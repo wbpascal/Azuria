@@ -43,7 +43,6 @@ namespace Proxer.API.Utility
             {
                 using (HttpClient client = new HttpClient(handler))
                 {
-
                     FormUrlEncodedContent content = new FormUrlEncodedContent(postArguments);
                     HttpResponseMessage response = await client.PostAsync(adresse, content);
                     return await response.Content.ReadAsStringAsync();
@@ -58,6 +57,17 @@ namespace Proxer.API.Utility
                 FormUrlEncodedContent content = new FormUrlEncodedContent(postArguments);
                 HttpResponseMessage response = await client.PostAsync(adresse, content);
                 return await response.Content.ReadAsStringAsync();
+            }
+        }
+        public static async Task<string> GetWebRequestResponseAsync(string adresse, CookieContainer cookieContainer)
+        {
+            using (HttpClientHandler handler = new HttpClientHandler() { CookieContainer = cookieContainer })
+            {
+                using (HttpClient client = new HttpClient(handler))
+                {
+                    HttpResponseMessage response = await client.GetAsync(adresse);
+                    return await response.Content.ReadAsStringAsync();
+                }
             }
         }
     }
