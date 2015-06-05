@@ -2,7 +2,3 @@ language: csharp
 solution: Proxer.API.sln
 install:
   - nuget restore Proxer.API.sln
-# whitelist
-branches:
-  only:
-    - master
