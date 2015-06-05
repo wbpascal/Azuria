@@ -1,8 +1,8 @@
 # Proxer API .NET 
 ## WIP
 ###Status
-Master-Branch: [![Build Status](https://travis-ci.org/InfiniteSoul/massive-octo-wookie.png?branch=master)](https://travis-ci.org/InfiniteSoul/massive-octo-wookie)
+Master-Branch: [![Build status](https://ci.appveyor.com/api/projects/status/eenr5ksrjakegl0e/branch/master?svg=true)](https://ci.appveyor.com/project/InfiniteSoul/massive-octo-wookie/branch/master)
 
-Neuester Commit: [![Build Status](https://travis-ci.org/InfiniteSoul/massive-octo-wookie.png)](https://travis-ci.org/InfiniteSoul/massive-octo-wookie)
+Neuester Commit: [![Build status](https://ci.appveyor.com/api/projects/status/eenr5ksrjakegl0e?svg=true)](https://ci.appveyor.com/project/InfiniteSoul/massive-octo-wookie)
 
 Eine kleine Umsetztung des Proxer APIs in eine Klassenbibliothek für Windows
