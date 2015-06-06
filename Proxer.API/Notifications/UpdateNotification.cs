@@ -20,6 +20,9 @@ namespace Proxer.API.Notifications
             this.Count = updateCount;
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
         public int Count {get; private set; }
 
         /// <summary>

@@ -11,8 +11,15 @@ namespace Proxer.API.Notifications
     /// </summary>
     public class NewsNotification : INotification
     {
+        /// <summary>
+        /// 
+        /// </summary>
         public int Count { get; private set; }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
         public string[] getUpdates()
         {
             throw new NotImplementedException();
