@@ -14,6 +14,14 @@ namespace Proxer.API.Notifications
         /// <summary>
         /// 
         /// </summary>
+        /// <param name="updateCount"></param>
+        public NewsNotification(int updateCount)
+        {
+            this.Count = updateCount;
+        }
+        /// <summary>
+        /// 
+        /// </summary>
         public int Count { get; private set; }
 
         /// <summary>

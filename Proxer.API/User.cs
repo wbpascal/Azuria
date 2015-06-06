@@ -86,7 +86,6 @@ namespace Proxer.API
                 if (value)
                 {
                     loginCheckTimer.Start();
-                    notificationTimer.Start();
                     this.loggedIn = value;
                 }
                 else
@@ -166,22 +165,30 @@ namespace Proxer.API
                 {
                     if (!response[2].Equals("0"))
                     {
-                        if (PMNotification_Raised != null) PMNotification_Raised(this, new NotificationEventArgs(new PMNotification()));
+                        if (PMNotification_Raised != null) PMNotification_Raised(this, new NotificationEventArgs(new PMNotification(Convert.ToInt32(response[2]))));
                     }
                     if (!response[3].Equals("0"))
                     {
-                        if (FriendNotification_Raised != null) FriendNotification_Raised(this, new NotificationEventArgs(new FriendNotification()));
+                        if (FriendNotification_Raised != null) FriendNotification_Raised(this, new NotificationEventArgs(new FriendNotification(Convert.ToInt32(response[3]))));
                     }
                     if (!response[4].Equals("0"))
                     {
-                        if (NewsNotification_Raised != null) FriendNotification_Raised(this, new NotificationEventArgs(new FriendNotification()));
+                        if (NewsNotification_Raised != null) FriendNotification_Raised(this, new NotificationEventArgs(new NewsNotification(Convert.ToInt32(response[4]))));
                     }
                     if (!response[5].Equals("0"))
                     {
-                        if (UpdateNotification_Raised != null) UpdateNotification_Raised(this, new NotificationEventArgs(new UpdateNotification()));
+                        if (UpdateNotification_Raised != null) UpdateNotification_Raised(this, new NotificationEventArgs(new UpdateNotification(Convert.ToInt32(response[5]))));
                     }
                 }
             }
+        }
+        /// <summary>
+        /// Initialiesiert die Benachrichtigungen
+        /// </summary>
+        public void initNotifications()
+        {
+            checkNotifications();
+            notificationTimer.Start();
         }
     }
 }
