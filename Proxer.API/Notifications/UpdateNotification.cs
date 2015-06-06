@@ -22,6 +22,7 @@ namespace Proxer.API.Notifications
         /// <param name="cookies"></param>
         public UpdateNotification(int updateCount, CookieContainer cookies)
         {
+            this.Typ = "Update";
             this.Count = updateCount;
             this.cookies = cookies;
         }
@@ -29,7 +30,11 @@ namespace Proxer.API.Notifications
         /// <summary>
         /// 
         /// </summary>
-        public int Count {get; private set; }
+        public int Count { get; private set; }
+        /// <summary>
+        /// 
+        /// </summary>
+        public string Typ { get; private set; }
 
         /// <summary>
         /// Gibt die Updates der Benachrichtigungen in einem Array zurück
@@ -37,8 +42,15 @@ namespace Proxer.API.Notifications
         /// <returns>UpdateObject-Array</returns>
         public async Task<INotificationObject[]> getUpdates()
         {
-            string updateRaw = await HttpUtility.GetWebRequestResponseAsync("", cookies);
-            return new UpdateObject[Count];
+            UpdateObject[] lReturn = new UpdateObject[this.Count];
+            string[] updateRaw = Utility.Utility.GetTagContents(await HttpUtility.GetWebRequestResponseAsync("", cookies), "<a class=\"notificationList\"", "</a>").ToArray();
+
+            for (int i = 0; i < this.Count; i++)
+            {
+                lReturn[i] = new UpdateObject(Utility.Utility.GetTagContents(updateRaw[i], "<u>", "</u>")[0]);
+            }
+
+            return lReturn;
         }
     }
 }

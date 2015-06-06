@@ -17,6 +17,10 @@ namespace Proxer.API
         /// Anzahl der Updates in der Benachrichtigung
         /// </summary>
         int Count { get; }
+        /// <summary>
+        /// 
+        /// </summary>
+        string Typ { get; }
 
         /// <summary>
         /// Gibt den Inhalt der Benachrichtigung zurück

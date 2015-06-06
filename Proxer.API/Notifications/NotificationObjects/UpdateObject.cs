@@ -14,19 +14,20 @@ namespace Proxer.API.Notifications.NotificationObjects
         /// <summary>
         /// 
         /// </summary>
-        /// <returns></returns>
-        public string getObjectType()
+        /// <param name="message"></param>
+        public UpdateObject(string message)
         {
-            throw new NotImplementedException();
+            this.Typ = "Update";
+            this.Message = message;
         }
 
         /// <summary>
         /// 
         /// </summary>
-        /// <returns></returns>
-        public string getMessage()
-        {
-            throw new NotImplementedException();
-        }
+        public string Typ { get; private set; }
+        /// <summary>
+        /// 
+        /// </summary>
+        public string Message { get; private set; }
     }
 }

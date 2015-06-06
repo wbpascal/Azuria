@@ -18,6 +18,7 @@ namespace Proxer.API.Notifications
         /// <param name="updateCount"></param>
         public PMNotification(int updateCount)
         {
+            this.Typ = "Private Nachricht";
             this.Count = updateCount;
         }
 
@@ -25,6 +26,10 @@ namespace Proxer.API.Notifications
         /// 
         /// </summary>
         public int Count { get; private set; }
+        /// <summary>
+        /// 
+        /// </summary>
+        public string Typ { get; private set; }
 
         /// <summary>
         /// 

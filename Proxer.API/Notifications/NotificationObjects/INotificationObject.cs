@@ -12,15 +12,15 @@ namespace Proxer.API.Notifications.NotificationObjects
     public interface INotificationObject
     {
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <returns></returns>
-        string getObjectType();
+        string Typ { get; }
 
         /// <summary>
         /// 
         /// </summary>
         /// <returns></returns>
-        string getMessage();
+        string Message { get; }
     }
 }

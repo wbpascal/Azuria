@@ -18,6 +18,7 @@ namespace Proxer.API.Notifications
         /// <param name="updateCount"></param>
         public FriendNotification(int updateCount)
         {
+            this.Typ = "Freund";
             this.Count = updateCount;
         }
 
@@ -25,6 +26,10 @@ namespace Proxer.API.Notifications
         /// 
         /// </summary>
         public int Count { get; private set; }
+        /// <summary>
+        /// 
+        /// </summary>
+        public string Typ { get; private set; }
 
         /// <summary>
         /// 
@@ -32,6 +37,7 @@ namespace Proxer.API.Notifications
         /// <returns></returns>
         public async Task<INotificationObject[]> getUpdates()
         {
+            await Task.Delay(1);
             throw new NotImplementedException();
         }
     }

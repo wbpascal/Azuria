@@ -14,19 +14,21 @@ namespace Proxer.API.Notifications.NotificationObjects
         /// <summary>
         /// 
         /// </summary>
-        /// <returns></returns>
-        public string getObjectType()
+        public PMObject()
         {
-            throw new NotImplementedException();
+            this.Typ = "Privat Nachricht";
         }
 
         /// <summary>
         /// 
         /// </summary>
-        /// <returns></returns>
-        public string getMessage()
+        public string Typ { get; private set; }
+        /// <summary>
+        /// 
+        /// </summary>
+        public string Message
         {
-            throw new NotImplementedException();
+            get { throw new NotImplementedException(); }
         }
     }
 }

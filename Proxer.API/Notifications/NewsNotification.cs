@@ -18,12 +18,17 @@ namespace Proxer.API.Notifications
         /// <param name="updateCount"></param>
         public NewsNotification(int updateCount)
         {
+            this.Typ = "News";
             this.Count = updateCount;
         }
         /// <summary>
         /// 
         /// </summary>
         public int Count { get; private set; }
+        /// <summary>
+        /// 
+        /// </summary>
+        public string Typ { get; private set; }
 
         /// <summary>
         /// 
