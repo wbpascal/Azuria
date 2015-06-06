@@ -12,6 +12,9 @@ using System.Windows.Threading;
 
 namespace Proxer.API
 {
+    /// <summary>
+    /// 
+    /// </summary>
     public class User
     {
         private int userID;
@@ -21,6 +24,11 @@ namespace Proxer.API
         private DispatcherTimer notificationTimer;
         private DispatcherTimer loginCheckTimer;
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         public delegate void NotificationEventHandler(object sender, NotificationEventArgs e);
         /// <summary>
         /// Wird aufgerufen, wenn eine neue Freundschaftsanfrage aussteht(30 Minuten Intervall)
@@ -43,6 +51,9 @@ namespace Proxer.API
         /// </summary>
         public event EventHandler UserLoggedOut_Raised;
 
+        /// <summary>
+        /// 
+        /// </summary>
         public User()
         {
             this.loggedIn = false;

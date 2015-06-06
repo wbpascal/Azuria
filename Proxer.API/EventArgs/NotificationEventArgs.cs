@@ -6,13 +6,23 @@ using System.Threading.Tasks;
 
 namespace Proxer.API.EventArgs
 {
+    /// <summary>
+    /// 
+    /// </summary>
     public class NotificationEventArgs
     {
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="notification"></param>
         public NotificationEventArgs(INotification notification)
         {
             this.Notification = notification;
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
         public INotification Notification { get; private set; }
     }
 }
