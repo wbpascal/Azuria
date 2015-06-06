@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Proxer.API.Notifications.NotificationObjects;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -29,7 +30,7 @@ namespace Proxer.API.Notifications
         /// 
         /// </summary>
         /// <returns></returns>
-        public string[] getUpdates()
+        public async Task<INotificationObject[]> getUpdates()
         {
             throw new NotImplementedException();
         }

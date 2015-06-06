@@ -60,11 +60,17 @@
     <Compile Include="Notifications\FriendNotification.cs" />
     <Compile Include="Notifications\INotification.cs" />
     <Compile Include="Notifications\NewsNotification.cs" />
+    <Compile Include="Notifications\NotificationObjects\FriendObject.cs" />
+    <Compile Include="Notifications\NotificationObjects\INotificationObject.cs" />
+    <Compile Include="Notifications\NotificationObjects\NewsObject.cs" />
+    <Compile Include="Notifications\NotificationObjects\PMObject.cs" />
+    <Compile Include="Notifications\NotificationObjects\UpdateObject.cs" />
     <Compile Include="Notifications\PMNotification.cs" />
     <Compile Include="Notifications\UpdateNotification.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="User.cs" />
     <Compile Include="Utility\HttpUtility.cs" />
+    <Compile Include="Utility\Utility.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

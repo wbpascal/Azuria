@@ -1,6 +1,9 @@
-﻿using System;
+﻿using Proxer.API.Notifications.NotificationObjects;
+using Proxer.API.Utility;
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -11,13 +14,16 @@ namespace Proxer.API.Notifications
     /// </summary>
     public class UpdateNotification : INotification
     {
+        private readonly CookieContainer cookies;
         /// <summary>
         /// 
         /// </summary>
         /// <param name="updateCount"></param>
-        public UpdateNotification(int updateCount)
+        /// <param name="cookies"></param>
+        public UpdateNotification(int updateCount, CookieContainer cookies)
         {
             this.Count = updateCount;
+            this.cookies = cookies;
         }
 
         /// <summary>
@@ -26,13 +32,13 @@ namespace Proxer.API.Notifications
         public int Count {get; private set; }
 
         /// <summary>
-        /// (Tut im Moment nichts)
         /// Gibt die Updates der Benachrichtigungen in einem Array zurück
         /// </summary>
-        /// <returns>String-Array mit den Updates</returns>
-        public string[] getUpdates()
+        /// <returns>UpdateObject-Array</returns>
+        public async Task<INotificationObject[]> getUpdates()
         {
-            throw new NotImplementedException();
+            string updateRaw = await HttpUtility.GetWebRequestResponseAsync("", cookies);
+            return new UpdateObject[Count];
         }
     }
 }

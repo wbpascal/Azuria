@@ -177,7 +177,7 @@ namespace Proxer.API
                     }
                     if (!response[5].Equals("0"))
                     {
-                        if (UpdateNotification_Raised != null) UpdateNotification_Raised(this, new NotificationEventArgs(new UpdateNotification(Convert.ToInt32(response[5]))));
+                        if (UpdateNotification_Raised != null) UpdateNotification_Raised(this, new NotificationEventArgs(new UpdateNotification(Convert.ToInt32(response[5]), loginCookies)));
                     }
                 }
             }
