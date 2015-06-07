@@ -14,17 +14,17 @@ namespace Proxer.API.Notifications
     /// </summary>
     public class UpdateNotification : INotification
     {
-        private readonly CookieContainer cookies;
+        private readonly User senpai;
         /// <summary>
         /// 
         /// </summary>
         /// <param name="updateCount"></param>
-        /// <param name="cookies"></param>
-        public UpdateNotification(int updateCount, CookieContainer cookies)
+        /// <param name="senpai"></param>
+        public UpdateNotification(int updateCount, User senpai)
         {
             this.Typ = "Update";
             this.Count = updateCount;
-            this.cookies = cookies;
+            this.senpai = senpai;
         }
 
         /// <summary>
@@ -43,13 +43,17 @@ namespace Proxer.API.Notifications
         public async Task<INotificationObject[]> getUpdates()
         {
             UpdateObject[] lReturn = new UpdateObject[this.Count];
-            string[] updateRaw = Utility.Utility.GetTagContents(await HttpUtility.GetWebRequestResponseAsync("", cookies), "<a class=\"notificationList\"", "</a>").ToArray();
-
-            for (int i = 0; i < this.Count; i++)
+            if (senpai.LoggedIn)
             {
-                lReturn[i] = new UpdateObject(Utility.Utility.GetTagContents(updateRaw[i], "<u>", "</u>")[0]);
-            }
+                string[] updateRaw = Utility.Utility.GetTagContents(await HttpUtility.GetWebRequestResponseAsync("https://proxer.me/components/com_proxer/misc/notifications_misc.php", senpai.LoginCookies), "<a class=\"notificationList\"", "</a>").ToArray();
 
+                for (int i = 0; i < this.Count; i++)
+                {
+                    UpdateObject lUpdate =new UpdateObject(Utility.Utility.GetTagContents(updateRaw[i], "<u>", "</u>")[0]);
+                    lReturn[i] = lUpdate;
+                    senpai.AMUpdates.Add(lUpdate);
+                }
+            }
             return lReturn;
         }
     }

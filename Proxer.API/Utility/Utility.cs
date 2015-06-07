@@ -31,9 +31,9 @@ namespace Proxer.API.Utility
                     Index = Source.IndexOf(startTag, Index) + startTag.Length;
                 }
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                Console.WriteLine(ex.Message);
+                
             }
             return StringsFound;
         }
