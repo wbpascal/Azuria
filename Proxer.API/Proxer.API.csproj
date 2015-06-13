@@ -60,6 +60,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="EventArgs\NotificationEventArgs.cs" />
+    <Compile Include="Notifications\NotificationType.cs" />
     <Compile Include="Notifications\FriendNotification.cs" />
     <Compile Include="Notifications\INotification.cs" />
     <Compile Include="Notifications\NewsNotification.cs" />

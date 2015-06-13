@@ -22,7 +22,7 @@ namespace Proxer.API.Notifications
         /// <param name="senpai"></param>
         public UpdateNotification(int updateCount, User senpai)
         {
-            this.Typ = "Update";
+            this.Typ = NotificationType.AnimeManga;
             this.Count = updateCount;
             this.senpai = senpai;
         }
@@ -34,7 +34,7 @@ namespace Proxer.API.Notifications
         /// <summary>
         /// 
         /// </summary>
-        public string Typ { get; private set; }
+        public NotificationType Typ { get; private set; }
 
         /// <summary>
         /// Gibt die Updates der Benachrichtigungen in einem Array zurück
@@ -42,19 +42,21 @@ namespace Proxer.API.Notifications
         /// <returns>UpdateObject-Array</returns>
         public async Task<INotificationObject[]> getUpdates()
         {
-            UpdateObject[] lReturn = new UpdateObject[this.Count];
-            if (senpai.LoggedIn)
-            {
-                string[] updateRaw = Utility.Utility.GetTagContents(await HttpUtility.GetWebRequestResponseAsync("https://proxer.me/components/com_proxer/misc/notifications_misc.php", senpai.LoginCookies), "<a class=\"notificationList\"", "</a>").ToArray();
+            //UpdateObject[] lReturn = new UpdateObject[this.Count];
+            //if (senpai.LoggedIn)
+            //{
+            //    string[] updateRaw = Utility.Utility.GetTagContents(await HttpUtility.GetWebRequestResponseAsync("https://proxer.me/components/com_proxer/misc/notifications_misc.php", senpai.LoginCookies), "<a class=\"notificationList\"", "</a>").ToArray();
 
-                for (int i = 0; i < this.Count; i++)
-                {
-                    UpdateObject lUpdate =new UpdateObject(Utility.Utility.GetTagContents(updateRaw[i], "<u>", "</u>")[0]);
-                    lReturn[i] = lUpdate;
-                    senpai.AMUpdates.Add(lUpdate);
-                }
-            }
-            return lReturn;
+            //    for (int i = 0; i < this.Count; i++)
+            //    {
+            //        UpdateObject lUpdate =new UpdateObject(Utility.Utility.GetTagContents(updateRaw[i], "<u>", "</u>")[0]);
+            //        lReturn[i] = lUpdate;
+            //        senpai.AMUpdates.Add(lUpdate);
+            //    }
+            //}
+            //return lReturn;
+      
+            throw new NotImplementedException();
         }
     }
 }

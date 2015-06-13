@@ -56,7 +56,7 @@ namespace Proxer.API
         /// </summary>
         public User()
         {
-            this.AMUpdates = new List<UpdateObject>();
+            this.AnimeMangaUpdates = new List<UpdateObject>();
             this.loggedIn = false;
             this.LoginCookies = new CookieContainer();
 
@@ -100,7 +100,7 @@ namespace Proxer.API
         /// <summary>
         /// Gibt alle Anime und Manga Benachrichtigungen in einer Liste zurück
         /// </summary>
-        public List<UpdateObject> AMUpdates { get; private set; }
+        public List<UpdateObject> AnimeMangaUpdates { get; private set; }
         /// <summary>
         /// 
         /// </summary>
@@ -182,7 +182,7 @@ namespace Proxer.API
                     }
                     if (!response[4].Equals("0"))
                     {
-                        if (NewsNotification_Raised != null) FriendNotification_Raised(this, new NotificationEventArgs(new NewsNotification(Convert.ToInt32(response[4]))));
+                        if (NewsNotification_Raised != null) FriendNotification_Raised(this, new NotificationEventArgs(new NewsNotification(Convert.ToInt32(response[4]), this)));
                     }
                     if (!response[5].Equals("0"))
                     {
@@ -212,7 +212,7 @@ namespace Proxer.API
                     }
                     if (!response[4].Equals("0"))
                     {
-                        if (NewsNotification_Raised != null) FriendNotification_Raised(this, new NotificationEventArgs(new NewsNotification(Convert.ToInt32(response[4]))));
+                        if (NewsNotification_Raised != null) FriendNotification_Raised(this, new NotificationEventArgs(new NewsNotification(Convert.ToInt32(response[4]), this)));
                     }
                     if (!response[5].Equals("0"))
                     {
@@ -231,6 +231,7 @@ namespace Proxer.API
             }
         }
         /// <summary>
+        /// (Vorläufig, nicht ausführlich getestet)
         /// Benutzt um ALLE Update Benachrichtigungen in die AMUpdates Eigenschaft einzutragen.
         /// Nur einmal in initNotifications() benutzt.
         /// </summary>
@@ -262,7 +263,7 @@ namespace Proxer.API
                             lNumber = -1;
                         }
 
-                        this.AMUpdates.Add(new UpdateObject(lMessage, lName, lNumber, lLink, lID));
+                        this.AnimeMangaUpdates.Add(new UpdateObject(lMessage, lName, lNumber, lLink, lID));
                     }
 
                     return true;

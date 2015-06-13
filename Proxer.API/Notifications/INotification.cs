@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Proxer.API
+namespace Proxer.API.Notifications
 {
     /// <summary>
     /// Fasst alle Benachrichtigungen-Klassen in ein Interface zusammen.
@@ -20,7 +20,7 @@ namespace Proxer.API
         /// <summary>
         /// 
         /// </summary>
-        string Typ { get; }
+        NotificationType Typ { get; }
 
         /// <summary>
         /// Gibt den Inhalt der Benachrichtigung zurück
