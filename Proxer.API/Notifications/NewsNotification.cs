@@ -15,6 +15,9 @@ namespace Proxer.API.Notifications
     public class NewsNotification : INotification
     {
         private readonly User senpai;
+        //nachdem getUpdate() einmal aufgerufen wurde werden die Ergebnisse hier drin gespeichert => weniger Auslastung
+        private NewsObject[] updateListe;
+
         /// <summary>
         /// 
         /// </summary>
@@ -41,19 +44,28 @@ namespace Proxer.API.Notifications
         /// <returns></returns>
         public async Task<INotificationObject[]> getUpdates()
         {
-            string lResponse = await HttpUtility.GetWebRequestResponseAsync("http://proxer.me/notifications?format=json&s=news&p=1", senpai.LoginCookies);
-            if (lResponse.StartsWith("{\"error\":0"))
+            if (updateListe == null && senpai.LoggedIn)
             {
-                Dictionary<string, List<NewsObject>> lDeserialized = JsonConvert.DeserializeObject<Dictionary<string, List<NewsObject>>>("{" + lResponse.Substring("{\"error\":0,".Length));
-                if(this.Count < 15) lDeserialized["notifications"].RemoveRange(this.Count, lDeserialized["notifications"].Count - this.Count);
-                return lDeserialized["notifications"].ToArray();
+                string lResponse = await HttpUtility.GetWebRequestResponseAsync("http://proxer.me/notifications?format=json&s=news&p=1", senpai.LoginCookies);
+                if (lResponse.StartsWith("{\"error\":0"))
+                {
+                    Dictionary<string, List<NewsObject>> lDeserialized = JsonConvert.DeserializeObject<Dictionary<string, List<NewsObject>>>("{" + lResponse.Substring("{\"error\":0,".Length));
+                    
+                    if (this.Count < 15) lDeserialized["notifications"].RemoveRange(this.Count, lDeserialized["notifications"].Count - this.Count);
+
+                    updateListe = lDeserialized["notifications"].ToArray();
+                    return updateListe;
+                }
+                else
+                {
+                    return null;
+                }
             }
             else
             {
-                return null;
+                //kann auch null sein
+                return updateListe;
             }
-
-            throw new NotImplementedException();
         }
     }
 }

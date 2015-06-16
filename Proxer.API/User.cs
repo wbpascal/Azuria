@@ -21,8 +21,16 @@ namespace Proxer.API
         private int userID;
         private bool loggedIn;
         private string username;
-        private DispatcherTimer notificationTimer;
+        private DispatcherTimer notificationCheckTimer;
         private DispatcherTimer loginCheckTimer;
+        private DispatcherTimer newsCheckTimer;
+        private DispatcherTimer animeMangaCheckTimer;
+
+        //für die NotificationObject-Listen Eigenschaften
+        internal bool checkNews;
+        internal bool checkAnimeMangaUpdate;
+        internal List<NewsObject> newsObjects;
+        internal List<AnimeMangaUpdateObject> animeMangaUpdates;
 
         /// <summary>
         /// 
@@ -56,7 +64,15 @@ namespace Proxer.API
         /// </summary>
         public User()
         {
-            this.AnimeMangaUpdates = new List<UpdateObject>();
+            //Initialisiere Eigenschaften
+            //this.AnimeMangaUpdates = new List<AnimeMangaUpdateObject>();
+            newsObjects = new List<NewsObject>();
+            animeMangaUpdates = new List<AnimeMangaUpdateObject>();
+
+            //Initialisiert die check-Variablen(wichtig für die Update-Eigenschaften)
+            checkNews = false;
+            checkAnimeMangaUpdate = false;
+
             this.loggedIn = false;
             this.LoginCookies = new CookieContainer();
 
@@ -68,9 +84,17 @@ namespace Proxer.API
                 checkLogin();
             };
 
-            this.notificationTimer = new DispatcherTimer(DispatcherPriority.Background);
-            this.notificationTimer.Interval = new TimeSpan(0, 30, 0);
-            this.notificationTimer.Tick += (s, eArgs) => { checkNotifications(); };
+            this.notificationCheckTimer = new DispatcherTimer(DispatcherPriority.Background);
+            this.notificationCheckTimer.Interval = new TimeSpan(0, 30, 0);
+            this.notificationCheckTimer.Tick += (s, eArgs) => { checkNotifications(); };
+
+            this.newsCheckTimer = new DispatcherTimer(DispatcherPriority.Background);
+            this.newsCheckTimer.Interval = new TimeSpan(0, 30, 0);
+            this.newsCheckTimer.Tick += (s, eArgs) => { checkNews = true; };
+
+            this.animeMangaCheckTimer = new DispatcherTimer(DispatcherPriority.Background);
+            this.animeMangaCheckTimer.Interval = new TimeSpan(0, 30, 0);
+            this.animeMangaCheckTimer.Tick += (s, eArgs) => { checkAnimeMangaUpdate = true; };
         }
 
         /// <summary>
@@ -92,7 +116,9 @@ namespace Proxer.API
                 else
                 {
                     loginCheckTimer.Stop();
-                    notificationTimer.Stop();
+                    notificationCheckTimer.Stop();
+                    newsCheckTimer.Stop();
+                    animeMangaCheckTimer.Stop();
                     this.loggedIn = value;
                 }
             }
@@ -100,9 +126,27 @@ namespace Proxer.API
         /// <summary>
         /// Gibt alle Anime und Manga Benachrichtigungen in einer Liste zurück
         /// </summary>
-        public List<UpdateObject> AnimeMangaUpdates { get; private set; }
+        public List<AnimeMangaUpdateObject> AnimeMangaUpdates
+        {
+            get 
+            {
+                if (checkAnimeMangaUpdate) getAllAnimeMangaUpdates();
+                return animeMangaUpdates; 
+            }
+        }
         /// <summary>
-        /// 
+        /// Gibt die letzten 15 News in einer Liste zurück
+        /// </summary>
+        public List<NewsObject> News
+        {
+            get
+            {
+                if (checkNews) getAllNewsUpdates();
+                return newsObjects;
+            }
+        }
+        /// <summary>
+        /// Gibt den CookieContainer zurück, der benutzt wird, um Aktionen im eingeloggten Status auszuführen
         /// </summary>
         public CookieContainer LoginCookies { get; private set; }
 
@@ -219,9 +263,13 @@ namespace Proxer.API
                         if (UpdateNotification_Raised != null) UpdateNotification_Raised(this, new NotificationEventArgs(new UpdateNotification(Convert.ToInt32(response[5]), this)));
                     }
                 }
-                await getAllUpdateNotifications();
 
-                notificationTimer.Start();
+                getAllAnimeMangaUpdates();
+                getAllNewsUpdates();
+
+                notificationCheckTimer.Start();
+                newsCheckTimer.Start();
+                animeMangaCheckTimer.Start();
 
                 return true;
             }
@@ -232,30 +280,35 @@ namespace Proxer.API
         }
         /// <summary>
         /// (Vorläufig, nicht ausführlich getestet)
-        /// Benutzt um ALLE Update Benachrichtigungen in die AMUpdates Eigenschaft einzutragen.
-        /// Nur einmal in initNotifications() benutzt.
+        /// Benutzt um ALLE Update Benachrichtigungen in die AnimeMangaUpdates Eigenschaft einzutragen.
+        /// Nur in initNotifications() und alle 30 Minuten, falls die AnimeMangaUpdates-Eigenschaft abgerufen wird, benutzt.
         /// </summary>
-        private async Task<bool> getAllUpdateNotifications()
+        private async void getAllAnimeMangaUpdates()
         {
             if (LoggedIn)
             {
-                try
-                {
-                    List<string> responseSplit = Utility.Utility.GetTagContents(await HttpUtility.GetWebRequestResponseAsync("https://proxer.me/components/com_proxer/misc/notifications_misc.php", LoginCookies), "<a class=\"notificationList\"", "</a>");
+                HtmlAgilityPack.HtmlDocument lDocument = new HtmlAgilityPack.HtmlDocument();
+                string lResponse = await HttpUtility.GetWebRequestResponseAsync("https://proxer.me/components/com_proxer/misc/notifications_misc.php", LoginCookies);
 
-                    foreach (string curUpdate in responseSplit)
+                lDocument.LoadHtml(lResponse);
+
+                if (lDocument.ParseErrors.Count() == 0)
+                {
+                    HtmlAgilityPack.HtmlNodeCollection lNodes = lDocument.DocumentNode.SelectNodes("//a[@class='notificationList']");
+
+                    foreach (HtmlAgilityPack.HtmlNode curNode in lNodes)
                     {
                         string lName;
                         int lNumber;
 
-                        int lID = Convert.ToInt32(Utility.Utility.GetTagContents(curUpdate, "id=\"", "\"")[0].Substring(12));
-                        string lMessage = Utility.Utility.GetTagContents(curUpdate, "<u>", "</u>")[0];
-                        Uri lLink = new Uri(Utility.Utility.GetTagContents(curUpdate, "href=\"", "\"")[0]);
+                        int lID = Convert.ToInt32(curNode.Id.Substring(12));
+                        string lMessage = curNode.ChildNodes["u"].InnerText;
+                        Uri lLink = new Uri("http://proxer.me" + curNode.Attributes["href"].Value);
 
                         if (lMessage.IndexOf('#') != -1)
                         {
-                            lName = curUpdate.Split('#')[0];
-                            if (!Int32.TryParse(curUpdate.Split('#')[1], out lNumber)) lNumber = -1;
+                            lName = lMessage.Split('#')[0];
+                            if (!Int32.TryParse(lMessage.Split('#')[1], out lNumber)) lNumber = -1;
                         }
                         else
                         {
@@ -263,19 +316,25 @@ namespace Proxer.API
                             lNumber = -1;
                         }
 
-                        this.AnimeMangaUpdates.Add(new UpdateObject(lMessage, lName, lNumber, lLink, lID));
+                        this.AnimeMangaUpdates.Add(new AnimeMangaUpdateObject(lMessage, lName, lNumber, lLink, lID));
                     }
-
-                    return true;
-                }
-                catch (Exception)
-                {
-                    return false;
                 }
             }
-            else
+        }
+        /// <summary>
+        /// Benutzt um die letzten 15 News abzurufen.
+        /// Nur in initNotifications() und alle 30 Minuten, falls die AnimeMangaUpdates-Eigenschaft abgerufen wird, benutzt.
+        /// </summary>
+        private async void getAllNewsUpdates()
+        {
+            if (LoggedIn)
             {
-                return false;
+                string lResponse = await HttpUtility.GetWebRequestResponseAsync("http://proxer.me/notifications?format=json&s=news&p=1", LoginCookies);
+                if (lResponse.StartsWith("{\"error\":0"))
+                {
+                    Dictionary<string, List<NewsObject>> lDeserialized = JsonConvert.DeserializeObject<Dictionary<string, List<NewsObject>>>("{" + lResponse.Substring("{\"error\":0,".Length));
+                    newsObjects = lDeserialized["notifications"];
+                }
             }
         }
     }

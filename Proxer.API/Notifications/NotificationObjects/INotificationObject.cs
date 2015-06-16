@@ -15,7 +15,7 @@ namespace Proxer.API.Notifications.NotificationObjects
         ///
         /// </summary>
         /// <returns></returns>
-        string Typ { get; }
+        NotificationObjectType Typ { get; }
 
         /// <summary>
         /// 

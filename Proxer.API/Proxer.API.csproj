@@ -60,6 +60,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="EventArgs\NotificationEventArgs.cs" />
+    <Compile Include="Notifications\NotificationObjects\NotificationObjectType.cs" />
     <Compile Include="Notifications\NotificationType.cs" />
     <Compile Include="Notifications\FriendNotification.cs" />
     <Compile Include="Notifications\INotification.cs" />
@@ -68,7 +69,7 @@
     <Compile Include="Notifications\NotificationObjects\INotificationObject.cs" />
     <Compile Include="Notifications\NotificationObjects\NewsObject.cs" />
     <Compile Include="Notifications\NotificationObjects\PMObject.cs" />
-    <Compile Include="Notifications\NotificationObjects\UpdateObject.cs" />
+    <Compile Include="Notifications\NotificationObjects\AnimeMangaUpdateObject.cs" />
     <Compile Include="Notifications\PMNotification.cs" />
     <Compile Include="Notifications\UpdateNotification.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

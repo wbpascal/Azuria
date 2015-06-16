@@ -2,33 +2,32 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace Proxer.API.Notifications.NotificationObjects
 {
     /// <summary>
     /// 
     /// </summary>
-    public class PMObject : INotificationObject
+    public enum NotificationObjectType
     {
         /// <summary>
         /// 
         /// </summary>
-        public PMObject()
-        {
-            this.Typ = NotificationObjectType.PrivateMessage;
-        }
+        Friend,
 
         /// <summary>
         /// 
         /// </summary>
-        public NotificationObjectType Typ { get; private set; }
+        News,
+
         /// <summary>
         /// 
         /// </summary>
-        public string Message
-        {
-            get { throw new NotImplementedException(); }
-        }
-    }
+        PrivateMessage,
+
+        /// <summary>
+        /// 
+        /// </summary>
+        AnimeManga
+    };
 }

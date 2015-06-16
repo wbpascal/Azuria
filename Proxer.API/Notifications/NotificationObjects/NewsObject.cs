@@ -16,13 +16,13 @@ namespace Proxer.API.Notifications.NotificationObjects
         /// </summary>
         public NewsObject()
         {
-            this.Typ = "News";
+            this.Typ = NotificationObjectType.News;
         }
 
         /// <summary>
         /// 
         /// </summary>
-        public string Typ { get; private set; }
+        public NotificationObjectType Typ { get; private set; }
         /// <summary>
         /// 
         /// </summary>
