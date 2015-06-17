@@ -12,14 +12,19 @@ namespace Proxer.API.Notifications
     /// </summary>
     public class PMNotification : INotification
     {
+        private readonly Senpai senpai;
+        private PMObject[] updateObjects;
+
         /// <summary>
         /// 
         /// </summary>
         /// <param name="updateCount"></param>
-        public PMNotification(int updateCount)
+        /// <param name="senpai"></param>
+        public PMNotification(int updateCount, Senpai senpai)
         {
             this.Typ = NotificationType.PrivateMessage;
             this.Count = updateCount;
+            this.senpai = senpai;
         }
 
         /// <summary>
@@ -37,7 +42,18 @@ namespace Proxer.API.Notifications
         /// <returns></returns>
         public async Task<INotificationObject[]> getUpdates()
         {
-            throw new NotImplementedException();
+            if (updateObjects == null && senpai.LoggedIn)
+            {
+
+
+
+                return null;
+            }
+            else
+            {
+                //kann auch null sein
+                return updateObjects;
+            }
         }
     }
 }
