@@ -305,7 +305,7 @@ namespace Proxer.API
 
                         int lID = Convert.ToInt32(curNode.Id.Substring(12));
                         string lMessage = curNode.ChildNodes["u"].InnerText;
-                        Uri lLink = new Uri("http://proxer.me" + curNode.Attributes["href"].Value);
+                        Uri lLink = new Uri("https://proxer.me" + curNode.Attributes["href"].Value);
 
                         if (lMessage.IndexOf('#') != -1)
                         {
@@ -334,7 +334,7 @@ namespace Proxer.API
             {
                 this.newsObjects = new List<NewsObject>();
 
-                string lResponse = await HttpUtility.GetWebRequestResponseAsync("http://proxer.me/notifications?format=json&s=news&p=1", LoginCookies);
+                string lResponse = await HttpUtility.GetWebRequestResponseAsync("https://proxer.me/notifications?format=json&s=news&p=1", LoginCookies);
                 if (lResponse.StartsWith("{\"error\":0"))
                 {
                     Dictionary<string, List<NewsObject>> lDeserialized = JsonConvert.DeserializeObject<Dictionary<string, List<NewsObject>>>("{" + lResponse.Substring("{\"error\":0,".Length));
