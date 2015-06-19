@@ -13,7 +13,7 @@ namespace Proxer.API.Utility
     /// <summary>
     /// 
     /// </summary>
-    public class HttpUtility
+    public static class HttpUtility
     {
         /// <summary>
         /// 
