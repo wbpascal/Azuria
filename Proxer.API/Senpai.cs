@@ -23,14 +23,15 @@ namespace Proxer.API
         private string username;
         private DispatcherTimer notificationCheckTimer;
         private DispatcherTimer loginCheckTimer;
-        private DispatcherTimer newsCheckTimer;
-        private DispatcherTimer animeMangaCheckTimer;
+        private DispatcherTimer notificationUpdateCheckTimer;
 
         //für die NotificationObject-Listen Eigenschaften
-        internal bool checkNews;
+        internal bool checkNewsUpdate;
         internal bool checkAnimeMangaUpdate;
-        internal List<NewsObject> newsObjects;
+        internal bool checkPMUpdate;
+        internal List<NewsObject> newsUpdates;
         internal List<AnimeMangaUpdateObject> animeMangaUpdates;
+        internal List<PMObject> pmUpdates;
 
         /// <summary>
         /// 
@@ -59,20 +60,12 @@ namespace Proxer.API
         /// </summary>
         public event EventHandler UserLoggedOut_Raised;
 
+
         /// <summary>
-        /// 
+        /// Initialisiert die Klasse
         /// </summary>
         public Senpai()
         {
-            //Initialisiere Eigenschaften
-            //this.AnimeMangaUpdates = new List<AnimeMangaUpdateObject>();
-            newsObjects = new List<NewsObject>();
-            animeMangaUpdates = new List<AnimeMangaUpdateObject>();
-
-            //Initialisiert die check-Variablen(wichtig für die Update-Eigenschaften)
-            checkNews = false;
-            checkAnimeMangaUpdate = false;
-
             this.loggedIn = false;
             this.LoginCookies = new CookieContainer();
 
@@ -88,14 +81,16 @@ namespace Proxer.API
             this.notificationCheckTimer.Interval = new TimeSpan(0, 30, 0);
             this.notificationCheckTimer.Tick += (s, eArgs) => { checkNotifications(); };
 
-            this.newsCheckTimer = new DispatcherTimer(DispatcherPriority.Background);
-            this.newsCheckTimer.Interval = new TimeSpan(0, 30, 0);
-            this.newsCheckTimer.Tick += (s, eArgs) => { checkNews = true; };
-
-            this.animeMangaCheckTimer = new DispatcherTimer(DispatcherPriority.Background);
-            this.animeMangaCheckTimer.Interval = new TimeSpan(0, 30, 0);
-            this.animeMangaCheckTimer.Tick += (s, eArgs) => { checkAnimeMangaUpdate = true; };
+            this.notificationUpdateCheckTimer = new DispatcherTimer(DispatcherPriority.Background);
+            this.notificationUpdateCheckTimer.Interval = new TimeSpan(0, 30, 0);
+            this.notificationUpdateCheckTimer.Tick += (s, eArgs) =>
+            {
+                checkAnimeMangaUpdate = true;
+                checkNewsUpdate = true;
+                checkPMUpdate = true;
+            };
         }
+
 
         /// <summary>
         /// Gibt an, ob der Benutzter noch eingeloggt ist, wird aber nicht überprüft
@@ -117,8 +112,7 @@ namespace Proxer.API
                 {
                     loginCheckTimer.Stop();
                     notificationCheckTimer.Stop();
-                    newsCheckTimer.Stop();
-                    animeMangaCheckTimer.Stop();
+                    notificationUpdateCheckTimer.Stop();
                     this.loggedIn = value;
                 }
             }
@@ -128,10 +122,10 @@ namespace Proxer.API
         /// </summary>
         public List<AnimeMangaUpdateObject> AnimeMangaUpdates
         {
-            get 
+            get
             {
                 if (checkAnimeMangaUpdate || animeMangaUpdates == null) getAllAnimeMangaUpdates();
-                return animeMangaUpdates; 
+                return animeMangaUpdates;
             }
         }
         /// <summary>
@@ -141,14 +135,26 @@ namespace Proxer.API
         {
             get
             {
-                if (checkNews || newsObjects == null) getAllNewsUpdates();
-                return newsObjects;
+                if (checkNewsUpdate || newsUpdates == null) getAllNewsUpdates();
+                return newsUpdates;
+            }
+        }
+        /// <summary>
+        /// Gibt alle Privat Nachricht Benachrichtigungen in einer Liste zurück
+        /// </summary>
+        public List<PMObject> PrivateMessages
+        {
+            get
+            {
+                if (checkPMUpdate || this.pmUpdates == null) getAllPMUpdates();
+                return pmUpdates;
             }
         }
         /// <summary>
         /// Gibt den CookieContainer zurück, der benutzt wird, um Aktionen im eingeloggten Status auszuführen
         /// </summary>
         public CookieContainer LoginCookies { get; private set; }
+
 
         /// <summary>
         /// Loggt den Benutzer ein und speichert die Cookies in ein Objekt, sodass
@@ -218,19 +224,23 @@ namespace Proxer.API
                 {
                     if (!response[2].Equals("0"))
                     {
-                        if (PMNotification_Raised != null) PMNotification_Raised(this, new NotificationEventArgs(new PMNotification(Convert.ToInt32(response[2]), this)));
+                        if (PMNotification_Raised != null) PMNotification_Raised(this, new NotificationEventArgs(new PMNotification(Convert.ToInt32(response[2]))));
+                        this.checkPMUpdate = true;
                     }
                     if (!response[3].Equals("0"))
                     {
                         if (FriendNotification_Raised != null) FriendNotification_Raised(this, new NotificationEventArgs(new FriendNotification(Convert.ToInt32(response[3]))));
+                        //hier check bool einfügen
                     }
                     if (!response[4].Equals("0"))
                     {
-                        if (NewsNotification_Raised != null) FriendNotification_Raised(this, new NotificationEventArgs(new NewsNotification(Convert.ToInt32(response[4]), this)));
+                        if (NewsNotification_Raised != null) FriendNotification_Raised(this, new NotificationEventArgs(new NewsNotification(Convert.ToInt32(response[4]))));
+                        this.checkNewsUpdate = true;
                     }
                     if (!response[5].Equals("0"))
                     {
-                        if (UpdateNotification_Raised != null) UpdateNotification_Raised(this, new NotificationEventArgs(new AnimeMangaNotification(Convert.ToInt32(response[5]), this)));
+                        if (UpdateNotification_Raised != null) UpdateNotification_Raised(this, new NotificationEventArgs(new AnimeMangaNotification(Convert.ToInt32(response[5]))));
+                        this.checkAnimeMangaUpdate = true;
                     }
                 }
             }
@@ -248,28 +258,28 @@ namespace Proxer.API
                 {
                     if (!response[2].Equals("0"))
                     {
-                        if (PMNotification_Raised != null) PMNotification_Raised(this, new NotificationEventArgs(new PMNotification(Convert.ToInt32(response[2]), this)));
+                        if (PMNotification_Raised != null) PMNotification_Raised(this, new NotificationEventArgs(new PMNotification(Convert.ToInt32(response[2]))));
+                        this.checkPMUpdate = true;
                     }
                     if (!response[3].Equals("0"))
                     {
                         if (FriendNotification_Raised != null) FriendNotification_Raised(this, new NotificationEventArgs(new FriendNotification(Convert.ToInt32(response[3]))));
+                        //hier check bool einfügen
                     }
                     if (!response[4].Equals("0"))
                     {
-                        if (NewsNotification_Raised != null) FriendNotification_Raised(this, new NotificationEventArgs(new NewsNotification(Convert.ToInt32(response[4]), this)));
+                        if (NewsNotification_Raised != null) FriendNotification_Raised(this, new NotificationEventArgs(new NewsNotification(Convert.ToInt32(response[4]))));
+                        this.checkNewsUpdate = true;
                     }
                     if (!response[5].Equals("0"))
                     {
-                        if (UpdateNotification_Raised != null) UpdateNotification_Raised(this, new NotificationEventArgs(new AnimeMangaNotification(Convert.ToInt32(response[5]), this)));
+                        if (UpdateNotification_Raised != null) UpdateNotification_Raised(this, new NotificationEventArgs(new AnimeMangaNotification(Convert.ToInt32(response[5]))));
+                        this.checkAnimeMangaUpdate = true;
                     }
                 }
 
-                getAllAnimeMangaUpdates();
-                getAllNewsUpdates();
-
                 notificationCheckTimer.Start();
-                newsCheckTimer.Start();
-                animeMangaCheckTimer.Start();
+                notificationUpdateCheckTimer.Start();
 
                 return true;
             }
@@ -278,12 +288,14 @@ namespace Proxer.API
                 return false;
             }
         }
+
+
         /// <summary>
         /// (Vorläufig, nicht ausführlich getestet)
-        /// Benutzt um ALLE Update Benachrichtigungen in die AnimeMangaUpdates Eigenschaft einzutragen.
-        /// Nur in initNotifications() und alle 30 Minuten, falls die AnimeMangaUpdates-Eigenschaft abgerufen wird, benutzt.
+        /// Benutzt um ALLE Anime und Manga Benachrichtigungen in die vorgesehene einzutragen.
+        /// Wird nur in initNotifications() und alle 30 Minuten, falls die AnimeMangaUpdates-Eigenschaft abgerufen wird, benutzt.
         /// </summary>
-        private async void getAllAnimeMangaUpdates()
+        protected internal async void getAllAnimeMangaUpdates()
         {
             if (LoggedIn)
             {
@@ -325,21 +337,71 @@ namespace Proxer.API
             }
         }
         /// <summary>
-        /// Benutzt um die letzten 15 News abzurufen.
-        /// Nur in initNotifications() und alle 30 Minuten, falls die AnimeMangaUpdates-Eigenschaft abgerufen wird, benutzt.
+        /// Benutzt um die letzten 15 News abzurufen und sie in die vorgesehene Eigenschaft einzutragen.
+        /// Nur in initNotifications() und alle 30 Minuten, falls die News-Eigenschaft abgerufen wird, benutzt.
         /// </summary>
-        private async void getAllNewsUpdates()
+        protected internal async void getAllNewsUpdates()
         {
             if (LoggedIn)
             {
-                this.newsObjects = new List<NewsObject>();
+                this.newsUpdates = new List<NewsObject>();
 
                 string lResponse = await HttpUtility.GetWebRequestResponseAsync("https://proxer.me/notifications?format=json&s=news&p=1", LoginCookies);
                 if (lResponse.StartsWith("{\"error\":0"))
                 {
                     Dictionary<string, List<NewsObject>> lDeserialized = JsonConvert.DeserializeObject<Dictionary<string, List<NewsObject>>>("{" + lResponse.Substring("{\"error\":0,".Length));
-                    newsObjects = lDeserialized["notifications"];
-                    this.checkNews = false;
+                    newsUpdates = lDeserialized["notifications"];
+                    this.checkNewsUpdate = false;
+                }
+            }
+        }
+        /// <summary>
+        /// (Vorläufig, nicht ausführlich getestet)
+        /// Benutzt um ALLE Privat Nachricht Benachrichtigungen abzurufen und sie in die vorgesehene Eigenschaft einzutragen.
+        /// Nur in initNotifications() und alle 30 Minuten, falls die PMUpdates-Eigenschaft abgerufen wird, benutzt.
+        /// </summary>
+        protected internal async void getAllPMUpdates()
+        {
+            this.pmUpdates = new List<PMObject>();
+
+            if (this.LoggedIn)
+            {
+                HtmlAgilityPack.HtmlDocument lDocument = new HtmlAgilityPack.HtmlDocument();
+                string lResponse = (await HttpUtility.GetWebRequestResponseAsync("https://proxer.me/messages?format=raw&s=notification", this.LoginCookies)).Replace("</link>", "");
+
+                lDocument.LoadHtml(lResponse);
+
+                if (lDocument.ParseErrors.Count() == 0)
+                {
+                    HtmlAgilityPack.HtmlNodeCollection lNodes = lDocument.DocumentNode.SelectNodes("//a[@class='conferenceList']");
+
+                    foreach (HtmlAgilityPack.HtmlNode curNode in lNodes)
+                    {
+                        string lTitel;
+                        string[] lDatum;
+                        if (curNode.ChildNodes[1].Name.ToLower().Equals("img"))
+                        {
+                            lTitel = curNode.ChildNodes[4].InnerText;
+                            lDatum = curNode.ChildNodes[6].InnerText.Split('.');
+
+                            DateTime lTimeStamp = new DateTime(Convert.ToInt32(lDatum[2]), Convert.ToInt32(lDatum[1]), Convert.ToInt32(lDatum[0]));
+                            int lID = Convert.ToInt32(curNode.Attributes["href"].Value.Substring(13, curNode.Attributes["href"].Value.Length - 17));
+
+                            this.pmUpdates.Add(new PMObject(lID, lTitel, lTimeStamp));
+                        }
+                        else
+                        {
+                            lTitel = curNode.ChildNodes[1].InnerText;
+                            lDatum = curNode.ChildNodes[3].InnerText.Split('.');
+
+                            DateTime lTimeStamp = new DateTime(Convert.ToInt32(lDatum[2]), Convert.ToInt32(lDatum[1]), Convert.ToInt32(lDatum[0]));
+                            int lID = Convert.ToInt32(curNode.Attributes["href"].Value.Substring(13, curNode.Attributes["href"].Value.Length - 17));
+
+                            this.pmUpdates.Add(new PMObject(lTitel, lID, lTimeStamp));
+                        }
+                    }
+
+                    this.checkPMUpdate = false;
                 }
             }
         }

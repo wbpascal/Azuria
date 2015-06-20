@@ -30,14 +30,5 @@ namespace Proxer.API.Notifications
         /// 
         /// </summary>
         public NotificationType Typ { get; private set; }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <returns></returns>
-        public async Task<INotificationObject[]> getUpdates()
-        {
-            throw new NotImplementedException();
-        }
     }
 }

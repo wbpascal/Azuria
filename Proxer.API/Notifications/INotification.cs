@@ -21,10 +21,5 @@ namespace Proxer.API.Notifications
         /// 
         /// </summary>
         NotificationType Typ { get; }
-
-        /// <summary>
-        /// Gibt den Inhalt der Benachrichtigung zurück
-        /// </summary>
-        Task<INotificationObject[]> getUpdates();
     }
 }
