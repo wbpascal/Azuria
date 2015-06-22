@@ -4,10 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Proxer.API.Notifications
+namespace Proxer.API.Community.PrivateMessages
 {
-    public class UpdateNotification : INotification
+    class Conference
     {
-        
     }
 }
