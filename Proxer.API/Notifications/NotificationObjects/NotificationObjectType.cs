@@ -13,7 +13,7 @@ namespace Proxer.API.Notifications.NotificationObjects
         /// <summary>
         /// 
         /// </summary>
-        Friend,
+        FriendRequest,
 
         /// <summary>
         /// 

@@ -18,7 +18,7 @@ namespace Proxer.API.Notifications
         /// <param name="updateCount"></param>
         public FriendNotification(int updateCount)
         {
-            this.Typ = NotificationType.Friend;
+            this.Typ = NotificationType.FriendRequest;
             this.Count = updateCount;
         }
 

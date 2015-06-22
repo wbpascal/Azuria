@@ -458,12 +458,11 @@ namespace Proxer.API
                                 DateTime lDatum = new DateTime(Convert.ToInt32(lDatumSplit[0]), Convert.ToInt32(lDatumSplit[1]), Convert.ToInt32(lDatumSplit[2]));
                                 bool lOnline = curNode.ChildNodes[1].ChildNodes[1].FirstChild.Attributes["src"].Value.Equals("/images/misc/onlineicon.png");
 
-                                this.friendUpdates.Add(new FriendRequestObject(lUserName, lUserID, lDescription, lDatum, lOnline));
+                                this.friendUpdates.Add(new FriendRequestObject(lUserName, lUserID, lDescription, lDatum, lOnline, this));
                             }
                         }
+                        this.checkFriendUpdates = false;
                     }
-
-                    this.checkFriendUpdates = false;
                 }
             }
         }
