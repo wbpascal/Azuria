@@ -67,7 +67,7 @@
     <Compile Include="Notifications\FriendNotification.cs" />
     <Compile Include="Notifications\INotification.cs" />
     <Compile Include="Notifications\NewsNotification.cs" />
-    <Compile Include="Notifications\NotificationObjects\FriendObject.cs" />
+    <Compile Include="Notifications\NotificationObjects\FriendRequestObject.cs" />
     <Compile Include="Notifications\NotificationObjects\INotificationObject.cs" />
     <Compile Include="Notifications\NotificationObjects\NewsObject.cs" />
     <Compile Include="Notifications\NotificationObjects\PMObject.cs" />

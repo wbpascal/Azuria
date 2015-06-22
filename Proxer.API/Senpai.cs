@@ -29,9 +29,11 @@ namespace Proxer.API
         internal bool checkNewsUpdate;
         internal bool checkAnimeMangaUpdate;
         internal bool checkPMUpdate;
+        internal bool checkFriendUpdates;
         internal List<NewsObject> newsUpdates;
         internal List<AnimeMangaUpdateObject> animeMangaUpdates;
         internal List<PMObject> pmUpdates;
+        internal List<FriendRequestObject> friendUpdates;
 
         /// <summary>
         /// 
@@ -151,6 +153,17 @@ namespace Proxer.API
             }
         }
         /// <summary>
+        /// Gibt alle Freundschaftsanfragen in einer Liste zurück
+        /// </summary>
+        public List<FriendRequestObject> FriendRequests
+        {
+            get
+            {
+                if (checkPMUpdate || this.friendUpdates == null) getAllFriendUpdates();
+                return friendUpdates;
+            }
+        }
+        /// <summary>
         /// Gibt den CookieContainer zurück, der benutzt wird, um Aktionen im eingeloggten Status auszuführen
         /// </summary>
         public CookieContainer LoginCookies { get; private set; }
@@ -165,6 +178,8 @@ namespace Proxer.API
         /// <returns>Gibt zurück, ob der Benutzer erfolgreich eingeloggt wurde</returns>
         public async Task<bool> login(string username, string password)
         {
+            if (LoggedIn) return false;
+
             Dictionary<string, string> postArgs = new Dictionary<string, string>
             {
                 {"username", username},
@@ -295,7 +310,7 @@ namespace Proxer.API
         /// Benutzt um ALLE Anime und Manga Benachrichtigungen in die vorgesehene einzutragen.
         /// Wird nur in initNotifications() und alle 30 Minuten, falls die AnimeMangaUpdates-Eigenschaft abgerufen wird, benutzt.
         /// </summary>
-        protected internal async void getAllAnimeMangaUpdates()
+        private async void getAllAnimeMangaUpdates()
         {
             if (LoggedIn)
             {
@@ -310,29 +325,32 @@ namespace Proxer.API
                 {
                     HtmlAgilityPack.HtmlNodeCollection lNodes = lDocument.DocumentNode.SelectNodes("//a[@class='notificationList']");
 
-                    foreach (HtmlAgilityPack.HtmlNode curNode in lNodes)
+                    if (lNodes != null)
                     {
-                        string lName;
-                        int lNumber;
-
-                        int lID = Convert.ToInt32(curNode.Id.Substring(12));
-                        string lMessage = curNode.ChildNodes["u"].InnerText;
-                        Uri lLink = new Uri("https://proxer.me" + curNode.Attributes["href"].Value);
-
-                        if (lMessage.IndexOf('#') != -1)
+                        foreach (HtmlAgilityPack.HtmlNode curNode in lNodes)
                         {
-                            lName = lMessage.Split('#')[0];
-                            if (!Int32.TryParse(lMessage.Split('#')[1], out lNumber)) lNumber = -1;
-                        }
-                        else
-                        {
-                            lName = "";
-                            lNumber = -1;
-                        }
+                            string lName;
+                            int lNumber;
 
-                        this.AnimeMangaUpdates.Add(new AnimeMangaUpdateObject(lMessage, lName, lNumber, lLink, lID));
+                            int lID = Convert.ToInt32(curNode.Id.Substring(12));
+                            string lMessage = curNode.ChildNodes["u"].InnerText;
+                            Uri lLink = new Uri("https://proxer.me" + curNode.Attributes["href"].Value);
+
+                            if (lMessage.IndexOf('#') != -1)
+                            {
+                                lName = lMessage.Split('#')[0];
+                                if (!Int32.TryParse(lMessage.Split('#')[1], out lNumber)) lNumber = -1;
+                            }
+                            else
+                            {
+                                lName = "";
+                                lNumber = -1;
+                            }
+
+                            this.AnimeMangaUpdates.Add(new AnimeMangaUpdateObject(lMessage, lName, lNumber, lLink, lID));
+                        }
+                        this.checkAnimeMangaUpdate = false;
                     }
-                    this.checkAnimeMangaUpdate = false;
                 }
             }
         }
@@ -340,7 +358,7 @@ namespace Proxer.API
         /// Benutzt um die letzten 15 News abzurufen und sie in die vorgesehene Eigenschaft einzutragen.
         /// Nur in initNotifications() und alle 30 Minuten, falls die News-Eigenschaft abgerufen wird, benutzt.
         /// </summary>
-        protected internal async void getAllNewsUpdates()
+        private async void getAllNewsUpdates()
         {
             if (LoggedIn)
             {
@@ -360,7 +378,7 @@ namespace Proxer.API
         /// Benutzt um ALLE Privat Nachricht Benachrichtigungen abzurufen und sie in die vorgesehene Eigenschaft einzutragen.
         /// Nur in initNotifications() und alle 30 Minuten, falls die PMUpdates-Eigenschaft abgerufen wird, benutzt.
         /// </summary>
-        protected internal async void getAllPMUpdates()
+        private async void getAllPMUpdates()
         {
             this.pmUpdates = new List<PMObject>();
 
@@ -375,33 +393,77 @@ namespace Proxer.API
                 {
                     HtmlAgilityPack.HtmlNodeCollection lNodes = lDocument.DocumentNode.SelectNodes("//a[@class='conferenceList']");
 
-                    foreach (HtmlAgilityPack.HtmlNode curNode in lNodes)
+                    if (lNodes != null)
                     {
-                        string lTitel;
-                        string[] lDatum;
-                        if (curNode.ChildNodes[1].Name.ToLower().Equals("img"))
+                        foreach (HtmlAgilityPack.HtmlNode curNode in lNodes)
                         {
-                            lTitel = curNode.ChildNodes[4].InnerText;
-                            lDatum = curNode.ChildNodes[6].InnerText.Split('.');
+                            string lTitel;
+                            string[] lDatum;
+                            if (curNode.ChildNodes[1].Name.ToLower().Equals("img"))
+                            {
+                                lTitel = curNode.ChildNodes[1].InnerText;
+                                lDatum = curNode.ChildNodes[2].InnerText.Split('.');
 
-                            DateTime lTimeStamp = new DateTime(Convert.ToInt32(lDatum[2]), Convert.ToInt32(lDatum[1]), Convert.ToInt32(lDatum[0]));
-                            int lID = Convert.ToInt32(curNode.Attributes["href"].Value.Substring(13, curNode.Attributes["href"].Value.Length - 17));
+                                DateTime lTimeStamp = new DateTime(Convert.ToInt32(lDatum[2]), Convert.ToInt32(lDatum[1]), Convert.ToInt32(lDatum[0]));
+                                int lID = Convert.ToInt32(curNode.Attributes["href"].Value.Substring(13, curNode.Attributes["href"].Value.Length - 17));
 
-                            this.pmUpdates.Add(new PMObject(lID, lTitel, lTimeStamp));
-                        }
-                        else
-                        {
-                            lTitel = curNode.ChildNodes[1].InnerText;
-                            lDatum = curNode.ChildNodes[3].InnerText.Split('.');
+                                this.pmUpdates.Add(new PMObject(lID, lTitel, lTimeStamp));
+                            }
+                            else
+                            {
+                                lTitel = curNode.ChildNodes[0].InnerText;
+                                lDatum = curNode.ChildNodes[1].InnerText.Split('.');
 
-                            DateTime lTimeStamp = new DateTime(Convert.ToInt32(lDatum[2]), Convert.ToInt32(lDatum[1]), Convert.ToInt32(lDatum[0]));
-                            int lID = Convert.ToInt32(curNode.Attributes["href"].Value.Substring(13, curNode.Attributes["href"].Value.Length - 17));
+                                DateTime lTimeStamp = new DateTime(Convert.ToInt32(lDatum[2]), Convert.ToInt32(lDatum[1]), Convert.ToInt32(lDatum[0]));
+                                int lID = Convert.ToInt32(curNode.Attributes["href"].Value.Substring(13, curNode.Attributes["href"].Value.Length - 17));
 
-                            this.pmUpdates.Add(new PMObject(lTitel, lID, lTimeStamp));
+                                this.pmUpdates.Add(new PMObject(lTitel, lID, lTimeStamp));
+                            }
                         }
                     }
 
                     this.checkPMUpdate = false;
+                }
+            }
+        }
+        /// <summary>
+        /// (Vorläufig, nicht ausfürhlich getestet)
+        /// Benutzt um ALLE Freundschaftsanfragen abzurufen und sie in die vorgesehen Eigenschaft einzutragen.
+        /// Nur in initNotifications() und alle 30 Minuten, falls die FriendRequests-Eigenschaft abgerufen wird, benutzt.
+        /// </summary>
+        public async void getAllFriendUpdates()
+        {
+            if (this.LoggedIn)
+            {
+                this.friendUpdates = new List<FriendRequestObject>();
+                HtmlAgilityPack.HtmlDocument lDocument = new HtmlAgilityPack.HtmlDocument();
+                string lResponse = (await HttpUtility.GetWebRequestResponseAsync("https://proxer.me/user/my/connections?format=raw", this.LoginCookies)).Replace("</link>", "").Replace("\n", "");
+
+                lDocument.LoadHtml(lResponse);
+
+                if (lDocument.ParseErrors.Count() == 0)
+                {
+                    HtmlAgilityPack.HtmlNodeCollection lNodes = lDocument.DocumentNode.SelectNodes("//tr");
+
+                    if (lNodes != null)
+                    {
+                        foreach (HtmlAgilityPack.HtmlNode curNode in lNodes)
+                        {
+                            if (curNode.Id.StartsWith("entry") && curNode.FirstChild.FirstChild.Attributes["class"].Value.Equals("accept"))
+                            {
+                                int lUserID = Convert.ToInt32(curNode.Id.Replace("entry", ""));
+                                string lUserName = curNode.InnerText.Split("  ".ToCharArray())[0];
+                                string lDescription = curNode.ChildNodes[3].ChildNodes[1].InnerText;
+                                string[] lDatumSplit = curNode.ChildNodes[4].InnerText.Split('-');
+                                DateTime lDatum = new DateTime(Convert.ToInt32(lDatumSplit[0]), Convert.ToInt32(lDatumSplit[1]), Convert.ToInt32(lDatumSplit[2]));
+                                bool lOnline = curNode.ChildNodes[1].ChildNodes[1].FirstChild.Attributes["src"].Value.Equals("/images/misc/onlineicon.png");
+
+                                this.friendUpdates.Add(new FriendRequestObject(lUserName, lUserID, lDescription, lDatum, lOnline));
+                            }
+                        }
+                    }
+
+                    this.checkFriendUpdates = false;
                 }
             }
         }
