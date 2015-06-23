@@ -68,6 +68,11 @@ namespace Proxer.API
         /// </summary>
         public Senpai()
         {
+            this.animeMangaUpdates = new List<AnimeMangaUpdateObject>() { new AnimeMangaUpdateObject(new Object()) };
+            this.friendUpdates = new List<FriendRequestObject>() { new FriendRequestObject(new Object()) };
+            this.newsUpdates = new List<NewsObject>() { new NewsObject(new Object()) };
+            this.pmUpdates = new List<PMObject>() { new PMObject(new Object()) };
+
             this.loggedIn = false;
             this.LoginCookies = new CookieContainer();
 
@@ -95,7 +100,7 @@ namespace Proxer.API
 
 
         /// <summary>
-        /// Gibt an, ob der Benutzter noch eingeloggt ist, wird aber nicht überprüft
+        /// Gibt an, ob der Benutzter noch eingeloggt ist, wird aber nicht überprüft (nur durch Timer alle 30 Minuten)
         /// </summary>
         public bool LoggedIn
         {
@@ -108,14 +113,14 @@ namespace Proxer.API
                 if (value)
                 {
                     loginCheckTimer.Start();
-                    this.loggedIn = value;
+                    this.loggedIn = true;
                 }
                 else
                 {
                     loginCheckTimer.Stop();
                     notificationCheckTimer.Stop();
                     notificationUpdateCheckTimer.Stop();
-                    this.loggedIn = value;
+                    this.loggedIn = false;
                 }
             }
         }
@@ -126,7 +131,7 @@ namespace Proxer.API
         {
             get
             {
-                if (checkAnimeMangaUpdate || animeMangaUpdates == null) getAllAnimeMangaUpdates();
+                if (checkAnimeMangaUpdate || (this.animeMangaUpdates.Count == 1 && this.animeMangaUpdates[0].Typ == NotificationObjectType.Dummy)) getAllAnimeMangaUpdates();
                 return animeMangaUpdates;
             }
         }
@@ -137,7 +142,7 @@ namespace Proxer.API
         {
             get
             {
-                if (checkNewsUpdate || newsUpdates == null) getAllNewsUpdates();
+                if (checkNewsUpdate || (this.newsUpdates.Count == 1 && this.newsUpdates[0].Typ == NotificationObjectType.Dummy)) getAllNewsUpdates();
                 return newsUpdates;
             }
         }
@@ -148,7 +153,7 @@ namespace Proxer.API
         {
             get
             {
-                if (checkPMUpdate || this.pmUpdates == null) getAllPMUpdates();
+                if (checkPMUpdate || (this.pmUpdates.Count == 1 && this.pmUpdates[0].Typ == NotificationObjectType.Dummy)) getAllPMUpdates();
                 return pmUpdates;
             }
         }
@@ -159,7 +164,7 @@ namespace Proxer.API
         {
             get
             {
-                if (checkPMUpdate || this.friendUpdates == null) getAllFriendUpdates();
+                if (checkFriendUpdates || (this.friendUpdates.Count == 1 && this.friendUpdates[0].Typ == NotificationObjectType.Dummy)) getAllFriendUpdates();
                 return friendUpdates;
             }
         }
@@ -240,22 +245,18 @@ namespace Proxer.API
                     if (!response[2].Equals("0"))
                     {
                         if (PMNotification_Raised != null) PMNotification_Raised(this, new NotificationEventArgs(new PMNotification(Convert.ToInt32(response[2]))));
-                        this.checkPMUpdate = true;
                     }
                     if (!response[3].Equals("0"))
                     {
                         if (FriendNotification_Raised != null) FriendNotification_Raised(this, new NotificationEventArgs(new FriendNotification(Convert.ToInt32(response[3]))));
-                        //hier check bool einfügen
                     }
                     if (!response[4].Equals("0"))
                     {
                         if (NewsNotification_Raised != null) FriendNotification_Raised(this, new NotificationEventArgs(new NewsNotification(Convert.ToInt32(response[4]))));
-                        this.checkNewsUpdate = true;
                     }
                     if (!response[5].Equals("0"))
                     {
                         if (UpdateNotification_Raised != null) UpdateNotification_Raised(this, new NotificationEventArgs(new AnimeMangaNotification(Convert.ToInt32(response[5]))));
-                        this.checkAnimeMangaUpdate = true;
                     }
                 }
             }
@@ -274,22 +275,18 @@ namespace Proxer.API
                     if (!response[2].Equals("0"))
                     {
                         if (PMNotification_Raised != null) PMNotification_Raised(this, new NotificationEventArgs(new PMNotification(Convert.ToInt32(response[2]))));
-                        this.checkPMUpdate = true;
                     }
                     if (!response[3].Equals("0"))
                     {
                         if (FriendNotification_Raised != null) FriendNotification_Raised(this, new NotificationEventArgs(new FriendNotification(Convert.ToInt32(response[3]))));
-                        //hier check bool einfügen
                     }
                     if (!response[4].Equals("0"))
                     {
                         if (NewsNotification_Raised != null) FriendNotification_Raised(this, new NotificationEventArgs(new NewsNotification(Convert.ToInt32(response[4]))));
-                        this.checkNewsUpdate = true;
                     }
                     if (!response[5].Equals("0"))
                     {
                         if (UpdateNotification_Raised != null) UpdateNotification_Raised(this, new NotificationEventArgs(new AnimeMangaNotification(Convert.ToInt32(response[5]))));
-                        this.checkAnimeMangaUpdate = true;
                     }
                 }
 
@@ -314,8 +311,6 @@ namespace Proxer.API
         {
             if (LoggedIn)
             {
-                this.animeMangaUpdates = new List<AnimeMangaUpdateObject>();
-
                 HtmlAgilityPack.HtmlDocument lDocument = new HtmlAgilityPack.HtmlDocument();
                 string lResponse = await HttpUtility.GetWebRequestResponseAsync("https://proxer.me/components/com_proxer/misc/notifications_misc.php", LoginCookies);
 
@@ -327,6 +322,7 @@ namespace Proxer.API
 
                     if (lNodes != null)
                     {
+                        this.animeMangaUpdates = new List<AnimeMangaUpdateObject>();
                         foreach (HtmlAgilityPack.HtmlNode curNode in lNodes)
                         {
                             string lName;
@@ -362,11 +358,10 @@ namespace Proxer.API
         {
             if (LoggedIn)
             {
-                this.newsUpdates = new List<NewsObject>();
-
                 string lResponse = await HttpUtility.GetWebRequestResponseAsync("https://proxer.me/notifications?format=json&s=news&p=1", LoginCookies);
                 if (lResponse.StartsWith("{\"error\":0"))
                 {
+                    this.newsUpdates = new List<NewsObject>();
                     Dictionary<string, List<NewsObject>> lDeserialized = JsonConvert.DeserializeObject<Dictionary<string, List<NewsObject>>>("{" + lResponse.Substring("{\"error\":0,".Length));
                     newsUpdates = lDeserialized["notifications"];
                     this.checkNewsUpdate = false;
@@ -380,12 +375,10 @@ namespace Proxer.API
         /// </summary>
         private async void getAllPMUpdates()
         {
-            this.pmUpdates = new List<PMObject>();
-
             if (this.LoggedIn)
             {
                 HtmlAgilityPack.HtmlDocument lDocument = new HtmlAgilityPack.HtmlDocument();
-                string lResponse = (await HttpUtility.GetWebRequestResponseAsync("https://proxer.me/messages?format=raw&s=notification", this.LoginCookies)).Replace("</link>", "");
+                string lResponse = (await HttpUtility.GetWebRequestResponseAsync("https://proxer.me/messages?format=raw&s=notification", this.LoginCookies)).Replace("</link>", "").Replace("\n", "");
 
                 lDocument.LoadHtml(lResponse);
 
@@ -395,14 +388,15 @@ namespace Proxer.API
 
                     if (lNodes != null)
                     {
+                        this.pmUpdates = new List<PMObject>();
                         foreach (HtmlAgilityPack.HtmlNode curNode in lNodes)
                         {
                             string lTitel;
                             string[] lDatum;
                             if (curNode.ChildNodes[1].Name.ToLower().Equals("img"))
                             {
-                                lTitel = curNode.ChildNodes[1].InnerText;
-                                lDatum = curNode.ChildNodes[2].InnerText.Split('.');
+                                lTitel = curNode.ChildNodes[0].InnerText;
+                                lDatum = curNode.ChildNodes[1].InnerText.Split('.');
 
                                 DateTime lTimeStamp = new DateTime(Convert.ToInt32(lDatum[2]), Convert.ToInt32(lDatum[1]), Convert.ToInt32(lDatum[0]));
                                 int lID = Convert.ToInt32(curNode.Attributes["href"].Value.Substring(13, curNode.Attributes["href"].Value.Length - 17));
@@ -435,7 +429,6 @@ namespace Proxer.API
         {
             if (this.LoggedIn)
             {
-                this.friendUpdates = new List<FriendRequestObject>();
                 HtmlAgilityPack.HtmlDocument lDocument = new HtmlAgilityPack.HtmlDocument();
                 string lResponse = (await HttpUtility.GetWebRequestResponseAsync("https://proxer.me/user/my/connections?format=raw", this.LoginCookies)).Replace("</link>", "").Replace("\n", "");
 
@@ -447,6 +440,7 @@ namespace Proxer.API
 
                     if (lNodes != null)
                     {
+                        this.friendUpdates = new List<FriendRequestObject>();
                         foreach (HtmlAgilityPack.HtmlNode curNode in lNodes)
                         {
                             if (curNode.Id.StartsWith("entry") && curNode.FirstChild.FirstChild.Attributes["class"].Value.Equals("accept"))

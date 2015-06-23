@@ -12,6 +12,13 @@ namespace Proxer.API.Notifications.NotificationObjects
     public class AnimeMangaUpdateObject : INotificationObject
     {
         /// <summary>
+        /// (vorläufig?) Benötigt als Dummy
+        /// </summary>
+        public AnimeMangaUpdateObject(Object dummy)
+        {
+            this.Typ = NotificationObjectType.Dummy;
+        }
+        /// <summary>
         /// 
         /// </summary>
         /// <param name="message">Die Nachricht des Updates</param>

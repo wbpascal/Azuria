@@ -12,6 +12,13 @@ namespace Proxer.API.Notifications.NotificationObjects
     public class NewsObject : INotificationObject
     {
         /// <summary>
+        /// (vorläufig?) Benötigt als Dummy
+        /// </summary>
+        public NewsObject(Object dummy)
+        {
+            this.Typ = NotificationObjectType.Dummy;
+        }
+        /// <summary>
         /// 
         /// </summary>
         public NewsObject()
