@@ -35,6 +35,7 @@ namespace Proxer.API
         internal List<PMObject> pmUpdates;
         internal List<FriendRequestObject> friendUpdates;
 
+        #region Events + Handler
         /// <summary>
         /// 
         /// </summary>
@@ -42,25 +43,56 @@ namespace Proxer.API
         /// <param name="e"></param>
         public delegate void NotificationEventHandler(object sender, NotificationEventArgs e);
         /// <summary>
+        /// Wird bei allen Benachrichtigungen aufgerufen(30 Minuten Intervall)
+        /// </summary>
+        public event NotificationEventHandler Notification_Raised;
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        public delegate void FriendNotificiationEventHandler(object sender, FriendNotificationEventArgs e);
+        /// <summary>
         /// Wird aufgerufen, wenn eine neue Freundschaftsanfrage aussteht(30 Minuten Intervall)
         /// </summary>
-        public event NotificationEventHandler FriendNotification_Raised;
+        public event FriendNotificiationEventHandler FriendNotification_Raised;
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        public delegate void NewsNotificationEventHandler(object sender, NewsNotificationEventArgs e);
         /// <summary>
         /// Wird aufgerufen, wenn neue ungelesene News vorhanden sind(30 Minuten Intervall)
         /// </summary>
-        public event NotificationEventHandler NewsNotification_Raised;
+        public event NewsNotificationEventHandler NewsNotification_Raised;
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        public delegate void PMNotificationEventHandler(object sender, PMNotificationEventArgs e);
         /// <summary>
         /// Wird aufgerufen, wenn ungelesene PMs vorhanden sind(30 Minuten Intervall)
         /// </summary>
-        public event NotificationEventHandler PMNotification_Raised;
+        public event PMNotificationEventHandler PMNotification_Raised;
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        public delegate void AMNotificationEventHandler(object sender, AMNotificationEventArgs e);
         /// <summary>
         /// Wird aufgerufen, wenn neue Anime Folgen oder Manga Kapitel vorhanden sind(30 Minuten Intervall)
+        /// ACHTUNG: Kann auch aufgerufen werden, wenn z.B. eine Freundschaftsanfrage angenommen wurde(Wird versucht zu fixen)
         /// </summary>
-        public event NotificationEventHandler UpdateNotification_Raised;
+        public event AMNotificationEventHandler AMUpdateNotification_Raised;
+
         /// <summary>
         /// Wird aufgerufen, wenn die Cookies verfallen sind(30 Minuten Intervall)
         /// </summary>
         public event EventHandler UserLoggedOut_Raised;
+        #endregion
 
 
         /// <summary>
@@ -244,19 +276,23 @@ namespace Proxer.API
                 {
                     if (!response[2].Equals("0"))
                     {
-                        if (PMNotification_Raised != null) PMNotification_Raised(this, new NotificationEventArgs(new PMNotification(Convert.ToInt32(response[2]))));
+                        if (PMNotification_Raised != null) PMNotification_Raised(this, new PMNotificationEventArgs(new PMNotification(Convert.ToInt32(response[2]))));
+                        if (Notification_Raised != null) Notification_Raised(this, new NotificationEventArgs(new PMNotification(Convert.ToInt32(response[2]))));
                     }
                     if (!response[3].Equals("0"))
                     {
-                        if (FriendNotification_Raised != null) FriendNotification_Raised(this, new NotificationEventArgs(new FriendNotification(Convert.ToInt32(response[3]))));
+                        if (FriendNotification_Raised != null) FriendNotification_Raised(this, new FriendNotificationEventArgs(new FriendNotification(Convert.ToInt32(response[3]))));
+                        if (Notification_Raised != null) Notification_Raised(this, new NotificationEventArgs(new FriendNotification(Convert.ToInt32(response[3]))));
                     }
                     if (!response[4].Equals("0"))
                     {
-                        if (NewsNotification_Raised != null) FriendNotification_Raised(this, new NotificationEventArgs(new NewsNotification(Convert.ToInt32(response[4]))));
+                        if (NewsNotification_Raised != null) NewsNotification_Raised(this, new NewsNotificationEventArgs(new NewsNotification(Convert.ToInt32(response[4]))));
+                        if (Notification_Raised != null) Notification_Raised(this, new NotificationEventArgs(new NewsNotification(Convert.ToInt32(response[4]))));
                     }
                     if (!response[5].Equals("0"))
                     {
-                        if (UpdateNotification_Raised != null) UpdateNotification_Raised(this, new NotificationEventArgs(new AnimeMangaNotification(Convert.ToInt32(response[5]))));
+                        if (AMUpdateNotification_Raised != null) AMUpdateNotification_Raised(this, new AMNotificationEventArgs(new AnimeMangaNotification(Convert.ToInt32(response[5]))));
+                        if (Notification_Raised != null) Notification_Raised(this, new NotificationEventArgs(new AnimeMangaNotification(Convert.ToInt32(response[5]))));
                     }
                 }
             }
@@ -264,31 +300,11 @@ namespace Proxer.API
         /// <summary>
         /// Initialisiert die Benachrichtigungen
         /// </summary>
-        public async Task<bool> initNotifications()
+        public bool initNotifications()
         {
             if (LoggedIn)
             {
-                string[] response = (await HttpUtility.GetWebRequestResponseAsync("https://proxer.me/notifications?format=raw&s=count", LoginCookies)).Split('#');
-
-                if (response[0].Equals("0"))
-                {
-                    if (!response[2].Equals("0"))
-                    {
-                        if (PMNotification_Raised != null) PMNotification_Raised(this, new NotificationEventArgs(new PMNotification(Convert.ToInt32(response[2]))));
-                    }
-                    if (!response[3].Equals("0"))
-                    {
-                        if (FriendNotification_Raised != null) FriendNotification_Raised(this, new NotificationEventArgs(new FriendNotification(Convert.ToInt32(response[3]))));
-                    }
-                    if (!response[4].Equals("0"))
-                    {
-                        if (NewsNotification_Raised != null) FriendNotification_Raised(this, new NotificationEventArgs(new NewsNotification(Convert.ToInt32(response[4]))));
-                    }
-                    if (!response[5].Equals("0"))
-                    {
-                        if (UpdateNotification_Raised != null) UpdateNotification_Raised(this, new NotificationEventArgs(new AnimeMangaNotification(Convert.ToInt32(response[5]))));
-                    }
-                }
+                checkNotifications();
 
                 notificationCheckTimer.Start();
                 notificationUpdateCheckTimer.Start();

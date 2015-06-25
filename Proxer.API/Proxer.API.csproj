@@ -62,7 +62,11 @@
   <ItemGroup>
     <Compile Include="Community\PrivateMessages\Conference.cs" />
     <Compile Include="Community\PrivateMessages\Message.cs" />
+    <Compile Include="EventArgs\AMNotificationEventArgs.cs" />
+    <Compile Include="EventArgs\FriendNotificationEventArgs.cs" />
+    <Compile Include="EventArgs\NewsNotificationEventArgs.cs" />
     <Compile Include="EventArgs\NotificationEventArgs.cs" />
+    <Compile Include="EventArgs\PMNotificationEventArgs.cs" />
     <Compile Include="Notifications\NotificationObjects\NotificationObjectType.cs" />
     <Compile Include="Notifications\NotificationType.cs" />
     <Compile Include="Notifications\FriendNotification.cs" />
