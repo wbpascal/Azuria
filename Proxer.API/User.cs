@@ -1,4 +1,5 @@
-﻿using Proxer.API.Utility;
+﻿using Nito.AsyncEx;
+using Proxer.API.Utility;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -52,6 +53,8 @@ namespace Proxer.API
                 //checkFriendList = true;
                 //checkFriend = true;
             };
+
+            AsyncContext.Run(() => this.getMainInfo());
         }
 
         /// <summary>
@@ -69,7 +72,7 @@ namespace Proxer.API
         {
             get
             {
-                if (checkMain) getMainInfo();
+                if (checkMain) AsyncContext.Run(() => getMainInfo());
                 return this.status;
             }
         }
@@ -80,7 +83,7 @@ namespace Proxer.API
         {
             get
             {
-                if (checkMain) getMainInfo();
+                if (checkMain) AsyncContext.Run(() => getMainInfo());
                 return this.online;
             }
         }
@@ -91,7 +94,7 @@ namespace Proxer.API
         {
             get
             {
-                if (checkMain) getMainInfo();
+                if (checkMain) AsyncContext.Run(() => getMainInfo());
                 return this.rang;
             }
         }
@@ -102,7 +105,7 @@ namespace Proxer.API
         {
             get
             {
-                if (checkMain) getMainInfo();
+                if (checkMain) AsyncContext.Run(() => getMainInfo());
                 return this.punkte;
             }
         }
@@ -111,7 +114,7 @@ namespace Proxer.API
         /// <summary>
         /// (vorläufig, nicht ausführlich getestet)
         /// </summary>
-        public async void getMainInfo()
+        public async Task getMainInfo()
         {
             HtmlAgilityPack.HtmlDocument lDocument = new HtmlAgilityPack.HtmlDocument();
             string lResponse = (await HttpUtility.GetWebRequestResponseAsync("https://proxer.me/user/" + this.ID + "/overview?format=raw", this.senpai.LoginCookies)).Replace("</link>", "").Replace("\n", "");

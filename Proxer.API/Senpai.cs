@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using Nito.AsyncEx;
 using Proxer.API.EventArgs;
 using Proxer.API.Notifications;
 using Proxer.API.Notifications.NotificationObjects;
@@ -163,7 +164,7 @@ namespace Proxer.API
         {
             get
             {
-                if (checkAnimeMangaUpdate || (this.animeMangaUpdates.Count == 1 && this.animeMangaUpdates[0].Typ == NotificationObjectType.Dummy)) getAllAnimeMangaUpdates();
+                if (checkAnimeMangaUpdate || (this.animeMangaUpdates.Count == 1 && this.animeMangaUpdates[0].Typ == NotificationObjectType.Dummy)) AsyncContext.Run(() => getAllAnimeMangaUpdates());
                 return animeMangaUpdates;
             }
         }
@@ -174,7 +175,7 @@ namespace Proxer.API
         {
             get
             {
-                if (checkNewsUpdate || (this.newsUpdates.Count == 1 && this.newsUpdates[0].Typ == NotificationObjectType.Dummy)) getAllNewsUpdates();
+                if (checkNewsUpdate || (this.newsUpdates.Count == 1 && this.newsUpdates[0].Typ == NotificationObjectType.Dummy)) AsyncContext.Run(() => getAllNewsUpdates());
                 return newsUpdates;
             }
         }
@@ -185,7 +186,7 @@ namespace Proxer.API
         {
             get
             {
-                if (checkPMUpdate || (this.pmUpdates.Count == 1 && this.pmUpdates[0].Typ == NotificationObjectType.Dummy)) getAllPMUpdates();
+                if (checkPMUpdate || (this.pmUpdates.Count == 1 && this.pmUpdates[0].Typ == NotificationObjectType.Dummy)) AsyncContext.Run(() => getAllPMUpdates());
                 return pmUpdates;
             }
         }
@@ -196,7 +197,7 @@ namespace Proxer.API
         {
             get
             {
-                if (checkFriendUpdates || (this.friendUpdates.Count == 1 && this.friendUpdates[0].Typ == NotificationObjectType.Dummy)) getAllFriendUpdates();
+                if (checkFriendUpdates || (this.friendUpdates.Count == 1 && this.friendUpdates[0].Typ == NotificationObjectType.Dummy)) AsyncContext.Run(() => getAllFriendUpdates());
                 return friendUpdates;
             }
         }
@@ -204,6 +205,10 @@ namespace Proxer.API
         /// Gibt den CookieContainer zurück, der benutzt wird, um Aktionen im eingeloggten Status auszuführen
         /// </summary>
         public CookieContainer LoginCookies { get; private set; }
+        /// <summary>
+        /// Profil des Senpais
+        /// </summary>
+        public User Me { get; private set; }
 
 
         /// <summary>
@@ -228,8 +233,9 @@ namespace Proxer.API
 
             if (responseDes["error"].Equals("0"))
             {
-                userID = Convert.ToInt32(responseDes["uid"]);
+                this.userID = Convert.ToInt32(responseDes["uid"]);
                 this.username = username;
+                this.Me = new User(username, userID, this);
                 LoggedIn = true;
 
                 return true;
@@ -323,7 +329,7 @@ namespace Proxer.API
         /// Benutzt um ALLE Anime und Manga Benachrichtigungen in die vorgesehene einzutragen.
         /// Wird nur in initNotifications() und alle 30 Minuten, falls die AnimeMangaUpdates-Eigenschaft abgerufen wird, benutzt.
         /// </summary>
-        private async void getAllAnimeMangaUpdates()
+        private async Task getAllAnimeMangaUpdates()
         {
             if (LoggedIn)
             {
@@ -370,7 +376,7 @@ namespace Proxer.API
         /// Benutzt um die letzten 15 News abzurufen und sie in die vorgesehene Eigenschaft einzutragen.
         /// Nur in initNotifications() und alle 30 Minuten, falls die News-Eigenschaft abgerufen wird, benutzt.
         /// </summary>
-        private async void getAllNewsUpdates()
+        private async Task getAllNewsUpdates()
         {
             if (LoggedIn)
             {
@@ -389,7 +395,7 @@ namespace Proxer.API
         /// Benutzt um ALLE Privat Nachricht Benachrichtigungen abzurufen und sie in die vorgesehene Eigenschaft einzutragen.
         /// Nur in initNotifications() und alle 30 Minuten, falls die PMUpdates-Eigenschaft abgerufen wird, benutzt.
         /// </summary>
-        private async void getAllPMUpdates()
+        private async Task getAllPMUpdates()
         {
             if (this.LoggedIn)
             {
@@ -437,11 +443,11 @@ namespace Proxer.API
             }
         }
         /// <summary>
-        /// (Vorläufig, nicht ausfürhlich getestet)
+        /// (Vorläufig, nicht ausführlich getestet)
         /// Benutzt um ALLE Freundschaftsanfragen abzurufen und sie in die vorgesehen Eigenschaft einzutragen.
         /// Nur in initNotifications() und alle 30 Minuten, falls die FriendRequests-Eigenschaft abgerufen wird, benutzt.
         /// </summary>
-        public async void getAllFriendUpdates()
+        public async Task getAllFriendUpdates()
         {
             if (this.LoggedIn)
             {
