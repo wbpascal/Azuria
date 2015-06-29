@@ -10,6 +10,7 @@ using System.Linq;
 using System.Net;
 using System.Text;
 using System.Threading.Tasks;
+using System.Timers;
 using System.Windows.Threading;
 
 namespace Proxer.API
@@ -22,9 +23,9 @@ namespace Proxer.API
         private int userID;
         private bool loggedIn;
         private string username;
-        private DispatcherTimer notificationCheckTimer;
-        private DispatcherTimer loginCheckTimer;
-        private DispatcherTimer notificationUpdateCheckTimer;
+        private Timer notificationCheckTimer;
+        private Timer loginCheckTimer;
+        private Timer notificationUpdateCheckTimer;
 
         //für die NotificationObject-Listen Eigenschaften
         internal bool checkNewsUpdate;
@@ -109,21 +110,24 @@ namespace Proxer.API
             this.loggedIn = false;
             this.LoginCookies = new CookieContainer();
 
-            this.loginCheckTimer = new DispatcherTimer(DispatcherPriority.Background);
-            this.loginCheckTimer.Interval = new TimeSpan(0, 45, 0);
-            this.loginCheckTimer.Tick += (s, eArgs) =>
+            this.loginCheckTimer = new Timer();
+            this.loginCheckTimer.AutoReset = true;
+            this.loginCheckTimer.Interval = (new TimeSpan(0, 45, 0)).TotalMilliseconds;
+            this.loginCheckTimer.Elapsed += (s, eArgs) =>
             {
-                loginCheckTimer.Interval = new TimeSpan(0, 30, 0);
+                loginCheckTimer.Interval = (new TimeSpan(0, 30, 0)).TotalMilliseconds;
                 checkLogin();
             };
 
-            this.notificationCheckTimer = new DispatcherTimer(DispatcherPriority.Background);
-            this.notificationCheckTimer.Interval = new TimeSpan(0, 30, 0);
-            this.notificationCheckTimer.Tick += (s, eArgs) => { checkNotifications(); };
+            this.notificationCheckTimer = new Timer();
+            this.notificationCheckTimer.AutoReset = true;
+            this.notificationCheckTimer.Interval = (new TimeSpan(0, 30, 0)).TotalMilliseconds;
+            this.notificationCheckTimer.Elapsed += (s, eArgs) => { checkNotifications(); };
 
-            this.notificationUpdateCheckTimer = new DispatcherTimer(DispatcherPriority.Background);
-            this.notificationUpdateCheckTimer.Interval = new TimeSpan(0, 30, 0);
-            this.notificationUpdateCheckTimer.Tick += (s, eArgs) =>
+            this.notificationUpdateCheckTimer = new Timer();
+            this.notificationUpdateCheckTimer.AutoReset = true;
+            this.notificationUpdateCheckTimer.Interval = (new TimeSpan(0, 30, 0)).TotalMilliseconds;
+            this.notificationUpdateCheckTimer.Elapsed += (s, eArgs) =>
             {
                 checkAnimeMangaUpdate = true;
                 checkNewsUpdate = true;

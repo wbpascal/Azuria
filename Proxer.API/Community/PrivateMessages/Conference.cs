@@ -18,7 +18,54 @@ namespace Proxer.API.Community.PrivateMessages
         /// </summary>
         public class Message
         {
+            /// <summary>
+            /// 
+            /// </summary>
+            /// <param name="sender"></param>
+            /// <param name="mid"></param>
+            /// <param name="nachricht"></param>
+            /// <param name="unix"></param>
+            /// <param name="aktion"></param>
+            public Message(User sender, int mid, string nachricht, int unix, Action aktion)
+            {
 
+            }
+
+            /// <summary>
+            /// 
+            /// </summary>
+            public User Sender { get; private set; }
+            /// <summary>
+            /// 
+            /// </summary>
+            public int NachrichtID { get; private set; }
+            /// <summary>
+            /// 
+            /// </summary>
+            public string Nachricht { get; private set; }
+            /// <summary>
+            /// 
+            /// </summary>
+            public TimeSpan TimeStamp { get; private set; }
+            /// <summary>
+            /// 
+            /// </summary>
+            public Action Aktion { get; private set; }
+
+            /// <summary>
+            /// 
+            /// </summary>
+            public enum Action
+            {
+                /// <summary>
+                /// 
+                /// </summary>
+                NoAction,
+                /// <summary>
+                /// 
+                /// </summary>
+                AddUser
+            }
         }
 
         private Senpai senpai;
@@ -41,7 +88,7 @@ namespace Proxer.API.Community.PrivateMessages
             this.getMessagesTimer.AutoReset = true;
             this.getMessagesTimer.Elapsed += (s, eArgs) =>
             {
-
+                
             };
         }
 
@@ -84,6 +131,28 @@ namespace Proxer.API.Community.PrivateMessages
 
                             this.Teilnehmer.Add(new User(lUserName, lUserID, this.senpai));
                         }
+                    }
+                }
+            }
+        }
+        /// <summary>
+        /// 
+        /// </summary>
+        private async void getAllMessages()
+        {
+            if (senpai.LoggedIn)
+            {
+                string lResponse = await HttpUtility.GetWebRequestResponseAsync("http://proxer.me/messages?format=json&json=messages&id=" + this.ID, senpai.LoginCookies);
+                if (!lResponse.Equals("{\"uid\":\"" + senpai.Me.ID + "\",\"error\":1,\"msg\":\"Ein Fehler ist passiert.\"}"))
+                {
+                    string lMessagesJson = Utility.Utility.GetTagContents(lResponse, "\"messages\":[{", "}],\"favour")[0];
+                    List<Dictionary<string, string>> lMessages = await Task.Factory.StartNew(() => Newtonsoft.Json.JsonConvert.DeserializeObject<List<Dictionary<string, string>>>("[{" + lMessagesJson + "}]"));
+
+                    List<Message> lNachrichten = new List<Message>();
+                    foreach(Dictionary<string, string> curMessage in lMessages)
+                    {
+                        User lSender = new User(curMessage["username"], Convert.ToInt32(curMessage["fromid"]), senpai);
+                        new Message(lSender, Convert.ToInt32(curMessage["id"]), curMessage["message"], Convert.ToInt32(curMessage["timestamp"]), curMessage["action"].Equals("addUser") ? Message.Action.AddUser : Message.Action.NoAction);
                     }
                 }
             }
