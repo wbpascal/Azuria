@@ -172,6 +172,7 @@ namespace Proxer.API.Community.PrivateMessages
 
                             this.Teilnehmer.Add(new User(lUserName, lUserID, this.senpai));
                         }
+                        this.Aktiv = true;
                     }
                 }
             }
@@ -238,6 +239,23 @@ namespace Proxer.API.Community.PrivateMessages
             }
 
             this.getMessagesTimer.Start();
+        }
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="nachricht"></param>
+        public async void sendeNachricht(string nachricht)
+        {
+            if (senpai.LoggedIn)
+            {
+                Dictionary<string, string> lPostArgs = new Dictionary<string, string>
+                {
+                    {"message", nachricht}
+                };
+                string lResponse = await HttpUtility.PostWebRequestResponseAsync("https://proxer.me/messages?id=" + this.ID + "&format=json&json=answer", senpai.LoginCookies, lPostArgs);
+
+                this.getMessages(this.Nachrichten.Last().NachrichtID);
+            }
         }
 
         /// <summary>
