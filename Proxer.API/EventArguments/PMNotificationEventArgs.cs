@@ -5,18 +5,18 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Proxer.API.EventArgs
+namespace Proxer.API.EventArguments
 {
     /// <summary>
     /// 
     /// </summary>
-    public class FriendNotificationEventArgs
+    public class PMNotificationEventArgs
     {
         /// <summary>
         /// 
         /// </summary>
         /// <param name="notification"></param>
-        public FriendNotificationEventArgs(FriendNotification notification)
+        public PMNotificationEventArgs(PMNotification notification)
         {
             this.Notification = notification;
         }
@@ -24,6 +24,6 @@ namespace Proxer.API.EventArgs
         /// <summary>
         /// 
         /// </summary>
-        public FriendNotification Notification { get; private set; }
+        public PMNotification Notification { get; private set; }
     }
 }

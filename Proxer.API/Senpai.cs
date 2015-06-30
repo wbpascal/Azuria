@@ -1,6 +1,6 @@
 ﻿using Newtonsoft.Json;
 using Nito.AsyncEx;
-using Proxer.API.EventArgs;
+using Proxer.API.EventArguments;
 using Proxer.API.Notifications;
 using Proxer.API.Notifications.NotificationObjects;
 using Proxer.API.Utility;

@@ -74,11 +74,11 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Community\PrivateMessages\Conference.cs" />
-    <Compile Include="EventArgs\AMNotificationEventArgs.cs" />
-    <Compile Include="EventArgs\FriendNotificationEventArgs.cs" />
-    <Compile Include="EventArgs\NewsNotificationEventArgs.cs" />
-    <Compile Include="EventArgs\NotificationEventArgs.cs" />
-    <Compile Include="EventArgs\PMNotificationEventArgs.cs" />
+    <Compile Include="EventArguments\AMNotificationEventArgs.cs" />
+    <Compile Include="EventArguments\FriendNotificationEventArgs.cs" />
+    <Compile Include="EventArguments\NewsNotificationEventArgs.cs" />
+    <Compile Include="EventArguments\NotificationEventArgs.cs" />
+    <Compile Include="EventArguments\PMNotificationEventArgs.cs" />
     <Compile Include="Notifications\NotificationObjects\NotificationObjectType.cs" />
     <Compile Include="Notifications\NotificationType.cs" />
     <Compile Include="Notifications\FriendNotification.cs" />

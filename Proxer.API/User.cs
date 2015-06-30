@@ -130,7 +130,8 @@ namespace Proxer.API
                     this.punkte = Convert.ToInt32(Utility.Utility.GetTagContents(lProfileNodes[0].FirstChild.InnerText, "Summe: ", " - ")[0]);
                     this.rang = Utility.Utility.GetTagContents(lProfileNodes[0].FirstChild.InnerText, this.punkte.ToString() + " - ", "[?]")[0];
                     this.online = lProfileNodes[0].ChildNodes[1].InnerText.Equals("Status Online");
-                    this.status = lProfileNodes[0].ChildNodes[6].InnerText;
+                    if (lProfileNodes[0].ChildNodes.Count() == 7) this.status = lProfileNodes[0].ChildNodes[6].InnerText;
+                    else this.status = "";
 
                     if (this.UserName.Equals(""))
                     {

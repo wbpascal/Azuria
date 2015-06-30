@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Proxer.API.EventArgs
+namespace Proxer.API.EventArguments
 {
     /// <summary>
     /// 

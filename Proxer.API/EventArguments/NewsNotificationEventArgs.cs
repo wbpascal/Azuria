@@ -5,18 +5,18 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Proxer.API.EventArgs
+namespace Proxer.API.EventArguments
 {
     /// <summary>
     /// 
     /// </summary>
-    public class AMNotificationEventArgs
+    public class NewsNotificationEventArgs
     {
         /// <summary>
         /// 
         /// </summary>
         /// <param name="notification"></param>
-        public AMNotificationEventArgs(AnimeMangaNotification notification)
+        public NewsNotificationEventArgs(NewsNotification notification)
         {
             this.Notification = notification;
         }
@@ -24,6 +24,6 @@ namespace Proxer.API.EventArgs
         /// <summary>
         /// 
         /// </summary>
-        public AnimeMangaNotification Notification { get; private set; }
+        public NewsNotification Notification { get; private set; }
     }
 }
