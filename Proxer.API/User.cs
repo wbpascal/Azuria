@@ -53,6 +53,7 @@ namespace Proxer.API
                 //checkFriendList = true;
                 //checkFriend = true;
             };
+            
 
             AsyncContext.Run(() => this.getMainInfo());
         }

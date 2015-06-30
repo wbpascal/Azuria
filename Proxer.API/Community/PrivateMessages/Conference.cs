@@ -99,10 +99,11 @@ namespace Proxer.API.Community.PrivateMessages
             this.senpai = senpai;
 
             this.getMessagesTimer = new Timer();
-            this.getMessagesTimer.Interval = (new TimeSpan(0, 0, 10)).TotalMilliseconds;
             this.getMessagesTimer.AutoReset = true;
+            this.getMessagesTimer.Interval = (new TimeSpan(0, 0, 15)).TotalMilliseconds;
             this.getMessagesTimer.Elapsed += (s, eArgs) =>
             {
+                (s as Timer).Stop();
                 this.getMessages(this.Nachrichten.Last().NachrichtID);
             };
         }
@@ -185,14 +186,16 @@ namespace Proxer.API.Community.PrivateMessages
                 string lResponse = await HttpUtility.GetWebRequestResponseAsync("http://proxer.me/messages?format=json&json=messages&id=" + this.ID, senpai.LoginCookies);
                 if (!lResponse.Equals("{\"uid\":\"" + senpai.Me.ID + "\",\"error\":1,\"msg\":\"Ein Fehler ist passiert.\"}"))
                 {
-                    string lMessagesJson = Utility.Utility.GetTagContents(lResponse, "\"messages\":[{", "}],\"favour")[0];
-                    List<Dictionary<string, string>> lMessages = await Task.Factory.StartNew(() => Newtonsoft.Json.JsonConvert.DeserializeObject<List<Dictionary<string, string>>>("[{" + lMessagesJson + "}]"));
+                    string lMessagesJson = Utility.Utility.GetTagContents(lResponse, "\"messages\":[", "],\"favour")[0];
+                    if (lMessagesJson.Equals("")) return;
+
+                    List<Dictionary<string, string>> lMessages = await Task.Factory.StartNew(() => Newtonsoft.Json.JsonConvert.DeserializeObject<List<Dictionary<string, string>>>("[" + lMessagesJson + "]"));
 
                     this.Nachrichten = new List<Message>();
                     foreach(Dictionary<string, string> curMessage in lMessages)
                     {
                         User lSender = new User(curMessage["username"], Convert.ToInt32(curMessage["fromid"]), senpai);
-                        this.Nachrichten.Add(new Message(lSender, Convert.ToInt32(curMessage["id"]), curMessage["message"], Convert.ToInt32(curMessage["timestamp"]), curMessage["action"].Equals("addUser") ? Message.Action.AddUser : Message.Action.NoAction));
+                        this.Nachrichten.Insert(0, new Message(lSender, Convert.ToInt32(curMessage["id"]), curMessage["message"], Convert.ToInt32(curMessage["timestamp"]), curMessage["action"].Equals("addUser") ? Message.Action.AddUser : Message.Action.NoAction));
                     }
 
                     if (NeuePM_Raised != null) NeuePM_Raised.Invoke(this, this.Nachrichten);
@@ -214,22 +217,27 @@ namespace Proxer.API.Community.PrivateMessages
                     string lResponse = await HttpUtility.GetWebRequestResponseAsync("http://proxer.me/messages?format=json&json=newmessages&id=" + this.ID + "&mid=" + mid, senpai.LoginCookies);
                     if (!lResponse.Equals("{\"uid\":\"" + senpai.Me.ID + "\",\"error\":1,\"msg\":\"Ein Fehler ist passiert.\"}"))
                     {
-                        string lMessagesJson = Utility.Utility.GetTagContents(lResponse, "\"messages\":[{", "\"}]}")[0];
-                        List<Dictionary<string, string>> lMessages = await Task.Factory.StartNew(() => Newtonsoft.Json.JsonConvert.DeserializeObject<List<Dictionary<string, string>>>("[{" + lMessagesJson + "\"}]"));
-
-                        List<Message> lNewMessages = new List<Message>();
-                        foreach (Dictionary<string, string> curMessage in lMessages)
+                        string lMessagesJson = Utility.Utility.GetTagContents(lResponse, "\"messages\":[", "]}")[0];
+                        if (!lMessagesJson.Equals(""))
                         {
-                            User lSender = new User(curMessage["username"], Convert.ToInt32(curMessage["fromid"]), senpai);
-                            Message lMessage = new Message(lSender, Convert.ToInt32(curMessage["id"]), curMessage["message"], Convert.ToInt32(curMessage["timestamp"]), curMessage["action"].Equals("addUser") ? Message.Action.AddUser : Message.Action.NoAction);
-                            this.Nachrichten.Add(lMessage);
-                            lNewMessages.Add(lMessage);
-                        }
+                            List<Dictionary<string, string>> lMessages = await Task.Factory.StartNew(() => Newtonsoft.Json.JsonConvert.DeserializeObject<List<Dictionary<string, string>>>("[" + lMessagesJson + "]"));
 
-                        if (NeuePM_Raised != null) NeuePM_Raised.Invoke(this, lNewMessages);
+                            List<Message> lNewMessages = new List<Message>();
+                            foreach (Dictionary<string, string> curMessage in lMessages)
+                            {
+                                User lSender = new User(curMessage["username"], Convert.ToInt32(curMessage["fromid"]), senpai);
+                                Message lMessage = new Message(lSender, Convert.ToInt32(curMessage["id"]), curMessage["message"], Convert.ToInt32(curMessage["timestamp"]), curMessage["action"].Equals("addUser") ? Message.Action.AddUser : Message.Action.NoAction);
+                                lNewMessages.Insert(0, lMessage);
+                            }
+                            this.Nachrichten = this.Nachrichten.Concat(lNewMessages).ToList();
+
+                            if (NeuePM_Raised != null) NeuePM_Raised.Invoke(this, lNewMessages);
+                        }
                     }
                 }
             }
+
+            this.getMessagesTimer.Start();
         }
 
         /// <summary>
