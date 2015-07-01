@@ -110,11 +110,14 @@ namespace Proxer.API.Notifications.NotificationObjects
                 HtmlAgilityPack.HtmlDocument lDocument = new HtmlAgilityPack.HtmlDocument();
                 string lResponse = await HttpUtility.GetWebRequestResponseAsync("https://proxer.me/messages?id=79640&format=raw", senpai.LoginCookies);
 
-                lDocument.LoadHtml(lResponse);
-
-                if (lDocument.ParseErrors.Count() == 0)
+                if (!Utility.Utility.checkForCorrectHTML(lResponse))
                 {
+                    lDocument.LoadHtml(lResponse);
 
+                    if (lDocument.ParseErrors.Count() == 0)
+                    {
+
+                    }
                 }
             }
         }

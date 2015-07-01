@@ -129,6 +129,7 @@ namespace Proxer.API.Community.PrivateMessages
             {
                 if (value)
                 {
+                    #pragma warning disable
                     getAllMessages();
                 }
                 else
@@ -156,23 +157,26 @@ namespace Proxer.API.Community.PrivateMessages
                 HtmlAgilityPack.HtmlDocument lDocument = new HtmlAgilityPack.HtmlDocument();
                 string lResponse = (await HttpUtility.GetWebRequestResponseAsync("https://proxer.me/messages?id=" + this.ID + "&format=raw", senpai.LoginCookies)).Replace("</link>", "").Replace("\n", "");
 
-                lDocument.LoadHtml(lResponse);
-
-                if (lDocument.ParseErrors.Count() == 0)
+                if (Utility.Utility.checkForCorrectHTML(lResponse))
                 {
-                    HtmlAgilityPack.HtmlNodeCollection lNodes = lDocument.DocumentNode.SelectNodes("//div[@id='conferenceUsers']");
-                    if (lNodes != null)
+                    lDocument.LoadHtml(lResponse);
+
+                    if (lDocument.ParseErrors.Count() == 0)
                     {
-                        this.Teilnehmer = new List<User>();
-
-                        foreach(HtmlAgilityPack.HtmlNode curTeilnehmer in lNodes[0].ChildNodes[1].ChildNodes)
+                        HtmlAgilityPack.HtmlNodeCollection lNodes = lDocument.DocumentNode.SelectNodes("//div[@id='conferenceUsers']");
+                        if (lNodes != null)
                         {
-                            string lUserName = curTeilnehmer.ChildNodes[1].InnerText;
-                            int lUserID = Convert.ToInt32(Utility.Utility.GetTagContents(curTeilnehmer.ChildNodes[1].FirstChild.Attributes["href"].Value, "/user/", "#top")[0]);
+                            this.Teilnehmer = new List<User>();
 
-                            this.Teilnehmer.Add(new User(lUserName, lUserID, this.senpai));
+                            foreach (HtmlAgilityPack.HtmlNode curTeilnehmer in lNodes[0].ChildNodes[1].ChildNodes)
+                            {
+                                string lUserName = curTeilnehmer.ChildNodes[1].InnerText;
+                                int lUserID = Convert.ToInt32(Utility.Utility.GetTagContents(curTeilnehmer.ChildNodes[1].FirstChild.Attributes["href"].Value, "/user/", "#top")[0]);
+
+                                this.Teilnehmer.Add(new User(lUserName, lUserID, this.senpai));
+                            }
+                            this.Aktiv = true;
                         }
-                        this.Aktiv = true;
                     }
                 }
             }
@@ -182,10 +186,11 @@ namespace Proxer.API.Community.PrivateMessages
         /// </summary>
         private async Task getAllMessages()
         {
-            if (senpai.LoggedIn)
+            if (this.Nachrichten != null && this.Nachrichten.Count > 0) this.getMessages(this.Nachrichten.Last().NachrichtID);
+            else if ((this.Nachrichten == null || this.Nachrichten.Count == 0) && senpai.LoggedIn)
             {
                 string lResponse = await HttpUtility.GetWebRequestResponseAsync("http://proxer.me/messages?format=json&json=messages&id=" + this.ID, senpai.LoginCookies);
-                if (!lResponse.Equals("{\"uid\":\"" + senpai.Me.ID + "\",\"error\":1,\"msg\":\"Ein Fehler ist passiert.\"}"))
+                if (Utility.Utility.checkForCorrectHTML(lResponse) && !lResponse.Equals("{\"uid\":\"" + senpai.Me.ID + "\",\"error\":1,\"msg\":\"Ein Fehler ist passiert.\"}"))
                 {
                     string lMessagesJson = Utility.Utility.GetTagContents(lResponse, "\"messages\":[", "],\"favour")[0];
                     if (lMessagesJson.Equals("")) return;
@@ -216,7 +221,7 @@ namespace Proxer.API.Community.PrivateMessages
                 if (senpai.LoggedIn)
                 {
                     string lResponse = await HttpUtility.GetWebRequestResponseAsync("http://proxer.me/messages?format=json&json=newmessages&id=" + this.ID + "&mid=" + mid, senpai.LoginCookies);
-                    if (!lResponse.Equals("{\"uid\":\"" + senpai.Me.ID + "\",\"error\":1,\"msg\":\"Ein Fehler ist passiert.\"}"))
+                    if (Utility.Utility.checkForCorrectHTML(lResponse) && !lResponse.Equals("{\"uid\":\"" + senpai.Me.ID + "\",\"error\":1,\"msg\":\"Ein Fehler ist passiert.\"}"))
                     {
                         string lMessagesJson = Utility.Utility.GetTagContents(lResponse, "\"messages\":[", "]}")[0];
                         if (!lMessagesJson.Equals(""))
@@ -248,6 +253,8 @@ namespace Proxer.API.Community.PrivateMessages
         {
             if (senpai.LoggedIn)
             {
+                this.getMessagesTimer.Stop();
+
                 Dictionary<string, string> lPostArgs = new Dictionary<string, string>
                 {
                     {"message", nachricht}
@@ -268,7 +275,7 @@ namespace Proxer.API.Community.PrivateMessages
         {
             string lResponse = (await HttpUtility.GetWebRequestResponseAsync("https://proxer.me/messages?id=" + id + "&format=raw", senpai.LoginCookies)).Replace("</link>", "").Replace("\n", "");
 
-            return !lResponse.Contains("Du hast keine Berechtigungen für diese Konferenz.");
+            return Utility.Utility.checkForCorrectHTML(lResponse) && !lResponse.Contains("Du hast keine Berechtigungen für diese Konferenz.");
         }
     }
 }

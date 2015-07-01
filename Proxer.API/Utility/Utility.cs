@@ -11,6 +11,8 @@ namespace Proxer.API.Utility
     /// </summary>
     public class Utility
     {
+        private static List<Func<string, bool>> checkHtmlActions = new List<Func<string,bool>>{checkForFirewall, checkForLogin, checkForEligibility};
+
         /// <summary>
         /// 
         /// </summary>
@@ -50,5 +52,34 @@ namespace Proxer.API.Utility
             dtDateTime = dtDateTime.AddSeconds(unixTimeStamp).ToLocalTime();
             return dtDateTime;
         }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="html">Die HTML-Seite als string</param>
+        /// <returns></returns>
+        public static bool checkForCorrectHTML(string html)
+        {
+            foreach (Func<string, bool> curCheck in checkHtmlActions)
+            {
+                if (!curCheck(html)) return false;
+            }
+
+            return true;
+        }
+        #region checkCorrectHtml Funktionen
+        private static bool checkForFirewall(string html)
+        {
+            return !html.ToLower().Contains("please turn javascript on and reload the page");
+        }
+        private static bool checkForEligibility(string html)
+        {
+            return !html.ToLower().Contains("du hast keine berechtigung");
+        }
+        private static bool checkForLogin(string html)
+        {
+            return !html.ToLower().Contains("du bist nicht eingeloggt") || !html.ToLower().Contains("bitte logge dich ein um diese aktion durchführen zu können");
+        }
+        #endregion
     }
 }
