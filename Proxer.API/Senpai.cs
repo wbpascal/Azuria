@@ -28,14 +28,14 @@ namespace Proxer.API
         private Timer notificationUpdateCheckTimer;
 
         //für die NotificationObject-Listen Eigenschaften
-        internal bool checkNewsUpdate;
-        internal bool checkAnimeMangaUpdate;
-        internal bool checkPMUpdate;
-        internal bool checkFriendUpdates;
-        internal List<NewsObject> newsUpdates;
-        internal List<AnimeMangaUpdateObject> animeMangaUpdates;
-        internal List<PMObject> pmUpdates;
-        internal List<FriendRequestObject> friendUpdates;
+        private bool checkNewsUpdate;
+        private bool checkAnimeMangaUpdate;
+        private bool checkPMUpdate;
+        private bool checkFriendUpdates;
+        private List<NewsObject> newsUpdates;
+        private List<AnimeMangaUpdateObject> animeMangaUpdates;
+        private List<PMObject> pmUpdates;
+        private List<FriendRequestObject> friendUpdates;
 
         #region Events + Handler
         /// <summary>
@@ -233,7 +233,7 @@ namespace Proxer.API
             };
             string lResponse = await HttpUtility.PostWebRequestResponseAsync("https://proxer.me/login?format=json&action=login", LoginCookies, postArgs);
 
-            if (Utility.Utility.checkForCorrectHTML(lResponse))
+            if (Utility.Utility.checkForCorrectJson(lResponse))
             {
                 Dictionary<string, string> responseDes = JsonConvert.DeserializeObject<Dictionary<string, string>>(lResponse);
 
@@ -267,7 +267,7 @@ namespace Proxer.API
             {
                 string lResponse = await HttpUtility.GetWebRequestResponseAsync("https://proxer.me/login?format=json&action=login", LoginCookies);
 
-                if (Utility.Utility.checkForCorrectHTML(lResponse))
+                if (Utility.Utility.checkForCorrectJson(lResponse))
                 {
                     Dictionary<string, string> responseDes = JsonConvert.DeserializeObject<Dictionary<string, string>>(lResponse);
 
@@ -300,21 +300,25 @@ namespace Proxer.API
                     {
                         if (PMNotification_Raised != null) PMNotification_Raised(this, new PMNotificationEventArgs(new PMNotification(Convert.ToInt32(lResponse[2]))));
                         if (Notification_Raised != null) Notification_Raised(this, new NotificationEventArgs(new PMNotification(Convert.ToInt32(lResponse[2]))));
+                        this.checkPMUpdate = true;
                     }
                     if (!lResponse[3].Equals("0"))
                     {
                         if (FriendNotification_Raised != null) FriendNotification_Raised(this, new FriendNotificationEventArgs(new FriendNotification(Convert.ToInt32(lResponse[3]))));
                         if (Notification_Raised != null) Notification_Raised(this, new NotificationEventArgs(new FriendNotification(Convert.ToInt32(lResponse[3]))));
+                        this.checkFriendUpdates = true;
                     }
                     if (!lResponse[4].Equals("0"))
                     {
                         if (NewsNotification_Raised != null) NewsNotification_Raised(this, new NewsNotificationEventArgs(new NewsNotification(Convert.ToInt32(lResponse[4]))));
                         if (Notification_Raised != null) Notification_Raised(this, new NotificationEventArgs(new NewsNotification(Convert.ToInt32(lResponse[4]))));
+                        this.checkNewsUpdate = true;
                     }
                     if (!lResponse[5].Equals("0"))
                     {
                         if (AMUpdateNotification_Raised != null) AMUpdateNotification_Raised(this, new AMNotificationEventArgs(new AnimeMangaNotification(Convert.ToInt32(lResponse[5]))));
                         if (Notification_Raised != null) Notification_Raised(this, new NotificationEventArgs(new AnimeMangaNotification(Convert.ToInt32(lResponse[5]))));
+                        this.checkAnimeMangaUpdate = true;
                     }
                 }
             }
@@ -403,7 +407,7 @@ namespace Proxer.API
             if (LoggedIn)
             {
                 string lResponse = await HttpUtility.GetWebRequestResponseAsync("https://proxer.me/notifications?format=json&s=news&p=1", LoginCookies);
-                if (Utility.Utility.checkForCorrectHTML(lResponse) && lResponse.StartsWith("{\"error\":0"))
+                if (Utility.Utility.checkForCorrectJson(lResponse) && lResponse.StartsWith("{\"error\":0"))
                 {
                     this.newsUpdates = new List<NewsObject>();
                     Dictionary<string, List<NewsObject>> lDeserialized = JsonConvert.DeserializeObject<Dictionary<string, List<NewsObject>>>("{" + lResponse.Substring("{\"error\":0,".Length));

@@ -11,7 +11,8 @@ namespace Proxer.API.Utility
     /// </summary>
     public class Utility
     {
-        private static List<Func<string, bool>> checkHtmlActions = new List<Func<string,bool>>{checkForFirewall, checkForLogin, checkForEligibility};
+        private static List<Func<string, bool>> checkHtmlActions = new List<Func<string, bool>> { checkForFirewall, checkForLogin, checkForEligibility, checkFor404 };
+        private static List<Func<string, bool>> checkJsonActions = new List<Func<string, bool>> { checkForFirewall, checkForLogin, checkForEligibility };
 
         /// <summary>
         /// 
@@ -67,18 +68,36 @@ namespace Proxer.API.Utility
 
             return true;
         }
-        #region checkCorrectHtml Funktionen
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="json">Die JSON-Datei als string</param>
+        /// <returns></returns>
+        public static bool checkForCorrectJson(string json)
+        {
+            foreach (Func<string, bool> curCheck in checkJsonActions)
+            {
+                if (!curCheck(json)) return false;
+            }
+
+            return true;
+        }
+        #region checkCorrectHtml/Json Funktionen
         private static bool checkForFirewall(string html)
         {
             return !html.ToLower().Contains("please turn javascript on and reload the page");
         }
         private static bool checkForEligibility(string html)
         {
-            return !html.ToLower().Contains("du hast keine berechtigung");
+            return !html.ToLower().Contains("du hast keine berechtigung") || !html.ToLower().Contains("dieses profil wurde noch nicht aktiviert");
         }
         private static bool checkForLogin(string html)
         {
-            return !html.ToLower().Contains("du bist nicht eingeloggt") || !html.ToLower().Contains("bitte logge dich ein um diese aktion durchführen zu können");
+            return !html.ToLower().Contains("du bist nicht eingeloggt") || !html.ToLower().Contains("bitte logge dich ein");
+        }
+        private static bool checkFor404(string html)
+        {
+            return !html.ToLower().Contains("diese seite wurde nicht gefunden");
         }
         #endregion
     }

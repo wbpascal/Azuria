@@ -98,7 +98,7 @@ namespace Proxer.API.Notifications.NotificationObjects
                 Dictionary<string, string> lPostArgs = new Dictionary<string, string> { { "type", "accept" } };
                 string lResponse = await HttpUtility.PostWebRequestResponseAsync("https://proxer.me/user/my?format=json&cid=" + this.ID, senpai.LoginCookies, lPostArgs);
 
-                if (Utility.Utility.checkForCorrectHTML(lResponse) && lResponse.StartsWith("{\"error\":0"))
+                if (Utility.Utility.checkForCorrectJson(lResponse) && lResponse.StartsWith("{\"error\":0"))
                 {
                     this.accepted = true;
                     return true;
@@ -124,7 +124,7 @@ namespace Proxer.API.Notifications.NotificationObjects
                 Dictionary<string, string> lPostArgs = new Dictionary<string, string> { { "type", "deny" } };
                 string lResponse = await HttpUtility.PostWebRequestResponseAsync("https://proxer.me/user/my?format=json&cid=" + this.ID, senpai.LoginCookies, lPostArgs);
 
-                if (Utility.Utility.checkForCorrectHTML(lResponse) && lResponse.StartsWith("{\"error\":0"))
+                if (Utility.Utility.checkForCorrectJson(lResponse) && lResponse.StartsWith("{\"error\":0"))
                 {
                     this.denied = true;
                     return true;
@@ -150,7 +150,7 @@ namespace Proxer.API.Notifications.NotificationObjects
                 Dictionary<string, string> lPostArgs = new Dictionary<string, string> { { "type", "desc" } };
                 string lResponse = await HttpUtility.PostWebRequestResponseAsync("https://proxer.me/user/my?format=json&desc=" + System.Web.HttpUtility.JavaScriptStringEncode(pNewDescription) + "&cid=" + this.ID, senpai.LoginCookies, lPostArgs);
 
-                if (Utility.Utility.checkForCorrectHTML(lResponse) && lResponse.StartsWith("{\"error\":0"))
+                if (Utility.Utility.checkForCorrectJson(lResponse) && lResponse.StartsWith("{\"error\":0"))
                 {
                     this.Description = pNewDescription;
                     return true;
