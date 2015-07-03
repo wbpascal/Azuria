@@ -365,25 +365,28 @@ namespace Proxer.API
                             this.animeMangaUpdates = new List<AnimeMangaUpdateObject>();
                             foreach (HtmlAgilityPack.HtmlNode curNode in lNodes)
                             {
-                                string lName;
-                                int lNumber;
-
-                                int lID = Convert.ToInt32(curNode.Id.Substring(12));
-                                string lMessage = curNode.ChildNodes["u"].InnerText;
-                                Uri lLink = new Uri("https://proxer.me" + curNode.Attributes["href"].Value);
-
-                                if (lMessage.IndexOf('#') != -1)
+                                if (curNode.InnerText.StartsWith("Lesezeichen:"))
                                 {
-                                    lName = lMessage.Split('#')[0];
-                                    if (!Int32.TryParse(lMessage.Split('#')[1], out lNumber)) lNumber = -1;
-                                }
-                                else
-                                {
-                                    lName = "";
-                                    lNumber = -1;
-                                }
+                                    string lName;
+                                    int lNumber;
 
-                                this.AnimeMangaUpdates.Add(new AnimeMangaUpdateObject(lMessage, lName, lNumber, lLink, lID));
+                                    int lID = Convert.ToInt32(curNode.Id.Substring(12));
+                                    string lMessage = curNode.ChildNodes["u"].InnerText;
+                                    Uri lLink = new Uri("https://proxer.me" + curNode.Attributes["href"].Value);
+
+                                    if (lMessage.IndexOf('#') != -1)
+                                    {
+                                        lName = lMessage.Split('#')[0];
+                                        if (!Int32.TryParse(lMessage.Split('#')[1], out lNumber)) lNumber = -1;
+                                    }
+                                    else
+                                    {
+                                        lName = "";
+                                        lNumber = -1;
+                                    }
+
+                                    this.AnimeMangaUpdates.Add(new AnimeMangaUpdateObject(lMessage, lName, lNumber, lLink, lID));
+                                }
                             }
                             this.checkAnimeMangaUpdate = false;
                         }
