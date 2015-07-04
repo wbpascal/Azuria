@@ -292,32 +292,32 @@ namespace Proxer.API
             {
                 string lResponse = await HttpUtility.GetWebRequestResponseAsync("https://proxer.me/notifications?format=raw&s=count", LoginCookies);
 
-                if (Utility.Utility.checkForCorrectHTML(lResponse) && lResponse[0].Equals("0"))
+                if (Utility.Utility.checkForCorrectHTML(lResponse) && lResponse.StartsWith("0"))
                 {
                     string[] lResponseSplit = lResponse.Split('#');
 
-                    if (!lResponse[2].Equals("0"))
+                    if (!lResponseSplit[2].Equals("0"))
                     {
-                        if (PMNotification_Raised != null) PMNotification_Raised(this, new PMNotificationEventArgs(new PMNotification(Convert.ToInt32(lResponse[2]))));
-                        if (Notification_Raised != null) Notification_Raised(this, new NotificationEventArgs(new PMNotification(Convert.ToInt32(lResponse[2]))));
+                        if (PMNotification_Raised != null) PMNotification_Raised(this, new PMNotificationEventArgs(new PMNotification(Convert.ToInt32(lResponseSplit[2]))));
+                        if (Notification_Raised != null) Notification_Raised(this, new NotificationEventArgs(new PMNotification(Convert.ToInt32(lResponseSplit[2]))));
                         this.checkPMUpdate = true;
                     }
-                    if (!lResponse[3].Equals("0"))
+                    if (!lResponseSplit[3].Equals("0"))
                     {
-                        if (FriendNotification_Raised != null) FriendNotification_Raised(this, new FriendNotificationEventArgs(new FriendNotification(Convert.ToInt32(lResponse[3]))));
-                        if (Notification_Raised != null) Notification_Raised(this, new NotificationEventArgs(new FriendNotification(Convert.ToInt32(lResponse[3]))));
+                        if (FriendNotification_Raised != null) FriendNotification_Raised(this, new FriendNotificationEventArgs(new FriendNotification(Convert.ToInt32(lResponseSplit[3]))));
+                        if (Notification_Raised != null) Notification_Raised(this, new NotificationEventArgs(new FriendNotification(Convert.ToInt32(lResponseSplit[3]))));
                         this.checkFriendUpdates = true;
                     }
-                    if (!lResponse[4].Equals("0"))
+                    if (!lResponseSplit[4].Equals("0"))
                     {
-                        if (NewsNotification_Raised != null) NewsNotification_Raised(this, new NewsNotificationEventArgs(new NewsNotification(Convert.ToInt32(lResponse[4]))));
-                        if (Notification_Raised != null) Notification_Raised(this, new NotificationEventArgs(new NewsNotification(Convert.ToInt32(lResponse[4]))));
+                        if (NewsNotification_Raised != null) NewsNotification_Raised(this, new NewsNotificationEventArgs(new NewsNotification(Convert.ToInt32(lResponseSplit[4]))));
+                        if (Notification_Raised != null) Notification_Raised(this, new NotificationEventArgs(new NewsNotification(Convert.ToInt32(lResponseSplit[4]))));
                         this.checkNewsUpdate = true;
                     }
-                    if (!lResponse[5].Equals("0"))
+                    if (!lResponseSplit[5].Equals("0"))
                     {
-                        if (AMUpdateNotification_Raised != null) AMUpdateNotification_Raised(this, new AMNotificationEventArgs(new AnimeMangaNotification(Convert.ToInt32(lResponse[5]))));
-                        if (Notification_Raised != null) Notification_Raised(this, new NotificationEventArgs(new AnimeMangaNotification(Convert.ToInt32(lResponse[5]))));
+                        if (AMUpdateNotification_Raised != null) AMUpdateNotification_Raised(this, new AMNotificationEventArgs(new AnimeMangaNotification(Convert.ToInt32(lResponseSplit[5]))));
+                        if (Notification_Raised != null) Notification_Raised(this, new NotificationEventArgs(new AnimeMangaNotification(Convert.ToInt32(lResponseSplit[5]))));
                         this.checkAnimeMangaUpdate = true;
                     }
                 }
