@@ -100,5 +100,23 @@ namespace Proxer.API.Utility
             return !html.ToLower().Contains("diese seite wurde nicht gefunden");
         }
         #endregion
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="html"></param>
+        /// <param name="parseErrors"></param>
+        /// <returns></returns>
+        public static string tryFixParseErrors(string html, IEnumerable<HtmlAgilityPack.HtmlParseError> parseErrors)
+        {
+            if (parseErrors.Count() > 0)
+            {
+                foreach(HtmlAgilityPack.HtmlParseError curError in parseErrors)
+                {
+                    html = html.Remove(curError.StreamPosition, curError.SourceText.Length);
+                }
+            }
+
+            return html;
+        }
     }
 }

@@ -250,15 +250,19 @@ namespace Proxer.API
             }
             else if (senpai.LoggedIn)
             {
+                int lSeite = 1;
+                string lResponse;
                 HtmlAgilityPack.HtmlDocument lDocument = new HtmlAgilityPack.HtmlDocument();
-                string lResponse = (await HttpUtility.GetWebRequestResponseAsync("https://proxer.me/user/" + this.ID + "/connections?format=raw", this.senpai.LoginCookies)).Replace("</link>", "").Replace("\n", "");
 
-                if (Utility.Utility.checkForCorrectHTML(lResponse))
+                this.freunde = new List<User>();
+
+                while (!(lResponse = (await HttpUtility.GetWebRequestResponseAsync("https://proxer.me/user/" + this.ID + "/connections/" + lSeite + "?format=raw", this.senpai.LoginCookies)).Replace("</link>", "").Replace("\n", "").Replace("\t", "")).Contains("Dieser Benutzer hat bisher keine Freunde"))
                 {
-                    this.freunde = new List<User>();
-                    if (!lResponse.ToLower().Contains("dieser benutzter hat bisher keine freunde"))
+                    if (Utility.Utility.checkForCorrectHTML(lResponse))
                     {
                         lDocument.LoadHtml(lResponse);
+
+                        if (lDocument.ParseErrors.Count() > 0) lDocument.LoadHtml(Utility.Utility.tryFixParseErrors(lResponse, lDocument.ParseErrors));
 
                         if (lDocument.ParseErrors.Count() == 0)
                         {
@@ -273,12 +277,14 @@ namespace Proxer.API
                                     int lID = Convert.ToInt32(curFriendNode.Attributes["id"].Value.Substring("entry".Length));
                                     this.freunde.Add(new User(lUsername, lID, this.senpai));
                                 }
-
-                                this.checkFriends = false;
                             }
                         }
+
+                        lSeite++;
                     }
                 }
+
+                this.checkFriends = false;
             }
         }
         /// <summary>
