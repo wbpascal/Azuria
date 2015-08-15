@@ -399,7 +399,7 @@ namespace Proxer.API.Community.PrivateMessages
         /// 
         /// </summary>
         /// <returns></returns>
-        public bool favouritHinzufügen()
+        public bool favoritHinzufuegen()
         {
             if (senpai.LoggedIn)
             {
@@ -416,7 +416,7 @@ namespace Proxer.API.Community.PrivateMessages
         /// 
         /// </summary>
         /// <returns></returns>
-        public bool favouritEntfernen()
+        public bool favoritEntfernen()
         {
             if (senpai.LoggedIn)
             {
@@ -433,7 +433,7 @@ namespace Proxer.API.Community.PrivateMessages
         /// 
         /// </summary>
         /// <returns></returns>
-        public bool blockHinzufügen()
+        public bool blockHinzufuegen()
         {
             if (senpai.LoggedIn)
             {
