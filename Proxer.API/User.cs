@@ -348,10 +348,10 @@ namespace Proxer.API
         /// <param name="id"></param>
         /// <param name="loginCookies"></param>
         /// <returns></returns>
-        public string getUNameFromID(int id, System.Net.CookieContainer loginCookies)
+        public string getUNameFromID(int id)
         {
             HtmlAgilityPack.HtmlDocument lDocument = new HtmlAgilityPack.HtmlDocument();
-            string lResponse = HttpUtility.GetWebRequestResponse("https://proxer.me/user/" + id + "/overview?format=raw", loginCookies);
+            string lResponse = HttpUtility.GetWebRequestResponse("https://proxer.me/user/" + id + "/overview?format=raw", this.senpai.LoginCookies);
 
             if (Utilities.Utility.checkForCorrectResponse(lResponse, senpai.ErrHandler))
             {
