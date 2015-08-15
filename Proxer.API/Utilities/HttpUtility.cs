@@ -28,6 +28,13 @@ namespace Proxer.API.Utilities
             return lClient.Execute(lRequest).Content;
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="url"></param>
+        /// <param name="cookies"></param>
+        /// <param name="postArgs"></param>
+        /// <returns></returns>
         public static string PostWebRequestResponse(string url, CookieContainer cookies, Dictionary<string, string> postArgs)
         {
             RestClient lClient = new RestClient(url);
