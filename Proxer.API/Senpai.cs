@@ -43,7 +43,7 @@ namespace Proxer.API
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        public delegate void NotificationEventHandler(object sender, NotificationEventArgs e);
+        public delegate void NotificationEventHandler(Senpai sender, NotificationEventArgs e);
         /// <summary>
         /// Wird bei allen Benachrichtigungen aufgerufen(30 Minuten Intervall)
         /// </summary>
@@ -53,7 +53,7 @@ namespace Proxer.API
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        public delegate void FriendNotificiationEventHandler(object sender, FriendNotificationEventArgs e);
+        public delegate void FriendNotificiationEventHandler(Senpai sender, FriendNotificationEventArgs e);
         /// <summary>
         /// Wird aufgerufen, wenn eine neue Freundschaftsanfrage aussteht(30 Minuten Intervall)
         /// </summary>
@@ -63,7 +63,7 @@ namespace Proxer.API
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        public delegate void NewsNotificationEventHandler(object sender, NewsNotificationEventArgs e);
+        public delegate void NewsNotificationEventHandler(Senpai sender, NewsNotificationEventArgs e);
         /// <summary>
         /// Wird aufgerufen, wenn neue ungelesene News vorhanden sind(30 Minuten Intervall)
         /// </summary>
@@ -73,7 +73,7 @@ namespace Proxer.API
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        public delegate void PMNotificationEventHandler(object sender, PMNotificationEventArgs e);
+        public delegate void PMNotificationEventHandler(Senpai sender, PMNotificationEventArgs e);
         /// <summary>
         /// Wird aufgerufen, wenn ungelesene PMs vorhanden sind(30 Minuten Intervall)
         /// </summary>
@@ -83,7 +83,7 @@ namespace Proxer.API
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        public delegate void AMNotificationEventHandler(object sender, AMNotificationEventArgs e);
+        public delegate void AMNotificationEventHandler(Senpai sender, AMNotificationEventArgs e);
         /// <summary>
         /// Wird aufgerufen, wenn neue Anime Folgen oder Manga Kapitel vorhanden sind(30 Minuten Intervall)
         /// ACHTUNG: Kann auch aufgerufen werden, wenn z.B. eine Freundschaftsanfrage angenommen wurde(Wird versucht zu fixen)
@@ -219,14 +219,13 @@ namespace Proxer.API
         public User Me { get; private set; }
 
         /// <summary>
-        /// 
+        /// Gibt den Error-Handler zurück, der benutzt wird, um Fehler in Serverantworten zu bearbeiten und frühzeitig zu erkennen
         /// </summary>
         public ErrorHandler ErrHandler { get; private set; }
 
 
         /// <summary>
-        /// Loggt den Benutzer ein und speichert die Cookies in ein Objekt, sodass
-        /// mit diesem Objekt weitergearbeitet werden kann
+        /// Loggt den Benutzer ein
         /// </summary>
         /// <param name="username">Der Benutzername des zu einloggenden Benutzers</param>
         /// <param name="password">Das Passwort des Benutzers</param>
@@ -275,7 +274,7 @@ namespace Proxer.API
         /// <summary>
         /// Checkt per API, ob der Benutzer noch eingeloggt ist
         /// </summary>
-        public void checkLogin()
+        public bool checkLogin()
         {
             if (LoggedIn)
             {
@@ -290,11 +289,13 @@ namespace Proxer.API
                         if (responseDes["error"].Equals("0"))
                         {
                             LoggedIn = true;
+                            return true;
                         }
                         else
                         {
                             LoggedIn = false;
                             if (UserLoggedOut_Raised != null) UserLoggedOut_Raised(this, new System.EventArgs());
+                            return false;
                         }
                     }
                     catch (Exception)
@@ -303,6 +304,8 @@ namespace Proxer.API
                     }
                 }
             }
+
+            return false;
         }
         /// <summary>
         /// Checkt, ob neue Benachrichtigungen vorhanden sind
@@ -374,7 +377,7 @@ namespace Proxer.API
 
         /// <summary>
         /// (Vorläufig, nicht ausführlich getestet)
-        /// Benutzt um ALLE Anime und Manga Benachrichtigungen in die vorgesehene einzutragen.
+        /// Benutzt um ALLE Anime und Manga Benachrichtigungen in die vorgesehene Eigenschaft einzutragen.
         /// Wird nur in initNotifications() und alle 30 Minuten, falls die AnimeMangaUpdates-Eigenschaft abgerufen wird, benutzt.
         /// </summary>
         private void getAllAnimeMangaUpdates()
@@ -518,7 +521,7 @@ namespace Proxer.API
         /// Benutzt um ALLE Freundschaftsanfragen abzurufen und sie in die vorgesehen Eigenschaft einzutragen.
         /// Nur in initNotifications() und alle 30 Minuten, falls die FriendRequests-Eigenschaft abgerufen wird, benutzt.
         /// </summary>
-        public void getAllFriendUpdates()
+        private void getAllFriendUpdates()
         {
             if (this.LoggedIn)
             {
