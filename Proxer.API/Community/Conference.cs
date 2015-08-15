@@ -1,11 +1,13 @@
-﻿using Newtonsoft.Json;
-using Proxer.API.Utility;
+﻿using InfiniteSoul.Utilities;
+using Newtonsoft.Json;
+using Proxer.API.Utilities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Timers;
+using InfUtilities = InfiniteSoul.Utilities;
 
 namespace Proxer.API.Community.PrivateMessages
 {
@@ -32,7 +34,7 @@ namespace Proxer.API.Community.PrivateMessages
                 this.Sender = sender;
                 this.NachrichtID = mid;
                 this.Nachricht = nachricht;
-                this.TimeStamp = Utility.Utility.UnixTimeStampToDateTime((long)unix);
+                this.TimeStamp = InfUtilities.Utility.UnixTimeStampToDateTime((long)unix);
                 this.Aktion = aktion;
             }
             /// <summary>
@@ -162,7 +164,7 @@ namespace Proxer.API.Community.PrivateMessages
             {
                 if (value)
                 {
-                    #pragma warning disable
+#pragma warning disable
                     getAllMessages();
                 }
                 else
@@ -181,35 +183,43 @@ namespace Proxer.API.Community.PrivateMessages
         public List<Message> Nachrichten { get; private set; }
 
         /// <summary>
-        /// Initialisiert die 
+        /// Initialisiert die Konferenz
         /// </summary>
         public async Task initConference()
         {
             if (await istTeilnehmner(this.ID, this.senpai))
             {
                 HtmlAgilityPack.HtmlDocument lDocument = new HtmlAgilityPack.HtmlDocument();
+                //Asdfasfasf
                 string lResponse = (await HttpUtility.GetWebRequestResponseAsync("https://proxer.me/messages?id=" + this.ID + "&format=raw", senpai.LoginCookies)).Replace("</link>", "").Replace("\n", "");
 
-                if (Utility.Utility.checkForCorrectHTML(lResponse))
+                if (Utilities.Utility.checkForCorrectResponse(lResponse, senpai.ErrHandler))
                 {
-                    lDocument.LoadHtml(lResponse);
-
-                    if (lDocument.ParseErrors.Count() == 0)
+                    try
                     {
-                        HtmlAgilityPack.HtmlNodeCollection lNodes = lDocument.DocumentNode.SelectNodes("//div[@id='conferenceUsers']");
-                        if (lNodes != null)
+                        lDocument.LoadHtml(lResponse);
+
+                        if (lDocument.ParseErrors.Count() == 0)
                         {
-                            this.Teilnehmer = new List<User>();
-
-                            foreach (HtmlAgilityPack.HtmlNode curTeilnehmer in lNodes[0].ChildNodes[1].ChildNodes)
+                            HtmlAgilityPack.HtmlNodeCollection lNodes = lDocument.DocumentNode.SelectNodes("//div[@id='conferenceUsers']");
+                            if (lNodes != null)
                             {
-                                string lUserName = curTeilnehmer.ChildNodes[1].InnerText;
-                                int lUserID = Convert.ToInt32(Utility.Utility.GetTagContents(curTeilnehmer.ChildNodes[1].FirstChild.Attributes["href"].Value, "/user/", "#top")[0]);
+                                this.Teilnehmer = new List<User>();
 
-                                this.Teilnehmer.Add(new User(lUserName, lUserID, this.senpai));
+                                foreach (HtmlAgilityPack.HtmlNode curTeilnehmer in lNodes[0].ChildNodes[1].ChildNodes)
+                                {
+                                    string lUserName = curTeilnehmer.ChildNodes[1].InnerText;
+                                    int lUserID = Convert.ToInt32(Utilities.Utility.GetTagContents(curTeilnehmer.ChildNodes[1].FirstChild.Attributes["href"].Value, "/user/", "#top")[0]);
+
+                                    this.Teilnehmer.Add(new User(lUserName, lUserID, this.senpai));
+                                }
+                                this.Aktiv = true;
                             }
-                            this.Aktiv = true;
                         }
+                    }
+                    catch (Exception)
+                    {
+                        this.senpai.ErrHandler.add(lResponse);
                     }
                 }
             }
@@ -223,43 +233,50 @@ namespace Proxer.API.Community.PrivateMessages
             else if ((this.Nachrichten == null || this.Nachrichten.Count == 0) && senpai.LoggedIn)
             {
                 string lResponse = await HttpUtility.GetWebRequestResponseAsync("http://proxer.me/messages?format=json&json=messages&id=" + this.ID, senpai.LoginCookies);
-                if (Utility.Utility.checkForCorrectJson(lResponse) && !lResponse.Equals("{\"uid\":\"" + senpai.Me.ID + "\",\"error\":1,\"msg\":\"Ein Fehler ist passiert.\"}"))
+                if (Utilities.Utility.checkForCorrectResponse(lResponse, senpai.ErrHandler) && !lResponse.Equals("{\"uid\":\"" + senpai.Me.ID + "\",\"error\":1,\"msg\":\"Ein Fehler ist passiert.\"}"))
                 {
-                    string lMessagesJson = Utility.Utility.GetTagContents(lResponse, "\"messages\":[", "],\"favour")[0];
-                    if (lMessagesJson.Equals("")) return;
-
-                    List<Dictionary<string, string>> lMessages = await Task.Factory.StartNew(() => Newtonsoft.Json.JsonConvert.DeserializeObject<List<Dictionary<string, string>>>("[" + lMessagesJson + "]"));
-
-                    this.Nachrichten = new List<Message>();
-                    foreach(Dictionary<string, string> curMessage in lMessages)
+                    try
                     {
-                        Message.Action lMessageAction;
+                        string lMessagesJson = Utilities.Utility.GetTagContents(lResponse, "\"messages\":[", "],\"favour")[0];
+                        if (lMessagesJson.Equals("")) return;
 
-                        switch (curMessage["action"])
+                        List<Dictionary<string, string>> lMessages = await Task.Factory.StartNew(() => Newtonsoft.Json.JsonConvert.DeserializeObject<List<Dictionary<string, string>>>("[" + lMessagesJson + "]"));
+
+                        this.Nachrichten = new List<Message>();
+                        foreach (Dictionary<string, string> curMessage in lMessages)
                         {
-                            case "addUser":
-                                lMessageAction = Message.Action.AddUser;
-                                break;
-                            case "removeUser":
-                                lMessageAction = Message.Action.RemoveUser;
-                                break;
-                            case "setTopic":
-                                lMessageAction = Message.Action.SetTopic;
-                                break;
-                            case "setLeader":
-                                lMessageAction = Message.Action.SetLeader;
-                                break;
-                            default:
-                                lMessageAction = Message.Action.NoAction;
-                                break;
+                            Message.Action lMessageAction;
+
+                            switch (curMessage["action"])
+                            {
+                                case "addUser":
+                                    lMessageAction = Message.Action.AddUser;
+                                    break;
+                                case "removeUser":
+                                    lMessageAction = Message.Action.RemoveUser;
+                                    break;
+                                case "setTopic":
+                                    lMessageAction = Message.Action.SetTopic;
+                                    break;
+                                case "setLeader":
+                                    lMessageAction = Message.Action.SetLeader;
+                                    break;
+                                default:
+                                    lMessageAction = Message.Action.NoAction;
+                                    break;
+                            }
+
+                            User lSender = new User(curMessage["username"], Convert.ToInt32(curMessage["fromid"]), senpai);
+                            this.Nachrichten.Insert(0, new Message(lSender, Convert.ToInt32(curMessage["id"]), curMessage["message"], Convert.ToInt32(curMessage["timestamp"]), lMessageAction));
                         }
 
-                        User lSender = new User(curMessage["username"], Convert.ToInt32(curMessage["fromid"]), senpai);
-                        this.Nachrichten.Insert(0, new Message(lSender, Convert.ToInt32(curMessage["id"]), curMessage["message"], Convert.ToInt32(curMessage["timestamp"]), lMessageAction));
+                        if (NeuePM_Raised != null) NeuePM_Raised.Invoke(this, this.Nachrichten);
+                        if (!getMessagesTimer.Enabled) getMessagesTimer.Start();
                     }
-
-                    if (NeuePM_Raised != null) NeuePM_Raised.Invoke(this, this.Nachrichten);
-                    if (!getMessagesTimer.Enabled) getMessagesTimer.Start();
+                    catch (Exception)
+                    {
+                        this.senpai.ErrHandler.add(lResponse);
+                    }
                 }
             }
         }
@@ -275,44 +292,52 @@ namespace Proxer.API.Community.PrivateMessages
                 if (senpai.LoggedIn)
                 {
                     string lResponse = await HttpUtility.GetWebRequestResponseAsync("http://proxer.me/messages?format=json&json=newmessages&id=" + this.ID + "&mid=" + mid, senpai.LoginCookies);
-                    if (Utility.Utility.checkForCorrectJson(lResponse) && !lResponse.Equals("{\"uid\":\"" + senpai.Me.ID + "\",\"error\":1,\"msg\":\"Ein Fehler ist passiert.\"}"))
+                    if (Utilities.Utility.checkForCorrectResponse(lResponse, senpai.ErrHandler) && !lResponse.Equals("{\"uid\":\"" + senpai.Me.ID + "\",\"error\":1,\"msg\":\"Ein Fehler ist passiert.\"}"))
                     {
-                        string lMessagesJson = Utility.Utility.GetTagContents(lResponse, "\"messages\":[", "]}")[0];
-                        if (!lMessagesJson.Equals(""))
+                        try
                         {
-                            List<Dictionary<string, string>> lMessages = await Task.Factory.StartNew(() => Newtonsoft.Json.JsonConvert.DeserializeObject<List<Dictionary<string, string>>>("[" + lMessagesJson + "]"));
-
-                            List<Message> lNewMessages = new List<Message>();
-                            foreach (Dictionary<string, string> curMessage in lMessages)
+                            string lMessagesJson = Utilities.Utility.GetTagContents(lResponse, "\"messages\":[", "]}")[0];
+                            if (!lMessagesJson.Equals(""))
                             {
-                                Message.Action lMessageAction;
+                                List<Dictionary<string, string>> lMessages = await Task.Factory.StartNew(() => Newtonsoft.Json.JsonConvert.DeserializeObject<List<Dictionary<string, string>>>("[" + lMessagesJson + "]"));
 
-                                switch (curMessage["action"])
+                                List<Message> lNewMessages = new List<Message>();
+                                foreach (Dictionary<string, string> curMessage in lMessages)
                                 {
-                                    case "addUser":
-                                        lMessageAction = Message.Action.AddUser;
-                                        break;
-                                    case "removeUser":
-                                        lMessageAction = Message.Action.RemoveUser;
-                                        break;
-                                    case "setTopic":
-                                        lMessageAction = Message.Action.SetTopic;
-                                        break;
-                                    case "setLeader":
-                                        lMessageAction = Message.Action.SetLeader;
-                                        break;
-                                    default:
-                                        lMessageAction = Message.Action.NoAction;
-                                        break;
+                                    Message.Action lMessageAction;
+
+                                    switch (curMessage["action"])
+                                    {
+                                        case "addUser":
+                                            lMessageAction = Message.Action.AddUser;
+                                            break;
+                                        case "removeUser":
+                                            lMessageAction = Message.Action.RemoveUser;
+                                            break;
+                                        case "setTopic":
+                                            lMessageAction = Message.Action.SetTopic;
+                                            break;
+                                        case "setLeader":
+                                            lMessageAction = Message.Action.SetLeader;
+                                            break;
+                                        default:
+                                            lMessageAction = Message.Action.NoAction;
+                                            break;
+                                    }
+
+                                    User lSender = new User(curMessage["username"], Convert.ToInt32(curMessage["fromid"]), senpai);
+                                    Message lMessage = new Message(lSender, Convert.ToInt32(curMessage["id"]), curMessage["message"], Convert.ToInt32(curMessage["timestamp"]), lMessageAction);
+                                    lNewMessages.Insert(0, lMessage);
                                 }
+                                this.Nachrichten = this.Nachrichten.Concat(lNewMessages).ToList();
 
-                                User lSender = new User(curMessage["username"], Convert.ToInt32(curMessage["fromid"]), senpai);
-                                Message lMessage = new Message(lSender, Convert.ToInt32(curMessage["id"]), curMessage["message"], Convert.ToInt32(curMessage["timestamp"]), lMessageAction);
-                                lNewMessages.Insert(0, lMessage);
+                                if (NeuePM_Raised != null) NeuePM_Raised.Invoke(this, lNewMessages);
+
                             }
-                            this.Nachrichten = this.Nachrichten.Concat(lNewMessages).ToList();
-
-                            if (NeuePM_Raised != null) NeuePM_Raised.Invoke(this, lNewMessages);
+                        }
+                        catch (Exception)
+                        {
+                            this.senpai.ErrHandler.add(lResponse);
                         }
                     }
                 }
@@ -336,13 +361,20 @@ namespace Proxer.API.Community.PrivateMessages
                 };
                 string lResponse = await HttpUtility.PostWebRequestResponseAsync("https://proxer.me/messages?id=" + this.ID + "&format=json&json=answer", senpai.LoginCookies, lPostArgs);
 
-                if (Utility.Utility.checkForCorrectJson(lResponse))
+                if (Utilities.Utility.checkForCorrectResponse(lResponse, senpai.ErrHandler))
                 {
-                    Dictionary<string, string> lResponseJson = await Task.Factory.StartNew(() => Newtonsoft.Json.JsonConvert.DeserializeObject<Dictionary<string, string>>(lResponse));
-
-                    if (lResponseJson.Keys.Contains("message"))
+                    try
                     {
-                        if(this.NeuePM_Raised != null) this.NeuePM_Raised(this, new List<Message>{new Message(User.System, -1, lResponseJson["message"], DateTime.Now, Message.Action.GetAction)});
+                        Dictionary<string, string> lResponseJson = await Task.Factory.StartNew(() => Newtonsoft.Json.JsonConvert.DeserializeObject<Dictionary<string, string>>(lResponse));
+
+                        if (lResponseJson.Keys.Contains("message"))
+                        {
+                            if (this.NeuePM_Raised != null) this.NeuePM_Raised(this, new List<Message> { new Message(User.System, -1, lResponseJson["message"], DateTime.Now, Message.Action.GetAction) });
+                        }
+                    }
+                    catch (Exception)
+                    {
+                        this.senpai.ErrHandler.add(lResponse);
                     }
                 }
 
@@ -357,7 +389,7 @@ namespace Proxer.API.Community.PrivateMessages
             if (senpai.LoggedIn)
             {
                 string lResponse = await HttpUtility.GetWebRequestResponseAsync("http://proxer.me/messages?format=json&json=setUnread&id=" + this.ID, senpai.LoginCookies);
-                if (Utility.Utility.checkForCorrectJson(lResponse) && lResponse.StartsWith("{\"error\":0"))
+                if (lResponse.StartsWith("{\"error\":0"))
                 {
                     return true;
                 }
@@ -374,7 +406,7 @@ namespace Proxer.API.Community.PrivateMessages
             if (senpai.LoggedIn)
             {
                 string lResponse = await HttpUtility.GetWebRequestResponseAsync("http://proxer.me/messages?format=json&json=favour&id=" + this.ID, senpai.LoginCookies);
-                if (Utility.Utility.checkForCorrectJson(lResponse) && lResponse.StartsWith("{\"error\":0"))
+                if (lResponse.StartsWith("{\"error\":0"))
                 {
                     return true;
                 }
@@ -391,7 +423,7 @@ namespace Proxer.API.Community.PrivateMessages
             if (senpai.LoggedIn)
             {
                 string lResponse = await HttpUtility.GetWebRequestResponseAsync("http://proxer.me/messages?format=json&json=unfavour&id=" + this.ID, senpai.LoginCookies);
-                if (Utility.Utility.checkForCorrectJson(lResponse) && lResponse.StartsWith("{\"error\":0"))
+                if (lResponse.StartsWith("{\"error\":0"))
                 {
                     return true;
                 }
@@ -408,7 +440,7 @@ namespace Proxer.API.Community.PrivateMessages
             if (senpai.LoggedIn)
             {
                 string lResponse = await HttpUtility.GetWebRequestResponseAsync("http://proxer.me/messages?format=json&json=block&id=" + this.ID, senpai.LoginCookies);
-                if (Utility.Utility.checkForCorrectJson(lResponse) && lResponse.StartsWith("{\"error\":0"))
+                if (lResponse.StartsWith("{\"error\":0"))
                 {
                     return true;
                 }
@@ -425,7 +457,7 @@ namespace Proxer.API.Community.PrivateMessages
             if (senpai.LoggedIn)
             {
                 string lResponse = await HttpUtility.GetWebRequestResponseAsync("http://proxer.me/messages?format=json&json=unblock&id=" + this.ID, senpai.LoginCookies);
-                if (Utility.Utility.checkForCorrectJson(lResponse) && lResponse.StartsWith("{\"error\":0"))
+                if (lResponse.StartsWith("{\"error\":0"))
                 {
                     return true;
                 }
@@ -444,7 +476,26 @@ namespace Proxer.API.Community.PrivateMessages
         {
             string lResponse = (await HttpUtility.GetWebRequestResponseAsync("https://proxer.me/messages?id=" + id + "&format=raw", senpai.LoginCookies)).Replace("</link>", "").Replace("\n", "");
 
-            return Utility.Utility.checkForCorrectHTML(lResponse) && !lResponse.Contains("Du hast keine Berechtigungen für diese Konferenz.");
+            if (Utilities.Utility.checkForCorrectResponse(lResponse, senpai.ErrHandler))
+            {
+                try
+                {
+                    HtmlAgilityPack.HtmlDocument lDocument = new HtmlAgilityPack.HtmlDocument();
+                    lDocument.LoadHtml(lResponse);
+
+                    if (lDocument.ParseErrors.Count() == 0)
+                    {
+                        HtmlAgilityPack.HtmlNodeCollection lNodes = lDocument.DocumentNode.SelectNodes("//div[@id='conferenceUsers']");
+                        return lNodes != null;
+                    }
+                }
+                catch (Exception)
+                {
+                    this.senpai.ErrHandler.add(lResponse);
+                }
+            }
+
+            return false;
         }
     }
 }

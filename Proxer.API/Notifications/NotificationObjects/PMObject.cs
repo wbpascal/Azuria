@@ -1,4 +1,4 @@
-﻿using Proxer.API.Utility;
+﻿using Proxer.API.Utilities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -98,28 +98,5 @@ namespace Proxer.API.Notifications.NotificationObjects
         /// Gibt die ID der Konferenz zurück.
         /// </summary>
         public int ID { get; private set; }
-
-        /// <summary>
-        /// (geplant, momentan ohne Sinn) 
-        /// </summary>
-        /// <param name="senpai">Wird gebraucht, um die Login-Cookies abzurufen</param>
-        protected async void getAllInfo(Senpai senpai)
-        {
-            if (senpai.LoggedIn && !true)
-            {
-                HtmlAgilityPack.HtmlDocument lDocument = new HtmlAgilityPack.HtmlDocument();
-                string lResponse = await HttpUtility.GetWebRequestResponseAsync("https://proxer.me/messages?id=79640&format=raw", senpai.LoginCookies);
-
-                if (!Utility.Utility.checkForCorrectHTML(lResponse))
-                {
-                    lDocument.LoadHtml(lResponse);
-
-                    if (lDocument.ParseErrors.Count() == 0)
-                    {
-
-                    }
-                }
-            }
-        }
     }
 }

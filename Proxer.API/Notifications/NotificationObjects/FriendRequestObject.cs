@@ -1,4 +1,5 @@
-﻿using Proxer.API.Utility;
+﻿using InfiniteSoul.Utilities;
+using Proxer.API.Utilities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -98,7 +99,7 @@ namespace Proxer.API.Notifications.NotificationObjects
                 Dictionary<string, string> lPostArgs = new Dictionary<string, string> { { "type", "accept" } };
                 string lResponse = await HttpUtility.PostWebRequestResponseAsync("https://proxer.me/user/my?format=json&cid=" + this.ID, senpai.LoginCookies, lPostArgs);
 
-                if (Utility.Utility.checkForCorrectJson(lResponse) && lResponse.StartsWith("{\"error\":0"))
+                if (lResponse.StartsWith("{\"error\":0"))
                 {
                     this.accepted = true;
                     return true;
@@ -124,7 +125,7 @@ namespace Proxer.API.Notifications.NotificationObjects
                 Dictionary<string, string> lPostArgs = new Dictionary<string, string> { { "type", "deny" } };
                 string lResponse = await HttpUtility.PostWebRequestResponseAsync("https://proxer.me/user/my?format=json&cid=" + this.ID, senpai.LoginCookies, lPostArgs);
 
-                if (Utility.Utility.checkForCorrectJson(lResponse) && lResponse.StartsWith("{\"error\":0"))
+                if (lResponse.StartsWith("{\"error\":0"))
                 {
                     this.denied = true;
                     return true;
@@ -150,7 +151,7 @@ namespace Proxer.API.Notifications.NotificationObjects
                 Dictionary<string, string> lPostArgs = new Dictionary<string, string> { { "type", "desc" } };
                 string lResponse = await HttpUtility.PostWebRequestResponseAsync("https://proxer.me/user/my?format=json&desc=" + System.Web.HttpUtility.JavaScriptStringEncode(pNewDescription) + "&cid=" + this.ID, senpai.LoginCookies, lPostArgs);
 
-                if (Utility.Utility.checkForCorrectJson(lResponse) && lResponse.StartsWith("{\"error\":0"))
+                if (lResponse.StartsWith("{\"error\":0"))
                 {
                     this.Description = pNewDescription;
                     return true;

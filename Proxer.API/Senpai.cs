@@ -1,9 +1,10 @@
-﻿using Newtonsoft.Json;
+﻿using InfiniteSoul.Utilities;
+using Newtonsoft.Json;
 using Nito.AsyncEx;
 using Proxer.API.EventArguments;
 using Proxer.API.Notifications;
 using Proxer.API.Notifications.NotificationObjects;
-using Proxer.API.Utility;
+using Proxer.API.Utilities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -102,6 +103,8 @@ namespace Proxer.API
         /// </summary>
         public Senpai()
         {
+            this.ErrHandler = new ErrorHandler();
+
             this.animeMangaUpdates = new List<AnimeMangaUpdateObject>() { new AnimeMangaUpdateObject(new Object()) };
             this.friendUpdates = new List<FriendRequestObject>() { new FriendRequestObject(new Object()) };
             this.newsUpdates = new List<NewsObject>() { new NewsObject(new Object()) };
@@ -214,6 +217,11 @@ namespace Proxer.API
         /// </summary>
         public User Me { get; private set; }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        public ErrorHandler ErrHandler { get; private set; }
+
 
         /// <summary>
         /// Loggt den Benutzer ein und speichert die Cookies in ein Objekt, sodass
@@ -233,30 +241,35 @@ namespace Proxer.API
             };
             string lResponse = await HttpUtility.PostWebRequestResponseAsync("https://proxer.me/login?format=json&action=login", LoginCookies, postArgs);
 
-            if (Utility.Utility.checkForCorrectJson(lResponse))
+            if (Utilities.Utility.checkForCorrectResponse(lResponse, this.ErrHandler))
             {
-                Dictionary<string, string> responseDes = JsonConvert.DeserializeObject<Dictionary<string, string>>(lResponse);
-
-                if (responseDes["error"].Equals("0"))
+                try
                 {
-                    this.userID = Convert.ToInt32(responseDes["uid"]);
-                    this.username = username;
-                    this.Me = new User(username, userID, this);
-                    LoggedIn = true;
+                    Dictionary<string, string> responseDes = JsonConvert.DeserializeObject<Dictionary<string, string>>(lResponse);
 
-                    return true;
+                    if (responseDes["error"].Equals("0"))
+                    {
+                        this.userID = Convert.ToInt32(responseDes["uid"]);
+                        this.username = username;
+                        this.Me = new User(username, userID, this);
+                        LoggedIn = true;
+
+                        return true;
+                    }
+                    else
+                    {
+                        LoggedIn = false;
+
+                        return false;
+                    }
                 }
-                else
+                catch (Exception)
                 {
-                    LoggedIn = false;
-
-                    return false;
+                    this.ErrHandler.add(lResponse);
                 }
             }
-            else
-            {
-                return false;
-            }
+
+            return false;
         }
         /// <summary>
         /// Checkt per API, ob der Benutzer noch eingeloggt ist
@@ -267,18 +280,25 @@ namespace Proxer.API
             {
                 string lResponse = await HttpUtility.GetWebRequestResponseAsync("https://proxer.me/login?format=json&action=login", LoginCookies);
 
-                if (Utility.Utility.checkForCorrectJson(lResponse))
+                if (Utilities.Utility.checkForCorrectResponse(lResponse, this.ErrHandler))
                 {
-                    Dictionary<string, string> responseDes = JsonConvert.DeserializeObject<Dictionary<string, string>>(lResponse);
+                    try
+                    {
+                        Dictionary<string, string> responseDes = JsonConvert.DeserializeObject<Dictionary<string, string>>(lResponse);
 
-                    if (responseDes["error"].Equals("0"))
-                    {
-                        LoggedIn = true;
+                        if (responseDes["error"].Equals("0"))
+                        {
+                            LoggedIn = true;
+                        }
+                        else
+                        {
+                            LoggedIn = false;
+                            if (UserLoggedOut_Raised != null) UserLoggedOut_Raised(this, new System.EventArgs());
+                        }
                     }
-                    else
+                    catch (Exception)
                     {
-                        LoggedIn = false;
-                        if (UserLoggedOut_Raised != null) UserLoggedOut_Raised(this, new System.EventArgs());
+                        this.ErrHandler.add(lResponse);
                     }
                 }
             }
@@ -292,33 +312,40 @@ namespace Proxer.API
             {
                 string lResponse = await HttpUtility.GetWebRequestResponseAsync("https://proxer.me/notifications?format=raw&s=count", LoginCookies);
 
-                if (Utility.Utility.checkForCorrectHTML(lResponse) && lResponse.StartsWith("0"))
+                if (Utilities.Utility.checkForCorrectResponse(lResponse, this.ErrHandler) && lResponse.StartsWith("0"))
                 {
-                    string[] lResponseSplit = lResponse.Split('#');
+                    try
+                    {
+                        string[] lResponseSplit = lResponse.Split('#');
 
-                    if (!lResponseSplit[2].Equals("0"))
-                    {
-                        if (PMNotification_Raised != null) PMNotification_Raised(this, new PMNotificationEventArgs(new PMNotification(Convert.ToInt32(lResponseSplit[2]))));
-                        if (Notification_Raised != null) Notification_Raised(this, new NotificationEventArgs(new PMNotification(Convert.ToInt32(lResponseSplit[2]))));
-                        this.checkPMUpdate = true;
+                        if (!lResponseSplit[2].Equals("0"))
+                        {
+                            if (PMNotification_Raised != null) PMNotification_Raised(this, new PMNotificationEventArgs(new PMNotification(Convert.ToInt32(lResponseSplit[2]))));
+                            if (Notification_Raised != null) Notification_Raised(this, new NotificationEventArgs(new PMNotification(Convert.ToInt32(lResponseSplit[2]))));
+                            this.checkPMUpdate = true;
+                        }
+                        if (!lResponseSplit[3].Equals("0"))
+                        {
+                            if (FriendNotification_Raised != null) FriendNotification_Raised(this, new FriendNotificationEventArgs(new FriendNotification(Convert.ToInt32(lResponseSplit[3]))));
+                            if (Notification_Raised != null) Notification_Raised(this, new NotificationEventArgs(new FriendNotification(Convert.ToInt32(lResponseSplit[3]))));
+                            this.checkFriendUpdates = true;
+                        }
+                        if (!lResponseSplit[4].Equals("0"))
+                        {
+                            if (NewsNotification_Raised != null) NewsNotification_Raised(this, new NewsNotificationEventArgs(new NewsNotification(Convert.ToInt32(lResponseSplit[4]))));
+                            if (Notification_Raised != null) Notification_Raised(this, new NotificationEventArgs(new NewsNotification(Convert.ToInt32(lResponseSplit[4]))));
+                            this.checkNewsUpdate = true;
+                        }
+                        if (!lResponseSplit[5].Equals("0"))
+                        {
+                            if (AMUpdateNotification_Raised != null) AMUpdateNotification_Raised(this, new AMNotificationEventArgs(new AnimeMangaNotification(Convert.ToInt32(lResponseSplit[5]))));
+                            if (Notification_Raised != null) Notification_Raised(this, new NotificationEventArgs(new AnimeMangaNotification(Convert.ToInt32(lResponseSplit[5]))));
+                            this.checkAnimeMangaUpdate = true;
+                        }
                     }
-                    if (!lResponseSplit[3].Equals("0"))
+                    catch (Exception)
                     {
-                        if (FriendNotification_Raised != null) FriendNotification_Raised(this, new FriendNotificationEventArgs(new FriendNotification(Convert.ToInt32(lResponseSplit[3]))));
-                        if (Notification_Raised != null) Notification_Raised(this, new NotificationEventArgs(new FriendNotification(Convert.ToInt32(lResponseSplit[3]))));
-                        this.checkFriendUpdates = true;
-                    }
-                    if (!lResponseSplit[4].Equals("0"))
-                    {
-                        if (NewsNotification_Raised != null) NewsNotification_Raised(this, new NewsNotificationEventArgs(new NewsNotification(Convert.ToInt32(lResponseSplit[4]))));
-                        if (Notification_Raised != null) Notification_Raised(this, new NotificationEventArgs(new NewsNotification(Convert.ToInt32(lResponseSplit[4]))));
-                        this.checkNewsUpdate = true;
-                    }
-                    if (!lResponseSplit[5].Equals("0"))
-                    {
-                        if (AMUpdateNotification_Raised != null) AMUpdateNotification_Raised(this, new AMNotificationEventArgs(new AnimeMangaNotification(Convert.ToInt32(lResponseSplit[5]))));
-                        if (Notification_Raised != null) Notification_Raised(this, new NotificationEventArgs(new AnimeMangaNotification(Convert.ToInt32(lResponseSplit[5]))));
-                        this.checkAnimeMangaUpdate = true;
+                        this.ErrHandler.add(lResponse);
                     }
                 }
             }
@@ -356,44 +383,51 @@ namespace Proxer.API
                 HtmlAgilityPack.HtmlDocument lDocument = new HtmlAgilityPack.HtmlDocument();
                 string lResponse = await HttpUtility.GetWebRequestResponseAsync("https://proxer.me/components/com_proxer/misc/notifications_misc.php", LoginCookies);
 
-                if (Utility.Utility.checkForCorrectHTML(lResponse))
+                if (Utilities.Utility.checkForCorrectResponse(lResponse, this.ErrHandler))
                 {
-                    lDocument.LoadHtml(lResponse);
-
-                    if (lDocument.ParseErrors.Count() == 0)
+                    try
                     {
-                        HtmlAgilityPack.HtmlNodeCollection lNodes = lDocument.DocumentNode.SelectNodes("//a[@class='notificationList']");
+                        lDocument.LoadHtml(lResponse);
 
-                        if (lNodes != null)
+                        if (lDocument.ParseErrors.Count() == 0)
                         {
-                            this.animeMangaUpdates = new List<AnimeMangaUpdateObject>();
-                            foreach (HtmlAgilityPack.HtmlNode curNode in lNodes)
+                            HtmlAgilityPack.HtmlNodeCollection lNodes = lDocument.DocumentNode.SelectNodes("//a[@class='notificationList']");
+
+                            if (lNodes != null)
                             {
-                                if (curNode.InnerText.StartsWith("Lesezeichen:"))
+                                this.animeMangaUpdates = new List<AnimeMangaUpdateObject>();
+                                foreach (HtmlAgilityPack.HtmlNode curNode in lNodes)
                                 {
-                                    string lName;
-                                    int lNumber;
-
-                                    int lID = Convert.ToInt32(curNode.Id.Substring(12));
-                                    string lMessage = curNode.ChildNodes["u"].InnerText;
-                                    Uri lLink = new Uri("https://proxer.me" + curNode.Attributes["href"].Value);
-
-                                    if (lMessage.IndexOf('#') != -1)
+                                    if (curNode.InnerText.StartsWith("Lesezeichen:"))
                                     {
-                                        lName = lMessage.Split('#')[0];
-                                        if (!Int32.TryParse(lMessage.Split('#')[1], out lNumber)) lNumber = -1;
-                                    }
-                                    else
-                                    {
-                                        lName = "";
-                                        lNumber = -1;
-                                    }
+                                        string lName;
+                                        int lNumber;
 
-                                    this.AnimeMangaUpdates.Add(new AnimeMangaUpdateObject(lMessage, lName, lNumber, lLink, lID));
+                                        int lID = Convert.ToInt32(curNode.Id.Substring(12));
+                                        string lMessage = curNode.ChildNodes["u"].InnerText;
+                                        Uri lLink = new Uri("https://proxer.me" + curNode.Attributes["href"].Value);
+
+                                        if (lMessage.IndexOf('#') != -1)
+                                        {
+                                            lName = lMessage.Split('#')[0];
+                                            if (!Int32.TryParse(lMessage.Split('#')[1], out lNumber)) lNumber = -1;
+                                        }
+                                        else
+                                        {
+                                            lName = "";
+                                            lNumber = -1;
+                                        }
+
+                                        this.AnimeMangaUpdates.Add(new AnimeMangaUpdateObject(lMessage, lName, lNumber, lLink, lID));
+                                    }
                                 }
+                                this.checkAnimeMangaUpdate = false;
                             }
-                            this.checkAnimeMangaUpdate = false;
                         }
+                    }
+                    catch (Exception)
+                    {
+                        this.ErrHandler.add(lResponse);
                     }
                 }
             }
@@ -407,7 +441,7 @@ namespace Proxer.API
             if (LoggedIn)
             {
                 string lResponse = await HttpUtility.GetWebRequestResponseAsync("https://proxer.me/notifications?format=json&s=news&p=1", LoginCookies);
-                if (Utility.Utility.checkForCorrectJson(lResponse) && lResponse.StartsWith("{\"error\":0"))
+                if (lResponse.StartsWith("{\"error\":0"))
                 {
                     this.newsUpdates = new List<NewsObject>();
                     Dictionary<string, List<NewsObject>> lDeserialized = JsonConvert.DeserializeObject<Dictionary<string, List<NewsObject>>>("{" + lResponse.Substring("{\"error\":0,".Length));
@@ -428,45 +462,52 @@ namespace Proxer.API
                 HtmlAgilityPack.HtmlDocument lDocument = new HtmlAgilityPack.HtmlDocument();
                 string lResponse = (await HttpUtility.GetWebRequestResponseAsync("https://proxer.me/messages?format=raw&s=notification", this.LoginCookies)).Replace("</link>", "").Replace("\n", "");
 
-                if (Utility.Utility.checkForCorrectHTML(lResponse))
+                if (Utilities.Utility.checkForCorrectResponse(lResponse, this.ErrHandler))
                 {
-                    lDocument.LoadHtml(lResponse);
-
-                    if (lDocument.ParseErrors.Count() == 0)
+                    try
                     {
-                        HtmlAgilityPack.HtmlNodeCollection lNodes = lDocument.DocumentNode.SelectNodes("//a[@class='conferenceList']");
+                        lDocument.LoadHtml(lResponse);
 
-                        if (lNodes != null)
+                        if (lDocument.ParseErrors.Count() == 0)
                         {
-                            this.pmUpdates = new List<PMObject>();
-                            foreach (HtmlAgilityPack.HtmlNode curNode in lNodes)
+                            HtmlAgilityPack.HtmlNodeCollection lNodes = lDocument.DocumentNode.SelectNodes("//a[@class='conferenceList']");
+
+                            if (lNodes != null)
                             {
-                                string lTitel;
-                                string[] lDatum;
-                                if (curNode.ChildNodes[1].Name.ToLower().Equals("img"))
+                                this.pmUpdates = new List<PMObject>();
+                                foreach (HtmlAgilityPack.HtmlNode curNode in lNodes)
                                 {
-                                    lTitel = curNode.ChildNodes[0].InnerText;
-                                    lDatum = curNode.ChildNodes[1].InnerText.Split('.');
+                                    string lTitel;
+                                    string[] lDatum;
+                                    if (curNode.ChildNodes[1].Name.ToLower().Equals("img"))
+                                    {
+                                        lTitel = curNode.ChildNodes[0].InnerText;
+                                        lDatum = curNode.ChildNodes[1].InnerText.Split('.');
 
-                                    DateTime lTimeStamp = new DateTime(Convert.ToInt32(lDatum[2]), Convert.ToInt32(lDatum[1]), Convert.ToInt32(lDatum[0]));
-                                    int lID = Convert.ToInt32(curNode.Attributes["href"].Value.Substring(13, curNode.Attributes["href"].Value.Length - 17));
+                                        DateTime lTimeStamp = new DateTime(Convert.ToInt32(lDatum[2]), Convert.ToInt32(lDatum[1]), Convert.ToInt32(lDatum[0]));
+                                        int lID = Convert.ToInt32(curNode.Attributes["href"].Value.Substring(13, curNode.Attributes["href"].Value.Length - 17));
 
-                                    this.pmUpdates.Add(new PMObject(lID, lTitel, lTimeStamp));
-                                }
-                                else
-                                {
-                                    lTitel = curNode.ChildNodes[0].InnerText;
-                                    lDatum = curNode.ChildNodes[1].InnerText.Split('.');
+                                        this.pmUpdates.Add(new PMObject(lID, lTitel, lTimeStamp));
+                                    }
+                                    else
+                                    {
+                                        lTitel = curNode.ChildNodes[0].InnerText;
+                                        lDatum = curNode.ChildNodes[1].InnerText.Split('.');
 
-                                    DateTime lTimeStamp = new DateTime(Convert.ToInt32(lDatum[2]), Convert.ToInt32(lDatum[1]), Convert.ToInt32(lDatum[0]));
-                                    int lID = Convert.ToInt32(curNode.Attributes["href"].Value.Substring(13, curNode.Attributes["href"].Value.Length - 17));
+                                        DateTime lTimeStamp = new DateTime(Convert.ToInt32(lDatum[2]), Convert.ToInt32(lDatum[1]), Convert.ToInt32(lDatum[0]));
+                                        int lID = Convert.ToInt32(curNode.Attributes["href"].Value.Substring(13, curNode.Attributes["href"].Value.Length - 17));
 
-                                    this.pmUpdates.Add(new PMObject(lTitel, lID, lTimeStamp));
+                                        this.pmUpdates.Add(new PMObject(lTitel, lID, lTimeStamp));
+                                    }
                                 }
                             }
-                        }
 
-                        this.checkPMUpdate = false;
+                            this.checkPMUpdate = false;
+                        }
+                    }
+                    catch (Exception)
+                    {
+                        this.ErrHandler.add(lResponse);
                     }
                 }
             }
@@ -483,33 +524,40 @@ namespace Proxer.API
                 HtmlAgilityPack.HtmlDocument lDocument = new HtmlAgilityPack.HtmlDocument();
                 string lResponse = (await HttpUtility.GetWebRequestResponseAsync("https://proxer.me/user/my/connections?format=raw", this.LoginCookies)).Replace("</link>", "").Replace("\n", "");
 
-                if (Utility.Utility.checkForCorrectHTML(lResponse))
+                if (Utilities.Utility.checkForCorrectResponse(lResponse, this.ErrHandler))
                 {
-                    lDocument.LoadHtml(lResponse);
-
-                    if (lDocument.ParseErrors.Count() == 0)
+                    try
                     {
-                        HtmlAgilityPack.HtmlNodeCollection lNodes = lDocument.DocumentNode.SelectNodes("//tr");
+                        lDocument.LoadHtml(lResponse);
 
-                        if (lNodes != null)
+                        if (lDocument.ParseErrors.Count() == 0)
                         {
-                            this.friendUpdates = new List<FriendRequestObject>();
-                            foreach (HtmlAgilityPack.HtmlNode curNode in lNodes)
-                            {
-                                if (curNode.Id.StartsWith("entry") && curNode.FirstChild.FirstChild.Attributes["class"].Value.Equals("accept"))
-                                {
-                                    int lUserID = Convert.ToInt32(curNode.Id.Replace("entry", ""));
-                                    string lUserName = curNode.InnerText.Split("  ".ToCharArray())[0];
-                                    string lDescription = curNode.ChildNodes[3].ChildNodes[1].InnerText;
-                                    string[] lDatumSplit = curNode.ChildNodes[4].InnerText.Split('-');
-                                    DateTime lDatum = new DateTime(Convert.ToInt32(lDatumSplit[0]), Convert.ToInt32(lDatumSplit[1]), Convert.ToInt32(lDatumSplit[2]));
-                                    bool lOnline = curNode.ChildNodes[1].ChildNodes[1].FirstChild.Attributes["src"].Value.Equals("/images/misc/onlineicon.png");
+                            HtmlAgilityPack.HtmlNodeCollection lNodes = lDocument.DocumentNode.SelectNodes("//tr");
 
-                                    this.friendUpdates.Add(new FriendRequestObject(lUserName, lUserID, lDescription, lDatum, lOnline, this));
+                            if (lNodes != null)
+                            {
+                                this.friendUpdates = new List<FriendRequestObject>();
+                                foreach (HtmlAgilityPack.HtmlNode curNode in lNodes)
+                                {
+                                    if (curNode.Id.StartsWith("entry") && curNode.FirstChild.FirstChild.Attributes["class"].Value.Equals("accept"))
+                                    {
+                                        int lUserID = Convert.ToInt32(curNode.Id.Replace("entry", ""));
+                                        string lUserName = curNode.InnerText.Split("  ".ToCharArray())[0];
+                                        string lDescription = curNode.ChildNodes[3].ChildNodes[1].InnerText;
+                                        string[] lDatumSplit = curNode.ChildNodes[4].InnerText.Split('-');
+                                        DateTime lDatum = new DateTime(Convert.ToInt32(lDatumSplit[0]), Convert.ToInt32(lDatumSplit[1]), Convert.ToInt32(lDatumSplit[2]));
+                                        bool lOnline = curNode.ChildNodes[1].ChildNodes[1].FirstChild.Attributes["src"].Value.Equals("/images/misc/onlineicon.png");
+
+                                        this.friendUpdates.Add(new FriendRequestObject(lUserName, lUserID, lDescription, lDatum, lOnline, this));
+                                    }
                                 }
+                                this.checkFriendUpdates = false;
                             }
-                            this.checkFriendUpdates = false;
                         }
+                    }
+                    catch (Exception)
+                    {
+                        this.ErrHandler.add(lResponse);
                     }
                 }
             }

@@ -1,5 +1,6 @@
-﻿using Nito.AsyncEx;
-using Proxer.API.Utility;
+﻿using InfiniteSoul.Utilities;
+using Nito.AsyncEx;
+using Proxer.API.Utilities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -209,30 +210,37 @@ namespace Proxer.API
                 HtmlAgilityPack.HtmlDocument lDocument = new HtmlAgilityPack.HtmlDocument();
                 string lResponse = (await HttpUtility.GetWebRequestResponseAsync("https://proxer.me/user/" + this.ID + "/overview?format=raw", this.senpai.LoginCookies)).Replace("</link>", "").Replace("\n", "");
 
-                if (Utility.Utility.checkForCorrectHTML(lResponse))
+                if (Utilities.Utility.checkForCorrectResponse(lResponse, senpai.ErrHandler))
                 {
-                    lDocument.LoadHtml(lResponse);
-
-                    if (lDocument.ParseErrors.Count() == 0)
+                    try
                     {
-                        HtmlAgilityPack.HtmlNodeCollection lProfileNodes = lDocument.DocumentNode.SelectNodes("//table[@class='profile']");
+                        lDocument.LoadHtml(lResponse);
 
-                        if (lProfileNodes != null)
+                        if (lDocument.ParseErrors.Count() == 0)
                         {
-                            this.Avatar = new Uri("https://proxer.me" + lProfileNodes[0].ParentNode.ChildNodes[1].ChildNodes[0].Attributes["src"].Value);
-                            this.punkte = Convert.ToInt32(Utility.Utility.GetTagContents(lProfileNodes[0].FirstChild.InnerText, "Summe: ", " - ")[0]);
-                            this.rang = Utility.Utility.GetTagContents(lProfileNodes[0].FirstChild.InnerText, this.punkte.ToString() + " - ", "[?]")[0];
-                            this.online = lProfileNodes[0].ChildNodes[1].InnerText.Equals("Status Online");
-                            if (lProfileNodes[0].ChildNodes.Count() == 7) this.status = lProfileNodes[0].ChildNodes[6].InnerText;
-                            else this.status = "";
+                            HtmlAgilityPack.HtmlNodeCollection lProfileNodes = lDocument.DocumentNode.SelectNodes("//table[@class='profile']");
 
-                            if (this.UserName.Equals(""))
+                            if (lProfileNodes != null)
                             {
-                                this.UserName = lDocument.DocumentNode.SelectNodes("//div[@id='pageMetaAjax']")[0].InnerText.Split(' ')[1];
-                            }
+                                this.Avatar = new Uri("https://proxer.me" + lProfileNodes[0].ParentNode.ChildNodes[1].ChildNodes[0].Attributes["src"].Value);
+                                this.punkte = Convert.ToInt32(Utilities.Utility.GetTagContents(lProfileNodes[0].FirstChild.InnerText, "Summe: ", " - ")[0]);
+                                this.rang = Utilities.Utility.GetTagContents(lProfileNodes[0].FirstChild.InnerText, this.punkte.ToString() + " - ", "[?]")[0];
+                                this.online = lProfileNodes[0].ChildNodes[1].InnerText.Equals("Status Online");
+                                if (lProfileNodes[0].ChildNodes.Count() == 7) this.status = lProfileNodes[0].ChildNodes[6].InnerText;
+                                else this.status = "";
 
-                            this.checkMain = false;
+                                if (this.UserName.Equals(""))
+                                {
+                                    this.UserName = lDocument.DocumentNode.SelectNodes("//div[@id='pageMetaAjax']")[0].InnerText.Split(' ')[1];
+                                }
+
+                                this.checkMain = false;
+                            }
                         }
+                    }
+                    catch (Exception)
+                    {
+                        this.senpai.ErrHandler.add(lResponse);
                     }
                 }
             }
@@ -258,29 +266,36 @@ namespace Proxer.API
 
                 while (!(lResponse = (await HttpUtility.GetWebRequestResponseAsync("https://proxer.me/user/" + this.ID + "/connections/" + lSeite + "?format=raw", this.senpai.LoginCookies)).Replace("</link>", "").Replace("\n", "").Replace("\t", "")).Contains("Dieser Benutzer hat bisher keine Freunde"))
                 {
-                    if (Utility.Utility.checkForCorrectHTML(lResponse))
+                    if (Utilities.Utility.checkForCorrectResponse(lResponse, senpai.ErrHandler))
                     {
-                        lDocument.LoadHtml(lResponse);
-
-                        if (lDocument.ParseErrors.Count() > 0) lDocument.LoadHtml(Utility.Utility.tryFixParseErrors(lResponse, lDocument.ParseErrors));
-
-                        if (lDocument.ParseErrors.Count() == 0)
+                        try
                         {
-                            HtmlAgilityPack.HtmlNodeCollection lProfileNodes = lDocument.DocumentNode.SelectNodes("//table[@id='box-table-a']");
+                            lDocument.LoadHtml(lResponse);
 
-                            if (lProfileNodes != null)
+                            if (lDocument.ParseErrors.Count() > 0) lDocument.LoadHtml(Utilities.Utility.tryFixParseErrors(lResponse, lDocument.ParseErrors));
+
+                            if (lDocument.ParseErrors.Count() == 0)
                             {
-                                lProfileNodes[0].ChildNodes.Remove(0);
-                                foreach (HtmlAgilityPack.HtmlNode curFriendNode in lProfileNodes[0].ChildNodes)
+                                HtmlAgilityPack.HtmlNodeCollection lProfileNodes = lDocument.DocumentNode.SelectNodes("//table[@id='box-table-a']");
+
+                                if (lProfileNodes != null)
                                 {
-                                    string lUsername = curFriendNode.ChildNodes[2].InnerText;
-                                    int lID = Convert.ToInt32(curFriendNode.Attributes["id"].Value.Substring("entry".Length));
-                                    this.freunde.Add(new User(lUsername, lID, this.senpai));
+                                    lProfileNodes[0].ChildNodes.Remove(0);
+                                    foreach (HtmlAgilityPack.HtmlNode curFriendNode in lProfileNodes[0].ChildNodes)
+                                    {
+                                        string lUsername = curFriendNode.ChildNodes[2].InnerText;
+                                        int lID = Convert.ToInt32(curFriendNode.Attributes["id"].Value.Substring("entry".Length));
+                                        this.freunde.Add(new User(lUsername, lID, this.senpai));
+                                    }
                                 }
                             }
-                        }
 
-                        lSeite++;
+                            lSeite++;
+                        }
+                        catch (Exception)
+                        {
+                            this.senpai.ErrHandler.add(lResponse);
+                        }
                     }
                 }
 
@@ -303,24 +318,67 @@ namespace Proxer.API
                 HtmlAgilityPack.HtmlDocument lDocument = new HtmlAgilityPack.HtmlDocument();
                 string lResponse = (await HttpUtility.GetWebRequestResponseAsync("https://proxer.me/user/" + this.ID + "/about?format=raw", this.senpai.LoginCookies)).Replace("</link>", "").Replace("\n", "");
 
-                if (Utility.Utility.checkForCorrectHTML(lResponse))
+                if (Utilities.Utility.checkForCorrectResponse(lResponse, senpai.ErrHandler))
+                {
+                    try
+                    {
+                        lDocument.LoadHtml(lResponse);
+
+                        if (lDocument.ParseErrors.Count() == 0)
+                        {
+                            HtmlAgilityPack.HtmlNodeCollection lProfileNodes = lDocument.DocumentNode.SelectNodes("//table[@class='profile']");
+
+                            if (lProfileNodes != null)
+                            {
+                                this.Info = lProfileNodes[0].ChildNodes[10].InnerText;
+
+                                this.checkInfo = false;
+                            }
+                        }
+                    }
+                    catch (Exception)
+                    {
+                        this.senpai.ErrHandler.add(lResponse);
+                    }
+                }
+
+            }
+        }
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="loginCookies"></param>
+        /// <returns></returns>
+        public async Task<string> getUNameFromID(int id, System.Net.CookieContainer loginCookies)
+        {
+            HtmlAgilityPack.HtmlDocument lDocument = new HtmlAgilityPack.HtmlDocument();
+            string lResponse = await HttpUtility.GetWebRequestResponseAsync("https://proxer.me/user/" + id + "/overview?format=raw", loginCookies);
+
+            if (Utilities.Utility.checkForCorrectResponse(lResponse, senpai.ErrHandler))
+            {
+                try
                 {
                     lDocument.LoadHtml(lResponse);
 
                     if (lDocument.ParseErrors.Count() == 0)
                     {
-                        HtmlAgilityPack.HtmlNodeCollection lProfileNodes = lDocument.DocumentNode.SelectNodes("//table[@class='profile']");
-
-                        if (lProfileNodes != null)
-                        {
-                            this.Info = lProfileNodes[0].ChildNodes[10].InnerText;
-
-                            this.checkInfo = false;
-                        }
+                        HtmlAgilityPack.HtmlNodeCollection lNodes = lDocument.DocumentNode.SelectNodes("//div[@id='pageMetaAjax']");
+                        if (lNodes != null) return lNodes[0].InnerText.Split(' ')[1];
+                        else return "";
+                    }
+                    else
+                    {
+                        return "";
                     }
                 }
-
+                catch (Exception)
+                {
+                    this.senpai.ErrHandler.add(lResponse);
+                }
             }
+
+            return "";
         }
 
 
@@ -329,39 +387,7 @@ namespace Proxer.API
          * --------Statische Methoden---------
          * -----------------------------------
         */
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="id"></param>
-        /// <param name="loginCookies"></param>
-        /// <returns></returns>
-        public static async Task<string> getUNameFromID(int id, System.Net.CookieContainer loginCookies)
-        {
-            HtmlAgilityPack.HtmlDocument lDocument = new HtmlAgilityPack.HtmlDocument();
-            string lResponse = await HttpUtility.GetWebRequestResponseAsync("https://proxer.me/user/" + id + "/overview?format=raw", loginCookies);
 
-            if (Utility.Utility.checkForCorrectHTML(lResponse))
-            {
-                lDocument.LoadHtml(lResponse);
-
-                if (lDocument.ParseErrors.Count() == 0)
-                {
-                    try
-                    {
-                        return lDocument.DocumentNode.SelectNodes("//div[@id='pageMetaAjax']")[0].InnerText.Split(' ')[1];
-                    }
-                    catch (Exception)
-                    {
-                        return "";
-                    }
-                }
-                else
-                {
-                    return "";
-                }
-            }
-            else return "";
-        }
         /// <summary>
         /// Überprüft, ob zwei Benutzter Freunde sind.
         /// </summary>

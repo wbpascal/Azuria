@@ -1,6 +1,6 @@
 ﻿using Newtonsoft.Json;
 using Proxer.API.Notifications.NotificationObjects;
-using Proxer.API.Utility;
+using Proxer.API.Utilities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
