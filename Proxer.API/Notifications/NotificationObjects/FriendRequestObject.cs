@@ -1,5 +1,4 @@
-﻿using InfiniteSoul.Utilities;
-using Proxer.API.Utilities;
+﻿using Proxer.API.Utilities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -92,12 +91,12 @@ namespace Proxer.API.Notifications.NotificationObjects
         /// 
         /// </summary>
         /// <returns>Ob die Aktion erfolgreich war</returns>
-        public async Task<bool> acceptRequest()
+        public bool acceptRequest()
         {
             if (senpai.LoggedIn && !this.accepted && !this.denied)
             {
                 Dictionary<string, string> lPostArgs = new Dictionary<string, string> { { "type", "accept" } };
-                string lResponse = await HttpUtility.PostWebRequestResponseAsync("https://proxer.me/user/my?format=json&cid=" + this.ID, senpai.LoginCookies, lPostArgs);
+                string lResponse = HttpUtility.PostWebRequestResponse("https://proxer.me/user/my?format=json&cid=" + this.ID, senpai.LoginCookies, lPostArgs);
 
                 if (lResponse.StartsWith("{\"error\":0"))
                 {
@@ -118,12 +117,12 @@ namespace Proxer.API.Notifications.NotificationObjects
         /// 
         /// </summary>
         /// <returns>Ob die Aktion erfolgreich war</returns>
-        public async Task<bool> denyRequest()
+        public bool denyRequest()
         {
             if (senpai.LoggedIn && !this.accepted && !this.denied)
             {
                 Dictionary<string, string> lPostArgs = new Dictionary<string, string> { { "type", "deny" } };
-                string lResponse = await HttpUtility.PostWebRequestResponseAsync("https://proxer.me/user/my?format=json&cid=" + this.ID, senpai.LoginCookies, lPostArgs);
+                string lResponse = HttpUtility.PostWebRequestResponse("https://proxer.me/user/my?format=json&cid=" + this.ID, senpai.LoginCookies, lPostArgs);
 
                 if (lResponse.StartsWith("{\"error\":0"))
                 {
@@ -144,12 +143,12 @@ namespace Proxer.API.Notifications.NotificationObjects
         /// 
         /// </summary>
         /// <returns>Ob die Aktion erfolgreich war</returns>
-        public async Task<bool> editDescription(string pNewDescription)
+        public bool editDescription(string pNewDescription)
         {
             if (senpai.LoggedIn)
             {
                 Dictionary<string, string> lPostArgs = new Dictionary<string, string> { { "type", "desc" } };
-                string lResponse = await HttpUtility.PostWebRequestResponseAsync("https://proxer.me/user/my?format=json&desc=" + System.Web.HttpUtility.JavaScriptStringEncode(pNewDescription) + "&cid=" + this.ID, senpai.LoginCookies, lPostArgs);
+                string lResponse = HttpUtility.PostWebRequestResponse("https://proxer.me/user/my?format=json&desc=" + System.Web.HttpUtility.JavaScriptStringEncode(pNewDescription) + "&cid=" + this.ID, senpai.LoginCookies, lPostArgs);
 
                 if (lResponse.StartsWith("{\"error\":0"))
                 {

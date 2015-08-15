@@ -1,12 +1,11 @@
-﻿using InfiniteSoul.Utilities;
-using Newtonsoft.Json;
-using Nito.AsyncEx;
+﻿using Newtonsoft.Json;
 using Proxer.API.EventArguments;
 using Proxer.API.Notifications;
 using Proxer.API.Notifications.NotificationObjects;
 using Proxer.API.Utilities;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Net;
 using System.Text;
@@ -171,7 +170,9 @@ namespace Proxer.API
         {
             get
             {
-                if (checkAnimeMangaUpdate || (this.animeMangaUpdates.Count == 1 && this.animeMangaUpdates[0].Typ == NotificationObjectType.Dummy)) AsyncContext.Run(() => getAllAnimeMangaUpdates());
+                //AsyncContext.Run(() => getAllAnimeMangaUpdates());
+                BackgroundWorker lWorker = new BackgroundWorker();
+                if (checkAnimeMangaUpdate || (this.animeMangaUpdates.Count == 1 && this.animeMangaUpdates[0].Typ == NotificationObjectType.Dummy)) getAllAnimeMangaUpdates();
                 return animeMangaUpdates;
             }
         }
@@ -182,7 +183,7 @@ namespace Proxer.API
         {
             get
             {
-                if (checkNewsUpdate || (this.newsUpdates.Count == 1 && this.newsUpdates[0].Typ == NotificationObjectType.Dummy)) AsyncContext.Run(() => getAllNewsUpdates());
+                if (checkNewsUpdate || (this.newsUpdates.Count == 1 && this.newsUpdates[0].Typ == NotificationObjectType.Dummy)) getAllNewsUpdates();
                 return newsUpdates;
             }
         }
@@ -193,7 +194,7 @@ namespace Proxer.API
         {
             get
             {
-                if (checkPMUpdate || (this.pmUpdates.Count == 1 && this.pmUpdates[0].Typ == NotificationObjectType.Dummy)) AsyncContext.Run(() => getAllPMUpdates());
+                if (checkPMUpdate || (this.pmUpdates.Count == 1 && this.pmUpdates[0].Typ == NotificationObjectType.Dummy)) getAllPMUpdates();
                 return pmUpdates;
             }
         }
@@ -204,7 +205,7 @@ namespace Proxer.API
         {
             get
             {
-                if (checkFriendUpdates || (this.friendUpdates.Count == 1 && this.friendUpdates[0].Typ == NotificationObjectType.Dummy)) AsyncContext.Run(() => getAllFriendUpdates());
+                if (checkFriendUpdates || (this.friendUpdates.Count == 1 && this.friendUpdates[0].Typ == NotificationObjectType.Dummy)) getAllFriendUpdates();
                 return friendUpdates;
             }
         }
@@ -230,7 +231,7 @@ namespace Proxer.API
         /// <param name="username">Der Benutzername des zu einloggenden Benutzers</param>
         /// <param name="password">Das Passwort des Benutzers</param>
         /// <returns>Gibt zurück, ob der Benutzer erfolgreich eingeloggt wurde</returns>
-        public async Task<bool> login(string username, string password)
+        public bool login(string username, string password)
         {
             if (LoggedIn) return false;
 
@@ -239,7 +240,7 @@ namespace Proxer.API
                 {"username", username},
                 {"password", password}
             };
-            string lResponse = await HttpUtility.PostWebRequestResponseAsync("https://proxer.me/login?format=json&action=login", LoginCookies, postArgs);
+            string lResponse = HttpUtility.PostWebRequestResponse("https://proxer.me/login?format=json&action=login", LoginCookies, postArgs);
 
             if (Utilities.Utility.checkForCorrectResponse(lResponse, this.ErrHandler))
             {
@@ -274,11 +275,11 @@ namespace Proxer.API
         /// <summary>
         /// Checkt per API, ob der Benutzer noch eingeloggt ist
         /// </summary>
-        public async void checkLogin()
+        public void checkLogin()
         {
             if (LoggedIn)
             {
-                string lResponse = await HttpUtility.GetWebRequestResponseAsync("https://proxer.me/login?format=json&action=login", LoginCookies);
+                string lResponse = HttpUtility.GetWebRequestResponse("https://proxer.me/login?format=json&action=login", LoginCookies);
 
                 if (Utilities.Utility.checkForCorrectResponse(lResponse, this.ErrHandler))
                 {
@@ -306,11 +307,11 @@ namespace Proxer.API
         /// <summary>
         /// Checkt, ob neue Benachrichtigungen vorhanden sind
         /// </summary>
-        private async void checkNotifications()
+        private void checkNotifications()
         {
             if (LoggedIn)
             {
-                string lResponse = await HttpUtility.GetWebRequestResponseAsync("https://proxer.me/notifications?format=raw&s=count", LoginCookies);
+                string lResponse = HttpUtility.GetWebRequestResponse("https://proxer.me/notifications?format=raw&s=count", LoginCookies);
 
                 if (Utilities.Utility.checkForCorrectResponse(lResponse, this.ErrHandler) && lResponse.StartsWith("0"))
                 {
@@ -376,12 +377,12 @@ namespace Proxer.API
         /// Benutzt um ALLE Anime und Manga Benachrichtigungen in die vorgesehene einzutragen.
         /// Wird nur in initNotifications() und alle 30 Minuten, falls die AnimeMangaUpdates-Eigenschaft abgerufen wird, benutzt.
         /// </summary>
-        private async Task getAllAnimeMangaUpdates()
+        private void getAllAnimeMangaUpdates()
         {
             if (LoggedIn)
             {
                 HtmlAgilityPack.HtmlDocument lDocument = new HtmlAgilityPack.HtmlDocument();
-                string lResponse = await HttpUtility.GetWebRequestResponseAsync("https://proxer.me/components/com_proxer/misc/notifications_misc.php", LoginCookies);
+                string lResponse = HttpUtility.GetWebRequestResponse("https://proxer.me/components/com_proxer/misc/notifications_misc.php", LoginCookies);
 
                 if (Utilities.Utility.checkForCorrectResponse(lResponse, this.ErrHandler))
                 {
@@ -436,11 +437,11 @@ namespace Proxer.API
         /// Benutzt um die letzten 15 News abzurufen und sie in die vorgesehene Eigenschaft einzutragen.
         /// Nur in initNotifications() und alle 30 Minuten, falls die News-Eigenschaft abgerufen wird, benutzt.
         /// </summary>
-        private async Task getAllNewsUpdates()
+        private void getAllNewsUpdates()
         {
             if (LoggedIn)
             {
-                string lResponse = await HttpUtility.GetWebRequestResponseAsync("https://proxer.me/notifications?format=json&s=news&p=1", LoginCookies);
+                string lResponse = HttpUtility.GetWebRequestResponse("https://proxer.me/notifications?format=json&s=news&p=1", LoginCookies);
                 if (lResponse.StartsWith("{\"error\":0"))
                 {
                     this.newsUpdates = new List<NewsObject>();
@@ -455,12 +456,12 @@ namespace Proxer.API
         /// Benutzt um ALLE Privat Nachricht Benachrichtigungen abzurufen und sie in die vorgesehene Eigenschaft einzutragen.
         /// Nur in initNotifications() und alle 30 Minuten, falls die PMUpdates-Eigenschaft abgerufen wird, benutzt.
         /// </summary>
-        private async Task getAllPMUpdates()
+        private void getAllPMUpdates()
         {
             if (this.LoggedIn)
             {
                 HtmlAgilityPack.HtmlDocument lDocument = new HtmlAgilityPack.HtmlDocument();
-                string lResponse = (await HttpUtility.GetWebRequestResponseAsync("https://proxer.me/messages?format=raw&s=notification", this.LoginCookies)).Replace("</link>", "").Replace("\n", "");
+                string lResponse = (HttpUtility.GetWebRequestResponse("https://proxer.me/messages?format=raw&s=notification", this.LoginCookies)).Replace("</link>", "").Replace("\n", "");
 
                 if (Utilities.Utility.checkForCorrectResponse(lResponse, this.ErrHandler))
                 {
@@ -517,12 +518,12 @@ namespace Proxer.API
         /// Benutzt um ALLE Freundschaftsanfragen abzurufen und sie in die vorgesehen Eigenschaft einzutragen.
         /// Nur in initNotifications() und alle 30 Minuten, falls die FriendRequests-Eigenschaft abgerufen wird, benutzt.
         /// </summary>
-        public async Task getAllFriendUpdates()
+        public void getAllFriendUpdates()
         {
             if (this.LoggedIn)
             {
                 HtmlAgilityPack.HtmlDocument lDocument = new HtmlAgilityPack.HtmlDocument();
-                string lResponse = (await HttpUtility.GetWebRequestResponseAsync("https://proxer.me/user/my/connections?format=raw", this.LoginCookies)).Replace("</link>", "").Replace("\n", "");
+                string lResponse = (HttpUtility.GetWebRequestResponse("https://proxer.me/user/my/connections?format=raw", this.LoginCookies)).Replace("</link>", "").Replace("\n", "");
 
                 if (Utilities.Utility.checkForCorrectResponse(lResponse, this.ErrHandler))
                 {

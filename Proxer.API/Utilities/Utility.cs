@@ -1,4 +1,5 @@
-﻿using System;
+﻿using HtmlAgilityPack;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -41,6 +42,18 @@ namespace Proxer.API.Utilities
         /// <summary>
         /// 
         /// </summary>
+        /// <param name="unixTimeStamp"></param>
+        /// <returns></returns>
+        public static DateTime UnixTimeStampToDateTime(long unixTimeStamp)
+        {
+            System.DateTime dtDateTime = new DateTime(1970, 1, 1, 0, 0, 0, 0, System.DateTimeKind.Utc);
+            dtDateTime = dtDateTime.AddSeconds(unixTimeStamp).ToLocalTime();
+            return dtDateTime;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
         /// <param name="response"></param>
         /// <param name="errHandler"></param>
         /// <returns></returns>
@@ -59,7 +72,7 @@ namespace Proxer.API.Utilities
         /// <param name="html"></param>
         /// <param name="parseErrors"></param>
         /// <returns></returns>
-        public static string tryFixParseErrors(string html, IEnumerable<HtmlAgilityPack.HtmlParseError> parseErrors)
+        public static string tryFixParseErrors(string html, IEnumerable<HtmlParseError> parseErrors)
         {
             if (parseErrors.Count() > 0)
             {

@@ -12,6 +12,9 @@ Im Ordner "Libs" schon zu finden.
 
 [JSON .NET](https://github.com/JamesNK/Newtonsoft.Json)
 
-[HtmlAgilityPack](https://htmlagilitypack.codeplex.com/downloads/get/437941)
+#### NuGet-Bibliotheken
+[HtmlAgilityPack](https://htmlagilitypack.codeplex.com/)
 
-Und natürlich die NuGet-Bibliotheken. Diese können jedoch mit dem Befehl "nuget restore" runtergeladen werden.
+[RestSharp](http://restsharp.org/)
+
+Diese können mit dem Befehl "nuget restore" runtergeladen werden.

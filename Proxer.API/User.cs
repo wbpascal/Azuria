@@ -1,6 +1,4 @@
-﻿using InfiniteSoul.Utilities;
-using Nito.AsyncEx;
-using Proxer.API.Utilities;
+﻿using Proxer.API.Utilities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -110,7 +108,7 @@ namespace Proxer.API
         {
             get
             {
-                if (checkMain) AsyncContext.Run(() => getMainInfo());
+                if (checkMain) this.getMainInfo();
                 return this.status;
             }
         }
@@ -121,7 +119,7 @@ namespace Proxer.API
         {
             get
             {
-                if (checkMain) AsyncContext.Run(() => getMainInfo());
+                if (checkMain) this.getMainInfo();
                 return this.online;
             }
         }
@@ -132,7 +130,7 @@ namespace Proxer.API
         {
             get
             {
-                if (checkMain) AsyncContext.Run(() => getMainInfo());
+                if (checkMain) this.getMainInfo();
                 return this.rang;
             }
         }
@@ -143,7 +141,7 @@ namespace Proxer.API
         {
             get
             {
-                if (checkMain) AsyncContext.Run(() => getMainInfo());
+                if (checkMain) this.getMainInfo();
                 return this.punkte;
             }
         }
@@ -154,7 +152,7 @@ namespace Proxer.API
         {
             get
             {
-                if (this.checkFriends) AsyncContext.Run(() => getFriends());
+                if (this.checkFriends) this.getFriends();
                 return this.freunde;
             }
         }
@@ -165,7 +163,7 @@ namespace Proxer.API
         {
             get
             {
-                if (this.checkFriends) AsyncContext.Run(() => getMainInfo());
+                if (this.checkFriends) this.getMainInfo();
                 return this.avatar;
             }
             private set
@@ -180,7 +178,7 @@ namespace Proxer.API
         {
             get
             {
-                if (this.checkInfo) AsyncContext.Run(() => this.getInfos());
+                if (this.checkInfo) this.getInfos();
                 return this.info;
             }
             private set
@@ -193,7 +191,7 @@ namespace Proxer.API
         /// <summary>
         /// (vorläufig, nicht ausführlich getestet)
         /// </summary>
-        private async Task getMainInfo()
+        private void getMainInfo()
         {
             if (this.ID == -1)
             {
@@ -208,7 +206,7 @@ namespace Proxer.API
             else if (senpai.LoggedIn)
             {
                 HtmlAgilityPack.HtmlDocument lDocument = new HtmlAgilityPack.HtmlDocument();
-                string lResponse = (await HttpUtility.GetWebRequestResponseAsync("https://proxer.me/user/" + this.ID + "/overview?format=raw", this.senpai.LoginCookies)).Replace("</link>", "").Replace("\n", "");
+                string lResponse = (HttpUtility.GetWebRequestResponse("https://proxer.me/user/" + this.ID + "/overview?format=raw", this.senpai.LoginCookies)).Replace("</link>", "").Replace("\n", "");
 
                 if (Utilities.Utility.checkForCorrectResponse(lResponse, senpai.ErrHandler))
                 {
@@ -248,7 +246,7 @@ namespace Proxer.API
         /// <summary>
         /// 
         /// </summary>
-        private async Task getFriends()
+        private void getFriends()
         {
             if (this.ID == -1)
             {
@@ -264,7 +262,7 @@ namespace Proxer.API
 
                 this.freunde = new List<User>();
 
-                while (!(lResponse = (await HttpUtility.GetWebRequestResponseAsync("https://proxer.me/user/" + this.ID + "/connections/" + lSeite + "?format=raw", this.senpai.LoginCookies)).Replace("</link>", "").Replace("\n", "").Replace("\t", "")).Contains("Dieser Benutzer hat bisher keine Freunde"))
+                while (!(lResponse = (HttpUtility.GetWebRequestResponse("https://proxer.me/user/" + this.ID + "/connections/" + lSeite + "?format=raw", this.senpai.LoginCookies)).Replace("</link>", "").Replace("\n", "").Replace("\t", "")).Contains("Dieser Benutzer hat bisher keine Freunde"))
                 {
                     if (Utilities.Utility.checkForCorrectResponse(lResponse, senpai.ErrHandler))
                     {
@@ -305,7 +303,7 @@ namespace Proxer.API
         /// <summary>
         /// 
         /// </summary>
-        private async Task getInfos()
+        private void getInfos()
         {
             if (this.ID == -1)
             {
@@ -316,7 +314,7 @@ namespace Proxer.API
             else if (senpai.LoggedIn)
             {
                 HtmlAgilityPack.HtmlDocument lDocument = new HtmlAgilityPack.HtmlDocument();
-                string lResponse = (await HttpUtility.GetWebRequestResponseAsync("https://proxer.me/user/" + this.ID + "/about?format=raw", this.senpai.LoginCookies)).Replace("</link>", "").Replace("\n", "");
+                string lResponse = (HttpUtility.GetWebRequestResponse("https://proxer.me/user/" + this.ID + "/about?format=raw", this.senpai.LoginCookies)).Replace("</link>", "").Replace("\n", "");
 
                 if (Utilities.Utility.checkForCorrectResponse(lResponse, senpai.ErrHandler))
                 {
@@ -350,10 +348,10 @@ namespace Proxer.API
         /// <param name="id"></param>
         /// <param name="loginCookies"></param>
         /// <returns></returns>
-        public async Task<string> getUNameFromID(int id, System.Net.CookieContainer loginCookies)
+        public string getUNameFromID(int id, System.Net.CookieContainer loginCookies)
         {
             HtmlAgilityPack.HtmlDocument lDocument = new HtmlAgilityPack.HtmlDocument();
-            string lResponse = await HttpUtility.GetWebRequestResponseAsync("https://proxer.me/user/" + id + "/overview?format=raw", loginCookies);
+            string lResponse = HttpUtility.GetWebRequestResponse("https://proxer.me/user/" + id + "/overview?format=raw", loginCookies);
 
             if (Utilities.Utility.checkForCorrectResponse(lResponse, senpai.ErrHandler))
             {
