@@ -10,7 +10,7 @@ namespace Proxer.API.Utilities
     /// <summary>
     /// 
     /// </summary>
-    public class Utility
+    internal class Utility
     {
         /// <summary>
         /// 
@@ -19,7 +19,7 @@ namespace Proxer.API.Utilities
         /// <param name="startTag"></param>
         /// <param name="endTag"></param>
         /// <returns></returns>
-        public static List<string> GetTagContents(string Source, string startTag, string endTag)
+        internal static List<string> GetTagContents(string Source, string startTag, string endTag)
         {
             List<string> StringsFound = new List<string>();
             int Index = Source.IndexOf(startTag) + startTag.Length;
@@ -44,7 +44,7 @@ namespace Proxer.API.Utilities
         /// </summary>
         /// <param name="unixTimeStamp"></param>
         /// <returns></returns>
-        public static DateTime UnixTimeStampToDateTime(long unixTimeStamp)
+        internal static DateTime UnixTimeStampToDateTime(long unixTimeStamp)
         {
             System.DateTime dtDateTime = new DateTime(1970, 1, 1, 0, 0, 0, 0, System.DateTimeKind.Utc);
             dtDateTime = dtDateTime.AddSeconds(unixTimeStamp).ToLocalTime();
@@ -57,7 +57,7 @@ namespace Proxer.API.Utilities
         /// <param name="response"></param>
         /// <param name="errHandler"></param>
         /// <returns></returns>
-        public static bool checkForCorrectResponse(string response, ErrorHandler errHandler)
+        internal static bool checkForCorrectResponse(string response, ErrorHandler errHandler)
         {
             foreach (string curErrorResponse in errHandler.WrongHtml)
             {
@@ -72,7 +72,7 @@ namespace Proxer.API.Utilities
         /// <param name="html"></param>
         /// <param name="parseErrors"></param>
         /// <returns></returns>
-        public static string tryFixParseErrors(string html, IEnumerable<HtmlParseError> parseErrors)
+        internal static string tryFixParseErrors(string html, IEnumerable<HtmlParseError> parseErrors)
         {
             if (parseErrors.Count() > 0)
             {
@@ -94,7 +94,7 @@ namespace Proxer.API.Utilities
         /// <param name="sRow"></param>
         /// <param name="sCol"></param>
         /// <returns>0==perfect match | 100==totaly different</returns>
-        public static int iLD(String sRow, String sCol)
+        internal static int iLD(String sRow, String sCol)
         {
             int RowLen = sRow.Length;
             int ColLen = sCol.Length;

@@ -12,7 +12,7 @@ namespace Proxer.API.Utilities
     /// <summary>
     /// 
     /// </summary>
-    public class HttpUtility
+    internal class HttpUtility
     {
         /// <summary>
         /// 
@@ -20,7 +20,7 @@ namespace Proxer.API.Utilities
         /// <param name="url"></param>
         /// <param name="cookies"></param>
         /// <returns></returns>
-        public static string GetWebRequestResponse(string url, CookieContainer cookies)
+        internal static string GetWebRequestResponse(string url, CookieContainer cookies)
         {
             RestClient lClient = new RestClient(url);
             lClient.CookieContainer = cookies;
@@ -35,7 +35,7 @@ namespace Proxer.API.Utilities
         /// <param name="cookies"></param>
         /// <param name="postArgs"></param>
         /// <returns></returns>
-        public static string PostWebRequestResponse(string url, CookieContainer cookies, Dictionary<string, string> postArgs)
+        internal static string PostWebRequestResponse(string url, CookieContainer cookies, Dictionary<string, string> postArgs)
         {
             RestClient lClient = new RestClient(url);
             lClient.CookieContainer = cookies;

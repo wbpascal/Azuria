@@ -9,12 +9,12 @@ namespace Proxer.API.Utilities
     /// <summary>
     /// 
     /// </summary>
-    public class ErrorHandler
+    internal class ErrorHandler
     {
         /// <summary>
         /// 
         /// </summary>
-        public ErrorHandler()
+        internal ErrorHandler()
         {
             this.load();
         }
@@ -22,19 +22,19 @@ namespace Proxer.API.Utilities
         /// <summary>
         /// 
         /// </summary>
-        public List<string> WrongHtml { get; private set; }
+        internal List<string> WrongHtml { get; private set; }
 
         /// <summary>
         /// Erstellt eine neue Liste der strings, die aussortiert werden sollen
         /// </summary>
-        public void reset()
+        internal void reset()
         {
             this.WrongHtml = new List<string>();
         }
         /// <summary>
         /// Läd die Liste aus den Einstellungen
         /// </summary>
-        public void load()
+        internal void load()
         {
             if (!String.IsNullOrEmpty(Properties.Settings.Default.errorHtml))
             {
@@ -57,7 +57,7 @@ namespace Proxer.API.Utilities
         /// <summary>
         /// Speichert die Liste in den Einstellungen
         /// </summary>
-        public void save()
+        internal void save()
         {
             Properties.Settings.Default.errorHtml = Newtonsoft.Json.JsonConvert.SerializeObject(this.WrongHtml);
             Properties.Settings.Default.Save();
@@ -66,7 +66,7 @@ namespace Proxer.API.Utilities
         /// Hinzufügen einer falschen Ausgabe
         /// </summary>
         /// <param name="wrongHtml"></param>
-        public void add(string wrongHtml)
+        internal void add(string wrongHtml)
         {
             this.WrongHtml.Add(wrongHtml);
             this.save();
