@@ -21,7 +21,7 @@ namespace Proxer.API.Notifications
         /// </summary>
         public FriendRequestObject(Object dummy)
         {
-            this.Typ = NotificationObjectType.Dummy;
+            this.Type = NotificationObjectType.Dummy;
         }
         /// <summary>
         /// 
@@ -32,7 +32,7 @@ namespace Proxer.API.Notifications
         public FriendRequestObject(string userName, int userID, Senpai senpai)
         {
             this.senpai = senpai;
-            this.Typ = NotificationObjectType.FriendRequest;
+            this.Type = NotificationObjectType.FriendRequest;
             this.Message = userName;
             this.UserName = userName;
             this.ID = userID;
@@ -49,7 +49,7 @@ namespace Proxer.API.Notifications
         public FriendRequestObject(string userName, int userID, string userDescription, DateTime requestDate, bool userOnline, Senpai senpai)
         {
             this.senpai = senpai;
-            this.Typ = NotificationObjectType.FriendRequest;
+            this.Type = NotificationObjectType.FriendRequest;
             this.Message = userName;
             this.UserName = userName;
             this.ID = userID;
@@ -61,7 +61,7 @@ namespace Proxer.API.Notifications
         /// <summary>
         /// 
         /// </summary>
-        public NotificationObjectType Typ { get; private set; }
+        public NotificationObjectType Type { get; private set; }
         /// <summary>
         /// 
         /// </summary>

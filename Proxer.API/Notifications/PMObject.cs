@@ -32,7 +32,7 @@ namespace Proxer.API.Notifications
         /// </summary>
         public PMObject(Object dummy)
         {
-            this.Typ = NotificationObjectType.Dummy;
+            this.Type = NotificationObjectType.Dummy;
         }
         /// <summary>
         /// 
@@ -42,7 +42,7 @@ namespace Proxer.API.Notifications
         /// <param name="timeStampDate">Datum(ohne Uhrzeit) der Nachricht</param>
         public PMObject(int conID, string userName, DateTime timeStampDate)
         {
-            this.Typ = NotificationObjectType.PrivateMessage;
+            this.Type = NotificationObjectType.PrivateMessage;
             this.MessageTyp = PMTyp.Benutzer;
             this.TimeStampDate = timeStampDate;
             this.ID = conID;
@@ -56,7 +56,7 @@ namespace Proxer.API.Notifications
         /// <param name="timeStampDate">Datum(ohne Uhrzeit) der Nachricht</param>
         public PMObject(string title, int conID, DateTime timeStampDate)
         {
-            this.Typ = NotificationObjectType.PrivateMessage;
+            this.Type = NotificationObjectType.PrivateMessage;
             this.MessageTyp = PMTyp.Konferenz;
             this.ConferenceTitle = title;
             this.TimeStampDate = timeStampDate;
@@ -66,7 +66,7 @@ namespace Proxer.API.Notifications
         /// <summary>
         /// 
         /// </summary>
-        public NotificationObjectType Typ { get; private set; }
+        public NotificationObjectType Type { get; private set; }
         /// <summary>
         /// 
         /// </summary>

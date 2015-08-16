@@ -171,7 +171,7 @@ namespace Proxer.API
             {
                 //AsyncContext.Run(() => getAllAnimeMangaUpdates());
                 BackgroundWorker lWorker = new BackgroundWorker();
-                if (checkAnimeMangaUpdate || (this.animeMangaUpdates.Count == 1 && this.animeMangaUpdates[0].Typ == NotificationObjectType.Dummy)) getAllAnimeMangaUpdates();
+                if (checkAnimeMangaUpdate || (this.animeMangaUpdates.Count == 1 && this.animeMangaUpdates[0].Type == NotificationObjectType.Dummy)) getAllAnimeMangaUpdates();
                 return animeMangaUpdates;
             }
         }
@@ -182,7 +182,7 @@ namespace Proxer.API
         {
             get
             {
-                if (checkNewsUpdate || (this.newsUpdates.Count == 1 && this.newsUpdates[0].Typ == NotificationObjectType.Dummy)) getAllNewsUpdates();
+                if (checkNewsUpdate || (this.newsUpdates.Count == 1 && this.newsUpdates[0].Type == NotificationObjectType.Dummy)) getAllNewsUpdates();
                 return newsUpdates;
             }
         }
@@ -193,7 +193,7 @@ namespace Proxer.API
         {
             get
             {
-                if (checkPMUpdate || (this.pmUpdates.Count == 1 && this.pmUpdates[0].Typ == NotificationObjectType.Dummy)) getAllPMUpdates();
+                if (checkPMUpdate || (this.pmUpdates.Count == 1 && this.pmUpdates[0].Type == NotificationObjectType.Dummy)) getAllPMUpdates();
                 return pmUpdates;
             }
         }
@@ -204,7 +204,7 @@ namespace Proxer.API
         {
             get
             {
-                if (checkFriendUpdates || (this.friendUpdates.Count == 1 && this.friendUpdates[0].Typ == NotificationObjectType.Dummy)) getAllFriendUpdates();
+                if (checkFriendUpdates || (this.friendUpdates.Count == 1 && this.friendUpdates[0].Type == NotificationObjectType.Dummy)) getAllFriendUpdates();
                 return friendUpdates;
             }
         }

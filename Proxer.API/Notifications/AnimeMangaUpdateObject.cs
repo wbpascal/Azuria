@@ -14,17 +14,17 @@ namespace Proxer.API.Notifications
         /// <summary>
         /// (vorläufig?) Benötigt als Dummy
         /// </summary>
-        public AnimeMangaUpdateObject(Object dummy)
+        internal AnimeMangaUpdateObject(Object dummy)
         {
-            this.Typ = NotificationObjectType.Dummy;
+            this.Type = NotificationObjectType.Dummy;
         }
         /// <summary>
         /// 
         /// </summary>
         /// <param name="message">Die Nachricht des Updates</param>
-        public AnimeMangaUpdateObject(string message)
+        internal AnimeMangaUpdateObject(string message)
         {
-            this.Typ = NotificationObjectType.AnimeManga;
+            this.Type = NotificationObjectType.AnimeManga;
             this.Message = message;
             this.Name = "";
             this.Number = -1;
@@ -39,9 +39,9 @@ namespace Proxer.API.Notifications
         /// <param name="number">Die Nummer der Folge/des Kapitels</param>
         /// <param name="link">Der Link zu der Folge/dem Kapitel</param>
         /// <param name="id">Die ID der Benachrichtigung (Wichtig, um sie wieder zu löschen)</param>
-        public AnimeMangaUpdateObject(string message, string name, int number, Uri link, int id)
+        internal AnimeMangaUpdateObject(string message, string name, int number, Uri link, int id)
         {
-            this.Typ = NotificationObjectType.AnimeManga;
+            this.Type = NotificationObjectType.AnimeManga;
             this.Message = message;
             this.Name = name;
             this.Number = number;
@@ -52,7 +52,7 @@ namespace Proxer.API.Notifications
         /// <summary>
         /// 
         /// </summary>
-        public NotificationObjectType Typ { get; private set; }
+        public NotificationObjectType Type { get; private set; }
         /// <summary>
         /// 
         /// </summary>

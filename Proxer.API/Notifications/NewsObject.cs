@@ -16,20 +16,20 @@ namespace Proxer.API.Notifications
         /// </summary>
         public NewsObject(Object dummy)
         {
-            this.Typ = NotificationObjectType.Dummy;
+            this.Type = NotificationObjectType.Dummy;
         }
         /// <summary>
         /// 
         /// </summary>
         public NewsObject()
         {
-            this.Typ = NotificationObjectType.News;
+            this.Type = NotificationObjectType.News;
         }
 
         /// <summary>
         /// 
         /// </summary>
-        public NotificationObjectType Typ { get; private set; }
+        public NotificationObjectType Type { get; private set; }
         /// <summary>
         /// 
         /// </summary>
