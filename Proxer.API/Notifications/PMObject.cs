@@ -15,7 +15,7 @@ namespace Proxer.API.Notifications
         /// <summary>
         /// 
         /// </summary>
-        public enum PMTyp
+        public enum PMType
         {
             /// <summary>
             /// 
@@ -43,10 +43,10 @@ namespace Proxer.API.Notifications
         internal PMObject(int conID, string userName, DateTime timeStampDate)
         {
             this.Type = NotificationObjectType.PrivateMessage;
-            this.MessageTyp = PMTyp.Benutzer;
-            this.TimeStampDate = timeStampDate;
+            this.MessageTyp = PMType.Benutzer;
+            this.TimeStamp = timeStampDate;
             this.ID = conID;
-            this.User = userName;
+            this.UserName = userName;
         }
         /// <summary>
         /// Konstruktor für PM-Konferenzen
@@ -57,9 +57,9 @@ namespace Proxer.API.Notifications
         internal PMObject(string title, int conID, DateTime timeStampDate)
         {
             this.Type = NotificationObjectType.PrivateMessage;
-            this.MessageTyp = PMTyp.Konferenz;
+            this.MessageTyp = PMType.Konferenz;
             this.ConferenceTitle = title;
-            this.TimeStampDate = timeStampDate;
+            this.TimeStamp = timeStampDate;
             this.ID = conID;
         }
 
@@ -77,21 +77,17 @@ namespace Proxer.API.Notifications
         /// <summary>
         /// 
         /// </summary>
-        public PMTyp MessageTyp { get; private set; }
+        public PMType MessageTyp { get; private set; }
         /// <summary>
         /// 
         /// </summary>
-        public string User { get; private set; }
+        public string UserName { get; private set; }
         /// <summary>
         /// 
         /// </summary>
         public string ConferenceTitle { get; private set; }
         /// <summary>
         /// Gibt nur Datum zurück, keine Uhrzeit.
-        /// </summary>
-        public DateTime TimeStampDate { get; private set; }
-        /// <summary>
-        /// Gibt das Datum mit der Uhrzeit zurück. Nur benutzten, wenn unbedingt benötigt.
         /// </summary>
         public DateTime TimeStamp { get; private set; }
         /// <summary>
