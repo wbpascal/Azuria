@@ -40,19 +40,21 @@ namespace Proxer.API.Notifications
         /// <summary>
         /// 
         /// </summary>
-        public string nid { get; set; }
+        public int nid { get; set; }
         /// <summary>
         /// 
         /// </summary>
-        public string time { get; set; }
+        public long time { get; set; }
         /// <summary>
         /// 
         /// </summary>
-        public string mid { get; set; }
+        [Obsolete("Bitte benutzte stattdessen \"thread\"")]
+        public int mid { get; set; }
         /// <summary>
         /// 
         /// </summary>
-        public string pid { get; set; }
+        [Obsolete]
+        public int pid { get; set; }
         /// <summary>
         /// 
         /// </summary>
@@ -72,15 +74,15 @@ namespace Proxer.API.Notifications
         /// <summary>
         /// 
         /// </summary>
-        public string hits { get; set; }
+        public int hits { get; set; }
         /// <summary>
         /// 
         /// </summary>
-        public string thread { get; set; }
+        public int thread { get; set; }
         /// <summary>
         /// 
         /// </summary>
-        public string uid { get; set; }
+        public int uid { get; set; }
         /// <summary>
         /// 
         /// </summary>
@@ -88,11 +90,11 @@ namespace Proxer.API.Notifications
         /// <summary>
         /// 
         /// </summary>
-        public string posts { get; set; }
+        public int posts { get; set; }
         /// <summary>
         /// 
         /// </summary>
-        public string catid { get; set; }
+        public int catid { get; set; }
         /// <summary>
         /// 
         /// </summary>
