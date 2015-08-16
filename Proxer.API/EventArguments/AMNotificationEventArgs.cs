@@ -10,20 +10,38 @@ namespace Proxer.API.EventArguments
     /// <summary>
     /// 
     /// </summary>
-    public class AMNotificationEventArgs
+    public class AMNotificationEventArgs : INotificationEventArgs
     {
+        private readonly Senpai senpai;
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="notification"></param>
-        public AMNotificationEventArgs(AnimeMangaNotification notification)
+        /// <param name="count"></param>
+        /// <param name="senpai"></param>
+        public AMNotificationEventArgs(int count, Senpai senpai)
         {
-            this.Notification = notification;
+            this.senpai = senpai;
+            this.Type = NotificationEventArgsType.AnimeManga;
+            this.NotificationCount = count;
         }
 
         /// <summary>
         /// 
         /// </summary>
-        public AnimeMangaNotification Notification { get; private set; }
+        public int NotificationCount { get; private set; }
+        /// <summary>
+        /// 
+        /// </summary>
+        public NotificationEventArgsType Type { get; private set; }
+        /// <summary>
+        /// 
+        /// </summary>
+        public List<AnimeMangaUpdateObject> Benachrichtigungen
+        {
+            get
+            {
+                return this.senpai.AnimeMangaUpdates;
+            }
+        }
     }
 }

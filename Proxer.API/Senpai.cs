@@ -1,7 +1,6 @@
 ﻿using Newtonsoft.Json;
 using Proxer.API.EventArguments;
 using Proxer.API.Notifications;
-using Proxer.API.Notifications.NotificationObjects;
 using Proxer.API.Utilities;
 using System;
 using System.Collections.Generic;
@@ -43,7 +42,7 @@ namespace Proxer.API
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        public delegate void NotificationEventHandler(Senpai sender, NotificationEventArgs e);
+        public delegate void NotificationEventHandler(Senpai sender, INotificationEventArgs e);
         /// <summary>
         /// Wird bei allen Benachrichtigungen aufgerufen(30 Minuten Intervall)
         /// </summary>
@@ -324,26 +323,26 @@ namespace Proxer.API
 
                         if (!lResponseSplit[2].Equals("0"))
                         {
-                            if (PMNotification_Raised != null) PMNotification_Raised(this, new PMNotificationEventArgs(new PMNotification(Convert.ToInt32(lResponseSplit[2]))));
-                            if (Notification_Raised != null) Notification_Raised(this, new NotificationEventArgs(new PMNotification(Convert.ToInt32(lResponseSplit[2]))));
+                            if (PMNotification_Raised != null) PMNotification_Raised(this, new PMNotificationEventArgs(Convert.ToInt32(lResponseSplit[2]), this));
+                            if (Notification_Raised != null) Notification_Raised(this, new PMNotificationEventArgs(Convert.ToInt32(lResponseSplit[2]), this));
                             this.checkPMUpdate = true;
                         }
                         if (!lResponseSplit[3].Equals("0"))
                         {
-                            if (FriendNotification_Raised != null) FriendNotification_Raised(this, new FriendNotificationEventArgs(new FriendNotification(Convert.ToInt32(lResponseSplit[3]))));
-                            if (Notification_Raised != null) Notification_Raised(this, new NotificationEventArgs(new FriendNotification(Convert.ToInt32(lResponseSplit[3]))));
+                            if (FriendNotification_Raised != null) FriendNotification_Raised(this, new FriendNotificationEventArgs(Convert.ToInt32(lResponseSplit[3]), this));
+                            if (Notification_Raised != null) Notification_Raised(this, new FriendNotificationEventArgs(Convert.ToInt32(lResponseSplit[3]), this));
                             this.checkFriendUpdates = true;
                         }
                         if (!lResponseSplit[4].Equals("0"))
                         {
-                            if (NewsNotification_Raised != null) NewsNotification_Raised(this, new NewsNotificationEventArgs(new NewsNotification(Convert.ToInt32(lResponseSplit[4]))));
-                            if (Notification_Raised != null) Notification_Raised(this, new NotificationEventArgs(new NewsNotification(Convert.ToInt32(lResponseSplit[4]))));
+                            if (NewsNotification_Raised != null) NewsNotification_Raised(this, new NewsNotificationEventArgs(Convert.ToInt32(lResponseSplit[4]), this));
+                            if (Notification_Raised != null) Notification_Raised(this, new NewsNotificationEventArgs(Convert.ToInt32(lResponseSplit[4]), this));
                             this.checkNewsUpdate = true;
                         }
                         if (!lResponseSplit[5].Equals("0"))
                         {
-                            if (AMUpdateNotification_Raised != null) AMUpdateNotification_Raised(this, new AMNotificationEventArgs(new AnimeMangaNotification(Convert.ToInt32(lResponseSplit[5]))));
-                            if (Notification_Raised != null) Notification_Raised(this, new NotificationEventArgs(new AnimeMangaNotification(Convert.ToInt32(lResponseSplit[5]))));
+                            if (AMUpdateNotification_Raised != null) AMUpdateNotification_Raised(this, new AMNotificationEventArgs(Convert.ToInt32(lResponseSplit[5]), this));
+                            if (Notification_Raised != null) Notification_Raised(this, new AMNotificationEventArgs(Convert.ToInt32(lResponseSplit[5]), this));
                             this.checkAnimeMangaUpdate = true;
                         }
                     }

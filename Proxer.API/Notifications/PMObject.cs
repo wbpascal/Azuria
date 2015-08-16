@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Proxer.API.Notifications.NotificationObjects
+namespace Proxer.API.Notifications
 {
     /// <summary>
     /// 

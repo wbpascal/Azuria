@@ -10,20 +10,38 @@ namespace Proxer.API.EventArguments
     /// <summary>
     /// 
     /// </summary>
-    public class PMNotificationEventArgs
+    public class PMNotificationEventArgs : INotificationEventArgs
     {
+        private readonly Senpai senpai;
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="notification"></param>
-        public PMNotificationEventArgs(PMNotification notification)
+        /// <param name="count"></param>
+        /// <param name="senpai"></param>
+        public PMNotificationEventArgs(int count, Senpai senpai)
         {
-            this.Notification = notification;
+            this.senpai = senpai;
+            this.Type = NotificationEventArgsType.PrivateMessage;
+            this.NotificationCount = count;
         }
 
         /// <summary>
         /// 
         /// </summary>
-        public PMNotification Notification { get; private set; }
+        public int NotificationCount { get; private set; }
+        /// <summary>
+        /// 
+        /// </summary>
+        public NotificationEventArgsType Type { get; private set; }
+        /// <summary>
+        /// 
+        /// </summary>
+        public List<PMObject> Benchrichtigungen
+        {
+            get
+            {
+                return this.senpai.PrivateMessages;
+            }
+        }
     }
 }

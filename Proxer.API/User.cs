@@ -346,7 +346,6 @@ namespace Proxer.API
         /// 
         /// </summary>
         /// <param name="id"></param>
-        /// <param name="loginCookies"></param>
         /// <returns></returns>
         public string getUNameFromID(int id)
         {

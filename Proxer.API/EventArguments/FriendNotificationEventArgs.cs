@@ -10,20 +10,38 @@ namespace Proxer.API.EventArguments
     /// <summary>
     /// 
     /// </summary>
-    public class FriendNotificationEventArgs
+    public class FriendNotificationEventArgs : INotificationEventArgs
     {
+        private readonly Senpai senpai;
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="notification"></param>
-        public FriendNotificationEventArgs(FriendNotification notification)
+        /// <param name="count"></param>
+        /// <param name="senpai"></param>
+        public FriendNotificationEventArgs(int count, Senpai senpai)
         {
-            this.Notification = notification;
+            this.senpai = senpai;
+            this.Type = NotificationEventArgsType.Friend;
+            this.NotificationCount = count;
         }
 
         /// <summary>
         /// 
         /// </summary>
-        public FriendNotification Notification { get; private set; }
+        public int NotificationCount { get; private set; }
+        /// <summary>
+        /// 
+        /// </summary>
+        public NotificationEventArgsType Type { get; private set; }
+        /// <summary>
+        /// 
+        /// </summary>
+        public List<FriendRequestObject> Benachrichtigungen
+        {
+            get
+            {
+                return this.senpai.FriendRequests;
+            }
+        }
     }
 }
