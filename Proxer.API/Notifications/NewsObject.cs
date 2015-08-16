@@ -14,14 +14,14 @@ namespace Proxer.API.Notifications
         /// <summary>
         /// (vorläufig?) Benötigt als Dummy
         /// </summary>
-        public NewsObject(Object dummy)
+        internal NewsObject(Object dummy)
         {
             this.Type = NotificationObjectType.Dummy;
         }
         /// <summary>
         /// 
         /// </summary>
-        public NewsObject()
+        internal NewsObject()
         {
             this.Type = NotificationObjectType.News;
         }

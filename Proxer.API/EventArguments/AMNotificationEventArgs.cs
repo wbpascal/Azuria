@@ -18,7 +18,7 @@ namespace Proxer.API.EventArguments
         /// </summary>
         /// <param name="count"></param>
         /// <param name="senpai"></param>
-        interal AMNotificationEventArgs(int count, Senpai senpai)
+        internal AMNotificationEventArgs(int count, Senpai senpai)
         {
             this.senpai = senpai;
             this.Type = NotificationEventArgsType.AnimeManga;

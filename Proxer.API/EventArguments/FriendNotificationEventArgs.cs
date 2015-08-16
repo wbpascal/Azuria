@@ -18,7 +18,7 @@ namespace Proxer.API.EventArguments
         /// </summary>
         /// <param name="count"></param>
         /// <param name="senpai"></param>
-        public FriendNotificationEventArgs(int count, Senpai senpai)
+        internal FriendNotificationEventArgs(int count, Senpai senpai)
         {
             this.senpai = senpai;
             this.Type = NotificationEventArgsType.Friend;
