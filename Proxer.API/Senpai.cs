@@ -365,7 +365,16 @@ namespace Proxer.API
                 return false;
             }
         }
-
+        /// <summary>
+        /// Wenn man unbedingt möchte, dass die Eigenschaften aktualisiert werden.
+        /// </summary>
+        public void forcePropertyReload()
+        {
+            this.checkLogin();
+            this.checkAnimeMangaUpdate = true;
+            this.checkNewsUpdate = true;
+            this.checkPMUpdate = true;
+        }
 
         /// <summary>
         /// (Vorläufig, nicht ausführlich getestet)

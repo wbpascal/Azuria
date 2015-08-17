@@ -132,7 +132,6 @@ namespace Proxer.API.Community.PrivateMessages
             this.senpai = senpai;
 
             this.getMessagesTimer = new Timer();
-            this.getMessagesTimer.AutoReset = true;
             this.getMessagesTimer.Interval = (new TimeSpan(0, 0, 15)).TotalMilliseconds;
             this.getMessagesTimer.Elapsed += (s, eArgs) =>
             {
