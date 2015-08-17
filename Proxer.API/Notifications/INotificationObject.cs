@@ -47,11 +47,6 @@ namespace Proxer.API.Notifications
         /// <summary>
         /// 
         /// </summary>
-        AnimeManga,
-
-        /// <summary>
-        /// 
-        /// </summary>
-        Dummy
+        AnimeManga
     };
 }

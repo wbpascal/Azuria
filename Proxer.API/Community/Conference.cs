@@ -27,7 +27,7 @@ namespace Proxer.API.Community.PrivateMessages
             /// <param name="nachricht"></param>
             /// <param name="unix"></param>
             /// <param name="aktion"></param>
-            public Message(User sender, int mid, string nachricht, int unix, Action aktion)
+            internal Message(User sender, int mid, string nachricht, int unix, Action aktion)
             {
                 this.Sender = sender;
                 this.NachrichtID = mid;
@@ -43,7 +43,7 @@ namespace Proxer.API.Community.PrivateMessages
             /// <param name="nachricht"></param>
             /// <param name="date"></param>
             /// <param name="aktion"></param>
-            public Message(User sender, int mid, string nachricht, DateTime date, Action aktion)
+            internal Message(User sender, int mid, string nachricht, DateTime date, Action aktion)
             {
                 this.Sender = sender;
                 this.NachrichtID = mid;

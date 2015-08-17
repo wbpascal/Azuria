@@ -17,13 +17,6 @@ namespace Proxer.API.Notifications
         private bool denied;
 
         /// <summary>
-        /// (vorläufig?) Benötigt als Dummy
-        /// </summary>
-        internal FriendRequestObject(Object dummy)
-        {
-            this.Type = NotificationObjectType.Dummy;
-        }
-        /// <summary>
         /// 
         /// </summary>
         /// <param name="userName"></param>

@@ -103,11 +103,6 @@ namespace Proxer.API
         {
             this.ErrHandler = new ErrorHandler();
 
-            this.animeMangaUpdates = new List<AnimeMangaUpdateObject>() { new AnimeMangaUpdateObject(new Object()) };
-            this.friendUpdates = new List<FriendRequestObject>() { new FriendRequestObject(new Object()) };
-            this.newsUpdates = new List<NewsObject>() { new NewsObject(new Object()) };
-            this.pmUpdates = new List<PMObject>() { new PMObject(new Object()) };
-
             this.loggedIn = false;
             this.LoginCookies = new CookieContainer();
 
@@ -116,23 +111,23 @@ namespace Proxer.API
             this.loginCheckTimer.Interval = (new TimeSpan(0, 45, 0)).TotalMilliseconds;
             this.loginCheckTimer.Elapsed += (s, eArgs) =>
             {
-                loginCheckTimer.Interval = (new TimeSpan(0, 30, 0)).TotalMilliseconds;
-                checkLogin();
+                this.loginCheckTimer.Interval = (new TimeSpan(0, 30, 0)).TotalMilliseconds;
+                this.checkLogin();
             };
 
             this.notificationCheckTimer = new Timer();
             this.notificationCheckTimer.AutoReset = true;
-            this.notificationCheckTimer.Interval = (new TimeSpan(0, 30, 0)).TotalMilliseconds;
+            this.notificationCheckTimer.Interval = (new TimeSpan(0, 15, 0)).TotalMilliseconds;
             this.notificationCheckTimer.Elapsed += (s, eArgs) => { checkNotifications(); };
 
-            this.notificationUpdateCheckTimer = new Timer();
+            this.notificationUpdateCheckTimer = new Timer(0);
             this.notificationUpdateCheckTimer.AutoReset = true;
-            this.notificationUpdateCheckTimer.Interval = (new TimeSpan(0, 30, 0)).TotalMilliseconds;
             this.notificationUpdateCheckTimer.Elapsed += (s, eArgs) =>
             {
-                checkAnimeMangaUpdate = true;
-                checkNewsUpdate = true;
-                checkPMUpdate = true;
+                this.notificationUpdateCheckTimer.Interval = (new TimeSpan(0, 10, 0)).TotalMilliseconds;
+                this.checkAnimeMangaUpdate = true;
+                this.checkNewsUpdate = true;
+                this.checkPMUpdate = true;
             };
         }
 
@@ -169,9 +164,7 @@ namespace Proxer.API
         {
             get
             {
-                //AsyncContext.Run(() => getAllAnimeMangaUpdates());
-                BackgroundWorker lWorker = new BackgroundWorker();
-                if (checkAnimeMangaUpdate || (this.animeMangaUpdates.Count == 1 && this.animeMangaUpdates[0].Type == NotificationObjectType.Dummy)) getAllAnimeMangaUpdates();
+                if (checkAnimeMangaUpdate) getAllAnimeMangaUpdates();
                 return animeMangaUpdates;
             }
         }
@@ -182,7 +175,7 @@ namespace Proxer.API
         {
             get
             {
-                if (checkNewsUpdate || (this.newsUpdates.Count == 1 && this.newsUpdates[0].Type == NotificationObjectType.Dummy)) getAllNewsUpdates();
+                if (checkNewsUpdate) getAllNewsUpdates();
                 return newsUpdates;
             }
         }
@@ -193,7 +186,7 @@ namespace Proxer.API
         {
             get
             {
-                if (checkPMUpdate || (this.pmUpdates.Count == 1 && this.pmUpdates[0].Type == NotificationObjectType.Dummy)) getAllPMUpdates();
+                if (checkPMUpdate) getAllPMUpdates();
                 return pmUpdates;
             }
         }
@@ -204,7 +197,7 @@ namespace Proxer.API
         {
             get
             {
-                if (checkFriendUpdates || (this.friendUpdates.Count == 1 && this.friendUpdates[0].Type == NotificationObjectType.Dummy)) getAllFriendUpdates();
+                if (checkFriendUpdates) getAllFriendUpdates();
                 return friendUpdates;
             }
         }

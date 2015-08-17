@@ -28,13 +28,6 @@ namespace Proxer.API.Notifications
         }
 
         /// <summary>
-        /// (vorläufig?) Benötigt als Dummy
-        /// </summary>
-        internal PMObject(Object dummy)
-        {
-            this.Type = NotificationObjectType.Dummy;
-        }
-        /// <summary>
         /// 
         /// </summary>
         /// <param name="conID">ID der Konferenz</param>
