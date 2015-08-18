@@ -1,7 +1,10 @@
 # [inoffiziell] Proxer API .NET 
 ## WIP
 
-Eine kleine Umsetztung des Proxer APIs in eine Klassenbibliothek für Windows
+Eine kleine Umsetztung des Proxer APIs in eine Klassenbibliothek für Windows.
+
+**Fragen?** Dann schaue am besten mal im [Wiki] (/wiki) nach.
+
 ###Status
 Master-Branch: [![Build status](https://ci.appveyor.com/api/projects/status/eenr5ksrjakegl0e/branch/master?svg=true)](https://ci.appveyor.com/project/InfiniteSoul/massive-octo-wookie/branch/master)
 
