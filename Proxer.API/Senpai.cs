@@ -300,6 +300,36 @@ namespace Proxer.API
             return false;
         }
         /// <summary>
+        /// Initialisiert die Benachrichtigungen
+        /// </summary>
+        public bool initNotifications()
+        {
+            if (LoggedIn)
+            {
+                checkNotifications();
+
+                notificationCheckTimer.Start();
+                notificationUpdateCheckTimer.Start();
+
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+        /// <summary>
+        /// Wenn man unbedingt möchte, dass die Eigenschaften aktualisiert werden.
+        /// </summary>
+        public void forcePropertyReload()
+        {
+            this.checkLogin();
+            this.checkAnimeMangaUpdate = true;
+            this.checkNewsUpdate = true;
+            this.checkPMUpdate = true;
+        }
+
+        /// <summary>
         /// Checkt, ob neue Benachrichtigungen vorhanden sind
         /// </summary>
         private void checkNotifications()
@@ -346,36 +376,6 @@ namespace Proxer.API
                 }
             }
         }
-        /// <summary>
-        /// Initialisiert die Benachrichtigungen
-        /// </summary>
-        public bool initNotifications()
-        {
-            if (LoggedIn)
-            {
-                checkNotifications();
-
-                notificationCheckTimer.Start();
-                notificationUpdateCheckTimer.Start();
-
-                return true;
-            }
-            else
-            {
-                return false;
-            }
-        }
-        /// <summary>
-        /// Wenn man unbedingt möchte, dass die Eigenschaften aktualisiert werden.
-        /// </summary>
-        public void forcePropertyReload()
-        {
-            this.checkLogin();
-            this.checkAnimeMangaUpdate = true;
-            this.checkNewsUpdate = true;
-            this.checkPMUpdate = true;
-        }
-
         /// <summary>
         /// (Vorläufig, nicht ausführlich getestet)
         /// Benutzt um ALLE Anime und Manga Benachrichtigungen in die vorgesehene Eigenschaft einzutragen.

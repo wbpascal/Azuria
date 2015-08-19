@@ -19,14 +19,6 @@ namespace Proxer.API.Community.PrivateMessages
         /// </summary>
         public class Message
         {
-            /// <summary>
-            /// 
-            /// </summary>
-            /// <param name="sender"></param>
-            /// <param name="mid"></param>
-            /// <param name="nachricht"></param>
-            /// <param name="unix"></param>
-            /// <param name="aktion"></param>
             internal Message(User sender, int mid, string nachricht, int unix, Action aktion)
             {
                 this.Sender = sender;
@@ -35,14 +27,6 @@ namespace Proxer.API.Community.PrivateMessages
                 this.TimeStamp = Utility.UnixTimeStampToDateTime((long)unix);
                 this.Aktion = aktion;
             }
-            /// <summary>
-            /// 
-            /// </summary>
-            /// <param name="sender"></param>
-            /// <param name="mid"></param>
-            /// <param name="nachricht"></param>
-            /// <param name="date"></param>
-            /// <param name="aktion"></param>
             internal Message(User sender, int mid, string nachricht, DateTime date, Action aktion)
             {
                 this.Sender = sender;
@@ -120,14 +104,12 @@ namespace Proxer.API.Community.PrivateMessages
         public event NeuePMEventHandler NeuePM_Raised;
 
         /// <summary>
-        /// 
+        /// Standard-Konstruktor der Klasse
         /// </summary>
-        /// <param name="title"></param>
         /// <param name="id"></param>
         /// <param name="senpai"></param>
-        public Conference(string title, int id, Senpai senpai)
+        public Conference(int id, Senpai senpai)
         {
-            this.Titel = title;
             this.ID = id;
             this.senpai = senpai;
 
@@ -138,80 +120,212 @@ namespace Proxer.API.Community.PrivateMessages
                 (s as Timer).Stop();
                 this.getMessages(this.Nachrichten.Last().NachrichtID);
             };
+
+            this.initConference();
         }
 
         /// <summary>
-        /// 
+        /// Gibt die ID der Konferenz zurück
         /// </summary>
         public int ID { get; private set; }
         /// <summary>
-        /// 
+        /// Gibt den Titel der Konferenz zurück (initConference() muss dafür zunächst einmal aufgerufen werden)
         /// </summary>
         public string Titel { get; private set; }
         /// <summary>
-        /// Gibt einen Wert an, ob die Privatnachrichten in einem bestimmten Intervall abgerufen werden, oder legt diesen fest.
+        /// Gibt einen Wert an, ob die Privatnachrichten in einem bestimmten Intervall abgerufen werden, oder legt diesen fest 
         /// </summary>
         public bool Aktiv
         {
             get
             {
-                return getMessagesTimer.Enabled;
+                return this.getMessagesTimer.Enabled;
             }
             set
             {
                 if (value)
                 {
-#pragma warning disable
-                    getAllMessages();
+                    this.getMessagesTimer.Start();
                 }
                 else
                 {
-                    getMessagesTimer.Stop();
+                    this.getMessagesTimer.Stop();
                 }
             }
         }
         /// <summary>
-        /// 
+        /// Gibt alle Teilnehmer der Konferenz zurück (initConference() muss dafür zunächst einmal aufgerufen werden)
         /// </summary>
         public List<User> Teilnehmer { get; private set; }
         /// <summary>
-        /// 
+        /// Gibt alle Nachrichten aus der Konferenz in chronoligischer Ordnung zurück.
         /// </summary>
         public List<Message> Nachrichten { get; private set; }
+        /// <summary>
+        /// Gibt den Leiter der Konferenz zurück (initConference() muss dafür zunächst einmal aufgerufen werden)
+        /// </summary>
+        public User Leiter { get; private set; }
+
 
         /// <summary>
         /// Initialisiert die Konferenz
         /// </summary>
         public void initConference()
         {
-            if (istTeilnehmner(this.ID, this.senpai))
+            if (this.senpai.LoggedIn || this.istTeilnehmner())
             {
-                HtmlAgilityPack.HtmlDocument lDocument = new HtmlAgilityPack.HtmlDocument();
-                //Asdfasfasf
-                string lResponse = (HttpUtility.GetWebRequestResponse("https://proxer.me/messages?id=" + this.ID + "&format=raw", senpai.LoginCookies)).Replace("</link>", "").Replace("\n", "");
+                this.getAllParticipants();
+                this.getLeader();
+                this.getTitle();
+            }
+        }
+        /// <summary>
+        /// Sendet eine Nachricht an die Konferenz
+        /// </summary>
+        /// <param name="nachricht">Die Nachricht, die gesendet werden soll</param>
+        /// <returns>Gibt zurück, ob die Aktion erfolgreich war</returns>
+        public bool sendeNachricht(string nachricht)
+        {
+            if (senpai.LoggedIn)
+            {
+                this.getMessagesTimer.Stop();
+
+                Dictionary<string, string> lPostArgs = new Dictionary<string, string>
+                {
+                    {"message", nachricht}
+                };
+                string lResponse = HttpUtility.PostWebRequestResponse("https://proxer.me/messages?id=" + this.ID + "&format=json&json=answer", senpai.LoginCookies, lPostArgs);
 
                 if (Utilities.Utility.checkForCorrectResponse(lResponse, senpai.ErrHandler))
                 {
                     try
                     {
-                        lDocument.LoadHtml(lResponse);
+                        Dictionary<string, string> lResponseJson = Newtonsoft.Json.JsonConvert.DeserializeObject<Dictionary<string, string>>(lResponse);
 
-                        if (lDocument.ParseErrors.Count() == 0)
+                        if (lResponseJson.Keys.Contains("message"))
                         {
-                            HtmlAgilityPack.HtmlNodeCollection lNodes = lDocument.DocumentNode.SelectNodes("//div[@id='conferenceUsers']");
-                            if (lNodes != null)
-                            {
-                                this.Teilnehmer = new List<User>();
+                            if (this.NeuePM_Raised != null) this.NeuePM_Raised(this, new List<Message> { new Message(User.System, -1, lResponseJson["message"], DateTime.Now, Message.Action.GetAction) });
+                            return true;
+                        }
+                        else if (lResponseJson["msg"].Equals("Erfolgreich!")) return true;
+                    }
+                    catch (Exception)
+                    {
+                        this.senpai.ErrHandler.add(lResponse);
+                    }
+                }
 
-                                foreach (HtmlAgilityPack.HtmlNode curTeilnehmer in lNodes[0].ChildNodes[1].ChildNodes)
-                                {
-                                    string lUserName = curTeilnehmer.ChildNodes[1].InnerText;
-                                    int lUserID = Convert.ToInt32(Utilities.Utility.GetTagContents(curTeilnehmer.ChildNodes[1].FirstChild.Attributes["href"].Value, "/user/", "#top")[0]);
+                this.getMessages(this.Nachrichten.Last().NachrichtID);
+            }
 
-                                    this.Teilnehmer.Add(new User(lUserName, lUserID, this.senpai));
-                                }
-                                this.Aktiv = true;
-                            }
+            return false;
+        }
+        /// <summary>
+        /// Markiert die Konferenz als ungelesen 
+        /// </summary>
+        /// <returns>Gibt zurück, ob die Aktion erfolgreich war</returns>
+        public bool alsUngelesenMarkieren()
+        {
+            if (senpai.LoggedIn)
+            {
+                string lResponse = HttpUtility.GetWebRequestResponse("http://proxer.me/messages?format=json&json=setUnread&id=" + this.ID, senpai.LoginCookies);
+                if (lResponse.StartsWith("{\"error\":0"))
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+        /// <summary>
+        /// Markiert die Konferenz als Favorit 
+        /// </summary>
+        /// <returns>Gibt zurück, ob die Aktion erfolgreich war</returns>
+        public bool favoritHinzufuegen()
+        {
+            if (senpai.LoggedIn)
+            {
+                string lResponse = HttpUtility.GetWebRequestResponse("http://proxer.me/messages?format=json&json=favour&id=" + this.ID, senpai.LoginCookies);
+                if (lResponse.StartsWith("{\"error\":0"))
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+        /// <summary>
+        /// Entfernt die Konferenz aus den Favoriten
+        /// </summary>
+        /// <returns>Gibt zurück, ob die Aktion erfolgreich war</returns>
+        public bool favoritEntfernen()
+        {
+            if (senpai.LoggedIn)
+            {
+                string lResponse = HttpUtility.GetWebRequestResponse("http://proxer.me/messages?format=json&json=unfavour&id=" + this.ID, senpai.LoginCookies);
+                if (lResponse.StartsWith("{\"error\":0"))
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+        /// <summary>
+        /// Blockiert die Konferenz
+        /// </summary>
+        /// <returns>Gibt zurück, ob die Aktion erfolgreich war</returns>
+        public bool blockHinzufuegen()
+        {
+            if (senpai.LoggedIn)
+            {
+                string lResponse = HttpUtility.GetWebRequestResponse("http://proxer.me/messages?format=json&json=block&id=" + this.ID, senpai.LoginCookies);
+                if (lResponse.StartsWith("{\"error\":0"))
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+        /// <summary>
+        /// Entblockt die Konferenz
+        /// </summary>
+        /// <returns>Gibt zurück, ob die Aktion erfolgreich war</returns>
+        public bool blockEntfernen()
+        {
+            if (senpai.LoggedIn)
+            {
+                string lResponse = HttpUtility.GetWebRequestResponse("http://proxer.me/messages?format=json&json=unblock&id=" + this.ID, senpai.LoginCookies);
+                if (lResponse.StartsWith("{\"error\":0"))
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+
+        private void getLeader()
+        {
+            if (isConference())
+            {
+                Dictionary<string, string> lPostArgs = new Dictionary<string, string>()
+                {
+                    {"message", "/leader"},
+                };
+                string lResponse = HttpUtility.PostWebRequestResponse("https://proxer.me/messages?id=" + this.ID + "&format=json&json=answer", senpai.LoginCookies, lPostArgs);
+
+                if (Utilities.Utility.checkForCorrectResponse(lResponse, senpai.ErrHandler))
+                {
+                    try
+                    {
+                        Dictionary<string, string> lDict = JsonConvert.DeserializeObject<Dictionary<string, string>>(lResponse);
+                        if (lDict["msg"].Equals("Erfolgreich!"))
+                        {
+                            User[] lLeiterArray = this.Teilnehmer.Where(x => x.UserName.Equals(lDict["message"].Remove(0, "Konferenzleiter: ".Count()))).ToArray();
+                            if (lLeiterArray.Count() > 0) this.Leiter = lLeiterArray[0];
                         }
                     }
                     catch (Exception)
@@ -220,17 +334,82 @@ namespace Proxer.API.Community.PrivateMessages
                     }
                 }
             }
+            else
+            {
+                this.Leiter = User.System;
+            }
         }
-        /// <summary>
-        /// 
-        /// </summary>
+        private void getAllParticipants()
+        {
+            HtmlAgilityPack.HtmlDocument lDocument = new HtmlAgilityPack.HtmlDocument();
+            string lResponse = HttpUtility.GetWebRequestResponse("https://proxer.me/messages?id=" + this.ID + "&format=raw", senpai.LoginCookies).Replace("</link>", "").Replace("\n", "");
+
+            if (Utilities.Utility.checkForCorrectResponse(lResponse, senpai.ErrHandler))
+            {
+                try
+                {
+                    lDocument.LoadHtml(lResponse);
+
+                    if (lDocument.ParseErrors.Count() == 0)
+                    {
+                        HtmlAgilityPack.HtmlNodeCollection lNodes = lDocument.DocumentNode.SelectNodes("//div[@id='conferenceUsers']");
+                        if (lNodes != null)
+                        {
+                            this.Teilnehmer = new List<User>();
+
+                            foreach (HtmlAgilityPack.HtmlNode curTeilnehmer in lNodes[0].ChildNodes[1].ChildNodes)
+                            {
+                                string lUserName = curTeilnehmer.ChildNodes[1].InnerText;
+                                int lUserID = Convert.ToInt32(Utilities.Utility.GetTagContents(curTeilnehmer.ChildNodes[1].FirstChild.Attributes["href"].Value, "/user/", "#top")[0]);
+
+                                this.Teilnehmer.Add(new User(lUserName, lUserID, this.senpai));
+                            }
+                            this.Aktiv = true;
+                        }
+                    }
+                }
+                catch (Exception)
+                {
+                    this.senpai.ErrHandler.add(lResponse);
+                }
+            }
+
+        }
+        private void getTitle()
+        {
+            if (isConference())
+            {
+                Dictionary<string, string> lPostArgs = new Dictionary<string, string>()
+                {
+                    {"message", "/topic"},
+                };
+                string lResponse = HttpUtility.PostWebRequestResponse("https://proxer.me/messages?id=" + this.ID + "&format=json&json=answer", senpai.LoginCookies, lPostArgs);
+
+                if (Utilities.Utility.checkForCorrectResponse(lResponse, senpai.ErrHandler))
+                {
+                    try
+                    {
+                        Dictionary<string, string> lDict = JsonConvert.DeserializeObject<Dictionary<string, string>>(lResponse);
+                        if (lDict["msg"].Equals("Erfolgreich!")) this.Titel = lDict["message"];
+                    }
+                    catch (Exception)
+                    {
+                        this.senpai.ErrHandler.add(lResponse);
+                    }
+                }
+            }
+            else
+            {
+                if(this.Teilnehmer.Count > 1) this.Titel = this.Teilnehmer.Where(x => x.ID != this.senpai.Me.ID).ToArray()[0].UserName;
+            }
+        }
         private void getAllMessages()
         {
             if (this.Nachrichten != null && this.Nachrichten.Count > 0) this.getMessages(this.Nachrichten.Last().NachrichtID);
             else if ((this.Nachrichten == null || this.Nachrichten.Count == 0) && senpai.LoggedIn)
             {
                 string lResponse = HttpUtility.GetWebRequestResponse("http://proxer.me/messages?format=json&json=messages&id=" + this.ID, senpai.LoginCookies);
-                if (Utilities.Utility.checkForCorrectResponse(lResponse, senpai.ErrHandler) && !lResponse.Equals("{\"uid\":\"" + senpai.Me.ID + "\",\"error\":1,\"msg\":\"Ein Fehler ist passiert.\"}"))
+                if (!lResponse.Equals("{\"uid\":\"" + senpai.Me.ID + "\",\"error\":1,\"msg\":\"Ein Fehler ist passiert.\"}"))
                 {
                     try
                     {
@@ -266,9 +445,9 @@ namespace Proxer.API.Community.PrivateMessages
                             User lSender = new User(curMessage["username"], Convert.ToInt32(curMessage["fromid"]), senpai);
                             this.Nachrichten.Insert(0, new Message(lSender, Convert.ToInt32(curMessage["id"]), curMessage["message"], Convert.ToInt32(curMessage["timestamp"]), lMessageAction));
                         }
+                        if (this.Nachrichten.Count(x => x.Aktion == Message.Action.AddUser || x.Aktion == Message.Action.RemoveUser) > 0) this.getAllParticipants();
 
                         if (NeuePM_Raised != null) NeuePM_Raised.Invoke(this, this.Nachrichten);
-                        if (!getMessagesTimer.Enabled) getMessagesTimer.Start();
                     }
                     catch (Exception)
                     {
@@ -277,60 +456,59 @@ namespace Proxer.API.Community.PrivateMessages
                 }
             }
         }
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="mid">Die ID der letzten Nachricht</param>
         private void getMessages(int mid)
         {
-            if (this.Nachrichten == null) this.getAllMessages();
+            if (this.Nachrichten == null || this.Nachrichten.Where(x => x.NachrichtID == ID).Count() == 0) this.getAllMessages();
             else
             {
                 if (senpai.LoggedIn)
                 {
                     string lResponse = HttpUtility.GetWebRequestResponse("http://proxer.me/messages?format=json&json=newmessages&id=" + this.ID + "&mid=" + mid, senpai.LoginCookies);
-                    if (Utilities.Utility.checkForCorrectResponse(lResponse, senpai.ErrHandler) && !lResponse.Equals("{\"uid\":\"" + senpai.Me.ID + "\",\"error\":1,\"msg\":\"Ein Fehler ist passiert.\"}"))
+                    if (!lResponse.Equals("{\"uid\":\"" + senpai.Me.ID + "\",\"error\":1,\"msg\":\"Ein Fehler ist passiert.\"}"))
                     {
                         try
                         {
                             string lMessagesJson = Utilities.Utility.GetTagContents(lResponse, "\"messages\":[", "]}")[0];
-                            if (!lMessagesJson.Equals(""))
+                            if (lMessagesJson.Equals("")) return;
+
+                            List<Dictionary<string, string>> lMessages = Newtonsoft.Json.JsonConvert.DeserializeObject<List<Dictionary<string, string>>>("[" + lMessagesJson + "]");
+
+                            List<Message> lNewMessages = new List<Message>();
+                            foreach (Dictionary<string, string> curMessage in lMessages)
                             {
-                                List<Dictionary<string, string>> lMessages = Newtonsoft.Json.JsonConvert.DeserializeObject<List<Dictionary<string, string>>>("[" + lMessagesJson + "]");
+                                Message.Action lMessageAction;
 
-                                List<Message> lNewMessages = new List<Message>();
-                                foreach (Dictionary<string, string> curMessage in lMessages)
+                                switch (curMessage["action"])
                                 {
-                                    Message.Action lMessageAction;
-
-                                    switch (curMessage["action"])
-                                    {
-                                        case "addUser":
-                                            lMessageAction = Message.Action.AddUser;
-                                            break;
-                                        case "removeUser":
-                                            lMessageAction = Message.Action.RemoveUser;
-                                            break;
-                                        case "setTopic":
-                                            lMessageAction = Message.Action.SetTopic;
-                                            break;
-                                        case "setLeader":
-                                            lMessageAction = Message.Action.SetLeader;
-                                            break;
-                                        default:
-                                            lMessageAction = Message.Action.NoAction;
-                                            break;
-                                    }
-
-                                    User lSender = new User(curMessage["username"], Convert.ToInt32(curMessage["fromid"]), senpai);
-                                    Message lMessage = new Message(lSender, Convert.ToInt32(curMessage["id"]), curMessage["message"], Convert.ToInt32(curMessage["timestamp"]), lMessageAction);
-                                    lNewMessages.Insert(0, lMessage);
+                                    case "addUser":
+                                        lMessageAction = Message.Action.AddUser;
+                                        break;
+                                    case "removeUser":
+                                        lMessageAction = Message.Action.RemoveUser;
+                                        break;
+                                    case "setTopic":
+                                        lMessageAction = Message.Action.SetTopic;
+                                        break;
+                                    case "setLeader":
+                                        lMessageAction = Message.Action.SetLeader;
+                                        break;
+                                    default:
+                                        lMessageAction = Message.Action.NoAction;
+                                        break;
                                 }
-                                this.Nachrichten = this.Nachrichten.Concat(lNewMessages).ToList();
 
-                                if (NeuePM_Raised != null) NeuePM_Raised.Invoke(this, lNewMessages);
-
+                                User lSender = new User(curMessage["username"], Convert.ToInt32(curMessage["fromid"]), senpai);
+                                Message lMessage = new Message(lSender, Convert.ToInt32(curMessage["id"]), curMessage["message"], Convert.ToInt32(curMessage["timestamp"]), lMessageAction);
+                                lNewMessages.Insert(0, lMessage);
                             }
+
+                            if (lNewMessages.Count(x => x.Aktion == Message.Action.AddUser || x.Aktion == Message.Action.RemoveUser) > 0) this.getAllParticipants();
+
+                            this.Nachrichten = this.Nachrichten.Concat(lNewMessages).ToList();
+
+                            if (NeuePM_Raised != null) NeuePM_Raised.Invoke(this, lNewMessages);
+
+
                         }
                         catch (Exception)
                         {
@@ -342,149 +520,43 @@ namespace Proxer.API.Community.PrivateMessages
 
             this.getMessagesTimer.Start();
         }
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="nachricht"></param>
-        public void sendeNachricht(string nachricht)
+        private bool isConference()
         {
-            if (senpai.LoggedIn)
+            Dictionary<string, string> lPostArgs = new Dictionary<string, string>()
             {
-                this.getMessagesTimer.Stop();
-
-                Dictionary<string, string> lPostArgs = new Dictionary<string, string>
-                {
-                    {"message", nachricht}
-                };
-                string lResponse = HttpUtility.PostWebRequestResponse("https://proxer.me/messages?id=" + this.ID + "&format=json&json=answer", senpai.LoginCookies, lPostArgs);
-
-                if (Utilities.Utility.checkForCorrectResponse(lResponse, senpai.ErrHandler))
-                {
-                    try
-                    {
-                        Dictionary<string, string> lResponseJson = Newtonsoft.Json.JsonConvert.DeserializeObject<Dictionary<string, string>>(lResponse);
-
-                        if (lResponseJson.Keys.Contains("message"))
-                        {
-                            if (this.NeuePM_Raised != null) this.NeuePM_Raised(this, new List<Message> { new Message(User.System, -1, lResponseJson["message"], DateTime.Now, Message.Action.GetAction) });
-                        }
-                    }
-                    catch (Exception)
-                    {
-                        this.senpai.ErrHandler.add(lResponse);
-                    }
-                }
-
-                this.getMessages(this.Nachrichten.Last().NachrichtID);
-            }
-        }
-        /// <summary>
-        /// 
-        /// </summary>
-        public bool alsUngelesenMarkieren()
-        {
-            if (senpai.LoggedIn)
-            {
-                string lResponse = HttpUtility.GetWebRequestResponse("http://proxer.me/messages?format=json&json=setUnread&id=" + this.ID, senpai.LoginCookies);
-                if (lResponse.StartsWith("{\"error\":0"))
-                {
-                    return true;
-                }
-            }
-
-            return false;
-        }
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <returns></returns>
-        public bool favoritHinzufuegen()
-        {
-            if (senpai.LoggedIn)
-            {
-                string lResponse = HttpUtility.GetWebRequestResponse("http://proxer.me/messages?format=json&json=favour&id=" + this.ID, senpai.LoginCookies);
-                if (lResponse.StartsWith("{\"error\":0"))
-                {
-                    return true;
-                }
-            }
-
-            return false;
-        }
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <returns></returns>
-        public bool favoritEntfernen()
-        {
-            if (senpai.LoggedIn)
-            {
-                string lResponse = HttpUtility.GetWebRequestResponse("http://proxer.me/messages?format=json&json=unfavour&id=" + this.ID, senpai.LoginCookies);
-                if (lResponse.StartsWith("{\"error\":0"))
-                {
-                    return true;
-                }
-            }
-
-            return false;
-        }
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <returns></returns>
-        public bool blockHinzufuegen()
-        {
-            if (senpai.LoggedIn)
-            {
-                string lResponse = HttpUtility.GetWebRequestResponse("http://proxer.me/messages?format=json&json=block&id=" + this.ID, senpai.LoginCookies);
-                if (lResponse.StartsWith("{\"error\":0"))
-                {
-                    return true;
-                }
-            }
-
-            return false;
-        }
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <returns></returns>
-        public bool blockEntfernen()
-        {
-            if (senpai.LoggedIn)
-            {
-                string lResponse = HttpUtility.GetWebRequestResponse("http://proxer.me/messages?format=json&json=unblock&id=" + this.ID, senpai.LoginCookies);
-                if (lResponse.StartsWith("{\"error\":0"))
-                {
-                    return true;
-                }
-            }
-
-            return false;
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="id"></param>
-        /// <param name="senpai"></param>
-        /// <returns>Ob der Benutzter zu der Konferenz gehört</returns>
-        public bool istTeilnehmner(int id, Senpai senpai)
-        {
-            string lResponse = (HttpUtility.GetWebRequestResponse("https://proxer.me/messages?id=" + id + "&format=raw", senpai.LoginCookies)).Replace("</link>", "").Replace("\n", "");
+                {"message", "/ping"},
+            };
+            string lResponse = HttpUtility.PostWebRequestResponse("https://proxer.me/messages?id=" + this.ID + "&format=json&json=answer", this.senpai.LoginCookies, lPostArgs);
 
             if (Utilities.Utility.checkForCorrectResponse(lResponse, senpai.ErrHandler))
             {
                 try
                 {
-                    HtmlAgilityPack.HtmlDocument lDocument = new HtmlAgilityPack.HtmlDocument();
-                    lDocument.LoadHtml(lResponse);
+                    Dictionary<string, string> lDict = JsonConvert.DeserializeObject<Dictionary<string, string>>(lResponse);
+                    return lDict["msg"].Equals("Erfolgreich!") && !lDict["message"].Equals("Befehle sind nur in Konferenzen verfügbar.");
+                }
+                catch (Exception)
+                {
+                    this.senpai.ErrHandler.add(lResponse);
+                }
+            }
 
-                    if (lDocument.ParseErrors.Count() == 0)
-                    {
-                        HtmlAgilityPack.HtmlNodeCollection lNodes = lDocument.DocumentNode.SelectNodes("//div[@id='conferenceUsers']");
-                        return lNodes != null;
-                    }
+            return false;
+        }
+        private bool istTeilnehmner()
+        {
+            Dictionary<string, string> lPostArgs = new Dictionary<string, string>()
+            {
+                {"message", "/ping"},
+            };
+            string lResponse = HttpUtility.PostWebRequestResponse("https://proxer.me/messages?id=" + this.ID + "&format=json&json=answer", this.senpai.LoginCookies, lPostArgs);
+
+            if (Utilities.Utility.checkForCorrectResponse(lResponse, senpai.ErrHandler))
+            {
+                try
+                {
+                    Dictionary<string, string> lDict = JsonConvert.DeserializeObject<Dictionary<string, string>>(lResponse);
+                    return !lDict["msg"].Equals("Ein Fehler ist passiert.");
                 }
                 catch (Exception)
                 {
