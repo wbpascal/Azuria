@@ -1,4 +1,6 @@
-﻿using Newtonsoft.Json;
+﻿using HtmlAgilityPack;
+using Newtonsoft.Json;
+using Proxer.API.Community.PrivateMessages;
 using Proxer.API.EventArguments;
 using Proxer.API.Notifications;
 using Proxer.API.Utilities;
@@ -120,7 +122,7 @@ namespace Proxer.API
             this.notificationCheckTimer.Interval = (new TimeSpan(0, 15, 0)).TotalMilliseconds;
             this.notificationCheckTimer.Elapsed += (s, eArgs) => { checkNotifications(); };
 
-            this.notificationUpdateCheckTimer = new Timer(0);
+            this.notificationUpdateCheckTimer = new Timer(1);
             this.notificationUpdateCheckTimer.AutoReset = true;
             this.notificationUpdateCheckTimer.Elapsed += (s, eArgs) =>
             {
@@ -266,6 +268,7 @@ namespace Proxer.API
         /// <summary>
         /// Checkt per API, ob der Benutzer noch eingeloggt ist
         /// </summary>
+        /// <returns></returns>
         public bool checkLogin()
         {
             if (LoggedIn)
@@ -302,6 +305,7 @@ namespace Proxer.API
         /// <summary>
         /// Initialisiert die Benachrichtigungen
         /// </summary>
+        /// <returns></returns>
         public bool initNotifications()
         {
             if (LoggedIn)
@@ -328,10 +332,53 @@ namespace Proxer.API
             this.checkNewsUpdate = true;
             this.checkPMUpdate = true;
         }
-
         /// <summary>
-        /// Checkt, ob neue Benachrichtigungen vorhanden sind
+        /// Gibt alle Konferenzen des Senpais zurück. ACHTUNG: Bei den Konferenzen muss noch initConference() aufgerufen werden!
         /// </summary>
+        /// <returns></returns>
+        public List<Conference> getAllConferences()
+        {
+            if (LoggedIn)
+            {
+                string lResponse = HttpUtility.GetWebRequestResponse("http://proxer.me/messages", LoginCookies).Replace("</link>", "").Replace("\n", "");
+
+                if (Utilities.Utility.checkForCorrectResponse(lResponse, this.ErrHandler))
+                {
+                    try
+                    {
+                        HtmlDocument lDocument = new HtmlDocument();
+                        lDocument.LoadHtml(lResponse);
+
+                        if (lDocument.ParseErrors.Count() == 0)
+                        {
+                            List<Conference> lReturn = new List<Conference>();
+
+                            HtmlAgilityPack.HtmlNodeCollection lNodes = lDocument.DocumentNode.SelectNodes("//a[@class='conferenceGrid ']");
+                            if (lNodes != null)
+                            {
+                                foreach (HtmlNode curNode in lNodes)
+                                {
+                                    int lID = Convert.ToInt32(Utility.GetTagContents(curNode.Attributes["href"].Value, "/messages?id=", "#top")[0]);
+                                    string lTitle = curNode.FirstChild.InnerText;
+
+                                    lReturn.Add(new Conference(lTitle, lID, this));
+                                }
+                            }
+
+                            return lReturn;
+                        }
+                    }
+                    catch (Exception)
+                    {
+                        this.ErrHandler.add(lResponse);
+                    }
+                }
+            }
+
+            return null;
+        }
+
+
         private void checkNotifications()
         {
             if (LoggedIn)
@@ -376,11 +423,6 @@ namespace Proxer.API
                 }
             }
         }
-        /// <summary>
-        /// (Vorläufig, nicht ausführlich getestet)
-        /// Benutzt um ALLE Anime und Manga Benachrichtigungen in die vorgesehene Eigenschaft einzutragen.
-        /// Wird nur in initNotifications() und alle 30 Minuten, falls die AnimeMangaUpdates-Eigenschaft abgerufen wird, benutzt.
-        /// </summary>
         private void getAllAnimeMangaUpdates()
         {
             if (LoggedIn)
@@ -437,10 +479,6 @@ namespace Proxer.API
                 }
             }
         }
-        /// <summary>
-        /// Benutzt um die letzten 15 News abzurufen und sie in die vorgesehene Eigenschaft einzutragen.
-        /// Nur in initNotifications() und alle 30 Minuten, falls die News-Eigenschaft abgerufen wird, benutzt.
-        /// </summary>
         private void getAllNewsUpdates()
         {
             if (LoggedIn)
@@ -455,11 +493,6 @@ namespace Proxer.API
                 }
             }
         }
-        /// <summary>
-        /// (Vorläufig, nicht ausführlich getestet)
-        /// Benutzt um ALLE Privat Nachricht Benachrichtigungen abzurufen und sie in die vorgesehene Eigenschaft einzutragen.
-        /// Nur in initNotifications() und alle 30 Minuten, falls die PMUpdates-Eigenschaft abgerufen wird, benutzt.
-        /// </summary>
         private void getAllPMUpdates()
         {
             if (this.LoggedIn)
@@ -517,11 +550,6 @@ namespace Proxer.API
                 }
             }
         }
-        /// <summary>
-        /// (Vorläufig, nicht ausführlich getestet)
-        /// Benutzt um ALLE Freundschaftsanfragen abzurufen und sie in die vorgesehen Eigenschaft einzutragen.
-        /// Nur in initNotifications() und alle 30 Minuten, falls die FriendRequests-Eigenschaft abgerufen wird, benutzt.
-        /// </summary>
         private void getAllFriendUpdates()
         {
             if (this.LoggedIn)

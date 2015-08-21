@@ -117,11 +117,36 @@ namespace Proxer.API.Community.PrivateMessages
             this.getMessagesTimer.Interval = (new TimeSpan(0, 0, 15)).TotalMilliseconds;
             this.getMessagesTimer.Elapsed += (s, eArgs) =>
             {
+                this.getMessagesTimer.Interval = (new TimeSpan(0, 0, 15)).TotalMilliseconds;
                 (s as Timer).Stop();
-                this.getMessages(this.Nachrichten.Last().NachrichtID);
+                if (this.Nachrichten != null && this.Nachrichten.Count() > 0) this.getMessages(this.Nachrichten.Last().NachrichtID);
+                else this.getAllMessages();
+                (s as Timer).Start();
             };
 
+            this.Aktiv = false;
+
             this.initConference();
+        }
+
+        internal Conference(string title, int id, Senpai senpai)
+        {
+            this.Titel = title;
+            this.ID = id;
+            this.senpai = senpai;
+
+            this.getMessagesTimer = new Timer();
+            this.getMessagesTimer.Interval = (new TimeSpan(0, 0, 15)).TotalMilliseconds;
+            this.getMessagesTimer.Elapsed += (s, eArgs) =>
+            {
+                this.getMessagesTimer.Interval = (new TimeSpan(0, 0, 15)).TotalMilliseconds;
+                (s as Timer).Stop();
+                if (this.Nachrichten != null && this.Nachrichten.Count() > 0) this.getMessages(this.Nachrichten.Last().NachrichtID);
+                else this.getAllMessages();
+                (s as Timer).Start();
+            };
+
+            this.Aktiv = false;
         }
 
         /// <summary>
@@ -145,6 +170,7 @@ namespace Proxer.API.Community.PrivateMessages
             {
                 if (value)
                 {
+                    this.getMessagesTimer.Interval = 1;
                     this.getMessagesTimer.Start();
                 }
                 else
@@ -167,6 +193,9 @@ namespace Proxer.API.Community.PrivateMessages
         public User Leiter { get; private set; }
 
 
+        private bool IsConference { get; set; }
+
+
         /// <summary>
         /// Initialisiert die Konferenz
         /// </summary>
@@ -174,6 +203,7 @@ namespace Proxer.API.Community.PrivateMessages
         {
             if (this.senpai.LoggedIn || this.istTeilnehmner())
             {
+                this.IsConference = this.isConference();
                 this.getAllParticipants();
                 this.getLeader();
                 this.getTitle();
@@ -207,7 +237,12 @@ namespace Proxer.API.Community.PrivateMessages
                             if (this.NeuePM_Raised != null) this.NeuePM_Raised(this, new List<Message> { new Message(User.System, -1, lResponseJson["message"], DateTime.Now, Message.Action.GetAction) });
                             return true;
                         }
-                        else if (lResponseJson["msg"].Equals("Erfolgreich!")) return true;
+                        else if (lResponseJson["msg"].Equals("Erfolgreich!"))
+                        {
+                            this.getMessages(this.Nachrichten.Last().NachrichtID);
+                            this.getMessagesTimer.Start();
+                            return true;
+                        }
                     }
                     catch (Exception)
                     {
@@ -215,7 +250,7 @@ namespace Proxer.API.Community.PrivateMessages
                     }
                 }
 
-                this.getMessages(this.Nachrichten.Last().NachrichtID);
+                this.getMessagesTimer.Start();
             }
 
             return false;
@@ -309,7 +344,7 @@ namespace Proxer.API.Community.PrivateMessages
 
         private void getLeader()
         {
-            if (isConference())
+            if (this.IsConference)
             {
                 Dictionary<string, string> lPostArgs = new Dictionary<string, string>()
                 {
@@ -364,7 +399,6 @@ namespace Proxer.API.Community.PrivateMessages
 
                                 this.Teilnehmer.Add(new User(lUserName, lUserID, this.senpai));
                             }
-                            this.Aktiv = true;
                         }
                     }
                 }
@@ -377,7 +411,7 @@ namespace Proxer.API.Community.PrivateMessages
         }
         private void getTitle()
         {
-            if (isConference())
+            if (this.IsConference)
             {
                 Dictionary<string, string> lPostArgs = new Dictionary<string, string>()
                 {
@@ -446,19 +480,21 @@ namespace Proxer.API.Community.PrivateMessages
                             this.Nachrichten.Insert(0, new Message(lSender, Convert.ToInt32(curMessage["id"]), curMessage["message"], Convert.ToInt32(curMessage["timestamp"]), lMessageAction));
                         }
                         if (this.Nachrichten.Count(x => x.Aktion == Message.Action.AddUser || x.Aktion == Message.Action.RemoveUser) > 0) this.getAllParticipants();
-
-                        if (NeuePM_Raised != null) NeuePM_Raised.Invoke(this, this.Nachrichten);
+                        if (this.Nachrichten.Count(x => x.Aktion == Message.Action.SetLeader) > 0) this.getLeader();
+                        if (this.Nachrichten.Count(x => x.Aktion == Message.Action.SetTopic) > 0) this.getTitle();
                     }
                     catch (Exception)
                     {
                         this.senpai.ErrHandler.add(lResponse);
                     }
+
+                    if (NeuePM_Raised != null) NeuePM_Raised.Invoke(this, this.Nachrichten);
                 }
             }
         }
         private void getMessages(int mid)
         {
-            if (this.Nachrichten == null || this.Nachrichten.Where(x => x.NachrichtID == ID).Count() == 0) this.getAllMessages();
+            if (this.Nachrichten == null || this.Nachrichten.Count(x => x.NachrichtID == mid) == 0) this.getAllMessages();
             else
             {
                 if (senpai.LoggedIn)
@@ -466,6 +502,7 @@ namespace Proxer.API.Community.PrivateMessages
                     string lResponse = HttpUtility.GetWebRequestResponse("http://proxer.me/messages?format=json&json=newmessages&id=" + this.ID + "&mid=" + mid, senpai.LoginCookies);
                     if (!lResponse.Equals("{\"uid\":\"" + senpai.Me.ID + "\",\"error\":1,\"msg\":\"Ein Fehler ist passiert.\"}"))
                     {
+                        List<Message> lNewMessages = new List<Message>();
                         try
                         {
                             string lMessagesJson = Utilities.Utility.GetTagContents(lResponse, "\"messages\":[", "]}")[0];
@@ -473,7 +510,6 @@ namespace Proxer.API.Community.PrivateMessages
 
                             List<Dictionary<string, string>> lMessages = Newtonsoft.Json.JsonConvert.DeserializeObject<List<Dictionary<string, string>>>("[" + lMessagesJson + "]");
 
-                            List<Message> lNewMessages = new List<Message>();
                             foreach (Dictionary<string, string> curMessage in lMessages)
                             {
                                 Message.Action lMessageAction;
@@ -503,10 +539,10 @@ namespace Proxer.API.Community.PrivateMessages
                             }
 
                             if (lNewMessages.Count(x => x.Aktion == Message.Action.AddUser || x.Aktion == Message.Action.RemoveUser) > 0) this.getAllParticipants();
+                            if (lNewMessages.Count(x => x.Aktion == Message.Action.SetLeader) > 0) this.getLeader();
+                            if (lNewMessages.Count(x => x.Aktion == Message.Action.SetTopic) > 0) this.getTitle();
 
                             this.Nachrichten = this.Nachrichten.Concat(lNewMessages).ToList();
-
-                            if (NeuePM_Raised != null) NeuePM_Raised.Invoke(this, lNewMessages);
 
 
                         }
@@ -514,11 +550,11 @@ namespace Proxer.API.Community.PrivateMessages
                         {
                             this.senpai.ErrHandler.add(lResponse);
                         }
+
+                        if (NeuePM_Raised != null) NeuePM_Raised.Invoke(this, lNewMessages);
                     }
                 }
             }
-
-            this.getMessagesTimer.Start();
         }
         private bool isConference()
         {
