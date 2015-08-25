@@ -215,7 +215,7 @@ namespace Proxer.API
         /// <summary>
         /// Gibt den Error-Handler zurück, der benutzt wird, um Fehler in Serverantworten zu bearbeiten und frühzeitig zu erkennen
         /// </summary>
-        internal ErrorHandler ErrHandler { get; private set; }
+        public ErrorHandler ErrHandler { get; private set; }
 
 
         /// <summary>

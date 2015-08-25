@@ -119,8 +119,11 @@ namespace Proxer.API.Community.PrivateMessages
             {
                 this.getMessagesTimer.Interval = (new TimeSpan(0, 0, 15)).TotalMilliseconds;
                 (s as Timer).Stop();
-                if (this.Nachrichten != null && this.Nachrichten.Count() > 0) this.getMessages(this.Nachrichten.Last().NachrichtID);
-                else this.getAllMessages();
+                if (this.IstInitialisiert)
+                {
+                    if (this.Nachrichten != null && this.Nachrichten.Count() > 0) this.getMessages(this.Nachrichten.Last().NachrichtID);
+                    else this.getAllMessages();
+                }
                 (s as Timer).Start();
             };
 
@@ -141,8 +144,11 @@ namespace Proxer.API.Community.PrivateMessages
             {
                 this.getMessagesTimer.Interval = (new TimeSpan(0, 0, 15)).TotalMilliseconds;
                 (s as Timer).Stop();
-                if (this.Nachrichten != null && this.Nachrichten.Count() > 0) this.getMessages(this.Nachrichten.Last().NachrichtID);
-                else this.getAllMessages();
+                if (this.IstInitialisiert)
+                {
+                    if (this.Nachrichten != null && this.Nachrichten.Count() > 0) this.getMessages(this.Nachrichten.Last().NachrichtID);
+                    else this.getAllMessages();
+                }
                 (s as Timer).Start();
             };
 
@@ -191,6 +197,10 @@ namespace Proxer.API.Community.PrivateMessages
         /// Gibt den Leiter der Konferenz zurück (initConference() muss dafür zunächst einmal aufgerufen werden)
         /// </summary>
         public User Leiter { get; private set; }
+        /// <summary>
+        /// 
+        /// </summary>
+        public bool IstInitialisiert { get; private set; }
 
 
         private bool IsConference { get; set; }
@@ -201,12 +211,14 @@ namespace Proxer.API.Community.PrivateMessages
         /// </summary>
         public void initConference()
         {
-            if (this.senpai.LoggedIn || this.istTeilnehmner())
+            if (this.senpai.LoggedIn && istTeilnehmner(this.ID, this.senpai))
             {
                 this.IsConference = this.isConference();
                 this.getAllParticipants();
                 this.getLeader();
                 this.getTitle();
+
+                this.IstInitialisiert = true;
             }
         }
         /// <summary>
@@ -476,12 +488,14 @@ namespace Proxer.API.Community.PrivateMessages
                                     break;
                             }
 
-                            User lSender = new User(curMessage["username"], Convert.ToInt32(curMessage["fromid"]), senpai);
-                            this.Nachrichten.Insert(0, new Message(lSender, Convert.ToInt32(curMessage["id"]), curMessage["message"], Convert.ToInt32(curMessage["timestamp"]), lMessageAction));
+                            User[] lSender = this.Teilnehmer.Where(x => x.ID == Convert.ToInt32(curMessage["fromid"])).ToArray();
+
+                            if(lSender != null && lSender.Count() > 0) this.Nachrichten.Insert(0, new Message(lSender[0], Convert.ToInt32(curMessage["id"]), curMessage["message"], Convert.ToInt32(curMessage["timestamp"]), lMessageAction));
+                            else this.Nachrichten.Insert(0, new Message(new User(curMessage["username"], Convert.ToInt32(curMessage["fromid"]), senpai), Convert.ToInt32(curMessage["id"]), curMessage["message"], Convert.ToInt32(curMessage["timestamp"]), lMessageAction));
                         }
                         if (this.Nachrichten.Count(x => x.Aktion == Message.Action.AddUser || x.Aktion == Message.Action.RemoveUser) > 0) this.getAllParticipants();
-                        if (this.Nachrichten.Count(x => x.Aktion == Message.Action.SetLeader) > 0) this.getLeader();
-                        if (this.Nachrichten.Count(x => x.Aktion == Message.Action.SetTopic) > 0) this.getTitle();
+                        if (this.Nachrichten.Count(x => x.Aktion == Message.Action.SetLeader) > 0 && this.IstInitialisiert) this.getLeader();
+                        if (this.Nachrichten.Count(x => x.Aktion == Message.Action.SetTopic) > 0 && this.IstInitialisiert) this.getTitle();
                     }
                     catch (Exception)
                     {
@@ -533,14 +547,15 @@ namespace Proxer.API.Community.PrivateMessages
                                         break;
                                 }
 
-                                User lSender = new User(curMessage["username"], Convert.ToInt32(curMessage["fromid"]), senpai);
-                                Message lMessage = new Message(lSender, Convert.ToInt32(curMessage["id"]), curMessage["message"], Convert.ToInt32(curMessage["timestamp"]), lMessageAction);
-                                lNewMessages.Insert(0, lMessage);
+                                User[] lSender = this.Teilnehmer.Where(x => x.ID == Convert.ToInt32(curMessage["fromid"])).ToArray();
+
+                                if (lSender != null && lSender.Count() > 0) lNewMessages.Insert(0, new Message(lSender[0], Convert.ToInt32(curMessage["id"]), curMessage["message"], Convert.ToInt32(curMessage["timestamp"]), lMessageAction));
+                                else lNewMessages.Insert(0, new Message(new User(curMessage["username"], Convert.ToInt32(curMessage["fromid"]), senpai), Convert.ToInt32(curMessage["id"]), curMessage["message"], Convert.ToInt32(curMessage["timestamp"]), lMessageAction));
                             }
 
                             if (lNewMessages.Count(x => x.Aktion == Message.Action.AddUser || x.Aktion == Message.Action.RemoveUser) > 0) this.getAllParticipants();
-                            if (lNewMessages.Count(x => x.Aktion == Message.Action.SetLeader) > 0) this.getLeader();
-                            if (lNewMessages.Count(x => x.Aktion == Message.Action.SetTopic) > 0) this.getTitle();
+                            if (lNewMessages.Count(x => x.Aktion == Message.Action.SetLeader) > 0 && this.IstInitialisiert) this.getLeader();
+                            if (lNewMessages.Count(x => x.Aktion == Message.Action.SetTopic) > 0 && this.IstInitialisiert) this.getTitle();
 
                             this.Nachrichten = this.Nachrichten.Concat(lNewMessages).ToList();
 
@@ -579,13 +594,19 @@ namespace Proxer.API.Community.PrivateMessages
 
             return false;
         }
-        private bool istTeilnehmner()
+
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        public static bool istTeilnehmner(int id, Senpai senpai)
         {
             Dictionary<string, string> lPostArgs = new Dictionary<string, string>()
             {
                 {"message", "/ping"},
             };
-            string lResponse = HttpUtility.PostWebRequestResponse("https://proxer.me/messages?id=" + this.ID + "&format=json&json=answer", this.senpai.LoginCookies, lPostArgs);
+            string lResponse = HttpUtility.PostWebRequestResponse("https://proxer.me/messages?id=" + id + "&format=json&json=answer", senpai.LoginCookies, lPostArgs);
 
             if (Utilities.Utility.checkForCorrectResponse(lResponse, senpai.ErrHandler))
             {
@@ -596,7 +617,7 @@ namespace Proxer.API.Community.PrivateMessages
                 }
                 catch (Exception)
                 {
-                    this.senpai.ErrHandler.add(lResponse);
+                    senpai.ErrHandler.add(lResponse);
                 }
             }
 

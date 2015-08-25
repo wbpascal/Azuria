@@ -9,7 +9,7 @@ namespace Proxer.API.Utilities
     /// <summary>
     /// 
     /// </summary>
-    internal class ErrorHandler
+    public class ErrorHandler
     {
         /// <summary>
         /// 
@@ -27,7 +27,7 @@ namespace Proxer.API.Utilities
         /// <summary>
         /// Erstellt eine neue Liste der strings, die aussortiert werden sollen
         /// </summary>
-        internal void reset()
+        public void reset()
         {
             this.WrongHtml = new List<string>();
         }
