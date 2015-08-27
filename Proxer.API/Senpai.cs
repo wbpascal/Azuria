@@ -17,7 +17,7 @@ using System.Windows.Threading;
 namespace Proxer.API
 {
     /// <summary>
-    /// 
+    /// Der Benutzer der Anwendung an sich
     /// </summary>
     public class Senpai
     {
@@ -323,7 +323,7 @@ namespace Proxer.API
             }
         }
         /// <summary>
-        /// Wenn man unbedingt möchte, dass die Eigenschaften aktualisiert werden.
+        /// Nach dem Aufruf, wenn eine Eigenschaft aufgerufen wird, wird dessen Wert neu berechnet.
         /// </summary>
         public void forcePropertyReload()
         {

@@ -10,12 +10,12 @@ using System.Timers;
 namespace Proxer.API.Community.PrivateMessages
 {
     /// <summary>
-    /// 
+    /// Repräsentiert eine Proxer-Konferenz
     /// </summary>
     public class Conference
     {
         /// <summary>
-        /// 
+        /// Repräsentiert die jeweilige einzelne Nachricht in der Konferenz
         /// </summary>
         public class Message
         {
@@ -198,7 +198,7 @@ namespace Proxer.API.Community.PrivateMessages
         /// </summary>
         public User Leiter { get; private set; }
         /// <summary>
-        /// 
+        /// Gibt zurück, ob die Konferenz bereits initialisiert ist
         /// </summary>
         public bool IstInitialisiert { get; private set; }
 
@@ -597,8 +597,10 @@ namespace Proxer.API.Community.PrivateMessages
 
 
         /// <summary>
-        /// 
+        /// Gibt zurück, ob Senpai ein Teilnehmer einer Konferenz mit der bestimmten ID ist
         /// </summary>
+        /// <param name="id">ID der Konferenz</param>
+        /// <param name="senpai"></param>
         /// <returns></returns>
         public static bool istTeilnehmner(int id, Senpai senpai)
         {

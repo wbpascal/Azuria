@@ -9,7 +9,7 @@ using System.Timers;
 namespace Proxer.API
 {
     /// <summary>
-    /// 
+    /// Repräsentiert einen Proxer-Benutzer
     /// </summary>
     public class User
     {
@@ -20,12 +20,6 @@ namespace Proxer.API
 
         private readonly Senpai senpai;
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="name"></param>
-        /// <param name="userID"></param>
-        /// <param name="senpai"></param>
         internal User(string name, int userID, Senpai senpai)
         {
             this.senpai = senpai;
@@ -34,13 +28,6 @@ namespace Proxer.API
             this.ID = userID;
             this.Avatar = new Uri("https://proxer.me/components/com_comprofiler/plugin/templates/default/images/avatar/nophoto_n.png");
         }
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="name"></param>
-        /// <param name="userID"></param>
-        /// <param name="avatar"></param>
-        /// <param name="senpai"></param>
         internal User(string name, int userID, Uri avatar, Senpai senpai)
         {
             this.senpai = senpai;
@@ -51,7 +38,7 @@ namespace Proxer.API
             else this.Avatar = new Uri("https://proxer.me/components/com_comprofiler/plugin/templates/default/images/avatar/nophoto_n.png");
         }
         /// <summary>
-        /// 
+        /// Initialisiert die Klasse mit allen Standardeinstellungen.
         /// </summary>
         /// <param name="userID"></param>
         /// <param name="senpai"></param>
@@ -66,44 +53,45 @@ namespace Proxer.API
 
 
         /// <summary>
-        /// 
-        /// </summary>
-        public string UserName { get; private set; }
-        /// <summary>
-        /// 
-        /// </summary>
-        public int ID { get; private set; }
-        /// <summary>
-        /// 
-        /// </summary>
-        public string Status { get; private set; }
-        /// <summary>
-        /// 
-        /// </summary>
-        public bool Online { get; private set; }
-        /// <summary>
-        /// 
-        /// </summary>
-        public string Rang { get; private set; }
-        /// <summary>
-        /// 
-        /// </summary>
-        public int Punkte { get; private set; }
-        /// <summary>
-        /// 
-        /// </summary>
-        public List<User> Freunde { get; private set; }
-        /// <summary>
-        /// 
+        /// Gibt den Link zu dem Avatar des Benutzers zurück
         /// </summary>
         public Uri Avatar { get; private set; }
         /// <summary>
-        /// 
+        /// Gibt die Freunde des Benutzers in einer Liste zurück
+        /// </summary>
+        public List<User> Freunde { get; private set; }
+        /// <summary>
+        /// Gibt die Freunde des Benutzers in einer Liste zurück
+        /// </summary>
+        public int ID { get; private set; }
+        /// <summary>
+        /// Gibt die Info des Benutzers als Html-Dokument zurück
         /// </summary>
         public string Info { get; private set; }
+        /// <summary>
+        /// Gibt zurück, ob der Benutzter zur Zeit online ist
+        /// </summary>
+        public bool Online { get; private set; }
+        /// <summary>
+        /// Gibt zurück, wie viele Punkte der Benutzter momentan hat
+        /// </summary>
+        public int Punkte { get; private set; }
+        /// <summary>
+        /// Gibt den Rang-namen des Benutzers zurück
+        /// </summary>
+        public string Rang { get; private set; }
+        /// <summary>
+        /// Gibt den Status des Benutzers zurück
+        /// </summary>
+        public string Status { get; private set; }
+        /// <summary>
+        /// Gibt den Benutzernamen des Benutzers zurück
+        /// </summary>
+        public string UserName { get; private set; }
+
 
         /// <summary>
-        /// 
+        /// Initialisiert die Eigenschaften der Klasse
         /// </summary>
         public void initUser()
         {
@@ -267,7 +255,7 @@ namespace Proxer.API
             return user1.Freunde.Any(item => item.ID == user2.ID);
         }
         /// <summary>
-        /// 
+        /// Gibt den Benutzernamen eines Benutzers mit der spezifizierten ID zurück
         /// </summary>
         /// <param name="id"></param>
         /// <param name="senpai"></param>
