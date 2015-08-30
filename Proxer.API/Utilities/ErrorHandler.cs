@@ -1,75 +1,73 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using Newtonsoft.Json;
+using Proxer.API.Properties;
 
 namespace Proxer.API.Utilities
 {
     /// <summary>
-    /// 
     /// </summary>
     public class ErrorHandler
     {
         /// <summary>
-        /// 
         /// </summary>
         internal ErrorHandler()
         {
-            this.load();
+            this.Load();
         }
 
         /// <summary>
-        /// 
         /// </summary>
         internal List<string> WrongHtml { get; private set; }
 
         /// <summary>
-        /// Erstellt eine neue Liste der strings, die aussortiert werden sollen
+        ///     Erstellt eine neue Liste der strings, die aussortiert werden sollen
         /// </summary>
-        public void reset()
+        public void Reset()
         {
             this.WrongHtml = new List<string>();
         }
+
         /// <summary>
-        /// Läd die Liste aus den Einstellungen
+        ///     Läd die Liste aus den Einstellungen
         /// </summary>
-        internal void load()
+        internal void Load()
         {
-            if (!String.IsNullOrEmpty(Properties.Settings.Default.errorHtml))
+            if (!string.IsNullOrEmpty(Settings.Default.errorHtml))
             {
                 try
                 {
-                    this.WrongHtml = Newtonsoft.Json.JsonConvert.DeserializeObject<List<string>>(Properties.Settings.Default.errorHtml);
+                    this.WrongHtml = JsonConvert.DeserializeObject<List<string>>(Settings.Default.errorHtml);
                 }
-                catch (Newtonsoft.Json.JsonSerializationException)
+                catch (JsonSerializationException)
                 {
-                    this.reset();
-                    this.save();
+                    this.Reset();
+                    this.Save();
                 }
             }
             else
             {
-                this.reset();
-                this.save();
+                this.Reset();
+                this.Save();
             }
         }
+
         /// <summary>
-        /// Speichert die Liste in den Einstellungen
+        ///     Speichert die Liste in den Einstellungen
         /// </summary>
-        internal void save()
+        internal void Save()
         {
-            Properties.Settings.Default.errorHtml = Newtonsoft.Json.JsonConvert.SerializeObject(this.WrongHtml);
-            Properties.Settings.Default.Save();
+            Settings.Default.errorHtml = JsonConvert.SerializeObject(this.WrongHtml);
+            Settings.Default.Save();
         }
+
         /// <summary>
-        /// Hinzufügen einer falschen Ausgabe
+        ///     Hinzufügen einer falschen Ausgabe
         /// </summary>
         /// <param name="wrongHtml"></param>
-        internal void add(string wrongHtml)
+        internal void Add(string wrongHtml)
         {
             this.WrongHtml.Add(wrongHtml);
-            this.save();
+            this.Save();
         }
     }
 }

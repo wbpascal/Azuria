@@ -1,18 +1,12 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Proxer.API.Notifications
 {
     /// <summary>
-    /// 
     /// </summary>
     public class AnimeMangaUpdateObject : INotificationObject
     {
         /// <summary>
-        /// 
         /// </summary>
         /// <param name="message">Die Nachricht des Updates</param>
         internal AnimeMangaUpdateObject(string message)
@@ -22,10 +16,10 @@ namespace Proxer.API.Notifications
             this.Name = "";
             this.Number = -1;
             this.Link = null;
-            this.ID = -1;
+            this.Id = -1;
         }
+
         /// <summary>
-        /// 
         /// </summary>
         /// <param name="message">Die Nachricht des Updates</param>
         /// <param name="name">Der Name des Anime/Manga</param>
@@ -39,32 +33,34 @@ namespace Proxer.API.Notifications
             this.Name = name;
             this.Number = number;
             this.Link = link;
-            this.ID = id;
+            this.Id = id;
         }
 
         /// <summary>
-        /// 
+        ///     Die ID des Anime/Manga
         /// </summary>
-        public NotificationObjectType Type { get; private set; }
+        public int Id { get; private set; }
+
         /// <summary>
-        /// 
-        /// </summary>
-        public string Message { get; private set; }
-        /// <summary>
-        /// 
         /// </summary>
         public Uri Link { get; private set; }
+
         /// <summary>
-        /// Der Name des Anime/Mangas
+        ///     Der Name des Anime/Mangas
         /// </summary>
         public string Name { get; private set; }
+
         /// <summary>
-        /// Die Episode/Das Kapitel, das erschienen ist
+        ///     Die Episode/Das Kapitel, das erschienen ist
         /// </summary>
         public int Number { get; private set; }
+
         /// <summary>
-        /// Die ID des Anime/Manga
         /// </summary>
-        public int ID { get; private set; }
+        public NotificationObjectType Type { get; private set; }
+
+        /// <summary>
+        /// </summary>
+        public string Message { get; private set; }
     }
 }

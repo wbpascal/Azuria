@@ -1,82 +1,127 @@
-﻿using HtmlAgilityPack;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using HtmlAgilityPack;
+using Proxer.API.Main;
 
 namespace Proxer.API.Utilities
 {
     /// <summary>
-    /// 
     /// </summary>
-    internal class Utility
+    public class Utility
     {
         /// <summary>
-        /// 
         /// </summary>
-        /// <param name="Source"></param>
+        /// <param name="id"></param>
+        /// <param name="senpai"></param>
+        /// <returns></returns>
+        public static IAnimeMangaObject GetAnimeManga(int id, Senpai senpai)
+        {
+            HtmlDocument lDocument = new HtmlDocument();
+            string lResponse =
+                HttpUtility.GetWebRequestResponse("https://proxer.me/info/" + id, senpai.LoginCookies)
+                    .Replace("</link>", "")
+                    .Replace("\n", "");
+
+            if (CheckForCorrectResponse(lResponse, senpai.ErrHandler))
+            {
+                try
+                {
+                    lDocument.LoadHtml(lResponse);
+
+                    if (lDocument.ParseErrors.Count() == 0)
+                    {
+                        if (
+                            lDocument.DocumentNode.ChildNodes[1].ChildNodes[2].ChildNodes[2].ChildNodes[2].ChildNodes[1]
+                                .ChildNodes[1].InnerText.Equals("Episode"))
+                        {
+                            return
+                                new Anime(
+                                    lDocument.DocumentNode.ChildNodes[1].ChildNodes[2].ChildNodes[2].ChildNodes[2]
+                                        .ChildNodes[5].ChildNodes[2].FirstChild.ChildNodes[1].FirstChild.ChildNodes[1]
+                                        .ChildNodes[1].InnerText, id);
+                        }
+                        if (
+                            lDocument.DocumentNode.ChildNodes[1].ChildNodes[2].ChildNodes[2].ChildNodes[2].ChildNodes[1]
+                                .ChildNodes[1].InnerText.Equals("Kapitel"))
+                        {
+                            return
+                                new Manga(
+                                    lDocument.DocumentNode.ChildNodes[1].ChildNodes[2].ChildNodes[2].ChildNodes[2]
+                                        .ChildNodes[5].ChildNodes[2].FirstChild.ChildNodes[1].FirstChild.ChildNodes[1]
+                                        .ChildNodes[1].InnerText, id);
+                        }
+                    }
+                }
+                catch (NullReferenceException)
+                {
+                    senpai.ErrHandler.Add(lResponse);
+                }
+            }
+
+            return null;
+        }
+
+        /// <summary>
+        /// </summary>
+        /// <param name="source"></param>
         /// <param name="startTag"></param>
         /// <param name="endTag"></param>
         /// <returns></returns>
-        internal static List<string> GetTagContents(string Source, string startTag, string endTag)
+        internal static List<string> GetTagContents(string source, string startTag, string endTag)
         {
-            List<string> StringsFound = new List<string>();
-            int Index = Source.IndexOf(startTag) + startTag.Length;
+            List<string> stringsFound = new List<string>();
+            int index = source.IndexOf(startTag) + startTag.Length;
 
             try
             {
-                while (Index != startTag.Length - 1)
+                while (index != startTag.Length - 1)
                 {
-                    StringsFound.Add(Source.Substring(Index, Source.IndexOf(endTag, Index) - Index));
-                    Index = Source.IndexOf(startTag, Index) + startTag.Length;
+                    stringsFound.Add(source.Substring(index, source.IndexOf(endTag, index) - index));
+                    index = source.IndexOf(startTag, index) + startTag.Length;
                 }
             }
             catch (Exception)
             {
-
             }
-            return StringsFound;
+            return stringsFound;
         }
 
         /// <summary>
-        /// 
         /// </summary>
         /// <param name="unixTimeStamp"></param>
         /// <returns></returns>
         internal static DateTime UnixTimeStampToDateTime(long unixTimeStamp)
         {
-            System.DateTime dtDateTime = new DateTime(1970, 1, 1, 0, 0, 0, 0, System.DateTimeKind.Utc);
+            DateTime dtDateTime = new DateTime(1970, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc);
             dtDateTime = dtDateTime.AddSeconds(unixTimeStamp).ToLocalTime();
             return dtDateTime;
         }
 
         /// <summary>
-        /// 
         /// </summary>
         /// <param name="response"></param>
         /// <param name="errHandler"></param>
         /// <returns></returns>
-        internal static bool checkForCorrectResponse(string response, ErrorHandler errHandler)
+        internal static bool CheckForCorrectResponse(string response, ErrorHandler errHandler)
         {
             foreach (string curErrorResponse in errHandler.WrongHtml)
             {
-                if (iLD(response, curErrorResponse) <= 15) return false;
+                if (ILd(response, curErrorResponse) <= 15) return false;
             }
             return true;
         }
 
         /// <summary>
-        /// 
         /// </summary>
         /// <param name="html"></param>
         /// <param name="parseErrors"></param>
         /// <returns></returns>
-        internal static string tryFixParseErrors(string html, IEnumerable<HtmlParseError> parseErrors)
+        internal static string TryFixParseErrors(string html, IEnumerable<HtmlParseError> parseErrors)
         {
             if (parseErrors.Count() > 0)
             {
-                foreach (HtmlAgilityPack.HtmlParseError curError in parseErrors)
+                foreach (HtmlParseError curError in parseErrors)
                 {
                     html = html.Remove(curError.StreamPosition, curError.SourceText.Length);
                 }
@@ -87,52 +132,53 @@ namespace Proxer.API.Utilities
 
 
         /// <summary>
-        /// Compute Levenshtein distance 
-        /// Memory efficient version
-        /// By: Sten Hjelmqvist
+        ///     Compute Levenshtein distance
+        ///     Memory efficient version
+        ///     By: Sten Hjelmqvist
         /// </summary>
         /// <param name="sRow"></param>
         /// <param name="sCol"></param>
         /// <returns>0==perfect match | 100==totaly different</returns>
-        internal static int iLD(String sRow, String sCol)
+        internal static int ILd(string sRow, string sCol)
         {
-            int RowLen = sRow.Length;
-            int ColLen = sCol.Length;
-            int RowIdx;
-            int ColIdx;
-            char Row_i;
-            char Col_j;
+            int rowLen = sRow.Length;
+            int colLen = sCol.Length;
+            int rowIdx;
+            int colIdx;
+            char rowI;
+            char colJ;
             int cost;
 
             if (Math.Max(sRow.Length, sCol.Length) > Math.Pow(2, 31))
-                throw (new Exception("\nMaximum string length in Levenshtein.iLD is " + Math.Pow(2, 31) + ".\nYours is " + Math.Max(sRow.Length, sCol.Length) + "."));
+                throw (new Exception("\nMaximum string length in Levenshtein.iLD is " + Math.Pow(2, 31) + ".\nYours is " +
+                                     Math.Max(sRow.Length, sCol.Length) + "."));
 
-            if (RowLen == 0)
+            if (rowLen == 0)
             {
-                return ColLen;
+                return colLen;
             }
-            if (ColLen == 0)
+            if (colLen == 0)
             {
-                return RowLen;
+                return rowLen;
             }
 
-            int[] v0 = new int[RowLen + 1];
-            int[] v1 = new int[RowLen + 1];
+            int[] v0 = new int[rowLen + 1];
+            int[] v1 = new int[rowLen + 1];
             int[] vTmp;
 
-            for (RowIdx = 1; RowIdx <= RowLen; RowIdx++)
+            for (rowIdx = 1; rowIdx <= rowLen; rowIdx++)
             {
-                v0[RowIdx] = RowIdx;
+                v0[rowIdx] = rowIdx;
             }
 
-            for (ColIdx = 1; ColIdx <= ColLen; ColIdx++)
+            for (colIdx = 1; colIdx <= colLen; colIdx++)
             {
-                v1[0] = ColIdx;
-                Col_j = sCol[ColIdx - 1];
-                for (RowIdx = 1; RowIdx <= RowLen; RowIdx++)
+                v1[0] = colIdx;
+                colJ = sCol[colIdx - 1];
+                for (rowIdx = 1; rowIdx <= rowLen; rowIdx++)
                 {
-                    Row_i = sRow[RowIdx - 1];
-                    if (Row_i == Col_j)
+                    rowI = sRow[rowIdx - 1];
+                    if (rowI == colJ)
                     {
                         cost = 0;
                     }
@@ -141,19 +187,19 @@ namespace Proxer.API.Utilities
                         cost = 1;
                     }
 
-                    int m_min = v0[RowIdx] + 1;
-                    int b = v1[RowIdx - 1] + 1;
-                    int c = v0[RowIdx - 1] + cost;
+                    int mMin = v0[rowIdx] + 1;
+                    int b = v1[rowIdx - 1] + 1;
+                    int c = v0[rowIdx - 1] + cost;
 
-                    if (b < m_min)
+                    if (b < mMin)
                     {
-                        m_min = b;
+                        mMin = b;
                     }
-                    if (c < m_min)
+                    if (c < mMin)
                     {
-                        m_min = c;
+                        mMin = c;
                     }
-                    v1[RowIdx] = m_min;
+                    v1[rowIdx] = mMin;
                 }
                 vTmp = v0;
                 v0 = v1;
@@ -162,8 +208,8 @@ namespace Proxer.API.Utilities
 
             // Value between 0 - 100
             // 0==perfect match 100==totaly different
-            int max = System.Math.Max(RowLen, ColLen);
-            return ((100 * v0[RowLen]) / max);
+            int max = Math.Max(rowLen, colLen);
+            return ((100*v0[rowLen])/max);
         }
     }
 }

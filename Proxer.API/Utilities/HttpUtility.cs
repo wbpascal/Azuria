@@ -1,21 +1,15 @@
-﻿using RestSharp;
-using System;
-using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Net;
-using System.Reflection;
-using System.Text;
+using RestSharp;
 
 namespace Proxer.API.Utilities
 {
     /// <summary>
-    /// 
     /// </summary>
     internal class HttpUtility
     {
         /// <summary>
-        /// 
         /// </summary>
         /// <param name="url"></param>
         /// <param name="cookies"></param>
@@ -29,13 +23,13 @@ namespace Proxer.API.Utilities
         }
 
         /// <summary>
-        /// 
         /// </summary>
         /// <param name="url"></param>
         /// <param name="cookies"></param>
         /// <param name="postArgs"></param>
         /// <returns></returns>
-        internal static string PostWebRequestResponse(string url, CookieContainer cookies, Dictionary<string, string> postArgs)
+        internal static string PostWebRequestResponse(string url, CookieContainer cookies,
+            Dictionary<string, string> postArgs)
         {
             RestClient lClient = new RestClient(url);
             lClient.CookieContainer = cookies;

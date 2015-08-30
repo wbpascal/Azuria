@@ -1,47 +1,38 @@
-﻿using Proxer.API.Notifications;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using Proxer.API.Notifications;
 
 namespace Proxer.API.EventArguments
 {
     /// <summary>
-    /// 
     /// </summary>
     public class NewsNotificationEventArgs : INotificationEventArgs
     {
-        private readonly Senpai senpai;
+        private readonly Senpai _senpai;
+
         /// <summary>
-        /// 
         /// </summary>
         /// <param name="count"></param>
         /// <param name="senpai"></param>
         internal NewsNotificationEventArgs(int count, Senpai senpai)
         {
-            this.senpai = senpai;
+            this._senpai = senpai;
             this.Type = NotificationEventArgsType.News;
             this.NotificationCount = count;
         }
 
         /// <summary>
-        /// 
-        /// </summary>
-        public int NotificationCount { get; private set; }
-        /// <summary>
-        /// 
-        /// </summary>
-        public NotificationEventArgsType Type { get; private set; }
-        /// <summary>
-        /// 
         /// </summary>
         public List<NewsObject> Benachrichtigungen
         {
-            get
-            {
-                return this.senpai.News;
-            }
+            get { return this._senpai.News; }
         }
+
+        /// <summary>
+        /// </summary>
+        public int NotificationCount { get; private set; }
+
+        /// <summary>
+        /// </summary>
+        public NotificationEventArgsType Type { get; private set; }
     }
 }

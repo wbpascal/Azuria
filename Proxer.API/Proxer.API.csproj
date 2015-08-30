@@ -62,6 +62,11 @@
     <Compile Include="EventArguments\INotificationEventArgs.cs" />
     <Compile Include="EventArguments\NewsNotificationEventArgs.cs" />
     <Compile Include="EventArguments\PMNotificationEventArgs.cs" />
+    <Compile Include="Main\Anime.cs" />
+    <Compile Include="Main\IAnimeMangaObject.cs" />
+    <Compile Include="Main\Manga.cs" />
+    <Compile Include="Main\Minor\Group.cs" />
+    <Compile Include="Main\Minor\Industry.cs" />
     <Compile Include="Notifications\FriendRequestObject.cs" />
     <Compile Include="Notifications\INotificationObject.cs" />
     <Compile Include="Notifications\NewsObject.cs" />
