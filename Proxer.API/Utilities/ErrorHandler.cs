@@ -15,9 +15,15 @@ namespace Proxer.API.Utilities
             this.Load();
         }
 
+        #region Properties
+
         /// <summary>
         /// </summary>
         internal List<string> WrongHtml { get; private set; }
+
+        #endregion
+
+        #region
 
         /// <summary>
         ///     Erstellt eine neue Liste der strings, die aussortiert werden sollen
@@ -69,5 +75,7 @@ namespace Proxer.API.Utilities
             this.WrongHtml.Add(wrongHtml);
             this.Save();
         }
+
+        #endregion
     }
 }

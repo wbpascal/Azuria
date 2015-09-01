@@ -47,6 +47,8 @@ namespace Proxer.API.Notifications
             this.Online = userOnline;
         }
 
+        #region Properties
+
         /// <summary>
         /// </summary>
         public DateTime Date { get; private set; }
@@ -61,11 +63,11 @@ namespace Proxer.API.Notifications
 
         /// <summary>
         /// </summary>
-        public bool Online { get; private set; }
+        public string Message { get; private set; }
 
         /// <summary>
         /// </summary>
-        public string UserName { get; private set; }
+        public bool Online { get; private set; }
 
         /// <summary>
         /// </summary>
@@ -73,7 +75,11 @@ namespace Proxer.API.Notifications
 
         /// <summary>
         /// </summary>
-        public string Message { get; private set; }
+        public string UserName { get; private set; }
+
+        #endregion
+
+        #region
 
         /// <summary>
         /// </summary>
@@ -83,7 +89,9 @@ namespace Proxer.API.Notifications
             if (this._senpai.LoggedIn && !this._accepted && !this._denied)
             {
                 Dictionary<string, string> lPostArgs = new Dictionary<string, string> {{"type", "accept"}};
-                string lResponse = HttpUtility.PostWebRequestResponse("https://proxer.me/user/my?format=json&cid=" + this.Id, this._senpai.LoginCookies, lPostArgs);
+                string lResponse =
+                    HttpUtility.PostWebRequestResponse("https://proxer.me/user/my?format=json&cid=" + this.Id,
+                        this._senpai.LoginCookies, lPostArgs);
 
                 if (lResponse.StartsWith("{\"error\":0"))
                 {
@@ -103,7 +111,9 @@ namespace Proxer.API.Notifications
             if (this._senpai.LoggedIn && !this._accepted && !this._denied)
             {
                 Dictionary<string, string> lPostArgs = new Dictionary<string, string> {{"type", "deny"}};
-                string lResponse = HttpUtility.PostWebRequestResponse("https://proxer.me/user/my?format=json&cid=" + this.Id, this._senpai.LoginCookies, lPostArgs);
+                string lResponse =
+                    HttpUtility.PostWebRequestResponse("https://proxer.me/user/my?format=json&cid=" + this.Id,
+                        this._senpai.LoginCookies, lPostArgs);
 
                 if (lResponse.StartsWith("{\"error\":0"))
                 {
@@ -126,7 +136,8 @@ namespace Proxer.API.Notifications
                 string lResponse =
                     HttpUtility.PostWebRequestResponse(
                         "https://proxer.me/user/my?format=json&desc=" +
-                        System.Web.HttpUtility.JavaScriptStringEncode(pNewDescription) + "&cid=" + this.Id, this._senpai.LoginCookies, lPostArgs);
+                        System.Web.HttpUtility.JavaScriptStringEncode(pNewDescription) + "&cid=" + this.Id,
+                        this._senpai.LoginCookies, lPostArgs);
 
                 if (lResponse.StartsWith("{\"error\":0"))
                 {
@@ -137,5 +148,7 @@ namespace Proxer.API.Notifications
             }
             return false;
         }
+
+        #endregion
     }
 }

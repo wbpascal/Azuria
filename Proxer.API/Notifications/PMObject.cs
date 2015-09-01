@@ -48,6 +48,8 @@ namespace Proxer.API.Notifications
             this.Id = conId;
         }
 
+        #region Properties
+
         /// <summary>
         /// </summary>
         public string ConferenceTitle { get; private set; }
@@ -56,6 +58,13 @@ namespace Proxer.API.Notifications
         ///     Gibt die ID der Konferenz zurück.
         /// </summary>
         public int Id { get; private set; }
+
+        /// <summary>
+        /// </summary>
+        public string Message
+        {
+            get { throw new NotImplementedException(); }
+        }
 
         /// <summary>
         /// </summary>
@@ -68,17 +77,12 @@ namespace Proxer.API.Notifications
 
         /// <summary>
         /// </summary>
-        public string UserName { get; private set; }
-
-        /// <summary>
-        /// </summary>
         public NotificationObjectType Type { get; private set; }
 
         /// <summary>
         /// </summary>
-        public string Message
-        {
-            get { throw new NotImplementedException(); }
-        }
+        public string UserName { get; private set; }
+
+        #endregion
     }
 }

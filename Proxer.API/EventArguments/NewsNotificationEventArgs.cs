@@ -20,6 +20,8 @@ namespace Proxer.API.EventArguments
             this.NotificationCount = count;
         }
 
+        #region Properties
+
         /// <summary>
         /// </summary>
         public List<NewsObject> Benachrichtigungen
@@ -34,5 +36,7 @@ namespace Proxer.API.EventArguments
         /// <summary>
         /// </summary>
         public NotificationEventArgsType Type { get; private set; }
+
+        #endregion
     }
 }

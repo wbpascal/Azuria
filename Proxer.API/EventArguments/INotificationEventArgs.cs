@@ -4,6 +4,8 @@
     /// </summary>
     public interface INotificationEventArgs
     {
+        #region Properties
+
         /// <summary>
         /// </summary>
         int NotificationCount { get; }
@@ -11,26 +13,7 @@
         /// <summary>
         /// </summary>
         NotificationEventArgsType Type { get; }
-    }
 
-    /// <summary>
-    /// </summary>
-    public enum NotificationEventArgsType
-    {
-        /// <summary>
-        /// </summary>
-        AnimeManga,
-
-        /// <summary>
-        /// </summary>
-        Friend,
-
-        /// <summary>
-        /// </summary>
-        News,
-
-        /// <summary>
-        /// </summary>
-        PrivateMessage
+        #endregion
     }
 }

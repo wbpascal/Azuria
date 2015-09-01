@@ -61,8 +61,11 @@
     <Compile Include="EventArguments\FriendNotificationEventArgs.cs" />
     <Compile Include="EventArguments\INotificationEventArgs.cs" />
     <Compile Include="EventArguments\NewsNotificationEventArgs.cs" />
+    <Compile Include="EventArguments\NotificationEventArgsType.cs" />
     <Compile Include="EventArguments\PMNotificationEventArgs.cs" />
     <Compile Include="Main\Anime.cs" />
+    <Compile Include="Main\AnimeMangaStatus.cs" />
+    <Compile Include="Main\AnimeMangaType.cs" />
     <Compile Include="Main\IAnimeMangaObject.cs" />
     <Compile Include="Main\Manga.cs" />
     <Compile Include="Main\Minor\Group.cs" />
@@ -70,6 +73,7 @@
     <Compile Include="Notifications\FriendRequestObject.cs" />
     <Compile Include="Notifications\INotificationObject.cs" />
     <Compile Include="Notifications\NewsObject.cs" />
+    <Compile Include="Notifications\NotificationObjectType.cs" />
     <Compile Include="Notifications\PMObject.cs" />
     <Compile Include="Notifications\AnimeMangaUpdateObject.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

@@ -13,6 +13,8 @@ namespace Proxer.API.Notifications
             this.Type = NotificationObjectType.News;
         }
 
+        #region Properties
+
         /// <summary>
         ///     Gibt die ID der Kategorie, in der sich die News befindet, zurück.
         /// </summary>
@@ -42,6 +44,13 @@ namespace Proxer.API.Notifications
         ///     Gibt Angaben zum CSS-Style des Bildes zurück.
         /// </summary>
         public string ImageStyle { get; set; }
+
+        /// <summary>
+        /// </summary>
+        public string Message
+        {
+            get { return this.Description; }
+        }
 
         /// <summary>
         /// </summary>
@@ -79,6 +88,10 @@ namespace Proxer.API.Notifications
         public long Time { get; set; }
 
         /// <summary>
+        /// </summary>
+        public NotificationObjectType Type { get; private set; }
+
+        /// <summary>
         ///     Gibt die ID des Authors zurück.
         /// </summary>
         public int Uid { get; set; }
@@ -88,15 +101,6 @@ namespace Proxer.API.Notifications
         /// </summary>
         public string Uname { get; set; }
 
-        /// <summary>
-        /// </summary>
-        public NotificationObjectType Type { get; private set; }
-
-        /// <summary>
-        /// </summary>
-        public string Message
-        {
-            get { return this.Description; }
-        }
+        #endregion
     }
 }

@@ -36,6 +36,8 @@ namespace Proxer.API.Notifications
             this.Id = id;
         }
 
+        #region Properties
+
         /// <summary>
         ///     Die ID des Anime/Manga
         /// </summary>
@@ -44,6 +46,10 @@ namespace Proxer.API.Notifications
         /// <summary>
         /// </summary>
         public Uri Link { get; private set; }
+
+        /// <summary>
+        /// </summary>
+        public string Message { get; private set; }
 
         /// <summary>
         ///     Der Name des Anime/Mangas
@@ -59,8 +65,6 @@ namespace Proxer.API.Notifications
         /// </summary>
         public NotificationObjectType Type { get; private set; }
 
-        /// <summary>
-        /// </summary>
-        public string Message { get; private set; }
+        #endregion
     }
 }

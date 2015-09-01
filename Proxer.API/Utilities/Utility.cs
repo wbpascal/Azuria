@@ -10,6 +10,8 @@ namespace Proxer.API.Utilities
     /// </summary>
     public class Utility
     {
+        #region
+
         /// <summary>
         /// </summary>
         /// <param name="id"></param>
@@ -23,40 +25,41 @@ namespace Proxer.API.Utilities
                     .Replace("</link>", "")
                     .Replace("\n", "");
 
-            if (CheckForCorrectResponse(lResponse, senpai.ErrHandler))
+            if (!CheckForCorrectResponse(lResponse, senpai.ErrHandler)) return null;
+            try
             {
-                try
-                {
-                    lDocument.LoadHtml(lResponse);
+                lDocument.LoadHtml(lResponse);
 
-                    if (lDocument.ParseErrors.Count() == 0)
+                if (lDocument.ParseErrors.Any())
+                    lDocument.LoadHtml(TryFixParseErrors(lDocument.DocumentNode.InnerHtml, lDocument.ParseErrors));
+
+                if (!lDocument.ParseErrors.Any())
+                {
+                    HtmlNode lNode =
+                        lDocument.DocumentNode.ChildNodes[1].ChildNodes[2].ChildNodes[2].ChildNodes[2].ChildNodes[1]
+                            .ChildNodes[1];
+                    if (lNode.InnerText.Equals("Episoden"))
                     {
-                        if (
-                            lDocument.DocumentNode.ChildNodes[1].ChildNodes[2].ChildNodes[2].ChildNodes[2].ChildNodes[1]
-                                .ChildNodes[1].InnerText.Equals("Episode"))
-                        {
-                            return
-                                new Anime(
-                                    lDocument.DocumentNode.ChildNodes[1].ChildNodes[2].ChildNodes[2].ChildNodes[2]
-                                        .ChildNodes[5].ChildNodes[2].FirstChild.ChildNodes[1].FirstChild.ChildNodes[1]
-                                        .ChildNodes[1].InnerText, id);
-                        }
-                        if (
-                            lDocument.DocumentNode.ChildNodes[1].ChildNodes[2].ChildNodes[2].ChildNodes[2].ChildNodes[1]
-                                .ChildNodes[1].InnerText.Equals("Kapitel"))
-                        {
-                            return
-                                new Manga(
-                                    lDocument.DocumentNode.ChildNodes[1].ChildNodes[2].ChildNodes[2].ChildNodes[2]
-                                        .ChildNodes[5].ChildNodes[2].FirstChild.ChildNodes[1].FirstChild.ChildNodes[1]
-                                        .ChildNodes[1].InnerText, id);
-                        }
+                        return
+                            new Anime(
+                                lDocument.DocumentNode.ChildNodes[1].ChildNodes[2].ChildNodes[2].ChildNodes[2]
+                                    .ChildNodes[5].ChildNodes[2].FirstChild.ChildNodes[1].FirstChild.ChildNodes[1]
+                                    .ChildNodes[1].InnerText, id, senpai);
+                    }
+
+                    if (lNode.InnerText.Equals("Kapitel"))
+                    {
+                        return
+                            new Manga(
+                                lDocument.DocumentNode.ChildNodes[1].ChildNodes[2].ChildNodes[2].ChildNodes[2]
+                                    .ChildNodes[5].ChildNodes[2].FirstChild.ChildNodes[1].FirstChild.ChildNodes[1]
+                                    .ChildNodes[1].InnerText, id, senpai);
                     }
                 }
-                catch (NullReferenceException)
-                {
-                    senpai.ErrHandler.Add(lResponse);
-                }
+            }
+            catch (NullReferenceException)
+            {
+                senpai.ErrHandler.Add(lResponse);
             }
 
             return null;
@@ -71,18 +74,20 @@ namespace Proxer.API.Utilities
         internal static List<string> GetTagContents(string source, string startTag, string endTag)
         {
             List<string> stringsFound = new List<string>();
-            int index = source.IndexOf(startTag) + startTag.Length;
+            int index = source.IndexOf(startTag, StringComparison.Ordinal) + startTag.Length;
 
             try
             {
                 while (index != startTag.Length - 1)
                 {
-                    stringsFound.Add(source.Substring(index, source.IndexOf(endTag, index) - index));
-                    index = source.IndexOf(startTag, index) + startTag.Length;
+                    stringsFound.Add(source.Substring(index,
+                        source.IndexOf(endTag, index, StringComparison.Ordinal) - index));
+                    index = source.IndexOf(startTag, index, StringComparison.Ordinal) + startTag.Length;
                 }
             }
             catch (Exception)
             {
+                // ignored
             }
             return stringsFound;
         }
@@ -105,11 +110,7 @@ namespace Proxer.API.Utilities
         /// <returns></returns>
         internal static bool CheckForCorrectResponse(string response, ErrorHandler errHandler)
         {
-            foreach (string curErrorResponse in errHandler.WrongHtml)
-            {
-                if (ILd(response, curErrorResponse) <= 15) return false;
-            }
-            return true;
+            return errHandler.WrongHtml.All(curErrorResponse => ILd(response, curErrorResponse) > 15);
         }
 
         /// <summary>
@@ -119,12 +120,11 @@ namespace Proxer.API.Utilities
         /// <returns></returns>
         internal static string TryFixParseErrors(string html, IEnumerable<HtmlParseError> parseErrors)
         {
-            if (parseErrors.Count() > 0)
+            IEnumerable<HtmlParseError> htmlParseErrors = parseErrors as HtmlParseError[] ?? parseErrors.ToArray();
+            if (htmlParseErrors.Any())
             {
-                foreach (HtmlParseError curError in parseErrors)
-                {
-                    html = html.Remove(curError.StreamPosition, curError.SourceText.Length);
-                }
+                html = htmlParseErrors.Aggregate(html,
+                    (current, curError) => current.Remove(curError.StreamPosition, curError.SourceText.Length));
             }
 
             return html;
@@ -145,12 +145,9 @@ namespace Proxer.API.Utilities
             int colLen = sCol.Length;
             int rowIdx;
             int colIdx;
-            char rowI;
-            char colJ;
-            int cost;
 
             if (Math.Max(sRow.Length, sCol.Length) > Math.Pow(2, 31))
-                throw (new Exception("\nMaximum string length in Levenshtein.iLD is " + Math.Pow(2, 31) + ".\nYours is " +
+                throw (new Exception("Maximum string length in Levenshtein.iLD is " + Math.Pow(2, 31) + ".\nYours is " +
                                      Math.Max(sRow.Length, sCol.Length) + "."));
 
             if (rowLen == 0)
@@ -164,7 +161,6 @@ namespace Proxer.API.Utilities
 
             int[] v0 = new int[rowLen + 1];
             int[] v1 = new int[rowLen + 1];
-            int[] vTmp;
 
             for (rowIdx = 1; rowIdx <= rowLen; rowIdx++)
             {
@@ -174,18 +170,11 @@ namespace Proxer.API.Utilities
             for (colIdx = 1; colIdx <= colLen; colIdx++)
             {
                 v1[0] = colIdx;
-                colJ = sCol[colIdx - 1];
+                char colJ = sCol[colIdx - 1];
                 for (rowIdx = 1; rowIdx <= rowLen; rowIdx++)
                 {
-                    rowI = sRow[rowIdx - 1];
-                    if (rowI == colJ)
-                    {
-                        cost = 0;
-                    }
-                    else
-                    {
-                        cost = 1;
-                    }
+                    char rowI = sRow[rowIdx - 1];
+                    int cost = rowI == colJ ? 0 : 1;
 
                     int mMin = v0[rowIdx] + 1;
                     int b = v1[rowIdx - 1] + 1;
@@ -201,7 +190,7 @@ namespace Proxer.API.Utilities
                     }
                     v1[rowIdx] = mMin;
                 }
-                vTmp = v0;
+                int[] vTmp = v0;
                 v0 = v1;
                 v1 = vTmp;
             }
@@ -211,5 +200,7 @@ namespace Proxer.API.Utilities
             int max = Math.Max(rowLen, colLen);
             return ((100*v0[rowLen])/max);
         }
+
+        #endregion
     }
 }

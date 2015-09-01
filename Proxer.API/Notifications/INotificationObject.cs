@@ -4,6 +4,8 @@
     /// </summary>
     public interface INotificationObject
     {
+        #region Properties
+
         /// <summary>
         /// </summary>
         /// <returns></returns>
@@ -13,26 +15,7 @@
         /// </summary>
         /// <returns></returns>
         NotificationObjectType Type { get; }
+
+        #endregion
     }
-
-    /// <summary>
-    /// </summary>
-    public enum NotificationObjectType
-    {
-        /// <summary>
-        /// </summary>
-        FriendRequest,
-
-        /// <summary>
-        /// </summary>
-        News,
-
-        /// <summary>
-        /// </summary>
-        PrivateMessage,
-
-        /// <summary>
-        /// </summary>
-        AnimeManga
-    };
 }

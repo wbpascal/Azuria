@@ -8,9 +8,15 @@ namespace Proxer.API.Main
     /// </summary>
     public interface IAnimeMangaObject
     {
+        #region Properties
+
         /// <summary>
         /// </summary>
         string Beschreibung { get; }
+
+        /// <summary>
+        /// </summary>
+        Uri CoverUri { get; }
 
         /// <summary>
         /// </summary>
@@ -18,7 +24,7 @@ namespace Proxer.API.Main
 
         /// <summary>
         /// </summary>
-        Uri[] Fsk { get; }
+        Dictionary<string, Uri> Fsk { get; }
 
         /// <summary>
         /// </summary>
@@ -26,7 +32,7 @@ namespace Proxer.API.Main
 
         /// <summary>
         /// </summary>
-        Group Gruppen { get; }
+        Group[] Gruppen { get; }
 
         /// <summary>
         /// </summary>
@@ -53,46 +59,25 @@ namespace Proxer.API.Main
         AnimeMangaType ObjectType { get; }
 
         /// <summary>
-        ///     Jahr | Winter/Frühling/Sommer/Herbst
         /// </summary>
-        Dictionary<int, int> Season { get; }
+        string[] Season { get; }
+
+        /// <summary>
+        /// </summary>
+        AnimeMangaStatus Status { get; }
 
         /// <summary>
         /// </summary>
         string Synonym { get; }
-    }
 
-    /// <summary>
-    /// </summary>
-    public enum AnimeMangaType
-    {
-        /// <summary>
-        /// </summary>
-        Anime,
+        #endregion
+
+        #region
 
         /// <summary>
         /// </summary>
-        Manga
-    }
+        void Init();
 
-    /// <summary>
-    /// </summary>
-    public enum AnimeMangaStatus
-    {
-        /// <summary>
-        /// </summary>
-        PreAiring,
-
-        /// <summary>
-        /// </summary>
-        Airing,
-
-        /// <summary>
-        /// </summary>
-        Abgebrochen,
-
-        /// <summary>
-        /// </summary>
-        Abgeschlossen
+        #endregion
     }
 }

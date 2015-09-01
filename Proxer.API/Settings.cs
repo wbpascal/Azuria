@@ -10,6 +10,8 @@ namespace Proxer.API.Properties
     //  Das SettingsSaving-Ereignis wird ausgelöst, bevor die Einstellungswerte gespeichert werden.
     internal sealed partial class Settings
     {
+        #region
+
         private void SettingChangingEventHandler(object sender, SettingChangingEventArgs e)
         {
             // Fügen Sie hier Code zum Behandeln des SettingChangingEvent-Ereignisses hinzu.
@@ -19,5 +21,7 @@ namespace Proxer.API.Properties
         {
             // Fügen Sie hier Code zum Behandeln des SettingsSaving-Ereignisses hinzu.
         }
+
+        #endregion
     }
 }

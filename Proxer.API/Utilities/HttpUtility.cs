@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Net;
+using System.Text;
 using RestSharp;
 
 namespace Proxer.API.Utilities
@@ -9,6 +10,8 @@ namespace Proxer.API.Utilities
     /// </summary>
     internal class HttpUtility
     {
+        #region
+
         /// <summary>
         /// </summary>
         /// <param name="url"></param>
@@ -16,10 +19,13 @@ namespace Proxer.API.Utilities
         /// <returns></returns>
         internal static string GetWebRequestResponse(string url, CookieContainer cookies)
         {
-            RestClient lClient = new RestClient(url);
-            lClient.CookieContainer = cookies;
+            RestClient lClient = new RestClient(url)
+            {
+                CookieContainer = cookies,
+                Encoding = Encoding.UTF8
+            };
             RestRequest lRequest = new RestRequest(Method.GET);
-            return lClient.Execute(lRequest).Content;
+            return System.Web.HttpUtility.HtmlDecode(lClient.Execute(lRequest).Content);
         }
 
         /// <summary>
@@ -31,11 +37,16 @@ namespace Proxer.API.Utilities
         internal static string PostWebRequestResponse(string url, CookieContainer cookies,
             Dictionary<string, string> postArgs)
         {
-            RestClient lClient = new RestClient(url);
-            lClient.CookieContainer = cookies;
+            RestClient lClient = new RestClient(url)
+            {
+                CookieContainer = cookies,
+                Encoding = Encoding.UTF8
+            };
             RestRequest lRequest = new RestRequest(Method.POST);
             postArgs.ToList().ForEach(x => lRequest.AddParameter(x.Key, x.Value));
-            return lClient.Execute(lRequest).Content;
+            return System.Web.HttpUtility.HtmlDecode(lClient.Execute(lRequest).Content);
         }
+
+        #endregion
     }
 }
