@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using HtmlAgilityPack;
+using Proxer.API.Exceptions;
 using Proxer.API.Main.Minor;
 using Proxer.API.Utilities;
 
@@ -11,6 +12,27 @@ namespace Proxer.API.Main
     /// </summary>
     public class Anime : IAnimeMangaObject
     {
+        /// <summary>
+        /// </summary>
+        public enum Language
+        {
+            /// <summary>
+            /// </summary>
+            GerSub,
+
+            /// <summary>
+            /// </summary>
+            EngSub,
+
+            /// <summary>
+            /// </summary>
+            EngDub,
+
+            /// <summary>
+            /// </summary>
+            GerDub
+        }
+
         private readonly Senpai _senpai;
 
         internal Anime(string name, int id, Senpai senpai)
@@ -35,6 +57,10 @@ namespace Proxer.API.Main
         /// <summary>
         /// </summary>
         public string EnglischTitel { get; private set; }
+
+        /// <summary>
+        /// </summary>
+        public int EpisodenZahl { get; private set; }
 
         /// <summary>
         /// </summary>
@@ -78,6 +104,10 @@ namespace Proxer.API.Main
 
         /// <summary>
         /// </summary>
+        public Language[] Sprachen { get; private set; }
+
+        /// <summary>
+        /// </summary>
         public AnimeMangaStatus Status { get; private set; }
 
         /// <summary>
@@ -93,11 +123,33 @@ namespace Proxer.API.Main
         public void Init()
         {
             this.InitMain();
+            this.InitEpisodeCount();
+            this.InitAvailableLang();
         }
 
         #endregion
 
         #region
+
+        /// <summary>
+        /// </summary>
+        /// <param name="language"></param>
+        /// <returns></returns>
+        /// <exception cref="InitializeNeededException">Wenn der Anime noch nicht initialisiert ist.</exception>
+        public Episode[] GetEpisodes(Language language)
+        {
+            if (this.Sprachen == null) throw new InitializeNeededException();
+
+            if (!this.Sprachen.Contains(language)) return null;
+
+            List<Episode> lEpisodes = new List<Episode>();
+            for (int i = 1; i <= this.EpisodenZahl; i++)
+            {
+                lEpisodes.Add(new Episode(this, i, language, this._senpai));
+            }
+
+            return lEpisodes.ToArray();
+        }
 
         private void InitMain()
         {
@@ -112,10 +164,6 @@ namespace Proxer.API.Main
             {
                 lDocument.LoadHtml(lResponse);
 
-                if (lDocument.ParseErrors.Any())
-                    lDocument.LoadHtml(Utility.TryFixParseErrors(lDocument.DocumentNode.InnerHtml, lDocument.ParseErrors));
-
-                if (lDocument.ParseErrors.Any()) return;
                 HtmlNode lTableNode =
                     lDocument.DocumentNode.ChildNodes[1].ChildNodes[2].ChildNodes[2].ChildNodes[2].ChildNodes[5]
                         .ChildNodes[2].FirstChild.ChildNodes[1].FirstChild;
@@ -231,16 +279,287 @@ namespace Proxer.API.Main
                                 if (htmlNode.Name.Equals("br")) this.Beschreibung += "\n";
                                 else this.Beschreibung += htmlNode.InnerText;
                             }
+                            if (this.Beschreibung.StartsWith("\n")) this.Beschreibung = this.Beschreibung.TrimStart();
                             break;
                     }
                 }
             }
             catch (NullReferenceException)
             {
-                this._senpai.ErrHandler.Add(lResponse);
+            }
+            catch (IndexOutOfRangeException)
+            {
+            }
+        }
+
+        private void InitAvailableLang()
+        {
+            if (!this._senpai.LoggedIn) return;
+
+            HtmlDocument lDocument = new HtmlDocument();
+            string lResponse =
+                HttpUtility.GetWebRequestResponse("http://proxer.me/edit/entry/" + this.Id + "/languages",
+                    this._senpai.LoginCookies)
+                    .Replace("</link>", "")
+                    .Replace("\n", "");
+
+            if (!Utility.CheckForCorrectResponse(lResponse, this._senpai.ErrHandler)) return;
+
+            try
+            {
+                lDocument.LoadHtml(lResponse);
+
+                List<Language> languageList = new List<Language>();
+                foreach (
+                    HtmlNode childNode in
+                        lDocument.DocumentNode.ChildNodes[1].ChildNodes[2].ChildNodes[2].ChildNodes[2].ChildNodes[4]
+                            .ChildNodes[5].ChildNodes.Where(
+                                childNode =>
+                                    childNode.ChildNodes.Count > 3 &&
+                                    childNode.ChildNodes[3].FirstChild.GetAttributeValue("value", "+").Equals("-")))
+                {
+                    switch (childNode.FirstChild.InnerText)
+                    {
+                        case "GerSub":
+                            languageList.Add(Language.GerSub);
+                            break;
+                        case "EngSub":
+                            languageList.Add(Language.EngSub);
+                            break;
+                        case "EngDub":
+                            languageList.Add(Language.EngDub);
+                            break;
+                        case "GerDub":
+                            languageList.Add(Language.GerDub);
+                            break;
+                    }
+                }
+
+                this.Sprachen = languageList.ToArray();
+            }
+            catch (NullReferenceException)
+            {
+            }
+            catch (IndexOutOfRangeException)
+            {
+            }
+        }
+
+        private void InitEpisodeCount()
+        {
+            if (!this._senpai.LoggedIn) return;
+
+            HtmlDocument lDocument = new HtmlDocument();
+            string lResponse =
+                HttpUtility.GetWebRequestResponse("http://proxer.me/edit/entry/" + this.Id + "/count",
+                    this._senpai.LoginCookies)
+                    .Replace("</link>", "")
+                    .Replace("\n", "");
+
+            if (!Utility.CheckForCorrectResponse(lResponse, this._senpai.ErrHandler)) return;
+
+            try
+            {
+                lDocument.LoadHtml(lResponse);
+
+                if (
+                    lDocument.DocumentNode.ChildNodes[1].ChildNodes[2].ChildNodes[2].ChildNodes[2].ChildNodes[4]
+                        .ChildNodes[5].FirstChild.FirstChild.InnerText.Equals("Aktuelle Anzahl:"))
+                    this.EpisodenZahl =
+                        Convert.ToInt32(
+                            lDocument.DocumentNode.ChildNodes[1].ChildNodes[2].ChildNodes[2].ChildNodes[2].ChildNodes[4]
+                                .ChildNodes[5].FirstChild.ChildNodes[1].InnerText);
+            }
+            catch (NullReferenceException)
+            {
+            }
+            catch (IndexOutOfRangeException)
+            {
             }
         }
 
         #endregion
+
+        /// <summary>
+        /// </summary>
+        public class Episode
+        {
+            private readonly Anime _anime;
+            private readonly Language _lang;
+            private readonly Senpai _senpai;
+
+            internal Episode(Anime anime, int nr, Language lang, Senpai senpai)
+            {
+                this.EpisodeNr = nr;
+                this._anime = anime;
+                this._lang = lang;
+                this._senpai = senpai;
+            }
+
+            #region Properties
+
+            /// <summary>
+            /// </summary>
+            public int EpisodeNr { get; set; }
+
+            /// <summary>
+            ///     Wenn nach Init() immer noch null, dann sind keine Streams für diese Episode verfügbar.
+            /// </summary>
+            public Dictionary<Stream.StreamPartner, Stream> Streams { get; private set; }
+
+            #endregion
+
+            #region
+
+            /// <summary>
+            /// </summary>
+            /// <exception cref="NotLoggedInException"></exception>
+            /// <exception cref="CaptchaException"></exception>
+            public void Init()
+            {
+                if (!this._senpai.LoggedIn) throw new NotLoggedInException();
+
+                HtmlDocument lDocument = new HtmlDocument();
+                string lResponse =
+                    HttpUtility.GetWebRequestResponse(
+                        "https://proxer.me/watch/" + this._anime.Id + "/" + this.EpisodeNr + "/" +
+                        this._lang.ToString().ToLower(),
+                        this._senpai.MobileLoginCookies)
+                        .Replace("</link>", "")
+                        .Replace("\n", "");
+
+                string test = "https://proxer.me/watch/" + this._anime.Id + "/" + this.EpisodeNr + "/" +
+                              this._lang.ToString().ToLower();
+                int lTest = test.Length;
+
+                if (!Utility.CheckForCorrectResponse(lResponse, this._senpai.ErrHandler)) return;
+                try
+                {
+                    lDocument.LoadHtml(lResponse);
+
+                    HtmlNode[] lAllHtmlNodes = Utility.GetAllHtmlNodes(lDocument.DocumentNode.ChildNodes).ToArray();
+
+                    if (
+                        lAllHtmlNodes.Any(
+                            x =>
+                                x.Name.Equals("img") && x.HasAttributes &&
+                                x.GetAttributeValue("src", "").Equals("/images/misc/stopyui.jpg")))
+                        throw new CaptchaException();
+
+                    if (
+                        lAllHtmlNodes.Any(
+                            x =>
+                                x.Name.Equals("img") && x.HasAttributes &&
+                                x.GetAttributeValue("src", "").Equals("/images/misc/404.png")))
+                        return;
+
+                    this.Streams = new Dictionary<Stream.StreamPartner, Stream>();
+
+                    foreach (
+                        HtmlNode childNode in
+                            lDocument.DocumentNode.ChildNodes[1].ChildNodes[2].FirstChild.ChildNodes[1].ChildNodes[1]
+                                .ChildNodes.Where(childNode => !childNode.FirstChild.Name.Equals("#text")))
+                    {
+                        switch (childNode.InnerText)
+                        {
+                            case "Dailymotion":
+                                this.Streams.Add(Stream.StreamPartner.Dailymotion,
+                                    new Stream(
+                                        new Uri(childNode.FirstChild.GetAttributeValue("href", "http://proxer.me/")),
+                                        Stream.StreamPartner.Dailymotion));
+                                break;
+                            case "MP4Upload":
+                                this.Streams.Add(Stream.StreamPartner.Mp4Upload,
+                                    new Stream(
+                                        new Uri(childNode.FirstChild.GetAttributeValue("href", "http://proxer.me/")),
+                                        Stream.StreamPartner.Mp4Upload));
+                                break;
+                            case "Streamcloud":
+                                this.Streams.Add(Stream.StreamPartner.Streamcloud,
+                                    new Stream(
+                                        new Uri(childNode.FirstChild.GetAttributeValue("href", "http://proxer.me/")),
+                                        Stream.StreamPartner.Streamcloud));
+                                break;
+                            case "Videobam":
+                                this.Streams.Add(Stream.StreamPartner.Videobam,
+                                    new Stream(
+                                        new Uri(childNode.FirstChild.GetAttributeValue("href", "http://proxer.me/")),
+                                        Stream.StreamPartner.Videobam));
+                                break;
+                            case "YourUpload":
+                                this.Streams.Add(Stream.StreamPartner.YourUpload,
+                                    new Stream(
+                                        new Uri(childNode.FirstChild.GetAttributeValue("href", "http://proxer.me/")),
+                                        Stream.StreamPartner.YourUpload));
+                                break;
+                            case "Proxer-Stream":
+                                this.Streams.Add(Stream.StreamPartner.ProxerStream,
+                                    new Stream(
+                                        new Uri(childNode.FirstChild.GetAttributeValue("href", "http://proxer.me/")),
+                                        Stream.StreamPartner.ProxerStream));
+                                break;
+                        }
+                    }
+                }
+                catch (NullReferenceException)
+                {
+                }
+                catch (IndexOutOfRangeException)
+                {
+                }
+            }
+
+            #endregion
+
+            /// <summary>
+            /// </summary>
+            public class Stream
+            {
+                /// <summary>
+                /// </summary>
+                public enum StreamPartner
+                {
+                    /// <summary>
+                    /// </summary>
+                    Streamcloud,
+
+                    /// <summary>
+                    /// </summary>
+                    Mp4Upload,
+
+                    /// <summary>
+                    /// </summary>
+                    Dailymotion,
+
+                    /// <summary>
+                    /// </summary>
+                    Videobam,
+
+                    /// <summary>
+                    /// </summary>
+                    YourUpload,
+
+                    /// <summary>
+                    /// </summary>
+                    ProxerStream
+                }
+
+                private readonly StreamPartner _streamPartner;
+
+                internal Stream(Uri link, StreamPartner streamPartner)
+                {
+                    this.Link = link;
+                    this._streamPartner = streamPartner;
+                }
+
+                #region Properties
+
+                /// <summary>
+                /// </summary>
+                public Uri Link { get; private set; }
+
+                #endregion
+            }
+        }
     }
 }

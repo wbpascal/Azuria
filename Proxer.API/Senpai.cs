@@ -7,6 +7,7 @@ using HtmlAgilityPack;
 using Newtonsoft.Json;
 using Proxer.API.Community;
 using Proxer.API.EventArguments;
+using Proxer.API.Exceptions;
 using Proxer.API.Notifications;
 using Proxer.API.Utilities;
 
@@ -169,6 +170,23 @@ namespace Proxer.API
         public User Me { get; private set; }
 
         /// <summary>
+        /// </summary>
+        public CookieContainer MobileLoginCookies
+        {
+            get
+            {
+                if (this.LoginCookies == null) return null;
+                CookieContainer lMobileCookies = new CookieContainer();
+                foreach (Cookie loginCookie in this.LoginCookies.GetCookies(new Uri("https://proxer.me/")))
+                {
+                    lMobileCookies.Add(loginCookie);
+                }
+                lMobileCookies.Add(new Cookie("device", "mobile", "/", "proxer.me"));
+                return lMobileCookies;
+            }
+        }
+
+        /// <summary>
         ///     Gibt die letzten 15 News in einer Liste zurück
         /// </summary>
         public List<NewsObject> News
@@ -214,29 +232,27 @@ namespace Proxer.API
             string lResponse = HttpUtility.PostWebRequestResponse("https://proxer.me/login?format=json&action=login",
                 this.LoginCookies, postArgs);
 
-            if (Utility.CheckForCorrectResponse(lResponse, this.ErrHandler))
+            if (!Utility.CheckForCorrectResponse(lResponse, this.ErrHandler)) return false;
+            try
             {
-                try
+                Dictionary<string, string> responseDes =
+                    JsonConvert.DeserializeObject<Dictionary<string, string>>(lResponse);
+
+                if (responseDes["error"].Equals("0"))
                 {
-                    Dictionary<string, string> responseDes =
-                        JsonConvert.DeserializeObject<Dictionary<string, string>>(lResponse);
+                    this._userId = Convert.ToInt32(responseDes["uid"]);
+                    this.Me = new User(username, this._userId, this);
+                    this.LoggedIn = true;
 
-                    if (responseDes["error"].Equals("0"))
-                    {
-                        this._userId = Convert.ToInt32(responseDes["uid"]);
-                        this.Me = new User(username, this._userId, this);
-                        this.LoggedIn = true;
-
-                        return true;
-                    }
-                    this.LoggedIn = false;
-
-                    return false;
+                    return true;
                 }
-                catch (Exception)
-                {
-                    this.ErrHandler.Add(lResponse);
-                }
+                this.LoggedIn = false;
+
+                return false;
+            }
+            catch (Exception)
+            {
+                this.ErrHandler.Add(lResponse);
             }
 
             return false;
@@ -248,32 +264,28 @@ namespace Proxer.API
         /// <returns></returns>
         public bool CheckLogin()
         {
-            if (this.LoggedIn)
+            if (!this.LoggedIn) return false;
+            string lResponse = HttpUtility.GetWebRequestResponse(
+                "https://proxer.me/login?format=json&action=login", this.LoginCookies);
+
+            if (!Utility.CheckForCorrectResponse(lResponse, this.ErrHandler)) return false;
+            try
             {
-                string lResponse = HttpUtility.GetWebRequestResponse(
-                    "https://proxer.me/login?format=json&action=login", this.LoginCookies);
+                Dictionary<string, string> responseDes =
+                    JsonConvert.DeserializeObject<Dictionary<string, string>>(lResponse);
 
-                if (Utility.CheckForCorrectResponse(lResponse, this.ErrHandler))
+                if (responseDes["error"].Equals("0"))
                 {
-                    try
-                    {
-                        Dictionary<string, string> responseDes =
-                            JsonConvert.DeserializeObject<Dictionary<string, string>>(lResponse);
-
-                        if (responseDes["error"].Equals("0"))
-                        {
-                            this.LoggedIn = true;
-                            return true;
-                        }
-                        this.LoggedIn = false;
-                        if (this.UserLoggedOutRaised != null) this.UserLoggedOutRaised(this, new EventArgs());
-                        return false;
-                    }
-                    catch (Exception)
-                    {
-                        this.ErrHandler.Add(lResponse);
-                    }
+                    this.LoggedIn = true;
+                    return true;
                 }
+                this.LoggedIn = false;
+                if (this.UserLoggedOutRaised != null) this.UserLoggedOutRaised(this, new EventArgs());
+                return false;
+            }
+            catch (Exception)
+            {
+                this.ErrHandler.Add(lResponse);
             }
 
             return false;
@@ -285,16 +297,13 @@ namespace Proxer.API
         /// <returns></returns>
         public bool InitNotifications()
         {
-            if (this.LoggedIn)
-            {
-                this.CheckNotifications();
+            if (!this.LoggedIn) return false;
+            this.CheckNotifications();
 
-                this._notificationCheckTimer.Start();
-                this._notificationUpdateCheckTimer.Start();
+            this._notificationCheckTimer.Start();
+            this._notificationUpdateCheckTimer.Start();
 
-                return true;
-            }
-            return false;
+            return true;
         }
 
         /// <summary>
@@ -315,45 +324,41 @@ namespace Proxer.API
         /// <returns></returns>
         public List<Conference> GetAllConferences()
         {
-            if (this.LoggedIn)
+            if (!this.LoggedIn) return null;
+            string lResponse =
+                HttpUtility.GetWebRequestResponse("http://proxer.me/messages", this.LoginCookies)
+                    .Replace("</link>", "")
+                    .Replace("\n", "");
+
+            if (!Utility.CheckForCorrectResponse(lResponse, this.ErrHandler)) return null;
+            try
             {
-                string lResponse =
-                    HttpUtility.GetWebRequestResponse("http://proxer.me/messages", this.LoginCookies)
-                        .Replace("</link>", "")
-                        .Replace("\n", "");
+                HtmlDocument lDocument = new HtmlDocument();
+                lDocument.LoadHtml(lResponse);
 
-                if (Utility.CheckForCorrectResponse(lResponse, this.ErrHandler))
+                if (!lDocument.ParseErrors.Any())
                 {
-                    try
+                    List<Conference> lReturn = new List<Conference>();
+
+                    HtmlNodeCollection lNodes =
+                        lDocument.DocumentNode.SelectNodes("//a[@class='conferenceGrid ']");
+                    if (lNodes != null)
                     {
-                        HtmlDocument lDocument = new HtmlDocument();
-                        lDocument.LoadHtml(lResponse);
-
-                        if (!lDocument.ParseErrors.Any())
-                        {
-                            List<Conference> lReturn = new List<Conference>();
-
-                            HtmlNodeCollection lNodes =
-                                lDocument.DocumentNode.SelectNodes("//a[@class='conferenceGrid ']");
-                            if (lNodes != null)
-                            {
-                                lReturn.AddRange(from curNode in lNodes
-                                    let lId =
-                                        Convert.ToInt32(
-                                            Utility.GetTagContents(curNode.Attributes["href"].Value, "/messages?id=",
-                                                "#top")[0])
-                                    let lTitle = curNode.FirstChild.InnerText
-                                    select new Conference(lTitle, lId, this));
-                            }
-
-                            return lReturn;
-                        }
+                        lReturn.AddRange(from curNode in lNodes
+                            let lId =
+                                Convert.ToInt32(
+                                    Utility.GetTagContents(curNode.Attributes["href"].Value, "/messages?id=",
+                                        "#top")[0])
+                            let lTitle = curNode.FirstChild.InnerText
+                            select new Conference(lTitle, lId, this));
                     }
-                    catch (Exception)
-                    {
-                        this.ErrHandler.Add(lResponse);
-                    }
+
+                    return lReturn;
                 }
+            }
+            catch (Exception)
+            {
+                this.ErrHandler.Add(lResponse);
             }
 
             return null;
@@ -362,63 +367,57 @@ namespace Proxer.API
 
         private void CheckNotifications()
         {
-            if (this.LoggedIn)
+            if (!this.LoggedIn) return;
+            string lResponse =
+                HttpUtility.GetWebRequestResponse("https://proxer.me/notifications?format=raw&s=count",
+                    this.LoginCookies);
+
+            if (!lResponse.StartsWith("0")) return;
+            string[] lResponseSplit = lResponse.Split('#');
+
+            if (!lResponseSplit[2].Equals("0"))
             {
-                string lResponse =
-                    HttpUtility.GetWebRequestResponse("https://proxer.me/notifications?format=raw&s=count",
-                        this.LoginCookies);
-
-                if (lResponse.StartsWith("0"))
-                {
-                    string[] lResponseSplit = lResponse.Split('#');
-
-                    if (!lResponseSplit[2].Equals("0"))
-                    {
-                        if (this.PmNotificationRaised != null)
-                            this.PmNotificationRaised(this,
-                                new PmNotificationEventArgs(Convert.ToInt32(lResponseSplit[2]), this));
-                        if (this.NotificationRaised != null)
-                            this.NotificationRaised(this,
-                                new PmNotificationEventArgs(Convert.ToInt32(lResponseSplit[2]), this));
-                        this._checkPmUpdate = true;
-                    }
-                    if (!lResponseSplit[3].Equals("0"))
-                    {
-                        if (this.FriendNotificationRaised != null)
-                            this.FriendNotificationRaised(this,
-                                new FriendNotificationEventArgs(Convert.ToInt32(lResponseSplit[3]), this));
-                        if (this.NotificationRaised != null)
-                            this.NotificationRaised(this,
-                                new FriendNotificationEventArgs(Convert.ToInt32(lResponseSplit[3]), this));
-                        this._checkFriendUpdates = true;
-                    }
-                    if (!lResponseSplit[4].Equals("0"))
-                    {
-                        if (this.NewsNotificationRaised != null)
-                            this.NewsNotificationRaised(this,
-                                new NewsNotificationEventArgs(Convert.ToInt32(lResponseSplit[4]), this));
-                        if (this.NotificationRaised != null)
-                            this.NotificationRaised(this,
-                                new NewsNotificationEventArgs(Convert.ToInt32(lResponseSplit[4]), this));
-                        this._checkNewsUpdate = true;
-                    }
-                    if (!lResponseSplit[5].Equals("0"))
-                    {
-                        if (this.AmUpdateNotificationRaised != null)
-                            this.AmUpdateNotificationRaised(this,
-                                new AmNotificationEventArgs(Convert.ToInt32(lResponseSplit[5]), this));
-                        if (this.NotificationRaised != null)
-                            this.NotificationRaised(this,
-                                new AmNotificationEventArgs(Convert.ToInt32(lResponseSplit[5]), this));
-                        this._checkAnimeMangaUpdate = true;
-                    }
-                }
+                if (this.PmNotificationRaised != null)
+                    this.PmNotificationRaised(this,
+                        new PmNotificationEventArgs(Convert.ToInt32(lResponseSplit[2]), this));
+                if (this.NotificationRaised != null)
+                    this.NotificationRaised(this,
+                        new PmNotificationEventArgs(Convert.ToInt32(lResponseSplit[2]), this));
+                this._checkPmUpdate = true;
             }
+            if (!lResponseSplit[3].Equals("0"))
+            {
+                if (this.FriendNotificationRaised != null)
+                    this.FriendNotificationRaised(this,
+                        new FriendNotificationEventArgs(Convert.ToInt32(lResponseSplit[3]), this));
+                if (this.NotificationRaised != null)
+                    this.NotificationRaised(this,
+                        new FriendNotificationEventArgs(Convert.ToInt32(lResponseSplit[3]), this));
+                this._checkFriendUpdates = true;
+            }
+            if (!lResponseSplit[4].Equals("0"))
+            {
+                if (this.NewsNotificationRaised != null)
+                    this.NewsNotificationRaised(this,
+                        new NewsNotificationEventArgs(Convert.ToInt32(lResponseSplit[4]), this));
+                if (this.NotificationRaised != null)
+                    this.NotificationRaised(this,
+                        new NewsNotificationEventArgs(Convert.ToInt32(lResponseSplit[4]), this));
+                this._checkNewsUpdate = true;
+            }
+            if (lResponseSplit[5].Equals("0")) return;
+            if (this.AmUpdateNotificationRaised != null)
+                this.AmUpdateNotificationRaised(this,
+                    new AmNotificationEventArgs(Convert.ToInt32(lResponseSplit[5]), this));
+            if (this.NotificationRaised != null)
+                this.NotificationRaised(this,
+                    new AmNotificationEventArgs(Convert.ToInt32(lResponseSplit[5]), this));
+            this._checkAnimeMangaUpdate = true;
         }
 
         private void GetAllAnimeMangaUpdates()
         {
-            if (!this.LoggedIn) return;
+            if (!this.LoggedIn) throw new NotLoggedInException();
             HtmlDocument lDocument = new HtmlDocument();
             string lResponse =
                 HttpUtility.GetWebRequestResponse(
@@ -546,49 +545,45 @@ namespace Proxer.API
 
         private void GetAllFriendUpdates()
         {
-            if (this.LoggedIn)
+            if (!this.LoggedIn) return;
+            HtmlDocument lDocument = new HtmlDocument();
+            string lResponse =
+                (HttpUtility.GetWebRequestResponse("https://proxer.me/user/my/connections?format=raw",
+                    this.LoginCookies))
+                    .Replace("</link>", "").Replace("\n", "");
+
+            if (!Utility.CheckForCorrectResponse(lResponse, this.ErrHandler)) return;
+            try
             {
-                HtmlDocument lDocument = new HtmlDocument();
-                string lResponse =
-                    (HttpUtility.GetWebRequestResponse("https://proxer.me/user/my/connections?format=raw",
-                        this.LoginCookies))
-                        .Replace("</link>", "").Replace("\n", "");
+                lDocument.LoadHtml(lResponse);
 
-                if (Utility.CheckForCorrectResponse(lResponse, this.ErrHandler))
+                if (lDocument.ParseErrors.Any()) return;
+                HtmlNodeCollection lNodes = lDocument.DocumentNode.SelectNodes("//tr");
+
+                if (lNodes == null) return;
+                this._friendUpdates = new List<FriendRequestObject>();
+                foreach (HtmlNode curNode in lNodes)
                 {
-                    try
-                    {
-                        lDocument.LoadHtml(lResponse);
+                    if (!curNode.Id.StartsWith("entry") ||
+                        !curNode.FirstChild.FirstChild.Attributes["class"].Value.Equals("accept")) continue;
+                    int lUserId = Convert.ToInt32(curNode.Id.Replace("entry", ""));
+                    string lUserName = curNode.InnerText.Split("  ".ToCharArray())[0];
+                    string lDescription = curNode.ChildNodes[3].ChildNodes[1].InnerText;
+                    string[] lDatumSplit = curNode.ChildNodes[4].InnerText.Split('-');
+                    DateTime lDatum = new DateTime(Convert.ToInt32(lDatumSplit[0]),
+                        Convert.ToInt32(lDatumSplit[1]), Convert.ToInt32(lDatumSplit[2]));
+                    bool lOnline =
+                        curNode.ChildNodes[1].ChildNodes[1].FirstChild.Attributes["src"].Value
+                            .Equals("/images/misc/onlineicon.png");
 
-                        if (lDocument.ParseErrors.Any()) return;
-                        HtmlNodeCollection lNodes = lDocument.DocumentNode.SelectNodes("//tr");
-
-                        if (lNodes == null) return;
-                        this._friendUpdates = new List<FriendRequestObject>();
-                        foreach (HtmlNode curNode in lNodes)
-                        {
-                            if (!curNode.Id.StartsWith("entry") ||
-                                !curNode.FirstChild.FirstChild.Attributes["class"].Value.Equals("accept")) continue;
-                            int lUserId = Convert.ToInt32(curNode.Id.Replace("entry", ""));
-                            string lUserName = curNode.InnerText.Split("  ".ToCharArray())[0];
-                            string lDescription = curNode.ChildNodes[3].ChildNodes[1].InnerText;
-                            string[] lDatumSplit = curNode.ChildNodes[4].InnerText.Split('-');
-                            DateTime lDatum = new DateTime(Convert.ToInt32(lDatumSplit[0]),
-                                Convert.ToInt32(lDatumSplit[1]), Convert.ToInt32(lDatumSplit[2]));
-                            bool lOnline =
-                                curNode.ChildNodes[1].ChildNodes[1].FirstChild.Attributes["src"].Value
-                                    .Equals("/images/misc/onlineicon.png");
-
-                            this._friendUpdates.Add(new FriendRequestObject(lUserName, lUserId, lDescription,
-                                lDatum, lOnline, this));
-                        }
-                        this._checkFriendUpdates = false;
-                    }
-                    catch (NullReferenceException)
-                    {
-                        this.ErrHandler.Add(lResponse);
-                    }
+                    this._friendUpdates.Add(new FriendRequestObject(lUserName, lUserId, lDescription,
+                        lDatum, lOnline, this));
                 }
+                this._checkFriendUpdates = false;
+            }
+            catch (NullReferenceException)
+            {
+                this.ErrHandler.Add(lResponse);
             }
         }
 

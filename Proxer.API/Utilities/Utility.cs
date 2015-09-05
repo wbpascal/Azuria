@@ -65,6 +65,18 @@ namespace Proxer.API.Utilities
             return null;
         }
 
+        internal static IEnumerable<HtmlNode> GetAllHtmlNodes(HtmlNodeCollection htmlNodeCollection)
+        {
+            List<HtmlNode> lHtmlNodes = new List<HtmlNode>();
+            foreach (HtmlNode htmlNode in htmlNodeCollection)
+            {
+                lHtmlNodes.Add(htmlNode);
+                if (htmlNode.HasChildNodes)
+                    lHtmlNodes = lHtmlNodes.Concat(GetAllHtmlNodes(htmlNode.ChildNodes)).ToList();
+            }
+            return lHtmlNodes;
+        }
+
         /// <summary>
         /// </summary>
         /// <param name="source"></param>

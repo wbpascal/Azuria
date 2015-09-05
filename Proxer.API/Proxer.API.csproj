@@ -63,6 +63,10 @@
     <Compile Include="EventArguments\NewsNotificationEventArgs.cs" />
     <Compile Include="EventArguments\NotificationEventArgsType.cs" />
     <Compile Include="EventArguments\PMNotificationEventArgs.cs" />
+    <Compile Include="Exceptions\CaptchaException.cs" />
+    <Compile Include="Exceptions\InitializeNeededException.cs" />
+    <Compile Include="Exceptions\LanguageNotAvailableException.cs" />
+    <Compile Include="Exceptions\NotLoggedInException.cs" />
     <Compile Include="Main\Anime.cs" />
     <Compile Include="Main\AnimeMangaStatus.cs" />
     <Compile Include="Main\AnimeMangaType.cs" />
@@ -97,6 +101,7 @@
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
