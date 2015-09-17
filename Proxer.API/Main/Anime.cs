@@ -384,19 +384,23 @@ namespace Proxer.API.Main
         /// </summary>
         public class Episode
         {
-            private readonly Anime _anime;
             private readonly Language _lang;
             private readonly Senpai _senpai;
 
             internal Episode(Anime anime, int nr, Language lang, Senpai senpai)
             {
+                this.ParentAnime = anime;
                 this.EpisodeNr = nr;
-                this._anime = anime;
                 this._lang = lang;
                 this._senpai = senpai;
             }
 
             #region Properties
+
+            /// <summary>
+            /// 
+            /// </summary>
+            public Anime ParentAnime { get; set; }
 
             /// <summary>
             /// </summary>
@@ -422,15 +426,11 @@ namespace Proxer.API.Main
                 HtmlDocument lDocument = new HtmlDocument();
                 string lResponse =
                     HttpUtility.GetWebRequestResponse(
-                        "https://proxer.me/watch/" + this._anime.Id + "/" + this.EpisodeNr + "/" +
+                        "https://proxer.me/watch/" + this.ParentAnime.Id + "/" + this.EpisodeNr + "/" +
                         this._lang.ToString().ToLower(),
                         this._senpai.MobileLoginCookies)
                         .Replace("</link>", "")
                         .Replace("\n", "");
-
-                string test = "https://proxer.me/watch/" + this._anime.Id + "/" + this.EpisodeNr + "/" +
-                              this._lang.ToString().ToLower();
-                int lTest = test.Length;
 
                 if (!Utility.CheckForCorrectResponse(lResponse, this._senpai.ErrHandler)) return;
                 try

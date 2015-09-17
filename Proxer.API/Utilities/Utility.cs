@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using HtmlAgilityPack;
 using Proxer.API.Main;
@@ -211,6 +212,14 @@ namespace Proxer.API.Utilities
             // 0==perfect match 100==totaly different
             int max = Math.Max(rowLen, colLen);
             return ((100*v0[rowLen])/max);
+        }
+
+        internal static DateTime ToDateTime(string strFdate, string format = "dd.MM.yyyy")
+        {
+            return DateTime.ParseExact(
+                strFdate,
+                format,
+                CultureInfo.InvariantCulture);
         }
 
         #endregion

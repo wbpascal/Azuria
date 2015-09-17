@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using HtmlAgilityPack;
+using Proxer.API.Exceptions;
 using Proxer.API.Main.Minor;
 using Proxer.API.Utilities;
 
@@ -11,6 +12,19 @@ namespace Proxer.API.Main
     /// </summary>
     public class Manga : IAnimeMangaObject
     {
+        /// <summary>
+        /// </summary>
+        public enum Language
+        {
+            /// <summary>
+            /// </summary>
+            Deutsch,
+
+            /// <summary>
+            /// </summary>
+            English
+        }
+
         private readonly Senpai _senpai;
 
         internal Manga(string name, int id, Senpai senpai)
@@ -62,6 +76,10 @@ namespace Proxer.API.Main
 
         /// <summary>
         /// </summary>
+        public int KapitelZahl { get; private set; }
+
+        /// <summary>
+        /// </summary>
         public bool Lizensiert { get; private set; }
 
         /// <summary>
@@ -75,6 +93,10 @@ namespace Proxer.API.Main
         /// <summary>
         /// </summary>
         public string[] Season { get; private set; }
+
+        /// <summary>
+        /// </summary>
+        public Language[] Sprachen { get; private set; }
 
         /// <summary>
         /// </summary>
@@ -93,11 +115,31 @@ namespace Proxer.API.Main
         public void Init()
         {
             this.InitMain();
+            this.InitAvailableLang();
+            this.InitChapterCount();
         }
 
         #endregion
 
         #region
+
+        /// <summary>
+        /// </summary>
+        /// <param name="lang"></param>
+        /// <exception cref="LanguageNotAvailableException"></exception>
+        /// <returns></returns>
+        public Chapter[] GetChapters(Language lang)
+        {
+            if (!this.Sprachen.Contains(lang)) throw new LanguageNotAvailableException();
+
+            List<Chapter> lChapters = new List<Chapter>();
+            for (int i = 1; i <= this.KapitelZahl; i++)
+            {
+                lChapters.Add(new Chapter(i, lang, this, this._senpai));
+            }
+
+            return lChapters.ToArray();
+        }
 
         private void InitMain()
         {
@@ -112,10 +154,6 @@ namespace Proxer.API.Main
             {
                 lDocument.LoadHtml(lResponse);
 
-                if (lDocument.ParseErrors.Any())
-                    lDocument.LoadHtml(Utility.TryFixParseErrors(lDocument.DocumentNode.InnerHtml, lDocument.ParseErrors));
-
-                if (lDocument.ParseErrors.Any()) return;
                 HtmlNode lTableNode =
                     lDocument.DocumentNode.ChildNodes[1].ChildNodes[2].ChildNodes[2].ChildNodes[2].ChildNodes[5]
                         .ChildNodes[2].FirstChild.ChildNodes[1].FirstChild;
@@ -231,16 +269,283 @@ namespace Proxer.API.Main
                                 if (htmlNode.Name.Equals("br")) this.Beschreibung += "\n";
                                 else this.Beschreibung += htmlNode.InnerText;
                             }
+                            if (this.Beschreibung.StartsWith("\n")) this.Beschreibung = this.Beschreibung.TrimStart();
                             break;
                     }
                 }
             }
             catch (NullReferenceException)
             {
-                this._senpai.ErrHandler.Add(lResponse);
+            }
+            catch (IndexOutOfRangeException)
+            {
+            }
+        }
+
+        private void InitAvailableLang()
+        {
+            if (!this._senpai.LoggedIn) return;
+
+            HtmlDocument lDocument = new HtmlDocument();
+            string lResponse =
+                HttpUtility.GetWebRequestResponse("http://proxer.me/edit/entry/" + this.Id + "/languages",
+                    this._senpai.LoginCookies)
+                    .Replace("</link>", "")
+                    .Replace("\n", "");
+
+            if (!Utility.CheckForCorrectResponse(lResponse, this._senpai.ErrHandler)) return;
+
+            try
+            {
+                lDocument.LoadHtml(lResponse);
+
+                List<Language> languageList = new List<Language>();
+                foreach (
+                    HtmlNode childNode in
+                        lDocument.DocumentNode.ChildNodes[1].ChildNodes[2].ChildNodes[2].ChildNodes[2].ChildNodes[4]
+                            .ChildNodes[5].ChildNodes.Where(
+                                childNode =>
+                                    childNode.ChildNodes.Count > 3 &&
+                                    childNode.ChildNodes[3].FirstChild.GetAttributeValue("value", "+").Equals("-")))
+                {
+                    switch (childNode.FirstChild.InnerText)
+                    {
+                        case "Englisch":
+                            languageList.Add(Language.English);
+                            break;
+                        case "Deutsch":
+                            languageList.Add(Language.Deutsch);
+                            break;
+                    }
+                }
+
+                this.Sprachen = languageList.ToArray();
+            }
+            catch (NullReferenceException)
+            {
+            }
+            catch (IndexOutOfRangeException)
+            {
+            }
+        }
+
+        private void InitChapterCount()
+        {
+            if (!this._senpai.LoggedIn) return;
+
+            HtmlDocument lDocument = new HtmlDocument();
+            string lResponse =
+                HttpUtility.GetWebRequestResponse("http://proxer.me/edit/entry/" + this.Id + "/count",
+                    this._senpai.LoginCookies)
+                    .Replace("</link>", "")
+                    .Replace("\n", "");
+
+            if (!Utility.CheckForCorrectResponse(lResponse, this._senpai.ErrHandler)) return;
+
+            try
+            {
+                lDocument.LoadHtml(lResponse);
+
+                if (
+                    lDocument.DocumentNode.ChildNodes[1].ChildNodes[2].ChildNodes[2].ChildNodes[2].ChildNodes[4]
+                        .ChildNodes[5].FirstChild.FirstChild.InnerText.Equals("Aktuelle Anzahl:"))
+                    this.KapitelZahl =
+                        Convert.ToInt32(
+                            lDocument.DocumentNode.ChildNodes[1].ChildNodes[2].ChildNodes[2].ChildNodes[2].ChildNodes[4]
+                                .ChildNodes[5].FirstChild.ChildNodes[1].InnerText);
+            }
+            catch (NullReferenceException)
+            {
+            }
+            catch (IndexOutOfRangeException)
+            {
             }
         }
 
         #endregion
+
+        /// <summary>
+        /// </summary>
+        public class Chapter
+        {
+            private readonly Senpai _senpai;
+
+            internal Chapter(int kapitelNr, Language lang, Manga parentManga, Senpai senpai)
+            {
+                this._senpai = senpai;
+                this.KapitelNr = kapitelNr;
+                this.Sprache = lang;
+                this.ParentManga = parentManga;
+            }
+
+            #region Properties
+
+            /// <summary>
+            /// </summary>
+            public DateTime Datum { get; private set; }
+
+            /// <summary>
+            /// </summary>
+            public int KapitelNr { get; private set; }
+
+            /// <summary>
+            /// </summary>
+            public Manga ParentManga { get; set; }
+
+            /// <summary>
+            /// </summary>
+            public Group ScanlatorGruppe { get; private set; }
+
+            /// <summary>
+            /// </summary>
+            public Uri[] Seiten { get; private set; }
+
+            /// <summary>
+            /// </summary>
+            public Language Sprache { get; private set; }
+
+            /// <summary>
+            /// </summary>
+            public string Titel { get; private set; }
+
+            /// <summary>
+            /// </summary>
+            public string UploaderName { get; private set; }
+
+            /// <summary>
+            /// </summary>
+            public bool Verfuegbar { get; private set; }
+
+            #endregion
+
+            #region
+
+            /// <summary>
+            /// </summary>
+            public void Init()
+            {
+                this.InitInfo();
+                //this.InitChapters();
+            }
+
+            private void InitInfo()
+            {
+                HtmlDocument lDocument = new HtmlDocument();
+                string lResponse =
+                    HttpUtility.GetWebRequestResponse(
+                        "https://proxer.me/chapter/" + this.ParentManga.Id + "/" + this.KapitelNr + "/" +
+                        this.Sprache.ToString().ToLower().Substring(0, 2),
+                        this._senpai.LoginCookies)
+                        .Replace("</link>", "")
+                        .Replace("\n", "");
+
+                if (!Utility.CheckForCorrectResponse(lResponse, this._senpai.ErrHandler)) return;
+
+                if (lResponse.Contains("Dieses Kapitel ist leider noch nicht verfügbar :/"))
+                {
+                    this.Verfuegbar = false;
+                    return;
+                }
+
+                this.Verfuegbar = true;
+
+                try
+                {
+                    lDocument.LoadHtml(lResponse);
+
+                    HtmlNode[] lAllHtmlNodes = Utility.GetAllHtmlNodes(lDocument.DocumentNode.ChildNodes).ToArray();
+
+                    if (
+                        lAllHtmlNodes.Any(
+                            x =>
+                                x.Name.Equals("img") && x.HasAttributes &&
+                                x.GetAttributeValue("src", "").Equals("/images/misc/stopyui.jpg")))
+                        throw new CaptchaException();
+
+                    if (
+                        lAllHtmlNodes.Any(
+                            x =>
+                                x.Name.Equals("img") && x.HasAttributes &&
+                                x.GetAttributeValue("src", "").Equals("/images/misc/404.png")))
+                        return;
+
+                    foreach (
+                        HtmlNode childNode in
+                            lDocument.DocumentNode.SelectNodes("//table[@class='details']")[0].ChildNodes)
+                    {
+                        switch (childNode.FirstChild.InnerText)
+                        {
+                            case "Titel":
+                                this.Titel = childNode.ChildNodes[1].InnerText;
+                                break;
+                            case "Uploader":
+                                this.UploaderName = childNode.ChildNodes[1].InnerText;
+                                break;
+                            case "Scanlator-Gruppe":
+                                break;
+                            case "Datum":
+                                this.Datum = Utility.ToDateTime(childNode.ChildNodes[1].InnerText);
+                                break;
+                        }
+                    }
+                }
+                catch (NullReferenceException)
+                {
+                }
+                catch (IndexOutOfRangeException)
+                {
+                }
+            }
+
+            private void InitChapters()
+            {
+                HtmlDocument lDocument = new HtmlDocument();
+                string lResponse =
+                    HttpUtility.GetWebRequestResponse(
+                        "https://proxer.me/read/" + this.ParentManga.Id + "/" + this.KapitelNr + "/" +
+                        this.Sprache.ToString().ToLower().Substring(0, 2),
+                        this._senpai.MobileLoginCookies)
+                        .Replace("</link>", "")
+                        .Replace("\n", "");
+
+                if (!Utility.CheckForCorrectResponse(lResponse, this._senpai.ErrHandler)) return;
+
+                try
+                {
+                    lDocument.LoadHtml(lResponse);
+
+                    HtmlNode[] lAllHtmlNodes = Utility.GetAllHtmlNodes(lDocument.DocumentNode.ChildNodes).ToArray();
+
+                    if (
+                        lAllHtmlNodes.Any(
+                            x =>
+                                x.Name.Equals("img") && x.HasAttributes &&
+                                x.GetAttributeValue("src", "").Equals("/images/misc/stopyui.jpg")))
+                        throw new CaptchaException();
+
+                    if (
+                        lAllHtmlNodes.Any(
+                            x =>
+                                x.Name.Equals("img") && x.HasAttributes &&
+                                x.GetAttributeValue("src", "").Equals("/images/misc/404.png")))
+                        return;
+
+                    List<Uri> list = new List<Uri>();
+                    var lTest = lDocument.GetElementbyId("pages");
+                    foreach (HtmlNode pageNode in lTest.ChildNodes)
+                        list.Add(new Uri("http:" + pageNode.FirstChild.Attributes["src"].Value));
+                    this.Seiten =
+                        list.ToArray();
+                }
+                catch (NullReferenceException)
+                {
+                }
+                catch (IndexOutOfRangeException)
+                {
+                }
+            }
+
+            #endregion
+        }
     }
 }
