@@ -223,7 +223,7 @@ namespace Proxer.API
         /// <returns>Gibt zurück, ob der Benutzer erfolgreich eingeloggt wurde</returns>
         public bool Login(string username, string password)
         {
-            if (this.LoggedIn) throw new NotLoggedInException();
+            if (this.LoggedIn || string.IsNullOrEmpty(username) || string.IsNullOrEmpty(password)) return false;
 
             Dictionary<string, string> postArgs = new Dictionary<string, string>
             {

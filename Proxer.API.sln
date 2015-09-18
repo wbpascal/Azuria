@@ -1,9 +1,11 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
-VisualStudioVersion = 12.0.21005.1
+VisualStudioVersion = 12.0.31101.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Proxer.API", "Proxer.API\Proxer.API.csproj", "{841DC1A7-9140-47E5-B13B-E4C57CFE6496}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Proxer.API.Example", "Proxer.API.Example\Proxer.API.Example.csproj", "{12C2544C-7640-4183-9310-465E74D2EBC0}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +17,10 @@ Global
 		{841DC1A7-9140-47E5-B13B-E4C57CFE6496}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{841DC1A7-9140-47E5-B13B-E4C57CFE6496}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{841DC1A7-9140-47E5-B13B-E4C57CFE6496}.Release|Any CPU.Build.0 = Release|Any CPU
+		{12C2544C-7640-4183-9310-465E74D2EBC0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{12C2544C-7640-4183-9310-465E74D2EBC0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{12C2544C-7640-4183-9310-465E74D2EBC0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{12C2544C-7640-4183-9310-465E74D2EBC0}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
