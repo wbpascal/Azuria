@@ -425,7 +425,7 @@ namespace Proxer.API.Main
             public void Init()
             {
                 this.InitInfo();
-                //this.InitChapters();
+                this.InitChapters();
             }
 
             private void InitInfo()
@@ -503,7 +503,7 @@ namespace Proxer.API.Main
                 string lResponse =
                     HttpUtility.GetWebRequestResponse(
                         "https://proxer.me/read/" + this.ParentManga.Id + "/" + this.KapitelNr + "/" +
-                        this.Sprache.ToString().ToLower().Substring(0, 2),
+                        this.Sprache.ToString().ToLower().Substring(0, 2) + "?format=json",
                         this._senpai.MobileLoginCookies)
                         .Replace("</link>", "")
                         .Replace("\n", "");
@@ -530,12 +530,15 @@ namespace Proxer.API.Main
                                 x.GetAttributeValue("src", "").Equals("/images/misc/404.png")))
                         return;
 
-                    List<Uri> list = new List<Uri>();
-                    var lTest = lDocument.GetElementbyId("pages");
-                    foreach (HtmlNode pageNode in lTest.ChildNodes)
-                        list.Add(new Uri("http:" + pageNode.FirstChild.Attributes["src"].Value));
                     this.Seiten =
-                        list.ToArray();
+                        (from s in
+                            Utility.GetTagContents(lDocument.DocumentNode.ChildNodes[1].InnerText.Split(';')[0], "[",
+                                "]")
+                            where !s.StartsWith("[")
+                            select
+                                new Uri("http://upload.proxer.me/manga/" + this.ParentManga.Id + "_" +
+                                        this.Sprache.ToString().ToLower().Substring(0, 2) + "/" + this.KapitelNr + "/" +
+                                        Utility.GetTagContents(s, "\"", "\"")[0])).ToArray();
                 }
                 catch (NullReferenceException)
                 {
