@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using HtmlAgilityPack;
+using Proxer.API.Exceptions;
 using Proxer.API.Utilities;
 
 namespace Proxer.API
@@ -112,28 +113,27 @@ namespace Proxer.API
         /// <summary>
         ///     Initialisiert die Eigenschaften der Klasse
         /// </summary>
+        /// <exception cref="NotLoggedInException"></exception>
         public void InitUser()
         {
-            this.GetMainInfo();
-            this.GetFriends();
-            this.GetInfos();
+            try
+            {
+                this.GetMainInfo();
+                this.GetFriends();
+                this.GetInfos();
+            }
+            catch (NotLoggedInException)
+            {
+                throw new NotLoggedInException();
+            }
         }
 
 
         private void GetMainInfo()
         {
-            if (this.Id == -1)
+            if (this.Id != -1)
             {
-                this.Status = "";
-                this.Online = false;
-                this.Rang = "";
-                this.Punkte = -1;
-                this.Avatar =
-                    new Uri(
-                        "https://proxer.me/components/com_comprofiler/plugin/templates/default/images/avatar/nophoto_n.png");
-            }
-            else if (this._senpai.LoggedIn)
-            {
+                if (!this._senpai.LoggedIn) throw new NotLoggedInException();
                 HtmlDocument lDocument = new HtmlDocument();
                 string lResponse =
                     (HttpUtility.GetWebRequestResponse("https://proxer.me/user/" + this.Id + "/overview?format=raw",
@@ -162,7 +162,9 @@ namespace Proxer.API
                             "[?]")
                             [0];
                     this.Online = lProfileNodes[0].ChildNodes[1].InnerText.Equals("Status Online");
-                    this.Status = lProfileNodes[0].ChildNodes.Count == 7 ? lProfileNodes[0].ChildNodes[6].InnerText : "";
+                    this.Status = lProfileNodes[0].ChildNodes.Count == 7
+                        ? lProfileNodes[0].ChildNodes[6].InnerText
+                        : "";
 
                     if (this.UserName.Equals(""))
                     {
@@ -176,16 +178,23 @@ namespace Proxer.API
                     this._senpai.ErrHandler.Add(lResponse);
                 }
             }
+            else
+            {
+                this.Status = "";
+                this.Online = false;
+                this.Rang = "";
+                this.Punkte = -1;
+                this.Avatar =
+                    new Uri(
+                        "https://proxer.me/components/com_comprofiler/plugin/templates/default/images/avatar/nophoto_n.png");
+            }
         }
 
         private void GetFriends()
         {
-            if (this.Id == -1)
+            if (this.Id != -1)
             {
-                this.Freunde = new List<User>();
-            }
-            else if (this._senpai.LoggedIn)
-            {
+                if (!this._senpai.LoggedIn) throw new NotLoggedInException();
                 int lSeite = 1;
                 string lResponse;
                 HtmlDocument lDocument = new HtmlDocument();
@@ -242,16 +251,17 @@ namespace Proxer.API
                     }
                 }
             }
+            else
+            {
+                this.Freunde = new List<User>();
+            }
         }
 
         private void GetInfos()
         {
-            if (this.Id == -1)
+            if (this.Id != -1)
             {
-                this.Info = "";
-            }
-            else if (this._senpai.LoggedIn)
-            {
+                if (!this._senpai.LoggedIn) throw new NotLoggedInException();
                 HtmlDocument lDocument = new HtmlDocument();
                 string lResponse =
                     (HttpUtility.GetWebRequestResponse("https://proxer.me/user/" + this.Id + "/about?format=raw",
@@ -275,6 +285,10 @@ namespace Proxer.API
                 {
                     this._senpai.ErrHandler.Add(lResponse);
                 }
+            }
+            else
+            {
+                this.Info = "";
             }
         }
 

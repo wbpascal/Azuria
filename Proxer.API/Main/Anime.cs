@@ -120,11 +120,19 @@ namespace Proxer.API.Main
 
         /// <summary>
         /// </summary>
+        /// <exception cref="NotLoggedInException"></exception>
         public void Init()
         {
-            this.InitMain();
-            this.InitEpisodeCount();
-            this.InitAvailableLang();
+            try
+            {
+                this.InitMain();
+                this.InitEpisodeCount();
+                this.InitAvailableLang();
+            }
+            catch (NotLoggedInException)
+            {
+                throw new NotLoggedInException();
+            }
         }
 
         #endregion
@@ -294,7 +302,7 @@ namespace Proxer.API.Main
 
         private void InitAvailableLang()
         {
-            if (!this._senpai.LoggedIn) return;
+            if (!this._senpai.LoggedIn) throw new NotLoggedInException();
 
             HtmlDocument lDocument = new HtmlDocument();
             string lResponse =
@@ -347,7 +355,7 @@ namespace Proxer.API.Main
 
         private void InitEpisodeCount()
         {
-            if (!this._senpai.LoggedIn) return;
+            if (!this._senpai.LoggedIn) throw new NotLoggedInException();
 
             HtmlDocument lDocument = new HtmlDocument();
             string lResponse =
@@ -544,12 +552,10 @@ namespace Proxer.API.Main
                     ProxerStream
                 }
 
-                private readonly StreamPartner _streamPartner;
-
                 internal Stream(Uri link, StreamPartner streamPartner)
                 {
                     this.Link = link;
-                    this._streamPartner = streamPartner;
+                    this.SPartner = streamPartner;
                 }
 
                 #region Properties
@@ -557,6 +563,11 @@ namespace Proxer.API.Main
                 /// <summary>
                 /// </summary>
                 public Uri Link { get; private set; }
+
+                /// <summary>
+                /// 
+                /// </summary>
+                public StreamPartner SPartner { get; private set; }
 
                 #endregion
             }

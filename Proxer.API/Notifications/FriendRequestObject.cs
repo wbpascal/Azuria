@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Proxer.API.Exceptions;
 using Proxer.API.Utilities;
 
 namespace Proxer.API.Notifications
@@ -83,70 +84,57 @@ namespace Proxer.API.Notifications
 
         /// <summary>
         /// </summary>
+        /// <exception cref="NotLoggedInException"></exception>
         /// <returns>Ob die Aktion erfolgreich war</returns>
         public bool AcceptRequest()
         {
-            if (this._senpai.LoggedIn && !this._accepted && !this._denied)
-            {
-                Dictionary<string, string> lPostArgs = new Dictionary<string, string> {{"type", "accept"}};
-                string lResponse =
-                    HttpUtility.PostWebRequestResponse("https://proxer.me/user/my?format=json&cid=" + this.Id,
-                        this._senpai.LoginCookies, lPostArgs);
+            if(!this._senpai.LoggedIn) throw new NotLoggedInException();
+            if (this._accepted || this._denied) return false;
+            Dictionary<string, string> lPostArgs = new Dictionary<string, string> {{"type", "accept"}};
+            string lResponse =
+                HttpUtility.PostWebRequestResponse("https://proxer.me/user/my?format=json&cid=" + this.Id,
+                    this._senpai.LoginCookies, lPostArgs);
 
-                if (lResponse.StartsWith("{\"error\":0"))
-                {
-                    this._accepted = true;
-                    return true;
-                }
-                return false;
-            }
-            return false;
+            if (!lResponse.StartsWith("{\"error\":0")) return false;
+            this._accepted = true;
+            return true;
         }
 
         /// <summary>
         /// </summary>
+        /// <exception cref="NotLoggedInException"></exception>
         /// <returns>Ob die Aktion erfolgreich war</returns>
         public bool DenyRequest()
         {
-            if (this._senpai.LoggedIn && !this._accepted && !this._denied)
-            {
-                Dictionary<string, string> lPostArgs = new Dictionary<string, string> {{"type", "deny"}};
-                string lResponse =
-                    HttpUtility.PostWebRequestResponse("https://proxer.me/user/my?format=json&cid=" + this.Id,
-                        this._senpai.LoginCookies, lPostArgs);
+            if(!this._senpai.LoggedIn) throw new NotLoggedInException();
+            if (this._accepted || this._denied) return false;
+            Dictionary<string, string> lPostArgs = new Dictionary<string, string> {{"type", "deny"}};
+            string lResponse =
+                HttpUtility.PostWebRequestResponse("https://proxer.me/user/my?format=json&cid=" + this.Id,
+                    this._senpai.LoginCookies, lPostArgs);
 
-                if (lResponse.StartsWith("{\"error\":0"))
-                {
-                    this._denied = true;
-                    return true;
-                }
-                return false;
-            }
-            return false;
+            if (!lResponse.StartsWith("{\"error\":0")) return false;
+            this._denied = true;
+            return true;
         }
 
         /// <summary>
         /// </summary>
+        /// <exception cref="NotLoggedInException"></exception>
         /// <returns>Ob die Aktion erfolgreich war</returns>
         public bool EditDescription(string pNewDescription)
         {
-            if (this._senpai.LoggedIn)
-            {
-                Dictionary<string, string> lPostArgs = new Dictionary<string, string> {{"type", "desc"}};
-                string lResponse =
-                    HttpUtility.PostWebRequestResponse(
-                        "https://proxer.me/user/my?format=json&desc=" +
-                        System.Web.HttpUtility.JavaScriptStringEncode(pNewDescription) + "&cid=" + this.Id,
-                        this._senpai.LoginCookies, lPostArgs);
+            if (!this._senpai.LoggedIn) throw new NotLoggedInException();
+            Dictionary<string, string> lPostArgs = new Dictionary<string, string> {{"type", "desc"}};
+            string lResponse =
+                HttpUtility.PostWebRequestResponse(
+                    "https://proxer.me/user/my?format=json&desc=" +
+                    System.Web.HttpUtility.JavaScriptStringEncode(pNewDescription) + "&cid=" + this.Id,
+                    this._senpai.LoginCookies, lPostArgs);
 
-                if (lResponse.StartsWith("{\"error\":0"))
-                {
-                    this.Description = pNewDescription;
-                    return true;
-                }
-                return false;
-            }
-            return false;
+            if (!lResponse.StartsWith("{\"error\":0")) return false;
+            this.Description = pNewDescription;
+            return true;
         }
 
         #endregion

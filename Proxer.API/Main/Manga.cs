@@ -112,11 +112,19 @@ namespace Proxer.API.Main
 
         /// <summary>
         /// </summary>
+        /// <exception cref="NotLoggedInException"></exception>
         public void Init()
         {
-            this.InitMain();
-            this.InitAvailableLang();
-            this.InitChapterCount();
+            try
+            {
+                this.InitMain();
+                this.InitAvailableLang();
+                this.InitChapterCount();
+            }
+            catch (NotLoggedInException)
+            {
+                throw new NotLoggedInException();
+            }
         }
 
         #endregion
@@ -284,7 +292,7 @@ namespace Proxer.API.Main
 
         private void InitAvailableLang()
         {
-            if (!this._senpai.LoggedIn) return;
+            if (!this._senpai.LoggedIn) throw new NotLoggedInException();
 
             HtmlDocument lDocument = new HtmlDocument();
             string lResponse =
@@ -331,7 +339,7 @@ namespace Proxer.API.Main
 
         private void InitChapterCount()
         {
-            if (!this._senpai.LoggedIn) return;
+            if (!this._senpai.LoggedIn) throw new NotLoggedInException();
 
             HtmlDocument lDocument = new HtmlDocument();
             string lResponse =
@@ -422,10 +430,18 @@ namespace Proxer.API.Main
 
             /// <summary>
             /// </summary>
+            /// <exception cref="NotLoggedInException"></exception>
             public void Init()
             {
-                this.InitInfo();
-                this.InitChapters();
+                try
+                {
+                    this.InitInfo();
+                    this.InitChapters();
+                }
+                catch (NotLoggedInException)
+                {
+                    throw new NotLoggedInException();
+                }
             }
 
             private void InitInfo()
@@ -482,6 +498,15 @@ namespace Proxer.API.Main
                                 this.UploaderName = childNode.ChildNodes[1].InnerText;
                                 break;
                             case "Scanlator-Gruppe":
+                                if (childNode.ChildNodes[1].InnerText.Equals("siehe Kapitelcredits"))
+                                    this.ScanlatorGruppe = new Group(-1, "siehe Kapitelcredits");
+                                else
+                                    this.ScanlatorGruppe = new Group(
+                                        Convert.ToInt32(
+                                            Utility.GetTagContents(
+                                                childNode.ChildNodes[1].FirstChild.GetAttributeValue("href",
+                                                    "/translatorgroups?id=-1#top"),
+                                                "/translatorgroups?id=", "#top")[0]), childNode.ChildNodes[1].InnerText);
                                 break;
                             case "Datum":
                                 this.Datum = Utility.ToDateTime(childNode.ChildNodes[1].InnerText);
@@ -499,6 +524,8 @@ namespace Proxer.API.Main
 
             private void InitChapters()
             {
+                if(!this._senpai.LoggedIn) throw new NotLoggedInException();
+
                 HtmlDocument lDocument = new HtmlDocument();
                 string lResponse =
                     HttpUtility.GetWebRequestResponse(
