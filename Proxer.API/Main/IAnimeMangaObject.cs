@@ -44,6 +44,10 @@ namespace Proxer.API.Main
 
         /// <summary>
         /// </summary>
+        bool IstInitialisiert { get; }
+
+        /// <summary>
+        /// </summary>
         string JapanTitel { get; }
 
         /// <summary>

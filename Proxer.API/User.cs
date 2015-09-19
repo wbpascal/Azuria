@@ -18,10 +18,18 @@ namespace Proxer.API
         public static User System = new User("System", -1, new Senpai());
 
         private readonly Senpai _senpai;
+        private string _info;
+        private List<User> _freunde;
+        private Uri _avatar;
+        private bool _online;
+        private int _punkte;
+        private string _rang;
+        private string _status;
 
         internal User(string name, int userId, Senpai senpai)
         {
             this._senpai = senpai;
+            this.IstInitialisiert = false;
 
             this.UserName = name;
             this.Id = userId;
@@ -33,6 +41,7 @@ namespace Proxer.API
         internal User(string name, int userId, Uri avatar, Senpai senpai)
         {
             this._senpai = senpai;
+            this.IstInitialisiert = false;
 
             this.UserName = name;
             this.Id = userId;
@@ -51,6 +60,7 @@ namespace Proxer.API
         public User(int userId, Senpai senpai)
         {
             this._senpai = senpai;
+            this.IstInitialisiert = false;
 
             this.UserName = GetUNameFromId(userId, senpai);
             this.Id = userId;
@@ -64,12 +74,30 @@ namespace Proxer.API
         /// <summary>
         ///     Gibt den Link zu dem Avatar des Benutzers zurück
         /// </summary>
-        public Uri Avatar { get; private set; }
+        /// <exception cref="InitializeNeededException"></exception>
+        public Uri Avatar
+        {
+            get
+            {
+                if (!this.IstInitialisiert) throw new InitializeNeededException();
+                return this._avatar;
+            }
+            private set { this._avatar = value; }
+        }
 
         /// <summary>
         ///     Gibt die Freunde des Benutzers in einer Liste zurück
         /// </summary>
-        public List<User> Freunde { get; private set; }
+        /// <exception cref="InitializeNeededException"></exception>
+        public List<User> Freunde
+        {
+            get
+            {
+                if (!this.IstInitialisiert) throw new InitializeNeededException();
+                return this._freunde;
+            }
+            private set { this._freunde = value; }
+        }
 
         /// <summary>
         ///     Gibt die Freunde des Benutzers in einer Liste zurück
@@ -79,27 +107,77 @@ namespace Proxer.API
         /// <summary>
         ///     Gibt die Info des Benutzers als Html-Dokument zurück
         /// </summary>
-        public string Info { get; private set; }
+        /// <exception cref="InitializeNeededException"></exception>
+        public string Info
+        {
+            get
+            {
+                if(!this.IstInitialisiert) throw new InitializeNeededException();
+                return this._info;
+            }
+            private set { this._info = value; }
+        }
+
+        /// <summary>
+        /// Gibt an, ob das Objekt bereits Initialisiert ist
+        /// </summary>
+        public bool IstInitialisiert { get; private set; }
 
         /// <summary>
         ///     Gibt zurück, ob der Benutzter zur Zeit online ist
         /// </summary>
-        public bool Online { get; private set; }
+        /// <exception cref="InitializeNeededException"></exception>
+        public bool Online
+        {
+            get
+            {
+                if (!this.IstInitialisiert) throw new InitializeNeededException();
+                return this._online;
+            }
+            private set { this._online = value; }
+        }
 
         /// <summary>
         ///     Gibt zurück, wie viele Punkte der Benutzter momentan hat
         /// </summary>
-        public int Punkte { get; private set; }
+        /// <exception cref="InitializeNeededException"></exception>
+        public int Punkte
+        {
+            get
+            {
+                if (!this.IstInitialisiert) throw new InitializeNeededException();
+                return this._punkte;
+            }
+            private set { this._punkte = value; }
+        }
 
         /// <summary>
         ///     Gibt den Rang-namen des Benutzers zurück
         /// </summary>
-        public string Rang { get; private set; }
+        /// <exception cref="InitializeNeededException"></exception>
+        public string Rang
+        {
+            get
+            {
+                if (!this.IstInitialisiert) throw new InitializeNeededException();
+                return this._rang;
+            }
+            private set { this._rang = value; }
+        }
 
         /// <summary>
         ///     Gibt den Status des Benutzers zurück
         /// </summary>
-        public string Status { get; private set; }
+        /// <exception cref="InitializeNeededException"></exception>
+        public string Status
+        {
+            get
+            {
+                if (!this.IstInitialisiert) throw new InitializeNeededException();
+                return this._status;
+            }
+            private set { this._status = value; }
+        }
 
         /// <summary>
         ///     Gibt den Benutzernamen des Benutzers zurück
@@ -121,6 +199,8 @@ namespace Proxer.API
                 this.GetMainInfo();
                 this.GetFriends();
                 this.GetInfos();
+
+                this.IstInitialisiert = true;
             }
             catch (NotLoggedInException)
             {

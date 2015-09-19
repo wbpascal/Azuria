@@ -34,6 +34,19 @@ namespace Proxer.API.Main
         }
 
         private readonly Senpai _senpai;
+        private string _beschreibung;
+        private string _englischTitel;
+        private int _episodenZahl;
+        private Dictionary<string, Uri> _fsk;
+        private string[] _genre;
+        private Group[] _gruppen;
+        private Industry[] _industrie;
+        private string _japanTitel;
+        private bool _lizensiert;
+        private string[] _season;
+        private Language[] _sprachen;
+        private AnimeMangaStatus _status;
+        private string _synonym;
 
         internal Anime(string name, int id, Senpai senpai)
         {
@@ -42,13 +55,29 @@ namespace Proxer.API.Main
             this.Name = name;
             this.Id = id;
             this.CoverUri = new Uri("http://cdn.proxer.me/cover/" + this.Id + ".jpg");
+
+            this.IstInitialisiert = false;
         }
 
         #region Properties
 
         /// <summary>
         /// </summary>
-        public string Beschreibung { get; private set; }
+        /// <exception cref="InitializeNeededException"></exception>
+        public string Beschreibung
+        {
+            get
+            {
+                if (!this.IstInitialisiert) throw new InitializeNeededException();
+                return this._beschreibung;
+            }
+            private set { this._beschreibung = value; }
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public bool IstInitialisiert { get; private set; }
 
         /// <summary>
         /// </summary>
@@ -56,23 +85,68 @@ namespace Proxer.API.Main
 
         /// <summary>
         /// </summary>
-        public string EnglischTitel { get; private set; }
+        /// <exception cref="InitializeNeededException"></exception>
+        public string EnglischTitel
+        {
+            get
+            {
+                if (!this.IstInitialisiert) throw new InitializeNeededException();
+                return this._englischTitel;
+            }
+            private set { this._englischTitel = value; }
+        }
 
         /// <summary>
         /// </summary>
-        public int EpisodenZahl { get; private set; }
+        /// <exception cref="InitializeNeededException"></exception>
+        public int EpisodenZahl
+        {
+            get
+            {
+                if (!this.IstInitialisiert) throw new InitializeNeededException();
+                return this._episodenZahl;
+            }
+            private set { this._episodenZahl = value; }
+        }
 
         /// <summary>
         /// </summary>
-        public Dictionary<string, Uri> Fsk { get; private set; }
+        /// <exception cref="InitializeNeededException"></exception>
+        public Dictionary<string, Uri> Fsk
+        {
+            get
+            {
+                if (!this.IstInitialisiert) throw new InitializeNeededException();
+                return this._fsk;
+            }
+            private set { this._fsk = value; }
+        }
 
         /// <summary>
         /// </summary>
-        public string[] Genre { get; private set; }
+        /// <exception cref="InitializeNeededException"></exception>
+        public string[] Genre
+        {
+            get
+            {
+                if (!this.IstInitialisiert) throw new InitializeNeededException();
+                return this._genre;
+            }
+            private set { this._genre = value; }
+        }
 
         /// <summary>
         /// </summary>
-        public Group[] Gruppen { get; private set; }
+        /// <exception cref="InitializeNeededException"></exception>
+        public Group[] Gruppen
+        {
+            get
+            {
+                if (!this.IstInitialisiert) throw new InitializeNeededException();
+                return this._gruppen;
+            }
+            private set { this._gruppen = value; }
+        }
 
         /// <summary>
         /// </summary>
@@ -80,15 +154,42 @@ namespace Proxer.API.Main
 
         /// <summary>
         /// </summary>
-        public Industry[] Industrie { get; private set; }
+        /// <exception cref="InitializeNeededException"></exception>
+        public Industry[] Industrie
+        {
+            get
+            {
+                if (!this.IstInitialisiert) throw new InitializeNeededException();
+                return this._industrie;
+            }
+            private set { this._industrie = value; }
+        }
 
         /// <summary>
         /// </summary>
-        public string JapanTitel { get; private set; }
+        /// <exception cref="InitializeNeededException"></exception>
+        public string JapanTitel
+        {
+            get
+            {
+                if (!this.IstInitialisiert) throw new InitializeNeededException();
+                return this._japanTitel;
+            }
+            private set { this._japanTitel = value; }
+        }
 
         /// <summary>
         /// </summary>
-        public bool Lizensiert { get; private set; }
+        /// <exception cref="InitializeNeededException"></exception>
+        public bool Lizensiert
+        {
+            get
+            {
+                if (!this.IstInitialisiert) throw new InitializeNeededException();
+                return this._lizensiert;
+            }
+            private set { this._lizensiert = value; }
+        }
 
         /// <summary>
         /// </summary>
@@ -100,19 +201,55 @@ namespace Proxer.API.Main
 
         /// <summary>
         /// </summary>
-        public string[] Season { get; private set; }
+        /// <exception cref="InitializeNeededException"></exception>
+        public string[] Season
+        {
+            get
+            {
+                if (!this.IstInitialisiert) throw new InitializeNeededException();
+                return this._season;
+            }
+            private set { this._season = value; }
+        }
 
         /// <summary>
         /// </summary>
-        public Language[] Sprachen { get; private set; }
+        /// <exception cref="InitializeNeededException"></exception>
+        public Language[] Sprachen
+        {
+            get
+            {
+                if (!this.IstInitialisiert) throw new InitializeNeededException();
+                return this._sprachen;
+            }
+            private set { this._sprachen = value; }
+        }
 
         /// <summary>
         /// </summary>
-        public AnimeMangaStatus Status { get; private set; }
+        /// <exception cref="InitializeNeededException"></exception>
+        public AnimeMangaStatus Status
+        {
+            get
+            {
+                if (!this.IstInitialisiert) throw new InitializeNeededException();
+                return this._status;
+            }
+            private set { this._status = value; }
+        }
 
         /// <summary>
         /// </summary>
-        public string Synonym { get; private set; }
+        /// <exception cref="InitializeNeededException"></exception>
+        public string Synonym
+        {
+            get
+            {
+                if (!this.IstInitialisiert) throw new InitializeNeededException();
+                return this._synonym;
+            }
+            private set { this._synonym = value; }
+        }
 
         #endregion
 
@@ -128,6 +265,8 @@ namespace Proxer.API.Main
                 this.InitMain();
                 this.InitEpisodeCount();
                 this.InitAvailableLang();
+
+                this.IstInitialisiert = true;
             }
             catch (NotLoggedInException)
             {
@@ -394,6 +533,7 @@ namespace Proxer.API.Main
         {
             private readonly Language _lang;
             private readonly Senpai _senpai;
+            private Dictionary<Stream.StreamPartner, Stream> _streams;
 
             internal Episode(Anime anime, int nr, Language lang, Senpai senpai)
             {
@@ -401,6 +541,8 @@ namespace Proxer.API.Main
                 this.EpisodeNr = nr;
                 this._lang = lang;
                 this._senpai = senpai;
+
+                this.IstInitialisiert = false;
             }
 
             #region Properties
@@ -415,9 +557,23 @@ namespace Proxer.API.Main
             public int EpisodeNr { get; set; }
 
             /// <summary>
+            /// 
+            /// </summary>
+            public bool IstInitialisiert { get; private set; }
+
+            /// <summary>
             ///     Wenn nach Init() immer noch null, dann sind keine Streams für diese Episode verfügbar.
             /// </summary>
-            public Dictionary<Stream.StreamPartner, Stream> Streams { get; private set; }
+            /// <exception cref="InitializeNeededException"></exception>
+            public Dictionary<Stream.StreamPartner, Stream> Streams
+            {
+                get
+                {
+                    if (!this.IstInitialisiert) throw new InitializeNeededException();
+                    return this._streams;
+                }
+                private set { this._streams = value; }
+            }
 
             #endregion
 
@@ -508,6 +664,8 @@ namespace Proxer.API.Main
                                 break;
                         }
                     }
+
+                    this.IstInitialisiert = true;
                 }
                 catch (NullReferenceException)
                 {
