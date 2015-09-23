@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
+using System.Threading.Tasks;
 using System.Timers;
 using HtmlAgilityPack;
 using Newtonsoft.Json;
@@ -80,10 +81,10 @@ namespace Proxer.API
                 AutoReset = true,
                 Interval = (new TimeSpan(0, 45, 0)).TotalMilliseconds
             };
-            this._loginCheckTimer.Elapsed += (s, eArgs) =>
+            this._loginCheckTimer.Elapsed += async (s, eArgs) =>
             {
                 this._loginCheckTimer.Interval = (new TimeSpan(0, 30, 0)).TotalMilliseconds;
-                this.CheckLogin();
+                await this.CheckLogin();
             };
 
             this._notificationCheckTimer = new Timer
@@ -91,7 +92,7 @@ namespace Proxer.API
                 AutoReset = true,
                 Interval = (new TimeSpan(0, 15, 0)).TotalMilliseconds
             };
-            this._notificationCheckTimer.Elapsed += (s, eArgs) => { this.CheckNotifications(); };
+            this._notificationCheckTimer.Elapsed += async (s, eArgs) => { await this.CheckNotifications(); };
 
             this._notificationUpdateCheckTimer = new Timer(1) {AutoReset = true};
             this._notificationUpdateCheckTimer.Elapsed += (s, eArgs) =>
@@ -112,7 +113,7 @@ namespace Proxer.API
         {
             get
             {
-                if (this._checkAnimeMangaUpdate) this.GetAllAnimeMangaUpdates();
+                if (this._checkAnimeMangaUpdate) this.GetAllAnimeMangaUpdates().RunSynchronously();
                 return this._animeMangaUpdates;
             }
         }
@@ -130,7 +131,7 @@ namespace Proxer.API
         {
             get
             {
-                if (this._checkFriendUpdates) this.GetAllFriendUpdates();
+                if (this._checkFriendUpdates) this.GetAllFriendUpdates().RunSynchronously();
                 return this._friendUpdates;
             }
         }
@@ -193,7 +194,7 @@ namespace Proxer.API
         {
             get
             {
-                if (this._checkNewsUpdate) this.GetAllNewsUpdates();
+                if (this._checkNewsUpdate) this.GetAllNewsUpdates().RunSynchronously();
                 return this._newsUpdates;
             }
         }
@@ -205,7 +206,7 @@ namespace Proxer.API
         {
             get
             {
-                if (this._checkPmUpdate) this.GetAllPmUpdates();
+                if (this._checkPmUpdate) this.GetAllPmUpdates().RunSynchronously();
                 return this._pmUpdates;
             }
         }
@@ -221,7 +222,7 @@ namespace Proxer.API
         /// <param name="password">Das Passwort des Benutzers</param>
         /// <exception cref="NotLoggedInException"></exception>
         /// <returns>Gibt zurück, ob der Benutzer erfolgreich eingeloggt wurde</returns>
-        public bool Login(string username, string password)
+        public async Task<bool> Login(string username, string password)
         {
             if (this.LoggedIn || string.IsNullOrEmpty(username) || string.IsNullOrEmpty(password)) return false;
 
@@ -230,8 +231,9 @@ namespace Proxer.API
                 {"username", username},
                 {"password", password}
             };
-            string lResponse = HttpUtility.PostWebRequestResponse("https://proxer.me/login?format=json&action=login",
-                this.LoginCookies, postArgs);
+            string lResponse =
+                await HttpUtility.PostWebRequestResponse("https://proxer.me/login?format=json&action=login",
+                    this.LoginCookies, postArgs);
 
             if (!Utility.CheckForCorrectResponse(lResponse, this.ErrHandler)) return false;
             try
@@ -263,10 +265,10 @@ namespace Proxer.API
         ///     Checkt per API, ob der Benutzer noch eingeloggt ist
         /// </summary>
         /// <returns></returns>
-        public bool CheckLogin()
+        public async Task<bool> CheckLogin()
         {
             if (!this.LoggedIn) return false;
-            string lResponse = HttpUtility.GetWebRequestResponse(
+            string lResponse = await HttpUtility.GetWebRequestResponse(
                 "https://proxer.me/login?format=json&action=login", this.LoginCookies);
 
             if (!Utility.CheckForCorrectResponse(lResponse, this.ErrHandler)) return false;
@@ -296,10 +298,10 @@ namespace Proxer.API
         ///     Initialisiert die Benachrichtigungen
         /// </summary>
         /// <returns></returns>
-        public bool InitNotifications()
+        public async Task<bool> InitNotifications()
         {
             if (!this.LoggedIn) return false;
-            this.CheckNotifications();
+            await this.CheckNotifications();
 
             this._notificationCheckTimer.Start();
             this._notificationUpdateCheckTimer.Start();
@@ -312,6 +314,7 @@ namespace Proxer.API
         /// </summary>
         public void ForcePropertyReload()
         {
+            #pragma warning disable
             this.CheckLogin();
             this._checkAnimeMangaUpdate = true;
             this._checkNewsUpdate = true;
@@ -323,11 +326,11 @@ namespace Proxer.API
         ///     werden!
         /// </summary>
         /// <returns></returns>
-        public List<Conference> GetAllConferences()
+        public async Task<List<Conference>> GetAllConferences()
         {
             if (!this.LoggedIn) return null;
             string lResponse =
-                HttpUtility.GetWebRequestResponse("http://proxer.me/messages", this.LoginCookies)
+                (await HttpUtility.GetWebRequestResponse("http://proxer.me/messages", this.LoginCookies))
                     .Replace("</link>", "")
                     .Replace("\n", "");
 
@@ -366,11 +369,11 @@ namespace Proxer.API
         }
 
 
-        private void CheckNotifications()
+        private async Task CheckNotifications()
         {
             if (!this.LoggedIn) return;
             string lResponse =
-                HttpUtility.GetWebRequestResponse("https://proxer.me/notifications?format=raw&s=count",
+                await HttpUtility.GetWebRequestResponse("https://proxer.me/notifications?format=raw&s=count",
                     this.LoginCookies);
 
             if (!lResponse.StartsWith("0")) return;
@@ -416,12 +419,12 @@ namespace Proxer.API
             this._checkAnimeMangaUpdate = true;
         }
 
-        private void GetAllAnimeMangaUpdates()
+        private async Task GetAllAnimeMangaUpdates()
         {
             if (!this.LoggedIn) throw new NotLoggedInException();
             HtmlDocument lDocument = new HtmlDocument();
             string lResponse =
-                HttpUtility.GetWebRequestResponse(
+                await HttpUtility.GetWebRequestResponse(
                     "https://proxer.me/components/com_proxer/misc/notifications_misc.php", this.LoginCookies);
 
             if (!Utility.CheckForCorrectResponse(lResponse, this.ErrHandler)) return;
@@ -467,11 +470,11 @@ namespace Proxer.API
             }
         }
 
-        private void GetAllNewsUpdates()
+        private async Task GetAllNewsUpdates()
         {
             if (!this.LoggedIn) return;
             string lResponse =
-                HttpUtility.GetWebRequestResponse("https://proxer.me/notifications?format=json&s=news&p=1",
+                await HttpUtility.GetWebRequestResponse("https://proxer.me/notifications?format=json&s=news&p=1",
                     this.LoginCookies);
             if (!lResponse.StartsWith("{\"error\":0")) return;
             this._newsUpdates = new List<NewsObject>();
@@ -483,12 +486,12 @@ namespace Proxer.API
             this._checkNewsUpdate = false;
         }
 
-        private void GetAllPmUpdates()
+        private async Task GetAllPmUpdates()
         {
             if (!this.LoggedIn) return;
             HtmlDocument lDocument = new HtmlDocument();
             string lResponse =
-                (HttpUtility.GetWebRequestResponse("https://proxer.me/messages?format=raw&s=notification",
+                (await HttpUtility.GetWebRequestResponse("https://proxer.me/messages?format=raw&s=notification",
                     this.LoginCookies)).Replace("</link>", "").Replace("\n", "");
 
             if (!Utility.CheckForCorrectResponse(lResponse, this.ErrHandler)) return;
@@ -544,12 +547,12 @@ namespace Proxer.API
             }
         }
 
-        private void GetAllFriendUpdates()
+        private async Task GetAllFriendUpdates()
         {
             if (!this.LoggedIn) return;
             HtmlDocument lDocument = new HtmlDocument();
             string lResponse =
-                (HttpUtility.GetWebRequestResponse("https://proxer.me/user/my/connections?format=raw",
+                (await HttpUtility.GetWebRequestResponse("https://proxer.me/user/my/connections?format=raw",
                     this.LoginCookies))
                     .Replace("</link>", "").Replace("\n", "");
 

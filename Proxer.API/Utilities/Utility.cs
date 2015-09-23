@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using System.Threading.Tasks;
 using HtmlAgilityPack;
 using Proxer.API.Main;
 
@@ -18,11 +19,11 @@ namespace Proxer.API.Utilities
         /// <param name="id"></param>
         /// <param name="senpai"></param>
         /// <returns></returns>
-        public static IAnimeMangaObject GetAnimeManga(int id, Senpai senpai)
+        public static async Task<IAnimeMangaObject> GetAnimeManga(int id, Senpai senpai)
         {
             HtmlDocument lDocument = new HtmlDocument();
             string lResponse =
-                HttpUtility.GetWebRequestResponse("https://proxer.me/info/" + id, senpai.LoginCookies)
+                (await HttpUtility.GetWebRequestResponse("https://proxer.me/info/" + id, senpai.LoginCookies))
                     .Replace("</link>", "")
                     .Replace("\n", "");
 

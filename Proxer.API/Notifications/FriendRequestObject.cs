@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using Proxer.API.Exceptions;
 using Proxer.API.Utilities;
 
@@ -86,13 +87,13 @@ namespace Proxer.API.Notifications
         /// </summary>
         /// <exception cref="NotLoggedInException"></exception>
         /// <returns>Ob die Aktion erfolgreich war</returns>
-        public bool AcceptRequest()
+        public async Task<bool> AcceptRequest()
         {
             if(!this._senpai.LoggedIn) throw new NotLoggedInException();
             if (this._accepted || this._denied) return false;
             Dictionary<string, string> lPostArgs = new Dictionary<string, string> {{"type", "accept"}};
             string lResponse =
-                HttpUtility.PostWebRequestResponse("https://proxer.me/user/my?format=json&cid=" + this.Id,
+                await HttpUtility.PostWebRequestResponse("https://proxer.me/user/my?format=json&cid=" + this.Id,
                     this._senpai.LoginCookies, lPostArgs);
 
             if (!lResponse.StartsWith("{\"error\":0")) return false;
@@ -104,13 +105,13 @@ namespace Proxer.API.Notifications
         /// </summary>
         /// <exception cref="NotLoggedInException"></exception>
         /// <returns>Ob die Aktion erfolgreich war</returns>
-        public bool DenyRequest()
+        public async Task<bool> DenyRequest()
         {
             if(!this._senpai.LoggedIn) throw new NotLoggedInException();
             if (this._accepted || this._denied) return false;
             Dictionary<string, string> lPostArgs = new Dictionary<string, string> {{"type", "deny"}};
             string lResponse =
-                HttpUtility.PostWebRequestResponse("https://proxer.me/user/my?format=json&cid=" + this.Id,
+                await HttpUtility.PostWebRequestResponse("https://proxer.me/user/my?format=json&cid=" + this.Id,
                     this._senpai.LoginCookies, lPostArgs);
 
             if (!lResponse.StartsWith("{\"error\":0")) return false;
@@ -122,12 +123,12 @@ namespace Proxer.API.Notifications
         /// </summary>
         /// <exception cref="NotLoggedInException"></exception>
         /// <returns>Ob die Aktion erfolgreich war</returns>
-        public bool EditDescription(string pNewDescription)
+        public async Task<bool> EditDescription(string pNewDescription)
         {
             if (!this._senpai.LoggedIn) throw new NotLoggedInException();
             Dictionary<string, string> lPostArgs = new Dictionary<string, string> {{"type", "desc"}};
             string lResponse =
-                HttpUtility.PostWebRequestResponse(
+                await HttpUtility.PostWebRequestResponse(
                     "https://proxer.me/user/my?format=json&desc=" +
                     System.Web.HttpUtility.JavaScriptStringEncode(pNewDescription) + "&cid=" + this.Id,
                     this._senpai.LoginCookies, lPostArgs);

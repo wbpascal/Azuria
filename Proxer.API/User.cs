@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
+using System.Threading.Tasks;
 using HtmlAgilityPack;
 using Proxer.API.Exceptions;
 using Proxer.API.Utilities;
@@ -62,7 +64,7 @@ namespace Proxer.API
             this._senpai = senpai;
             this.IstInitialisiert = false;
 
-            this.UserName = GetUNameFromId(userId, senpai);
+            this.UserName = GetUNameFromId(userId, senpai).Result;
             this.Id = userId;
             this.Avatar =
                 new Uri(
@@ -192,13 +194,13 @@ namespace Proxer.API
         ///     Initialisiert die Eigenschaften der Klasse
         /// </summary>
         /// <exception cref="NotLoggedInException"></exception>
-        public void InitUser()
+        public async Task InitUser()
         {
             try
             {
-                this.GetMainInfo();
-                this.GetFriends();
-                this.GetInfos();
+                await this.GetMainInfo();
+                await this.GetFriends();
+                await this.GetInfos();
 
                 this.IstInitialisiert = true;
             }
@@ -209,14 +211,14 @@ namespace Proxer.API
         }
 
 
-        private void GetMainInfo()
+        private async Task GetMainInfo()
         {
             if (this.Id != -1)
             {
                 if (!this._senpai.LoggedIn) throw new NotLoggedInException();
                 HtmlDocument lDocument = new HtmlDocument();
                 string lResponse =
-                    (HttpUtility.GetWebRequestResponse("https://proxer.me/user/" + this.Id + "/overview?format=raw",
+                    (await HttpUtility.GetWebRequestResponse("https://proxer.me/user/" + this.Id + "/overview?format=raw",
                         this._senpai.LoginCookies)).Replace("</link>", "").Replace("\n", "");
 
                 if (!Utility.CheckForCorrectResponse(lResponse, this._senpai.ErrHandler)) return;
@@ -270,7 +272,7 @@ namespace Proxer.API
             }
         }
 
-        private void GetFriends()
+        private async Task GetFriends()
         {
             if (this.Id != -1)
             {
@@ -283,51 +285,49 @@ namespace Proxer.API
 
                 while (
                     !(lResponse =
-                        (HttpUtility.GetWebRequestResponse(
+                        (await HttpUtility.GetWebRequestResponse(
                             "https://proxer.me/user/" + this.Id + "/connections/" + lSeite + "?format=raw",
                             this._senpai.LoginCookies)).Replace("</link>", "").Replace("\n", "").Replace("\t", ""))
                         .Contains(
                             "Dieser Benutzer hat bisher keine Freunde"))
                 {
-                    if (Utility.CheckForCorrectResponse(lResponse, this._senpai.ErrHandler))
+                    if (!Utility.CheckForCorrectResponse(lResponse, this._senpai.ErrHandler)) continue;
+                    if (
+                        lResponse.Equals(
+                            "<div class=\"inner\"><h3>Du hast keine Berechtigung um diese Seite zu betreten.</h3></div>"))
+                        break;
+
+                    try
                     {
-                        if (
-                            lResponse.Equals(
-                                "<div class=\"inner\"><h3>Du hast keine Berechtigung um diese Seite zu betreten.</h3></div>"))
-                            break;
+                        lDocument.LoadHtml(lResponse);
 
-                        try
+                        if (lDocument.ParseErrors.Any())
+                            lDocument.LoadHtml(Utility.TryFixParseErrors(lResponse, lDocument.ParseErrors));
+
+                        if (!lDocument.ParseErrors.Any())
                         {
-                            lDocument.LoadHtml(lResponse);
+                            HtmlNodeCollection lProfileNodes =
+                                lDocument.DocumentNode.SelectNodes("//table[@id='box-table-a']");
 
-                            if (lDocument.ParseErrors.Any())
-                                lDocument.LoadHtml(Utility.TryFixParseErrors(lResponse, lDocument.ParseErrors));
-
-                            if (!lDocument.ParseErrors.Any())
+                            if (lProfileNodes != null)
                             {
-                                HtmlNodeCollection lProfileNodes =
-                                    lDocument.DocumentNode.SelectNodes("//table[@id='box-table-a']");
-
-                                if (lProfileNodes != null)
+                                lProfileNodes[0].ChildNodes.Remove(0);
+                                foreach (HtmlNode curFriendNode in lProfileNodes[0].ChildNodes)
                                 {
-                                    lProfileNodes[0].ChildNodes.Remove(0);
-                                    foreach (HtmlNode curFriendNode in lProfileNodes[0].ChildNodes)
-                                    {
-                                        string lUsername = curFriendNode.ChildNodes[2].InnerText;
-                                        int lId =
-                                            Convert.ToInt32(
-                                                curFriendNode.Attributes["id"].Value.Substring("entry".Length));
-                                        this.Freunde.Add(new User(lUsername, lId, this._senpai));
-                                    }
+                                    string lUsername = curFriendNode.ChildNodes[2].InnerText;
+                                    int lId =
+                                        Convert.ToInt32(
+                                            curFriendNode.Attributes["id"].Value.Substring("entry".Length));
+                                    this.Freunde.Add(new User(lUsername, lId, this._senpai));
                                 }
                             }
+                        }
 
-                            lSeite++;
-                        }
-                        catch (Exception)
-                        {
-                            this._senpai.ErrHandler.Add(lResponse);
-                        }
+                        lSeite++;
+                    }
+                    catch (Exception)
+                    {
+                        this._senpai.ErrHandler.Add(lResponse);
                     }
                 }
             }
@@ -337,14 +337,14 @@ namespace Proxer.API
             }
         }
 
-        private void GetInfos()
+        private async Task GetInfos()
         {
             if (this.Id != -1)
             {
                 if (!this._senpai.LoggedIn) throw new NotLoggedInException();
                 HtmlDocument lDocument = new HtmlDocument();
                 string lResponse =
-                    (HttpUtility.GetWebRequestResponse("https://proxer.me/user/" + this.Id + "/about?format=raw",
+                    (await HttpUtility.GetWebRequestResponse("https://proxer.me/user/" + this.Id + "/about?format=raw",
                         this._senpai.LoginCookies)).Replace("</link>", "").Replace("\n", "");
 
                 if (!Utility.CheckForCorrectResponse(lResponse, this._senpai.ErrHandler)) return;
@@ -396,10 +396,10 @@ namespace Proxer.API
         /// <param name="id"></param>
         /// <param name="senpai"></param>
         /// <returns></returns>
-        public static string GetUNameFromId(int id, Senpai senpai)
+        public static async Task<string> GetUNameFromId(int id, Senpai senpai)
         {
             HtmlDocument lDocument = new HtmlDocument();
-            string lResponse = HttpUtility.GetWebRequestResponse(
+            string lResponse = await HttpUtility.GetWebRequestResponse(
                 "https://proxer.me/user/" + id + "/overview?format=raw",
                 senpai.LoginCookies);
 

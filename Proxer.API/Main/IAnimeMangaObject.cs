@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using Proxer.API.Main.Minor;
 
 namespace Proxer.API.Main
@@ -80,7 +81,7 @@ namespace Proxer.API.Main
 
         /// <summary>
         /// </summary>
-        void Init();
+        Task  Init();
 
         #endregion
     }

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using HtmlAgilityPack;
 using Proxer.API.Exceptions;
 using Proxer.API.Main.Minor;
@@ -258,13 +259,13 @@ namespace Proxer.API.Main
         /// <summary>
         /// </summary>
         /// <exception cref="NotLoggedInException"></exception>
-        public void Init()
+        public async Task Init()
         {
             try
             {
-                this.InitMain();
-                this.InitEpisodeCount();
-                this.InitAvailableLang();
+                await this.InitMain();
+                await this.InitEpisodeCount();
+                await this.InitAvailableLang();
 
                 this.IstInitialisiert = true;
             }
@@ -298,11 +299,11 @@ namespace Proxer.API.Main
             return lEpisodes.ToArray();
         }
 
-        private void InitMain()
+        private async Task InitMain()
         {
             HtmlDocument lDocument = new HtmlDocument();
             string lResponse =
-                HttpUtility.GetWebRequestResponse("https://proxer.me/info/" + this.Id, this._senpai.LoginCookies)
+                (await HttpUtility.GetWebRequestResponse("https://proxer.me/info/" + this.Id, this._senpai.LoginCookies))
                     .Replace("</link>", "")
                     .Replace("\n", "");
 
@@ -439,14 +440,14 @@ namespace Proxer.API.Main
             }
         }
 
-        private void InitAvailableLang()
+        private async Task InitAvailableLang()
         {
             if (!this._senpai.LoggedIn) throw new NotLoggedInException();
 
             HtmlDocument lDocument = new HtmlDocument();
             string lResponse =
-                HttpUtility.GetWebRequestResponse("http://proxer.me/edit/entry/" + this.Id + "/languages",
-                    this._senpai.LoginCookies)
+                (await HttpUtility.GetWebRequestResponse("http://proxer.me/edit/entry/" + this.Id + "/languages",
+                    this._senpai.LoginCookies))
                     .Replace("</link>", "")
                     .Replace("\n", "");
 
@@ -492,14 +493,14 @@ namespace Proxer.API.Main
             }
         }
 
-        private void InitEpisodeCount()
+        private async Task InitEpisodeCount()
         {
             if (!this._senpai.LoggedIn) throw new NotLoggedInException();
 
             HtmlDocument lDocument = new HtmlDocument();
             string lResponse =
-                HttpUtility.GetWebRequestResponse("http://proxer.me/edit/entry/" + this.Id + "/count",
-                    this._senpai.LoginCookies)
+                (await HttpUtility.GetWebRequestResponse("http://proxer.me/edit/entry/" + this.Id + "/count",
+                    this._senpai.LoginCookies))
                     .Replace("</link>", "")
                     .Replace("\n", "");
 
@@ -583,16 +584,16 @@ namespace Proxer.API.Main
             /// </summary>
             /// <exception cref="NotLoggedInException"></exception>
             /// <exception cref="CaptchaException"></exception>
-            public void Init()
+            public async Task Init()
             {
                 if (!this._senpai.LoggedIn) throw new NotLoggedInException();
 
                 HtmlDocument lDocument = new HtmlDocument();
                 string lResponse =
-                    HttpUtility.GetWebRequestResponse(
+                    (await HttpUtility.GetWebRequestResponse(
                         "https://proxer.me/watch/" + this.ParentAnime.Id + "/" + this.EpisodeNr + "/" +
                         this._lang.ToString().ToLower(),
-                        this._senpai.MobileLoginCookies)
+                        this._senpai.MobileLoginCookies))
                         .Replace("</link>", "")
                         .Replace("\n", "");
 

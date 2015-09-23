@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Timers;
 using HtmlAgilityPack;
 using Newtonsoft.Json;
@@ -35,7 +36,7 @@ namespace Proxer.API.Community
             this._senpai = senpai;
 
             this._getMessagesTimer = new Timer {Interval = (new TimeSpan(0, 0, 15)).TotalMilliseconds};
-            this._getMessagesTimer.Elapsed += (s, eArgs) =>
+            this._getMessagesTimer.Elapsed += async (s, eArgs) =>
             {
                 this._getMessagesTimer.Interval = (new TimeSpan(0, 0, 15)).TotalMilliseconds;
                 Timer timer = s as Timer;
@@ -43,16 +44,14 @@ namespace Proxer.API.Community
                 if (this.IstInitialisiert)
                 {
                     if (this.Nachrichten != null && this.Nachrichten.Any())
-                        this.GetMessages(this.Nachrichten.Last().NachrichtId);
-                    else this.GetAllMessages();
+                        await this.GetMessages(this.Nachrichten.Last().NachrichtId);
+                    else await this.GetAllMessages();
                 }
                 Timer timer1 = s as Timer;
                 if (timer1 != null) timer1.Start();
             };
 
             this.Aktiv = false;
-
-            this.InitConference();
         }
 
         internal Conference(string title, int id, Senpai senpai)
@@ -62,7 +61,7 @@ namespace Proxer.API.Community
             this._senpai = senpai;
 
             this._getMessagesTimer = new Timer {Interval = (new TimeSpan(0, 0, 15)).TotalMilliseconds};
-            this._getMessagesTimer.Elapsed += (s, eArgs) =>
+            this._getMessagesTimer.Elapsed += async (s, eArgs) =>
             {
                 this._getMessagesTimer.Interval = (new TimeSpan(0, 0, 15)).TotalMilliseconds;
                 Timer timer = s as Timer;
@@ -70,8 +69,8 @@ namespace Proxer.API.Community
                 if (this.IstInitialisiert)
                 {
                     if (this.Nachrichten != null && this.Nachrichten.Any())
-                        this.GetMessages(this.Nachrichten.Last().NachrichtId);
-                    else this.GetAllMessages();
+                        await this.GetMessages(this.Nachrichten.Last().NachrichtId);
+                    else await this.GetAllMessages();
                 }
                 Timer timer1 = s as Timer;
                 if (timer1 != null) timer1.Start();
@@ -149,17 +148,17 @@ namespace Proxer.API.Community
         ///     Initialisiert die Konferenz
         /// </summary>
         /// <exception cref="NotLoggedInException"></exception>
-        public void InitConference()
+        public async Task InitConference()
         {
             if (!this._senpai.LoggedIn) throw new NotLoggedInException();
 
-            if(!IstTeilnehmner(this.Id, this._senpai)) return;
-            this.IsConference = this.CheckIsConference();
+            if(!await IstTeilnehmner(this.Id, this._senpai)) return;
+            this.IsConference = await this.CheckIsConference();
             try
             {
-                this.GetAllParticipants();
-                this.GetLeader();
-                this.GetTitle();
+                await this.GetAllParticipants();
+                await this.GetLeader();
+                await this.GetTitle();
             }
             catch (NotLoggedInException)
             {
@@ -175,7 +174,7 @@ namespace Proxer.API.Community
         /// <param name="nachricht">Die Nachricht, die gesendet werden soll</param>
         /// <exception cref="NotLoggedInException"></exception>
         /// <returns>Gibt zurück, ob die Aktion erfolgreich war</returns>
-        public bool SendeNachricht(string nachricht)
+        public async Task<bool> SendeNachricht(string nachricht)
         {
             if (!this._senpai.LoggedIn) throw new NotLoggedInException();
 
@@ -186,7 +185,7 @@ namespace Proxer.API.Community
                 {"message", nachricht}
             };
             string lResponse =
-                HttpUtility.PostWebRequestResponse(
+                await HttpUtility.PostWebRequestResponse(
                     "https://proxer.me/messages?id=" + this.Id + "&format=json&json=answer",
                     this._senpai.LoginCookies,
                     lPostArgs);
@@ -211,7 +210,7 @@ namespace Proxer.API.Community
                     }
                     if (lResponseJson["msg"].Equals("Erfolgreich!"))
                     {
-                        this.GetMessages(this.Nachrichten.Last().NachrichtId);
+                        await this.GetMessages(this.Nachrichten.Last().NachrichtId);
                         this._getMessagesTimer.Start();
                         return true;
                     }
@@ -232,11 +231,11 @@ namespace Proxer.API.Community
         /// </summary>
         /// <exception cref="NotLoggedInException"></exception>
         /// <returns>Gibt zurück, ob die Aktion erfolgreich war</returns>
-        public bool AlsUngelesenMarkieren()
+        public async Task<bool> AlsUngelesenMarkieren()
         {
             if (!this._senpai.LoggedIn) throw new NotLoggedInException();
             string lResponse =
-                HttpUtility.GetWebRequestResponse(
+                await HttpUtility.GetWebRequestResponse(
                     "http://proxer.me/messages?format=json&json=setUnread&id=" + this.Id, this._senpai.LoginCookies);
 
             return lResponse.StartsWith("{\"error\":0");
@@ -247,11 +246,11 @@ namespace Proxer.API.Community
         /// </summary>
         /// <exception cref="NotLoggedInException"></exception>
         /// <returns>Gibt zurück, ob die Aktion erfolgreich war</returns>
-        public bool FavoritHinzufuegen()
+        public async Task<bool> FavoritHinzufuegen()
         {
             if (!this._senpai.LoggedIn) throw new NotLoggedInException();
             string lResponse =
-                HttpUtility.GetWebRequestResponse(
+                await HttpUtility.GetWebRequestResponse(
                     "http://proxer.me/messages?format=json&json=favour&id=" + this.Id, this._senpai.LoginCookies);
             return lResponse.StartsWith("{\"error\":0");
         }
@@ -261,11 +260,11 @@ namespace Proxer.API.Community
         /// </summary>
         /// <exception cref="NotLoggedInException"></exception>
         /// <returns>Gibt zurück, ob die Aktion erfolgreich war</returns>
-        public bool FavoritEntfernen()
+        public async Task<bool> FavoritEntfernen()
         {
             if (!this._senpai.LoggedIn) throw new NotLoggedInException();
             string lResponse =
-                HttpUtility.GetWebRequestResponse(
+                await HttpUtility.GetWebRequestResponse(
                     "http://proxer.me/messages?format=json&json=unfavour&id=" + this.Id, this._senpai.LoginCookies);
             return lResponse.StartsWith("{\"error\":0");
         }
@@ -275,11 +274,11 @@ namespace Proxer.API.Community
         /// </summary>
         /// <exception cref="NotLoggedInException"></exception>
         /// <returns>Gibt zurück, ob die Aktion erfolgreich war</returns>
-        public bool BlockHinzufuegen()
+        public async Task<bool> BlockHinzufuegen()
         {
             if (!this._senpai.LoggedIn) throw new NotLoggedInException();
             string lResponse =
-                HttpUtility.GetWebRequestResponse("http://proxer.me/messages?format=json&json=block&id=" + this.Id,
+                await HttpUtility.GetWebRequestResponse("http://proxer.me/messages?format=json&json=block&id=" + this.Id,
                     this._senpai.LoginCookies);
             return lResponse.StartsWith("{\"error\":0");
         }
@@ -289,17 +288,17 @@ namespace Proxer.API.Community
         /// </summary>
         /// <exception cref="NotLoggedInException"></exception>
         /// <returns>Gibt zurück, ob die Aktion erfolgreich war</returns>
-        public bool BlockEntfernen()
+        public async Task<bool> BlockEntfernen()
         {
             if (!this._senpai.LoggedIn) throw new NotLoggedInException();
             string lResponse =
-                HttpUtility.GetWebRequestResponse(
+                await HttpUtility.GetWebRequestResponse(
                     "http://proxer.me/messages?format=json&json=unblock&id=" + this.Id, this._senpai.LoginCookies);
             return lResponse.StartsWith("{\"error\":0");
         }
 
 
-        private void GetLeader()
+        private async Task GetLeader()
         {
             if (this.IsConference)
             {
@@ -308,7 +307,7 @@ namespace Proxer.API.Community
                     {"message", "/leader"}
                 };
                 string lResponse =
-                    HttpUtility.PostWebRequestResponse(
+                    await HttpUtility.PostWebRequestResponse(
                         "https://proxer.me/messages?id=" + this.Id + "&format=json&json=answer",
                         this._senpai.LoginCookies,
                         lPostArgs);
@@ -337,12 +336,12 @@ namespace Proxer.API.Community
             }
         }
 
-        private void GetAllParticipants()
+        private async Task GetAllParticipants()
         {
             HtmlDocument lDocument = new HtmlDocument();
             string lResponse =
-                HttpUtility.GetWebRequestResponse("https://proxer.me/messages?id=" + this.Id + "&format=raw",
-                    this._senpai.LoginCookies).Replace("</link>", "").Replace("\n", "");
+                (await HttpUtility.GetWebRequestResponse("https://proxer.me/messages?id=" + this.Id + "&format=raw",
+                    this._senpai.LoginCookies)).Replace("</link>", "").Replace("\n", "");
 
             if (!Utility.CheckForCorrectResponse(lResponse, this._senpai.ErrHandler)) return;
             try
@@ -372,7 +371,7 @@ namespace Proxer.API.Community
             }
         }
 
-        private void GetTitle()
+        private async Task GetTitle()
         {
             if (this.IsConference)
             {
@@ -381,7 +380,7 @@ namespace Proxer.API.Community
                     {"message", "/topic"}
                 };
                 string lResponse =
-                    HttpUtility.PostWebRequestResponse(
+                    await HttpUtility.PostWebRequestResponse(
                         "https://proxer.me/messages?id=" + this.Id + "&format=json&json=answer",
                         this._senpai.LoginCookies,
                         lPostArgs);
@@ -405,14 +404,14 @@ namespace Proxer.API.Community
             }
         }
 
-        private void GetAllMessages()
+        private async Task GetAllMessages()
         {
             if (this.Nachrichten != null && this.Nachrichten.Count > 0)
-                this.GetMessages(this.Nachrichten.Last().NachrichtId);
+                await this.GetMessages(this.Nachrichten.Last().NachrichtId);
             else if ((this.Nachrichten == null || this.Nachrichten.Count == 0) && this._senpai.LoggedIn)
             {
                 string lResponse =
-                    HttpUtility.GetWebRequestResponse(
+                    await HttpUtility.GetWebRequestResponse(
                         "http://proxer.me/messages?format=json&json=messages&id=" + this.Id, this._senpai.LoginCookies);
                 if (lResponse.Equals("{\"uid\":\"" + this._senpai.Me.Id +
                                      "\",\"error\":1,\"msg\":\"Ein Fehler ist passiert.\"}")) return;
@@ -467,13 +466,13 @@ namespace Proxer.API.Community
                     {
                         if (this.Nachrichten.Count(
                             x => x.Aktion == Message.Action.AddUser || x.Aktion == Message.Action.RemoveUser) > 0)
-                            this.GetAllParticipants();
+                            await this.GetAllParticipants();
                         if (this.Nachrichten.Count(x => x.Aktion == Message.Action.SetLeader) > 0 &&
                             this.IstInitialisiert)
-                            this.GetLeader();
+                            await this.GetLeader();
                         if (this.Nachrichten.Count(x => x.Aktion == Message.Action.SetTopic) > 0 &&
                             this.IstInitialisiert)
-                            this.GetTitle();
+                            await this.GetTitle();
                     }
                     catch (NotLoggedInException)
                     {
@@ -485,20 +484,20 @@ namespace Proxer.API.Community
                     this._senpai.ErrHandler.Add(lResponse);
                 }
 
-                if (this.NeuePmRaised != null) this.NeuePmRaised.Invoke(this, this.Nachrichten);
+                if (this.NeuePmRaised != null) this.NeuePmRaised(this, this.Nachrichten);
             }
         }
 
-        private void GetMessages(int mid)
+        private async Task GetMessages(int mid)
         {
             if (this.Nachrichten == null || this.Nachrichten.Count(x => x.NachrichtId == mid) == 0)
-                this.GetAllMessages();
+                await this.GetAllMessages();
             else
             {
                 if (!this._senpai.LoggedIn) return;
 
                 string lResponse =
-                    HttpUtility.GetWebRequestResponse(
+                    await HttpUtility.GetWebRequestResponse(
                         "http://proxer.me/messages?format=json&json=newmessages&id=" + this.Id + "&mid=" + mid,
                         this._senpai.LoginCookies);
 
@@ -557,13 +556,13 @@ namespace Proxer.API.Community
                         if (
                             lNewMessages.Count(
                                 x => x.Aktion == Message.Action.AddUser || x.Aktion == Message.Action.RemoveUser) >
-                            0) this.GetAllParticipants();
+                            0) await this.GetAllParticipants();
                         if (lNewMessages.Count(x => x.Aktion == Message.Action.SetLeader) > 0 &&
                             this.IstInitialisiert)
-                            this.GetLeader();
+                            await this.GetLeader();
                         if (lNewMessages.Count(x => x.Aktion == Message.Action.SetTopic) > 0 &&
                             this.IstInitialisiert)
-                            this.GetTitle();
+                            await this.GetTitle();
                     }
                     catch (NotLoggedInException)
                     {
@@ -577,18 +576,18 @@ namespace Proxer.API.Community
                     this._senpai.ErrHandler.Add(lResponse);
                 }
 
-                if (this.NeuePmRaised != null) this.NeuePmRaised.Invoke(this, lNewMessages);
+                if (this.NeuePmRaised != null) this.NeuePmRaised(this, lNewMessages);
             }
         }
 
-        private bool CheckIsConference()
+        private async Task<bool> CheckIsConference()
         {
             Dictionary<string, string> lPostArgs = new Dictionary<string, string>
             {
                 {"message", "/ping"}
             };
             string lResponse =
-                HttpUtility.PostWebRequestResponse(
+                await HttpUtility.PostWebRequestResponse(
                     "https://proxer.me/messages?id=" + this.Id + "&format=json&json=answer", this._senpai.LoginCookies,
                     lPostArgs);
 
@@ -615,14 +614,14 @@ namespace Proxer.API.Community
         /// <param name="id">ID der Konferenz</param>
         /// <param name="senpai"></param>
         /// <returns></returns>
-        public static bool IstTeilnehmner(int id, Senpai senpai)
+        public static async Task<bool> IstTeilnehmner(int id, Senpai senpai)
         {
             Dictionary<string, string> lPostArgs = new Dictionary<string, string>
             {
                 {"message", "/ping"}
             };
             string lResponse =
-                HttpUtility.PostWebRequestResponse("https://proxer.me/messages?id=" + id + "&format=json&json=answer",
+                await HttpUtility.PostWebRequestResponse("https://proxer.me/messages?id=" + id + "&format=json&json=answer",
                     senpai.LoginCookies, lPostArgs);
 
             if (!Utility.CheckForCorrectResponse(lResponse, senpai.ErrHandler)) return false;
