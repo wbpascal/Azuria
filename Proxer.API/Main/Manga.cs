@@ -68,11 +68,6 @@ namespace Proxer.API.Main
         }
 
         /// <summary>
-        /// 
-        /// </summary>
-        public bool IstInitialisiert { get; private set; }
-
-        /// <summary>
         /// </summary>
         public Uri CoverUri { get; private set; }
 
@@ -87,19 +82,6 @@ namespace Proxer.API.Main
                 return this._englischTitel;
             }
             private set { this._englischTitel = value; }
-        }
-
-        /// <summary>
-        /// </summary>
-        /// <exception cref="InitializeNeededException"></exception>
-        public int KapitelZahl
-        {
-            get
-            {
-                if (!this.IstInitialisiert) throw new InitializeNeededException();
-                return this._episodenZahl;
-            }
-            private set { this._episodenZahl = value; }
         }
 
         /// <summary>
@@ -160,6 +142,10 @@ namespace Proxer.API.Main
 
         /// <summary>
         /// </summary>
+        public bool IstInitialisiert { get; private set; }
+
+        /// <summary>
+        /// </summary>
         /// <exception cref="InitializeNeededException"></exception>
         public string JapanTitel
         {
@@ -169,6 +155,19 @@ namespace Proxer.API.Main
                 return this._japanTitel;
             }
             private set { this._japanTitel = value; }
+        }
+
+        /// <summary>
+        /// </summary>
+        /// <exception cref="InitializeNeededException"></exception>
+        public int KapitelZahl
+        {
+            get
+            {
+                if (!this.IstInitialisiert) throw new InitializeNeededException();
+                return this._episodenZahl;
+            }
+            private set { this._episodenZahl = value; }
         }
 
         /// <summary>
@@ -551,12 +550,11 @@ namespace Proxer.API.Main
 
             /// <summary>
             /// </summary>
-            public int KapitelNr { get; private set; }
+            public bool IstInitialisiert { get; private set; }
 
             /// <summary>
-            /// 
             /// </summary>
-            public bool IstInitialisiert { get; private set; }
+            public int KapitelNr { get; private set; }
 
             /// <summary>
             /// </summary>
@@ -733,7 +731,7 @@ namespace Proxer.API.Main
 
             private async Task InitChapters()
             {
-                if(!this._senpai.LoggedIn) throw new NotLoggedInException();
+                if (!this._senpai.LoggedIn) throw new NotLoggedInException();
 
                 HtmlDocument lDocument = new HtmlDocument();
                 string lResponse =

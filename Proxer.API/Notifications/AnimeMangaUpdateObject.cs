@@ -30,7 +30,7 @@ namespace Proxer.API.Notifications
         {
             this.Type = NotificationObjectType.AnimeManga;
             this.Message = message;
-            this.Name = name;
+            this.Name = name.Trim();
             this.Number = number;
             this.Link = link;
             this.Id = id;

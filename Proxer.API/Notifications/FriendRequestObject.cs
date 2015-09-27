@@ -89,7 +89,7 @@ namespace Proxer.API.Notifications
         /// <returns>Ob die Aktion erfolgreich war</returns>
         public async Task<bool> AcceptRequest()
         {
-            if(!this._senpai.LoggedIn) throw new NotLoggedInException();
+            if (!this._senpai.LoggedIn) throw new NotLoggedInException();
             if (this._accepted || this._denied) return false;
             Dictionary<string, string> lPostArgs = new Dictionary<string, string> {{"type", "accept"}};
             string lResponse =
@@ -107,7 +107,7 @@ namespace Proxer.API.Notifications
         /// <returns>Ob die Aktion erfolgreich war</returns>
         public async Task<bool> DenyRequest()
         {
-            if(!this._senpai.LoggedIn) throw new NotLoggedInException();
+            if (!this._senpai.LoggedIn) throw new NotLoggedInException();
             if (this._accepted || this._denied) return false;
             Dictionary<string, string> lPostArgs = new Dictionary<string, string> {{"type", "deny"}};
             string lResponse =

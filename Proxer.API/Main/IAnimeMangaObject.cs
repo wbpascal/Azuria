@@ -81,7 +81,7 @@ namespace Proxer.API.Main
 
         /// <summary>
         /// </summary>
-        Task  Init();
+        Task Init();
 
         #endregion
     }

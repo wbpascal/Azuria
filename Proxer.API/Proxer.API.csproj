@@ -76,10 +76,15 @@
     <Compile Include="Main\Manga.cs" />
     <Compile Include="Main\Minor\Group.cs" />
     <Compile Include="Main\Minor\Industry.cs" />
+    <Compile Include="Notifications\AnimeMangaUpdateCollection.cs" />
+    <Compile Include="Notifications\FriendRequestCollection.cs" />
     <Compile Include="Notifications\FriendRequestObject.cs" />
+    <Compile Include="Notifications\INotificationCollection.cs" />
     <Compile Include="Notifications\INotificationObject.cs" />
+    <Compile Include="Notifications\NewsCollection.cs" />
     <Compile Include="Notifications\NewsObject.cs" />
     <Compile Include="Notifications\NotificationObjectType.cs" />
+    <Compile Include="Notifications\PMCollection.cs" />
     <Compile Include="Notifications\PMObject.cs" />
     <Compile Include="Notifications\AnimeMangaUpdateObject.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

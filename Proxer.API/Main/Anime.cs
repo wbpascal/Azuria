@@ -76,11 +76,6 @@ namespace Proxer.API.Main
         }
 
         /// <summary>
-        /// 
-        /// </summary>
-        public bool IstInitialisiert { get; private set; }
-
-        /// <summary>
         /// </summary>
         public Uri CoverUri { get; private set; }
 
@@ -165,6 +160,10 @@ namespace Proxer.API.Main
             }
             private set { this._industrie = value; }
         }
+
+        /// <summary>
+        /// </summary>
+        public bool IstInitialisiert { get; private set; }
 
         /// <summary>
         /// </summary>
@@ -549,18 +548,16 @@ namespace Proxer.API.Main
             #region Properties
 
             /// <summary>
-            /// 
-            /// </summary>
-            public Anime ParentAnime { get; set; }
-
-            /// <summary>
             /// </summary>
             public int EpisodeNr { get; set; }
 
             /// <summary>
-            /// 
             /// </summary>
             public bool IstInitialisiert { get; private set; }
+
+            /// <summary>
+            /// </summary>
+            public Anime ParentAnime { get; set; }
 
             /// <summary>
             ///     Wenn nach Init() immer noch null, dann sind keine Streams für diese Episode verfügbar.
@@ -724,7 +721,6 @@ namespace Proxer.API.Main
                 public Uri Link { get; private set; }
 
                 /// <summary>
-                /// 
                 /// </summary>
                 public StreamPartner SPartner { get; private set; }
 

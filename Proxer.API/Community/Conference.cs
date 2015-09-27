@@ -152,7 +152,7 @@ namespace Proxer.API.Community
         {
             if (!this._senpai.LoggedIn) throw new NotLoggedInException();
 
-            if(!await IstTeilnehmner(this.Id, this._senpai)) return;
+            if (!await IstTeilnehmner(this.Id, this._senpai)) return;
             this.IsConference = await this.CheckIsConference();
             try
             {
@@ -278,8 +278,9 @@ namespace Proxer.API.Community
         {
             if (!this._senpai.LoggedIn) throw new NotLoggedInException();
             string lResponse =
-                await HttpUtility.GetWebRequestResponse("http://proxer.me/messages?format=json&json=block&id=" + this.Id,
-                    this._senpai.LoginCookies);
+                await
+                    HttpUtility.GetWebRequestResponse("http://proxer.me/messages?format=json&json=block&id=" + this.Id,
+                        this._senpai.LoginCookies);
             return lResponse.StartsWith("{\"error\":0");
         }
 
@@ -476,7 +477,6 @@ namespace Proxer.API.Community
                     }
                     catch (NotLoggedInException)
                     {
-                        
                     }
                 }
                 catch (Exception)
@@ -566,7 +566,6 @@ namespace Proxer.API.Community
                     }
                     catch (NotLoggedInException)
                     {
-                        
                     }
 
                     this.Nachrichten = this.Nachrichten.Concat(lNewMessages).ToList();
@@ -621,8 +620,10 @@ namespace Proxer.API.Community
                 {"message", "/ping"}
             };
             string lResponse =
-                await HttpUtility.PostWebRequestResponse("https://proxer.me/messages?id=" + id + "&format=json&json=answer",
-                    senpai.LoginCookies, lPostArgs);
+                await
+                    HttpUtility.PostWebRequestResponse(
+                        "https://proxer.me/messages?id=" + id + "&format=json&json=answer",
+                        senpai.LoginCookies, lPostArgs);
 
             if (!Utility.CheckForCorrectResponse(lResponse, senpai.ErrHandler)) return false;
             try

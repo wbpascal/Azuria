@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using HtmlAgilityPack;
 using Proxer.API.Exceptions;
@@ -20,9 +19,9 @@ namespace Proxer.API
         public static User System = new User("System", -1, new Senpai());
 
         private readonly Senpai _senpai;
-        private string _info;
-        private List<User> _freunde;
         private Uri _avatar;
+        private List<User> _freunde;
+        private string _info;
         private bool _online;
         private int _punkte;
         private string _rang;
@@ -114,14 +113,14 @@ namespace Proxer.API
         {
             get
             {
-                if(!this.IstInitialisiert) throw new InitializeNeededException();
+                if (!this.IstInitialisiert) throw new InitializeNeededException();
                 return this._info;
             }
             private set { this._info = value; }
         }
 
         /// <summary>
-        /// Gibt an, ob das Objekt bereits Initialisiert ist
+        ///     Gibt an, ob das Objekt bereits Initialisiert ist
         /// </summary>
         public bool IstInitialisiert { get; private set; }
 
@@ -218,8 +217,9 @@ namespace Proxer.API
                 if (!this._senpai.LoggedIn) throw new NotLoggedInException();
                 HtmlDocument lDocument = new HtmlDocument();
                 string lResponse =
-                    (await HttpUtility.GetWebRequestResponse("https://proxer.me/user/" + this.Id + "/overview?format=raw",
-                        this._senpai.LoginCookies)).Replace("</link>", "").Replace("\n", "");
+                    (await
+                        HttpUtility.GetWebRequestResponse("https://proxer.me/user/" + this.Id + "/overview?format=raw",
+                            this._senpai.LoginCookies)).Replace("</link>", "").Replace("\n", "");
 
                 if (!Utility.CheckForCorrectResponse(lResponse, this._senpai.ErrHandler)) return;
                 try

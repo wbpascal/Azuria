@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using Proxer.API.Notifications;
+﻿using Proxer.API.Notifications;
 
 namespace Proxer.API.EventArguments
 {
@@ -24,7 +23,7 @@ namespace Proxer.API.EventArguments
 
         /// <summary>
         /// </summary>
-        public List<FriendRequestObject> Benachrichtigungen
+        public FriendRequestCollection Benachrichtigungen
         {
             get { return this._senpai.FriendRequests; }
         }
