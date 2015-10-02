@@ -5,11 +5,10 @@ using Proxer.API.Properties;
 namespace Proxer.API.Utilities
 {
     /// <summary>
+    ///     Fehler in HTML-Dateien werden hier frühzeitig erkannt
     /// </summary>
     public class ErrorHandler
     {
-        /// <summary>
-        /// </summary>
         internal ErrorHandler()
         {
             this.Load();
@@ -17,8 +16,6 @@ namespace Proxer.API.Utilities
 
         #region Properties
 
-        /// <summary>
-        /// </summary>
         internal List<string> WrongHtml { get; private set; }
 
         #endregion
@@ -26,16 +23,13 @@ namespace Proxer.API.Utilities
         #region
 
         /// <summary>
-        ///     Erstellt eine neue Liste der strings, die aussortiert werden sollen
+        ///     Erstellt eine neue Liste der Strings, die aussortiert werden sollen
         /// </summary>
         public void Reset()
         {
             this.WrongHtml = new List<string>();
         }
 
-        /// <summary>
-        ///     Läd die Liste aus den Einstellungen
-        /// </summary>
         internal void Load()
         {
             if (!string.IsNullOrEmpty(Settings.Default.errorHtml))
@@ -57,9 +51,6 @@ namespace Proxer.API.Utilities
             }
         }
 
-        /// <summary>
-        ///     Speichert die Liste in den Einstellungen
-        /// </summary>
         internal void Save()
         {
             Settings.Default.errorHtml = JsonConvert.SerializeObject(this.WrongHtml);
@@ -67,10 +58,10 @@ namespace Proxer.API.Utilities
         }
 
         /// <summary>
-        ///     Hinzufügen einer falschen Ausgabe
+        ///     Fügt eine falsche Ausgabe hinzu.
         /// </summary>
-        /// <param name="wrongHtml"></param>
-        internal void Add(string wrongHtml)
+        /// <param name="wrongHtml">Die falsche Ausgabe.</param>
+        public void Add(string wrongHtml)
         {
             this.WrongHtml.Add(wrongHtml);
             this.Save();

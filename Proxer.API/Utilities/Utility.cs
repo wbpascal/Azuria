@@ -9,16 +9,20 @@ using Proxer.API.Main;
 namespace Proxer.API.Utilities
 {
     /// <summary>
+    ///     In dieser Klasse sind alle Funktionen zusammengefasst,
+    ///     die Hilfestellungen anbieten
     /// </summary>
     public class Utility
     {
         #region
 
         /// <summary>
+        ///     Gibt ein Objekt zurück, dass einen Anime oder Manga
+        ///     der spezifizierten ID repräsentiert.
         /// </summary>
-        /// <param name="id"></param>
-        /// <param name="senpai"></param>
-        /// <returns></returns>
+        /// <param name="id">Die ID des <see cref="Main.Anime">Anime</see> oder <see cref="Main.Manga">Manga</see>.</param>
+        /// <param name="senpai">Der Benutzer. (Muss eingeloggt sein)</param>
+        /// <returns>Anime oder Manga der ID (Typecast erforderlich)</returns>
         public static async Task<IAnimeMangaObject> GetAnimeManga(int id, Senpai senpai)
         {
             HtmlDocument lDocument = new HtmlDocument();
@@ -67,6 +71,7 @@ namespace Proxer.API.Utilities
             return null;
         }
 
+
         internal static IEnumerable<HtmlNode> GetAllHtmlNodes(HtmlNodeCollection htmlNodeCollection)
         {
             List<HtmlNode> lHtmlNodes = new List<HtmlNode>();
@@ -79,12 +84,6 @@ namespace Proxer.API.Utilities
             return lHtmlNodes;
         }
 
-        /// <summary>
-        /// </summary>
-        /// <param name="source"></param>
-        /// <param name="startTag"></param>
-        /// <param name="endTag"></param>
-        /// <returns></returns>
         internal static List<string> GetTagContents(string source, string startTag, string endTag)
         {
             List<string> stringsFound = new List<string>();
@@ -106,10 +105,6 @@ namespace Proxer.API.Utilities
             return stringsFound;
         }
 
-        /// <summary>
-        /// </summary>
-        /// <param name="unixTimeStamp"></param>
-        /// <returns></returns>
         internal static DateTime UnixTimeStampToDateTime(long unixTimeStamp)
         {
             DateTime dtDateTime = new DateTime(1970, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc);
@@ -117,21 +112,11 @@ namespace Proxer.API.Utilities
             return dtDateTime;
         }
 
-        /// <summary>
-        /// </summary>
-        /// <param name="response"></param>
-        /// <param name="errHandler"></param>
-        /// <returns></returns>
         internal static bool CheckForCorrectResponse(string response, ErrorHandler errHandler)
         {
             return errHandler.WrongHtml.All(curErrorResponse => ILd(response, curErrorResponse) > 15);
         }
 
-        /// <summary>
-        /// </summary>
-        /// <param name="html"></param>
-        /// <param name="parseErrors"></param>
-        /// <returns></returns>
         internal static string TryFixParseErrors(string html, IEnumerable<HtmlParseError> parseErrors)
         {
             IEnumerable<HtmlParseError> htmlParseErrors = parseErrors as HtmlParseError[] ?? parseErrors.ToArray();
@@ -143,7 +128,6 @@ namespace Proxer.API.Utilities
 
             return html;
         }
-
 
         /// <summary>
         ///     Compute Levenshtein distance

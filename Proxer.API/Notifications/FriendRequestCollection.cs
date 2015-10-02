@@ -6,13 +6,10 @@ using HtmlAgilityPack;
 using Proxer.API.Exceptions;
 using Proxer.API.Utilities;
 
-// ReSharper disable CoVariantArrayConversion
-
-// ReSharper disable InvertIf
-
 namespace Proxer.API.Notifications
 {
     /// <summary>
+    /// Eine Klasse, die eine Sammlung von <see cref="FriendRequestObject">Freundschaftsanfragen</see> darstellt
     /// </summary>
     public class FriendRequestCollection : INotificationCollection
     {
@@ -20,30 +17,33 @@ namespace Proxer.API.Notifications
         private FriendRequestObject[] _friendRequestObjects;
         private INotificationObject[] _notificationObjects;
 
-        /// <summary>
-        /// </summary>
-        /// <param name="senpai"></param>
+
         internal FriendRequestCollection(Senpai senpai)
         {
             this._senpai = senpai;
             this.Type = NotificationObjectType.FriendRequest;
         }
 
-        #region Properties
-
-        /// <summary>
-        /// </summary>
-        public NotificationObjectType Type { get; private set; }
-
-        #endregion
-
         #region Geerbt
 
         /// <summary>
+        ///     Gibt den Typ der Benachrichtigung zurück.
+        /// <para>(Vererbt von <see cref="INotificationCollection"/>)</para>
         /// </summary>
-        /// <param name="count"></param>
-        /// <exception cref="NotLoggedInException"></exception>
-        /// <returns></returns>
+        public NotificationObjectType Type { get; private set; }
+
+        /// <summary>
+        ///     Gibt eine bestimmte Anzahl der aktuellen Benachrichtigungen, die diese Klasse repräsentiert, zurück.
+        /// <para>(Vererbt von <see cref="INotificationCollection"/>)</para>
+        /// </summary>
+        /// <param name="count">Die Anzahl der Benachrichtigungen</param>
+        /// <seealso cref="INotificationCollection.GetAllNotifications">GetAllNotifications Funktion</seealso>
+        /// <seealso cref="Senpai.Login"/>
+        /// <exception cref="NotLoggedInException">Wird ausgelöst, wenn der Benutzer nicht eingeloggt ist.</exception>
+        /// <returns>
+        ///     Ein Array mit der Anzahl an Elementen in <paramref name="count" /> spezifiziert.
+        ///     Wenn <paramref name="count" /> > Array.length, dann wird der gesamte Array zurückgegeben.
+        /// </returns>
         public async Task<INotificationObject[]> GetNotifications(int count)
         {
             if (this._notificationObjects == null)
@@ -64,9 +64,13 @@ namespace Proxer.API.Notifications
         }
 
         /// <summary>
+        /// Gibt alle aktuellen Benachrichtigungen, die diese Klasse repräsentiert, zurück.
+        /// <para>(Vererbt von <see cref="INotificationCollection"/>)</para>
         /// </summary>
-        /// <exception cref="NotLoggedInException"></exception>
-        /// <returns></returns>
+        /// <seealso cref="INotificationCollection.GetNotifications"/>
+        /// <seealso cref="Senpai.Login"/>
+        /// <exception cref="NotLoggedInException">Wird ausgelöst, wenn der Benutzer noch nicht eingeloggt ist.</exception>
+        /// <returns>Ein Array mit allen aktuellen Benachrichtigungen.</returns>
         public async Task<INotificationObject[]> GetAllNotifications()
         {
             if (this._notificationObjects == null)
@@ -89,10 +93,15 @@ namespace Proxer.API.Notifications
         #region
 
         /// <summary>
+        ///     Gibt eine bestimmte Anzahl der aktuellen Benachrichtigungen, die diese Klasse repräsentiert, zurück.
         /// </summary>
-        /// <param name="count"></param>
-        /// <exception cref="NotLoggedInException"></exception>
-        /// <returns></returns>
+        /// <param name="count">Die Anzahl der Benachrichtigungen</param>
+        /// <exception cref="NotLoggedInException">Tritt auf, wenn der Benutzer noch nicht angemeldet ist.</exception>
+        /// <seealso cref="Senpai.Login" />
+        /// <returns>
+        ///     Ein Array mit der Anzahl an Elementen in <paramref name="count" /> spezifiziert.
+        ///     Wenn <paramref name="count" /> > Array.length, dann wird der gesamte Array zurückgegeben.
+        /// </returns>
         public async Task<FriendRequestObject[]> GetFriendRequests(int count)
         {
             if (this._friendRequestObjects == null)
@@ -113,9 +122,11 @@ namespace Proxer.API.Notifications
         }
 
         /// <summary>
+        /// Gibt alle aktuellen Benachrichtigungen, die diese Klasse repräsentiert, zurück.
         /// </summary>
-        /// <exception cref="NotLoggedInException"></exception>
-        /// <returns></returns>
+        /// <exception cref="NotLoggedInException">Wird ausgelöst, wenn der Benutzer noch nicht eingeloggt ist.</exception>
+        /// <seealso cref="Senpai.Login"/>
+        /// <returns>Ein Array mit allen aktuellen Benachrichtigungen.</returns>
         public async Task<FriendRequestObject[]> GetAllFriendRequests()
         {
             if (this._friendRequestObjects == null)
@@ -158,15 +169,11 @@ namespace Proxer.API.Notifications
                         curNode.FirstChild.FirstChild.Attributes["class"].Value.Equals("accept")
                     let lUserId = Convert.ToInt32(curNode.Id.Replace("entry", ""))
                     let lUserName = curNode.InnerText.Split("  ".ToCharArray())[0]
-                    let lDescription = curNode.ChildNodes[3].ChildNodes[1].InnerText
                     let lDatumSplit = curNode.ChildNodes[4].InnerText.Split('-')
                     let lDatum =
                         new DateTime(Convert.ToInt32(lDatumSplit[0]), Convert.ToInt32(lDatumSplit[1]),
                             Convert.ToInt32(lDatumSplit[2]))
-                    let lOnline =
-                        curNode.ChildNodes[1].ChildNodes[1].FirstChild.Attributes["src"].Value.Equals(
-                            "/images/misc/onlineicon.png")
-                    select new FriendRequestObject(lUserName, lUserId, lDescription, lDatum, lOnline, this._senpai))
+                    select new FriendRequestObject(lUserName, lUserId, lDatum, this._senpai))
                     .ToList();
 
                 this._friendRequestObjects = lFriendRequests.ToArray();

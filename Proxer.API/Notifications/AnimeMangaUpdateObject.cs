@@ -1,14 +1,13 @@
 ﻿using System;
+using Proxer.API.Main;
 
 namespace Proxer.API.Notifications
 {
     /// <summary>
+    /// Eine Klasse, die eine <see cref="Main.Anime">Anime-</see> oder <see cref="Main.Manga">Manga-</see>Benachrichtigung darstellt.
     /// </summary>
     public class AnimeMangaUpdateObject : INotificationObject
     {
-        /// <summary>
-        /// </summary>
-        /// <param name="message">Die Nachricht des Updates</param>
         internal AnimeMangaUpdateObject(string message)
         {
             this.Type = NotificationObjectType.AnimeManga;
@@ -19,13 +18,6 @@ namespace Proxer.API.Notifications
             this.Id = -1;
         }
 
-        /// <summary>
-        /// </summary>
-        /// <param name="message">Die Nachricht des Updates</param>
-        /// <param name="name">Der Name des Anime/Manga</param>
-        /// <param name="number">Die Nummer der Folge/des Kapitels</param>
-        /// <param name="link">Der Link zu der Folge/dem Kapitel</param>
-        /// <param name="id">Die ID der Benachrichtigung (Wichtig, um sie wieder zu löschen)</param>
         internal AnimeMangaUpdateObject(string message, string name, int number, Uri link, int id)
         {
             this.Type = NotificationObjectType.AnimeManga;
@@ -36,34 +28,43 @@ namespace Proxer.API.Notifications
             this.Id = id;
         }
 
-        #region Properties
+        #region Geerbt
 
         /// <summary>
-        ///     Die ID des Anime/Manga
-        /// </summary>
-        public int Id { get; private set; }
-
-        /// <summary>
-        /// </summary>
-        public Uri Link { get; private set; }
-
-        /// <summary>
+        /// Gibt die Nachricht der Benachrichtigung als Text zurück.
+        /// <para>(Vererbt von <see cref="INotificationObject"/>)</para>
         /// </summary>
         public string Message { get; private set; }
 
         /// <summary>
-        ///     Der Name des Anime/Mangas
+        /// Gibt den Typ der Benachrichtigung zurück.
+        /// <para>(Vererbt von <see cref="INotificationObject"/>)</para>
+        /// </summary>
+        public NotificationObjectType Type { get; private set; }
+
+        #endregion
+
+        #region Properties
+
+        /// <summary>
+        /// Gibt die Id des <see cref="Main.Anime">Anim-</see> oder <see cref="Main.Manga">Manga</see> zurück.
+        /// </summary>
+        public int Id { get; private set; }
+
+        /// <summary>
+        /// Gibt den Link zur <see cref="Main.Anime.Episode">Episode</see> oder zum <see cref="Main.Manga.Chapter">Kapitel</see> zurück.
+        /// </summary>
+        public Uri Link { get; private set; }
+
+        /// <summary>
+        /// Gibt den Namen des <see cref="Main.Anime">Anime</see> oder <see cref="Main.Manga">Manga</see> zurück.
         /// </summary>
         public string Name { get; private set; }
 
         /// <summary>
-        ///     Die Episode/Das Kapitel, das erschienen ist
+        /// Gibt die Nummer der <see cref="Main.Anime.Episode">Episode</see> oder des <see cref="Main.Manga.Chapter">Kapitels</see> zurück.
         /// </summary>
         public int Number { get; private set; }
-
-        /// <summary>
-        /// </summary>
-        public NotificationObjectType Type { get; private set; }
 
         #endregion
     }

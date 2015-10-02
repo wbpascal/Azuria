@@ -10,18 +10,22 @@ using Proxer.API.Utilities;
 namespace Proxer.API.Main
 {
     /// <summary>
+    ///     Eine Klasse, die einen <see cref="Manga" /> darstellt.
     /// </summary>
     public class Manga : IAnimeMangaObject
     {
         /// <summary>
+        ///     Eine Enumeration, die die Sprache eines <see cref="Manga" /> darstellt.
         /// </summary>
         public enum Language
         {
             /// <summary>
+            ///     Die Sprache ist Deutsch.
             /// </summary>
             Deutsch,
 
             /// <summary>
+            ///     Die Sprache ist Englisch.
             /// </summary>
             English
         }
@@ -52,11 +56,14 @@ namespace Proxer.API.Main
             this.IstInitialisiert = false;
         }
 
-        #region Properties
+        #region Geerbt
 
         /// <summary>
+        ///     Gibt die Beschreibung des <see cref="Anime" /> oder <see cref="Manga" /> zurück.
+        ///     <para>(Vererbt von <see cref="IAnimeMangaObject" />)</para>
         /// </summary>
-        /// <exception cref="InitializeNeededException"></exception>
+        /// <exception cref="InitializeNeededException">Wird ausgelöst, wenn das Objekt noch nicht initialisiert wurde.</exception>
+        /// <seealso cref="Init" />
         public string Beschreibung
         {
             get
@@ -68,12 +75,17 @@ namespace Proxer.API.Main
         }
 
         /// <summary>
+        ///     Gibt den Link zum Cover des <see cref="Anime" /> oder <see cref="Manga" /> zurück.
+        ///     <para>(Vererbt von <see cref="IAnimeMangaObject" />)</para>
         /// </summary>
         public Uri CoverUri { get; private set; }
 
         /// <summary>
+        ///     Gibt den Englische Titel des <see cref="Anime" /> oder <see cref="Manga" /> zurück.
+        ///     <para>(Vererbt von <see cref="IAnimeMangaObject" />)</para>
         /// </summary>
-        /// <exception cref="InitializeNeededException"></exception>
+        /// <exception cref="InitializeNeededException">Wird ausgelöst, wenn das Objekt noch nicht initialisiert wurde.</exception>
+        /// <seealso cref="Init" />
         public string EnglischTitel
         {
             get
@@ -85,8 +97,11 @@ namespace Proxer.API.Main
         }
 
         /// <summary>
+        ///     Gibt die Links zu allen FSK-Beschränkungen des <see cref="Anime" /> oder <see cref="Manga" /> zurück.
+        ///     <para>(Vererbt von <see cref="IAnimeMangaObject" />)</para>
         /// </summary>
-        /// <exception cref="InitializeNeededException"></exception>
+        /// <exception cref="InitializeNeededException">Wird ausgelöst, wenn das Objekt noch nicht initialisiert wurde.</exception>
+        /// <seealso cref="Init" />
         public Dictionary<string, Uri> Fsk
         {
             get
@@ -98,8 +113,11 @@ namespace Proxer.API.Main
         }
 
         /// <summary>
+        ///     Gitb die Genres des <see cref="Anime" /> oder <see cref="Manga" /> zurück.
+        ///     <para>(Vererbt von <see cref="IAnimeMangaObject" />)</para>
         /// </summary>
-        /// <exception cref="InitializeNeededException"></exception>
+        /// <exception cref="InitializeNeededException">Wird ausgelöst, wenn das Objekt noch nicht initialisiert wurde.</exception>
+        /// <seealso cref="Init" />
         public string[] Genre
         {
             get
@@ -111,8 +129,11 @@ namespace Proxer.API.Main
         }
 
         /// <summary>
+        ///     Gibt die Gruppen zurück, die den <see cref="Anime" /> oder <see cref="Manga" /> übersetzten oder übersetzt haben.
+        ///     <para>(Vererbt von <see cref="IAnimeMangaObject" />)</para>
         /// </summary>
-        /// <exception cref="InitializeNeededException"></exception>
+        /// <exception cref="InitializeNeededException">Wird ausgelöst, wenn das Objekt noch nicht initialisiert wurde.</exception>
+        /// <seealso cref="Init" />
         public Group[] Gruppen
         {
             get
@@ -124,12 +145,17 @@ namespace Proxer.API.Main
         }
 
         /// <summary>
+        ///     Gibt die ID des <see cref="Anime" /> oder <see cref="Manga" /> zurück.
+        ///     <para>(Vererbt von <see cref="IAnimeMangaObject" />)</para>
         /// </summary>
         public int Id { get; private set; }
 
         /// <summary>
+        ///     Gibt die Industrie des <see cref="Anime" /> oder <see cref="Manga" /> zurück.
+        ///     <para>(Vererbt von <see cref="IAnimeMangaObject" />)</para>
         /// </summary>
-        /// <exception cref="InitializeNeededException"></exception>
+        /// <exception cref="InitializeNeededException">Wird ausgelöst, wenn das Objekt noch nicht initialisiert wurde.</exception>
+        /// <seealso cref="Init" />
         public Industry[] Industrie
         {
             get
@@ -141,12 +167,17 @@ namespace Proxer.API.Main
         }
 
         /// <summary>
+        ///     Gibt zurück, ob das Objekt bereits Initialisiert ist.
+        ///     <para>(Vererbt von <see cref="IAnimeMangaObject" />)</para>
         /// </summary>
         public bool IstInitialisiert { get; private set; }
 
         /// <summary>
+        ///     Gibt den japanischen Titel des <see cref="Anime" /> oder <see cref="Manga" /> zurück.
+        ///     <para>(Vererbt von <see cref="IAnimeMangaObject" />)</para>
         /// </summary>
-        /// <exception cref="InitializeNeededException"></exception>
+        /// <exception cref="InitializeNeededException">Wird ausgelöst, wenn das Objekt noch nicht initialisiert wurde.</exception>
+        /// <seealso cref="Init" />
         public string JapanTitel
         {
             get
@@ -158,21 +189,11 @@ namespace Proxer.API.Main
         }
 
         /// <summary>
+        ///     Gibt zurück, ob der <see cref="Anime" /> oder <see cref="Manga" /> lizensiert ist.
+        ///     <para>(Vererbt von <see cref="IAnimeMangaObject" />)</para>
         /// </summary>
-        /// <exception cref="InitializeNeededException"></exception>
-        public int KapitelZahl
-        {
-            get
-            {
-                if (!this.IstInitialisiert) throw new InitializeNeededException();
-                return this._episodenZahl;
-            }
-            private set { this._episodenZahl = value; }
-        }
-
-        /// <summary>
-        /// </summary>
-        /// <exception cref="InitializeNeededException"></exception>
+        /// <exception cref="InitializeNeededException">Wird ausgelöst, wenn das Objekt noch nicht initialisiert wurde.</exception>
+        /// <seealso cref="Init" />
         public bool Lizensiert
         {
             get
@@ -184,16 +205,23 @@ namespace Proxer.API.Main
         }
 
         /// <summary>
+        ///     Gibt den Namen des <see cref="Anime" /> oder <see cref="Manga" /> zurück.
+        ///     <para>(Vererbt von <see cref="IAnimeMangaObject" />)</para>
         /// </summary>
         public string Name { get; private set; }
 
         /// <summary>
+        ///     Gibt zurück, ob es sich um einen <see cref="Anime" /> oder <see cref="Manga" /> handelt.
+        ///     <para>(Vererbt von <see cref="IAnimeMangaObject" />)</para>
         /// </summary>
         public AnimeMangaType ObjectType { get; private set; }
 
         /// <summary>
+        ///     Gibt die Season des <see cref="Anime" /> oder <see cref="Manga" /> zurück.
+        ///     <para>(Vererbt von <see cref="IAnimeMangaObject" />)</para>
         /// </summary>
-        /// <exception cref="InitializeNeededException"></exception>
+        /// <exception cref="InitializeNeededException">Wird ausgelöst, wenn das Objekt noch nicht initialisiert wurde.</exception>
+        /// <seealso cref="Init" />
         public string[] Season
         {
             get
@@ -205,21 +233,11 @@ namespace Proxer.API.Main
         }
 
         /// <summary>
+        ///     Gibt den Status des <see cref="Anime" /> oder <see cref="Manga" /> zurück.
+        ///     <para>(Vererbt von <see cref="IAnimeMangaObject" />)</para>
         /// </summary>
-        /// <exception cref="InitializeNeededException"></exception>
-        public Language[] Sprachen
-        {
-            get
-            {
-                if (!this.IstInitialisiert) throw new InitializeNeededException();
-                return this._sprachen;
-            }
-            private set { this._sprachen = value; }
-        }
-
-        /// <summary>
-        /// </summary>
-        /// <exception cref="InitializeNeededException"></exception>
+        /// <exception cref="InitializeNeededException">Wird ausgelöst, wenn das Objekt noch nicht initialisiert wurde.</exception>
+        /// <seealso cref="Init" />
         public AnimeMangaStatus Status
         {
             get
@@ -231,8 +249,11 @@ namespace Proxer.API.Main
         }
 
         /// <summary>
+        ///     Gibt das Synonym des <see cref="Anime" /> oder <see cref="Manga" /> zurück.
+        ///     <para>(Vererbt von <see cref="IAnimeMangaObject" />)</para>
         /// </summary>
-        /// <exception cref="InitializeNeededException"></exception>
+        /// <exception cref="InitializeNeededException">Wird ausgelöst, wenn das Objekt noch nicht initialisiert wurde.</exception>
+        /// <seealso cref="Init" />
         public string Synonym
         {
             get
@@ -243,13 +264,12 @@ namespace Proxer.API.Main
             private set { this._synonym = value; }
         }
 
-        #endregion
-
-        #region Geerbt
-
         /// <summary>
+        ///     Initialisiert das Objekt.
+        ///     <para>(Vererbt von <see cref="IAnimeMangaObject" />)</para>
         /// </summary>
-        /// <exception cref="NotLoggedInException"></exception>
+        /// <exception cref="NotLoggedInException">Wird ausgelöst, wenn der Benutzer noch nicht eingeloggt ist.</exception>
+        /// <seealso cref="Senpai.Login" />
         public async Task Init()
         {
             try
@@ -268,13 +288,52 @@ namespace Proxer.API.Main
 
         #endregion
 
+        #region Properties
+
+        /// <summary>
+        ///     Gibt die Anzahl der Kapitel zurück.
+        /// </summary>
+        /// <exception cref="InitializeNeededException">Wird ausgelöst, wenn das Objekt noch nicht initialisiert wurde.</exception>
+        /// <seealso cref="Init" />
+        public int KapitelZahl
+        {
+            get
+            {
+                if (!this.IstInitialisiert) throw new InitializeNeededException();
+                return this._episodenZahl;
+            }
+            private set { this._episodenZahl = value; }
+        }
+
+        /// <summary>
+        ///     Gibt die verfügbaren Sprachen zurück.
+        /// </summary>
+        /// <exception cref="InitializeNeededException">Wird ausgelöst, wenn das Objekt noch nicht initialisiert wurde.</exception>
+        /// <seealso cref="Init" />
+        public Language[] Sprachen
+        {
+            get
+            {
+                if (!this.IstInitialisiert) throw new InitializeNeededException();
+                return this._sprachen;
+            }
+            private set { this._sprachen = value; }
+        }
+
+        #endregion
+
         #region
 
         /// <summary>
+        ///     Gibt alle <see cref="Chapter">Kapitel</see> des <see cref="Manga" /> in der ausgewählten Sprache zurück.
         /// </summary>
-        /// <param name="lang"></param>
-        /// <exception cref="LanguageNotAvailableException"></exception>
-        /// <returns></returns>
+        /// <param name="lang">Die Sprache der <see cref="Chapter">Kapitel</see>.</param>
+        /// <exception cref="LanguageNotAvailableException">
+        ///     Wird ausgelöst, wenn der Manga nicht in der in <paramref name="lang" />
+        ///     spezifizierten Sprache verfügbar ist.
+        /// </exception>
+        /// <seealso cref="Sprachen" />
+        /// <returns>Ein Array mit length = <see cref="KapitelZahl" /></returns>
         public Chapter[] GetChapters(Language lang)
         {
             if (!this.Sprachen.Contains(lang)) throw new LanguageNotAvailableException();
@@ -512,6 +571,7 @@ namespace Proxer.API.Main
         #endregion
 
         /// <summary>
+        ///     Eine Klasse, die ein <see cref="Chapter">Kapitel</see> eines <see cref="Manga">Mangas</see> darstellt.
         /// </summary>
         public class Chapter
         {
@@ -536,8 +596,10 @@ namespace Proxer.API.Main
             #region Properties
 
             /// <summary>
+            ///     Gibt das Erscheinungsdatum des <see cref="Chapter">Kapitels</see> zurück.
             /// </summary>
-            /// <exception cref="InitializeNeededException"></exception>
+            /// <exception cref="InitializeNeededException">Wird ausgelöst, wenn das Objekt noch nicht initialisiert wurde.</exception>
+            /// <seealso cref="Init" />
             public DateTime Datum
             {
                 get
@@ -549,20 +611,25 @@ namespace Proxer.API.Main
             }
 
             /// <summary>
+            ///     Gibt zurück, ob das Objekt bereits initialisiert ist.
             /// </summary>
             public bool IstInitialisiert { get; private set; }
 
             /// <summary>
+            ///     Gibt die Nummer des <see cref="Chapter">Kapitels</see> zurück.
             /// </summary>
             public int KapitelNr { get; private set; }
 
             /// <summary>
+            ///     Gibt den <see cref="Manga" /> zurück, zu dem das <see cref="Chapter">Kapitel</see> gehört.
             /// </summary>
             public Manga ParentManga { get; set; }
 
             /// <summary>
+            ///     Gibt die <see cref="Group">Gruppe</see> zurück, die das Kapitel übersetzt hat.
             /// </summary>
-            /// <exception cref="InitializeNeededException"></exception>
+            /// <exception cref="InitializeNeededException">Wird ausgelöst, wenn das Objekt noch nicht initialisiert wurde.</exception>
+            /// <seealso cref="Init" />
             public Group ScanlatorGruppe
             {
                 get
@@ -574,8 +641,10 @@ namespace Proxer.API.Main
             }
 
             /// <summary>
+            ///     Gibt die Links zu den einzelnen Seiten des <see cref="Chapter">Kapitels</see> zurück.
             /// </summary>
-            /// <exception cref="InitializeNeededException"></exception>
+            /// <exception cref="InitializeNeededException">Wird ausgelöst, wenn das Objekt noch nicht initialisiert wurde.</exception>
+            /// <seealso cref="Init" />
             public Uri[] Seiten
             {
                 get
@@ -587,12 +656,15 @@ namespace Proxer.API.Main
             }
 
             /// <summary>
+            ///     Gibt die <see cref="Language">Sprache</see> des <see cref="Chapter">Kapitels</see> zurück.
             /// </summary>
             public Language Sprache { get; private set; }
 
             /// <summary>
+            ///     Gibt den Titel des <see cref="Chapter">Kapitels</see> zurück.
             /// </summary>
-            /// <exception cref="InitializeNeededException"></exception>
+            /// <exception cref="InitializeNeededException">Wird ausgelöst, wenn das Objekt noch nicht initialisiert wurde.</exception>
+            /// <seealso cref="Init" />
             public string Titel
             {
                 get
@@ -604,8 +676,10 @@ namespace Proxer.API.Main
             }
 
             /// <summary>
+            ///     Gibt den Namen des Uploaders des <see cref="Chapter">Kapitels</see> zurück.
             /// </summary>
-            /// <exception cref="InitializeNeededException"></exception>
+            /// <exception cref="InitializeNeededException">Wird ausgelöst, wenn das Objekt noch nicht initialisiert wurde.</exception>
+            /// <seealso cref="Init" />
             public string UploaderName
             {
                 get
@@ -617,8 +691,10 @@ namespace Proxer.API.Main
             }
 
             /// <summary>
+            ///     Gibt zurück, ob das <see cref="Chapter">Kapitel</see> verfügbar ist.
             /// </summary>
-            /// <exception cref="InitializeNeededException"></exception>
+            /// <exception cref="InitializeNeededException">Wird ausgelöst, wenn das Objekt noch nicht initialisiert wurde.</exception>
+            /// <seealso cref="Init" />
             public bool Verfuegbar
             {
                 get
@@ -634,8 +710,10 @@ namespace Proxer.API.Main
             #region
 
             /// <summary>
+            ///     Initialisiert das Objekt.
             /// </summary>
-            /// <exception cref="NotLoggedInException"></exception>
+            /// <exception cref="NotLoggedInException">Wird ausgelöst, wenn der Benutzer noch nicht eingeloggt ist.</exception>
+            /// <seealso cref="Senpai.Login" />
             public async Task Init()
             {
                 try

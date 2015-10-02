@@ -10,26 +10,32 @@ using Proxer.API.Utilities;
 namespace Proxer.API.Main
 {
     /// <summary>
+    ///     Eine Klasse, die einen <see cref="Anime" /> darstellt.
     /// </summary>
     public class Anime : IAnimeMangaObject
     {
         /// <summary>
+        ///     Eine Enumeration, die die Sprache eines <see cref="Anime" /> darstellt.
         /// </summary>
         public enum Language
         {
             /// <summary>
+            ///     Deutsche Untertitel
             /// </summary>
             GerSub,
 
             /// <summary>
+            ///     Englische Untertitel
             /// </summary>
             EngSub,
 
             /// <summary>
+            ///     Englisch vertont
             /// </summary>
             EngDub,
 
             /// <summary>
+            ///     Deutsch vertont
             /// </summary>
             GerDub
         }
@@ -60,11 +66,14 @@ namespace Proxer.API.Main
             this.IstInitialisiert = false;
         }
 
-        #region Properties
+        #region Geerbt
 
         /// <summary>
+        ///     Gibt die Beschreibung des <see cref="Anime" /> oder <see cref="Manga" /> zurück.
+        ///     <para>(Vererbt von <see cref="IAnimeMangaObject" />)</para>
         /// </summary>
-        /// <exception cref="InitializeNeededException"></exception>
+        /// <exception cref="InitializeNeededException">Wird ausgelöst, wenn das Objekt noch nicht initialisiert wurde.</exception>
+        /// <seealso cref="Init" />
         public string Beschreibung
         {
             get
@@ -75,13 +84,20 @@ namespace Proxer.API.Main
             private set { this._beschreibung = value; }
         }
 
+
         /// <summary>
+        ///     Gibt den Link zum Cover des <see cref="Anime" /> oder <see cref="Manga" /> zurück.
+        ///     <para>(Vererbt von <see cref="IAnimeMangaObject" />)</para>
         /// </summary>
         public Uri CoverUri { get; private set; }
 
+
         /// <summary>
+        ///     Gibt den Englische Titel des <see cref="Anime" /> oder <see cref="Manga" /> zurück.
+        ///     <para>(Vererbt von <see cref="IAnimeMangaObject" />)</para>
         /// </summary>
-        /// <exception cref="InitializeNeededException"></exception>
+        /// <exception cref="InitializeNeededException">Wird ausgelöst, wenn das Objekt noch nicht initialisiert wurde.</exception>
+        /// <seealso cref="Init" />
         public string EnglischTitel
         {
             get
@@ -92,22 +108,13 @@ namespace Proxer.API.Main
             private set { this._englischTitel = value; }
         }
 
-        /// <summary>
-        /// </summary>
-        /// <exception cref="InitializeNeededException"></exception>
-        public int EpisodenZahl
-        {
-            get
-            {
-                if (!this.IstInitialisiert) throw new InitializeNeededException();
-                return this._episodenZahl;
-            }
-            private set { this._episodenZahl = value; }
-        }
 
         /// <summary>
+        ///     Gibt die Links zu allen FSK-Beschränkungen des <see cref="Anime" /> oder <see cref="Manga" /> zurück.
+        ///     <para>(Vererbt von <see cref="IAnimeMangaObject" />)</para>
         /// </summary>
-        /// <exception cref="InitializeNeededException"></exception>
+        /// <exception cref="InitializeNeededException">Wird ausgelöst, wenn das Objekt noch nicht initialisiert wurde.</exception>
+        /// <seealso cref="Init" />
         public Dictionary<string, Uri> Fsk
         {
             get
@@ -118,9 +125,13 @@ namespace Proxer.API.Main
             private set { this._fsk = value; }
         }
 
+
         /// <summary>
+        ///     Gitb die Genres des <see cref="Anime" /> oder <see cref="Manga" /> zurück.
+        ///     <para>(Vererbt von <see cref="IAnimeMangaObject" />)</para>
         /// </summary>
-        /// <exception cref="InitializeNeededException"></exception>
+        /// <exception cref="InitializeNeededException">Wird ausgelöst, wenn das Objekt noch nicht initialisiert wurde.</exception>
+        /// <seealso cref="Init" />
         public string[] Genre
         {
             get
@@ -131,9 +142,14 @@ namespace Proxer.API.Main
             private set { this._genre = value; }
         }
 
+
         /// <summary>
+        ///     Gibt die Gruppen zurück, die den <see cref="Anime" /> oder <see cref="Manga" /> übersetzten oder übersetzt haben.
+        ///     <para>(Vererbt von <see cref="IAnimeMangaObject" />)</para>
         /// </summary>
-        /// <exception cref="InitializeNeededException"></exception>
+        /// <seealso cref="Minor.Group" />
+        /// <seealso cref="Init" />
+        /// <exception cref="InitializeNeededException">Wird ausgelöst, wenn das Objekt noch nicht initialisiert wurde.</exception>
         public Group[] Gruppen
         {
             get
@@ -144,13 +160,21 @@ namespace Proxer.API.Main
             private set { this._gruppen = value; }
         }
 
+
         /// <summary>
+        ///     Gibt die ID des <see cref="Anime" /> oder <see cref="Manga" /> zurück.
+        ///     <para>(Vererbt von <see cref="IAnimeMangaObject" />)</para>
         /// </summary>
         public int Id { get; private set; }
 
+
         /// <summary>
+        ///     Gibt die Industrie des <see cref="Anime" /> oder <see cref="Manga" /> zurück.
+        ///     <para>(Vererbt von <see cref="IAnimeMangaObject" />)</para>
         /// </summary>
-        /// <exception cref="InitializeNeededException"></exception>
+        /// <seealso cref="Minor.Industry" />
+        /// <seealso cref="Init" />
+        /// <exception cref="InitializeNeededException">Wird ausgelöst, wenn das Objekt noch nicht initialisiert wurde.</exception>
         public Industry[] Industrie
         {
             get
@@ -161,13 +185,20 @@ namespace Proxer.API.Main
             private set { this._industrie = value; }
         }
 
+
         /// <summary>
+        ///     Gibt zurück, ob das Objekt bereits Initialisiert ist.
+        ///     <para>(Vererbt von <see cref="IAnimeMangaObject" />)</para>
         /// </summary>
         public bool IstInitialisiert { get; private set; }
 
+
         /// <summary>
+        ///     Gibt den japanischen Titel des <see cref="Anime" /> oder <see cref="Manga" /> zurück.
+        ///     <para>(Vererbt von <see cref="IAnimeMangaObject" />)</para>
         /// </summary>
-        /// <exception cref="InitializeNeededException"></exception>
+        /// <exception cref="InitializeNeededException">Wird ausgelöst, wenn das Objekt noch nicht initialisiert wurde.</exception>
+        /// <seealso cref="Init" />
         public string JapanTitel
         {
             get
@@ -178,9 +209,13 @@ namespace Proxer.API.Main
             private set { this._japanTitel = value; }
         }
 
+
         /// <summary>
+        ///     Gibt zurück, ob der <see cref="Anime" /> oder <see cref="Manga" /> lizensiert ist.
+        ///     <para>(Vererbt von <see cref="IAnimeMangaObject" />)</para>
         /// </summary>
-        /// <exception cref="InitializeNeededException"></exception>
+        /// <exception cref="InitializeNeededException">Wird ausgelöst, wenn das Objekt noch nicht initialisiert wurde.</exception>
+        /// <seealso cref="Init" />
         public bool Lizensiert
         {
             get
@@ -191,17 +226,28 @@ namespace Proxer.API.Main
             private set { this._lizensiert = value; }
         }
 
+
         /// <summary>
+        ///     Gibt den Namen des <see cref="Anime" /> oder <see cref="Manga" /> zurück.
+        ///     <para>(Vererbt von <see cref="IAnimeMangaObject" />)</para>
         /// </summary>
         public string Name { get; private set; }
 
-        /// <summary>
-        /// </summary>
-        public AnimeMangaType ObjectType { get; private set; }
 
         /// <summary>
+        ///     Gibt zurück, ob es sich um einen <see cref="Anime" /> oder <see cref="Manga" /> handelt.
+        ///     <para>(Vererbt von <see cref="IAnimeMangaObject" />)</para>
         /// </summary>
-        /// <exception cref="InitializeNeededException"></exception>
+        /// <seealso cref="AnimeMangaType" />
+        public AnimeMangaType ObjectType { get; private set; }
+
+
+        /// <summary>
+        ///     Gibt die Season des <see cref="Anime" /> oder <see cref="Manga" /> zurück.
+        ///     <para>(Vererbt von <see cref="IAnimeMangaObject" />)</para>
+        /// </summary>
+        /// <exception cref="InitializeNeededException">Wird ausgelöst, wenn das Objekt noch nicht initialisiert wurde.</exception>
+        /// <seealso cref="Init" />
         public string[] Season
         {
             get
@@ -212,22 +258,14 @@ namespace Proxer.API.Main
             private set { this._season = value; }
         }
 
-        /// <summary>
-        /// </summary>
-        /// <exception cref="InitializeNeededException"></exception>
-        public Language[] Sprachen
-        {
-            get
-            {
-                if (!this.IstInitialisiert) throw new InitializeNeededException();
-                return this._sprachen;
-            }
-            private set { this._sprachen = value; }
-        }
 
         /// <summary>
+        ///     Gibt den Status des <see cref="Anime" /> oder <see cref="Manga" /> zurück.
+        ///     <para>(Vererbt von <see cref="IAnimeMangaObject" />)</para>
         /// </summary>
-        /// <exception cref="InitializeNeededException"></exception>
+        /// <seealso cref="AnimeMangaStatus" />
+        /// <seealso cref="Init" />
+        /// <exception cref="InitializeNeededException">Wird ausgelöst, wenn das Objekt noch nicht initialisiert wurde.</exception>
         public AnimeMangaStatus Status
         {
             get
@@ -238,9 +276,13 @@ namespace Proxer.API.Main
             private set { this._status = value; }
         }
 
+
         /// <summary>
+        ///     Gibt das Synonym des <see cref="Anime" /> oder <see cref="Manga" /> zurück.
+        ///     <para>(Vererbt von <see cref="IAnimeMangaObject" />)</para>
         /// </summary>
-        /// <exception cref="InitializeNeededException"></exception>
+        /// <exception cref="InitializeNeededException">Wird ausgelöst, wenn das Objekt noch nicht initialisiert wurde.</exception>
+        /// <seealso cref="Init" />
         public string Synonym
         {
             get
@@ -251,13 +293,13 @@ namespace Proxer.API.Main
             private set { this._synonym = value; }
         }
 
-        #endregion
-
-        #region Geerbt
 
         /// <summary>
+        ///     Initialisiert das Objekt.
+        ///     <para>(Vererbt von <see cref="IAnimeMangaObject" />)</para>
         /// </summary>
-        /// <exception cref="NotLoggedInException"></exception>
+        /// <exception cref="NotLoggedInException">Wird ausgelöst, wenn der Benutzer noch nicht eingeloggt ist.</exception>
+        /// <seealso cref="Senpai.Login" />
         public async Task Init()
         {
             try
@@ -276,13 +318,50 @@ namespace Proxer.API.Main
 
         #endregion
 
+        #region Properties
+
+        /// <summary>
+        ///     Gibt die Episodenanzahl eines <see cref="Anime" /> zurück.
+        /// </summary>
+        /// <exception cref="InitializeNeededException">Wird ausgelöst, wenn das Objekt noch nicht initialisiert wurde.</exception>
+        /// <seealso cref="Init" />
+        public int EpisodenZahl
+        {
+            get
+            {
+                if (!this.IstInitialisiert) throw new InitializeNeededException();
+                return this._episodenZahl;
+            }
+            private set { this._episodenZahl = value; }
+        }
+
+        /// <summary>
+        ///     Gibt die verfügbaren Sprachen des <see cref="Anime" /> zurück.
+        /// </summary>
+        /// <seealso cref="Language" />
+        /// <exception cref="InitializeNeededException">Wird ausgelöst, wenn das Objekt noch nicht initialisiert wurde.</exception>
+        /// <seealso cref="Init" />
+        public Language[] Sprachen
+        {
+            get
+            {
+                if (!this.IstInitialisiert) throw new InitializeNeededException();
+                return this._sprachen;
+            }
+            private set { this._sprachen = value; }
+        }
+
+        #endregion
+
         #region
 
         /// <summary>
+        ///     Gibt die Episoden des <see cref="Anime" /> in einer bestimmten <see cref="Language">Sprache</see> zurück.
         /// </summary>
-        /// <param name="language"></param>
-        /// <returns></returns>
-        /// <exception cref="InitializeNeededException">Wenn der Anime noch nicht initialisiert ist.</exception>
+        /// <param name="language">Die Sprache der Episoden.</param>
+        /// <seealso cref="Anime.Episode" />
+        /// <returns>Einen Array mit length = <see cref="EpisodenZahl" />.</returns>
+        /// <exception cref="InitializeNeededException">Wird ausgelöst, wenn das Objekt noch nicht initialisiert wurde.</exception>
         public Episode[] GetEpisodes(Language language)
         {
             if (this.Sprachen == null) throw new InitializeNeededException();
@@ -296,6 +375,92 @@ namespace Proxer.API.Main
             }
 
             return lEpisodes.ToArray();
+        }
+
+        private async Task InitAvailableLang()
+        {
+            if (!this._senpai.LoggedIn) throw new NotLoggedInException();
+
+            HtmlDocument lDocument = new HtmlDocument();
+            string lResponse =
+                (await HttpUtility.GetWebRequestResponse("http://proxer.me/edit/entry/" + this.Id + "/languages",
+                    this._senpai.LoginCookies))
+                    .Replace("</link>", "")
+                    .Replace("\n", "");
+
+            if (!Utility.CheckForCorrectResponse(lResponse, this._senpai.ErrHandler)) return;
+
+            try
+            {
+                lDocument.LoadHtml(lResponse);
+
+                List<Language> languageList = new List<Language>();
+                foreach (
+                    HtmlNode childNode in
+                        lDocument.DocumentNode.ChildNodes[1].ChildNodes[2].ChildNodes[2].ChildNodes[2].ChildNodes[4]
+                            .ChildNodes[5].ChildNodes.Where(
+                                childNode =>
+                                    childNode.ChildNodes.Count > 3 &&
+                                    childNode.ChildNodes[3].FirstChild.GetAttributeValue("value", "+").Equals("-")))
+                {
+                    switch (childNode.FirstChild.InnerText)
+                    {
+                        case "GerSub":
+                            languageList.Add(Language.GerSub);
+                            break;
+                        case "EngSub":
+                            languageList.Add(Language.EngSub);
+                            break;
+                        case "EngDub":
+                            languageList.Add(Language.EngDub);
+                            break;
+                        case "GerDub":
+                            languageList.Add(Language.GerDub);
+                            break;
+                    }
+                }
+
+                this.Sprachen = languageList.ToArray();
+            }
+            catch (NullReferenceException)
+            {
+            }
+            catch (IndexOutOfRangeException)
+            {
+            }
+        }
+
+        private async Task InitEpisodeCount()
+        {
+            if (!this._senpai.LoggedIn) throw new NotLoggedInException();
+
+            HtmlDocument lDocument = new HtmlDocument();
+            string lResponse =
+                (await HttpUtility.GetWebRequestResponse("http://proxer.me/edit/entry/" + this.Id + "/count",
+                    this._senpai.LoginCookies))
+                    .Replace("</link>", "")
+                    .Replace("\n", "");
+
+            if (!Utility.CheckForCorrectResponse(lResponse, this._senpai.ErrHandler)) return;
+
+            try
+            {
+                lDocument.LoadHtml(lResponse);
+
+                if (
+                    lDocument.DocumentNode.ChildNodes[1].ChildNodes[2].ChildNodes[2].ChildNodes[2].ChildNodes[4]
+                        .ChildNodes[5].FirstChild.FirstChild.InnerText.Equals("Aktuelle Anzahl:"))
+                    this.EpisodenZahl =
+                        Convert.ToInt32(
+                            lDocument.DocumentNode.ChildNodes[1].ChildNodes[2].ChildNodes[2].ChildNodes[2].ChildNodes[4]
+                                .ChildNodes[5].FirstChild.ChildNodes[1].InnerText);
+            }
+            catch (NullReferenceException)
+            {
+            }
+            catch (IndexOutOfRangeException)
+            {
+            }
         }
 
         private async Task InitMain()
@@ -439,101 +604,16 @@ namespace Proxer.API.Main
             }
         }
 
-        private async Task InitAvailableLang()
-        {
-            if (!this._senpai.LoggedIn) throw new NotLoggedInException();
-
-            HtmlDocument lDocument = new HtmlDocument();
-            string lResponse =
-                (await HttpUtility.GetWebRequestResponse("http://proxer.me/edit/entry/" + this.Id + "/languages",
-                    this._senpai.LoginCookies))
-                    .Replace("</link>", "")
-                    .Replace("\n", "");
-
-            if (!Utility.CheckForCorrectResponse(lResponse, this._senpai.ErrHandler)) return;
-
-            try
-            {
-                lDocument.LoadHtml(lResponse);
-
-                List<Language> languageList = new List<Language>();
-                foreach (
-                    HtmlNode childNode in
-                        lDocument.DocumentNode.ChildNodes[1].ChildNodes[2].ChildNodes[2].ChildNodes[2].ChildNodes[4]
-                            .ChildNodes[5].ChildNodes.Where(
-                                childNode =>
-                                    childNode.ChildNodes.Count > 3 &&
-                                    childNode.ChildNodes[3].FirstChild.GetAttributeValue("value", "+").Equals("-")))
-                {
-                    switch (childNode.FirstChild.InnerText)
-                    {
-                        case "GerSub":
-                            languageList.Add(Language.GerSub);
-                            break;
-                        case "EngSub":
-                            languageList.Add(Language.EngSub);
-                            break;
-                        case "EngDub":
-                            languageList.Add(Language.EngDub);
-                            break;
-                        case "GerDub":
-                            languageList.Add(Language.GerDub);
-                            break;
-                    }
-                }
-
-                this.Sprachen = languageList.ToArray();
-            }
-            catch (NullReferenceException)
-            {
-            }
-            catch (IndexOutOfRangeException)
-            {
-            }
-        }
-
-        private async Task InitEpisodeCount()
-        {
-            if (!this._senpai.LoggedIn) throw new NotLoggedInException();
-
-            HtmlDocument lDocument = new HtmlDocument();
-            string lResponse =
-                (await HttpUtility.GetWebRequestResponse("http://proxer.me/edit/entry/" + this.Id + "/count",
-                    this._senpai.LoginCookies))
-                    .Replace("</link>", "")
-                    .Replace("\n", "");
-
-            if (!Utility.CheckForCorrectResponse(lResponse, this._senpai.ErrHandler)) return;
-
-            try
-            {
-                lDocument.LoadHtml(lResponse);
-
-                if (
-                    lDocument.DocumentNode.ChildNodes[1].ChildNodes[2].ChildNodes[2].ChildNodes[2].ChildNodes[4]
-                        .ChildNodes[5].FirstChild.FirstChild.InnerText.Equals("Aktuelle Anzahl:"))
-                    this.EpisodenZahl =
-                        Convert.ToInt32(
-                            lDocument.DocumentNode.ChildNodes[1].ChildNodes[2].ChildNodes[2].ChildNodes[2].ChildNodes[4]
-                                .ChildNodes[5].FirstChild.ChildNodes[1].InnerText);
-            }
-            catch (NullReferenceException)
-            {
-            }
-            catch (IndexOutOfRangeException)
-            {
-            }
-        }
-
         #endregion
 
         /// <summary>
+        ///     Eine Klasse, die die <see cref="Episode">Episode</see> eines <see cref="Anime" /> darstellt.
         /// </summary>
         public class Episode
         {
             private readonly Language _lang;
             private readonly Senpai _senpai;
-            private Dictionary<Stream.StreamPartner, Stream> _streams;
+            private List<KeyValuePair<Stream.StreamPartner, Stream>> _streams;
 
             internal Episode(Anime anime, int nr, Language lang, Senpai senpai)
             {
@@ -548,22 +628,27 @@ namespace Proxer.API.Main
             #region Properties
 
             /// <summary>
+            ///     Gibt die Nummer der Episode zurück.
             /// </summary>
             public int EpisodeNr { get; set; }
 
             /// <summary>
+            ///     Gibt zurück, ob das Objekt bereits initialisiert ist.
             /// </summary>
             public bool IstInitialisiert { get; private set; }
 
             /// <summary>
+            ///     Gibt den Anime der Episode zurück.
             /// </summary>
             public Anime ParentAnime { get; set; }
 
             /// <summary>
-            ///     Wenn nach Init() immer noch null, dann sind keine Streams für diese Episode verfügbar.
+            ///     Gibt die Stream
+            ///     <para>Wenn nach Aufruf von Init() immer noch null, dann sind keine Streams für diese Episode verfügbar.</para>
             /// </summary>
-            /// <exception cref="InitializeNeededException"></exception>
-            public Dictionary<Stream.StreamPartner, Stream> Streams
+            /// <exception cref="InitializeNeededException">Wird ausgelöst, wenn das Objekt noch nicht initialisiert wurde.</exception>
+            /// <seealso cref="Episode.Init" />
+            public List<KeyValuePair<Stream.StreamPartner, Stream>> Streams
             {
                 get
                 {
@@ -578,9 +663,11 @@ namespace Proxer.API.Main
             #region
 
             /// <summary>
+            ///     Initialisiert das Objekt.
             /// </summary>
-            /// <exception cref="NotLoggedInException"></exception>
-            /// <exception cref="CaptchaException"></exception>
+            /// <exception cref="NotLoggedInException">Wird ausgelöst, wenn der Benutzer noch nicht eingeloggt ist.</exception>
+            /// <exception cref="CaptchaException">Wird ausgelöst, wenn Proxer vom Benutzer das ausfüllen eines Captchas verlangt.</exception>
+            /// <seealso cref="Senpai.Login" />
             public async Task Init()
             {
                 if (!this._senpai.LoggedIn) throw new NotLoggedInException();
@@ -615,7 +702,7 @@ namespace Proxer.API.Main
                                 x.GetAttributeValue("src", "").Equals("/images/misc/404.png")))
                         return;
 
-                    this.Streams = new Dictionary<Stream.StreamPartner, Stream>();
+                    this.Streams = new List<KeyValuePair<Stream.StreamPartner, Stream>>();
 
                     foreach (
                         HtmlNode childNode in
@@ -625,40 +712,46 @@ namespace Proxer.API.Main
                         switch (childNode.InnerText)
                         {
                             case "Dailymotion":
-                                this.Streams.Add(Stream.StreamPartner.Dailymotion,
-                                    new Stream(
-                                        new Uri(childNode.FirstChild.GetAttributeValue("href", "http://proxer.me/")),
-                                        Stream.StreamPartner.Dailymotion));
+                                this.Streams.Add(
+                                    new KeyValuePair<Stream.StreamPartner, Stream>(Stream.StreamPartner.Dailymotion,
+                                        new Stream(
+                                            new Uri(childNode.FirstChild.GetAttributeValue("href", "http://proxer.me/")),
+                                            Stream.StreamPartner.Dailymotion)));
                                 break;
                             case "MP4Upload":
-                                this.Streams.Add(Stream.StreamPartner.Mp4Upload,
-                                    new Stream(
-                                        new Uri(childNode.FirstChild.GetAttributeValue("href", "http://proxer.me/")),
-                                        Stream.StreamPartner.Mp4Upload));
+                                this.Streams.Add(
+                                    new KeyValuePair<Stream.StreamPartner, Stream>(Stream.StreamPartner.Mp4Upload,
+                                        new Stream(
+                                            new Uri(childNode.FirstChild.GetAttributeValue("href", "http://proxer.me/")),
+                                            Stream.StreamPartner.Mp4Upload)));
                                 break;
                             case "Streamcloud":
-                                this.Streams.Add(Stream.StreamPartner.Streamcloud,
-                                    new Stream(
-                                        new Uri(childNode.FirstChild.GetAttributeValue("href", "http://proxer.me/")),
-                                        Stream.StreamPartner.Streamcloud));
+                                this.Streams.Add(
+                                    new KeyValuePair<Stream.StreamPartner, Stream>(Stream.StreamPartner.Streamcloud,
+                                        new Stream(
+                                            new Uri(childNode.FirstChild.GetAttributeValue("href", "http://proxer.me/")),
+                                            Stream.StreamPartner.Streamcloud)));
                                 break;
                             case "Videobam":
-                                this.Streams.Add(Stream.StreamPartner.Videobam,
-                                    new Stream(
-                                        new Uri(childNode.FirstChild.GetAttributeValue("href", "http://proxer.me/")),
-                                        Stream.StreamPartner.Videobam));
+                                this.Streams.Add(
+                                    new KeyValuePair<Stream.StreamPartner, Stream>(Stream.StreamPartner.Videobam,
+                                        new Stream(
+                                            new Uri(childNode.FirstChild.GetAttributeValue("href", "http://proxer.me/")),
+                                            Stream.StreamPartner.Videobam)));
                                 break;
                             case "YourUpload":
-                                this.Streams.Add(Stream.StreamPartner.YourUpload,
-                                    new Stream(
-                                        new Uri(childNode.FirstChild.GetAttributeValue("href", "http://proxer.me/")),
-                                        Stream.StreamPartner.YourUpload));
+                                this.Streams.Add(
+                                    new KeyValuePair<Stream.StreamPartner, Stream>(Stream.StreamPartner.YourUpload,
+                                        new Stream(
+                                            new Uri(childNode.FirstChild.GetAttributeValue("href", "http://proxer.me/")),
+                                            Stream.StreamPartner.YourUpload)));
                                 break;
                             case "Proxer-Stream":
-                                this.Streams.Add(Stream.StreamPartner.ProxerStream,
-                                    new Stream(
-                                        new Uri(childNode.FirstChild.GetAttributeValue("href", "http://proxer.me/")),
-                                        Stream.StreamPartner.ProxerStream));
+                                this.Streams.Add(
+                                    new KeyValuePair<Stream.StreamPartner, Stream>(Stream.StreamPartner.ProxerStream,
+                                        new Stream(
+                                            new Uri(childNode.FirstChild.GetAttributeValue("href", "http://proxer.me/")),
+                                            Stream.StreamPartner.ProxerStream)));
                                 break;
                         }
                     }
@@ -676,34 +769,44 @@ namespace Proxer.API.Main
             #endregion
 
             /// <summary>
+            ///     Eine Klasse, die einen <see cref="Stream">Stream</see> einer <see cref="Episode">Episode</see> eines
+            ///     <see cref="Anime" />
+            ///     darstellt.
             /// </summary>
             public class Stream
             {
                 /// <summary>
+                ///     Eine Enumeration, die alle unterstützten Streampartner aufführt.
                 /// </summary>
                 public enum StreamPartner
                 {
                     /// <summary>
+                    ///     Stellt den Streampartner Streamcloud da.
                     /// </summary>
                     Streamcloud,
 
                     /// <summary>
+                    ///     Stellt den Streampartner MP4Upload da.
                     /// </summary>
                     Mp4Upload,
 
                     /// <summary>
+                    ///     Stellt den Streampartner Dailymotion da.
                     /// </summary>
                     Dailymotion,
 
                     /// <summary>
+                    ///     Stellt den Streampartner Videobam da.
                     /// </summary>
                     Videobam,
 
                     /// <summary>
+                    ///     Stellt den Streampartner YourUpload da.
                     /// </summary>
                     YourUpload,
 
                     /// <summary>
+                    ///     Stellt den Streampartner Proxer da.
                     /// </summary>
                     ProxerStream
                 }
@@ -717,10 +820,12 @@ namespace Proxer.API.Main
                 #region Properties
 
                 /// <summary>
+                ///     Gibt den Link des <see cref="Stream">Streams</see> zurück.
                 /// </summary>
                 public Uri Link { get; private set; }
 
                 /// <summary>
+                ///     Gibt den <see cref="StreamPartner">Streampartner</see> des <see cref="Stream">Streams</see> zurück.
                 /// </summary>
                 public StreamPartner SPartner { get; private set; }
 

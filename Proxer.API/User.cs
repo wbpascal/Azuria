@@ -14,7 +14,7 @@ namespace Proxer.API
     public class User
     {
         /// <summary>
-        ///     Representiert das System
+        ///     Representiert das System.
         /// </summary>
         public static User System = new User("System", -1, new Senpai());
 
@@ -56,8 +56,8 @@ namespace Proxer.API
         /// <summary>
         ///     Initialisiert die Klasse mit allen Standardeinstellungen.
         /// </summary>
-        /// <param name="userId"></param>
-        /// <param name="senpai"></param>
+        /// <param name="userId">Die ID des Benutzers</param>
+        /// <param name="senpai">Wird benötigt um einige Eigenschaften abzurufen</param>
         public User(int userId, Senpai senpai)
         {
             this._senpai = senpai;
@@ -73,9 +73,10 @@ namespace Proxer.API
         #region Properties
 
         /// <summary>
-        ///     Gibt den Link zu dem Avatar des Benutzers zurück
+        ///     Gibt den Link zu dem Avatar des Benutzers zurück.
         /// </summary>
-        /// <exception cref="InitializeNeededException"></exception>
+        /// <exception cref="InitializeNeededException">Wird ausgelöst, wenn das Objekt noch nicht initialisiert ist.</exception>
+        /// <seealso cref="InitUser" />
         public Uri Avatar
         {
             get
@@ -87,9 +88,10 @@ namespace Proxer.API
         }
 
         /// <summary>
-        ///     Gibt die Freunde des Benutzers in einer Liste zurück
+        ///     Gibt die Freunde des Benutzers in einer Liste zurück.
         /// </summary>
-        /// <exception cref="InitializeNeededException"></exception>
+        /// <exception cref="InitializeNeededException">Wird ausgelöst, wenn das Objekt noch nicht initialisiert ist.</exception>
+        /// <seealso cref="InitUser" />
         public List<User> Freunde
         {
             get
@@ -101,14 +103,15 @@ namespace Proxer.API
         }
 
         /// <summary>
-        ///     Gibt die Freunde des Benutzers in einer Liste zurück
+        ///     Gibt die ID des Benutzers zurück.
         /// </summary>
         public int Id { get; private set; }
 
         /// <summary>
-        ///     Gibt die Info des Benutzers als Html-Dokument zurück
+        ///     Gibt die Info des Benutzers als Html-Dokument zurück.
         /// </summary>
-        /// <exception cref="InitializeNeededException"></exception>
+        /// <exception cref="InitializeNeededException">Wird ausgelöst, wenn das Objekt noch nicht initialisiert ist.</exception>
+        /// <seealso cref="InitUser" />
         public string Info
         {
             get
@@ -120,14 +123,15 @@ namespace Proxer.API
         }
 
         /// <summary>
-        ///     Gibt an, ob das Objekt bereits Initialisiert ist
+        ///     Gibt an, ob das Objekt bereits Initialisiert ist.
         /// </summary>
         public bool IstInitialisiert { get; private set; }
 
         /// <summary>
-        ///     Gibt zurück, ob der Benutzter zur Zeit online ist
+        ///     Gibt zurück, ob der Benutzter zur Zeit online ist.
         /// </summary>
-        /// <exception cref="InitializeNeededException"></exception>
+        /// <exception cref="InitializeNeededException">Wird ausgelöst, wenn das Objekt noch nicht initialisiert ist.</exception>
+        /// <seealso cref="InitUser" />
         public bool Online
         {
             get
@@ -139,9 +143,10 @@ namespace Proxer.API
         }
 
         /// <summary>
-        ///     Gibt zurück, wie viele Punkte der Benutzter momentan hat
+        ///     Gibt zurück, wie viele Punkte der Benutzter momentan hat.
         /// </summary>
-        /// <exception cref="InitializeNeededException"></exception>
+        /// <exception cref="InitializeNeededException">Wird ausgelöst, wenn das Objekt noch nicht initialisiert ist.</exception>
+        /// <seealso cref="InitUser" />
         public int Punkte
         {
             get
@@ -153,9 +158,10 @@ namespace Proxer.API
         }
 
         /// <summary>
-        ///     Gibt den Rang-namen des Benutzers zurück
+        ///     Gibt den Rangnamen des Benutzers zurück.
         /// </summary>
-        /// <exception cref="InitializeNeededException"></exception>
+        /// <exception cref="InitializeNeededException">Wird ausgelöst, wenn das Objekt noch nicht initialisiert ist.</exception>
+        /// <seealso cref="InitUser" />
         public string Rang
         {
             get
@@ -167,9 +173,10 @@ namespace Proxer.API
         }
 
         /// <summary>
-        ///     Gibt den Status des Benutzers zurück
+        ///     Gibt den Status des Benutzers zurück.
         /// </summary>
-        /// <exception cref="InitializeNeededException"></exception>
+        /// <exception cref="InitializeNeededException">Wird ausgelöst, wenn das Objekt noch nicht initialisiert ist.</exception>
+        /// <seealso cref="InitUser" />
         public string Status
         {
             get
@@ -181,7 +188,7 @@ namespace Proxer.API
         }
 
         /// <summary>
-        ///     Gibt den Benutzernamen des Benutzers zurück
+        ///     Gibt den Benutzernamen des Benutzers zurück.
         /// </summary>
         public string UserName { get; private set; }
 
@@ -192,7 +199,8 @@ namespace Proxer.API
         /// <summary>
         ///     Initialisiert die Eigenschaften der Klasse
         /// </summary>
-        /// <exception cref="NotLoggedInException"></exception>
+        /// <exception cref="NotLoggedInException">Wird ausgelöst, wenn der Benutzer noch nicht eingeloggt ist.</exception>
+        /// <seealso cref="Senpai.Login" />
         public async Task InitUser()
         {
             try
@@ -382,22 +390,26 @@ namespace Proxer.API
         /// <summary>
         ///     Überprüft, ob zwei Benutzter Freunde sind.
         /// </summary>
-        /// <param name="user1"></param>
-        /// <param name="user2"></param>
-        /// <returns></returns>
+        /// <param name="user1">Benutzer 1</param>
+        /// <param name="user2">Benutzer 2</param>
+        /// <returns>Benutzer sind Freunde. True oder False.</returns>
         public static bool IsUserFriendOf(User user1, User user2)
         {
             return user1.Freunde.Any(item => item.Id == user2.Id);
         }
 
         /// <summary>
-        ///     Gibt den Benutzernamen eines Benutzers mit der spezifizierten ID zurück
+        ///     Gibt den Benutzernamen eines Benutzers mit der spezifizierten ID zurück.
         /// </summary>
-        /// <param name="id"></param>
-        /// <param name="senpai"></param>
+        /// <param name="id">Die ID des Benutzers</param>
+        /// <param name="senpai">Login-Cookies werden benötigt</param>
+        /// <exception cref="NotLoggedInException">Wird ausgelöst, wenn der Benutzer noch nicht eingeloggt ist.</exception>
+        /// <seealso cref="Senpai.Login" />
         /// <returns></returns>
         public static async Task<string> GetUNameFromId(int id, Senpai senpai)
         {
+            if (!senpai.LoggedIn) throw new NotLoggedInException();
+
             HtmlDocument lDocument = new HtmlDocument();
             string lResponse = await HttpUtility.GetWebRequestResponse(
                 "https://proxer.me/user/" + id + "/overview?format=raw",

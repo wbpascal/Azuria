@@ -1,29 +1,30 @@
 ﻿using System;
+using Proxer.API.Community;
 
 namespace Proxer.API.Notifications
 {
     /// <summary>
+    /// Eine Klasse, die eine neue private Nachricht darstellt.
     /// </summary>
     public class PmObject : INotificationObject
     {
         /// <summary>
+        /// Eine Enumeration, die darstellt, ob die <see cref="PmObject">private Nachricht</see> von einem einzelnen <see cref="User">Benutzer</see> stammt oder aus einer <see cref="Conference">Konferenz</see>.
         /// </summary>
         public enum PmType
         {
             /// <summary>
+            /// Die private Nachricht stammt aus einer <see cref="Conference">Konferenz</see>.
             /// </summary>
             Konferenz,
 
             /// <summary>
+            /// Die private Nachricht stammt von einem einzelnen <see cref="User">Benutzer</see>.
             /// </summary>
             Benutzer
         }
 
-        /// <summary>
-        /// </summary>
-        /// <param name="conId">ID der Konferenz</param>
-        /// <param name="userName">Benutzername des Senders</param>
-        /// <param name="timeStampDate">Datum(ohne Uhrzeit) der Nachricht</param>
+
         internal PmObject(int conId, string userName, DateTime timeStampDate)
         {
             this.Type = NotificationObjectType.PrivateMessage;
@@ -33,12 +34,6 @@ namespace Proxer.API.Notifications
             this.UserName = userName;
         }
 
-        /// <summary>
-        ///     Konstruktor für PM-Konferenzen
-        /// </summary>
-        /// <param name="conId">ID der Konferenz</param>
-        /// <param name="title">Titel der Konferenz</param>
-        /// <param name="timeStampDate">Datum(ohne Uhrzeit) der Nachricht</param>
         internal PmObject(string title, int conId, DateTime timeStampDate)
         {
             this.Type = NotificationObjectType.PrivateMessage;
@@ -48,9 +43,30 @@ namespace Proxer.API.Notifications
             this.Id = conId;
         }
 
+        #region Geerbt
+
+        /// <summary>
+        /// Gibt die Nachricht der Benachrichtigung als Text zurück.
+        /// <para>(Vererbt von <see cref="INotificationObject"/>)</para>
+        /// </summary>
+        public string Message
+        {
+            get { throw new NotImplementedException(); }
+        }
+
+        /// <summary>
+        /// Gibt den Typ der Benachrichtigung zurück.
+        /// <para>(Vererbt von <see cref="INotificationObject"/>)</para>
+        /// </summary>
+        public NotificationObjectType Type { get; private set; }
+
+        #endregion
+
         #region Properties
 
         /// <summary>
+        /// Gibt den Titel der <see cref="Conference">Sender-Konferenz</see> zurück.
+        /// <para>(Ist nur vorhanden, wenn <see cref="MessageTyp"/> = <see cref="PmType.Konferenz"/>)</para>
         /// </summary>
         public string ConferenceTitle { get; private set; }
 
@@ -60,26 +76,18 @@ namespace Proxer.API.Notifications
         public int Id { get; private set; }
 
         /// <summary>
-        /// </summary>
-        public string Message
-        {
-            get { throw new NotImplementedException(); }
-        }
-
-        /// <summary>
+        /// Gibt den Typ des Senders zurück.
         /// </summary>
         public PmType MessageTyp { get; private set; }
 
         /// <summary>
-        ///     Gibt nur Datum zurück, keine Uhrzeit.
+        /// Gibt das Empfangsdatum der Nachricht zurück.
         /// </summary>
         public DateTime TimeStamp { get; private set; }
 
         /// <summary>
-        /// </summary>
-        public NotificationObjectType Type { get; private set; }
-
-        /// <summary>
+        /// Gibt den Benutzernamen des Senders zurück.
+        /// <para>(Ist nur vorhanden, wenn <see cref="MessageTyp"/> = <see cref="PmType.Benutzer"/>)</para>
         /// </summary>
         public string UserName { get; private set; }
 

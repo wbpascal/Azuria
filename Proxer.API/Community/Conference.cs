@@ -11,11 +11,12 @@ using Proxer.API.Utilities;
 namespace Proxer.API.Community
 {
     /// <summary>
-    ///     Repräsentiert eine Proxer-Konferenz
+    ///     Repräsentiert eine Proxer-Konferenz.
     /// </summary>
     public class Conference
     {
         /// <summary>
+        ///     Wird ausgelöst, wenn neue Nachrichten in der Konferenz vorhanden sind.
         /// </summary>
         /// <param name="sender">Die Konferenz, die das Event aufgerufen hat</param>
         /// <param name="e">Die neuen Nachrichten. Beim ersten mal werden hier alle Nachrichten aufgeführt</param>
@@ -26,10 +27,10 @@ namespace Proxer.API.Community
         private readonly Senpai _senpai;
 
         /// <summary>
-        ///     Standard-Konstruktor der Klasse
+        ///     Standard-Konstruktor der Klasse.
         /// </summary>
-        /// <param name="id"></param>
-        /// <param name="senpai"></param>
+        /// <param name="id">Die ID der Konferenz</param>
+        /// <param name="senpai">Muss Teilnehmer der Konferenz sein.</param>
         public Conference(int id, Senpai senpai)
         {
             this.Id = id;
@@ -82,7 +83,7 @@ namespace Proxer.API.Community
         #region Properties
 
         /// <summary>
-        ///     Gibt einen Wert an, ob die Privatnachrichten in einem bestimmten Intervall abgerufen werden, oder legt diesen fest
+        ///     Gibt einen Wert an, ob die Privatnachrichten in einem bestimmten Intervall abgerufen werden, oder legt diesen fest.
         /// </summary>
         public bool Aktiv
         {
@@ -110,12 +111,12 @@ namespace Proxer.API.Community
         private bool IsConference { get; set; }
 
         /// <summary>
-        ///     Gibt zurück, ob die Konferenz bereits initialisiert ist
+        ///     Gibt zurück, ob die Konferenz bereits initialisiert ist.
         /// </summary>
         public bool IstInitialisiert { get; private set; }
 
         /// <summary>
-        ///     Gibt den Leiter der Konferenz zurück (initConference() muss dafür zunächst einmal aufgerufen werden)
+        ///     Gibt den Leiter der Konferenz zurück. (<see cref="InitConference" /> muss dafür zunächst einmal aufgerufen werden)
         /// </summary>
         public User Leiter { get; private set; }
 
@@ -125,12 +126,13 @@ namespace Proxer.API.Community
         public List<Message> Nachrichten { get; private set; }
 
         /// <summary>
-        ///     Gibt alle Teilnehmer der Konferenz zurück (initConference() muss dafür zunächst einmal aufgerufen werden)
+        ///     Gibt alle Teilnehmer der Konferenz zurück (<see cref="InitConference" /> muss dafür zunächst einmal aufgerufen
+        ///     werden)
         /// </summary>
         public List<User> Teilnehmer { get; private set; }
 
         /// <summary>
-        ///     Gibt den Titel der Konferenz zurück (initConference() muss dafür zunächst einmal aufgerufen werden)
+        ///     Gibt den Titel der Konferenz zurück (<see cref="InitConference" /> muss dafür zunächst einmal aufgerufen werden)
         /// </summary>
         public string Titel { get; private set; }
 
@@ -139,15 +141,16 @@ namespace Proxer.API.Community
         #region
 
         /// <summary>
-        ///     Wird immer aufgerufen, wenn neue Nachrichten in der Konferenz vorhanden sind
+        ///     Wird immer aufgerufen, wenn neue Nachrichten in der Konferenz vorhanden sind.
         /// </summary>
         public event NeuePmEventHandler NeuePmRaised;
 
 
         /// <summary>
-        ///     Initialisiert die Konferenz
+        ///     Initialisiert die Konferenz.
         /// </summary>
-        /// <exception cref="NotLoggedInException"></exception>
+        /// <exception cref="NotLoggedInException">Wird ausgelöst, wenn der Benutzer noch nicht eingeloggt ist.</exception>
+        /// <seealso cref="Senpai.Login" />
         public async Task InitConference()
         {
             if (!this._senpai.LoggedIn) throw new NotLoggedInException();
@@ -169,10 +172,11 @@ namespace Proxer.API.Community
         }
 
         /// <summary>
-        ///     Sendet eine Nachricht an die Konferenz
+        ///     Sendet eine Nachricht an die Konferenz.
         /// </summary>
         /// <param name="nachricht">Die Nachricht, die gesendet werden soll</param>
-        /// <exception cref="NotLoggedInException"></exception>
+        /// <exception cref="NotLoggedInException">Wird ausgelöst, wenn der Benutzer noch nicht eingeloggt ist.</exception>
+        /// <seealso cref="Senpai.Login" />
         /// <returns>Gibt zurück, ob die Aktion erfolgreich war</returns>
         public async Task<bool> SendeNachricht(string nachricht)
         {
@@ -227,9 +231,10 @@ namespace Proxer.API.Community
         }
 
         /// <summary>
-        ///     Markiert die Konferenz als ungelesen
+        ///     Markiert die Konferenz als ungelesen.
         /// </summary>
-        /// <exception cref="NotLoggedInException"></exception>
+        /// <exception cref="NotLoggedInException">Wird ausgelöst, wenn der Benutzer noch nicht eingeloggt ist.</exception>
+        /// <seealso cref="Senpai.Login" />
         /// <returns>Gibt zurück, ob die Aktion erfolgreich war</returns>
         public async Task<bool> AlsUngelesenMarkieren()
         {
@@ -244,7 +249,8 @@ namespace Proxer.API.Community
         /// <summary>
         ///     Markiert die Konferenz als Favorit
         /// </summary>
-        /// <exception cref="NotLoggedInException"></exception>
+        /// <exception cref="NotLoggedInException">Wird ausgelöst, wenn der Benutzer noch nicht eingeloggt ist.</exception>
+        /// <seealso cref="Senpai.Login" />
         /// <returns>Gibt zurück, ob die Aktion erfolgreich war</returns>
         public async Task<bool> FavoritHinzufuegen()
         {
@@ -256,9 +262,10 @@ namespace Proxer.API.Community
         }
 
         /// <summary>
-        ///     Entfernt die Konferenz aus den Favoriten
+        ///     Entfernt die Konferenz aus den Favoriten.
         /// </summary>
-        /// <exception cref="NotLoggedInException"></exception>
+        /// <exception cref="NotLoggedInException">Wird ausgelöst, wenn der Benutzer noch nicht eingeloggt ist.</exception>
+        /// <seealso cref="Senpai.Login" />
         /// <returns>Gibt zurück, ob die Aktion erfolgreich war</returns>
         public async Task<bool> FavoritEntfernen()
         {
@@ -270,9 +277,10 @@ namespace Proxer.API.Community
         }
 
         /// <summary>
-        ///     Blockiert die Konferenz
+        ///     Blockiert die Konferenz.
         /// </summary>
-        /// <exception cref="NotLoggedInException"></exception>
+        /// <exception cref="NotLoggedInException">Wird ausgelöst, wenn der Benutzer noch nicht eingeloggt ist.</exception>
+        /// <seealso cref="Senpai.Login" />
         /// <returns>Gibt zurück, ob die Aktion erfolgreich war</returns>
         public async Task<bool> BlockHinzufuegen()
         {
@@ -287,7 +295,8 @@ namespace Proxer.API.Community
         /// <summary>
         ///     Entblockt die Konferenz
         /// </summary>
-        /// <exception cref="NotLoggedInException"></exception>
+        /// <exception cref="NotLoggedInException">Wird ausgelöst, wenn der Benutzer noch nicht eingeloggt ist.</exception>
+        /// <seealso cref="Senpai.Login" />
         /// <returns>Gibt zurück, ob die Aktion erfolgreich war</returns>
         public async Task<bool> BlockEntfernen()
         {
@@ -608,13 +617,17 @@ namespace Proxer.API.Community
 
 
         /// <summary>
-        ///     Gibt zurück, ob Senpai ein Teilnehmer einer Konferenz mit der bestimmten ID ist
+        ///     Gibt zurück, ob Senpai ein Teilnehmer einer Konferenz mit der bestimmten ID ist.
         /// </summary>
         /// <param name="id">ID der Konferenz</param>
-        /// <param name="senpai"></param>
-        /// <returns></returns>
+        /// <param name="senpai">Muss eingeloggt sein</param>
+        /// <exception cref="NotLoggedInException">Wird ausgelöst, wenn der Benutzer noch nicht eingeloggt ist.</exception>
+        /// <seealso cref="Senpai.Login" />
+        /// <returns>Benutzer ist Teilnehmer der Konferenz. True oder False.</returns>
         public static async Task<bool> IstTeilnehmner(int id, Senpai senpai)
         {
+            if (!senpai.LoggedIn) throw new NotLoggedInException();
+
             Dictionary<string, string> lPostArgs = new Dictionary<string, string>
             {
                 {"message", "/ping"}
@@ -643,31 +656,37 @@ namespace Proxer.API.Community
         #endregion
 
         /// <summary>
-        ///     Repräsentiert die jeweilige einzelne Nachricht in der Konferenz
+        ///     Repräsentiert die jeweilige einzelne Nachricht in der Konferenz.
         /// </summary>
         public class Message
         {
             /// <summary>
+            ///     Die Aktion der Nachricht.
             /// </summary>
             public enum Action
             {
                 /// <summary>
+                ///     Normale Nachricht, nur Text.
                 /// </summary>
                 NoAction,
 
                 /// <summary>
+                ///     Ein Benutzer wurde hinzugefügt.
                 /// </summary>
                 AddUser,
 
                 /// <summary>
+                ///     Ein Benutzer wurde entfernt.
                 /// </summary>
                 RemoveUser,
 
                 /// <summary>
+                ///     Der Leiter der Konferenz wurde geändert.
                 /// </summary>
                 SetLeader,
 
                 /// <summary>
+                ///     Das Thema der Konferenz wurde geändert.
                 /// </summary>
                 SetTopic,
 
@@ -698,22 +717,27 @@ namespace Proxer.API.Community
             #region Properties
 
             /// <summary>
+            ///     Gibt die Aktion der Nachricht zurück.
             /// </summary>
             public Action Aktion { get; private set; }
 
             /// <summary>
+            ///     Gibt den Text der Nachricht zurück.
             /// </summary>
             public string Nachricht { get; private set; }
 
             /// <summary>
+            ///     Gibt die ID der Nachricht zurück.
             /// </summary>
             public int NachrichtId { get; private set; }
 
             /// <summary>
+            ///     Gibt den Sender der Nachricht zurück.
             /// </summary>
             public User Sender { get; private set; }
 
             /// <summary>
+            ///     Gibt das Datum der Nachricht zurück.
             /// </summary>
             public DateTime TimeStamp { get; private set; }
 

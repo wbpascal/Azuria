@@ -3,15 +3,33 @@
 namespace Proxer.API.Notifications
 {
     /// <summary>
+    /// Eine Klasse, die eine Nachricht darstellt.
     /// </summary>
     public class NewsObject : INotificationObject
     {
-        /// <summary>
-        /// </summary>
         internal NewsObject()
         {
             this.Type = NotificationObjectType.News;
         }
+
+        #region Geerbt
+
+        /// <summary>
+        /// Gibt die Nachricht der Benachrichtigung als Text zurück.
+        /// <para>(Vererbt von <see cref="INotificationObject"/>)</para>
+        /// </summary>
+        public string Message
+        {
+            get { return this.Description; }
+        }
+
+        /// <summary>
+        /// Gibt den Typ der Benachrichtigung zurück.
+        /// <para>(Vererbt von <see cref="INotificationObject"/>)</para>
+        /// </summary>
+        public NotificationObjectType Type { get; private set; }
+
+        #endregion
 
         #region Properties
 
@@ -46,13 +64,7 @@ namespace Proxer.API.Notifications
         public string ImageStyle { get; set; }
 
         /// <summary>
-        /// </summary>
-        public string Message
-        {
-            get { return this.Description; }
-        }
-
-        /// <summary>
+        ///  Veraltet. Gibt die Thread-ID zurück.
         /// </summary>
         [Obsolete("Bitte benutzte stattdessen \"thread\"")]
         internal int Mid { get; set; }
@@ -63,6 +75,7 @@ namespace Proxer.API.Notifications
         public int Nid { get; set; }
 
         /// <summary>
+        ///  Veraltet.
         /// </summary>
         [Obsolete]
         internal int Pid { get; set; }
@@ -86,10 +99,6 @@ namespace Proxer.API.Notifications
         ///     Gibt den Zeitpunkt der News als Unix Timestamp zurück.
         /// </summary>
         public long Time { get; set; }
-
-        /// <summary>
-        /// </summary>
-        public NotificationObjectType Type { get; private set; }
 
         /// <summary>
         ///     Gibt die ID des Authors zurück.

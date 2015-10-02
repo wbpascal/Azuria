@@ -7,6 +7,7 @@ using Proxer.API.Utilities;
 namespace Proxer.API.Notifications
 {
     /// <summary>
+    /// Eine Klasse, die eine Freundschaftsanfrage aus den Benachrichtigungen darstellt.
     /// </summary>
     public class FriendRequestObject : INotificationObject
     {
@@ -14,68 +15,55 @@ namespace Proxer.API.Notifications
         private bool _accepted;
         private bool _denied;
 
-        /// <summary>
-        /// </summary>
-        /// <param name="userName"></param>
-        /// <param name="userId"></param>
-        /// <param name="senpai"></param>
-        internal FriendRequestObject(string userName, int userId, Senpai senpai)
+        internal FriendRequestObject(string userName, int userUserId, Senpai senpai)
         {
             this._senpai = senpai;
             this.Type = NotificationObjectType.FriendRequest;
             this.Message = userName;
             this.UserName = userName;
-            this.Id = userId;
+            this.UserId = userUserId;
         }
 
-        /// <summary>
-        /// </summary>
-        /// <param name="userName"></param>
-        /// <param name="userId"></param>
-        /// <param name="userDescription"></param>
-        /// <param name="requestDate"></param>
-        /// <param name="userOnline"></param>
-        /// <param name="senpai"></param>
-        internal FriendRequestObject(string userName, int userId, string userDescription, DateTime requestDate,
-            bool userOnline, Senpai senpai)
+        internal FriendRequestObject(string userName, int userUserId, DateTime requestDate, Senpai senpai)
         {
             this._senpai = senpai;
             this.Type = NotificationObjectType.FriendRequest;
             this.Message = userName;
             this.UserName = userName;
-            this.Id = userId;
-            this.Description = userDescription;
+            this.UserId = userUserId;
             this.Date = requestDate;
-            this.Online = userOnline;
         }
 
-        #region Properties
+        #region Geerbt
 
         /// <summary>
-        /// </summary>
-        public DateTime Date { get; private set; }
-
-        /// <summary>
-        /// </summary>
-        public string Description { get; private set; }
-
-        /// <summary>
-        /// </summary>
-        public int Id { get; private set; }
-
-        /// <summary>
+        /// Gibt die Nachricht der Benachrichtigung als Text zurück.
+        /// <para>(Vererbt von <see cref="INotificationObject"/>)</para>
         /// </summary>
         public string Message { get; private set; }
 
         /// <summary>
-        /// </summary>
-        public bool Online { get; private set; }
-
-        /// <summary>
+        /// Gibt den Typ der Benachrichtigung zurück.
+        /// <para>(Vererbt von <see cref="INotificationObject"/>)</para>
         /// </summary>
         public NotificationObjectType Type { get; private set; }
 
+        #endregion
+
+        #region Properties
+
         /// <summary>
+        /// Gibt das Datum der Freundschaftsanfrage zurück.
+        /// </summary>
+        public DateTime Date { get; private set; }
+
+        /// <summary>
+        /// Gibt die ID des <see cref="User">Benutzers</see> zurück, der die Freundschaftsanfrage gestellt hat.
+        /// </summary>
+        public int UserId { get; private set; }
+
+        /// <summary>
+        /// Gibt den Namen des <see cref="User">Benutzers</see> zurück, der die Freundschaftsanfrage gestellt hat.
         /// </summary>
         public string UserName { get; private set; }
 
@@ -84,16 +72,18 @@ namespace Proxer.API.Notifications
         #region
 
         /// <summary>
+        /// Akzeptiert die Freundschaftsanfrage.
         /// </summary>
-        /// <exception cref="NotLoggedInException"></exception>
-        /// <returns>Ob die Aktion erfolgreich war</returns>
+        /// <exception cref="NotLoggedInException">Wird ausgelöst, wenn der <see cref="Senpai">Benutzer</see> nicht eingeloggt ist.</exception>
+        /// <seealso cref="Senpai.Login"/>
+        /// <returns>Die Aktion war erfolgreich. True oder False</returns>
         public async Task<bool> AcceptRequest()
         {
             if (!this._senpai.LoggedIn) throw new NotLoggedInException();
             if (this._accepted || this._denied) return false;
             Dictionary<string, string> lPostArgs = new Dictionary<string, string> {{"type", "accept"}};
             string lResponse =
-                await HttpUtility.PostWebRequestResponse("https://proxer.me/user/my?format=json&cid=" + this.Id,
+                await HttpUtility.PostWebRequestResponse("https://proxer.me/user/my?format=json&cid=" + this.UserId,
                     this._senpai.LoginCookies, lPostArgs);
 
             if (!lResponse.StartsWith("{\"error\":0")) return false;
@@ -102,39 +92,22 @@ namespace Proxer.API.Notifications
         }
 
         /// <summary>
+        /// Lehnt die Freundschaftsanfrage ab.
         /// </summary>
-        /// <exception cref="NotLoggedInException"></exception>
-        /// <returns>Ob die Aktion erfolgreich war</returns>
+        /// <exception cref="NotLoggedInException">Wird ausgelöst, wenn der <see cref="Senpai">Benutzer</see> nicht eingeloggt ist.</exception>
+        /// <seealso cref="Senpai.Login"/>
+        /// <returns>Die Aktion war erfolgreich. True oder False</returns>
         public async Task<bool> DenyRequest()
         {
             if (!this._senpai.LoggedIn) throw new NotLoggedInException();
             if (this._accepted || this._denied) return false;
             Dictionary<string, string> lPostArgs = new Dictionary<string, string> {{"type", "deny"}};
             string lResponse =
-                await HttpUtility.PostWebRequestResponse("https://proxer.me/user/my?format=json&cid=" + this.Id,
+                await HttpUtility.PostWebRequestResponse("https://proxer.me/user/my?format=json&cid=" + this.UserId,
                     this._senpai.LoginCookies, lPostArgs);
 
             if (!lResponse.StartsWith("{\"error\":0")) return false;
             this._denied = true;
-            return true;
-        }
-
-        /// <summary>
-        /// </summary>
-        /// <exception cref="NotLoggedInException"></exception>
-        /// <returns>Ob die Aktion erfolgreich war</returns>
-        public async Task<bool> EditDescription(string pNewDescription)
-        {
-            if (!this._senpai.LoggedIn) throw new NotLoggedInException();
-            Dictionary<string, string> lPostArgs = new Dictionary<string, string> {{"type", "desc"}};
-            string lResponse =
-                await HttpUtility.PostWebRequestResponse(
-                    "https://proxer.me/user/my?format=json&desc=" +
-                    System.Web.HttpUtility.JavaScriptStringEncode(pNewDescription) + "&cid=" + this.Id,
-                    this._senpai.LoginCookies, lPostArgs);
-
-            if (!lResponse.StartsWith("{\"error\":0")) return false;
-            this.Description = pNewDescription;
             return true;
         }
 

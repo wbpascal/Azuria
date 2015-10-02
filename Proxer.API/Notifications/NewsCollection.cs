@@ -5,13 +5,10 @@ using Newtonsoft.Json;
 using Proxer.API.Exceptions;
 using Proxer.API.Utilities;
 
-// ReSharper disable CoVariantArrayConversion
-
-// ReSharper disable InvertIf
-
 namespace Proxer.API.Notifications
 {
     /// <summary>
+    /// Eine Klasse, die eine Sammlung von <see cref="NewsObject">News</see> darstellt.
     /// </summary>
     public class NewsCollection : INotificationCollection
     {
@@ -25,21 +22,26 @@ namespace Proxer.API.Notifications
             this.Type = NotificationObjectType.News;
         }
 
-        #region Properties
-
-        /// <summary>
-        /// </summary>
-        public NotificationObjectType Type { get; private set; }
-
-        #endregion
-
         #region Geerbt
 
         /// <summary>
+        ///     Gibt den Typ der Benachrichtigung zurück.
+        /// <para>(Vererbt von <see cref="INotificationCollection"/>)</para>
         /// </summary>
-        /// <param name="count"></param>
-        /// <exception cref="NotLoggedInException"></exception>
-        /// <returns></returns>
+        public NotificationObjectType Type { get; private set; }
+
+        /// <summary>
+        ///     Gibt eine bestimmte Anzahl der aktuellen Benachrichtigungen, die diese Klasse repräsentiert, zurück.
+        /// <para>(Vererbt von <see cref="INotificationCollection"/>)</para>
+        /// </summary>
+        /// <param name="count">Die Anzahl der Benachrichtigungen</param>
+        /// <exception cref="NotLoggedInException">Wird ausgelöst, wenn der Benutzer noch nicht eingeloggt ist.</exception>
+        /// <seealso cref="Senpai.Login"/>
+        /// <seealso cref="INotificationCollection.GetAllNotifications">GetAllNotifications Funktion</seealso>
+        /// <returns>
+        ///     Ein Array mit der Anzahl an Elementen in <paramref name="count" /> spezifiziert.
+        ///     Wenn <paramref name="count" /> > Array.length, dann wird der gesamte Array zurückgegeben.
+        /// </returns>
         public async Task<INotificationObject[]> GetNotifications(int count)
         {
             if (this._notificationObjects == null)
@@ -60,9 +62,13 @@ namespace Proxer.API.Notifications
         }
 
         /// <summary>
+        /// Gibt alle aktuellen Benachrichtigungen, die diese Klasse repräsentiert, zurück.
+        /// <para>(Vererbt von <see cref="INotificationCollection"/>)</para>
         /// </summary>
-        /// <exception cref="NotLoggedInException"></exception>
-        /// <returns></returns>
+        /// <exception cref="NotLoggedInException">Wird ausgelöst, wenn der Benutzer noch nicht eingeloggt ist.</exception>
+        /// <seealso cref="Senpai.Login"/>
+        /// <seealso cref="INotificationCollection.GetNotifications"/>
+        /// <returns>Ein Array mit allen aktuellen Benachrichtigungen.</returns>
         public async Task<INotificationObject[]> GetAllNotifications()
         {
             if (this._notificationObjects == null)
@@ -85,10 +91,15 @@ namespace Proxer.API.Notifications
         #region
 
         /// <summary>
+        ///     Gibt eine bestimmte Anzahl der aktuellen Benachrichtigungen, die diese Klasse repräsentiert, zurück.
         /// </summary>
-        /// <param name="count"></param>
-        /// <exception cref="NotLoggedInException"></exception>
-        /// <returns></returns>
+        /// <param name="count">Die Anzahl der Benachrichtigungen</param>
+        /// <exception cref="NotLoggedInException">Tritt auf, wenn der Benutzer noch nicht angemeldet ist.</exception>
+        /// <seealso cref="Senpai.Login" />
+        /// <returns>
+        ///     Ein Array mit der Anzahl an Elementen in <paramref name="count" /> spezifiziert.
+        ///     Wenn <paramref name="count" /> > Array.length, dann wird der gesamte Array zurückgegeben.
+        /// </returns>
         public async Task<NewsObject[]> GetNews(int count)
         {
             if (this._newsObjects == null)
@@ -109,9 +120,11 @@ namespace Proxer.API.Notifications
         }
 
         /// <summary>
+        /// Gibt alle aktuellen Benachrichtigungen, die diese Klasse repräsentiert, zurück.
         /// </summary>
-        /// <exception cref="NotLoggedInException"></exception>
-        /// <returns></returns>
+        /// <exception cref="NotLoggedInException">Wird ausgelöst, wenn der Benutzer noch nicht eingeloggt ist.</exception>
+        /// <seealso cref="Senpai.Login"/>
+        /// <returns>Ein Array mit allen aktuellen Benachrichtigungen.</returns>
         public async Task<NewsObject[]> GetAllNews()
         {
             if (this._newsObjects == null)

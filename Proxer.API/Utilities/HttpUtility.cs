@@ -7,17 +7,10 @@ using RestSharp;
 
 namespace Proxer.API.Utilities
 {
-    /// <summary>
-    /// </summary>
     internal class HttpUtility
     {
         #region
 
-        /// <summary>
-        /// </summary>
-        /// <param name="url"></param>
-        /// <param name="cookies"></param>
-        /// <returns></returns>
         internal static async Task<string> GetWebRequestResponse(string url, CookieContainer cookies)
         {
             RestClient lClient = new RestClient(url)
@@ -29,12 +22,6 @@ namespace Proxer.API.Utilities
             return System.Web.HttpUtility.HtmlDecode((await lClient.ExecuteTaskAsync(lRequest)).Content);
         }
 
-        /// <summary>
-        /// </summary>
-        /// <param name="url"></param>
-        /// <param name="cookies"></param>
-        /// <param name="postArgs"></param>
-        /// <returns></returns>
         internal static async Task<string> PostWebRequestResponse(string url, CookieContainer cookies,
             Dictionary<string, string> postArgs)
         {

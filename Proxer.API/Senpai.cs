@@ -20,38 +20,43 @@ namespace Proxer.API
     public class Senpai
     {
         /// <summary>
+        ///     Stellt die Methode da, die ausgelöst wird, wenn neue Anime- oder Manga-Benachrichtigungen verfügbar sind.
         /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
+        /// <param name="sender">Der Benutzer, der die Benachrichtigung empfangen hat.</param>
+        /// <param name="e">Die Benachrichtigungen</param>
         public delegate void AmNotificationEventHandler(Senpai sender, AmNotificationEventArgs e);
 
         /// <summary>
+        ///     Stellt die Methode da, die ausgelöst wird, wenn neue Freundschafts-Benachrichtigungen verfügbar sind.
         /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
+        /// <param name="sender">Der Benutzer, der die Benachrichtigung empfangen hat.</param>
+        /// <param name="e">Die Benachrichtigungen</param>
         public delegate void FriendNotificiationEventHandler(Senpai sender, FriendNotificationEventArgs e);
 
         /// <summary>
+        ///     Stellt die Methode da, die ausgelöst wird, wenn neue News verfügbar sind.
         /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
+        /// <param name="sender">Der Benutzer, der die Benachrichtigung empfangen hat.</param>
+        /// <param name="e">Die Benachrichtigungen</param>
         public delegate void NewsNotificationEventHandler(Senpai sender, NewsNotificationEventArgs e);
 
         /// <summary>
+        ///     Stellt die Methode da, die ausgelöst wird, wenn neue Benachrichtigungen aller Art verfügbar sind.
         /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
+        /// <param name="sender">Der Benutzer, der die Benachrichtigung empfangen hat.</param>
+        /// <param name="e">Die Benachrichtigungen</param>
         public delegate void NotificationEventHandler(Senpai sender, INotificationEventArgs e);
 
         /// <summary>
+        ///     Stellt die Methode da, die ausgelöst wird, wenn neue Privat-Nachricht-Benachrichtigungen verfügbar sind.
         /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
+        /// <param name="sender">Der Benutzer, der die Benachrichtigung empfangen hat.</param>
+        /// <param name="e">Die Benachrichtigungen</param>
         public delegate void PmNotificationEventHandler(Senpai sender, PmNotificationEventArgs e);
 
         private readonly Timer _loginCheckTimer;
         private readonly Timer _notificationCheckTimer;
-        private readonly Timer _notificationUpdateCheckTimer;
+        private readonly Timer _propertyUpdateTimer;
         private AnimeMangaUpdateCollection _animeMangaUpdates;
         private bool _checkAnimeMangaUpdate;
         private bool _checkFriendUpdates;
@@ -65,7 +70,7 @@ namespace Proxer.API
 
 
         /// <summary>
-        ///     Initialisiert die Klasse
+        ///     Standard-Konstruktor der Klasse.
         /// </summary>
         public Senpai()
         {
@@ -92,11 +97,12 @@ namespace Proxer.API
             };
             this._notificationCheckTimer.Elapsed += async (s, eArgs) => { await this.CheckNotifications(); };
 
-            this._notificationUpdateCheckTimer = new Timer(1) {AutoReset = true};
-            this._notificationUpdateCheckTimer.Elapsed += (s, eArgs) =>
+            this._propertyUpdateTimer = new Timer(1) {AutoReset = true};
+            this._propertyUpdateTimer.Elapsed += (s, eArgs) =>
             {
-                this._notificationUpdateCheckTimer.Interval = (new TimeSpan(0, 10, 0)).TotalMilliseconds;
+                this._propertyUpdateTimer.Interval = (new TimeSpan(0, 15, 0)).TotalMilliseconds;
                 this._checkAnimeMangaUpdate = true;
+                this._checkFriendUpdates = true;
                 this._checkNewsUpdate = true;
                 this._checkPmUpdate = true;
             };
@@ -105,8 +111,12 @@ namespace Proxer.API
         #region Properties
 
         /// <summary>
-        ///     Gibt alle Anime und Manga Benachrichtigungen in einer Liste zurück
+        ///     Gibt ein Objekt zurück, mithilfe dessen alle Anime- und Manga-Benachrichtigungen abgerufen werden könne.
         /// </summary>
+        /// <seealso cref="AnimeMangaUpdates" />
+        /// <seealso cref="FriendRequests" />
+        /// <seealso cref="News" />
+        /// <seealso cref="PrivateMessages" />
         public AnimeMangaUpdateCollection AnimeMangaUpdates
         {
             get
@@ -122,13 +132,17 @@ namespace Proxer.API
 
         /// <summary>
         ///     Gibt den Error-Handler zurück, der benutzt wird, um Fehler in Serverantworten zu bearbeiten und frühzeitig zu
-        ///     erkennen
+        ///     erkennen.
         /// </summary>
         public ErrorHandler ErrHandler { get; private set; }
 
         /// <summary>
-        ///     Gibt alle Freundschaftsanfragen in einer Liste zurück
+        ///     Gibt ein Objekt zurück, mithilfe dessen alle Freundschafts-Benachrichtigungen abgerufen werden könne.
         /// </summary>
+        /// <seealso cref="AnimeMangaUpdates" />
+        /// <seealso cref="FriendRequests" />
+        /// <seealso cref="News" />
+        /// <seealso cref="PrivateMessages" />
         public FriendRequestCollection FriendRequests
         {
             get
@@ -144,7 +158,7 @@ namespace Proxer.API
 
 
         /// <summary>
-        ///     Gibt an, ob der Benutzter noch eingeloggt ist, wird aber nicht überprüft (nur durch Timer alle 30 Minuten)
+        ///     Gibt an, ob der Benutzter noch eingeloggt ist, wird aber nicht überprüft. (nur durch Timer alle 30 Minuten)
         /// </summary>
         public bool LoggedIn
         {
@@ -160,24 +174,28 @@ namespace Proxer.API
                 {
                     this._loginCheckTimer.Stop();
                     this._notificationCheckTimer.Stop();
-                    this._notificationUpdateCheckTimer.Stop();
+                    this._propertyUpdateTimer.Stop();
                     this._loggedIn = false;
                 }
             }
         }
 
         /// <summary>
-        ///     Gibt den CookieContainer zurück, der benutzt wird, um Aktionen im eingeloggten Status auszuführen
+        ///     Gibt den CookieContainer zurück, der benutzt wird, um Aktionen im eingeloggten Status auszuführen.
         /// </summary>
+        /// <seealso cref="MobileLoginCookies" />
         public CookieContainer LoginCookies { get; private set; }
 
         /// <summary>
-        ///     Profil des Senpais
+        ///     Profil des Senpais.
         /// </summary>
         public User Me { get; private set; }
 
         /// <summary>
+        ///     Gibt den CookieContainer zurück, der benutzt wird, um Aktionen im eingeloggten Status auszuführen.
+        ///     Jedoch wird hierbei dem CookieContainer noch Cookies hinzugefügt, sodass die mobile Seite angezeigt wird.
         /// </summary>
+        /// <seealso cref="LoginCookies" />
         public CookieContainer MobileLoginCookies
         {
             get
@@ -194,8 +212,12 @@ namespace Proxer.API
         }
 
         /// <summary>
-        ///     Gibt die letzten 15 News in einer Liste zurück
+        ///     Gibt ein Objekt zurück, mithilfe dessen alle News abgerufen werden könne.
         /// </summary>
+        /// <seealso cref="AnimeMangaUpdates" />
+        /// <seealso cref="FriendRequests" />
+        /// <seealso cref="News" />
+        /// <seealso cref="PrivateMessages" />
         public NewsCollection News
         {
             get
@@ -210,8 +232,12 @@ namespace Proxer.API
         }
 
         /// <summary>
-        ///     Gibt alle Privat Nachricht Benachrichtigungen in einer Liste zurück
+        ///     Gibt ein Objekt zurück, mithilfe dessen alle Privat-Nachricht-Benachrichtigungen abgerufen werden könne.
         /// </summary>
+        /// <seealso cref="AnimeMangaUpdates" />
+        /// <seealso cref="FriendRequests" />
+        /// <seealso cref="News" />
+        /// <seealso cref="PrivateMessages" />
         public PmCollection PrivateMessages
         {
             get
@@ -230,12 +256,11 @@ namespace Proxer.API
         #region
 
         /// <summary>
-        ///     Loggt den Benutzer ein
+        ///     Loggt den Benutzer ein.
         /// </summary>
-        /// <param name="username">Der Benutzername des zu einloggenden Benutzers</param>
+        /// <param name="username">Der Benutzername des einzuloggenden Benutzers</param>
         /// <param name="password">Das Passwort des Benutzers</param>
-        /// <exception cref="NotLoggedInException"></exception>
-        /// <returns>Gibt zurück, ob der Benutzer erfolgreich eingeloggt wurde</returns>
+        /// <returns>Gibt zurück, ob der Benutzer erfolgreich eingeloggt wurde.</returns>
         public async Task<bool> Login(string username, string password)
         {
             if (this.LoggedIn || string.IsNullOrEmpty(username) || string.IsNullOrEmpty(password)) return false;
@@ -277,10 +302,6 @@ namespace Proxer.API
             return false;
         }
 
-        /// <summary>
-        ///     Checkt per API, ob der Benutzer noch eingeloggt ist
-        /// </summary>
-        /// <returns></returns>
         internal async Task<bool> CheckLogin()
         {
             if (!this.LoggedIn) return false;
@@ -311,26 +332,24 @@ namespace Proxer.API
         }
 
         /// <summary>
-        ///     Initialisiert die Benachrichtigungen
+        ///     Initialisiert die Benachrichtigungen.
         /// </summary>
-        /// <returns></returns>
-        public async Task<bool> InitNotifications()
+        /// <exception cref="NotLoggedInException">Wird ausgelöst, wenn der Benutzer noch nicht eingeloggt ist.</exception>
+        /// <seealso cref="Login" />
+        public async Task InitNotifications()
         {
-            if (!this.LoggedIn) return false;
+            if (!this.LoggedIn) throw new NotLoggedInException();
             await this.CheckNotifications();
 
             this._notificationCheckTimer.Start();
-            this._notificationUpdateCheckTimer.Start();
-
-            return true;
+            this._propertyUpdateTimer.Start();
         }
 
         /// <summary>
-        ///     Nach dem Aufruf, wenn eine Eigenschaft aufgerufen wird, wird dessen Wert neu berechnet.
+        ///     Zwingt die Eigenschaften sich beim nächsten Aufruf zu aktualisieren.
         /// </summary>
         public async Task ForcePropertyReload()
         {
-#pragma warning disable
             await this.CheckLogin();
             this._checkAnimeMangaUpdate = true;
             this._checkNewsUpdate = true;
@@ -338,13 +357,17 @@ namespace Proxer.API
         }
 
         /// <summary>
-        ///     Gibt alle Konferenzen des Senpais zurück. ACHTUNG: Bei den Konferenzen muss noch initConference() aufgerufen
+        ///     Gibt alle Konferenzen des Senpais zurück. ACHTUNG: Bei den Konferenzen muss noch
+        ///     <see cref="Conference.InitConference">InitConference()</see>
+        ///     aufgerufen
         ///     werden!
         /// </summary>
-        /// <returns></returns>
+        /// <exception cref="NotLoggedInException">Wird ausgelöst, wenn der Benutzer noch nicht eingeloggt ist.</exception>
+        /// <seealso cref="Login" />
+        /// <returns>Alle Konferenzen, in denen der Benutzer Teilnehmer ist.</returns>
         public async Task<List<Conference>> GetAllConferences()
         {
-            if (!this.LoggedIn) return null;
+            if (!this.LoggedIn) throw new NotLoggedInException();
             string lResponse =
                 (await HttpUtility.GetWebRequestResponse("http://proxer.me/messages", this.LoginCookies))
                     .Replace("</link>", "")
@@ -437,33 +460,32 @@ namespace Proxer.API
 
 
         /// <summary>
-        ///     Wird bei allen Benachrichtigungen aufgerufen(30 Minuten Intervall)
+        ///     Wird bei allen Benachrichtigungen ausgelöst. (15 Minuten Intervall)
         /// </summary>
         public event NotificationEventHandler NotificationRaised;
 
         /// <summary>
-        ///     Wird aufgerufen, wenn eine neue Freundschaftsanfrage aussteht(30 Minuten Intervall)
+        ///     Wird ausgelöst, wenn eine neue Freundschaftsanfrage aussteht. (15 Minuten Intervall)
         /// </summary>
         public event FriendNotificiationEventHandler FriendNotificationRaised;
 
         /// <summary>
-        ///     Wird aufgerufen, wenn neue ungelesene News vorhanden sind(30 Minuten Intervall)
+        ///     Wird ausgelöst, wenn neue ungelesene News vorhanden sind. (15 Minuten Intervall)
         /// </summary>
         public event NewsNotificationEventHandler NewsNotificationRaised;
 
         /// <summary>
-        ///     Wird aufgerufen, wenn ungelesene PMs vorhanden sind(30 Minuten Intervall)
+        ///     Wird ausgelöst, wenn ungelesene PMs vorhanden sind. (15 Minuten Intervall)
         /// </summary>
         public event PmNotificationEventHandler PmNotificationRaised;
 
         /// <summary>
-        ///     Wird aufgerufen, wenn neue Anime Folgen oder Manga Kapitel vorhanden sind(30 Minuten Intervall)
-        ///     ACHTUNG: Kann auch aufgerufen werden, wenn z.B. eine Freundschaftsanfrage angenommen wurde(Wird versucht zu fixen)
+        ///     Wird ausgelöst, wenn neue Anime Folgen oder Manga Kapitel vorhanden sind. (15 Minuten Intervall)
         /// </summary>
         public event AmNotificationEventHandler AmUpdateNotificationRaised;
 
         /// <summary>
-        ///     Wird aufgerufen, wenn die Cookies verfallen sind(30 Minuten Intervall)
+        ///     Wird ausgelöst, wenn die Login-Cookies verfallen sind. (15 Minuten Intervall)
         /// </summary>
         public event EventHandler UserLoggedOutRaised;
 
