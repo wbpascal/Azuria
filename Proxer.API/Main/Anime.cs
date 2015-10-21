@@ -4,7 +4,6 @@ using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
 using HtmlAgilityPack;
-using JetBrains.Annotations;
 using Proxer.API.Exceptions;
 using Proxer.API.Main.Minor;
 using Proxer.API.Utilities;
@@ -361,7 +360,7 @@ namespace Proxer.API.Main
         /// Gibt die aktuell am beliebtesten <see cref="Anime"/> zurück.
         /// </summary>
         /// <returns>Ein Array mit den aktuell beliebtesten <see cref="Anime"/>.</returns>
-        public static async Task<ProxerResult<Anime[]>> GetPopularAnimes([NotNull] Senpai senpai)
+        public static async Task<ProxerResult<Anime[]>> GetPopularAnimes(Senpai senpai)
         {
             HtmlDocument lDocument = new HtmlDocument();
             string lResponse;

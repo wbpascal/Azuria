@@ -5,7 +5,6 @@ using System.Net;
 using System.Threading.Tasks;
 using System.Timers;
 using HtmlAgilityPack;
-using JetBrains.Annotations;
 using Newtonsoft.Json;
 using Proxer.API.Exceptions;
 using Proxer.API.Utilities;
@@ -35,7 +34,7 @@ namespace Proxer.API.Community
         /// </summary>
         /// <param name="id">Die ID der Konferenz</param>
         /// <param name="senpai">Muss Teilnehmer der Konferenz sein.</param>
-        public Conference(int id, [NotNull]Senpai senpai)
+        public Conference(int id, Senpai senpai)
         {
             this.Id = id;
             this._senpai = senpai;
@@ -187,7 +186,7 @@ namespace Proxer.API.Community
         /// <param name="nachricht">Die Nachricht, die gesendet werden soll</param>
         /// <seealso cref="Senpai.Login" />
         /// <returns>Gibt zurück, ob die Aktion erfolgreich war</returns>
-        public async Task<ProxerResult<bool>> SendeNachricht([NotNull] string nachricht)
+        public async Task<ProxerResult<bool>> SendeNachricht(string nachricht)
         {
             if (!this._senpai.LoggedIn)
                 return new ProxerResult<bool>(new Exception[] { new NotLoggedInException(this._senpai) });

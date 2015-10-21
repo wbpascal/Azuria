@@ -5,7 +5,6 @@ using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
 using HtmlAgilityPack;
-using JetBrains.Annotations;
 using Proxer.API.Exceptions;
 using Proxer.API.Main;
 using Proxer.API.Utilities.Net;
@@ -28,7 +27,7 @@ namespace Proxer.API.Utilities
         /// <param name="id">Die ID des <see cref="Main.Anime">Anime</see> oder <see cref="Main.Manga">Manga</see>.</param>
         /// <param name="senpai">Der Benutzer. (Muss eingeloggt sein)</param>
         /// <returns>Anime oder Manga der ID (Typecast erforderlich)</returns>
-        public static async Task<ProxerResult<IAnimeMangaObject>> GetAnimeManga(int id, [NotNull] Senpai senpai)
+        public static async Task<ProxerResult<IAnimeMangaObject>> GetAnimeManga(int id, Senpai senpai)
         {
             HtmlDocument lDocument = new HtmlDocument();
             string lResponse;
