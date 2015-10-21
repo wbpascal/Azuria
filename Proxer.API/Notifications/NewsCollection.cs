@@ -158,7 +158,7 @@ namespace Proxer.API.Notifications
                                                                                             "{\"error\":0,".Length));
 
                 this._newsObjects = lDeserialized["notifications"].ToArray();
-                this._notificationObjects = lDeserialized["notifications"].ToArray();
+                this._notificationObjects = lDeserialized["notifications"].Cast<INotificationObject>().ToArray();
 
                 return new ProxerResult();
             }

@@ -186,7 +186,7 @@ namespace Proxer.API.Notifications
                 }
 
                 this._pmObjects = lPmObjects.ToArray();
-                this._notificationObjects = lPmObjects.ToArray();
+                this._notificationObjects = lPmObjects.Cast<INotificationObject>().ToArray();
 
                 return new ProxerResult();
             }

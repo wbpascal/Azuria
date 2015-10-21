@@ -174,7 +174,7 @@ namespace Proxer.API.Notifications
                     .ToList();
 
                 this._friendRequestObjects = lFriendRequests.ToArray();
-                this._notificationObjects = lFriendRequests.ToArray();
+                this._notificationObjects = lFriendRequests.Cast<INotificationObject>().ToArray();
 
                 return new ProxerResult();
             }

@@ -1,5 +1,7 @@
 ﻿using System.Linq;
 using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Input;
 using Proxer.API.EventArguments;
 using Proxer.API.Exceptions;
 using Proxer.API.Notifications;
@@ -43,29 +45,29 @@ namespace Proxer.API.Example
             //man kann auch einen Ton abspielen
         }
 
-        private async void AmUpdateNotificationRaised(Senpai sender, AmNotificationEventArgs e)
+        private void AmUpdateNotificationRaised(Senpai sender, AmNotificationEventArgs e)
         {
-            this.AMTextBox.Clear();
-            this.AMTextBox.IsReadOnly = false;
+            this.LoadAmUpdateNotifications(sender, e.Benachrichtigungen);   
+        }
 
-            ProxerResult<AnimeMangaUpdateObject[]> lResult = await e.Benachrichtigungen.GetAllAnimeMangaUpdates();
+        private async void LoadAmUpdateNotifications(Senpai senpai, AnimeMangaUpdateCollection collection)
+        {
+            this.AmTextBox.Items.Clear();
+
+            ProxerResult<AnimeMangaUpdateObject[]> lResult = await collection.GetAllAnimeMangaUpdates();
             if (!lResult.Success)
             {
                 MessageBox.Show(lResult.Exceptions.OfType<NotLoggedInException>().Any()
                     ? "Bitte logge dich ein bevor du fortfährst!"
                     : "Es ist ein Fehler während der Anfrage aufgetreten!");
 
-                new LoginWindow().Show();
-                this.Close();
                 return;
             }
 
             foreach (AnimeMangaUpdateObject notification in lResult.Result)
             {
-                this.AMTextBox.Text += notification.Name + "#" + notification.Number + " ist jetzt online! ( " +
-                                       notification.Link.AbsoluteUri + " )\n\n";
+                this.AmTextBox.Items.Add(notification);
             }
-            this.AMTextBox.IsReadOnly = true;
         }
 
         private void Window_GotFocus(object sender, RoutedEventArgs e)
@@ -78,29 +80,17 @@ namespace Proxer.API.Example
         {
             await this._senpai.InitNotifications();
 
-            this.AMTextBox.IsReadOnly = false;
-
-            ProxerResult<AnimeMangaUpdateObject[]> lResult =
-                await this._senpai.AnimeMangaUpdates.GetAllAnimeMangaUpdates();
-            if (!lResult.Success)
-            {
-                MessageBox.Show(lResult.Exceptions.OfType<NotLoggedInException>().Any()
-                    ? "Bitte logge dich ein bevor du fortfährst!"
-                    : "Es ist ein Fehler während der Anfrage aufgetreten!");
-
-                new LoginWindow().Show();
-                this.Close();
-                return;
-            }
-
-            foreach (AnimeMangaUpdateObject notification in lResult.Result)
-            {
-                this.AMTextBox.Text += notification.Name + " #" + notification.Number + " ist jetzt online! ( " +
-                                       notification.Link.AbsoluteUri + " )\n\n";
-            }
-            this.AMTextBox.IsReadOnly = true;
+            this.LoadAmUpdateNotifications(this._senpai, this._senpai.AnimeMangaUpdates);
         }
 
         #endregion
+
+        private void AmTextBox_MouseUp(object sender, MouseButtonEventArgs e)
+        {
+            if (e.ChangedButton == MouseButton.Left)
+            {
+                MessageBox.Show(((sender as ListBox).SelectedItem as AnimeMangaUpdateObject).Name);
+            }
+        }
     }
 }

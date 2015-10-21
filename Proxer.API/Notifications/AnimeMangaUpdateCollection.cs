@@ -181,7 +181,7 @@ namespace Proxer.API.Notifications
                 }
 
                 this._animeMangaUpdateObjects = lAnimeMangaUpdateObjects.ToArray();
-                this._notificationObjects = lAnimeMangaUpdateObjects.ToArray();
+                this._notificationObjects = lAnimeMangaUpdateObjects.Cast<INotificationObject>().ToArray();
 
                 return new ProxerResult();
             }
