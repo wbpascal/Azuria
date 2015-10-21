@@ -58,7 +58,7 @@ namespace Proxer.API.Main
         private AnimeMangaStatus _status;
         private string _synonym;
 
-        /// <exception cref="ArgumentNullException"><paramref name="senpai"/> is <see langword="null" />.</exception>
+        /// <exception cref="ArgumentNullException"><paramref name="senpai" /> is <see langword="null" />.</exception>
         internal Anime(string name, int id, Senpai senpai)
         {
             if (senpai == null) throw new ArgumentNullException(nameof(senpai));
@@ -357,9 +357,9 @@ namespace Proxer.API.Main
         #region
 
         /// <summary>
-        /// Gibt die aktuell am beliebtesten <see cref="Anime"/> zurück.
+        ///     Gibt die aktuell am beliebtesten <see cref="Anime" /> zurück.
         /// </summary>
-        /// <returns>Ein Array mit den aktuell beliebtesten <see cref="Anime"/>.</returns>
+        /// <returns>Ein Array mit den aktuell beliebtesten <see cref="Anime" />.</returns>
         public static async Task<ProxerResult<Anime[]>> GetPopularAnimes(Senpai senpai)
         {
             HtmlDocument lDocument = new HtmlDocument();
@@ -372,11 +372,11 @@ namespace Proxer.API.Main
                         senpai.LoginCookies);
             if (lResponseObject.StatusCode == HttpStatusCode.OK && !string.IsNullOrEmpty(lResponseObject.Content))
                 lResponse = System.Web.HttpUtility.HtmlDecode(lResponseObject.Content).Replace("\n", "");
-            else return new ProxerResult<Anime[]>(new[] { new WrongResponseException(), lResponseObject.ErrorException });
+            else return new ProxerResult<Anime[]>(new[] {new WrongResponseException(), lResponseObject.ErrorException});
 
             if (string.IsNullOrEmpty(lResponse) ||
                 !Utility.CheckForCorrectResponse(lResponse, senpai.ErrHandler))
-                return new ProxerResult<Anime[]>(new Exception[] { new WrongResponseException() });
+                return new ProxerResult<Anime[]>(new Exception[] {new WrongResponseException()});
 
             try
             {
@@ -423,7 +423,7 @@ namespace Proxer.API.Main
         private async Task<ProxerResult> InitAvailableLang()
         {
             if (!this._senpai.LoggedIn)
-                return new ProxerResult(new Exception[] { new NotLoggedInException(this._senpai) });
+                return new ProxerResult(new Exception[] {new NotLoggedInException(this._senpai)});
 
             HtmlDocument lDocument = new HtmlDocument();
             string lResponse;
@@ -435,11 +435,11 @@ namespace Proxer.API.Main
                         this._senpai.LoginCookies);
             if (lResponseObject.StatusCode == HttpStatusCode.OK && !string.IsNullOrEmpty(lResponseObject.Content))
                 lResponse = System.Web.HttpUtility.HtmlDecode(lResponseObject.Content).Replace("\n", "");
-            else return new ProxerResult(new[] { new WrongResponseException(), lResponseObject.ErrorException });
+            else return new ProxerResult(new[] {new WrongResponseException(), lResponseObject.ErrorException});
 
             if (string.IsNullOrEmpty(lResponse) ||
                 !Utility.CheckForCorrectResponse(lResponse, this._senpai.ErrHandler))
-                return new ProxerResult(new Exception[] { new WrongResponseException() });
+                return new ProxerResult(new Exception[] {new WrongResponseException()});
 
             try
             {
@@ -484,7 +484,7 @@ namespace Proxer.API.Main
         private async Task<ProxerResult> InitEpisodeCount()
         {
             if (!this._senpai.LoggedIn)
-                return new ProxerResult(new Exception[] { new NotLoggedInException(this._senpai) });
+                return new ProxerResult(new Exception[] {new NotLoggedInException(this._senpai)});
 
             HtmlDocument lDocument = new HtmlDocument();
             string lResponse;
@@ -496,11 +496,11 @@ namespace Proxer.API.Main
                         this._senpai.LoginCookies);
             if (lResponseObject.StatusCode == HttpStatusCode.OK && !string.IsNullOrEmpty(lResponseObject.Content))
                 lResponse = System.Web.HttpUtility.HtmlDecode(lResponseObject.Content).Replace("\n", "");
-            else return new ProxerResult(new[] { new WrongResponseException(), lResponseObject.ErrorException });
+            else return new ProxerResult(new[] {new WrongResponseException(), lResponseObject.ErrorException});
 
             if (string.IsNullOrEmpty(lResponse) ||
                 !Utility.CheckForCorrectResponse(lResponse, this._senpai.ErrHandler))
-                return new ProxerResult(new Exception[] { new WrongResponseException() });
+                return new ProxerResult(new Exception[] {new WrongResponseException()});
 
             try
             {
@@ -534,11 +534,11 @@ namespace Proxer.API.Main
                         this._senpai.LoginCookies);
             if (lResponseObject.StatusCode == HttpStatusCode.OK && !string.IsNullOrEmpty(lResponseObject.Content))
                 lResponse = System.Web.HttpUtility.HtmlDecode(lResponseObject.Content).Replace("\n", "");
-            else return new ProxerResult(new[] { new WrongResponseException(), lResponseObject.ErrorException });
+            else return new ProxerResult(new[] {new WrongResponseException(), lResponseObject.ErrorException});
 
             if (string.IsNullOrEmpty(lResponse) ||
                 !Utility.CheckForCorrectResponse(lResponse, this._senpai.ErrHandler))
-                return new ProxerResult(new Exception[] { new WrongResponseException() });
+                return new ProxerResult(new Exception[] {new WrongResponseException()});
             try
             {
                 lDocument.LoadHtml(lResponse);
@@ -566,7 +566,7 @@ namespace Proxer.API.Main
                             List<string> lGenreList = new List<string>();
                             childNode.ChildNodes[1].ChildNodes.ToList()
                                                    .ForEach(
-                                                       delegate (HtmlNode htmlNode)
+                                                       delegate(HtmlNode htmlNode)
                                                        {
                                                            if (htmlNode.Name.Equals("a"))
                                                                lGenreList.Add(htmlNode.InnerText);
@@ -577,7 +577,7 @@ namespace Proxer.API.Main
                             this.Fsk = new Dictionary<string, Uri>();
                             childNode.ChildNodes[1].ChildNodes.ToList()
                                                    .ForEach(
-                                                       delegate (HtmlNode htmlNode)
+                                                       delegate(HtmlNode htmlNode)
                                                        {
                                                            if (htmlNode.Name.Equals("span") &&
                                                                !this.Fsk.ContainsKey(htmlNode.GetAttributeValue(
@@ -593,7 +593,7 @@ namespace Proxer.API.Main
                             List<string> lSeasonList = new List<string>();
                             childNode.ChildNodes[1].ChildNodes.ToList()
                                                    .ForEach(
-                                                       delegate (HtmlNode htmlNode)
+                                                       delegate(HtmlNode htmlNode)
                                                        {
                                                            if (htmlNode.Name.Equals("a"))
                                                                lSeasonList.Add(htmlNode.InnerText);
@@ -741,7 +741,8 @@ namespace Proxer.API.Main
             /// <seealso cref="Senpai.Login" />
             public async Task<ProxerResult> Init()
             {
-                if (!this._senpai.LoggedIn) return new ProxerResult(new Exception[] {new NotLoggedInException(this._senpai)});
+                if (!this._senpai.LoggedIn)
+                    return new ProxerResult(new Exception[] {new NotLoggedInException(this._senpai)});
 
                 HtmlDocument lDocument = new HtmlDocument();
                 string lResponse;
@@ -754,11 +755,11 @@ namespace Proxer.API.Main
                             this._senpai.MobileLoginCookies);
                 if (lResponseObject.StatusCode == HttpStatusCode.OK && !string.IsNullOrEmpty(lResponseObject.Content))
                     lResponse = System.Web.HttpUtility.HtmlDecode(lResponseObject.Content).Replace("\n", "");
-                else return new ProxerResult(new[] { new WrongResponseException(), lResponseObject.ErrorException });
+                else return new ProxerResult(new[] {new WrongResponseException(), lResponseObject.ErrorException});
 
                 if (string.IsNullOrEmpty(lResponse) ||
                     !Utility.CheckForCorrectResponse(lResponse, this._senpai.ErrHandler))
-                    return new ProxerResult(new Exception[] { new WrongResponseException() });
+                    return new ProxerResult(new Exception[] {new WrongResponseException()});
 
                 try
                 {

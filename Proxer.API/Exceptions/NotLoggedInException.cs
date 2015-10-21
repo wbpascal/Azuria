@@ -10,11 +10,6 @@ namespace Proxer.API.Exceptions
     public class NotLoggedInException : Exception
     {
         /// <summary>
-        /// Gibt den <see cref="Senpai"/> zurück, der mit dem Fehler in Verbindung steht.
-        /// </summary>
-        public Senpai Senpai { get; set; }
-
-        /// <summary>
         ///     Initialisiert eine neue Instanz der <see cref="NotLoggedInException" />-Klasse.
         /// </summary>
         public NotLoggedInException()
@@ -49,5 +44,14 @@ namespace Proxer.API.Exceptions
         public NotLoggedInException(string message, Exception inner) : base(message, inner)
         {
         }
+
+        #region Properties
+
+        /// <summary>
+        ///     Gibt den <see cref="Senpai" /> zurück, der mit dem Fehler in Verbindung steht.
+        /// </summary>
+        public Senpai Senpai { get; set; }
+
+        #endregion
     }
 }

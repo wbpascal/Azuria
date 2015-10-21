@@ -1,17 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Linq;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
-using Proxer.API.Community;
+using Proxer.API.EventArguments;
 using Proxer.API.Exceptions;
 using Proxer.API.Notifications;
 using Proxer.API.Utilities.Net;
@@ -19,12 +8,12 @@ using Proxer.API.Utilities.Net;
 namespace Proxer.API.Example
 {
     /// <summary>
-    /// Interaktionslogik für NotificationWindow.xaml
+    ///     Interaktionslogik für NotificationWindow.xaml
     /// </summary>
     public partial class NotificationWindow : Window
     {
         private readonly Senpai _senpai;
-        private int _unseenNotifications = 0;
+        private int _unseenNotifications;
 
         internal NotificationWindow(Senpai senpai)
         {
@@ -42,7 +31,9 @@ namespace Proxer.API.Example
             this._senpai.AmUpdateNotificationRaised += this.AmUpdateNotificationRaised;
         }
 
-        private void NotificationRaised(Senpai sender, EventArguments.INotificationEventArgs e)
+        #region
+
+        private void NotificationRaised(Senpai sender, INotificationEventArgs e)
         {
             if (this.IsFocused) return;
 
@@ -52,7 +43,7 @@ namespace Proxer.API.Example
             //man kann auch einen Ton abspielen
         }
 
-        private async void AmUpdateNotificationRaised(Senpai sender, EventArguments.AmNotificationEventArgs e)
+        private async void AmUpdateNotificationRaised(Senpai sender, AmNotificationEventArgs e)
         {
             this.AMTextBox.Clear();
             this.AMTextBox.IsReadOnly = false;
@@ -89,7 +80,8 @@ namespace Proxer.API.Example
 
             this.AMTextBox.IsReadOnly = false;
 
-            ProxerResult<AnimeMangaUpdateObject[]> lResult = await this._senpai.AnimeMangaUpdates.GetAllAnimeMangaUpdates();
+            ProxerResult<AnimeMangaUpdateObject[]> lResult =
+                await this._senpai.AnimeMangaUpdates.GetAllAnimeMangaUpdates();
             if (!lResult.Success)
             {
                 MessageBox.Show(lResult.Exceptions.OfType<NotLoggedInException>().Any()
@@ -108,5 +100,7 @@ namespace Proxer.API.Example
             }
             this.AMTextBox.IsReadOnly = true;
         }
+
+        #endregion
     }
 }

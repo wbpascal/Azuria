@@ -3,7 +3,7 @@
 namespace Proxer.API.Notifications
 {
     /// <summary>
-    /// Eine Klasse, die eine Nachricht darstellt.
+    ///     Eine Klasse, die eine Nachricht darstellt.
     /// </summary>
     public class NewsObject : INotificationObject
     {
@@ -15,14 +15,14 @@ namespace Proxer.API.Notifications
         #region Geerbt
 
         /// <summary>
-        /// Gibt die Nachricht der Benachrichtigung als Text zurück.
-        /// <para>(Vererbt von <see cref="INotificationObject"/>)</para>
+        ///     Gibt die Nachricht der Benachrichtigung als Text zurück.
+        ///     <para>(Vererbt von <see cref="INotificationObject" />)</para>
         /// </summary>
         public string Message => this.Description;
 
         /// <summary>
-        /// Gibt den Typ der Benachrichtigung zurück.
-        /// <para>(Vererbt von <see cref="INotificationObject"/>)</para>
+        ///     Gibt den Typ der Benachrichtigung zurück.
+        ///     <para>(Vererbt von <see cref="INotificationObject" />)</para>
         /// </summary>
         public NotificationObjectType Type { get; }
 
@@ -61,7 +61,7 @@ namespace Proxer.API.Notifications
         public string ImageStyle { get; set; }
 
         /// <summary>
-        ///  Veraltet. Gibt die Thread-ID zurück.
+        ///     Veraltet. Gibt die Thread-ID zurück.
         /// </summary>
         [Obsolete("Bitte benutzte stattdessen \"thread\"")]
         internal int Mid { get; set; }
@@ -72,7 +72,7 @@ namespace Proxer.API.Notifications
         public int Nid { get; set; }
 
         /// <summary>
-        ///  Veraltet.
+        ///     Veraltet.
         /// </summary>
         [Obsolete]
         internal int Pid { get; set; }

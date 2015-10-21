@@ -36,10 +36,13 @@ namespace Proxer.API.Utilities
                 await HttpUtility.GetWebRequestResponse("https://proxer.me/info/" + id, senpai.LoginCookies);
             if (lResponseObject.StatusCode == HttpStatusCode.OK && !string.IsNullOrEmpty(lResponseObject.Content))
                 lResponse = System.Web.HttpUtility.HtmlDecode(lResponseObject.Content).Replace("\n", "");
-            else return new ProxerResult<IAnimeMangaObject>(new[] { new WrongResponseException(), lResponseObject.ErrorException });
+            else
+                return
+                    new ProxerResult<IAnimeMangaObject>(new[]
+                    {new WrongResponseException(), lResponseObject.ErrorException});
 
             if (string.IsNullOrEmpty(lResponse) || !CheckForCorrectResponse(lResponse, senpai.ErrHandler))
-                return new ProxerResult<IAnimeMangaObject>(new Exception[] { new WrongResponseException() });
+                return new ProxerResult<IAnimeMangaObject>(new Exception[] {new WrongResponseException()});
 
             if (!CheckForCorrectResponse(lResponse, senpai.ErrHandler)) return null;
             try
@@ -69,7 +72,9 @@ namespace Proxer.API.Utilities
             }
             catch
             {
-                return new ProxerResult<IAnimeMangaObject>((await ErrorHandler.HandleError(senpai, lResponse, false)).Exceptions);
+                return
+                    new ProxerResult<IAnimeMangaObject>(
+                        (await ErrorHandler.HandleError(senpai, lResponse, false)).Exceptions);
             }
 
             return new ProxerResult<IAnimeMangaObject>(new Exception[] {new WrongResponseException()});

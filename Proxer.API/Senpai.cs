@@ -1,5 +1,4 @@
 ﻿using System;
-using System.CodeDom;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
@@ -100,7 +99,7 @@ namespace Proxer.API
             };
             this._notificationCheckTimer.Elapsed += async (s, eArgs) => { await this.CheckNotifications(); };
 
-            this._propertyUpdateTimer = new Timer(1) { AutoReset = true };
+            this._propertyUpdateTimer = new Timer(1) {AutoReset = true};
             this._propertyUpdateTimer.Elapsed += (s, eArgs) =>
             {
                 this._propertyUpdateTimer.Interval = (new TimeSpan(0, 20, 0)).TotalMilliseconds;
@@ -278,13 +277,15 @@ namespace Proxer.API
             string lResponse;
 
             IRestResponse lResponseObject =
-                await HttpUtility.PostWebRequestResponse("https://proxer.me/login?format=json&action=login", this.LoginCookies, postArgs);
+                await
+                    HttpUtility.PostWebRequestResponse("https://proxer.me/login?format=json&action=login",
+                        this.LoginCookies, postArgs);
             if (lResponseObject.StatusCode == HttpStatusCode.OK && !string.IsNullOrEmpty(lResponseObject.Content))
                 lResponse = System.Web.HttpUtility.HtmlDecode(lResponseObject.Content).Replace("\n", "");
-            else return new ProxerResult<bool>(new[] { new WrongResponseException(), lResponseObject.ErrorException });
+            else return new ProxerResult<bool>(new[] {new WrongResponseException(), lResponseObject.ErrorException});
 
             if (string.IsNullOrEmpty(lResponse) || !Utility.CheckForCorrectResponse(lResponse, this.ErrHandler))
-                return new ProxerResult<bool>(new Exception[] { new WrongResponseException() });
+                return new ProxerResult<bool>(new Exception[] {new WrongResponseException()});
 
             try
             {
@@ -313,18 +314,20 @@ namespace Proxer.API
 
         internal async Task<ProxerResult<bool>> CheckLogin()
         {
-            if (!this.LoggedIn) return new ProxerResult<bool>(new Exception[] { new NotLoggedInException(this) });
+            if (!this.LoggedIn) return new ProxerResult<bool>(new Exception[] {new NotLoggedInException(this)});
 
             string lResponse;
 
             IRestResponse lResponseObject =
-                await HttpUtility.GetWebRequestResponse("https://proxer.me/login?format=json&action=login", this.LoginCookies);
+                await
+                    HttpUtility.GetWebRequestResponse("https://proxer.me/login?format=json&action=login",
+                        this.LoginCookies);
             if (lResponseObject.StatusCode == HttpStatusCode.OK && !string.IsNullOrEmpty(lResponseObject.Content))
                 lResponse = System.Web.HttpUtility.HtmlDecode(lResponseObject.Content).Replace("\n", "");
-            else return new ProxerResult<bool>(new[] { new WrongResponseException(), lResponseObject.ErrorException });
+            else return new ProxerResult<bool>(new[] {new WrongResponseException(), lResponseObject.ErrorException});
 
             if (string.IsNullOrEmpty(lResponse) || !Utility.CheckForCorrectResponse(lResponse, this.ErrHandler))
-                return new ProxerResult<bool>(new Exception[] { new WrongResponseException() });
+                return new ProxerResult<bool>(new Exception[] {new WrongResponseException()});
 
             try
             {
@@ -352,7 +355,7 @@ namespace Proxer.API
         /// <seealso cref="Login" />
         public async Task<ProxerResult> InitNotifications()
         {
-            if (!this.LoggedIn) return new ProxerResult(new Exception[] { new NotLoggedInException(this) });
+            if (!this.LoggedIn) return new ProxerResult(new Exception[] {new NotLoggedInException(this)});
             await this.CheckNotifications();
 
             this._notificationCheckTimer.Start();
@@ -388,7 +391,7 @@ namespace Proxer.API
         /// <returns>Alle Konferenzen, in denen der Benutzer Teilnehmer ist.</returns>
         public async Task<ProxerResult<List<Conference>>> GetAllConferences()
         {
-            if (!this.LoggedIn) return new ProxerResult<List<Conference>>(new Exception[] { new NotLoggedInException() });
+            if (!this.LoggedIn) return new ProxerResult<List<Conference>>(new Exception[] {new NotLoggedInException()});
 
             string lResponse;
 
@@ -396,10 +399,13 @@ namespace Proxer.API
                 await HttpUtility.GetWebRequestResponse("http://proxer.me/messages", this.LoginCookies);
             if (lResponseObject.StatusCode == HttpStatusCode.OK && !string.IsNullOrEmpty(lResponseObject.Content))
                 lResponse = System.Web.HttpUtility.HtmlDecode(lResponseObject.Content).Replace("\n", "");
-            else return new ProxerResult<List<Conference>>(new[] { new WrongResponseException(), lResponseObject.ErrorException });
+            else
+                return
+                    new ProxerResult<List<Conference>>(new[]
+                    {new WrongResponseException(), lResponseObject.ErrorException});
 
             if (string.IsNullOrEmpty(lResponse) || !Utility.CheckForCorrectResponse(lResponse, this.ErrHandler))
-                return new ProxerResult<List<Conference>>(new Exception[] { new WrongResponseException() });
+                return new ProxerResult<List<Conference>>(new Exception[] {new WrongResponseException()});
 
             try
             {
@@ -421,24 +427,26 @@ namespace Proxer.API
             }
             catch
             {
-                return new ProxerResult<List<Conference>>((await ErrorHandler.HandleError(this, lResponse, false)).Exceptions);
+                return
+                    new ProxerResult<List<Conference>>(
+                        (await ErrorHandler.HandleError(this, lResponse, false)).Exceptions);
             }
         }
 
 
         private async Task<ProxerResult> CheckNotifications()
         {
-            if (!this.LoggedIn) return new ProxerResult(new Exception[] { new NotLoggedInException() });
+            if (!this.LoggedIn) return new ProxerResult(new Exception[] {new NotLoggedInException()});
             string lResponse;
 
             IRestResponse lResponseObject =
                 await HttpUtility.GetWebRequestResponse("http://proxer.me/messages", this.LoginCookies);
             if (lResponseObject.StatusCode == HttpStatusCode.OK && !string.IsNullOrEmpty(lResponseObject.Content))
                 lResponse = System.Web.HttpUtility.HtmlDecode(lResponseObject.Content).Replace("\n", "");
-            else return new ProxerResult(new[] { new WrongResponseException(), lResponseObject.ErrorException });
+            else return new ProxerResult(new[] {new WrongResponseException(), lResponseObject.ErrorException});
 
             if (string.IsNullOrEmpty(lResponse) || !Utility.CheckForCorrectResponse(lResponse, this.ErrHandler))
-                return new ProxerResult(new Exception[] { new WrongResponseException() });
+                return new ProxerResult(new Exception[] {new WrongResponseException()});
 
             if (!lResponse.StartsWith("0")) return new ProxerResult();
             string[] lResponseSplit = lResponse.Split('#');

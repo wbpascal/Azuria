@@ -39,7 +39,7 @@ namespace Proxer.API.Community
             this.Id = id;
             this._senpai = senpai;
 
-            this._getMessagesTimer = new Timer { Interval = (new TimeSpan(0, 0, 15)).TotalMilliseconds };
+            this._getMessagesTimer = new Timer {Interval = (new TimeSpan(0, 0, 15)).TotalMilliseconds};
             this._getMessagesTimer.Elapsed += async (s, eArgs) =>
             {
                 this._getMessagesTimer.Interval = (new TimeSpan(0, 0, 15)).TotalMilliseconds;
@@ -64,7 +64,7 @@ namespace Proxer.API.Community
             this.Id = id;
             this._senpai = senpai;
 
-            this._getMessagesTimer = new Timer { Interval = (new TimeSpan(0, 0, 15)).TotalMilliseconds };
+            this._getMessagesTimer = new Timer {Interval = (new TimeSpan(0, 0, 15)).TotalMilliseconds};
             this._getMessagesTimer.Elapsed += async (s, eArgs) =>
             {
                 this._getMessagesTimer.Interval = (new TimeSpan(0, 0, 15)).TotalMilliseconds;
@@ -156,7 +156,7 @@ namespace Proxer.API.Community
         public async Task<ProxerResult> InitConference()
         {
             if (!this._senpai.LoggedIn)
-                return new ProxerResult(new Exception[] { new NotLoggedInException(this._senpai) });
+                return new ProxerResult(new Exception[] {new NotLoggedInException(this._senpai)});
 
             ProxerResult<bool> lIstTeilnehmer = await IstTeilnehmner(this.Id, this._senpai);
             if (lIstTeilnehmer.Success && !lIstTeilnehmer.Result)
@@ -189,7 +189,7 @@ namespace Proxer.API.Community
         public async Task<ProxerResult<bool>> SendeNachricht(string nachricht)
         {
             if (!this._senpai.LoggedIn)
-                return new ProxerResult<bool>(new Exception[] { new NotLoggedInException(this._senpai) });
+                return new ProxerResult<bool>(new Exception[] {new NotLoggedInException(this._senpai)});
 
             this._getMessagesTimer.Stop();
 
@@ -200,13 +200,16 @@ namespace Proxer.API.Community
             string lResponse;
 
             IRestResponse lResponseObject =
-                await HttpUtility.PostWebRequestResponse("https://proxer.me/messages?id=" + this.Id + "&format=json&json=answer", this._senpai.LoginCookies, lPostArgs);
+                await
+                    HttpUtility.PostWebRequestResponse(
+                        "https://proxer.me/messages?id=" + this.Id + "&format=json&json=answer",
+                        this._senpai.LoginCookies, lPostArgs);
             if (lResponseObject.StatusCode == HttpStatusCode.OK && !string.IsNullOrEmpty(lResponseObject.Content))
                 lResponse = System.Web.HttpUtility.HtmlDecode(lResponseObject.Content).Replace("\n", "");
-            else return new ProxerResult<bool>(new[] { new WrongResponseException(), lResponseObject.ErrorException });
+            else return new ProxerResult<bool>(new[] {new WrongResponseException(), lResponseObject.ErrorException});
 
             if (string.IsNullOrEmpty(lResponse) || !Utility.CheckForCorrectResponse(lResponse, this._senpai.ErrHandler))
-                return new ProxerResult<bool>(new Exception[] { new WrongResponseException() });
+                return new ProxerResult<bool>(new Exception[] {new WrongResponseException()});
 
             try
             {
@@ -232,12 +235,13 @@ namespace Proxer.API.Community
             }
             catch
             {
-                return new ProxerResult<bool>((await ErrorHandler.HandleError(this._senpai, lResponse, false)).Exceptions);
+                return
+                    new ProxerResult<bool>((await ErrorHandler.HandleError(this._senpai, lResponse, false)).Exceptions);
             }
 
             this._getMessagesTimer.Start();
 
-            return new ProxerResult<bool>(new Exception[] { new WrongResponseException() });
+            return new ProxerResult<bool>(new Exception[] {new WrongResponseException()});
         }
 
         /// <summary>
@@ -248,18 +252,20 @@ namespace Proxer.API.Community
         public async Task<ProxerResult<bool>> AlsUngelesenMarkieren()
         {
             if (!this._senpai.LoggedIn)
-                return new ProxerResult<bool>(new Exception[] { new NotLoggedInException(this._senpai) });
+                return new ProxerResult<bool>(new Exception[] {new NotLoggedInException(this._senpai)});
 
             string lResponse;
 
             IRestResponse lResponseObject =
-                await HttpUtility.GetWebRequestResponse("http://proxer.me/messages?format=json&json=setUnread&id=" + this.Id, this._senpai.LoginCookies);
+                await
+                    HttpUtility.GetWebRequestResponse(
+                        "http://proxer.me/messages?format=json&json=setUnread&id=" + this.Id, this._senpai.LoginCookies);
             if (lResponseObject.StatusCode == HttpStatusCode.OK && !string.IsNullOrEmpty(lResponseObject.Content))
                 lResponse = System.Web.HttpUtility.HtmlDecode(lResponseObject.Content).Replace("\n", "");
-            else return new ProxerResult<bool>(new[] { new WrongResponseException(), lResponseObject.ErrorException });
+            else return new ProxerResult<bool>(new[] {new WrongResponseException(), lResponseObject.ErrorException});
 
             if (string.IsNullOrEmpty(lResponse) || !Utility.CheckForCorrectResponse(lResponse, this._senpai.ErrHandler))
-                return new ProxerResult<bool>(new Exception[] { new WrongResponseException() });
+                return new ProxerResult<bool>(new Exception[] {new WrongResponseException()});
 
             return new ProxerResult<bool>(lResponse.StartsWith("{\"error\":0"));
         }
@@ -272,18 +278,20 @@ namespace Proxer.API.Community
         public async Task<ProxerResult<bool>> FavoritHinzufuegen()
         {
             if (!this._senpai.LoggedIn)
-                return new ProxerResult<bool>(new Exception[] { new NotLoggedInException(this._senpai) });
+                return new ProxerResult<bool>(new Exception[] {new NotLoggedInException(this._senpai)});
 
             string lResponse;
 
             IRestResponse lResponseObject =
-                await HttpUtility.GetWebRequestResponse("http://proxer.me/messages?format=json&json=favour&id=" + this.Id, this._senpai.LoginCookies);
+                await
+                    HttpUtility.GetWebRequestResponse(
+                        "http://proxer.me/messages?format=json&json=favour&id=" + this.Id, this._senpai.LoginCookies);
             if (lResponseObject.StatusCode == HttpStatusCode.OK && !string.IsNullOrEmpty(lResponseObject.Content))
                 lResponse = System.Web.HttpUtility.HtmlDecode(lResponseObject.Content).Replace("\n", "");
-            else return new ProxerResult<bool>(new[] { new WrongResponseException(), lResponseObject.ErrorException });
+            else return new ProxerResult<bool>(new[] {new WrongResponseException(), lResponseObject.ErrorException});
 
             if (string.IsNullOrEmpty(lResponse) || !Utility.CheckForCorrectResponse(lResponse, this._senpai.ErrHandler))
-                return new ProxerResult<bool>(new Exception[] { new WrongResponseException() });
+                return new ProxerResult<bool>(new Exception[] {new WrongResponseException()});
 
             return new ProxerResult<bool>(lResponse.StartsWith("{\"error\":0"));
         }
@@ -296,18 +304,20 @@ namespace Proxer.API.Community
         public async Task<ProxerResult<bool>> FavoritEntfernen()
         {
             if (!this._senpai.LoggedIn)
-                return new ProxerResult<bool>(new Exception[] { new NotLoggedInException(this._senpai) });
+                return new ProxerResult<bool>(new Exception[] {new NotLoggedInException(this._senpai)});
 
             string lResponse;
 
             IRestResponse lResponseObject =
-                await HttpUtility.GetWebRequestResponse("http://proxer.me/messages?format=json&json=unfavour&id=" + this.Id, this._senpai.LoginCookies);
+                await
+                    HttpUtility.GetWebRequestResponse(
+                        "http://proxer.me/messages?format=json&json=unfavour&id=" + this.Id, this._senpai.LoginCookies);
             if (lResponseObject.StatusCode == HttpStatusCode.OK && !string.IsNullOrEmpty(lResponseObject.Content))
                 lResponse = System.Web.HttpUtility.HtmlDecode(lResponseObject.Content).Replace("\n", "");
-            else return new ProxerResult<bool>(new[] { new WrongResponseException(), lResponseObject.ErrorException });
+            else return new ProxerResult<bool>(new[] {new WrongResponseException(), lResponseObject.ErrorException});
 
             if (string.IsNullOrEmpty(lResponse) || !Utility.CheckForCorrectResponse(lResponse, this._senpai.ErrHandler))
-                return new ProxerResult<bool>(new Exception[] { new WrongResponseException() });
+                return new ProxerResult<bool>(new Exception[] {new WrongResponseException()});
 
             return new ProxerResult<bool>(lResponse.StartsWith("{\"error\":0"));
         }
@@ -320,18 +330,20 @@ namespace Proxer.API.Community
         public async Task<ProxerResult<bool>> BlockHinzufuegen()
         {
             if (!this._senpai.LoggedIn)
-                return new ProxerResult<bool>(new Exception[] { new NotLoggedInException(this._senpai) });
+                return new ProxerResult<bool>(new Exception[] {new NotLoggedInException(this._senpai)});
 
             string lResponse;
 
             IRestResponse lResponseObject =
-                await HttpUtility.GetWebRequestResponse("http://proxer.me/messages?format=json&json=block&id=" + this.Id, this._senpai.LoginCookies);
+                await
+                    HttpUtility.GetWebRequestResponse("http://proxer.me/messages?format=json&json=block&id=" + this.Id,
+                        this._senpai.LoginCookies);
             if (lResponseObject.StatusCode == HttpStatusCode.OK && !string.IsNullOrEmpty(lResponseObject.Content))
                 lResponse = System.Web.HttpUtility.HtmlDecode(lResponseObject.Content).Replace("\n", "");
-            else return new ProxerResult<bool>(new[] { new WrongResponseException(), lResponseObject.ErrorException });
+            else return new ProxerResult<bool>(new[] {new WrongResponseException(), lResponseObject.ErrorException});
 
             if (string.IsNullOrEmpty(lResponse) || !Utility.CheckForCorrectResponse(lResponse, this._senpai.ErrHandler))
-                return new ProxerResult<bool>(new Exception[] { new WrongResponseException() });
+                return new ProxerResult<bool>(new Exception[] {new WrongResponseException()});
 
             return new ProxerResult<bool>(lResponse.StartsWith("{\"error\":0"));
         }
@@ -344,18 +356,20 @@ namespace Proxer.API.Community
         public async Task<ProxerResult<bool>> BlockEntfernen()
         {
             if (!this._senpai.LoggedIn)
-                return new ProxerResult<bool>(new Exception[] { new NotLoggedInException(this._senpai) });
+                return new ProxerResult<bool>(new Exception[] {new NotLoggedInException(this._senpai)});
 
             string lResponse;
 
             IRestResponse lResponseObject =
-                await HttpUtility.GetWebRequestResponse("http://proxer.me/messages?format=json&json=unblock&id=" + this.Id, this._senpai.LoginCookies);
+                await
+                    HttpUtility.GetWebRequestResponse(
+                        "http://proxer.me/messages?format=json&json=unblock&id=" + this.Id, this._senpai.LoginCookies);
             if (lResponseObject.StatusCode == HttpStatusCode.OK && !string.IsNullOrEmpty(lResponseObject.Content))
                 lResponse = System.Web.HttpUtility.HtmlDecode(lResponseObject.Content).Replace("\n", "");
-            else return new ProxerResult<bool>(new[] { new WrongResponseException(), lResponseObject.ErrorException });
+            else return new ProxerResult<bool>(new[] {new WrongResponseException(), lResponseObject.ErrorException});
 
             if (string.IsNullOrEmpty(lResponse) || !Utility.CheckForCorrectResponse(lResponse, this._senpai.ErrHandler))
-                return new ProxerResult<bool>(new Exception[] { new WrongResponseException() });
+                return new ProxerResult<bool>(new Exception[] {new WrongResponseException()});
 
             return new ProxerResult<bool>(lResponse.StartsWith("{\"error\":0"));
         }
@@ -378,18 +392,18 @@ namespace Proxer.API.Community
                         this._senpai.LoginCookies, lPostArgs);
             if (lResponseObject.StatusCode == HttpStatusCode.OK && !string.IsNullOrEmpty(lResponseObject.Content))
                 lResponse = System.Web.HttpUtility.HtmlDecode(lResponseObject.Content).Replace("\n", "");
-            else return new ProxerResult(new[] { new WrongResponseException(), lResponseObject.ErrorException });
+            else return new ProxerResult(new[] {new WrongResponseException(), lResponseObject.ErrorException});
 
             if (string.IsNullOrEmpty(lResponse) ||
                 !Utility.CheckForCorrectResponse(lResponse, this._senpai.ErrHandler))
-                return new ProxerResult(new Exception[] { new WrongResponseException() });
+                return new ProxerResult(new Exception[] {new WrongResponseException()});
 
             try
             {
                 Dictionary<string, string> lDict =
                     JsonConvert.DeserializeObject<Dictionary<string, string>>(lResponse);
                 if (!lDict["msg"].Equals("Erfolgreich!"))
-                    return new ProxerResult()
+                    return new ProxerResult
                     {
                         Success = false
                     };
@@ -419,11 +433,11 @@ namespace Proxer.API.Community
                         this._senpai.LoginCookies);
             if (lResponseObject.StatusCode == HttpStatusCode.OK && !string.IsNullOrEmpty(lResponseObject.Content))
                 lResponse = System.Web.HttpUtility.HtmlDecode(lResponseObject.Content).Replace("\n", "");
-            else return new ProxerResult(new[] { new WrongResponseException(), lResponseObject.ErrorException });
+            else return new ProxerResult(new[] {new WrongResponseException(), lResponseObject.ErrorException});
 
             if (string.IsNullOrEmpty(lResponse) ||
                 !Utility.CheckForCorrectResponse(lResponse, this._senpai.ErrHandler))
-                return new ProxerResult(new Exception[] { new WrongResponseException() });
+                return new ProxerResult(new Exception[] {new WrongResponseException()});
 
             try
             {
@@ -469,11 +483,11 @@ namespace Proxer.API.Community
                             this._senpai.LoginCookies, lPostArgs);
                 if (lResponseObject.StatusCode == HttpStatusCode.OK && !string.IsNullOrEmpty(lResponseObject.Content))
                     lResponse = System.Web.HttpUtility.HtmlDecode(lResponseObject.Content).Replace("\n", "");
-                else return new ProxerResult(new[] { new WrongResponseException(), lResponseObject.ErrorException });
+                else return new ProxerResult(new[] {new WrongResponseException(), lResponseObject.ErrorException});
 
                 if (string.IsNullOrEmpty(lResponse) ||
                     !Utility.CheckForCorrectResponse(lResponse, this._senpai.ErrHandler))
-                    return new ProxerResult(new Exception[] { new WrongResponseException() });
+                    return new ProxerResult(new Exception[] {new WrongResponseException()});
 
                 try
                 {
@@ -501,13 +515,13 @@ namespace Proxer.API.Community
                 return await this.GetMessages(this.Nachrichten.Last().NachrichtId);
 
             if (this.Nachrichten != null && this.Nachrichten.Count != 0)
-                return new ProxerResult()
+                return new ProxerResult
                 {
                     Success = false
                 };
 
             if (!this._senpai.LoggedIn)
-                return new ProxerResult(new Exception[] { new NotLoggedInException(this._senpai) });
+                return new ProxerResult(new Exception[] {new NotLoggedInException(this._senpai)});
 
             string lResponse;
 
@@ -518,15 +532,15 @@ namespace Proxer.API.Community
                         this._senpai.LoginCookies);
             if (lResponseObject.StatusCode == HttpStatusCode.OK && !string.IsNullOrEmpty(lResponseObject.Content))
                 lResponse = System.Web.HttpUtility.HtmlDecode(lResponseObject.Content).Replace("\n", "");
-            else return new ProxerResult(new[] { new WrongResponseException(), lResponseObject.ErrorException });
+            else return new ProxerResult(new[] {new WrongResponseException(), lResponseObject.ErrorException});
 
             if (string.IsNullOrEmpty(lResponse) ||
                 !Utility.CheckForCorrectResponse(lResponse, this._senpai.ErrHandler))
-                return new ProxerResult(new Exception[] { new WrongResponseException() });
+                return new ProxerResult(new Exception[] {new WrongResponseException()});
 
             if (lResponse.Equals("{\"uid\":\"" + this._senpai.Me.Id +
                                  "\",\"error\":1,\"msg\":\"Ein Fehler ist passiert.\"}"))
-                return new ProxerResult()
+                return new ProxerResult
                 {
                     Success = false
                 };
@@ -600,7 +614,7 @@ namespace Proxer.API.Community
             if (this.Nachrichten == null || this.Nachrichten.Count(x => x.NachrichtId == mid) == 0)
                 return await this.GetAllMessages();
             if (!this._senpai.LoggedIn)
-                return new ProxerResult(new Exception[] { new NotLoggedInException(this._senpai) });
+                return new ProxerResult(new Exception[] {new NotLoggedInException(this._senpai)});
 
             string lResponse;
 
@@ -611,15 +625,15 @@ namespace Proxer.API.Community
                         this._senpai.LoginCookies);
             if (lResponseObject.StatusCode == HttpStatusCode.OK && !string.IsNullOrEmpty(lResponseObject.Content))
                 lResponse = System.Web.HttpUtility.HtmlDecode(lResponseObject.Content).Replace("\n", "");
-            else return new ProxerResult(new[] { new WrongResponseException(), lResponseObject.ErrorException });
+            else return new ProxerResult(new[] {new WrongResponseException(), lResponseObject.ErrorException});
 
             if (string.IsNullOrEmpty(lResponse) ||
                 !Utility.CheckForCorrectResponse(lResponse, this._senpai.ErrHandler))
-                return new ProxerResult(new Exception[] { new WrongResponseException() });
+                return new ProxerResult(new Exception[] {new WrongResponseException()});
 
             if (lResponse.Equals("{\"uid\":\"" + this._senpai.Me.Id +
                                  "\",\"error\":1,\"msg\":\"Ein Fehler ist passiert.\"}"))
-                return new ProxerResult()
+                return new ProxerResult
                 {
                     Success = false
                 };
@@ -709,11 +723,11 @@ namespace Proxer.API.Community
                         this._senpai.LoginCookies, lPostArgs);
             if (lResponseObject.StatusCode == HttpStatusCode.OK && !string.IsNullOrEmpty(lResponseObject.Content))
                 lResponse = System.Web.HttpUtility.HtmlDecode(lResponseObject.Content).Replace("\n", "");
-            else return new ProxerResult<bool>(new[] { new WrongResponseException(), lResponseObject.ErrorException });
+            else return new ProxerResult<bool>(new[] {new WrongResponseException(), lResponseObject.ErrorException});
 
             if (string.IsNullOrEmpty(lResponse) ||
                 !Utility.CheckForCorrectResponse(lResponse, this._senpai.ErrHandler))
-                return new ProxerResult<bool>(new Exception[] { new WrongResponseException() });
+                return new ProxerResult<bool>(new Exception[] {new WrongResponseException()});
             try
             {
                 Dictionary<string, string> lDict =
@@ -723,7 +737,8 @@ namespace Proxer.API.Community
             }
             catch
             {
-                return new ProxerResult<bool>((await ErrorHandler.HandleError(this._senpai, lResponse, false)).Exceptions);
+                return
+                    new ProxerResult<bool>((await ErrorHandler.HandleError(this._senpai, lResponse, false)).Exceptions);
             }
         }
 
@@ -737,7 +752,7 @@ namespace Proxer.API.Community
         /// <returns>Benutzer ist Teilnehmer der Konferenz. True oder False.</returns>
         public static async Task<ProxerResult<bool>> IstTeilnehmner(int id, Senpai senpai)
         {
-            if (!senpai.LoggedIn) return new ProxerResult<bool>(new Exception[] { new NotLoggedInException(senpai) });
+            if (!senpai.LoggedIn) return new ProxerResult<bool>(new Exception[] {new NotLoggedInException(senpai)});
 
             Dictionary<string, string> lPostArgs = new Dictionary<string, string>
             {
@@ -752,11 +767,11 @@ namespace Proxer.API.Community
                         senpai.LoginCookies, lPostArgs);
             if (lResponseObject.StatusCode == HttpStatusCode.OK && !string.IsNullOrEmpty(lResponseObject.Content))
                 lResponse = System.Web.HttpUtility.HtmlDecode(lResponseObject.Content).Replace("\n", "");
-            else return new ProxerResult<bool>(new[] { new WrongResponseException(), lResponseObject.ErrorException });
+            else return new ProxerResult<bool>(new[] {new WrongResponseException(), lResponseObject.ErrorException});
 
             if (string.IsNullOrEmpty(lResponse) ||
                 !Utility.CheckForCorrectResponse(lResponse, senpai.ErrHandler))
-                return new ProxerResult<bool>(new Exception[] { new WrongResponseException() });
+                return new ProxerResult<bool>(new Exception[] {new WrongResponseException()});
 
             try
             {

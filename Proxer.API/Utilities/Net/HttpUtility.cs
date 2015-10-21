@@ -23,7 +23,7 @@ namespace Proxer.API.Utilities.Net
         }
 
         internal static async Task<IRestResponse> PostWebRequestResponse(string url, CookieContainer cookies,
-            Dictionary<string, string> postArgs)
+                                                                         Dictionary<string, string> postArgs)
         {
             RestClient lClient = new RestClient(url)
             {

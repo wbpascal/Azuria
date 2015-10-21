@@ -60,8 +60,8 @@ namespace Proxer.API.Utilities
             Settings.Default.errorHtml = JsonConvert.SerializeObject(this.WrongHtml);
             Settings.Default.Save();
         }
-        
-        internal async static Task<ProxerResult>  HandleError(Senpai senpai, string wrongHtml, bool checkedLogin)
+
+        internal static async Task<ProxerResult> HandleError(Senpai senpai, string wrongHtml, bool checkedLogin)
         {
             ProxerResult<bool> lCheckResult;
             if (!checkedLogin && (lCheckResult = await senpai.CheckLogin()).Success && !lCheckResult.Result)

@@ -10,7 +10,7 @@ using RestSharp;
 namespace Proxer.API.Notifications
 {
     /// <summary>
-    /// Eine Klasse, die eine Freundschaftsanfrage aus den Benachrichtigungen darstellt.
+    ///     Eine Klasse, die eine Freundschaftsanfrage aus den Benachrichtigungen darstellt.
     /// </summary>
     public class FriendRequestObject : INotificationObject
     {
@@ -40,14 +40,14 @@ namespace Proxer.API.Notifications
         #region Geerbt
 
         /// <summary>
-        /// Gibt die Nachricht der Benachrichtigung als Text zurück.
-        /// <para>(Vererbt von <see cref="INotificationObject"/>)</para>
+        ///     Gibt die Nachricht der Benachrichtigung als Text zurück.
+        ///     <para>(Vererbt von <see cref="INotificationObject" />)</para>
         /// </summary>
         public string Message { get; }
 
         /// <summary>
-        /// Gibt den Typ der Benachrichtigung zurück.
-        /// <para>(Vererbt von <see cref="INotificationObject"/>)</para>
+        ///     Gibt den Typ der Benachrichtigung zurück.
+        ///     <para>(Vererbt von <see cref="INotificationObject" />)</para>
         /// </summary>
         public NotificationObjectType Type { get; }
 
@@ -56,17 +56,17 @@ namespace Proxer.API.Notifications
         #region Properties
 
         /// <summary>
-        /// Gibt das Datum der Freundschaftsanfrage zurück.
+        ///     Gibt das Datum der Freundschaftsanfrage zurück.
         /// </summary>
         public DateTime Date { get; private set; }
 
         /// <summary>
-        /// Gibt die ID des <see cref="User">Benutzers</see> zurück, der die Freundschaftsanfrage gestellt hat.
+        ///     Gibt die ID des <see cref="User">Benutzers</see> zurück, der die Freundschaftsanfrage gestellt hat.
         /// </summary>
         public int UserId { get; }
 
         /// <summary>
-        /// Gibt den Namen des <see cref="User">Benutzers</see> zurück, der die Freundschaftsanfrage gestellt hat.
+        ///     Gibt den Namen des <see cref="User">Benutzers</see> zurück, der die Freundschaftsanfrage gestellt hat.
         /// </summary>
         public string UserName { get; private set; }
 
@@ -75,9 +75,9 @@ namespace Proxer.API.Notifications
         #region
 
         /// <summary>
-        /// Akzeptiert die Freundschaftsanfrage.
+        ///     Akzeptiert die Freundschaftsanfrage.
         /// </summary>
-        /// <seealso cref="Senpai.Login"/>
+        /// <seealso cref="Senpai.Login" />
         /// <returns>Die Aktion war erfolgreich. True oder False</returns>
         public async Task<ProxerResult<bool>> AcceptRequest()
         {
@@ -85,7 +85,7 @@ namespace Proxer.API.Notifications
                 return new ProxerResult<bool>(new Exception[] {new NotLoggedInException(this._senpai)});
             if (this._accepted || this._denied) return new ProxerResult<bool>(false);
 
-            Dictionary<string, string> lPostArgs = new Dictionary<string, string> { { "type", "accept" } };
+            Dictionary<string, string> lPostArgs = new Dictionary<string, string> {{"type", "accept"}};
 
             string lResponse;
 
@@ -96,11 +96,11 @@ namespace Proxer.API.Notifications
                         this._senpai.LoginCookies, lPostArgs);
             if (lResponseObject.StatusCode == HttpStatusCode.OK && !string.IsNullOrEmpty(lResponseObject.Content))
                 lResponse = System.Web.HttpUtility.HtmlDecode(lResponseObject.Content).Replace("\n", "");
-            else return new ProxerResult<bool>(new[] { new WrongResponseException(), lResponseObject.ErrorException });
+            else return new ProxerResult<bool>(new[] {new WrongResponseException(), lResponseObject.ErrorException});
 
             if (string.IsNullOrEmpty(lResponse) ||
                 !Utility.CheckForCorrectResponse(lResponse, this._senpai.ErrHandler))
-                return new ProxerResult<bool>(new Exception[] { new WrongResponseException() });
+                return new ProxerResult<bool>(new Exception[] {new WrongResponseException()});
 
             if (!lResponse.StartsWith("{\"error\":0")) return new ProxerResult<bool>(false);
 
@@ -109,9 +109,9 @@ namespace Proxer.API.Notifications
         }
 
         /// <summary>
-        /// Lehnt die Freundschaftsanfrage ab.
+        ///     Lehnt die Freundschaftsanfrage ab.
         /// </summary>
-        /// <seealso cref="Senpai.Login"/>
+        /// <seealso cref="Senpai.Login" />
         /// <returns>Die Aktion war erfolgreich. True oder False</returns>
         public async Task<ProxerResult<bool>> DenyRequest()
         {
@@ -119,7 +119,7 @@ namespace Proxer.API.Notifications
                 return new ProxerResult<bool>(new Exception[] {new NotLoggedInException(this._senpai)});
             if (this._accepted || this._denied) return new ProxerResult<bool>(false);
 
-            Dictionary<string, string> lPostArgs = new Dictionary<string, string> { { "type", "deny" } };
+            Dictionary<string, string> lPostArgs = new Dictionary<string, string> {{"type", "deny"}};
 
             string lResponse;
 
@@ -130,11 +130,11 @@ namespace Proxer.API.Notifications
                         this._senpai.LoginCookies, lPostArgs);
             if (lResponseObject.StatusCode == HttpStatusCode.OK && !string.IsNullOrEmpty(lResponseObject.Content))
                 lResponse = System.Web.HttpUtility.HtmlDecode(lResponseObject.Content).Replace("\n", "");
-            else return new ProxerResult<bool>(new[] { new WrongResponseException(), lResponseObject.ErrorException });
+            else return new ProxerResult<bool>(new[] {new WrongResponseException(), lResponseObject.ErrorException});
 
             if (string.IsNullOrEmpty(lResponse) ||
                 !Utility.CheckForCorrectResponse(lResponse, this._senpai.ErrHandler))
-                return new ProxerResult<bool>(new Exception[] { new WrongResponseException() });
+                return new ProxerResult<bool>(new Exception[] {new WrongResponseException()});
 
             if (!lResponse.StartsWith("{\"error\":0")) return new ProxerResult<bool>(false);
 

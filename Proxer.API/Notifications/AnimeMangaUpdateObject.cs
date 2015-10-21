@@ -3,7 +3,8 @@
 namespace Proxer.API.Notifications
 {
     /// <summary>
-    /// Eine Klasse, die eine <see cref="Main.Anime">Anime-</see> oder <see cref="Main.Manga">Manga-</see>Benachrichtigung darstellt.
+    ///     Eine Klasse, die eine <see cref="Main.Anime">Anime-</see> oder <see cref="Main.Manga">Manga-</see>Benachrichtigung
+    ///     darstellt.
     /// </summary>
     public class AnimeMangaUpdateObject : INotificationObject
     {
@@ -30,14 +31,14 @@ namespace Proxer.API.Notifications
         #region Geerbt
 
         /// <summary>
-        /// Gibt die Nachricht der Benachrichtigung als Text zurück.
-        /// <para>(Vererbt von <see cref="INotificationObject"/>)</para>
+        ///     Gibt die Nachricht der Benachrichtigung als Text zurück.
+        ///     <para>(Vererbt von <see cref="INotificationObject" />)</para>
         /// </summary>
         public string Message { get; }
 
         /// <summary>
-        /// Gibt den Typ der Benachrichtigung zurück.
-        /// <para>(Vererbt von <see cref="INotificationObject"/>)</para>
+        ///     Gibt den Typ der Benachrichtigung zurück.
+        ///     <para>(Vererbt von <see cref="INotificationObject" />)</para>
         /// </summary>
         public NotificationObjectType Type { get; }
 
@@ -46,22 +47,24 @@ namespace Proxer.API.Notifications
         #region Properties
 
         /// <summary>
-        /// Gibt die Id des <see cref="Main.Anime">Anim-</see> oder <see cref="Main.Manga">Manga</see> zurück.
+        ///     Gibt die Id des <see cref="Main.Anime">Anim-</see> oder <see cref="Main.Manga">Manga</see> zurück.
         /// </summary>
         public int Id { get; private set; }
 
         /// <summary>
-        /// Gibt den Link zur <see cref="Main.Anime.Episode">Episode</see> oder zum <see cref="Main.Manga.Chapter">Kapitel</see> zurück.
+        ///     Gibt den Link zur <see cref="Main.Anime.Episode">Episode</see> oder zum
+        ///     <see cref="Main.Manga.Chapter">Kapitel</see> zurück.
         /// </summary>
         public Uri Link { get; private set; }
 
         /// <summary>
-        /// Gibt den Namen des <see cref="Main.Anime">Anime</see> oder <see cref="Main.Manga">Manga</see> zurück.
+        ///     Gibt den Namen des <see cref="Main.Anime">Anime</see> oder <see cref="Main.Manga">Manga</see> zurück.
         /// </summary>
         public string Name { get; private set; }
 
         /// <summary>
-        /// Gibt die Nummer der <see cref="Main.Anime.Episode">Episode</see> oder des <see cref="Main.Manga.Chapter">Kapitels</see> zurück.
+        ///     Gibt die Nummer der <see cref="Main.Anime.Episode">Episode</see> oder des
+        ///     <see cref="Main.Manga.Chapter">Kapitels</see> zurück.
         /// </summary>
         public int Number { get; private set; }
 

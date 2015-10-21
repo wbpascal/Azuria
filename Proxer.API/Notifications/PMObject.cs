@@ -4,22 +4,23 @@ using Proxer.API.Community;
 namespace Proxer.API.Notifications
 {
     /// <summary>
-    /// Eine Klasse, die eine neue private Nachricht darstellt.
+    ///     Eine Klasse, die eine neue private Nachricht darstellt.
     /// </summary>
     public class PmObject : INotificationObject
     {
         /// <summary>
-        /// Eine Enumeration, die darstellt, ob die <see cref="PmObject">private Nachricht</see> von einem einzelnen <see cref="User">Benutzer</see> stammt oder aus einer <see cref="Conference">Konferenz</see>.
+        ///     Eine Enumeration, die darstellt, ob die <see cref="PmObject">private Nachricht</see> von einem einzelnen
+        ///     <see cref="User">Benutzer</see> stammt oder aus einer <see cref="Conference">Konferenz</see>.
         /// </summary>
         public enum PmType
         {
             /// <summary>
-            /// Die private Nachricht stammt aus einer <see cref="Conference">Konferenz</see>.
+            ///     Die private Nachricht stammt aus einer <see cref="Conference">Konferenz</see>.
             /// </summary>
             Konferenz,
 
             /// <summary>
-            /// Die private Nachricht stammt von einem einzelnen <see cref="User">Benutzer</see>.
+            ///     Die private Nachricht stammt von einem einzelnen <see cref="User">Benutzer</see>.
             /// </summary>
             Benutzer
         }
@@ -46,8 +47,8 @@ namespace Proxer.API.Notifications
         #region Geerbt
 
         /// <summary>
-        /// Gibt die Nachricht der Benachrichtigung als Text zurück.
-        /// <para>(Vererbt von <see cref="INotificationObject"/>)</para>
+        ///     Gibt die Nachricht der Benachrichtigung als Text zurück.
+        ///     <para>(Vererbt von <see cref="INotificationObject" />)</para>
         /// </summary>
         public string Message
         {
@@ -55,8 +56,8 @@ namespace Proxer.API.Notifications
         }
 
         /// <summary>
-        /// Gibt den Typ der Benachrichtigung zurück.
-        /// <para>(Vererbt von <see cref="INotificationObject"/>)</para>
+        ///     Gibt den Typ der Benachrichtigung zurück.
+        ///     <para>(Vererbt von <see cref="INotificationObject" />)</para>
         /// </summary>
         public NotificationObjectType Type { get; }
 
@@ -65,8 +66,8 @@ namespace Proxer.API.Notifications
         #region Properties
 
         /// <summary>
-        /// Gibt den Titel der <see cref="Conference">Sender-Konferenz</see> zurück.
-        /// <para>(Ist nur vorhanden, wenn <see cref="MessageTyp"/> = <see cref="PmType.Konferenz"/>)</para>
+        ///     Gibt den Titel der <see cref="Conference">Sender-Konferenz</see> zurück.
+        ///     <para>(Ist nur vorhanden, wenn <see cref="MessageTyp" /> = <see cref="PmType.Konferenz" />)</para>
         /// </summary>
         public string ConferenceTitle { get; private set; }
 
@@ -76,18 +77,18 @@ namespace Proxer.API.Notifications
         public int Id { get; private set; }
 
         /// <summary>
-        /// Gibt den Typ des Senders zurück.
+        ///     Gibt den Typ des Senders zurück.
         /// </summary>
         public PmType MessageTyp { get; private set; }
 
         /// <summary>
-        /// Gibt das Empfangsdatum der Nachricht zurück.
+        ///     Gibt das Empfangsdatum der Nachricht zurück.
         /// </summary>
         public DateTime TimeStamp { get; private set; }
 
         /// <summary>
-        /// Gibt den Benutzernamen des Senders zurück.
-        /// <para>(Ist nur vorhanden, wenn <see cref="MessageTyp"/> = <see cref="PmType.Benutzer"/>)</para>
+        ///     Gibt den Benutzernamen des Senders zurück.
+        ///     <para>(Ist nur vorhanden, wenn <see cref="MessageTyp" /> = <see cref="PmType.Benutzer" />)</para>
         /// </summary>
         public string UserName { get; private set; }
 

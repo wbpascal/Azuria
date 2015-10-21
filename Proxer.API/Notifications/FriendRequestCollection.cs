@@ -12,7 +12,7 @@ using RestSharp;
 namespace Proxer.API.Notifications
 {
     /// <summary>
-    /// Eine Klasse, die eine Sammlung von <see cref="FriendRequestObject">Freundschaftsanfragen</see> darstellt
+    ///     Eine Klasse, die eine Sammlung von <see cref="FriendRequestObject">Freundschaftsanfragen</see> darstellt
     /// </summary>
     public class FriendRequestCollection : INotificationCollection
     {
@@ -31,17 +31,17 @@ namespace Proxer.API.Notifications
 
         /// <summary>
         ///     Gibt den Typ der Benachrichtigung zurück.
-        /// <para>(Vererbt von <see cref="INotificationCollection"/>)</para>
+        ///     <para>(Vererbt von <see cref="INotificationCollection" />)</para>
         /// </summary>
         public NotificationObjectType Type { get; }
 
         /// <summary>
         ///     Gibt eine bestimmte Anzahl der aktuellen Benachrichtigungen, die diese Klasse repräsentiert, zurück.
-        /// <para>(Vererbt von <see cref="INotificationCollection"/>)</para>
+        ///     <para>(Vererbt von <see cref="INotificationCollection" />)</para>
         /// </summary>
         /// <param name="count">Die Anzahl der Benachrichtigungen</param>
         /// <seealso cref="INotificationCollection.GetAllNotifications">GetAllNotifications Funktion</seealso>
-        /// <seealso cref="Senpai.Login"/>
+        /// <seealso cref="Senpai.Login" />
         /// <returns>
         ///     Ein Array mit der Anzahl an Elementen in <paramref name="count" /> spezifiziert.
         ///     Wenn <paramref name="count" /> > Array.length, dann wird der gesamte Array zurückgegeben.
@@ -63,11 +63,11 @@ namespace Proxer.API.Notifications
 
 
         /// <summary>
-        /// Gibt alle aktuellen Benachrichtigungen, die diese Klasse repräsentiert, zurück.
-        /// <para>(Vererbt von <see cref="INotificationCollection"/>)</para>
+        ///     Gibt alle aktuellen Benachrichtigungen, die diese Klasse repräsentiert, zurück.
+        ///     <para>(Vererbt von <see cref="INotificationCollection" />)</para>
         /// </summary>
-        /// <seealso cref="INotificationCollection.GetNotifications"/>
-        /// <seealso cref="Senpai.Login"/>
+        /// <seealso cref="INotificationCollection.GetNotifications" />
+        /// <seealso cref="Senpai.Login" />
         /// <returns>Ein Array mit allen aktuellen Benachrichtigungen.</returns>
         public async Task<ProxerResult<INotificationObject[]>> GetAllNotifications()
         {
@@ -109,9 +109,9 @@ namespace Proxer.API.Notifications
         }
 
         /// <summary>
-        /// Gibt alle aktuellen Benachrichtigungen, die diese Klasse repräsentiert, zurück.
+        ///     Gibt alle aktuellen Benachrichtigungen, die diese Klasse repräsentiert, zurück.
         /// </summary>
-        /// <seealso cref="Senpai.Login"/>
+        /// <seealso cref="Senpai.Login" />
         /// <returns>Ein Array mit allen aktuellen Benachrichtigungen.</returns>
         public async Task<ProxerResult<FriendRequestObject[]>> GetAllFriendRequests()
         {
@@ -140,11 +140,11 @@ namespace Proxer.API.Notifications
                         this._senpai.LoginCookies);
             if (lResponseObject.StatusCode == HttpStatusCode.OK && !string.IsNullOrEmpty(lResponseObject.Content))
                 lResponse = System.Web.HttpUtility.HtmlDecode(lResponseObject.Content).Replace("\n", "");
-            else return new ProxerResult(new[] { new WrongResponseException(), lResponseObject.ErrorException });
+            else return new ProxerResult(new[] {new WrongResponseException(), lResponseObject.ErrorException});
 
             if (string.IsNullOrEmpty(lResponse) ||
                 !Utility.CheckForCorrectResponse(lResponse, this._senpai.ErrHandler))
-                return new ProxerResult(new Exception[] { new WrongResponseException() });
+                return new ProxerResult(new Exception[] {new WrongResponseException()});
 
             try
             {

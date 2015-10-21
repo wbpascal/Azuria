@@ -15,8 +15,9 @@
         <Button x:Name="LoginButton" Content="Login" HorizontalAlignment="Left" Height="35" Margin="72,142,0,0"
                 VerticalAlignment="Top" Width="121" Click="LoginButton_Click" />
         <GroupBox Header="Funktionen" HorizontalAlignment="Left" Height="113" Margin="10,197,0,0"
-                  VerticalAlignment="Top" Width="251" BorderBrush="#FF9BA3A8" >
-            <Button x:Name="notificationButton" Content="Benachrichtigungen" HorizontalAlignment="Left" Height="38" Margin="8,15,0,0" VerticalAlignment="Top" Width="121" Click="notificationButton_Click"/>
+                  VerticalAlignment="Top" Width="251" BorderBrush="#FF9BA3A8">
+            <Button x:Name="notificationButton" Content="Benachrichtigungen" HorizontalAlignment="Left" Height="38"
+                    Margin="8,15,0,0" VerticalAlignment="Top" Width="121" Click="notificationButton_Click" />
         </GroupBox>
 
     </Grid>

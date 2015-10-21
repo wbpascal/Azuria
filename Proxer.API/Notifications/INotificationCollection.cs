@@ -12,7 +12,7 @@ namespace Proxer.API.Notifications
 
         /// <summary>
         ///     Gibt den Typ der Benachrichtigung zurück.
-        /// <para>(Vererbt von <see cref="INotificationCollection"/>)</para>
+        ///     <para>(Vererbt von <see cref="INotificationCollection" />)</para>
         /// </summary>
         NotificationObjectType Type { get; }
 
@@ -22,7 +22,7 @@ namespace Proxer.API.Notifications
 
         /// <summary>
         ///     Gibt eine bestimmte Anzahl der aktuellen Benachrichtigungen, die diese Klasse repräsentiert, zurück.
-        /// <para>(Vererbt von <see cref="INotificationCollection"/>)</para>
+        ///     <para>(Vererbt von <see cref="INotificationCollection" />)</para>
         /// </summary>
         /// <param name="count">Die Anzahl der Benachrichtigungen</param>
         /// <seealso cref="GetAllNotifications">GetAllNotifications Funktion</seealso>
@@ -33,10 +33,10 @@ namespace Proxer.API.Notifications
         Task<ProxerResult<INotificationObject[]>> GetNotifications(int count);
 
         /// <summary>
-        /// Gibt alle aktuellen Benachrichtigungen, die diese Klasse repräsentiert, zurück.
-        /// <para>(Vererbt von <see cref="INotificationCollection"/>)</para>
+        ///     Gibt alle aktuellen Benachrichtigungen, die diese Klasse repräsentiert, zurück.
+        ///     <para>(Vererbt von <see cref="INotificationCollection" />)</para>
         /// </summary>
-        /// <seealso cref="GetNotifications"/>
+        /// <seealso cref="GetNotifications" />
         /// <returns>Ein Array mit allen aktuellen Benachrichtigungen.</returns>
         Task<ProxerResult<INotificationObject[]>> GetAllNotifications();
 

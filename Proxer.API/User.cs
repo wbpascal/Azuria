@@ -8,7 +8,6 @@ using Proxer.API.Exceptions;
 using Proxer.API.Utilities;
 using Proxer.API.Utilities.Net;
 using RestSharp;
-using Web = System.Web;
 
 namespace Proxer.API
 {
@@ -222,18 +221,22 @@ namespace Proxer.API
         {
             if (this.Id != -1)
             {
-                if (!this._senpai.LoggedIn) return new ProxerResult(new Exception[] { new NotLoggedInException(this._senpai) });
+                if (!this._senpai.LoggedIn)
+                    return new ProxerResult(new Exception[] {new NotLoggedInException(this._senpai)});
                 HtmlDocument lDocument = new HtmlDocument();
                 string lResponse;
 
                 IRestResponse lResponseObject =
-                    await HttpUtility.GetWebRequestResponse("https://proxer.me/user/" + this.Id + "/overview?format=raw", this._senpai.LoginCookies);
+                    await
+                        HttpUtility.GetWebRequestResponse("https://proxer.me/user/" + this.Id + "/overview?format=raw",
+                            this._senpai.LoginCookies);
                 if (lResponseObject.StatusCode == HttpStatusCode.OK && !string.IsNullOrEmpty(lResponseObject.Content))
-                    lResponse = Web.HttpUtility.HtmlDecode(lResponseObject.Content).Replace("\n", "");
-                else return new ProxerResult(new[] { new WrongResponseException(), lResponseObject.ErrorException });
+                    lResponse = global::System.Web.HttpUtility.HtmlDecode(lResponseObject.Content).Replace("\n", "");
+                else return new ProxerResult(new[] {new WrongResponseException(), lResponseObject.ErrorException});
 
-                if (string.IsNullOrEmpty(lResponse) || !Utility.CheckForCorrectResponse(lResponse, this._senpai.ErrHandler))
-                    return new ProxerResult(new Exception[] { new WrongResponseException() });
+                if (string.IsNullOrEmpty(lResponse) ||
+                    !Utility.CheckForCorrectResponse(lResponse, this._senpai.ErrHandler))
+                    return new ProxerResult(new Exception[] {new WrongResponseException()});
 
                 try
                 {
@@ -270,25 +273,23 @@ namespace Proxer.API
                     return new ProxerResult((await ErrorHandler.HandleError(this._senpai, lResponse, false)).Exceptions);
                 }
             }
-            else
-            {
-                this.Status = "";
-                this.Online = false;
-                this.Rang = "";
-                this.Punkte = -1;
-                this.Avatar =
-                    new Uri(
-                        "https://proxer.me/components/com_comprofiler/plugin/templates/default/images/avatar/nophoto_n.png");
+            this.Status = "";
+            this.Online = false;
+            this.Rang = "";
+            this.Punkte = -1;
+            this.Avatar =
+                new Uri(
+                    "https://proxer.me/components/com_comprofiler/plugin/templates/default/images/avatar/nophoto_n.png");
 
-                return new ProxerResult();
-            }
+            return new ProxerResult();
         }
 
         private async Task<ProxerResult> GetFriends()
         {
             if (this.Id != -1)
             {
-                if (!this._senpai.LoggedIn) return new ProxerResult(new Exception[] { new NotLoggedInException(this._senpai) });
+                if (!this._senpai.LoggedIn)
+                    return new ProxerResult(new Exception[] {new NotLoggedInException(this._senpai)});
 
                 int lSeite = 1;
                 IRestResponse lResponseObject;
@@ -301,13 +302,14 @@ namespace Proxer.API
                     (lResponseObject =
                         (await HttpUtility.GetWebRequestResponse(
                             "https://proxer.me/user/" + this.Id + "/connections/" + lSeite + "?format=raw",
-                            this._senpai.LoginCookies))).StatusCode == HttpStatusCode.OK && (lResponse = Web.HttpUtility.HtmlDecode(lResponseObject.Content)).Replace("\n", "")
-                        .Contains(
-                            "Dieser Benutzer hat bisher keine Freunde"))
+                            this._senpai.LoginCookies))).StatusCode == HttpStatusCode.OK &&
+                    (lResponse = global::System.Web.HttpUtility.HtmlDecode(lResponseObject.Content)).Replace("\n", "")
+                                                                                                    .Contains(
+                                                                                                        "Dieser Benutzer hat bisher keine Freunde"))
                 {
                     if (string.IsNullOrEmpty(lResponse) ||
                         !Utility.CheckForCorrectResponse(lResponse, this._senpai.ErrHandler))
-                        return new ProxerResult(new Exception[] { new WrongResponseException() });
+                        return new ProxerResult(new Exception[] {new WrongResponseException()});
                     if (
                         lResponse.Equals(
                             "<div class=\"inner\"><h3>Du hast keine Berechtigung um diese Seite zu betreten.</h3></div>"))
@@ -343,12 +345,13 @@ namespace Proxer.API
                     }
                     catch
                     {
-                        return new ProxerResult((await ErrorHandler.HandleError(this._senpai, lResponse, false)).Exceptions);
+                        return
+                            new ProxerResult((await ErrorHandler.HandleError(this._senpai, lResponse, false)).Exceptions);
                     }
                 }
 
                 return lResponseObject.StatusCode != HttpStatusCode.OK
-                    ? new ProxerResult(new Exception[] { new WebException() })
+                    ? new ProxerResult(new Exception[] {new WebException()})
                     : new ProxerResult();
             }
 
@@ -361,18 +364,21 @@ namespace Proxer.API
             if (this.Id != -1)
             {
                 if (!this._senpai.LoggedIn)
-                    return new ProxerResult(new Exception[] { new NotLoggedInException(this._senpai) });
+                    return new ProxerResult(new Exception[] {new NotLoggedInException(this._senpai)});
                 HtmlDocument lDocument = new HtmlDocument();
                 string lResponse;
 
                 IRestResponse lResponseObject =
-                    await HttpUtility.GetWebRequestResponse("https://proxer.me/user/" + this.Id + "/about?format=raw", this._senpai.LoginCookies);
+                    await
+                        HttpUtility.GetWebRequestResponse("https://proxer.me/user/" + this.Id + "/about?format=raw",
+                            this._senpai.LoginCookies);
                 if (lResponseObject.StatusCode == HttpStatusCode.OK && !string.IsNullOrEmpty(lResponseObject.Content))
-                    lResponse = Web.HttpUtility.HtmlDecode(lResponseObject.Content).Replace("\n", "");
-                else return new ProxerResult(new[] { new WrongResponseException(), lResponseObject.ErrorException });
+                    lResponse = global::System.Web.HttpUtility.HtmlDecode(lResponseObject.Content).Replace("\n", "");
+                else return new ProxerResult(new[] {new WrongResponseException(), lResponseObject.ErrorException});
 
-                if (string.IsNullOrEmpty(lResponse) || !Utility.CheckForCorrectResponse(lResponse, this._senpai.ErrHandler))
-                    return new ProxerResult(new Exception[] { new WrongResponseException() });
+                if (string.IsNullOrEmpty(lResponse) ||
+                    !Utility.CheckForCorrectResponse(lResponse, this._senpai.ErrHandler))
+                    return new ProxerResult(new Exception[] {new WrongResponseException()});
 
                 try
                 {
@@ -427,19 +433,21 @@ namespace Proxer.API
         /// <returns></returns>
         public static async Task<ProxerResult<string>> GetUNameFromId(int id, Senpai senpai)
         {
-            if (!senpai.LoggedIn) return new ProxerResult<string>(new Exception[] { new NotLoggedInException() });
+            if (!senpai.LoggedIn) return new ProxerResult<string>(new Exception[] {new NotLoggedInException()});
 
             HtmlDocument lDocument = new HtmlDocument();
             string lResponse;
 
             IRestResponse lResponseObject =
-                await HttpUtility.GetWebRequestResponse("https://proxer.me/user/" + id + "/overview?format=raw", senpai.LoginCookies);
+                await
+                    HttpUtility.GetWebRequestResponse("https://proxer.me/user/" + id + "/overview?format=raw",
+                        senpai.LoginCookies);
             if (lResponseObject.StatusCode == HttpStatusCode.OK && !string.IsNullOrEmpty(lResponseObject.Content))
-                lResponse = Web.HttpUtility.HtmlDecode(lResponseObject.Content).Replace("\n", "");
-            else return new ProxerResult<string>(new[] { new WrongResponseException(), lResponseObject.ErrorException });
+                lResponse = global::System.Web.HttpUtility.HtmlDecode(lResponseObject.Content).Replace("\n", "");
+            else return new ProxerResult<string>(new[] {new WrongResponseException(), lResponseObject.ErrorException});
 
             if (string.IsNullOrEmpty(lResponse) || !Utility.CheckForCorrectResponse(lResponse, senpai.ErrHandler))
-                return new ProxerResult<string>(new Exception[] { new WrongResponseException() });
+                return new ProxerResult<string>(new Exception[] {new WrongResponseException()});
 
             try
             {
