@@ -1,5 +1,4 @@
 ﻿using System;
-using Proxer.API.Main;
 
 namespace Proxer.API.Notifications
 {
@@ -34,13 +33,13 @@ namespace Proxer.API.Notifications
         /// Gibt die Nachricht der Benachrichtigung als Text zurück.
         /// <para>(Vererbt von <see cref="INotificationObject"/>)</para>
         /// </summary>
-        public string Message { get; private set; }
+        public string Message { get; }
 
         /// <summary>
         /// Gibt den Typ der Benachrichtigung zurück.
         /// <para>(Vererbt von <see cref="INotificationObject"/>)</para>
         /// </summary>
-        public NotificationObjectType Type { get; private set; }
+        public NotificationObjectType Type { get; }
 
         #endregion
 

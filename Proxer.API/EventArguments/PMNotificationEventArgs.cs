@@ -29,13 +29,13 @@ namespace Proxer.API.EventArguments
         ///     Gibt die Anzahl der Benachrichtigungen zurück.
         ///     <para>(Vererbt von <see cref="INotificationEventArgs" />)</para>
         /// </summary>
-        public int NotificationCount { get; private set; }
+        public int NotificationCount { get; }
 
         /// <summary>
         ///     Gibt den Typ der Benachrichtigung zurück.
         ///     <para>(Vererbt von <see cref="INotificationEventArgs" />)</para>
         /// </summary>
-        public NotificationEventArgsType Type { get; private set; }
+        public NotificationEventArgsType Type { get; }
 
         #endregion
 
@@ -44,10 +44,7 @@ namespace Proxer.API.EventArguments
         /// <summary>
         ///     Gibt ein Objekt zurück, mithilfe dessen die Benachrichtigungen abgerufen werden können.
         /// </summary>
-        public PmCollection Benchrichtigungen
-        {
-            get { return this._senpai.PrivateMessages; }
-        }
+        public PmCollection Benchrichtigungen => this._senpai.PrivateMessages;
 
         #endregion
     }

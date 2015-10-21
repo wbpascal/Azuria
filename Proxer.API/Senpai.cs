@@ -1,4 +1,5 @@
 ﻿using System;
+using System.CodeDom;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
@@ -11,6 +12,8 @@ using Proxer.API.EventArguments;
 using Proxer.API.Exceptions;
 using Proxer.API.Notifications;
 using Proxer.API.Utilities;
+using Proxer.API.Utilities.Net;
+using RestSharp;
 
 namespace Proxer.API
 {
@@ -97,10 +100,10 @@ namespace Proxer.API
             };
             this._notificationCheckTimer.Elapsed += async (s, eArgs) => { await this.CheckNotifications(); };
 
-            this._propertyUpdateTimer = new Timer(1) {AutoReset = true};
+            this._propertyUpdateTimer = new Timer(1) { AutoReset = true };
             this._propertyUpdateTimer.Elapsed += (s, eArgs) =>
             {
-                this._propertyUpdateTimer.Interval = (new TimeSpan(0, 15, 0)).TotalMilliseconds;
+                this._propertyUpdateTimer.Interval = (new TimeSpan(0, 20, 0)).TotalMilliseconds;
                 this._checkAnimeMangaUpdate = true;
                 this._checkFriendUpdates = true;
                 this._checkNewsUpdate = true;
@@ -134,7 +137,7 @@ namespace Proxer.API
         ///     Gibt den Error-Handler zurück, der benutzt wird, um Fehler in Serverantworten zu bearbeiten und frühzeitig zu
         ///     erkennen.
         /// </summary>
-        public ErrorHandler ErrHandler { get; private set; }
+        public ErrorHandler ErrHandler { get; }
 
         /// <summary>
         ///     Gibt ein Objekt zurück, mithilfe dessen alle Freundschafts-Benachrichtigungen abgerufen werden könne.
@@ -184,7 +187,7 @@ namespace Proxer.API
         ///     Gibt den CookieContainer zurück, der benutzt wird, um Aktionen im eingeloggten Status auszuführen.
         /// </summary>
         /// <seealso cref="MobileLoginCookies" />
-        public CookieContainer LoginCookies { get; private set; }
+        public CookieContainer LoginCookies { get; }
 
         /// <summary>
         ///     Profil des Senpais.
@@ -261,20 +264,28 @@ namespace Proxer.API
         /// <param name="username">Der Benutzername des einzuloggenden Benutzers</param>
         /// <param name="password">Das Passwort des Benutzers</param>
         /// <returns>Gibt zurück, ob der Benutzer erfolgreich eingeloggt wurde.</returns>
-        public async Task<bool> Login(string username, string password)
+        public async Task<ProxerResult<bool>> Login(string username, string password)
         {
-            if (this.LoggedIn || string.IsNullOrEmpty(username) || string.IsNullOrEmpty(password)) return false;
+            if (this.LoggedIn || string.IsNullOrEmpty(username) || string.IsNullOrEmpty(password))
+                return new ProxerResult<bool>(false);
 
             Dictionary<string, string> postArgs = new Dictionary<string, string>
             {
                 {"username", username},
                 {"password", password}
             };
-            string lResponse =
-                await HttpUtility.PostWebRequestResponse("https://proxer.me/login?format=json&action=login",
-                    this.LoginCookies, postArgs);
 
-            if (!Utility.CheckForCorrectResponse(lResponse, this.ErrHandler)) return false;
+            string lResponse;
+
+            IRestResponse lResponseObject =
+                await HttpUtility.PostWebRequestResponse("https://proxer.me/login?format=json&action=login", this.LoginCookies, postArgs);
+            if (lResponseObject.StatusCode == HttpStatusCode.OK && !string.IsNullOrEmpty(lResponseObject.Content))
+                lResponse = System.Web.HttpUtility.HtmlDecode(lResponseObject.Content).Replace("\n", "");
+            else return new ProxerResult<bool>(new[] { new WrongResponseException(), lResponseObject.ErrorException });
+
+            if (string.IsNullOrEmpty(lResponse) || !Utility.CheckForCorrectResponse(lResponse, this.ErrHandler))
+                return new ProxerResult<bool>(new Exception[] { new WrongResponseException() });
+
             try
             {
                 Dictionary<string, string> responseDes =
@@ -288,27 +299,33 @@ namespace Proxer.API
                     this.Me = new User(username, this._userId, this);
                     this.LoggedIn = true;
 
-                    return true;
+                    return new ProxerResult<bool>(true);
                 }
                 this.LoggedIn = false;
 
-                return false;
+                return new ProxerResult<bool>(false);
             }
-            catch (Exception)
+            catch
             {
-                this.ErrHandler.Add(lResponse);
+                return new ProxerResult<bool>((await ErrorHandler.HandleError(this, lResponse, false)).Exceptions);
             }
-
-            return false;
         }
 
-        internal async Task<bool> CheckLogin()
+        internal async Task<ProxerResult<bool>> CheckLogin()
         {
-            if (!this.LoggedIn) return false;
-            string lResponse = await HttpUtility.GetWebRequestResponse(
-                "https://proxer.me/login?format=json&action=login", this.LoginCookies);
+            if (!this.LoggedIn) return new ProxerResult<bool>(new Exception[] { new NotLoggedInException(this) });
 
-            if (!Utility.CheckForCorrectResponse(lResponse, this.ErrHandler)) return false;
+            string lResponse;
+
+            IRestResponse lResponseObject =
+                await HttpUtility.GetWebRequestResponse("https://proxer.me/login?format=json&action=login", this.LoginCookies);
+            if (lResponseObject.StatusCode == HttpStatusCode.OK && !string.IsNullOrEmpty(lResponseObject.Content))
+                lResponse = System.Web.HttpUtility.HtmlDecode(lResponseObject.Content).Replace("\n", "");
+            else return new ProxerResult<bool>(new[] { new WrongResponseException(), lResponseObject.ErrorException });
+
+            if (string.IsNullOrEmpty(lResponse) || !Utility.CheckForCorrectResponse(lResponse, this.ErrHandler))
+                return new ProxerResult<bool>(new Exception[] { new WrongResponseException() });
+
             try
             {
                 Dictionary<string, string> responseDes =
@@ -317,145 +334,149 @@ namespace Proxer.API
                 if (responseDes["error"].Equals("0"))
                 {
                     this.LoggedIn = true;
-                    return true;
+                    return new ProxerResult<bool>(true);
                 }
                 this.LoggedIn = false;
-                if (this.UserLoggedOutRaised != null) this.UserLoggedOutRaised(this, new EventArgs());
-                return false;
+                this.UserLoggedOutRaised?.Invoke(this, new EventArgs());
+                return new ProxerResult<bool>(false);
             }
-            catch (Exception)
+            catch
             {
-                this.ErrHandler.Add(lResponse);
+                return new ProxerResult<bool>((await ErrorHandler.HandleError(this, lResponse, true)).Exceptions);
             }
-
-            return false;
         }
 
         /// <summary>
         ///     Initialisiert die Benachrichtigungen.
         /// </summary>
-        /// <exception cref="NotLoggedInException">Wird ausgelöst, wenn der Benutzer noch nicht eingeloggt ist.</exception>
         /// <seealso cref="Login" />
-        public async Task InitNotifications()
+        public async Task<ProxerResult> InitNotifications()
         {
-            if (!this.LoggedIn) throw new NotLoggedInException();
+            if (!this.LoggedIn) return new ProxerResult(new Exception[] { new NotLoggedInException(this) });
             await this.CheckNotifications();
 
             this._notificationCheckTimer.Start();
             this._propertyUpdateTimer.Start();
+
+            return new ProxerResult();
         }
 
         /// <summary>
         ///     Zwingt die Eigenschaften sich beim nächsten Aufruf zu aktualisieren.
         /// </summary>
-        public async Task ForcePropertyReload()
+        public async Task<ProxerResult> ForcePropertyReload()
         {
-            await this.CheckLogin();
+            ProxerResult<bool> lResult;
+            if ((lResult = await this.CheckLogin()).Success == false)
+            {
+                return new ProxerResult(lResult.Exceptions);
+            }
+
             this._checkAnimeMangaUpdate = true;
             this._checkNewsUpdate = true;
             this._checkPmUpdate = true;
+
+            return new ProxerResult();
         }
 
         /// <summary>
         ///     Gibt alle Konferenzen des Senpais zurück. ACHTUNG: Bei den Konferenzen muss noch
         ///     <see cref="Conference.InitConference">InitConference()</see>
-        ///     aufgerufen
-        ///     werden!
+        ///     aufgerufen werden!
         /// </summary>
-        /// <exception cref="NotLoggedInException">Wird ausgelöst, wenn der Benutzer noch nicht eingeloggt ist.</exception>
         /// <seealso cref="Login" />
         /// <returns>Alle Konferenzen, in denen der Benutzer Teilnehmer ist.</returns>
-        public async Task<List<Conference>> GetAllConferences()
+        public async Task<ProxerResult<List<Conference>>> GetAllConferences()
         {
-            if (!this.LoggedIn) throw new NotLoggedInException();
-            string lResponse =
-                (await HttpUtility.GetWebRequestResponse("http://proxer.me/messages", this.LoginCookies))
-                    .Replace("</link>", "")
-                    .Replace("\n", "");
+            if (!this.LoggedIn) return new ProxerResult<List<Conference>>(new Exception[] { new NotLoggedInException() });
 
-            if (!Utility.CheckForCorrectResponse(lResponse, this.ErrHandler)) return null;
+            string lResponse;
+
+            IRestResponse lResponseObject =
+                await HttpUtility.GetWebRequestResponse("http://proxer.me/messages", this.LoginCookies);
+            if (lResponseObject.StatusCode == HttpStatusCode.OK && !string.IsNullOrEmpty(lResponseObject.Content))
+                lResponse = System.Web.HttpUtility.HtmlDecode(lResponseObject.Content).Replace("\n", "");
+            else return new ProxerResult<List<Conference>>(new[] { new WrongResponseException(), lResponseObject.ErrorException });
+
+            if (string.IsNullOrEmpty(lResponse) || !Utility.CheckForCorrectResponse(lResponse, this.ErrHandler))
+                return new ProxerResult<List<Conference>>(new Exception[] { new WrongResponseException() });
+
             try
             {
                 HtmlDocument lDocument = new HtmlDocument();
                 lDocument.LoadHtml(lResponse);
+                List<Conference> lReturn = new List<Conference>();
 
-                if (!lDocument.ParseErrors.Any())
-                {
-                    List<Conference> lReturn = new List<Conference>();
+                HtmlNodeCollection lNodes =
+                    lDocument.DocumentNode.SelectNodes("//a[@class='conferenceGrid ']");
+                lReturn.AddRange(from curNode in lNodes
+                                 let lId =
+                                     Convert.ToInt32(
+                                         Utility.GetTagContents(curNode.Attributes["href"].Value, "/messages?id=",
+                                             "#top")[0])
+                                 let lTitle = curNode.FirstChild.InnerText
+                                 select new Conference(lTitle, lId, this));
 
-                    HtmlNodeCollection lNodes =
-                        lDocument.DocumentNode.SelectNodes("//a[@class='conferenceGrid ']");
-                    if (lNodes != null)
-                    {
-                        lReturn.AddRange(from curNode in lNodes
-                            let lId =
-                                Convert.ToInt32(
-                                    Utility.GetTagContents(curNode.Attributes["href"].Value, "/messages?id=",
-                                        "#top")[0])
-                            let lTitle = curNode.FirstChild.InnerText
-                            select new Conference(lTitle, lId, this));
-                    }
-
-                    return lReturn;
-                }
+                return new ProxerResult<List<Conference>>(lReturn);
             }
-            catch (Exception)
+            catch
             {
-                this.ErrHandler.Add(lResponse);
+                return new ProxerResult<List<Conference>>((await ErrorHandler.HandleError(this, lResponse, false)).Exceptions);
             }
-
-            return null;
         }
 
 
-        private async Task CheckNotifications()
+        private async Task<ProxerResult> CheckNotifications()
         {
-            if (!this.LoggedIn) return;
-            string lResponse =
-                await HttpUtility.GetWebRequestResponse("https://proxer.me/notifications?format=raw&s=count",
-                    this.LoginCookies);
+            if (!this.LoggedIn) return new ProxerResult(new Exception[] { new NotLoggedInException() });
+            string lResponse;
 
-            if (!lResponse.StartsWith("0")) return;
+            IRestResponse lResponseObject =
+                await HttpUtility.GetWebRequestResponse("http://proxer.me/messages", this.LoginCookies);
+            if (lResponseObject.StatusCode == HttpStatusCode.OK && !string.IsNullOrEmpty(lResponseObject.Content))
+                lResponse = System.Web.HttpUtility.HtmlDecode(lResponseObject.Content).Replace("\n", "");
+            else return new ProxerResult(new[] { new WrongResponseException(), lResponseObject.ErrorException });
+
+            if (string.IsNullOrEmpty(lResponse) || !Utility.CheckForCorrectResponse(lResponse, this.ErrHandler))
+                return new ProxerResult(new Exception[] { new WrongResponseException() });
+
+            if (!lResponse.StartsWith("0")) return new ProxerResult();
             string[] lResponseSplit = lResponse.Split('#');
 
             if (!lResponseSplit[2].Equals("0"))
             {
-                if (this.PmNotificationRaised != null)
-                    this.PmNotificationRaised(this,
-                        new PmNotificationEventArgs(Convert.ToInt32(lResponseSplit[2]), this));
-                if (this.NotificationRaised != null)
-                    this.NotificationRaised(this,
-                        new PmNotificationEventArgs(Convert.ToInt32(lResponseSplit[2]), this));
+                this.PmNotificationRaised?.Invoke(this,
+                    new PmNotificationEventArgs(Convert.ToInt32(lResponseSplit[2]), this));
+                this.NotificationRaised?.Invoke(this,
+                    new PmNotificationEventArgs(Convert.ToInt32(lResponseSplit[2]), this));
                 this._checkPmUpdate = true;
             }
             if (!lResponseSplit[3].Equals("0"))
             {
-                if (this.FriendNotificationRaised != null)
-                    this.FriendNotificationRaised(this,
-                        new FriendNotificationEventArgs(Convert.ToInt32(lResponseSplit[3]), this));
-                if (this.NotificationRaised != null)
-                    this.NotificationRaised(this,
-                        new FriendNotificationEventArgs(Convert.ToInt32(lResponseSplit[3]), this));
+                this.FriendNotificationRaised?.Invoke(this,
+                    new FriendNotificationEventArgs(Convert.ToInt32(lResponseSplit[3]), this));
+                this.NotificationRaised?.Invoke(this,
+                    new FriendNotificationEventArgs(Convert.ToInt32(lResponseSplit[3]), this));
                 this._checkFriendUpdates = true;
             }
             if (!lResponseSplit[4].Equals("0"))
             {
-                if (this.NewsNotificationRaised != null)
-                    this.NewsNotificationRaised(this,
-                        new NewsNotificationEventArgs(Convert.ToInt32(lResponseSplit[4]), this));
-                if (this.NotificationRaised != null)
-                    this.NotificationRaised(this,
-                        new NewsNotificationEventArgs(Convert.ToInt32(lResponseSplit[4]), this));
+                this.NewsNotificationRaised?.Invoke(this,
+                    new NewsNotificationEventArgs(Convert.ToInt32(lResponseSplit[4]), this));
+                this.NotificationRaised?.Invoke(this,
+                    new NewsNotificationEventArgs(Convert.ToInt32(lResponseSplit[4]), this));
                 this._checkNewsUpdate = true;
             }
-            if (lResponseSplit[5].Equals("0")) return;
-            if (this.AmUpdateNotificationRaised != null)
-                this.AmUpdateNotificationRaised(this,
+            if (!lResponseSplit[5].Equals("0"))
+            {
+                this.AmUpdateNotificationRaised?.Invoke(this,
                     new AmNotificationEventArgs(Convert.ToInt32(lResponseSplit[5]), this));
-            if (this.NotificationRaised != null)
-                this.NotificationRaised(this,
+                this.NotificationRaised?.Invoke(this,
                     new AmNotificationEventArgs(Convert.ToInt32(lResponseSplit[5]), this));
-            this._checkAnimeMangaUpdate = true;
+                this._checkAnimeMangaUpdate = true;
+            }
+
+            return new ProxerResult();
         }
 
 

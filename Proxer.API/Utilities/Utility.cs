@@ -2,9 +2,14 @@
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using System.Net;
 using System.Threading.Tasks;
 using HtmlAgilityPack;
+using JetBrains.Annotations;
+using Proxer.API.Exceptions;
 using Proxer.API.Main;
+using Proxer.API.Utilities.Net;
+using RestSharp;
 
 namespace Proxer.API.Utilities
 {
@@ -23,52 +28,52 @@ namespace Proxer.API.Utilities
         /// <param name="id">Die ID des <see cref="Main.Anime">Anime</see> oder <see cref="Main.Manga">Manga</see>.</param>
         /// <param name="senpai">Der Benutzer. (Muss eingeloggt sein)</param>
         /// <returns>Anime oder Manga der ID (Typecast erforderlich)</returns>
-        public static async Task<IAnimeMangaObject> GetAnimeManga(int id, Senpai senpai)
+        public static async Task<ProxerResult<IAnimeMangaObject>> GetAnimeManga(int id, [NotNull] Senpai senpai)
         {
             HtmlDocument lDocument = new HtmlDocument();
-            string lResponse =
-                (await HttpUtility.GetWebRequestResponse("https://proxer.me/info/" + id, senpai.LoginCookies))
-                    .Replace("</link>", "")
-                    .Replace("\n", "");
+            string lResponse;
+
+            IRestResponse lResponseObject =
+                await HttpUtility.GetWebRequestResponse("https://proxer.me/info/" + id, senpai.LoginCookies);
+            if (lResponseObject.StatusCode == HttpStatusCode.OK && !string.IsNullOrEmpty(lResponseObject.Content))
+                lResponse = System.Web.HttpUtility.HtmlDecode(lResponseObject.Content).Replace("\n", "");
+            else return new ProxerResult<IAnimeMangaObject>(new[] { new WrongResponseException(), lResponseObject.ErrorException });
+
+            if (string.IsNullOrEmpty(lResponse) || !CheckForCorrectResponse(lResponse, senpai.ErrHandler))
+                return new ProxerResult<IAnimeMangaObject>(new Exception[] { new WrongResponseException() });
 
             if (!CheckForCorrectResponse(lResponse, senpai.ErrHandler)) return null;
             try
             {
                 lDocument.LoadHtml(lResponse);
 
-                if (lDocument.ParseErrors.Any())
-                    lDocument.LoadHtml(TryFixParseErrors(lDocument.DocumentNode.InnerHtml, lDocument.ParseErrors));
-
-                if (!lDocument.ParseErrors.Any())
+                HtmlNode lNode =
+                    lDocument.DocumentNode.ChildNodes[1].ChildNodes[2].ChildNodes[2].ChildNodes[2].ChildNodes[1]
+                        .ChildNodes[1];
+                if (lNode.InnerText.Equals("Episoden"))
                 {
-                    HtmlNode lNode =
-                        lDocument.DocumentNode.ChildNodes[1].ChildNodes[2].ChildNodes[2].ChildNodes[2].ChildNodes[1]
-                            .ChildNodes[1];
-                    if (lNode.InnerText.Equals("Episoden"))
-                    {
-                        return
-                            new Anime(
-                                lDocument.DocumentNode.ChildNodes[1].ChildNodes[2].ChildNodes[2].ChildNodes[2]
-                                    .ChildNodes[5].ChildNodes[2].FirstChild.ChildNodes[1].FirstChild.ChildNodes[1]
-                                    .ChildNodes[1].InnerText, id, senpai);
-                    }
+                    return
+                        new ProxerResult<IAnimeMangaObject>(new Anime(
+                            lDocument.DocumentNode.ChildNodes[1].ChildNodes[2].ChildNodes[2].ChildNodes[2]
+                                .ChildNodes[5].ChildNodes[2].FirstChild.ChildNodes[1].FirstChild.ChildNodes[1]
+                                .ChildNodes[1].InnerText, id, senpai));
+                }
 
-                    if (lNode.InnerText.Equals("Kapitel"))
-                    {
-                        return
-                            new Manga(
-                                lDocument.DocumentNode.ChildNodes[1].ChildNodes[2].ChildNodes[2].ChildNodes[2]
-                                    .ChildNodes[5].ChildNodes[2].FirstChild.ChildNodes[1].FirstChild.ChildNodes[1]
-                                    .ChildNodes[1].InnerText, id, senpai);
-                    }
+                if (lNode.InnerText.Equals("Kapitel"))
+                {
+                    return
+                        new ProxerResult<IAnimeMangaObject>(new Manga(
+                            lDocument.DocumentNode.ChildNodes[1].ChildNodes[2].ChildNodes[2].ChildNodes[2]
+                                .ChildNodes[5].ChildNodes[2].FirstChild.ChildNodes[1].FirstChild.ChildNodes[1]
+                                .ChildNodes[1].InnerText, id, senpai));
                 }
             }
-            catch (NullReferenceException)
+            catch
             {
-                senpai.ErrHandler.Add(lResponse);
+                return new ProxerResult<IAnimeMangaObject>((await ErrorHandler.HandleError(senpai, lResponse, false)).Exceptions);
             }
 
-            return null;
+            return new ProxerResult<IAnimeMangaObject>(new Exception[] {new WrongResponseException()});
         }
 
 
@@ -98,7 +103,7 @@ namespace Proxer.API.Utilities
                     index = source.IndexOf(startTag, index, StringComparison.Ordinal) + startTag.Length;
                 }
             }
-            catch (Exception)
+            catch
             {
                 // ignored
             }
@@ -114,7 +119,8 @@ namespace Proxer.API.Utilities
 
         internal static bool CheckForCorrectResponse(string response, ErrorHandler errHandler)
         {
-            return errHandler.WrongHtml.All(curErrorResponse => ILd(response, curErrorResponse) > 15);
+            //return errHandler.WrongHtml.All(curErrorResponse => ILd(response, curErrorResponse) > 15);
+            return true;
         }
 
         internal static string TryFixParseErrors(string html, IEnumerable<HtmlParseError> parseErrors)
@@ -196,7 +202,7 @@ namespace Proxer.API.Utilities
             // Value between 0 - 100
             // 0==perfect match 100==totaly different
             int max = Math.Max(rowLen, colLen);
-            return ((100*v0[rowLen])/max);
+            return ((100 * v0[rowLen]) / max);
         }
 
         internal static DateTime ToDateTime(string strFdate, string format = "dd.MM.yyyy")

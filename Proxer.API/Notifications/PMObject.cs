@@ -58,7 +58,7 @@ namespace Proxer.API.Notifications
         /// Gibt den Typ der Benachrichtigung zurück.
         /// <para>(Vererbt von <see cref="INotificationObject"/>)</para>
         /// </summary>
-        public NotificationObjectType Type { get; private set; }
+        public NotificationObjectType Type { get; }
 
         #endregion
 

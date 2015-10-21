@@ -1,11 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Threading.Tasks;
 using HtmlAgilityPack;
+using JetBrains.Annotations;
 using Proxer.API.Exceptions;
 using Proxer.API.Main.Minor;
 using Proxer.API.Utilities;
+using Proxer.API.Utilities.Net;
+using RestSharp;
 
 namespace Proxer.API.Main
 {
@@ -55,8 +59,10 @@ namespace Proxer.API.Main
         private AnimeMangaStatus _status;
         private string _synonym;
 
+        /// <exception cref="ArgumentNullException"><paramref name="senpai"/> is <see langword="null" />.</exception>
         internal Anime(string name, int id, Senpai senpai)
         {
+            if (senpai == null) throw new ArgumentNullException(nameof(senpai));
             this._senpai = senpai;
             this.ObjectType = AnimeMangaType.Anime;
             this.Name = name;
@@ -89,7 +95,7 @@ namespace Proxer.API.Main
         ///     Gibt den Link zum Cover des <see cref="Anime" /> oder <see cref="Manga" /> zurück.
         ///     <para>(Vererbt von <see cref="IAnimeMangaObject" />)</para>
         /// </summary>
-        public Uri CoverUri { get; private set; }
+        public Uri CoverUri { get; }
 
 
         /// <summary>
@@ -165,7 +171,7 @@ namespace Proxer.API.Main
         ///     Gibt die ID des <see cref="Anime" /> oder <see cref="Manga" /> zurück.
         ///     <para>(Vererbt von <see cref="IAnimeMangaObject" />)</para>
         /// </summary>
-        public int Id { get; private set; }
+        public int Id { get; }
 
 
         /// <summary>
@@ -239,7 +245,7 @@ namespace Proxer.API.Main
         ///     <para>(Vererbt von <see cref="IAnimeMangaObject" />)</para>
         /// </summary>
         /// <seealso cref="AnimeMangaType" />
-        public AnimeMangaType ObjectType { get; private set; }
+        public AnimeMangaType ObjectType { get; }
 
 
         /// <summary>
@@ -298,22 +304,18 @@ namespace Proxer.API.Main
         ///     Initialisiert das Objekt.
         ///     <para>(Vererbt von <see cref="IAnimeMangaObject" />)</para>
         /// </summary>
-        /// <exception cref="NotLoggedInException">Wird ausgelöst, wenn der Benutzer noch nicht eingeloggt ist.</exception>
         /// <seealso cref="Senpai.Login" />
-        public async Task Init()
+        public async Task<ProxerResult> Init()
         {
-            try
+            ProxerResult lResult;
+            if (!(lResult = await this.InitMain()).Success || !(lResult = await this.InitEpisodeCount()).Success ||
+                !(lResult = await this.InitAvailableLang()).Success)
             {
-                await this.InitMain();
-                await this.InitEpisodeCount();
-                await this.InitAvailableLang();
+                return lResult;
+            }
 
-                this.IstInitialisiert = true;
-            }
-            catch (NotLoggedInException)
-            {
-                throw new NotLoggedInException();
-            }
+            this.IstInitialisiert = true;
+            return new ProxerResult();
         }
 
         #endregion
@@ -356,17 +358,59 @@ namespace Proxer.API.Main
         #region
 
         /// <summary>
+        /// Gibt die aktuell am beliebtesten <see cref="Anime"/> zurück.
+        /// </summary>
+        /// <returns>Ein Array mit den aktuell beliebtesten <see cref="Anime"/>.</returns>
+        public static async Task<ProxerResult<Anime[]>> GetPopularAnimes([NotNull] Senpai senpai)
+        {
+            HtmlDocument lDocument = new HtmlDocument();
+            string lResponse;
+
+            IRestResponse lResponseObject =
+                await
+                    HttpUtility.GetWebRequestResponse(
+                        "http://proxer.me/anime?format=raw",
+                        senpai.LoginCookies);
+            if (lResponseObject.StatusCode == HttpStatusCode.OK && !string.IsNullOrEmpty(lResponseObject.Content))
+                lResponse = System.Web.HttpUtility.HtmlDecode(lResponseObject.Content).Replace("\n", "");
+            else return new ProxerResult<Anime[]>(new[] { new WrongResponseException(), lResponseObject.ErrorException });
+
+            if (string.IsNullOrEmpty(lResponse) ||
+                !Utility.CheckForCorrectResponse(lResponse, senpai.ErrHandler))
+                return new ProxerResult<Anime[]>(new Exception[] { new WrongResponseException() });
+
+            try
+            {
+                lDocument.LoadHtml(lResponse);
+
+                return
+                    new ProxerResult<Anime[]>(
+                        (from childNode in lDocument.DocumentNode.ChildNodes[5].FirstChild.FirstChild.ChildNodes
+                         let lId =
+                             Convert.ToInt32(
+                                 childNode.FirstChild.GetAttributeValue("href", "/info/-1#top").Split('/')[2].Split('#')
+                                     [0])
+                         select new Anime(childNode.FirstChild.GetAttributeValue("title", "ERROR"), lId, senpai))
+                            .ToArray());
+            }
+            catch
+            {
+                return new ProxerResult<Anime[]>((await ErrorHandler.HandleError(senpai, lResponse, false)).Exceptions);
+            }
+        }
+
+        /// <summary>
         ///     Gibt die Episoden des <see cref="Anime" /> in einer bestimmten <see cref="Language">Sprache</see> zurück.
         /// </summary>
         /// <param name="language">Die Sprache der Episoden.</param>
         /// <seealso cref="Anime.Episode" />
         /// <returns>Einen Array mit length = <see cref="EpisodenZahl" />.</returns>
-        /// <exception cref="InitializeNeededException">Wird ausgelöst, wenn das Objekt noch nicht initialisiert wurde.</exception>
-        public Episode[] GetEpisodes(Language language)
+        public ProxerResult<Episode[]> GetEpisodes(Language language)
         {
-            if (this.Sprachen == null) throw new InitializeNeededException();
-
-            if (!this.Sprachen.Contains(language)) return null;
+            if (this.Sprachen == null)
+                return new ProxerResult<Episode[]>(new Exception[] {new InitializeNeededException()});
+            if (!this.Sprachen.Contains(language))
+                return new ProxerResult<Episode[]>(new Exception[] {new LanguageNotAvailableException()});
 
             List<Episode> lEpisodes = new List<Episode>();
             for (int i = 1; i <= this.EpisodenZahl; i++)
@@ -374,21 +418,29 @@ namespace Proxer.API.Main
                 lEpisodes.Add(new Episode(this, i, language, this._senpai));
             }
 
-            return lEpisodes.ToArray();
+            return new ProxerResult<Episode[]>(lEpisodes.ToArray());
         }
 
-        private async Task InitAvailableLang()
+        private async Task<ProxerResult> InitAvailableLang()
         {
-            if (!this._senpai.LoggedIn) throw new NotLoggedInException();
+            if (!this._senpai.LoggedIn)
+                return new ProxerResult(new Exception[] { new NotLoggedInException(this._senpai) });
 
             HtmlDocument lDocument = new HtmlDocument();
-            string lResponse =
-                (await HttpUtility.GetWebRequestResponse("http://proxer.me/edit/entry/" + this.Id + "/languages",
-                    this._senpai.LoginCookies))
-                    .Replace("</link>", "")
-                    .Replace("\n", "");
+            string lResponse;
 
-            if (!Utility.CheckForCorrectResponse(lResponse, this._senpai.ErrHandler)) return;
+            IRestResponse lResponseObject =
+                await
+                    HttpUtility.GetWebRequestResponse(
+                        "http://proxer.me/edit/entry/" + this.Id + "/languages",
+                        this._senpai.LoginCookies);
+            if (lResponseObject.StatusCode == HttpStatusCode.OK && !string.IsNullOrEmpty(lResponseObject.Content))
+                lResponse = System.Web.HttpUtility.HtmlDecode(lResponseObject.Content).Replace("\n", "");
+            else return new ProxerResult(new[] { new WrongResponseException(), lResponseObject.ErrorException });
+
+            if (string.IsNullOrEmpty(lResponse) ||
+                !Utility.CheckForCorrectResponse(lResponse, this._senpai.ErrHandler))
+                return new ProxerResult(new Exception[] { new WrongResponseException() });
 
             try
             {
@@ -421,27 +473,35 @@ namespace Proxer.API.Main
                 }
 
                 this.Sprachen = languageList.ToArray();
+
+                return new ProxerResult();
             }
-            catch (NullReferenceException)
+            catch
             {
-            }
-            catch (IndexOutOfRangeException)
-            {
+                return new ProxerResult((await ErrorHandler.HandleError(this._senpai, lResponse, false)).Exceptions);
             }
         }
 
-        private async Task InitEpisodeCount()
+        private async Task<ProxerResult> InitEpisodeCount()
         {
-            if (!this._senpai.LoggedIn) throw new NotLoggedInException();
+            if (!this._senpai.LoggedIn)
+                return new ProxerResult(new Exception[] { new NotLoggedInException(this._senpai) });
 
             HtmlDocument lDocument = new HtmlDocument();
-            string lResponse =
-                (await HttpUtility.GetWebRequestResponse("http://proxer.me/edit/entry/" + this.Id + "/count",
-                    this._senpai.LoginCookies))
-                    .Replace("</link>", "")
-                    .Replace("\n", "");
+            string lResponse;
 
-            if (!Utility.CheckForCorrectResponse(lResponse, this._senpai.ErrHandler)) return;
+            IRestResponse lResponseObject =
+                await
+                    HttpUtility.GetWebRequestResponse(
+                        "http://proxer.me/edit/entry/" + this.Id + "/count",
+                        this._senpai.LoginCookies);
+            if (lResponseObject.StatusCode == HttpStatusCode.OK && !string.IsNullOrEmpty(lResponseObject.Content))
+                lResponse = System.Web.HttpUtility.HtmlDecode(lResponseObject.Content).Replace("\n", "");
+            else return new ProxerResult(new[] { new WrongResponseException(), lResponseObject.ErrorException });
+
+            if (string.IsNullOrEmpty(lResponse) ||
+                !Utility.CheckForCorrectResponse(lResponse, this._senpai.ErrHandler))
+                return new ProxerResult(new Exception[] { new WrongResponseException() });
 
             try
             {
@@ -455,23 +515,31 @@ namespace Proxer.API.Main
                             lDocument.DocumentNode.ChildNodes[1].ChildNodes[2].ChildNodes[2].ChildNodes[2].ChildNodes[4]
                                 .ChildNodes[5].FirstChild.ChildNodes[1].InnerText);
             }
-            catch (NullReferenceException)
+            catch
             {
+                return new ProxerResult((await ErrorHandler.HandleError(this._senpai, lResponse, false)).Exceptions);
             }
-            catch (IndexOutOfRangeException)
-            {
-            }
+
+            return new ProxerResult();
         }
 
-        private async Task InitMain()
+        private async Task<ProxerResult> InitMain()
         {
             HtmlDocument lDocument = new HtmlDocument();
-            string lResponse =
-                (await HttpUtility.GetWebRequestResponse("https://proxer.me/info/" + this.Id, this._senpai.LoginCookies))
-                    .Replace("</link>", "")
-                    .Replace("\n", "");
+            string lResponse;
 
-            if (!Utility.CheckForCorrectResponse(lResponse, this._senpai.ErrHandler)) return;
+            IRestResponse lResponseObject =
+                await
+                    HttpUtility.GetWebRequestResponse(
+                        "https://proxer.me/info/" + this.Id,
+                        this._senpai.LoginCookies);
+            if (lResponseObject.StatusCode == HttpStatusCode.OK && !string.IsNullOrEmpty(lResponseObject.Content))
+                lResponse = System.Web.HttpUtility.HtmlDecode(lResponseObject.Content).Replace("\n", "");
+            else return new ProxerResult(new[] { new WrongResponseException(), lResponseObject.ErrorException });
+
+            if (string.IsNullOrEmpty(lResponse) ||
+                !Utility.CheckForCorrectResponse(lResponse, this._senpai.ErrHandler))
+                return new ProxerResult(new Exception[] { new WrongResponseException() });
             try
             {
                 lDocument.LoadHtml(lResponse);
@@ -498,35 +566,39 @@ namespace Proxer.API.Main
                         case "Genre":
                             List<string> lGenreList = new List<string>();
                             childNode.ChildNodes[1].ChildNodes.ToList()
-                                .ForEach(
-                                    delegate(HtmlNode htmlNode)
-                                    {
-                                        if (htmlNode.Name.Equals("a")) lGenreList.Add(htmlNode.InnerText);
-                                    });
+                                                   .ForEach(
+                                                       delegate (HtmlNode htmlNode)
+                                                       {
+                                                           if (htmlNode.Name.Equals("a"))
+                                                               lGenreList.Add(htmlNode.InnerText);
+                                                       });
                             this.Genre = lGenreList.ToArray();
                             break;
                         case "FSK":
                             this.Fsk = new Dictionary<string, Uri>();
                             childNode.ChildNodes[1].ChildNodes.ToList()
-                                .ForEach(
-                                    delegate(HtmlNode htmlNode)
-                                    {
-                                        if (htmlNode.Name.Equals("span") &&
-                                            !this.Fsk.ContainsKey(htmlNode.GetAttributeValue("title", "ERROR")))
-                                            this.Fsk.Add(htmlNode.GetAttributeValue("title", "ERROR"),
-                                                new Uri("https://proxer.me" +
-                                                        htmlNode.FirstChild.GetAttributeValue("src", "/")));
-                                    });
+                                                   .ForEach(
+                                                       delegate (HtmlNode htmlNode)
+                                                       {
+                                                           if (htmlNode.Name.Equals("span") &&
+                                                               !this.Fsk.ContainsKey(htmlNode.GetAttributeValue(
+                                                                   "title", "ERROR")))
+                                                               this.Fsk.Add(
+                                                                   htmlNode.GetAttributeValue("title", "ERROR"),
+                                                                   new Uri("https://proxer.me" +
+                                                                           htmlNode.FirstChild.GetAttributeValue("src",
+                                                                               "/")));
+                                                       });
                             break;
                         case "Season":
                             List<string> lSeasonList = new List<string>();
                             childNode.ChildNodes[1].ChildNodes.ToList()
-                                .ForEach(
-                                    delegate(HtmlNode htmlNode)
-                                    {
-                                        if (htmlNode.Name.Equals("a"))
-                                            lSeasonList.Add(htmlNode.InnerText);
-                                    });
+                                                   .ForEach(
+                                                       delegate (HtmlNode htmlNode)
+                                                       {
+                                                           if (htmlNode.Name.Equals("a"))
+                                                               lSeasonList.Add(htmlNode.InnerText);
+                                                       });
                             this.Season = lSeasonList.ToArray();
                             break;
                         case "Status":
@@ -549,13 +621,15 @@ namespace Proxer.API.Main
                         case "Gruppen":
                             if (childNode.ChildNodes[1].InnerText.Contains("Keine Gruppen eingetragen.")) break;
                             this.Gruppen = (from htmlNode in childNode.ChildNodes[1].ChildNodes
-                                where htmlNode.Name.Equals("a")
-                                select
-                                    new Group(
-                                        Convert.ToInt32(
-                                            Utility.GetTagContents(
-                                                htmlNode.GetAttributeValue("href", "/translatorgroups?id=-1#top"),
-                                                "/translatorgroups?id=", "#top")[0]), htmlNode.InnerText)).ToArray();
+                                            where htmlNode.Name.Equals("a")
+                                            select
+                                                new Group(
+                                                    Convert.ToInt32(
+                                                        Utility.GetTagContents(
+                                                            htmlNode.GetAttributeValue("href",
+                                                                "/translatorgroups?id=-1#top"),
+                                                            "/translatorgroups?id=", "#top")[0]), htmlNode.InnerText))
+                                .ToArray();
                             break;
                         case "Industrie":
                             if (childNode.ChildNodes[1].InnerText.Contains("Keine Unternehmen eingetragen.")) break;
@@ -596,12 +670,12 @@ namespace Proxer.API.Main
                     }
                 }
             }
-            catch (NullReferenceException)
+            catch
             {
+                return new ProxerResult((await ErrorHandler.HandleError(this._senpai, lResponse, false)).Exceptions);
             }
-            catch (IndexOutOfRangeException)
-            {
-            }
+
+            return new ProxerResult();
         }
 
         #endregion
@@ -665,23 +739,28 @@ namespace Proxer.API.Main
             /// <summary>
             ///     Initialisiert das Objekt.
             /// </summary>
-            /// <exception cref="NotLoggedInException">Wird ausgelöst, wenn der Benutzer noch nicht eingeloggt ist.</exception>
-            /// <exception cref="CaptchaException">Wird ausgelöst, wenn Proxer vom Benutzer das ausfüllen eines Captchas verlangt.</exception>
             /// <seealso cref="Senpai.Login" />
-            public async Task Init()
+            public async Task<ProxerResult> Init()
             {
-                if (!this._senpai.LoggedIn) throw new NotLoggedInException();
+                if (!this._senpai.LoggedIn) return new ProxerResult(new Exception[] {new NotLoggedInException(this._senpai)});
 
                 HtmlDocument lDocument = new HtmlDocument();
-                string lResponse =
-                    (await HttpUtility.GetWebRequestResponse(
-                        "https://proxer.me/watch/" + this.ParentAnime.Id + "/" + this.EpisodeNr + "/" +
-                        this._lang.ToString().ToLower(),
-                        this._senpai.MobileLoginCookies))
-                        .Replace("</link>", "")
-                        .Replace("\n", "");
+                string lResponse;
 
-                if (!Utility.CheckForCorrectResponse(lResponse, this._senpai.ErrHandler)) return;
+                IRestResponse lResponseObject =
+                    await
+                        HttpUtility.GetWebRequestResponse(
+                            "https://proxer.me/watch/" + this.ParentAnime.Id + "/" + this.EpisodeNr + "/" +
+                            this._lang.ToString().ToLower(),
+                            this._senpai.MobileLoginCookies);
+                if (lResponseObject.StatusCode == HttpStatusCode.OK && !string.IsNullOrEmpty(lResponseObject.Content))
+                    lResponse = System.Web.HttpUtility.HtmlDecode(lResponseObject.Content).Replace("\n", "");
+                else return new ProxerResult(new[] { new WrongResponseException(), lResponseObject.ErrorException });
+
+                if (string.IsNullOrEmpty(lResponse) ||
+                    !Utility.CheckForCorrectResponse(lResponse, this._senpai.ErrHandler))
+                    return new ProxerResult(new Exception[] { new WrongResponseException() });
+
                 try
                 {
                     lDocument.LoadHtml(lResponse);
@@ -693,14 +772,14 @@ namespace Proxer.API.Main
                             x =>
                                 x.Name.Equals("img") && x.HasAttributes &&
                                 x.GetAttributeValue("src", "").Equals("/images/misc/stopyui.jpg")))
-                        throw new CaptchaException();
+                        return new ProxerResult(new Exception[] {new CaptchaException()});
 
                     if (
                         lAllHtmlNodes.Any(
                             x =>
                                 x.Name.Equals("img") && x.HasAttributes &&
                                 x.GetAttributeValue("src", "").Equals("/images/misc/404.png")))
-                        return;
+                        return new ProxerResult(new Exception[] {new WrongResponseException()});
 
                     this.Streams = new List<KeyValuePair<Stream.StreamPartner, Stream>>();
 
@@ -757,12 +836,12 @@ namespace Proxer.API.Main
                     }
 
                     this.IstInitialisiert = true;
+
+                    return new ProxerResult();
                 }
-                catch (NullReferenceException)
+                catch
                 {
-                }
-                catch (IndexOutOfRangeException)
-                {
+                    return new ProxerResult((await ErrorHandler.HandleError(this._senpai, lResponse, false)).Exceptions);
                 }
             }
 

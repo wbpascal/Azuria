@@ -5,13 +5,13 @@ using System.Text;
 using System.Threading.Tasks;
 using RestSharp;
 
-namespace Proxer.API.Utilities
+namespace Proxer.API.Utilities.Net
 {
     internal class HttpUtility
     {
         #region
 
-        internal static async Task<string> GetWebRequestResponse(string url, CookieContainer cookies)
+        internal static async Task<IRestResponse> GetWebRequestResponse(string url, CookieContainer cookies)
         {
             RestClient lClient = new RestClient(url)
             {
@@ -19,10 +19,10 @@ namespace Proxer.API.Utilities
                 Encoding = Encoding.UTF8
             };
             RestRequest lRequest = new RestRequest(Method.GET);
-            return System.Web.HttpUtility.HtmlDecode((await lClient.ExecuteTaskAsync(lRequest)).Content);
+            return await lClient.ExecuteTaskAsync(lRequest);
         }
 
-        internal static async Task<string> PostWebRequestResponse(string url, CookieContainer cookies,
+        internal static async Task<IRestResponse> PostWebRequestResponse(string url, CookieContainer cookies,
             Dictionary<string, string> postArgs)
         {
             RestClient lClient = new RestClient(url)
@@ -32,7 +32,7 @@ namespace Proxer.API.Utilities
             };
             RestRequest lRequest = new RestRequest(Method.POST);
             postArgs.ToList().ForEach(x => lRequest.AddParameter(x.Key, x.Value));
-            return System.Web.HttpUtility.HtmlDecode((await lClient.ExecuteTaskAsync(lRequest)).Content);
+            return await lClient.ExecuteTaskAsync(lRequest);
         }
 
         #endregion

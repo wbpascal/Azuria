@@ -1,5 +1,9 @@
-﻿using System.Windows;
+﻿using System.Linq;
+using System.Windows;
 using System.Windows.Controls;
+using Proxer.API.Community;
+using Proxer.API.Main;
+using Proxer.API.Utilities.Net;
 
 namespace Proxer.API.Example
 {
@@ -31,14 +35,25 @@ namespace Proxer.API.Example
 
             (sender as Button).IsEnabled = false;
 
-            if (await this._senpai.Login(this.TextBox1.Text, this.PasswordBox1.Password))
+            ProxerResult<bool> lResult;
+            if ((lResult = await this._senpai.Login(this.TextBox1.Text, this.PasswordBox1.Password)).Success &&
+                lResult.Result)
                 MessageBox.Show("Du wurdest erfolgreich eingeloggt!");
             else
-                MessageBox.Show("Die Benutzername/Passwort-Kombination konnte nicht erkannt werden!");
+            {
+                MessageBox.Show(lResult.Success
+                    ? "Die Benutzername/Passwort-Kombination konnte nicht erkannt werden!"
+                    : "Es ist ein Fehler während der Anfrage aufgetreten!");
+            }
 
             (sender as Button).IsEnabled = true;
         }
 
         #endregion
+
+        private void notificationButton_Click(object sender, RoutedEventArgs e)
+        {
+            new NotificationWindow(this._senpai).Show();
+        }
     }
 }

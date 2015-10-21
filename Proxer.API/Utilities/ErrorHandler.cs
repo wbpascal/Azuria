@@ -1,6 +1,10 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 using Newtonsoft.Json;
+using Proxer.API.Exceptions;
 using Proxer.API.Properties;
+using Proxer.API.Utilities.Net;
 
 namespace Proxer.API.Utilities
 {
@@ -55,6 +59,18 @@ namespace Proxer.API.Utilities
         {
             Settings.Default.errorHtml = JsonConvert.SerializeObject(this.WrongHtml);
             Settings.Default.Save();
+        }
+        
+        internal async static Task<ProxerResult>  HandleError(Senpai senpai, string wrongHtml, bool checkedLogin)
+        {
+            ProxerResult<bool> lCheckResult;
+            if (!checkedLogin && (lCheckResult = await senpai.CheckLogin()).Success && !lCheckResult.Result)
+            {
+                return new ProxerResult(new Exception[] {new NotLoggedInException(senpai)});
+            }
+
+            senpai.ErrHandler.Add(wrongHtml);
+            return new ProxerResult(new Exception[] {new WrongResponseException()});
         }
 
         /// <summary>

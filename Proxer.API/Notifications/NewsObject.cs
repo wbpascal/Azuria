@@ -18,16 +18,13 @@ namespace Proxer.API.Notifications
         /// Gibt die Nachricht der Benachrichtigung als Text zurück.
         /// <para>(Vererbt von <see cref="INotificationObject"/>)</para>
         /// </summary>
-        public string Message
-        {
-            get { return this.Description; }
-        }
+        public string Message => this.Description;
 
         /// <summary>
         /// Gibt den Typ der Benachrichtigung zurück.
         /// <para>(Vererbt von <see cref="INotificationObject"/>)</para>
         /// </summary>
-        public NotificationObjectType Type { get; private set; }
+        public NotificationObjectType Type { get; }
 
         #endregion
 

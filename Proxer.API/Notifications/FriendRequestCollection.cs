@@ -1,10 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Threading.Tasks;
 using HtmlAgilityPack;
 using Proxer.API.Exceptions;
 using Proxer.API.Utilities;
+using Proxer.API.Utilities.Net;
+using RestSharp;
 
 namespace Proxer.API.Notifications
 {
@@ -30,7 +33,7 @@ namespace Proxer.API.Notifications
         ///     Gibt den Typ der Benachrichtigung zurück.
         /// <para>(Vererbt von <see cref="INotificationCollection"/>)</para>
         /// </summary>
-        public NotificationObjectType Type { get; private set; }
+        public NotificationObjectType Type { get; }
 
         /// <summary>
         ///     Gibt eine bestimmte Anzahl der aktuellen Benachrichtigungen, die diese Klasse repräsentiert, zurück.
@@ -39,29 +42,25 @@ namespace Proxer.API.Notifications
         /// <param name="count">Die Anzahl der Benachrichtigungen</param>
         /// <seealso cref="INotificationCollection.GetAllNotifications">GetAllNotifications Funktion</seealso>
         /// <seealso cref="Senpai.Login"/>
-        /// <exception cref="NotLoggedInException">Wird ausgelöst, wenn der Benutzer nicht eingeloggt ist.</exception>
         /// <returns>
         ///     Ein Array mit der Anzahl an Elementen in <paramref name="count" /> spezifiziert.
         ///     Wenn <paramref name="count" /> > Array.length, dann wird der gesamte Array zurückgegeben.
         /// </returns>
-        public async Task<INotificationObject[]> GetNotifications(int count)
+        public async Task<ProxerResult<INotificationObject[]>> GetNotifications(int count)
         {
-            if (this._notificationObjects == null)
-            {
-                try
-                {
-                    await this.GetInfos();
-                }
-                catch (NotLoggedInException)
-                {
-                    throw new NotLoggedInException();
-                }
-            }
+            if (this._notificationObjects != null)
+                return this._notificationObjects.Length >= count
+                    ? new ProxerResult<INotificationObject[]>(this._notificationObjects)
+                    : new ProxerResult<INotificationObject[]>(this._notificationObjects.Take(count).ToArray());
+            ProxerResult lResult;
+            if (!(lResult = await this.GetInfos()).Success)
+                return new ProxerResult<INotificationObject[]>(lResult.Exceptions);
 
             return this._notificationObjects.Length >= count
-                ? this._notificationObjects
-                : this._notificationObjects.Take(count).ToArray();
+                ? new ProxerResult<INotificationObject[]>(this._notificationObjects)
+                : new ProxerResult<INotificationObject[]>(this._notificationObjects.Take(count).ToArray());
         }
+
 
         /// <summary>
         /// Gibt alle aktuellen Benachrichtigungen, die diese Klasse repräsentiert, zurück.
@@ -69,23 +68,16 @@ namespace Proxer.API.Notifications
         /// </summary>
         /// <seealso cref="INotificationCollection.GetNotifications"/>
         /// <seealso cref="Senpai.Login"/>
-        /// <exception cref="NotLoggedInException">Wird ausgelöst, wenn der Benutzer noch nicht eingeloggt ist.</exception>
         /// <returns>Ein Array mit allen aktuellen Benachrichtigungen.</returns>
-        public async Task<INotificationObject[]> GetAllNotifications()
+        public async Task<ProxerResult<INotificationObject[]>> GetAllNotifications()
         {
-            if (this._notificationObjects == null)
-            {
-                try
-                {
-                    await this.GetInfos();
-                }
-                catch (NotLoggedInException)
-                {
-                    throw new NotLoggedInException();
-                }
-            }
+            if (this._notificationObjects != null)
+                return new ProxerResult<INotificationObject[]>(this._notificationObjects);
 
-            return this._notificationObjects;
+            ProxerResult lResult;
+            return !(lResult = await this.GetInfos()).Success
+                ? new ProxerResult<INotificationObject[]>(lResult.Exceptions)
+                : new ProxerResult<INotificationObject[]>(this._notificationObjects);
         }
 
         #endregion
@@ -96,92 +88,99 @@ namespace Proxer.API.Notifications
         ///     Gibt eine bestimmte Anzahl der aktuellen Benachrichtigungen, die diese Klasse repräsentiert, zurück.
         /// </summary>
         /// <param name="count">Die Anzahl der Benachrichtigungen</param>
-        /// <exception cref="NotLoggedInException">Tritt auf, wenn der Benutzer noch nicht angemeldet ist.</exception>
         /// <seealso cref="Senpai.Login" />
         /// <returns>
         ///     Ein Array mit der Anzahl an Elementen in <paramref name="count" /> spezifiziert.
         ///     Wenn <paramref name="count" /> > Array.length, dann wird der gesamte Array zurückgegeben.
         /// </returns>
-        public async Task<FriendRequestObject[]> GetFriendRequests(int count)
+        public async Task<ProxerResult<FriendRequestObject[]>> GetFriendRequests(int count)
         {
-            if (this._friendRequestObjects == null)
-            {
-                try
-                {
-                    await this.GetInfos();
-                }
-                catch (NotLoggedInException)
-                {
-                    throw new NotLoggedInException();
-                }
-            }
+            if (this._notificationObjects != null)
+                return this._notificationObjects.Length >= count
+                    ? new ProxerResult<FriendRequestObject[]>(this._friendRequestObjects)
+                    : new ProxerResult<FriendRequestObject[]>(this._friendRequestObjects.Take(count).ToArray());
+            ProxerResult lResult;
+            if (!(lResult = await this.GetInfos()).Success)
+                return new ProxerResult<FriendRequestObject[]>(lResult.Exceptions);
 
-            return this._friendRequestObjects.Length >= count
-                ? this._friendRequestObjects
-                : this._friendRequestObjects.Take(count).ToArray();
+            return this._notificationObjects.Length >= count
+                ? new ProxerResult<FriendRequestObject[]>(this._friendRequestObjects)
+                : new ProxerResult<FriendRequestObject[]>(this._friendRequestObjects.Take(count).ToArray());
         }
 
         /// <summary>
         /// Gibt alle aktuellen Benachrichtigungen, die diese Klasse repräsentiert, zurück.
         /// </summary>
-        /// <exception cref="NotLoggedInException">Wird ausgelöst, wenn der Benutzer noch nicht eingeloggt ist.</exception>
         /// <seealso cref="Senpai.Login"/>
         /// <returns>Ein Array mit allen aktuellen Benachrichtigungen.</returns>
-        public async Task<FriendRequestObject[]> GetAllFriendRequests()
+        public async Task<ProxerResult<FriendRequestObject[]>> GetAllFriendRequests()
         {
-            if (this._friendRequestObjects == null)
-            {
-                try
-                {
-                    await this.GetInfos();
-                }
-                catch (NotLoggedInException)
-                {
-                    throw new NotLoggedInException();
-                }
-            }
+            if (this._notificationObjects != null)
+                return new ProxerResult<FriendRequestObject[]>(this._friendRequestObjects);
 
-            return this._friendRequestObjects;
+            ProxerResult lResult;
+            return !(lResult = await this.GetInfos()).Success
+                ? new ProxerResult<FriendRequestObject[]>(lResult.Exceptions)
+                : new ProxerResult<FriendRequestObject[]>(this._friendRequestObjects);
         }
 
 
-        private async Task GetInfos()
+        private async Task<ProxerResult> GetInfos()
         {
-            if (!this._senpai.LoggedIn) throw new NotLoggedInException();
-            HtmlDocument lDocument = new HtmlDocument();
-            string lResponse =
-                (await HttpUtility.GetWebRequestResponse("https://proxer.me/user/my/connections?format=raw",
-                    this._senpai.LoginCookies))
-                    .Replace("</link>", "").Replace("\n", "");
+            if (!this._senpai.LoggedIn)
+                return new ProxerResult(new Exception[] {new NotLoggedInException(this._senpai)});
 
-            if (!Utility.CheckForCorrectResponse(lResponse, this._senpai.ErrHandler)) return;
+            HtmlDocument lDocument = new HtmlDocument();
+            string lResponse;
+
+            IRestResponse lResponseObject =
+                await
+                    HttpUtility.GetWebRequestResponse(
+                        "https://proxer.me/user/my/connections?format=raw",
+                        this._senpai.LoginCookies);
+            if (lResponseObject.StatusCode == HttpStatusCode.OK && !string.IsNullOrEmpty(lResponseObject.Content))
+                lResponse = System.Web.HttpUtility.HtmlDecode(lResponseObject.Content).Replace("\n", "");
+            else return new ProxerResult(new[] { new WrongResponseException(), lResponseObject.ErrorException });
+
+            if (string.IsNullOrEmpty(lResponse) ||
+                !Utility.CheckForCorrectResponse(lResponse, this._senpai.ErrHandler))
+                return new ProxerResult(new Exception[] { new WrongResponseException() });
+
             try
             {
                 lDocument.LoadHtml(lResponse);
 
-                if (lDocument.ParseErrors.Any()) return;
                 HtmlNodeCollection lNodes = lDocument.DocumentNode.SelectNodes("//tr");
 
-                if (lNodes == null) return;
                 List<FriendRequestObject> lFriendRequests = (from curNode in lNodes
-                    where
-                        curNode.Id.StartsWith("entry") &&
-                        curNode.FirstChild.FirstChild.Attributes["class"].Value.Equals("accept")
-                    let lUserId = Convert.ToInt32(curNode.Id.Replace("entry", ""))
-                    let lUserName = curNode.InnerText.Split("  ".ToCharArray())[0]
-                    let lDatumSplit = curNode.ChildNodes[4].InnerText.Split('-')
-                    let lDatum =
-                        new DateTime(Convert.ToInt32(lDatumSplit[0]), Convert.ToInt32(lDatumSplit[1]),
-                            Convert.ToInt32(lDatumSplit[2]))
-                    select new FriendRequestObject(lUserName, lUserId, lDatum, this._senpai))
+                                                             where
+                                                                 curNode.Id.StartsWith("entry") &&
+                                                                 curNode.FirstChild.FirstChild.Attributes["class"].Value
+                                                                                                                  .Equals
+                                                                     ("accept")
+                                                             let lUserId =
+                                                                 Convert.ToInt32(curNode.Id.Replace("entry", ""))
+                                                             let lUserName =
+                                                                 curNode.InnerText.Split("  ".ToCharArray())[0]
+                                                             let lDatumSplit =
+                                                                 curNode.ChildNodes[4].InnerText.Split('-')
+                                                             let lDatum =
+                                                                 new DateTime(Convert.ToInt32(lDatumSplit[0]),
+                                                                     Convert.ToInt32(lDatumSplit[1]),
+                                                                     Convert.ToInt32(lDatumSplit[2]))
+                                                             select
+                                                                 new FriendRequestObject(lUserName, lUserId, lDatum,
+                                                                     this._senpai))
                     .ToList();
 
                 this._friendRequestObjects = lFriendRequests.ToArray();
                 this._notificationObjects = lFriendRequests.ToArray();
+
+                return new ProxerResult();
             }
-            catch (NullReferenceException)
+            catch
             {
-                this._senpai.ErrHandler.Add(lResponse);
+                return new ProxerResult((await ErrorHandler.HandleError(this._senpai, lResponse, false)).Exceptions);
             }
         }
 

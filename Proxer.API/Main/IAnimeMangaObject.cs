@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Proxer.API.Main.Minor;
+using Proxer.API.Utilities.Net;
 
 namespace Proxer.API.Main
 {
@@ -116,7 +117,7 @@ namespace Proxer.API.Main
         ///     Initialisiert das Objekt.
         ///     <para>(Vererbt von <see cref="IAnimeMangaObject" />)</para>
         /// </summary>
-        Task Init();
+        Task<ProxerResult> Init();
 
         #endregion
     }
