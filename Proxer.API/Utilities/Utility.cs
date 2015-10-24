@@ -42,7 +42,7 @@ namespace Proxer.API.Utilities
                     {new WrongResponseException(), lResponseObject.ErrorException});
 
             if (string.IsNullOrEmpty(lResponse) || !CheckForCorrectResponse(lResponse, senpai.ErrHandler))
-                return new ProxerResult<IAnimeMangaObject>(new Exception[] {new WrongResponseException()});
+                return new ProxerResult<IAnimeMangaObject>(new Exception[] {new WrongResponseException() { Response = lResponse } });
 
             if (!CheckForCorrectResponse(lResponse, senpai.ErrHandler)) return null;
             try
@@ -77,7 +77,7 @@ namespace Proxer.API.Utilities
                         (await ErrorHandler.HandleError(senpai, lResponse, false)).Exceptions);
             }
 
-            return new ProxerResult<IAnimeMangaObject>(new Exception[] {new WrongResponseException()});
+            return new ProxerResult<IAnimeMangaObject>(new Exception[] {new WrongResponseException() { Response = lResponse } });
         }
 
 

@@ -144,7 +144,7 @@ namespace Proxer.API.Notifications
 
             if (string.IsNullOrEmpty(lResponse) ||
                 !Utility.CheckForCorrectResponse(lResponse, this._senpai.ErrHandler))
-                return new ProxerResult(new Exception[] {new WrongResponseException()});
+                return new ProxerResult(new Exception[] {new WrongResponseException() { Response = lResponse } });
 
             try
             {
@@ -152,25 +152,27 @@ namespace Proxer.API.Notifications
 
                 HtmlNodeCollection lNodes = lDocument.DocumentNode.SelectNodes("//tr");
 
-                List<FriendRequestObject> lFriendRequests = (from curNode in lNodes
-                                                             where
-                                                                 curNode.Id.StartsWith("entry") &&
-                                                                 curNode.FirstChild.FirstChild.Attributes["class"].Value
-                                                                                                                  .Equals
-                                                                     ("accept")
-                                                             let lUserId =
-                                                                 Convert.ToInt32(curNode.Id.Replace("entry", ""))
-                                                             let lUserName =
-                                                                 curNode.InnerText.Split("  ".ToCharArray())[0]
-                                                             let lDatumSplit =
-                                                                 curNode.ChildNodes[4].InnerText.Split('-')
-                                                             let lDatum =
-                                                                 new DateTime(Convert.ToInt32(lDatumSplit[0]),
-                                                                     Convert.ToInt32(lDatumSplit[1]),
-                                                                     Convert.ToInt32(lDatumSplit[2]))
-                                                             select
-                                                                 new FriendRequestObject(lUserName, lUserId, lDatum,
-                                                                     this._senpai))
+                List<FriendRequestObject> lFriendRequests = new List<FriendRequestObject>();
+
+                if(lNodes != null) lFriendRequests = (from curNode in lNodes
+                                   where
+                                       curNode.Id.StartsWith("entry") &&
+                                       curNode.FirstChild.FirstChild.Attributes["class"].Value
+                                                                                        .Equals
+                                           ("accept")
+                                   let lUserId =
+                                       Convert.ToInt32(curNode.Id.Replace("entry", ""))
+                                   let lUserName =
+                                       curNode.InnerText.Split("  ".ToCharArray())[0]
+                                   let lDatumSplit =
+                                       curNode.ChildNodes[4].InnerText.Split('-')
+                                   let lDatum =
+                                       new DateTime(Convert.ToInt32(lDatumSplit[0]),
+                                           Convert.ToInt32(lDatumSplit[1]),
+                                           Convert.ToInt32(lDatumSplit[2]))
+                                   select
+                                       new FriendRequestObject(lUserName, lUserId, lDatum,
+                                           this._senpai))
                     .ToList();
 
                 this._friendRequestObjects = lFriendRequests.ToArray();

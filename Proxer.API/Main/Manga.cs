@@ -360,7 +360,7 @@ namespace Proxer.API.Main
 
             if (string.IsNullOrEmpty(lResponse) ||
                 !Utility.CheckForCorrectResponse(lResponse, this._senpai.ErrHandler))
-                return new ProxerResult(new Exception[] {new WrongResponseException()});
+                return new ProxerResult(new Exception[] {new WrongResponseException() { Response = lResponse } });
 
             try
             {
@@ -519,7 +519,7 @@ namespace Proxer.API.Main
 
             if (string.IsNullOrEmpty(lResponse) ||
                 !Utility.CheckForCorrectResponse(lResponse, this._senpai.ErrHandler))
-                return new ProxerResult(new Exception[] {new WrongResponseException()});
+                return new ProxerResult(new Exception[] {new WrongResponseException() { Response = lResponse } });
 
             try
             {
@@ -574,7 +574,7 @@ namespace Proxer.API.Main
 
             if (string.IsNullOrEmpty(lResponse) ||
                 !Utility.CheckForCorrectResponse(lResponse, this._senpai.ErrHandler))
-                return new ProxerResult(new Exception[] {new WrongResponseException()});
+                return new ProxerResult(new Exception[] {new WrongResponseException() { Response = lResponse } });
 
             try
             {
@@ -767,7 +767,7 @@ namespace Proxer.API.Main
 
                 if (string.IsNullOrEmpty(lResponse) ||
                     !Utility.CheckForCorrectResponse(lResponse, this._senpai.ErrHandler))
-                    return new ProxerResult(new Exception[] {new WrongResponseException()});
+                    return new ProxerResult(new Exception[] {new WrongResponseException() { Response = lResponse } });
 
                 if (lResponse.Contains("Dieses Kapitel ist leider noch nicht verfügbar :/"))
                 {
@@ -795,7 +795,7 @@ namespace Proxer.API.Main
                             x =>
                                 x.Name.Equals("img") && x.HasAttributes &&
                                 x.GetAttributeValue("src", "").Equals("/images/misc/404.png")))
-                        return new ProxerResult(new Exception[] {new WrongResponseException()});
+                        return new ProxerResult(new Exception[] {new WrongResponseException() { Response = lResponse } });
 
                     foreach (
                         HtmlNode childNode in
@@ -854,7 +854,7 @@ namespace Proxer.API.Main
 
                 if (string.IsNullOrEmpty(lResponse) ||
                     !Utility.CheckForCorrectResponse(lResponse, this._senpai.ErrHandler))
-                    return new ProxerResult(new Exception[] {new WrongResponseException()});
+                    return new ProxerResult(new Exception[] {new WrongResponseException() { Response = lResponse } });
 
                 try
                 {
@@ -874,7 +874,7 @@ namespace Proxer.API.Main
                             x =>
                                 x.Name.Equals("img") && x.HasAttributes &&
                                 x.GetAttributeValue("src", "").Equals("/images/misc/404.png")))
-                        return new ProxerResult(new Exception[] {new WrongResponseException()});
+                        return new ProxerResult(new Exception[] {new WrongResponseException() { Response = lResponse } });
 
                     this.Seiten =
                         (from s in

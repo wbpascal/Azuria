@@ -100,7 +100,7 @@ namespace Proxer.API.Notifications
 
             if (string.IsNullOrEmpty(lResponse) ||
                 !Utility.CheckForCorrectResponse(lResponse, this._senpai.ErrHandler))
-                return new ProxerResult<bool>(new Exception[] {new WrongResponseException()});
+                return new ProxerResult<bool>(new Exception[] {new WrongResponseException() { Response = lResponse } });
 
             if (!lResponse.StartsWith("{\"error\":0")) return new ProxerResult<bool>(false);
 
@@ -134,14 +134,14 @@ namespace Proxer.API.Notifications
 
             if (string.IsNullOrEmpty(lResponse) ||
                 !Utility.CheckForCorrectResponse(lResponse, this._senpai.ErrHandler))
-                return new ProxerResult<bool>(new Exception[] {new WrongResponseException()});
+                return new ProxerResult<bool>(new Exception[] {new WrongResponseException() { Response = lResponse } });
 
             if (!lResponse.StartsWith("{\"error\":0")) return new ProxerResult<bool>(false);
 
             this._denied = true;
             return new ProxerResult<bool>(true);
         }
-
+        
         #endregion
     }
 }

@@ -60,13 +60,13 @@ namespace Proxer.API.Notifications
         /// <summary>
         ///     Gibt den Namen des <see cref="Main.Anime">Anime</see> oder <see cref="Main.Manga">Manga</see> zurück.
         /// </summary>
-        public string Name { get; private set; }
+        public string Name { get; }
 
         /// <summary>
         ///     Gibt die Nummer der <see cref="Main.Anime.Episode">Episode</see> oder des
         ///     <see cref="Main.Manga.Chapter">Kapitels</see> zurück.
         /// </summary>
-        public int Number { get; private set; }
+        public int Number { get; }
 
         #endregion
 
@@ -78,7 +78,7 @@ namespace Proxer.API.Notifications
         /// </returns>
         public override string ToString()
         {
-            return this.Name + "#" + this.Number + " ist jetzt online!";
+            return this.Name + " #" + this.Number + " ist jetzt online!";
         }
     }
 }

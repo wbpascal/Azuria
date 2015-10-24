@@ -285,7 +285,7 @@ namespace Proxer.API
             else return new ProxerResult<bool>(new[] {new WrongResponseException(), lResponseObject.ErrorException});
 
             if (string.IsNullOrEmpty(lResponse) || !Utility.CheckForCorrectResponse(lResponse, this.ErrHandler))
-                return new ProxerResult<bool>(new Exception[] {new WrongResponseException()});
+                return new ProxerResult<bool>(new Exception[] {new WrongResponseException() { Response = lResponse } });
 
             try
             {
@@ -327,7 +327,7 @@ namespace Proxer.API
             else return new ProxerResult<bool>(new[] {new WrongResponseException(), lResponseObject.ErrorException});
 
             if (string.IsNullOrEmpty(lResponse) || !Utility.CheckForCorrectResponse(lResponse, this.ErrHandler))
-                return new ProxerResult<bool>(new Exception[] {new WrongResponseException()});
+                return new ProxerResult<bool>(new Exception[] {new WrongResponseException() { Response = lResponse } });
 
             try
             {
@@ -405,7 +405,7 @@ namespace Proxer.API
                     {new WrongResponseException(), lResponseObject.ErrorException});
 
             if (string.IsNullOrEmpty(lResponse) || !Utility.CheckForCorrectResponse(lResponse, this.ErrHandler))
-                return new ProxerResult<List<Conference>>(new Exception[] {new WrongResponseException()});
+                return new ProxerResult<List<Conference>>(new Exception[] {new WrongResponseException() { Response = lResponse } });
 
             try
             {
@@ -446,7 +446,7 @@ namespace Proxer.API
             else return new ProxerResult(new[] {new WrongResponseException(), lResponseObject.ErrorException});
 
             if (string.IsNullOrEmpty(lResponse) || !Utility.CheckForCorrectResponse(lResponse, this.ErrHandler))
-                return new ProxerResult(new Exception[] {new WrongResponseException()});
+                return new ProxerResult(new Exception[] {new WrongResponseException() { Response = lResponse } });
 
             if (!lResponse.StartsWith("0")) return new ProxerResult();
             string[] lResponseSplit = lResponse.Split('#');

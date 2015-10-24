@@ -37,5 +37,10 @@ namespace Proxer.API.Exceptions
         public WrongResponseException(string message, Exception inner) : base(message, inner)
         {
         }
+
+        /// <summary>
+        /// Gibt die Antwort des Servers zurück, mit der diese Ausnahme zusammenhängt oder legt diese fest.
+        /// </summary>
+        public string Response { get; set; }
     }
 }

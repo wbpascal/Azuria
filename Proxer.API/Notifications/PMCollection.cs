@@ -143,7 +143,7 @@ namespace Proxer.API.Notifications
 
             if (string.IsNullOrEmpty(lResponse) ||
                 !Utility.CheckForCorrectResponse(lResponse, this._senpai.ErrHandler))
-                return new ProxerResult(new Exception[] {new WrongResponseException()});
+                return new ProxerResult(new Exception[] {new WrongResponseException {Response = lResponse}});
 
             try
             {
@@ -153,35 +153,38 @@ namespace Proxer.API.Notifications
                     lDocument.DocumentNode.SelectNodes("//a[@class='conferenceList']");
 
                 List<PmObject> lPmObjects = new List<PmObject>();
-                foreach (HtmlNode curNode in lNodes)
+                if (lNodes != null)
                 {
-                    string lTitel;
-                    string[] lDatum;
-                    if (curNode.ChildNodes[1].Name.ToLower().Equals("img"))
+                    foreach (HtmlNode curNode in lNodes)
                     {
-                        lTitel = curNode.ChildNodes[0].InnerText;
-                        lDatum = curNode.ChildNodes[1].InnerText.Split('.');
+                        string lTitel;
+                        string[] lDatum;
+                        if (curNode.ChildNodes[1].Name.ToLower().Equals("img"))
+                        {
+                            lTitel = curNode.ChildNodes[0].InnerText;
+                            lDatum = curNode.ChildNodes[1].InnerText.Split('.');
 
-                        DateTime lTimeStamp = new DateTime(Convert.ToInt32(lDatum[2]),
-                            Convert.ToInt32(lDatum[1]), Convert.ToInt32(lDatum[0]));
-                        int lId =
-                            Convert.ToInt32(curNode.Attributes["href"].Value.Substring(13,
-                                curNode.Attributes["href"].Value.Length - 17));
+                            DateTime lTimeStamp = new DateTime(Convert.ToInt32(lDatum[2]),
+                                Convert.ToInt32(lDatum[1]), Convert.ToInt32(lDatum[0]));
+                            int lId =
+                                Convert.ToInt32(curNode.Attributes["href"].Value.Substring(13,
+                                    curNode.Attributes["href"].Value.Length - 17));
 
-                        lPmObjects.Add(new PmObject(lId, lTitel, lTimeStamp));
-                    }
-                    else
-                    {
-                        lTitel = curNode.ChildNodes[0].InnerText;
-                        lDatum = curNode.ChildNodes[1].InnerText.Split('.');
+                            lPmObjects.Add(new PmObject(lId, lTitel, lTimeStamp));
+                        }
+                        else
+                        {
+                            lTitel = curNode.ChildNodes[0].InnerText;
+                            lDatum = curNode.ChildNodes[1].InnerText.Split('.');
 
-                        DateTime lTimeStamp = new DateTime(Convert.ToInt32(lDatum[2]),
-                            Convert.ToInt32(lDatum[1]), Convert.ToInt32(lDatum[0]));
-                        int lId =
-                            Convert.ToInt32(curNode.Attributes["href"].Value.Substring(13,
-                                curNode.Attributes["href"].Value.Length - 17));
+                            DateTime lTimeStamp = new DateTime(Convert.ToInt32(lDatum[2]),
+                                Convert.ToInt32(lDatum[1]), Convert.ToInt32(lDatum[0]));
+                            int lId =
+                                Convert.ToInt32(curNode.Attributes["href"].Value.Substring(13,
+                                    curNode.Attributes["href"].Value.Length - 17));
 
-                        lPmObjects.Add(new PmObject(lTitel, lId, lTimeStamp));
+                            lPmObjects.Add(new PmObject(lTitel, lId, lTimeStamp));
+                        }
                     }
                 }
 

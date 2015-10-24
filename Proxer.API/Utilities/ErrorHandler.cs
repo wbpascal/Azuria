@@ -70,7 +70,7 @@ namespace Proxer.API.Utilities
             }
 
             senpai.ErrHandler.Add(wrongHtml);
-            return new ProxerResult(new Exception[] {new WrongResponseException()});
+            return new ProxerResult(new Exception[] {new WrongResponseException() { Response = wrongHtml } });
         }
 
         /// <summary>

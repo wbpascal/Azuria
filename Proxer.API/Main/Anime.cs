@@ -376,7 +376,7 @@ namespace Proxer.API.Main
 
             if (string.IsNullOrEmpty(lResponse) ||
                 !Utility.CheckForCorrectResponse(lResponse, senpai.ErrHandler))
-                return new ProxerResult<Anime[]>(new Exception[] {new WrongResponseException()});
+                return new ProxerResult<Anime[]>(new Exception[] {new WrongResponseException() { Response = lResponse } });
 
             try
             {
@@ -439,7 +439,7 @@ namespace Proxer.API.Main
 
             if (string.IsNullOrEmpty(lResponse) ||
                 !Utility.CheckForCorrectResponse(lResponse, this._senpai.ErrHandler))
-                return new ProxerResult(new Exception[] {new WrongResponseException()});
+                return new ProxerResult(new Exception[] {new WrongResponseException() { Response = lResponse } });
 
             try
             {
@@ -500,7 +500,7 @@ namespace Proxer.API.Main
 
             if (string.IsNullOrEmpty(lResponse) ||
                 !Utility.CheckForCorrectResponse(lResponse, this._senpai.ErrHandler))
-                return new ProxerResult(new Exception[] {new WrongResponseException()});
+                return new ProxerResult(new Exception[] {new WrongResponseException() { Response = lResponse } });
 
             try
             {
@@ -538,7 +538,7 @@ namespace Proxer.API.Main
 
             if (string.IsNullOrEmpty(lResponse) ||
                 !Utility.CheckForCorrectResponse(lResponse, this._senpai.ErrHandler))
-                return new ProxerResult(new Exception[] {new WrongResponseException()});
+                return new ProxerResult(new Exception[] {new WrongResponseException() { Response = lResponse } });
             try
             {
                 lDocument.LoadHtml(lResponse);
@@ -759,7 +759,7 @@ namespace Proxer.API.Main
 
                 if (string.IsNullOrEmpty(lResponse) ||
                     !Utility.CheckForCorrectResponse(lResponse, this._senpai.ErrHandler))
-                    return new ProxerResult(new Exception[] {new WrongResponseException()});
+                    return new ProxerResult(new Exception[] {new WrongResponseException() { Response = lResponse } });
 
                 try
                 {
@@ -779,7 +779,7 @@ namespace Proxer.API.Main
                             x =>
                                 x.Name.Equals("img") && x.HasAttributes &&
                                 x.GetAttributeValue("src", "").Equals("/images/misc/404.png")))
-                        return new ProxerResult(new Exception[] {new WrongResponseException()});
+                        return new ProxerResult(new Exception[] {new WrongResponseException() { Response = lResponse } });
 
                     this.Streams = new List<KeyValuePair<Stream.StreamPartner, Stream>>();
 

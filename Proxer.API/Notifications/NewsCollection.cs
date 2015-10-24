@@ -142,7 +142,7 @@ namespace Proxer.API.Notifications
 
             if (string.IsNullOrEmpty(lResponse) ||
                 !Utility.CheckForCorrectResponse(lResponse, this._senpai.ErrHandler))
-                return new ProxerResult(new Exception[] {new WrongResponseException()});
+                return new ProxerResult(new Exception[] {new WrongResponseException() { Response = lResponse } });
 
             if (!lResponse.StartsWith("{\"error\":0"))
                 return new ProxerResult

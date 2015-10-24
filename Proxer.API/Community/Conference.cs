@@ -209,7 +209,7 @@ namespace Proxer.API.Community
             else return new ProxerResult<bool>(new[] {new WrongResponseException(), lResponseObject.ErrorException});
 
             if (string.IsNullOrEmpty(lResponse) || !Utility.CheckForCorrectResponse(lResponse, this._senpai.ErrHandler))
-                return new ProxerResult<bool>(new Exception[] {new WrongResponseException()});
+                return new ProxerResult<bool>(new Exception[] {new WrongResponseException() {Response = lResponse} });
 
             try
             {
@@ -241,7 +241,7 @@ namespace Proxer.API.Community
 
             this._getMessagesTimer.Start();
 
-            return new ProxerResult<bool>(new Exception[] {new WrongResponseException()});
+            return new ProxerResult<bool>(new Exception[] {new WrongResponseException() { Response = lResponse } });
         }
 
         /// <summary>
@@ -265,7 +265,7 @@ namespace Proxer.API.Community
             else return new ProxerResult<bool>(new[] {new WrongResponseException(), lResponseObject.ErrorException});
 
             if (string.IsNullOrEmpty(lResponse) || !Utility.CheckForCorrectResponse(lResponse, this._senpai.ErrHandler))
-                return new ProxerResult<bool>(new Exception[] {new WrongResponseException()});
+                return new ProxerResult<bool>(new Exception[] {new WrongResponseException() { Response = lResponse } });
 
             return new ProxerResult<bool>(lResponse.StartsWith("{\"error\":0"));
         }
@@ -291,7 +291,7 @@ namespace Proxer.API.Community
             else return new ProxerResult<bool>(new[] {new WrongResponseException(), lResponseObject.ErrorException});
 
             if (string.IsNullOrEmpty(lResponse) || !Utility.CheckForCorrectResponse(lResponse, this._senpai.ErrHandler))
-                return new ProxerResult<bool>(new Exception[] {new WrongResponseException()});
+                return new ProxerResult<bool>(new Exception[] {new WrongResponseException() { Response = lResponse } });
 
             return new ProxerResult<bool>(lResponse.StartsWith("{\"error\":0"));
         }
@@ -317,7 +317,7 @@ namespace Proxer.API.Community
             else return new ProxerResult<bool>(new[] {new WrongResponseException(), lResponseObject.ErrorException});
 
             if (string.IsNullOrEmpty(lResponse) || !Utility.CheckForCorrectResponse(lResponse, this._senpai.ErrHandler))
-                return new ProxerResult<bool>(new Exception[] {new WrongResponseException()});
+                return new ProxerResult<bool>(new Exception[] {new WrongResponseException() { Response = lResponse } });
 
             return new ProxerResult<bool>(lResponse.StartsWith("{\"error\":0"));
         }
@@ -343,7 +343,7 @@ namespace Proxer.API.Community
             else return new ProxerResult<bool>(new[] {new WrongResponseException(), lResponseObject.ErrorException});
 
             if (string.IsNullOrEmpty(lResponse) || !Utility.CheckForCorrectResponse(lResponse, this._senpai.ErrHandler))
-                return new ProxerResult<bool>(new Exception[] {new WrongResponseException()});
+                return new ProxerResult<bool>(new Exception[] {new WrongResponseException() { Response = lResponse } });
 
             return new ProxerResult<bool>(lResponse.StartsWith("{\"error\":0"));
         }
@@ -369,7 +369,7 @@ namespace Proxer.API.Community
             else return new ProxerResult<bool>(new[] {new WrongResponseException(), lResponseObject.ErrorException});
 
             if (string.IsNullOrEmpty(lResponse) || !Utility.CheckForCorrectResponse(lResponse, this._senpai.ErrHandler))
-                return new ProxerResult<bool>(new Exception[] {new WrongResponseException()});
+                return new ProxerResult<bool>(new Exception[] {new WrongResponseException() { Response = lResponse } });
 
             return new ProxerResult<bool>(lResponse.StartsWith("{\"error\":0"));
         }
@@ -396,7 +396,7 @@ namespace Proxer.API.Community
 
             if (string.IsNullOrEmpty(lResponse) ||
                 !Utility.CheckForCorrectResponse(lResponse, this._senpai.ErrHandler))
-                return new ProxerResult(new Exception[] {new WrongResponseException()});
+                return new ProxerResult(new Exception[] {new WrongResponseException() { Response = lResponse } });
 
             try
             {
@@ -437,7 +437,7 @@ namespace Proxer.API.Community
 
             if (string.IsNullOrEmpty(lResponse) ||
                 !Utility.CheckForCorrectResponse(lResponse, this._senpai.ErrHandler))
-                return new ProxerResult(new Exception[] {new WrongResponseException()});
+                return new ProxerResult(new Exception[] {new WrongResponseException() { Response = lResponse } });
 
             try
             {
@@ -487,7 +487,7 @@ namespace Proxer.API.Community
 
                 if (string.IsNullOrEmpty(lResponse) ||
                     !Utility.CheckForCorrectResponse(lResponse, this._senpai.ErrHandler))
-                    return new ProxerResult(new Exception[] {new WrongResponseException()});
+                    return new ProxerResult(new Exception[] {new WrongResponseException() { Response = lResponse } });
 
                 try
                 {
@@ -536,7 +536,7 @@ namespace Proxer.API.Community
 
             if (string.IsNullOrEmpty(lResponse) ||
                 !Utility.CheckForCorrectResponse(lResponse, this._senpai.ErrHandler))
-                return new ProxerResult(new Exception[] {new WrongResponseException()});
+                return new ProxerResult(new Exception[] {new WrongResponseException() { Response = lResponse } });
 
             if (lResponse.Equals("{\"uid\":\"" + this._senpai.Me.Id +
                                  "\",\"error\":1,\"msg\":\"Ein Fehler ist passiert.\"}"))
@@ -629,7 +629,7 @@ namespace Proxer.API.Community
 
             if (string.IsNullOrEmpty(lResponse) ||
                 !Utility.CheckForCorrectResponse(lResponse, this._senpai.ErrHandler))
-                return new ProxerResult(new Exception[] {new WrongResponseException()});
+                return new ProxerResult(new Exception[] {new WrongResponseException() { Response = lResponse } });
 
             if (lResponse.Equals("{\"uid\":\"" + this._senpai.Me.Id +
                                  "\",\"error\":1,\"msg\":\"Ein Fehler ist passiert.\"}"))
@@ -727,7 +727,7 @@ namespace Proxer.API.Community
 
             if (string.IsNullOrEmpty(lResponse) ||
                 !Utility.CheckForCorrectResponse(lResponse, this._senpai.ErrHandler))
-                return new ProxerResult<bool>(new Exception[] {new WrongResponseException()});
+                return new ProxerResult<bool>(new Exception[] {new WrongResponseException() { Response = lResponse } });
             try
             {
                 Dictionary<string, string> lDict =
@@ -771,7 +771,7 @@ namespace Proxer.API.Community
 
             if (string.IsNullOrEmpty(lResponse) ||
                 !Utility.CheckForCorrectResponse(lResponse, senpai.ErrHandler))
-                return new ProxerResult<bool>(new Exception[] {new WrongResponseException()});
+                return new ProxerResult<bool>(new Exception[] {new WrongResponseException() { Response = lResponse } });
 
             try
             {

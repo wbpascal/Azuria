@@ -236,7 +236,7 @@ namespace Proxer.API
 
                 if (string.IsNullOrEmpty(lResponse) ||
                     !Utility.CheckForCorrectResponse(lResponse, this._senpai.ErrHandler))
-                    return new ProxerResult(new Exception[] {new WrongResponseException()});
+                    return new ProxerResult(new Exception[] {new WrongResponseException() { Response = lResponse } });
 
                 try
                 {
@@ -309,7 +309,7 @@ namespace Proxer.API
                 {
                     if (string.IsNullOrEmpty(lResponse) ||
                         !Utility.CheckForCorrectResponse(lResponse, this._senpai.ErrHandler))
-                        return new ProxerResult(new Exception[] {new WrongResponseException()});
+                        return new ProxerResult(new Exception[] {new WrongResponseException() { Response = lResponse } });
                     if (
                         lResponse.Equals(
                             "<div class=\"inner\"><h3>Du hast keine Berechtigung um diese Seite zu betreten.</h3></div>"))
@@ -378,7 +378,7 @@ namespace Proxer.API
 
                 if (string.IsNullOrEmpty(lResponse) ||
                     !Utility.CheckForCorrectResponse(lResponse, this._senpai.ErrHandler))
-                    return new ProxerResult(new Exception[] {new WrongResponseException()});
+                    return new ProxerResult(new Exception[] {new WrongResponseException() { Response = lResponse } });
 
                 try
                 {
@@ -447,7 +447,7 @@ namespace Proxer.API
             else return new ProxerResult<string>(new[] {new WrongResponseException(), lResponseObject.ErrorException});
 
             if (string.IsNullOrEmpty(lResponse) || !Utility.CheckForCorrectResponse(lResponse, senpai.ErrHandler))
-                return new ProxerResult<string>(new Exception[] {new WrongResponseException()});
+                return new ProxerResult<string>(new Exception[] {new WrongResponseException() { Response = lResponse } });
 
             try
             {

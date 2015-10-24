@@ -1,4 +1,5 @@
 ﻿using System;
+using Proxer.API.Utilities;
 
 namespace Proxer.API.Notifications
 {
@@ -106,6 +107,17 @@ namespace Proxer.API.Notifications
         ///     Gibt den Benutzernamen des Authors zurück.
         /// </summary>
         public string Uname { get; set; }
+
+        /// <summary>
+        /// Returns a string that represents the current object.
+        /// </summary>
+        /// <returns>
+        /// A string that represents the current object.
+        /// </returns>
+        public override string ToString()
+        {
+            return this.Subject + "\n" + Utility.UnixTimeStampToDateTime(this.Time) + "\n" + this.Catname;
+        }
 
         #endregion
     }
