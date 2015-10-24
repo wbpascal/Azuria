@@ -259,6 +259,19 @@ namespace Proxer.API
 
         /// <summary>
         ///     Loggt den Benutzer ein.
+        ///     <para>Mögliche Fehler, die <see cref="ProxerResult" /> enthalten kann:</para>
+        ///     <list type="table">
+        ///         <listheader>
+        ///             <term>Ausnahme</term>
+        ///             <description>Beschreibung</description>
+        ///         </listheader>
+        ///         <item>
+        ///             <term>
+        ///                 <see cref="WrongResponseException" />
+        ///             </term>
+        ///             <description>Wird ausgelöst, wenn die Antwort des Servers nicht der Erwarteten entspricht.</description>
+        ///         </item>
+        ///     </list>
         /// </summary>
         /// <param name="username">Der Benutzername des einzuloggenden Benutzers</param>
         /// <param name="password">Das Passwort des Benutzers</param>
@@ -285,7 +298,7 @@ namespace Proxer.API
             else return new ProxerResult<bool>(new[] {new WrongResponseException(), lResponseObject.ErrorException});
 
             if (string.IsNullOrEmpty(lResponse) || !Utility.CheckForCorrectResponse(lResponse, this.ErrHandler))
-                return new ProxerResult<bool>(new Exception[] {new WrongResponseException() { Response = lResponse } });
+                return new ProxerResult<bool>(new Exception[] {new WrongResponseException {Response = lResponse}});
 
             try
             {
@@ -308,14 +321,12 @@ namespace Proxer.API
             }
             catch
             {
-                return new ProxerResult<bool>((await ErrorHandler.HandleError(this, lResponse, false)).Exceptions);
+                return new ProxerResult<bool>(ErrorHandler.HandleError(this, lResponse).Exceptions);
             }
         }
 
         internal async Task<ProxerResult<bool>> CheckLogin()
         {
-            if (!this.LoggedIn) return new ProxerResult<bool>(new Exception[] {new NotLoggedInException(this)});
-
             string lResponse;
 
             IRestResponse lResponseObject =
@@ -327,7 +338,7 @@ namespace Proxer.API
             else return new ProxerResult<bool>(new[] {new WrongResponseException(), lResponseObject.ErrorException});
 
             if (string.IsNullOrEmpty(lResponse) || !Utility.CheckForCorrectResponse(lResponse, this.ErrHandler))
-                return new ProxerResult<bool>(new Exception[] {new WrongResponseException() { Response = lResponse } });
+                return new ProxerResult<bool>(new Exception[] {new WrongResponseException {Response = lResponse}});
 
             try
             {
@@ -351,6 +362,25 @@ namespace Proxer.API
 
         /// <summary>
         ///     Initialisiert die Benachrichtigungen.
+        ///     <para>Mögliche Fehler, die <see cref="ProxerResult" /> enthalten kann:</para>
+        ///     <list type="table">
+        ///         <listheader>
+        ///             <term>Ausnahme</term>
+        ///             <description>Beschreibung</description>
+        ///         </listheader>
+        ///         <item>
+        ///             <term>
+        ///                 <see cref="NotLoggedInException" />
+        ///             </term>
+        ///             <description>Wird ausgelöst, wenn der <see cref="Senpai">Benutzer</see> nicht eingeloggt ist.</description>
+        ///         </item>
+        ///         <item>
+        ///             <term>
+        ///                 <see cref="WrongResponseException" />
+        ///             </term>
+        ///             <description>Wird ausgelöst, wenn die Antwort des Servers nicht der Erwarteten entspricht.</description>
+        ///         </item>
+        ///     </list>
         /// </summary>
         /// <seealso cref="Login" />
         public async Task<ProxerResult> InitNotifications()
@@ -366,6 +396,19 @@ namespace Proxer.API
 
         /// <summary>
         ///     Zwingt die Eigenschaften sich beim nächsten Aufruf zu aktualisieren.
+        ///     <para>Mögliche Fehler, die <see cref="ProxerResult" /> enthalten kann:</para>
+        ///     <list type="table">
+        ///         <listheader>
+        ///             <term>Ausnahme</term>
+        ///             <description>Beschreibung</description>
+        ///         </listheader>
+        ///         <item>
+        ///             <term>
+        ///                 <see cref="WrongResponseException" />
+        ///             </term>
+        ///             <description>Wird ausgelöst, wenn die Antwort des Servers nicht der Erwarteten entspricht.</description>
+        ///         </item>
+        ///     </list>
         /// </summary>
         public async Task<ProxerResult> ForcePropertyReload()
         {
@@ -386,6 +429,25 @@ namespace Proxer.API
         ///     Gibt alle Konferenzen des Senpais zurück. ACHTUNG: Bei den Konferenzen muss noch
         ///     <see cref="Conference.InitConference">InitConference()</see>
         ///     aufgerufen werden!
+        ///     <para>Mögliche Fehler, die <see cref="ProxerResult" /> enthalten kann:</para>
+        ///     <list type="table">
+        ///         <listheader>
+        ///             <term>Ausnahme</term>
+        ///             <description>Beschreibung</description>
+        ///         </listheader>
+        ///         <item>
+        ///             <term>
+        ///                 <see cref="NotLoggedInException" />
+        ///             </term>
+        ///             <description>Wird ausgelöst, wenn der <see cref="Senpai">Benutzer</see> nicht eingeloggt ist.</description>
+        ///         </item>
+        ///         <item>
+        ///             <term>
+        ///                 <see cref="WrongResponseException" />
+        ///             </term>
+        ///             <description>Wird ausgelöst, wenn die Antwort des Servers nicht der Erwarteten entspricht.</description>
+        ///         </item>
+        ///     </list>
         /// </summary>
         /// <seealso cref="Login" />
         /// <returns>Alle Konferenzen, in denen der Benutzer Teilnehmer ist.</returns>
@@ -405,7 +467,9 @@ namespace Proxer.API
                     {new WrongResponseException(), lResponseObject.ErrorException});
 
             if (string.IsNullOrEmpty(lResponse) || !Utility.CheckForCorrectResponse(lResponse, this.ErrHandler))
-                return new ProxerResult<List<Conference>>(new Exception[] {new WrongResponseException() { Response = lResponse } });
+                return
+                    new ProxerResult<List<Conference>>(new Exception[]
+                    {new WrongResponseException {Response = lResponse}});
 
             try
             {
@@ -446,7 +510,7 @@ namespace Proxer.API
             else return new ProxerResult(new[] {new WrongResponseException(), lResponseObject.ErrorException});
 
             if (string.IsNullOrEmpty(lResponse) || !Utility.CheckForCorrectResponse(lResponse, this.ErrHandler))
-                return new ProxerResult(new Exception[] {new WrongResponseException() { Response = lResponse } });
+                return new ProxerResult(new Exception[] {new WrongResponseException {Response = lResponse}});
 
             if (!lResponse.StartsWith("0")) return new ProxerResult();
             string[] lResponseSplit = lResponse.Split('#');

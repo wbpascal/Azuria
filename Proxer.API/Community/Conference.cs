@@ -110,9 +110,6 @@ namespace Proxer.API.Community
         /// </summary>
         public int Id { get; }
 
-
-        private bool IsConference { get; set; }
-
         /// <summary>
         ///     Gibt zurück, ob die Konferenz bereits initialisiert ist.
         /// </summary>
@@ -139,6 +136,9 @@ namespace Proxer.API.Community
         /// </summary>
         public string Titel { get; private set; }
 
+
+        private bool IsConference { get; set; }
+
         #endregion
 
         #region
@@ -151,6 +151,25 @@ namespace Proxer.API.Community
 
         /// <summary>
         ///     Initialisiert die Konferenz.
+        ///     <para>Mögliche Fehler, die <see cref="ProxerResult" /> enthalten kann:</para>
+        ///     <list type="table">
+        ///         <listheader>
+        ///             <term>Ausnahme</term>
+        ///             <description>Beschreibung</description>
+        ///         </listheader>
+        ///         <item>
+        ///             <term>
+        ///                 <see cref="NotLoggedInException" />
+        ///             </term>
+        ///             <description>Wird ausgelöst, wenn der <see cref="Senpai">Benutzer</see> nicht eingeloggt ist.</description>
+        ///         </item>
+        ///         <item>
+        ///             <term>
+        ///                 <see cref="WrongResponseException" />
+        ///             </term>
+        ///             <description>Wird ausgelöst, wenn die Antwort des Servers nicht der Erwarteten entspricht.</description>
+        ///         </item>
+        ///     </list>
         /// </summary>
         /// <seealso cref="Senpai.Login" />
         public async Task<ProxerResult> InitConference()
@@ -182,6 +201,25 @@ namespace Proxer.API.Community
 
         /// <summary>
         ///     Sendet eine Nachricht an die Konferenz.
+        ///     <para>Mögliche Fehler, die <see cref="ProxerResult" /> enthalten kann:</para>
+        ///     <list type="table">
+        ///         <listheader>
+        ///             <term>Ausnahme</term>
+        ///             <description>Beschreibung</description>
+        ///         </listheader>
+        ///         <item>
+        ///             <term>
+        ///                 <see cref="NotLoggedInException" />
+        ///             </term>
+        ///             <description>Wird ausgelöst, wenn der <see cref="Senpai">Benutzer</see> nicht eingeloggt ist.</description>
+        ///         </item>
+        ///         <item>
+        ///             <term>
+        ///                 <see cref="WrongResponseException" />
+        ///             </term>
+        ///             <description>Wird ausgelöst, wenn die Antwort des Servers nicht der Erwarteten entspricht.</description>
+        ///         </item>
+        ///     </list>
         /// </summary>
         /// <param name="nachricht">Die Nachricht, die gesendet werden soll</param>
         /// <seealso cref="Senpai.Login" />
@@ -209,7 +247,7 @@ namespace Proxer.API.Community
             else return new ProxerResult<bool>(new[] {new WrongResponseException(), lResponseObject.ErrorException});
 
             if (string.IsNullOrEmpty(lResponse) || !Utility.CheckForCorrectResponse(lResponse, this._senpai.ErrHandler))
-                return new ProxerResult<bool>(new Exception[] {new WrongResponseException() {Response = lResponse} });
+                return new ProxerResult<bool>(new Exception[] {new WrongResponseException {Response = lResponse}});
 
             try
             {
@@ -241,11 +279,30 @@ namespace Proxer.API.Community
 
             this._getMessagesTimer.Start();
 
-            return new ProxerResult<bool>(new Exception[] {new WrongResponseException() { Response = lResponse } });
+            return new ProxerResult<bool>(new Exception[] {new WrongResponseException {Response = lResponse}});
         }
 
         /// <summary>
         ///     Markiert die Konferenz als ungelesen.
+        ///     <para>Mögliche Fehler, die <see cref="ProxerResult" /> enthalten kann:</para>
+        ///     <list type="table">
+        ///         <listheader>
+        ///             <term>Ausnahme</term>
+        ///             <description>Beschreibung</description>
+        ///         </listheader>
+        ///         <item>
+        ///             <term>
+        ///                 <see cref="NotLoggedInException" />
+        ///             </term>
+        ///             <description>Wird ausgelöst, wenn der <see cref="Senpai">Benutzer</see> nicht eingeloggt ist.</description>
+        ///         </item>
+        ///         <item>
+        ///             <term>
+        ///                 <see cref="WrongResponseException" />
+        ///             </term>
+        ///             <description>Wird ausgelöst, wenn die Antwort des Servers nicht der Erwarteten entspricht.</description>
+        ///         </item>
+        ///     </list>
         /// </summary>
         /// <seealso cref="Senpai.Login" />
         /// <returns>Gibt zurück, ob die Aktion erfolgreich war</returns>
@@ -265,13 +322,32 @@ namespace Proxer.API.Community
             else return new ProxerResult<bool>(new[] {new WrongResponseException(), lResponseObject.ErrorException});
 
             if (string.IsNullOrEmpty(lResponse) || !Utility.CheckForCorrectResponse(lResponse, this._senpai.ErrHandler))
-                return new ProxerResult<bool>(new Exception[] {new WrongResponseException() { Response = lResponse } });
+                return new ProxerResult<bool>(new Exception[] {new WrongResponseException {Response = lResponse}});
 
             return new ProxerResult<bool>(lResponse.StartsWith("{\"error\":0"));
         }
 
         /// <summary>
-        ///     Markiert die Konferenz als Favorit
+        ///     Markiert die Konferenz als Favorit.
+        ///     <para>Mögliche Fehler, die <see cref="ProxerResult" /> enthalten kann:</para>
+        ///     <list type="table">
+        ///         <listheader>
+        ///             <term>Ausnahme</term>
+        ///             <description>Beschreibung</description>
+        ///         </listheader>
+        ///         <item>
+        ///             <term>
+        ///                 <see cref="NotLoggedInException" />
+        ///             </term>
+        ///             <description>Wird ausgelöst, wenn der <see cref="Senpai">Benutzer</see> nicht eingeloggt ist.</description>
+        ///         </item>
+        ///         <item>
+        ///             <term>
+        ///                 <see cref="WrongResponseException" />
+        ///             </term>
+        ///             <description>Wird ausgelöst, wenn die Antwort des Servers nicht der Erwarteten entspricht.</description>
+        ///         </item>
+        ///     </list>
         /// </summary>
         /// <seealso cref="Senpai.Login" />
         /// <returns>Gibt zurück, ob die Aktion erfolgreich war</returns>
@@ -291,13 +367,32 @@ namespace Proxer.API.Community
             else return new ProxerResult<bool>(new[] {new WrongResponseException(), lResponseObject.ErrorException});
 
             if (string.IsNullOrEmpty(lResponse) || !Utility.CheckForCorrectResponse(lResponse, this._senpai.ErrHandler))
-                return new ProxerResult<bool>(new Exception[] {new WrongResponseException() { Response = lResponse } });
+                return new ProxerResult<bool>(new Exception[] {new WrongResponseException {Response = lResponse}});
 
             return new ProxerResult<bool>(lResponse.StartsWith("{\"error\":0"));
         }
 
         /// <summary>
         ///     Entfernt die Konferenz aus den Favoriten.
+        ///     <para>Mögliche Fehler, die <see cref="ProxerResult" /> enthalten kann:</para>
+        ///     <list type="table">
+        ///         <listheader>
+        ///             <term>Ausnahme</term>
+        ///             <description>Beschreibung</description>
+        ///         </listheader>
+        ///         <item>
+        ///             <term>
+        ///                 <see cref="NotLoggedInException" />
+        ///             </term>
+        ///             <description>Wird ausgelöst, wenn der <see cref="Senpai">Benutzer</see> nicht eingeloggt ist.</description>
+        ///         </item>
+        ///         <item>
+        ///             <term>
+        ///                 <see cref="WrongResponseException" />
+        ///             </term>
+        ///             <description>Wird ausgelöst, wenn die Antwort des Servers nicht der Erwarteten entspricht.</description>
+        ///         </item>
+        ///     </list>
         /// </summary>
         /// <seealso cref="Senpai.Login" />
         /// <returns>Gibt zurück, ob die Aktion erfolgreich war</returns>
@@ -317,13 +412,32 @@ namespace Proxer.API.Community
             else return new ProxerResult<bool>(new[] {new WrongResponseException(), lResponseObject.ErrorException});
 
             if (string.IsNullOrEmpty(lResponse) || !Utility.CheckForCorrectResponse(lResponse, this._senpai.ErrHandler))
-                return new ProxerResult<bool>(new Exception[] {new WrongResponseException() { Response = lResponse } });
+                return new ProxerResult<bool>(new Exception[] {new WrongResponseException {Response = lResponse}});
 
             return new ProxerResult<bool>(lResponse.StartsWith("{\"error\":0"));
         }
 
         /// <summary>
         ///     Blockiert die Konferenz.
+        ///     <para>Mögliche Fehler, die <see cref="ProxerResult" /> enthalten kann:</para>
+        ///     <list type="table">
+        ///         <listheader>
+        ///             <term>Ausnahme</term>
+        ///             <description>Beschreibung</description>
+        ///         </listheader>
+        ///         <item>
+        ///             <term>
+        ///                 <see cref="NotLoggedInException" />
+        ///             </term>
+        ///             <description>Wird ausgelöst, wenn der <see cref="Senpai">Benutzer</see> nicht eingeloggt ist.</description>
+        ///         </item>
+        ///         <item>
+        ///             <term>
+        ///                 <see cref="WrongResponseException" />
+        ///             </term>
+        ///             <description>Wird ausgelöst, wenn die Antwort des Servers nicht der Erwarteten entspricht.</description>
+        ///         </item>
+        ///     </list>
         /// </summary>
         /// <seealso cref="Senpai.Login" />
         /// <returns>Gibt zurück, ob die Aktion erfolgreich war</returns>
@@ -343,13 +457,32 @@ namespace Proxer.API.Community
             else return new ProxerResult<bool>(new[] {new WrongResponseException(), lResponseObject.ErrorException});
 
             if (string.IsNullOrEmpty(lResponse) || !Utility.CheckForCorrectResponse(lResponse, this._senpai.ErrHandler))
-                return new ProxerResult<bool>(new Exception[] {new WrongResponseException() { Response = lResponse } });
+                return new ProxerResult<bool>(new Exception[] {new WrongResponseException {Response = lResponse}});
 
             return new ProxerResult<bool>(lResponse.StartsWith("{\"error\":0"));
         }
 
         /// <summary>
-        ///     Entblockt die Konferenz
+        ///     Entblockt die Konferenz.
+        ///     <para>Mögliche Fehler, die <see cref="ProxerResult" /> enthalten kann:</para>
+        ///     <list type="table">
+        ///         <listheader>
+        ///             <term>Ausnahme</term>
+        ///             <description>Beschreibung</description>
+        ///         </listheader>
+        ///         <item>
+        ///             <term>
+        ///                 <see cref="NotLoggedInException" />
+        ///             </term>
+        ///             <description>Wird ausgelöst, wenn der <see cref="Senpai">Benutzer</see> nicht eingeloggt ist.</description>
+        ///         </item>
+        ///         <item>
+        ///             <term>
+        ///                 <see cref="WrongResponseException" />
+        ///             </term>
+        ///             <description>Wird ausgelöst, wenn die Antwort des Servers nicht der Erwarteten entspricht.</description>
+        ///         </item>
+        ///     </list>
         /// </summary>
         /// <seealso cref="Senpai.Login" />
         /// <returns>Gibt zurück, ob die Aktion erfolgreich war</returns>
@@ -369,7 +502,7 @@ namespace Proxer.API.Community
             else return new ProxerResult<bool>(new[] {new WrongResponseException(), lResponseObject.ErrorException});
 
             if (string.IsNullOrEmpty(lResponse) || !Utility.CheckForCorrectResponse(lResponse, this._senpai.ErrHandler))
-                return new ProxerResult<bool>(new Exception[] {new WrongResponseException() { Response = lResponse } });
+                return new ProxerResult<bool>(new Exception[] {new WrongResponseException {Response = lResponse}});
 
             return new ProxerResult<bool>(lResponse.StartsWith("{\"error\":0"));
         }
@@ -396,7 +529,7 @@ namespace Proxer.API.Community
 
             if (string.IsNullOrEmpty(lResponse) ||
                 !Utility.CheckForCorrectResponse(lResponse, this._senpai.ErrHandler))
-                return new ProxerResult(new Exception[] {new WrongResponseException() { Response = lResponse } });
+                return new ProxerResult(new Exception[] {new WrongResponseException {Response = lResponse}});
 
             try
             {
@@ -437,7 +570,7 @@ namespace Proxer.API.Community
 
             if (string.IsNullOrEmpty(lResponse) ||
                 !Utility.CheckForCorrectResponse(lResponse, this._senpai.ErrHandler))
-                return new ProxerResult(new Exception[] {new WrongResponseException() { Response = lResponse } });
+                return new ProxerResult(new Exception[] {new WrongResponseException {Response = lResponse}});
 
             try
             {
@@ -487,7 +620,7 @@ namespace Proxer.API.Community
 
                 if (string.IsNullOrEmpty(lResponse) ||
                     !Utility.CheckForCorrectResponse(lResponse, this._senpai.ErrHandler))
-                    return new ProxerResult(new Exception[] {new WrongResponseException() { Response = lResponse } });
+                    return new ProxerResult(new Exception[] {new WrongResponseException {Response = lResponse}});
 
                 try
                 {
@@ -536,7 +669,7 @@ namespace Proxer.API.Community
 
             if (string.IsNullOrEmpty(lResponse) ||
                 !Utility.CheckForCorrectResponse(lResponse, this._senpai.ErrHandler))
-                return new ProxerResult(new Exception[] {new WrongResponseException() { Response = lResponse } });
+                return new ProxerResult(new Exception[] {new WrongResponseException {Response = lResponse}});
 
             if (lResponse.Equals("{\"uid\":\"" + this._senpai.Me.Id +
                                  "\",\"error\":1,\"msg\":\"Ein Fehler ist passiert.\"}"))
@@ -629,7 +762,7 @@ namespace Proxer.API.Community
 
             if (string.IsNullOrEmpty(lResponse) ||
                 !Utility.CheckForCorrectResponse(lResponse, this._senpai.ErrHandler))
-                return new ProxerResult(new Exception[] {new WrongResponseException() { Response = lResponse } });
+                return new ProxerResult(new Exception[] {new WrongResponseException {Response = lResponse}});
 
             if (lResponse.Equals("{\"uid\":\"" + this._senpai.Me.Id +
                                  "\",\"error\":1,\"msg\":\"Ein Fehler ist passiert.\"}"))
@@ -727,7 +860,7 @@ namespace Proxer.API.Community
 
             if (string.IsNullOrEmpty(lResponse) ||
                 !Utility.CheckForCorrectResponse(lResponse, this._senpai.ErrHandler))
-                return new ProxerResult<bool>(new Exception[] {new WrongResponseException() { Response = lResponse } });
+                return new ProxerResult<bool>(new Exception[] {new WrongResponseException {Response = lResponse}});
             try
             {
                 Dictionary<string, string> lDict =
@@ -745,6 +878,25 @@ namespace Proxer.API.Community
 
         /// <summary>
         ///     Gibt zurück, ob Senpai ein Teilnehmer einer Konferenz mit der bestimmten ID ist.
+        ///     <para>Mögliche Fehler, die <see cref="ProxerResult" /> enthalten kann:</para>
+        ///     <list type="table">
+        ///         <listheader>
+        ///             <term>Ausnahme</term>
+        ///             <description>Beschreibung</description>
+        ///         </listheader>
+        ///         <item>
+        ///             <term>
+        ///                 <see cref="NotLoggedInException" />
+        ///             </term>
+        ///             <description>Wird ausgelöst, wenn der <see cref="Senpai">Benutzer</see> nicht eingeloggt ist.</description>
+        ///         </item>
+        ///         <item>
+        ///             <term>
+        ///                 <see cref="WrongResponseException" />
+        ///             </term>
+        ///             <description>Wird ausgelöst, wenn die Antwort des Servers nicht der Erwarteten entspricht.</description>
+        ///         </item>
+        ///     </list>
         /// </summary>
         /// <param name="id">ID der Konferenz</param>
         /// <param name="senpai">Muss eingeloggt sein</param>
@@ -771,7 +923,7 @@ namespace Proxer.API.Community
 
             if (string.IsNullOrEmpty(lResponse) ||
                 !Utility.CheckForCorrectResponse(lResponse, senpai.ErrHandler))
-                return new ProxerResult<bool>(new Exception[] {new WrongResponseException() { Response = lResponse } });
+                return new ProxerResult<bool>(new Exception[] {new WrongResponseException {Response = lResponse}});
 
             try
             {

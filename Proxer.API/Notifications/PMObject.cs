@@ -69,7 +69,7 @@ namespace Proxer.API.Notifications
         ///     Gibt den Titel der <see cref="Conference">Sender-Konferenz</see> zurück.
         ///     <para>(Ist nur vorhanden, wenn <see cref="MessageTyp" /> = <see cref="PmType.Konferenz" />)</para>
         /// </summary>
-        public string ConferenceTitle { get;}
+        public string ConferenceTitle { get; }
 
         /// <summary>
         ///     Gibt die ID der Konferenz zurück.
@@ -79,24 +79,28 @@ namespace Proxer.API.Notifications
         /// <summary>
         ///     Gibt den Typ des Senders zurück.
         /// </summary>
-        public PmType MessageTyp { get;}
+        public PmType MessageTyp { get; }
 
         /// <summary>
         ///     Gibt das Empfangsdatum der Nachricht zurück.
         /// </summary>
-        public DateTime TimeStamp { get;}
+        public DateTime TimeStamp { get; }
 
         /// <summary>
         ///     Gibt den Benutzernamen des Senders zurück.
         ///     <para>(Ist nur vorhanden, wenn <see cref="MessageTyp" /> = <see cref="PmType.Benutzer" />)</para>
         /// </summary>
-        public string UserName { get;}
+        public string UserName { get; }
+
+        #endregion
+
+        #region
 
         /// <summary>
-        /// Returns a string that represents the current object.
+        ///     Returns a string that represents the current object.
         /// </summary>
         /// <returns>
-        /// A string that represents the current object.
+        ///     A string that represents the current object.
         /// </returns>
         public override string ToString()
         {

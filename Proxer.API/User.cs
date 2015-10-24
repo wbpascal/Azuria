@@ -200,6 +200,25 @@ namespace Proxer.API
 
         /// <summary>
         ///     Initialisiert die Eigenschaften der Klasse
+        ///     <para>Mögliche Fehler, die <see cref="ProxerResult" /> enthalten kann:</para>
+        ///     <list type="table">
+        ///         <listheader>
+        ///             <term>Ausnahme</term>
+        ///             <description>Beschreibung</description>
+        ///         </listheader>
+        ///         <item>
+        ///             <term>
+        ///                 <see cref="NotLoggedInException" />
+        ///             </term>
+        ///             <description>Wird ausgelöst, wenn der <see cref="Senpai">Benutzer</see> nicht eingeloggt ist.</description>
+        ///         </item>
+        ///         <item>
+        ///             <term>
+        ///                 <see cref="WrongResponseException" />
+        ///             </term>
+        ///             <description>Wird ausgelöst, wenn die Antwort des Servers nicht der Erwarteten entspricht.</description>
+        ///         </item>
+        ///     </list>
         /// </summary>
         /// <seealso cref="Senpai.Login" />
         public async Task<ProxerResult> InitUser()
@@ -236,7 +255,7 @@ namespace Proxer.API
 
                 if (string.IsNullOrEmpty(lResponse) ||
                     !Utility.CheckForCorrectResponse(lResponse, this._senpai.ErrHandler))
-                    return new ProxerResult(new Exception[] {new WrongResponseException() { Response = lResponse } });
+                    return new ProxerResult(new Exception[] {new WrongResponseException {Response = lResponse}});
 
                 try
                 {
@@ -309,7 +328,7 @@ namespace Proxer.API
                 {
                     if (string.IsNullOrEmpty(lResponse) ||
                         !Utility.CheckForCorrectResponse(lResponse, this._senpai.ErrHandler))
-                        return new ProxerResult(new Exception[] {new WrongResponseException() { Response = lResponse } });
+                        return new ProxerResult(new Exception[] {new WrongResponseException {Response = lResponse}});
                     if (
                         lResponse.Equals(
                             "<div class=\"inner\"><h3>Du hast keine Berechtigung um diese Seite zu betreten.</h3></div>"))
@@ -378,7 +397,7 @@ namespace Proxer.API
 
                 if (string.IsNullOrEmpty(lResponse) ||
                     !Utility.CheckForCorrectResponse(lResponse, this._senpai.ErrHandler))
-                    return new ProxerResult(new Exception[] {new WrongResponseException() { Response = lResponse } });
+                    return new ProxerResult(new Exception[] {new WrongResponseException {Response = lResponse}});
 
                 try
                 {
@@ -414,18 +433,56 @@ namespace Proxer.API
 
         /// <summary>
         ///     Überprüft, ob zwei Benutzter Freunde sind.
+        ///     <para>Mögliche Fehler, die <see cref="ProxerResult" /> enthalten kann:</para>
+        ///     <list type="table">
+        ///         <listheader>
+        ///             <term>Ausnahme</term>
+        ///             <description>Beschreibung</description>
+        ///         </listheader>
+        ///         <item>
+        ///             <term>
+        ///                 <see cref="InitializeNeededException" />
+        ///             </term>
+        ///             <description>Wird ausgelöst, wenn die Eigenschaften des Objektes noch nicht initialisiert sind.</description>
+        ///         </item>
+        ///     </list>
         /// </summary>
         /// <param name="user1">Benutzer 1</param>
         /// <param name="user2">Benutzer 2</param>
         /// <returns>Benutzer sind Freunde. True oder False.</returns>
-        /// <exception cref="InitializeNeededException">Wird ausgelöst, wenn das Objekt noch nicht initialisiert ist.</exception>
-        public static bool IsUserFriendOf(User user1, User user2)
+        public static ProxerResult<bool> IsUserFriendOf(User user1, User user2)
         {
-            return user1.Freunde.Any(item => item.Id == user2.Id);
+            try
+            {
+                return new ProxerResult<bool>(user1.Freunde.Any(item => item.Id == user2.Id));
+            }
+            catch (InitializeNeededException exception)
+            {
+                return new ProxerResult<bool>(new Exception[] {exception});
+            }
         }
 
         /// <summary>
         ///     Gibt den Benutzernamen eines Benutzers mit der spezifizierten ID zurück.
+        ///     <para>Mögliche Fehler, die <see cref="ProxerResult" /> enthalten kann:</para>
+        ///     <list type="table">
+        ///         <listheader>
+        ///             <term>Ausnahme</term>
+        ///             <description>Beschreibung</description>
+        ///         </listheader>
+        ///         <item>
+        ///             <term>
+        ///                 <see cref="NotLoggedInException" />
+        ///             </term>
+        ///             <description>Wird ausgelöst, wenn der <see cref="Senpai">Benutzer</see> nicht eingeloggt ist.</description>
+        ///         </item>
+        ///         <item>
+        ///             <term>
+        ///                 <see cref="WrongResponseException" />
+        ///             </term>
+        ///             <description>Wird ausgelöst, wenn die Antwort des Servers nicht der Erwarteten entspricht.</description>
+        ///         </item>
+        ///     </list>
         /// </summary>
         /// <param name="id">Die ID des Benutzers</param>
         /// <param name="senpai">Login-Cookies werden benötigt</param>
@@ -447,7 +504,7 @@ namespace Proxer.API
             else return new ProxerResult<string>(new[] {new WrongResponseException(), lResponseObject.ErrorException});
 
             if (string.IsNullOrEmpty(lResponse) || !Utility.CheckForCorrectResponse(lResponse, senpai.ErrHandler))
-                return new ProxerResult<string>(new Exception[] {new WrongResponseException() { Response = lResponse } });
+                return new ProxerResult<string>(new Exception[] {new WrongResponseException {Response = lResponse}});
 
             try
             {

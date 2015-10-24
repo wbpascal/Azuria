@@ -19,6 +19,7 @@ namespace Proxer.API.Exceptions
         /// <summary>
         ///     Initialisiert eine neue Instanz der <see cref="NotLoggedInException" />-Klasse.
         /// </summary>
+        /// <param name="senpai">Der Benutzer, der nicht eingeloggt ist.</param>
         public NotLoggedInException(Senpai senpai)
         {
             this.Senpai = senpai;

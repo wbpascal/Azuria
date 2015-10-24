@@ -62,21 +62,9 @@ namespace Proxer.API.Notifications
         public string ImageStyle { get; set; }
 
         /// <summary>
-        ///     Veraltet. Gibt die Thread-ID zurück.
-        /// </summary>
-        [Obsolete("Bitte benutzte stattdessen \"thread\"")]
-        internal int Mid { get; set; }
-
-        /// <summary>
         ///     Gibt die News-ID zurück.
         /// </summary>
         public int Nid { get; set; }
-
-        /// <summary>
-        ///     Veraltet.
-        /// </summary>
-        [Obsolete]
-        internal int Pid { get; set; }
 
         /// <summary>
         ///     Gibt die Anzahl der Kommentare zurück.
@@ -109,10 +97,26 @@ namespace Proxer.API.Notifications
         public string Uname { get; set; }
 
         /// <summary>
-        /// Returns a string that represents the current object.
+        ///     Veraltet. Gibt die Thread-ID zurück.
+        /// </summary>
+        [Obsolete("Bitte benutzte stattdessen \"thread\"")]
+        internal int Mid { get; set; }
+
+        /// <summary>
+        ///     Veraltet.
+        /// </summary>
+        [Obsolete]
+        internal int Pid { get; set; }
+
+        #endregion
+
+        #region
+
+        /// <summary>
+        ///     Returns a string that represents the current object.
         /// </summary>
         /// <returns>
-        /// A string that represents the current object.
+        ///     A string that represents the current object.
         /// </returns>
         public override string ToString()
         {

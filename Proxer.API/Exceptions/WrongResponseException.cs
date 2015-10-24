@@ -38,9 +38,13 @@ namespace Proxer.API.Exceptions
         {
         }
 
+        #region Properties
+
         /// <summary>
-        /// Gibt die Antwort des Servers zurück, mit der diese Ausnahme zusammenhängt oder legt diese fest.
+        ///     Gibt die Antwort des Servers zurück, mit der diese Ausnahme zusammenhängt oder legt diese fest.
         /// </summary>
         public string Response { get; set; }
+
+        #endregion
     }
 }

@@ -302,6 +302,31 @@ namespace Proxer.API.Main
         /// <summary>
         ///     Initialisiert das Objekt.
         ///     <para>(Vererbt von <see cref="IAnimeMangaObject" />)</para>
+        ///     <para>Mögliche Fehler, die <see cref="ProxerResult" /> enthalten kann:</para>
+        ///     <list type="table">
+        ///         <listheader>
+        ///             <term>Ausnahme</term>
+        ///             <description>Beschreibung</description>
+        ///         </listheader>
+        ///         <item>
+        ///             <term>
+        ///                 <see cref="NotLoggedInException" />
+        ///             </term>
+        ///             <description>Wird ausgelöst, wenn der <see cref="Senpai">Benutzer</see> nicht eingeloggt ist.</description>
+        ///         </item>
+        ///         <item>
+        ///             <term>
+        ///                 <see cref="WrongResponseException" />
+        ///             </term>
+        ///             <description>Wird ausgelöst, wenn die Antwort des Servers nicht der Erwarteten entspricht.</description>
+        ///         </item>
+        ///         <item>
+        ///             <term>
+        ///                 <see cref="CaptchaException" />
+        ///             </term>
+        ///             <description>Wird ausgelöst, wenn der Server das Ausfüllen eines Captchas erfordert.</description>
+        ///         </item>
+        ///     </list>
         /// </summary>
         /// <seealso cref="Senpai.Login" />
         public async Task<ProxerResult> Init()
@@ -358,6 +383,19 @@ namespace Proxer.API.Main
 
         /// <summary>
         ///     Gibt die aktuell am beliebtesten <see cref="Anime" /> zurück.
+        ///     <para>Mögliche Fehler, die <see cref="ProxerResult" /> enthalten kann:</para>
+        ///     <list type="table">
+        ///         <listheader>
+        ///             <term>Ausnahme</term>
+        ///             <description>Beschreibung</description>
+        ///         </listheader>
+        ///         <item>
+        ///             <term>
+        ///                 <see cref="WrongResponseException" />
+        ///             </term>
+        ///             <description>Wird ausgelöst, wenn die Antwort des Servers nicht der Erwarteten entspricht.</description>
+        ///         </item>
+        ///     </list>
         /// </summary>
         /// <returns>Ein Array mit den aktuell beliebtesten <see cref="Anime" />.</returns>
         public static async Task<ProxerResult<Anime[]>> GetPopularAnimes(Senpai senpai)
@@ -376,7 +414,7 @@ namespace Proxer.API.Main
 
             if (string.IsNullOrEmpty(lResponse) ||
                 !Utility.CheckForCorrectResponse(lResponse, senpai.ErrHandler))
-                return new ProxerResult<Anime[]>(new Exception[] {new WrongResponseException() { Response = lResponse } });
+                return new ProxerResult<Anime[]>(new Exception[] {new WrongResponseException {Response = lResponse}});
 
             try
             {
@@ -394,12 +432,31 @@ namespace Proxer.API.Main
             }
             catch
             {
-                return new ProxerResult<Anime[]>((await ErrorHandler.HandleError(senpai, lResponse, false)).Exceptions);
+                return new ProxerResult<Anime[]>(ErrorHandler.HandleError(senpai, lResponse).Exceptions);
             }
         }
 
         /// <summary>
         ///     Gibt die Episoden des <see cref="Anime" /> in einer bestimmten <see cref="Language">Sprache</see> zurück.
+        ///     <para>Mögliche Fehler, die <see cref="ProxerResult" /> enthalten kann:</para>
+        ///     <list type="table">
+        ///         <listheader>
+        ///             <term>Ausnahme</term>
+        ///             <description>Beschreibung</description>
+        ///         </listheader>
+        ///         <item>
+        ///             <term>
+        ///                 <see cref="LanguageNotAvailableException" />
+        ///             </term>
+        ///             <description>Wird ausgelöst, wenn der Anime nicht in der angegebenen Sprache verfügbar ist.</description>
+        ///         </item>
+        ///         <item>
+        ///             <term>
+        ///                 <see cref="InitializeNeededException" />
+        ///             </term>
+        ///             <description>Wird ausgelöst, wenn die Eigenschaften des Objektes noch nicht initialisiert sind.</description>
+        ///         </item>
+        ///     </list>
         /// </summary>
         /// <param name="language">Die Sprache der Episoden.</param>
         /// <seealso cref="Anime.Episode" />
@@ -439,7 +496,7 @@ namespace Proxer.API.Main
 
             if (string.IsNullOrEmpty(lResponse) ||
                 !Utility.CheckForCorrectResponse(lResponse, this._senpai.ErrHandler))
-                return new ProxerResult(new Exception[] {new WrongResponseException() { Response = lResponse } });
+                return new ProxerResult(new Exception[] {new WrongResponseException {Response = lResponse}});
 
             try
             {
@@ -500,7 +557,7 @@ namespace Proxer.API.Main
 
             if (string.IsNullOrEmpty(lResponse) ||
                 !Utility.CheckForCorrectResponse(lResponse, this._senpai.ErrHandler))
-                return new ProxerResult(new Exception[] {new WrongResponseException() { Response = lResponse } });
+                return new ProxerResult(new Exception[] {new WrongResponseException {Response = lResponse}});
 
             try
             {
@@ -538,7 +595,7 @@ namespace Proxer.API.Main
 
             if (string.IsNullOrEmpty(lResponse) ||
                 !Utility.CheckForCorrectResponse(lResponse, this._senpai.ErrHandler))
-                return new ProxerResult(new Exception[] {new WrongResponseException() { Response = lResponse } });
+                return new ProxerResult(new Exception[] {new WrongResponseException {Response = lResponse}});
             try
             {
                 lDocument.LoadHtml(lResponse);
@@ -671,7 +728,7 @@ namespace Proxer.API.Main
             }
             catch
             {
-                return new ProxerResult((await ErrorHandler.HandleError(this._senpai, lResponse, false)).Exceptions);
+                return new ProxerResult(ErrorHandler.HandleError(this._senpai, lResponse).Exceptions);
             }
 
             return new ProxerResult();
@@ -737,6 +794,31 @@ namespace Proxer.API.Main
 
             /// <summary>
             ///     Initialisiert das Objekt.
+            ///     <para>Mögliche Fehler, die <see cref="ProxerResult" /> enthalten kann:</para>
+            ///     <list type="table">
+            ///         <listheader>
+            ///             <term>Ausnahme</term>
+            ///             <description>Beschreibung</description>
+            ///         </listheader>
+            ///         <item>
+            ///             <term>
+            ///                 <see cref="NotLoggedInException" />
+            ///             </term>
+            ///             <description>Wird ausgelöst, wenn der <see cref="Senpai">Benutzer</see> nicht eingeloggt ist.</description>
+            ///         </item>
+            ///         <item>
+            ///             <term>
+            ///                 <see cref="WrongResponseException" />
+            ///             </term>
+            ///             <description>Wird ausgelöst, wenn die Antwort des Servers nicht der Erwarteten entspricht.</description>
+            ///         </item>
+            ///         <item>
+            ///             <term>
+            ///                 <see cref="CaptchaException" />
+            ///             </term>
+            ///             <description>Wird ausgelöst, wenn die Website das Ausfüllen eines Captcha erfordert.</description>
+            ///         </item>
+            ///     </list>
             /// </summary>
             /// <seealso cref="Senpai.Login" />
             public async Task<ProxerResult> Init()
@@ -759,7 +841,7 @@ namespace Proxer.API.Main
 
                 if (string.IsNullOrEmpty(lResponse) ||
                     !Utility.CheckForCorrectResponse(lResponse, this._senpai.ErrHandler))
-                    return new ProxerResult(new Exception[] {new WrongResponseException() { Response = lResponse } });
+                    return new ProxerResult(new Exception[] {new WrongResponseException {Response = lResponse}});
 
                 try
                 {
@@ -779,7 +861,7 @@ namespace Proxer.API.Main
                             x =>
                                 x.Name.Equals("img") && x.HasAttributes &&
                                 x.GetAttributeValue("src", "").Equals("/images/misc/404.png")))
-                        return new ProxerResult(new Exception[] {new WrongResponseException() { Response = lResponse } });
+                        return new ProxerResult(new Exception[] {new WrongResponseException {Response = lResponse}});
 
                     this.Streams = new List<KeyValuePair<Stream.StreamPartner, Stream>>();
 
