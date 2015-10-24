@@ -1,240 +1,427 @@
-﻿using Proxer.API.Utilities;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
+using System.Net;
 using System.Threading.Tasks;
-using System.Timers;
+using HtmlAgilityPack;
+using Proxer.API.Exceptions;
+using Proxer.API.Utilities;
+using Proxer.API.Utilities.Net;
+using RestSharp;
 
 namespace Proxer.API
 {
     /// <summary>
-    /// Repräsentiert einen Proxer-Benutzer
+    ///     Repräsentiert einen Proxer-Benutzer
     /// </summary>
     public class User
     {
         /// <summary>
-        /// Representiert das System
+        ///     Representiert das System.
         /// </summary>
         public static User System = new User("System", -1, new Senpai());
 
-        private readonly Senpai senpai;
+        private readonly Senpai _senpai;
+        private Uri _avatar;
+        private List<User> _freunde;
+        private string _info;
+        private bool _online;
+        private int _punkte;
+        private string _rang;
+        private string _status;
 
-        internal User(string name, int userID, Senpai senpai)
+        internal User(string name, int userId, Senpai senpai)
         {
-            this.senpai = senpai;
+            this._senpai = senpai;
+            this.IstInitialisiert = false;
 
             this.UserName = name;
-            this.ID = userID;
-            this.Avatar = new Uri("https://proxer.me/components/com_comprofiler/plugin/templates/default/images/avatar/nophoto_n.png");
+            this.Id = userId;
+            this.Avatar =
+                new Uri(
+                    "https://proxer.me/components/com_comprofiler/plugin/templates/default/images/avatar/nophoto_n.png");
         }
-        internal User(string name, int userID, Uri avatar, Senpai senpai)
+
+        internal User(string name, int userId, Uri avatar, Senpai senpai)
         {
-            this.senpai = senpai;
+            this._senpai = senpai;
+            this.IstInitialisiert = false;
 
             this.UserName = name;
-            this.ID = userID;
+            this.Id = userId;
             if (avatar != null) this.Avatar = avatar;
-            else this.Avatar = new Uri("https://proxer.me/components/com_comprofiler/plugin/templates/default/images/avatar/nophoto_n.png");
+            else
+                this.Avatar =
+                    new Uri(
+                        "https://proxer.me/components/com_comprofiler/plugin/templates/default/images/avatar/nophoto_n.png");
         }
+
         /// <summary>
-        /// Initialisiert die Klasse mit allen Standardeinstellungen.
+        ///     Initialisiert die Klasse mit allen Standardeinstellungen.
         /// </summary>
-        /// <param name="userID"></param>
-        /// <param name="senpai"></param>
-        public User(int userID, Senpai senpai)
+        /// <param name="userId">Die ID des Benutzers</param>
+        /// <param name="senpai">Wird benötigt um einige Eigenschaften abzurufen</param>
+        public User(int userId, Senpai senpai)
         {
-            this.senpai = senpai;
+            this._senpai = senpai;
+            this.IstInitialisiert = false;
 
-            this.UserName = User.getUNameFromID(userID, senpai);
-            this.ID = userID;
-            this.Avatar = new Uri("https://proxer.me/components/com_comprofiler/plugin/templates/default/images/avatar/nophoto_n.png");
+            this.Id = userId;
+            this.Avatar =
+                new Uri(
+                    "https://proxer.me/components/com_comprofiler/plugin/templates/default/images/avatar/nophoto_n.png");
         }
 
+        #region Properties
 
         /// <summary>
-        /// Gibt den Link zu dem Avatar des Benutzers zurück
+        ///     Gibt den Link zu dem Avatar des Benutzers zurück.
         /// </summary>
-        public Uri Avatar { get; private set; }
+        /// <exception cref="InitializeNeededException">Wird ausgelöst, wenn das Objekt noch nicht initialisiert ist.</exception>
+        /// <seealso cref="InitUser" />
+        public Uri Avatar
+        {
+            get
+            {
+                if (!this.IstInitialisiert) throw new InitializeNeededException();
+                return this._avatar;
+            }
+            private set { this._avatar = value; }
+        }
+
         /// <summary>
-        /// Gibt die Freunde des Benutzers in einer Liste zurück
+        ///     Gibt die Freunde des Benutzers in einer Liste zurück.
         /// </summary>
-        public List<User> Freunde { get; private set; }
+        /// <exception cref="InitializeNeededException">Wird ausgelöst, wenn das Objekt noch nicht initialisiert ist.</exception>
+        /// <seealso cref="InitUser" />
+        public List<User> Freunde
+        {
+            get
+            {
+                if (!this.IstInitialisiert) throw new InitializeNeededException();
+                return this._freunde;
+            }
+            private set { this._freunde = value; }
+        }
+
         /// <summary>
-        /// Gibt die Freunde des Benutzers in einer Liste zurück
+        ///     Gibt die ID des Benutzers zurück.
         /// </summary>
-        public int ID { get; private set; }
+        public int Id { get; }
+
         /// <summary>
-        /// Gibt die Info des Benutzers als Html-Dokument zurück
+        ///     Gibt die Info des Benutzers als Html-Dokument zurück.
         /// </summary>
-        public string Info { get; private set; }
+        /// <exception cref="InitializeNeededException">Wird ausgelöst, wenn das Objekt noch nicht initialisiert ist.</exception>
+        /// <seealso cref="InitUser" />
+        public string Info
+        {
+            get
+            {
+                if (!this.IstInitialisiert) throw new InitializeNeededException();
+                return this._info;
+            }
+            private set { this._info = value; }
+        }
+
         /// <summary>
-        /// Gibt zurück, ob der Benutzter zur Zeit online ist
+        ///     Gibt an, ob das Objekt bereits Initialisiert ist.
         /// </summary>
-        public bool Online { get; private set; }
+        public bool IstInitialisiert { get; private set; }
+
         /// <summary>
-        /// Gibt zurück, wie viele Punkte der Benutzter momentan hat
+        ///     Gibt zurück, ob der Benutzter zur Zeit online ist.
         /// </summary>
-        public int Punkte { get; private set; }
+        /// <exception cref="InitializeNeededException">Wird ausgelöst, wenn das Objekt noch nicht initialisiert ist.</exception>
+        /// <seealso cref="InitUser" />
+        public bool Online
+        {
+            get
+            {
+                if (!this.IstInitialisiert) throw new InitializeNeededException();
+                return this._online;
+            }
+            private set { this._online = value; }
+        }
+
         /// <summary>
-        /// Gibt den Rang-namen des Benutzers zurück
+        ///     Gibt zurück, wie viele Punkte der Benutzter momentan hat.
         /// </summary>
-        public string Rang { get; private set; }
+        /// <exception cref="InitializeNeededException">Wird ausgelöst, wenn das Objekt noch nicht initialisiert ist.</exception>
+        /// <seealso cref="InitUser" />
+        public int Punkte
+        {
+            get
+            {
+                if (!this.IstInitialisiert) throw new InitializeNeededException();
+                return this._punkte;
+            }
+            private set { this._punkte = value; }
+        }
+
         /// <summary>
-        /// Gibt den Status des Benutzers zurück
+        ///     Gibt den Rangnamen des Benutzers zurück.
         /// </summary>
-        public string Status { get; private set; }
+        /// <exception cref="InitializeNeededException">Wird ausgelöst, wenn das Objekt noch nicht initialisiert ist.</exception>
+        /// <seealso cref="InitUser" />
+        public string Rang
+        {
+            get
+            {
+                if (!this.IstInitialisiert) throw new InitializeNeededException();
+                return this._rang;
+            }
+            private set { this._rang = value; }
+        }
+
         /// <summary>
-        /// Gibt den Benutzernamen des Benutzers zurück
+        ///     Gibt den Status des Benutzers zurück.
+        /// </summary>
+        /// <exception cref="InitializeNeededException">Wird ausgelöst, wenn das Objekt noch nicht initialisiert ist.</exception>
+        /// <seealso cref="InitUser" />
+        public string Status
+        {
+            get
+            {
+                if (!this.IstInitialisiert) throw new InitializeNeededException();
+                return this._status;
+            }
+            private set { this._status = value; }
+        }
+
+        /// <summary>
+        ///     Gibt den Benutzernamen des Benutzers zurück.
         /// </summary>
         public string UserName { get; private set; }
 
+        #endregion
+
+        #region
 
         /// <summary>
-        /// Initialisiert die Eigenschaften der Klasse
+        ///     Initialisiert die Eigenschaften der Klasse
+        ///     <para>Mögliche Fehler, die <see cref="ProxerResult" /> enthalten kann:</para>
+        ///     <list type="table">
+        ///         <listheader>
+        ///             <term>Ausnahme</term>
+        ///             <description>Beschreibung</description>
+        ///         </listheader>
+        ///         <item>
+        ///             <term>
+        ///                 <see cref="NotLoggedInException" />
+        ///             </term>
+        ///             <description>Wird ausgelöst, wenn der <see cref="Senpai">Benutzer</see> nicht eingeloggt ist.</description>
+        ///         </item>
+        ///         <item>
+        ///             <term>
+        ///                 <see cref="WrongResponseException" />
+        ///             </term>
+        ///             <description>Wird ausgelöst, wenn die Antwort des Servers nicht der Erwarteten entspricht.</description>
+        ///         </item>
+        ///     </list>
         /// </summary>
-        public void initUser()
+        /// <seealso cref="Senpai.Login" />
+        public async Task<ProxerResult> InitUser()
         {
-            this.getMainInfo();
-            this.getFriends();
-            this.getInfos();
-        }
-        
-
-        private void getMainInfo()
-        {
-            if (this.ID == -1)
+            ProxerResult lResult;
+            if (!(lResult = await this.GetMainInfo()).Success || !(lResult = await this.GetFriends()).Success ||
+                !(lResult = await this.GetInfos()).Success)
             {
-                this.Status = "";
-                this.Online = false;
-                this.Rang = "";
-                this.Punkte = -1;
-                this.Avatar = new Uri("https://proxer.me/components/com_comprofiler/plugin/templates/default/images/avatar/nophoto_n.png");
+                return lResult;
             }
-            else if (senpai.LoggedIn)
-            {
-                HtmlAgilityPack.HtmlDocument lDocument = new HtmlAgilityPack.HtmlDocument();
-                string lResponse = (HttpUtility.GetWebRequestResponse("https://proxer.me/user/" + this.ID + "/overview?format=raw", this.senpai.LoginCookies)).Replace("</link>", "").Replace("\n", "");
 
-                if (Utilities.Utility.checkForCorrectResponse(lResponse, senpai.ErrHandler))
+            this.IstInitialisiert = true;
+
+            return new ProxerResult();
+        }
+
+
+        private async Task<ProxerResult> GetMainInfo()
+        {
+            if (this.Id != -1)
+            {
+                if (!this._senpai.LoggedIn)
+                    return new ProxerResult(new Exception[] {new NotLoggedInException(this._senpai)});
+                HtmlDocument lDocument = new HtmlDocument();
+                string lResponse;
+
+                IRestResponse lResponseObject =
+                    await
+                        HttpUtility.GetWebRequestResponse("https://proxer.me/user/" + this.Id + "/overview?format=raw",
+                            this._senpai.LoginCookies);
+                if (lResponseObject.StatusCode == HttpStatusCode.OK && !string.IsNullOrEmpty(lResponseObject.Content))
+                    lResponse = global::System.Web.HttpUtility.HtmlDecode(lResponseObject.Content).Replace("\n", "");
+                else return new ProxerResult(new[] {new WrongResponseException(), lResponseObject.ErrorException});
+
+                if (string.IsNullOrEmpty(lResponse) ||
+                    !Utility.CheckForCorrectResponse(lResponse, this._senpai.ErrHandler))
+                    return new ProxerResult(new Exception[] {new WrongResponseException {Response = lResponse}});
+
+                try
                 {
+                    lDocument.LoadHtml(lResponse);
+
+                    HtmlNodeCollection lProfileNodes =
+                        lDocument.DocumentNode.SelectNodes("//table[@class='profile']");
+
+                    this.Avatar =
+                        new Uri("https://proxer.me" +
+                                lProfileNodes[0].ParentNode.ParentNode.ChildNodes[1].ChildNodes[0]
+                                    .Attributes["src"].Value);
+                    this.Punkte =
+                        Convert.ToInt32(
+                            Utility.GetTagContents(lProfileNodes[0].FirstChild.InnerText, "Summe: ", " - ")[
+                                0]);
+                    this.Rang =
+                        Utility.GetTagContents(lProfileNodes[0].FirstChild.InnerText, this.Punkte + " - ",
+                            "[?]")
+                            [0];
+                    this.Online = lProfileNodes[0].ChildNodes[1].InnerText.Equals("Status Online");
+                    this.Status = lProfileNodes[0].ChildNodes.Count == 7
+                        ? lProfileNodes[0].ChildNodes[6].InnerText
+                        : "";
+
+                    this.UserName =
+                        lDocument.DocumentNode.SelectNodes("//div[@id='pageMetaAjax']")[0].InnerText
+                                                                                          .Split(' ')[1];
+
+                    return new ProxerResult();
+                }
+                catch
+                {
+                    return new ProxerResult((await ErrorHandler.HandleError(this._senpai, lResponse, false)).Exceptions);
+                }
+            }
+            this.Status = "";
+            this.Online = false;
+            this.Rang = "";
+            this.Punkte = -1;
+            this.Avatar =
+                new Uri(
+                    "https://proxer.me/components/com_comprofiler/plugin/templates/default/images/avatar/nophoto_n.png");
+
+            return new ProxerResult();
+        }
+
+        private async Task<ProxerResult> GetFriends()
+        {
+            if (this.Id != -1)
+            {
+                if (!this._senpai.LoggedIn)
+                    return new ProxerResult(new Exception[] {new NotLoggedInException(this._senpai)});
+
+                int lSeite = 1;
+                IRestResponse lResponseObject;
+                string lResponse;
+                HtmlDocument lDocument = new HtmlDocument();
+
+                this.Freunde = new List<User>();
+
+                while (
+                    (lResponseObject =
+                        (await HttpUtility.GetWebRequestResponse(
+                            "https://proxer.me/user/" + this.Id + "/connections/" + lSeite + "?format=raw",
+                            this._senpai.LoginCookies))).StatusCode == HttpStatusCode.OK &&
+                    (lResponse = global::System.Web.HttpUtility.HtmlDecode(lResponseObject.Content)).Replace("\n", "")
+                                                                                                    .Contains(
+                                                                                                        "Dieser Benutzer hat bisher keine Freunde"))
+                {
+                    if (string.IsNullOrEmpty(lResponse) ||
+                        !Utility.CheckForCorrectResponse(lResponse, this._senpai.ErrHandler))
+                        return new ProxerResult(new Exception[] {new WrongResponseException {Response = lResponse}});
+                    if (
+                        lResponse.Equals(
+                            "<div class=\"inner\"><h3>Du hast keine Berechtigung um diese Seite zu betreten.</h3></div>"))
+                        break;
+
                     try
                     {
                         lDocument.LoadHtml(lResponse);
 
-                        if (lDocument.ParseErrors.Count() == 0)
+                        if (lDocument.ParseErrors.Any())
+                            lDocument.LoadHtml(Utility.TryFixParseErrors(lResponse, lDocument.ParseErrors));
+
+                        if (!lDocument.ParseErrors.Any())
                         {
-                            HtmlAgilityPack.HtmlNodeCollection lProfileNodes = lDocument.DocumentNode.SelectNodes("//table[@class='profile']");
+                            HtmlNodeCollection lProfileNodes =
+                                lDocument.DocumentNode.SelectNodes("//table[@id='box-table-a']");
 
                             if (lProfileNodes != null)
                             {
-                                this.Avatar = new Uri("https://proxer.me" + lProfileNodes[0].ParentNode.ParentNode.ChildNodes[1].ChildNodes[0].Attributes["src"].Value);
-                                this.Punkte = Convert.ToInt32(Utilities.Utility.GetTagContents(lProfileNodes[0].FirstChild.InnerText, "Summe: ", " - ")[0]);
-                                this.Rang = Utilities.Utility.GetTagContents(lProfileNodes[0].FirstChild.InnerText, this.Punkte.ToString() + " - ", "[?]")[0];
-                                this.Online = lProfileNodes[0].ChildNodes[1].InnerText.Equals("Status Online");
-                                if (lProfileNodes[0].ChildNodes.Count() == 7) this.Status = lProfileNodes[0].ChildNodes[6].InnerText;
-                                else this.Status = "";
-
-                                if (this.UserName.Equals(""))
+                                lProfileNodes[0].ChildNodes.Remove(0);
+                                foreach (HtmlNode curFriendNode in lProfileNodes[0].ChildNodes)
                                 {
-                                    this.UserName = lDocument.DocumentNode.SelectNodes("//div[@id='pageMetaAjax']")[0].InnerText.Split(' ')[1];
+                                    string lUsername = curFriendNode.ChildNodes[2].InnerText;
+                                    int lId =
+                                        Convert.ToInt32(
+                                            curFriendNode.Attributes["id"].Value.Substring("entry".Length));
+                                    this.Freunde.Add(new User(lUsername, lId, this._senpai));
                                 }
                             }
                         }
+
+                        lSeite++;
                     }
-                    catch (Exception)
+                    catch
                     {
-                        this.senpai.ErrHandler.add(lResponse);
+                        return
+                            new ProxerResult((await ErrorHandler.HandleError(this._senpai, lResponse, false)).Exceptions);
                     }
                 }
+
+                return lResponseObject.StatusCode != HttpStatusCode.OK
+                    ? new ProxerResult(new Exception[] {new WebException()})
+                    : new ProxerResult();
             }
+
+            this.Freunde = new List<User>();
+            return new ProxerResult();
         }
-        private void getFriends()
+
+        private async Task<ProxerResult> GetInfos()
         {
-            if (this.ID == -1)
+            if (this.Id != -1)
             {
-                this.Freunde = new List<User>();
-            }
-            else if (senpai.LoggedIn)
-            {
-                int lSeite = 1;
+                if (!this._senpai.LoggedIn)
+                    return new ProxerResult(new Exception[] {new NotLoggedInException(this._senpai)});
+                HtmlDocument lDocument = new HtmlDocument();
                 string lResponse;
-                HtmlAgilityPack.HtmlDocument lDocument = new HtmlAgilityPack.HtmlDocument();
 
-                this.Freunde = new List<User>();
+                IRestResponse lResponseObject =
+                    await
+                        HttpUtility.GetWebRequestResponse("https://proxer.me/user/" + this.Id + "/about?format=raw",
+                            this._senpai.LoginCookies);
+                if (lResponseObject.StatusCode == HttpStatusCode.OK && !string.IsNullOrEmpty(lResponseObject.Content))
+                    lResponse = global::System.Web.HttpUtility.HtmlDecode(lResponseObject.Content).Replace("\n", "");
+                else return new ProxerResult(new[] {new WrongResponseException(), lResponseObject.ErrorException});
 
-                while (!(lResponse = (HttpUtility.GetWebRequestResponse("https://proxer.me/user/" + this.ID + "/connections/" + lSeite + "?format=raw", this.senpai.LoginCookies)).Replace("</link>", "").Replace("\n", "").Replace("\t", "")).Contains("Dieser Benutzer hat bisher keine Freunde"))
+                if (string.IsNullOrEmpty(lResponse) ||
+                    !Utility.CheckForCorrectResponse(lResponse, this._senpai.ErrHandler))
+                    return new ProxerResult(new Exception[] {new WrongResponseException {Response = lResponse}});
+
+                try
                 {
-                    if (Utilities.Utility.checkForCorrectResponse(lResponse, senpai.ErrHandler))
+                    lDocument.LoadHtml(lResponse);
+
+                    HtmlNodeCollection lProfileNodes =
+                        lDocument.DocumentNode.SelectNodes("//table[@class='profile']");
+
+                    if (lProfileNodes != null)
                     {
-                        if (lResponse.Equals("<div class=\"inner\"><h3>Du hast keine Berechtigung um diese Seite zu betreten.</h3></div>")) break;
-
-                        try
-                        {
-                            lDocument.LoadHtml(lResponse);
-
-                            if (lDocument.ParseErrors.Count() > 0) lDocument.LoadHtml(Utilities.Utility.tryFixParseErrors(lResponse, lDocument.ParseErrors));
-
-                            if (lDocument.ParseErrors.Count() == 0)
-                            {
-                                HtmlAgilityPack.HtmlNodeCollection lProfileNodes = lDocument.DocumentNode.SelectNodes("//table[@id='box-table-a']");
-
-                                if (lProfileNodes != null)
-                                {
-                                    lProfileNodes[0].ChildNodes.Remove(0);
-                                    foreach (HtmlAgilityPack.HtmlNode curFriendNode in lProfileNodes[0].ChildNodes)
-                                    {
-                                        string lUsername = curFriendNode.ChildNodes[2].InnerText;
-                                        int lID = Convert.ToInt32(curFriendNode.Attributes["id"].Value.Substring("entry".Length));
-                                        this.Freunde.Add(new User(lUsername, lID, this.senpai));
-                                    }
-                                }
-                            }
-
-                            lSeite++;
-                        }
-                        catch (Exception)
-                        {
-                            this.senpai.ErrHandler.add(lResponse);
-                        }
+                        this.Info = lProfileNodes[0].ChildNodes[10].InnerText;
                     }
                 }
+                catch
+                {
+                    return new ProxerResult((await ErrorHandler.HandleError(this._senpai, lResponse, false)).Exceptions);
+                }
             }
-        }
-        private void getInfos()
-        {
-            if (this.ID == -1)
+            else
             {
                 this.Info = "";
             }
-            else if (senpai.LoggedIn)
-            {
-                HtmlAgilityPack.HtmlDocument lDocument = new HtmlAgilityPack.HtmlDocument();
-                string lResponse = (HttpUtility.GetWebRequestResponse("https://proxer.me/user/" + this.ID + "/about?format=raw", this.senpai.LoginCookies)).Replace("</link>", "").Replace("\n", "");
 
-                if (Utilities.Utility.checkForCorrectResponse(lResponse, senpai.ErrHandler))
-                {
-                    try
-                    {
-                        lDocument.LoadHtml(lResponse);
-
-                        if (lDocument.ParseErrors.Count() == 0)
-                        {
-                            HtmlAgilityPack.HtmlNodeCollection lProfileNodes = lDocument.DocumentNode.SelectNodes("//table[@class='profile']");
-
-                            if (lProfileNodes != null)
-                            {
-                                this.Info = lProfileNodes[0].ChildNodes[10].InnerText;
-                            }
-                        }
-                    }
-                    catch (Exception)
-                    {
-                        this.senpai.ErrHandler.add(lResponse);
-                    }
-                }
-
-            }
+            return new ProxerResult();
         }
 
 
@@ -245,50 +432,92 @@ namespace Proxer.API
         */
 
         /// <summary>
-        /// Überprüft, ob zwei Benutzter Freunde sind.
+        ///     Überprüft, ob zwei Benutzter Freunde sind.
+        ///     <para>Mögliche Fehler, die <see cref="ProxerResult" /> enthalten kann:</para>
+        ///     <list type="table">
+        ///         <listheader>
+        ///             <term>Ausnahme</term>
+        ///             <description>Beschreibung</description>
+        ///         </listheader>
+        ///         <item>
+        ///             <term>
+        ///                 <see cref="InitializeNeededException" />
+        ///             </term>
+        ///             <description>Wird ausgelöst, wenn die Eigenschaften des Objektes noch nicht initialisiert sind.</description>
+        ///         </item>
+        ///     </list>
         /// </summary>
-        /// <param name="user1"></param>
-        /// <param name="user2"></param>
-        /// <returns></returns>
-        public static bool isUserFriendOf(User user1, User user2)
+        /// <param name="user1">Benutzer 1</param>
+        /// <param name="user2">Benutzer 2</param>
+        /// <returns>Benutzer sind Freunde. True oder False.</returns>
+        public static ProxerResult<bool> IsUserFriendOf(User user1, User user2)
         {
-            return user1.Freunde.Any(item => item.ID == user2.ID);
-        }
-        /// <summary>
-        /// Gibt den Benutzernamen eines Benutzers mit der spezifizierten ID zurück
-        /// </summary>
-        /// <param name="id"></param>
-        /// <param name="senpai"></param>
-        /// <returns></returns>
-        public static string getUNameFromID(int id, Senpai senpai)
-        {
-            HtmlAgilityPack.HtmlDocument lDocument = new HtmlAgilityPack.HtmlDocument();
-            string lResponse = HttpUtility.GetWebRequestResponse("https://proxer.me/user/" + id + "/overview?format=raw", senpai.LoginCookies);
-
-            if (Utilities.Utility.checkForCorrectResponse(lResponse, senpai.ErrHandler))
+            try
             {
-                try
-                {
-                    lDocument.LoadHtml(lResponse);
-
-                    if (lDocument.ParseErrors.Count() == 0)
-                    {
-                        HtmlAgilityPack.HtmlNodeCollection lNodes = lDocument.DocumentNode.SelectNodes("//div[@id='pageMetaAjax']");
-                        if (lNodes != null) return lNodes[0].InnerText.Split(' ')[1];
-                        else return "";
-                    }
-                    else
-                    {
-                        return "";
-                    }
-                }
-                catch (Exception)
-                {
-                    senpai.ErrHandler.add(lResponse);
-                }
+                return new ProxerResult<bool>(user1.Freunde.Any(item => item.Id == user2.Id));
             }
-
-            return "";
+            catch (InitializeNeededException exception)
+            {
+                return new ProxerResult<bool>(new Exception[] {exception});
+            }
         }
+
+        /// <summary>
+        ///     Gibt den Benutzernamen eines Benutzers mit der spezifizierten ID zurück.
+        ///     <para>Mögliche Fehler, die <see cref="ProxerResult" /> enthalten kann:</para>
+        ///     <list type="table">
+        ///         <listheader>
+        ///             <term>Ausnahme</term>
+        ///             <description>Beschreibung</description>
+        ///         </listheader>
+        ///         <item>
+        ///             <term>
+        ///                 <see cref="NotLoggedInException" />
+        ///             </term>
+        ///             <description>Wird ausgelöst, wenn der <see cref="Senpai">Benutzer</see> nicht eingeloggt ist.</description>
+        ///         </item>
+        ///         <item>
+        ///             <term>
+        ///                 <see cref="WrongResponseException" />
+        ///             </term>
+        ///             <description>Wird ausgelöst, wenn die Antwort des Servers nicht der Erwarteten entspricht.</description>
+        ///         </item>
+        ///     </list>
+        /// </summary>
+        /// <param name="id">Die ID des Benutzers</param>
+        /// <param name="senpai">Login-Cookies werden benötigt</param>
+        /// <seealso cref="Senpai.Login" />
+        /// <returns></returns>
+        public static async Task<ProxerResult<string>> GetUNameFromId(int id, Senpai senpai)
+        {
+            if (!senpai.LoggedIn) return new ProxerResult<string>(new Exception[] {new NotLoggedInException()});
+
+            HtmlDocument lDocument = new HtmlDocument();
+            string lResponse;
+
+            IRestResponse lResponseObject =
+                await
+                    HttpUtility.GetWebRequestResponse("https://proxer.me/user/" + id + "/overview?format=raw",
+                        senpai.LoginCookies);
+            if (lResponseObject.StatusCode == HttpStatusCode.OK && !string.IsNullOrEmpty(lResponseObject.Content))
+                lResponse = global::System.Web.HttpUtility.HtmlDecode(lResponseObject.Content).Replace("\n", "");
+            else return new ProxerResult<string>(new[] {new WrongResponseException(), lResponseObject.ErrorException});
+
+            if (string.IsNullOrEmpty(lResponse) || !Utility.CheckForCorrectResponse(lResponse, senpai.ErrHandler))
+                return new ProxerResult<string>(new Exception[] {new WrongResponseException {Response = lResponse}});
+
+            try
+            {
+                lDocument.LoadHtml(lResponse);
+                HtmlNodeCollection lNodes = lDocument.DocumentNode.SelectNodes("//div[@id='pageMetaAjax']");
+                return new ProxerResult<string>(lNodes[0].InnerText.Split(' ')[1]);
+            }
+            catch
+            {
+                return new ProxerResult<string>((await ErrorHandler.HandleError(senpai, lResponse, false)).Exceptions);
+            }
+        }
+
+        #endregion
     }
 }

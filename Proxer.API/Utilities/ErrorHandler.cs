@@ -1,75 +1,94 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
+using Newtonsoft.Json;
+using Proxer.API.Exceptions;
+using Proxer.API.Properties;
+using Proxer.API.Utilities.Net;
 
 namespace Proxer.API.Utilities
 {
     /// <summary>
-    /// 
+    ///     Fehler in HTML-Dateien werden hier frühzeitig erkannt
     /// </summary>
     public class ErrorHandler
     {
-        /// <summary>
-        /// 
-        /// </summary>
         internal ErrorHandler()
         {
-            this.load();
+            this.Load();
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
+        #region Properties
+
         internal List<string> WrongHtml { get; private set; }
 
+        #endregion
+
+        #region
+
         /// <summary>
-        /// Erstellt eine neue Liste der strings, die aussortiert werden sollen
+        ///     Erstellt eine neue Liste der Strings, die aussortiert werden sollen
         /// </summary>
-        public void reset()
+        public void Reset()
         {
             this.WrongHtml = new List<string>();
         }
-        /// <summary>
-        /// Läd die Liste aus den Einstellungen
-        /// </summary>
-        internal void load()
+
+        internal void Load()
         {
-            if (!String.IsNullOrEmpty(Properties.Settings.Default.errorHtml))
+            if (!string.IsNullOrEmpty(Settings.Default.errorHtml))
             {
                 try
                 {
-                    this.WrongHtml = Newtonsoft.Json.JsonConvert.DeserializeObject<List<string>>(Properties.Settings.Default.errorHtml);
+                    this.WrongHtml = JsonConvert.DeserializeObject<List<string>>(Settings.Default.errorHtml);
                 }
-                catch (Newtonsoft.Json.JsonSerializationException)
+                catch (JsonSerializationException)
                 {
-                    this.reset();
-                    this.save();
+                    this.Reset();
+                    this.Save();
                 }
             }
             else
             {
-                this.reset();
-                this.save();
+                this.Reset();
+                this.Save();
             }
         }
-        /// <summary>
-        /// Speichert die Liste in den Einstellungen
-        /// </summary>
-        internal void save()
+
+        internal void Save()
         {
-            Properties.Settings.Default.errorHtml = Newtonsoft.Json.JsonConvert.SerializeObject(this.WrongHtml);
-            Properties.Settings.Default.Save();
+            Settings.Default.errorHtml = JsonConvert.SerializeObject(this.WrongHtml);
+            Settings.Default.Save();
         }
+
+        internal static async Task<ProxerResult> HandleError(Senpai senpai, string wrongHtml, bool checkedLogin)
+        {
+            ProxerResult<bool> lCheckResult;
+            if (!checkedLogin && (lCheckResult = await senpai.CheckLogin()).Success && !lCheckResult.Result)
+            {
+                return new ProxerResult(new Exception[] {new NotLoggedInException(senpai)});
+            }
+
+            senpai.ErrHandler.Add(wrongHtml);
+            return new ProxerResult(new Exception[] {new WrongResponseException {Response = wrongHtml}});
+        }
+
+        internal static ProxerResult HandleError(Senpai senpai, string wrongHtml)
+        {
+            senpai.ErrHandler.Add(wrongHtml);
+            return new ProxerResult(new Exception[] {new WrongResponseException {Response = wrongHtml}});
+        }
+
         /// <summary>
-        /// Hinzufügen einer falschen Ausgabe
+        ///     Fügt eine falsche Ausgabe hinzu.
         /// </summary>
-        /// <param name="wrongHtml"></param>
-        internal void add(string wrongHtml)
+        /// <param name="wrongHtml">Die falsche Ausgabe.</param>
+        public void Add(string wrongHtml)
         {
             this.WrongHtml.Add(wrongHtml);
-            this.save();
+            this.Save();
         }
+
+        #endregion
     }
 }

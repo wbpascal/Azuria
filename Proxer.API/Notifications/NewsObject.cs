@@ -1,96 +1,128 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Proxer.API.Utilities;
 
 namespace Proxer.API.Notifications
 {
     /// <summary>
-    /// 
+    ///     Eine Klasse, die eine Nachricht darstellt.
     /// </summary>
     public class NewsObject : INotificationObject
     {
-        /// <summary>
-        /// 
-        /// </summary>
         internal NewsObject()
         {
             this.Type = NotificationObjectType.News;
         }
 
+        #region Geerbt
+
         /// <summary>
-        /// 
+        ///     Gibt die Nachricht der Benachrichtigung als Text zurück.
+        ///     <para>(Vererbt von <see cref="INotificationObject" />)</para>
         /// </summary>
-        public NotificationObjectType Type { get; private set; }
+        public string Message => this.Description;
+
         /// <summary>
-        /// 
+        ///     Gibt den Typ der Benachrichtigung zurück.
+        ///     <para>(Vererbt von <see cref="INotificationObject" />)</para>
         /// </summary>
-        public string Message
-        {
-            get { return this.description; }
-        }
+        public NotificationObjectType Type { get; }
+
+        #endregion
+
+        #region Properties
+
         /// <summary>
-        /// Gibt die News-ID zurück.
+        ///     Gibt die ID der Kategorie, in der sich die News befindet, zurück.
         /// </summary>
-        public int nid { get; set; }
+        public int Catid { get; set; }
+
         /// <summary>
-        /// Gibt den Zeitpunkt der News als Unix Timestamp zurück.
+        ///     Gibt den Namen der Kategorie, in der sich die News befindet, zurück.
         /// </summary>
-        public long time { get; set; }
+        public string Catname { get; set; }
+
         /// <summary>
-        /// 
+        ///     Gibt eine Kurzbeschreibung der News zurück.
+        /// </summary>
+        public string Description { get; set; }
+
+        /// <summary>
+        ///     Gibt die Aufrufe der News zurück.
+        /// </summary>
+        public int Hits { get; set; }
+
+        /// <summary>
+        ///     Gibt die Bild-ID der News zurück.
+        /// </summary>
+        public string ImageId { get; set; }
+
+        /// <summary>
+        ///     Gibt Angaben zum CSS-Style des Bildes zurück.
+        /// </summary>
+        public string ImageStyle { get; set; }
+
+        /// <summary>
+        ///     Gibt die News-ID zurück.
+        /// </summary>
+        public int Nid { get; set; }
+
+        /// <summary>
+        ///     Gibt die Anzahl der Kommentare zurück.
+        /// </summary>
+        public int Posts { get; set; }
+
+        /// <summary>
+        ///     Gibt die Überschrift der News zurück.
+        /// </summary>
+        public string Subject { get; set; }
+
+        /// <summary>
+        ///     Gibt die Thread-ID zurück.
+        /// </summary>
+        public int Thread { get; set; }
+
+        /// <summary>
+        ///     Gibt den Zeitpunkt der News als Unix Timestamp zurück.
+        /// </summary>
+        public long Time { get; set; }
+
+        /// <summary>
+        ///     Gibt die ID des Authors zurück.
+        /// </summary>
+        public int Uid { get; set; }
+
+        /// <summary>
+        ///     Gibt den Benutzernamen des Authors zurück.
+        /// </summary>
+        public string Uname { get; set; }
+
+        /// <summary>
+        ///     Veraltet. Gibt die Thread-ID zurück.
         /// </summary>
         [Obsolete("Bitte benutzte stattdessen \"thread\"")]
-        internal int mid { get; set; }
+        internal int Mid { get; set; }
+
         /// <summary>
-        /// 
+        ///     Veraltet.
         /// </summary>
         [Obsolete]
-        internal int pid { get; set; }
+        internal int Pid { get; set; }
+
+        #endregion
+
+        #region
+
         /// <summary>
-        /// Gibt eine Kurzbeschreibung der News zurück.
+        ///     Returns a string that represents the current object.
         /// </summary>
-        public string description { get; set; }
-        /// <summary>
-        /// Gibt die Bild-ID der News zurück.
-        /// </summary>
-        public string image_id { get; set; }
-        /// <summary>
-        /// Gibt Angaben zum CSS-Style des Bildes zurück.
-        /// </summary>
-        public string image_style { get; set; }
-        /// <summary>
-        /// Gibt die Überschrift der News zurück.
-        /// </summary>
-        public string subject { get; set; }
-        /// <summary>
-        /// Gibt die Aufrufe der News zurück.
-        /// </summary>
-        public int hits { get; set; }
-        /// <summary>
-        /// Gibt die Thread-ID zurück.
-        /// </summary>
-        public int thread { get; set; }
-        /// <summary>
-        /// Gibt die ID des Authors zurück.
-        /// </summary>
-        public int uid { get; set; }
-        /// <summary>
-        /// Gibt den Benutzernamen des Authors zurück.
-        /// </summary>
-        public string uname { get; set; }
-        /// <summary>
-        /// Gibt die Anzahl der Kommentare zurück.
-        /// </summary>
-        public int posts { get; set; }
-        /// <summary>
-        /// Gibt die ID der Kategorie, in der sich die News befindet, zurück.
-        /// </summary>
-        public int catid { get; set; }
-        /// <summary>
-        /// Gibt den Namen der Kategorie, in der sich die News befindet, zurück.
-        /// </summary>
-        public string catname { get; set; }
+        /// <returns>
+        ///     A string that represents the current object.
+        /// </returns>
+        public override string ToString()
+        {
+            return this.Subject + "\n" + Utility.UnixTimeStampToDateTime(this.Time) + "\n" + this.Catname;
+        }
+
+        #endregion
     }
 }

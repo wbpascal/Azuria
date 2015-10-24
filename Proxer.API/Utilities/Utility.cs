@@ -1,169 +1,225 @@
-﻿using HtmlAgilityPack;
-using System;
+﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
-using System.Text;
+using System.Net;
 using System.Threading.Tasks;
+using HtmlAgilityPack;
+using Proxer.API.Exceptions;
+using Proxer.API.Main;
+using Proxer.API.Utilities.Net;
+using RestSharp;
 
 namespace Proxer.API.Utilities
 {
     /// <summary>
-    /// 
+    ///     In dieser Klasse sind alle Funktionen zusammengefasst,
+    ///     die Hilfestellungen anbieten
     /// </summary>
-    internal class Utility
+    public class Utility
     {
+        #region
+
         /// <summary>
-        /// 
+        ///     Gibt ein Objekt zurück, dass einen Anime oder Manga
+        ///     der spezifizierten ID repräsentiert.
         /// </summary>
-        /// <param name="Source"></param>
-        /// <param name="startTag"></param>
-        /// <param name="endTag"></param>
-        /// <returns></returns>
-        internal static List<string> GetTagContents(string Source, string startTag, string endTag)
+        /// <param name="id">Die ID des <see cref="Main.Anime">Anime</see> oder <see cref="Main.Manga">Manga</see>.</param>
+        /// <param name="senpai">Der Benutzer. (Muss eingeloggt sein)</param>
+        /// <returns>Anime oder Manga der ID (Typecast erforderlich)</returns>
+        public static async Task<ProxerResult<IAnimeMangaObject>> GetAnimeManga(int id, Senpai senpai)
         {
-            List<string> StringsFound = new List<string>();
-            int Index = Source.IndexOf(startTag) + startTag.Length;
+            HtmlDocument lDocument = new HtmlDocument();
+            string lResponse;
+
+            IRestResponse lResponseObject =
+                await HttpUtility.GetWebRequestResponse("https://proxer.me/info/" + id, senpai.LoginCookies);
+            if (lResponseObject.StatusCode == HttpStatusCode.OK && !string.IsNullOrEmpty(lResponseObject.Content))
+                lResponse = System.Web.HttpUtility.HtmlDecode(lResponseObject.Content).Replace("\n", "");
+            else
+                return
+                    new ProxerResult<IAnimeMangaObject>(new[]
+                    {new WrongResponseException(), lResponseObject.ErrorException});
+
+            if (string.IsNullOrEmpty(lResponse) || !CheckForCorrectResponse(lResponse, senpai.ErrHandler))
+                return
+                    new ProxerResult<IAnimeMangaObject>(new Exception[]
+                    {new WrongResponseException {Response = lResponse}});
+
+            if (!CheckForCorrectResponse(lResponse, senpai.ErrHandler)) return null;
+            try
+            {
+                lDocument.LoadHtml(lResponse);
+
+                HtmlNode lNode =
+                    lDocument.DocumentNode.ChildNodes[1].ChildNodes[2].ChildNodes[2].ChildNodes[2].ChildNodes[1]
+                        .ChildNodes[1];
+                if (lNode.InnerText.Equals("Episoden"))
+                {
+                    return
+                        new ProxerResult<IAnimeMangaObject>(new Anime(
+                            lDocument.DocumentNode.ChildNodes[1].ChildNodes[2].ChildNodes[2].ChildNodes[2]
+                                .ChildNodes[5].ChildNodes[2].FirstChild.ChildNodes[1].FirstChild.ChildNodes[1]
+                                .ChildNodes[1].InnerText, id, senpai));
+                }
+
+                if (lNode.InnerText.Equals("Kapitel"))
+                {
+                    return
+                        new ProxerResult<IAnimeMangaObject>(new Manga(
+                            lDocument.DocumentNode.ChildNodes[1].ChildNodes[2].ChildNodes[2].ChildNodes[2]
+                                .ChildNodes[5].ChildNodes[2].FirstChild.ChildNodes[1].FirstChild.ChildNodes[1]
+                                .ChildNodes[1].InnerText, id, senpai));
+                }
+            }
+            catch
+            {
+                return
+                    new ProxerResult<IAnimeMangaObject>(
+                        (await ErrorHandler.HandleError(senpai, lResponse, false)).Exceptions);
+            }
+
+            return
+                new ProxerResult<IAnimeMangaObject>(new Exception[] {new WrongResponseException {Response = lResponse}});
+        }
+
+
+        internal static IEnumerable<HtmlNode> GetAllHtmlNodes(HtmlNodeCollection htmlNodeCollection)
+        {
+            List<HtmlNode> lHtmlNodes = new List<HtmlNode>();
+            foreach (HtmlNode htmlNode in htmlNodeCollection)
+            {
+                lHtmlNodes.Add(htmlNode);
+                if (htmlNode.HasChildNodes)
+                    lHtmlNodes = lHtmlNodes.Concat(GetAllHtmlNodes(htmlNode.ChildNodes)).ToList();
+            }
+            return lHtmlNodes;
+        }
+
+        internal static List<string> GetTagContents(string source, string startTag, string endTag)
+        {
+            List<string> stringsFound = new List<string>();
+            int index = source.IndexOf(startTag, StringComparison.Ordinal) + startTag.Length;
 
             try
             {
-                while (Index != startTag.Length - 1)
+                while (index != startTag.Length - 1)
                 {
-                    StringsFound.Add(Source.Substring(Index, Source.IndexOf(endTag, Index) - Index));
-                    Index = Source.IndexOf(startTag, Index) + startTag.Length;
+                    stringsFound.Add(source.Substring(index,
+                        source.IndexOf(endTag, index, StringComparison.Ordinal) - index));
+                    index = source.IndexOf(startTag, index, StringComparison.Ordinal) + startTag.Length;
                 }
             }
-            catch (Exception)
+            catch
             {
-
+                // ignored
             }
-            return StringsFound;
+            return stringsFound;
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="unixTimeStamp"></param>
-        /// <returns></returns>
         internal static DateTime UnixTimeStampToDateTime(long unixTimeStamp)
         {
-            System.DateTime dtDateTime = new DateTime(1970, 1, 1, 0, 0, 0, 0, System.DateTimeKind.Utc);
+            DateTime dtDateTime = new DateTime(1970, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc);
             dtDateTime = dtDateTime.AddSeconds(unixTimeStamp).ToLocalTime();
             return dtDateTime;
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="response"></param>
-        /// <param name="errHandler"></param>
-        /// <returns></returns>
-        internal static bool checkForCorrectResponse(string response, ErrorHandler errHandler)
+        internal static bool CheckForCorrectResponse(string response, ErrorHandler errHandler)
         {
-            foreach (string curErrorResponse in errHandler.WrongHtml)
-            {
-                if (iLD(response, curErrorResponse) <= 15) return false;
-            }
+            //return errHandler.WrongHtml.All(curErrorResponse => ILd(response, curErrorResponse) > 15);
             return true;
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="html"></param>
-        /// <param name="parseErrors"></param>
-        /// <returns></returns>
-        internal static string tryFixParseErrors(string html, IEnumerable<HtmlParseError> parseErrors)
+        internal static string TryFixParseErrors(string html, IEnumerable<HtmlParseError> parseErrors)
         {
-            if (parseErrors.Count() > 0)
+            IEnumerable<HtmlParseError> htmlParseErrors = parseErrors as HtmlParseError[] ?? parseErrors.ToArray();
+            if (htmlParseErrors.Any())
             {
-                foreach (HtmlAgilityPack.HtmlParseError curError in parseErrors)
-                {
-                    html = html.Remove(curError.StreamPosition, curError.SourceText.Length);
-                }
+                html = htmlParseErrors.Aggregate(html,
+                    (current, curError) => current.Remove(curError.StreamPosition, curError.SourceText.Length));
             }
 
             return html;
         }
 
-
         /// <summary>
-        /// Compute Levenshtein distance 
-        /// Memory efficient version
-        /// By: Sten Hjelmqvist
+        ///     Compute Levenshtein distance
+        ///     Memory efficient version
+        ///     By: Sten Hjelmqvist
         /// </summary>
         /// <param name="sRow"></param>
         /// <param name="sCol"></param>
         /// <returns>0==perfect match | 100==totaly different</returns>
-        internal static int iLD(String sRow, String sCol)
+        internal static int ILd(string sRow, string sCol)
         {
-            int RowLen = sRow.Length;
-            int ColLen = sCol.Length;
-            int RowIdx;
-            int ColIdx;
-            char Row_i;
-            char Col_j;
-            int cost;
+            int rowLen = sRow.Length;
+            int colLen = sCol.Length;
+            int rowIdx;
+            int colIdx;
 
             if (Math.Max(sRow.Length, sCol.Length) > Math.Pow(2, 31))
-                throw (new Exception("\nMaximum string length in Levenshtein.iLD is " + Math.Pow(2, 31) + ".\nYours is " + Math.Max(sRow.Length, sCol.Length) + "."));
+                throw (new Exception("Maximum string length in Levenshtein.iLD is " + Math.Pow(2, 31) + ".\nYours is " +
+                                     Math.Max(sRow.Length, sCol.Length) + "."));
 
-            if (RowLen == 0)
+            if (rowLen == 0)
             {
-                return ColLen;
+                return colLen;
             }
-            if (ColLen == 0)
+            if (colLen == 0)
             {
-                return RowLen;
-            }
-
-            int[] v0 = new int[RowLen + 1];
-            int[] v1 = new int[RowLen + 1];
-            int[] vTmp;
-
-            for (RowIdx = 1; RowIdx <= RowLen; RowIdx++)
-            {
-                v0[RowIdx] = RowIdx;
+                return rowLen;
             }
 
-            for (ColIdx = 1; ColIdx <= ColLen; ColIdx++)
+            int[] v0 = new int[rowLen + 1];
+            int[] v1 = new int[rowLen + 1];
+
+            for (rowIdx = 1; rowIdx <= rowLen; rowIdx++)
             {
-                v1[0] = ColIdx;
-                Col_j = sCol[ColIdx - 1];
-                for (RowIdx = 1; RowIdx <= RowLen; RowIdx++)
+                v0[rowIdx] = rowIdx;
+            }
+
+            for (colIdx = 1; colIdx <= colLen; colIdx++)
+            {
+                v1[0] = colIdx;
+                char colJ = sCol[colIdx - 1];
+                for (rowIdx = 1; rowIdx <= rowLen; rowIdx++)
                 {
-                    Row_i = sRow[RowIdx - 1];
-                    if (Row_i == Col_j)
-                    {
-                        cost = 0;
-                    }
-                    else
-                    {
-                        cost = 1;
-                    }
+                    char rowI = sRow[rowIdx - 1];
+                    int cost = rowI == colJ ? 0 : 1;
 
-                    int m_min = v0[RowIdx] + 1;
-                    int b = v1[RowIdx - 1] + 1;
-                    int c = v0[RowIdx - 1] + cost;
+                    int mMin = v0[rowIdx] + 1;
+                    int b = v1[rowIdx - 1] + 1;
+                    int c = v0[rowIdx - 1] + cost;
 
-                    if (b < m_min)
+                    if (b < mMin)
                     {
-                        m_min = b;
+                        mMin = b;
                     }
-                    if (c < m_min)
+                    if (c < mMin)
                     {
-                        m_min = c;
+                        mMin = c;
                     }
-                    v1[RowIdx] = m_min;
+                    v1[rowIdx] = mMin;
                 }
-                vTmp = v0;
+                int[] vTmp = v0;
                 v0 = v1;
                 v1 = vTmp;
             }
 
             // Value between 0 - 100
             // 0==perfect match 100==totaly different
-            int max = System.Math.Max(RowLen, ColLen);
-            return ((100 * v0[RowLen]) / max);
+            int max = Math.Max(rowLen, colLen);
+            return ((100 * v0[rowLen]) / max);
         }
+
+        internal static DateTime ToDateTime(string strFdate, string format = "dd.MM.yyyy")
+        {
+            return DateTime.ParseExact(
+                strFdate,
+                format,
+                CultureInfo.InvariantCulture);
+        }
+
+        #endregion
     }
 }

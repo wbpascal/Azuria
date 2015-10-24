@@ -11,12 +11,9 @@ Master-Branch: [![Build status](https://ci.appveyor.com/api/projects/status/eenr
 Neuester Commit: [![Build status](https://ci.appveyor.com/api/projects/status/eenr5ksrjakegl0e?svg=true)](https://ci.appveyor.com/project/InfiniteSoul/massive-octo-wookie)
 
 ## Externe Abhängigkeiten
-Im Ordner "Libs" schon zu finden.
 
-[JSON .NET](https://github.com/JamesNK/Newtonsoft.Json)
+[JSON .NET](https://www.nuget.org/packages/Newtonsoft.Json/)
 
-
-#### NuGet-Bibliotheken
 [HtmlAgilityPack](https://htmlagilitypack.codeplex.com/)
 
 [RestSharp](http://restsharp.org/)

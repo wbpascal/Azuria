@@ -1,52 +1,24 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Proxer.API.Notifications
+﻿namespace Proxer.API.Notifications
 {
     /// <summary>
-    /// 
+    ///     Eine Klasse, die die Informationen einer Benachrichtigung darstellt.
     /// </summary>
     public interface INotificationObject
     {
+        #region Properties
+
         /// <summary>
-        ///
+        ///     Gibt die Nachricht der Benachrichtigung als Text zurück.
+        ///     <para>(Vererbt von <see cref="INotificationObject" />)</para>
         /// </summary>
-        /// <returns></returns>
+        string Message { get; }
+
+        /// <summary>
+        ///     Gibt den Typ der Benachrichtigung zurück.
+        ///     <para>(Vererbt von <see cref="INotificationObject" />)</para>
+        /// </summary>
         NotificationObjectType Type { get; }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <returns></returns>
-        string Message { get; }
+        #endregion
     }
-
-    /// <summary>
-    /// 
-    /// </summary>
-    public enum NotificationObjectType
-    {
-        /// <summary>
-        /// 
-        /// </summary>
-        FriendRequest,
-
-        /// <summary>
-        /// 
-        /// </summary>
-        News,
-
-        /// <summary>
-        /// 
-        /// </summary>
-        PrivateMessage,
-
-        /// <summary>
-        /// 
-        /// </summary>
-        AnimeManga
-    };
 }

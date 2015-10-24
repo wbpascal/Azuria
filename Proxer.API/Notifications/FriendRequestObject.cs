@@ -1,162 +1,147 @@
-﻿using Proxer.API.Utilities;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+using System.Net;
 using System.Threading.Tasks;
+using Proxer.API.Exceptions;
+using Proxer.API.Utilities;
+using Proxer.API.Utilities.Net;
+using RestSharp;
 
 namespace Proxer.API.Notifications
 {
     /// <summary>
-    /// 
+    ///     Eine Klasse, die eine Freundschaftsanfrage aus den Benachrichtigungen darstellt.
     /// </summary>
     public class FriendRequestObject : INotificationObject
     {
-        private Senpai senpai;
-        private bool accepted;
-        private bool denied;
+        private readonly Senpai _senpai;
+        private bool _accepted;
+        private bool _denied;
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="userName"></param>
-        /// <param name="userID"></param>
-        /// <param name="senpai"></param>
-        internal FriendRequestObject(string userName, int userID, Senpai senpai)
+        internal FriendRequestObject(string userName, int userUserId, Senpai senpai)
         {
-            this.senpai = senpai;
+            this._senpai = senpai;
             this.Type = NotificationObjectType.FriendRequest;
             this.Message = userName;
             this.UserName = userName;
-            this.ID = userID;
+            this.UserId = userUserId;
         }
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="userName"></param>
-        /// <param name="userID"></param>
-        /// <param name="userDescription"></param>
-        /// <param name="requestDate"></param>
-        /// <param name="userOnline"></param>
-        /// <param name="senpai"></param>
-        internal FriendRequestObject(string userName, int userID, string userDescription, DateTime requestDate, bool userOnline, Senpai senpai)
+
+        internal FriendRequestObject(string userName, int userUserId, DateTime requestDate, Senpai senpai)
         {
-            this.senpai = senpai;
+            this._senpai = senpai;
             this.Type = NotificationObjectType.FriendRequest;
             this.Message = userName;
             this.UserName = userName;
-            this.ID = userID;
-            this.Description = userDescription;
+            this.UserId = userUserId;
             this.Date = requestDate;
-            this.Online = userOnline;
         }
 
+        #region Geerbt
+
         /// <summary>
-        /// 
+        ///     Gibt die Nachricht der Benachrichtigung als Text zurück.
+        ///     <para>(Vererbt von <see cref="INotificationObject" />)</para>
         /// </summary>
-        public NotificationObjectType Type { get; private set; }
+        public string Message { get; }
+
         /// <summary>
-        /// 
+        ///     Gibt den Typ der Benachrichtigung zurück.
+        ///     <para>(Vererbt von <see cref="INotificationObject" />)</para>
         /// </summary>
-        public string Message { get; private set; }
+        public NotificationObjectType Type { get; }
+
+        #endregion
+
+        #region Properties
+
         /// <summary>
-        /// 
-        /// </summary>
-        public string UserName { get; private set; }
-        /// <summary>
-        /// 
-        /// </summary>
-        public int ID { get; private set; }
-        /// <summary>
-        /// 
-        /// </summary>
-        public string Description { get; private set; }
-        /// <summary>
-        /// 
+        ///     Gibt das Datum der Freundschaftsanfrage zurück.
         /// </summary>
         public DateTime Date { get; private set; }
-        /// <summary>
-        /// 
-        /// </summary>
-        public bool Online { get; private set; }
 
         /// <summary>
-        /// 
+        ///     Gibt die ID des <see cref="User">Benutzers</see> zurück, der die Freundschaftsanfrage gestellt hat.
         /// </summary>
-        /// <returns>Ob die Aktion erfolgreich war</returns>
-        public bool acceptRequest()
+        public int UserId { get; }
+
+        /// <summary>
+        ///     Gibt den Namen des <see cref="User">Benutzers</see> zurück, der die Freundschaftsanfrage gestellt hat.
+        /// </summary>
+        public string UserName { get; private set; }
+
+        #endregion
+
+        #region
+
+        /// <summary>
+        ///     Akzeptiert die Freundschaftsanfrage.
+        /// </summary>
+        /// <seealso cref="Senpai.Login" />
+        /// <returns>Die Aktion war erfolgreich. True oder False</returns>
+        public async Task<ProxerResult<bool>> AcceptRequest()
         {
-            if (senpai.LoggedIn && !this.accepted && !this.denied)
-            {
-                Dictionary<string, string> lPostArgs = new Dictionary<string, string> { { "type", "accept" } };
-                string lResponse = HttpUtility.PostWebRequestResponse("https://proxer.me/user/my?format=json&cid=" + this.ID, senpai.LoginCookies, lPostArgs);
+            if (!this._senpai.LoggedIn)
+                return new ProxerResult<bool>(new Exception[] {new NotLoggedInException(this._senpai)});
+            if (this._accepted || this._denied) return new ProxerResult<bool>(false);
 
-                if (lResponse.StartsWith("{\"error\":0"))
-                {
-                    this.accepted = true;
-                    return true;
-                }
-                else
-                {
-                    return false;
-                }
-            }
-            else
-            {
-                return false;
-            }
+            Dictionary<string, string> lPostArgs = new Dictionary<string, string> {{"type", "accept"}};
+
+            string lResponse;
+
+            IRestResponse lResponseObject =
+                await
+                    HttpUtility.PostWebRequestResponse(
+                        "https://proxer.me/user/my?format=json&cid=" + this.UserId,
+                        this._senpai.LoginCookies, lPostArgs);
+            if (lResponseObject.StatusCode == HttpStatusCode.OK && !string.IsNullOrEmpty(lResponseObject.Content))
+                lResponse = System.Web.HttpUtility.HtmlDecode(lResponseObject.Content).Replace("\n", "");
+            else return new ProxerResult<bool>(new[] {new WrongResponseException(), lResponseObject.ErrorException});
+
+            if (string.IsNullOrEmpty(lResponse) ||
+                !Utility.CheckForCorrectResponse(lResponse, this._senpai.ErrHandler))
+                return new ProxerResult<bool>(new Exception[] {new WrongResponseException {Response = lResponse}});
+
+            if (!lResponse.StartsWith("{\"error\":0")) return new ProxerResult<bool>(false);
+
+            this._accepted = true;
+            return new ProxerResult<bool>(true);
         }
+
         /// <summary>
-        /// 
+        ///     Lehnt die Freundschaftsanfrage ab.
         /// </summary>
-        /// <returns>Ob die Aktion erfolgreich war</returns>
-        public bool denyRequest()
+        /// <seealso cref="Senpai.Login" />
+        /// <returns>Die Aktion war erfolgreich. True oder False</returns>
+        public async Task<ProxerResult<bool>> DenyRequest()
         {
-            if (senpai.LoggedIn && !this.accepted && !this.denied)
-            {
-                Dictionary<string, string> lPostArgs = new Dictionary<string, string> { { "type", "deny" } };
-                string lResponse = HttpUtility.PostWebRequestResponse("https://proxer.me/user/my?format=json&cid=" + this.ID, senpai.LoginCookies, lPostArgs);
+            if (!this._senpai.LoggedIn)
+                return new ProxerResult<bool>(new Exception[] {new NotLoggedInException(this._senpai)});
+            if (this._accepted || this._denied) return new ProxerResult<bool>(false);
 
-                if (lResponse.StartsWith("{\"error\":0"))
-                {
-                    this.denied = true;
-                    return true;
-                }
-                else
-                {
-                    return false;
-                }
-            }
-            else
-            {
-                return false;
-            }
-        }
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <returns>Ob die Aktion erfolgreich war</returns>
-        public bool editDescription(string pNewDescription)
-        {
-            if (senpai.LoggedIn)
-            {
-                Dictionary<string, string> lPostArgs = new Dictionary<string, string> { { "type", "desc" } };
-                string lResponse = HttpUtility.PostWebRequestResponse("https://proxer.me/user/my?format=json&desc=" + System.Web.HttpUtility.JavaScriptStringEncode(pNewDescription) + "&cid=" + this.ID, senpai.LoginCookies, lPostArgs);
+            Dictionary<string, string> lPostArgs = new Dictionary<string, string> {{"type", "deny"}};
 
-                if (lResponse.StartsWith("{\"error\":0"))
-                {
-                    this.Description = pNewDescription;
-                    return true;
-                }
-                else
-                {
-                    return false;
-                }
-            }
-            else
-            {
-                return false;
-            }
+            string lResponse;
+
+            IRestResponse lResponseObject =
+                await
+                    HttpUtility.PostWebRequestResponse(
+                        "https://proxer.me/user/my?format=json&cid=" + this.UserId,
+                        this._senpai.LoginCookies, lPostArgs);
+            if (lResponseObject.StatusCode == HttpStatusCode.OK && !string.IsNullOrEmpty(lResponseObject.Content))
+                lResponse = System.Web.HttpUtility.HtmlDecode(lResponseObject.Content).Replace("\n", "");
+            else return new ProxerResult<bool>(new[] {new WrongResponseException(), lResponseObject.ErrorException});
+
+            if (string.IsNullOrEmpty(lResponse) ||
+                !Utility.CheckForCorrectResponse(lResponse, this._senpai.ErrHandler))
+                return new ProxerResult<bool>(new Exception[] {new WrongResponseException {Response = lResponse}});
+
+            if (!lResponse.StartsWith("{\"error\":0")) return new ProxerResult<bool>(false);
+
+            this._denied = true;
+            return new ProxerResult<bool>(true);
         }
+
+        #endregion
     }
 }

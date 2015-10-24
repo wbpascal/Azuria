@@ -1,599 +1,587 @@
-﻿using HtmlAgilityPack;
-using Newtonsoft.Json;
-using Proxer.API.Community.PrivateMessages;
-using Proxer.API.EventArguments;
-using Proxer.API.Notifications;
-using Proxer.API.Utilities;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Linq;
 using System.Net;
-using System.Text;
 using System.Threading.Tasks;
 using System.Timers;
-using System.Windows.Threading;
+using HtmlAgilityPack;
+using Newtonsoft.Json;
+using Proxer.API.Community;
+using Proxer.API.EventArguments;
+using Proxer.API.Exceptions;
+using Proxer.API.Notifications;
+using Proxer.API.Utilities;
+using Proxer.API.Utilities.Net;
+using RestSharp;
 
 namespace Proxer.API
 {
     /// <summary>
-    /// Der Benutzer der Anwendung an sich
+    ///     Der Benutzer der Anwendung an sich
     /// </summary>
     public class Senpai
     {
-        private int userID;
-        private bool loggedIn;
-        private string username;
-        private Timer notificationCheckTimer;
-        private Timer loginCheckTimer;
-        private Timer notificationUpdateCheckTimer;
+        /// <summary>
+        ///     Stellt die Methode da, die ausgelöst wird, wenn neue Anime- oder Manga-Benachrichtigungen verfügbar sind.
+        /// </summary>
+        /// <param name="sender">Der Benutzer, der die Benachrichtigung empfangen hat.</param>
+        /// <param name="e">Die Benachrichtigungen</param>
+        public delegate void AmNotificationEventHandler(Senpai sender, AmNotificationEventArgs e);
 
-        //für die NotificationObject-Listen Eigenschaften
-        private bool checkNewsUpdate;
-        private bool checkAnimeMangaUpdate;
-        private bool checkPMUpdate;
-        private bool checkFriendUpdates;
-        private List<NewsObject> newsUpdates;
-        private List<AnimeMangaUpdateObject> animeMangaUpdates;
-        private List<PMObject> pmUpdates;
-        private List<FriendRequestObject> friendUpdates;
-
-        #region Events + Handler
         /// <summary>
-        /// 
+        ///     Stellt die Methode da, die ausgelöst wird, wenn neue Freundschafts-Benachrichtigungen verfügbar sind.
         /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        public delegate void NotificationEventHandler(Senpai sender, INotificationEventArgs e);
-        /// <summary>
-        /// Wird bei allen Benachrichtigungen aufgerufen(30 Minuten Intervall)
-        /// </summary>
-        public event NotificationEventHandler Notification_Raised;
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
+        /// <param name="sender">Der Benutzer, der die Benachrichtigung empfangen hat.</param>
+        /// <param name="e">Die Benachrichtigungen</param>
         public delegate void FriendNotificiationEventHandler(Senpai sender, FriendNotificationEventArgs e);
+
         /// <summary>
-        /// Wird aufgerufen, wenn eine neue Freundschaftsanfrage aussteht(30 Minuten Intervall)
+        ///     Stellt die Methode da, die ausgelöst wird, wenn neue News verfügbar sind.
         /// </summary>
-        public event FriendNotificiationEventHandler FriendNotification_Raised;
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
+        /// <param name="sender">Der Benutzer, der die Benachrichtigung empfangen hat.</param>
+        /// <param name="e">Die Benachrichtigungen</param>
         public delegate void NewsNotificationEventHandler(Senpai sender, NewsNotificationEventArgs e);
-        /// <summary>
-        /// Wird aufgerufen, wenn neue ungelesene News vorhanden sind(30 Minuten Intervall)
-        /// </summary>
-        public event NewsNotificationEventHandler NewsNotification_Raised;
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        public delegate void PMNotificationEventHandler(Senpai sender, PMNotificationEventArgs e);
-        /// <summary>
-        /// Wird aufgerufen, wenn ungelesene PMs vorhanden sind(30 Minuten Intervall)
-        /// </summary>
-        public event PMNotificationEventHandler PMNotification_Raised;
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        public delegate void AMNotificationEventHandler(Senpai sender, AMNotificationEventArgs e);
-        /// <summary>
-        /// Wird aufgerufen, wenn neue Anime Folgen oder Manga Kapitel vorhanden sind(30 Minuten Intervall)
-        /// ACHTUNG: Kann auch aufgerufen werden, wenn z.B. eine Freundschaftsanfrage angenommen wurde(Wird versucht zu fixen)
-        /// </summary>
-        public event AMNotificationEventHandler AMUpdateNotification_Raised;
 
         /// <summary>
-        /// Wird aufgerufen, wenn die Cookies verfallen sind(30 Minuten Intervall)
+        ///     Stellt die Methode da, die ausgelöst wird, wenn neue Benachrichtigungen aller Art verfügbar sind.
         /// </summary>
-        public event EventHandler UserLoggedOut_Raised;
-        #endregion
+        /// <param name="sender">Der Benutzer, der die Benachrichtigung empfangen hat.</param>
+        /// <param name="e">Die Benachrichtigungen</param>
+        public delegate void NotificationEventHandler(Senpai sender, INotificationEventArgs e);
+
+        /// <summary>
+        ///     Stellt die Methode da, die ausgelöst wird, wenn neue Privat-Nachricht-Benachrichtigungen verfügbar sind.
+        /// </summary>
+        /// <param name="sender">Der Benutzer, der die Benachrichtigung empfangen hat.</param>
+        /// <param name="e">Die Benachrichtigungen</param>
+        public delegate void PmNotificationEventHandler(Senpai sender, PmNotificationEventArgs e);
+
+        private readonly Timer _loginCheckTimer;
+        private readonly Timer _notificationCheckTimer;
+        private readonly Timer _propertyUpdateTimer;
+        private AnimeMangaUpdateCollection _animeMangaUpdates;
+        private bool _checkAnimeMangaUpdate;
+        private bool _checkFriendUpdates;
+        private bool _checkNewsUpdate;
+        private bool _checkPmUpdate;
+        private FriendRequestCollection _friendUpdates;
+        private bool _loggedIn;
+        private NewsCollection _newsUpdates;
+        private PmCollection _pmUpdates;
+        private int _userId;
 
 
         /// <summary>
-        /// Initialisiert die Klasse
+        ///     Standard-Konstruktor der Klasse.
         /// </summary>
         public Senpai()
         {
             this.ErrHandler = new ErrorHandler();
 
-            this.loggedIn = false;
+            this._loggedIn = false;
             this.LoginCookies = new CookieContainer();
 
-            this.loginCheckTimer = new Timer();
-            this.loginCheckTimer.AutoReset = true;
-            this.loginCheckTimer.Interval = (new TimeSpan(0, 45, 0)).TotalMilliseconds;
-            this.loginCheckTimer.Elapsed += (s, eArgs) =>
+            this._loginCheckTimer = new Timer
             {
-                this.loginCheckTimer.Interval = (new TimeSpan(0, 30, 0)).TotalMilliseconds;
-                this.checkLogin();
+                AutoReset = true,
+                Interval = (new TimeSpan(0, 45, 0)).TotalMilliseconds
+            };
+            this._loginCheckTimer.Elapsed += async (s, eArgs) =>
+            {
+                this._loginCheckTimer.Interval = (new TimeSpan(0, 30, 0)).TotalMilliseconds;
+                await this.CheckLogin();
             };
 
-            this.notificationCheckTimer = new Timer();
-            this.notificationCheckTimer.AutoReset = true;
-            this.notificationCheckTimer.Interval = (new TimeSpan(0, 15, 0)).TotalMilliseconds;
-            this.notificationCheckTimer.Elapsed += (s, eArgs) => { checkNotifications(); };
-
-            this.notificationUpdateCheckTimer = new Timer(1);
-            this.notificationUpdateCheckTimer.AutoReset = true;
-            this.notificationUpdateCheckTimer.Elapsed += (s, eArgs) =>
+            this._notificationCheckTimer = new Timer
             {
-                this.notificationUpdateCheckTimer.Interval = (new TimeSpan(0, 10, 0)).TotalMilliseconds;
-                this.checkAnimeMangaUpdate = true;
-                this.checkNewsUpdate = true;
-                this.checkPMUpdate = true;
+                AutoReset = true,
+                Interval = (new TimeSpan(0, 15, 0)).TotalMilliseconds
             };
+            this._notificationCheckTimer.Elapsed += async (s, eArgs) => { await this.CheckNotifications(); };
+
+            this._propertyUpdateTimer = new Timer(1) {AutoReset = true};
+            this._propertyUpdateTimer.Elapsed += (s, eArgs) =>
+            {
+                this._propertyUpdateTimer.Interval = (new TimeSpan(0, 20, 0)).TotalMilliseconds;
+                this._checkAnimeMangaUpdate = true;
+                this._checkFriendUpdates = true;
+                this._checkNewsUpdate = true;
+                this._checkPmUpdate = true;
+            };
+        }
+
+        #region Properties
+
+        /// <summary>
+        ///     Gibt ein Objekt zurück, mithilfe dessen alle Anime- und Manga-Benachrichtigungen abgerufen werden könne.
+        /// </summary>
+        /// <seealso cref="AnimeMangaUpdates" />
+        /// <seealso cref="FriendRequests" />
+        /// <seealso cref="News" />
+        /// <seealso cref="PrivateMessages" />
+        public AnimeMangaUpdateCollection AnimeMangaUpdates
+        {
+            get
+            {
+                if (!this._checkAnimeMangaUpdate && this._animeMangaUpdates != null) return this._animeMangaUpdates;
+
+                this._animeMangaUpdates = new AnimeMangaUpdateCollection(this);
+                this._checkAnimeMangaUpdate = false;
+
+                return this._animeMangaUpdates;
+            }
+        }
+
+        /// <summary>
+        ///     Gibt den Error-Handler zurück, der benutzt wird, um Fehler in Serverantworten zu bearbeiten und frühzeitig zu
+        ///     erkennen.
+        /// </summary>
+        public ErrorHandler ErrHandler { get; }
+
+        /// <summary>
+        ///     Gibt ein Objekt zurück, mithilfe dessen alle Freundschafts-Benachrichtigungen abgerufen werden könne.
+        /// </summary>
+        /// <seealso cref="AnimeMangaUpdates" />
+        /// <seealso cref="FriendRequests" />
+        /// <seealso cref="News" />
+        /// <seealso cref="PrivateMessages" />
+        public FriendRequestCollection FriendRequests
+        {
+            get
+            {
+                if (!this._checkFriendUpdates && this._friendUpdates != null) return this._friendUpdates;
+
+                this._friendUpdates = new FriendRequestCollection(this);
+                this._checkFriendUpdates = false;
+
+                return this._friendUpdates;
+            }
         }
 
 
         /// <summary>
-        /// Gibt an, ob der Benutzter noch eingeloggt ist, wird aber nicht überprüft (nur durch Timer alle 30 Minuten)
+        ///     Gibt an, ob der Benutzter noch eingeloggt ist, wird aber nicht überprüft. (nur durch Timer alle 30 Minuten)
         /// </summary>
         public bool LoggedIn
         {
-            get
-            {
-                return this.loggedIn;
-            }
+            get { return this._loggedIn; }
             private set
             {
                 if (value)
                 {
-                    loginCheckTimer.Start();
-                    this.loggedIn = true;
+                    this._loginCheckTimer.Start();
+                    this._loggedIn = true;
                 }
                 else
                 {
-                    loginCheckTimer.Stop();
-                    notificationCheckTimer.Stop();
-                    notificationUpdateCheckTimer.Stop();
-                    this.loggedIn = false;
+                    this._loginCheckTimer.Stop();
+                    this._notificationCheckTimer.Stop();
+                    this._propertyUpdateTimer.Stop();
+                    this._loggedIn = false;
                 }
             }
         }
+
         /// <summary>
-        /// Gibt alle Anime und Manga Benachrichtigungen in einer Liste zurück
+        ///     Gibt den CookieContainer zurück, der benutzt wird, um Aktionen im eingeloggten Status auszuführen.
         /// </summary>
-        public List<AnimeMangaUpdateObject> AnimeMangaUpdates
-        {
-            get
-            {
-                if (checkAnimeMangaUpdate) getAllAnimeMangaUpdates();
-                return animeMangaUpdates;
-            }
-        }
+        /// <seealso cref="MobileLoginCookies" />
+        public CookieContainer LoginCookies { get; }
+
         /// <summary>
-        /// Gibt die letzten 15 News in einer Liste zurück
-        /// </summary>
-        public List<NewsObject> News
-        {
-            get
-            {
-                if (checkNewsUpdate) getAllNewsUpdates();
-                return newsUpdates;
-            }
-        }
-        /// <summary>
-        /// Gibt alle Privat Nachricht Benachrichtigungen in einer Liste zurück
-        /// </summary>
-        public List<PMObject> PrivateMessages
-        {
-            get
-            {
-                if (checkPMUpdate) getAllPMUpdates();
-                return pmUpdates;
-            }
-        }
-        /// <summary>
-        /// Gibt alle Freundschaftsanfragen in einer Liste zurück
-        /// </summary>
-        public List<FriendRequestObject> FriendRequests
-        {
-            get
-            {
-                if (checkFriendUpdates) getAllFriendUpdates();
-                return friendUpdates;
-            }
-        }
-        /// <summary>
-        /// Gibt den CookieContainer zurück, der benutzt wird, um Aktionen im eingeloggten Status auszuführen
-        /// </summary>
-        public CookieContainer LoginCookies { get; private set; }
-        /// <summary>
-        /// Profil des Senpais
+        ///     Profil des Senpais.
         /// </summary>
         public User Me { get; private set; }
 
         /// <summary>
-        /// Gibt den Error-Handler zurück, der benutzt wird, um Fehler in Serverantworten zu bearbeiten und frühzeitig zu erkennen
+        ///     Gibt den CookieContainer zurück, der benutzt wird, um Aktionen im eingeloggten Status auszuführen.
+        ///     Jedoch wird hierbei dem CookieContainer noch Cookies hinzugefügt, sodass die mobile Seite angezeigt wird.
         /// </summary>
-        public ErrorHandler ErrHandler { get; private set; }
-
+        /// <seealso cref="LoginCookies" />
+        public CookieContainer MobileLoginCookies
+        {
+            get
+            {
+                if (this.LoginCookies == null) return null;
+                CookieContainer lMobileCookies = new CookieContainer();
+                foreach (Cookie loginCookie in this.LoginCookies.GetCookies(new Uri("https://proxer.me/")))
+                {
+                    lMobileCookies.Add(loginCookie);
+                }
+                lMobileCookies.Add(new Cookie("device", "mobile", "/", "proxer.me"));
+                return lMobileCookies;
+            }
+        }
 
         /// <summary>
-        /// Loggt den Benutzer ein
+        ///     Gibt ein Objekt zurück, mithilfe dessen alle News abgerufen werden könne.
         /// </summary>
-        /// <param name="username">Der Benutzername des zu einloggenden Benutzers</param>
-        /// <param name="password">Das Passwort des Benutzers</param>
-        /// <returns>Gibt zurück, ob der Benutzer erfolgreich eingeloggt wurde</returns>
-        public bool login(string username, string password)
+        /// <seealso cref="AnimeMangaUpdates" />
+        /// <seealso cref="FriendRequests" />
+        /// <seealso cref="News" />
+        /// <seealso cref="PrivateMessages" />
+        public NewsCollection News
         {
-            if (LoggedIn) return false;
+            get
+            {
+                if (!this._checkNewsUpdate && this._newsUpdates != null) return this._newsUpdates;
+
+                this._newsUpdates = new NewsCollection(this);
+                this._checkNewsUpdate = false;
+
+                return this._newsUpdates;
+            }
+        }
+
+        /// <summary>
+        ///     Gibt ein Objekt zurück, mithilfe dessen alle Privat-Nachricht-Benachrichtigungen abgerufen werden könne.
+        /// </summary>
+        /// <seealso cref="AnimeMangaUpdates" />
+        /// <seealso cref="FriendRequests" />
+        /// <seealso cref="News" />
+        /// <seealso cref="PrivateMessages" />
+        public PmCollection PrivateMessages
+        {
+            get
+            {
+                if (!this._checkPmUpdate && this._pmUpdates != null) return this._pmUpdates;
+
+                this._pmUpdates = new PmCollection(this);
+                this._checkPmUpdate = false;
+
+                return this._pmUpdates;
+            }
+        }
+
+        #endregion
+
+        #region
+
+        /// <summary>
+        ///     Loggt den Benutzer ein.
+        ///     <para>Mögliche Fehler, die <see cref="ProxerResult" /> enthalten kann:</para>
+        ///     <list type="table">
+        ///         <listheader>
+        ///             <term>Ausnahme</term>
+        ///             <description>Beschreibung</description>
+        ///         </listheader>
+        ///         <item>
+        ///             <term>
+        ///                 <see cref="WrongResponseException" />
+        ///             </term>
+        ///             <description>Wird ausgelöst, wenn die Antwort des Servers nicht der Erwarteten entspricht.</description>
+        ///         </item>
+        ///     </list>
+        /// </summary>
+        /// <param name="username">Der Benutzername des einzuloggenden Benutzers</param>
+        /// <param name="password">Das Passwort des Benutzers</param>
+        /// <returns>Gibt zurück, ob der Benutzer erfolgreich eingeloggt wurde.</returns>
+        public async Task<ProxerResult<bool>> Login(string username, string password)
+        {
+            if (this.LoggedIn || string.IsNullOrEmpty(username) || string.IsNullOrEmpty(password))
+                return new ProxerResult<bool>(false);
 
             Dictionary<string, string> postArgs = new Dictionary<string, string>
             {
                 {"username", username},
                 {"password", password}
             };
-            string lResponse = HttpUtility.PostWebRequestResponse("https://proxer.me/login?format=json&action=login", LoginCookies, postArgs);
 
-            if (Utilities.Utility.checkForCorrectResponse(lResponse, this.ErrHandler))
+            string lResponse;
+
+            IRestResponse lResponseObject =
+                await
+                    HttpUtility.PostWebRequestResponse("https://proxer.me/login?format=json&action=login",
+                        this.LoginCookies, postArgs);
+            if (lResponseObject.StatusCode == HttpStatusCode.OK && !string.IsNullOrEmpty(lResponseObject.Content))
+                lResponse = System.Web.HttpUtility.HtmlDecode(lResponseObject.Content).Replace("\n", "");
+            else return new ProxerResult<bool>(new[] {new WrongResponseException(), lResponseObject.ErrorException});
+
+            if (string.IsNullOrEmpty(lResponse) || !Utility.CheckForCorrectResponse(lResponse, this.ErrHandler))
+                return new ProxerResult<bool>(new Exception[] {new WrongResponseException {Response = lResponse}});
+
+            try
             {
-                try
+                Dictionary<string, string> responseDes =
+                    JsonConvert.DeserializeObject<Dictionary<string, string>>(lResponse);
+
+                if (responseDes["error"].Equals("0"))
                 {
-                    Dictionary<string, string> responseDes = JsonConvert.DeserializeObject<Dictionary<string, string>>(lResponse);
+                    this._userId = Convert.ToInt32(responseDes["uid"]);
 
-                    if (responseDes["error"].Equals("0"))
-                    {
-                        this.userID = Convert.ToInt32(responseDes["uid"]);
-                        this.username = username;
-                        this.Me = new User(username, userID, this);
-                        LoggedIn = true;
+                    //Avatar einfügen
+                    this.Me = new User(username, this._userId, this);
+                    this.LoggedIn = true;
 
-                        return true;
-                    }
-                    else
-                    {
-                        LoggedIn = false;
-
-                        return false;
-                    }
+                    return new ProxerResult<bool>(true);
                 }
-                catch (Exception)
-                {
-                    this.ErrHandler.add(lResponse);
-                }
+                this.LoggedIn = false;
+
+                return new ProxerResult<bool>(false);
             }
-
-            return false;
+            catch
+            {
+                return new ProxerResult<bool>(ErrorHandler.HandleError(this, lResponse).Exceptions);
+            }
         }
-        /// <summary>
-        /// Checkt per API, ob der Benutzer noch eingeloggt ist
-        /// </summary>
-        /// <returns></returns>
-        public bool checkLogin()
-        {
-            if (LoggedIn)
-            {
-                string lResponse = HttpUtility.GetWebRequestResponse("https://proxer.me/login?format=json&action=login", LoginCookies);
 
-                if (Utilities.Utility.checkForCorrectResponse(lResponse, this.ErrHandler))
+        internal async Task<ProxerResult<bool>> CheckLogin()
+        {
+            string lResponse;
+
+            IRestResponse lResponseObject =
+                await
+                    HttpUtility.GetWebRequestResponse("https://proxer.me/login?format=json&action=login",
+                        this.LoginCookies);
+            if (lResponseObject.StatusCode == HttpStatusCode.OK && !string.IsNullOrEmpty(lResponseObject.Content))
+                lResponse = System.Web.HttpUtility.HtmlDecode(lResponseObject.Content).Replace("\n", "");
+            else return new ProxerResult<bool>(new[] {new WrongResponseException(), lResponseObject.ErrorException});
+
+            if (string.IsNullOrEmpty(lResponse) || !Utility.CheckForCorrectResponse(lResponse, this.ErrHandler))
+                return new ProxerResult<bool>(new Exception[] {new WrongResponseException {Response = lResponse}});
+
+            try
+            {
+                Dictionary<string, string> responseDes =
+                    JsonConvert.DeserializeObject<Dictionary<string, string>>(lResponse);
+
+                if (responseDes["error"].Equals("0"))
                 {
-                    try
-                    {
-                        Dictionary<string, string> responseDes = JsonConvert.DeserializeObject<Dictionary<string, string>>(lResponse);
-
-                        if (responseDes["error"].Equals("0"))
-                        {
-                            LoggedIn = true;
-                            return true;
-                        }
-                        else
-                        {
-                            LoggedIn = false;
-                            if (UserLoggedOut_Raised != null) UserLoggedOut_Raised(this, new System.EventArgs());
-                            return false;
-                        }
-                    }
-                    catch (Exception)
-                    {
-                        this.ErrHandler.add(lResponse);
-                    }
+                    this.LoggedIn = true;
+                    return new ProxerResult<bool>(true);
                 }
+                this.LoggedIn = false;
+                this.UserLoggedOutRaised?.Invoke(this, new EventArgs());
+                return new ProxerResult<bool>(false);
             }
-
-            return false;
-        }
-        /// <summary>
-        /// Initialisiert die Benachrichtigungen
-        /// </summary>
-        /// <returns></returns>
-        public bool initNotifications()
-        {
-            if (LoggedIn)
+            catch
             {
-                checkNotifications();
-
-                notificationCheckTimer.Start();
-                notificationUpdateCheckTimer.Start();
-
-                return true;
+                return new ProxerResult<bool>((await ErrorHandler.HandleError(this, lResponse, true)).Exceptions);
             }
+        }
+
+        /// <summary>
+        ///     Initialisiert die Benachrichtigungen.
+        ///     <para>Mögliche Fehler, die <see cref="ProxerResult" /> enthalten kann:</para>
+        ///     <list type="table">
+        ///         <listheader>
+        ///             <term>Ausnahme</term>
+        ///             <description>Beschreibung</description>
+        ///         </listheader>
+        ///         <item>
+        ///             <term>
+        ///                 <see cref="NotLoggedInException" />
+        ///             </term>
+        ///             <description>Wird ausgelöst, wenn der <see cref="Senpai">Benutzer</see> nicht eingeloggt ist.</description>
+        ///         </item>
+        ///         <item>
+        ///             <term>
+        ///                 <see cref="WrongResponseException" />
+        ///             </term>
+        ///             <description>Wird ausgelöst, wenn die Antwort des Servers nicht der Erwarteten entspricht.</description>
+        ///         </item>
+        ///     </list>
+        /// </summary>
+        /// <seealso cref="Login" />
+        public async Task<ProxerResult> InitNotifications()
+        {
+            if (!this.LoggedIn) return new ProxerResult(new Exception[] {new NotLoggedInException(this)});
+            await this.CheckNotifications();
+
+            this._notificationCheckTimer.Start();
+            this._propertyUpdateTimer.Start();
+
+            return new ProxerResult();
+        }
+
+        /// <summary>
+        ///     Zwingt die Eigenschaften sich beim nächsten Aufruf zu aktualisieren.
+        ///     <para>Mögliche Fehler, die <see cref="ProxerResult" /> enthalten kann:</para>
+        ///     <list type="table">
+        ///         <listheader>
+        ///             <term>Ausnahme</term>
+        ///             <description>Beschreibung</description>
+        ///         </listheader>
+        ///         <item>
+        ///             <term>
+        ///                 <see cref="WrongResponseException" />
+        ///             </term>
+        ///             <description>Wird ausgelöst, wenn die Antwort des Servers nicht der Erwarteten entspricht.</description>
+        ///         </item>
+        ///     </list>
+        /// </summary>
+        public async Task<ProxerResult> ForcePropertyReload()
+        {
+            ProxerResult<bool> lResult;
+            if ((lResult = await this.CheckLogin()).Success == false)
+            {
+                return new ProxerResult(lResult.Exceptions);
+            }
+
+            this._checkAnimeMangaUpdate = true;
+            this._checkNewsUpdate = true;
+            this._checkPmUpdate = true;
+
+            return new ProxerResult();
+        }
+
+        /// <summary>
+        ///     Gibt alle Konferenzen des Senpais zurück. ACHTUNG: Bei den Konferenzen muss noch
+        ///     <see cref="Conference.InitConference">InitConference()</see>
+        ///     aufgerufen werden!
+        ///     <para>Mögliche Fehler, die <see cref="ProxerResult" /> enthalten kann:</para>
+        ///     <list type="table">
+        ///         <listheader>
+        ///             <term>Ausnahme</term>
+        ///             <description>Beschreibung</description>
+        ///         </listheader>
+        ///         <item>
+        ///             <term>
+        ///                 <see cref="NotLoggedInException" />
+        ///             </term>
+        ///             <description>Wird ausgelöst, wenn der <see cref="Senpai">Benutzer</see> nicht eingeloggt ist.</description>
+        ///         </item>
+        ///         <item>
+        ///             <term>
+        ///                 <see cref="WrongResponseException" />
+        ///             </term>
+        ///             <description>Wird ausgelöst, wenn die Antwort des Servers nicht der Erwarteten entspricht.</description>
+        ///         </item>
+        ///     </list>
+        /// </summary>
+        /// <seealso cref="Login" />
+        /// <returns>Alle Konferenzen, in denen der Benutzer Teilnehmer ist.</returns>
+        public async Task<ProxerResult<List<Conference>>> GetAllConferences()
+        {
+            if (!this.LoggedIn) return new ProxerResult<List<Conference>>(new Exception[] {new NotLoggedInException()});
+
+            string lResponse;
+
+            IRestResponse lResponseObject =
+                await HttpUtility.GetWebRequestResponse("http://proxer.me/messages", this.LoginCookies);
+            if (lResponseObject.StatusCode == HttpStatusCode.OK && !string.IsNullOrEmpty(lResponseObject.Content))
+                lResponse = System.Web.HttpUtility.HtmlDecode(lResponseObject.Content).Replace("\n", "");
             else
+                return
+                    new ProxerResult<List<Conference>>(new[]
+                    {new WrongResponseException(), lResponseObject.ErrorException});
+
+            if (string.IsNullOrEmpty(lResponse) || !Utility.CheckForCorrectResponse(lResponse, this.ErrHandler))
+                return
+                    new ProxerResult<List<Conference>>(new Exception[]
+                    {new WrongResponseException {Response = lResponse}});
+
+            try
             {
-                return false;
+                HtmlDocument lDocument = new HtmlDocument();
+                lDocument.LoadHtml(lResponse);
+                List<Conference> lReturn = new List<Conference>();
+
+                HtmlNodeCollection lNodes =
+                    lDocument.DocumentNode.SelectNodes("//a[@class='conferenceGrid ']");
+                lReturn.AddRange(from curNode in lNodes
+                                 let lId =
+                                     Convert.ToInt32(
+                                         Utility.GetTagContents(curNode.Attributes["href"].Value, "/messages?id=",
+                                             "#top")[0])
+                                 let lTitle = curNode.FirstChild.InnerText
+                                 select new Conference(lTitle, lId, this));
+
+                return new ProxerResult<List<Conference>>(lReturn);
+            }
+            catch
+            {
+                return
+                    new ProxerResult<List<Conference>>(
+                        (await ErrorHandler.HandleError(this, lResponse, false)).Exceptions);
             }
         }
+
+
+        private async Task<ProxerResult> CheckNotifications()
+        {
+            if (!this.LoggedIn) return new ProxerResult(new Exception[] {new NotLoggedInException()});
+            string lResponse;
+
+            IRestResponse lResponseObject =
+                await HttpUtility.GetWebRequestResponse("http://proxer.me/messages", this.LoginCookies);
+            if (lResponseObject.StatusCode == HttpStatusCode.OK && !string.IsNullOrEmpty(lResponseObject.Content))
+                lResponse = System.Web.HttpUtility.HtmlDecode(lResponseObject.Content).Replace("\n", "");
+            else return new ProxerResult(new[] {new WrongResponseException(), lResponseObject.ErrorException});
+
+            if (string.IsNullOrEmpty(lResponse) || !Utility.CheckForCorrectResponse(lResponse, this.ErrHandler))
+                return new ProxerResult(new Exception[] {new WrongResponseException {Response = lResponse}});
+
+            if (!lResponse.StartsWith("0")) return new ProxerResult();
+            string[] lResponseSplit = lResponse.Split('#');
+
+            if (!lResponseSplit[2].Equals("0"))
+            {
+                this.PmNotificationRaised?.Invoke(this,
+                    new PmNotificationEventArgs(Convert.ToInt32(lResponseSplit[2]), this));
+                this.NotificationRaised?.Invoke(this,
+                    new PmNotificationEventArgs(Convert.ToInt32(lResponseSplit[2]), this));
+                this._checkPmUpdate = true;
+            }
+            if (!lResponseSplit[3].Equals("0"))
+            {
+                this.FriendNotificationRaised?.Invoke(this,
+                    new FriendNotificationEventArgs(Convert.ToInt32(lResponseSplit[3]), this));
+                this.NotificationRaised?.Invoke(this,
+                    new FriendNotificationEventArgs(Convert.ToInt32(lResponseSplit[3]), this));
+                this._checkFriendUpdates = true;
+            }
+            if (!lResponseSplit[4].Equals("0"))
+            {
+                this.NewsNotificationRaised?.Invoke(this,
+                    new NewsNotificationEventArgs(Convert.ToInt32(lResponseSplit[4]), this));
+                this.NotificationRaised?.Invoke(this,
+                    new NewsNotificationEventArgs(Convert.ToInt32(lResponseSplit[4]), this));
+                this._checkNewsUpdate = true;
+            }
+            if (!lResponseSplit[5].Equals("0"))
+            {
+                this.AmUpdateNotificationRaised?.Invoke(this,
+                    new AmNotificationEventArgs(Convert.ToInt32(lResponseSplit[5]), this));
+                this.NotificationRaised?.Invoke(this,
+                    new AmNotificationEventArgs(Convert.ToInt32(lResponseSplit[5]), this));
+                this._checkAnimeMangaUpdate = true;
+            }
+
+            return new ProxerResult();
+        }
+
+
         /// <summary>
-        /// Nach dem Aufruf, wenn eine Eigenschaft aufgerufen wird, wird dessen Wert neu berechnet.
+        ///     Wird bei allen Benachrichtigungen ausgelöst. (15 Minuten Intervall)
         /// </summary>
-        public void forcePropertyReload()
-        {
-            this.checkLogin();
-            this.checkAnimeMangaUpdate = true;
-            this.checkNewsUpdate = true;
-            this.checkPMUpdate = true;
-        }
+        public event NotificationEventHandler NotificationRaised;
+
         /// <summary>
-        /// Gibt alle Konferenzen des Senpais zurück. ACHTUNG: Bei den Konferenzen muss noch initConference() aufgerufen werden!
+        ///     Wird ausgelöst, wenn eine neue Freundschaftsanfrage aussteht. (15 Minuten Intervall)
         /// </summary>
-        /// <returns></returns>
-        public List<Conference> getAllConferences()
-        {
-            if (LoggedIn)
-            {
-                string lResponse = HttpUtility.GetWebRequestResponse("http://proxer.me/messages", LoginCookies).Replace("</link>", "").Replace("\n", "");
+        public event FriendNotificiationEventHandler FriendNotificationRaised;
 
-                if (Utilities.Utility.checkForCorrectResponse(lResponse, this.ErrHandler))
-                {
-                    try
-                    {
-                        HtmlDocument lDocument = new HtmlDocument();
-                        lDocument.LoadHtml(lResponse);
+        /// <summary>
+        ///     Wird ausgelöst, wenn neue ungelesene News vorhanden sind. (15 Minuten Intervall)
+        /// </summary>
+        public event NewsNotificationEventHandler NewsNotificationRaised;
 
-                        if (lDocument.ParseErrors.Count() == 0)
-                        {
-                            List<Conference> lReturn = new List<Conference>();
+        /// <summary>
+        ///     Wird ausgelöst, wenn ungelesene PMs vorhanden sind. (15 Minuten Intervall)
+        /// </summary>
+        public event PmNotificationEventHandler PmNotificationRaised;
 
-                            HtmlAgilityPack.HtmlNodeCollection lNodes = lDocument.DocumentNode.SelectNodes("//a[@class='conferenceGrid ']");
-                            if (lNodes != null)
-                            {
-                                foreach (HtmlNode curNode in lNodes)
-                                {
-                                    int lID = Convert.ToInt32(Utility.GetTagContents(curNode.Attributes["href"].Value, "/messages?id=", "#top")[0]);
-                                    string lTitle = curNode.FirstChild.InnerText;
+        /// <summary>
+        ///     Wird ausgelöst, wenn neue Anime Folgen oder Manga Kapitel vorhanden sind. (15 Minuten Intervall)
+        /// </summary>
+        public event AmNotificationEventHandler AmUpdateNotificationRaised;
 
-                                    lReturn.Add(new Conference(lTitle, lID, this));
-                                }
-                            }
+        /// <summary>
+        ///     Wird ausgelöst, wenn die Login-Cookies verfallen sind. (15 Minuten Intervall)
+        /// </summary>
+        public event EventHandler UserLoggedOutRaised;
 
-                            return lReturn;
-                        }
-                    }
-                    catch (Exception)
-                    {
-                        this.ErrHandler.add(lResponse);
-                    }
-                }
-            }
-
-            return null;
-        }
-
-
-        private void checkNotifications()
-        {
-            if (LoggedIn)
-            {
-                string lResponse = HttpUtility.GetWebRequestResponse("https://proxer.me/notifications?format=raw&s=count", LoginCookies);
-
-                if (Utilities.Utility.checkForCorrectResponse(lResponse, this.ErrHandler) && lResponse.StartsWith("0"))
-                {
-                    try
-                    {
-                        string[] lResponseSplit = lResponse.Split('#');
-
-                        if (!lResponseSplit[2].Equals("0"))
-                        {
-                            if (PMNotification_Raised != null) PMNotification_Raised(this, new PMNotificationEventArgs(Convert.ToInt32(lResponseSplit[2]), this));
-                            if (Notification_Raised != null) Notification_Raised(this, new PMNotificationEventArgs(Convert.ToInt32(lResponseSplit[2]), this));
-                            this.checkPMUpdate = true;
-                        }
-                        if (!lResponseSplit[3].Equals("0"))
-                        {
-                            if (FriendNotification_Raised != null) FriendNotification_Raised(this, new FriendNotificationEventArgs(Convert.ToInt32(lResponseSplit[3]), this));
-                            if (Notification_Raised != null) Notification_Raised(this, new FriendNotificationEventArgs(Convert.ToInt32(lResponseSplit[3]), this));
-                            this.checkFriendUpdates = true;
-                        }
-                        if (!lResponseSplit[4].Equals("0"))
-                        {
-                            if (NewsNotification_Raised != null) NewsNotification_Raised(this, new NewsNotificationEventArgs(Convert.ToInt32(lResponseSplit[4]), this));
-                            if (Notification_Raised != null) Notification_Raised(this, new NewsNotificationEventArgs(Convert.ToInt32(lResponseSplit[4]), this));
-                            this.checkNewsUpdate = true;
-                        }
-                        if (!lResponseSplit[5].Equals("0"))
-                        {
-                            if (AMUpdateNotification_Raised != null) AMUpdateNotification_Raised(this, new AMNotificationEventArgs(Convert.ToInt32(lResponseSplit[5]), this));
-                            if (Notification_Raised != null) Notification_Raised(this, new AMNotificationEventArgs(Convert.ToInt32(lResponseSplit[5]), this));
-                            this.checkAnimeMangaUpdate = true;
-                        }
-                    }
-                    catch (Exception)
-                    {
-                        this.ErrHandler.add(lResponse);
-                    }
-                }
-            }
-        }
-        private void getAllAnimeMangaUpdates()
-        {
-            if (LoggedIn)
-            {
-                HtmlAgilityPack.HtmlDocument lDocument = new HtmlAgilityPack.HtmlDocument();
-                string lResponse = HttpUtility.GetWebRequestResponse("https://proxer.me/components/com_proxer/misc/notifications_misc.php", LoginCookies);
-
-                if (Utilities.Utility.checkForCorrectResponse(lResponse, this.ErrHandler))
-                {
-                    try
-                    {
-                        lDocument.LoadHtml(lResponse);
-
-                        if (lDocument.ParseErrors.Count() == 0)
-                        {
-                            HtmlAgilityPack.HtmlNodeCollection lNodes = lDocument.DocumentNode.SelectNodes("//a[@class='notificationList']");
-
-                            if (lNodes != null)
-                            {
-                                this.animeMangaUpdates = new List<AnimeMangaUpdateObject>();
-                                foreach (HtmlAgilityPack.HtmlNode curNode in lNodes)
-                                {
-                                    if (curNode.InnerText.StartsWith("Lesezeichen:"))
-                                    {
-                                        string lName;
-                                        int lNumber;
-
-                                        int lID = Convert.ToInt32(curNode.Id.Substring(12));
-                                        string lMessage = curNode.ChildNodes["u"].InnerText;
-                                        Uri lLink = new Uri("https://proxer.me" + curNode.Attributes["href"].Value);
-
-                                        if (lMessage.IndexOf('#') != -1)
-                                        {
-                                            lName = lMessage.Split('#')[0];
-                                            if (!Int32.TryParse(lMessage.Split('#')[1], out lNumber)) lNumber = -1;
-                                        }
-                                        else
-                                        {
-                                            lName = "";
-                                            lNumber = -1;
-                                        }
-
-                                        this.AnimeMangaUpdates.Add(new AnimeMangaUpdateObject(lMessage, lName, lNumber, lLink, lID));
-                                    }
-                                }
-                                this.checkAnimeMangaUpdate = false;
-                            }
-                        }
-                    }
-                    catch (Exception)
-                    {
-                        this.ErrHandler.add(lResponse);
-                    }
-                }
-            }
-        }
-        private void getAllNewsUpdates()
-        {
-            if (LoggedIn)
-            {
-                string lResponse = HttpUtility.GetWebRequestResponse("https://proxer.me/notifications?format=json&s=news&p=1", LoginCookies);
-                if (lResponse.StartsWith("{\"error\":0"))
-                {
-                    this.newsUpdates = new List<NewsObject>();
-                    Dictionary<string, List<NewsObject>> lDeserialized = JsonConvert.DeserializeObject<Dictionary<string, List<NewsObject>>>("{" + lResponse.Substring("{\"error\":0,".Length));
-                    newsUpdates = lDeserialized["notifications"];
-                    this.checkNewsUpdate = false;
-                }
-            }
-        }
-        private void getAllPMUpdates()
-        {
-            if (this.LoggedIn)
-            {
-                HtmlAgilityPack.HtmlDocument lDocument = new HtmlAgilityPack.HtmlDocument();
-                string lResponse = (HttpUtility.GetWebRequestResponse("https://proxer.me/messages?format=raw&s=notification", this.LoginCookies)).Replace("</link>", "").Replace("\n", "");
-
-                if (Utilities.Utility.checkForCorrectResponse(lResponse, this.ErrHandler))
-                {
-                    try
-                    {
-                        lDocument.LoadHtml(lResponse);
-
-                        if (lDocument.ParseErrors.Count() == 0)
-                        {
-                            HtmlAgilityPack.HtmlNodeCollection lNodes = lDocument.DocumentNode.SelectNodes("//a[@class='conferenceList']");
-
-                            if (lNodes != null)
-                            {
-                                this.pmUpdates = new List<PMObject>();
-                                foreach (HtmlAgilityPack.HtmlNode curNode in lNodes)
-                                {
-                                    string lTitel;
-                                    string[] lDatum;
-                                    if (curNode.ChildNodes[1].Name.ToLower().Equals("img"))
-                                    {
-                                        lTitel = curNode.ChildNodes[0].InnerText;
-                                        lDatum = curNode.ChildNodes[1].InnerText.Split('.');
-
-                                        DateTime lTimeStamp = new DateTime(Convert.ToInt32(lDatum[2]), Convert.ToInt32(lDatum[1]), Convert.ToInt32(lDatum[0]));
-                                        int lID = Convert.ToInt32(curNode.Attributes["href"].Value.Substring(13, curNode.Attributes["href"].Value.Length - 17));
-
-                                        this.pmUpdates.Add(new PMObject(lID, lTitel, lTimeStamp));
-                                    }
-                                    else
-                                    {
-                                        lTitel = curNode.ChildNodes[0].InnerText;
-                                        lDatum = curNode.ChildNodes[1].InnerText.Split('.');
-
-                                        DateTime lTimeStamp = new DateTime(Convert.ToInt32(lDatum[2]), Convert.ToInt32(lDatum[1]), Convert.ToInt32(lDatum[0]));
-                                        int lID = Convert.ToInt32(curNode.Attributes["href"].Value.Substring(13, curNode.Attributes["href"].Value.Length - 17));
-
-                                        this.pmUpdates.Add(new PMObject(lTitel, lID, lTimeStamp));
-                                    }
-                                }
-                            }
-
-                            this.checkPMUpdate = false;
-                        }
-                    }
-                    catch (Exception)
-                    {
-                        this.ErrHandler.add(lResponse);
-                    }
-                }
-            }
-        }
-        private void getAllFriendUpdates()
-        {
-            if (this.LoggedIn)
-            {
-                HtmlAgilityPack.HtmlDocument lDocument = new HtmlAgilityPack.HtmlDocument();
-                string lResponse = (HttpUtility.GetWebRequestResponse("https://proxer.me/user/my/connections?format=raw", this.LoginCookies)).Replace("</link>", "").Replace("\n", "");
-
-                if (Utilities.Utility.checkForCorrectResponse(lResponse, this.ErrHandler))
-                {
-                    try
-                    {
-                        lDocument.LoadHtml(lResponse);
-
-                        if (lDocument.ParseErrors.Count() == 0)
-                        {
-                            HtmlAgilityPack.HtmlNodeCollection lNodes = lDocument.DocumentNode.SelectNodes("//tr");
-
-                            if (lNodes != null)
-                            {
-                                this.friendUpdates = new List<FriendRequestObject>();
-                                foreach (HtmlAgilityPack.HtmlNode curNode in lNodes)
-                                {
-                                    if (curNode.Id.StartsWith("entry") && curNode.FirstChild.FirstChild.Attributes["class"].Value.Equals("accept"))
-                                    {
-                                        int lUserID = Convert.ToInt32(curNode.Id.Replace("entry", ""));
-                                        string lUserName = curNode.InnerText.Split("  ".ToCharArray())[0];
-                                        string lDescription = curNode.ChildNodes[3].ChildNodes[1].InnerText;
-                                        string[] lDatumSplit = curNode.ChildNodes[4].InnerText.Split('-');
-                                        DateTime lDatum = new DateTime(Convert.ToInt32(lDatumSplit[0]), Convert.ToInt32(lDatumSplit[1]), Convert.ToInt32(lDatumSplit[2]));
-                                        bool lOnline = curNode.ChildNodes[1].ChildNodes[1].FirstChild.Attributes["src"].Value.Equals("/images/misc/onlineicon.png");
-
-                                        this.friendUpdates.Add(new FriendRequestObject(lUserName, lUserID, lDescription, lDatum, lOnline, this));
-                                    }
-                                }
-                                this.checkFriendUpdates = false;
-                            }
-                        }
-                    }
-                    catch (Exception)
-                    {
-                        this.ErrHandler.add(lResponse);
-                    }
-                }
-            }
-        }
+        #endregion
     }
 }

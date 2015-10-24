@@ -1,91 +1,112 @@
-﻿using Proxer.API.Utilities;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System;
+using Proxer.API.Community;
 
 namespace Proxer.API.Notifications
 {
     /// <summary>
-    /// 
+    ///     Eine Klasse, die eine neue private Nachricht darstellt.
     /// </summary>
-    public class PMObject : INotificationObject
+    public class PmObject : INotificationObject
     {
         /// <summary>
-        /// 
+        ///     Eine Enumeration, die darstellt, ob die <see cref="PmObject">private Nachricht</see> von einem einzelnen
+        ///     <see cref="User">Benutzer</see> stammt oder aus einer <see cref="Conference">Konferenz</see>.
         /// </summary>
-        public enum PMType
+        public enum PmType
         {
             /// <summary>
-            /// 
+            ///     Die private Nachricht stammt aus einer <see cref="Conference">Konferenz</see>.
             /// </summary>
             Konferenz,
+
             /// <summary>
-            /// 
+            ///     Die private Nachricht stammt von einem einzelnen <see cref="User">Benutzer</see>.
             /// </summary>
             Benutzer
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="conID">ID der Konferenz</param>
-        /// <param name="userName">Benutzername des Senders</param>
-        /// <param name="timeStampDate">Datum(ohne Uhrzeit) der Nachricht</param>
-        internal PMObject(int conID, string userName, DateTime timeStampDate)
+
+        internal PmObject(int conId, string userName, DateTime timeStampDate)
         {
             this.Type = NotificationObjectType.PrivateMessage;
-            this.MessageTyp = PMType.Benutzer;
+            this.MessageTyp = PmType.Benutzer;
             this.TimeStamp = timeStampDate;
-            this.ID = conID;
+            this.Id = conId;
             this.UserName = userName;
         }
-        /// <summary>
-        /// Konstruktor für PM-Konferenzen
-        /// </summary>
-        /// <param name="conID">ID der Konferenz</param>
-        /// <param name="title">Titel der Konferenz</param>
-        /// <param name="timeStampDate">Datum(ohne Uhrzeit) der Nachricht</param>
-        internal PMObject(string title, int conID, DateTime timeStampDate)
+
+        internal PmObject(string title, int conId, DateTime timeStampDate)
         {
             this.Type = NotificationObjectType.PrivateMessage;
-            this.MessageTyp = PMType.Konferenz;
+            this.MessageTyp = PmType.Konferenz;
             this.ConferenceTitle = title;
             this.TimeStamp = timeStampDate;
-            this.ID = conID;
+            this.Id = conId;
         }
 
+        #region Geerbt
+
         /// <summary>
-        /// 
-        /// </summary>
-        public NotificationObjectType Type { get; private set; }
-        /// <summary>
-        /// 
+        ///     Gibt die Nachricht der Benachrichtigung als Text zurück.
+        ///     <para>(Vererbt von <see cref="INotificationObject" />)</para>
         /// </summary>
         public string Message
         {
             get { throw new NotImplementedException(); }
         }
+
         /// <summary>
-        /// 
+        ///     Gibt den Typ der Benachrichtigung zurück.
+        ///     <para>(Vererbt von <see cref="INotificationObject" />)</para>
         /// </summary>
-        public PMType MessageTyp { get; private set; }
+        public NotificationObjectType Type { get; }
+
+        #endregion
+
+        #region Properties
+
         /// <summary>
-        /// 
+        ///     Gibt den Titel der <see cref="Conference">Sender-Konferenz</see> zurück.
+        ///     <para>(Ist nur vorhanden, wenn <see cref="MessageTyp" /> = <see cref="PmType.Konferenz" />)</para>
         /// </summary>
-        public string UserName { get; private set; }
+        public string ConferenceTitle { get; }
+
         /// <summary>
-        /// 
+        ///     Gibt die ID der Konferenz zurück.
         /// </summary>
-        public string ConferenceTitle { get; private set; }
+        public int Id { get; private set; }
+
         /// <summary>
-        /// Gibt nur Datum zurück, keine Uhrzeit.
+        ///     Gibt den Typ des Senders zurück.
         /// </summary>
-        public DateTime TimeStamp { get; private set; }
+        public PmType MessageTyp { get; }
+
         /// <summary>
-        /// Gibt die ID der Konferenz zurück.
+        ///     Gibt das Empfangsdatum der Nachricht zurück.
         /// </summary>
-        public int ID { get; private set; }
+        public DateTime TimeStamp { get; }
+
+        /// <summary>
+        ///     Gibt den Benutzernamen des Senders zurück.
+        ///     <para>(Ist nur vorhanden, wenn <see cref="MessageTyp" /> = <see cref="PmType.Benutzer" />)</para>
+        /// </summary>
+        public string UserName { get; }
+
+        #endregion
+
+        #region
+
+        /// <summary>
+        ///     Returns a string that represents the current object.
+        /// </summary>
+        /// <returns>
+        ///     A string that represents the current object.
+        /// </returns>
+        public override string ToString()
+        {
+            return (this.MessageTyp == PmType.Konferenz ? this.ConferenceTitle : this.UserName) + "\n" + this.TimeStamp;
+        }
+
+        #endregion
     }
 }
