@@ -400,6 +400,9 @@ namespace Proxer.API.Main
         /// <returns>Ein Array mit den aktuell beliebtesten <see cref="Anime" />.</returns>
         public static async Task<ProxerResult<Anime[]>> GetPopularAnimes(Senpai senpai)
         {
+            if (senpai == null)
+                return new ProxerResult<Anime[]>(new Exception[] {new ArgumentNullException(nameof(senpai))});
+
             HtmlDocument lDocument = new HtmlDocument();
             string lResponse;
 

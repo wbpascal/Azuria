@@ -23,12 +23,34 @@ namespace Proxer.API.Utilities
         /// <summary>
         ///     Gibt ein Objekt zurück, dass einen Anime oder Manga
         ///     der spezifizierten ID repräsentiert.
+        ///     <para>Mögliche Fehler, die <see cref="ProxerResult" /> enthalten kann:</para>
+        ///     <list type="table">
+        ///         <listheader>
+        ///             <term>Ausnahme</term>
+        ///             <description>Beschreibung</description>
+        ///         </listheader>
+        ///         <item>
+        ///             <term>
+        ///                 <see cref="WrongResponseException" />
+        ///             </term>
+        ///             <description>Wird ausgelöst, wenn die Antwort des Servers nicht der Erwarteten entspricht.</description>
+        ///         </item>
+        ///         <item>
+        ///             <term>
+        ///                 <see cref="ArgumentNullException" />
+        ///             </term>
+        ///             <description>Wird ausgelöst, wenn <paramref name="senpai" /> null (oder Nothing in Visual Basic) ist.</description>
+        ///         </item>
+        ///     </list>
         /// </summary>
         /// <param name="id">Die ID des <see cref="Main.Anime">Anime</see> oder <see cref="Main.Manga">Manga</see>.</param>
         /// <param name="senpai">Der Benutzer. (Muss eingeloggt sein)</param>
         /// <returns>Anime oder Manga der ID (Typecast erforderlich)</returns>
         public static async Task<ProxerResult<IAnimeMangaObject>> GetAnimeManga(int id, Senpai senpai)
         {
+            if (senpai == null)
+                return new ProxerResult<IAnimeMangaObject>(new Exception[] {new ArgumentNullException(nameof(senpai))});
+
             HtmlDocument lDocument = new HtmlDocument();
             string lResponse;
 
@@ -75,8 +97,7 @@ namespace Proxer.API.Utilities
             catch
             {
                 return
-                    new ProxerResult<IAnimeMangaObject>(
-                        (await ErrorHandler.HandleError(senpai, lResponse, false)).Exceptions);
+                    new ProxerResult<IAnimeMangaObject>(ErrorHandler.HandleError(senpai, lResponse).Exceptions);
             }
 
             return

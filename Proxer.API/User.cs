@@ -445,6 +445,15 @@ namespace Proxer.API
         ///             </term>
         ///             <description>Wird ausgelöst, wenn die Eigenschaften des Objektes noch nicht initialisiert sind.</description>
         ///         </item>
+        ///         <item>
+        ///             <term>
+        ///                 <see cref="ArgumentNullException" />
+        ///             </term>
+        ///             <description>
+        ///                 Wird ausgelöst, wenn <paramref name="user1" /> oder <paramref name="user2" /> null (oder
+        ///                 Nothing in Visual Basic) sind.
+        ///             </description>
+        ///         </item>
         ///     </list>
         /// </summary>
         /// <param name="user1">Benutzer 1</param>
@@ -452,6 +461,11 @@ namespace Proxer.API
         /// <returns>Benutzer sind Freunde. True oder False.</returns>
         public static ProxerResult<bool> IsUserFriendOf(User user1, User user2)
         {
+            if (user1 == null)
+                return new ProxerResult<bool>(new Exception[] {new ArgumentNullException(nameof(user1))});
+            if (user2 == null)
+                return new ProxerResult<bool>(new Exception[] {new ArgumentNullException(nameof(user2))});
+
             try
             {
                 return new ProxerResult<bool>(user1.Freunde.Any(item => item.Id == user2.Id));
@@ -482,6 +496,12 @@ namespace Proxer.API
         ///             </term>
         ///             <description>Wird ausgelöst, wenn die Antwort des Servers nicht der Erwarteten entspricht.</description>
         ///         </item>
+        ///         <item>
+        ///             <term>
+        ///                 <see cref="ArgumentNullException" />
+        ///             </term>
+        ///             <description>Wird ausgelöst, wenn <paramref name="senpai" /> null (oder Nothing in Visual Basic) ist.</description>
+        ///         </item>
         ///     </list>
         /// </summary>
         /// <param name="id">Die ID des Benutzers</param>
@@ -490,6 +510,9 @@ namespace Proxer.API
         /// <returns></returns>
         public static async Task<ProxerResult<string>> GetUNameFromId(int id, Senpai senpai)
         {
+            if (senpai == null)
+                return new ProxerResult<string>(new Exception[] {new ArgumentNullException(nameof(senpai))});
+
             if (!senpai.LoggedIn) return new ProxerResult<string>(new Exception[] {new NotLoggedInException()});
 
             HtmlDocument lDocument = new HtmlDocument();

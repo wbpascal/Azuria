@@ -27,7 +27,7 @@ namespace Proxer.API.Utilities
         #region
 
         /// <summary>
-        ///     Erstellt eine neue Liste der Strings, die aussortiert werden sollen
+        ///     Erstellt eine neue Liste der Strings, die aussortiert werden sollen.
         /// </summary>
         public void Reset()
         {

@@ -33,7 +33,7 @@ namespace Proxer.API.Community
         ///     Standard-Konstruktor der Klasse.
         /// </summary>
         /// <param name="id">Die ID der Konferenz</param>
-        /// <param name="senpai">Muss Teilnehmer der Konferenz sein.</param>
+        /// <param name="senpai">Muss Teilnehmer der Konferenz sein. Darf nicht null sein.</param>
         public Conference(int id, Senpai senpai)
         {
             this.Id = id;
@@ -896,6 +896,12 @@ namespace Proxer.API.Community
         ///             </term>
         ///             <description>Wird ausgelöst, wenn die Antwort des Servers nicht der Erwarteten entspricht.</description>
         ///         </item>
+        ///         <item>
+        ///             <term>
+        ///                 <see cref="ArgumentNullException" />
+        ///             </term>
+        ///             <description>Wird ausgelöst, wenn <paramref name="senpai" /> null (oder Nothing in Visual Basic) ist.</description>
+        ///         </item>
         ///     </list>
         /// </summary>
         /// <param name="id">ID der Konferenz</param>
@@ -904,6 +910,9 @@ namespace Proxer.API.Community
         /// <returns>Benutzer ist Teilnehmer der Konferenz. True oder False.</returns>
         public static async Task<ProxerResult<bool>> IstTeilnehmner(int id, Senpai senpai)
         {
+            if (senpai == null)
+                return new ProxerResult<bool>(new Exception[] {new ArgumentNullException(nameof(senpai))});
+
             if (!senpai.LoggedIn) return new ProxerResult<bool>(new Exception[] {new NotLoggedInException(senpai)});
 
             Dictionary<string, string> lPostArgs = new Dictionary<string, string>
