@@ -29,6 +29,14 @@ namespace Proxer.API
         public delegate void AmNotificationEventHandler(Senpai sender, AmNotificationEventArgs e);
 
         /// <summary>
+        ///     Stellt eine Methode da, die ausgelöst, wenn während des Abrufen der Benachrichtigungen eine Ausnahme ausgelöst
+        ///     wird.
+        /// </summary>
+        /// <param name="sender">Der Benutzer, bei dem der Error aufgetreten ist.</param>
+        /// <param name="exceptions">Die Ausnahmen, die aufgetreten sind.</param>
+        public delegate void ErrorDuringNotificationFetchEventHandler(Senpai sender, Exception[] exceptions);
+
+        /// <summary>
         ///     Stellt die Methode da, die ausgelöst wird, wenn neue Freundschafts-Benachrichtigungen verfügbar sind.
         /// </summary>
         /// <param name="sender">Der Benutzer, der die Benachrichtigung empfangen hat.</param>
@@ -97,7 +105,12 @@ namespace Proxer.API
                 AutoReset = true,
                 Interval = (new TimeSpan(0, 15, 0)).TotalMilliseconds
             };
-            this._notificationCheckTimer.Elapsed += async (s, eArgs) => { await this.CheckNotifications(); };
+            this._notificationCheckTimer.Elapsed += async (s, eArgs) =>
+            {
+                ProxerResult lResult = await this.CheckNotifications();
+                if (!lResult.Success)
+                    this.ErrorDuringNotificationFetch?.Invoke(this, lResult.Exceptions);
+            };
 
             this._propertyUpdateTimer = new Timer(1) {AutoReset = true};
             this._propertyUpdateTimer.Elapsed += (s, eArgs) =>
@@ -386,7 +399,10 @@ namespace Proxer.API
         public async Task<ProxerResult> InitNotifications()
         {
             if (!this.LoggedIn) return new ProxerResult(new Exception[] {new NotLoggedInException(this)});
-            await this.CheckNotifications();
+
+            ProxerResult lResult = await this.CheckNotifications();
+            if (!lResult.Success)
+                this.ErrorDuringNotificationFetch?.Invoke(this, lResult.Exceptions);
 
             this._notificationCheckTimer.Start();
             this._propertyUpdateTimer.Start();
@@ -512,40 +528,47 @@ namespace Proxer.API
             if (string.IsNullOrEmpty(lResponse) || !Utility.CheckForCorrectResponse(lResponse, this.ErrHandler))
                 return new ProxerResult(new Exception[] {new WrongResponseException {Response = lResponse}});
 
-            if (!lResponse.StartsWith("0")) return new ProxerResult();
-            string[] lResponseSplit = lResponse.Split('#');
+            if (lResponse.StartsWith("1")) return new ProxerResult();
+            try
+            {
+                string[] lResponseSplit = lResponse.Split('#');
 
-            if (!lResponseSplit[2].Equals("0"))
-            {
-                this.PmNotificationRaised?.Invoke(this,
-                    new PmNotificationEventArgs(Convert.ToInt32(lResponseSplit[2]), this));
-                this.NotificationRaised?.Invoke(this,
-                    new PmNotificationEventArgs(Convert.ToInt32(lResponseSplit[2]), this));
-                this._checkPmUpdate = true;
+                if (!lResponseSplit[2].Equals("0"))
+                {
+                    this.PmNotificationRaised?.Invoke(this,
+                        new PmNotificationEventArgs(Convert.ToInt32(lResponseSplit[2]), this));
+                    this.NotificationRaised?.Invoke(this,
+                        new PmNotificationEventArgs(Convert.ToInt32(lResponseSplit[2]), this));
+                    this._checkPmUpdate = true;
+                }
+                if (!lResponseSplit[3].Equals("0"))
+                {
+                    this.FriendNotificationRaised?.Invoke(this,
+                        new FriendNotificationEventArgs(Convert.ToInt32(lResponseSplit[3]), this));
+                    this.NotificationRaised?.Invoke(this,
+                        new FriendNotificationEventArgs(Convert.ToInt32(lResponseSplit[3]), this));
+                    this._checkFriendUpdates = true;
+                }
+                if (!lResponseSplit[4].Equals("0"))
+                {
+                    this.NewsNotificationRaised?.Invoke(this,
+                        new NewsNotificationEventArgs(Convert.ToInt32(lResponseSplit[4]), this));
+                    this.NotificationRaised?.Invoke(this,
+                        new NewsNotificationEventArgs(Convert.ToInt32(lResponseSplit[4]), this));
+                    this._checkNewsUpdate = true;
+                }
+                if (!lResponseSplit[5].Equals("0"))
+                {
+                    this.AmUpdateNotificationRaised?.Invoke(this,
+                        new AmNotificationEventArgs(Convert.ToInt32(lResponseSplit[5]), this));
+                    this.NotificationRaised?.Invoke(this,
+                        new AmNotificationEventArgs(Convert.ToInt32(lResponseSplit[5]), this));
+                    this._checkAnimeMangaUpdate = true;
+                }
             }
-            if (!lResponseSplit[3].Equals("0"))
+            catch
             {
-                this.FriendNotificationRaised?.Invoke(this,
-                    new FriendNotificationEventArgs(Convert.ToInt32(lResponseSplit[3]), this));
-                this.NotificationRaised?.Invoke(this,
-                    new FriendNotificationEventArgs(Convert.ToInt32(lResponseSplit[3]), this));
-                this._checkFriendUpdates = true;
-            }
-            if (!lResponseSplit[4].Equals("0"))
-            {
-                this.NewsNotificationRaised?.Invoke(this,
-                    new NewsNotificationEventArgs(Convert.ToInt32(lResponseSplit[4]), this));
-                this.NotificationRaised?.Invoke(this,
-                    new NewsNotificationEventArgs(Convert.ToInt32(lResponseSplit[4]), this));
-                this._checkNewsUpdate = true;
-            }
-            if (!lResponseSplit[5].Equals("0"))
-            {
-                this.AmUpdateNotificationRaised?.Invoke(this,
-                    new AmNotificationEventArgs(Convert.ToInt32(lResponseSplit[5]), this));
-                this.NotificationRaised?.Invoke(this,
-                    new AmNotificationEventArgs(Convert.ToInt32(lResponseSplit[5]), this));
-                this._checkAnimeMangaUpdate = true;
+                return new ProxerResult((await ErrorHandler.HandleError(this, lResponse, false)).Exceptions);
             }
 
             return new ProxerResult();
@@ -556,6 +579,11 @@ namespace Proxer.API
         ///     Wird bei allen Benachrichtigungen ausgelöst. (15 Minuten Intervall)
         /// </summary>
         public event NotificationEventHandler NotificationRaised;
+
+        /// <summary>
+        ///     Wird ausgelöst, wenn während des Abrufens der Benachríchtigungen eine Ausnahme aufgetreten ist.
+        /// </summary>
+        public event ErrorDuringNotificationFetchEventHandler ErrorDuringNotificationFetch;
 
         /// <summary>
         ///     Wird ausgelöst, wenn eine neue Freundschaftsanfrage aussteht. (15 Minuten Intervall)

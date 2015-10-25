@@ -95,6 +95,7 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
       <DependentUpon>Settings.settings</DependentUpon>
     </Compile>
+    <Compile Include="ProxerClass.cs" />
     <Compile Include="Senpai.cs" />
     <Compile Include="User.cs" />
     <Compile Include="Utilities\ErrorHandler.cs" />
