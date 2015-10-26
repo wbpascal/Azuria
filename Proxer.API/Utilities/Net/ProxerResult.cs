@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Proxer.API.Utilities.Net
 {
@@ -6,43 +8,32 @@ namespace Proxer.API.Utilities.Net
     ///     Eine Klasse, die ein Resultat einer Methode des API darstellt.
     /// </summary>
     /// <typeparam name="T">Der Typ des Resultats.</typeparam>
-    public class ProxerResult<T>
+    public class ProxerResult<T> : ProxerResult
     {
         internal ProxerResult()
         {
             this.Success = true;
+            this.Exceptions = new Exception[0];
         }
 
         internal ProxerResult(T result)
         {
             this.Success = true;
             this.Result = result;
+            this.Exceptions = new Exception[0];
         }
 
-        internal ProxerResult(Exception[] exceptions)
+        internal ProxerResult(Exception[] exceptions) : base(exceptions)
         {
-            this.Success = false;
-            this.Exceptions = exceptions;
         }
 
         #region Properties
 
         /// <summary>
-        ///     Gibt die Fehler zurück, die während der Ausführung aufgetreten sind, oder legt diese fest.
-        /// </summary>
-        /// <value>Ist null, wenn <see cref="Success" /> == true</value>
-        public Exception[] Exceptions { get; set; }
-
-        /// <summary>
         ///     Gibt das Resultat zurück, das die Klasse repräsentiert, oder legt dieses fest.
         /// </summary>
-        /// <value>Ist null, wenn <see cref="Success" /> == false</value>
+        /// <value>Ist null, wenn <see cref="ProxerResult.Success" /> == false</value>
         public T Result { get; set; }
-
-        /// <summary>
-        ///     Gibt zurück, ob die Methode erfolg hatte, oder legt dieses fest.
-        /// </summary>
-        public bool Success { get; set; }
 
         #endregion
     }
@@ -55,6 +46,7 @@ namespace Proxer.API.Utilities.Net
         internal ProxerResult()
         {
             this.Success = true;
+            this.Exceptions = new Exception[0];
         }
 
         internal ProxerResult(Exception[] exceptions)
@@ -75,6 +67,36 @@ namespace Proxer.API.Utilities.Net
         ///     Gibt zurück, ob die Methode erfolg hatte, oder legt dieses fest.
         /// </summary>
         public bool Success { get; set; }
+
+        #endregion
+
+        #region
+
+        /// <summary>
+        ///     Fügt den <see cref="Exceptions">Ausnahmen</see> eine weiter hinzu.
+        /// </summary>
+        /// <param name="exception">Die Ausnahme die hinzugefügt werden soll.</param>
+        public void AddException(Exception exception)
+        {
+            List<Exception> lExceptions = this.Exceptions.ToList();
+            lExceptions.Add(exception);
+            this.Exceptions = lExceptions.ToArray();
+
+            this.Success = false;
+        }
+
+        /// <summary>
+        ///     Fügt den <see cref="Exceptions">Ausnahmen</see> weitere hinzu.
+        /// </summary>
+        /// <param name="exception">Die Ausnahme die hinzugefügt werden soll.</param>
+        public void AddExceptions(Exception[] exception)
+        {
+            List<Exception> lExceptions = this.Exceptions.ToList();
+            lExceptions.AddRange(exception);
+            this.Exceptions = lExceptions.ToArray();
+
+            this.Success = false;
+        }
 
         #endregion
     }

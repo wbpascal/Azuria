@@ -68,6 +68,7 @@
     <Compile Include="Exceptions\CaptchaException.cs" />
     <Compile Include="Exceptions\InitializeNeededException.cs" />
     <Compile Include="Exceptions\LanguageNotAvailableException.cs" />
+    <Compile Include="Exceptions\NoAccessException.cs" />
     <Compile Include="Exceptions\NotLoggedInException.cs" />
     <Compile Include="Exceptions\WrongResponseException.cs" />
     <Compile Include="Main\Anime.cs" />

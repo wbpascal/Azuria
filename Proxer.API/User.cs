@@ -27,6 +27,7 @@ namespace Proxer.API
         private string _info;
         private string _rang;
         private string _status;
+        private string userName;
 
         internal User(string name, int userId, Senpai senpai)
         {
@@ -74,27 +75,30 @@ namespace Proxer.API
 
         /// <summary>
         ///     Gibt den Link zu dem Avatar des Benutzers zurück.
+        ///     <para />
+        ///     <para>Diese Eigenschaft muss durch <see cref="Init" /> initialisiert werden.</para>
         /// </summary>
-        /// <seealso cref="InitUser" />
+        /// <seealso cref="Init" />
         public Uri Avatar
         {
             get
             {
-                return this._avatar ?? new Uri("https://proxer.me/components/com_comprofiler/plugin/templates/default/images/avatar/nophoto_n.png");
+                return this._avatar ??
+                       new Uri(
+                           "https://proxer.me/components/com_comprofiler/plugin/templates/default/images/avatar/nophoto_n.png");
             }
             private set { this._avatar = value; }
         }
 
         /// <summary>
         ///     Gibt die Freunde des Benutzers in einer Liste zurück.
+        ///     <para />
+        ///     <para>Diese Eigenschaft muss durch <see cref="Init" /> initialisiert werden.</para>
         /// </summary>
-        /// <seealso cref="InitUser" />
+        /// <seealso cref="Init" />
         public List<User> Freunde
         {
-            get
-            {
-                return this._freunde ?? new List<User>();
-            }
+            get { return this._freunde ?? new List<User>(); }
             private set { this._freunde = value; }
         }
 
@@ -105,14 +109,13 @@ namespace Proxer.API
 
         /// <summary>
         ///     Gibt die Info des Benutzers als Html-Dokument zurück.
+        ///     <para />
+        ///     <para>Diese Eigenschaft muss durch <see cref="Init" /> initialisiert werden.</para>
         /// </summary>
-        /// <seealso cref="InitUser" />
+        /// <seealso cref="Init" />
         public string Info
         {
-            get
-            {
-                return this._info ?? "";
-            }
+            get { return this._info ?? ""; }
             private set { this._info = value; }
         }
 
@@ -123,46 +126,52 @@ namespace Proxer.API
 
         /// <summary>
         ///     Gibt zurück, ob der Benutzter zur Zeit online ist.
+        ///     <para />
+        ///     <para>Diese Eigenschaft muss durch <see cref="Init" /> initialisiert werden.</para>
         /// </summary>
-        /// <seealso cref="InitUser" />
+        /// <seealso cref="Init" />
         public bool Online { get; private set; }
 
         /// <summary>
         ///     Gibt zurück, wie viele Punkte der Benutzter momentan hat.
+        ///     <para />
+        ///     <para>Diese Eigenschaft muss durch <see cref="Init" /> initialisiert werden.</para>
         /// </summary>
-        /// <seealso cref="InitUser" />
+        /// <seealso cref="Init" />
         public int Punkte { get; private set; }
 
         /// <summary>
         ///     Gibt den Rangnamen des Benutzers zurück.
+        ///     <para />
+        ///     <para>Diese Eigenschaft muss durch <see cref="Init" /> initialisiert werden.</para>
         /// </summary>
-        /// <seealso cref="InitUser" />
+        /// <seealso cref="Init" />
         public string Rang
         {
-            get
-            {
-                return this._rang ?? "";
-            }
+            get { return this._rang ?? ""; }
             private set { this._rang = value; }
         }
 
         /// <summary>
         ///     Gibt den Status des Benutzers zurück.
+        ///     <para />
+        ///     <para>Diese Eigenschaft muss durch <see cref="Init" /> initialisiert werden.</para>
         /// </summary>
-        /// <seealso cref="InitUser" />
+        /// <seealso cref="Init" />
         public string Status
         {
-            get
-            {
-                return this._status ?? "";
-            }
+            get { return this._status ?? ""; }
             private set { this._status = value; }
         }
 
         /// <summary>
         ///     Gibt den Benutzernamen des Benutzers zurück.
         /// </summary>
-        public string UserName { get; private set; }
+        public string UserName
+        {
+            get { return this.userName ?? ""; }
+            private set { this.userName = value; }
+        }
 
         #endregion
 
@@ -178,31 +187,52 @@ namespace Proxer.API
         ///         </listheader>
         ///         <item>
         ///             <term>
-        ///                 <see cref="NotLoggedInException" />
-        ///             </term>
-        ///             <description>Wird ausgelöst, wenn der <see cref="Senpai">Benutzer</see> nicht eingeloggt ist.</description>
-        ///         </item>
-        ///         <item>
-        ///             <term>
         ///                 <see cref="WrongResponseException" />
         ///             </term>
         ///             <description>Wird ausgelöst, wenn die Antwort des Servers nicht der Erwarteten entspricht.</description>
         ///         </item>
+        ///         <item>
+        ///             <term>
+        ///                 <see cref="NoAccessException" />
+        ///             </term>
+        ///             <description>
+        ///                 Wird ausgelöst, wenn Teile der Initialisierung nicht durchgeführt werden können,
+        ///                 da der <see cref="Senpai">Benutzer</see> nicht die nötigen Rechte dafür hat.
+        ///             </description>
+        ///         </item>
         ///     </list>
         /// </summary>
         /// <seealso cref="Senpai.Login" />
-        public async Task<ProxerResult> InitUser()
+        public async Task<ProxerResult> Init()
         {
+            int lFailedInits = 0;
+            ProxerResult lReturn = new ProxerResult();
+
             ProxerResult lResult;
-            if (!(lResult = await this.GetMainInfo()).Success || !(lResult = await this.GetFriends()).Success ||
-                !(lResult = await this.GetInfos()).Success)
+            if (!(lResult = await this.GetMainInfo()).Success)
             {
-                return lResult;
+                lReturn.AddExceptions(lResult.Exceptions);
+                lFailedInits++;
+            }
+
+            if (!(lResult = await this.GetFriends()).Success)
+            {
+                lReturn.AddExceptions(lResult.Exceptions);
+                lFailedInits++;
+            }
+
+            if (!(lResult = await this.GetInfos()).Success)
+            {
+                lReturn.AddExceptions(lResult.Exceptions);
+                lFailedInits++;
             }
 
             this.IstInitialisiert = true;
 
-            return new ProxerResult();
+            if (lFailedInits < 3)
+                lReturn.Success = true;
+
+            return lReturn;
         }
 
 
@@ -210,8 +240,6 @@ namespace Proxer.API
         {
             if (this.Id != -1)
             {
-                if (!this._senpai.LoggedIn)
-                    return new ProxerResult(new Exception[] {new NotLoggedInException(this._senpai)});
                 HtmlDocument lDocument = new HtmlDocument();
                 string lResponse;
 
@@ -222,6 +250,11 @@ namespace Proxer.API
                 if (lResponseObject.StatusCode == HttpStatusCode.OK && !string.IsNullOrEmpty(lResponseObject.Content))
                     lResponse = global::System.Web.HttpUtility.HtmlDecode(lResponseObject.Content).Replace("\n", "");
                 else return new ProxerResult(new[] {new WrongResponseException(), lResponseObject.ErrorException});
+
+                if (!string.IsNullOrEmpty(lResponse) &&
+                    lResponse.Equals(
+                        "<div class=\"inner\">\n<h3>Du hast keine Berechtigung um diese Seite zu betreten.</h3>\n</div>"))
+                    return new ProxerResult(new Exception[] {new NoAccessException(nameof(this.GetMainInfo))});
 
                 if (string.IsNullOrEmpty(lResponse) ||
                     !Utility.CheckForCorrectResponse(lResponse, this._senpai.ErrHandler))
@@ -277,9 +310,6 @@ namespace Proxer.API
         {
             if (this.Id != -1)
             {
-                if (!this._senpai.LoggedIn)
-                    return new ProxerResult(new Exception[] {new NotLoggedInException(this._senpai)});
-
                 int lSeite = 1;
                 IRestResponse lResponseObject;
                 string lResponse;
@@ -292,43 +322,39 @@ namespace Proxer.API
                         (await HttpUtility.GetWebRequestResponse(
                             "https://proxer.me/user/" + this.Id + "/connections/" + lSeite + "?format=raw",
                             this._senpai.LoginCookies))).StatusCode == HttpStatusCode.OK &&
-                    (lResponse = global::System.Web.HttpUtility.HtmlDecode(lResponseObject.Content)).Replace("\n", "")
-                                                                                                    .Contains(
-                                                                                                        "Dieser Benutzer hat bisher keine Freunde"))
+                    !(lResponse = global::System.Web.HttpUtility.HtmlDecode(lResponseObject.Content)).Replace("\n", "")
+                                                                                                     .Contains(
+                                                                                                         "Dieser Benutzer hat bisher keine Freunde"))
                 {
+                    if (!string.IsNullOrEmpty(lResponse) &&
+                        lResponse.Equals(
+                            "<div class=\"inner\">\n<h3>Du hast keine Berechtigung um diese Seite zu betreten.</h3>\n</div>"))
+                        return new ProxerResult(new Exception[] {new NoAccessException(nameof(this.GetFriends))});
+
                     if (string.IsNullOrEmpty(lResponse) ||
                         !Utility.CheckForCorrectResponse(lResponse, this._senpai.ErrHandler))
                         return new ProxerResult(new Exception[] {new WrongResponseException {Response = lResponse}});
-                    if (
-                        lResponse.Equals(
-                            "<div class=\"inner\"><h3>Du hast keine Berechtigung um diese Seite zu betreten.</h3></div>"))
-                        break;
 
                     try
                     {
                         lDocument.LoadHtml(lResponse);
 
-                        if (lDocument.ParseErrors.Any())
-                            lDocument.LoadHtml(Utility.TryFixParseErrors(lResponse, lDocument.ParseErrors));
+                        HtmlNodeCollection lProfileNodes =
+                            lDocument.DocumentNode.SelectNodes("//table[@id='box-table-a']");
 
-                        if (!lDocument.ParseErrors.Any())
+                        if (lProfileNodes != null)
                         {
-                            HtmlNodeCollection lProfileNodes =
-                                lDocument.DocumentNode.SelectNodes("//table[@id='box-table-a']");
-
-                            if (lProfileNodes != null)
+                            lProfileNodes[0].ChildNodes.Remove(0);
+                            foreach (HtmlNode curFriendNode in lProfileNodes[0].ChildNodes)
                             {
-                                lProfileNodes[0].ChildNodes.Remove(0);
-                                foreach (HtmlNode curFriendNode in lProfileNodes[0].ChildNodes)
-                                {
-                                    string lUsername = curFriendNode.ChildNodes[2].InnerText;
-                                    int lId =
-                                        Convert.ToInt32(
-                                            curFriendNode.Attributes["id"].Value.Substring("entry".Length));
-                                    this.Freunde.Add(new User(lUsername, lId, this._senpai));
-                                }
+                                string lUsername = curFriendNode.ChildNodes[2].InnerText;
+                                int lId =
+                                    Convert.ToInt32(
+                                        curFriendNode.Attributes["id"].Value.Substring("entry".Length));
+                                this.Freunde.Add(new User(lUsername, lId, this._senpai));
                             }
                         }
+
 
                         lSeite++;
                     }
@@ -352,8 +378,6 @@ namespace Proxer.API
         {
             if (this.Id != -1)
             {
-                if (!this._senpai.LoggedIn)
-                    return new ProxerResult(new Exception[] {new NotLoggedInException(this._senpai)});
                 HtmlDocument lDocument = new HtmlDocument();
                 string lResponse;
 
@@ -364,6 +388,11 @@ namespace Proxer.API
                 if (lResponseObject.StatusCode == HttpStatusCode.OK && !string.IsNullOrEmpty(lResponseObject.Content))
                     lResponse = global::System.Web.HttpUtility.HtmlDecode(lResponseObject.Content).Replace("\n", "");
                 else return new ProxerResult(new[] {new WrongResponseException(), lResponseObject.ErrorException});
+
+                if (!string.IsNullOrEmpty(lResponse) &&
+                    lResponse.Equals(
+                        "<div class=\"inner\">\n<h3>Du hast keine Berechtigung um diese Seite zu betreten.</h3>\n</div>"))
+                    return new ProxerResult(new Exception[] {new NoAccessException(nameof(this.GetInfos))});
 
                 if (string.IsNullOrEmpty(lResponse) ||
                     !Utility.CheckForCorrectResponse(lResponse, this._senpai.ErrHandler))

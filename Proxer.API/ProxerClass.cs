@@ -53,7 +53,9 @@ namespace Proxer.API
             string lResponse;
 
             IRestResponse lResponseObject =
-                await HttpUtility.GetWebRequestResponse("https://proxer.me/info/" + id, senpai.LoginCookies);
+                await
+                    HttpUtility.GetWebRequestResponse("https://proxer.me/info/" + id + "?format=raw",
+                        senpai.LoginCookies);
             if (lResponseObject.StatusCode == HttpStatusCode.OK && !string.IsNullOrEmpty(lResponseObject.Content))
                 lResponse = System.Web.HttpUtility.HtmlDecode(lResponseObject.Content).Replace("\n", "");
             else
@@ -70,15 +72,13 @@ namespace Proxer.API
             {
                 lDocument.LoadHtml(lResponse);
 
-                HtmlNode lNode =
-                    lDocument.DocumentNode.ChildNodes[1].ChildNodes[2].ChildNodes[2].ChildNodes[2].ChildNodes[1]
-                        .ChildNodes[1];
+                HtmlNode lNode = lDocument.DocumentNode.ChildNodes[1].ChildNodes[1];
                 if (lNode.InnerText.Equals("Episoden"))
                 {
                     return
                         new ProxerResult<IAnimeMangaObject>(new Anime(
-                            lDocument.DocumentNode.ChildNodes[1].ChildNodes[2].ChildNodes[2].ChildNodes[2]
-                                .ChildNodes[5].ChildNodes[2].FirstChild.ChildNodes[1].FirstChild.ChildNodes[1]
+                            lDocument.DocumentNode
+                                     .ChildNodes[5].ChildNodes[2].FirstChild.ChildNodes[1].FirstChild.ChildNodes[1]
                                 .ChildNodes[1].InnerText, id, senpai));
                 }
 
@@ -86,8 +86,8 @@ namespace Proxer.API
                 {
                     return
                         new ProxerResult<IAnimeMangaObject>(new Manga(
-                            lDocument.DocumentNode.ChildNodes[1].ChildNodes[2].ChildNodes[2].ChildNodes[2]
-                                .ChildNodes[5].ChildNodes[2].FirstChild.ChildNodes[1].FirstChild.ChildNodes[1]
+                            lDocument.DocumentNode.ChildNodes[5].ChildNodes[2].FirstChild.ChildNodes[1].FirstChild
+                                                                                                       .ChildNodes[1]
                                 .ChildNodes[1].InnerText, id, senpai));
                 }
             }

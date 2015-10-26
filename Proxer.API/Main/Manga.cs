@@ -61,14 +61,13 @@ namespace Proxer.API.Main
         /// <summary>
         ///     Gibt die Beschreibung des <see cref="Anime" /> oder <see cref="Manga" /> zurück.
         ///     <para>(Vererbt von <see cref="IAnimeMangaObject" />)</para>
+        ///     <para />
+        ///     <para>Diese Eigenschaft muss durch <see cref="Init" /> initialisiert werden.</para>
         /// </summary>
         /// <seealso cref="Init" />
         public string Beschreibung
         {
-            get
-            {
-                return this._beschreibung ?? "";
-            }
+            get { return this._beschreibung ?? ""; }
             private set { this._beschreibung = value; }
         }
 
@@ -76,6 +75,8 @@ namespace Proxer.API.Main
         /// <summary>
         ///     Gibt den Link zum Cover des <see cref="Anime" /> oder <see cref="Manga" /> zurück.
         ///     <para>(Vererbt von <see cref="IAnimeMangaObject" />)</para>
+        ///     <para />
+        ///     <para>Diese Eigenschaft muss durch <see cref="Init" /> initialisiert werden.</para>
         /// </summary>
         public Uri CoverUri { get; }
 
@@ -83,14 +84,13 @@ namespace Proxer.API.Main
         /// <summary>
         ///     Gibt den Englische Titel des <see cref="Anime" /> oder <see cref="Manga" /> zurück.
         ///     <para>(Vererbt von <see cref="IAnimeMangaObject" />)</para>
+        ///     <para />
+        ///     <para>Diese Eigenschaft muss durch <see cref="Init" /> initialisiert werden.</para>
         /// </summary>
         /// <seealso cref="Init" />
         public string EnglischTitel
         {
-            get
-            {
-                return this._englischTitel ?? "";
-            }
+            get { return this._englischTitel ?? ""; }
             private set { this._englischTitel = value; }
         }
 
@@ -98,6 +98,8 @@ namespace Proxer.API.Main
         /// <summary>
         ///     Gibt die Links zu allen FSK-Beschränkungen des <see cref="Anime" /> oder <see cref="Manga" /> zurück.
         ///     <para>(Vererbt von <see cref="IAnimeMangaObject" />)</para>
+        ///     <para />
+        ///     <para>Diese Eigenschaft muss durch <see cref="Init" /> initialisiert werden.</para>
         /// </summary>
         /// <seealso cref="Init" />
         public Dictionary<string, Uri> Fsk
@@ -110,6 +112,8 @@ namespace Proxer.API.Main
         /// <summary>
         ///     Gitb die Genres des <see cref="Anime" /> oder <see cref="Manga" /> zurück.
         ///     <para>(Vererbt von <see cref="IAnimeMangaObject" />)</para>
+        ///     <para />
+        ///     <para>Diese Eigenschaft muss durch <see cref="Init" /> initialisiert werden.</para>
         /// </summary>
         /// <seealso cref="Init" />
         public string[] Genre
@@ -122,6 +126,8 @@ namespace Proxer.API.Main
         /// <summary>
         ///     Gibt die Gruppen zurück, die den <see cref="Anime" /> oder <see cref="Manga" /> übersetzten oder übersetzt haben.
         ///     <para>(Vererbt von <see cref="IAnimeMangaObject" />)</para>
+        ///     <para />
+        ///     <para>Diese Eigenschaft muss durch <see cref="Init" /> initialisiert werden.</para>
         /// </summary>
         /// <seealso cref="Minor.Group" />
         /// <seealso cref="Init" />
@@ -142,6 +148,8 @@ namespace Proxer.API.Main
         /// <summary>
         ///     Gibt die Industrie des <see cref="Anime" /> oder <see cref="Manga" /> zurück.
         ///     <para>(Vererbt von <see cref="IAnimeMangaObject" />)</para>
+        ///     <para />
+        ///     <para>Diese Eigenschaft muss durch <see cref="Init" /> initialisiert werden.</para>
         /// </summary>
         /// <seealso cref="Minor.Industry" />
         /// <seealso cref="Init" />
@@ -162,14 +170,13 @@ namespace Proxer.API.Main
         /// <summary>
         ///     Gibt den japanischen Titel des <see cref="Anime" /> oder <see cref="Manga" /> zurück.
         ///     <para>(Vererbt von <see cref="IAnimeMangaObject" />)</para>
+        ///     <para />
+        ///     <para>Diese Eigenschaft muss durch <see cref="Init" /> initialisiert werden.</para>
         /// </summary>
         /// <seealso cref="Init" />
         public string JapanTitel
         {
-            get
-            {
-                return this._japanTitel ?? "";
-            }
+            get { return this._japanTitel ?? ""; }
             private set { this._japanTitel = value; }
         }
 
@@ -177,6 +184,8 @@ namespace Proxer.API.Main
         /// <summary>
         ///     Gibt zurück, ob der <see cref="Anime" /> oder <see cref="Manga" /> lizensiert ist.
         ///     <para>(Vererbt von <see cref="IAnimeMangaObject" />)</para>
+        ///     <para />
+        ///     <para>Diese Eigenschaft muss durch <see cref="Init" /> initialisiert werden.</para>
         /// </summary>
         /// <seealso cref="Init" />
         public bool Lizensiert { get; private set; }
@@ -192,6 +201,8 @@ namespace Proxer.API.Main
         /// <summary>
         ///     Gibt zurück, ob es sich um einen <see cref="Anime" /> oder <see cref="Manga" /> handelt.
         ///     <para>(Vererbt von <see cref="IAnimeMangaObject" />)</para>
+        ///     <para />
+        ///     <para>Diese Eigenschaft muss durch <see cref="Init" /> initialisiert werden.</para>
         /// </summary>
         /// <seealso cref="AnimeMangaType" />
         public AnimeMangaType ObjectType { get; }
@@ -200,14 +211,13 @@ namespace Proxer.API.Main
         /// <summary>
         ///     Gibt die Season des <see cref="Anime" /> oder <see cref="Manga" /> zurück.
         ///     <para>(Vererbt von <see cref="IAnimeMangaObject" />)</para>
+        ///     <para />
+        ///     <para>Diese Eigenschaft muss durch <see cref="Init" /> initialisiert werden.</para>
         /// </summary>
         /// <seealso cref="Init" />
         public string[] Season
         {
-            get
-            {
-                return this._season ?? new string[0];
-            }
+            get { return this._season ?? new string[0]; }
             private set { this._season = value; }
         }
 
@@ -215,6 +225,8 @@ namespace Proxer.API.Main
         /// <summary>
         ///     Gibt den Status des <see cref="Anime" /> oder <see cref="Manga" /> zurück.
         ///     <para>(Vererbt von <see cref="IAnimeMangaObject" />)</para>
+        ///     <para />
+        ///     <para>Diese Eigenschaft muss durch <see cref="Init" /> initialisiert werden.</para>
         /// </summary>
         /// <seealso cref="AnimeMangaStatus" />
         /// <seealso cref="Init" />
@@ -224,14 +236,13 @@ namespace Proxer.API.Main
         /// <summary>
         ///     Gibt das Synonym des <see cref="Anime" /> oder <see cref="Manga" /> zurück.
         ///     <para>(Vererbt von <see cref="IAnimeMangaObject" />)</para>
+        ///     <para />
+        ///     <para>Diese Eigenschaft muss durch <see cref="Init" /> initialisiert werden.</para>
         /// </summary>
         /// <seealso cref="Init" />
         public string Synonym
         {
-            get
-            {
-                return this._synonym ?? "";
-            }
+            get { return this._synonym ?? ""; }
             private set { this._synonym = value; }
         }
 
@@ -262,20 +273,48 @@ namespace Proxer.API.Main
         ///             </term>
         ///             <description>Wird ausgelöst, wenn der Server das Ausfüllen eines Captchas erfordert.</description>
         ///         </item>
+        ///         <item>
+        ///             <term>
+        ///                 <see cref="NoAccessException" />
+        ///             </term>
+        ///             <description>
+        ///                 Wird ausgelöst, wenn Teile der Initialisierung nicht durchgeführt werden können,
+        ///                 da der <see cref="Senpai">Benutzer</see> nicht die nötigen Rechte dafür hat.
+        ///             </description>
+        ///         </item>
         ///     </list>
         /// </summary>
         /// <seealso cref="Senpai.Login" />
         public async Task<ProxerResult> Init()
         {
+            int lFailedInits = 0;
+            ProxerResult lReturn = new ProxerResult();
+
             ProxerResult lResult;
-            if (!(lResult = await this.InitMain()).Success || !(lResult = await this.InitChapterCount()).Success ||
-                !(lResult = await this.InitAvailableLang()).Success)
+            if (!(lResult = await this.InitMain()).Success)
             {
-                return lResult;
+                lReturn.AddExceptions(lResult.Exceptions);
+                lFailedInits++;
+            }
+
+            if (!(lResult = await this.InitAvailableLang()).Success)
+            {
+                lReturn.AddExceptions(lResult.Exceptions);
+                lFailedInits++;
+            }
+
+            if (!(lResult = await this.InitChapterCount()).Success)
+            {
+                lReturn.AddExceptions(lResult.Exceptions);
+                lFailedInits++;
             }
 
             this.IstInitialisiert = true;
-            return new ProxerResult();
+
+            if (lFailedInits < 3)
+                lReturn.Success = true;
+
+            return lReturn;
         }
 
         #endregion
@@ -284,20 +323,21 @@ namespace Proxer.API.Main
 
         /// <summary>
         ///     Gibt die Anzahl der Kapitel zurück.
+        ///     <para />
+        ///     <para>Diese Eigenschaft muss durch <see cref="Init" /> initialisiert werden.</para>
         /// </summary>
         /// <seealso cref="Init" />
         public int KapitelZahl { get; private set; }
 
         /// <summary>
         ///     Gibt die verfügbaren Sprachen zurück.
+        ///     <para />
+        ///     <para>Diese Eigenschaft muss durch <see cref="Init" /> initialisiert werden.</para>
         /// </summary>
         /// <seealso cref="Init" />
         public Language[] Sprachen
         {
-            get
-            {
-                return this._sprachen ?? new Language[0];
-            }
+            get { return this._sprachen ?? new Language[0]; }
             private set { this._sprachen = value; }
         }
 
@@ -354,10 +394,15 @@ namespace Proxer.API.Main
             IRestResponse lResponseObject =
                 await
                     HttpUtility.GetWebRequestResponse(
-                        "https://proxer.me/info/" + this.Id, this._senpai.LoginCookies);
+                        "https://proxer.me/info/" + this.Id + "?format=raw", this._senpai.LoginCookies);
             if (lResponseObject.StatusCode == HttpStatusCode.OK && !string.IsNullOrEmpty(lResponseObject.Content))
                 lResponse = System.Web.HttpUtility.HtmlDecode(lResponseObject.Content).Replace("\n", "");
             else return new ProxerResult(new[] {new WrongResponseException(), lResponseObject.ErrorException});
+
+            if (!string.IsNullOrEmpty(lResponse) &&
+                lResponse.Equals(
+                    "<div class=\"inner\">\n<h3>Du hast keine Berechtigung um diese Seite zu betreten.</h3>\n</div>"))
+                return new ProxerResult(new Exception[] {new NoAccessException(nameof(this.InitMain))});
 
             if (string.IsNullOrEmpty(lResponse) ||
                 !Utility.CheckForCorrectResponse(lResponse, this._senpai.ErrHandler))
@@ -368,7 +413,7 @@ namespace Proxer.API.Main
                 lDocument.LoadHtml(lResponse);
 
                 HtmlNode lTableNode =
-                    lDocument.DocumentNode.ChildNodes[1].ChildNodes[2].ChildNodes[2].ChildNodes[2].ChildNodes[5]
+                    lDocument.DocumentNode.ChildNodes[5]
                         .ChildNodes[2].FirstChild.ChildNodes[1].FirstChild;
                 foreach (HtmlNode childNode in lTableNode.ChildNodes.Where(childNode => childNode.Name.Equals("tr")))
                 {
@@ -512,11 +557,16 @@ namespace Proxer.API.Main
             IRestResponse lResponseObject =
                 await
                     HttpUtility.GetWebRequestResponse(
-                        "http://proxer.me/edit/entry/" + this.Id + "/languages",
+                        "http://proxer.me/edit/entry/" + this.Id + "/languages?format=raw",
                         this._senpai.LoginCookies);
             if (lResponseObject.StatusCode == HttpStatusCode.OK && !string.IsNullOrEmpty(lResponseObject.Content))
                 lResponse = System.Web.HttpUtility.HtmlDecode(lResponseObject.Content).Replace("\n", "");
             else return new ProxerResult(new[] {new WrongResponseException(), lResponseObject.ErrorException});
+
+            if (!string.IsNullOrEmpty(lResponse) &&
+                lResponse.Equals(
+                    "<div class=\"inner\">\n<h3>Du hast keine Berechtigung um diese Seite zu betreten.</h3>\n</div>"))
+                return new ProxerResult(new Exception[] {new NoAccessException(nameof(this.InitAvailableLang))});
 
             if (string.IsNullOrEmpty(lResponse) ||
                 !Utility.CheckForCorrectResponse(lResponse, this._senpai.ErrHandler))
@@ -529,7 +579,7 @@ namespace Proxer.API.Main
                 List<Language> languageList = new List<Language>();
                 foreach (
                     HtmlNode childNode in
-                        lDocument.DocumentNode.ChildNodes[1].ChildNodes[2].ChildNodes[2].ChildNodes[2].ChildNodes[4]
+                        lDocument.DocumentNode.ChildNodes[4]
                             .ChildNodes[5].ChildNodes.Where(
                                 childNode =>
                                     childNode.ChildNodes.Count > 3 &&
@@ -567,11 +617,16 @@ namespace Proxer.API.Main
             IRestResponse lResponseObject =
                 await
                     HttpUtility.GetWebRequestResponse(
-                        "http://proxer.me/edit/entry/" + this.Id + "/count",
+                        "http://proxer.me/edit/entry/" + this.Id + "/count?format=raw",
                         this._senpai.LoginCookies);
             if (lResponseObject.StatusCode == HttpStatusCode.OK && !string.IsNullOrEmpty(lResponseObject.Content))
                 lResponse = System.Web.HttpUtility.HtmlDecode(lResponseObject.Content).Replace("\n", "");
             else return new ProxerResult(new[] {new WrongResponseException(), lResponseObject.ErrorException});
+
+            if (!string.IsNullOrEmpty(lResponse) &&
+                lResponse.Equals(
+                    "<div class=\"inner\">\n<h3>Du hast keine Berechtigung um diese Seite zu betreten.</h3>\n</div>"))
+                return new ProxerResult(new Exception[] {new NoAccessException(nameof(this.InitChapterCount))});
 
             if (string.IsNullOrEmpty(lResponse) ||
                 !Utility.CheckForCorrectResponse(lResponse, this._senpai.ErrHandler))
@@ -583,7 +638,7 @@ namespace Proxer.API.Main
 
                 this.KapitelZahl =
                     Convert.ToInt32(
-                        lDocument.DocumentNode.ChildNodes[1].ChildNodes[2].ChildNodes[2].ChildNodes[2].ChildNodes[4]
+                        lDocument.DocumentNode.ChildNodes[4]
                             .ChildNodes[5].FirstChild.ChildNodes[1].InnerText);
 
                 return new ProxerResult();
@@ -646,10 +701,7 @@ namespace Proxer.API.Main
             /// <seealso cref="Init" />
             public Group ScanlatorGruppe
             {
-                get
-                {
-                    return this._scanlatorGruppe ?? new Group(-1, "");
-                }
+                get { return this._scanlatorGruppe ?? new Group(-1, ""); }
                 private set { this._scanlatorGruppe = value; }
             }
 
@@ -659,10 +711,7 @@ namespace Proxer.API.Main
             /// <seealso cref="Init" />
             public Uri[] Seiten
             {
-                get
-                {
-                    return this._seiten ?? new Uri[0];
-                }
+                get { return this._seiten ?? new Uri[0]; }
                 private set { this._seiten = value; }
             }
 
@@ -677,10 +726,7 @@ namespace Proxer.API.Main
             /// <seealso cref="Init" />
             public string Titel
             {
-                get
-                {
-                    return this._titel ?? "";
-                }
+                get { return this._titel ?? ""; }
                 private set { this._titel = value; }
             }
 
@@ -690,10 +736,7 @@ namespace Proxer.API.Main
             /// <seealso cref="Init" />
             public string UploaderName
             {
-                get
-                {
-                    return this._uploaderName ?? "";
-                }
+                get { return this._uploaderName ?? ""; }
                 private set { this._uploaderName = value; }
             }
 
@@ -738,14 +781,28 @@ namespace Proxer.API.Main
             /// <seealso cref="Senpai.Login" />
             public async Task<ProxerResult> Init()
             {
+                int lFailedInits = 0;
+                ProxerResult lReturn = new ProxerResult();
+
                 ProxerResult lResult;
-                if (!(lResult = await this.InitInfo()).Success || !(lResult = await this.InitChapters()).Success)
+                if (!(lResult = await this.InitInfo()).Success)
                 {
-                    return lResult;
+                    lReturn.AddExceptions(lResult.Exceptions);
+                    lFailedInits++;
+                }
+
+                if (!(lResult = await this.InitChapters()).Success)
+                {
+                    lReturn.AddExceptions(lResult.Exceptions);
+                    lFailedInits++;
                 }
 
                 this.IstInitialisiert = true;
-                return new ProxerResult();
+
+                if (lFailedInits < 2)
+                    lReturn.Success = true;
+
+                return lReturn;
             }
 
             private async Task<ProxerResult> InitInfo()
@@ -762,6 +819,10 @@ namespace Proxer.API.Main
                 if (lResponseObject.StatusCode == HttpStatusCode.OK && !string.IsNullOrEmpty(lResponseObject.Content))
                     lResponse = System.Web.HttpUtility.HtmlDecode(lResponseObject.Content).Replace("\n", "");
                 else return new ProxerResult(new[] {new WrongResponseException(), lResponseObject.ErrorException});
+
+                if (!string.IsNullOrEmpty(lResponse) &&
+                    lResponse.Contains("Du hast keine Berechtigung um diese Seite zu betreten."))
+                    return new ProxerResult(new Exception[] {new NoAccessException(nameof(this.InitInfo))});
 
                 if (string.IsNullOrEmpty(lResponse) ||
                     !Utility.CheckForCorrectResponse(lResponse, this._senpai.ErrHandler))
@@ -849,6 +910,10 @@ namespace Proxer.API.Main
                 if (lResponseObject.StatusCode == HttpStatusCode.OK && !string.IsNullOrEmpty(lResponseObject.Content))
                     lResponse = System.Web.HttpUtility.HtmlDecode(lResponseObject.Content).Replace("\n", "");
                 else return new ProxerResult(new[] {new WrongResponseException(), lResponseObject.ErrorException});
+
+                if (!string.IsNullOrEmpty(lResponse) &&
+                    lResponse.Contains("Du hast keine Berechtigung um diese Seite zu betreten."))
+                    return new ProxerResult(new Exception[] {new NoAccessException(nameof(this.InitChapters))});
 
                 if (string.IsNullOrEmpty(lResponse) ||
                     !Utility.CheckForCorrectResponse(lResponse, this._senpai.ErrHandler))
