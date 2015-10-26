@@ -25,8 +25,6 @@ namespace Proxer.API
         private Uri _avatar;
         private List<User> _freunde;
         private string _info;
-        private bool _online;
-        private int _punkte;
         private string _rang;
         private string _status;
 
@@ -77,14 +75,12 @@ namespace Proxer.API
         /// <summary>
         ///     Gibt den Link zu dem Avatar des Benutzers zurück.
         /// </summary>
-        /// <exception cref="InitializeNeededException">Wird ausgelöst, wenn das Objekt noch nicht initialisiert ist.</exception>
         /// <seealso cref="InitUser" />
         public Uri Avatar
         {
             get
             {
-                if (!this.IstInitialisiert) throw new InitializeNeededException();
-                return this._avatar;
+                return this._avatar ?? new Uri("https://proxer.me/components/com_comprofiler/plugin/templates/default/images/avatar/nophoto_n.png");
             }
             private set { this._avatar = value; }
         }
@@ -92,14 +88,12 @@ namespace Proxer.API
         /// <summary>
         ///     Gibt die Freunde des Benutzers in einer Liste zurück.
         /// </summary>
-        /// <exception cref="InitializeNeededException">Wird ausgelöst, wenn das Objekt noch nicht initialisiert ist.</exception>
         /// <seealso cref="InitUser" />
         public List<User> Freunde
         {
             get
             {
-                if (!this.IstInitialisiert) throw new InitializeNeededException();
-                return this._freunde;
+                return this._freunde ?? new List<User>();
             }
             private set { this._freunde = value; }
         }
@@ -112,14 +106,12 @@ namespace Proxer.API
         /// <summary>
         ///     Gibt die Info des Benutzers als Html-Dokument zurück.
         /// </summary>
-        /// <exception cref="InitializeNeededException">Wird ausgelöst, wenn das Objekt noch nicht initialisiert ist.</exception>
         /// <seealso cref="InitUser" />
         public string Info
         {
             get
             {
-                if (!this.IstInitialisiert) throw new InitializeNeededException();
-                return this._info;
+                return this._info ?? "";
             }
             private set { this._info = value; }
         }
@@ -132,44 +124,24 @@ namespace Proxer.API
         /// <summary>
         ///     Gibt zurück, ob der Benutzter zur Zeit online ist.
         /// </summary>
-        /// <exception cref="InitializeNeededException">Wird ausgelöst, wenn das Objekt noch nicht initialisiert ist.</exception>
         /// <seealso cref="InitUser" />
-        public bool Online
-        {
-            get
-            {
-                if (!this.IstInitialisiert) throw new InitializeNeededException();
-                return this._online;
-            }
-            private set { this._online = value; }
-        }
+        public bool Online { get; private set; }
 
         /// <summary>
         ///     Gibt zurück, wie viele Punkte der Benutzter momentan hat.
         /// </summary>
-        /// <exception cref="InitializeNeededException">Wird ausgelöst, wenn das Objekt noch nicht initialisiert ist.</exception>
         /// <seealso cref="InitUser" />
-        public int Punkte
-        {
-            get
-            {
-                if (!this.IstInitialisiert) throw new InitializeNeededException();
-                return this._punkte;
-            }
-            private set { this._punkte = value; }
-        }
+        public int Punkte { get; private set; }
 
         /// <summary>
         ///     Gibt den Rangnamen des Benutzers zurück.
         /// </summary>
-        /// <exception cref="InitializeNeededException">Wird ausgelöst, wenn das Objekt noch nicht initialisiert ist.</exception>
         /// <seealso cref="InitUser" />
         public string Rang
         {
             get
             {
-                if (!this.IstInitialisiert) throw new InitializeNeededException();
-                return this._rang;
+                return this._rang ?? "";
             }
             private set { this._rang = value; }
         }
@@ -177,14 +149,12 @@ namespace Proxer.API
         /// <summary>
         ///     Gibt den Status des Benutzers zurück.
         /// </summary>
-        /// <exception cref="InitializeNeededException">Wird ausgelöst, wenn das Objekt noch nicht initialisiert ist.</exception>
         /// <seealso cref="InitUser" />
         public string Status
         {
             get
             {
-                if (!this.IstInitialisiert) throw new InitializeNeededException();
-                return this._status;
+                return this._status ?? "";
             }
             private set { this._status = value; }
         }
@@ -463,17 +433,10 @@ namespace Proxer.API
         {
             if (user1 == null)
                 return new ProxerResult<bool>(new Exception[] {new ArgumentNullException(nameof(user1))});
-            if (user2 == null)
-                return new ProxerResult<bool>(new Exception[] {new ArgumentNullException(nameof(user2))});
 
-            try
-            {
-                return new ProxerResult<bool>(user1.Freunde.Any(item => item.Id == user2.Id));
-            }
-            catch (InitializeNeededException exception)
-            {
-                return new ProxerResult<bool>(new Exception[] {exception});
-            }
+            return user2 == null
+                ? new ProxerResult<bool>(new Exception[] {new ArgumentNullException(nameof(user2))})
+                : new ProxerResult<bool>(user1.Freunde.Any(item => item.Id == user2.Id));
         }
 
         /// <summary>

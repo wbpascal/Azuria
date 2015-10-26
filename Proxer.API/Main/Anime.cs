@@ -46,16 +46,12 @@ namespace Proxer.API.Main
         private readonly Senpai _senpai;
         private string _beschreibung;
         private string _englischTitel;
-        private int _episodenZahl;
         private Dictionary<string, Uri> _fsk;
         private string[] _genre;
         private Group[] _gruppen;
         private Industry[] _industrie;
         private string _japanTitel;
-        private bool _lizensiert;
         private string[] _season;
-        private Language[] _sprachen;
-        private AnimeMangaStatus _status;
         private string _synonym;
 
         /// <exception cref="ArgumentNullException"><paramref name="senpai" /> is <see langword="null" />.</exception>
@@ -77,14 +73,12 @@ namespace Proxer.API.Main
         ///     Gibt die Beschreibung des <see cref="Anime" /> oder <see cref="Manga" /> zurück.
         ///     <para>(Vererbt von <see cref="IAnimeMangaObject" />)</para>
         /// </summary>
-        /// <exception cref="InitializeNeededException">Wird ausgelöst, wenn das Objekt noch nicht initialisiert wurde.</exception>
         /// <seealso cref="Init" />
         public string Beschreibung
         {
             get
             {
-                if (!this.IstInitialisiert) throw new InitializeNeededException();
-                return this._beschreibung;
+                return this._beschreibung ?? "";
             }
             private set { this._beschreibung = value; }
         }
@@ -101,14 +95,12 @@ namespace Proxer.API.Main
         ///     Gibt den Englische Titel des <see cref="Anime" /> oder <see cref="Manga" /> zurück.
         ///     <para>(Vererbt von <see cref="IAnimeMangaObject" />)</para>
         /// </summary>
-        /// <exception cref="InitializeNeededException">Wird ausgelöst, wenn das Objekt noch nicht initialisiert wurde.</exception>
         /// <seealso cref="Init" />
         public string EnglischTitel
         {
             get
             {
-                if (!this.IstInitialisiert) throw new InitializeNeededException();
-                return this._englischTitel;
+                return this._englischTitel ?? "";
             }
             private set { this._englischTitel = value; }
         }
@@ -118,15 +110,10 @@ namespace Proxer.API.Main
         ///     Gibt die Links zu allen FSK-Beschränkungen des <see cref="Anime" /> oder <see cref="Manga" /> zurück.
         ///     <para>(Vererbt von <see cref="IAnimeMangaObject" />)</para>
         /// </summary>
-        /// <exception cref="InitializeNeededException">Wird ausgelöst, wenn das Objekt noch nicht initialisiert wurde.</exception>
         /// <seealso cref="Init" />
         public Dictionary<string, Uri> Fsk
         {
-            get
-            {
-                if (!this.IstInitialisiert) throw new InitializeNeededException();
-                return this._fsk;
-            }
+            get { return this._fsk ?? new Dictionary<string, Uri>(); }
             private set { this._fsk = value; }
         }
 
@@ -135,15 +122,10 @@ namespace Proxer.API.Main
         ///     Gitb die Genres des <see cref="Anime" /> oder <see cref="Manga" /> zurück.
         ///     <para>(Vererbt von <see cref="IAnimeMangaObject" />)</para>
         /// </summary>
-        /// <exception cref="InitializeNeededException">Wird ausgelöst, wenn das Objekt noch nicht initialisiert wurde.</exception>
         /// <seealso cref="Init" />
         public string[] Genre
         {
-            get
-            {
-                if (!this.IstInitialisiert) throw new InitializeNeededException();
-                return this._genre;
-            }
+            get { return this._genre ?? new string[0]; }
             private set { this._genre = value; }
         }
 
@@ -154,14 +136,9 @@ namespace Proxer.API.Main
         /// </summary>
         /// <seealso cref="Minor.Group" />
         /// <seealso cref="Init" />
-        /// <exception cref="InitializeNeededException">Wird ausgelöst, wenn das Objekt noch nicht initialisiert wurde.</exception>
         public Group[] Gruppen
         {
-            get
-            {
-                if (!this.IstInitialisiert) throw new InitializeNeededException();
-                return this._gruppen;
-            }
+            get { return this._gruppen ?? new Group[0]; }
             private set { this._gruppen = value; }
         }
 
@@ -179,14 +156,9 @@ namespace Proxer.API.Main
         /// </summary>
         /// <seealso cref="Minor.Industry" />
         /// <seealso cref="Init" />
-        /// <exception cref="InitializeNeededException">Wird ausgelöst, wenn das Objekt noch nicht initialisiert wurde.</exception>
         public Industry[] Industrie
         {
-            get
-            {
-                if (!this.IstInitialisiert) throw new InitializeNeededException();
-                return this._industrie;
-            }
+            get { return this._industrie ?? new Industry[0]; }
             private set { this._industrie = value; }
         }
 
@@ -202,14 +174,12 @@ namespace Proxer.API.Main
         ///     Gibt den japanischen Titel des <see cref="Anime" /> oder <see cref="Manga" /> zurück.
         ///     <para>(Vererbt von <see cref="IAnimeMangaObject" />)</para>
         /// </summary>
-        /// <exception cref="InitializeNeededException">Wird ausgelöst, wenn das Objekt noch nicht initialisiert wurde.</exception>
         /// <seealso cref="Init" />
         public string JapanTitel
         {
             get
             {
-                if (!this.IstInitialisiert) throw new InitializeNeededException();
-                return this._japanTitel;
+                return this._japanTitel ?? "";
             }
             private set { this._japanTitel = value; }
         }
@@ -219,17 +189,8 @@ namespace Proxer.API.Main
         ///     Gibt zurück, ob der <see cref="Anime" /> oder <see cref="Manga" /> lizensiert ist.
         ///     <para>(Vererbt von <see cref="IAnimeMangaObject" />)</para>
         /// </summary>
-        /// <exception cref="InitializeNeededException">Wird ausgelöst, wenn das Objekt noch nicht initialisiert wurde.</exception>
         /// <seealso cref="Init" />
-        public bool Lizensiert
-        {
-            get
-            {
-                if (!this.IstInitialisiert) throw new InitializeNeededException();
-                return this._lizensiert;
-            }
-            private set { this._lizensiert = value; }
-        }
+        public bool Lizensiert { get; private set; }
 
 
         /// <summary>
@@ -251,14 +212,12 @@ namespace Proxer.API.Main
         ///     Gibt die Season des <see cref="Anime" /> oder <see cref="Manga" /> zurück.
         ///     <para>(Vererbt von <see cref="IAnimeMangaObject" />)</para>
         /// </summary>
-        /// <exception cref="InitializeNeededException">Wird ausgelöst, wenn das Objekt noch nicht initialisiert wurde.</exception>
         /// <seealso cref="Init" />
         public string[] Season
         {
             get
             {
-                if (!this.IstInitialisiert) throw new InitializeNeededException();
-                return this._season;
+                return this._season ?? new string[0];
             }
             private set { this._season = value; }
         }
@@ -270,30 +229,19 @@ namespace Proxer.API.Main
         /// </summary>
         /// <seealso cref="AnimeMangaStatus" />
         /// <seealso cref="Init" />
-        /// <exception cref="InitializeNeededException">Wird ausgelöst, wenn das Objekt noch nicht initialisiert wurde.</exception>
-        public AnimeMangaStatus Status
-        {
-            get
-            {
-                if (!this.IstInitialisiert) throw new InitializeNeededException();
-                return this._status;
-            }
-            private set { this._status = value; }
-        }
+        public AnimeMangaStatus Status { get; private set; }
 
 
         /// <summary>
         ///     Gibt das Synonym des <see cref="Anime" /> oder <see cref="Manga" /> zurück.
         ///     <para>(Vererbt von <see cref="IAnimeMangaObject" />)</para>
         /// </summary>
-        /// <exception cref="InitializeNeededException">Wird ausgelöst, wenn das Objekt noch nicht initialisiert wurde.</exception>
         /// <seealso cref="Init" />
         public string Synonym
         {
             get
             {
-                if (!this.IstInitialisiert) throw new InitializeNeededException();
-                return this._synonym;
+                return this._synonym ?? "";
             }
             private set { this._synonym = value; }
         }
@@ -349,33 +297,15 @@ namespace Proxer.API.Main
         /// <summary>
         ///     Gibt die Episodenanzahl eines <see cref="Anime" /> zurück.
         /// </summary>
-        /// <exception cref="InitializeNeededException">Wird ausgelöst, wenn das Objekt noch nicht initialisiert wurde.</exception>
         /// <seealso cref="Init" />
-        public int EpisodenZahl
-        {
-            get
-            {
-                if (!this.IstInitialisiert) throw new InitializeNeededException();
-                return this._episodenZahl;
-            }
-            private set { this._episodenZahl = value; }
-        }
+        public int EpisodenZahl { get; private set; }
 
         /// <summary>
         ///     Gibt die verfügbaren Sprachen des <see cref="Anime" /> zurück.
         /// </summary>
         /// <seealso cref="Language" />
-        /// <exception cref="InitializeNeededException">Wird ausgelöst, wenn das Objekt noch nicht initialisiert wurde.</exception>
         /// <seealso cref="Init" />
-        public Language[] Sprachen
-        {
-            get
-            {
-                if (!this.IstInitialisiert) throw new InitializeNeededException();
-                return this._sprachen;
-            }
-            private set { this._sprachen = value; }
-        }
+        public Language[] Sprachen { get; private set; }
 
         #endregion
 
@@ -779,14 +709,17 @@ namespace Proxer.API.Main
             ///     Gibt die Stream
             ///     <para>Wenn nach Aufruf von Init() immer noch null, dann sind keine Streams für diese Episode verfügbar.</para>
             /// </summary>
-            /// <exception cref="InitializeNeededException">Wird ausgelöst, wenn das Objekt noch nicht initialisiert wurde.</exception>
             /// <seealso cref="Episode.Init" />
             public List<KeyValuePair<Stream.StreamPartner, Stream>> Streams
             {
                 get
                 {
-                    if (!this.IstInitialisiert) throw new InitializeNeededException();
-                    return this._streams;
+                    return this._streams ??
+                           new List<KeyValuePair<Stream.StreamPartner, Stream>>(new[]
+                           {
+                               new KeyValuePair<Stream.StreamPartner, Stream>(Stream.StreamPartner.None,
+                                   new Stream(new Uri("https://proxer.me/"), Stream.StreamPartner.None))
+                           });
                 }
                 private set { this._streams = value; }
             }
@@ -972,7 +905,12 @@ namespace Proxer.API.Main
                     /// <summary>
                     ///     Stellt den Streampartner Proxer da.
                     /// </summary>
-                    ProxerStream
+                    ProxerStream,
+
+                    /// <summary>
+                    /// Stellt keinen Streampartner da.
+                    /// </summary>
+                    None
                 }
 
                 internal Stream(Uri link, StreamPartner streamPartner)
