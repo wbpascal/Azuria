@@ -78,6 +78,7 @@
     <Compile Include="Main\Manga.cs" />
     <Compile Include="Main\Minor\Group.cs" />
     <Compile Include="Main\Minor\Industry.cs" />
+    <Compile Include="Main\User\AnimeMangaProgressObject.cs" />
     <Compile Include="Notifications\AnimeMangaUpdateCollection.cs" />
     <Compile Include="Notifications\FriendRequestCollection.cs" />
     <Compile Include="Notifications\FriendRequestObject.cs" />
