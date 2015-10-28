@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -15,7 +16,6 @@ namespace Proxer.API.Example
     public partial class NotificationWindow : Window
     {
         private readonly Senpai _senpai;
-        private int _unseenNotifications;
 
         internal NotificationWindow(Senpai senpai)
         {
@@ -23,7 +23,7 @@ namespace Proxer.API.Example
 
             if (!this._senpai.LoggedIn)
             {
-                MessageBox.Show("Du musst für diese Aktione eingeloggt sein!");
+                MessageBox.Show("Du musst für diese Aktion eingeloggt sein!");
                 return;
             }
 
@@ -31,59 +31,191 @@ namespace Proxer.API.Example
 
             this._senpai.NotificationRaised += this.NotificationRaised;
             this._senpai.AmUpdateNotificationRaised += this.AmUpdateNotificationRaised;
+            this._senpai.FriendNotificationRaised += this.FriendNotificationRaised;
+            this._senpai.NewsNotificationRaised += this.NewsNotificationRaised;
+            this._senpai.PmNotificationRaised += this.PmNotificationRaised;
+            this._senpai.ErrorDuringNotificationFetch += this.ErrorDuringNotificationFetch;
         }
 
         #region
 
-        private void NotificationRaised(Senpai sender, INotificationEventArgs e)
+        private void ErrorDuringNotificationFetch(Senpai sender, Exception[] exceptions)
         {
+            MessageBox.Show(nameof(this.ErrorDuringNotificationFetch));
+        }
+
+        private void NotificationRaised(Senpai sender, int e)
+        {
+            if (!this.Dispatcher.CheckAccess())
+            {
+                this.Dispatcher.Invoke(() => this.NotificationRaised(sender, e));
+                return;
+            }
+
             if (this.IsFocused) return;
 
-            this._unseenNotifications += e.NotificationCount;
-            this.Title = "Benachrichtigungen (" + this._unseenNotifications + ")";
+            this.Title = "Benachrichtigungen (" + e + ")";
 
             //man kann auch einen Ton abspielen
         }
 
         private void AmUpdateNotificationRaised(Senpai sender, AmNotificationEventArgs e)
         {
-            this.LoadAmUpdateNotifications(sender, e.Benachrichtigungen);   
+            this.LoadAmUpdateNotifications(e.Benachrichtigungen);
         }
 
-        private async void LoadAmUpdateNotifications(Senpai senpai, AnimeMangaUpdateCollection collection)
+        private void FriendNotificationRaised(Senpai sender, FriendNotificationEventArgs e)
         {
-            this.AmTextBox.Items.Clear();
+            this.ProcessFriendRequests(e.Benachrichtigungen);
+        }
+
+        private void NewsNotificationRaised(Senpai sender, NewsNotificationEventArgs e)
+        {
+            this.LoadNewsNotifications(e.Benachrichtigungen);
+        }
+
+        private void PmNotificationRaised(Senpai sender, PmNotificationEventArgs e)
+        {
+            this.LoadPmNotification(e.Benchrichtigungen);
+        }
+
+        private async void LoadAmUpdateNotifications(AnimeMangaUpdateCollection collection)
+        {
+            if (!this.Dispatcher.CheckAccess())
+            {
+                this.Dispatcher.Invoke(() => this.LoadAmUpdateNotifications(collection));
+                return;
+            }
+
+            this.AmListBox.Items.Clear();
 
             ProxerResult<AnimeMangaUpdateObject[]> lResult = await collection.GetAllAnimeMangaUpdates();
             if (!lResult.Success)
             {
                 MessageBox.Show(lResult.Exceptions.OfType<NotLoggedInException>().Any()
                     ? "Bitte logge dich ein bevor du fortfährst!"
-                    : "Es ist ein Fehler während der Anfrage aufgetreten!");
+                    : "Es ist ein Fehler während der Anfrage aufgetreten! (LoadAmUpdateNotifications)");
 
                 return;
             }
 
             foreach (AnimeMangaUpdateObject notification in lResult.Result)
             {
-                this.AmTextBox.Items.Add(notification);
+                this.AmListBox.Items.Add(notification);
+            }
+        }
+
+        private async void ProcessFriendRequests(FriendRequestCollection collection)
+        {
+            if (!this.Dispatcher.CheckAccess())
+            {
+                this.Dispatcher.Invoke(() => this.ProcessFriendRequests(collection));
+                return;
+            }
+
+            ProxerResult<FriendRequestObject[]> lResult = await collection.GetAllFriendRequests();
+            if (!lResult.Success)
+            {
+                MessageBox.Show(lResult.Exceptions.OfType<NotLoggedInException>().Any()
+                    ? "Bitte logge dich ein bevor du fortfährst!"
+                    : "Es ist ein Fehler während der Anfrage aufgetreten! (ProcessFriendRequests)");
+
+                return;
+            }
+
+            foreach (FriendRequestObject requestObject in lResult.Result)
+            {
+                MessageBoxResult lBoxResult =
+                    MessageBox.Show(
+                        "Möchtest du die Freundschaftsanfrage von " + requestObject.UserName + " [ID:" +
+                        requestObject.UserId + "] annehmen?", "Freundschaftsanfrage", MessageBoxButton.YesNoCancel);
+
+                switch (lBoxResult)
+                {
+                    case MessageBoxResult.Yes:
+                        ProxerResult<bool> lAcceptResult = await requestObject.AcceptRequest();
+                        if (lAcceptResult.Success && lAcceptResult.Result)
+                            MessageBox.Show("Die Freundschaftsanfrage wurde erfolgreich angenommen!");
+                        else
+                            MessageBox.Show("Es ist ein Fehler passiert!");
+                        break;
+                    case MessageBoxResult.No:
+                        ProxerResult<bool> lDenyResult = await requestObject.DenyRequest();
+                        if (lDenyResult.Success && lDenyResult.Result)
+                            MessageBox.Show("Die Freundschaftsanfrage wurde erfolgreich abgelehnt!");
+                        else
+                            MessageBox.Show("Es ist ein Fehler passiert!");
+                        break;
+                }
+            }
+        }
+
+        private async void LoadNewsNotifications(NewsCollection collection)
+        {
+            if (!this.Dispatcher.CheckAccess())
+            {
+                this.Dispatcher.Invoke(() => this.LoadNewsNotifications(collection));
+                return;
+            }
+
+            this.NewsListBox.Items.Clear();
+
+            ProxerResult<NewsObject[]> lResult = await collection.GetAllNews();
+            if (!lResult.Success)
+            {
+                MessageBox.Show(lResult.Exceptions.OfType<NotLoggedInException>().Any()
+                    ? "Bitte logge dich ein bevor du fortfährst!"
+                    : "Es ist ein Fehler während der Anfrage aufgetreten! (LoadNewsNotifications)");
+
+                return;
+            }
+
+            foreach (NewsObject notification in lResult.Result)
+            {
+                this.NewsListBox.Items.Add(notification);
+            }
+        }
+
+        private async void LoadPmNotification(PmCollection collection)
+        {
+            if (!this.Dispatcher.CheckAccess())
+            {
+                this.Dispatcher.Invoke(() => this.LoadPmNotification(collection));
+                return;
+            }
+
+            this.PmListBox.Items.Clear();
+
+            ProxerResult<PmObject[]> lResult = await collection.GetAllPrivateMessages();
+            if (!lResult.Success)
+            {
+                MessageBox.Show(lResult.Exceptions.OfType<NotLoggedInException>().Any()
+                    ? "Bitte logge dich ein bevor du fortfährst!"
+                    : "Es ist ein Fehler während der Anfrage aufgetreten! (LoadNewsNotifications)");
+
+                return;
+            }
+
+            foreach (PmObject notification in lResult.Result)
+            {
+                this.PmListBox.Items.Add(notification);
             }
         }
 
         private void Window_GotFocus(object sender, RoutedEventArgs e)
         {
-            this._unseenNotifications = 0;
             this.Title = "Benachrichtigungen";
         }
 
-        private async void Window_Loaded(object sender, RoutedEventArgs e)
+        private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            await this._senpai.InitNotifications();
+            this._senpai.InitNotifications();
 
-            this.LoadAmUpdateNotifications(this._senpai, this._senpai.AnimeMangaUpdates);
+            this.LoadAmUpdateNotifications(this._senpai.AnimeMangaUpdates);
+            this.ProcessFriendRequests(this._senpai.FriendRequests);
+            this.LoadNewsNotifications(this._senpai.News);
+            this.LoadPmNotification(this._senpai.PrivateMessages);
         }
-
-        #endregion
 
         private void AmTextBox_MouseUp(object sender, MouseButtonEventArgs e)
         {
@@ -92,5 +224,23 @@ namespace Proxer.API.Example
                 MessageBox.Show(((sender as ListBox).SelectedItem as AnimeMangaUpdateObject).Name);
             }
         }
+
+        private void NewsListBox_MouseUp(object sender, MouseButtonEventArgs e)
+        {
+            if (e.ChangedButton == MouseButton.Left)
+            {
+                MessageBox.Show(((sender as ListBox).SelectedItem as NewsObject).Nid.ToString());
+            }
+        }
+
+        private void PmListBox_MouseUp(object sender, MouseButtonEventArgs e)
+        {
+            if (e.ChangedButton == MouseButton.Left)
+            {
+                MessageBox.Show(((sender as ListBox).SelectedItem as PmObject).TimeStamp.ToShortTimeString());
+            }
+        }
+
+        #endregion
     }
 }

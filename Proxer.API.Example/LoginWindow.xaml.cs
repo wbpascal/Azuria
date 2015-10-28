@@ -9,14 +9,13 @@ namespace Proxer.API.Example
     /// </summary>
     public partial class LoginWindow : Window
     {
-        private readonly Senpai _senpai;
+        private Senpai _senpai;
 
         /// <summary>
         /// </summary>
         public LoginWindow()
         {
             this._senpai = new Senpai();
-
             this.InitializeComponent();
         }
 
@@ -31,6 +30,8 @@ namespace Proxer.API.Example
             }
 
             (sender as Button).IsEnabled = false;
+
+            this._senpai = new Senpai();
 
             ProxerResult<bool> lResult;
             if ((lResult = await this._senpai.Login(this.TextBox1.Text, this.PasswordBox1.Password)).Success &&

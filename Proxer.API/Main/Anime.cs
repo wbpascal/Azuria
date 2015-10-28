@@ -43,6 +43,8 @@ namespace Proxer.API.Main
             GerDub
         }
 
+        private readonly Func<Task<ProxerResult>>[] _initFuncs;
+
         private readonly Senpai _senpai;
         private string _beschreibung;
         private string _englischTitel;
@@ -59,6 +61,8 @@ namespace Proxer.API.Main
         {
             if (senpai == null) throw new ArgumentNullException(nameof(senpai));
             this._senpai = senpai;
+            this._initFuncs = new Func<Task<ProxerResult>>[]
+            {this.InitMain, this.InitAvailableLang, this.InitEpisodeCount};
             this.ObjectType = AnimeMangaType.Anime;
             this.Name = name;
             this.Id = id;
@@ -269,26 +273,36 @@ namespace Proxer.API.Main
         ///             <term>
         ///                 <see cref="NotLoggedInException" />
         ///             </term>
-        ///             <description>Wird ausgelöst, wenn der <see cref="Senpai">Benutzer</see> nicht eingeloggt ist.</description>
+        ///             <description>
+        ///                 <see cref="NotLoggedInException" /> wird ausgelöst, wenn der <see cref="Senpai">Benutzer</see>
+        ///                 nicht eingeloggt ist.
+        ///             </description>
         ///         </item>
         ///         <item>
         ///             <term>
         ///                 <see cref="WrongResponseException" />
         ///             </term>
-        ///             <description>Wird ausgelöst, wenn die Antwort des Servers nicht der Erwarteten entspricht.</description>
+        ///             <description>
+        ///                 <see cref="WrongResponseException" /> wird ausgelöst, wenn die Antwort des Servers nicht der
+        ///                 Erwarteten entspricht.
+        ///             </description>
         ///         </item>
         ///         <item>
         ///             <term>
         ///                 <see cref="CaptchaException" />
         ///             </term>
-        ///             <description>Wird ausgelöst, wenn der Server das Ausfüllen eines Captchas erfordert.</description>
+        ///             <description>
+        ///                 <see cref="CaptchaException" /> wird ausgelöst, wenn der Server das Ausfüllen eines Captchas
+        ///                 erfordert.
+        ///             </description>
         ///         </item>
         ///         <item>
         ///             <term>
         ///                 <see cref="NoAccessException" />
         ///             </term>
         ///             <description>
-        ///                 Wird ausgelöst, wenn Teile der Initialisierung nicht durchgeführt werden können,
+        ///                 <see cref="NoAccessException" /> wird ausgelöst, wenn Teile der Initialisierung nicht durchgeführt
+        ///                 werden können,
         ///                 da der <see cref="Senpai">Benutzer</see> nicht die nötigen Rechte dafür hat.
         ///             </description>
         ///         </item>
@@ -300,28 +314,28 @@ namespace Proxer.API.Main
             int lFailedInits = 0;
             ProxerResult lReturn = new ProxerResult();
 
-            ProxerResult lResult;
-            if (!(lResult = await this.InitMain()).Success)
+            foreach (Func<Task<ProxerResult>> initFunc in this._initFuncs)
             {
-                lReturn.AddExceptions(lResult.Exceptions);
-                lFailedInits++;
-            }
+                try
+                {
+                    ProxerResult lResult = await initFunc.Invoke();
+                    if (lResult.Success) continue;
 
-            if (!(lResult = await this.InitAvailableLang()).Success)
-            {
-                lReturn.AddExceptions(lResult.Exceptions);
-                lFailedInits++;
-            }
-
-            if (!(lResult = await this.InitEpisodeCount()).Success)
-            {
-                lReturn.AddExceptions(lResult.Exceptions);
-                lFailedInits++;
+                    lReturn.AddExceptions(lResult.Exceptions);
+                    lFailedInits++;
+                }
+                catch
+                {
+                    return new ProxerResult
+                    {
+                        Success = false
+                    };
+                }
             }
 
             this.IstInitialisiert = true;
 
-            if (lFailedInits < 3)
+            if (lFailedInits < this._initFuncs.Length)
                 lReturn.Success = true;
 
             return lReturn;
@@ -364,7 +378,10 @@ namespace Proxer.API.Main
         ///             <term>
         ///                 <see cref="WrongResponseException" />
         ///             </term>
-        ///             <description>Wird ausgelöst, wenn die Antwort des Servers nicht der Erwarteten entspricht.</description>
+        ///             <description>
+        ///                 <see cref="WrongResponseException" /> wird ausgelöst, wenn die Antwort des Servers nicht der
+        ///                 Erwarteten entspricht.
+        ///             </description>
         ///         </item>
         ///     </list>
         /// </summary>
@@ -422,13 +439,19 @@ namespace Proxer.API.Main
         ///             <term>
         ///                 <see cref="LanguageNotAvailableException" />
         ///             </term>
-        ///             <description>Wird ausgelöst, wenn der Anime nicht in der angegebenen Sprache verfügbar ist.</description>
+        ///             <description>
+        ///                 <see cref="LanguageNotAvailableException" /> wird ausgelöst, wenn der Anime nicht in der
+        ///                 angegebenen Sprache verfügbar ist.
+        ///             </description>
         ///         </item>
         ///         <item>
         ///             <term>
         ///                 <see cref="InitializeNeededException" />
         ///             </term>
-        ///             <description>Wird ausgelöst, wenn die Eigenschaften des Objektes noch nicht initialisiert sind.</description>
+        ///             <description>
+        ///                 <see cref="InitializeNeededException" /> wird ausgelöst, wenn die Eigenschaften des Objektes
+        ///                 noch nicht initialisiert sind.
+        ///             </description>
         ///         </item>
         ///     </list>
         /// </summary>
@@ -469,8 +492,7 @@ namespace Proxer.API.Main
             else return new ProxerResult(new[] {new WrongResponseException(), lResponseObject.ErrorException});
 
             if (!string.IsNullOrEmpty(lResponse) &&
-                lResponse.Equals(
-                    "<div class=\"inner\">\n<h3>Du hast keine Berechtigung um diese Seite zu betreten.</h3>\n</div>"))
+                lResponse.Equals("Bitte logge dich ein."))
                 return new ProxerResult(new Exception[] {new NoAccessException(nameof(this.InitAvailableLang))});
 
             if (string.IsNullOrEmpty(lResponse) ||
@@ -535,8 +557,7 @@ namespace Proxer.API.Main
             else return new ProxerResult(new[] {new WrongResponseException(), lResponseObject.ErrorException});
 
             if (!string.IsNullOrEmpty(lResponse) &&
-                lResponse.Equals(
-                    "<div class=\"inner\">\n<h3>Du hast keine Berechtigung um diese Seite zu betreten.</h3>\n</div>"))
+                lResponse.Contains("Bitte logge dich ein."))
                 return new ProxerResult(new Exception[] {new NoAccessException(nameof(this.InitEpisodeCount))});
 
             if (string.IsNullOrEmpty(lResponse) ||
@@ -576,7 +597,7 @@ namespace Proxer.API.Main
 
             if (!string.IsNullOrEmpty(lResponse) &&
                 lResponse.Equals(
-                    "<div class=\"inner\">\n<h3>Du hast keine Berechtigung um diese Seite zu betreten.</h3>\n</div>"))
+                    "<div class=\"inner\"><h3>Du hast keine Berechtigung um diese Seite zu betreten.</h3></div>"))
                 return new ProxerResult(new Exception[] {new NoAccessException(nameof(this.InitMain))});
 
             if (string.IsNullOrEmpty(lResponse) ||
@@ -768,11 +789,7 @@ namespace Proxer.API.Main
                 get
                 {
                     return this._streams ??
-                           new List<KeyValuePair<Stream.StreamPartner, Stream>>(new[]
-                           {
-                               new KeyValuePair<Stream.StreamPartner, Stream>(Stream.StreamPartner.None,
-                                   new Stream(new Uri("https://proxer.me/"), Stream.StreamPartner.None))
-                           });
+                           new List<KeyValuePair<Stream.StreamPartner, Stream>>();
                 }
                 private set { this._streams = value; }
             }
@@ -793,19 +810,28 @@ namespace Proxer.API.Main
             ///             <term>
             ///                 <see cref="NotLoggedInException" />
             ///             </term>
-            ///             <description>Wird ausgelöst, wenn der <see cref="Senpai">Benutzer</see> nicht eingeloggt ist.</description>
+            ///             <description>
+            ///                 <see cref="NotLoggedInException" /> wird ausgelöst, wenn der <see cref="Senpai">Benutzer</see>
+            ///                 nicht eingeloggt ist.
+            ///             </description>
             ///         </item>
             ///         <item>
             ///             <term>
             ///                 <see cref="WrongResponseException" />
             ///             </term>
-            ///             <description>Wird ausgelöst, wenn die Antwort des Servers nicht der Erwarteten entspricht.</description>
+            ///             <description>
+            ///                 <see cref="WrongResponseException" /> wird ausgelöst, wenn die Antwort des Servers nicht der
+            ///                 Erwarteten entspricht.
+            ///             </description>
             ///         </item>
             ///         <item>
             ///             <term>
             ///                 <see cref="CaptchaException" />
             ///             </term>
-            ///             <description>Wird ausgelöst, wenn die Website das Ausfüllen eines Captcha erfordert.</description>
+            ///             <description>
+            ///                 <see cref="CaptchaException" /> wird ausgelöst, wenn die Website das Ausfüllen eines Captcha
+            ///                 erfordert.
+            ///             </description>
             ///         </item>
             ///     </list>
             /// </summary>

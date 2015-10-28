@@ -8,19 +8,21 @@
         <TabControl>
             <TabItem Header="Anime und Manga">
                 <Grid Background="#FFE5E5E5">
-                    <ListBox x:Name="AmTextBox" HorizontalAlignment="Left" Height="219"
-                             VerticalAlignment="Top" Width="373" Margin="10,10,0,0" MouseUp="AmTextBox_MouseUp">
-                        <ListBoxItem Content="Anime ist jetzt online! aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"/>
+                    <ListBox x:Name="AmListBox" Margin="7,7,7,7" MouseUp="AmTextBox_MouseUp">
+                        <ListBoxItem
+                            Content="Anime ist jetzt online! aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa" />
                     </ListBox>
                 </Grid>
             </TabItem>
-            <TabItem Header="Privatnachrichten">
-                <Grid Background="#FFE5E5E5" >
-                    <TextBox x:Name="PmTextBox" HorizontalAlignment="Left" Height="219" Margin="10,10,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="373"/>
+            <TabItem Header="News">
+                <Grid Background="#FFE5E5E5">
+                    <ListBox x:Name="NewsListBox" Margin="7,7,7,7" MouseUp="NewsListBox_MouseUp" />
                 </Grid>
             </TabItem>
-            <TabItem Header="News">
-                <Grid Background="#FFE5E5E5" />
+            <TabItem Header="Privatnachrichten">
+                <Grid Background="#FFE5E5E5">
+                    <ListBox x:Name="PmListBox" Margin="7,7,7,7" MouseUp="PmListBox_MouseUp" />
+                </Grid>
             </TabItem>
         </TabControl>
     </Grid>

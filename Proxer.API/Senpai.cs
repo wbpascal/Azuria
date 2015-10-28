@@ -25,7 +25,7 @@ namespace Proxer.API
         ///     Stellt die Methode da, die ausgelöst wird, wenn neue Anime- oder Manga-Benachrichtigungen verfügbar sind.
         /// </summary>
         /// <param name="sender">Der Benutzer, der die Benachrichtigung empfangen hat.</param>
-        /// <param name="e">Die Benachrichtigungen</param>
+        /// <param name="e">Die Benachrichtigungen.</param>
         public delegate void AmNotificationEventHandler(Senpai sender, AmNotificationEventArgs e);
 
         /// <summary>
@@ -40,42 +40,39 @@ namespace Proxer.API
         ///     Stellt die Methode da, die ausgelöst wird, wenn neue Freundschafts-Benachrichtigungen verfügbar sind.
         /// </summary>
         /// <param name="sender">Der Benutzer, der die Benachrichtigung empfangen hat.</param>
-        /// <param name="e">Die Benachrichtigungen</param>
+        /// <param name="e">Die Benachrichtigungen.</param>
         public delegate void FriendNotificiationEventHandler(Senpai sender, FriendNotificationEventArgs e);
 
         /// <summary>
         ///     Stellt die Methode da, die ausgelöst wird, wenn neue News verfügbar sind.
         /// </summary>
         /// <param name="sender">Der Benutzer, der die Benachrichtigung empfangen hat.</param>
-        /// <param name="e">Die Benachrichtigungen</param>
+        /// <param name="e">Die Benachrichtigungen.</param>
         public delegate void NewsNotificationEventHandler(Senpai sender, NewsNotificationEventArgs e);
 
         /// <summary>
         ///     Stellt die Methode da, die ausgelöst wird, wenn neue Benachrichtigungen aller Art verfügbar sind.
         /// </summary>
         /// <param name="sender">Der Benutzer, der die Benachrichtigung empfangen hat.</param>
-        /// <param name="e">Die Benachrichtigungen</param>
-        public delegate void NotificationEventHandler(Senpai sender, INotificationEventArgs e);
+        /// <param name="e">Die Anzahl der Benachrichtigungen.</param>
+        public delegate void NotificationEventHandler(Senpai sender, int e);
 
         /// <summary>
         ///     Stellt die Methode da, die ausgelöst wird, wenn neue Privat-Nachricht-Benachrichtigungen verfügbar sind.
         /// </summary>
         /// <param name="sender">Der Benutzer, der die Benachrichtigung empfangen hat.</param>
-        /// <param name="e">Die Benachrichtigungen</param>
+        /// <param name="e">Die Benachrichtigungen.</param>
         public delegate void PmNotificationEventHandler(Senpai sender, PmNotificationEventArgs e);
 
         private readonly Timer _loginCheckTimer;
         private readonly Timer _notificationCheckTimer;
         private readonly Timer _propertyUpdateTimer;
         private AnimeMangaUpdateCollection _animeMangaUpdates;
-        private bool _checkAnimeMangaUpdate;
-        private bool _checkFriendUpdates;
-        private bool _checkNewsUpdate;
-        private bool _checkPmUpdate;
         private FriendRequestCollection _friendUpdates;
         private bool _loggedIn;
         private NewsCollection _newsUpdates;
         private PmCollection _pmUpdates;
+        private bool _updateNotifications;
         private int _userId;
 
 
@@ -116,10 +113,7 @@ namespace Proxer.API
             this._propertyUpdateTimer.Elapsed += (s, eArgs) =>
             {
                 this._propertyUpdateTimer.Interval = (new TimeSpan(0, 20, 0)).TotalMilliseconds;
-                this._checkAnimeMangaUpdate = true;
-                this._checkFriendUpdates = true;
-                this._checkNewsUpdate = true;
-                this._checkPmUpdate = true;
+                this._updateNotifications = true;
             };
         }
 
@@ -136,10 +130,10 @@ namespace Proxer.API
         {
             get
             {
-                if (!this._checkAnimeMangaUpdate && this._animeMangaUpdates != null) return this._animeMangaUpdates;
+                if (!this._updateNotifications && this._animeMangaUpdates != null) return this._animeMangaUpdates;
 
                 this._animeMangaUpdates = new AnimeMangaUpdateCollection(this);
-                this._checkAnimeMangaUpdate = false;
+                this._updateNotifications = false;
 
                 return this._animeMangaUpdates;
             }
@@ -162,10 +156,10 @@ namespace Proxer.API
         {
             get
             {
-                if (!this._checkFriendUpdates && this._friendUpdates != null) return this._friendUpdates;
+                if (!this._updateNotifications && this._friendUpdates != null) return this._friendUpdates;
 
                 this._friendUpdates = new FriendRequestCollection(this);
-                this._checkFriendUpdates = false;
+                this._updateNotifications = false;
 
                 return this._friendUpdates;
             }
@@ -237,10 +231,10 @@ namespace Proxer.API
         {
             get
             {
-                if (!this._checkNewsUpdate && this._newsUpdates != null) return this._newsUpdates;
+                if (!this._updateNotifications && this._newsUpdates != null) return this._newsUpdates;
 
                 this._newsUpdates = new NewsCollection(this);
-                this._checkNewsUpdate = false;
+                this._updateNotifications = false;
 
                 return this._newsUpdates;
             }
@@ -257,10 +251,10 @@ namespace Proxer.API
         {
             get
             {
-                if (!this._checkPmUpdate && this._pmUpdates != null) return this._pmUpdates;
+                if (!this._updateNotifications && this._pmUpdates != null) return this._pmUpdates;
 
                 this._pmUpdates = new PmCollection(this);
-                this._checkPmUpdate = false;
+                this._updateNotifications = false;
 
                 return this._pmUpdates;
             }
@@ -396,13 +390,9 @@ namespace Proxer.API
         ///     </list>
         /// </summary>
         /// <seealso cref="Login" />
-        public async Task<ProxerResult> InitNotifications()
+        public ProxerResult InitNotifications()
         {
             if (!this.LoggedIn) return new ProxerResult(new Exception[] {new NotLoggedInException(this)});
-
-            ProxerResult lResult = await this.CheckNotifications();
-            if (!lResult.Success)
-                this.ErrorDuringNotificationFetch?.Invoke(this, lResult.Exceptions);
 
             this._notificationCheckTimer.Start();
             this._propertyUpdateTimer.Start();
@@ -434,9 +424,7 @@ namespace Proxer.API
                 return new ProxerResult(lResult.Exceptions);
             }
 
-            this._checkAnimeMangaUpdate = true;
-            this._checkNewsUpdate = true;
-            this._checkPmUpdate = true;
+            this._updateNotifications = true;
 
             return new ProxerResult();
         }
@@ -520,7 +508,9 @@ namespace Proxer.API
             string lResponse;
 
             IRestResponse lResponseObject =
-                await HttpUtility.GetWebRequestResponse("http://proxer.me/messages", this.LoginCookies);
+                await
+                    HttpUtility.GetWebRequestResponse("https://proxer.me/notifications?format=raw&s=count",
+                        this.LoginCookies);
             if (lResponseObject.StatusCode == HttpStatusCode.OK && !string.IsNullOrEmpty(lResponseObject.Content))
                 lResponse = System.Web.HttpUtility.HtmlDecode(lResponseObject.Content).Replace("\n", "");
             else return new ProxerResult(new[] {new WrongResponseException(), lResponseObject.ErrorException});
@@ -531,40 +521,28 @@ namespace Proxer.API
             if (lResponse.StartsWith("1")) return new ProxerResult();
             try
             {
+                int lCount = 0;
                 string[] lResponseSplit = lResponse.Split('#');
 
-                if (!lResponseSplit[2].Equals("0"))
-                {
-                    this.PmNotificationRaised?.Invoke(this,
-                        new PmNotificationEventArgs(Convert.ToInt32(lResponseSplit[2]), this));
-                    this.NotificationRaised?.Invoke(this,
-                        new PmNotificationEventArgs(Convert.ToInt32(lResponseSplit[2]), this));
-                    this._checkPmUpdate = true;
-                }
-                if (!lResponseSplit[3].Equals("0"))
-                {
-                    this.FriendNotificationRaised?.Invoke(this,
-                        new FriendNotificationEventArgs(Convert.ToInt32(lResponseSplit[3]), this));
-                    this.NotificationRaised?.Invoke(this,
-                        new FriendNotificationEventArgs(Convert.ToInt32(lResponseSplit[3]), this));
-                    this._checkFriendUpdates = true;
-                }
-                if (!lResponseSplit[4].Equals("0"))
-                {
-                    this.NewsNotificationRaised?.Invoke(this,
-                        new NewsNotificationEventArgs(Convert.ToInt32(lResponseSplit[4]), this));
-                    this.NotificationRaised?.Invoke(this,
-                        new NewsNotificationEventArgs(Convert.ToInt32(lResponseSplit[4]), this));
-                    this._checkNewsUpdate = true;
-                }
-                if (!lResponseSplit[5].Equals("0"))
-                {
-                    this.AmUpdateNotificationRaised?.Invoke(this,
-                        new AmNotificationEventArgs(Convert.ToInt32(lResponseSplit[5]), this));
-                    this.NotificationRaised?.Invoke(this,
-                        new AmNotificationEventArgs(Convert.ToInt32(lResponseSplit[5]), this));
-                    this._checkAnimeMangaUpdate = true;
-                }
+                this._updateNotifications = true;
+
+                this.PmNotificationRaised?.Invoke(this,
+                    new PmNotificationEventArgs(Convert.ToInt32(lResponseSplit[2]), this));
+                lCount += Convert.ToInt32(lResponseSplit[2]);
+
+                this.FriendNotificationRaised?.Invoke(this,
+                    new FriendNotificationEventArgs(Convert.ToInt32(lResponseSplit[3]), this));
+                lCount += Convert.ToInt32(lResponseSplit[3]);
+
+                this.NewsNotificationRaised?.Invoke(this,
+                    new NewsNotificationEventArgs(Convert.ToInt32(lResponseSplit[4]), this));
+                lCount += Convert.ToInt32(lResponseSplit[4]);
+
+                this.AmUpdateNotificationRaised?.Invoke(this,
+                    new AmNotificationEventArgs(Convert.ToInt32(lResponseSplit[5]), this));
+                lCount += Convert.ToInt32(lResponseSplit[5]);
+
+                this.NotificationRaised?.Invoke(this, lCount);
             }
             catch
             {

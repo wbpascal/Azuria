@@ -23,19 +23,23 @@ namespace Proxer.API
         /// </summary>
         public static User System = new User("System", -1, new Senpai());
 
+        private readonly Func<Task<ProxerResult>>[] _initFuncs;
+
         private readonly Senpai _senpai;
+        private List<KeyValuePair<AnimeMangaProgressObject.AnimeMangaProgress, AnimeMangaProgressObject>> _animeList;
         private Uri _avatar;
         private List<User> _freunde;
         private string _info;
+        private List<KeyValuePair<AnimeMangaProgressObject.AnimeMangaProgress, AnimeMangaProgressObject>> _mangaList;
         private string _rang;
         private string _status;
         private string _userName;
-        private List<KeyValuePair<AnimeMangaProgressObject.AnimeMangaProgress, AnimeMangaProgressObject>> _animeList;
-        private List<KeyValuePair<AnimeMangaProgressObject.AnimeMangaProgress, AnimeMangaProgressObject>> _mangaList;
 
         internal User(string name, int userId, Senpai senpai)
         {
             this._senpai = senpai;
+            this._initFuncs = new Func<Task<ProxerResult>>[]
+            {this.InitMainInfo, this.InitInfos, this.InitFriends, this.InitAnime, this.InitManga};
             this.IstInitialisiert = false;
 
             this.UserName = name;
@@ -48,6 +52,8 @@ namespace Proxer.API
         internal User(string name, int userId, Uri avatar, Senpai senpai)
         {
             this._senpai = senpai;
+            this._initFuncs = new Func<Task<ProxerResult>>[]
+            {this.InitMainInfo, this.InitInfos, this.InitFriends, this.InitAnime, this.InitManga};
             this.IstInitialisiert = false;
 
             this.UserName = name;
@@ -67,6 +73,8 @@ namespace Proxer.API
         public User(int userId, Senpai senpai)
         {
             this._senpai = senpai;
+            this._initFuncs = new Func<Task<ProxerResult>>[]
+            {this.InitMainInfo, this.InitInfos, this.InitFriends, this.InitAnime, this.InitManga};
             this.IstInitialisiert = false;
 
             this.Id = userId;
@@ -78,18 +86,12 @@ namespace Proxer.API
         #region Properties
 
         /// <summary>
-        /// Gibt alle <see cref="Anime">Anime</see> zurück, die der <see cref="User">Benutzer</see> 
-        /// in seinem Profil markiert hat.
+        ///     Gibt alle <see cref="Anime">Anime</see> zurück, die der <see cref="User">Benutzer</see>
+        ///     in seinem Profil markiert hat.
         /// </summary>
         public List<KeyValuePair<AnimeMangaProgressObject.AnimeMangaProgress, AnimeMangaProgressObject>> Anime
-        {
-            get
-            {
-                return this._animeList ??
-                       new List<KeyValuePair<AnimeMangaProgressObject.AnimeMangaProgress, AnimeMangaProgressObject>>();
-            }
-            private set { this._animeList = value; }
-        }
+            => this._animeList ??
+               new List<KeyValuePair<AnimeMangaProgressObject.AnimeMangaProgress, AnimeMangaProgressObject>>();
 
         /// <summary>
         ///     Gibt den Link zu dem Avatar des Benutzers zurück.
@@ -143,18 +145,12 @@ namespace Proxer.API
         public bool IstInitialisiert { get; private set; }
 
         /// <summary>
-        /// Gibt alle <see cref="Manga">Manga</see> zurück, die der <see cref="User">Benutzer</see> 
-        /// in seinem Profil markiert hat.
+        ///     Gibt alle <see cref="Manga">Manga</see> zurück, die der <see cref="User">Benutzer</see>
+        ///     in seinem Profil markiert hat.
         /// </summary>
         public List<KeyValuePair<AnimeMangaProgressObject.AnimeMangaProgress, AnimeMangaProgressObject>> Manga
-        {
-            get
-            {
-                return this._mangaList ??
-                       new List<KeyValuePair<AnimeMangaProgressObject.AnimeMangaProgress, AnimeMangaProgressObject>>();
-            }
-            private set { this._mangaList = value; }
-        }
+            => this._mangaList ??
+               new List<KeyValuePair<AnimeMangaProgressObject.AnimeMangaProgress, AnimeMangaProgressObject>>();
 
         /// <summary>
         ///     Gibt zurück, ob der Benutzter zur Zeit online ist.
@@ -221,14 +217,18 @@ namespace Proxer.API
         ///             <term>
         ///                 <see cref="WrongResponseException" />
         ///             </term>
-        ///             <description>Wird ausgelöst, wenn die Antwort des Servers nicht der Erwarteten entspricht.</description>
+        ///             <description>
+        ///                 <see cref="WrongResponseException" /> wird ausgelöst, wenn die Antwort des Servers nicht der
+        ///                 Erwarteten entspricht.
+        ///             </description>
         ///         </item>
         ///         <item>
         ///             <term>
         ///                 <see cref="NoAccessException" />
         ///             </term>
         ///             <description>
-        ///                 Wird ausgelöst, wenn Teile der Initialisierung nicht durchgeführt werden können,
+        ///                 <see cref="NoAccessException" /> wird ausgelöst, wenn Teile der Initialisierung nicht durchgeführt
+        ///                 werden können,
         ///                 da der <see cref="Senpai">Benutzer</see> nicht die nötigen Rechte dafür hat.
         ///             </description>
         ///         </item>
@@ -240,40 +240,28 @@ namespace Proxer.API
             int lFailedInits = 0;
             ProxerResult lReturn = new ProxerResult();
 
-            ProxerResult lResult;
-            if (!(lResult = await this.InitMainInfo()).Success)
+            foreach (Func<Task<ProxerResult>> initFunc in this._initFuncs)
             {
-                lReturn.AddExceptions(lResult.Exceptions);
-                lFailedInits++;
-            }
+                try
+                {
+                    ProxerResult lResult;
+                    if ((lResult = await initFunc.Invoke()).Success) continue;
 
-            if (!(lResult = await this.InitFriends()).Success)
-            {
-                lReturn.AddExceptions(lResult.Exceptions);
-                lFailedInits++;
-            }
-
-            if (!(lResult = await this.InitInfos()).Success)
-            {
-                lReturn.AddExceptions(lResult.Exceptions);
-                lFailedInits++;
-            }
-
-            if (!(lResult = await this.InitAnime()).Success)
-            {
-                lReturn.AddExceptions(lResult.Exceptions);
-                lFailedInits++;
-            }
-
-            if (!(lResult = await this.InitManga()).Success)
-            {
-                lReturn.AddExceptions(lResult.Exceptions);
-                lFailedInits++;
+                    lReturn.AddExceptions(lResult.Exceptions);
+                    lFailedInits++;
+                }
+                catch
+                {
+                    return new ProxerResult
+                    {
+                        Success = false
+                    };
+                }
             }
 
             this.IstInitialisiert = true;
 
-            if (lFailedInits < 5)
+            if (lFailedInits < this._initFuncs.Length)
                 lReturn.Success = true;
 
             return lReturn;
@@ -356,9 +344,12 @@ namespace Proxer.API
                     (await HttpUtility.GetWebRequestResponse(
                         "https://proxer.me/user/" + this.Id + "/connections/" + lSeite + "?format=raw",
                         this._senpai.LoginCookies))).StatusCode == HttpStatusCode.OK &&
-                !(lResponse = global::System.Web.HttpUtility.HtmlDecode(lResponseObject.Content)).Replace("\n", "")
-                                                                                                 .Contains(
-                                                                                                     "Dieser Benutzer hat bisher keine Freunde"))
+                !(lResponse =
+                    global::System.Web.HttpUtility.HtmlDecode(lResponseObject.Content)
+                          .Replace("\n", "")
+                          .Replace("\t", ""))
+                    .Contains(
+                        "Dieser Benutzer hat bisher keine Freunde"))
             {
                 if (!string.IsNullOrEmpty(lResponse) &&
                     lResponse.Equals(
@@ -458,16 +449,16 @@ namespace Proxer.API
                         this._senpai.LoginCookies);
             if (lResponseObject.StatusCode == HttpStatusCode.OK && !string.IsNullOrEmpty(lResponseObject.Content))
                 lResponse = global::System.Web.HttpUtility.HtmlDecode(lResponseObject.Content).Replace("\n", "");
-            else return new ProxerResult(new[] { new WrongResponseException(), lResponseObject.ErrorException });
+            else return new ProxerResult(new[] {new WrongResponseException(), lResponseObject.ErrorException});
 
             if (!string.IsNullOrEmpty(lResponse) &&
                 lResponse.Equals(
                     "<div class=\"inner\"><h3>Du hast keine Berechtigung um diese Seite zu betreten.</h3></div>"))
-                return new ProxerResult(new Exception[] { new NoAccessException(nameof(this.InitAnime)) });
+                return new ProxerResult(new Exception[] {new NoAccessException(nameof(this.InitAnime))});
 
             if (string.IsNullOrEmpty(lResponse) ||
                 !Utility.CheckForCorrectResponse(lResponse, this._senpai.ErrHandler))
-                return new ProxerResult(new Exception[] { new WrongResponseException { Response = lResponse } });
+                return new ProxerResult(new Exception[] {new WrongResponseException {Response = lResponse}});
 
             try
             {
@@ -581,16 +572,16 @@ namespace Proxer.API
                         this._senpai.LoginCookies);
             if (lResponseObject.StatusCode == HttpStatusCode.OK && !string.IsNullOrEmpty(lResponseObject.Content))
                 lResponse = global::System.Web.HttpUtility.HtmlDecode(lResponseObject.Content).Replace("\n", "");
-            else return new ProxerResult(new[] { new WrongResponseException(), lResponseObject.ErrorException });
+            else return new ProxerResult(new[] {new WrongResponseException(), lResponseObject.ErrorException});
 
             if (!string.IsNullOrEmpty(lResponse) &&
                 lResponse.Equals(
                     "<div class=\"inner\"><h3>Du hast keine Berechtigung um diese Seite zu betreten.</h3></div>"))
-                return new ProxerResult(new Exception[] { new NoAccessException(nameof(this.InitManga)) });
+                return new ProxerResult(new Exception[] {new NoAccessException(nameof(this.InitManga))});
 
             if (string.IsNullOrEmpty(lResponse) ||
                 !Utility.CheckForCorrectResponse(lResponse, this._senpai.ErrHandler))
-                return new ProxerResult(new Exception[] { new WrongResponseException { Response = lResponse } });
+                return new ProxerResult(new Exception[] {new WrongResponseException {Response = lResponse}});
 
             try
             {
@@ -710,14 +701,18 @@ namespace Proxer.API
         ///             <term>
         ///                 <see cref="InitializeNeededException" />
         ///             </term>
-        ///             <description>Wird ausgelöst, wenn die Eigenschaften des Objektes noch nicht initialisiert sind.</description>
+        ///             <description>
+        ///                 <see cref="InitializeNeededException" /> wird ausgelöst, wenn die Eigenschaften des Objektes
+        ///                 noch nicht initialisiert sind.
+        ///             </description>
         ///         </item>
         ///         <item>
         ///             <term>
         ///                 <see cref="ArgumentNullException" />
         ///             </term>
         ///             <description>
-        ///                 Wird ausgelöst, wenn <paramref name="user1" /> oder <paramref name="user2" /> null (oder
+        ///                 <see cref="ArgumentNullException" /> wird ausgelöst, wenn <paramref name="user1" /> oder
+        ///                 <paramref name="user2" /> null (oder
         ///                 Nothing in Visual Basic) sind.
         ///             </description>
         ///         </item>
@@ -748,19 +743,38 @@ namespace Proxer.API
         ///             <term>
         ///                 <see cref="NotLoggedInException" />
         ///             </term>
-        ///             <description>Wird ausgelöst, wenn der <see cref="Senpai">Benutzer</see> nicht eingeloggt ist.</description>
+        ///             <description>
+        ///                 <see cref="NotLoggedInException" /> wird ausgelöst, wenn der <see cref="Senpai">Benutzer</see>
+        ///                 nicht eingeloggt ist.
+        ///             </description>
         ///         </item>
         ///         <item>
         ///             <term>
         ///                 <see cref="WrongResponseException" />
         ///             </term>
-        ///             <description>Wird ausgelöst, wenn die Antwort des Servers nicht der Erwarteten entspricht.</description>
+        ///             <description>
+        ///                 <see cref="WrongResponseException" /> wird ausgelöst, wenn die Antwort des Servers nicht der
+        ///                 Erwarteten entspricht.
+        ///             </description>
         ///         </item>
         ///         <item>
         ///             <term>
         ///                 <see cref="ArgumentNullException" />
         ///             </term>
-        ///             <description>Wird ausgelöst, wenn <paramref name="senpai" /> null (oder Nothing in Visual Basic) ist.</description>
+        ///             <description>
+        ///                 <see cref="ArgumentNullException" /> wird ausgelöst, wenn <paramref name="senpai" /> null
+        ///                 (oder Nothing in Visual Basic) ist.
+        ///             </description>
+        ///         </item>
+        ///         <item>
+        ///             <term>
+        ///                 <see cref="NoAccessException" />
+        ///             </term>
+        ///             <description>
+        ///                 <see cref="NoAccessException" /> wird ausgelöst, wenn Teile der Initialisierung nicht durchgeführt
+        ///                 werden können,
+        ///                 da der <see cref="Senpai">Benutzer</see> nicht die nötigen Rechte dafür hat.
+        ///             </description>
         ///         </item>
         ///     </list>
         /// </summary>
@@ -785,6 +799,11 @@ namespace Proxer.API
             if (lResponseObject.StatusCode == HttpStatusCode.OK && !string.IsNullOrEmpty(lResponseObject.Content))
                 lResponse = global::System.Web.HttpUtility.HtmlDecode(lResponseObject.Content).Replace("\n", "");
             else return new ProxerResult<string>(new[] {new WrongResponseException(), lResponseObject.ErrorException});
+
+            if (!string.IsNullOrEmpty(lResponse) &&
+                lResponse.Equals(
+                    "<div class=\"inner\">\n<h3>Du hast keine Berechtigung um diese Seite zu betreten.</h3>\n</div>"))
+                return new ProxerResult<string>(new Exception[] {new NoAccessException(nameof(GetUNameFromId))});
 
             if (string.IsNullOrEmpty(lResponse) || !Utility.CheckForCorrectResponse(lResponse, senpai.ErrHandler))
                 return new ProxerResult<string>(new Exception[] {new WrongResponseException {Response = lResponse}});
