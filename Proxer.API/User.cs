@@ -65,6 +65,23 @@ namespace Proxer.API
                         "https://proxer.me/components/com_comprofiler/plugin/templates/default/images/avatar/nophoto_n.png");
         }
 
+        internal User(string name, int userId, Uri avatar, bool online, Senpai senpai)
+        {
+            this._senpai = senpai;
+            this._initFuncs = new Func<Task<ProxerResult>>[]
+            {this.InitMainInfo, this.InitInfos, this.InitFriends, this.InitAnime, this.InitManga};
+            this.IstInitialisiert = false;
+
+            this.UserName = name;
+            this.Id = userId;
+            this.Online = online;
+            if (avatar != null) this.Avatar = avatar;
+            else
+                this.Avatar =
+                    new Uri(
+                        "https://proxer.me/components/com_comprofiler/plugin/templates/default/images/avatar/nophoto_n.png");
+        }
+
         /// <summary>
         ///     Initialisiert die Klasse mit allen Standardeinstellungen.
         /// </summary>
@@ -376,7 +393,18 @@ namespace Proxer.API
                             int lId =
                                 Convert.ToInt32(
                                     curFriendNode.Attributes["id"].Value.Substring("entry".Length));
-                            this.Freunde.Add(new User(lUsername, lId, this._senpai));
+                            Uri lAvatar = curFriendNode.ChildNodes[2].GetAttributeValue("title", "Avatar:")
+                                                                     .Equals("Avatar:")
+                                ? new Uri(
+                                    "https://proxer.me/components/com_comprofiler/plugin/templates/default/images/avatar/nophoto_n.png")
+                                : new Uri("https://proxer.me/images/comprofiler/" +
+                                          curFriendNode.ChildNodes[2].GetAttributeValue("title", "Avatar:")
+                                                                     .Split(':')[1]);
+                            bool lOnline =
+                                curFriendNode.ChildNodes[1].FirstChild.GetAttributeValue("src",
+                                    "/images/misc/offlineicon.png").Equals("/images/misc/onlineicon.png");
+
+                            this.Freunde.Add(new User(lUsername, lId, lAvatar, lOnline, this._senpai));
                         }
                     }
 

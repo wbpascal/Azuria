@@ -178,6 +178,7 @@ namespace Proxer.API
                 {
                     this._loginCheckTimer.Start();
                     this._loggedIn = true;
+                    this.UserLoggedInRaised?.Invoke(this, EventArgs.Empty);
                 }
                 else
                 {
@@ -185,6 +186,7 @@ namespace Proxer.API
                     this._notificationCheckTimer.Stop();
                     this._propertyUpdateTimer.Stop();
                     this._loggedIn = false;
+                    this.UserLoggedOutRaised?.Invoke(this, EventArgs.Empty);
                 }
             }
         }
@@ -354,11 +356,10 @@ namespace Proxer.API
 
                 if (responseDes["error"].Equals("0"))
                 {
-                    this.LoggedIn = true;
+                    if(!this.LoggedIn) this.LoggedIn = true;
                     return new ProxerResult<bool>(true);
                 }
-                this.LoggedIn = false;
-                this.UserLoggedOutRaised?.Invoke(this, new EventArgs());
+                if(this.LoggedIn) this.LoggedIn = false;
                 return new ProxerResult<bool>(false);
             }
             catch
@@ -582,6 +583,11 @@ namespace Proxer.API
         ///     Wird ausgelöst, wenn neue Anime Folgen oder Manga Kapitel vorhanden sind. (15 Minuten Intervall)
         /// </summary>
         public event AmNotificationEventHandler AmUpdateNotificationRaised;
+
+        /// <summary>
+        ///  Wird ausgelöst, wenn der <see cref="Senpai">Benutzer</see> sich eingeloggt hat.
+        /// </summary>
+        public event EventHandler UserLoggedInRaised;
 
         /// <summary>
         ///     Wird ausgelöst, wenn die Login-Cookies verfallen sind. (15 Minuten Intervall)
