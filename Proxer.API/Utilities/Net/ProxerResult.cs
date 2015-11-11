@@ -10,20 +10,31 @@ namespace Proxer.API.Utilities.Net
     /// <typeparam name="T">Der Typ des Resultats.</typeparam>
     public class ProxerResult<T> : ProxerResult
     {
-        internal ProxerResult()
+        /// <summary>
+        ///     Initialisiert die Klasse.
+        /// </summary>
+        public ProxerResult()
         {
             this.Success = true;
             this.Exceptions = new Exception[0];
         }
 
-        internal ProxerResult(T result)
+        /// <summary>
+        ///     Initialisiert die Klasse mit einem Resultat.
+        /// </summary>
+        /// <param name="result">Das Resultat</param>
+        public ProxerResult(T result)
         {
             this.Success = true;
             this.Result = result;
             this.Exceptions = new Exception[0];
         }
 
-        internal ProxerResult(Exception[] exceptions) : base(exceptions)
+        /// <summary>
+        ///     Initialisiert die Klasse mit Fehlermeldungen.
+        /// </summary>
+        /// <param name="exceptions">Die Fehlermeldungen.</param>
+        public ProxerResult(Exception[] exceptions) : base(exceptions)
         {
         }
 
@@ -43,13 +54,20 @@ namespace Proxer.API.Utilities.Net
     /// </summary>
     public class ProxerResult
     {
-        internal ProxerResult()
+        /// <summary>
+        ///     Initialisiert die Klasse.
+        /// </summary>
+        public ProxerResult()
         {
             this.Success = true;
             this.Exceptions = new Exception[0];
         }
 
-        internal ProxerResult(Exception[] exceptions)
+        /// <summary>
+        ///     Initialisiert die Klasse mit Fehlermeldungen.
+        /// </summary>
+        /// <param name="exceptions">Die Fehlermeldungen.</param>
+        public ProxerResult(Exception[] exceptions)
         {
             this.Success = false;
             this.Exceptions = exceptions;

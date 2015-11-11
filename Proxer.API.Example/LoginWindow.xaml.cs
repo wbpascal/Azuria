@@ -47,9 +47,10 @@ namespace Proxer.API.Example
             (sender as Button).IsEnabled = true;
         }
 
-        private void notificationButton_Click(object sender, RoutedEventArgs e)
+        private async void notificationButton_Click(object sender, RoutedEventArgs e)
         {
-            new NotificationWindow(this._senpai).Show();
+            //new NotificationWindow(this._senpai).Show();
+            await this._senpai.Me.Init();
         }
 
         #endregion

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
@@ -41,10 +42,10 @@ namespace Proxer.API.Example
 
         private void ErrorDuringNotificationFetch(Senpai sender, Exception[] exceptions)
         {
-            MessageBox.Show(nameof(this.ErrorDuringNotificationFetch));
+            //Aktion, die ausgeführt wird, wenn ein Fehler bei dem Abrufen der Benachrichtigungs-Events aufgetreten ist
         }
 
-        private void NotificationRaised(Senpai sender, int e)
+        private void NotificationRaised(Senpai sender, IEnumerable<INotificationEventArgs> e)
         {
             if (!this.Dispatcher.CheckAccess())
             {
@@ -54,7 +55,18 @@ namespace Proxer.API.Example
 
             if (this.IsFocused) return;
 
-            this.Title = "Benachrichtigungen (" + e + ")";
+            IEnumerable<INotificationEventArgs> notificationEventArgses = e as IList<INotificationEventArgs> ??
+                                                                          e.ToList();
+            if (notificationEventArgses.Any())
+            {
+                int lAnzahl = 0;
+                notificationEventArgses.ToList().ForEach(x => lAnzahl += x.NotificationCount);
+                this.Title = "Benachrichtigungen (" + lAnzahl + ")";
+            }
+            else
+            {
+                this.Title = "Benachrichtigungen";
+            }
 
             //man kann auch einen Ton abspielen
         }

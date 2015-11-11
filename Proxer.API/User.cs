@@ -249,6 +249,12 @@ namespace Proxer.API
         ///                 da der <see cref="Senpai">Benutzer</see> nicht die nötigen Rechte dafür hat.
         ///             </description>
         ///         </item>
+        ///         <item>
+        ///             <term>
+        ///                 <see cref="NotLoggedInException" />
+        ///             </term>
+        ///             <description>Wird ausgelöst, wenn der <see cref="Senpai">Benutzer</see> nicht eingeloggt ist.</description>
+        ///         </item>
         ///     </list>
         /// </summary>
         /// <seealso cref="Senpai.Login" />
@@ -290,24 +296,27 @@ namespace Proxer.API
             if (this.Id == -1) return new ProxerResult();
 
             HtmlDocument lDocument = new HtmlDocument();
-            string lResponse;
 
-            IRestResponse lResponseObject =
+            Func<string, ProxerResult> lCheckFunc = s =>
+            {
+                if (!string.IsNullOrEmpty(s) &&
+                    s.Equals(
+                        "<div class=\"inner\">\n<h3>Du hast keine Berechtigung um diese Seite zu betreten.</h3>\n</div>"))
+                    return new ProxerResult(new Exception[] {new NoAccessException(nameof(this.InitMainInfo))});
+
+                return new ProxerResult();
+            };
+
+            ProxerResult<string> lResult =
                 await
-                    HttpUtility.GetWebRequestResponse("https://proxer.me/user/" + this.Id + "/overview?format=raw",
-                        this._senpai.LoginCookies);
-            if (lResponseObject.StatusCode == HttpStatusCode.OK && !string.IsNullOrEmpty(lResponseObject.Content))
-                lResponse = global::System.Web.HttpUtility.HtmlDecode(lResponseObject.Content).Replace("\n", "");
-            else return new ProxerResult(new[] {new WrongResponseException(), lResponseObject.ErrorException});
+                    HttpUtility.GetResponseErrorHandling("https://proxer.me/user/" + this.Id, this._senpai.LoginCookies,
+                        this._senpai.ErrHandler,
+                        this._senpai, new[] {lCheckFunc});
 
-            if (!string.IsNullOrEmpty(lResponse) &&
-                lResponse.Equals(
-                    "<div class=\"inner\">\n<h3>Du hast keine Berechtigung um diese Seite zu betreten.</h3>\n</div>"))
-                return new ProxerResult(new Exception[] {new NoAccessException(nameof(this.InitMainInfo))});
+            if (!lResult.Success)
+                return new ProxerResult(lResult.Exceptions);
 
-            if (string.IsNullOrEmpty(lResponse) ||
-                !Utility.CheckForCorrectResponse(lResponse, this._senpai.ErrHandler))
-                return new ProxerResult(new Exception[] {new WrongResponseException {Response = lResponse}});
+            string lResponse = lResult.Result;
 
             try
             {
@@ -349,78 +358,100 @@ namespace Proxer.API
         {
             if (this.Id == -1) return new ProxerResult();
 
-            int lSeite = 1;
-            IRestResponse lResponseObject;
-            string lResponse;
-            HtmlDocument lDocument = new HtmlDocument();
-
             this.Freunde = new List<User>();
 
-            while (
-                (lResponseObject =
-                    (await HttpUtility.GetWebRequestResponse(
-                        "https://proxer.me/user/" + this.Id + "/connections/" + lSeite + "?format=raw",
-                        this._senpai.LoginCookies))).StatusCode == HttpStatusCode.OK &&
-                !(lResponse =
-                    global::System.Web.HttpUtility.HtmlDecode(lResponseObject.Content)
-                          .Replace("\n", "")
-                          .Replace("\t", ""))
-                    .Contains(
-                        "Dieser Benutzer hat bisher keine Freunde"))
+            ProxerResult<HtmlNode[]> lResult = await this.GetAllFriendNodes();
+            if (!lResult.Success) return new ProxerResult(lResult.Exceptions);
+            try
             {
-                if (!string.IsNullOrEmpty(lResponse) &&
-                    lResponse.Equals(
-                        "<div class=\"inner\">\n<h3>Du hast keine Berechtigung um diese Seite zu betreten.</h3>\n</div>"))
+                foreach (HtmlNode curFriendNode in lResult.Result)
+                {
+                    string lUsername = curFriendNode.ChildNodes[2].InnerText;
+                    int lId =
+                        Convert.ToInt32(
+                            curFriendNode.Attributes["id"].Value.Substring("entry".Length));
+                    Uri lAvatar = curFriendNode.ChildNodes[2].GetAttributeValue("title", "Avatar:")
+                                                             .Equals("Avatar:")
+                        ? new Uri(
+                            "https://proxer.me/components/com_comprofiler/plugin/templates/default/images/avatar/nophoto_n.png")
+                        : new Uri("https://proxer.me/images/comprofiler/" +
+                                  curFriendNode.ChildNodes[2].GetAttributeValue("title", "Avatar:")
+                                                             .Split(':')[1]);
+                    bool lOnline =
+                        curFriendNode.ChildNodes[1].FirstChild.GetAttributeValue("src",
+                            "/images/misc/offlineicon.png").Equals("/images/misc/onlineicon.png");
+
+                    this.Freunde.Add(new User(lUsername, lId, lAvatar, lOnline, this._senpai));
+                }
+
+                return new ProxerResult();
+            }
+            catch
+            {
+                return
+                    new ProxerResult(new Exception[] {new WrongResponseException()});
+            }
+        }
+
+        private async Task<ProxerResult<HtmlNode[]>> GetAllFriendNodes()
+        {
+            ProxerResult<string> lResult;
+            int lSeite = 1;
+
+            List<HtmlNode> lReturn = new List<HtmlNode>();
+
+            Func<string, ProxerResult> lCheckFunc = s =>
+            {
+                if (!string.IsNullOrEmpty(s) &&
+                    s.Equals(
+                        "<div class=\"inner\"><h3>Du hast keine Berechtigung um diese Seite zu betreten.</h3></div>"))
                     return new ProxerResult(new Exception[] {new NoAccessException(nameof(this.InitFriends))});
 
-                if (string.IsNullOrEmpty(lResponse) ||
-                    !Utility.CheckForCorrectResponse(lResponse, this._senpai.ErrHandler))
-                    return new ProxerResult(new Exception[] {new WrongResponseException {Response = lResponse}});
+                return new ProxerResult();
+            };
+
+            while (
+                (lResult =
+                    await
+                        HttpUtility.GetResponseErrorHandling(
+                            "https://proxer.me/user/" + this.Id + "/connections/" + lSeite + "?format=raw",
+                            this._senpai.LoginCookies
+                            , this._senpai.ErrHandler, this._senpai, new[] {lCheckFunc})).Success)
+            {
+                HtmlDocument lDocument = new HtmlDocument();
+                lDocument.LoadHtml(lResult.Result);
 
                 try
                 {
-                    lDocument.LoadHtml(lResponse);
-
-                    HtmlNodeCollection lProfileNodes =
-                        lDocument.DocumentNode.SelectNodes("//table[@id='box-table-a']");
-
-                    if (lProfileNodes != null)
+                    if (
+                        lDocument.DocumentNode.SelectSingleNode("//div[@class='inner']")?
+                                 .InnerText.Equals("Dieser Benutzer hat bisher keine Freunde :/") ?? false)
                     {
-                        lProfileNodes[0].ChildNodes.Remove(0);
-                        foreach (HtmlNode curFriendNode in lProfileNodes[0].ChildNodes)
-                        {
-                            string lUsername = curFriendNode.ChildNodes[2].InnerText;
-                            int lId =
-                                Convert.ToInt32(
-                                    curFriendNode.Attributes["id"].Value.Substring("entry".Length));
-                            Uri lAvatar = curFriendNode.ChildNodes[2].GetAttributeValue("title", "Avatar:")
-                                                                     .Equals("Avatar:")
-                                ? new Uri(
-                                    "https://proxer.me/components/com_comprofiler/plugin/templates/default/images/avatar/nophoto_n.png")
-                                : new Uri("https://proxer.me/images/comprofiler/" +
-                                          curFriendNode.ChildNodes[2].GetAttributeValue("title", "Avatar:")
-                                                                     .Split(':')[1]);
-                            bool lOnline =
-                                curFriendNode.ChildNodes[1].FirstChild.GetAttributeValue("src",
-                                    "/images/misc/offlineicon.png").Equals("/images/misc/onlineicon.png");
-
-                            this.Freunde.Add(new User(lUsername, lId, lAvatar, lOnline, this._senpai));
-                        }
+                        break;
                     }
 
+                    HtmlNode lProfileNodes =
+                        lDocument.DocumentNode.SelectSingleNode("//table[@id='box-table-a']");
+
+                    if (lProfileNodes == null)
+                        return
+                            new ProxerResult<HtmlNode[]>(new Exception[]
+                            {new WrongResponseException {Response = lResult.Result}});
+
+                    lProfileNodes.ChildNodes.Remove(0);
+                    lReturn.AddRange(lProfileNodes.ChildNodes);
 
                     lSeite++;
                 }
                 catch
                 {
                     return
-                        new ProxerResult((await ErrorHandler.HandleError(this._senpai, lResponse, false)).Exceptions);
+                        new ProxerResult<HtmlNode[]>(
+                            (await ErrorHandler.HandleError(this._senpai, lResult.Result, false)).Exceptions);
                 }
             }
 
-            return lResponseObject.StatusCode != HttpStatusCode.OK
-                ? new ProxerResult(new Exception[] {new WebException()})
-                : new ProxerResult();
+            return new ProxerResult<HtmlNode[]>(lReturn.ToArray());
         }
 
         private async Task<ProxerResult> InitInfos()
@@ -428,24 +459,28 @@ namespace Proxer.API
             if (this.Id == -1) return new ProxerResult();
 
             HtmlDocument lDocument = new HtmlDocument();
-            string lResponse;
 
-            IRestResponse lResponseObject =
+            Func<string, ProxerResult> lCheckFunc = s =>
+            {
+                if (!string.IsNullOrEmpty(s) &&
+                    s.Equals(
+                        "<div class=\"inner\"><h3>Du hast keine Berechtigung um diese Seite zu betreten.</h3></div>"))
+                    return new ProxerResult(new Exception[] {new NoAccessException(nameof(this.InitInfos))});
+
+                return new ProxerResult();
+            };
+
+            ProxerResult<string> lResult =
                 await
-                    HttpUtility.GetWebRequestResponse("https://proxer.me/user/" + this.Id + "/about?format=raw",
-                        this._senpai.LoginCookies);
-            if (lResponseObject.StatusCode == HttpStatusCode.OK && !string.IsNullOrEmpty(lResponseObject.Content))
-                lResponse = global::System.Web.HttpUtility.HtmlDecode(lResponseObject.Content).Replace("\n", "");
-            else return new ProxerResult(new[] {new WrongResponseException(), lResponseObject.ErrorException});
+                    HttpUtility.GetResponseErrorHandling("https://proxer.me/user/" + this.Id + "/about?format=raw",
+                        this._senpai.LoginCookies,
+                        this._senpai.ErrHandler,
+                        this._senpai, new[] {lCheckFunc});
 
-            if (!string.IsNullOrEmpty(lResponse) &&
-                lResponse.Equals(
-                    "<div class=\"inner\"><h3>Du hast keine Berechtigung um diese Seite zu betreten.</h3></div>"))
-                return new ProxerResult(new Exception[] {new NoAccessException(nameof(this.InitInfos))});
+            if (!lResult.Success)
+                return new ProxerResult(lResult.Exceptions);
 
-            if (string.IsNullOrEmpty(lResponse) ||
-                !Utility.CheckForCorrectResponse(lResponse, this._senpai.ErrHandler))
-                return new ProxerResult(new Exception[] {new WrongResponseException {Response = lResponse}});
+            string lResponse = lResult.Result;
 
             try
             {
@@ -469,27 +504,33 @@ namespace Proxer.API
             if (this.Id == -1) return new ProxerResult();
 
             HtmlDocument lDocument = new HtmlDocument();
-            string lResponse;
 
-            IRestResponse lResponseObject =
+            Func<string, ProxerResult> lCheckFunc = s =>
+            {
+                if (!string.IsNullOrEmpty(s) &&
+                    s.Equals(
+                        "<div class=\"inner\"><h3>Du hast keine Berechtigung um diese Seite zu betreten.</h3></div>"))
+                    return new ProxerResult(new Exception[] {new NoAccessException(nameof(this.InitAnime))});
+
+                return new ProxerResult();
+            };
+
+            ProxerResult<string> lResult =
                 await
-                    HttpUtility.GetWebRequestResponse("https://proxer.me/user/" + this.Id + "/anime?format=raw",
-                        this._senpai.LoginCookies);
-            if (lResponseObject.StatusCode == HttpStatusCode.OK && !string.IsNullOrEmpty(lResponseObject.Content))
-                lResponse = global::System.Web.HttpUtility.HtmlDecode(lResponseObject.Content).Replace("\n", "");
-            else return new ProxerResult(new[] {new WrongResponseException(), lResponseObject.ErrorException});
+                    HttpUtility.GetResponseErrorHandling("https://proxer.me/user/" + this.Id + "/anime?format=raw",
+                        this._senpai.LoginCookies,
+                        this._senpai.ErrHandler,
+                        this._senpai, new[] {lCheckFunc});
 
-            if (!string.IsNullOrEmpty(lResponse) &&
-                lResponse.Equals(
-                    "<div class=\"inner\"><h3>Du hast keine Berechtigung um diese Seite zu betreten.</h3></div>"))
-                return new ProxerResult(new Exception[] {new NoAccessException(nameof(this.InitAnime))});
+            if (!lResult.Success)
+                return new ProxerResult(lResult.Exceptions);
 
-            if (string.IsNullOrEmpty(lResponse) ||
-                !Utility.CheckForCorrectResponse(lResponse, this._senpai.ErrHandler))
-                return new ProxerResult(new Exception[] {new WrongResponseException {Response = lResponse}});
+            string lResponse = lResult.Result;
 
             try
             {
+                #region Process Nodes
+
                 this._animeList =
                     new List<KeyValuePair<AnimeMangaProgressObject.AnimeMangaProgress, AnimeMangaProgressObject>>();
 
@@ -579,6 +620,8 @@ namespace Proxer.API
                                 AnimeMangaProgressObject.AnimeMangaProgress.Abgebrochen)));
                 }
 
+                #endregion
+
                 return new ProxerResult();
             }
             catch
@@ -592,27 +635,33 @@ namespace Proxer.API
             if (this.Id == -1) return new ProxerResult();
 
             HtmlDocument lDocument = new HtmlDocument();
-            string lResponse;
 
-            IRestResponse lResponseObject =
+            Func<string, ProxerResult> lCheckFunc = s =>
+            {
+                if (!string.IsNullOrEmpty(s) &&
+                    s.Equals(
+                        "<div class=\"inner\"><h3>Du hast keine Berechtigung um diese Seite zu betreten.</h3></div>"))
+                    return new ProxerResult(new Exception[] {new NoAccessException(nameof(this.InitManga))});
+
+                return new ProxerResult();
+            };
+
+            ProxerResult<string> lResult =
                 await
-                    HttpUtility.GetWebRequestResponse("https://proxer.me/user/" + this.Id + "/manga?format=raw",
-                        this._senpai.LoginCookies);
-            if (lResponseObject.StatusCode == HttpStatusCode.OK && !string.IsNullOrEmpty(lResponseObject.Content))
-                lResponse = global::System.Web.HttpUtility.HtmlDecode(lResponseObject.Content).Replace("\n", "");
-            else return new ProxerResult(new[] {new WrongResponseException(), lResponseObject.ErrorException});
+                    HttpUtility.GetResponseErrorHandling("https://proxer.me/user/" + this.Id + "/manga?format=raw",
+                        this._senpai.LoginCookies,
+                        this._senpai.ErrHandler,
+                        this._senpai, new[] {lCheckFunc});
 
-            if (!string.IsNullOrEmpty(lResponse) &&
-                lResponse.Equals(
-                    "<div class=\"inner\"><h3>Du hast keine Berechtigung um diese Seite zu betreten.</h3></div>"))
-                return new ProxerResult(new Exception[] {new NoAccessException(nameof(this.InitManga))});
+            if (!lResult.Success)
+                return new ProxerResult(lResult.Exceptions);
 
-            if (string.IsNullOrEmpty(lResponse) ||
-                !Utility.CheckForCorrectResponse(lResponse, this._senpai.ErrHandler))
-                return new ProxerResult(new Exception[] {new WrongResponseException {Response = lResponse}});
+            string lResponse = lResult.Result;
 
             try
             {
+                #region Process Nodes
+
                 this._mangaList =
                     new List<KeyValuePair<AnimeMangaProgressObject.AnimeMangaProgress, AnimeMangaProgressObject>>();
 
@@ -701,6 +750,8 @@ namespace Proxer.API
                                 Convert.ToInt32(animeNode.ChildNodes[4].InnerText.Split('/')[1].Trim()),
                                 AnimeMangaProgressObject.AnimeMangaProgress.Abgebrochen)));
                 }
+
+                #endregion
 
                 return new ProxerResult();
             }

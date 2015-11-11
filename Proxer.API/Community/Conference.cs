@@ -732,13 +732,14 @@ namespace Proxer.API.Community
                 if (this.Nachrichten.Any(x => x.Aktion == Message.Action.SetTopic) &&
                     this.IstInitialisiert)
                     await this.GetTitle();
+
+                this.NeuePmRaised?.Invoke(this, this.Nachrichten);
             }
             catch
             {
                 return new ProxerResult((await ErrorHandler.HandleError(this._senpai, lResponse, false)).Exceptions);
             }
 
-            this.NeuePmRaised?.Invoke(this, this.Nachrichten);
             return new ProxerResult();
         }
 
@@ -831,13 +832,14 @@ namespace Proxer.API.Community
                     await this.GetTitle();
 
                 this.Nachrichten = this.Nachrichten.Concat(lNewMessages).ToList();
+
+                this.NeuePmRaised?.Invoke(this, lNewMessages);
             }
             catch
             {
                 return new ProxerResult((await ErrorHandler.HandleError(this._senpai, lResponse, false)).Exceptions);
             }
 
-            this.NeuePmRaised?.Invoke(this, lNewMessages);
             return new ProxerResult();
         }
 
