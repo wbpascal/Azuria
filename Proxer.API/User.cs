@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Net;
 using System.Threading.Tasks;
 using HtmlAgilityPack;
 using Proxer.API.Exceptions;
@@ -9,7 +8,6 @@ using Proxer.API.Main;
 using Proxer.API.Main.User;
 using Proxer.API.Utilities;
 using Proxer.API.Utilities.Net;
-using RestSharp;
 
 namespace Proxer.API
 {
@@ -866,26 +864,28 @@ namespace Proxer.API
             if (senpai == null)
                 return new ProxerResult<string>(new Exception[] {new ArgumentNullException(nameof(senpai))});
 
-            if (!senpai.LoggedIn) return new ProxerResult<string>(new Exception[] {new NotLoggedInException()});
-
             HtmlDocument lDocument = new HtmlDocument();
-            string lResponse;
+            Func<string, ProxerResult> lCheckFunc = s =>
+            {
+                if (!string.IsNullOrEmpty(s) &&
+                    s.Equals(
+                        "<div class=\"inner\">\n<h3>Du hast keine Berechtigung um diese Seite zu betreten.</h3>\n</div>"))
+                    return new ProxerResult(new Exception[] {new NoAccessException(nameof(GetUNameFromId))});
 
-            IRestResponse lResponseObject =
+                return new ProxerResult();
+            };
+
+            ProxerResult<string> lResult =
                 await
-                    HttpUtility.GetWebRequestResponse("https://proxer.me/user/" + id + "/overview?format=raw",
-                        senpai.LoginCookies);
-            if (lResponseObject.StatusCode == HttpStatusCode.OK && !string.IsNullOrEmpty(lResponseObject.Content))
-                lResponse = global::System.Web.HttpUtility.HtmlDecode(lResponseObject.Content).Replace("\n", "");
-            else return new ProxerResult<string>(new[] {new WrongResponseException(), lResponseObject.ErrorException});
+                    HttpUtility.GetResponseErrorHandling("https://proxer.me/user/" + id + "/overview?format=raw",
+                        senpai.LoginCookies,
+                        senpai.ErrHandler,
+                        senpai, new[] {lCheckFunc});
 
-            if (!string.IsNullOrEmpty(lResponse) &&
-                lResponse.Equals(
-                    "<div class=\"inner\">\n<h3>Du hast keine Berechtigung um diese Seite zu betreten.</h3>\n</div>"))
-                return new ProxerResult<string>(new Exception[] {new NoAccessException(nameof(GetUNameFromId))});
+            if (!lResult.Success)
+                return new ProxerResult<string>(lResult.Exceptions);
 
-            if (string.IsNullOrEmpty(lResponse) || !Utility.CheckForCorrectResponse(lResponse, senpai.ErrHandler))
-                return new ProxerResult<string>(new Exception[] {new WrongResponseException {Response = lResponse}});
+            string lResponse = lResult.Result;
 
             try
             {

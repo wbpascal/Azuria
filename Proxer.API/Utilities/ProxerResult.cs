@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Proxer.API.Utilities.Net
+namespace Proxer.API.Utilities
 {
     /// <summary>
     ///     Eine Klasse, die ein Resultat einer Methode des API darstellt.
@@ -45,6 +45,21 @@ namespace Proxer.API.Utilities.Net
         /// </summary>
         /// <value>Ist null, wenn <see cref="ProxerResult.Success" /> == false</value>
         public T Result { get; set; }
+
+        #endregion
+
+        #region
+
+        /// <summary>
+        ///     Eine Methode, die <paramref name="returnObject" /> zurückgibt, wenn <see cref="ProxerResult.Success" /> = false,
+        ///     sonst wird das <see cref="Result">Resultat</see> zurückgegeben.
+        /// </summary>
+        /// <param name="returnObject">Das Objekt, dass zurückgegeben wird, wenn <see cref="ProxerResult.Success" /> = false.</param>
+        /// <returns>Ein Objekt mit dem Typ <typeparamref name="T" /></returns>
+        public T OnError(T returnObject)
+        {
+            return this.Success ? this.Result : returnObject;
+        }
 
         #endregion
     }

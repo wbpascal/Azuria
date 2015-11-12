@@ -1,6 +1,6 @@
 ﻿using System.Windows;
 using System.Windows.Controls;
-using Proxer.API.Utilities.Net;
+using Proxer.API.Utilities;
 
 namespace Proxer.API.Example
 {
@@ -47,10 +47,9 @@ namespace Proxer.API.Example
             (sender as Button).IsEnabled = true;
         }
 
-        private async void notificationButton_Click(object sender, RoutedEventArgs e)
+        private void notificationButton_Click(object sender, RoutedEventArgs e)
         {
-            //new NotificationWindow(this._senpai).Show();
-            await this._senpai.Me.Init();
+            new NotificationWindow(this._senpai).Show();
         }
 
         #endregion

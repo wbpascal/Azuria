@@ -1,13 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Net;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
 using Proxer.API.Exceptions;
 using Proxer.API.Utilities;
 using Proxer.API.Utilities.Net;
-using RestSharp;
 
 namespace Proxer.API.Notifications
 {
@@ -202,23 +199,18 @@ namespace Proxer.API.Notifications
 
         private async Task<ProxerResult> GetInfos()
         {
-            if (!this._senpai.LoggedIn)
-                return new ProxerResult(new Exception[] {new NotLoggedInException(this._senpai)});
-
-            string lResponse;
-
-            IRestResponse lResponseObject =
+            ProxerResult<string> lResult =
                 await
-                    HttpUtility.GetWebRequestResponse(
+                    HttpUtility.GetResponseErrorHandling(
                         "https://proxer.me/notifications?format=json&s=news&p=1",
-                        this._senpai.LoginCookies);
-            if (lResponseObject.StatusCode == HttpStatusCode.OK && !string.IsNullOrEmpty(lResponseObject.Content))
-                lResponse = System.Web.HttpUtility.HtmlDecode(lResponseObject.Content).Replace("\n", "");
-            else return new ProxerResult(new[] {new WrongResponseException(), lResponseObject.ErrorException});
+                        this._senpai.LoginCookies,
+                        this._senpai.ErrHandler,
+                        this._senpai);
 
-            if (string.IsNullOrEmpty(lResponse) ||
-                !Utility.CheckForCorrectResponse(lResponse, this._senpai.ErrHandler))
-                return new ProxerResult(new Exception[] {new WrongResponseException {Response = lResponse}});
+            if (!lResult.Success)
+                return new ProxerResult(lResult.Exceptions);
+
+            string lResponse = lResult.Result;
 
             if (!lResponse.StartsWith("{\"error\":0"))
                 return new ProxerResult

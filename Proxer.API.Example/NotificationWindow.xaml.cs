@@ -7,7 +7,7 @@ using System.Windows.Input;
 using Proxer.API.EventArguments;
 using Proxer.API.Exceptions;
 using Proxer.API.Notifications;
-using Proxer.API.Utilities.Net;
+using Proxer.API.Utilities;
 
 namespace Proxer.API.Example
 {

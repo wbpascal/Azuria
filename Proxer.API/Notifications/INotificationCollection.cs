@@ -1,5 +1,5 @@
 ﻿using System.Threading.Tasks;
-using Proxer.API.Utilities.Net;
+using Proxer.API.Utilities;
 
 namespace Proxer.API.Notifications
 {

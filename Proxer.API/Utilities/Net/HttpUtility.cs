@@ -9,8 +9,19 @@ using RestSharp;
 
 namespace Proxer.API.Utilities.Net
 {
-    internal class HttpUtility
+    /// <summary>
+    ///     Eine Klasse, die alle Methoden darstellt, um per HTTP- und HTTPS-
+    ///     Protokol mit dem Server zu kommunizieren.
+    /// </summary>
+    public class HttpUtility
     {
+        /// <summary>
+        ///     Gibt die Zeit in Millisekunden zurück, die der Client auf eine Antwort wartet bis er abbricht, oder legt diese
+        ///     fest.
+        ///     Standartwert = 0
+        /// </summary>
+        public static int Timeout = 0;
+
         #region
 
         internal static async Task<IRestResponse> GetWebRequestResponse(string url, CookieContainer cookies)
@@ -18,7 +29,8 @@ namespace Proxer.API.Utilities.Net
             RestClient lClient = new RestClient(url)
             {
                 CookieContainer = cookies,
-                Encoding = Encoding.UTF8
+                Encoding = Encoding.UTF8,
+                Timeout = Timeout
             };
             RestRequest lRequest = new RestRequest(Method.GET);
             return await lClient.ExecuteTaskAsync(lRequest);
@@ -30,7 +42,8 @@ namespace Proxer.API.Utilities.Net
             RestClient lClient = new RestClient(url)
             {
                 CookieContainer = cookies,
-                Encoding = Encoding.UTF8
+                Encoding = Encoding.UTF8,
+                Timeout = Timeout
             };
             RestRequest lRequest = new RestRequest(Method.POST);
             postArgs.ToList().ForEach(x => lRequest.AddParameter(x.Key, x.Value));

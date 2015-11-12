@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
@@ -73,7 +74,7 @@ namespace Proxer.API
         private bool _loggedIn;
         private NewsCollection _newsUpdates;
         private PmCollection _pmUpdates;
-        private bool _updateNotifications;
+        private ArrayList _updateNotifications;
         private int _userId;
 
 
@@ -84,6 +85,7 @@ namespace Proxer.API
         {
             this.ErrHandler = new ErrorHandler();
 
+            this._updateNotifications = ArrayList.Synchronized(new ArrayList(new[] {true, false, true, true}));
             this._loggedIn = false;
             this.LoginCookies = new CookieContainer();
 
@@ -117,11 +119,17 @@ namespace Proxer.API
                 }
             };
 
-            this._propertyUpdateTimer = new Timer(1) {AutoReset = true};
+            this._propertyUpdateTimer = new Timer((new TimeSpan(0, 20, 0)).TotalMilliseconds) {AutoReset = true};
             this._propertyUpdateTimer.Elapsed += (s, eArgs) =>
             {
-                this._propertyUpdateTimer.Interval = (new TimeSpan(0, 20, 0)).TotalMilliseconds;
-                this._updateNotifications = true;
+                ArrayList lNotSyncedList = this._updateNotifications;
+                lock (lNotSyncedList.SyncRoot)
+                {
+                    for (int i = 0; i < 4; i++)
+                        this._updateNotifications[i] = true;
+
+                    this._updateNotifications = ArrayList.Synchronized(lNotSyncedList);
+                }
             };
         }
 
@@ -138,10 +146,11 @@ namespace Proxer.API
         {
             get
             {
-                if (!this._updateNotifications && this._animeMangaUpdates != null) return this._animeMangaUpdates;
+                if (!(bool) this._updateNotifications[0] && this._animeMangaUpdates != null)
+                    return this._animeMangaUpdates;
 
                 this._animeMangaUpdates = new AnimeMangaUpdateCollection(this);
-                this._updateNotifications = false;
+                this._updateNotifications[0] = false;
 
                 return this._animeMangaUpdates;
             }
@@ -164,10 +173,10 @@ namespace Proxer.API
         {
             get
             {
-                if (!this._updateNotifications && this._friendUpdates != null) return this._friendUpdates;
+                if (!(bool) this._updateNotifications[1] && this._friendUpdates != null) return this._friendUpdates;
 
                 this._friendUpdates = new FriendRequestCollection(this);
-                this._updateNotifications = false;
+                this._updateNotifications[1] = false;
 
                 return this._friendUpdates;
             }
@@ -241,10 +250,10 @@ namespace Proxer.API
         {
             get
             {
-                if (!this._updateNotifications && this._newsUpdates != null) return this._newsUpdates;
+                if (!(bool) this._updateNotifications[2] && this._newsUpdates != null) return this._newsUpdates;
 
                 this._newsUpdates = new NewsCollection(this);
-                this._updateNotifications = false;
+                this._updateNotifications[2] = false;
 
                 return this._newsUpdates;
             }
@@ -261,10 +270,10 @@ namespace Proxer.API
         {
             get
             {
-                if (!this._updateNotifications && this._pmUpdates != null) return this._pmUpdates;
+                if (!(bool) this._updateNotifications[3] && this._pmUpdates != null) return this._pmUpdates;
 
                 this._pmUpdates = new PmCollection(this);
-                this._updateNotifications = false;
+                this._updateNotifications[3] = false;
 
                 return this._pmUpdates;
             }
@@ -428,7 +437,14 @@ namespace Proxer.API
                 return new ProxerResult(lResult.Exceptions);
             }
 
-            this._updateNotifications = true;
+            ArrayList lNotSyncedList = this._updateNotifications;
+            lock (lNotSyncedList.SyncRoot)
+            {
+                for (int i = 0; i < 4; i++)
+                    this._updateNotifications[i] = true;
+
+                this._updateNotifications = ArrayList.Synchronized(lNotSyncedList);
+            }
 
             return new ProxerResult();
         }
@@ -497,7 +513,6 @@ namespace Proxer.API
             }
         }
 
-
         private async Task<ProxerResult> CheckNotifications()
         {
             ProxerResult<string> lResult =
@@ -519,7 +534,14 @@ namespace Proxer.API
                 if (lResponseSplit.Length < 6)
                     return new ProxerResult(new Exception[] {new WrongResponseException {Response = lResponse}});
 
-                this._updateNotifications = true;
+                ArrayList lNotSyncedList = this._updateNotifications;
+                lock (lNotSyncedList.SyncRoot)
+                {
+                    for (int i = 0; i < 4; i++)
+                        this._updateNotifications[i] = true;
+
+                    this._updateNotifications = ArrayList.Synchronized(lNotSyncedList);
+                }
 
                 if (!lResponseSplit[2].Equals("0"))
                 {

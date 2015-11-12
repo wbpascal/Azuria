@@ -1,14 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Net;
 using System.Threading.Tasks;
 using HtmlAgilityPack;
 using Proxer.API.Exceptions;
 using Proxer.API.Main.Minor;
 using Proxer.API.Utilities;
 using Proxer.API.Utilities.Net;
-using RestSharp;
 
 namespace Proxer.API.Main
 {
@@ -392,20 +390,18 @@ namespace Proxer.API.Main
                 return new ProxerResult<Anime[]>(new Exception[] {new ArgumentNullException(nameof(senpai))});
 
             HtmlDocument lDocument = new HtmlDocument();
-            string lResponse;
-
-            IRestResponse lResponseObject =
+            ProxerResult<string> lResult =
                 await
-                    HttpUtility.GetWebRequestResponse(
-                        "http://proxer.me/anime?format=raw",
-                        senpai.LoginCookies);
-            if (lResponseObject.StatusCode == HttpStatusCode.OK && !string.IsNullOrEmpty(lResponseObject.Content))
-                lResponse = System.Web.HttpUtility.HtmlDecode(lResponseObject.Content).Replace("\n", "");
-            else return new ProxerResult<Anime[]>(new[] {new WrongResponseException(), lResponseObject.ErrorException});
+                    HttpUtility.GetResponseErrorHandling(
+                        "https://proxer.me/anime?format=raw",
+                        null,
+                        senpai.ErrHandler,
+                        senpai);
 
-            if (string.IsNullOrEmpty(lResponse) ||
-                !Utility.CheckForCorrectResponse(lResponse, senpai.ErrHandler))
-                return new ProxerResult<Anime[]>(new Exception[] {new WrongResponseException {Response = lResponse}});
+            if (!lResult.Success)
+                return new ProxerResult<Anime[]>(lResult.Exceptions);
+
+            string lResponse = lResult.Result;
 
             try
             {
@@ -476,28 +472,28 @@ namespace Proxer.API.Main
 
         private async Task<ProxerResult> InitAvailableLang()
         {
-            if (!this._senpai.LoggedIn)
-                return new ProxerResult(new Exception[] {new NotLoggedInException(this._senpai)});
-
             HtmlDocument lDocument = new HtmlDocument();
-            string lResponse;
+            Func<string, ProxerResult> lCheckFunc = s =>
+            {
+                if (!string.IsNullOrEmpty(s) &&
+                    s.Equals("Bitte logge dich ein."))
+                    return new ProxerResult(new Exception[] {new NoAccessException(nameof(this.InitAvailableLang))});
 
-            IRestResponse lResponseObject =
+                return new ProxerResult();
+            };
+            ProxerResult<string> lResult =
                 await
-                    HttpUtility.GetWebRequestResponse(
+                    HttpUtility.GetResponseErrorHandling(
                         "http://proxer.me/edit/entry/" + this.Id + "/languages?format=raw",
-                        this._senpai.LoginCookies);
-            if (lResponseObject.StatusCode == HttpStatusCode.OK && !string.IsNullOrEmpty(lResponseObject.Content))
-                lResponse = System.Web.HttpUtility.HtmlDecode(lResponseObject.Content).Replace("\n", "");
-            else return new ProxerResult(new[] {new WrongResponseException(), lResponseObject.ErrorException});
+                        this._senpai.LoginCookies,
+                        this._senpai.ErrHandler,
+                        this._senpai,
+                        new[] {lCheckFunc});
 
-            if (!string.IsNullOrEmpty(lResponse) &&
-                lResponse.Equals("Bitte logge dich ein."))
-                return new ProxerResult(new Exception[] {new NoAccessException(nameof(this.InitAvailableLang))});
+            if (!lResult.Success)
+                return new ProxerResult(lResult.Exceptions);
 
-            if (string.IsNullOrEmpty(lResponse) ||
-                !Utility.CheckForCorrectResponse(lResponse, this._senpai.ErrHandler))
-                return new ProxerResult(new Exception[] {new WrongResponseException {Response = lResponse}});
+            string lResponse = lResult.Result;
 
             try
             {
@@ -541,28 +537,28 @@ namespace Proxer.API.Main
 
         private async Task<ProxerResult> InitEpisodeCount()
         {
-            if (!this._senpai.LoggedIn)
-                return new ProxerResult(new Exception[] {new NotLoggedInException(this._senpai)});
-
             HtmlDocument lDocument = new HtmlDocument();
-            string lResponse;
+            Func<string, ProxerResult> lCheckFunc = s =>
+            {
+                if (!string.IsNullOrEmpty(s) &&
+                    s.Equals("Bitte logge dich ein."))
+                    return new ProxerResult(new Exception[] {new NoAccessException(nameof(this.InitEpisodeCount))});
 
-            IRestResponse lResponseObject =
+                return new ProxerResult();
+            };
+            ProxerResult<string> lResult =
                 await
-                    HttpUtility.GetWebRequestResponse(
+                    HttpUtility.GetResponseErrorHandling(
                         "http://proxer.me/edit/entry/" + this.Id + "/count?format=raw",
-                        this._senpai.LoginCookies);
-            if (lResponseObject.StatusCode == HttpStatusCode.OK && !string.IsNullOrEmpty(lResponseObject.Content))
-                lResponse = System.Web.HttpUtility.HtmlDecode(lResponseObject.Content).Replace("\n", "");
-            else return new ProxerResult(new[] {new WrongResponseException(), lResponseObject.ErrorException});
+                        this._senpai.LoginCookies,
+                        this._senpai.ErrHandler,
+                        this._senpai,
+                        new[] {lCheckFunc});
 
-            if (!string.IsNullOrEmpty(lResponse) &&
-                lResponse.Contains("Bitte logge dich ein."))
-                return new ProxerResult(new Exception[] {new NoAccessException(nameof(this.InitEpisodeCount))});
+            if (!lResult.Success)
+                return new ProxerResult(lResult.Exceptions);
 
-            if (string.IsNullOrEmpty(lResponse) ||
-                !Utility.CheckForCorrectResponse(lResponse, this._senpai.ErrHandler))
-                return new ProxerResult(new Exception[] {new WrongResponseException {Response = lResponse}});
+            string lResponse = lResult.Result;
 
             try
             {
@@ -584,25 +580,29 @@ namespace Proxer.API.Main
         private async Task<ProxerResult> InitMain()
         {
             HtmlDocument lDocument = new HtmlDocument();
-            string lResponse;
+            Func<string, ProxerResult> lCheckFunc = s =>
+            {
+                if (!string.IsNullOrEmpty(s) &&
+                    s.Equals(
+                        "<div class=\"inner\"><h3>Du hast keine Berechtigung um diese Seite zu betreten.</h3></div>"))
+                    return new ProxerResult(new Exception[] {new NoAccessException(nameof(this.InitMain))});
 
-            IRestResponse lResponseObject =
+                return new ProxerResult();
+            };
+            ProxerResult<string> lResult =
                 await
-                    HttpUtility.GetWebRequestResponse(
+                    HttpUtility.GetResponseErrorHandling(
                         "https://proxer.me/info/" + this.Id + "?format=raw",
-                        this._senpai.LoginCookies);
-            if (lResponseObject.StatusCode == HttpStatusCode.OK && !string.IsNullOrEmpty(lResponseObject.Content))
-                lResponse = System.Web.HttpUtility.HtmlDecode(lResponseObject.Content).Replace("\n", "");
-            else return new ProxerResult(new[] {new WrongResponseException(), lResponseObject.ErrorException});
+                        null,
+                        this._senpai.ErrHandler,
+                        this._senpai,
+                        new[] {lCheckFunc});
 
-            if (!string.IsNullOrEmpty(lResponse) &&
-                lResponse.Equals(
-                    "<div class=\"inner\"><h3>Du hast keine Berechtigung um diese Seite zu betreten.</h3></div>"))
-                return new ProxerResult(new Exception[] {new NoAccessException(nameof(this.InitMain))});
+            if (!lResult.Success)
+                return new ProxerResult(lResult.Exceptions);
 
-            if (string.IsNullOrEmpty(lResponse) ||
-                !Utility.CheckForCorrectResponse(lResponse, this._senpai.ErrHandler))
-                return new ProxerResult(new Exception[] {new WrongResponseException {Response = lResponse}});
+            string lResponse = lResult.Result;
+
             try
             {
                 lDocument.LoadHtml(lResponse);
@@ -838,25 +838,20 @@ namespace Proxer.API.Main
             /// <seealso cref="Senpai.Login" />
             public async Task<ProxerResult> Init()
             {
-                if (!this._senpai.LoggedIn)
-                    return new ProxerResult(new Exception[] {new NotLoggedInException(this._senpai)});
-
                 HtmlDocument lDocument = new HtmlDocument();
-                string lResponse;
-
-                IRestResponse lResponseObject =
+                ProxerResult<string> lResult =
                     await
-                        HttpUtility.GetWebRequestResponse(
+                        HttpUtility.GetResponseErrorHandling(
                             "https://proxer.me/watch/" + this.ParentAnime.Id + "/" + this.EpisodeNr + "/" +
                             this._lang.ToString().ToLower(),
-                            this._senpai.MobileLoginCookies);
-                if (lResponseObject.StatusCode == HttpStatusCode.OK && !string.IsNullOrEmpty(lResponseObject.Content))
-                    lResponse = System.Web.HttpUtility.HtmlDecode(lResponseObject.Content).Replace("\n", "");
-                else return new ProxerResult(new[] {new WrongResponseException(), lResponseObject.ErrorException});
+                            this._senpai.LoginCookies,
+                            this._senpai.ErrHandler,
+                            this._senpai);
 
-                if (string.IsNullOrEmpty(lResponse) ||
-                    !Utility.CheckForCorrectResponse(lResponse, this._senpai.ErrHandler))
-                    return new ProxerResult(new Exception[] {new WrongResponseException {Response = lResponse}});
+                if (!lResult.Success)
+                    return new ProxerResult(lResult.Exceptions);
+
+                string lResponse = lResult.Result;
 
                 try
                 {
