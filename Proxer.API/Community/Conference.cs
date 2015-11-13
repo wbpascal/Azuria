@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using System.Timers;
 using HtmlAgilityPack;
 using Newtonsoft.Json;
+using Proxer.API.Community.ConferenceHelper;
 using Proxer.API.Exceptions;
 using Proxer.API.Utilities;
 using Proxer.API.Utilities.Net;
@@ -17,11 +18,19 @@ namespace Proxer.API.Community
     public class Conference
     {
         /// <summary>
-        ///     Wird ausgelöst, wenn neue Nachrichten in der Konferenz vorhanden sind.
+        ///     Stellt eine Methode da, die ausgelöst wird, wenn neue Nachrichten in der Konferenz vorhanden sind.
         /// </summary>
-        /// <param name="sender">Die Konferenz, die das Event aufgerufen hat</param>
-        /// <param name="e">Die neuen Nachrichten. Beim ersten mal werden hier alle Nachrichten aufgeführt</param>
-        public delegate void NeuePmEventHandler(Conference sender, List<Message> e);
+        /// <param name="sender">Die Konferenz, die das Event aufgerufen hat.</param>
+        /// <param name="e">Die neuen Nachrichten. Beim ersten mal werden hier alle Nachrichten aufgeführt.</param>
+        /// <param name="alleNachrichten">Gibt an, ob alle Nachrichten geholt wurden oder nur die neuesten.</param>
+        public delegate void NeuePmEventHandler(Conference sender, List<Message> e, bool alleNachrichten);
+
+        /// <summary>
+        /// Stellt eine Methode da, die ausgelöst wird, wenn während des Abrufen der Nachrichten ein Fehler auftritt.
+        /// </summary>
+        /// <param name="sender">Die Konferenz, die das Event aufgerufen hat.</param>
+        /// <param name="exceptions">Die Ausnahmen, die ausgelöst wurden.</param>
+        public delegate void ErrorDuringPmFetchEventHandler(Conference sender, IEnumerable<Exception> exceptions);
 
         private readonly Timer _getMessagesTimer;
         private readonly Func<Task<ProxerResult>>[] _initFuncs;
@@ -40,22 +49,7 @@ namespace Proxer.API.Community
             this._senpai = senpai;
 
             this._getMessagesTimer = new Timer {Interval = (new TimeSpan(0, 0, 15)).TotalMilliseconds};
-            this._getMessagesTimer.Elapsed += async (s, eArgs) =>
-            {
-                this._getMessagesTimer.Interval = (new TimeSpan(0, 0, 15)).TotalMilliseconds;
-                Timer timer = s as Timer;
-                timer?.Stop();
-                if (this.IstInitialisiert)
-                {
-                    if (this.Nachrichten != null && this.Nachrichten.Any())
-                        await this.GetMessages(this.Nachrichten.Last().NachrichtId);
-                    else await this.GetAllMessages();
-                }
-                Timer timer1 = s as Timer;
-                timer1?.Start();
-            };
-
-            this.Aktiv = false;
+            this._getMessagesTimer.Elapsed += this.OnGetMessagesTimerElapsed;
         }
 
         internal Conference(string title, int id, Senpai senpai)
@@ -67,22 +61,37 @@ namespace Proxer.API.Community
             this._senpai = senpai;
 
             this._getMessagesTimer = new Timer {Interval = (new TimeSpan(0, 0, 15)).TotalMilliseconds};
-            this._getMessagesTimer.Elapsed += async (s, eArgs) =>
-            {
-                this._getMessagesTimer.Interval = (new TimeSpan(0, 0, 15)).TotalMilliseconds;
-                Timer timer = s as Timer;
-                timer?.Stop();
-                if (this.IstInitialisiert)
-                {
-                    if (this.Nachrichten != null && this.Nachrichten.Any())
-                        await this.GetMessages(this.Nachrichten.Last().NachrichtId);
-                    else await this.GetAllMessages();
-                }
-                Timer timer1 = s as Timer;
-                timer1?.Start();
-            };
+            this._getMessagesTimer.Elapsed += this.OnGetMessagesTimerElapsed;
+        }
 
-            this.Aktiv = false;
+        private void OnGetMessagesTimerElapsed(object s, ElapsedEventArgs eArgs)
+        {
+            Timer timer = s as Timer;
+            timer?.Stop();
+            this.GetMessagesTimer(timer);
+        }
+
+        private async void GetMessagesTimer(Timer timer)
+        {
+            if (this.IstInitialisiert)
+            {
+                ProxerResult lResult;
+                if (this.Nachrichten != null && this.Nachrichten.Any())
+                    lResult = await this.GetMessages(this.Nachrichten.Last().NachrichtId);
+                else lResult = await this.GetAllMessages();
+
+                try
+                {
+                    if (!lResult.Success)
+                        this.ErrorDuringPmFetchRaised?.Invoke(this, lResult.Exceptions);
+                }
+                catch
+                {
+                    //ignored
+                }
+            }
+
+            timer?.Start();
         }
 
         #region Properties
@@ -97,8 +106,7 @@ namespace Proxer.API.Community
             {
                 if (value)
                 {
-                    this._getMessagesTimer.Interval = 1;
-                    this._getMessagesTimer.Start();
+                    this.GetMessagesTimer(this._getMessagesTimer);
                 }
                 else
                 {
@@ -149,6 +157,11 @@ namespace Proxer.API.Community
         ///     Wird immer aufgerufen, wenn neue Nachrichten in der Konferenz vorhanden sind.
         /// </summary>
         public event NeuePmEventHandler NeuePmRaised;
+
+        /// <summary>
+        /// Wird ausgelöst, wenn während des Abrufen der Nachrichten ein Fehler auftritt.
+        /// </summary>
+        public event ErrorDuringPmFetchEventHandler ErrorDuringPmFetchRaised;
 
 
         /// <summary>
@@ -276,7 +289,7 @@ namespace Proxer.API.Community
                         {
                             new Message(User.System, -1, lResponseJson["message"], DateTime.Now,
                                 Message.Action.GetAction)
-                        });
+                        }, false);
                     return new ProxerResult<bool>(true);
                 }
                 if (lResponseJson["msg"].Equals("Erfolgreich!"))
@@ -671,50 +684,12 @@ namespace Proxer.API.Community
                 };
             try
             {
-                string lMessagesJson = Utility.GetTagContents(lResponse, "\"messages\":[", "],\"favour")[0];
+                ProxerResult<List<Message>> lResultMessages = await this.ProcessMessages(lResponse);
+                if (!lResultMessages.Success)
+                    return new ProxerResult(new Exception[] { new WrongResponseException(lResponse) });
 
-                List<Dictionary<string, string>> lMessages =
-                    JsonConvert.DeserializeObject<List<Dictionary<string, string>>>("[" + lMessagesJson + "]");
+                this.Nachrichten = lResultMessages.Result;
 
-                this.Nachrichten = new List<Message>();
-                foreach (Dictionary<string, string> curMessage in lMessages)
-                {
-                    Message.Action lMessageAction;
-
-                    switch (curMessage["action"])
-                    {
-                        case "addUser":
-                            lMessageAction = Message.Action.AddUser;
-                            break;
-                        case "removeUser":
-                            lMessageAction = Message.Action.RemoveUser;
-                            break;
-                        case "setTopic":
-                            lMessageAction = Message.Action.SetTopic;
-                            break;
-                        case "setLeader":
-                            lMessageAction = Message.Action.SetLeader;
-                            break;
-                        default:
-                            lMessageAction = Message.Action.NoAction;
-                            break;
-                    }
-
-                    User[] lSender =
-                        this.Teilnehmer.Where(x => x.Id == Convert.ToInt32(curMessage["fromid"])).ToArray();
-
-                    if (lSender.Any())
-                        this.Nachrichten.Insert(0,
-                            new Message(lSender[0], Convert.ToInt32(curMessage["id"]), curMessage["message"],
-                                Convert.ToInt32(curMessage["timestamp"]), lMessageAction));
-                    else
-                        this.Nachrichten.Insert(0,
-                            new Message(
-                                new User(curMessage["username"], Convert.ToInt32(curMessage["fromid"]),
-                                    this._senpai),
-                                Convert.ToInt32(curMessage["id"]), curMessage["message"],
-                                Convert.ToInt32(curMessage["timestamp"]), lMessageAction));
-                }
                 if (this.Nachrichten.Any(
                     x => x.Aktion == Message.Action.AddUser || x.Aktion == Message.Action.RemoveUser))
                     await this.GetAllParticipants();
@@ -725,7 +700,7 @@ namespace Proxer.API.Community
                     this.IstInitialisiert)
                     await this.GetTitle();
 
-                this.NeuePmRaised?.Invoke(this, this.Nachrichten);
+                this.NeuePmRaised?.Invoke(this, this.Nachrichten, true);
             }
             catch
             {
@@ -739,8 +714,6 @@ namespace Proxer.API.Community
         {
             if (this.Nachrichten == null || this.Nachrichten.Count(x => x.NachrichtId == mid) == 0)
                 return await this.GetAllMessages();
-            if (!this._senpai.LoggedIn)
-                return new ProxerResult(new Exception[] {new NotLoggedInException(this._senpai)});
 
             ProxerResult<string> lResult =
                 await
@@ -761,21 +734,52 @@ namespace Proxer.API.Community
                 {
                     Success = false
                 };
-
-            List<Message> lNewMessages = new List<Message>();
+            
             try
             {
-                string lMessagesJson = Utility.GetTagContents(lResponse, "\"messages\":[", "]}")[0];
+                ProxerResult<List<Message>> lResultMessages = await this.ProcessMessages(lResponse);
+                if (!lResultMessages.Success)
+                    return new ProxerResult(new Exception[] {new WrongResponseException(lResponse)});
 
-                List<Dictionary<string, string>> lMessages =
-                    JsonConvert.DeserializeObject<List<Dictionary<string, string>>>("[" + lMessagesJson +
-                                                                                    "]");
+                List<Message> lNewMessages = lResultMessages.Result;
 
-                foreach (Dictionary<string, string> curMessage in lMessages)
+                if (
+                    lNewMessages.Count(
+                        x => x.Aktion == Message.Action.AddUser || x.Aktion == Message.Action.RemoveUser) >
+                    0)
+                    await this.GetAllParticipants();
+                if (lNewMessages.Count(x => x.Aktion == Message.Action.SetLeader) > 0 &&
+                    this.IstInitialisiert)
+                    await this.GetLeader();
+                if (lNewMessages.Count(x => x.Aktion == Message.Action.SetTopic) > 0 &&
+                    this.IstInitialisiert)
+                    await this.GetTitle();
+
+                this.Nachrichten = this.Nachrichten.Concat(lNewMessages).ToList();
+
+                this.NeuePmRaised?.Invoke(this, lNewMessages, false);
+            }
+            catch
+            {
+                return new ProxerResult((await ErrorHandler.HandleError(this._senpai, lResponse, false)).Exceptions);
+            }
+
+            return new ProxerResult();
+        }
+
+        private async Task<ProxerResult<List<Message>>> ProcessMessages(string messages)
+        {
+            List<Message> lReturn = new List<Message>();
+
+            try
+            {
+                ConferenceHelper.MessagesViewModel lMessages = JsonConvert.DeserializeObject<MessagesViewModel>(messages);
+
+                foreach (ConferenceHelper.MessageModel curMessage in lMessages.MessagesModel)
                 {
                     Message.Action lMessageAction;
 
-                    switch (curMessage["action"])
+                    switch (curMessage.Action)
                     {
                         case "addUser":
                             lMessageAction = Message.Action.AddUser;
@@ -795,42 +799,28 @@ namespace Proxer.API.Community
                     }
 
                     User[] lSender =
-                        this.Teilnehmer.Where(x => x.Id == Convert.ToInt32(curMessage["fromid"])).ToArray();
+                        this.Teilnehmer.Where(x => x.Id == Convert.ToInt32(curMessage.Fromid)).ToArray();
 
                     if (lSender.Any())
-                        lNewMessages.Insert(0,
-                            new Message(lSender[0], Convert.ToInt32(curMessage["id"]), curMessage["message"],
-                                Convert.ToInt32(curMessage["timestamp"]), lMessageAction));
+                        lReturn.Insert(0,
+                            new Message(lSender[0], Convert.ToInt32(curMessage.Id), curMessage.Message,
+                                Convert.ToInt32(curMessage.Timestamp), lMessageAction));
                     else
-                        lNewMessages.Insert(0,
+                        lReturn.Insert(0,
                             new Message(
-                                new User(curMessage["username"], Convert.ToInt32(curMessage["fromid"]),
-                                    this._senpai), Convert.ToInt32(curMessage["id"]), curMessage["message"],
-                                Convert.ToInt32(curMessage["timestamp"]), lMessageAction));
+                                new User(curMessage.Username, Convert.ToInt32(curMessage.Fromid),
+                                    this._senpai), Convert.ToInt32(curMessage.Id), curMessage.Message,
+                                Convert.ToInt32(curMessage.Timestamp), lMessageAction));
                 }
-
-                if (
-                    lNewMessages.Count(
-                        x => x.Aktion == Message.Action.AddUser || x.Aktion == Message.Action.RemoveUser) >
-                    0)
-                    await this.GetAllParticipants();
-                if (lNewMessages.Count(x => x.Aktion == Message.Action.SetLeader) > 0 &&
-                    this.IstInitialisiert)
-                    await this.GetLeader();
-                if (lNewMessages.Count(x => x.Aktion == Message.Action.SetTopic) > 0 &&
-                    this.IstInitialisiert)
-                    await this.GetTitle();
-
-                this.Nachrichten = this.Nachrichten.Concat(lNewMessages).ToList();
-
-                this.NeuePmRaised?.Invoke(this, lNewMessages);
             }
-            catch
+            catch(Exception ex)
             {
-                return new ProxerResult((await ErrorHandler.HandleError(this._senpai, lResponse, false)).Exceptions);
+                return
+                    new ProxerResult<List<Message>>(
+                        (await ErrorHandler.HandleError(this._senpai, messages, false)).Exceptions);
             }
 
-            return new ProxerResult();
+            return new ProxerResult<List<Message>>(lReturn);
         }
 
         private async Task<ProxerResult<bool>> CheckIsConference()

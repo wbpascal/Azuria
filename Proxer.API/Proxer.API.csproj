@@ -57,6 +57,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Community\Conference.cs" />
+    <Compile Include="Community\ConferenceHelper\MessagesViewModel.cs" />
     <Compile Include="EventArguments\AMNotificationEventArgs.cs" />
     <Compile Include="EventArguments\FriendNotificationEventArgs.cs" />
     <Compile Include="EventArguments\INotificationEventArgs.cs" />
