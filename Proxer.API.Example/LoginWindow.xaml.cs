@@ -36,6 +36,8 @@ namespace Proxer.API.Example
 
             (sender as Button).IsEnabled = false;
 
+            //Es wird empfolen jedesmal, wenn ein Benutzer sich einloggt ein neues Senpai-Objekt zu erzeugen, 
+            //da es momentan noch keine Reset-Methode gibt und einige Eigenschaften zurückgesetzt werden müssen.
             this._senpai = new Senpai();
 
             //Loggt den Benutzer mit den angegeben Daten ein.

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using Proxer.API.Community;
 using Proxer.API.EventArguments;
 using Proxer.API.Exceptions;
 using Proxer.API.Notifications;
@@ -19,6 +20,7 @@ namespace Proxer.API.Example
         {
             this._senpai = senpai;
 
+            //Überprüfen, ob der Senpai eingeloggt ist, sonst werden die Events nicht abgerufen
             if (!this._senpai.LoggedIn)
             {
                 MessageBox.Show("Du musst für diese Aktion eingeloggt sein!");
@@ -44,12 +46,20 @@ namespace Proxer.API.Example
 
         private void NotificationRaised(Senpai sender, IEnumerable<INotificationEventArgs> e)
         {
+            //Wird nach dem Überprüfen aller Benachrichtigungen einmal aufgerufen, 
+            //wenn mindestens eine Benachrichtigung verfügbar ist.
+            //Der Parameter e enthält alle EventArgs, die in den Benachrichtigungs-Events 
+            //zuvor aufgerufen wurden.
+
+            //Wird benötigt, da die Methode von einem anderen Thread aufgerufen wird (von Timer)
             if (!this.Dispatcher.CheckAccess())
             {
                 this.Dispatcher.Invoke(() => this.NotificationRaised(sender, e));
                 return;
             }
 
+            //Ändert den Titel des Fensters, um die Anzahl der Benachrichtigungen darzustellen, 
+            //wenn das Fenster im Moment keinen Fokus hat
             if (this.IsFocused) return;
 
             IEnumerable<INotificationEventArgs> notificationEventArgses = e as IList<INotificationEventArgs> ??
@@ -70,26 +80,37 @@ namespace Proxer.API.Example
 
         private void AmUpdateNotificationRaised(Senpai sender, AmNotificationEventArgs e)
         {
+            //e enthält die Anzahl der Benachrichtigungen(NotificationCount) 
+            //als auch die Benachrichtigungen an sich(Benachrichtigungen)
             this.LoadAmUpdateNotifications(e.Benachrichtigungen);
         }
 
         private void FriendNotificationRaised(Senpai sender, FriendNotificationEventArgs e)
         {
+            //e enthält die Anzahl der Benachrichtigungen(NotificationCount) 
+            //als auch die Benachrichtigungen an sich(Benachrichtigungen)
             this.ProcessFriendRequests(e.Benachrichtigungen);
         }
 
         private void NewsNotificationRaised(Senpai sender, NewsNotificationEventArgs e)
         {
+            //e enthält die Anzahl der Benachrichtigungen(NotificationCount) 
+            //als auch die Benachrichtigungen an sich(Benachrichtigungen)
             this.LoadNewsNotifications(e.Benachrichtigungen);
         }
 
         private void PmNotificationRaised(Senpai sender, PmNotificationEventArgs e)
         {
+            //e enthält die Anzahl der Benachrichtigungen(NotificationCount) 
+            //als auch die Benachrichtigungen an sich(Benachrichtigungen)
             this.LoadPmNotifications(e.Benchrichtigungen);
         }
 
         private async void LoadAmUpdateNotifications(AnimeMangaUpdateCollection collection)
         {
+            //Läd die Anime- und Manga-Benachrichtigungen und stellt sie in einer Liste dar.
+
+            //WICHTIG: Wird benötigt, da die Methode von einem anderen Thread aufgerufen wird (von Timer)
             if (!this.Dispatcher.CheckAccess())
             {
                 this.Dispatcher.Invoke(() => this.LoadAmUpdateNotifications(collection));
@@ -98,9 +119,14 @@ namespace Proxer.API.Example
 
             this.AmListBox.Items.Clear();
 
+            //Rufe die Benachrichtigungen ab
             ProxerResult<AnimeMangaUpdateObject[]> lResult = await collection.GetAllAnimeMangaUpdates();
             if (!lResult.Success)
             {
+                //Falls die Methode fehlschlägt kann hier überprüft werden was der Grund ist.
+
+                //Beispiel: Wenn die Aufzählung der Ausnahmen von lResult eine NotLoggedInException enthält, 
+                //dann ist der Benutzer nicht eingeloggt
                 MessageBox.Show(lResult.Exceptions.OfType<NotLoggedInException>().Any()
                     ? "Bitte logge dich ein bevor du fortfährst!"
                     : "Es ist ein Fehler während der Anfrage aufgetreten! (LoadAmUpdateNotifications)");
@@ -108,6 +134,7 @@ namespace Proxer.API.Example
                 return;
             }
 
+            //Wenn die Aktion erfolgreich war füge die Benachrichtigungen der ListBox hinzu
             foreach (AnimeMangaUpdateObject notification in lResult.Result)
             {
                 this.AmListBox.Items.Add(notification);
@@ -116,15 +143,23 @@ namespace Proxer.API.Example
 
         private async void ProcessFriendRequests(FriendRequestCollection collection)
         {
+            //Läd die Freundschaftsanfragen und fragt den Benutzer, ob er sie annehmen will
+
+            //WICHTIG: Wird benötigt, da die Methode von einem anderen Thread aufgerufen wird (von Timer)
             if (!this.Dispatcher.CheckAccess())
             {
                 this.Dispatcher.Invoke(() => this.ProcessFriendRequests(collection));
                 return;
             }
 
+            //Rufe die Freundschaftsanfragen ab
             ProxerResult<FriendRequestObject[]> lResult = await collection.GetAllFriendRequests();
             if (!lResult.Success)
             {
+                //Falls die Methode fehlschlägt kann hier überprüft werden was der Grund ist.
+
+                //Beispiel: Wenn die Aufzählung der Ausnahmen von lResult eine NotLoggedInException enthält, 
+                //dann ist der Benutzer nicht eingeloggt
                 MessageBox.Show(lResult.Exceptions.OfType<NotLoggedInException>().Any()
                     ? "Bitte logge dich ein bevor du fortfährst!"
                     : "Es ist ein Fehler während der Anfrage aufgetreten! (ProcessFriendRequests)");
@@ -132,6 +167,8 @@ namespace Proxer.API.Example
                 return;
             }
 
+            //Wenn die Aktion erfolgreich war gehe durch die Liste der Freundschaftsanfragen 
+            //und frage den Benutzer, ob er sie annehmen will
             foreach (FriendRequestObject requestObject in lResult.Result)
             {
                 MessageBoxResult lBoxResult =
@@ -142,6 +179,7 @@ namespace Proxer.API.Example
                 switch (lBoxResult)
                 {
                     case MessageBoxResult.Yes:
+                        //Benutzer hat die Freundschaftsanfrage akzeptiert
                         ProxerResult<bool> lAcceptResult = await requestObject.AcceptRequest();
                         if (lAcceptResult.Success && lAcceptResult.Result)
                             MessageBox.Show("Die Freundschaftsanfrage wurde erfolgreich angenommen!");
@@ -149,6 +187,7 @@ namespace Proxer.API.Example
                             MessageBox.Show("Es ist ein Fehler passiert!");
                         break;
                     case MessageBoxResult.No:
+                        //Benutzer hat die Freundschaftsanfrage abgelehnt
                         ProxerResult<bool> lDenyResult = await requestObject.DenyRequest();
                         if (lDenyResult.Success && lDenyResult.Result)
                             MessageBox.Show("Die Freundschaftsanfrage wurde erfolgreich abgelehnt!");
@@ -161,6 +200,9 @@ namespace Proxer.API.Example
 
         private async void LoadNewsNotifications(NewsCollection collection)
         {
+            //Läd die letzten 15 News und stellt sie in einer ListBox dar.
+
+            //WICHTIG: Wird benötigt, da die Methode von einem anderen Thread aufgerufen wird (von Timer)
             if (!this.Dispatcher.CheckAccess())
             {
                 this.Dispatcher.Invoke(() => this.LoadNewsNotifications(collection));
@@ -169,9 +211,14 @@ namespace Proxer.API.Example
 
             this.NewsListBox.Items.Clear();
 
+            //Rufe die letzten 15 News ab
             ProxerResult<NewsObject[]> lResult = await collection.GetAllNews();
             if (!lResult.Success)
             {
+                //Falls die Methode fehlschlägt kann hier überprüft werden was der Grund ist.
+
+                //Beispiel: Wenn die Aufzählung der Ausnahmen von lResult eine NotLoggedInException enthält, 
+                //dann ist der Benutzer nicht eingeloggt
                 MessageBox.Show(lResult.Exceptions.OfType<NotLoggedInException>().Any()
                     ? "Bitte logge dich ein bevor du fortfährst!"
                     : "Es ist ein Fehler während der Anfrage aufgetreten! (LoadNewsNotifications)");
@@ -179,6 +226,7 @@ namespace Proxer.API.Example
                 return;
             }
 
+            //Wenn die Methode erfolgreich war stelle die Benachrichtigungen in einer ListBox dar.
             foreach (NewsObject notification in lResult.Result)
             {
                 this.NewsListBox.Items.Add(notification);
@@ -187,6 +235,9 @@ namespace Proxer.API.Example
 
         private async void LoadPmNotifications(PmCollection collection)
         {
+            //Läd alle Privatnachricht-Benachrichtigungen und stellt sie in einer ListBox dar.
+
+            //WICHTIG: Wird benötigt, da die Methode von einem anderen Thread aufgerufen wird (von Timer)
             if (!this.Dispatcher.CheckAccess())
             {
                 this.Dispatcher.Invoke(() => this.LoadPmNotifications(collection));
@@ -195,9 +246,14 @@ namespace Proxer.API.Example
 
             this.PmListBox.Items.Clear();
 
+            //Ruft alle Privatnachricht-Benachrichtigungen ab
             ProxerResult<PmObject[]> lResult = await collection.GetAllPrivateMessages();
             if (!lResult.Success)
             {
+                //Falls die Methode fehlschlägt kann hier überprüft werden was der Grund ist.
+
+                //Beispiel: Wenn die Aufzählung der Ausnahmen von lResult eine NotLoggedInException enthält, 
+                //dann ist der Benutzer nicht eingeloggt
                 MessageBox.Show(lResult.Exceptions.OfType<NotLoggedInException>().Any()
                     ? "Bitte logge dich ein bevor du fortfährst!"
                     : "Es ist ein Fehler während der Anfrage aufgetreten! (LoadPmNotifications)");
@@ -205,6 +261,7 @@ namespace Proxer.API.Example
                 return;
             }
 
+            //Wenn die Methode erfolgreich war stelle die Benachrichtigungen in einer ListBox dar.
             foreach (PmObject notification in lResult.Result)
             {
                 this.PmListBox.Items.Add(notification);
@@ -213,13 +270,18 @@ namespace Proxer.API.Example
 
         private void Window_GotFocus(object sender, RoutedEventArgs e)
         {
+            //Wenn das Fenster den Fokus erlangt, dann setze den Titel zurück
             this.Title = "Benachrichtigungen";
         }
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
+            //Muss aufgerufen werden, damit die Senpai-Klasse anfängt im Hintergrund 
+            //die Benachrichtigungen abzurufen (alle 15 Minuten)
             this._senpai.InitNotifications();
 
+            //Lade alle Inhalte der Benachrichtigungen des Benutzers und stelle sie da.
+            //Muss gemacht werden, da die Events erst noch einer Zeit aktiviert werden.
             this.LoadAmUpdateNotifications(this._senpai.AnimeMangaUpdates);
             this.ProcessFriendRequests(this._senpai.FriendRequests);
             this.LoadNewsNotifications(this._senpai.News);
@@ -230,6 +292,7 @@ namespace Proxer.API.Example
         {
             if (e.ChangedButton == MouseButton.Left)
             {
+                //Zeige dem Benutzer eine Nachricht, die das geklickte Element repräsentiert
                 MessageBox.Show(((sender as ListBox).SelectedItem as AnimeMangaUpdateObject).Name);
             }
         }
@@ -238,6 +301,7 @@ namespace Proxer.API.Example
         {
             if (e.ChangedButton == MouseButton.Left)
             {
+                //Zeige dem Benutzer eine Nachricht, die das geklickte Element repräsentiert
                 MessageBox.Show(((sender as ListBox).SelectedItem as NewsObject).Nid.ToString());
             }
         }
@@ -246,7 +310,10 @@ namespace Proxer.API.Example
         {
             if (e.ChangedButton == MouseButton.Left)
             {
-                MessageBox.Show(((sender as ListBox).SelectedItem as PmObject).TimeStamp.ToShortTimeString());
+                //Rufe die Konferenz des geklickten Elements ab
+                Conference lConference = new Conference(((sender as ListBox).SelectedItem as PmObject).Id, this._senpai);
+                //Öffne die Konferenz
+                new ConferenceWindow(lConference).Show();
             }
         }
 

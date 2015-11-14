@@ -8,10 +8,7 @@
         <TabControl>
             <TabItem Header="Anime und Manga">
                 <Grid Background="#FFE5E5E5">
-                    <ListBox x:Name="AmListBox" Margin="7,7,7,7" MouseUp="AmTextBox_MouseUp">
-                        <ListBoxItem
-                            Content="Anime ist jetzt online! aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa" />
-                    </ListBox>
+                    <ListBox x:Name="AmListBox" Margin="7,7,7,7" MouseUp="AmTextBox_MouseUp"/>
                 </Grid>
             </TabItem>
             <TabItem Header="News">
