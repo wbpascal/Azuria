@@ -11,9 +11,6 @@ using Proxer.API.Utilities;
 
 namespace Proxer.API.Example
 {
-    /// <summary>
-    ///     Interaktionslogik für NotificationWindow.xaml
-    /// </summary>
     public partial class NotificationWindow : Window
     {
         private readonly Senpai _senpai;
@@ -88,7 +85,7 @@ namespace Proxer.API.Example
 
         private void PmNotificationRaised(Senpai sender, PmNotificationEventArgs e)
         {
-            this.LoadPmNotification(e.Benchrichtigungen);
+            this.LoadPmNotifications(e.Benchrichtigungen);
         }
 
         private async void LoadAmUpdateNotifications(AnimeMangaUpdateCollection collection)
@@ -188,11 +185,11 @@ namespace Proxer.API.Example
             }
         }
 
-        private async void LoadPmNotification(PmCollection collection)
+        private async void LoadPmNotifications(PmCollection collection)
         {
             if (!this.Dispatcher.CheckAccess())
             {
-                this.Dispatcher.Invoke(() => this.LoadPmNotification(collection));
+                this.Dispatcher.Invoke(() => this.LoadPmNotifications(collection));
                 return;
             }
 
@@ -203,7 +200,7 @@ namespace Proxer.API.Example
             {
                 MessageBox.Show(lResult.Exceptions.OfType<NotLoggedInException>().Any()
                     ? "Bitte logge dich ein bevor du fortfährst!"
-                    : "Es ist ein Fehler während der Anfrage aufgetreten! (LoadNewsNotifications)");
+                    : "Es ist ein Fehler während der Anfrage aufgetreten! (LoadPmNotifications)");
 
                 return;
             }
@@ -226,7 +223,7 @@ namespace Proxer.API.Example
             this.LoadAmUpdateNotifications(this._senpai.AnimeMangaUpdates);
             this.ProcessFriendRequests(this._senpai.FriendRequests);
             this.LoadNewsNotifications(this._senpai.News);
-            this.LoadPmNotification(this._senpai.PrivateMessages);
+            this.LoadPmNotifications(this._senpai.PrivateMessages);
         }
 
         private void AmTextBox_MouseUp(object sender, MouseButtonEventArgs e)

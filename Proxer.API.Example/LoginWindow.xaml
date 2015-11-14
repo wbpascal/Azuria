@@ -1,7 +1,7 @@
 ﻿<Window x:Class="Proxer.API.Example.LoginWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="Login" Height="359.804" Width="288.726"
+        Title="Login" Height="359.804" Width="277.636"
         Background="{DynamicResource {x:Static SystemColors.ControlBrushKey}}">
     <Grid>
         <TextBox x:Name="TextBox1" HorizontalAlignment="Left" Height="27" Margin="24,34,0,0" TextWrapping="Wrap"
@@ -15,9 +15,13 @@
         <Button x:Name="LoginButton" Content="Login" HorizontalAlignment="Left" Height="35" Margin="72,142,0,0"
                 VerticalAlignment="Top" Width="121" Click="LoginButton_Click" />
         <GroupBox Header="Funktionen" HorizontalAlignment="Left" Height="113" Margin="10,197,0,0"
-                  VerticalAlignment="Top" Width="251" BorderBrush="#FF9BA3A8">
-            <Button x:Name="notificationButton" Content="Benachrichtigungen" HorizontalAlignment="Left" Height="38"
-                    Margin="8,15,0,0" VerticalAlignment="Top" Width="121" Click="notificationButton_Click" />
+                  VerticalAlignment="Top" Width="250" BorderBrush="#FF9BA3A8">
+            <WrapPanel>
+                <Button Content="Benachrichtigungen" HorizontalAlignment="Left" Height="38"
+                    Margin="8,15,0,0" VerticalAlignment="Top" Width="121" Click="NotificationButton_Click" />
+                <Button Content="Konferenz" HorizontalAlignment="Left" Height="38"
+                    Margin="8,15,0,0" VerticalAlignment="Top" Width="92" Click="ConferenceButton_Click"/>
+            </WrapPanel>
         </GroupBox>
 
     </Grid>

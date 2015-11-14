@@ -759,6 +759,17 @@ namespace Proxer.API
             }
         }
 
+        /// <summary>
+        /// Gibt einen string zurück, der das aktuelle Objekt repräsentiert.
+        /// </summary>
+        /// <returns>
+        /// Ein string, der das aktuelle Objekt repräsentiert.
+        /// </returns>
+        public override string ToString()
+        {
+            return this.UserName + " [" + this.Id + "]";
+        }
+
 
         /*
          * -----------------------------------
