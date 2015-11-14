@@ -104,7 +104,7 @@ namespace Proxer.API
         ///     Gibt alle <see cref="Anime">Anime</see> zurück, die der <see cref="User">Benutzer</see>
         ///     in seinem Profil markiert hat.
         /// </summary>
-        public List<KeyValuePair<AnimeMangaProgressObject.AnimeMangaProgress, AnimeMangaProgressObject>> Anime
+        public IEnumerable<KeyValuePair<AnimeMangaProgressObject.AnimeMangaProgress, AnimeMangaProgressObject>> Anime
             => this._animeList ??
                new List<KeyValuePair<AnimeMangaProgressObject.AnimeMangaProgress, AnimeMangaProgressObject>>();
 
@@ -163,7 +163,7 @@ namespace Proxer.API
         ///     Gibt alle <see cref="Manga">Manga</see> zurück, die der <see cref="User">Benutzer</see>
         ///     in seinem Profil markiert hat.
         /// </summary>
-        public List<KeyValuePair<AnimeMangaProgressObject.AnimeMangaProgress, AnimeMangaProgressObject>> Manga
+        public IEnumerable<KeyValuePair<AnimeMangaProgressObject.AnimeMangaProgress, AnimeMangaProgressObject>> Manga
             => this._mangaList ??
                new List<KeyValuePair<AnimeMangaProgressObject.AnimeMangaProgress, AnimeMangaProgressObject>>();
 

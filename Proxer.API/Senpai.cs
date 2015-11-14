@@ -34,7 +34,7 @@ namespace Proxer.API
         /// </summary>
         /// <param name="sender">Der Benutzer, bei dem der Error aufgetreten ist.</param>
         /// <param name="exceptions">Die Ausnahmen, die aufgetreten sind.</param>
-        public delegate void ErrorDuringNotificationFetchEventHandler(Senpai sender, Exception[] exceptions);
+        public delegate void ErrorDuringNotificationFetchEventHandler(Senpai sender, IEnumerable<Exception> exceptions);
 
         /// <summary>
         ///     Stellt die Methode da, die ausgelöst wird, wenn neue Freundschafts-Benachrichtigungen verfügbar sind.

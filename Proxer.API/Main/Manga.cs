@@ -118,10 +118,10 @@ namespace Proxer.API.Main
         ///     <para>Diese Eigenschaft muss durch <see cref="Init" /> initialisiert werden.</para>
         /// </summary>
         /// <seealso cref="Init" />
-        public string[] Genre
+        public IEnumerable<string> Genre
         {
             get { return this._genre ?? new string[0]; }
-            private set { this._genre = value; }
+            private set { this._genre = value.ToArray(); }
         }
 
 
@@ -133,10 +133,10 @@ namespace Proxer.API.Main
         /// </summary>
         /// <seealso cref="Minor.Group" />
         /// <seealso cref="Init" />
-        public Group[] Gruppen
+        public IEnumerable<Group> Gruppen
         {
             get { return this._gruppen ?? new Group[0]; }
-            private set { this._gruppen = value; }
+            private set { this._gruppen = value.ToArray(); }
         }
 
 
@@ -155,10 +155,10 @@ namespace Proxer.API.Main
         /// </summary>
         /// <seealso cref="Minor.Industry" />
         /// <seealso cref="Init" />
-        public Industry[] Industrie
+        public IEnumerable<Industry> Industrie
         {
             get { return this._industrie ?? new Industry[0]; }
-            private set { this._industrie = value; }
+            private set { this._industrie = value.ToArray(); }
         }
 
 
@@ -217,10 +217,10 @@ namespace Proxer.API.Main
         ///     <para>Diese Eigenschaft muss durch <see cref="Init" /> initialisiert werden.</para>
         /// </summary>
         /// <seealso cref="Init" />
-        public string[] Season
+        public IEnumerable<string> Season
         {
             get { return this._season ?? new string[0]; }
-            private set { this._season = value; }
+            private set { this._season = value.ToArray(); }
         }
 
 
@@ -347,10 +347,10 @@ namespace Proxer.API.Main
         ///     <para>Diese Eigenschaft muss durch <see cref="Init" /> initialisiert werden.</para>
         /// </summary>
         /// <seealso cref="Init" />
-        public Language[] Sprachen
+        public IEnumerable<Language> Sprachen
         {
             get { return this._sprachen ?? new Language[0]; }
-            private set { this._sprachen = value; }
+            private set { this._sprachen = value.ToArray(); }
         }
 
         #endregion
@@ -388,12 +388,12 @@ namespace Proxer.API.Main
         /// <param name="lang">Die Sprache der <see cref="Chapter">Kapitel</see>.</param>
         /// <seealso cref="Sprachen" />
         /// <returns>Ein Array mit length = <see cref="KapitelZahl" /></returns>
-        public ProxerResult<Chapter[]> GetChapters(Language lang)
+        public ProxerResult<IEnumerable<Chapter>> GetChapters(Language lang)
         {
             if (this.Sprachen == null)
-                return new ProxerResult<Chapter[]>(new Exception[] {new InitializeNeededException()});
+                return new ProxerResult<IEnumerable<Chapter>>(new Exception[] {new InitializeNeededException()});
             if (!this.Sprachen.Contains(lang))
-                return new ProxerResult<Chapter[]>(new Exception[] {new LanguageNotAvailableException()});
+                return new ProxerResult<IEnumerable<Chapter>>(new Exception[] {new LanguageNotAvailableException()});
 
             List<Chapter> lChapters = new List<Chapter>();
             for (int i = 1; i <= this.KapitelZahl; i++)
@@ -401,7 +401,7 @@ namespace Proxer.API.Main
                 lChapters.Add(new Chapter(i, lang, this, this._senpai));
             }
 
-            return new ProxerResult<Chapter[]>(lChapters.ToArray());
+            return new ProxerResult<IEnumerable<Chapter>>(lChapters.ToArray());
         }
 
         private async Task<ProxerResult> InitMain()
@@ -732,10 +732,10 @@ namespace Proxer.API.Main
             ///     Gibt die Links zu den einzelnen Seiten des <see cref="Chapter">Kapitels</see> zurück.
             /// </summary>
             /// <seealso cref="Init" />
-            public Uri[] Seiten
+            public IEnumerable<Uri> Seiten
             {
                 get { return this._seiten ?? new Uri[0]; }
-                private set { this._seiten = value; }
+                private set { this._seiten = value.ToArray(); }
             }
 
             /// <summary>

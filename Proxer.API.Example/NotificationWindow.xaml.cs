@@ -39,7 +39,7 @@ namespace Proxer.API.Example
 
         #region
 
-        private void ErrorDuringNotificationFetch(Senpai sender, Exception[] exceptions)
+        private void ErrorDuringNotificationFetch(Senpai sender, IEnumerable<Exception> exceptions)
         {
             //Aktion, die ausgeführt wird, wenn ein Fehler bei dem Abrufen der Benachrichtigungs-Events aufgetreten ist
         }
@@ -120,7 +120,7 @@ namespace Proxer.API.Example
             this.AmListBox.Items.Clear();
 
             //Rufe die Benachrichtigungen ab
-            ProxerResult<AnimeMangaUpdateObject[]> lResult = await collection.GetAllAnimeMangaUpdates();
+            ProxerResult<IEnumerable<AnimeMangaUpdateObject>> lResult = await collection.GetAllAnimeMangaUpdates();
             if (!lResult.Success)
             {
                 //Falls die Methode fehlschlägt kann hier überprüft werden was der Grund ist.

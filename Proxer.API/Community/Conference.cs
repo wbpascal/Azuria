@@ -23,7 +23,7 @@ namespace Proxer.API.Community
         /// <param name="sender">Die Konferenz, die das Event aufgerufen hat.</param>
         /// <param name="e">Die neuen Nachrichten. Beim ersten mal werden hier alle Nachrichten aufgeführt.</param>
         /// <param name="alleNachrichten">Gibt an, ob alle Nachrichten geholt wurden oder nur die neuesten.</param>
-        public delegate void NeuePmEventHandler(Conference sender, List<Message> e, bool alleNachrichten);
+        public delegate void NeuePmEventHandler(Conference sender, IEnumerable<Message> e, bool alleNachrichten);
 
         /// <summary>
         /// Stellt eine Methode da, die ausgelöst wird, wenn während des Abrufen der Nachrichten ein Fehler auftritt.
@@ -133,13 +133,13 @@ namespace Proxer.API.Community
         /// <summary>
         ///     Gibt alle Nachrichten aus der Konferenz in chronoligischer Ordnung zurück.
         /// </summary>
-        public List<Message> Nachrichten { get; private set; }
+        public IEnumerable<Message> Nachrichten { get; private set; }
 
         /// <summary>
         ///     Gibt alle Teilnehmer der Konferenz zurück (<see cref="InitConference" /> muss dafür zunächst einmal aufgerufen
         ///     werden)
         /// </summary>
-        public List<User> Teilnehmer { get; private set; }
+        public IEnumerable<User> Teilnehmer { get; private set; }
 
         /// <summary>
         ///     Gibt den Titel der Konferenz zurück (<see cref="InitConference" /> muss dafür zunächst einmal aufgerufen werden)
@@ -587,19 +587,18 @@ namespace Proxer.API.Community
                 lDocument.LoadHtml(lResponse);
 
                 HtmlNodeCollection lNodes = lDocument.DocumentNode.SelectNodes("//div[@id='conferenceUsers']");
-                this.Teilnehmer = new List<User>();
+                List<User> lTeilnehmer = this.Teilnehmer.ToList();
 
-                foreach (HtmlNode curTeilnehmer in lNodes[0].ChildNodes[1].ChildNodes)
-                {
-                    string lUserName = curTeilnehmer.ChildNodes[1].InnerText;
-                    int lUserId =
-                        Convert.ToInt32(
-                            Utility.GetTagContents(
-                                curTeilnehmer.ChildNodes[1].FirstChild.Attributes["href"].Value, "/user/",
-                                "#top")[0]);
+                lTeilnehmer.AddRange(from curTeilnehmer in lNodes[0].ChildNodes[1].ChildNodes
+                                     let lUserName = curTeilnehmer.ChildNodes[1].InnerText
+                                     let lUserId =
+                                         Convert.ToInt32(
+                                             Utility.GetTagContents(
+                                                 curTeilnehmer.ChildNodes[1].FirstChild.Attributes["href"].Value,
+                                                 "/user/", "#top")[0])
+                                     select new User(lUserName, lUserId, this._senpai));
 
-                    this.Teilnehmer.Add(new User(lUserName, lUserId, this._senpai));
-                }
+                this.Teilnehmer = lTeilnehmer;
 
                 return new ProxerResult();
             }
@@ -646,7 +645,7 @@ namespace Proxer.API.Community
                 }
             }
 
-            if (this.Teilnehmer.Count > 1)
+            if (this.Teilnehmer.ToList().Count > 1)
                 this.Titel = this.Teilnehmer.Where(x => x.Id != this._senpai.Me.Id).ToArray()[0].UserName;
 
             return new ProxerResult();
@@ -654,10 +653,10 @@ namespace Proxer.API.Community
 
         private async Task<ProxerResult> GetAllMessages()
         {
-            if (this.Nachrichten != null && this.Nachrichten.Count > 0)
+            if (this.Nachrichten != null && this.Nachrichten.ToList().Count > 0)
                 return await this.GetMessages(this.Nachrichten.Last().NachrichtId);
 
-            if (this.Nachrichten != null && this.Nachrichten.Count != 0)
+            if (this.Nachrichten != null && this.Nachrichten.ToList().Count != 0)
                 return new ProxerResult
                 {
                     Success = false
@@ -813,7 +812,7 @@ namespace Proxer.API.Community
                                 Convert.ToInt32(curMessage.Timestamp), lMessageAction));
                 }
             }
-            catch(Exception ex)
+            catch
             {
                 return
                     new ProxerResult<List<Message>>(

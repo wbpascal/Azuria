@@ -20,7 +20,7 @@ namespace Proxer.API.Example
             this._conference.NeuePmRaised += this.ConferenceOnNeuePmRaised;
         }
 
-        private void ConferenceOnNeuePmRaised(Conference sender, List<Conference.Message> messages, bool alleNachrichten)
+        private void ConferenceOnNeuePmRaised(Conference sender, IEnumerable<Conference.Message> messages, bool alleNachrichten)
         {
             //Hier werden die Nachrichten verarbeitet
 

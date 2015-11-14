@@ -41,13 +41,13 @@ namespace Proxer.API.Main
         ///     Gitb die Genres des <see cref="Anime" /> oder <see cref="Manga" /> zurück.
         ///     <para>(Vererbt von <see cref="IAnimeMangaObject" />)</para>
         /// </summary>
-        string[] Genre { get; }
+        IEnumerable<string> Genre { get; }
 
         /// <summary>
         ///     Gibt die Gruppen zurück, die den <see cref="Anime" /> oder <see cref="Manga" /> übersetzten oder übersetzt haben.
         ///     <para>(Vererbt von <see cref="IAnimeMangaObject" />)</para>
         /// </summary>
-        Group[] Gruppen { get; }
+        IEnumerable<Group> Gruppen { get; }
 
         /// <summary>
         ///     Gibt die ID des <see cref="Anime" /> oder <see cref="Manga" /> zurück.
@@ -59,7 +59,7 @@ namespace Proxer.API.Main
         ///     Gibt die Industrie des <see cref="Anime" /> oder <see cref="Manga" /> zurück.
         ///     <para>(Vererbt von <see cref="IAnimeMangaObject" />)</para>
         /// </summary>
-        Industry[] Industrie { get; }
+        IEnumerable<Industry> Industrie { get; }
 
         /// <summary>
         ///     Gibt zurück, ob das Objekt bereits Initialisiert ist.
@@ -95,7 +95,7 @@ namespace Proxer.API.Main
         ///     Gibt die Season des <see cref="Anime" /> oder <see cref="Manga" /> zurück.
         ///     <para>(Vererbt von <see cref="IAnimeMangaObject" />)</para>
         /// </summary>
-        string[] Season { get; }
+        IEnumerable<string> Season { get; }
 
         /// <summary>
         ///     Gibt den Status des <see cref="Anime" /> oder <see cref="Manga" /> zurück.

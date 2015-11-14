@@ -34,7 +34,7 @@ namespace Proxer.API.Utilities
         ///     Initialisiert die Klasse mit Fehlermeldungen.
         /// </summary>
         /// <param name="exceptions">Die Fehlermeldungen.</param>
-        public ProxerResult(Exception[] exceptions) : base(exceptions)
+        public ProxerResult(IEnumerable<Exception> exceptions) : base(exceptions)
         {
         }
 
@@ -82,7 +82,7 @@ namespace Proxer.API.Utilities
         ///     Initialisiert die Klasse mit Fehlermeldungen.
         /// </summary>
         /// <param name="exceptions">Die Fehlermeldungen.</param>
-        public ProxerResult(Exception[] exceptions)
+        public ProxerResult(IEnumerable<Exception> exceptions)
         {
             this.Success = false;
             this.Exceptions = exceptions;
@@ -94,7 +94,7 @@ namespace Proxer.API.Utilities
         ///     Gibt die Fehler zurück, die während der Ausführung aufgetreten sind, oder legt diese fest.
         /// </summary>
         /// <value>Ist null, wenn <see cref="Success" /> == true</value>
-        public Exception[] Exceptions { get; set; }
+        public IEnumerable<Exception> Exceptions { get; set; }
 
         /// <summary>
         ///     Gibt zurück, ob die Methode erfolg hatte, oder legt dieses fest.
@@ -122,7 +122,7 @@ namespace Proxer.API.Utilities
         ///     Fügt den <see cref="Exceptions">Ausnahmen</see> weitere hinzu.
         /// </summary>
         /// <param name="exception">Die Ausnahme die hinzugefügt werden soll.</param>
-        public void AddExceptions(Exception[] exception)
+        public void AddExceptions(IEnumerable<Exception> exception)
         {
             List<Exception> lExceptions = this.Exceptions.ToList();
             lExceptions.AddRange(exception);

@@ -129,10 +129,10 @@ namespace Proxer.API.Main
         ///     <para>Diese Eigenschaft muss durch <see cref="Init" /> initialisiert werden.</para>
         /// </summary>
         /// <seealso cref="Init" />
-        public string[] Genre
+        public IEnumerable<string> Genre
         {
             get { return this._genre ?? new string[0]; }
-            private set { this._genre = value; }
+            private set { this._genre = value.ToArray(); }
         }
 
 
@@ -144,10 +144,10 @@ namespace Proxer.API.Main
         /// </summary>
         /// <seealso cref="Minor.Group" />
         /// <seealso cref="Init" />
-        public Group[] Gruppen
+        public IEnumerable<Group> Gruppen
         {
             get { return this._gruppen ?? new Group[0]; }
-            private set { this._gruppen = value; }
+            private set { this._gruppen = value.ToArray(); }
         }
 
 
@@ -166,10 +166,10 @@ namespace Proxer.API.Main
         /// </summary>
         /// <seealso cref="Minor.Industry" />
         /// <seealso cref="Init" />
-        public Industry[] Industrie
+        public IEnumerable<Industry> Industrie
         {
             get { return this._industrie ?? new Industry[0]; }
-            private set { this._industrie = value; }
+            private set { this._industrie = value.ToArray(); }
         }
 
 
@@ -226,10 +226,10 @@ namespace Proxer.API.Main
         ///     <para>Diese Eigenschaft muss durch <see cref="Init" /> initialisiert werden.</para>
         /// </summary>
         /// <seealso cref="Init" />
-        public string[] Season
+        public IEnumerable<string> Season
         {
             get { return this._season ?? new string[0]; }
-            private set { this._season = value; }
+            private set { this._season = value.ToArray(); }
         }
 
 
@@ -358,7 +358,7 @@ namespace Proxer.API.Main
         /// </summary>
         /// <seealso cref="Language" />
         /// <seealso cref="Init" />
-        public Language[] Sprachen { get; private set; }
+        public IEnumerable<Language> Sprachen { get; private set; }
 
         #endregion
 
@@ -384,10 +384,10 @@ namespace Proxer.API.Main
         ///     </list>
         /// </summary>
         /// <returns>Ein Array mit den aktuell beliebtesten <see cref="Anime" />.</returns>
-        public static async Task<ProxerResult<Anime[]>> GetPopularAnimes(Senpai senpai)
+        public static async Task<ProxerResult<IEnumerable<Anime>>> GetPopularAnimes(Senpai senpai)
         {
             if (senpai == null)
-                return new ProxerResult<Anime[]>(new Exception[] {new ArgumentNullException(nameof(senpai))});
+                return new ProxerResult<IEnumerable<Anime>>(new Exception[] {new ArgumentNullException(nameof(senpai))});
 
             HtmlDocument lDocument = new HtmlDocument();
             ProxerResult<string> lResult =
@@ -399,7 +399,7 @@ namespace Proxer.API.Main
                         senpai);
 
             if (!lResult.Success)
-                return new ProxerResult<Anime[]>(lResult.Exceptions);
+                return new ProxerResult<IEnumerable<Anime>>(lResult.Exceptions);
 
             string lResponse = lResult.Result;
 
@@ -408,7 +408,7 @@ namespace Proxer.API.Main
                 lDocument.LoadHtml(lResponse);
 
                 return
-                    new ProxerResult<Anime[]>(
+                    new ProxerResult<IEnumerable<Anime>>(
                         (from childNode in lDocument.DocumentNode.ChildNodes[5].FirstChild.FirstChild.ChildNodes
                          let lId =
                              Convert.ToInt32(
@@ -419,7 +419,7 @@ namespace Proxer.API.Main
             }
             catch
             {
-                return new ProxerResult<Anime[]>(ErrorHandler.HandleError(senpai, lResponse).Exceptions);
+                return new ProxerResult<IEnumerable<Anime>>(ErrorHandler.HandleError(senpai, lResponse).Exceptions);
             }
         }
 
@@ -454,12 +454,12 @@ namespace Proxer.API.Main
         /// <param name="language">Die Sprache der Episoden.</param>
         /// <seealso cref="Anime.Episode" />
         /// <returns>Einen Array mit length = <see cref="EpisodenZahl" />.</returns>
-        public ProxerResult<Episode[]> GetEpisodes(Language language)
+        public ProxerResult<IEnumerable<Episode>> GetEpisodes(Language language)
         {
             if (this.Sprachen == null)
-                return new ProxerResult<Episode[]>(new Exception[] {new InitializeNeededException()});
+                return new ProxerResult<IEnumerable<Episode>>(new Exception[] {new InitializeNeededException()});
             if (!this.Sprachen.Contains(language))
-                return new ProxerResult<Episode[]>(new Exception[] {new LanguageNotAvailableException()});
+                return new ProxerResult<IEnumerable<Episode>>(new Exception[] {new LanguageNotAvailableException()});
 
             List<Episode> lEpisodes = new List<Episode>();
             for (int i = 1; i <= this.EpisodenZahl; i++)
@@ -467,7 +467,7 @@ namespace Proxer.API.Main
                 lEpisodes.Add(new Episode(this, i, language, this._senpai));
             }
 
-            return new ProxerResult<Episode[]>(lEpisodes.ToArray());
+            return new ProxerResult<IEnumerable<Episode>>(lEpisodes.ToArray());
         }
 
         private async Task<ProxerResult> InitAvailableLang()
@@ -784,14 +784,14 @@ namespace Proxer.API.Main
             ///     <para>Wenn nach Aufruf von Init() immer noch null, dann sind keine Streams für diese Episode verfügbar.</para>
             /// </summary>
             /// <seealso cref="Episode.Init" />
-            public List<KeyValuePair<Stream.StreamPartner, Stream>> Streams
+            public IEnumerable<KeyValuePair<Stream.StreamPartner, Stream>> Streams
             {
                 get
                 {
                     return this._streams ??
                            new List<KeyValuePair<Stream.StreamPartner, Stream>>();
                 }
-                private set { this._streams = value; }
+                private set { this._streams = value.ToList(); }
             }
 
             #endregion
@@ -873,7 +873,8 @@ namespace Proxer.API.Main
                                 x.GetAttributeValue("src", "").Equals("/images/misc/404.png")))
                         return new ProxerResult(new Exception[] {new WrongResponseException {Response = lResponse}});
 
-                    this.Streams = new List<KeyValuePair<Stream.StreamPartner, Stream>>();
+                    List<KeyValuePair<Stream.StreamPartner, Stream>> lStreams =
+                        new List<KeyValuePair<Stream.StreamPartner, Stream>>();
 
                     foreach (
                         HtmlNode childNode in
@@ -883,48 +884,49 @@ namespace Proxer.API.Main
                         switch (childNode.InnerText)
                         {
                             case "Dailymotion":
-                                this.Streams.Add(
+                                lStreams.Add(
                                     new KeyValuePair<Stream.StreamPartner, Stream>(Stream.StreamPartner.Dailymotion,
                                         new Stream(
                                             new Uri(childNode.FirstChild.GetAttributeValue("href", "http://proxer.me/")),
                                             Stream.StreamPartner.Dailymotion)));
                                 break;
                             case "MP4Upload":
-                                this.Streams.Add(
+                                lStreams.Add(
                                     new KeyValuePair<Stream.StreamPartner, Stream>(Stream.StreamPartner.Mp4Upload,
                                         new Stream(
                                             new Uri(childNode.FirstChild.GetAttributeValue("href", "http://proxer.me/")),
                                             Stream.StreamPartner.Mp4Upload)));
                                 break;
                             case "Streamcloud":
-                                this.Streams.Add(
+                                lStreams.Add(
                                     new KeyValuePair<Stream.StreamPartner, Stream>(Stream.StreamPartner.Streamcloud,
                                         new Stream(
                                             new Uri(childNode.FirstChild.GetAttributeValue("href", "http://proxer.me/")),
                                             Stream.StreamPartner.Streamcloud)));
                                 break;
                             case "Videobam":
-                                this.Streams.Add(
+                                lStreams.Add(
                                     new KeyValuePair<Stream.StreamPartner, Stream>(Stream.StreamPartner.Videobam,
                                         new Stream(
                                             new Uri(childNode.FirstChild.GetAttributeValue("href", "http://proxer.me/")),
                                             Stream.StreamPartner.Videobam)));
                                 break;
                             case "YourUpload":
-                                this.Streams.Add(
+                                lStreams.Add(
                                     new KeyValuePair<Stream.StreamPartner, Stream>(Stream.StreamPartner.YourUpload,
                                         new Stream(
                                             new Uri(childNode.FirstChild.GetAttributeValue("href", "http://proxer.me/")),
                                             Stream.StreamPartner.YourUpload)));
                                 break;
                             case "Proxer-Stream":
-                                this.Streams.Add(
+                                lStreams.Add(
                                     new KeyValuePair<Stream.StreamPartner, Stream>(Stream.StreamPartner.ProxerStream,
                                         new Stream(
                                             new Uri(childNode.FirstChild.GetAttributeValue("href", "http://proxer.me/")),
                                             Stream.StreamPartner.ProxerStream)));
                                 break;
                         }
+                        this.Streams = lStreams;
                     }
 
                     this.IstInitialisiert = true;

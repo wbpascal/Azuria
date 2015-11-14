@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using Proxer.API.Utilities;
 
 namespace Proxer.API.Notifications
@@ -30,7 +31,7 @@ namespace Proxer.API.Notifications
         ///     Ein Array mit der Anzahl an Elementen in <paramref name="count" /> spezifiziert.
         ///     Wenn <paramref name="count" /> > Array.length, dann wird der gesamte Array zurückgegeben.
         /// </returns>
-        Task<ProxerResult<INotificationObject[]>> GetNotifications(int count);
+        Task<ProxerResult<IEnumerable<INotificationObject>>> GetNotifications(int count);
 
         /// <summary>
         ///     Gibt alle aktuellen Benachrichtigungen, die diese Klasse repräsentiert, zurück.
@@ -38,7 +39,7 @@ namespace Proxer.API.Notifications
         /// </summary>
         /// <seealso cref="GetNotifications" />
         /// <returns>Ein Array mit allen aktuellen Benachrichtigungen.</returns>
-        Task<ProxerResult<INotificationObject[]>> GetAllNotifications();
+        Task<ProxerResult<IEnumerable<INotificationObject>>> GetAllNotifications();
 
         #endregion
     }
