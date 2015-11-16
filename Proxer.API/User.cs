@@ -32,6 +32,7 @@ namespace Proxer.API
         private string _rang;
         private string _status;
         private string _userName;
+        private string _infoHtml;
 
         internal User(string name, int userId, Senpai senpai)
         {
@@ -143,7 +144,8 @@ namespace Proxer.API
         public int Id { get; }
 
         /// <summary>
-        ///     Gibt die Info des Benutzers als Html-Dokument zurück.
+        ///     Gibt die Info des Benutzers als Text-Dokument zurück. 
+        ///     Dabei werden sämtliche Html-Eigenschaften ignoriert.
         ///     <para />
         ///     <para>Diese Eigenschaft muss durch <see cref="Init" /> initialisiert werden.</para>
         /// </summary>
@@ -152,6 +154,18 @@ namespace Proxer.API
         {
             get { return this._info ?? ""; }
             private set { this._info = value; }
+        }
+
+        /// <summary>
+        ///     Gibt die Info des Benutzers als Html-Dokument zurück.
+        ///     <para />
+        ///     <para>Diese Eigenschaft muss durch <see cref="Init" /> initialisiert werden.</para>
+        /// </summary>
+        /// <seealso cref="Init" />
+        public string InfoHtml
+        {
+            get { return this._infoHtml ?? ""; }
+            private set { this._infoHtml = value; }
         }
 
         /// <summary>
@@ -488,6 +502,7 @@ namespace Proxer.API
                     lDocument.DocumentNode.SelectNodes("//table[@class='profile']");
 
                 this.Info = lProfileNodes[0].ChildNodes[10].InnerText;
+                this.InfoHtml = lProfileNodes[0].ChildNodes[10].InnerHtml;
 
                 return new ProxerResult();
             }

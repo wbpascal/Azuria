@@ -73,22 +73,22 @@ namespace Proxer.API.Utilities.Net
                                                                                   Func<string, ProxerResult>[]
                                                                                       checkFuncs)
         {
-            ProxerResult<KeyValuePair<string, CookieContainer>> lResult =
+            ProxerResult<Tuple<string, CookieContainer>> lResult =
                 await
                     GetResponseErrorHandling(url, loginCookies, errorHandler, senpai, checkFuncs, loginCookies == null);
 
             return lResult.Success
-                ? new ProxerResult<string>(lResult.Result.Key)
+                ? new ProxerResult<string>(lResult.Result.Item1)
                 : new ProxerResult<string>(lResult.Exceptions);
         }
 
-        internal static async Task<ProxerResult<KeyValuePair<string, CookieContainer>>> GetResponseErrorHandling(
+        internal static async Task<ProxerResult<Tuple<string, CookieContainer>>> GetResponseErrorHandling(
             string url, CookieContainer loginCookies, ErrorHandler errorHandler, Senpai senpai,
             Func<string, ProxerResult>[] checkFuncs, bool checkLogin)
         {
             if (checkLogin && loginCookies != null && !senpai.LoggedIn)
                 return
-                    new ProxerResult<KeyValuePair<string, CookieContainer>>(new Exception[] {new NotLoggedInException()});
+                    new ProxerResult<Tuple<string, CookieContainer>>(new Exception[] {new NotLoggedInException()});
 
             string lResponse;
 
@@ -98,7 +98,7 @@ namespace Proxer.API.Utilities.Net
                 lResponse = System.Web.HttpUtility.HtmlDecode(lResponseObject.Content).Replace("\n", "");
             else
                 return
-                    new ProxerResult<KeyValuePair<string, CookieContainer>>(new[]
+                    new ProxerResult<Tuple<string, CookieContainer>>(new[]
                     {new WrongResponseException(), lResponseObject.ErrorException});
 
             foreach (Func<string, ProxerResult> checkFunc in checkFuncs)
@@ -107,22 +107,22 @@ namespace Proxer.API.Utilities.Net
                 {
                     ProxerResult lResult = checkFunc?.Invoke(lResponse) ?? new ProxerResult {Success = false};
                     if (!lResult.Success)
-                        return new ProxerResult<KeyValuePair<string, CookieContainer>>(lResult.Exceptions);
+                        return new ProxerResult<Tuple<string, CookieContainer>>(lResult.Exceptions);
                 }
                 catch
                 {
-                    return new ProxerResult<KeyValuePair<string, CookieContainer>> {Success = false};
+                    return new ProxerResult<Tuple<string, CookieContainer>> {Success = false};
                 }
             }
 
             if (string.IsNullOrEmpty(lResponse) || !Utility.CheckForCorrectResponse(lResponse, errorHandler))
                 return
-                    new ProxerResult<KeyValuePair<string, CookieContainer>>(new Exception[]
+                    new ProxerResult<Tuple<string, CookieContainer>>(new Exception[]
                     {new WrongResponseException {Response = lResponse}});
 
             return
-                new ProxerResult<KeyValuePair<string, CookieContainer>>(
-                    new KeyValuePair<string, CookieContainer>(lResponse, loginCookies));
+                new ProxerResult<Tuple<string, CookieContainer>>(
+                    new Tuple<string, CookieContainer>(lResponse, loginCookies));
         }
 
         internal static async Task<ProxerResult<string>> PostResponseErrorHandling(string url,

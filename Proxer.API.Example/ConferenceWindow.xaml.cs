@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Threading;
 using Proxer.API.Community;
 using Proxer.API.Utilities;
 
@@ -24,7 +25,16 @@ namespace Proxer.API.Example
         {
             //Hier werden die Nachrichten verarbeitet
 
+            //WICHTIG, wenn auf Elemente des Fensters zugegriffen werden will, 
+            //da das Event von einem anderen Thread ausgelöst wird
+            if (!this.Dispatcher.CheckAccess())
+            {
+                this.Dispatcher.Invoke(() => this.ConferenceOnNeuePmRaised(sender, messages, alleNachrichten));
+                return;
+            }
+
             //Falls alle Nachrichten abgerufen wurden setze den Text der ChatBox zurück
+            //Alle Nachrichten sind die 15 aktuellsten Nachrichten 
             if (alleNachrichten) this.ChatBox.Text = "";
 
             //Gehe alle Nachrichten durch und füge sie der ChatBox hinzu
@@ -59,19 +69,34 @@ namespace Proxer.API.Example
         private void InitComponents()
         {
             //Titel der Konferenz als Fenstertitel
-            this.Title = this._conference.Titel;
+            this.Title = "Konferenz: " + this._conference.Titel;
 
             //Gehe durch die Teilnehmerliste
-            foreach (User teilnehmer in this._conference.Teilnehmer)
+            foreach (User teilnehmer in this._conference.Teilnehmer ?? new List<User>())
             {
-                //Füge den Teilnehmer zur ListBox hinzu
-                //ListBox stellt den Teilnehmer da, indem es die ToString()-Methode aufruft
-                this.TeilnehmerBox.Items.Add(teilnehmer);
+                TextBlock lTeilnehmerBlock = new TextBlock {DataContext = teilnehmer, Text = teilnehmer.ToString()};
+                //Klick-Event, wenn auf den Benutzer geklickt wird
+                lTeilnehmerBlock.MouseLeftButtonDown += this.UserTextBlock_MouseLeftButtonDown;
+                //Füge den TextBlock mit dem User als Hintergrundobjekt der ListBox hinzu
+                this.TeilnehmerBox.Items.Add(lTeilnehmerBlock);
             }
 
             //Scheibe den Leiter in die LeiterBox
             //Darstellung wie bei der TeilnehmerBox
-            this.LeiterBox.Items.Add(this._conference.Leiter);
+            TextBlock lLeaderBlock = new TextBlock
+            {
+                DataContext = this._conference.Leiter,
+                Text = this._conference.Leiter.ToString()
+            };
+            lLeaderBlock.MouseLeftButtonDown += this.UserTextBlock_MouseLeftButtonDown;
+            this.LeiterBox.Items.Add(lLeaderBlock);
+        }
+
+        private void UserTextBlock_MouseLeftButtonDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        {
+            TextBlock lTeilnehmerBlock = sender as TextBlock;
+            //Öffne ein UserWindow mit den Hintergrund User-Objekt des TextBlocks als Parameter
+            new UserWindow((lTeilnehmerBlock?.DataContext as User) ?? User.System).Show();
         }
 
         private async void Button_Click(object sender, RoutedEventArgs e)

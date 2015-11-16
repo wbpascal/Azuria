@@ -148,19 +148,19 @@ namespace Proxer.API.Notifications
         ///     Ein Array mit der Anzahl an Elementen in <paramref name="count" /> spezifiziert.
         ///     Wenn <paramref name="count" /> > Array.length, dann wird der gesamte Array zurückgegeben.
         /// </returns>
-        public async Task<ProxerResult<FriendRequestObject[]>> GetFriendRequests(int count)
+        public async Task<ProxerResult<IEnumerable<FriendRequestObject>>> GetFriendRequests(int count)
         {
             if (this._notificationObjects != null)
                 return this._notificationObjects.Length >= count
-                    ? new ProxerResult<FriendRequestObject[]>(this._friendRequestObjects)
-                    : new ProxerResult<FriendRequestObject[]>(this._friendRequestObjects.Take(count).ToArray());
+                    ? new ProxerResult<IEnumerable<FriendRequestObject>>(this._friendRequestObjects)
+                    : new ProxerResult<IEnumerable<FriendRequestObject>>(this._friendRequestObjects.Take(count).ToArray());
             ProxerResult lResult;
             if (!(lResult = await this.GetInfos()).Success)
-                return new ProxerResult<FriendRequestObject[]>(lResult.Exceptions);
+                return new ProxerResult<IEnumerable<FriendRequestObject>>(lResult.Exceptions);
 
             return this._notificationObjects.Length >= count
-                ? new ProxerResult<FriendRequestObject[]>(this._friendRequestObjects)
-                : new ProxerResult<FriendRequestObject[]>(this._friendRequestObjects.Take(count).ToArray());
+                ? new ProxerResult<IEnumerable<FriendRequestObject>>(this._friendRequestObjects)
+                : new ProxerResult<IEnumerable<FriendRequestObject>>(this._friendRequestObjects.Take(count).ToArray());
         }
 
         /// <summary>
@@ -187,15 +187,15 @@ namespace Proxer.API.Notifications
         /// </summary>
         /// <seealso cref="Senpai.Login" />
         /// <returns>Ein Array mit allen aktuellen Benachrichtigungen.</returns>
-        public async Task<ProxerResult<FriendRequestObject[]>> GetAllFriendRequests()
+        public async Task<ProxerResult<IEnumerable<FriendRequestObject>>> GetAllFriendRequests()
         {
             if (this._notificationObjects != null)
-                return new ProxerResult<FriendRequestObject[]>(this._friendRequestObjects);
+                return new ProxerResult<IEnumerable<FriendRequestObject>>(this._friendRequestObjects);
 
             ProxerResult lResult;
             return !(lResult = await this.GetInfos()).Success
-                ? new ProxerResult<FriendRequestObject[]>(lResult.Exceptions)
-                : new ProxerResult<FriendRequestObject[]>(this._friendRequestObjects);
+                ? new ProxerResult<IEnumerable<FriendRequestObject>>(lResult.Exceptions)
+                : new ProxerResult<IEnumerable<FriendRequestObject>>(this._friendRequestObjects);
         }
 
 

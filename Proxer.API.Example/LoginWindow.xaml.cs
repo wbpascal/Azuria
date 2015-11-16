@@ -86,5 +86,10 @@ namespace Proxer.API.Example
                     : "Es ist ein Fehler während der Anfrage aufgetreten! (Konferenzen)");
             }
         }
+
+        private void UserButton_Click(object sender, RoutedEventArgs e)
+        {
+            new UserWindow(new User(177103, this._senpai)).Show();
+        }
     }
 }

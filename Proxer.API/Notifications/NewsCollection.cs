@@ -146,19 +146,19 @@ namespace Proxer.API.Notifications
         ///     Ein Array mit der Anzahl an Elementen in <paramref name="count" /> spezifiziert.
         ///     Wenn <paramref name="count" /> > Array.length, dann wird der gesamte Array zurückgegeben.
         /// </returns>
-        public async Task<ProxerResult<NewsObject[]>> GetNews(int count)
+        public async Task<ProxerResult<IEnumerable<NewsObject>>> GetNews(int count)
         {
             if (this._notificationObjects != null)
                 return this._notificationObjects.Length >= count
-                    ? new ProxerResult<NewsObject[]>(this._newsObjects)
-                    : new ProxerResult<NewsObject[]>(this._newsObjects.Take(count).ToArray());
+                    ? new ProxerResult<IEnumerable<NewsObject>>(this._newsObjects)
+                    : new ProxerResult<IEnumerable<NewsObject>>(this._newsObjects.Take(count).ToArray());
             ProxerResult lResult;
             if (!(lResult = await this.GetInfos()).Success)
-                return new ProxerResult<NewsObject[]>(lResult.Exceptions);
+                return new ProxerResult<IEnumerable<NewsObject>>(lResult.Exceptions);
 
             return this._notificationObjects.Length >= count
-                ? new ProxerResult<NewsObject[]>(this._newsObjects)
-                : new ProxerResult<NewsObject[]>(this._newsObjects.Take(count).ToArray());
+                ? new ProxerResult<IEnumerable<NewsObject>>(this._newsObjects)
+                : new ProxerResult<IEnumerable<NewsObject>>(this._newsObjects.Take(count).ToArray());
         }
 
         /// <summary>
@@ -185,15 +185,15 @@ namespace Proxer.API.Notifications
         /// </summary>
         /// <seealso cref="Senpai.Login" />
         /// <returns>Ein Array mit allen aktuellen Benachrichtigungen.</returns>
-        public async Task<ProxerResult<NewsObject[]>> GetAllNews()
+        public async Task<ProxerResult<IEnumerable<NewsObject>>> GetAllNews()
         {
             if (this._notificationObjects != null)
-                return new ProxerResult<NewsObject[]>(this._newsObjects);
+                return new ProxerResult<IEnumerable<NewsObject>>(this._newsObjects);
 
             ProxerResult lResult;
             return !(lResult = await this.GetInfos()).Success
-                ? new ProxerResult<NewsObject[]>(lResult.Exceptions)
-                : new ProxerResult<NewsObject[]>(this._newsObjects);
+                ? new ProxerResult<IEnumerable<NewsObject>>(lResult.Exceptions)
+                : new ProxerResult<IEnumerable<NewsObject>>(this._newsObjects);
         }
 
 

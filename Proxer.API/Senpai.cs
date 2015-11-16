@@ -351,15 +351,16 @@ namespace Proxer.API
 
         internal async Task<ProxerResult<bool>> CheckLogin()
         {
-            ProxerResult<string> lResult =
+            ProxerResult<Tuple<string, CookieContainer>> lResult =
                 await
                     HttpUtility.GetResponseErrorHandling("https://proxer.me/login?format=json&action=login",
-                        this.ErrHandler, this);
+                        this.LoginCookies,
+                        this.ErrHandler, this, new Func<string, ProxerResult>[0], false);
 
             if (!lResult.Success)
                 return new ProxerResult<bool>(lResult.Exceptions);
 
-            string lResponse = lResult.Result;
+            string lResponse = lResult.Result.Item1;
 
             try
             {

@@ -147,19 +147,19 @@ namespace Proxer.API.Notifications
         ///     Ein Array mit der Anzahl an Elementen in <paramref name="count" /> spezifiziert.
         ///     Wenn <paramref name="count" /> > Array.length, dann wird der gesamte Array zurückgegeben.
         /// </returns>
-        public async Task<ProxerResult<PmObject[]>> GetPrivateMessages(int count)
+        public async Task<ProxerResult<IEnumerable<PmObject>>> GetPrivateMessages(int count)
         {
             if (this._notificationObjects != null)
                 return this._notificationObjects.Length >= count
-                    ? new ProxerResult<PmObject[]>(this._pmObjects)
-                    : new ProxerResult<PmObject[]>(this._pmObjects.Take(count).ToArray());
+                    ? new ProxerResult<IEnumerable<PmObject>>(this._pmObjects)
+                    : new ProxerResult<IEnumerable<PmObject>>(this._pmObjects.Take(count).ToArray());
             ProxerResult lResult;
             if (!(lResult = await this.GetInfos()).Success)
-                return new ProxerResult<PmObject[]>(lResult.Exceptions);
+                return new ProxerResult<IEnumerable<PmObject>>(lResult.Exceptions);
 
             return this._notificationObjects.Length >= count
-                ? new ProxerResult<PmObject[]>(this._pmObjects)
-                : new ProxerResult<PmObject[]>(this._pmObjects.Take(count).ToArray());
+                ? new ProxerResult<IEnumerable<PmObject>>(this._pmObjects)
+                : new ProxerResult<IEnumerable<PmObject>>(this._pmObjects.Take(count).ToArray());
         }
 
         /// <summary>
@@ -186,15 +186,15 @@ namespace Proxer.API.Notifications
         /// </summary>
         /// <seealso cref="Senpai.Login" />
         /// <returns>Ein Array mit allen aktuellen Benachrichtigungen.</returns>
-        public async Task<ProxerResult<PmObject[]>> GetAllPrivateMessages()
+        public async Task<ProxerResult<IEnumerable<PmObject>>> GetAllPrivateMessages()
         {
             if (this._notificationObjects != null)
-                return new ProxerResult<PmObject[]>(this._pmObjects);
+                return new ProxerResult<IEnumerable<PmObject>>(this._pmObjects);
 
             ProxerResult lResult;
             return !(lResult = await this.GetInfos()).Success
-                ? new ProxerResult<PmObject[]>(lResult.Exceptions)
-                : new ProxerResult<PmObject[]>(this._pmObjects);
+                ? new ProxerResult<IEnumerable<PmObject>>(lResult.Exceptions)
+                : new ProxerResult<IEnumerable<PmObject>>(this._pmObjects);
         }
 
 

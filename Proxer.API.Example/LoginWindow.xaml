@@ -18,9 +18,11 @@
                   VerticalAlignment="Top" Width="250" BorderBrush="#FF9BA3A8">
             <WrapPanel>
                 <Button Content="Benachrichtigungen" HorizontalAlignment="Left" Height="38"
-                    Margin="8,15,0,0" VerticalAlignment="Top" Width="121" Click="NotificationButton_Click" />
+                    Margin="8,5,0,0" VerticalAlignment="Top" Width="121" Click="NotificationButton_Click" />
                 <Button Content="Konferenz" HorizontalAlignment="Left" Height="38"
-                    Margin="8,15,0,0" VerticalAlignment="Top" Width="92" Click="ConferenceButton_Click"/>
+                    Margin="8,5,0,0" VerticalAlignment="Top" Width="92" Click="ConferenceButton_Click"/>
+                <Button Content="User" HorizontalAlignment="Left" Height="38"
+                	Margin="8,5,0,0" VerticalAlignment="Top" Width="92" Click="UserButton_Click"/>
             </WrapPanel>
         </GroupBox>
 

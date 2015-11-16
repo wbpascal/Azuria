@@ -35,6 +35,9 @@ namespace Proxer.API.Community
         private readonly Timer _getMessagesTimer;
         private readonly Func<Task<ProxerResult>>[] _initFuncs;
         private readonly Senpai _senpai;
+        private IEnumerable<User> _teilnehmer;
+        private User _leiter;
+        private IEnumerable<Message> _nachrichten;
 
         /// <summary>
         ///     Standard-Konstruktor der Klasse.
@@ -128,18 +131,30 @@ namespace Proxer.API.Community
         /// <summary>
         ///     Gibt den Leiter der Konferenz zurück. (<see cref="InitConference" /> muss dafür zunächst einmal aufgerufen werden)
         /// </summary>
-        public User Leiter { get; private set; }
+        public User Leiter
+        {
+            get { return this._leiter ?? User.System; }
+            private set { this._leiter = value; }
+        }
 
         /// <summary>
         ///     Gibt alle Nachrichten aus der Konferenz in chronoligischer Ordnung zurück.
         /// </summary>
-        public IEnumerable<Message> Nachrichten { get; private set; }
+        public IEnumerable<Message> Nachrichten
+        {
+            get { return this._nachrichten ?? new List<Message>(); }
+            private set { this._nachrichten = value; }
+        }
 
         /// <summary>
         ///     Gibt alle Teilnehmer der Konferenz zurück (<see cref="InitConference" /> muss dafür zunächst einmal aufgerufen
         ///     werden)
         /// </summary>
-        public IEnumerable<User> Teilnehmer { get; private set; }
+        public IEnumerable<User> Teilnehmer
+        {
+            get { return this._teilnehmer ?? new List<User>(); }
+            private set { this._teilnehmer = value; }
+        }
 
         /// <summary>
         ///     Gibt den Titel der Konferenz zurück (<see cref="InitConference" /> muss dafür zunächst einmal aufgerufen werden)
@@ -553,10 +568,9 @@ namespace Proxer.API.Community
                         Success = false
                     };
 
-                User[] lLeiterArray = this.Teilnehmer.Where(
-                    x => x.UserName.Equals(lDict["message"].Remove(0, "Konferenzleiter: ".Length)))
-                                          .ToArray();
-                if (lLeiterArray.Any()) this.Leiter = lLeiterArray[0];
+                this.Leiter =
+                    this.Teilnehmer?.FirstOrDefault(
+                        x => x.UserName.Equals(lDict["message"].Remove(0, "Konferenzleiter: ".Length))) ?? User.System;
 
                 return new ProxerResult();
             }

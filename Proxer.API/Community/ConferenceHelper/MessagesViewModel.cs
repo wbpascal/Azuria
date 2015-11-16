@@ -22,17 +22,8 @@ namespace Proxer.API.Community.ConferenceHelper
         [JsonProperty("timestamp")]
         public string Timestamp { get; set; }
 
-        [JsonProperty("device")]
-        public string Device { get; set; }
-
         [JsonProperty("username")]
         public string Username { get; set; }
-
-        [JsonProperty("avatar")]
-        public string Avatar { get; set; }
-
-        [JsonProperty("block")]
-        public string Block { get; set; }
     }
 
     internal class MessagesViewModel
@@ -46,15 +37,6 @@ namespace Proxer.API.Community.ConferenceHelper
 
         [JsonProperty("messages")]
         public MessageModel[] MessagesModel { get; set; }
-
-        [JsonProperty("favour")]
-        public string Favour { get; set; }
-
-        [JsonProperty("block")]
-        public string Block { get; set; }
-
-        [JsonProperty("bookmark")]
-        public string Bookmark { get; set; }
     }
 
 }

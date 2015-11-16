@@ -153,7 +153,7 @@ namespace Proxer.API.Example
             }
 
             //Rufe die Freundschaftsanfragen ab
-            ProxerResult<FriendRequestObject[]> lResult = await collection.GetAllFriendRequests();
+            ProxerResult<IEnumerable<FriendRequestObject>> lResult = await collection.GetAllFriendRequests();
             if (!lResult.Success)
             {
                 //Falls die Methode fehlschlägt kann hier überprüft werden was der Grund ist.
@@ -212,7 +212,7 @@ namespace Proxer.API.Example
             this.NewsListBox.Items.Clear();
 
             //Rufe die letzten 15 News ab
-            ProxerResult<NewsObject[]> lResult = await collection.GetAllNews();
+            ProxerResult<IEnumerable<NewsObject>> lResult = await collection.GetAllNews();
             if (!lResult.Success)
             {
                 //Falls die Methode fehlschlägt kann hier überprüft werden was der Grund ist.
@@ -247,7 +247,7 @@ namespace Proxer.API.Example
             this.PmListBox.Items.Clear();
 
             //Ruft alle Privatnachricht-Benachrichtigungen ab
-            ProxerResult<PmObject[]> lResult = await collection.GetAllPrivateMessages();
+            ProxerResult<IEnumerable<PmObject>> lResult = await collection.GetAllPrivateMessages();
             if (!lResult.Success)
             {
                 //Falls die Methode fehlschlägt kann hier überprüft werden was der Grund ist.
