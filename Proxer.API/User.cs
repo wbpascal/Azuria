@@ -563,11 +563,11 @@ namespace Proxer.API
 
                     this._animeList.Add(
                         new KeyValuePair<AnimeMangaProgressObject.AnimeMangaProgress, AnimeMangaProgressObject>(
-                            AnimeMangaProgressObject.AnimeMangaProgress.Geschaut,
+                            AnimeMangaProgressObject.AnimeMangaProgress.Finished,
                             new AnimeMangaProgressObject(this, lAnime,
                                 Convert.ToInt32(animeNode.ChildNodes[4].InnerText.Split('/')[0].Trim()),
                                 Convert.ToInt32(animeNode.ChildNodes[4].InnerText.Split('/')[1].Trim()),
-                                AnimeMangaProgressObject.AnimeMangaProgress.Geschaut)));
+                                AnimeMangaProgressObject.AnimeMangaProgress.Finished)));
                 }
 
                 foreach (
@@ -584,11 +584,11 @@ namespace Proxer.API
 
                     this._animeList.Add(
                         new KeyValuePair<AnimeMangaProgressObject.AnimeMangaProgress, AnimeMangaProgressObject>(
-                            AnimeMangaProgressObject.AnimeMangaProgress.AmSchauen,
+                            AnimeMangaProgressObject.AnimeMangaProgress.InProgress,
                             new AnimeMangaProgressObject(this, lAnime,
                                 Convert.ToInt32(animeNode.ChildNodes[4].InnerText.Split('/')[0].Trim()),
                                 Convert.ToInt32(animeNode.ChildNodes[4].InnerText.Split('/')[1].Trim()),
-                                AnimeMangaProgressObject.AnimeMangaProgress.AmSchauen)));
+                                AnimeMangaProgressObject.AnimeMangaProgress.InProgress)));
                 }
 
                 foreach (
@@ -605,11 +605,11 @@ namespace Proxer.API
 
                     this._animeList.Add(
                         new KeyValuePair<AnimeMangaProgressObject.AnimeMangaProgress, AnimeMangaProgressObject>(
-                            AnimeMangaProgressObject.AnimeMangaProgress.WirdNochGeschaut,
+                            AnimeMangaProgressObject.AnimeMangaProgress.Planned,
                             new AnimeMangaProgressObject(this, lAnime,
                                 Convert.ToInt32(animeNode.ChildNodes[4].InnerText.Split('/')[0].Trim()),
                                 Convert.ToInt32(animeNode.ChildNodes[4].InnerText.Split('/')[1].Trim()),
-                                AnimeMangaProgressObject.AnimeMangaProgress.WirdNochGeschaut)));
+                                AnimeMangaProgressObject.AnimeMangaProgress.Planned)));
                 }
 
                 foreach (
@@ -626,11 +626,11 @@ namespace Proxer.API
 
                     this._animeList.Add(
                         new KeyValuePair<AnimeMangaProgressObject.AnimeMangaProgress, AnimeMangaProgressObject>(
-                            AnimeMangaProgressObject.AnimeMangaProgress.Abgebrochen,
+                            AnimeMangaProgressObject.AnimeMangaProgress.Aborted,
                             new AnimeMangaProgressObject(this, lAnime,
                                 Convert.ToInt32(animeNode.ChildNodes[4].InnerText.Split('/')[0].Trim()),
                                 Convert.ToInt32(animeNode.ChildNodes[4].InnerText.Split('/')[1].Trim()),
-                                AnimeMangaProgressObject.AnimeMangaProgress.Abgebrochen)));
+                                AnimeMangaProgressObject.AnimeMangaProgress.Aborted)));
                 }
 
                 #endregion
@@ -694,11 +694,11 @@ namespace Proxer.API
 
                     this._mangaList.Add(
                         new KeyValuePair<AnimeMangaProgressObject.AnimeMangaProgress, AnimeMangaProgressObject>(
-                            AnimeMangaProgressObject.AnimeMangaProgress.Geschaut,
+                            AnimeMangaProgressObject.AnimeMangaProgress.Finished,
                             new AnimeMangaProgressObject(this, lManga,
                                 Convert.ToInt32(animeNode.ChildNodes[4].InnerText.Split('/')[0].Trim()),
                                 Convert.ToInt32(animeNode.ChildNodes[4].InnerText.Split('/')[1].Trim()),
-                                AnimeMangaProgressObject.AnimeMangaProgress.Geschaut)));
+                                AnimeMangaProgressObject.AnimeMangaProgress.Finished)));
                 }
 
                 foreach (
@@ -715,11 +715,11 @@ namespace Proxer.API
 
                     this._mangaList.Add(
                         new KeyValuePair<AnimeMangaProgressObject.AnimeMangaProgress, AnimeMangaProgressObject>(
-                            AnimeMangaProgressObject.AnimeMangaProgress.AmSchauen,
+                            AnimeMangaProgressObject.AnimeMangaProgress.InProgress,
                             new AnimeMangaProgressObject(this, lManga,
                                 Convert.ToInt32(animeNode.ChildNodes[4].InnerText.Split('/')[0].Trim()),
                                 Convert.ToInt32(animeNode.ChildNodes[4].InnerText.Split('/')[1].Trim()),
-                                AnimeMangaProgressObject.AnimeMangaProgress.AmSchauen)));
+                                AnimeMangaProgressObject.AnimeMangaProgress.InProgress)));
                 }
 
                 foreach (
@@ -736,11 +736,11 @@ namespace Proxer.API
 
                     this._mangaList.Add(
                         new KeyValuePair<AnimeMangaProgressObject.AnimeMangaProgress, AnimeMangaProgressObject>(
-                            AnimeMangaProgressObject.AnimeMangaProgress.WirdNochGeschaut,
+                            AnimeMangaProgressObject.AnimeMangaProgress.Planned,
                             new AnimeMangaProgressObject(this, lManga,
                                 Convert.ToInt32(animeNode.ChildNodes[4].InnerText.Split('/')[0].Trim()),
                                 Convert.ToInt32(animeNode.ChildNodes[4].InnerText.Split('/')[1].Trim()),
-                                AnimeMangaProgressObject.AnimeMangaProgress.WirdNochGeschaut)));
+                                AnimeMangaProgressObject.AnimeMangaProgress.Planned)));
                 }
 
                 foreach (
@@ -757,11 +757,11 @@ namespace Proxer.API
 
                     this._mangaList.Add(
                         new KeyValuePair<AnimeMangaProgressObject.AnimeMangaProgress, AnimeMangaProgressObject>(
-                            AnimeMangaProgressObject.AnimeMangaProgress.Abgebrochen,
+                            AnimeMangaProgressObject.AnimeMangaProgress.Aborted,
                             new AnimeMangaProgressObject(this, lManga,
                                 Convert.ToInt32(animeNode.ChildNodes[4].InnerText.Split('/')[0].Trim()),
                                 Convert.ToInt32(animeNode.ChildNodes[4].InnerText.Split('/')[1].Trim()),
-                                AnimeMangaProgressObject.AnimeMangaProgress.Abgebrochen)));
+                                AnimeMangaProgressObject.AnimeMangaProgress.Aborted)));
                 }
 
                 #endregion

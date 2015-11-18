@@ -1,26 +1,37 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using Proxer.API.Example.Controls;
+using Proxer.API.Main.User;
 using Proxer.API.Utilities;
 
 namespace Proxer.API.Example
 {
-    /// <summary>
-    /// Interaction logic for UserWindow.xaml
-    /// </summary>
     public partial class UserWindow : Window
     {
         private readonly User _user;
 
         public UserWindow(User user)
         {
+            if (user == null)
+            {
+                this.Close();
+                return;
+            }
+
             this._user = user;
             this.InitializeComponent();
         }
 
         private async void Window_Loaded(object sender, RoutedEventArgs e)
         {
+            //WICHTIG
+            //Wenn der User schon initialisiert ist brauch das nicht noch einmal gemacht zu werden
+            //Dies verringert die Belastung auf Proxer
+            //Die Initialisierungs-Methode kann aber auch aufgerufen werden um die Infos zu aktualisieren
             if (!this._user.IstInitialisiert)
             {
                 ProxerResult lInitResult = await this._user.Init();
@@ -33,6 +44,7 @@ namespace Proxer.API.Example
                 }
             }
 
+            //Schreibe die Infos zu dem User in die zugehörigen Controls
             this.InitComponents();
         }
 
@@ -40,6 +52,8 @@ namespace Proxer.API.Example
         {
             this.Title = "User: " + this._user.UserName;
 
+            //ACHTUNG: Wenn Proxer nicht erreichbar ist kann hier ein Fehler auftreten
+            //Wenn der User noch nicht initialisiert ist sollte die Eigenschaft den Standard-Avatar von Proxer zurückgeben
             this.ProfileImage.Source = new BitmapImage(this._user.Avatar);
 
             this.IdLabel.Content = this._user.Id;
@@ -50,6 +64,9 @@ namespace Proxer.API.Example
                 new SolidColorBrush(this._user.Online ? Color.FromRgb(79, 222, 43) : Color.FromRgb(222, 43, 43));
 
             this.InitInfo();
+            this.InitFriends();
+            this.InitAnime();
+            this.InitManga();
         }
 
         private void InitInfo()
@@ -59,6 +76,97 @@ namespace Proxer.API.Example
             this.StatusBlock.Text = this._user.Status;
             this.InfoBox.Text = this._user.Info;
             this.InfoHtmlBox.Text = this._user.InfoHtml;
+        }
+
+        private void InitFriends()
+        {
+            foreach (User friend in this._user.Freunde)
+            {
+                //Um den Freund darzustellen benutzte ich einen TextBlock
+                //Der DataContext ist nur wichtig, um den Freund in dem MouseLeftButtonUp-Event abzurufen
+                TextBlock lFriendBlock = new TextBlock {Text = friend.ToString(), DataContext = friend};
+                lFriendBlock.MouseLeftButtonUp += this.FriendBlock_MouseLeftButtonUp;
+
+                this.FriendListBox.Items.Add(lFriendBlock);
+            }
+        }
+
+        private void InitAnime()
+        {
+            foreach (
+                KeyValuePair<AnimeMangaProgressObject.AnimeMangaProgress, AnimeMangaProgressObject> anime in
+                    this._user.Anime)
+            {
+                //Hier wird keine Standartmäßiges Control verwendet um den Anime darzustellen
+                //Mehr Infos in der Klasse AnimeMangaProgressControl
+                AnimeMangaProgressControl lProgressControl = new AnimeMangaProgressControl(anime.Value);
+
+                //Füge AnimeMangaProgressControl dem zugehörigen StackPanel hinzu
+                //Variiert je nachdem was anime.Key für einen Wert hat
+                switch (anime.Key)
+                {
+                    //Anime wurde bereits geschaut
+                    case AnimeMangaProgressObject.AnimeMangaProgress.Finished:
+                        this.AnimeGeschautPanel.Children.Add(lProgressControl);
+                        break;
+                    //Anime wird gerade geschaut
+                    case AnimeMangaProgressObject.AnimeMangaProgress.InProgress:
+                        this.AnimeAmSchauenPanel.Children.Add(lProgressControl);
+                        break;
+                    //Anime wird noch geschaut
+                    case AnimeMangaProgressObject.AnimeMangaProgress.Planned:
+                        this.AnimeWirdNochGeschautPanel.Children.Add(lProgressControl);
+                        break;
+                    //Anime wurde abgebrochen
+                    case AnimeMangaProgressObject.AnimeMangaProgress.Aborted:
+                        this.AnimeAbgebrochenPanel.Children.Add(lProgressControl);
+                        break;
+                }
+            }
+        }
+
+        private void InitManga()
+        {
+            foreach (
+                KeyValuePair<AnimeMangaProgressObject.AnimeMangaProgress, AnimeMangaProgressObject> manga in
+                    this._user.Manga)
+            {
+                //Hier wird keine Standartmäßiges Control verwendet um den Manga darzustellen
+                //Mehr Infos in der Klasse AnimeMangaProgressControl
+                AnimeMangaProgressControl lProgressControl = new AnimeMangaProgressControl(manga.Value);
+
+                //Füge AnimeMangaProgressControl dem zugehörigen StackPanel hinzu
+                //Variiert je nachdem was manga.Key für einen Wert hat
+                switch (manga.Key)
+                {
+                    //Manga wurde bereits gelesen
+                    case AnimeMangaProgressObject.AnimeMangaProgress.Finished:
+                        this.MangaGelesenPanel.Children.Add(lProgressControl);
+                        break;
+                    //Manga wird gerade gelesen
+                    case AnimeMangaProgressObject.AnimeMangaProgress.InProgress:
+                        this.MangaAmLesenPanel.Children.Add(lProgressControl);
+                        break;
+                    //Manga wird noch gelesen
+                    case AnimeMangaProgressObject.AnimeMangaProgress.Planned:
+                        this.MangaWirdNochGelesenPanel.Children.Add(lProgressControl);
+                        break;
+                    //Manga wurde abgebrochen
+                    case AnimeMangaProgressObject.AnimeMangaProgress.Aborted:
+                        this.MangaAbgebrochenPanel.Children.Add(lProgressControl);
+                        break;
+                }
+            }
+        }
+
+        private void FriendBlock_MouseLeftButtonUp(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        {
+            //Rufe den TextBlock aus den Parametern ab
+            TextBlock lFriendBlock = sender as TextBlock;
+            if (lFriendBlock == null) return;
+
+            //Öffne ein neues UserWindow mit dem DataContext des TextBlock, der den User enthält
+            new UserWindow(lFriendBlock.DataContext as User).Show();
         }
     }
 }

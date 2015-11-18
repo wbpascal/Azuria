@@ -17,25 +17,25 @@
             ///     Der <see cref="API.User">Benutzer</see> hat den <see cref="Anime">Anime</see>
             ///     oder <see cref="Manga">Manga</see> als bereits geschaut markiert.
             /// </summary>
-            Geschaut,
+            Finished,
 
             /// <summary>
             ///     Der <see cref="API.User">Benutzer</see> schaut den <see cref="Anime">Anime</see>
             ///     oder <see cref="Manga">Manga</see> momentan.
             /// </summary>
-            AmSchauen,
+            InProgress,
 
             /// <summary>
             ///     Der <see cref="API.User">Benutzer</see> hat den <see cref="Anime">Anime</see>
             ///     oder <see cref="Manga">Manga</see> markiert, dass er ihn noch sehen wird.
             /// </summary>
-            WirdNochGeschaut,
+            Planned,
 
             /// <summary>
             ///     Der <see cref="API.User">Benutzer</see> hat den <see cref="Anime">Anime</see>
             ///     oder <see cref="Manga">Manga</see> als abgebrochen markiert.
             /// </summary>
-            Abgebrochen
+            Aborted
         }
 
         /// <summary>

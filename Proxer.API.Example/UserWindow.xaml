@@ -35,13 +35,35 @@
                 </ScrollViewer>
             </TabItem>
             <TabItem Header="Freunde">
-                <Grid Background="#FFE5E5E5"/>
+                <ListBox x:Name="FriendListBox" Background="#FFE5E5E5"/>
             </TabItem>
             <TabItem Header="Anime">
-                <Grid Background="#FFE5E5E5"/>
+                <ScrollViewer>
+                    <StackPanel Background="#FFE5E5E5">
+                        <TextBlock Text="Geschaut" FontSize="14.667" FontWeight="Bold"/>
+                        <StackPanel x:Name="AnimeGeschautPanel" Margin="25,0,0,0"/>
+                        <TextBlock Text="Am Schauen" FontSize="14.667" FontWeight="Bold"/>
+                        <StackPanel x:Name="AnimeAmSchauenPanel" Margin="25,0,0,0"/>
+                        <TextBlock Text="Wird Noch Geschaut" FontSize="14.667" FontWeight="Bold"/>
+                        <StackPanel x:Name="AnimeWirdNochGeschautPanel" Margin="25,0,0,0"/>
+                        <TextBlock Text="Abgebrochen" FontSize="14.667" FontWeight="Bold"/>
+                        <StackPanel x:Name="AnimeAbgebrochenPanel" Margin="25,0,0,0"/>
+                    </StackPanel>
+                </ScrollViewer>
             </TabItem>
             <TabItem Header="Manga">
-                <Grid Background="#FFE5E5E5"/>
+                <ScrollViewer>
+                    <StackPanel Background="#FFE5E5E5">
+                        <TextBlock Text="Gelesen" FontSize="14.667" FontWeight="Bold"/>
+                        <StackPanel x:Name="MangaGelesenPanel" Margin="25,0,0,0"/>
+                        <TextBlock Text="Am Lesen" FontSize="14.667" FontWeight="Bold"/>
+                        <StackPanel x:Name="MangaAmLesenPanel" Margin="25,0,0,0"/>
+                        <TextBlock Text="Wird Noch Geschaut" FontSize="14.667" FontWeight="Bold"/>
+                        <StackPanel x:Name="MangaWirdNochGelesenPanel" Margin="25,0,0,0"/>
+                        <TextBlock Text="Abgebrochen" FontSize="14.667" FontWeight="Bold"/>
+                        <StackPanel x:Name="MangaAbgebrochenPanel" Margin="25,0,0,0"/>
+                    </StackPanel>
+                </ScrollViewer>
             </TabItem>
         </TabControl>
         <Label Content="ID:" HorizontalAlignment="Left" Height="24" Margin="171,23,0,0" VerticalAlignment="Top" Width="26"/>
