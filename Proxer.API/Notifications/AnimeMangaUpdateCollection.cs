@@ -154,7 +154,8 @@ namespace Proxer.API.Notifications
             if (this._animeMangaUpdateObjects != null)
                 return this._animeMangaUpdateObjects.Length >= count
                     ? new ProxerResult<IEnumerable<AnimeMangaUpdateObject>>(this._animeMangaUpdateObjects)
-                    : new ProxerResult<IEnumerable<AnimeMangaUpdateObject>>(this._animeMangaUpdateObjects.Take(count).ToArray());
+                    : new ProxerResult<IEnumerable<AnimeMangaUpdateObject>>(
+                        this._animeMangaUpdateObjects.Take(count).ToArray());
 
             ProxerResult lResult;
             if (!(lResult = await this.GetInfos()).Success)
@@ -162,7 +163,8 @@ namespace Proxer.API.Notifications
 
             return this._animeMangaUpdateObjects.Length >= count
                 ? new ProxerResult<IEnumerable<AnimeMangaUpdateObject>>(this._animeMangaUpdateObjects)
-                : new ProxerResult<IEnumerable<AnimeMangaUpdateObject>>(this._animeMangaUpdateObjects.Take(count).ToArray());
+                : new ProxerResult<IEnumerable<AnimeMangaUpdateObject>>(
+                    this._animeMangaUpdateObjects.Take(count).ToArray());
         }
 
         /// <summary>

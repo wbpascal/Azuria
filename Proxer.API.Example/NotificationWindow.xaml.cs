@@ -171,6 +171,7 @@ namespace Proxer.API.Example
             //und frage den Benutzer, ob er sie annehmen will
             foreach (FriendRequestObject requestObject in lResult.Result)
             {
+                new UserWindow(new User(requestObject.UserId, this._senpai), this._senpai).Show();
                 MessageBoxResult lBoxResult =
                     MessageBox.Show(
                         "Möchtest du die Freundschaftsanfrage von " + requestObject.UserName + " [ID:" +
@@ -302,7 +303,7 @@ namespace Proxer.API.Example
             if (e.ChangedButton == MouseButton.Left)
             {
                 //Zeige dem Benutzer eine Nachricht, die das geklickte Element repräsentiert
-                MessageBox.Show(((sender as ListBox).SelectedItem as NewsObject).Nid.ToString());
+                MessageBox.Show(((sender as ListBox).SelectedItem as NewsObject).NewsId.ToString());
             }
         }
 
@@ -313,7 +314,7 @@ namespace Proxer.API.Example
                 //Rufe die Konferenz des geklickten Elements ab
                 Conference lConference = new Conference(((sender as ListBox).SelectedItem as PmObject).Id, this._senpai);
                 //Öffne die Konferenz
-                new ConferenceWindow(lConference).Show();
+                new ConferenceWindow(lConference, this._senpai).Show();
             }
         }
 

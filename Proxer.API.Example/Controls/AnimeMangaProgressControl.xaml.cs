@@ -1,12 +1,11 @@
-﻿using System.Windows.Controls;
+﻿using System.Windows;
+using System.Windows.Controls;
 using Proxer.API.Main.User;
 
 namespace Proxer.API.Example.Controls
 {
     public partial class AnimeMangaProgressControl : UserControl
     {
-        public AnimeMangaProgressObject AnimeMangaProgressObject { get; set; }
-
         public AnimeMangaProgressControl(AnimeMangaProgressObject animeMangaProgressObject)
         {
             //Schreibt das AnimeMangaProgressObject in die zugehörige Eigenschaft
@@ -15,9 +14,18 @@ namespace Proxer.API.Example.Controls
             this.InitializeComponent();
         }
 
-        private void StackPanel_Loaded(object sender, System.Windows.RoutedEventArgs e)
-        {
+        #region Properties
 
+        public AnimeMangaProgressObject AnimeMangaProgressObject { get; set; }
+
+        #endregion
+
+        #region
+
+        private void StackPanel_Loaded(object sender, RoutedEventArgs e)
+        {
         }
+
+        #endregion
     }
 }

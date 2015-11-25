@@ -1,7 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using System.Diagnostics;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using Proxer.API.Example.Controls;
@@ -12,9 +13,10 @@ namespace Proxer.API.Example
 {
     public partial class UserWindow : Window
     {
+        private readonly Senpai _senpai;
         private readonly User _user;
 
-        public UserWindow(User user)
+        public UserWindow(User user, Senpai senpai)
         {
             if (user == null)
             {
@@ -23,8 +25,15 @@ namespace Proxer.API.Example
             }
 
             this._user = user;
+            this._senpai = senpai;
             this.InitializeComponent();
+
+            //Freundschaftsanfragen können nur gesendet werden, wenn der Benutzer nicht der selbe wie der Senpai ist
+            //Es müsste bei einer besseren Implementierung auch noch geprüft werden, ob der Benutzer nicht schon ein Freund ist
+            this.SendFriendRequestButton.IsEnabled = this._user.Id != this._senpai.Me.Id;
         }
+
+        #region
 
         private async void Window_Loaded(object sender, RoutedEventArgs e)
         {
@@ -97,7 +106,7 @@ namespace Proxer.API.Example
                 KeyValuePair<AnimeMangaProgressObject.AnimeMangaProgress, AnimeMangaProgressObject> anime in
                     this._user.Anime)
             {
-                //Hier wird keine Standartmäßiges Control verwendet um den Anime darzustellen
+                //Hier wird keine Standartmäßiges Control-Element verwendet um den Anime darzustellen
                 //Mehr Infos in der Klasse AnimeMangaProgressControl
                 AnimeMangaProgressControl lProgressControl = new AnimeMangaProgressControl(anime.Value);
 
@@ -131,7 +140,7 @@ namespace Proxer.API.Example
                 KeyValuePair<AnimeMangaProgressObject.AnimeMangaProgress, AnimeMangaProgressObject> manga in
                     this._user.Manga)
             {
-                //Hier wird keine Standartmäßiges Control verwendet um den Manga darzustellen
+                //Hier wird keine Standartmäßiges Control-Element verwendet um den Manga darzustellen
                 //Mehr Infos in der Klasse AnimeMangaProgressControl
                 AnimeMangaProgressControl lProgressControl = new AnimeMangaProgressControl(manga.Value);
 
@@ -159,14 +168,31 @@ namespace Proxer.API.Example
             }
         }
 
-        private void FriendBlock_MouseLeftButtonUp(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        private void FriendBlock_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
             //Rufe den TextBlock aus den Parametern ab
             TextBlock lFriendBlock = sender as TextBlock;
             if (lFriendBlock == null) return;
 
             //Öffne ein neues UserWindow mit dem DataContext des TextBlock, der den User enthält
-            new UserWindow(lFriendBlock.DataContext as User).Show();
+            new UserWindow(lFriendBlock.DataContext as User, this._senpai).Show();
         }
+
+        private void OpenWebsiteButton_Click(object sender, RoutedEventArgs e)
+        {
+            //Öffne den Link zu dem Benutzer in dem Standardbrowser 
+            Process.Start("https://proxer.me/user/" + this._user.Id);
+        }
+
+        private async void SendFriendRequestButton_Click(object sender, RoutedEventArgs e)
+        {
+            if ((await this._user.SendFriendRequest()).OnError(false))
+                MessageBox.Show("Die Freundschaftsanfrage wurde erfolgreich versendet!");
+            else
+                MessageBox.Show("Es ist ein Fehler beim Versenden der Freundschaftanfrage aufgetreten!", "Fehler",
+                    MessageBoxButton.OK, MessageBoxImage.Error);
+        }
+
+        #endregion
     }
 }

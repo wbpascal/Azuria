@@ -31,6 +31,22 @@ namespace Proxer.API.Main
             English
         }
 
+        /// <summary>
+        ///     Eine Enumeration, die den Typ des Mangas darstellt.
+        /// </summary>
+        public enum MangaType
+        {
+            /// <summary>
+            ///     Stellt eine Manga-Serie dar.
+            /// </summary>
+            Series,
+
+            /// <summary>
+            ///     Stellt einen Manga One-Shot dar.
+            /// </summary>
+            OneShot
+        }
+
         private readonly Func<Task<ProxerResult>>[] _initFuncs;
 
         private readonly Senpai _senpai;
@@ -49,7 +65,7 @@ namespace Proxer.API.Main
         {
             this._senpai = senpai;
             this._initFuncs = new Func<Task<ProxerResult>>[]
-            {this.InitMain, this.InitAvailableLang, this.InitChapterCount};
+            {this.InitMain, this.InitAvailableLang, this.InitChapterCount, this.InitType};
             this.ObjectType = AnimeMangaType.Manga;
             this.Name = name;
             this.Id = id;
@@ -340,6 +356,14 @@ namespace Proxer.API.Main
         /// </summary>
         /// <seealso cref="Init" />
         public int KapitelZahl { get; private set; }
+
+        /// <summary>
+        ///     Gibt den Typ eines Anime zurück.
+        ///     <para />
+        ///     <para>Diese Eigenschaft muss durch <see cref="Init" /> initialisiert werden.</para>
+        /// </summary>
+        /// <seealso cref="Init" />
+        public MangaType MangaTyp { get; private set; }
 
         /// <summary>
         ///     Gibt die verfügbaren Sprachen zurück.
@@ -667,6 +691,58 @@ namespace Proxer.API.Main
             {
                 return new ProxerResult((await ErrorHandler.HandleError(this._senpai, lResponse, false)).Exceptions);
             }
+        }
+
+        private async Task<ProxerResult> InitType()
+        {
+            HtmlDocument lDocument = new HtmlDocument();
+            Func<string, ProxerResult> lCheckFunc = s =>
+            {
+                if (!string.IsNullOrEmpty(s) &&
+                    s.Equals("Bitte logge dich ein."))
+                    return new ProxerResult(new Exception[] {new NoAccessException(nameof(this.InitType))});
+
+                return new ProxerResult();
+            };
+            ProxerResult<string> lResult =
+                await
+                    HttpUtility.GetResponseErrorHandling(
+                        "http://proxer.me/edit/entry/" + this.Id + "/medium?format=raw",
+                        this._senpai.LoginCookies,
+                        this._senpai.ErrHandler,
+                        this._senpai,
+                        new[] {lCheckFunc});
+
+            if (!lResult.Success)
+                return new ProxerResult(lResult.Exceptions);
+
+            string lResponse = lResult.Result;
+
+            try
+            {
+                lDocument.LoadHtml(lResponse);
+
+                HtmlNode lNode =
+                    lDocument.GetElementbyId("medium").ChildNodes.First(node => node.Attributes.Contains("selected"));
+                switch (lNode.Attributes["value"].Value)
+                {
+                    case "mangaseries":
+                        this.MangaTyp = MangaType.Series;
+                        break;
+                    case "oneshot":
+                        this.MangaTyp = MangaType.OneShot;
+                        break;
+                    default:
+                        this.MangaTyp = MangaType.Series;
+                        break;
+                }
+            }
+            catch
+            {
+                return new ProxerResult((await ErrorHandler.HandleError(this._senpai, lResponse, false)).Exceptions);
+            }
+
+            return new ProxerResult();
         }
 
         #endregion

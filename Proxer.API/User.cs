@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using HtmlAgilityPack;
+using Newtonsoft.Json;
 using Proxer.API.Exceptions;
 using Proxer.API.Main;
 using Proxer.API.Main.User;
@@ -28,11 +29,11 @@ namespace Proxer.API
         private Uri _avatar;
         private List<User> _freunde;
         private string _info;
+        private string _infoHtml;
         private List<KeyValuePair<AnimeMangaProgressObject.AnimeMangaProgress, AnimeMangaProgressObject>> _mangaList;
         private string _rang;
         private string _status;
         private string _userName;
-        private string _infoHtml;
 
         internal User(string name, int userId, Senpai senpai)
         {
@@ -144,7 +145,7 @@ namespace Proxer.API
         public int Id { get; }
 
         /// <summary>
-        ///     Gibt die Info des Benutzers als Text-Dokument zurück. 
+        ///     Gibt die Info des Benutzers als Text-Dokument zurück.
         ///     Dabei werden sämtliche Html-Eigenschaften ignoriert.
         ///     <para />
         ///     <para>Diese Eigenschaft muss durch <see cref="Init" /> initialisiert werden.</para>
@@ -300,6 +301,68 @@ namespace Proxer.API
                 lReturn.Success = true;
 
             return lReturn;
+        }
+
+        /// <summary>
+        ///     Sendet dem <see cref="User">Benutzer</see> eine Freundschaftsanfrage.
+        ///     <para>Mögliche Fehler, die <see cref="ProxerResult" /> enthalten kann:</para>
+        ///     <list type="table">
+        ///         <listheader>
+        ///             <term>Ausnahme</term>
+        ///             <description>Beschreibung</description>
+        ///         </listheader>
+        ///         <item>
+        ///             <term>
+        ///                 <see cref="WrongResponseException" />
+        ///             </term>
+        ///             <description>
+        ///                 <see cref="WrongResponseException" /> wird ausgelöst, wenn die Antwort des Servers nicht der
+        ///                 Erwarteten entspricht.
+        ///             </description>
+        ///         </item>
+        ///         <item>
+        ///             <term>
+        ///                 <see cref="NotLoggedInException" />
+        ///             </term>
+        ///             <description>Wird ausgelöst, wenn der <see cref="Senpai">Benutzer</see> nicht eingeloggt ist.</description>
+        ///         </item>
+        ///     </list>
+        /// </summary>
+        /// <returns>Einen boolischen Wert, der angibt, ob die Aktion erfolgreich war.</returns>
+        public async Task<ProxerResult<bool>> SendFriendRequest()
+        {
+            if (this.Id == -1) return new ProxerResult<bool> {Success = false};
+
+            Dictionary<string, string> lPostArgs = new Dictionary<string, string>
+            {
+                {"type", "addFriend"}
+            };
+            ProxerResult<string> lResult =
+                await
+                    HttpUtility.PostResponseErrorHandling("https://proxer.me/user/" + this.Id + "?format=json",
+                        lPostArgs,
+                        this._senpai.LoginCookies,
+                        this._senpai.ErrHandler,
+                        this._senpai);
+
+            if (!lResult.Success)
+                return new ProxerResult<bool>(lResult.Exceptions);
+
+            try
+            {
+                Dictionary<string, string> lResultDictionary =
+                    JsonConvert.DeserializeObject<Dictionary<string, string>>(lResult.Result);
+
+                return lResultDictionary.ContainsKey("error")
+                    ? new ProxerResult<bool>(lResultDictionary["error"].Equals("0"))
+                    : new ProxerResult<bool>(new Exception[] {new WrongResponseException {Response = lResult.Result}});
+            }
+            catch
+            {
+                return
+                    new ProxerResult<bool>(
+                        (await ErrorHandler.HandleError(this._senpai, lResult.Result, false)).Exceptions);
+            }
         }
 
 
@@ -775,10 +838,10 @@ namespace Proxer.API
         }
 
         /// <summary>
-        /// Gibt einen string zurück, der das aktuelle Objekt repräsentiert.
+        ///     Gibt einen string zurück, der das aktuelle Objekt repräsentiert.
         /// </summary>
         /// <returns>
-        /// Ein string, der das aktuelle Objekt repräsentiert.
+        ///     Ein string, der das aktuelle Objekt repräsentiert.
         /// </returns>
         public override string ToString()
         {

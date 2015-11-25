@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using Proxer.API.Community;
@@ -66,8 +65,6 @@ namespace Proxer.API.Example
             new NotificationWindow(this._senpai).Show();
         }
 
-        #endregion
-
         private async void ConferenceButton_Click(object sender, RoutedEventArgs e)
         {
             //Gib alle Konferenzen zurück
@@ -76,7 +73,7 @@ namespace Proxer.API.Example
             if (lResult.Success && lResult.Result.Any())
             {
                 //Öffne die erste Konferenz in der Liste
-                new ConferenceWindow(lResult.Result.First()).Show();
+                new ConferenceWindow(lResult.Result.First(), this._senpai).Show();
             }
             else
             {
@@ -89,7 +86,9 @@ namespace Proxer.API.Example
 
         private void UserButton_Click(object sender, RoutedEventArgs e)
         {
-            new UserWindow(new User(177103, this._senpai)).Show();
+            new UserWindow(this._senpai.Me, this._senpai).Show();
         }
+
+        #endregion
     }
 }

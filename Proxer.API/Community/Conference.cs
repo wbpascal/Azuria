@@ -18,6 +18,13 @@ namespace Proxer.API.Community
     public class Conference
     {
         /// <summary>
+        ///     Stellt eine Methode da, die ausgelöst wird, wenn während des Abrufen der Nachrichten ein Fehler auftritt.
+        /// </summary>
+        /// <param name="sender">Die Konferenz, die das Event aufgerufen hat.</param>
+        /// <param name="exceptions">Die Ausnahmen, die ausgelöst wurden.</param>
+        public delegate void ErrorDuringPmFetchEventHandler(Conference sender, IEnumerable<Exception> exceptions);
+
+        /// <summary>
         ///     Stellt eine Methode da, die ausgelöst wird, wenn neue Nachrichten in der Konferenz vorhanden sind.
         /// </summary>
         /// <param name="sender">Die Konferenz, die das Event aufgerufen hat.</param>
@@ -25,19 +32,12 @@ namespace Proxer.API.Community
         /// <param name="alleNachrichten">Gibt an, ob alle Nachrichten geholt wurden oder nur die neuesten.</param>
         public delegate void NeuePmEventHandler(Conference sender, IEnumerable<Message> e, bool alleNachrichten);
 
-        /// <summary>
-        /// Stellt eine Methode da, die ausgelöst wird, wenn während des Abrufen der Nachrichten ein Fehler auftritt.
-        /// </summary>
-        /// <param name="sender">Die Konferenz, die das Event aufgerufen hat.</param>
-        /// <param name="exceptions">Die Ausnahmen, die ausgelöst wurden.</param>
-        public delegate void ErrorDuringPmFetchEventHandler(Conference sender, IEnumerable<Exception> exceptions);
-
         private readonly Timer _getMessagesTimer;
         private readonly Func<Task<ProxerResult>>[] _initFuncs;
         private readonly Senpai _senpai;
-        private IEnumerable<User> _teilnehmer;
         private User _leiter;
         private IEnumerable<Message> _nachrichten;
+        private IEnumerable<User> _teilnehmer;
 
         /// <summary>
         ///     Standard-Konstruktor der Klasse.
@@ -65,36 +65,6 @@ namespace Proxer.API.Community
 
             this._getMessagesTimer = new Timer {Interval = (new TimeSpan(0, 0, 15)).TotalMilliseconds};
             this._getMessagesTimer.Elapsed += this.OnGetMessagesTimerElapsed;
-        }
-
-        private void OnGetMessagesTimerElapsed(object s, ElapsedEventArgs eArgs)
-        {
-            Timer timer = s as Timer;
-            timer?.Stop();
-            this.GetMessagesTimer(timer);
-        }
-
-        private async void GetMessagesTimer(Timer timer)
-        {
-            if (this.IstInitialisiert)
-            {
-                ProxerResult lResult;
-                if (this.Nachrichten != null && this.Nachrichten.Any())
-                    lResult = await this.GetMessages(this.Nachrichten.Last().NachrichtId);
-                else lResult = await this.GetAllMessages();
-
-                try
-                {
-                    if (!lResult.Success)
-                        this.ErrorDuringPmFetchRaised?.Invoke(this, lResult.Exceptions);
-                }
-                catch
-                {
-                    //ignored
-                }
-            }
-
-            timer?.Start();
         }
 
         #region Properties
@@ -168,13 +138,43 @@ namespace Proxer.API.Community
 
         #region
 
+        private void OnGetMessagesTimerElapsed(object s, ElapsedEventArgs eArgs)
+        {
+            Timer timer = s as Timer;
+            timer?.Stop();
+            this.GetMessagesTimer(timer);
+        }
+
+        private async void GetMessagesTimer(Timer timer)
+        {
+            if (this.IstInitialisiert)
+            {
+                ProxerResult lResult;
+                if (this.Nachrichten != null && this.Nachrichten.Any())
+                    lResult = await this.GetMessages(this.Nachrichten.Last().NachrichtId);
+                else lResult = await this.GetAllMessages();
+
+                try
+                {
+                    if (!lResult.Success)
+                        this.ErrorDuringPmFetchRaised?.Invoke(this, lResult.Exceptions);
+                }
+                catch
+                {
+                    //ignored
+                }
+            }
+
+            timer?.Start();
+        }
+
         /// <summary>
         ///     Wird immer aufgerufen, wenn neue Nachrichten in der Konferenz vorhanden sind.
         /// </summary>
         public event NeuePmEventHandler NeuePmRaised;
 
         /// <summary>
-        /// Wird ausgelöst, wenn während des Abrufen der Nachrichten ein Fehler auftritt.
+        ///     Wird ausgelöst, wenn während des Abrufen der Nachrichten ein Fehler auftritt.
         /// </summary>
         public event ErrorDuringPmFetchEventHandler ErrorDuringPmFetchRaised;
 
@@ -699,7 +699,7 @@ namespace Proxer.API.Community
             {
                 ProxerResult<List<Message>> lResultMessages = await this.ProcessMessages(lResponse);
                 if (!lResultMessages.Success)
-                    return new ProxerResult(new Exception[] { new WrongResponseException(lResponse) });
+                    return new ProxerResult(new Exception[] {new WrongResponseException(lResponse)});
 
                 this.Nachrichten = lResultMessages.Result;
 
@@ -747,7 +747,7 @@ namespace Proxer.API.Community
                 {
                     Success = false
                 };
-            
+
             try
             {
                 ProxerResult<List<Message>> lResultMessages = await this.ProcessMessages(lResponse);
@@ -786,9 +786,9 @@ namespace Proxer.API.Community
 
             try
             {
-                ConferenceHelper.MessagesViewModel lMessages = JsonConvert.DeserializeObject<MessagesViewModel>(messages);
+                MessagesViewModel lMessages = JsonConvert.DeserializeObject<MessagesViewModel>(messages);
 
-                foreach (ConferenceHelper.MessageModel curMessage in lMessages.MessagesModel)
+                foreach (MessageModel curMessage in lMessages.MessagesModel)
                 {
                     Message.Action lMessageAction;
 

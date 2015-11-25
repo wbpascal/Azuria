@@ -153,7 +153,8 @@ namespace Proxer.API.Notifications
             if (this._notificationObjects != null)
                 return this._notificationObjects.Length >= count
                     ? new ProxerResult<IEnumerable<FriendRequestObject>>(this._friendRequestObjects)
-                    : new ProxerResult<IEnumerable<FriendRequestObject>>(this._friendRequestObjects.Take(count).ToArray());
+                    : new ProxerResult<IEnumerable<FriendRequestObject>>(
+                        this._friendRequestObjects.Take(count).ToArray());
             ProxerResult lResult;
             if (!(lResult = await this.GetInfos()).Success)
                 return new ProxerResult<IEnumerable<FriendRequestObject>>(lResult.Exceptions);

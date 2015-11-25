@@ -16,27 +16,48 @@ namespace Proxer.API.Main
     public class Anime : IAnimeMangaObject
     {
         /// <summary>
+        ///     Eine Enumeration, die die Verschiedenen Typen eines Anime darstellt.
+        /// </summary>
+        public enum AnimeType
+        {
+            /// <summary>
+            ///     Stellt eine Anime-Serie dar.
+            /// </summary>
+            Series,
+
+            /// <summary>
+            ///     Stellt einen Film dar.
+            /// </summary>
+            Movie,
+
+            /// <summary>
+            ///     Stellt eine Original Video Animation dar.
+            /// </summary>
+            Ova
+        }
+
+        /// <summary>
         ///     Eine Enumeration, die die Sprache eines <see cref="Anime" /> darstellt.
         /// </summary>
         public enum Language
         {
             /// <summary>
-            ///     Deutsche Untertitel
+            ///     Der Anime besitzt Deutsche Untertitel.
             /// </summary>
             GerSub,
 
             /// <summary>
-            ///     Englische Untertitel
+            ///     Der Anime besitzt Englische Untertitel.
             /// </summary>
             EngSub,
 
             /// <summary>
-            ///     Englisch vertont
+            ///     Der Anime ist Englisch vertont.
             /// </summary>
             EngDub,
 
             /// <summary>
-            ///     Deutsch vertont
+            ///     Der Anime ist Deutsch vertont.
             /// </summary>
             GerDub
         }
@@ -60,7 +81,7 @@ namespace Proxer.API.Main
             if (senpai == null) throw new ArgumentNullException(nameof(senpai));
             this._senpai = senpai;
             this._initFuncs = new Func<Task<ProxerResult>>[]
-            {this.InitMain, this.InitAvailableLang, this.InitEpisodeCount};
+            {this.InitMain, this.InitAvailableLang, this.InitEpisodeCount, this.InitType};
             this.ObjectType = AnimeMangaType.Anime;
             this.Name = name;
             this.Id = id;
@@ -342,6 +363,14 @@ namespace Proxer.API.Main
         #endregion
 
         #region Properties
+
+        /// <summary>
+        ///     Gibt den Typ eines Anime zurück.
+        ///     <para />
+        ///     <para>Diese Eigenschaft muss durch <see cref="Init" /> initialisiert werden.</para>
+        /// </summary>
+        /// <seealso cref="Init" />
+        public AnimeType AnimeTyp { get; private set; }
 
         /// <summary>
         ///     Gibt die Episodenanzahl eines <see cref="Anime" /> zurück.
@@ -736,6 +765,61 @@ namespace Proxer.API.Main
             catch
             {
                 return new ProxerResult(ErrorHandler.HandleError(this._senpai, lResponse).Exceptions);
+            }
+
+            return new ProxerResult();
+        }
+
+        private async Task<ProxerResult> InitType()
+        {
+            HtmlDocument lDocument = new HtmlDocument();
+            Func<string, ProxerResult> lCheckFunc = s =>
+            {
+                if (!string.IsNullOrEmpty(s) &&
+                    s.Equals("Bitte logge dich ein."))
+                    return new ProxerResult(new Exception[] {new NoAccessException(nameof(this.InitType))});
+
+                return new ProxerResult();
+            };
+            ProxerResult<string> lResult =
+                await
+                    HttpUtility.GetResponseErrorHandling(
+                        "http://proxer.me/edit/entry/" + this.Id + "/medium?format=raw",
+                        this._senpai.LoginCookies,
+                        this._senpai.ErrHandler,
+                        this._senpai,
+                        new[] {lCheckFunc});
+
+            if (!lResult.Success)
+                return new ProxerResult(lResult.Exceptions);
+
+            string lResponse = lResult.Result;
+
+            try
+            {
+                lDocument.LoadHtml(lResponse);
+
+                HtmlNode lNode =
+                    lDocument.GetElementbyId("medium").ChildNodes.First(node => node.Attributes.Contains("selected"));
+                switch (lNode.Attributes["value"].Value)
+                {
+                    case "animeseries":
+                        this.AnimeTyp = AnimeType.Series;
+                        break;
+                    case "movie":
+                        this.AnimeTyp = AnimeType.Movie;
+                        break;
+                    case "ova":
+                        this.AnimeTyp = AnimeType.Ova;
+                        break;
+                    default:
+                        this.AnimeTyp = AnimeType.Series;
+                        break;
+                }
+            }
+            catch
+            {
+                return new ProxerResult((await ErrorHandler.HandleError(this._senpai, lResponse, false)).Exceptions);
             }
 
             return new ProxerResult();

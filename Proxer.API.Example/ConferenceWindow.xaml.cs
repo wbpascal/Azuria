@@ -2,26 +2,30 @@
 using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Threading;
+using System.Windows.Input;
 using Proxer.API.Community;
-using Proxer.API.Utilities;
 
 namespace Proxer.API.Example
 {
     public partial class ConferenceWindow : Window
     {
         private readonly Conference _conference;
+        private readonly Senpai _senpai;
 
-        public ConferenceWindow(Conference conference)
+        public ConferenceWindow(Conference conference, Senpai senpai)
         {
             this._conference = conference;
+            this._senpai = senpai;
             this.InitializeComponent();
 
             this._conference.ErrorDuringPmFetchRaised += this.ConferenceOnErrorDuringPmFetchRaised;
             this._conference.NeuePmRaised += this.ConferenceOnNeuePmRaised;
         }
 
-        private void ConferenceOnNeuePmRaised(Conference sender, IEnumerable<Conference.Message> messages, bool alleNachrichten)
+        #region
+
+        private void ConferenceOnNeuePmRaised(Conference sender, IEnumerable<Conference.Message> messages,
+                                              bool alleNachrichten)
         {
             //Hier werden die Nachrichten verarbeitet
 
@@ -92,11 +96,11 @@ namespace Proxer.API.Example
             this.LeiterBox.Items.Add(lLeaderBlock);
         }
 
-        private void UserTextBlock_MouseLeftButtonDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        private void UserTextBlock_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
             TextBlock lTeilnehmerBlock = sender as TextBlock;
             //Öffne ein UserWindow mit den Hintergrund User-Objekt des TextBlocks als Parameter
-            new UserWindow((lTeilnehmerBlock?.DataContext as User) ?? User.System).Show();
+            new UserWindow((lTeilnehmerBlock?.DataContext as User) ?? User.System, this._senpai).Show();
         }
 
         private async void Button_Click(object sender, RoutedEventArgs e)
@@ -115,5 +119,7 @@ namespace Proxer.API.Example
                 this.InputBox.Clear();
             }
         }
+
+        #endregion
     }
 }
