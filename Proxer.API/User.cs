@@ -401,7 +401,7 @@ namespace Proxer.API
                     lDocument.DocumentNode.SelectNodes("//table[@class='profile']");
 
                 this.Avatar =
-                    new Uri("https://proxer.me" +
+                    new Uri("https:" +
                             lProfileNodes[0].ParentNode.ParentNode.ChildNodes[1].ChildNodes[0]
                                 .Attributes["src"].Value);
                 this.Punkte =

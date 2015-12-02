@@ -26,7 +26,13 @@ namespace Proxer.API.Main
         Uri CoverUri { get; }
 
         /// <summary>
-        ///     Gibt den Englische Titel des <see cref="Anime" /> oder <see cref="Manga" /> zurück.
+        ///     Gibt den deutschen Titel des <see cref="Anime" /> oder <see cref="Manga" /> zurück.
+        ///     <para>(Vererbt von <see cref="IAnimeMangaObject" />)</para>
+        /// </summary>
+        string DeutschTitel { get; }
+
+        /// <summary>
+        ///     Gibt den englische Titel des <see cref="Anime" /> oder <see cref="Manga" /> zurück.
         ///     <para>(Vererbt von <see cref="IAnimeMangaObject" />)</para>
         /// </summary>
         string EnglischTitel { get; }
@@ -35,7 +41,7 @@ namespace Proxer.API.Main
         ///     Gibt die Links zu allen FSK-Beschränkungen des <see cref="Anime" /> oder <see cref="Manga" /> zurück.
         ///     <para>(Vererbt von <see cref="IAnimeMangaObject" />)</para>
         /// </summary>
-        Dictionary<string, Uri> Fsk { get; }
+        Dictionary<Uri, string> Fsk { get; }
 
         /// <summary>
         ///     Gitb die Genres des <see cref="Anime" /> oder <see cref="Manga" /> zurück.

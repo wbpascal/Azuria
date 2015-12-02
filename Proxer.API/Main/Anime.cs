@@ -67,13 +67,14 @@ namespace Proxer.API.Main
         private readonly Senpai _senpai;
         private string _beschreibung;
         private string _englischTitel;
-        private Dictionary<string, Uri> _fsk;
+        private Dictionary<Uri, string> _fsk;
         private string[] _genre;
         private Group[] _gruppen;
         private Industry[] _industrie;
         private string _japanTitel;
         private string[] _season;
         private string _synonym;
+        private string _deutschTitel;
 
         /// <exception cref="ArgumentNullException"><paramref name="senpai" /> is <see langword="null" />.</exception>
         internal Anime(string name, int id, Senpai senpai)
@@ -114,6 +115,15 @@ namespace Proxer.API.Main
         /// </summary>
         public Uri CoverUri { get; }
 
+        /// <summary>
+        ///     Gibt den deutschen Titel des <see cref="Anime" /> oder <see cref="Manga" /> zurück.
+        ///     <para>(Vererbt von <see cref="IAnimeMangaObject" />)</para>
+        /// </summary>
+        public string DeutschTitel
+        {
+            get { return this._deutschTitel ?? ""; }
+            private set { this._deutschTitel = value; }
+        }
 
         /// <summary>
         ///     Gibt den Englische Titel des <see cref="Anime" /> oder <see cref="Manga" /> zurück.
@@ -136,9 +146,9 @@ namespace Proxer.API.Main
         ///     <para>Diese Eigenschaft muss durch <see cref="Init" /> initialisiert werden.</para>
         /// </summary>
         /// <seealso cref="Init" />
-        public Dictionary<string, Uri> Fsk
+        public Dictionary<Uri, string> Fsk
         {
-            get { return this._fsk ?? new Dictionary<string, Uri>(); }
+            get { return this._fsk ?? new Dictionary<Uri, string>(); }
             private set { this._fsk = value; }
         }
 
@@ -649,6 +659,9 @@ namespace Proxer.API.Main
                         case "Eng. Titel":
                             this.EnglischTitel = childNode.ChildNodes[1].InnerText;
                             break;
+                        case "Ger. Titel":
+                            this.DeutschTitel = childNode.ChildNodes[1].InnerText;
+                            break;
                         case "Jap. Titel":
                             this.JapanTitel = childNode.ChildNodes[1].InnerText;
                             break;
@@ -667,19 +680,19 @@ namespace Proxer.API.Main
                             this.Genre = lGenreList.ToArray();
                             break;
                         case "FSK":
-                            this.Fsk = new Dictionary<string, Uri>();
+                            this.Fsk = new Dictionary<Uri, string>();
                             childNode.ChildNodes[1].ChildNodes.ToList()
                                                    .ForEach(
                                                        delegate(HtmlNode htmlNode)
                                                        {
                                                            if (htmlNode.Name.Equals("span") &&
-                                                               !this.Fsk.ContainsKey(htmlNode.GetAttributeValue(
+                                                               !this.Fsk.ContainsValue(htmlNode.GetAttributeValue(
                                                                    "title", "ERROR")))
                                                                this.Fsk.Add(
-                                                                   htmlNode.GetAttributeValue("title", "ERROR"),
                                                                    new Uri("https://proxer.me" +
                                                                            htmlNode.FirstChild.GetAttributeValue("src",
-                                                                               "/")));
+                                                                               "/")),
+                                                                   htmlNode.GetAttributeValue("title", "ERROR"));
                                                        });
                             break;
                         case "Season":
