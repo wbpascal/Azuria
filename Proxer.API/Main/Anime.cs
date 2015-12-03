@@ -66,6 +66,7 @@ namespace Proxer.API.Main
 
         private readonly Senpai _senpai;
         private string _beschreibung;
+        private string _deutschTitel;
         private string _englischTitel;
         private Dictionary<Uri, string> _fsk;
         private string[] _genre;
@@ -74,7 +75,6 @@ namespace Proxer.API.Main
         private string _japanTitel;
         private string[] _season;
         private string _synonym;
-        private string _deutschTitel;
 
         /// <exception cref="ArgumentNullException"><paramref name="senpai" /> is <see langword="null" />.</exception>
         internal Anime(string name, int id, Senpai senpai)

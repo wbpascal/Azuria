@@ -23,6 +23,7 @@
                         Margin="8,5,0,0" VerticalAlignment="Top" Width="92" Click="ConferenceButton_Click" />
                 <Button Content="User" HorizontalAlignment="Left" Height="38"
                         Margin="8,5,0,0" VerticalAlignment="Top" Width="92" Click="UserButton_Click" />
+                <Button Content="Anime und Manga" Height="38" Width="122" Margin="8,5,0,0" Click="AMButton_Click" />
             </WrapPanel>
         </GroupBox>
 

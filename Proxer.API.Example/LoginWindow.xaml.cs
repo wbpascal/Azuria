@@ -3,6 +3,7 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using Proxer.API.Community;
+using Proxer.API.Main;
 using Proxer.API.Utilities;
 using Proxer.API.Utilities.Net;
 
@@ -14,8 +15,8 @@ namespace Proxer.API.Example
 
         public LoginWindow()
         {
-            //API-Anfragen Timeout auf 5 Sekunden festlegen
-            HttpUtility.Timeout = 5000;
+            //API-Anfragen Timeout auf 10 Sekunden festlegen
+            HttpUtility.Timeout = 10000;
 
             this.InitializeComponent();
         }
@@ -86,7 +87,14 @@ namespace Proxer.API.Example
 
         private void UserButton_Click(object sender, RoutedEventArgs e)
         {
+            //Öffne ein neues User-Fenster, das den User von Senpai darstellt
             new UserWindow(this._senpai.Me, this._senpai).Show();
+        }
+
+        private async void AMButton_Click(object sender, RoutedEventArgs e)
+        {
+            IAnimeMangaObject lAnimeMangaObject = (await ProxerClass.GetAnimeManga(8455, this._senpai)).OnError(null);
+            new AnimeMangaWindow(lAnimeMangaObject).Show();
         }
 
         #endregion

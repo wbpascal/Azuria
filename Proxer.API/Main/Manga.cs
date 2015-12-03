@@ -51,6 +51,7 @@ namespace Proxer.API.Main
 
         private readonly Senpai _senpai;
         private string _beschreibung;
+        private string _deutschTitel;
         private string _englischTitel;
         private Dictionary<Uri, string> _fsk;
         private string[] _genre;
@@ -60,7 +61,6 @@ namespace Proxer.API.Main
         private string[] _season;
         private Language[] _sprachen;
         private string _synonym;
-        private string _deutschTitel;
 
         internal Manga(string name, int id, Senpai senpai)
         {
