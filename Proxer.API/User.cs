@@ -27,6 +27,8 @@ namespace Proxer.API
         private readonly Senpai _senpai;
         private List<KeyValuePair<AnimeMangaProgressObject.AnimeMangaProgress, AnimeMangaProgressObject>> _animeList;
         private Uri _avatar;
+        private IEnumerable<Anime> _favouritenAnime;
+        private IEnumerable<Manga> _favouritenManga;
         private List<User> _freunde;
         private string _info;
         private string _infoHtml;
@@ -125,6 +127,30 @@ namespace Proxer.API
                            "https://proxer.me/components/com_comprofiler/plugin/templates/default/images/avatar/nophoto_n.png");
             }
             private set { this._avatar = value; }
+        }
+
+        /// <summary>
+        ///     Gibt die Anime-Favouriten des Benutzers zurück.
+        ///     <para />
+        ///     <para>Diese Eigenschaft muss durch <see cref="Init" /> initialisiert werden.</para>
+        /// </summary>
+        /// <seealso cref="Init" />
+        public IEnumerable<Anime> FavouritenAnime
+        {
+            get { return this._favouritenAnime ?? new Anime[0]; }
+            private set { this._favouritenAnime = value; }
+        }
+
+        /// <summary>
+        ///     Gibt die Manga-Favouriten des Benutzers zurück.
+        ///     <para />
+        ///     <para>Diese Eigenschaft muss durch <see cref="Init" /> initialisiert werden.</para>
+        /// </summary>
+        /// <seealso cref="Init" />
+        public IEnumerable<Manga> FavouritenManga
+        {
+            get { return this._favouritenManga ?? new Manga[0]; }
+            private set { this._favouritenManga = value; }
         }
 
         /// <summary>
@@ -612,6 +638,20 @@ namespace Proxer.API
 
                 lDocument.LoadHtml(lResponse);
 
+                this.FavouritenAnime =
+                    lDocument.DocumentNode.ChildNodes[5].ChildNodes.Where(
+                        x =>
+                            x.HasAttributes && x.Attributes.Contains("href") &&
+                            x.Attributes["href"].Value.StartsWith("/info/"))
+                                                        .Select(
+                                                            favouritenNode =>
+                                                                new Anime(favouritenNode.Attributes["title"].Value,
+                                                                    Convert.ToInt32(
+                                                                        Utility.GetTagContents(
+                                                                            favouritenNode.Attributes["href"].Value,
+                                                                            "/info/", "#top").First()), this._senpai))
+                                                        .ToArray();
+
                 foreach (
                     HtmlNode animeNode in
                         lDocument.DocumentNode.ChildNodes[7].ChildNodes.Where(
@@ -743,87 +783,101 @@ namespace Proxer.API
 
                 lDocument.LoadHtml(lResponse);
 
+                this.FavouritenManga =
+                    lDocument.DocumentNode.ChildNodes[5].ChildNodes.Where(
+                        x =>
+                            x.HasAttributes && x.Attributes.Contains("href") &&
+                            x.Attributes["href"].Value.StartsWith("/info/"))
+                                                        .Select(
+                                                            favouritenNode =>
+                                                                new Manga(favouritenNode.Attributes["title"].Value,
+                                                                    Convert.ToInt32(
+                                                                        Utility.GetTagContents(
+                                                                            favouritenNode.Attributes["href"].Value,
+                                                                            "/info/", "#top").First()), this._senpai))
+                                                        .ToArray();
+
                 foreach (
-                    HtmlNode animeNode in
+                    HtmlNode mangaNode in
                         lDocument.DocumentNode.ChildNodes[7].ChildNodes.Where(
                             x =>
                                 x.HasAttributes && x.Attributes.Contains("id") &&
                                 x.Attributes["id"].Value.StartsWith("entry")))
                 {
-                    Manga lManga = new Manga(animeNode.ChildNodes[1].InnerText,
+                    Manga lManga = new Manga(mangaNode.ChildNodes[1].InnerText,
                         Convert.ToInt32(
-                            animeNode.ChildNodes[1].FirstChild.GetAttributeValue("title", "Cover:-1").Split(':')[1]),
+                            mangaNode.ChildNodes[1].FirstChild.GetAttributeValue("title", "Cover:-1").Split(':')[1]),
                         this._senpai);
 
                     this._mangaList.Add(
                         new KeyValuePair<AnimeMangaProgressObject.AnimeMangaProgress, AnimeMangaProgressObject>(
                             AnimeMangaProgressObject.AnimeMangaProgress.Finished,
                             new AnimeMangaProgressObject(this, lManga,
-                                Convert.ToInt32(animeNode.ChildNodes[4].InnerText.Split('/')[0].Trim()),
-                                Convert.ToInt32(animeNode.ChildNodes[4].InnerText.Split('/')[1].Trim()),
+                                Convert.ToInt32(mangaNode.ChildNodes[4].InnerText.Split('/')[0].Trim()),
+                                Convert.ToInt32(mangaNode.ChildNodes[4].InnerText.Split('/')[1].Trim()),
                                 AnimeMangaProgressObject.AnimeMangaProgress.Finished)));
                 }
 
                 foreach (
-                    HtmlNode animeNode in
+                    HtmlNode mangaNode in
                         lDocument.DocumentNode.ChildNodes[10].ChildNodes.Where(
                             x =>
                                 x.HasAttributes && x.Attributes.Contains("id") &&
                                 x.Attributes["id"].Value.StartsWith("entry")))
                 {
-                    Manga lManga = new Manga(animeNode.ChildNodes[1].InnerText,
+                    Manga lManga = new Manga(mangaNode.ChildNodes[1].InnerText,
                         Convert.ToInt32(
-                            animeNode.ChildNodes[1].FirstChild.GetAttributeValue("title", "Cover:-1").Split(':')[1]),
+                            mangaNode.ChildNodes[1].FirstChild.GetAttributeValue("title", "Cover:-1").Split(':')[1]),
                         this._senpai);
 
                     this._mangaList.Add(
                         new KeyValuePair<AnimeMangaProgressObject.AnimeMangaProgress, AnimeMangaProgressObject>(
                             AnimeMangaProgressObject.AnimeMangaProgress.InProgress,
                             new AnimeMangaProgressObject(this, lManga,
-                                Convert.ToInt32(animeNode.ChildNodes[4].InnerText.Split('/')[0].Trim()),
-                                Convert.ToInt32(animeNode.ChildNodes[4].InnerText.Split('/')[1].Trim()),
+                                Convert.ToInt32(mangaNode.ChildNodes[4].InnerText.Split('/')[0].Trim()),
+                                Convert.ToInt32(mangaNode.ChildNodes[4].InnerText.Split('/')[1].Trim()),
                                 AnimeMangaProgressObject.AnimeMangaProgress.InProgress)));
                 }
 
                 foreach (
-                    HtmlNode animeNode in
+                    HtmlNode mangaNode in
                         lDocument.DocumentNode.ChildNodes[13].ChildNodes.Where(
                             x =>
                                 x.HasAttributes && x.Attributes.Contains("id") &&
                                 x.Attributes["id"].Value.StartsWith("entry")))
                 {
-                    Manga lManga = new Manga(animeNode.ChildNodes[1].InnerText,
+                    Manga lManga = new Manga(mangaNode.ChildNodes[1].InnerText,
                         Convert.ToInt32(
-                            animeNode.ChildNodes[1].FirstChild.GetAttributeValue("title", "Cover:-1").Split(':')[1]),
+                            mangaNode.ChildNodes[1].FirstChild.GetAttributeValue("title", "Cover:-1").Split(':')[1]),
                         this._senpai);
 
                     this._mangaList.Add(
                         new KeyValuePair<AnimeMangaProgressObject.AnimeMangaProgress, AnimeMangaProgressObject>(
                             AnimeMangaProgressObject.AnimeMangaProgress.Planned,
                             new AnimeMangaProgressObject(this, lManga,
-                                Convert.ToInt32(animeNode.ChildNodes[4].InnerText.Split('/')[0].Trim()),
-                                Convert.ToInt32(animeNode.ChildNodes[4].InnerText.Split('/')[1].Trim()),
+                                Convert.ToInt32(mangaNode.ChildNodes[4].InnerText.Split('/')[0].Trim()),
+                                Convert.ToInt32(mangaNode.ChildNodes[4].InnerText.Split('/')[1].Trim()),
                                 AnimeMangaProgressObject.AnimeMangaProgress.Planned)));
                 }
 
                 foreach (
-                    HtmlNode animeNode in
+                    HtmlNode mangaNode in
                         lDocument.DocumentNode.ChildNodes[16].ChildNodes.Where(
                             x =>
                                 x.HasAttributes && x.Attributes.Contains("id") &&
                                 x.Attributes["id"].Value.StartsWith("entry")))
                 {
-                    Manga lManga = new Manga(animeNode.ChildNodes[1].InnerText,
+                    Manga lManga = new Manga(mangaNode.ChildNodes[1].InnerText,
                         Convert.ToInt32(
-                            animeNode.ChildNodes[1].FirstChild.GetAttributeValue("title", "Cover:-1").Split(':')[1]),
+                            mangaNode.ChildNodes[1].FirstChild.GetAttributeValue("title", "Cover:-1").Split(':')[1]),
                         this._senpai);
 
                     this._mangaList.Add(
                         new KeyValuePair<AnimeMangaProgressObject.AnimeMangaProgress, AnimeMangaProgressObject>(
                             AnimeMangaProgressObject.AnimeMangaProgress.Aborted,
                             new AnimeMangaProgressObject(this, lManga,
-                                Convert.ToInt32(animeNode.ChildNodes[4].InnerText.Split('/')[0].Trim()),
-                                Convert.ToInt32(animeNode.ChildNodes[4].InnerText.Split('/')[1].Trim()),
+                                Convert.ToInt32(mangaNode.ChildNodes[4].InnerText.Split('/')[0].Trim()),
+                                Convert.ToInt32(mangaNode.ChildNodes[4].InnerText.Split('/')[1].Trim()),
                                 AnimeMangaProgressObject.AnimeMangaProgress.Aborted)));
                 }
 

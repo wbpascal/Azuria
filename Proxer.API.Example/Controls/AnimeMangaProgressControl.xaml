@@ -5,7 +5,8 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:local="clr-namespace:Proxer.API.Example.Controls"
              mc:Ignorable="d"
-             d:DesignHeight="20" d:DesignWidth="200">
+             d:DesignHeight="20" d:DesignWidth="200" MouseLeftButtonDown="ProgressUserControl_MouseLeftButtonDown"
+             Cursor="Hand">
     <StackPanel Orientation="Horizontal" Loaded="StackPanel_Loaded">
         <TextBlock
             Text="{Binding ElementName=ProgressUserControl, Path=AnimeMangaProgressObject.AnimeMangaObject.Name}" />

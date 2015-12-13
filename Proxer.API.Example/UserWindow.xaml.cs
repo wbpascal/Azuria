@@ -39,8 +39,8 @@ namespace Proxer.API.Example
         {
             //WICHTIG
             //Wenn der User schon initialisiert ist brauch das nicht noch einmal gemacht zu werden
-            //Dies verringert die Belastung auf Proxer
-            //Die Initialisierungs-Methode kann aber auch aufgerufen werden um die Infos zu aktualisieren
+            //Dies verringert die Belastung auf die Proxer-Server
+            //Die Initialisierungs-Methode kann aber auch aufgerufen werden, um die Infos zu aktualisieren
             if (!this._user.IstInitialisiert)
             {
                 ProxerResult lInitResult = await this._user.Init();

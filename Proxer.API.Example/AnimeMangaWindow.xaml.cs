@@ -25,6 +25,8 @@ namespace Proxer.API.Example
 
         private async void Window_Loaded(object sender, RoutedEventArgs e)
         {
+            //Wenn das AnimeMangaObject null ist, dann muss ein Fehler bei der Abfrage passiert seien
+            //Wird hier verwendet da bei der Abfrage ein .OnError(null) angehängt wurde (siehe LoginWindow)
             if (this._animeMangaObject == null)
             {
                 MessageBox.Show("Es ist ein Fehler bei der Abfrage des Anime/Manga aufgetreten!", "Fehler",
@@ -33,6 +35,7 @@ namespace Proxer.API.Example
                 return;
             }
 
+            //Empfohlen: Überprüfen, ob das Objekt bereits initialisiert ist
             if (!this._animeMangaObject.IstInitialisiert)
                 if (!(await this._animeMangaObject.Init()).Success)
                 {
@@ -49,12 +52,17 @@ namespace Proxer.API.Example
         {
             try
             {
+                //CoverUri wird nur als Uri zurückgegeben, das Bild muss dann noch heruntergeladen werden
+                //BitmapImage übernimmt das herunterladen, es muss nur eine Uri angegeben werden
                 this.CoverImage.Source = new BitmapImage(this._animeMangaObject.CoverUri);
             }
             catch
             {
                 //ignoriert
             }
+
+            //Um die Informationen alle übersichtlich darzustellen, werden sie in Expander gesteckt, die dann
+            //dem StackPanel hinzugefügt werden, das die Expander automatisch anordnet.
 
             #region Namen
 
@@ -90,7 +98,7 @@ namespace Proxer.API.Example
 
             this.InfoStackPanel.Children.Add(new Expander
             {
-                Content = ArrayToString(this._animeMangaObject.Genre.ToArray()),
+                Content = ArrayToString(this._animeMangaObject.Genre),
                 Header = "Genre"
             });
 
@@ -117,6 +125,10 @@ namespace Proxer.API.Example
 
             #region Season
 
+            //Die Größe des IEnumerable-Sammlung gibt auskunft, welche Informationen vorhanden sind
+            //Größe 0: Keine Infos
+            //Größe 1: Nur die Start Season ist angegeben an dem Index 0
+            //Größe 2: Start und End Season sind angegeben, Start Season an dem Index 0 und End Season an dem Index 1
             string[] lSeasonArray = this._animeMangaObject.Season.ToArray();
             string lSeasons = "";
             if (lSeasonArray.Length > 0) lSeasons += "Start: " + lSeasonArray[0];
@@ -147,7 +159,13 @@ namespace Proxer.API.Example
             this._animeMangaObject.Gruppen.ToList().ForEach(x => lGruppenString += "\n" + x.Name + "[ID:" + x.Id + "]");
             this.InfoStackPanel.Children.Add(new Expander
             {
-                Content = lGruppenString,
+                Content =
+                    new TextBlock
+                    {
+                        Text = lGruppenString,
+                        Width = this.InfoStackPanel.ActualWidth - 10,
+                        TextWrapping = TextWrapping.WrapWithOverflow
+                    },
                 Header = "Gruppen"
             });
 
@@ -180,7 +198,13 @@ namespace Proxer.API.Example
 
             this.InfoStackPanel.Children.Add(new Expander
             {
-                Content = new TextBlock {Text = this._animeMangaObject.Beschreibung, Width = 50},
+                Content =
+                    new TextBlock
+                    {
+                        Text = this._animeMangaObject.Beschreibung,
+                        Width = this.InfoStackPanel.ActualWidth - 10,
+                        TextWrapping = TextWrapping.WrapWithOverflow
+                    },
                 Header = "Beschreibung"
             });
 
@@ -189,6 +213,7 @@ namespace Proxer.API.Example
 
         private static string ArrayToString(IEnumerable<string> array)
         {
+            //string wird mit Komma getrennt aneinander gereiht
             StringBuilder builder = new StringBuilder();
             foreach (string value in array)
             {

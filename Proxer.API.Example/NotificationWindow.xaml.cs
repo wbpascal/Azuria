@@ -6,7 +6,9 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using Proxer.API.Community;
 using Proxer.API.EventArguments;
+using Proxer.API.Example.Utilities;
 using Proxer.API.Exceptions;
+using Proxer.API.Main;
 using Proxer.API.Notifications;
 using Proxer.API.Utilities;
 
@@ -289,12 +291,20 @@ namespace Proxer.API.Example
             this.LoadPmNotifications(this._senpai.PrivateMessages);
         }
 
-        private void AmTextBox_MouseUp(object sender, MouseButtonEventArgs e)
+        private async void AmTextBox_MouseUp(object sender, MouseButtonEventArgs e)
         {
             if (e.ChangedButton == MouseButton.Left)
             {
-                //Zeige dem Benutzer eine Nachricht, die das geklickte Element repräsentiert
-                MessageBox.Show(((sender as ListBox).SelectedItem as AnimeMangaUpdateObject).Name);
+                AnimeMangaUpdateObject lUpdateObject = ((sender as ListBox).SelectedItem as AnimeMangaUpdateObject);
+                //Speicher die ID des Anime oder Manga ab
+                int lAnimeMangaId =
+                    Convert.ToInt32(Utility.GetTagContents(lUpdateObject.Link.OriginalString, "/watch/",
+                        "/" + lUpdateObject.Number + "/").First());
+                //Rufe den Anime oder Manga der Benachrichtigung ab
+                IAnimeMangaObject lAnimeMangaObject =
+                    (await ProxerClass.GetAnimeManga(lAnimeMangaId, this._senpai)).OnError(null);
+                //Öffne das Anime-/Manga-Fenster
+                new AnimeMangaWindow(lAnimeMangaObject).Show();
             }
         }
 

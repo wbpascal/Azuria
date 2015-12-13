@@ -1,5 +1,6 @@
 ﻿using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Input;
 using Proxer.API.Main.User;
 
 namespace Proxer.API.Example.Controls
@@ -24,6 +25,11 @@ namespace Proxer.API.Example.Controls
 
         private void StackPanel_Loaded(object sender, RoutedEventArgs e)
         {
+        }
+
+        private void ProgressUserControl_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            new AnimeMangaWindow(this.AnimeMangaProgressObject.AnimeMangaObject).Show();
         }
 
         #endregion
