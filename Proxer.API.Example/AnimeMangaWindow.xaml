@@ -20,8 +20,23 @@
                     </ScrollViewer>
                 </Grid>
             </TabItem>
-            <TabItem Header="TabItem">
-                <Grid Background="#FFE5E5E5" />
+            <TabItem x:Name="EpisodenTab" Header="Episoden">
+                <Grid Background="#FFE5E5E5" >
+                    <ComboBox x:Name="EpisodenComboBox" HorizontalAlignment="Center" Height="22" Margin="0,14,0,0" Width="206" VerticalAlignment="Top" SelectionChanged="EpisodenComboBox_SelectionChanged"/>
+                    <Separator Margin="0,53,0,2" VerticalAlignment="Top"/>
+                    <ScrollViewer Margin="0,68,0,0" VerticalScrollBarVisibility="Auto">
+                        <StackPanel x:Name="StreamsStackPanel"/>
+                    </ScrollViewer>
+                </Grid>
+            </TabItem>
+            <TabItem x:Name="KapitelTab" Header="Kapitel">
+                <Grid Background="#FFE5E5E5" >
+                    <ComboBox x:Name="KapitelComboBox" HorizontalAlignment="Center" Height="22" Margin="0,14,0,0" Width="206" VerticalAlignment="Top" SelectionChanged="KapitelComboBox_SelectionChanged"/>
+                    <Separator Margin="0,53,0,2" VerticalAlignment="Top"/>
+                    <ScrollViewer Margin="0,68,0,0" VerticalScrollBarVisibility="Auto">
+                        <StackPanel x:Name="KapitelSeitenListView"/>
+                    </ScrollViewer>
+                </Grid>
             </TabItem>
         </TabControl>
     </Grid>

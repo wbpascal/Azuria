@@ -877,7 +877,7 @@ namespace Proxer.API.Main
             public Anime ParentAnime { get; set; }
 
             /// <summary>
-            ///     Gibt die Stream
+            ///     Gibt die vorhandenen Streams der Episode zurück.
             ///     <para>Wenn nach Aufruf von Init() immer noch null, dann sind keine Streams für diese Episode verfügbar.</para>
             /// </summary>
             /// <seealso cref="Episode.Init" />
@@ -941,7 +941,7 @@ namespace Proxer.API.Main
                         HttpUtility.GetResponseErrorHandling(
                             "https://proxer.me/watch/" + this.ParentAnime.Id + "/" + this.EpisodeNr + "/" +
                             this._lang.ToString().ToLower(),
-                            this._senpai.LoginCookies,
+                            this._senpai.MobileLoginCookies,
                             this._senpai.ErrHandler,
                             this._senpai);
 
@@ -1034,6 +1034,17 @@ namespace Proxer.API.Main
                 {
                     return new ProxerResult((await ErrorHandler.HandleError(this._senpai, lResponse, false)).Exceptions);
                 }
+            }
+
+            /// <summary>
+            /// Returns a string that represents the current object.
+            /// </summary>
+            /// <returns>
+            /// A string that represents the current object.
+            /// </returns>
+            public override string ToString()
+            {
+                return "Episode " + this.EpisodeNr;
             }
 
             #endregion

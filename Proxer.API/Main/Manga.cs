@@ -1049,7 +1049,7 @@ namespace Proxer.API.Main
                         HttpUtility.GetResponseErrorHandling(
                             "https://proxer.me/read/" + this.ParentManga.Id + "/" + this.KapitelNr + "/" +
                             this.Sprache.ToString().ToLower().Substring(0, 2) + "?format=json",
-                            this._senpai.LoginCookies,
+                            this._senpai.MobileLoginCookies,
                             this._senpai.ErrHandler,
                             this._senpai,
                             new[] {lCheckFunc});
@@ -1095,6 +1095,17 @@ namespace Proxer.API.Main
                 {
                     return new ProxerResult((await ErrorHandler.HandleError(this._senpai, lResponse, false)).Exceptions);
                 }
+            }
+
+            /// <summary>
+            /// Returns a string that represents the current object.
+            /// </summary>
+            /// <returns>
+            /// A string that represents the current object.
+            /// </returns>
+            public override string ToString()
+            {
+                return "Kapitel " + this.KapitelNr;
             }
 
             #endregion
