@@ -42,4 +42,4 @@ Dann schaue dir am besten mal das Beispielprojekt `Proxer.Example` an oder schau
 
 [RestSharp](http://restsharp.org/)
 
-Diese können auch mit dem Befehl "nuget restore" runtergeladen werden.
+Diese können auch mit dem Befehl `nuget restore` heruntergeladen werden.
