@@ -3,6 +3,7 @@ using System.Linq;
 using System.Text;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using Proxer.API.Main;
 using Proxer.API.Utilities;
@@ -306,14 +307,21 @@ namespace Proxer.API.Example
             }
 
             this.StreamsStackPanel.Children.Clear();
-            lEpisode.Streams.ToList()
-                    .ForEach(
-                        pair =>
-                            this.StreamsStackPanel.Children.Add(new Expander
-                            {
-                                Header = pair.Key,
-                                Content = new TextBlock {Text = pair.Value.Link.OriginalString}
-                            }));
+            if (lEpisode.Streams.Any())
+                lEpisode.Streams.ToList()
+                        .ForEach(
+                            pair =>
+                                this.StreamsStackPanel.Children.Add(new Expander
+                                {
+                                    Header = pair.Key,
+                                    Content = new TextBlock {Text = pair.Value.Link.OriginalString}
+                                }));
+            else
+                this.StreamsStackPanel.Children.Add(new TextBlock
+                {
+                    Text = "Nicht verfügbar!",
+                    Foreground = new SolidColorBrush(Color.FromRgb(255, 0, 0))
+                });
         }
 
         private async void KapitelComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -337,6 +345,12 @@ namespace Proxer.API.Example
             }
 
             this.KapitelSeitenListView.Children.Clear();
+            if (!lChapter.Verfuegbar)
+                this.KapitelSeitenListView.Children.Add(new TextBlock
+                {
+                    Text = "Nicht verfügbar!",
+                    Foreground = new SolidColorBrush(Color.FromRgb(255, 0, 0))
+                });
             this.KapitelSeitenListView.Children.Add(new TextBlock {Text = "Titel: " + lChapter.Titel});
             this.KapitelSeitenListView.Children.Add(new TextBlock
             {

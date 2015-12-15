@@ -6,6 +6,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using Proxer.API.Example.Controls;
+using Proxer.API.Main;
 using Proxer.API.Main.User;
 using Proxer.API.Utilities;
 
@@ -102,6 +103,11 @@ namespace Proxer.API.Example
 
         private void InitAnime()
         {
+            foreach (Anime favAnime in this._user.FavoritenAnime)
+            {
+                this.AnimeFavsPanel.Children.Add(new AnimeMangaProgressControl(favAnime));
+            }
+
             foreach (
                 KeyValuePair<AnimeMangaProgressObject.AnimeMangaProgress, AnimeMangaProgressObject> anime in
                     this._user.Anime)
@@ -136,6 +142,11 @@ namespace Proxer.API.Example
 
         private void InitManga()
         {
+            foreach (Manga favManga in this._user.FavoritenManga)
+            {
+                this.MangaFavsPanel.Children.Add(new AnimeMangaProgressControl(favManga));
+            }
+
             foreach (
                 KeyValuePair<AnimeMangaProgressObject.AnimeMangaProgress, AnimeMangaProgressObject> manga in
                     this._user.Manga)

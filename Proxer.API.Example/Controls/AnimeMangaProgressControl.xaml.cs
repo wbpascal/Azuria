@@ -1,6 +1,7 @@
 ﻿using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using Proxer.API.Main;
 using Proxer.API.Main.User;
 
 namespace Proxer.API.Example.Controls
@@ -12,6 +13,13 @@ namespace Proxer.API.Example.Controls
             //Schreibt das AnimeMangaProgressObject in die zugehörige Eigenschaft
             //Die Werte der Controls werden mit Bindings gelöst
             this.AnimeMangaProgressObject = animeMangaProgressObject;
+            this.InitializeComponent();
+        }
+
+        public AnimeMangaProgressControl(IAnimeMangaObject animeMangaObject)
+        {
+            this.AnimeMangaProgressObject = new AnimeMangaProgressObject(User.System, animeMangaObject, -1, -1,
+                AnimeMangaProgressObject.AnimeMangaProgress.Finished);
             this.InitializeComponent();
         }
 

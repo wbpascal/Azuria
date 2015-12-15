@@ -135,7 +135,7 @@ namespace Proxer.API
         ///     <para>Diese Eigenschaft muss durch <see cref="Init" /> initialisiert werden.</para>
         /// </summary>
         /// <seealso cref="Init" />
-        public IEnumerable<Anime> FavouritenAnime
+        public IEnumerable<Anime> FavoritenAnime
         {
             get { return this._favouritenAnime ?? new Anime[0]; }
             private set { this._favouritenAnime = value; }
@@ -147,7 +147,7 @@ namespace Proxer.API
         ///     <para>Diese Eigenschaft muss durch <see cref="Init" /> initialisiert werden.</para>
         /// </summary>
         /// <seealso cref="Init" />
-        public IEnumerable<Manga> FavouritenManga
+        public IEnumerable<Manga> FavoritenManga
         {
             get { return this._favouritenManga ?? new Manga[0]; }
             private set { this._favouritenManga = value; }
@@ -638,7 +638,7 @@ namespace Proxer.API
 
                 lDocument.LoadHtml(lResponse);
 
-                this.FavouritenAnime =
+                this.FavoritenAnime =
                     lDocument.DocumentNode.ChildNodes[5].ChildNodes.Where(
                         x =>
                             x.HasAttributes && x.Attributes.Contains("href") &&
@@ -783,7 +783,7 @@ namespace Proxer.API
 
                 lDocument.LoadHtml(lResponse);
 
-                this.FavouritenManga =
+                this.FavoritenManga =
                     lDocument.DocumentNode.ChildNodes[5].ChildNodes.Where(
                         x =>
                             x.HasAttributes && x.Attributes.Contains("href") &&

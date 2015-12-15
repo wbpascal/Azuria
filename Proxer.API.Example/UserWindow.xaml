@@ -28,10 +28,10 @@
                             <TextBlock x:Name="StatusBlock" Text="status" Height="16" />
                         </StackPanel>
                         <Expander Header="Info" Margin="5,0,0,0">
-                            <TextBox x:Name="InfoBox" IsReadOnly="True" />
+                            <TextBox x:Name="InfoBox" TextWrapping="WrapWithOverflow" IsReadOnly="True" />
                         </Expander>
                         <Expander Header="InfoHtml" Margin="5,0,0,0">
-                            <TextBox x:Name="InfoHtmlBox" IsReadOnly="True" />
+                            <TextBox x:Name="InfoHtmlBox" TextWrapping="WrapWithOverflow" IsReadOnly="True" />
                         </Expander>
                     </StackPanel>
                 </ScrollViewer>
@@ -42,6 +42,8 @@
             <TabItem Header="Anime">
                 <ScrollViewer>
                     <StackPanel Background="#FFE5E5E5">
+                        <TextBlock Text="Favouriten" FontSize="14.667" FontWeight="Bold" />
+                        <StackPanel x:Name="AnimeFavsPanel" Margin="25,0,0,0" />
                         <TextBlock Text="Geschaut" FontSize="14.667" FontWeight="Bold" />
                         <StackPanel x:Name="AnimeGeschautPanel" Margin="25,0,0,0" />
                         <TextBlock Text="Am Schauen" FontSize="14.667" FontWeight="Bold" />
@@ -56,6 +58,8 @@
             <TabItem Header="Manga">
                 <ScrollViewer>
                     <StackPanel Background="#FFE5E5E5">
+                        <TextBlock Text="Favouriten" FontSize="14.667" FontWeight="Bold" />
+                        <StackPanel x:Name="MangaFavsPanel" Margin="25,0,0,0" />
                         <TextBlock Text="Gelesen" FontSize="14.667" FontWeight="Bold" />
                         <StackPanel x:Name="MangaGelesenPanel" Margin="25,0,0,0" />
                         <TextBlock Text="Am Lesen" FontSize="14.667" FontWeight="Bold" />
