@@ -54,7 +54,6 @@ namespace Proxer.API.Example
                 }
             }
 
-            //Schreibe die Infos zu dem User in die zugehörigen Controls
             this.InitComponents();
         }
 
@@ -92,8 +91,6 @@ namespace Proxer.API.Example
         {
             foreach (User friend in this._user.Freunde)
             {
-                //Um den Freund darzustellen benutzte ich einen TextBlock
-                //Der DataContext ist nur wichtig, um den Freund in dem MouseLeftButtonUp-Event abzurufen
                 TextBlock lFriendBlock = new TextBlock {Text = friend.ToString(), DataContext = friend};
                 lFriendBlock.MouseLeftButtonUp += this.FriendBlock_MouseLeftButtonUp;
 
@@ -112,12 +109,8 @@ namespace Proxer.API.Example
                 KeyValuePair<AnimeMangaProgressObject.AnimeMangaProgress, AnimeMangaProgressObject> anime in
                     this._user.Anime)
             {
-                //Hier wird keine Standartmäßiges Control-Element verwendet um den Anime darzustellen
-                //Mehr Infos in der Klasse AnimeMangaProgressControl
                 AnimeMangaProgressControl lProgressControl = new AnimeMangaProgressControl(anime.Value);
 
-                //Füge AnimeMangaProgressControl dem zugehörigen StackPanel hinzu
-                //Variiert je nachdem was anime.Key für einen Wert hat
                 switch (anime.Key)
                 {
                     //Anime wurde bereits geschaut
@@ -151,12 +144,8 @@ namespace Proxer.API.Example
                 KeyValuePair<AnimeMangaProgressObject.AnimeMangaProgress, AnimeMangaProgressObject> manga in
                     this._user.Manga)
             {
-                //Hier wird keine Standartmäßiges Control-Element verwendet um den Manga darzustellen
-                //Mehr Infos in der Klasse AnimeMangaProgressControl
                 AnimeMangaProgressControl lProgressControl = new AnimeMangaProgressControl(manga.Value);
 
-                //Füge AnimeMangaProgressControl dem zugehörigen StackPanel hinzu
-                //Variiert je nachdem was manga.Key für einen Wert hat
                 switch (manga.Key)
                 {
                     //Manga wurde bereits gelesen
@@ -181,17 +170,14 @@ namespace Proxer.API.Example
 
         private void FriendBlock_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
-            //Rufe den TextBlock aus den Parametern ab
             TextBlock lFriendBlock = sender as TextBlock;
             if (lFriendBlock == null) return;
 
-            //Öffne ein neues UserWindow mit dem DataContext des TextBlock, der den User enthält
             new UserWindow(lFriendBlock.DataContext as User, this._senpai).Show();
         }
 
         private void OpenWebsiteButton_Click(object sender, RoutedEventArgs e)
         {
-            //Öffne den Link zu dem Benutzer in dem Standardbrowser 
             Process.Start("https://proxer.me/user/" + this._user.Id);
         }
 

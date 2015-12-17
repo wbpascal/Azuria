@@ -38,20 +38,19 @@ namespace Proxer.API.Example
             }
 
             //Falls alle Nachrichten abgerufen wurden setze den Text der ChatBox zurück
-            //Alle Nachrichten sind die 15 aktuellsten Nachrichten 
+            //Alle Nachrichten sind die 15 aktuellsten Nachrichten. Dies ist eine Limitation der Funktionen von Proxer selbst
             if (alleNachrichten) this.ChatBox.Text = "";
 
-            //Gehe alle Nachrichten durch und füge sie der ChatBox hinzu
             foreach (Conference.Message message in messages)
             {
-                this.ChatBox.Text += "[" + message.TimeStamp.ToShortTimeString() + "] " + message.Sender.UserName + ": " +
+                this.ChatBox.Text += "[" + message.TimeStamp + "] " + message.Sender.UserName + ": " +
                                      message.Nachricht + "\n";
             }
         }
 
         private void ConferenceOnErrorDuringPmFetchRaised(Conference sender, IEnumerable<Exception> exceptions)
         {
-            //Falls beim Abrufen der Nachrichten im Hintergrund ein Fehler auftritt
+            //Falls beim Abrufen der Nachrichten im Hintergrund ein Fehler auftritt wird dieses Event ausgelöst
             MessageBox.Show("Es ist ein Fehler beim Abrufen der Nachrichten aufgetreten!", "Fehler", MessageBoxButton.OK,
                 MessageBoxImage.Error);
         }
@@ -62,7 +61,6 @@ namespace Proxer.API.Example
             //Nachrichten werden noch nicht abgerufen
             await this._conference.InitConference();
 
-            //Schreibt die Infos der Konferenz in die zugehörigen Controls
             this.InitComponents();
 
             //Abrufen der Nachrichten im Hintergrund wird aktiviert
@@ -72,21 +70,15 @@ namespace Proxer.API.Example
 
         private void InitComponents()
         {
-            //Titel der Konferenz als Fenstertitel
             this.Title = "Konferenz: " + this._conference.Titel;
 
-            //Gehe durch die Teilnehmerliste
             foreach (User teilnehmer in this._conference.Teilnehmer ?? new List<User>())
             {
                 TextBlock lTeilnehmerBlock = new TextBlock {DataContext = teilnehmer, Text = teilnehmer.ToString()};
-                //Klick-Event, wenn auf den Benutzer geklickt wird
                 lTeilnehmerBlock.MouseLeftButtonDown += this.UserTextBlock_MouseLeftButtonDown;
-                //Füge den TextBlock mit dem User als Hintergrundobjekt der ListBox hinzu
                 this.TeilnehmerBox.Items.Add(lTeilnehmerBlock);
             }
 
-            //Scheibe den Leiter in die LeiterBox
-            //Darstellung wie bei der TeilnehmerBox
             TextBlock lLeaderBlock = new TextBlock
             {
                 DataContext = this._conference.Leiter,
@@ -99,7 +91,6 @@ namespace Proxer.API.Example
         private void UserTextBlock_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
             TextBlock lTeilnehmerBlock = sender as TextBlock;
-            //Öffne ein UserWindow mit den Hintergrund User-Objekt des TextBlocks als Parameter
             new UserWindow((lTeilnehmerBlock?.DataContext as User) ?? User.System, this._senpai).Show();
         }
 
@@ -115,7 +106,6 @@ namespace Proxer.API.Example
             }
             else
             {
-                //Falls die Aktion erfolgreich war setzte den Text in der InputBox zurück
                 this.InputBox.Clear();
             }
         }

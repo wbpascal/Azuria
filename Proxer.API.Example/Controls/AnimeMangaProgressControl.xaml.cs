@@ -10,7 +10,6 @@ namespace Proxer.API.Example.Controls
     {
         public AnimeMangaProgressControl(AnimeMangaProgressObject animeMangaProgressObject)
         {
-            //Schreibt das AnimeMangaProgressObject in die zugehörige Eigenschaft
             //Die Werte der Controls werden mit Bindings gelöst
             this.AnimeMangaProgressObject = animeMangaProgressObject;
             this.InitializeComponent();
@@ -18,6 +17,8 @@ namespace Proxer.API.Example.Controls
 
         public AnimeMangaProgressControl(IAnimeMangaObject animeMangaObject)
         {
+            //Die Werte der Controls werden mit Bindings gelöst
+            //Dies ist eine Möglichkeit einen Favoriten darzustellen (nicht empfohlen)
             this.AnimeMangaProgressObject = new AnimeMangaProgressObject(User.System, animeMangaObject, -1, -1,
                 AnimeMangaProgressObject.AnimeMangaProgress.Finished);
             this.InitializeComponent();

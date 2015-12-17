@@ -60,8 +60,6 @@ namespace Proxer.API.Example
                 return;
             }
 
-            //Ändert den Titel des Fensters, um die Anzahl der Benachrichtigungen darzustellen, 
-            //wenn das Fenster im Moment keinen Fokus hat
             if (this.IsFocused) return;
 
             IEnumerable<INotificationEventArgs> notificationEventArgses = e as IList<INotificationEventArgs> ??
@@ -77,7 +75,7 @@ namespace Proxer.API.Example
                 this.Title = "Benachrichtigungen";
             }
 
-            //man kann auch einen Ton abspielen
+            //man kann hier auch einen Ton abspielen
         }
 
         private void AmUpdateNotificationRaised(Senpai sender, AmNotificationEventArgs e)
@@ -112,7 +110,8 @@ namespace Proxer.API.Example
         {
             //Läd die Anime- und Manga-Benachrichtigungen und stellt sie in einer Liste dar.
 
-            //WICHTIG: Wird benötigt, da die Methode von einem anderen Thread aufgerufen wird (von Timer)
+            //WICHTIG: Das Event, dass diese Methode aufruft läuft auf einem anderen Thread, da es von 
+            //einem Timer ausgelöst wird
             if (!this.Dispatcher.CheckAccess())
             {
                 this.Dispatcher.Invoke(() => this.LoadAmUpdateNotifications(collection));
@@ -125,7 +124,7 @@ namespace Proxer.API.Example
             ProxerResult<IEnumerable<AnimeMangaUpdateObject>> lResult = await collection.GetAllAnimeMangaUpdates();
             if (!lResult.Success)
             {
-                //Falls die Methode fehlschlägt kann hier überprüft werden was der Grund ist.
+                //Falls die Methode fehlschlägt kann hier überprüft werden, was der Grund ist.
 
                 //Beispiel: Wenn die Aufzählung der Ausnahmen von lResult eine NotLoggedInException enthält, 
                 //dann ist der Benutzer nicht eingeloggt
@@ -147,7 +146,8 @@ namespace Proxer.API.Example
         {
             //Läd die Freundschaftsanfragen und fragt den Benutzer, ob er sie annehmen will
 
-            //WICHTIG: Wird benötigt, da die Methode von einem anderen Thread aufgerufen wird (von Timer)
+            //WICHTIG: Das Event, dass diese Methode aufruft läuft auf einem anderen Thread, da es von 
+            //einem Timer ausgelöst wird
             if (!this.Dispatcher.CheckAccess())
             {
                 this.Dispatcher.Invoke(() => this.ProcessFriendRequests(collection));
@@ -205,7 +205,8 @@ namespace Proxer.API.Example
         {
             //Läd die letzten 15 News und stellt sie in einer ListBox dar.
 
-            //WICHTIG: Wird benötigt, da die Methode von einem anderen Thread aufgerufen wird (von Timer)
+            //WICHTIG: Das Event, dass diese Methode aufruft läuft auf einem anderen Thread, da es von 
+            //einem Timer ausgelöst wird
             if (!this.Dispatcher.CheckAccess())
             {
                 this.Dispatcher.Invoke(() => this.LoadNewsNotifications(collection));
@@ -215,6 +216,8 @@ namespace Proxer.API.Example
             this.NewsListBox.Items.Clear();
 
             //Rufe die letzten 15 News ab
+            //Durch Limitationen des hauseigenen Proxer API können mit einer Anfrage nicht mehr News 
+            //auf einmal abgerufen werden
             ProxerResult<IEnumerable<NewsObject>> lResult = await collection.GetAllNews();
             if (!lResult.Success)
             {
@@ -240,7 +243,8 @@ namespace Proxer.API.Example
         {
             //Läd alle Privatnachricht-Benachrichtigungen und stellt sie in einer ListBox dar.
 
-            //WICHTIG: Wird benötigt, da die Methode von einem anderen Thread aufgerufen wird (von Timer)
+            //WICHTIG: Das Event, dass diese Methode aufruft läuft auf einem anderen Thread, da es von 
+            //einem Timer ausgelöst wird
             if (!this.Dispatcher.CheckAccess())
             {
                 this.Dispatcher.Invoke(() => this.LoadPmNotifications(collection));
@@ -273,7 +277,6 @@ namespace Proxer.API.Example
 
         private void Window_GotFocus(object sender, RoutedEventArgs e)
         {
-            //Wenn das Fenster den Fokus erlangt, dann setze den Titel zurück
             this.Title = "Benachrichtigungen";
         }
 
@@ -284,7 +287,7 @@ namespace Proxer.API.Example
             this._senpai.InitNotifications();
 
             //Lade alle Inhalte der Benachrichtigungen des Benutzers und stelle sie da.
-            //Muss gemacht werden, da die Events erst noch einer Zeit aktiviert werden.
+            //Muss gemacht werden, da die Events erst nach einer Zeit aktiviert werden.
             this.LoadAmUpdateNotifications(this._senpai.AnimeMangaUpdates);
             this.ProcessFriendRequests(this._senpai.FriendRequests);
             this.LoadNewsNotifications(this._senpai.News);
@@ -296,6 +299,9 @@ namespace Proxer.API.Example
             if (e.ChangedButton == MouseButton.Left)
             {
                 AnimeMangaUpdateObject lUpdateObject = ((sender as ListBox).SelectedItem as AnimeMangaUpdateObject);
+
+                if (lUpdateObject == null) return;
+
                 //Speicher die ID des Anime oder Manga ab
                 int lAnimeMangaId =
                     Convert.ToInt32(Utility.GetTagContents(lUpdateObject.Link.OriginalString, "/watch/",
@@ -312,7 +318,6 @@ namespace Proxer.API.Example
         {
             if (e.ChangedButton == MouseButton.Left)
             {
-                //Zeige dem Benutzer eine Nachricht, die das geklickte Element repräsentiert
                 MessageBox.Show(((sender as ListBox).SelectedItem as NewsObject).NewsId.ToString());
             }
         }
@@ -321,9 +326,7 @@ namespace Proxer.API.Example
         {
             if (e.ChangedButton == MouseButton.Left)
             {
-                //Rufe die Konferenz des geklickten Elements ab
                 Conference lConference = new Conference(((sender as ListBox).SelectedItem as PmObject).Id, this._senpai);
-                //Öffne die Konferenz
                 new ConferenceWindow(lConference, this._senpai).Show();
             }
         }

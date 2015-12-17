@@ -9,7 +9,8 @@
         Background="{DynamicResource {x:Static SystemColors.ControlBrushKey}}">
     <Grid>
         <TextBox x:Name="ChatBox" HorizontalAlignment="Left" Height="327" Margin="10,10,0,0" VerticalAlignment="Top"
-                 Width="292" Background="White" IsReadOnly="True" HorizontalScrollBarVisibility="Auto"
+                 Width="292" Background="White" IsReadOnly="True" TextWrapping="WrapWithOverflow"
+                 HorizontalScrollBarVisibility="Auto"
                  VerticalScrollBarVisibility="Auto" />
         <TextBox x:Name="InputBox" HorizontalAlignment="Left" Height="24" Margin="10,342,0,0" TextWrapping="Wrap"
                  VerticalAlignment="Top" Width="217" />

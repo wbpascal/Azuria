@@ -604,7 +604,7 @@ namespace Proxer.API.Community
                 List<User> lTeilnehmer = this.Teilnehmer.ToList();
 
                 lTeilnehmer.AddRange(from curTeilnehmer in lNodes[0].ChildNodes[1].ChildNodes
-                                     let lUserName = curTeilnehmer.ChildNodes[1].InnerText
+                                     let lUserName = curTeilnehmer.ChildNodes[1].FirstChild.InnerText
                                      let lUserId =
                                          Convert.ToInt32(
                                              Utility.GetTagContents(

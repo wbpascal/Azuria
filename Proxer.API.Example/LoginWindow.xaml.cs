@@ -62,7 +62,6 @@ namespace Proxer.API.Example
 
         private void NotificationButton_Click(object sender, RoutedEventArgs e)
         {
-            //Öffne des Benachrichtigungsfenster
             new NotificationWindow(this._senpai).Show();
         }
 

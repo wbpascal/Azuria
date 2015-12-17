@@ -68,7 +68,7 @@ namespace Proxer.API.Example
             if (lManga == null)
             {
                 MessageBox.Show("Es ist ein Fehler beim Initialisieren des Objekts aufgetreten!", "Fehler",
-                        MessageBoxButton.OK, MessageBoxImage.Error);
+                    MessageBoxButton.OK, MessageBoxImage.Error);
                 this.Close();
                 return;
             }
@@ -93,7 +93,7 @@ namespace Proxer.API.Example
             if (lAnime == null)
             {
                 MessageBox.Show("Es ist ein Fehler beim Initialisieren des Objekts aufgetreten!", "Fehler",
-                        MessageBoxButton.OK, MessageBoxImage.Error);
+                    MessageBoxButton.OK, MessageBoxImage.Error);
                 this.Close();
                 return;
             }
@@ -121,9 +121,6 @@ namespace Proxer.API.Example
             {
                 //ignoriert
             }
-
-            //Um die Informationen alle übersichtlich darzustellen, werden sie in Expander gesteckt, die dann
-            //dem StackPanel hinzugefügt werden, das die Expander automatisch anordnet.
 
             #region Namen
 
@@ -168,6 +165,7 @@ namespace Proxer.API.Example
             #region FSK
 
             //Hier werden nur die FSK-Infobilder dargestellt, es können aber noch Infos zu den Bilder dargestellt werden (Values)
+            //Die Values enthalten jeweils einen kleinen Satz, der das FSK-Bild kurz beschreibt
             StackPanel lFskPanel = new StackPanel {Orientation = Orientation.Horizontal, Height = 80};
             this._animeMangaObject.Fsk.Keys.ToList()
                 .ForEach(uri => lFskPanel.Children.Add(new Image
@@ -274,7 +272,6 @@ namespace Proxer.API.Example
 
         private static string ArrayToString(IEnumerable<string> array)
         {
-            //string wird mit Komma getrennt aneinander gereiht
             StringBuilder builder = new StringBuilder();
             foreach (string value in array)
             {
@@ -283,8 +280,6 @@ namespace Proxer.API.Example
             }
             return builder.ToString();
         }
-
-        #endregion
 
         private async void EpisodenComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
@@ -308,14 +303,16 @@ namespace Proxer.API.Example
 
             this.StreamsStackPanel.Children.Clear();
             if (lEpisode.Streams.Any())
-                lEpisode.Streams.ToList()
-                        .ForEach(
-                            pair =>
-                                this.StreamsStackPanel.Children.Add(new Expander
-                                {
-                                    Header = pair.Key,
-                                    Content = new TextBlock {Text = pair.Value.Link.OriginalString}
-                                }));
+                foreach (
+                    KeyValuePair<Anime.Episode.Stream.StreamPartner, Anime.Episode.Stream> pair in
+                        lEpisode.Streams.ToList())
+                {
+                    this.StreamsStackPanel.Children.Add(new Expander
+                    {
+                        Header = pair.Key,
+                        Content = new TextBlock {Text = pair.Value.Link.OriginalString}
+                    });
+                }
             else
                 this.StreamsStackPanel.Children.Add(new TextBlock
                 {
@@ -357,12 +354,14 @@ namespace Proxer.API.Example
                 Text =
                     "Scanlator-Gruppe: " + lChapter.ScanlatorGruppe.Name + " [ID:" + lChapter.ScanlatorGruppe.Id + "]"
             });
-            this.KapitelSeitenListView.Children.Add(new TextBlock { Text = "Datum: " + lChapter.Datum });
-            this.KapitelSeitenListView.Children.Add(new TextBlock { Text = "Uploader: " + lChapter.UploaderName });
+            this.KapitelSeitenListView.Children.Add(new TextBlock {Text = "Datum: " + lChapter.Datum});
+            this.KapitelSeitenListView.Children.Add(new TextBlock {Text = "Uploader: " + lChapter.UploaderName});
 
             TextBlock lSeitenLinks = new TextBlock();
             lChapter.Seiten.ToList().ForEach(uri => lSeitenLinks.Text += uri.OriginalString + "\n");
             this.KapitelSeitenListView.Children.Add(new Expander {Header = "Seiten", Content = lSeitenLinks});
         }
+
+        #endregion
     }
 }
