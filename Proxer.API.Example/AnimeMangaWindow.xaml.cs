@@ -119,7 +119,7 @@ namespace Proxer.API.Example
             }
             catch
             {
-                //ignoriert
+                //ignoriert, nur hier in dem Beispiel, sonst sollte hier etwas stehen
             }
 
             #region Namen
