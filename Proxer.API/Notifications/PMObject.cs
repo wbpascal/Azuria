@@ -50,10 +50,7 @@ namespace Proxer.API.Notifications
         ///     Gibt die Nachricht der Benachrichtigung als Text zurück.
         ///     <para>(Vererbt von <see cref="INotificationObject" />)</para>
         /// </summary>
-        public string Message
-        {
-            get { throw new NotImplementedException(); }
-        }
+        public string Message => this.ToString();
 
         /// <summary>
         ///     Gibt den Typ der Benachrichtigung zurück.

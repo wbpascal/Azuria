@@ -1,0 +1,29 @@
+﻿<Window x:Class="Proxer.API.Example.ConferenceWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Proxer.API.Example"
+        mc:Ignorable="d"
+        Title="Konferenz" Height="413" Width="497" Loaded="Window_Loaded"
+        Background="{DynamicResource {x:Static SystemColors.ControlBrushKey}}">
+    <Grid>
+        <TextBox x:Name="ChatBox" HorizontalAlignment="Left" Height="327" Margin="10,10,0,0" VerticalAlignment="Top"
+                 Width="292" Background="White" IsReadOnly="True" TextWrapping="WrapWithOverflow"
+                 HorizontalScrollBarVisibility="Auto"
+                 VerticalScrollBarVisibility="Auto" />
+        <TextBox x:Name="InputBox" HorizontalAlignment="Left" Height="24" Margin="10,342,0,0" TextWrapping="Wrap"
+                 VerticalAlignment="Top" Width="217" />
+        <Button Content="Senden" HorizontalAlignment="Left" Height="24" Margin="244,342,0,0" VerticalAlignment="Top"
+                Width="58" Click="Button_Click" />
+        <GroupBox Header="Teilnehmer" HorizontalAlignment="Left" Height="179" Margin="307,10,0,0"
+                  VerticalAlignment="Top" Width="172">
+            <ListBox x:Name="TeilnehmerBox" BorderThickness="0" />
+        </GroupBox>
+        <GroupBox Header="Leiter" HorizontalAlignment="Left" Height="42" Margin="307,194,0,0" VerticalAlignment="Top"
+                  Width="172">
+            <ListView x:Name="LeiterBox" BorderThickness="0" />
+        </GroupBox>
+
+    </Grid>
+</Window>

@@ -2,87 +2,13 @@
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
-using System.Net;
-using System.Threading.Tasks;
 using HtmlAgilityPack;
-using Proxer.API.Exceptions;
-using Proxer.API.Main;
-using Proxer.API.Utilities.Net;
-using RestSharp;
 
 namespace Proxer.API.Utilities
 {
-    /// <summary>
-    ///     In dieser Klasse sind alle Funktionen zusammengefasst,
-    ///     die Hilfestellungen anbieten
-    /// </summary>
-    public class Utility
+    internal class Utility
     {
         #region
-
-        /// <summary>
-        ///     Gibt ein Objekt zurück, dass einen Anime oder Manga
-        ///     der spezifizierten ID repräsentiert.
-        /// </summary>
-        /// <param name="id">Die ID des <see cref="Main.Anime">Anime</see> oder <see cref="Main.Manga">Manga</see>.</param>
-        /// <param name="senpai">Der Benutzer. (Muss eingeloggt sein)</param>
-        /// <returns>Anime oder Manga der ID (Typecast erforderlich)</returns>
-        public static async Task<ProxerResult<IAnimeMangaObject>> GetAnimeManga(int id, Senpai senpai)
-        {
-            HtmlDocument lDocument = new HtmlDocument();
-            string lResponse;
-
-            IRestResponse lResponseObject =
-                await HttpUtility.GetWebRequestResponse("https://proxer.me/info/" + id, senpai.LoginCookies);
-            if (lResponseObject.StatusCode == HttpStatusCode.OK && !string.IsNullOrEmpty(lResponseObject.Content))
-                lResponse = System.Web.HttpUtility.HtmlDecode(lResponseObject.Content).Replace("\n", "");
-            else
-                return
-                    new ProxerResult<IAnimeMangaObject>(new[]
-                    {new WrongResponseException(), lResponseObject.ErrorException});
-
-            if (string.IsNullOrEmpty(lResponse) || !CheckForCorrectResponse(lResponse, senpai.ErrHandler))
-                return
-                    new ProxerResult<IAnimeMangaObject>(new Exception[]
-                    {new WrongResponseException {Response = lResponse}});
-
-            if (!CheckForCorrectResponse(lResponse, senpai.ErrHandler)) return null;
-            try
-            {
-                lDocument.LoadHtml(lResponse);
-
-                HtmlNode lNode =
-                    lDocument.DocumentNode.ChildNodes[1].ChildNodes[2].ChildNodes[2].ChildNodes[2].ChildNodes[1]
-                        .ChildNodes[1];
-                if (lNode.InnerText.Equals("Episoden"))
-                {
-                    return
-                        new ProxerResult<IAnimeMangaObject>(new Anime(
-                            lDocument.DocumentNode.ChildNodes[1].ChildNodes[2].ChildNodes[2].ChildNodes[2]
-                                .ChildNodes[5].ChildNodes[2].FirstChild.ChildNodes[1].FirstChild.ChildNodes[1]
-                                .ChildNodes[1].InnerText, id, senpai));
-                }
-
-                if (lNode.InnerText.Equals("Kapitel"))
-                {
-                    return
-                        new ProxerResult<IAnimeMangaObject>(new Manga(
-                            lDocument.DocumentNode.ChildNodes[1].ChildNodes[2].ChildNodes[2].ChildNodes[2]
-                                .ChildNodes[5].ChildNodes[2].FirstChild.ChildNodes[1].FirstChild.ChildNodes[1]
-                                .ChildNodes[1].InnerText, id, senpai));
-                }
-            }
-            catch
-            {
-                return
-                    new ProxerResult<IAnimeMangaObject>(
-                        (await ErrorHandler.HandleError(senpai, lResponse, false)).Exceptions);
-            }
-
-            return
-                new ProxerResult<IAnimeMangaObject>(new Exception[] {new WrongResponseException {Response = lResponse}});
-        }
-
 
         internal static IEnumerable<HtmlNode> GetAllHtmlNodes(HtmlNodeCollection htmlNodeCollection)
         {

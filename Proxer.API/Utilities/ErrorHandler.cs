@@ -4,7 +4,6 @@ using System.Threading.Tasks;
 using Newtonsoft.Json;
 using Proxer.API.Exceptions;
 using Proxer.API.Properties;
-using Proxer.API.Utilities.Net;
 
 namespace Proxer.API.Utilities
 {
@@ -27,7 +26,7 @@ namespace Proxer.API.Utilities
         #region
 
         /// <summary>
-        ///     Erstellt eine neue Liste der Strings, die aussortiert werden sollen
+        ///     Erstellt eine neue Liste der Strings, die aussortiert werden sollen.
         /// </summary>
         public void Reset()
         {

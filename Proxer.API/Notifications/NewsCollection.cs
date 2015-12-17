@@ -1,13 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Net;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
 using Proxer.API.Exceptions;
 using Proxer.API.Utilities;
 using Proxer.API.Utilities.Net;
-using RestSharp;
 
 namespace Proxer.API.Notifications
 {
@@ -61,15 +58,15 @@ namespace Proxer.API.Notifications
         /// <seealso cref="INotificationCollection.GetNotifications" />
         /// <seealso cref="Senpai.Login" />
         /// <returns>Ein Array mit allen aktuellen Benachrichtigungen.</returns>
-        public async Task<ProxerResult<INotificationObject[]>> GetAllNotifications()
+        public async Task<ProxerResult<IEnumerable<INotificationObject>>> GetAllNotifications()
         {
             if (this._notificationObjects != null)
-                return new ProxerResult<INotificationObject[]>(this._notificationObjects);
+                return new ProxerResult<IEnumerable<INotificationObject>>(this._notificationObjects);
 
             ProxerResult lResult;
             return !(lResult = await this.GetInfos()).Success
-                ? new ProxerResult<INotificationObject[]>(lResult.Exceptions)
-                : new ProxerResult<INotificationObject[]>(this._notificationObjects);
+                ? new ProxerResult<IEnumerable<INotificationObject>>(lResult.Exceptions)
+                : new ProxerResult<IEnumerable<INotificationObject>>(this._notificationObjects);
         }
 
         /// <summary>
@@ -102,19 +99,19 @@ namespace Proxer.API.Notifications
         ///     Ein Array mit der Anzahl an Elementen in <paramref name="count" /> spezifiziert.
         ///     Wenn <paramref name="count" /> > Array.length, dann wird der gesamte Array zurückgegeben.
         /// </returns>
-        public async Task<ProxerResult<INotificationObject[]>> GetNotifications(int count)
+        public async Task<ProxerResult<IEnumerable<INotificationObject>>> GetNotifications(int count)
         {
             if (this._notificationObjects != null)
                 return this._notificationObjects.Length >= count
-                    ? new ProxerResult<INotificationObject[]>(this._notificationObjects)
-                    : new ProxerResult<INotificationObject[]>(this._notificationObjects.Take(count).ToArray());
+                    ? new ProxerResult<IEnumerable<INotificationObject>>(this._notificationObjects)
+                    : new ProxerResult<IEnumerable<INotificationObject>>(this._notificationObjects.Take(count).ToArray());
             ProxerResult lResult;
             if (!(lResult = await this.GetInfos()).Success)
-                return new ProxerResult<INotificationObject[]>(lResult.Exceptions);
+                return new ProxerResult<IEnumerable<INotificationObject>>(lResult.Exceptions);
 
             return this._notificationObjects.Length >= count
-                ? new ProxerResult<INotificationObject[]>(this._notificationObjects)
-                : new ProxerResult<INotificationObject[]>(this._notificationObjects.Take(count).ToArray());
+                ? new ProxerResult<IEnumerable<INotificationObject>>(this._notificationObjects)
+                : new ProxerResult<IEnumerable<INotificationObject>>(this._notificationObjects.Take(count).ToArray());
         }
 
         #endregion
@@ -149,19 +146,19 @@ namespace Proxer.API.Notifications
         ///     Ein Array mit der Anzahl an Elementen in <paramref name="count" /> spezifiziert.
         ///     Wenn <paramref name="count" /> > Array.length, dann wird der gesamte Array zurückgegeben.
         /// </returns>
-        public async Task<ProxerResult<NewsObject[]>> GetNews(int count)
+        public async Task<ProxerResult<IEnumerable<NewsObject>>> GetNews(int count)
         {
             if (this._notificationObjects != null)
                 return this._notificationObjects.Length >= count
-                    ? new ProxerResult<NewsObject[]>(this._newsObjects)
-                    : new ProxerResult<NewsObject[]>(this._newsObjects.Take(count).ToArray());
+                    ? new ProxerResult<IEnumerable<NewsObject>>(this._newsObjects)
+                    : new ProxerResult<IEnumerable<NewsObject>>(this._newsObjects.Take(count).ToArray());
             ProxerResult lResult;
             if (!(lResult = await this.GetInfos()).Success)
-                return new ProxerResult<NewsObject[]>(lResult.Exceptions);
+                return new ProxerResult<IEnumerable<NewsObject>>(lResult.Exceptions);
 
             return this._notificationObjects.Length >= count
-                ? new ProxerResult<NewsObject[]>(this._newsObjects)
-                : new ProxerResult<NewsObject[]>(this._newsObjects.Take(count).ToArray());
+                ? new ProxerResult<IEnumerable<NewsObject>>(this._newsObjects)
+                : new ProxerResult<IEnumerable<NewsObject>>(this._newsObjects.Take(count).ToArray());
         }
 
         /// <summary>
@@ -188,37 +185,32 @@ namespace Proxer.API.Notifications
         /// </summary>
         /// <seealso cref="Senpai.Login" />
         /// <returns>Ein Array mit allen aktuellen Benachrichtigungen.</returns>
-        public async Task<ProxerResult<NewsObject[]>> GetAllNews()
+        public async Task<ProxerResult<IEnumerable<NewsObject>>> GetAllNews()
         {
             if (this._notificationObjects != null)
-                return new ProxerResult<NewsObject[]>(this._newsObjects);
+                return new ProxerResult<IEnumerable<NewsObject>>(this._newsObjects);
 
             ProxerResult lResult;
             return !(lResult = await this.GetInfos()).Success
-                ? new ProxerResult<NewsObject[]>(lResult.Exceptions)
-                : new ProxerResult<NewsObject[]>(this._newsObjects);
+                ? new ProxerResult<IEnumerable<NewsObject>>(lResult.Exceptions)
+                : new ProxerResult<IEnumerable<NewsObject>>(this._newsObjects);
         }
 
 
         private async Task<ProxerResult> GetInfos()
         {
-            if (!this._senpai.LoggedIn)
-                return new ProxerResult(new Exception[] {new NotLoggedInException(this._senpai)});
-
-            string lResponse;
-
-            IRestResponse lResponseObject =
+            ProxerResult<string> lResult =
                 await
-                    HttpUtility.GetWebRequestResponse(
+                    HttpUtility.GetResponseErrorHandling(
                         "https://proxer.me/notifications?format=json&s=news&p=1",
-                        this._senpai.LoginCookies);
-            if (lResponseObject.StatusCode == HttpStatusCode.OK && !string.IsNullOrEmpty(lResponseObject.Content))
-                lResponse = System.Web.HttpUtility.HtmlDecode(lResponseObject.Content).Replace("\n", "");
-            else return new ProxerResult(new[] {new WrongResponseException(), lResponseObject.ErrorException});
+                        this._senpai.LoginCookies,
+                        this._senpai.ErrHandler,
+                        this._senpai);
 
-            if (string.IsNullOrEmpty(lResponse) ||
-                !Utility.CheckForCorrectResponse(lResponse, this._senpai.ErrHandler))
-                return new ProxerResult(new Exception[] {new WrongResponseException {Response = lResponse}});
+            if (!lResult.Success)
+                return new ProxerResult(lResult.Exceptions);
+
+            string lResponse = lResult.Result;
 
             if (!lResponse.StartsWith("{\"error\":0"))
                 return new ProxerResult

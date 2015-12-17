@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
@@ -12,7 +13,6 @@ using Proxer.API.Exceptions;
 using Proxer.API.Notifications;
 using Proxer.API.Utilities;
 using Proxer.API.Utilities.Net;
-using RestSharp;
 
 namespace Proxer.API
 {
@@ -25,49 +25,56 @@ namespace Proxer.API
         ///     Stellt die Methode da, die ausgelöst wird, wenn neue Anime- oder Manga-Benachrichtigungen verfügbar sind.
         /// </summary>
         /// <param name="sender">Der Benutzer, der die Benachrichtigung empfangen hat.</param>
-        /// <param name="e">Die Benachrichtigungen</param>
+        /// <param name="e">Die Benachrichtigungen.</param>
         public delegate void AmNotificationEventHandler(Senpai sender, AmNotificationEventArgs e);
+
+        /// <summary>
+        ///     Stellt eine Methode da, die ausgelöst, wenn während des Abrufen der Benachrichtigungen eine Ausnahme ausgelöst
+        ///     wird.
+        /// </summary>
+        /// <param name="sender">Der Benutzer, bei dem der Error aufgetreten ist.</param>
+        /// <param name="exceptions">Die Ausnahmen, die aufgetreten sind.</param>
+        public delegate void ErrorDuringNotificationFetchEventHandler(Senpai sender, IEnumerable<Exception> exceptions);
 
         /// <summary>
         ///     Stellt die Methode da, die ausgelöst wird, wenn neue Freundschafts-Benachrichtigungen verfügbar sind.
         /// </summary>
         /// <param name="sender">Der Benutzer, der die Benachrichtigung empfangen hat.</param>
-        /// <param name="e">Die Benachrichtigungen</param>
+        /// <param name="e">Die Benachrichtigungen.</param>
         public delegate void FriendNotificiationEventHandler(Senpai sender, FriendNotificationEventArgs e);
 
         /// <summary>
         ///     Stellt die Methode da, die ausgelöst wird, wenn neue News verfügbar sind.
         /// </summary>
         /// <param name="sender">Der Benutzer, der die Benachrichtigung empfangen hat.</param>
-        /// <param name="e">Die Benachrichtigungen</param>
+        /// <param name="e">Die Benachrichtigungen.</param>
         public delegate void NewsNotificationEventHandler(Senpai sender, NewsNotificationEventArgs e);
 
         /// <summary>
         ///     Stellt die Methode da, die ausgelöst wird, wenn neue Benachrichtigungen aller Art verfügbar sind.
+        ///     Wird nur ausgelöst, wenn mindestens eine Benachrichtigung ausgelöst wurde aber wird nur höchstens bei
+        ///     jeden Durchgang einmal ausgelöst.
         /// </summary>
         /// <param name="sender">Der Benutzer, der die Benachrichtigung empfangen hat.</param>
-        /// <param name="e">Die Benachrichtigungen</param>
-        public delegate void NotificationEventHandler(Senpai sender, INotificationEventArgs e);
+        /// <param name="e">Eine Aufzählung aller Benachrichtigungen.</param>
+        public delegate void NotificationEventHandler(Senpai sender, IEnumerable<INotificationEventArgs> e);
 
         /// <summary>
         ///     Stellt die Methode da, die ausgelöst wird, wenn neue Privat-Nachricht-Benachrichtigungen verfügbar sind.
         /// </summary>
         /// <param name="sender">Der Benutzer, der die Benachrichtigung empfangen hat.</param>
-        /// <param name="e">Die Benachrichtigungen</param>
+        /// <param name="e">Die Benachrichtigungen.</param>
         public delegate void PmNotificationEventHandler(Senpai sender, PmNotificationEventArgs e);
 
         private readonly Timer _loginCheckTimer;
         private readonly Timer _notificationCheckTimer;
         private readonly Timer _propertyUpdateTimer;
         private AnimeMangaUpdateCollection _animeMangaUpdates;
-        private bool _checkAnimeMangaUpdate;
-        private bool _checkFriendUpdates;
-        private bool _checkNewsUpdate;
-        private bool _checkPmUpdate;
         private FriendRequestCollection _friendUpdates;
         private bool _loggedIn;
         private NewsCollection _newsUpdates;
         private PmCollection _pmUpdates;
+        private ArrayList _updateNotifications;
         private int _userId;
 
 
@@ -78,6 +85,7 @@ namespace Proxer.API
         {
             this.ErrHandler = new ErrorHandler();
 
+            this._updateNotifications = ArrayList.Synchronized(new ArrayList(new[] {true, false, true, true}));
             this._loggedIn = false;
             this.LoginCookies = new CookieContainer();
 
@@ -97,16 +105,31 @@ namespace Proxer.API
                 AutoReset = true,
                 Interval = (new TimeSpan(0, 15, 0)).TotalMilliseconds
             };
-            this._notificationCheckTimer.Elapsed += async (s, eArgs) => { await this.CheckNotifications(); };
+            this._notificationCheckTimer.Elapsed += async (s, eArgs) =>
+            {
+                ProxerResult lResult = await this.CheckNotifications();
+                try
+                {
+                    if (!lResult.Success)
+                        this.ErrorDuringNotificationFetch?.Invoke(this, lResult.Exceptions);
+                }
+                catch
+                {
+                    //ignored
+                }
+            };
 
-            this._propertyUpdateTimer = new Timer(1) {AutoReset = true};
+            this._propertyUpdateTimer = new Timer((new TimeSpan(0, 20, 0)).TotalMilliseconds) {AutoReset = true};
             this._propertyUpdateTimer.Elapsed += (s, eArgs) =>
             {
-                this._propertyUpdateTimer.Interval = (new TimeSpan(0, 20, 0)).TotalMilliseconds;
-                this._checkAnimeMangaUpdate = true;
-                this._checkFriendUpdates = true;
-                this._checkNewsUpdate = true;
-                this._checkPmUpdate = true;
+                ArrayList lNotSyncedList = this._updateNotifications;
+                lock (lNotSyncedList.SyncRoot)
+                {
+                    for (int i = 0; i < 4; i++)
+                        this._updateNotifications[i] = true;
+
+                    this._updateNotifications = ArrayList.Synchronized(lNotSyncedList);
+                }
             };
         }
 
@@ -123,10 +146,11 @@ namespace Proxer.API
         {
             get
             {
-                if (!this._checkAnimeMangaUpdate && this._animeMangaUpdates != null) return this._animeMangaUpdates;
+                if (!(bool) this._updateNotifications[0] && this._animeMangaUpdates != null)
+                    return this._animeMangaUpdates;
 
                 this._animeMangaUpdates = new AnimeMangaUpdateCollection(this);
-                this._checkAnimeMangaUpdate = false;
+                this._updateNotifications[0] = false;
 
                 return this._animeMangaUpdates;
             }
@@ -149,10 +173,10 @@ namespace Proxer.API
         {
             get
             {
-                if (!this._checkFriendUpdates && this._friendUpdates != null) return this._friendUpdates;
+                if (!(bool) this._updateNotifications[1] && this._friendUpdates != null) return this._friendUpdates;
 
                 this._friendUpdates = new FriendRequestCollection(this);
-                this._checkFriendUpdates = false;
+                this._updateNotifications[1] = false;
 
                 return this._friendUpdates;
             }
@@ -171,6 +195,7 @@ namespace Proxer.API
                 {
                     this._loginCheckTimer.Start();
                     this._loggedIn = true;
+                    this.UserLoggedInRaised?.Invoke(this, EventArgs.Empty);
                 }
                 else
                 {
@@ -178,6 +203,7 @@ namespace Proxer.API
                     this._notificationCheckTimer.Stop();
                     this._propertyUpdateTimer.Stop();
                     this._loggedIn = false;
+                    this.UserLoggedOutRaised?.Invoke(this, EventArgs.Empty);
                 }
             }
         }
@@ -186,7 +212,7 @@ namespace Proxer.API
         ///     Gibt den CookieContainer zurück, der benutzt wird, um Aktionen im eingeloggten Status auszuführen.
         /// </summary>
         /// <seealso cref="MobileLoginCookies" />
-        public CookieContainer LoginCookies { get; }
+        public CookieContainer LoginCookies { get; private set; }
 
         /// <summary>
         ///     Profil des Senpais.
@@ -224,10 +250,10 @@ namespace Proxer.API
         {
             get
             {
-                if (!this._checkNewsUpdate && this._newsUpdates != null) return this._newsUpdates;
+                if (!(bool) this._updateNotifications[2] && this._newsUpdates != null) return this._newsUpdates;
 
                 this._newsUpdates = new NewsCollection(this);
-                this._checkNewsUpdate = false;
+                this._updateNotifications[2] = false;
 
                 return this._newsUpdates;
             }
@@ -244,10 +270,10 @@ namespace Proxer.API
         {
             get
             {
-                if (!this._checkPmUpdate && this._pmUpdates != null) return this._pmUpdates;
+                if (!(bool) this._updateNotifications[3] && this._pmUpdates != null) return this._pmUpdates;
 
                 this._pmUpdates = new PmCollection(this);
-                this._checkPmUpdate = false;
+                this._updateNotifications[3] = false;
 
                 return this._pmUpdates;
             }
@@ -278,7 +304,7 @@ namespace Proxer.API
         /// <returns>Gibt zurück, ob der Benutzer erfolgreich eingeloggt wurde.</returns>
         public async Task<ProxerResult<bool>> Login(string username, string password)
         {
-            if (this.LoggedIn || string.IsNullOrEmpty(username) || string.IsNullOrEmpty(password))
+            if (string.IsNullOrEmpty(username) || string.IsNullOrEmpty(password))
                 return new ProxerResult<bool>(false);
 
             Dictionary<string, string> postArgs = new Dictionary<string, string>
@@ -287,18 +313,16 @@ namespace Proxer.API
                 {"password", password}
             };
 
-            string lResponse;
-
-            IRestResponse lResponseObject =
+            ProxerResult<KeyValuePair<string, CookieContainer>> lResult =
                 await
-                    HttpUtility.PostWebRequestResponse("https://proxer.me/login?format=json&action=login",
-                        this.LoginCookies, postArgs);
-            if (lResponseObject.StatusCode == HttpStatusCode.OK && !string.IsNullOrEmpty(lResponseObject.Content))
-                lResponse = System.Web.HttpUtility.HtmlDecode(lResponseObject.Content).Replace("\n", "");
-            else return new ProxerResult<bool>(new[] {new WrongResponseException(), lResponseObject.ErrorException});
+                    HttpUtility.PostResponseErrorHandling("https://proxer.me/login?format=json&action=login",
+                        postArgs, this.LoginCookies, this.ErrHandler, this, new Func<string, ProxerResult>[0], false);
 
-            if (string.IsNullOrEmpty(lResponse) || !Utility.CheckForCorrectResponse(lResponse, this.ErrHandler))
-                return new ProxerResult<bool>(new Exception[] {new WrongResponseException {Response = lResponse}});
+            if (!lResult.Success)
+                return new ProxerResult<bool>(lResult.Exceptions);
+
+            string lResponse = lResult.Result.Key;
+            this.LoginCookies = lResult.Result.Value;
 
             try
             {
@@ -327,18 +351,16 @@ namespace Proxer.API
 
         internal async Task<ProxerResult<bool>> CheckLogin()
         {
-            string lResponse;
-
-            IRestResponse lResponseObject =
+            ProxerResult<Tuple<string, CookieContainer>> lResult =
                 await
-                    HttpUtility.GetWebRequestResponse("https://proxer.me/login?format=json&action=login",
-                        this.LoginCookies);
-            if (lResponseObject.StatusCode == HttpStatusCode.OK && !string.IsNullOrEmpty(lResponseObject.Content))
-                lResponse = System.Web.HttpUtility.HtmlDecode(lResponseObject.Content).Replace("\n", "");
-            else return new ProxerResult<bool>(new[] {new WrongResponseException(), lResponseObject.ErrorException});
+                    HttpUtility.GetResponseErrorHandling("https://proxer.me/login?format=json&action=login",
+                        this.LoginCookies,
+                        this.ErrHandler, this, new Func<string, ProxerResult>[0], false);
 
-            if (string.IsNullOrEmpty(lResponse) || !Utility.CheckForCorrectResponse(lResponse, this.ErrHandler))
-                return new ProxerResult<bool>(new Exception[] {new WrongResponseException {Response = lResponse}});
+            if (!lResult.Success)
+                return new ProxerResult<bool>(lResult.Exceptions);
+
+            string lResponse = lResult.Result.Item1;
 
             try
             {
@@ -347,11 +369,10 @@ namespace Proxer.API
 
                 if (responseDes["error"].Equals("0"))
                 {
-                    this.LoggedIn = true;
+                    if (!this.LoggedIn) this.LoggedIn = true;
                     return new ProxerResult<bool>(true);
                 }
-                this.LoggedIn = false;
-                this.UserLoggedOutRaised?.Invoke(this, new EventArgs());
+                if (this.LoggedIn) this.LoggedIn = false;
                 return new ProxerResult<bool>(false);
             }
             catch
@@ -383,10 +404,9 @@ namespace Proxer.API
         ///     </list>
         /// </summary>
         /// <seealso cref="Login" />
-        public async Task<ProxerResult> InitNotifications()
+        public ProxerResult InitNotifications()
         {
             if (!this.LoggedIn) return new ProxerResult(new Exception[] {new NotLoggedInException(this)});
-            await this.CheckNotifications();
 
             this._notificationCheckTimer.Start();
             this._propertyUpdateTimer.Start();
@@ -418,9 +438,14 @@ namespace Proxer.API
                 return new ProxerResult(lResult.Exceptions);
             }
 
-            this._checkAnimeMangaUpdate = true;
-            this._checkNewsUpdate = true;
-            this._checkPmUpdate = true;
+            ArrayList lNotSyncedList = this._updateNotifications;
+            lock (lNotSyncedList.SyncRoot)
+            {
+                for (int i = 0; i < 4; i++)
+                    this._updateNotifications[i] = true;
+
+                this._updateNotifications = ArrayList.Synchronized(lNotSyncedList);
+            }
 
             return new ProxerResult();
         }
@@ -453,23 +478,15 @@ namespace Proxer.API
         /// <returns>Alle Konferenzen, in denen der Benutzer Teilnehmer ist.</returns>
         public async Task<ProxerResult<List<Conference>>> GetAllConferences()
         {
-            if (!this.LoggedIn) return new ProxerResult<List<Conference>>(new Exception[] {new NotLoggedInException()});
+            ProxerResult<string> lResult =
+                await
+                    HttpUtility.GetResponseErrorHandling("http://proxer.me/messages", this.LoginCookies, this.ErrHandler,
+                        this);
 
-            string lResponse;
+            if (!lResult.Success)
+                return new ProxerResult<List<Conference>>(lResult.Exceptions);
 
-            IRestResponse lResponseObject =
-                await HttpUtility.GetWebRequestResponse("http://proxer.me/messages", this.LoginCookies);
-            if (lResponseObject.StatusCode == HttpStatusCode.OK && !string.IsNullOrEmpty(lResponseObject.Content))
-                lResponse = System.Web.HttpUtility.HtmlDecode(lResponseObject.Content).Replace("\n", "");
-            else
-                return
-                    new ProxerResult<List<Conference>>(new[]
-                    {new WrongResponseException(), lResponseObject.ErrorException});
-
-            if (string.IsNullOrEmpty(lResponse) || !Utility.CheckForCorrectResponse(lResponse, this.ErrHandler))
-                return
-                    new ProxerResult<List<Conference>>(new Exception[]
-                    {new WrongResponseException {Response = lResponse}});
+            string lResponse = lResult.Result;
 
             try
             {
@@ -497,55 +514,78 @@ namespace Proxer.API
             }
         }
 
-
         private async Task<ProxerResult> CheckNotifications()
         {
-            if (!this.LoggedIn) return new ProxerResult(new Exception[] {new NotLoggedInException()});
-            string lResponse;
+            ProxerResult<string> lResult =
+                await
+                    HttpUtility.GetResponseErrorHandling("https://proxer.me/notifications?format=raw&s=count",
+                        this.LoginCookies, this.ErrHandler,
+                        this);
 
-            IRestResponse lResponseObject =
-                await HttpUtility.GetWebRequestResponse("http://proxer.me/messages", this.LoginCookies);
-            if (lResponseObject.StatusCode == HttpStatusCode.OK && !string.IsNullOrEmpty(lResponseObject.Content))
-                lResponse = System.Web.HttpUtility.HtmlDecode(lResponseObject.Content).Replace("\n", "");
-            else return new ProxerResult(new[] {new WrongResponseException(), lResponseObject.ErrorException});
+            if (!lResult.Success)
+                return new ProxerResult(lResult.Exceptions);
 
-            if (string.IsNullOrEmpty(lResponse) || !Utility.CheckForCorrectResponse(lResponse, this.ErrHandler))
-                return new ProxerResult(new Exception[] {new WrongResponseException {Response = lResponse}});
+            string lResponse = lResult.Result;
 
-            if (!lResponse.StartsWith("0")) return new ProxerResult();
-            string[] lResponseSplit = lResponse.Split('#');
-
-            if (!lResponseSplit[2].Equals("0"))
+            if (lResponse.StartsWith("1")) return new ProxerResult();
+            try
             {
-                this.PmNotificationRaised?.Invoke(this,
-                    new PmNotificationEventArgs(Convert.ToInt32(lResponseSplit[2]), this));
-                this.NotificationRaised?.Invoke(this,
-                    new PmNotificationEventArgs(Convert.ToInt32(lResponseSplit[2]), this));
-                this._checkPmUpdate = true;
+                List<INotificationEventArgs> lNotificationEventArgs = new List<INotificationEventArgs>();
+                string[] lResponseSplit = lResponse.Split('#');
+                if (lResponseSplit.Length < 6)
+                    return new ProxerResult(new Exception[] {new WrongResponseException {Response = lResponse}});
+
+                ArrayList lNotSyncedList = this._updateNotifications;
+                lock (lNotSyncedList.SyncRoot)
+                {
+                    for (int i = 0; i < 4; i++)
+                        this._updateNotifications[i] = true;
+
+                    this._updateNotifications = ArrayList.Synchronized(lNotSyncedList);
+                }
+
+                if (!lResponseSplit[2].Equals("0"))
+                {
+                    PmNotificationEventArgs lEventArgs = new PmNotificationEventArgs(
+                        Convert.ToInt32(lResponseSplit[2]), this);
+                    this.PmNotificationRaised?.Invoke(this, lEventArgs);
+
+                    lNotificationEventArgs.Add(lEventArgs);
+                }
+
+                if (!lResponseSplit[3].Equals("0"))
+                {
+                    FriendNotificationEventArgs lEventArgs =
+                        new FriendNotificationEventArgs(Convert.ToInt32(lResponseSplit[3]), this);
+                    this.FriendNotificationRaised?.Invoke(this, lEventArgs);
+
+                    lNotificationEventArgs.Add(lEventArgs);
+                }
+
+                if (!lResponseSplit[4].Equals("0"))
+                {
+                    NewsNotificationEventArgs lEventArgs =
+                        new NewsNotificationEventArgs(Convert.ToInt32(lResponseSplit[4]), this);
+                    this.NewsNotificationRaised?.Invoke(this, lEventArgs);
+
+                    lNotificationEventArgs.Add(lEventArgs);
+                }
+
+                if (!lResponseSplit[5].Equals("0"))
+                {
+                    AmNotificationEventArgs lEventArgs = new AmNotificationEventArgs(
+                        Convert.ToInt32(lResponseSplit[5]), this);
+                    this.AmUpdateNotificationRaised?.Invoke(this, lEventArgs);
+
+                    lNotificationEventArgs.Add(lEventArgs);
+                }
+
+                if (lNotificationEventArgs.Any())
+                    this.NotificationRaised?.Invoke(this, lNotificationEventArgs);
             }
-            if (!lResponseSplit[3].Equals("0"))
+            catch
             {
-                this.FriendNotificationRaised?.Invoke(this,
-                    new FriendNotificationEventArgs(Convert.ToInt32(lResponseSplit[3]), this));
-                this.NotificationRaised?.Invoke(this,
-                    new FriendNotificationEventArgs(Convert.ToInt32(lResponseSplit[3]), this));
-                this._checkFriendUpdates = true;
-            }
-            if (!lResponseSplit[4].Equals("0"))
-            {
-                this.NewsNotificationRaised?.Invoke(this,
-                    new NewsNotificationEventArgs(Convert.ToInt32(lResponseSplit[4]), this));
-                this.NotificationRaised?.Invoke(this,
-                    new NewsNotificationEventArgs(Convert.ToInt32(lResponseSplit[4]), this));
-                this._checkNewsUpdate = true;
-            }
-            if (!lResponseSplit[5].Equals("0"))
-            {
-                this.AmUpdateNotificationRaised?.Invoke(this,
-                    new AmNotificationEventArgs(Convert.ToInt32(lResponseSplit[5]), this));
-                this.NotificationRaised?.Invoke(this,
-                    new AmNotificationEventArgs(Convert.ToInt32(lResponseSplit[5]), this));
-                this._checkAnimeMangaUpdate = true;
+                return new ProxerResult((await ErrorHandler.HandleError(this, lResponse, false)).Exceptions);
             }
 
             return new ProxerResult();
@@ -556,6 +596,11 @@ namespace Proxer.API
         ///     Wird bei allen Benachrichtigungen ausgelöst. (15 Minuten Intervall)
         /// </summary>
         public event NotificationEventHandler NotificationRaised;
+
+        /// <summary>
+        ///     Wird ausgelöst, wenn während des Abrufens der Benachríchtigungen eine Ausnahme aufgetreten ist.
+        /// </summary>
+        public event ErrorDuringNotificationFetchEventHandler ErrorDuringNotificationFetch;
 
         /// <summary>
         ///     Wird ausgelöst, wenn eine neue Freundschaftsanfrage aussteht. (15 Minuten Intervall)
@@ -576,6 +621,11 @@ namespace Proxer.API
         ///     Wird ausgelöst, wenn neue Anime Folgen oder Manga Kapitel vorhanden sind. (15 Minuten Intervall)
         /// </summary>
         public event AmNotificationEventHandler AmUpdateNotificationRaised;
+
+        /// <summary>
+        ///     Wird ausgelöst, wenn der <see cref="Senpai">Benutzer</see> sich eingeloggt hat.
+        /// </summary>
+        public event EventHandler UserLoggedInRaised;
 
         /// <summary>
         ///     Wird ausgelöst, wenn die Login-Cookies verfallen sind. (15 Minuten Intervall)

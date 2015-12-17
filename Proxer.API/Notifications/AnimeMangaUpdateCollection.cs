@@ -1,13 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Net;
 using System.Threading.Tasks;
 using HtmlAgilityPack;
 using Proxer.API.Exceptions;
 using Proxer.API.Utilities;
 using Proxer.API.Utilities.Net;
-using RestSharp;
 
 namespace Proxer.API.Notifications
 {
@@ -63,15 +61,15 @@ namespace Proxer.API.Notifications
         /// <seealso cref="INotificationCollection.GetNotifications" />
         /// <seealso cref="Senpai.Login" />
         /// <returns>Ein Array mit allen aktuellen Benachrichtigungen.</returns>
-        public async Task<ProxerResult<INotificationObject[]>> GetAllNotifications()
+        public async Task<ProxerResult<IEnumerable<INotificationObject>>> GetAllNotifications()
         {
             if (this._notificationObjects != null)
-                return new ProxerResult<INotificationObject[]>(this._notificationObjects);
+                return new ProxerResult<IEnumerable<INotificationObject>>(this._notificationObjects);
 
             ProxerResult lResult;
             return !(lResult = await this.GetInfos()).Success
-                ? new ProxerResult<INotificationObject[]>(lResult.Exceptions)
-                : new ProxerResult<INotificationObject[]>(this._notificationObjects);
+                ? new ProxerResult<IEnumerable<INotificationObject>>(lResult.Exceptions)
+                : new ProxerResult<IEnumerable<INotificationObject>>(this._notificationObjects);
         }
 
         /// <summary>
@@ -104,19 +102,19 @@ namespace Proxer.API.Notifications
         ///     Ein Array mit der Anzahl an Elementen in <paramref name="count" /> spezifiziert.
         ///     Wenn <paramref name="count" /> > Array.length, dann wird der gesamte Array zurückgegeben.
         /// </returns>
-        public async Task<ProxerResult<INotificationObject[]>> GetNotifications(int count)
+        public async Task<ProxerResult<IEnumerable<INotificationObject>>> GetNotifications(int count)
         {
             if (this._notificationObjects != null)
                 return this._notificationObjects.Length >= count
-                    ? new ProxerResult<INotificationObject[]>(this._notificationObjects)
-                    : new ProxerResult<INotificationObject[]>(this._notificationObjects.Take(count).ToArray());
+                    ? new ProxerResult<IEnumerable<INotificationObject>>(this._notificationObjects)
+                    : new ProxerResult<IEnumerable<INotificationObject>>(this._notificationObjects.Take(count).ToArray());
             ProxerResult lResult;
             if (!(lResult = await this.GetInfos()).Success)
-                return new ProxerResult<INotificationObject[]>(lResult.Exceptions);
+                return new ProxerResult<IEnumerable<INotificationObject>>(lResult.Exceptions);
 
             return this._notificationObjects.Length >= count
-                ? new ProxerResult<INotificationObject[]>(this._notificationObjects)
-                : new ProxerResult<INotificationObject[]>(this._notificationObjects.Take(count).ToArray());
+                ? new ProxerResult<IEnumerable<INotificationObject>>(this._notificationObjects)
+                : new ProxerResult<IEnumerable<INotificationObject>>(this._notificationObjects.Take(count).ToArray());
         }
 
         #endregion
@@ -151,20 +149,22 @@ namespace Proxer.API.Notifications
         ///     Ein Array mit der Anzahl an Elementen in <paramref name="count" /> spezifiziert.
         ///     Wenn <paramref name="count" /> > Array.length, dann wird der gesamte Array zurückgegeben.
         /// </returns>
-        public async Task<ProxerResult<AnimeMangaUpdateObject[]>> GetAnimeMangaUpdates(int count)
+        public async Task<ProxerResult<IEnumerable<AnimeMangaUpdateObject>>> GetAnimeMangaUpdates(int count)
         {
             if (this._animeMangaUpdateObjects != null)
                 return this._animeMangaUpdateObjects.Length >= count
-                    ? new ProxerResult<AnimeMangaUpdateObject[]>(this._animeMangaUpdateObjects)
-                    : new ProxerResult<AnimeMangaUpdateObject[]>(this._animeMangaUpdateObjects.Take(count).ToArray());
+                    ? new ProxerResult<IEnumerable<AnimeMangaUpdateObject>>(this._animeMangaUpdateObjects)
+                    : new ProxerResult<IEnumerable<AnimeMangaUpdateObject>>(
+                        this._animeMangaUpdateObjects.Take(count).ToArray());
 
             ProxerResult lResult;
             if (!(lResult = await this.GetInfos()).Success)
-                return new ProxerResult<AnimeMangaUpdateObject[]>(lResult.Exceptions);
+                return new ProxerResult<IEnumerable<AnimeMangaUpdateObject>>(lResult.Exceptions);
 
             return this._animeMangaUpdateObjects.Length >= count
-                ? new ProxerResult<AnimeMangaUpdateObject[]>(this._animeMangaUpdateObjects)
-                : new ProxerResult<AnimeMangaUpdateObject[]>(this._animeMangaUpdateObjects.Take(count).ToArray());
+                ? new ProxerResult<IEnumerable<AnimeMangaUpdateObject>>(this._animeMangaUpdateObjects)
+                : new ProxerResult<IEnumerable<AnimeMangaUpdateObject>>(
+                    this._animeMangaUpdateObjects.Take(count).ToArray());
         }
 
         /// <summary>
@@ -191,38 +191,33 @@ namespace Proxer.API.Notifications
         /// </summary>
         /// <seealso cref="Senpai.Login" />
         /// <returns>Ein Array mit allen aktuellen Benachrichtigungen.</returns>
-        public async Task<ProxerResult<AnimeMangaUpdateObject[]>> GetAllAnimeMangaUpdates()
+        public async Task<ProxerResult<IEnumerable<AnimeMangaUpdateObject>>> GetAllAnimeMangaUpdates()
         {
             if (this._animeMangaUpdateObjects != null)
-                return new ProxerResult<AnimeMangaUpdateObject[]>(this._animeMangaUpdateObjects);
+                return new ProxerResult<IEnumerable<AnimeMangaUpdateObject>>(this._animeMangaUpdateObjects);
 
             ProxerResult lResult;
             return !(lResult = await this.GetInfos()).Success
-                ? new ProxerResult<AnimeMangaUpdateObject[]>(lResult.Exceptions)
-                : new ProxerResult<AnimeMangaUpdateObject[]>(this._animeMangaUpdateObjects);
+                ? new ProxerResult<IEnumerable<AnimeMangaUpdateObject>>(lResult.Exceptions)
+                : new ProxerResult<IEnumerable<AnimeMangaUpdateObject>>(this._animeMangaUpdateObjects);
         }
 
 
         private async Task<ProxerResult> GetInfos()
         {
-            if (!this._senpai.LoggedIn)
-                return new ProxerResult(new Exception[] {new NotLoggedInException(this._senpai)});
-
             HtmlDocument lDocument = new HtmlDocument();
-            string lResponse;
-
-            IRestResponse lResponseObject =
+            ProxerResult<string> lResult =
                 await
-                    HttpUtility.GetWebRequestResponse(
+                    HttpUtility.GetResponseErrorHandling(
                         "https://proxer.me/components/com_proxer/misc/notifications_misc.php",
-                        this._senpai.LoginCookies);
-            if (lResponseObject.StatusCode == HttpStatusCode.OK && !string.IsNullOrEmpty(lResponseObject.Content))
-                lResponse = System.Web.HttpUtility.HtmlDecode(lResponseObject.Content).Replace("\n", "");
-            else return new ProxerResult(new[] {new WrongResponseException(), lResponseObject.ErrorException});
+                        this._senpai.LoginCookies,
+                        this._senpai.ErrHandler,
+                        this._senpai);
 
-            if (string.IsNullOrEmpty(lResponse) ||
-                !Utility.CheckForCorrectResponse(lResponse, this._senpai.ErrHandler))
-                return new ProxerResult(new Exception[] {new WrongResponseException {Response = lResponse}});
+            if (!lResult.Success)
+                return new ProxerResult(lResult.Exceptions);
+
+            string lResponse = lResult.Result;
 
             try
             {

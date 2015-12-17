@@ -1,14 +1,40 @@
 # [inoffiziell] Proxer API .NET 
-## WIP
 
-Eine kleine Umsetztung des Proxer APIs in eine Klassenbibliothek für Windows.
-
-**Fragen?** Dann schaue am besten mal im [Wiki] (https://github.com/InfiniteSoul/massive-octo-wookie/wiki) nach.
-
-###Status
+##Status
 Master-Branch: [![Build status](https://ci.appveyor.com/api/projects/status/eenr5ksrjakegl0e/branch/master?svg=true)](https://ci.appveyor.com/project/InfiniteSoul/massive-octo-wookie/branch/master)
 
 Neuester Commit: [![Build status](https://ci.appveyor.com/api/projects/status/eenr5ksrjakegl0e?svg=true)](https://ci.appveyor.com/project/InfiniteSoul/massive-octo-wookie)
+
+Issues: [![Stories in Ready](https://badge.waffle.io/InfiniteSoul/massive-octo-wookie.svg?label=ready&title=Ready)](http://waffle.io/InfiniteSoul/massive-octo-wookie)
+
+---
+
+##Was ist das?
+Proxer API .NET ist eine Klassenbibliothek, die sowohl die Funktionen der offiziellen Proxer API, als auch einige weitere Funktionen für, wie der Titel schon vermuten mag, .NET Sprachen zur Verfügung stellt. Im Moment existiert nur eine "normale" Version, jedoch ist eine portable und eine für Mono bereits geplant. 
+
+
+##Die Klasse `ProxerResult`
+Diese Klasse ist eine Hilfsklasse und sie tritt fast überall auf, insbesondere, wenn die Klassenbibliothek mit Proxer kommuniziert. Sie tritt immer als Rückgabewert auf und gibt dem Anwender jede menge Möglichkeiten zu überprüfen, ob die Methode planmäßig verlaufen ist, indem sie die folgenden Eigenschaften und Methoden bereitstellt:
+
+####Die `Success` Eigenschaft 
+Diese Eigenschaft gibt an, ob die Methode erfolgreich war, die dieses Objekt zurückgegeben hat. Wenn diese Eigenschaft einen falschen Wahrheitswert zurückgibt, so kann die `Exceptions` Eigenschaft weiterhelfen.
+
+####Die `Exceptions` Eigenschaft
+Hier werden alle Ausnahmen gesammelt, die während der Ausführung der Methode und der dazugehörigen Untermethoden aufgerufen werde. Diese kann aber auch Ausnahmen enthalten, wenn die `Success` Eigenschaft einen wahren Wahrheitswert zurückgibt, wie bei den `Init()` Methoden einiger Klassen.
+
+####Die `Result` Eigenschaft (Nur in der Unterklasse `ProxerResult<T>`)
+Diese Eigenschaft gibt das Resultat der Methode zurück und ist vom Typ `T`. Hier muss jedoch beachtet werden, dass wenn die `Success` Eigenschaft einen falschen Wahrheitswert zurückgibt diese Eigenschaft auch einen NULL-Wert zurückgeben kann.
+
+####Die `OnError(T)` Methode (Nur in der Unterklasse `ProxerResult<T>`)
+Diese Methode gibt einen festgelegten Wert zurück, wenn nach der Ausführung der Methode die `Success` Eigenschaft einen falschen Wahrheitswert zurückgibt. Ansonsten wird der Rückgabewert der Methode zurückgegeben. Verwendung in C#:
+```csharp
+bool loggedIn = (await senpai.Login("benutzername", "passwort")).OnError(false);
+```
+In diesem Beispiel wird der Senpai durch die Methode eingeloggt und es wird zurückgegeben, ob die Aktion erfolgreich war. Wenn nun aber ein Fehler bei der Ausführung der Methode aufgetreten ist, z.B. ist der Proxer-Server nicht verfügbar, dann wird automatisch `false` zurückgegeben. Dies kann gut benutzt werden, um den Quellcode zu vereinfachen und keine zu großen `if` Blöcke zu bauen.
+
+
+##Noch Fragen? 
+Dann schaue dir am besten mal das Beispielprojekt `Proxer.Example` an oder schau in der [Dokumentation] (http://proxer.infinitesoul.de/api/help) nach. Diese sind immer auf dem aktuellsten Stand mit der Master-Branch. 
 
 ## Externe Abhängigkeiten
 
@@ -18,4 +44,4 @@ Neuester Commit: [![Build status](https://ci.appveyor.com/api/projects/status/ee
 
 [RestSharp](http://restsharp.org/)
 
-Diese können mit dem Befehl "nuget restore" runtergeladen werden.
+Diese können auch mit dem Befehl `nuget restore` heruntergeladen werden.
