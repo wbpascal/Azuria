@@ -1,0 +1,26 @@
+﻿<Window x:Class="Azuria.Example.NotificationWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Benachrichtigungen" Height="301" Width="411"
+        Background="{DynamicResource {x:Static SystemColors.ControlBrushKey}}" GotFocus="Window_GotFocus"
+        Loaded="Window_Loaded">
+    <Grid>
+        <TabControl>
+            <TabItem Header="Anime und Manga">
+                <Grid Background="#FFE5E5E5">
+                    <ListBox x:Name="AmListBox" Margin="7,7,7,7" MouseUp="AmTextBox_MouseUp" />
+                </Grid>
+            </TabItem>
+            <TabItem Header="News">
+                <Grid Background="#FFE5E5E5">
+                    <ListBox x:Name="NewsListBox" Margin="7,7,7,7" MouseUp="NewsListBox_MouseUp" />
+                </Grid>
+            </TabItem>
+            <TabItem Header="Privatnachrichten">
+                <Grid Background="#FFE5E5E5">
+                    <ListBox x:Name="PmListBox" Margin="7,7,7,7" MouseUp="PmListBox_MouseUp" />
+                </Grid>
+            </TabItem>
+        </TabControl>
+    </Grid>
+</Window>
