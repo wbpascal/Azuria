@@ -1,4 +1,4 @@
-# [inoffiziell] Proxer API .NET 
+# Azuria
 
 ##Status
 Master-Branch: [![Build status](https://ci.appveyor.com/api/projects/status/eenr5ksrjakegl0e/branch/master?svg=true)](https://ci.appveyor.com/project/InfiniteSoul/massive-octo-wookie/branch/master)
@@ -10,7 +10,7 @@ Issues: [![Stories in Ready](https://badge.waffle.io/InfiniteSoul/massive-octo-w
 ---
 
 ##Was ist das?
-Proxer API .NET ist eine Klassenbibliothek, die sowohl die Funktionen der offiziellen Proxer API, als auch einige weitere Funktionen für, wie der Titel schon vermuten mag, .NET Sprachen zur Verfügung stellt. Im Moment existiert nur eine "normale" Version, jedoch ist eine portable und eine für Mono bereits geplant. 
+Azuria ist eine Klassenbibliothek, die sowohl die Funktionen der offiziellen Proxer API, als auch einige weitere Funktionen von Proxer.Me für, wie der Titel schon vermuten mag, .NET Sprachen zur Verfügung stellt. Im Moment existiert nur eine "normale" Version, jedoch ist eine portable und eine für Mono bereits geplant. 
 
 
 ##Die Klasse `ProxerResult`
