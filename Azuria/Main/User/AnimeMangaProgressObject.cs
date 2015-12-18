@@ -1,38 +1,40 @@
 ﻿namespace Azuria.Main.User
 {
     /// <summary>
-    ///     Eine Klasse, die den Fortschritt eines <see cref="Proxer.Azuria.Userzers</see> bei einem <see cref="Anime">Anime</see>
+    ///     Eine Klasse, die den Fortschritt eines <see cref="Azuria.User">Benutzer</see> bei einem
+    ///     <see cref="Anime">Anime</see>
     ///     oder <see cref="Manga">Manga</see> darstellt.
     /// </summary>
     public class AnimeMangaProgressObject
     {
         /// <summary>
-        ///     Eine Aufzählung, die die Kategorie darstellt, in der der <see cref="Proxer.Userzer</see> seinen Fortschritt mit
+        ///     Eine Aufzählung, die die Kategorie darstellt, in der der <see cref="Azuria.User">Benutzer</see> seinen Fortschritt
+        ///     mit
         ///     dem aktuellen
         ///     <see cref="Anime">Anime</see> oder <see cref="Manga">Manga</see> eingeordnet hat.
         /// </summary>
         public enum AnimeMangaProgress
         {
             /// <summary>
-            ///     Der <see cref="Proxer.Userzer</see> hat den <see cref="Anime">Anime</see>
+            ///     Der <see cref="Azuria.User">Benutzer</see> hat den <see cref="Anime">Anime</see>
             ///     oder <see cref="Manga">Manga</see> als bereits geschaut markiert.
             /// </summary>
             Finished,
 
             /// <summary>
-            ///     Der <see cref="Proxer.Userzer</see> schaut den <see cref="Anime">Anime</see>
+            ///     Der <see cref="Azuria.User">Benutzer</see> schaut den <see cref="Anime">Anime</see>
             ///     oder <see cref="Manga">Manga</see> momentan.
             /// </summary>
             InProgress,
 
             /// <summary>
-            ///     Der <see cref="Proxer.Userzer</see> hat den <see cref="Anime">Anime</see>
+            ///     Der <see cref="Azuria.User">Benutzer</see> hat den <see cref="Anime">Anime</see>
             ///     oder <see cref="Manga">Manga</see> markiert, dass er ihn noch sehen wird.
             /// </summary>
             Planned,
 
             /// <summary>
-            ///     Der <see cref="Proxer.Userzer</see> hat den <see cref="Anime">Anime</see>
+            ///     Der <see cref="Azuria.User">Benutzer</see> hat den <see cref="Anime">Anime</see>
             ///     oder <see cref="Manga">Manga</see> als abgebrochen markiert.
             /// </summary>
             Aborted
@@ -90,7 +92,7 @@
         public AnimeMangaProgress Progress { get; set; }
 
         /// <summary>
-        ///     Gibt den <see cref="Proxer.Azuria.Userzer</see> zurück, mit dem der Fortschritt zusammenhängt.
+        ///     Gibt den <see cref="Azuria.User">Benutzer</see> zurück, mit dem der Fortschritt zusammenhängt.
         /// </summary>
         public Azuria.User User { get; set; }
 
