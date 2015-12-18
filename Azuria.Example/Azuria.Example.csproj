@@ -148,7 +148,7 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Proxer.API\Azuria.csproj">
+    <ProjectReference Include="..\Azuria\Azuria.csproj">
       <Project>{841dc1a7-9140-47e5-b13b-e4c57cfe6496}</Project>
       <Name>Azuria</Name>
     </ProjectReference>
