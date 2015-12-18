@@ -1,4 +1,4 @@
-# Azuria
+# Azuria - Das Proxer.Me API in .NET (inoffiziell)
 
 ##Status
 Master-Branch: [![Build status](https://ci.appveyor.com/api/projects/status/eenr5ksrjakegl0e/branch/master?svg=true)](https://ci.appveyor.com/project/InfiniteSoul/massive-octo-wookie/branch/master)
@@ -10,7 +10,7 @@ Issues: [![Stories in Ready](https://badge.waffle.io/InfiniteSoul/massive-octo-w
 ---
 
 ##Was ist das?
-Azuria ist eine Klassenbibliothek, die sowohl die Funktionen der offiziellen Proxer API, als auch einige weitere Funktionen von Proxer.Me f체r, wie der Titel schon vermuten mag, .NET Sprachen zur Verf체gung stellt. Im Moment existiert nur eine "normale" Version, jedoch ist eine portable und eine f체r Mono bereits geplant. 
+Azuria ist eine **inoffizielle** Klassenbibliothek, die sowohl die Funktionen der offiziellen Proxer API, als auch einige weitere Funktionen von Proxer.Me f체r, wie der Titel schon vermuten mag, .NET Sprachen zur Verf체gung stellt. Im Moment existiert nur eine "normale" Version, jedoch ist eine portable und eine f체r Mono bereits geplant. 
 
 
 ##Die Klasse `ProxerResult`
@@ -34,7 +34,7 @@ In diesem Beispiel wird der Senpai durch die Methode eingeloggt und es wird zur�
 
 
 ##Noch Fragen? 
-Dann schaue dir am besten mal das Beispielprojekt `Proxer.Example` an oder schau in der [Dokumentation] (http://proxer.infinitesoul.de/api/help) nach. Diese sind immer auf dem aktuellsten Stand mit der Master-Branch. 
+Dann schaue dir am besten mal das Beispielprojekt `Azuria.Example` an oder schau in der [Dokumentation] (http://azuria.infinitesoul.de/help) nach. Diese sind immer auf dem aktuellsten Stand mit der Master-Branch. 
 
 ## Externe Abh채ngigkeiten
 
