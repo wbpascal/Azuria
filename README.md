@@ -7,6 +7,8 @@ Neuester Commit: [![Build status](https://ci.appveyor.com/api/projects/status/ee
 
 Issues: [![Stories in Ready](https://badge.waffle.io/InfiniteSoul/massive-octo-wookie.svg?label=ready&title=Ready)](http://waffle.io/InfiniteSoul/massive-octo-wookie)
 
+Dokumentation: http://azuria.infinitesoul.de/help
+
 ---
 
 ##Was ist das?
