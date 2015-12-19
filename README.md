@@ -15,6 +15,12 @@ Dokumentation: http://azuria.infinitesoul.de/help
 Azuria ist eine **inoffizielle** Klassenbibliothek, die sowohl die Funktionen der offiziellen Proxer API, als auch einige weitere Funktionen von Proxer.Me für, wie der Titel schon vermuten mag, .NET Sprachen zur Verfügung stellt. Im Moment existiert nur eine "normale" Version, jedoch ist eine portable und eine für Mono bereits geplant. 
 
 
+##Wie installiere ich es?
+Entweder du gehst auf die [Website](http://azuria.infinitesoul.de) und lädst dir entweder die stabile oder die neueste Version runter oder du gibtst folgendes in die NuGet-Konsole ein:
+```
+PM> Install-Package Azuria
+```
+
 ##Die Klasse `ProxerResult`
 Diese Klasse ist eine Hilfsklasse und sie tritt fast überall auf, insbesondere, wenn die Klassenbibliothek mit Proxer kommuniziert. Sie tritt immer als Rückgabewert auf und gibt dem Anwender jede menge Möglichkeiten zu überprüfen, ob die Methode planmäßig verlaufen ist, indem sie die folgenden Eigenschaften und Methoden bereitstellt:
 
