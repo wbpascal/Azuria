@@ -5,7 +5,7 @@ Master-Branch: [![Build status](https://ci.appveyor.com/api/projects/status/eenr
 
 Neuester Commit: [![Build status](https://ci.appveyor.com/api/projects/status/eenr5ksrjakegl0e?svg=true)](https://ci.appveyor.com/project/InfiniteSoul/massive-octo-wookie)
 
-Issues: [![Stories in Ready](https://badge.waffle.io/InfiniteSoul/massive-octo-wookie.svg?label=ready&title=Ready)](http://waffle.io/InfiniteSoul/massive-octo-wookie)
+Issues: [![Stories in Ready](https://badge.waffle.io/InfiniteSoul/azuria.svg?label=ready&title=Ready)](http://waffle.io/InfiniteSoul/azuria)
 
 Dokumentation: http://azuria.infinitesoul.de/help
 
