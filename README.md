@@ -1,4 +1,4 @@
-# Azuria - Das Proxer.Me API in .NET (inoffiziell)
+# Azuria - Ein Proxer.Me API in .NET (inoffiziell)
 
 ##Status
 Master-Branch: [![Build status](https://ci.appveyor.com/api/projects/status/eenr5ksrjakegl0e/branch/master?svg=true)](https://ci.appveyor.com/project/InfiniteSoul/massive-octo-wookie/branch/master)
