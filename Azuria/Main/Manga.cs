@@ -392,6 +392,65 @@ namespace Azuria.Main
         #region
 
         /// <summary>
+        ///     Gibt die aktuell am beliebtesten <see cref="Manga" /> zurück.
+        ///     <para>Mögliche Fehler, die <see cref="ProxerResult" /> enthalten kann:</para>
+        ///     <list type="table">
+        ///         <listheader>
+        ///             <term>Ausnahme</term>
+        ///             <description>Beschreibung</description>
+        ///         </listheader>
+        ///         <item>
+        ///             <term>
+        ///                 <see cref="WrongResponseException" />
+        ///             </term>
+        ///             <description>
+        ///                 <see cref="WrongResponseException" /> wird ausgelöst, wenn die Antwort des Servers nicht der
+        ///                 Erwarteten entspricht.
+        ///             </description>
+        ///         </item>
+        ///     </list>
+        /// </summary>
+        /// <returns>Ein Array mit den aktuell beliebtesten <see cref="Manga" />.</returns>
+        public static async Task<ProxerResult<IEnumerable<Manga>>> GetPopularManga(Senpai senpai)
+        {
+            if (senpai == null)
+                return new ProxerResult<IEnumerable<Manga>>(new Exception[] {new ArgumentNullException(nameof(senpai))});
+
+            HtmlDocument lDocument = new HtmlDocument();
+            ProxerResult<string> lResult =
+                await
+                    HttpUtility.GetResponseErrorHandling(
+                        "https://proxer.me/manga?format=raw",
+                        null,
+                        senpai.ErrHandler,
+                        senpai);
+
+            if (!lResult.Success)
+                return new ProxerResult<IEnumerable<Manga>>(lResult.Exceptions);
+
+            string lResponse = lResult.Result;
+
+            try
+            {
+                lDocument.LoadHtml(lResponse);
+
+                return
+                    new ProxerResult<IEnumerable<Manga>>(
+                        (from childNode in lDocument.DocumentNode.ChildNodes[5].FirstChild.FirstChild.ChildNodes
+                         let lId =
+                             Convert.ToInt32(
+                                 childNode.FirstChild.GetAttributeValue("href", "/info/-1#top").Split('/')[2].Split('#')
+                                     [0])
+                         select new Manga(childNode.FirstChild.GetAttributeValue("title", "ERROR"), lId, senpai))
+                            .ToArray());
+            }
+            catch
+            {
+                return new ProxerResult<IEnumerable<Manga>>(ErrorHandler.HandleError(senpai, lResponse).Exceptions);
+            }
+        }
+
+        /// <summary>
         ///     Gibt alle <see cref="Chapter">Kapitel</see> des <see cref="Manga" /> in der ausgewählten Sprache zurück.
         ///     <para>Mögliche Fehler, die <see cref="ProxerResult" /> enthalten kann:</para>
         ///     <list type="table">

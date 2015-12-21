@@ -423,7 +423,7 @@ namespace Azuria.Main
         ///     </list>
         /// </summary>
         /// <returns>Ein Array mit den aktuell beliebtesten <see cref="Anime" />.</returns>
-        public static async Task<ProxerResult<IEnumerable<Anime>>> GetPopularAnimes(Senpai senpai)
+        public static async Task<ProxerResult<IEnumerable<Anime>>> GetPopularAnime(Senpai senpai)
         {
             if (senpai == null)
                 return new ProxerResult<IEnumerable<Anime>>(new Exception[] {new ArgumentNullException(nameof(senpai))});
