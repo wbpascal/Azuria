@@ -6,11 +6,11 @@ using System.Runtime.InteropServices;
 // Attribute gesteuert. Ändern Sie diese Attributwerte, um die Informationen zu ändern,
 // die mit einer Assembly verknüpft sind.
 
-[assembly: AssemblyTitle("Proxer.API")]
+[assembly: AssemblyTitle("Azuria")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("InfiniteSoul")]
-[assembly: AssemblyProduct("Proxer.API")]
+[assembly: AssemblyProduct("Azuria")]
 [assembly: AssemblyCopyright("Copyright ©  2015")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
@@ -36,6 +36,6 @@ using System.Runtime.InteropServices;
 // übernehmen, indem Sie "*" eingeben:
 // [assembly: AssemblyVersion("1.0.*")]
 
-[assembly: AssemblyVersion("0.3.5")]
-[assembly: AssemblyFileVersion("0.3.5")]
+[assembly: AssemblyVersion("0.4.*")]
+[assembly: AssemblyFileVersion("0.4")]
 [assembly: NeutralResourcesLanguage("de")]
