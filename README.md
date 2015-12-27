@@ -16,7 +16,7 @@ Azuria ist eine **inoffizielle** Klassenbibliothek, die sowohl die Funktionen de
 
 
 ##Wie installiere ich es?
-Entweder du gehst auf die [Website](http://azuria.infinitesoul.de) und lädst dir entweder die stabile oder die neueste Version runter oder du gibtst folgendes in die NuGet-Konsole ein:
+Entweder du gehst auf die [Website](http://azuria.infinitesoul.de) und lädst dir entweder die stabile oder die neueste Version runter oder du gibst folgendes in die NuGet-Konsole ein:
 ```
 PM> Install-Package Azuria
 ```
