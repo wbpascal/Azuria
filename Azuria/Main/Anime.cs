@@ -980,6 +980,22 @@ namespace Azuria.Main
                     {
                         switch (childNode.InnerText)
                         {
+                            case "Viewster":
+                                lStreams.Add(
+                                    new KeyValuePair<Stream.StreamPartner, Stream>(Stream.StreamPartner.Viewster,
+                                        new Stream(
+                                            new Uri(childNode.FirstChild.GetAttributeValue("href", "http://proxer.me/")),
+                                            Stream.StreamPartner.Viewster)));
+                                break;
+
+                            case "Crunchyroll (EN)":
+                                lStreams.Add(
+                                    new KeyValuePair<Stream.StreamPartner, Stream>(Stream.StreamPartner.Crunchyroll,
+                                        new Stream(
+                                            new Uri(childNode.FirstChild.GetAttributeValue("href", "http://proxer.me/")),
+                                            Stream.StreamPartner.Crunchyroll)));
+                                break;
+
                             case "Dailymotion":
                                 lStreams.Add(
                                     new KeyValuePair<Stream.StreamPartner, Stream>(Stream.StreamPartner.Dailymotion,
@@ -1062,37 +1078,47 @@ namespace Azuria.Main
                 public enum StreamPartner
                 {
                     /// <summary>
-                    ///     Stellt den Streampartner Streamcloud da.
+                    ///     Stellt den Streampartner Crunchyroll dar.
+                    /// </summary>
+                    Crunchyroll,
+
+                    /// <summary>
+                    ///     Stellt den Streampartner Viewster dar.
+                    /// </summary>
+                    Viewster,
+
+                    /// <summary>
+                    ///     Stellt den Streampartner Streamcloud dar.
                     /// </summary>
                     Streamcloud,
 
                     /// <summary>
-                    ///     Stellt den Streampartner MP4Upload da.
+                    ///     Stellt den Streampartner MP4Upload dar.
                     /// </summary>
                     Mp4Upload,
 
                     /// <summary>
-                    ///     Stellt den Streampartner Dailymotion da.
+                    ///     Stellt den Streampartner Dailymotion dar.
                     /// </summary>
                     Dailymotion,
 
                     /// <summary>
-                    ///     Stellt den Streampartner Videobam da.
+                    ///     Stellt den Streampartner Videobam dar.
                     /// </summary>
                     Videobam,
 
                     /// <summary>
-                    ///     Stellt den Streampartner YourUpload da.
+                    ///     Stellt den Streampartner YourUpload dar.
                     /// </summary>
                     YourUpload,
 
                     /// <summary>
-                    ///     Stellt den Streampartner Proxer da.
+                    ///     Stellt den Streampartner Proxer dar.
                     /// </summary>
                     ProxerStream,
 
                     /// <summary>
-                    ///     Stellt keinen Streampartner da.
+                    ///     Stellt keinen Streampartner dar.
                     /// </summary>
                     None
                 }
