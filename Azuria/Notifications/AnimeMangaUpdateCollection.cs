@@ -223,8 +223,8 @@ namespace Azuria.Notifications
             {
                 lDocument.LoadHtml(lResponse);
 
-                HtmlNodeCollection lNodes =
-                    lDocument.DocumentNode.SelectNodes("//a[@class='notificationList']");
+                HtmlNode[] lNodes =
+                    lDocument.DocumentNode.SelectNodesUtility("class", "notificationList").ToArray();
 
                 List<AnimeMangaUpdateObject> lAnimeMangaUpdateObjects = new List<AnimeMangaUpdateObject>();
 

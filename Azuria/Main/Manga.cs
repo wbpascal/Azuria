@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Threading.Tasks;
 using Azuria.Exceptions;
@@ -7,6 +8,7 @@ using Azuria.Main.Minor;
 using Azuria.Utilities;
 using Azuria.Utilities.Net;
 using HtmlAgilityPack;
+// ReSharper disable LoopCanBeConvertedToQuery
 
 namespace Azuria.Main
 {
@@ -496,7 +498,7 @@ namespace Azuria.Main
 
             return new ProxerResult<IEnumerable<Chapter>>(lChapters.ToArray());
         }
-
+        
         private async Task<ProxerResult> InitMain()
         {
             HtmlDocument lDocument = new HtmlDocument();
@@ -551,40 +553,37 @@ namespace Azuria.Main
                             break;
                         case "Genre":
                             List<string> lGenreList = new List<string>();
-                            childNode.ChildNodes[1].ChildNodes.ToList()
-                                                   .ForEach(
-                                                       delegate(HtmlNode htmlNode)
-                                                       {
-                                                           if (htmlNode.Name.Equals("a"))
-                                                               lGenreList.Add(htmlNode.InnerText);
-                                                       });
+                            foreach (HtmlNode htmlNode in childNode.ChildNodes[1].ChildNodes.ToList())
+                            {
+                                if (htmlNode.Name.Equals("a"))
+                                    lGenreList.Add(htmlNode.InnerText);
+                            }
                             this.Genre = lGenreList.ToArray();
                             break;
                         case "FSK":
                             this.Fsk = new Dictionary<Uri, string>();
-                            childNode.ChildNodes[1].ChildNodes.ToList()
-                                                   .ForEach(
-                                                       delegate(HtmlNode htmlNode)
-                                                       {
-                                                           if (htmlNode.Name.Equals("span") &&
-                                                               !this.Fsk.ContainsValue(htmlNode.GetAttributeValue(
-                                                                   "title", "ERROR")))
-                                                               this.Fsk.Add(
-                                                                   new Uri("https://proxer.me" +
-                                                                           htmlNode.FirstChild.GetAttributeValue("src",
-                                                                               "/")),
-                                                                   htmlNode.GetAttributeValue("title", "ERROR"));
-                                                       });
+                            foreach (
+                                HtmlNode htmlNode in
+                                    childNode.ChildNodes[1].ChildNodes.ToList()
+                                                           .Where(htmlNode => htmlNode.Name.Equals("span") &&
+                                                                              !this.Fsk.ContainsValue(htmlNode
+                                                                                  .GetAttributeValue(
+                                                                                      "title", "ERROR"))))
+                            {
+                                this.Fsk.Add(
+                                    new Uri("https://proxer.me" +
+                                            htmlNode.FirstChild.GetAttributeValue("src",
+                                                "/")),
+                                    htmlNode.GetAttributeValue("title", "ERROR"));
+                            }
                             break;
                         case "Season":
                             List<string> lSeasonList = new List<string>();
-                            childNode.ChildNodes[1].ChildNodes.ToList()
-                                                   .ForEach(
-                                                       delegate(HtmlNode htmlNode)
-                                                       {
-                                                           if (htmlNode.Name.Equals("a"))
-                                                               lSeasonList.Add(htmlNode.InnerText);
-                                                       });
+                            foreach (HtmlNode htmlNode in childNode.ChildNodes[1].ChildNodes.ToList())
+                            {
+                                if (htmlNode.Name.Equals("a"))
+                                    lSeasonList.Add(htmlNode.InnerText);
+                            }
                             this.Season = lSeasonList.ToArray();
                             break;
                         case "Status":
@@ -1057,7 +1056,9 @@ namespace Azuria.Main
 
                     foreach (
                         HtmlNode childNode in
-                            lDocument.DocumentNode.SelectNodes("//table[@class='details']")[0].ChildNodes)
+                            lAllHtmlNodes.First(
+                                x => x.Attributes.Contains("class") && x.Attributes["class"].Value == "details")
+                                         .ChildNodes)
                     {
                         switch (childNode.FirstChild.InnerText)
                         {

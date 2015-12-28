@@ -220,7 +220,8 @@ namespace Azuria.Notifications
             {
                 lDocument.LoadHtml(lResponse);
 
-                HtmlNodeCollection lNodes = lDocument.DocumentNode.SelectNodes("//tr");
+                HtmlNode[] lNodes =
+                    Utility.GetAllHtmlNodes(lDocument.DocumentNode.ChildNodes).Where(x => x.Name == "tr").ToArray();
 
                 List<FriendRequestObject> lFriendRequests = new List<FriendRequestObject>();
 

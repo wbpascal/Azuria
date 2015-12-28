@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Azuria", "Azuria\Azuria.csp
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Azuria.Example", "Azuria.Example\Azuria.Example.csproj", "{B6B792AB-FA3B-43B1-A577-EA6B1A0336C7}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Azuria.Portable", "Azuria.Portable\Azuria.Portable.csproj", "{5E392DE1-F823-4225-AE34-21FD6430D4DA}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{B6B792AB-FA3B-43B1-A577-EA6B1A0336C7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B6B792AB-FA3B-43B1-A577-EA6B1A0336C7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B6B792AB-FA3B-43B1-A577-EA6B1A0336C7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5E392DE1-F823-4225-AE34-21FD6430D4DA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5E392DE1-F823-4225-AE34-21FD6430D4DA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5E392DE1-F823-4225-AE34-21FD6430D4DA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5E392DE1-F823-4225-AE34-21FD6430D4DA}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

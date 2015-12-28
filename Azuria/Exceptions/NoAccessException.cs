@@ -6,7 +6,6 @@ namespace Azuria.Exceptions
     ///     Stellt eine Ausnahme dar, die ausgelöst wird, wenn der <see cref="Senpai">User</see> keine Berechtigung hat eine
     ///     Seite anzusehen.
     /// </summary>
-    [Serializable]
     public class NoAccessException : Exception
     {
         /// <summary>

@@ -6,7 +6,6 @@ namespace Azuria.Exceptions
     ///     Stellt einen Fehler da, der ausgelöst wird, wenn ein Anime oder Manga in einer Sprache abgerufen wird, in der es
     ///     nicht verfügbar ist.
     /// </summary>
-    [Serializable]
     public class LanguageNotAvailableException : Exception
     {
         /// <summary>

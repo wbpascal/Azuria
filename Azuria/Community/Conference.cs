@@ -138,7 +138,7 @@ namespace Azuria.Community
 
         #region
 
-        private void OnGetMessagesTimerElapsed(object s, ElapsedEventArgs eArgs)
+        private void OnGetMessagesTimerElapsed(object s, EventArgs eArgs)
         {
             Timer timer = s as Timer;
             timer?.Stop();
@@ -600,17 +600,17 @@ namespace Azuria.Community
             {
                 lDocument.LoadHtml(lResponse);
 
-                HtmlNodeCollection lNodes = lDocument.DocumentNode.SelectNodes("//div[@id='conferenceUsers']");
                 List<User> lTeilnehmer = this.Teilnehmer.ToList();
 
-                lTeilnehmer.AddRange(from curTeilnehmer in lNodes[0].ChildNodes[1].ChildNodes
-                                     let lUserName = curTeilnehmer.ChildNodes[1].FirstChild.InnerText
-                                     let lUserId =
-                                         Convert.ToInt32(
-                                             Utility.GetTagContents(
-                                                 curTeilnehmer.ChildNodes[1].FirstChild.Attributes["href"].Value,
-                                                 "/user/", "#top")[0])
-                                     select new User(lUserName, lUserId, this._senpai));
+                lTeilnehmer.AddRange(
+                    from curTeilnehmer in lDocument.GetElementbyId("conferenceUsers").ChildNodes[1].ChildNodes
+                    let lUserName = curTeilnehmer.ChildNodes[1].FirstChild.InnerText
+                    let lUserId =
+                        Convert.ToInt32(
+                            Utility.GetTagContents(
+                                curTeilnehmer.ChildNodes[1].FirstChild.Attributes["href"].Value,
+                                "/user/", "#top")[0])
+                    select new User(lUserName, lUserId, this._senpai));
 
                 this.Teilnehmer = lTeilnehmer;
 
@@ -786,9 +786,9 @@ namespace Azuria.Community
 
             try
             {
-                MessagesViewModel lMessages = JsonConvert.DeserializeObject<MessagesViewModel>(messages);
+                MessagesModel lMessages = JsonConvert.DeserializeObject<MessagesModel>(messages);
 
-                foreach (MessageModel curMessage in lMessages.MessagesModel)
+                foreach (MessageModel curMessage in lMessages.MessageModels)
                 {
                     Message.Action lMessageAction;
 

@@ -1,12 +1,10 @@
 ﻿using System;
-using System.Net;
 using System.Threading.Tasks;
 using Azuria.Exceptions;
 using Azuria.Main;
 using Azuria.Utilities;
 using Azuria.Utilities.Net;
 using HtmlAgilityPack;
-using RestSharp;
 
 namespace Azuria
 {
@@ -50,23 +48,16 @@ namespace Azuria
                 return new ProxerResult<IAnimeMangaObject>(new Exception[] {new ArgumentNullException(nameof(senpai))});
 
             HtmlDocument lDocument = new HtmlDocument();
-            string lResponse;
 
-            IRestResponse lResponseObject =
+            ProxerResult<string> lResult =
                 await
-                    HttpUtility.GetWebRequestResponse("https://proxer.me/info/" + id + "?format=raw",
-                        senpai.LoginCookies);
-            if (lResponseObject.StatusCode == HttpStatusCode.OK && !string.IsNullOrEmpty(lResponseObject.Content))
-                lResponse = System.Web.HttpUtility.HtmlDecode(lResponseObject.Content).Replace("\n", "");
-            else
-                return
-                    new ProxerResult<IAnimeMangaObject>(new[]
-                    {new WrongResponseException(), lResponseObject.ErrorException});
+                    HttpUtility.GetResponseErrorHandling("https://proxer.me/info/" + id + "?format=raw",
+                        senpai.LoginCookies, senpai.ErrHandler, senpai);
 
-            if (string.IsNullOrEmpty(lResponse) || !Utility.CheckForCorrectResponse(lResponse, senpai.ErrHandler))
-                return
-                    new ProxerResult<IAnimeMangaObject>(new Exception[]
-                    {new WrongResponseException {Response = lResponse}});
+            if (!lResult.Success)
+                return new ProxerResult<IAnimeMangaObject>(lResult.Exceptions);
+
+            string lResponse = lResult.Result;
 
             try
             {

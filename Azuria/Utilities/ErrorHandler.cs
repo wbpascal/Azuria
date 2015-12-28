@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Azuria.Exceptions;
-using Azuria.Properties;
 using Newtonsoft.Json;
 
 namespace Azuria.Utilities
@@ -35,11 +34,12 @@ namespace Azuria.Utilities
 
         internal void Load()
         {
-            if (!string.IsNullOrEmpty(Settings.Default.errorHtml))
+            if (true) //!string.IsNullOrEmpty(Settings.Default.errorHtml))
             {
                 try
                 {
-                    this.WrongHtml = JsonConvert.DeserializeObject<List<string>>(Settings.Default.errorHtml);
+                    this.WrongHtml = new List<string>();
+                    //this.WrongHtml = JsonConvert.DeserializeObject<List<string>>(Settings.Default.errorHtml);
                 }
                 catch (JsonSerializationException)
                 {
@@ -48,16 +48,18 @@ namespace Azuria.Utilities
                 }
             }
             else
+#pragma warning disable 162
             {
                 this.Reset();
                 this.Save();
             }
+#pragma warning restore 162
         }
 
         internal void Save()
         {
-            Settings.Default.errorHtml = JsonConvert.SerializeObject(this.WrongHtml);
-            Settings.Default.Save();
+            //Settings.Default.errorHtml = JsonConvert.SerializeObject(this.WrongHtml);
+            //Settings.Default.Save();
         }
 
         internal static async Task<ProxerResult> HandleError(Senpai senpai, string wrongHtml, bool checkedLogin)

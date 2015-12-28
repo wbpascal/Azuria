@@ -423,8 +423,8 @@ namespace Azuria
             {
                 lDocument.LoadHtml(lResponse);
 
-                HtmlNodeCollection lProfileNodes =
-                    lDocument.DocumentNode.SelectNodes("//table[@class='profile']");
+                HtmlNode[] lProfileNodes =
+                    lDocument.DocumentNode.SelectNodesUtility("class", "profile").ToArray();
 
                 this.Avatar =
                     new Uri("https:" +
@@ -444,8 +444,7 @@ namespace Azuria
                     : "";
 
                 this.UserName =
-                    lDocument.DocumentNode.SelectNodes("//div[@id='pageMetaAjax']")[0].InnerText
-                                                                                      .Split(' ')[1];
+                    lDocument.GetElementbyId("pageMetaAjax").InnerText.Split(' ')[1];
 
                 return new ProxerResult();
             }
@@ -525,14 +524,13 @@ namespace Azuria
                 try
                 {
                     if (
-                        lDocument.DocumentNode.SelectSingleNode("//div[@class='inner']")?
+                        lDocument.DocumentNode.SelectNodesUtility("class", "inner").First()?
                                  .InnerText.Equals("Dieser Benutzer hat bisher keine Freunde :/") ?? false)
                     {
                         break;
                     }
 
-                    HtmlNode lProfileNodes =
-                        lDocument.DocumentNode.SelectSingleNode("//table[@id='box-table-a']");
+                    HtmlNode lProfileNodes = lDocument.GetElementbyId("box-table-a");
 
                     if (lProfileNodes == null)
                         return
@@ -587,8 +585,8 @@ namespace Azuria
             {
                 lDocument.LoadHtml(lResponse);
 
-                HtmlNodeCollection lProfileNodes =
-                    lDocument.DocumentNode.SelectNodes("//table[@class='profile']");
+                HtmlNode[] lProfileNodes =
+                    lDocument.DocumentNode.SelectNodesUtility("class", "profile").ToArray();
 
                 this.Info = lProfileNodes[0].ChildNodes[10].InnerText;
                 this.InfoHtml = lProfileNodes[0].ChildNodes[10].InnerHtml;
@@ -1033,8 +1031,7 @@ namespace Azuria
             try
             {
                 lDocument.LoadHtml(lResponse);
-                HtmlNodeCollection lNodes = lDocument.DocumentNode.SelectNodes("//div[@id='pageMetaAjax']");
-                return new ProxerResult<string>(lNodes[0].InnerText.Split(' ')[1]);
+                return new ProxerResult<string>(lDocument.GetElementbyId("pageMetaAjax").InnerText.Split(' ')[1]);
             }
             catch
             {

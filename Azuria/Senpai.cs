@@ -1,6 +1,6 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
@@ -69,12 +69,12 @@ namespace Azuria
         private readonly Timer _loginCheckTimer;
         private readonly Timer _notificationCheckTimer;
         private readonly Timer _propertyUpdateTimer;
+        private readonly List<bool> _updateNotifications;
         private AnimeMangaUpdateCollection _animeMangaUpdates;
         private FriendRequestCollection _friendUpdates;
         private bool _loggedIn;
         private NewsCollection _newsUpdates;
         private PmCollection _pmUpdates;
-        private ArrayList _updateNotifications;
         private int _userId;
 
 
@@ -85,7 +85,7 @@ namespace Azuria
         {
             this.ErrHandler = new ErrorHandler();
 
-            this._updateNotifications = ArrayList.Synchronized(new ArrayList(new[] {true, false, true, true}));
+            this._updateNotifications = new List<bool>(new[] {true, false, true, true});
             this._loggedIn = false;
             this.LoginCookies = new CookieContainer();
 
@@ -122,14 +122,8 @@ namespace Azuria
             this._propertyUpdateTimer = new Timer((new TimeSpan(0, 20, 0)).TotalMilliseconds) {AutoReset = true};
             this._propertyUpdateTimer.Elapsed += (s, eArgs) =>
             {
-                ArrayList lNotSyncedList = this._updateNotifications;
-                lock (lNotSyncedList.SyncRoot)
-                {
-                    for (int i = 0; i < 4; i++)
-                        this._updateNotifications[i] = true;
-
-                    this._updateNotifications = ArrayList.Synchronized(lNotSyncedList);
-                }
+                for (int i = 0; i < 4; i++)
+                    this._updateNotifications[i] = true;
             };
         }
 
@@ -146,7 +140,7 @@ namespace Azuria
         {
             get
             {
-                if (!(bool) this._updateNotifications[0] && this._animeMangaUpdates != null)
+                if (!this._updateNotifications[0] && this._animeMangaUpdates != null)
                     return this._animeMangaUpdates;
 
                 this._animeMangaUpdates = new AnimeMangaUpdateCollection(this);
@@ -173,7 +167,7 @@ namespace Azuria
         {
             get
             {
-                if (!(bool) this._updateNotifications[1] && this._friendUpdates != null) return this._friendUpdates;
+                if (!this._updateNotifications[1] && this._friendUpdates != null) return this._friendUpdates;
 
                 this._friendUpdates = new FriendRequestCollection(this);
                 this._updateNotifications[1] = false;
@@ -224,6 +218,7 @@ namespace Azuria
         ///     Jedoch wird hierbei dem CookieContainer noch Cookies hinzugefügt, sodass die mobile Seite angezeigt wird.
         /// </summary>
         /// <seealso cref="LoginCookies" />
+        [SuppressMessage("ReSharper", "ExceptionNotDocumented")]
         public CookieContainer MobileLoginCookies
         {
             get
@@ -232,9 +227,9 @@ namespace Azuria
                 CookieContainer lMobileCookies = new CookieContainer();
                 foreach (Cookie loginCookie in this.LoginCookies.GetCookies(new Uri("https://proxer.me/")))
                 {
-                    lMobileCookies.Add(loginCookie);
+                    lMobileCookies.Add(new Uri("https://proxer.me/"), loginCookie);
                 }
-                lMobileCookies.Add(new Cookie("device", "mobile", "/", "proxer.me"));
+                lMobileCookies.Add(new Uri("https://proxer.me/"), new Cookie("device", "mobile", "/", "proxer.me"));
                 return lMobileCookies;
             }
         }
@@ -250,7 +245,7 @@ namespace Azuria
         {
             get
             {
-                if (!(bool) this._updateNotifications[2] && this._newsUpdates != null) return this._newsUpdates;
+                if (!this._updateNotifications[2] && this._newsUpdates != null) return this._newsUpdates;
 
                 this._newsUpdates = new NewsCollection(this);
                 this._updateNotifications[2] = false;
@@ -270,7 +265,7 @@ namespace Azuria
         {
             get
             {
-                if (!(bool) this._updateNotifications[3] && this._pmUpdates != null) return this._pmUpdates;
+                if (!this._updateNotifications[3] && this._pmUpdates != null) return this._pmUpdates;
 
                 this._pmUpdates = new PmCollection(this);
                 this._updateNotifications[3] = false;
@@ -438,14 +433,8 @@ namespace Azuria
                 return new ProxerResult(lResult.Exceptions);
             }
 
-            ArrayList lNotSyncedList = this._updateNotifications;
-            lock (lNotSyncedList.SyncRoot)
-            {
-                for (int i = 0; i < 4; i++)
-                    this._updateNotifications[i] = true;
-
-                this._updateNotifications = ArrayList.Synchronized(lNotSyncedList);
-            }
+            for (int i = 0; i < 4; i++)
+                this._updateNotifications[i] = true;
 
             return new ProxerResult();
         }
@@ -494,8 +483,12 @@ namespace Azuria
                 lDocument.LoadHtml(lResponse);
                 List<Conference> lReturn = new List<Conference>();
 
-                HtmlNodeCollection lNodes =
-                    lDocument.DocumentNode.SelectNodes("//a[@class='conferenceGrid ']");
+                IEnumerable<HtmlNode> lNodes = Utility.GetAllHtmlNodes(lDocument.DocumentNode.ChildNodes)
+                                                      .Where(
+                                                          x =>
+                                                              x.Attributes.Contains("class") &&
+                                                              x.Attributes["class"].Value == "conferenceGrid ");
+
                 lReturn.AddRange(from curNode in lNodes
                                  let lId =
                                      Convert.ToInt32(
@@ -535,14 +528,8 @@ namespace Azuria
                 if (lResponseSplit.Length < 6)
                     return new ProxerResult(new Exception[] {new WrongResponseException {Response = lResponse}});
 
-                ArrayList lNotSyncedList = this._updateNotifications;
-                lock (lNotSyncedList.SyncRoot)
-                {
-                    for (int i = 0; i < 4; i++)
-                        this._updateNotifications[i] = true;
-
-                    this._updateNotifications = ArrayList.Synchronized(lNotSyncedList);
-                }
+                for (int i = 0; i < 4; i++)
+                    this._updateNotifications[i] = true;
 
                 if (!lResponseSplit[2].Equals("0"))
                 {

@@ -6,7 +6,6 @@ namespace Azuria.Exceptions
     ///     Stellt einen Fehler da, der ausgelöst wird, wenn die Antwort des Servers bei einer Anfrage nicht mit der Erwarteten
     ///     übereinstimmt.
     /// </summary>
-    [Serializable]
     public class WrongResponseException : Exception
     {
         /// <summary>

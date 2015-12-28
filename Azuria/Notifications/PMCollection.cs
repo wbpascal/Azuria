@@ -218,8 +218,8 @@ namespace Azuria.Notifications
             {
                 lDocument.LoadHtml(lResponse);
 
-                HtmlNodeCollection lNodes =
-                    lDocument.DocumentNode.SelectNodes("//a[@class='conferenceList']");
+                HtmlNode[] lNodes =
+                    lDocument.DocumentNode.SelectNodesUtility("class", "conferenceList").ToArray();
 
                 List<PmObject> lPmObjects = new List<PmObject>();
                 if (lNodes != null)

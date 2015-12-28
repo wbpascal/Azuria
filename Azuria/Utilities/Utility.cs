@@ -6,7 +6,7 @@ using HtmlAgilityPack;
 
 namespace Azuria.Utilities
 {
-    internal class Utility
+    internal static class Utility
     {
         #region
 
@@ -144,6 +144,13 @@ namespace Azuria.Utilities
                 strFdate,
                 format,
                 CultureInfo.InvariantCulture);
+        }
+
+        internal static IEnumerable<HtmlNode> SelectNodesUtility(this HtmlNode node, string attribute, string value)
+        {
+            return
+                GetAllHtmlNodes(node.ChildNodes)
+                    .Where(x => x.Attributes.Contains(attribute) && x.Attributes[attribute].Value == value);
         }
 
         #endregion
