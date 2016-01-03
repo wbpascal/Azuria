@@ -1,4 +1,6 @@
-﻿namespace Azuria.Main.Minor
+﻿using System.Collections.Generic;
+
+namespace Azuria.Main.Minor
 {
     /// <summary>
     /// </summary>
@@ -24,6 +26,10 @@
         /// <summary>
         /// </summary>
         public int Sterne { get; set; }
+
+        /// <summary>
+        /// </summary>
+        public Dictionary<string, int> SubSterne { get; set; }
 
         #endregion
     }

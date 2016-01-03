@@ -386,10 +386,11 @@ namespace Azuria.Main
             const int lKommentareProSeite = 25;
 
             List<Comment> lReturn = new List<Comment>();
-            int lStartSeite = Convert.ToInt32(startIndex/lKommentareProSeite);
+            int lStartSeite = Convert.ToInt32(startIndex/lKommentareProSeite + 1);
             HtmlDocument lDocument = new HtmlDocument();
             Func<string, ProxerResult> lCheckFunc = s =>
             {
+                lDocument = new HtmlDocument();
                 lDocument.LoadHtml(s);
 
                 HtmlNode lNode;
@@ -416,8 +417,6 @@ namespace Azuria.Main
                                this._senpai.LoginCookies, this._senpai.ErrHandler, this._senpai, new[] {lCheckFunc}))
                        .Success)
             {
-                string lResponse = lResult.Result;
-
                 try
                 {
                     int i = 0;
@@ -436,6 +435,7 @@ namespace Azuria.Main
 
                         i++;
                     }
+                    lStartSeite++;
                 }
                 catch
                 {

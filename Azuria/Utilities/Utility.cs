@@ -7,6 +7,8 @@ using Azuria.Exceptions;
 using Azuria.Main.Minor;
 using HtmlAgilityPack;
 
+// ReSharper disable LoopCanBeConvertedToQuery
+
 namespace Azuria.Utilities
 {
     internal static class Utility
@@ -33,24 +35,40 @@ namespace Azuria.Utilities
 
         internal static ProxerResult<Comment> GetCommentFromNode(HtmlNode commentNode, Senpai senpai)
         {
-            commentNode = commentNode.FirstChild;
+            HtmlNode[] lTableNodes =
+                commentNode.ChildNodes.FindFirst("tr").ChildNodes.Where(node => node.Name.Equals("td")).ToArray();
 
             try
             {
-                User lAuthor = new User(commentNode.FirstChild.InnerText, Convert.ToInt32(
-                    GetTagContents(commentNode.FirstChild.ChildNodes[1].Attributes["href"].Value, "/user/", "#top")
+                User lAuthor = new User(lTableNodes[0].InnerText.Replace("/t", ""), Convert.ToInt32(
+                    GetTagContents(
+                        lTableNodes[0].ChildNodes.Where(node => !node.Name.Equals("#text")).ToArray()[1].Attributes[
+                            "href"].Value, "/user/", "#top")
                         .First()), senpai);
 
-                commentNode.ChildNodes[1].ChildNodes.RemoveAt(0);
-                string lContent = commentNode.ChildNodes[1].InnerHtml;
+                Dictionary<string, int> lSubRatings = new Dictionary<string, int>();
+                if (lTableNodes[1].ChildNodes.Any(node => node.Name.Equals("table")))
+                {
+                    foreach (HtmlNode ratingNode in lTableNodes[1].ChildNodes.FindFirst("table").ChildNodes)
+                    {
+                        lSubRatings.Add(ratingNode.FirstChild.InnerText,
+                            ratingNode.ChildNodes[1].ChildNodes.Count(
+                                node =>
+                                    node.Name.Equals("img") && node.Attributes.Contains("src") &&
+                                    node.Attributes["src"].Value.Equals("/images/misc/stern.png")));
+                    }
+                    lTableNodes[1].ChildNodes.Remove(lTableNodes[1].ChildNodes.FindFirst("table"));
+                }
+
+                string lContent = lTableNodes[1].InnerHtml.Trim();
 
                 int lStars =
-                    commentNode.ChildNodes[2].FirstChild.ChildNodes.Count(
+                    lTableNodes[2].ChildNodes.FindFirst("p").ChildNodes.Count(
                         starNode =>
                             starNode.Name.Equals("img") && starNode.Attributes.Contains("src") &&
                             starNode.Attributes["src"].Value.Equals("/images/misc/stern.png"));
 
-                return new ProxerResult<Comment>(new Comment(lAuthor, lStars, lContent));
+                return new ProxerResult<Comment>(new Comment(lAuthor, lStars, lContent) {SubSterne = lSubRatings});
             }
             catch
             {
