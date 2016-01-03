@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Azuria.ErrorHandling;
 using Azuria.Exceptions;
 using Azuria.Main;
 using Azuria.Main.User;
@@ -25,14 +26,14 @@ namespace Azuria
         private readonly Func<Task<ProxerResult>>[] _initFuncs;
 
         private readonly Senpai _senpai;
-        private List<KeyValuePair<AnimeMangaProgressObject.AnimeMangaProgress, AnimeMangaProgressObject>> _animeList;
+        private List<KeyValuePair<AnimeMangaProgress, AnimeMangaProgressObject>> _animeList;
         private Uri _avatar;
         private IEnumerable<Anime> _favouritenAnime;
         private IEnumerable<Manga> _favouritenManga;
         private List<User> _freunde;
         private string _info;
         private string _infoHtml;
-        private List<KeyValuePair<AnimeMangaProgressObject.AnimeMangaProgress, AnimeMangaProgressObject>> _mangaList;
+        private List<KeyValuePair<AnimeMangaProgress, AnimeMangaProgressObject>> _mangaList;
         private string _rang;
         private string _status;
         private string _userName;
@@ -108,9 +109,9 @@ namespace Azuria
         ///     Gibt alle <see cref="Anime">Anime</see> zurück, die der <see cref="User">Benutzer</see>
         ///     in seinem Profil markiert hat.
         /// </summary>
-        public IEnumerable<KeyValuePair<AnimeMangaProgressObject.AnimeMangaProgress, AnimeMangaProgressObject>> Anime
+        public IEnumerable<KeyValuePair<AnimeMangaProgress, AnimeMangaProgressObject>> Anime
             => this._animeList ??
-               new List<KeyValuePair<AnimeMangaProgressObject.AnimeMangaProgress, AnimeMangaProgressObject>>();
+               new List<KeyValuePair<AnimeMangaProgress, AnimeMangaProgressObject>>();
 
         /// <summary>
         ///     Gibt den Link zu dem Avatar des Benutzers zurück.
@@ -204,9 +205,9 @@ namespace Azuria
         ///     Gibt alle <see cref="Manga">Manga</see> zurück, die der <see cref="User">Benutzer</see>
         ///     in seinem Profil markiert hat.
         /// </summary>
-        public IEnumerable<KeyValuePair<AnimeMangaProgressObject.AnimeMangaProgress, AnimeMangaProgressObject>> Manga
+        public IEnumerable<KeyValuePair<AnimeMangaProgress, AnimeMangaProgressObject>> Manga
             => this._mangaList ??
-               new List<KeyValuePair<AnimeMangaProgressObject.AnimeMangaProgress, AnimeMangaProgressObject>>();
+               new List<KeyValuePair<AnimeMangaProgress, AnimeMangaProgressObject>>();
 
         /// <summary>
         ///     Gibt zurück, ob der Benutzter zur Zeit online ist.
@@ -261,238 +262,6 @@ namespace Azuria
 
         #region
 
-        /// <summary>
-        ///     Initialisiert die Eigenschaften der Klasse
-        ///     <para>Mögliche Fehler, die <see cref="ProxerResult" /> enthalten kann:</para>
-        ///     <list type="table">
-        ///         <listheader>
-        ///             <term>Ausnahme</term>
-        ///             <description>Beschreibung</description>
-        ///         </listheader>
-        ///         <item>
-        ///             <term>
-        ///                 <see cref="WrongResponseException" />
-        ///             </term>
-        ///             <description>
-        ///                 <see cref="WrongResponseException" /> wird ausgelöst, wenn die Antwort des Servers nicht der
-        ///                 Erwarteten entspricht.
-        ///             </description>
-        ///         </item>
-        ///         <item>
-        ///             <term>
-        ///                 <see cref="NoAccessException" />
-        ///             </term>
-        ///             <description>
-        ///                 <see cref="NoAccessException" /> wird ausgelöst, wenn Teile der Initialisierung nicht durchgeführt
-        ///                 werden können,
-        ///                 da der <see cref="Senpai">Benutzer</see> nicht die nötigen Rechte dafür hat.
-        ///             </description>
-        ///         </item>
-        ///         <item>
-        ///             <term>
-        ///                 <see cref="NotLoggedInException" />
-        ///             </term>
-        ///             <description>Wird ausgelöst, wenn der <see cref="Senpai">Benutzer</see> nicht eingeloggt ist.</description>
-        ///         </item>
-        ///     </list>
-        /// </summary>
-        /// <seealso cref="Senpai.Login" />
-        public async Task<ProxerResult> Init()
-        {
-            int lFailedInits = 0;
-            ProxerResult lReturn = new ProxerResult();
-
-            foreach (Func<Task<ProxerResult>> initFunc in this._initFuncs)
-            {
-                try
-                {
-                    ProxerResult lResult;
-                    if ((lResult = await initFunc.Invoke()).Success) continue;
-
-                    lReturn.AddExceptions(lResult.Exceptions);
-                    lFailedInits++;
-                }
-                catch
-                {
-                    return new ProxerResult
-                    {
-                        Success = false
-                    };
-                }
-            }
-
-            this.IstInitialisiert = true;
-
-            if (lFailedInits < this._initFuncs.Length)
-                lReturn.Success = true;
-
-            return lReturn;
-        }
-
-        /// <summary>
-        ///     Sendet dem <see cref="User">Benutzer</see> eine Freundschaftsanfrage.
-        ///     <para>Mögliche Fehler, die <see cref="ProxerResult" /> enthalten kann:</para>
-        ///     <list type="table">
-        ///         <listheader>
-        ///             <term>Ausnahme</term>
-        ///             <description>Beschreibung</description>
-        ///         </listheader>
-        ///         <item>
-        ///             <term>
-        ///                 <see cref="WrongResponseException" />
-        ///             </term>
-        ///             <description>
-        ///                 <see cref="WrongResponseException" /> wird ausgelöst, wenn die Antwort des Servers nicht der
-        ///                 Erwarteten entspricht.
-        ///             </description>
-        ///         </item>
-        ///         <item>
-        ///             <term>
-        ///                 <see cref="NotLoggedInException" />
-        ///             </term>
-        ///             <description>Wird ausgelöst, wenn der <see cref="Senpai">Benutzer</see> nicht eingeloggt ist.</description>
-        ///         </item>
-        ///     </list>
-        /// </summary>
-        /// <returns>Einen boolischen Wert, der angibt, ob die Aktion erfolgreich war.</returns>
-        public async Task<ProxerResult<bool>> SendFriendRequest()
-        {
-            if (this.Id == -1) return new ProxerResult<bool> {Success = false};
-
-            Dictionary<string, string> lPostArgs = new Dictionary<string, string>
-            {
-                {"type", "addFriend"}
-            };
-            ProxerResult<string> lResult =
-                await
-                    HttpUtility.PostResponseErrorHandling("https://proxer.me/user/" + this.Id + "?format=json",
-                        lPostArgs,
-                        this._senpai.LoginCookies,
-                        this._senpai.ErrHandler,
-                        this._senpai);
-
-            if (!lResult.Success)
-                return new ProxerResult<bool>(lResult.Exceptions);
-
-            try
-            {
-                Dictionary<string, string> lResultDictionary =
-                    JsonConvert.DeserializeObject<Dictionary<string, string>>(lResult.Result);
-
-                return lResultDictionary.ContainsKey("error")
-                    ? new ProxerResult<bool>(lResultDictionary["error"].Equals("0"))
-                    : new ProxerResult<bool>(new Exception[] {new WrongResponseException {Response = lResult.Result}});
-            }
-            catch
-            {
-                return
-                    new ProxerResult<bool>(
-                        (await ErrorHandler.HandleError(this._senpai, lResult.Result, false)).Exceptions);
-            }
-        }
-
-
-        private async Task<ProxerResult> InitMainInfo()
-        {
-            if (this.Id == -1) return new ProxerResult();
-
-            HtmlDocument lDocument = new HtmlDocument();
-
-            Func<string, ProxerResult> lCheckFunc = s =>
-            {
-                if (!string.IsNullOrEmpty(s) &&
-                    s.Equals(
-                        "<div class=\"inner\">\n<h3>Du hast keine Berechtigung um diese Seite zu betreten.</h3>\n</div>"))
-                    return new ProxerResult(new Exception[] {new NoAccessException(nameof(this.InitMainInfo))});
-
-                return new ProxerResult();
-            };
-
-            ProxerResult<string> lResult =
-                await
-                    HttpUtility.GetResponseErrorHandling("https://proxer.me/user/" + this.Id, this._senpai.LoginCookies,
-                        this._senpai.ErrHandler,
-                        this._senpai, new[] {lCheckFunc});
-
-            if (!lResult.Success)
-                return new ProxerResult(lResult.Exceptions);
-
-            string lResponse = lResult.Result;
-
-            try
-            {
-                lDocument.LoadHtml(lResponse);
-
-                HtmlNode[] lProfileNodes =
-                    lDocument.DocumentNode.SelectNodesUtility("class", "profile").ToArray();
-
-                this.Avatar =
-                    new Uri("https:" +
-                            lProfileNodes[0].ParentNode.ParentNode.ChildNodes[1].ChildNodes[0]
-                                .Attributes["src"].Value);
-                this.Punkte =
-                    Convert.ToInt32(
-                        Utility.GetTagContents(lProfileNodes[0].FirstChild.InnerText, "Summe: ", " - ")[
-                            0]);
-                this.Rang =
-                    Utility.GetTagContents(lProfileNodes[0].FirstChild.InnerText, this.Punkte + " - ",
-                        "[?]")
-                        [0];
-                this.Online = lProfileNodes[0].ChildNodes[1].InnerText.Equals("Status Online");
-                this.Status = lProfileNodes[0].ChildNodes.Count == 7
-                    ? lProfileNodes[0].ChildNodes[6].InnerText
-                    : "";
-
-                this.UserName =
-                    lDocument.GetElementbyId("pageMetaAjax").InnerText.Split(' ')[1];
-
-                return new ProxerResult();
-            }
-            catch
-            {
-                return new ProxerResult((await ErrorHandler.HandleError(this._senpai, lResponse, false)).Exceptions);
-            }
-        }
-
-        private async Task<ProxerResult> InitFriends()
-        {
-            if (this.Id == -1) return new ProxerResult();
-
-            this.Freunde = new List<User>();
-
-            ProxerResult<HtmlNode[]> lResult = await this.GetAllFriendNodes();
-            if (!lResult.Success) return new ProxerResult(lResult.Exceptions);
-            try
-            {
-                foreach (HtmlNode curFriendNode in lResult.Result)
-                {
-                    string lUsername = curFriendNode.ChildNodes[2].InnerText;
-                    int lId =
-                        Convert.ToInt32(
-                            curFriendNode.Attributes["id"].Value.Substring("entry".Length));
-                    Uri lAvatar = curFriendNode.ChildNodes[2].GetAttributeValue("title", "Avatar:")
-                                                             .Equals("Avatar:")
-                        ? new Uri(
-                            "https://proxer.me/components/com_comprofiler/plugin/templates/default/images/avatar/nophoto_n.png")
-                        : new Uri("https://proxer.me/images/comprofiler/" +
-                                  curFriendNode.ChildNodes[2].GetAttributeValue("title", "Avatar:")
-                                                             .Split(':')[1]);
-                    bool lOnline =
-                        curFriendNode.ChildNodes[1].FirstChild.GetAttributeValue("src",
-                            "/images/misc/offlineicon.png").Equals("/images/misc/onlineicon.png");
-
-                    this.Freunde.Add(new User(lUsername, lId, lAvatar, lOnline, this._senpai));
-                }
-
-                return new ProxerResult();
-            }
-            catch
-            {
-                return
-                    new ProxerResult(new Exception[] {new WrongResponseException()});
-            }
-        }
-
         private async Task<ProxerResult<HtmlNode[]>> GetAllFriendNodes()
         {
             ProxerResult<string> lResult;
@@ -525,7 +294,7 @@ namespace Azuria
                 {
                     if (
                         lDocument.DocumentNode.SelectNodesUtility("class", "inner").First()?
-                                 .InnerText.Equals("Dieser Benutzer hat bisher keine Freunde :/") ?? false)
+                            .InnerText.Equals("Dieser Benutzer hat bisher keine Freunde :/") ?? false)
                     {
                         break;
                     }
@@ -551,402 +320,6 @@ namespace Azuria
             }
 
             return new ProxerResult<HtmlNode[]>(lReturn.ToArray());
-        }
-
-        private async Task<ProxerResult> InitInfos()
-        {
-            if (this.Id == -1) return new ProxerResult();
-
-            HtmlDocument lDocument = new HtmlDocument();
-
-            Func<string, ProxerResult> lCheckFunc = s =>
-            {
-                if (!string.IsNullOrEmpty(s) &&
-                    s.Equals(
-                        "<div class=\"inner\"><h3>Du hast keine Berechtigung um diese Seite zu betreten.</h3></div>"))
-                    return new ProxerResult(new Exception[] {new NoAccessException(nameof(this.InitInfos))});
-
-                return new ProxerResult();
-            };
-
-            ProxerResult<string> lResult =
-                await
-                    HttpUtility.GetResponseErrorHandling("https://proxer.me/user/" + this.Id + "/about?format=raw",
-                        this._senpai.LoginCookies,
-                        this._senpai.ErrHandler,
-                        this._senpai, new[] {lCheckFunc});
-
-            if (!lResult.Success)
-                return new ProxerResult(lResult.Exceptions);
-
-            string lResponse = lResult.Result;
-
-            try
-            {
-                lDocument.LoadHtml(lResponse);
-
-                HtmlNode[] lProfileNodes =
-                    lDocument.DocumentNode.SelectNodesUtility("class", "profile").ToArray();
-
-                this.Info = lProfileNodes[0].ChildNodes[10].InnerText;
-                this.InfoHtml = lProfileNodes[0].ChildNodes[10].InnerHtml;
-
-                return new ProxerResult();
-            }
-            catch
-            {
-                return new ProxerResult((await ErrorHandler.HandleError(this._senpai, lResponse, false)).Exceptions);
-            }
-        }
-
-        private async Task<ProxerResult> InitAnime()
-        {
-            if (this.Id == -1) return new ProxerResult();
-
-            HtmlDocument lDocument = new HtmlDocument();
-
-            Func<string, ProxerResult> lCheckFunc = s =>
-            {
-                if (!string.IsNullOrEmpty(s) &&
-                    s.Equals(
-                        "<div class=\"inner\"><h3>Du hast keine Berechtigung um diese Seite zu betreten.</h3></div>"))
-                    return new ProxerResult(new Exception[] {new NoAccessException(nameof(this.InitAnime))});
-
-                return new ProxerResult();
-            };
-
-            ProxerResult<string> lResult =
-                await
-                    HttpUtility.GetResponseErrorHandling("https://proxer.me/user/" + this.Id + "/anime?format=raw",
-                        this._senpai.LoginCookies,
-                        this._senpai.ErrHandler,
-                        this._senpai, new[] {lCheckFunc});
-
-            if (!lResult.Success)
-                return new ProxerResult(lResult.Exceptions);
-
-            string lResponse = lResult.Result;
-
-            try
-            {
-                #region Process Nodes
-
-                this._animeList =
-                    new List<KeyValuePair<AnimeMangaProgressObject.AnimeMangaProgress, AnimeMangaProgressObject>>();
-
-                lDocument.LoadHtml(lResponse);
-
-                this.FavoritenAnime =
-                    lDocument.DocumentNode.ChildNodes[5].ChildNodes.Where(
-                        x =>
-                            x.HasAttributes && x.Attributes.Contains("href") &&
-                            x.Attributes["href"].Value.StartsWith("/info/"))
-                                                        .Select(
-                                                            favouritenNode =>
-                                                                new Anime(favouritenNode.Attributes["title"].Value,
-                                                                    Convert.ToInt32(
-                                                                        Utility.GetTagContents(
-                                                                            favouritenNode.Attributes["href"].Value,
-                                                                            "/info/", "#top").First()), this._senpai))
-                                                        .ToArray();
-
-                foreach (
-                    HtmlNode animeNode in
-                        lDocument.DocumentNode.ChildNodes[7].ChildNodes.Where(
-                            x =>
-                                x.HasAttributes && x.Attributes.Contains("id") &&
-                                x.Attributes["id"].Value.StartsWith("entry")))
-                {
-                    Anime lAnime = new Anime(animeNode.ChildNodes[1].InnerText,
-                        Convert.ToInt32(
-                            animeNode.ChildNodes[1].FirstChild.GetAttributeValue("title", "Cover:-1").Split(':')[1]),
-                        this._senpai);
-
-                    this._animeList.Add(
-                        new KeyValuePair<AnimeMangaProgressObject.AnimeMangaProgress, AnimeMangaProgressObject>(
-                            AnimeMangaProgressObject.AnimeMangaProgress.Finished,
-                            new AnimeMangaProgressObject(this, lAnime,
-                                Convert.ToInt32(animeNode.ChildNodes[4].InnerText.Split('/')[0].Trim()),
-                                Convert.ToInt32(animeNode.ChildNodes[4].InnerText.Split('/')[1].Trim()),
-                                AnimeMangaProgressObject.AnimeMangaProgress.Finished)));
-                }
-
-                foreach (
-                    HtmlNode animeNode in
-                        lDocument.DocumentNode.ChildNodes[10].ChildNodes.Where(
-                            x =>
-                                x.HasAttributes && x.Attributes.Contains("id") &&
-                                x.Attributes["id"].Value.StartsWith("entry")))
-                {
-                    Anime lAnime = new Anime(animeNode.ChildNodes[1].InnerText,
-                        Convert.ToInt32(
-                            animeNode.ChildNodes[1].FirstChild.GetAttributeValue("title", "Cover:-1").Split(':')[1]),
-                        this._senpai);
-
-                    this._animeList.Add(
-                        new KeyValuePair<AnimeMangaProgressObject.AnimeMangaProgress, AnimeMangaProgressObject>(
-                            AnimeMangaProgressObject.AnimeMangaProgress.InProgress,
-                            new AnimeMangaProgressObject(this, lAnime,
-                                Convert.ToInt32(animeNode.ChildNodes[4].InnerText.Split('/')[0].Trim()),
-                                Convert.ToInt32(animeNode.ChildNodes[4].InnerText.Split('/')[1].Trim()),
-                                AnimeMangaProgressObject.AnimeMangaProgress.InProgress)));
-                }
-
-                foreach (
-                    HtmlNode animeNode in
-                        lDocument.DocumentNode.ChildNodes[13].ChildNodes.Where(
-                            x =>
-                                x.HasAttributes && x.Attributes.Contains("id") &&
-                                x.Attributes["id"].Value.StartsWith("entry")))
-                {
-                    Anime lAnime = new Anime(animeNode.ChildNodes[1].InnerText,
-                        Convert.ToInt32(
-                            animeNode.ChildNodes[1].FirstChild.GetAttributeValue("title", "Cover:-1").Split(':')[1]),
-                        this._senpai);
-
-                    this._animeList.Add(
-                        new KeyValuePair<AnimeMangaProgressObject.AnimeMangaProgress, AnimeMangaProgressObject>(
-                            AnimeMangaProgressObject.AnimeMangaProgress.Planned,
-                            new AnimeMangaProgressObject(this, lAnime,
-                                Convert.ToInt32(animeNode.ChildNodes[4].InnerText.Split('/')[0].Trim()),
-                                Convert.ToInt32(animeNode.ChildNodes[4].InnerText.Split('/')[1].Trim()),
-                                AnimeMangaProgressObject.AnimeMangaProgress.Planned)));
-                }
-
-                foreach (
-                    HtmlNode animeNode in
-                        lDocument.DocumentNode.ChildNodes[16].ChildNodes.Where(
-                            x =>
-                                x.HasAttributes && x.Attributes.Contains("id") &&
-                                x.Attributes["id"].Value.StartsWith("entry")))
-                {
-                    Anime lAnime = new Anime(animeNode.ChildNodes[1].InnerText,
-                        Convert.ToInt32(
-                            animeNode.ChildNodes[1].FirstChild.GetAttributeValue("title", "Cover:-1").Split(':')[1]),
-                        this._senpai);
-
-                    this._animeList.Add(
-                        new KeyValuePair<AnimeMangaProgressObject.AnimeMangaProgress, AnimeMangaProgressObject>(
-                            AnimeMangaProgressObject.AnimeMangaProgress.Aborted,
-                            new AnimeMangaProgressObject(this, lAnime,
-                                Convert.ToInt32(animeNode.ChildNodes[4].InnerText.Split('/')[0].Trim()),
-                                Convert.ToInt32(animeNode.ChildNodes[4].InnerText.Split('/')[1].Trim()),
-                                AnimeMangaProgressObject.AnimeMangaProgress.Aborted)));
-                }
-
-                #endregion
-
-                return new ProxerResult();
-            }
-            catch
-            {
-                return new ProxerResult((await ErrorHandler.HandleError(this._senpai, lResponse, false)).Exceptions);
-            }
-        }
-
-        private async Task<ProxerResult> InitManga()
-        {
-            if (this.Id == -1) return new ProxerResult();
-
-            HtmlDocument lDocument = new HtmlDocument();
-
-            Func<string, ProxerResult> lCheckFunc = s =>
-            {
-                if (!string.IsNullOrEmpty(s) &&
-                    s.Equals(
-                        "<div class=\"inner\"><h3>Du hast keine Berechtigung um diese Seite zu betreten.</h3></div>"))
-                    return new ProxerResult(new Exception[] {new NoAccessException(nameof(this.InitManga))});
-
-                return new ProxerResult();
-            };
-
-            ProxerResult<string> lResult =
-                await
-                    HttpUtility.GetResponseErrorHandling("https://proxer.me/user/" + this.Id + "/manga?format=raw",
-                        this._senpai.LoginCookies,
-                        this._senpai.ErrHandler,
-                        this._senpai, new[] {lCheckFunc});
-
-            if (!lResult.Success)
-                return new ProxerResult(lResult.Exceptions);
-
-            string lResponse = lResult.Result;
-
-            try
-            {
-                #region Process Nodes
-
-                this._mangaList =
-                    new List<KeyValuePair<AnimeMangaProgressObject.AnimeMangaProgress, AnimeMangaProgressObject>>();
-
-                lDocument.LoadHtml(lResponse);
-
-                this.FavoritenManga =
-                    lDocument.DocumentNode.ChildNodes[5].ChildNodes.Where(
-                        x =>
-                            x.HasAttributes && x.Attributes.Contains("href") &&
-                            x.Attributes["href"].Value.StartsWith("/info/"))
-                                                        .Select(
-                                                            favouritenNode =>
-                                                                new Manga(favouritenNode.Attributes["title"].Value,
-                                                                    Convert.ToInt32(
-                                                                        Utility.GetTagContents(
-                                                                            favouritenNode.Attributes["href"].Value,
-                                                                            "/info/", "#top").First()), this._senpai))
-                                                        .ToArray();
-
-                foreach (
-                    HtmlNode mangaNode in
-                        lDocument.DocumentNode.ChildNodes[7].ChildNodes.Where(
-                            x =>
-                                x.HasAttributes && x.Attributes.Contains("id") &&
-                                x.Attributes["id"].Value.StartsWith("entry")))
-                {
-                    Manga lManga = new Manga(mangaNode.ChildNodes[1].InnerText,
-                        Convert.ToInt32(
-                            mangaNode.ChildNodes[1].FirstChild.GetAttributeValue("title", "Cover:-1").Split(':')[1]),
-                        this._senpai);
-
-                    this._mangaList.Add(
-                        new KeyValuePair<AnimeMangaProgressObject.AnimeMangaProgress, AnimeMangaProgressObject>(
-                            AnimeMangaProgressObject.AnimeMangaProgress.Finished,
-                            new AnimeMangaProgressObject(this, lManga,
-                                Convert.ToInt32(mangaNode.ChildNodes[4].InnerText.Split('/')[0].Trim()),
-                                Convert.ToInt32(mangaNode.ChildNodes[4].InnerText.Split('/')[1].Trim()),
-                                AnimeMangaProgressObject.AnimeMangaProgress.Finished)));
-                }
-
-                foreach (
-                    HtmlNode mangaNode in
-                        lDocument.DocumentNode.ChildNodes[10].ChildNodes.Where(
-                            x =>
-                                x.HasAttributes && x.Attributes.Contains("id") &&
-                                x.Attributes["id"].Value.StartsWith("entry")))
-                {
-                    Manga lManga = new Manga(mangaNode.ChildNodes[1].InnerText,
-                        Convert.ToInt32(
-                            mangaNode.ChildNodes[1].FirstChild.GetAttributeValue("title", "Cover:-1").Split(':')[1]),
-                        this._senpai);
-
-                    this._mangaList.Add(
-                        new KeyValuePair<AnimeMangaProgressObject.AnimeMangaProgress, AnimeMangaProgressObject>(
-                            AnimeMangaProgressObject.AnimeMangaProgress.InProgress,
-                            new AnimeMangaProgressObject(this, lManga,
-                                Convert.ToInt32(mangaNode.ChildNodes[4].InnerText.Split('/')[0].Trim()),
-                                Convert.ToInt32(mangaNode.ChildNodes[4].InnerText.Split('/')[1].Trim()),
-                                AnimeMangaProgressObject.AnimeMangaProgress.InProgress)));
-                }
-
-                foreach (
-                    HtmlNode mangaNode in
-                        lDocument.DocumentNode.ChildNodes[13].ChildNodes.Where(
-                            x =>
-                                x.HasAttributes && x.Attributes.Contains("id") &&
-                                x.Attributes["id"].Value.StartsWith("entry")))
-                {
-                    Manga lManga = new Manga(mangaNode.ChildNodes[1].InnerText,
-                        Convert.ToInt32(
-                            mangaNode.ChildNodes[1].FirstChild.GetAttributeValue("title", "Cover:-1").Split(':')[1]),
-                        this._senpai);
-
-                    this._mangaList.Add(
-                        new KeyValuePair<AnimeMangaProgressObject.AnimeMangaProgress, AnimeMangaProgressObject>(
-                            AnimeMangaProgressObject.AnimeMangaProgress.Planned,
-                            new AnimeMangaProgressObject(this, lManga,
-                                Convert.ToInt32(mangaNode.ChildNodes[4].InnerText.Split('/')[0].Trim()),
-                                Convert.ToInt32(mangaNode.ChildNodes[4].InnerText.Split('/')[1].Trim()),
-                                AnimeMangaProgressObject.AnimeMangaProgress.Planned)));
-                }
-
-                foreach (
-                    HtmlNode mangaNode in
-                        lDocument.DocumentNode.ChildNodes[16].ChildNodes.Where(
-                            x =>
-                                x.HasAttributes && x.Attributes.Contains("id") &&
-                                x.Attributes["id"].Value.StartsWith("entry")))
-                {
-                    Manga lManga = new Manga(mangaNode.ChildNodes[1].InnerText,
-                        Convert.ToInt32(
-                            mangaNode.ChildNodes[1].FirstChild.GetAttributeValue("title", "Cover:-1").Split(':')[1]),
-                        this._senpai);
-
-                    this._mangaList.Add(
-                        new KeyValuePair<AnimeMangaProgressObject.AnimeMangaProgress, AnimeMangaProgressObject>(
-                            AnimeMangaProgressObject.AnimeMangaProgress.Aborted,
-                            new AnimeMangaProgressObject(this, lManga,
-                                Convert.ToInt32(mangaNode.ChildNodes[4].InnerText.Split('/')[0].Trim()),
-                                Convert.ToInt32(mangaNode.ChildNodes[4].InnerText.Split('/')[1].Trim()),
-                                AnimeMangaProgressObject.AnimeMangaProgress.Aborted)));
-                }
-
-                #endregion
-
-                return new ProxerResult();
-            }
-            catch
-            {
-                return new ProxerResult((await ErrorHandler.HandleError(this._senpai, lResponse, false)).Exceptions);
-            }
-        }
-
-        /// <summary>
-        ///     Gibt einen string zurück, der das aktuelle Objekt repräsentiert.
-        /// </summary>
-        /// <returns>
-        ///     Ein string, der das aktuelle Objekt repräsentiert.
-        /// </returns>
-        public override string ToString()
-        {
-            return this.UserName + " [" + this.Id + "]";
-        }
-
-
-        /*
-         * -----------------------------------
-         * --------Statische Methoden---------
-         * -----------------------------------
-        */
-
-        /// <summary>
-        ///     Überprüft, ob zwei Benutzter Freunde sind.
-        ///     <para>Mögliche Fehler, die <see cref="ProxerResult" /> enthalten kann:</para>
-        ///     <list type="table">
-        ///         <listheader>
-        ///             <term>Ausnahme</term>
-        ///             <description>Beschreibung</description>
-        ///         </listheader>
-        ///         <item>
-        ///             <term>
-        ///                 <see cref="InitializeNeededException" />
-        ///             </term>
-        ///             <description>
-        ///                 <see cref="InitializeNeededException" /> wird ausgelöst, wenn die Eigenschaften des Objektes
-        ///                 noch nicht initialisiert sind.
-        ///             </description>
-        ///         </item>
-        ///         <item>
-        ///             <term>
-        ///                 <see cref="ArgumentNullException" />
-        ///             </term>
-        ///             <description>
-        ///                 <see cref="ArgumentNullException" /> wird ausgelöst, wenn <paramref name="user1" /> oder
-        ///                 <paramref name="user2" /> null (oder
-        ///                 Nothing in Visual Basic) sind.
-        ///             </description>
-        ///         </item>
-        ///     </list>
-        /// </summary>
-        /// <param name="user1">Benutzer 1</param>
-        /// <param name="user2">Benutzer 2</param>
-        /// <returns>Benutzer sind Freunde. True oder False.</returns>
-        public static ProxerResult<bool> IsUserFriendOf(User user1, User user2)
-        {
-            if (user1 == null)
-                return new ProxerResult<bool>(new Exception[] {new ArgumentNullException(nameof(user1))});
-
-            return user2 == null
-                ? new ProxerResult<bool>(new Exception[] {new ArgumentNullException(nameof(user2))})
-                : new ProxerResult<bool>(user1.Freunde.Any(item => item.Id == user2.Id));
         }
 
         /// <summary>
@@ -1037,6 +410,626 @@ namespace Azuria
             {
                 return new ProxerResult<string>((await ErrorHandler.HandleError(senpai, lResponse, false)).Exceptions);
             }
+        }
+
+        /// <summary>
+        ///     Initialisiert die Eigenschaften der Klasse
+        ///     <para>Mögliche Fehler, die <see cref="ProxerResult" /> enthalten kann:</para>
+        ///     <list type="table">
+        ///         <listheader>
+        ///             <term>Ausnahme</term>
+        ///             <description>Beschreibung</description>
+        ///         </listheader>
+        ///         <item>
+        ///             <term>
+        ///                 <see cref="WrongResponseException" />
+        ///             </term>
+        ///             <description>
+        ///                 <see cref="WrongResponseException" /> wird ausgelöst, wenn die Antwort des Servers nicht der
+        ///                 Erwarteten entspricht.
+        ///             </description>
+        ///         </item>
+        ///         <item>
+        ///             <term>
+        ///                 <see cref="NoAccessException" />
+        ///             </term>
+        ///             <description>
+        ///                 <see cref="NoAccessException" /> wird ausgelöst, wenn Teile der Initialisierung nicht durchgeführt
+        ///                 werden können,
+        ///                 da der <see cref="Senpai">Benutzer</see> nicht die nötigen Rechte dafür hat.
+        ///             </description>
+        ///         </item>
+        ///         <item>
+        ///             <term>
+        ///                 <see cref="NotLoggedInException" />
+        ///             </term>
+        ///             <description>Wird ausgelöst, wenn der <see cref="Senpai">Benutzer</see> nicht eingeloggt ist.</description>
+        ///         </item>
+        ///     </list>
+        /// </summary>
+        /// <seealso cref="Senpai.Login" />
+        public async Task<ProxerResult> Init()
+        {
+            int lFailedInits = 0;
+            ProxerResult lReturn = new ProxerResult();
+
+            foreach (Func<Task<ProxerResult>> initFunc in this._initFuncs)
+            {
+                try
+                {
+                    ProxerResult lResult;
+                    if ((lResult = await initFunc.Invoke()).Success) continue;
+
+                    lReturn.AddExceptions(lResult.Exceptions);
+                    lFailedInits++;
+                }
+                catch
+                {
+                    return new ProxerResult
+                    {
+                        Success = false
+                    };
+                }
+            }
+
+            this.IstInitialisiert = true;
+
+            if (lFailedInits < this._initFuncs.Length)
+                lReturn.Success = true;
+
+            return lReturn;
+        }
+
+        private async Task<ProxerResult> InitAnime()
+        {
+            if (this.Id == -1) return new ProxerResult();
+
+            HtmlDocument lDocument = new HtmlDocument();
+
+            Func<string, ProxerResult> lCheckFunc = s =>
+            {
+                if (!string.IsNullOrEmpty(s) &&
+                    s.Equals(
+                        "<div class=\"inner\"><h3>Du hast keine Berechtigung um diese Seite zu betreten.</h3></div>"))
+                    return new ProxerResult(new Exception[] {new NoAccessException(nameof(this.InitAnime))});
+
+                return new ProxerResult();
+            };
+
+            ProxerResult<string> lResult =
+                await
+                    HttpUtility.GetResponseErrorHandling("https://proxer.me/user/" + this.Id + "/anime?format=raw",
+                        this._senpai.LoginCookies,
+                        this._senpai.ErrHandler,
+                        this._senpai, new[] {lCheckFunc});
+
+            if (!lResult.Success)
+                return new ProxerResult(lResult.Exceptions);
+
+            string lResponse = lResult.Result;
+
+            try
+            {
+                #region Process Nodes
+
+                this._animeList =
+                    new List<KeyValuePair<AnimeMangaProgress, AnimeMangaProgressObject>>();
+
+                lDocument.LoadHtml(lResponse);
+
+                this.FavoritenAnime =
+                    lDocument.DocumentNode.ChildNodes[5].ChildNodes.Where(
+                        x =>
+                            x.HasAttributes && x.Attributes.Contains("href") &&
+                            x.Attributes["href"].Value.StartsWith("/info/"))
+                        .Select(
+                            favouritenNode =>
+                                new Anime(favouritenNode.Attributes["title"].Value,
+                                    Convert.ToInt32(
+                                        Utility.GetTagContents(
+                                            favouritenNode.Attributes["href"].Value,
+                                            "/info/", "#top").First()), this._senpai))
+                        .ToArray();
+
+                foreach (
+                    HtmlNode animeNode in
+                        lDocument.DocumentNode.ChildNodes[7].ChildNodes.Where(
+                            x =>
+                                x.HasAttributes && x.Attributes.Contains("id") &&
+                                x.Attributes["id"].Value.StartsWith("entry")))
+                {
+                    Anime lAnime = new Anime(animeNode.ChildNodes[1].InnerText,
+                        Convert.ToInt32(
+                            animeNode.ChildNodes[1].FirstChild.GetAttributeValue("title", "Cover:-1").Split(':')[1]),
+                        this._senpai);
+
+                    this._animeList.Add(
+                        new KeyValuePair<AnimeMangaProgress, AnimeMangaProgressObject>(AnimeMangaProgress.Finished,
+                            new AnimeMangaProgressObject(this, lAnime,
+                                Convert.ToInt32(animeNode.ChildNodes[4].InnerText.Split('/')[0].Trim()),
+                                Convert.ToInt32(animeNode.ChildNodes[4].InnerText.Split('/')[1].Trim()),
+                                AnimeMangaProgress.Finished)));
+                }
+
+                foreach (
+                    HtmlNode animeNode in
+                        lDocument.DocumentNode.ChildNodes[10].ChildNodes.Where(
+                            x =>
+                                x.HasAttributes && x.Attributes.Contains("id") &&
+                                x.Attributes["id"].Value.StartsWith("entry")))
+                {
+                    Anime lAnime = new Anime(animeNode.ChildNodes[1].InnerText,
+                        Convert.ToInt32(
+                            animeNode.ChildNodes[1].FirstChild.GetAttributeValue("title", "Cover:-1").Split(':')[1]),
+                        this._senpai);
+
+                    this._animeList.Add(
+                        new KeyValuePair<AnimeMangaProgress, AnimeMangaProgressObject>(AnimeMangaProgress.InProgress,
+                            new AnimeMangaProgressObject(this, lAnime,
+                                Convert.ToInt32(animeNode.ChildNodes[4].InnerText.Split('/')[0].Trim()),
+                                Convert.ToInt32(animeNode.ChildNodes[4].InnerText.Split('/')[1].Trim()),
+                                AnimeMangaProgress.InProgress)));
+                }
+
+                foreach (
+                    HtmlNode animeNode in
+                        lDocument.DocumentNode.ChildNodes[13].ChildNodes.Where(
+                            x =>
+                                x.HasAttributes && x.Attributes.Contains("id") &&
+                                x.Attributes["id"].Value.StartsWith("entry")))
+                {
+                    Anime lAnime = new Anime(animeNode.ChildNodes[1].InnerText,
+                        Convert.ToInt32(
+                            animeNode.ChildNodes[1].FirstChild.GetAttributeValue("title", "Cover:-1").Split(':')[1]),
+                        this._senpai);
+
+                    this._animeList.Add(
+                        new KeyValuePair<AnimeMangaProgress, AnimeMangaProgressObject>(AnimeMangaProgress.Planned,
+                            new AnimeMangaProgressObject(this, lAnime,
+                                Convert.ToInt32(animeNode.ChildNodes[4].InnerText.Split('/')[0].Trim()),
+                                Convert.ToInt32(animeNode.ChildNodes[4].InnerText.Split('/')[1].Trim()),
+                                AnimeMangaProgress.Planned)));
+                }
+
+                foreach (
+                    HtmlNode animeNode in
+                        lDocument.DocumentNode.ChildNodes[16].ChildNodes.Where(
+                            x =>
+                                x.HasAttributes && x.Attributes.Contains("id") &&
+                                x.Attributes["id"].Value.StartsWith("entry")))
+                {
+                    Anime lAnime = new Anime(animeNode.ChildNodes[1].InnerText,
+                        Convert.ToInt32(
+                            animeNode.ChildNodes[1].FirstChild.GetAttributeValue("title", "Cover:-1").Split(':')[1]),
+                        this._senpai);
+
+                    this._animeList.Add(
+                        new KeyValuePair<AnimeMangaProgress, AnimeMangaProgressObject>(AnimeMangaProgress.Aborted,
+                            new AnimeMangaProgressObject(this, lAnime,
+                                Convert.ToInt32(animeNode.ChildNodes[4].InnerText.Split('/')[0].Trim()),
+                                Convert.ToInt32(animeNode.ChildNodes[4].InnerText.Split('/')[1].Trim()),
+                                AnimeMangaProgress.Aborted)));
+                }
+
+                #endregion
+
+                return new ProxerResult();
+            }
+            catch
+            {
+                return new ProxerResult((await ErrorHandler.HandleError(this._senpai, lResponse, false)).Exceptions);
+            }
+        }
+
+        private async Task<ProxerResult> InitFriends()
+        {
+            if (this.Id == -1) return new ProxerResult();
+
+            this.Freunde = new List<User>();
+
+            ProxerResult<HtmlNode[]> lResult = await this.GetAllFriendNodes();
+            if (!lResult.Success) return new ProxerResult(lResult.Exceptions);
+            try
+            {
+                foreach (HtmlNode curFriendNode in lResult.Result)
+                {
+                    string lUsername = curFriendNode.ChildNodes[2].InnerText;
+                    int lId =
+                        Convert.ToInt32(
+                            curFriendNode.Attributes["id"].Value.Substring("entry".Length));
+                    Uri lAvatar = curFriendNode.ChildNodes[2].GetAttributeValue("title", "Avatar:")
+                        .Equals("Avatar:")
+                        ? new Uri(
+                            "https://proxer.me/components/com_comprofiler/plugin/templates/default/images/avatar/nophoto_n.png")
+                        : new Uri("https://proxer.me/images/comprofiler/" +
+                                  curFriendNode.ChildNodes[2].GetAttributeValue("title", "Avatar:")
+                                      .Split(':')[1]);
+                    bool lOnline =
+                        curFriendNode.ChildNodes[1].FirstChild.GetAttributeValue("src",
+                            "/images/misc/offlineicon.png").Equals("/images/misc/onlineicon.png");
+
+                    this.Freunde.Add(new User(lUsername, lId, lAvatar, lOnline, this._senpai));
+                }
+
+                return new ProxerResult();
+            }
+            catch
+            {
+                return
+                    new ProxerResult(new Exception[] {new WrongResponseException()});
+            }
+        }
+
+        private async Task<ProxerResult> InitInfos()
+        {
+            if (this.Id == -1) return new ProxerResult();
+
+            HtmlDocument lDocument = new HtmlDocument();
+
+            Func<string, ProxerResult> lCheckFunc = s =>
+            {
+                if (!string.IsNullOrEmpty(s) &&
+                    s.Equals(
+                        "<div class=\"inner\"><h3>Du hast keine Berechtigung um diese Seite zu betreten.</h3></div>"))
+                    return new ProxerResult(new Exception[] {new NoAccessException(nameof(this.InitInfos))});
+
+                return new ProxerResult();
+            };
+
+            ProxerResult<string> lResult =
+                await
+                    HttpUtility.GetResponseErrorHandling("https://proxer.me/user/" + this.Id + "/about?format=raw",
+                        this._senpai.LoginCookies,
+                        this._senpai.ErrHandler,
+                        this._senpai, new[] {lCheckFunc});
+
+            if (!lResult.Success)
+                return new ProxerResult(lResult.Exceptions);
+
+            string lResponse = lResult.Result;
+
+            try
+            {
+                lDocument.LoadHtml(lResponse);
+
+                HtmlNode[] lProfileNodes =
+                    lDocument.DocumentNode.SelectNodesUtility("class", "profile").ToArray();
+
+                this.Info = lProfileNodes[0].ChildNodes[10].InnerText;
+                this.InfoHtml = lProfileNodes[0].ChildNodes[10].InnerHtml;
+
+                return new ProxerResult();
+            }
+            catch
+            {
+                return new ProxerResult((await ErrorHandler.HandleError(this._senpai, lResponse, false)).Exceptions);
+            }
+        }
+
+
+        private async Task<ProxerResult> InitMainInfo()
+        {
+            if (this.Id == -1) return new ProxerResult();
+
+            HtmlDocument lDocument = new HtmlDocument();
+
+            Func<string, ProxerResult> lCheckFunc = s =>
+            {
+                if (!string.IsNullOrEmpty(s) &&
+                    s.Equals(
+                        "<div class=\"inner\">\n<h3>Du hast keine Berechtigung um diese Seite zu betreten.</h3>\n</div>"))
+                    return new ProxerResult(new Exception[] {new NoAccessException(nameof(this.InitMainInfo))});
+
+                return new ProxerResult();
+            };
+
+            ProxerResult<string> lResult =
+                await
+                    HttpUtility.GetResponseErrorHandling("https://proxer.me/user/" + this.Id, this._senpai.LoginCookies,
+                        this._senpai.ErrHandler,
+                        this._senpai, new[] {lCheckFunc});
+
+            if (!lResult.Success)
+                return new ProxerResult(lResult.Exceptions);
+
+            string lResponse = lResult.Result;
+
+            try
+            {
+                lDocument.LoadHtml(lResponse);
+
+                HtmlNode[] lProfileNodes =
+                    lDocument.DocumentNode.SelectNodesUtility("class", "profile").ToArray();
+
+                this.Avatar =
+                    new Uri("https:" +
+                            lProfileNodes[0].ParentNode.ParentNode.ChildNodes[1].ChildNodes[0]
+                                .Attributes["src"].Value);
+                this.Punkte =
+                    Convert.ToInt32(
+                        Utility.GetTagContents(lProfileNodes[0].FirstChild.InnerText, "Summe: ", " - ")[
+                            0]);
+                this.Rang =
+                    Utility.GetTagContents(lProfileNodes[0].FirstChild.InnerText, this.Punkte + " - ",
+                        "[?]")
+                        [0];
+                this.Online = lProfileNodes[0].ChildNodes[1].InnerText.Equals("Status Online");
+                this.Status = lProfileNodes[0].ChildNodes.Count == 7
+                    ? lProfileNodes[0].ChildNodes[6].InnerText
+                    : "";
+
+                this.UserName =
+                    lDocument.GetElementbyId("pageMetaAjax").InnerText.Split(' ')[1];
+
+                return new ProxerResult();
+            }
+            catch
+            {
+                return new ProxerResult((await ErrorHandler.HandleError(this._senpai, lResponse, false)).Exceptions);
+            }
+        }
+
+        private async Task<ProxerResult> InitManga()
+        {
+            if (this.Id == -1) return new ProxerResult();
+
+            HtmlDocument lDocument = new HtmlDocument();
+
+            Func<string, ProxerResult> lCheckFunc = s =>
+            {
+                if (!string.IsNullOrEmpty(s) &&
+                    s.Equals(
+                        "<div class=\"inner\"><h3>Du hast keine Berechtigung um diese Seite zu betreten.</h3></div>"))
+                    return new ProxerResult(new Exception[] {new NoAccessException(nameof(this.InitManga))});
+
+                return new ProxerResult();
+            };
+
+            ProxerResult<string> lResult =
+                await
+                    HttpUtility.GetResponseErrorHandling("https://proxer.me/user/" + this.Id + "/manga?format=raw",
+                        this._senpai.LoginCookies,
+                        this._senpai.ErrHandler,
+                        this._senpai, new[] {lCheckFunc});
+
+            if (!lResult.Success)
+                return new ProxerResult(lResult.Exceptions);
+
+            string lResponse = lResult.Result;
+
+            try
+            {
+                #region Process Nodes
+
+                this._mangaList =
+                    new List<KeyValuePair<AnimeMangaProgress, AnimeMangaProgressObject>>();
+
+                lDocument.LoadHtml(lResponse);
+
+                this.FavoritenManga =
+                    lDocument.DocumentNode.ChildNodes[5].ChildNodes.Where(
+                        x =>
+                            x.HasAttributes && x.Attributes.Contains("href") &&
+                            x.Attributes["href"].Value.StartsWith("/info/"))
+                        .Select(
+                            favouritenNode =>
+                                new Manga(favouritenNode.Attributes["title"].Value,
+                                    Convert.ToInt32(
+                                        Utility.GetTagContents(
+                                            favouritenNode.Attributes["href"].Value,
+                                            "/info/", "#top").First()), this._senpai))
+                        .ToArray();
+
+                foreach (
+                    HtmlNode mangaNode in
+                        lDocument.DocumentNode.ChildNodes[7].ChildNodes.Where(
+                            x =>
+                                x.HasAttributes && x.Attributes.Contains("id") &&
+                                x.Attributes["id"].Value.StartsWith("entry")))
+                {
+                    Manga lManga = new Manga(mangaNode.ChildNodes[1].InnerText,
+                        Convert.ToInt32(
+                            mangaNode.ChildNodes[1].FirstChild.GetAttributeValue("title", "Cover:-1").Split(':')[1]),
+                        this._senpai);
+
+                    this._mangaList.Add(
+                        new KeyValuePair<AnimeMangaProgress, AnimeMangaProgressObject>(AnimeMangaProgress.Finished,
+                            new AnimeMangaProgressObject(this, lManga,
+                                Convert.ToInt32(mangaNode.ChildNodes[4].InnerText.Split('/')[0].Trim()),
+                                Convert.ToInt32(mangaNode.ChildNodes[4].InnerText.Split('/')[1].Trim()),
+                                AnimeMangaProgress.Finished)));
+                }
+
+                foreach (
+                    HtmlNode mangaNode in
+                        lDocument.DocumentNode.ChildNodes[10].ChildNodes.Where(
+                            x =>
+                                x.HasAttributes && x.Attributes.Contains("id") &&
+                                x.Attributes["id"].Value.StartsWith("entry")))
+                {
+                    Manga lManga = new Manga(mangaNode.ChildNodes[1].InnerText,
+                        Convert.ToInt32(
+                            mangaNode.ChildNodes[1].FirstChild.GetAttributeValue("title", "Cover:-1").Split(':')[1]),
+                        this._senpai);
+
+                    this._mangaList.Add(
+                        new KeyValuePair<AnimeMangaProgress, AnimeMangaProgressObject>(AnimeMangaProgress.InProgress,
+                            new AnimeMangaProgressObject(this, lManga,
+                                Convert.ToInt32(mangaNode.ChildNodes[4].InnerText.Split('/')[0].Trim()),
+                                Convert.ToInt32(mangaNode.ChildNodes[4].InnerText.Split('/')[1].Trim()),
+                                AnimeMangaProgress.InProgress)));
+                }
+
+                foreach (
+                    HtmlNode mangaNode in
+                        lDocument.DocumentNode.ChildNodes[13].ChildNodes.Where(
+                            x =>
+                                x.HasAttributes && x.Attributes.Contains("id") &&
+                                x.Attributes["id"].Value.StartsWith("entry")))
+                {
+                    Manga lManga = new Manga(mangaNode.ChildNodes[1].InnerText,
+                        Convert.ToInt32(
+                            mangaNode.ChildNodes[1].FirstChild.GetAttributeValue("title", "Cover:-1").Split(':')[1]),
+                        this._senpai);
+
+                    this._mangaList.Add(
+                        new KeyValuePair<AnimeMangaProgress, AnimeMangaProgressObject>(AnimeMangaProgress.Planned,
+                            new AnimeMangaProgressObject(this, lManga,
+                                Convert.ToInt32(mangaNode.ChildNodes[4].InnerText.Split('/')[0].Trim()),
+                                Convert.ToInt32(mangaNode.ChildNodes[4].InnerText.Split('/')[1].Trim()),
+                                AnimeMangaProgress.Planned)));
+                }
+
+                foreach (
+                    HtmlNode mangaNode in
+                        lDocument.DocumentNode.ChildNodes[16].ChildNodes.Where(
+                            x =>
+                                x.HasAttributes && x.Attributes.Contains("id") &&
+                                x.Attributes["id"].Value.StartsWith("entry")))
+                {
+                    Manga lManga = new Manga(mangaNode.ChildNodes[1].InnerText,
+                        Convert.ToInt32(
+                            mangaNode.ChildNodes[1].FirstChild.GetAttributeValue("title", "Cover:-1").Split(':')[1]),
+                        this._senpai);
+
+                    this._mangaList.Add(
+                        new KeyValuePair<AnimeMangaProgress, AnimeMangaProgressObject>(AnimeMangaProgress.Aborted,
+                            new AnimeMangaProgressObject(this, lManga,
+                                Convert.ToInt32(mangaNode.ChildNodes[4].InnerText.Split('/')[0].Trim()),
+                                Convert.ToInt32(mangaNode.ChildNodes[4].InnerText.Split('/')[1].Trim()),
+                                AnimeMangaProgress.Aborted)));
+                }
+
+                #endregion
+
+                return new ProxerResult();
+            }
+            catch
+            {
+                return new ProxerResult((await ErrorHandler.HandleError(this._senpai, lResponse, false)).Exceptions);
+            }
+        }
+
+
+        /*
+         * -----------------------------------
+         * --------Statische Methoden---------
+         * -----------------------------------
+        */
+
+        /// <summary>
+        ///     Überprüft, ob zwei Benutzter Freunde sind.
+        ///     <para>Mögliche Fehler, die <see cref="ProxerResult" /> enthalten kann:</para>
+        ///     <list type="table">
+        ///         <listheader>
+        ///             <term>Ausnahme</term>
+        ///             <description>Beschreibung</description>
+        ///         </listheader>
+        ///         <item>
+        ///             <term>
+        ///                 <see cref="InitializeNeededException" />
+        ///             </term>
+        ///             <description>
+        ///                 <see cref="InitializeNeededException" /> wird ausgelöst, wenn die Eigenschaften des Objektes
+        ///                 noch nicht initialisiert sind.
+        ///             </description>
+        ///         </item>
+        ///         <item>
+        ///             <term>
+        ///                 <see cref="ArgumentNullException" />
+        ///             </term>
+        ///             <description>
+        ///                 <see cref="ArgumentNullException" /> wird ausgelöst, wenn <paramref name="user1" /> oder
+        ///                 <paramref name="user2" /> null (oder
+        ///                 Nothing in Visual Basic) sind.
+        ///             </description>
+        ///         </item>
+        ///     </list>
+        /// </summary>
+        /// <param name="user1">Benutzer 1</param>
+        /// <param name="user2">Benutzer 2</param>
+        /// <returns>Benutzer sind Freunde. True oder False.</returns>
+        public static ProxerResult<bool> IsUserFriendOf(User user1, User user2)
+        {
+            if (user1 == null)
+                return new ProxerResult<bool>(new Exception[] {new ArgumentNullException(nameof(user1))});
+
+            return user2 == null
+                ? new ProxerResult<bool>(new Exception[] {new ArgumentNullException(nameof(user2))})
+                : new ProxerResult<bool>(user1.Freunde.Any(item => item.Id == user2.Id));
+        }
+
+        /// <summary>
+        ///     Sendet dem <see cref="User">Benutzer</see> eine Freundschaftsanfrage.
+        ///     <para>Mögliche Fehler, die <see cref="ProxerResult" /> enthalten kann:</para>
+        ///     <list type="table">
+        ///         <listheader>
+        ///             <term>Ausnahme</term>
+        ///             <description>Beschreibung</description>
+        ///         </listheader>
+        ///         <item>
+        ///             <term>
+        ///                 <see cref="WrongResponseException" />
+        ///             </term>
+        ///             <description>
+        ///                 <see cref="WrongResponseException" /> wird ausgelöst, wenn die Antwort des Servers nicht der
+        ///                 Erwarteten entspricht.
+        ///             </description>
+        ///         </item>
+        ///         <item>
+        ///             <term>
+        ///                 <see cref="NotLoggedInException" />
+        ///             </term>
+        ///             <description>Wird ausgelöst, wenn der <see cref="Senpai">Benutzer</see> nicht eingeloggt ist.</description>
+        ///         </item>
+        ///     </list>
+        /// </summary>
+        /// <returns>Einen boolischen Wert, der angibt, ob die Aktion erfolgreich war.</returns>
+        public async Task<ProxerResult<bool>> SendFriendRequest()
+        {
+            if (this.Id == -1) return new ProxerResult<bool> {Success = false};
+
+            Dictionary<string, string> lPostArgs = new Dictionary<string, string>
+            {
+                {"type", "addFriend"}
+            };
+            ProxerResult<string> lResult =
+                await
+                    HttpUtility.PostResponseErrorHandling("https://proxer.me/user/" + this.Id + "?format=json",
+                        lPostArgs,
+                        this._senpai.LoginCookies,
+                        this._senpai.ErrHandler,
+                        this._senpai);
+
+            if (!lResult.Success)
+                return new ProxerResult<bool>(lResult.Exceptions);
+
+            try
+            {
+                Dictionary<string, string> lResultDictionary =
+                    JsonConvert.DeserializeObject<Dictionary<string, string>>(lResult.Result);
+
+                return lResultDictionary.ContainsKey("error")
+                    ? new ProxerResult<bool>(lResultDictionary["error"].Equals("0"))
+                    : new ProxerResult<bool>(new Exception[] {new WrongResponseException {Response = lResult.Result}});
+            }
+            catch
+            {
+                return
+                    new ProxerResult<bool>(
+                        (await ErrorHandler.HandleError(this._senpai, lResult.Result, false)).Exceptions);
+            }
+        }
+
+        /// <summary>
+        ///     Gibt einen string zurück, der das aktuelle Objekt repräsentiert.
+        /// </summary>
+        /// <returns>
+        ///     Ein string, der das aktuelle Objekt repräsentiert.
+        /// </returns>
+        public override string ToString()
+        {
+            return this.UserName + " [" + this.Id + "]";
         }
 
         #endregion

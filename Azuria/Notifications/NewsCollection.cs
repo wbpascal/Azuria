@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Azuria.ErrorHandling;
 using Azuria.Exceptions;
-using Azuria.Utilities;
 using Azuria.Utilities.Net;
 using Newtonsoft.Json;
 
@@ -119,49 +119,6 @@ namespace Azuria.Notifications
         #region
 
         /// <summary>
-        ///     Gibt eine bestimmte Anzahl der aktuellen Benachrichtigungen, die diese Klasse repräsentiert, zurück.
-        ///     <para>Mögliche Fehler, die <see cref="ProxerResult" /> enthalten kann:</para>
-        ///     <list type="table">
-        ///         <listheader>
-        ///             <term>Ausnahme</term>
-        ///             <description>Beschreibung</description>
-        ///         </listheader>
-        ///         <item>
-        ///             <term>
-        ///                 <see cref="NotLoggedInException" />
-        ///             </term>
-        ///             <description>Wird ausgelöst, wenn der <see cref="Senpai">Benutzer</see> nicht eingeloggt ist.</description>
-        ///         </item>
-        ///         <item>
-        ///             <term>
-        ///                 <see cref="WrongResponseException" />
-        ///             </term>
-        ///             <description>Wird ausgelöst, wenn die Antwort des Servers nicht der Erwarteten entspricht.</description>
-        ///         </item>
-        ///     </list>
-        /// </summary>
-        /// <param name="count">Die Anzahl der Benachrichtigungen</param>
-        /// <seealso cref="Senpai.Login" />
-        /// <returns>
-        ///     Ein Array mit der Anzahl an Elementen in <paramref name="count" /> spezifiziert.
-        ///     Wenn <paramref name="count" /> > Array.length, dann wird der gesamte Array zurückgegeben.
-        /// </returns>
-        public async Task<ProxerResult<IEnumerable<NewsObject>>> GetNews(int count)
-        {
-            if (this._notificationObjects != null)
-                return this._notificationObjects.Length >= count
-                    ? new ProxerResult<IEnumerable<NewsObject>>(this._newsObjects)
-                    : new ProxerResult<IEnumerable<NewsObject>>(this._newsObjects.Take(count).ToArray());
-            ProxerResult lResult;
-            if (!(lResult = await this.GetInfos()).Success)
-                return new ProxerResult<IEnumerable<NewsObject>>(lResult.Exceptions);
-
-            return this._notificationObjects.Length >= count
-                ? new ProxerResult<IEnumerable<NewsObject>>(this._newsObjects)
-                : new ProxerResult<IEnumerable<NewsObject>>(this._newsObjects.Take(count).ToArray());
-        }
-
-        /// <summary>
         ///     Gibt alle aktuellen Benachrichtigungen, die diese Klasse repräsentiert, zurück.
         ///     <para>Mögliche Fehler, die <see cref="ProxerResult" /> enthalten kann:</para>
         ///     <list type="table">
@@ -234,6 +191,49 @@ namespace Azuria.Notifications
             {
                 return new ProxerResult((await ErrorHandler.HandleError(this._senpai, lResponse, false)).Exceptions);
             }
+        }
+
+        /// <summary>
+        ///     Gibt eine bestimmte Anzahl der aktuellen Benachrichtigungen, die diese Klasse repräsentiert, zurück.
+        ///     <para>Mögliche Fehler, die <see cref="ProxerResult" /> enthalten kann:</para>
+        ///     <list type="table">
+        ///         <listheader>
+        ///             <term>Ausnahme</term>
+        ///             <description>Beschreibung</description>
+        ///         </listheader>
+        ///         <item>
+        ///             <term>
+        ///                 <see cref="NotLoggedInException" />
+        ///             </term>
+        ///             <description>Wird ausgelöst, wenn der <see cref="Senpai">Benutzer</see> nicht eingeloggt ist.</description>
+        ///         </item>
+        ///         <item>
+        ///             <term>
+        ///                 <see cref="WrongResponseException" />
+        ///             </term>
+        ///             <description>Wird ausgelöst, wenn die Antwort des Servers nicht der Erwarteten entspricht.</description>
+        ///         </item>
+        ///     </list>
+        /// </summary>
+        /// <param name="count">Die Anzahl der Benachrichtigungen</param>
+        /// <seealso cref="Senpai.Login" />
+        /// <returns>
+        ///     Ein Array mit der Anzahl an Elementen in <paramref name="count" /> spezifiziert.
+        ///     Wenn <paramref name="count" /> > Array.length, dann wird der gesamte Array zurückgegeben.
+        /// </returns>
+        public async Task<ProxerResult<IEnumerable<NewsObject>>> GetNews(int count)
+        {
+            if (this._notificationObjects != null)
+                return this._notificationObjects.Length >= count
+                    ? new ProxerResult<IEnumerable<NewsObject>>(this._newsObjects)
+                    : new ProxerResult<IEnumerable<NewsObject>>(this._newsObjects.Take(count).ToArray());
+            ProxerResult lResult;
+            if (!(lResult = await this.GetInfos()).Success)
+                return new ProxerResult<IEnumerable<NewsObject>>(lResult.Exceptions);
+
+            return this._notificationObjects.Length >= count
+                ? new ProxerResult<IEnumerable<NewsObject>>(this._newsObjects)
+                : new ProxerResult<IEnumerable<NewsObject>>(this._newsObjects.Take(count).ToArray());
         }
 
         #endregion

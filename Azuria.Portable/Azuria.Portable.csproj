@@ -24,6 +24,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <DocumentationFile>bin\Debug\Azuria.Portable.XML</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -32,6 +33,7 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <DocumentationFile>bin\Release\Azuria.Portable.XML</DocumentationFile>
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="..\Azuria\Community\Conference.cs">
@@ -39,6 +41,12 @@
     </Compile>
     <Compile Include="..\Azuria\Community\ConferenceHelper\MessagesModel.cs">
       <Link>Community\ConferenceHelper\MessagesModel.cs</Link>
+    </Compile>
+    <Compile Include="..\Azuria\ErrorHandling\ErrorHandler.cs">
+      <Link>ErrorHandling\ErrorHandler.cs</Link>
+    </Compile>
+    <Compile Include="..\Azuria\ErrorHandling\ProxerResult.cs">
+      <Link>ErrorHandling\ProxerResult.cs</Link>
     </Compile>
     <Compile Include="..\Azuria\EventArguments\AMNotificationEventArgs.cs">
       <Link>EventArguments\AMNotificationEventArgs.cs</Link>
@@ -91,11 +99,17 @@
     <Compile Include="..\Azuria\Main\Manga.cs">
       <Link>Main\Manga.cs</Link>
     </Compile>
+    <Compile Include="..\Azuria\Main\Minor\Comment.cs">
+      <Link>Main\Minor\Comment.cs</Link>
+    </Compile>
     <Compile Include="..\Azuria\Main\Minor\Group.cs">
       <Link>Main\Minor\Group.cs</Link>
     </Compile>
     <Compile Include="..\Azuria\Main\Minor\Industry.cs">
       <Link>Main\Minor\Industry.cs</Link>
+    </Compile>
+    <Compile Include="..\Azuria\Main\User\AnimeMangaProgress.cs">
+      <Link>Main\User\AnimeMangaProgress.cs</Link>
     </Compile>
     <Compile Include="..\Azuria\Main\User\AnimeMangaProgressObject.cs">
       <Link>Main\User\AnimeMangaProgressObject.cs</Link>
@@ -141,12 +155,6 @@
     </Compile>
     <Compile Include="..\Azuria\User.cs">
       <Link>User.cs</Link>
-    </Compile>
-    <Compile Include="..\Azuria\Utilities\ErrorHandler.cs">
-      <Link>Utilities\ErrorHandler.cs</Link>
-    </Compile>
-    <Compile Include="..\Azuria\Utilities\ProxerResult.cs">
-      <Link>Utilities\ProxerResult.cs</Link>
     </Compile>
     <Compile Include="..\Azuria\Utilities\Utility.cs">
       <Link>Utilities\Utility.cs</Link>

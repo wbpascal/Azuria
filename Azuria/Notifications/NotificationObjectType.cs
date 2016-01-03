@@ -25,5 +25,5 @@
         ///     <see cref="Main.Manga.Chapter">Kapitel</see>.
         /// </summary>
         AnimeManga
-    };
+    }
 }

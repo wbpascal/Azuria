@@ -36,6 +36,7 @@
     <DocumentationFile>bin\Release\Azuria.xml</DocumentationFile>
     <Prefer32Bit>false</Prefer32Bit>
     <LangVersion>6</LangVersion>
+    <PlatformTarget>AnyCPU</PlatformTarget>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -78,8 +79,10 @@
     <Compile Include="Main\AnimeMangaType.cs" />
     <Compile Include="Main\IAnimeMangaObject.cs" />
     <Compile Include="Main\Manga.cs" />
+    <Compile Include="Main\Minor\Comment.cs" />
     <Compile Include="Main\Minor\Group.cs" />
     <Compile Include="Main\Minor\Industry.cs" />
+    <Compile Include="Main\User\AnimeMangaProgress.cs" />
     <Compile Include="Main\User\AnimeMangaProgressObject.cs" />
     <Compile Include="Notifications\AnimeMangaUpdateCollection.cs" />
     <Compile Include="Notifications\FriendRequestCollection.cs" />
@@ -102,9 +105,9 @@
     <Compile Include="ProxerClass.cs" />
     <Compile Include="Senpai.cs" />
     <Compile Include="User.cs" />
-    <Compile Include="Utilities\ErrorHandler.cs" />
+    <Compile Include="ErrorHandling\ErrorHandler.cs" />
     <Compile Include="Utilities\Net\HttpUtility.cs" />
-    <Compile Include="Utilities\ProxerResult.cs" />
+    <Compile Include="ErrorHandling\ProxerResult.cs" />
     <Compile Include="Utilities\Utility.cs" />
   </ItemGroup>
   <ItemGroup>

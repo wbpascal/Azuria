@@ -1,13 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Threading.Tasks;
+using Azuria.ErrorHandling;
 using Azuria.Exceptions;
 using Azuria.Main.Minor;
 using Azuria.Utilities;
 using Azuria.Utilities.Net;
 using HtmlAgilityPack;
+
 // ReSharper disable LoopCanBeConvertedToQuery
 
 namespace Azuria.Main
@@ -75,6 +76,7 @@ namespace Azuria.Main
         private Group[] _gruppen;
         private Industry[] _industrie;
         private string _japanTitel;
+        private IEnumerable<Comment> _kommentare;
         private string[] _season;
         private string _synonym;
 
@@ -372,6 +374,96 @@ namespace Azuria.Main
             return lReturn;
         }
 
+        /// <summary>
+        ///     Gibt die aktuellen Kommentare des <see cref="Anime" /> zurück.
+        ///     <para>(Vererbt von <see cref="IAnimeMangaObject" />)</para>
+        ///     <para>Mögliche Fehler, die <see cref="ProxerResult" /> enthalten kann:</para>
+        ///     <list type="table">
+        ///         <listheader>
+        ///             <term>Ausnahme</term>
+        ///             <description>Beschreibung</description>
+        ///         </listheader>
+        ///         <item>
+        ///             <term>
+        ///                 <see cref="WrongResponseException" />
+        ///             </term>
+        ///             <description>
+        ///                 <see cref="WrongResponseException" /> wird ausgelöst, wenn die Antwort des Servers nicht der
+        ///                 Erwarteten entspricht.
+        ///             </description>
+        ///         </item>
+        ///     </list>
+        /// </summary>
+        /// <param name="startIndex">Der Start-Index der ausgegebenen Kommentare.</param>
+        /// <param name="count">Die Anzahl der ausgegebenen Kommentare ab dem angegebenen <paramref name="startIndex" />.</param>
+        /// <returns>Eine Aufzählung mit den Kommentaren.</returns>
+        public async Task<ProxerResult<IEnumerable<Comment>>> GetComments(int startIndex, int count)
+        {
+            const int lKommentareProSeite = 25;
+
+            List<Comment> lReturn = new List<Comment>();
+            int lStartSeite = Convert.ToInt32(startIndex/lKommentareProSeite);
+            HtmlDocument lDocument = new HtmlDocument();
+            Func<string, ProxerResult> lCheckFunc = s =>
+            {
+                lDocument.LoadHtml(s);
+
+                HtmlNode lNode;
+
+                if ((lNode = lDocument.DocumentNode.ChildNodes.FirstOrDefault(node =>
+                    node.Name.Equals("p") && node.Attributes.Contains("align") &&
+                    node.Attributes["align"].Value.Equals("center"))) != default(HtmlNode))
+                {
+                    return lNode.InnerText.Equals("Es existieren bisher keine Kommentare.")
+                        ? new ProxerResult(new[] {new WrongResponseException {Response = s}})
+                        : new ProxerResult();
+                }
+
+                return new ProxerResult();
+            };
+
+            ProxerResult<string> lResult;
+
+            while (count > 0 &&
+                   (lResult =
+                       await
+                           HttpUtility.GetResponseErrorHandling(
+                               "https://proxer.me/info/" + this.Id + "/comments/" + lStartSeite + "?format=raw",
+                               this._senpai.LoginCookies, this._senpai.ErrHandler, this._senpai, new[] {lCheckFunc}))
+                       .Success)
+            {
+                string lResponse = lResult.Result;
+
+                try
+                {
+                    int i = 0;
+                    foreach (HtmlNode commentNode in lDocument.DocumentNode.ChildNodes.Where(
+                        node =>
+                            node.Name.Equals("table") && node.Attributes.Contains("class") &&
+                            node.Attributes["class"].Value.Equals("details")).TakeWhile(node => count > 0))
+                    {
+                        if (i >= startIndex%lKommentareProSeite)
+                        {
+                            lReturn.Add(
+                                Utility.GetCommentFromNode(commentNode, this._senpai)
+                                    .OnError(new Comment(Azuria.User.System, -1, "ERROR")));
+                            count--;
+                        }
+
+                        i++;
+                    }
+                }
+                catch
+                {
+                    return
+                        new ProxerResult<IEnumerable<Comment>>(
+                            (await ErrorHandler.HandleError(this._senpai, lResult.Result, false)).Exceptions);
+                }
+            }
+
+            return new ProxerResult<IEnumerable<Comment>>(lReturn);
+        }
+
         #endregion
 
         #region Properties
@@ -404,65 +496,6 @@ namespace Azuria.Main
         #endregion
 
         #region
-
-        /// <summary>
-        ///     Gibt die aktuell am beliebtesten <see cref="Anime" /> zurück.
-        ///     <para>Mögliche Fehler, die <see cref="ProxerResult" /> enthalten kann:</para>
-        ///     <list type="table">
-        ///         <listheader>
-        ///             <term>Ausnahme</term>
-        ///             <description>Beschreibung</description>
-        ///         </listheader>
-        ///         <item>
-        ///             <term>
-        ///                 <see cref="WrongResponseException" />
-        ///             </term>
-        ///             <description>
-        ///                 <see cref="WrongResponseException" /> wird ausgelöst, wenn die Antwort des Servers nicht der
-        ///                 Erwarteten entspricht.
-        ///             </description>
-        ///         </item>
-        ///     </list>
-        /// </summary>
-        /// <returns>Ein Array mit den aktuell beliebtesten <see cref="Anime" />.</returns>
-        public static async Task<ProxerResult<IEnumerable<Anime>>> GetPopularAnime(Senpai senpai)
-        {
-            if (senpai == null)
-                return new ProxerResult<IEnumerable<Anime>>(new Exception[] {new ArgumentNullException(nameof(senpai))});
-
-            HtmlDocument lDocument = new HtmlDocument();
-            ProxerResult<string> lResult =
-                await
-                    HttpUtility.GetResponseErrorHandling(
-                        "https://proxer.me/anime?format=raw",
-                        null,
-                        senpai.ErrHandler,
-                        senpai);
-
-            if (!lResult.Success)
-                return new ProxerResult<IEnumerable<Anime>>(lResult.Exceptions);
-
-            string lResponse = lResult.Result;
-
-            try
-            {
-                lDocument.LoadHtml(lResponse);
-
-                return
-                    new ProxerResult<IEnumerable<Anime>>(
-                        (from childNode in lDocument.DocumentNode.ChildNodes[5].FirstChild.FirstChild.ChildNodes
-                         let lId =
-                             Convert.ToInt32(
-                                 childNode.FirstChild.GetAttributeValue("href", "/info/-1#top").Split('/')[2].Split('#')
-                                     [0])
-                         select new Anime(childNode.FirstChild.GetAttributeValue("title", "ERROR"), lId, senpai))
-                            .ToArray());
-            }
-            catch
-            {
-                return new ProxerResult<IEnumerable<Anime>>(ErrorHandler.HandleError(senpai, lResponse).Exceptions);
-            }
-        }
 
         /// <summary>
         ///     Gibt die Episoden des <see cref="Anime" /> in einer bestimmten <see cref="Language">Sprache</see> zurück.
@@ -511,6 +544,66 @@ namespace Azuria.Main
             return new ProxerResult<IEnumerable<Episode>>(lEpisodes.ToArray());
         }
 
+        /// <summary>
+        ///     Gibt die aktuell am beliebtesten <see cref="Anime" /> zurück.
+        ///     <para>Mögliche Fehler, die <see cref="ProxerResult" /> enthalten kann:</para>
+        ///     <list type="table">
+        ///         <listheader>
+        ///             <term>Ausnahme</term>
+        ///             <description>Beschreibung</description>
+        ///         </listheader>
+        ///         <item>
+        ///             <term>
+        ///                 <see cref="WrongResponseException" />
+        ///             </term>
+        ///             <description>
+        ///                 <see cref="WrongResponseException" /> wird ausgelöst, wenn die Antwort des Servers nicht der
+        ///                 Erwarteten entspricht.
+        ///             </description>
+        ///         </item>
+        ///     </list>
+        /// </summary>
+        /// <returns>Ein Array mit den aktuell beliebtesten <see cref="Anime" />.</returns>
+        public static async Task<ProxerResult<IEnumerable<Anime>>> GetPopularAnime(Senpai senpai)
+        {
+            if (senpai == null)
+                return new ProxerResult<IEnumerable<Anime>>(new Exception[] {new ArgumentNullException(nameof(senpai))});
+
+            HtmlDocument lDocument = new HtmlDocument();
+            ProxerResult<string> lResult =
+                await
+                    HttpUtility.GetResponseErrorHandling(
+                        "https://proxer.me/anime?format=raw",
+                        null,
+                        senpai.ErrHandler,
+                        senpai);
+
+            if (!lResult.Success)
+                return new ProxerResult<IEnumerable<Anime>>(lResult.Exceptions);
+
+            string lResponse = lResult.Result;
+
+            try
+            {
+                lDocument.LoadHtml(lResponse);
+
+                return
+                    new ProxerResult<IEnumerable<Anime>>(
+                        (from childNode in lDocument.DocumentNode.ChildNodes[5].FirstChild.FirstChild.ChildNodes
+                            let lId =
+                                Convert.ToInt32(
+                                    childNode.FirstChild.GetAttributeValue("href", "/info/-1#top").Split('/')[2].Split(
+                                        '#')
+                                        [0])
+                            select new Anime(childNode.FirstChild.GetAttributeValue("title", "ERROR"), lId, senpai))
+                            .ToArray());
+            }
+            catch
+            {
+                return new ProxerResult<IEnumerable<Anime>>(ErrorHandler.HandleError(senpai, lResponse).Exceptions);
+            }
+        }
+
         private async Task<ProxerResult> InitAvailableLang()
         {
             HtmlDocument lDocument = new HtmlDocument();
@@ -525,7 +618,7 @@ namespace Azuria.Main
             ProxerResult<string> lResult =
                 await
                     HttpUtility.GetResponseErrorHandling(
-                        "http://proxer.me/edit/entry/" + this.Id + "/languages?format=raw",
+                        "https://proxer.me/edit/entry/" + this.Id + "/languages?format=raw",
                         this._senpai.LoginCookies,
                         this._senpai.ErrHandler,
                         this._senpai,
@@ -590,7 +683,7 @@ namespace Azuria.Main
             ProxerResult<string> lResult =
                 await
                     HttpUtility.GetResponseErrorHandling(
-                        "http://proxer.me/edit/entry/" + this.Id + "/count?format=raw",
+                        "https://proxer.me/edit/entry/" + this.Id + "/count?format=raw",
                         this._senpai.LoginCookies,
                         this._senpai.ErrHandler,
                         this._senpai,
@@ -617,7 +710,7 @@ namespace Azuria.Main
 
             return new ProxerResult();
         }
-        
+
         private async Task<ProxerResult> InitMain()
         {
             HtmlDocument lDocument = new HtmlDocument();
@@ -684,10 +777,10 @@ namespace Azuria.Main
                             foreach (
                                 HtmlNode htmlNode in
                                     childNode.ChildNodes[1].ChildNodes.ToList()
-                                                           .Where(htmlNode => htmlNode.Name.Equals("span") &&
-                                                                              !this.Fsk.ContainsValue(htmlNode
-                                                                                  .GetAttributeValue(
-                                                                                      "title", "ERROR"))))
+                                        .Where(htmlNode => htmlNode.Name.Equals("span") &&
+                                                           !this.Fsk.ContainsValue(htmlNode
+                                                               .GetAttributeValue(
+                                                                   "title", "ERROR"))))
                             {
                                 this.Fsk.Add(
                                     new Uri("https://proxer.me" +
@@ -725,14 +818,14 @@ namespace Azuria.Main
                         case "Gruppen":
                             if (childNode.ChildNodes[1].InnerText.Contains("Keine Gruppen eingetragen.")) break;
                             this.Gruppen = (from htmlNode in childNode.ChildNodes[1].ChildNodes
-                                            where htmlNode.Name.Equals("a")
-                                            select
-                                                new Group(
-                                                    Convert.ToInt32(
-                                                        Utility.GetTagContents(
-                                                            htmlNode.GetAttributeValue("href",
-                                                                "/translatorgroups?id=-1#top"),
-                                                            "/translatorgroups?id=", "#top")[0]), htmlNode.InnerText))
+                                where htmlNode.Name.Equals("a")
+                                select
+                                    new Group(
+                                        Convert.ToInt32(
+                                            Utility.GetTagContents(
+                                                htmlNode.GetAttributeValue("href",
+                                                    "/translatorgroups?id=-1#top"),
+                                                "/translatorgroups?id=", "#top")[0]), htmlNode.InnerText))
                                 .ToArray();
                             break;
                         case "Industrie":
@@ -796,7 +889,7 @@ namespace Azuria.Main
             ProxerResult<string> lResult =
                 await
                     HttpUtility.GetResponseErrorHandling(
-                        "http://proxer.me/edit/entry/" + this.Id + "/medium?format=raw",
+                        "https://proxer.me/edit/entry/" + this.Id + "/medium?format=raw",
                         this._senpai.LoginCookies,
                         this._senpai.ErrHandler,
                         this._senpai,

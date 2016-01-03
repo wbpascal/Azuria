@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Azuria.ErrorHandling;
 using Azuria.Exceptions;
 using Azuria.Utilities;
 using Azuria.Utilities.Net;
@@ -121,6 +122,41 @@ namespace Azuria.Notifications
         #region
 
         /// <summary>
+        ///     Gibt alle aktuellen Benachrichtigungen, die diese Klasse repräsentiert, zurück.
+        ///     <para>Mögliche Fehler, die <see cref="ProxerResult" /> enthalten kann:</para>
+        ///     <list type="table">
+        ///         <listheader>
+        ///             <term>Ausnahme</term>
+        ///             <description>Beschreibung</description>
+        ///         </listheader>
+        ///         <item>
+        ///             <term>
+        ///                 <see cref="NotLoggedInException" />
+        ///             </term>
+        ///             <description>Wird ausgelöst, wenn der <see cref="Senpai">Benutzer</see> nicht eingeloggt ist.</description>
+        ///         </item>
+        ///         <item>
+        ///             <term>
+        ///                 <see cref="WrongResponseException" />
+        ///             </term>
+        ///             <description>Wird ausgelöst, wenn die Antwort des Servers nicht der Erwarteten entspricht.</description>
+        ///         </item>
+        ///     </list>
+        /// </summary>
+        /// <seealso cref="Senpai.Login" />
+        /// <returns>Ein Array mit allen aktuellen Benachrichtigungen.</returns>
+        public async Task<ProxerResult<IEnumerable<FriendRequestObject>>> GetAllFriendRequests()
+        {
+            if (this._notificationObjects != null)
+                return new ProxerResult<IEnumerable<FriendRequestObject>>(this._friendRequestObjects);
+
+            ProxerResult lResult;
+            return !(lResult = await this.GetInfos()).Success
+                ? new ProxerResult<IEnumerable<FriendRequestObject>>(lResult.Exceptions)
+                : new ProxerResult<IEnumerable<FriendRequestObject>>(this._friendRequestObjects);
+        }
+
+        /// <summary>
         ///     Gibt eine bestimmte Anzahl der aktuellen Benachrichtigungen, die diese Klasse repräsentiert, zurück.
         ///     <para>Mögliche Fehler, die <see cref="ProxerResult" /> enthalten kann:</para>
         ///     <list type="table">
@@ -164,41 +200,6 @@ namespace Azuria.Notifications
                 : new ProxerResult<IEnumerable<FriendRequestObject>>(this._friendRequestObjects.Take(count).ToArray());
         }
 
-        /// <summary>
-        ///     Gibt alle aktuellen Benachrichtigungen, die diese Klasse repräsentiert, zurück.
-        ///     <para>Mögliche Fehler, die <see cref="ProxerResult" /> enthalten kann:</para>
-        ///     <list type="table">
-        ///         <listheader>
-        ///             <term>Ausnahme</term>
-        ///             <description>Beschreibung</description>
-        ///         </listheader>
-        ///         <item>
-        ///             <term>
-        ///                 <see cref="NotLoggedInException" />
-        ///             </term>
-        ///             <description>Wird ausgelöst, wenn der <see cref="Senpai">Benutzer</see> nicht eingeloggt ist.</description>
-        ///         </item>
-        ///         <item>
-        ///             <term>
-        ///                 <see cref="WrongResponseException" />
-        ///             </term>
-        ///             <description>Wird ausgelöst, wenn die Antwort des Servers nicht der Erwarteten entspricht.</description>
-        ///         </item>
-        ///     </list>
-        /// </summary>
-        /// <seealso cref="Senpai.Login" />
-        /// <returns>Ein Array mit allen aktuellen Benachrichtigungen.</returns>
-        public async Task<ProxerResult<IEnumerable<FriendRequestObject>>> GetAllFriendRequests()
-        {
-            if (this._notificationObjects != null)
-                return new ProxerResult<IEnumerable<FriendRequestObject>>(this._friendRequestObjects);
-
-            ProxerResult lResult;
-            return !(lResult = await this.GetInfos()).Success
-                ? new ProxerResult<IEnumerable<FriendRequestObject>>(lResult.Exceptions)
-                : new ProxerResult<IEnumerable<FriendRequestObject>>(this._friendRequestObjects);
-        }
-
 
         private async Task<ProxerResult> GetInfos()
         {
@@ -227,24 +228,24 @@ namespace Azuria.Notifications
 
                 if (lNodes != null)
                     lFriendRequests = (from curNode in lNodes
-                                       where
-                                           curNode.Id.StartsWith("entry") &&
-                                           curNode.FirstChild.FirstChild.Attributes["class"].Value
-                                                                                            .Equals
-                                               ("accept")
-                                       let lUserId =
-                                           Convert.ToInt32(curNode.Id.Replace("entry", ""))
-                                       let lUserName =
-                                           curNode.InnerText.Split("  ".ToCharArray())[0]
-                                       let lDatumSplit =
-                                           curNode.ChildNodes[4].InnerText.Split('-')
-                                       let lDatum =
-                                           new DateTime(Convert.ToInt32(lDatumSplit[0]),
-                                               Convert.ToInt32(lDatumSplit[1]),
-                                               Convert.ToInt32(lDatumSplit[2]))
-                                       select
-                                           new FriendRequestObject(lUserName, lUserId, lDatum,
-                                               this._senpai))
+                        where
+                            curNode.Id.StartsWith("entry") &&
+                            curNode.FirstChild.FirstChild.Attributes["class"].Value
+                                .Equals
+                                ("accept")
+                        let lUserId =
+                            Convert.ToInt32(curNode.Id.Replace("entry", ""))
+                        let lUserName =
+                            curNode.InnerText.Split("  ".ToCharArray())[0]
+                        let lDatumSplit =
+                            curNode.ChildNodes[4].InnerText.Split('-')
+                        let lDatum =
+                            new DateTime(Convert.ToInt32(lDatumSplit[0]),
+                                Convert.ToInt32(lDatumSplit[1]),
+                                Convert.ToInt32(lDatumSplit[2]))
+                        select
+                            new FriendRequestObject(lUserName, lUserId, lDatum,
+                                this._senpai))
                         .ToList();
 
                 this._friendRequestObjects = lFriendRequests.ToArray();

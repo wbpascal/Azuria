@@ -2,6 +2,9 @@
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using Azuria.ErrorHandling;
+using Azuria.Exceptions;
+using Azuria.Main.Minor;
 using HtmlAgilityPack;
 
 namespace Azuria.Utilities
@@ -9,6 +12,12 @@ namespace Azuria.Utilities
     internal static class Utility
     {
         #region
+
+        internal static bool CheckForCorrectResponse(string response, ErrorHandler errHandler)
+        {
+            //return errHandler.WrongHtml.All(curErrorResponse => ILd(response, curErrorResponse) > 15);
+            return true;
+        }
 
         internal static IEnumerable<HtmlNode> GetAllHtmlNodes(HtmlNodeCollection htmlNodeCollection)
         {
@@ -20,6 +29,33 @@ namespace Azuria.Utilities
                     lHtmlNodes = lHtmlNodes.Concat(GetAllHtmlNodes(htmlNode.ChildNodes)).ToList();
             }
             return lHtmlNodes;
+        }
+
+        internal static ProxerResult<Comment> GetCommentFromNode(HtmlNode commentNode, Senpai senpai)
+        {
+            commentNode = commentNode.FirstChild;
+
+            try
+            {
+                User lAuthor = new User(commentNode.FirstChild.InnerText, Convert.ToInt32(
+                    GetTagContents(commentNode.FirstChild.ChildNodes[1].Attributes["href"].Value, "/user/", "#top")
+                        .First()), senpai);
+
+                commentNode.ChildNodes[1].ChildNodes.RemoveAt(0);
+                string lContent = commentNode.ChildNodes[1].InnerHtml;
+
+                int lStars =
+                    commentNode.ChildNodes[2].FirstChild.ChildNodes.Count(
+                        starNode =>
+                            starNode.Name.Equals("img") && starNode.Attributes.Contains("src") &&
+                            starNode.Attributes["src"].Value.Equals("/images/misc/stern.png"));
+
+                return new ProxerResult<Comment>(new Comment(lAuthor, lStars, lContent));
+            }
+            catch
+            {
+                return new ProxerResult<Comment>(new[] {new WrongResponseException()});
+            }
         }
 
         internal static List<string> GetTagContents(string source, string startTag, string endTag)
@@ -43,31 +79,6 @@ namespace Azuria.Utilities
             return stringsFound;
         }
 
-        internal static DateTime UnixTimeStampToDateTime(long unixTimeStamp)
-        {
-            DateTime dtDateTime = new DateTime(1970, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc);
-            dtDateTime = dtDateTime.AddSeconds(unixTimeStamp).ToLocalTime();
-            return dtDateTime;
-        }
-
-        internal static bool CheckForCorrectResponse(string response, ErrorHandler errHandler)
-        {
-            //return errHandler.WrongHtml.All(curErrorResponse => ILd(response, curErrorResponse) > 15);
-            return true;
-        }
-
-        internal static string TryFixParseErrors(string html, IEnumerable<HtmlParseError> parseErrors)
-        {
-            IEnumerable<HtmlParseError> htmlParseErrors = parseErrors as HtmlParseError[] ?? parseErrors.ToArray();
-            if (htmlParseErrors.Any())
-            {
-                html = htmlParseErrors.Aggregate(html,
-                    (current, curError) => current.Remove(curError.StreamPosition, curError.SourceText.Length));
-            }
-
-            return html;
-        }
-
         /// <summary>
         ///     Compute Levenshtein distance
         ///     Memory efficient version
@@ -84,8 +95,8 @@ namespace Azuria.Utilities
             int colIdx;
 
             if (Math.Max(sRow.Length, sCol.Length) > Math.Pow(2, 31))
-                throw (new Exception("Maximum string length in Levenshtein.iLD is " + Math.Pow(2, 31) + ".\nYours is " +
-                                     Math.Max(sRow.Length, sCol.Length) + "."));
+                throw new Exception("Maximum string length in Levenshtein.iLD is " + Math.Pow(2, 31) + ".\nYours is " +
+                                    Math.Max(sRow.Length, sCol.Length) + ".");
 
             if (rowLen == 0)
             {
@@ -135,7 +146,14 @@ namespace Azuria.Utilities
             // Value between 0 - 100
             // 0==perfect match 100==totaly different
             int max = Math.Max(rowLen, colLen);
-            return ((100 * v0[rowLen]) / max);
+            return 100*v0[rowLen]/max;
+        }
+
+        internal static IEnumerable<HtmlNode> SelectNodesUtility(this HtmlNode node, string attribute, string value)
+        {
+            return
+                GetAllHtmlNodes(node.ChildNodes)
+                    .Where(x => x.Attributes.Contains(attribute) && x.Attributes[attribute].Value == value);
         }
 
         internal static DateTime ToDateTime(string strFdate, string format = "dd.MM.yyyy")
@@ -146,11 +164,23 @@ namespace Azuria.Utilities
                 CultureInfo.InvariantCulture);
         }
 
-        internal static IEnumerable<HtmlNode> SelectNodesUtility(this HtmlNode node, string attribute, string value)
+        internal static string TryFixParseErrors(string html, IEnumerable<HtmlParseError> parseErrors)
         {
-            return
-                GetAllHtmlNodes(node.ChildNodes)
-                    .Where(x => x.Attributes.Contains(attribute) && x.Attributes[attribute].Value == value);
+            IEnumerable<HtmlParseError> htmlParseErrors = parseErrors as HtmlParseError[] ?? parseErrors.ToArray();
+            if (htmlParseErrors.Any())
+            {
+                html = htmlParseErrors.Aggregate(html,
+                    (current, curError) => current.Remove(curError.StreamPosition, curError.SourceText.Length));
+            }
+
+            return html;
+        }
+
+        internal static DateTime UnixTimeStampToDateTime(long unixTimeStamp)
+        {
+            DateTime dtDateTime = new DateTime(1970, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc);
+            dtDateTime = dtDateTime.AddSeconds(unixTimeStamp).ToLocalTime();
+            return dtDateTime;
         }
 
         #endregion

@@ -1,8 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Azuria.ErrorHandling;
+using Azuria.Exceptions;
 using Azuria.Main.Minor;
-using Azuria.Utilities;
 
 namespace Azuria.Main
 {
@@ -118,6 +119,31 @@ namespace Azuria.Main
         #endregion
 
         #region
+
+        /// <summary>
+        ///     Gibt die aktuellen Kommentare des <see cref="Anime" /> oder <see cref="Manga" /> zurück.
+        ///     <para>(Vererbt von <see cref="IAnimeMangaObject" />)</para>
+        ///     <para>Mögliche Fehler, die <see cref="ProxerResult" /> enthalten kann:</para>
+        ///     <list type="table">
+        ///         <listheader>
+        ///             <term>Ausnahme</term>
+        ///             <description>Beschreibung</description>
+        ///         </listheader>
+        ///         <item>
+        ///             <term>
+        ///                 <see cref="WrongResponseException" />
+        ///             </term>
+        ///             <description>
+        ///                 <see cref="WrongResponseException" /> wird ausgelöst, wenn die Antwort des Servers nicht der
+        ///                 Erwarteten entspricht.
+        ///             </description>
+        ///         </item>
+        ///     </list>
+        /// </summary>
+        /// <param name="startIndex">Der Start-Index der ausgegebenen Kommentare.</param>
+        /// <param name="count">Die Anzahl der ausgegebenen Kommentare ab dem angegebenen <paramref name="startIndex" />.</param>
+        /// <returns>Eine Aufzählung mit den Kommentaren.</returns>
+        Task<ProxerResult<IEnumerable<Comment>>> GetComments(int startIndex, int count);
 
         /// <summary>
         ///     Initialisiert das Objekt.

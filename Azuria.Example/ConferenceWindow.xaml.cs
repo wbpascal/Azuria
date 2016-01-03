@@ -24,8 +24,31 @@ namespace Azuria.Example
 
         #region
 
+        private async void Button_Click(object sender, RoutedEventArgs e)
+        {
+            //Versuche die Nachricht zu senden
+            if (!(await this._conference.SendeNachricht(this.InputBox.Text)).OnError(false))
+            {
+                //Falls ein Fehler beim Senden der Nachricht aufgetreten ist
+                MessageBox.Show("Die Nachricht konnte nicht gesendet werden!", "Fehler",
+                    MessageBoxButton.OK,
+                    MessageBoxImage.Error);
+            }
+            else
+            {
+                this.InputBox.Clear();
+            }
+        }
+
+        private void ConferenceOnErrorDuringPmFetchRaised(Conference sender, IEnumerable<Exception> exceptions)
+        {
+            //Falls beim Abrufen der Nachrichten im Hintergrund ein Fehler auftritt wird dieses Event ausgelöst
+            MessageBox.Show("Es ist ein Fehler beim Abrufen der Nachrichten aufgetreten!", "Fehler", MessageBoxButton.OK,
+                MessageBoxImage.Error);
+        }
+
         private void ConferenceOnNeuePmRaised(Conference sender, IEnumerable<Conference.Message> messages,
-                                              bool alleNachrichten)
+            bool alleNachrichten)
         {
             //Hier werden die Nachrichten verarbeitet
 
@@ -46,26 +69,6 @@ namespace Azuria.Example
                 this.ChatBox.Text += "[" + message.TimeStamp + "] " + message.Sender.UserName + ": " +
                                      message.Nachricht + "\n";
             }
-        }
-
-        private void ConferenceOnErrorDuringPmFetchRaised(Conference sender, IEnumerable<Exception> exceptions)
-        {
-            //Falls beim Abrufen der Nachrichten im Hintergrund ein Fehler auftritt wird dieses Event ausgelöst
-            MessageBox.Show("Es ist ein Fehler beim Abrufen der Nachrichten aufgetreten!", "Fehler", MessageBoxButton.OK,
-                MessageBoxImage.Error);
-        }
-
-        private async void Window_Loaded(object sender, RoutedEventArgs e)
-        {
-            //Eigenschaften der Konferenz initialisieren
-            //Nachrichten werden noch nicht abgerufen
-            await this._conference.InitConference();
-
-            this.InitComponents();
-
-            //Abrufen der Nachrichten im Hintergrund wird aktiviert
-            //Durch setzen auf false kann diese Funktion wieder deaktiviert werden
-            this._conference.Aktiv = true;
         }
 
         private void InitComponents()
@@ -91,23 +94,20 @@ namespace Azuria.Example
         private void UserTextBlock_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
             TextBlock lTeilnehmerBlock = sender as TextBlock;
-            new UserWindow((lTeilnehmerBlock?.DataContext as User) ?? User.System, this._senpai).Show();
+            new UserWindow(lTeilnehmerBlock?.DataContext as User ?? User.System, this._senpai).Show();
         }
 
-        private async void Button_Click(object sender, RoutedEventArgs e)
+        private async void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            //Versuche die Nachricht zu senden
-            if (!(await this._conference.SendeNachricht(this.InputBox.Text)).OnError(false))
-            {
-                //Falls ein Fehler beim Senden der Nachricht aufgetreten ist
-                MessageBox.Show("Die Nachricht konnte nicht gesendet werden!", "Fehler",
-                    MessageBoxButton.OK,
-                    MessageBoxImage.Error);
-            }
-            else
-            {
-                this.InputBox.Clear();
-            }
+            //Eigenschaften der Konferenz initialisieren
+            //Nachrichten werden noch nicht abgerufen
+            await this._conference.InitConference();
+
+            this.InitComponents();
+
+            //Abrufen der Nachrichten im Hintergrund wird aktiviert
+            //Durch setzen auf false kann diese Funktion wieder deaktiviert werden
+            this._conference.Aktiv = true;
         }
 
         #endregion

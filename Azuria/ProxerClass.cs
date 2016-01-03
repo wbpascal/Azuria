@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Threading.Tasks;
+using Azuria.ErrorHandling;
 using Azuria.Exceptions;
 using Azuria.Main;
-using Azuria.Utilities;
 using Azuria.Utilities.Net;
 using HtmlAgilityPack;
 
@@ -69,7 +69,7 @@ namespace Azuria
                     return
                         new ProxerResult<IAnimeMangaObject>(new Anime(
                             lDocument.DocumentNode
-                                     .ChildNodes[5].ChildNodes[2].FirstChild.ChildNodes[1].FirstChild.ChildNodes[1]
+                                .ChildNodes[5].ChildNodes[2].FirstChild.ChildNodes[1].FirstChild.ChildNodes[1]
                                 .ChildNodes[1].InnerText, id, senpai));
                 }
 
@@ -78,7 +78,7 @@ namespace Azuria
                     return
                         new ProxerResult<IAnimeMangaObject>(new Manga(
                             lDocument.DocumentNode.ChildNodes[5].ChildNodes[2].FirstChild.ChildNodes[1].FirstChild
-                                                                                                       .ChildNodes[1]
+                                .ChildNodes[1]
                                 .ChildNodes[1].InnerText, id, senpai));
                 }
             }

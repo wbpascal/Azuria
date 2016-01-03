@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
 using System.Timers;
 using Azuria.Community;
+using Azuria.ErrorHandling;
 using Azuria.EventArguments;
 using Azuria.Exceptions;
 using Azuria.Notifications;
@@ -92,18 +92,18 @@ namespace Azuria
             this._loginCheckTimer = new Timer
             {
                 AutoReset = true,
-                Interval = (new TimeSpan(0, 45, 0)).TotalMilliseconds
+                Interval = new TimeSpan(0, 45, 0).TotalMilliseconds
             };
             this._loginCheckTimer.Elapsed += async (s, eArgs) =>
             {
-                this._loginCheckTimer.Interval = (new TimeSpan(0, 30, 0)).TotalMilliseconds;
+                this._loginCheckTimer.Interval = new TimeSpan(0, 30, 0).TotalMilliseconds;
                 await this.CheckLogin();
             };
 
             this._notificationCheckTimer = new Timer
             {
                 AutoReset = true,
-                Interval = (new TimeSpan(0, 15, 0)).TotalMilliseconds
+                Interval = new TimeSpan(0, 15, 0).TotalMilliseconds
             };
             this._notificationCheckTimer.Elapsed += async (s, eArgs) =>
             {
@@ -119,7 +119,7 @@ namespace Azuria
                 }
             };
 
-            this._propertyUpdateTimer = new Timer((new TimeSpan(0, 20, 0)).TotalMilliseconds) {AutoReset = true};
+            this._propertyUpdateTimer = new Timer(new TimeSpan(0, 20, 0).TotalMilliseconds) {AutoReset = true};
             this._propertyUpdateTimer.Elapsed += (s, eArgs) =>
             {
                 for (int i = 0; i < 4; i++)
@@ -218,7 +218,6 @@ namespace Azuria
         ///     Jedoch wird hierbei dem CookieContainer noch Cookies hinzugefügt, sodass die mobile Seite angezeigt wird.
         /// </summary>
         /// <seealso cref="LoginCookies" />
-        [SuppressMessage("ReSharper", "ExceptionNotDocumented")]
         public CookieContainer MobileLoginCookies
         {
             get
@@ -279,70 +278,9 @@ namespace Azuria
         #region
 
         /// <summary>
-        ///     Loggt den Benutzer ein.
-        ///     <para>Mögliche Fehler, die <see cref="ProxerResult" /> enthalten kann:</para>
-        ///     <list type="table">
-        ///         <listheader>
-        ///             <term>Ausnahme</term>
-        ///             <description>Beschreibung</description>
-        ///         </listheader>
-        ///         <item>
-        ///             <term>
-        ///                 <see cref="WrongResponseException" />
-        ///             </term>
-        ///             <description>Wird ausgelöst, wenn die Antwort des Servers nicht der Erwarteten entspricht.</description>
-        ///         </item>
-        ///     </list>
+        ///     Wird ausgelöst, wenn neue Anime Folgen oder Manga Kapitel vorhanden sind. (15 Minuten Intervall)
         /// </summary>
-        /// <param name="username">Der Benutzername des einzuloggenden Benutzers</param>
-        /// <param name="password">Das Passwort des Benutzers</param>
-        /// <returns>Gibt zurück, ob der Benutzer erfolgreich eingeloggt wurde.</returns>
-        public async Task<ProxerResult<bool>> Login(string username, string password)
-        {
-            if (string.IsNullOrEmpty(username) || string.IsNullOrEmpty(password))
-                return new ProxerResult<bool>(false);
-
-            Dictionary<string, string> postArgs = new Dictionary<string, string>
-            {
-                {"username", username},
-                {"password", password}
-            };
-
-            ProxerResult<KeyValuePair<string, CookieContainer>> lResult =
-                await
-                    HttpUtility.PostResponseErrorHandling("https://proxer.me/login?format=json&action=login",
-                        postArgs, this.LoginCookies, this.ErrHandler, this, new Func<string, ProxerResult>[0], false);
-
-            if (!lResult.Success)
-                return new ProxerResult<bool>(lResult.Exceptions);
-
-            string lResponse = lResult.Result.Key;
-            this.LoginCookies = lResult.Result.Value;
-
-            try
-            {
-                Dictionary<string, string> responseDes =
-                    JsonConvert.DeserializeObject<Dictionary<string, string>>(lResponse);
-
-                if (responseDes["error"].Equals("0"))
-                {
-                    this._userId = Convert.ToInt32(responseDes["uid"]);
-
-                    //Avatar einfügen
-                    this.Me = new User(username, this._userId, this);
-                    this.LoggedIn = true;
-
-                    return new ProxerResult<bool>(true);
-                }
-                this.LoggedIn = false;
-
-                return new ProxerResult<bool>(false);
-            }
-            catch
-            {
-                return new ProxerResult<bool>(ErrorHandler.HandleError(this, lResponse).Exceptions);
-            }
-        }
+        public event AmNotificationEventHandler AmUpdateNotificationRaised;
 
         internal async Task<ProxerResult<bool>> CheckLogin()
         {
@@ -373,137 +311,6 @@ namespace Azuria
             catch
             {
                 return new ProxerResult<bool>((await ErrorHandler.HandleError(this, lResponse, true)).Exceptions);
-            }
-        }
-
-        /// <summary>
-        ///     Initialisiert die Benachrichtigungen.
-        ///     <para>Mögliche Fehler, die <see cref="ProxerResult" /> enthalten kann:</para>
-        ///     <list type="table">
-        ///         <listheader>
-        ///             <term>Ausnahme</term>
-        ///             <description>Beschreibung</description>
-        ///         </listheader>
-        ///         <item>
-        ///             <term>
-        ///                 <see cref="NotLoggedInException" />
-        ///             </term>
-        ///             <description>Wird ausgelöst, wenn der <see cref="Senpai">Benutzer</see> nicht eingeloggt ist.</description>
-        ///         </item>
-        ///         <item>
-        ///             <term>
-        ///                 <see cref="WrongResponseException" />
-        ///             </term>
-        ///             <description>Wird ausgelöst, wenn die Antwort des Servers nicht der Erwarteten entspricht.</description>
-        ///         </item>
-        ///     </list>
-        /// </summary>
-        /// <seealso cref="Login" />
-        public ProxerResult InitNotifications()
-        {
-            if (!this.LoggedIn) return new ProxerResult(new Exception[] {new NotLoggedInException(this)});
-
-            this._notificationCheckTimer.Start();
-            this._propertyUpdateTimer.Start();
-
-            return new ProxerResult();
-        }
-
-        /// <summary>
-        ///     Zwingt die Eigenschaften sich beim nächsten Aufruf zu aktualisieren.
-        ///     <para>Mögliche Fehler, die <see cref="ProxerResult" /> enthalten kann:</para>
-        ///     <list type="table">
-        ///         <listheader>
-        ///             <term>Ausnahme</term>
-        ///             <description>Beschreibung</description>
-        ///         </listheader>
-        ///         <item>
-        ///             <term>
-        ///                 <see cref="WrongResponseException" />
-        ///             </term>
-        ///             <description>Wird ausgelöst, wenn die Antwort des Servers nicht der Erwarteten entspricht.</description>
-        ///         </item>
-        ///     </list>
-        /// </summary>
-        public async Task<ProxerResult> ForcePropertyReload()
-        {
-            ProxerResult<bool> lResult;
-            if ((lResult = await this.CheckLogin()).Success == false)
-            {
-                return new ProxerResult(lResult.Exceptions);
-            }
-
-            for (int i = 0; i < 4; i++)
-                this._updateNotifications[i] = true;
-
-            return new ProxerResult();
-        }
-
-        /// <summary>
-        ///     Gibt alle Konferenzen des Senpais zurück. ACHTUNG: Bei den Konferenzen muss noch
-        ///     <see cref="Conference.InitConference">InitConference()</see>
-        ///     aufgerufen werden!
-        ///     <para>Mögliche Fehler, die <see cref="ProxerResult" /> enthalten kann:</para>
-        ///     <list type="table">
-        ///         <listheader>
-        ///             <term>Ausnahme</term>
-        ///             <description>Beschreibung</description>
-        ///         </listheader>
-        ///         <item>
-        ///             <term>
-        ///                 <see cref="NotLoggedInException" />
-        ///             </term>
-        ///             <description>Wird ausgelöst, wenn der <see cref="Senpai">Benutzer</see> nicht eingeloggt ist.</description>
-        ///         </item>
-        ///         <item>
-        ///             <term>
-        ///                 <see cref="WrongResponseException" />
-        ///             </term>
-        ///             <description>Wird ausgelöst, wenn die Antwort des Servers nicht der Erwarteten entspricht.</description>
-        ///         </item>
-        ///     </list>
-        /// </summary>
-        /// <seealso cref="Login" />
-        /// <returns>Alle Konferenzen, in denen der Benutzer Teilnehmer ist.</returns>
-        public async Task<ProxerResult<List<Conference>>> GetAllConferences()
-        {
-            ProxerResult<string> lResult =
-                await
-                    HttpUtility.GetResponseErrorHandling("http://proxer.me/messages", this.LoginCookies, this.ErrHandler,
-                        this);
-
-            if (!lResult.Success)
-                return new ProxerResult<List<Conference>>(lResult.Exceptions);
-
-            string lResponse = lResult.Result;
-
-            try
-            {
-                HtmlDocument lDocument = new HtmlDocument();
-                lDocument.LoadHtml(lResponse);
-                List<Conference> lReturn = new List<Conference>();
-
-                IEnumerable<HtmlNode> lNodes = Utility.GetAllHtmlNodes(lDocument.DocumentNode.ChildNodes)
-                                                      .Where(
-                                                          x =>
-                                                              x.Attributes.Contains("class") &&
-                                                              x.Attributes["class"].Value == "conferenceGrid ");
-
-                lReturn.AddRange(from curNode in lNodes
-                                 let lId =
-                                     Convert.ToInt32(
-                                         Utility.GetTagContents(curNode.Attributes["href"].Value, "/messages?id=",
-                                             "#top")[0])
-                                 let lTitle = curNode.FirstChild.InnerText
-                                 select new Conference(lTitle, lId, this));
-
-                return new ProxerResult<List<Conference>>(lReturn);
-            }
-            catch
-            {
-                return
-                    new ProxerResult<List<Conference>>(
-                        (await ErrorHandler.HandleError(this, lResponse, false)).Exceptions);
             }
         }
 
@@ -578,16 +385,40 @@ namespace Azuria
             return new ProxerResult();
         }
 
-
-        /// <summary>
-        ///     Wird bei allen Benachrichtigungen ausgelöst. (15 Minuten Intervall)
-        /// </summary>
-        public event NotificationEventHandler NotificationRaised;
-
         /// <summary>
         ///     Wird ausgelöst, wenn während des Abrufens der Benachríchtigungen eine Ausnahme aufgetreten ist.
         /// </summary>
         public event ErrorDuringNotificationFetchEventHandler ErrorDuringNotificationFetch;
+
+        /// <summary>
+        ///     Zwingt die Eigenschaften sich beim nächsten Aufruf zu aktualisieren.
+        ///     <para>Mögliche Fehler, die <see cref="ProxerResult" /> enthalten kann:</para>
+        ///     <list type="table">
+        ///         <listheader>
+        ///             <term>Ausnahme</term>
+        ///             <description>Beschreibung</description>
+        ///         </listheader>
+        ///         <item>
+        ///             <term>
+        ///                 <see cref="WrongResponseException" />
+        ///             </term>
+        ///             <description>Wird ausgelöst, wenn die Antwort des Servers nicht der Erwarteten entspricht.</description>
+        ///         </item>
+        ///     </list>
+        /// </summary>
+        public async Task<ProxerResult> ForcePropertyReload()
+        {
+            ProxerResult<bool> lResult;
+            if ((lResult = await this.CheckLogin()).Success == false)
+            {
+                return new ProxerResult(lResult.Exceptions);
+            }
+
+            for (int i = 0; i < 4; i++)
+                this._updateNotifications[i] = true;
+
+            return new ProxerResult();
+        }
 
         /// <summary>
         ///     Wird ausgelöst, wenn eine neue Freundschaftsanfrage aussteht. (15 Minuten Intervall)
@@ -595,19 +426,187 @@ namespace Azuria
         public event FriendNotificiationEventHandler FriendNotificationRaised;
 
         /// <summary>
+        ///     Gibt alle Konferenzen des Senpais zurück. ACHTUNG: Bei den Konferenzen muss noch
+        ///     <see cref="Conference.InitConference">InitConference()</see>
+        ///     aufgerufen werden!
+        ///     <para>Mögliche Fehler, die <see cref="ProxerResult" /> enthalten kann:</para>
+        ///     <list type="table">
+        ///         <listheader>
+        ///             <term>Ausnahme</term>
+        ///             <description>Beschreibung</description>
+        ///         </listheader>
+        ///         <item>
+        ///             <term>
+        ///                 <see cref="NotLoggedInException" />
+        ///             </term>
+        ///             <description>Wird ausgelöst, wenn der <see cref="Senpai">Benutzer</see> nicht eingeloggt ist.</description>
+        ///         </item>
+        ///         <item>
+        ///             <term>
+        ///                 <see cref="WrongResponseException" />
+        ///             </term>
+        ///             <description>Wird ausgelöst, wenn die Antwort des Servers nicht der Erwarteten entspricht.</description>
+        ///         </item>
+        ///     </list>
+        /// </summary>
+        /// <seealso cref="Login" />
+        /// <returns>Alle Konferenzen, in denen der Benutzer Teilnehmer ist.</returns>
+        public async Task<ProxerResult<List<Conference>>> GetAllConferences()
+        {
+            ProxerResult<string> lResult =
+                await
+                    HttpUtility.GetResponseErrorHandling("http://proxer.me/messages", this.LoginCookies, this.ErrHandler,
+                        this);
+
+            if (!lResult.Success)
+                return new ProxerResult<List<Conference>>(lResult.Exceptions);
+
+            string lResponse = lResult.Result;
+
+            try
+            {
+                HtmlDocument lDocument = new HtmlDocument();
+                lDocument.LoadHtml(lResponse);
+                List<Conference> lReturn = new List<Conference>();
+
+                IEnumerable<HtmlNode> lNodes = Utility.GetAllHtmlNodes(lDocument.DocumentNode.ChildNodes)
+                    .Where(
+                        x =>
+                            x.Attributes.Contains("class") &&
+                            x.Attributes["class"].Value == "conferenceGrid ");
+
+                lReturn.AddRange(from curNode in lNodes
+                    let lId =
+                        Convert.ToInt32(
+                            Utility.GetTagContents(curNode.Attributes["href"].Value, "/messages?id=",
+                                "#top")[0])
+                    let lTitle = curNode.FirstChild.InnerText
+                    select new Conference(lTitle, lId, this));
+
+                return new ProxerResult<List<Conference>>(lReturn);
+            }
+            catch
+            {
+                return
+                    new ProxerResult<List<Conference>>(
+                        (await ErrorHandler.HandleError(this, lResponse, false)).Exceptions);
+            }
+        }
+
+        /// <summary>
+        ///     Initialisiert die Benachrichtigungen.
+        ///     <para>Mögliche Fehler, die <see cref="ProxerResult" /> enthalten kann:</para>
+        ///     <list type="table">
+        ///         <listheader>
+        ///             <term>Ausnahme</term>
+        ///             <description>Beschreibung</description>
+        ///         </listheader>
+        ///         <item>
+        ///             <term>
+        ///                 <see cref="NotLoggedInException" />
+        ///             </term>
+        ///             <description>Wird ausgelöst, wenn der <see cref="Senpai">Benutzer</see> nicht eingeloggt ist.</description>
+        ///         </item>
+        ///         <item>
+        ///             <term>
+        ///                 <see cref="WrongResponseException" />
+        ///             </term>
+        ///             <description>Wird ausgelöst, wenn die Antwort des Servers nicht der Erwarteten entspricht.</description>
+        ///         </item>
+        ///     </list>
+        /// </summary>
+        /// <seealso cref="Login" />
+        public ProxerResult InitNotifications()
+        {
+            if (!this.LoggedIn) return new ProxerResult(new Exception[] {new NotLoggedInException(this)});
+
+            this._notificationCheckTimer.Start();
+            this._propertyUpdateTimer.Start();
+
+            return new ProxerResult();
+        }
+
+        /// <summary>
+        ///     Loggt den Benutzer ein.
+        ///     <para>Mögliche Fehler, die <see cref="ProxerResult" /> enthalten kann:</para>
+        ///     <list type="table">
+        ///         <listheader>
+        ///             <term>Ausnahme</term>
+        ///             <description>Beschreibung</description>
+        ///         </listheader>
+        ///         <item>
+        ///             <term>
+        ///                 <see cref="WrongResponseException" />
+        ///             </term>
+        ///             <description>Wird ausgelöst, wenn die Antwort des Servers nicht der Erwarteten entspricht.</description>
+        ///         </item>
+        ///     </list>
+        /// </summary>
+        /// <param name="username">Der Benutzername des einzuloggenden Benutzers</param>
+        /// <param name="password">Das Passwort des Benutzers</param>
+        /// <returns>Gibt zurück, ob der Benutzer erfolgreich eingeloggt wurde.</returns>
+        public async Task<ProxerResult<bool>> Login(string username, string password)
+        {
+            if (string.IsNullOrEmpty(username) || string.IsNullOrEmpty(password))
+                return new ProxerResult<bool>(false);
+
+            Dictionary<string, string> postArgs = new Dictionary<string, string>
+            {
+                {"username", username},
+                {"password", password}
+            };
+
+            ProxerResult<KeyValuePair<string, CookieContainer>> lResult =
+                await
+                    HttpUtility.PostResponseErrorHandling("https://proxer.me/login?format=json&action=login",
+                        postArgs, this.LoginCookies, this.ErrHandler, this, new Func<string, ProxerResult>[0], false);
+
+            if (!lResult.Success)
+                return new ProxerResult<bool>(lResult.Exceptions);
+
+            string lResponse = lResult.Result.Key;
+            this.LoginCookies = lResult.Result.Value;
+
+            try
+            {
+                Dictionary<string, string> responseDes =
+                    JsonConvert.DeserializeObject<Dictionary<string, string>>(lResponse);
+
+                if (responseDes["error"].Equals("0"))
+                {
+                    this._userId = Convert.ToInt32(responseDes["uid"]);
+
+                    //Avatar einfügen
+                    this.Me = new User(username, this._userId, this);
+                    this.LoggedIn = true;
+
+                    return new ProxerResult<bool>(true);
+                }
+                this.LoggedIn = false;
+
+                return new ProxerResult<bool>(false);
+            }
+            catch
+            {
+                return new ProxerResult<bool>(ErrorHandler.HandleError(this, lResponse).Exceptions);
+            }
+        }
+
+        /// <summary>
         ///     Wird ausgelöst, wenn neue ungelesene News vorhanden sind. (15 Minuten Intervall)
         /// </summary>
         public event NewsNotificationEventHandler NewsNotificationRaised;
+
+
+        /// <summary>
+        ///     Wird bei allen Benachrichtigungen ausgelöst. (15 Minuten Intervall)
+        /// </summary>
+        public event NotificationEventHandler NotificationRaised;
 
         /// <summary>
         ///     Wird ausgelöst, wenn ungelesene PMs vorhanden sind. (15 Minuten Intervall)
         /// </summary>
         public event PmNotificationEventHandler PmNotificationRaised;
-
-        /// <summary>
-        ///     Wird ausgelöst, wenn neue Anime Folgen oder Manga Kapitel vorhanden sind. (15 Minuten Intervall)
-        /// </summary>
-        public event AmNotificationEventHandler AmUpdateNotificationRaised;
 
         /// <summary>
         ///     Wird ausgelöst, wenn der <see cref="Senpai">Benutzer</see> sich eingeloggt hat.

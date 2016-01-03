@@ -5,10 +5,10 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using Azuria.ErrorHandling;
 using Azuria.Example.Controls;
 using Azuria.Main;
 using Azuria.Main.User;
-using Azuria.Utilities;
 
 namespace Azuria.Example
 {
@@ -36,25 +36,47 @@ namespace Azuria.Example
 
         #region
 
-        private async void Window_Loaded(object sender, RoutedEventArgs e)
+        private void FriendBlock_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
-            //WICHTIG
-            //Wenn der User schon initialisiert ist brauch das nicht noch einmal gemacht zu werden
-            //Dies verringert die Belastung auf die Proxer-Server
-            //Die Initialisierungs-Methode kann aber auch aufgerufen werden, um die Infos zu aktualisieren
-            if (!this._user.IstInitialisiert)
+            TextBlock lFriendBlock = sender as TextBlock;
+            if (lFriendBlock == null) return;
+
+            new UserWindow(lFriendBlock.DataContext as User, this._senpai).Show();
+        }
+
+        private void InitAnime()
+        {
+            foreach (Anime favAnime in this._user.FavoritenAnime)
             {
-                ProxerResult lInitResult = await this._user.Init();
-                if (!lInitResult.Success)
-                {
-                    MessageBox.Show("Es ist ein Fehler beim Abrufen des Benutzers aufgetreten!", "Fehler",
-                        MessageBoxButton.OK, MessageBoxImage.Error);
-                    this.Close();
-                    return;
-                }
+                this.AnimeFavsPanel.Children.Add(new AnimeMangaProgressControl(favAnime));
             }
 
-            this.InitComponents();
+            foreach (
+                KeyValuePair<AnimeMangaProgress, AnimeMangaProgressObject> anime in
+                    this._user.Anime)
+            {
+                AnimeMangaProgressControl lProgressControl = new AnimeMangaProgressControl(anime.Value);
+
+                switch (anime.Key)
+                {
+                    //Anime wurde bereits geschaut
+                    case AnimeMangaProgress.Finished:
+                        this.AnimeGeschautPanel.Children.Add(lProgressControl);
+                        break;
+                    //Anime wird gerade geschaut
+                    case AnimeMangaProgress.InProgress:
+                        this.AnimeAmSchauenPanel.Children.Add(lProgressControl);
+                        break;
+                    //Anime wird noch geschaut
+                    case AnimeMangaProgress.Planned:
+                        this.AnimeWirdNochGeschautPanel.Children.Add(lProgressControl);
+                        break;
+                    //Anime wurde abgebrochen
+                    case AnimeMangaProgress.Aborted:
+                        this.AnimeAbgebrochenPanel.Children.Add(lProgressControl);
+                        break;
+                }
+            }
         }
 
         private void InitComponents()
@@ -78,15 +100,6 @@ namespace Azuria.Example
             this.InitManga();
         }
 
-        private void InitInfo()
-        {
-            this.PointsLabel.Content = this._user.Punkte;
-            this.RankLabel.Content = this._user.Rang;
-            this.StatusBlock.Text = this._user.Status;
-            this.InfoBox.Text = this._user.Info;
-            this.InfoHtmlBox.Text = this._user.InfoHtml;
-        }
-
         private void InitFriends()
         {
             foreach (User friend in this._user.Freunde)
@@ -98,39 +111,13 @@ namespace Azuria.Example
             }
         }
 
-        private void InitAnime()
+        private void InitInfo()
         {
-            foreach (Anime favAnime in this._user.FavoritenAnime)
-            {
-                this.AnimeFavsPanel.Children.Add(new AnimeMangaProgressControl(favAnime));
-            }
-
-            foreach (
-                KeyValuePair<AnimeMangaProgressObject.AnimeMangaProgress, AnimeMangaProgressObject> anime in
-                    this._user.Anime)
-            {
-                AnimeMangaProgressControl lProgressControl = new AnimeMangaProgressControl(anime.Value);
-
-                switch (anime.Key)
-                {
-                    //Anime wurde bereits geschaut
-                    case AnimeMangaProgressObject.AnimeMangaProgress.Finished:
-                        this.AnimeGeschautPanel.Children.Add(lProgressControl);
-                        break;
-                    //Anime wird gerade geschaut
-                    case AnimeMangaProgressObject.AnimeMangaProgress.InProgress:
-                        this.AnimeAmSchauenPanel.Children.Add(lProgressControl);
-                        break;
-                    //Anime wird noch geschaut
-                    case AnimeMangaProgressObject.AnimeMangaProgress.Planned:
-                        this.AnimeWirdNochGeschautPanel.Children.Add(lProgressControl);
-                        break;
-                    //Anime wurde abgebrochen
-                    case AnimeMangaProgressObject.AnimeMangaProgress.Aborted:
-                        this.AnimeAbgebrochenPanel.Children.Add(lProgressControl);
-                        break;
-                }
-            }
+            this.PointsLabel.Content = this._user.Punkte;
+            this.RankLabel.Content = this._user.Rang;
+            this.StatusBlock.Text = this._user.Status;
+            this.InfoBox.Text = this._user.Info;
+            this.InfoHtmlBox.Text = this._user.InfoHtml;
         }
 
         private void InitManga()
@@ -141,7 +128,7 @@ namespace Azuria.Example
             }
 
             foreach (
-                KeyValuePair<AnimeMangaProgressObject.AnimeMangaProgress, AnimeMangaProgressObject> manga in
+                KeyValuePair<AnimeMangaProgress, AnimeMangaProgressObject> manga in
                     this._user.Manga)
             {
                 AnimeMangaProgressControl lProgressControl = new AnimeMangaProgressControl(manga.Value);
@@ -149,31 +136,23 @@ namespace Azuria.Example
                 switch (manga.Key)
                 {
                     //Manga wurde bereits gelesen
-                    case AnimeMangaProgressObject.AnimeMangaProgress.Finished:
+                    case AnimeMangaProgress.Finished:
                         this.MangaGelesenPanel.Children.Add(lProgressControl);
                         break;
                     //Manga wird gerade gelesen
-                    case AnimeMangaProgressObject.AnimeMangaProgress.InProgress:
+                    case AnimeMangaProgress.InProgress:
                         this.MangaAmLesenPanel.Children.Add(lProgressControl);
                         break;
                     //Manga wird noch gelesen
-                    case AnimeMangaProgressObject.AnimeMangaProgress.Planned:
+                    case AnimeMangaProgress.Planned:
                         this.MangaWirdNochGelesenPanel.Children.Add(lProgressControl);
                         break;
                     //Manga wurde abgebrochen
-                    case AnimeMangaProgressObject.AnimeMangaProgress.Aborted:
+                    case AnimeMangaProgress.Aborted:
                         this.MangaAbgebrochenPanel.Children.Add(lProgressControl);
                         break;
                 }
             }
-        }
-
-        private void FriendBlock_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
-        {
-            TextBlock lFriendBlock = sender as TextBlock;
-            if (lFriendBlock == null) return;
-
-            new UserWindow(lFriendBlock.DataContext as User, this._senpai).Show();
         }
 
         private void OpenWebsiteButton_Click(object sender, RoutedEventArgs e)
@@ -188,6 +167,27 @@ namespace Azuria.Example
             else
                 MessageBox.Show("Es ist ein Fehler beim Versenden der Freundschaftanfrage aufgetreten!", "Fehler",
                     MessageBoxButton.OK, MessageBoxImage.Error);
+        }
+
+        private async void Window_Loaded(object sender, RoutedEventArgs e)
+        {
+            //WICHTIG
+            //Wenn der User schon initialisiert ist brauch das nicht noch einmal gemacht zu werden
+            //Dies verringert die Belastung auf die Proxer-Server
+            //Die Initialisierungs-Methode kann aber auch aufgerufen werden, um die Infos zu aktualisieren
+            if (!this._user.IstInitialisiert)
+            {
+                ProxerResult lInitResult = await this._user.Init();
+                if (!lInitResult.Success)
+                {
+                    MessageBox.Show("Es ist ein Fehler beim Abrufen des Benutzers aufgetreten!", "Fehler",
+                        MessageBoxButton.OK, MessageBoxImage.Error);
+                    this.Close();
+                    return;
+                }
+            }
+
+            this.InitComponents();
         }
 
         #endregion

@@ -1,13 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Threading.Tasks;
+using Azuria.ErrorHandling;
 using Azuria.Exceptions;
 using Azuria.Main.Minor;
 using Azuria.Utilities;
 using Azuria.Utilities.Net;
 using HtmlAgilityPack;
+
 // ReSharper disable LoopCanBeConvertedToQuery
 
 namespace Azuria.Main
@@ -357,6 +358,96 @@ namespace Azuria.Main
             return lReturn;
         }
 
+        /// <summary>
+        ///     Gibt die aktuellen Kommentare des <see cref="Anime" /> zurück.
+        ///     <para>(Vererbt von <see cref="IAnimeMangaObject" />)</para>
+        ///     <para>Mögliche Fehler, die <see cref="ProxerResult" /> enthalten kann:</para>
+        ///     <list type="table">
+        ///         <listheader>
+        ///             <term>Ausnahme</term>
+        ///             <description>Beschreibung</description>
+        ///         </listheader>
+        ///         <item>
+        ///             <term>
+        ///                 <see cref="WrongResponseException" />
+        ///             </term>
+        ///             <description>
+        ///                 <see cref="WrongResponseException" /> wird ausgelöst, wenn die Antwort des Servers nicht der
+        ///                 Erwarteten entspricht.
+        ///             </description>
+        ///         </item>
+        ///     </list>
+        /// </summary>
+        /// <param name="startIndex">Der Start-Index der ausgegebenen Kommentare.</param>
+        /// <param name="count">Die Anzahl der ausgegebenen Kommentare ab dem angegebenen <paramref name="startIndex" />.</param>
+        /// <returns>Eine Aufzählung mit den Kommentaren.</returns>
+        public async Task<ProxerResult<IEnumerable<Comment>>> GetComments(int startIndex, int count)
+        {
+            const int lKommentareProSeite = 25;
+
+            List<Comment> lReturn = new List<Comment>();
+            int lStartSeite = Convert.ToInt32(startIndex/lKommentareProSeite);
+            HtmlDocument lDocument = new HtmlDocument();
+            Func<string, ProxerResult> lCheckFunc = s =>
+            {
+                lDocument.LoadHtml(s);
+
+                HtmlNode lNode;
+
+                if ((lNode = lDocument.DocumentNode.ChildNodes.FirstOrDefault(node =>
+                    node.Name.Equals("p") && node.Attributes.Contains("align") &&
+                    node.Attributes["align"].Value.Equals("center"))) != default(HtmlNode))
+                {
+                    return lNode.InnerText.Equals("Es existieren bisher keine Kommentare.")
+                        ? new ProxerResult(new[] {new WrongResponseException {Response = s}})
+                        : new ProxerResult();
+                }
+
+                return new ProxerResult();
+            };
+
+            ProxerResult<string> lResult;
+
+            while (count > 0 &&
+                   (lResult =
+                       await
+                           HttpUtility.GetResponseErrorHandling(
+                               "https://proxer.me/info/" + this.Id + "/comments/" + lStartSeite + "?format=raw",
+                               this._senpai.LoginCookies, this._senpai.ErrHandler, this._senpai, new[] {lCheckFunc}))
+                       .Success)
+            {
+                string lResponse = lResult.Result;
+
+                try
+                {
+                    int i = 0;
+                    foreach (HtmlNode commentNode in lDocument.DocumentNode.ChildNodes.Where(
+                        node =>
+                            node.Name.Equals("table") && node.Attributes.Contains("class") &&
+                            node.Attributes["class"].Value.Equals("details")).TakeWhile(node => count > 0))
+                    {
+                        if (i >= startIndex%lKommentareProSeite)
+                        {
+                            lReturn.Add(
+                                Utility.GetCommentFromNode(commentNode, this._senpai)
+                                    .OnError(new Comment(Azuria.User.System, -1, "ERROR")));
+                            count--;
+                        }
+
+                        i++;
+                    }
+                }
+                catch
+                {
+                    return
+                        new ProxerResult<IEnumerable<Comment>>(
+                            (await ErrorHandler.HandleError(this._senpai, lResult.Result, false)).Exceptions);
+                }
+            }
+
+            return new ProxerResult<IEnumerable<Comment>>(lReturn);
+        }
+
         #endregion
 
         #region Properties
@@ -392,65 +483,6 @@ namespace Azuria.Main
         #endregion
 
         #region
-
-        /// <summary>
-        ///     Gibt die aktuell am beliebtesten <see cref="Manga" /> zurück.
-        ///     <para>Mögliche Fehler, die <see cref="ProxerResult" /> enthalten kann:</para>
-        ///     <list type="table">
-        ///         <listheader>
-        ///             <term>Ausnahme</term>
-        ///             <description>Beschreibung</description>
-        ///         </listheader>
-        ///         <item>
-        ///             <term>
-        ///                 <see cref="WrongResponseException" />
-        ///             </term>
-        ///             <description>
-        ///                 <see cref="WrongResponseException" /> wird ausgelöst, wenn die Antwort des Servers nicht der
-        ///                 Erwarteten entspricht.
-        ///             </description>
-        ///         </item>
-        ///     </list>
-        /// </summary>
-        /// <returns>Ein Array mit den aktuell beliebtesten <see cref="Manga" />.</returns>
-        public static async Task<ProxerResult<IEnumerable<Manga>>> GetPopularManga(Senpai senpai)
-        {
-            if (senpai == null)
-                return new ProxerResult<IEnumerable<Manga>>(new Exception[] {new ArgumentNullException(nameof(senpai))});
-
-            HtmlDocument lDocument = new HtmlDocument();
-            ProxerResult<string> lResult =
-                await
-                    HttpUtility.GetResponseErrorHandling(
-                        "https://proxer.me/manga?format=raw",
-                        null,
-                        senpai.ErrHandler,
-                        senpai);
-
-            if (!lResult.Success)
-                return new ProxerResult<IEnumerable<Manga>>(lResult.Exceptions);
-
-            string lResponse = lResult.Result;
-
-            try
-            {
-                lDocument.LoadHtml(lResponse);
-
-                return
-                    new ProxerResult<IEnumerable<Manga>>(
-                        (from childNode in lDocument.DocumentNode.ChildNodes[5].FirstChild.FirstChild.ChildNodes
-                         let lId =
-                             Convert.ToInt32(
-                                 childNode.FirstChild.GetAttributeValue("href", "/info/-1#top").Split('/')[2].Split('#')
-                                     [0])
-                         select new Manga(childNode.FirstChild.GetAttributeValue("title", "ERROR"), lId, senpai))
-                            .ToArray());
-            }
-            catch
-            {
-                return new ProxerResult<IEnumerable<Manga>>(ErrorHandler.HandleError(senpai, lResponse).Exceptions);
-            }
-        }
 
         /// <summary>
         ///     Gibt alle <see cref="Chapter">Kapitel</see> des <see cref="Manga" /> in der ausgewählten Sprache zurück.
@@ -498,30 +530,43 @@ namespace Azuria.Main
 
             return new ProxerResult<IEnumerable<Chapter>>(lChapters.ToArray());
         }
-        
-        private async Task<ProxerResult> InitMain()
-        {
-            HtmlDocument lDocument = new HtmlDocument();
-            Func<string, ProxerResult> lCheckFunc = s =>
-            {
-                if (!string.IsNullOrEmpty(s) &&
-                    s.Equals(
-                        "<div class=\"inner\"><h3>Du hast keine Berechtigung um diese Seite zu betreten.</h3></div>"))
-                    return new ProxerResult(new Exception[] {new NoAccessException(nameof(this.InitMain))});
 
-                return new ProxerResult();
-            };
+        /// <summary>
+        ///     Gibt die aktuell am beliebtesten <see cref="Manga" /> zurück.
+        ///     <para>Mögliche Fehler, die <see cref="ProxerResult" /> enthalten kann:</para>
+        ///     <list type="table">
+        ///         <listheader>
+        ///             <term>Ausnahme</term>
+        ///             <description>Beschreibung</description>
+        ///         </listheader>
+        ///         <item>
+        ///             <term>
+        ///                 <see cref="WrongResponseException" />
+        ///             </term>
+        ///             <description>
+        ///                 <see cref="WrongResponseException" /> wird ausgelöst, wenn die Antwort des Servers nicht der
+        ///                 Erwarteten entspricht.
+        ///             </description>
+        ///         </item>
+        ///     </list>
+        /// </summary>
+        /// <returns>Ein Array mit den aktuell beliebtesten <see cref="Manga" />.</returns>
+        public static async Task<ProxerResult<IEnumerable<Manga>>> GetPopularManga(Senpai senpai)
+        {
+            if (senpai == null)
+                return new ProxerResult<IEnumerable<Manga>>(new Exception[] {new ArgumentNullException(nameof(senpai))});
+
+            HtmlDocument lDocument = new HtmlDocument();
             ProxerResult<string> lResult =
                 await
                     HttpUtility.GetResponseErrorHandling(
-                        "https://proxer.me/info/" + this.Id + "?format=raw",
+                        "https://proxer.me/manga?format=raw",
                         null,
-                        this._senpai.ErrHandler,
-                        this._senpai,
-                        new[] {lCheckFunc});
+                        senpai.ErrHandler,
+                        senpai);
 
             if (!lResult.Success)
-                return new ProxerResult(lResult.Exceptions);
+                return new ProxerResult<IEnumerable<Manga>>(lResult.Exceptions);
 
             string lResponse = lResult.Result;
 
@@ -529,137 +574,20 @@ namespace Azuria.Main
             {
                 lDocument.LoadHtml(lResponse);
 
-                HtmlNode lTableNode =
-                    lDocument.DocumentNode.ChildNodes[5]
-                        .ChildNodes[2].FirstChild.ChildNodes[1].FirstChild;
-                foreach (HtmlNode childNode in lTableNode.ChildNodes.Where(childNode => childNode.Name.Equals("tr")))
-                {
-                    switch (childNode.FirstChild.FirstChild.InnerText)
-                    {
-                        case "Original Titel":
-                            this.Name = childNode.ChildNodes[1].InnerText;
-                            break;
-                        case "Eng. Titel":
-                            this.EnglischTitel = childNode.ChildNodes[1].InnerText;
-                            break;
-                        case "Ger. Titel":
-                            this.DeutschTitel = childNode.ChildNodes[1].InnerText;
-                            break;
-                        case "Jap. Titel":
-                            this.JapanTitel = childNode.ChildNodes[1].InnerText;
-                            break;
-                        case "Synonym":
-                            this.Synonym = childNode.ChildNodes[1].InnerText;
-                            break;
-                        case "Genre":
-                            List<string> lGenreList = new List<string>();
-                            foreach (HtmlNode htmlNode in childNode.ChildNodes[1].ChildNodes.ToList())
-                            {
-                                if (htmlNode.Name.Equals("a"))
-                                    lGenreList.Add(htmlNode.InnerText);
-                            }
-                            this.Genre = lGenreList.ToArray();
-                            break;
-                        case "FSK":
-                            this.Fsk = new Dictionary<Uri, string>();
-                            foreach (
-                                HtmlNode htmlNode in
-                                    childNode.ChildNodes[1].ChildNodes.ToList()
-                                                           .Where(htmlNode => htmlNode.Name.Equals("span") &&
-                                                                              !this.Fsk.ContainsValue(htmlNode
-                                                                                  .GetAttributeValue(
-                                                                                      "title", "ERROR"))))
-                            {
-                                this.Fsk.Add(
-                                    new Uri("https://proxer.me" +
-                                            htmlNode.FirstChild.GetAttributeValue("src",
-                                                "/")),
-                                    htmlNode.GetAttributeValue("title", "ERROR"));
-                            }
-                            break;
-                        case "Season":
-                            List<string> lSeasonList = new List<string>();
-                            foreach (HtmlNode htmlNode in childNode.ChildNodes[1].ChildNodes.ToList())
-                            {
-                                if (htmlNode.Name.Equals("a"))
-                                    lSeasonList.Add(htmlNode.InnerText);
-                            }
-                            this.Season = lSeasonList.ToArray();
-                            break;
-                        case "Status":
-                            switch (childNode.ChildNodes[1].InnerText)
-                            {
-                                case "Airing":
-                                    this.Status = AnimeMangaStatus.Airing;
-                                    break;
-                                case "Abgeschlossen":
-                                    this.Status = AnimeMangaStatus.Abgeschlossen;
-                                    break;
-                                case "Nicht erschienen (Pre-Airing)":
-                                    this.Status = AnimeMangaStatus.PreAiring;
-                                    break;
-                                default:
-                                    this.Status = AnimeMangaStatus.Abgebrochen;
-                                    break;
-                            }
-                            break;
-                        case "Gruppen":
-                            if (childNode.ChildNodes[1].InnerText.Contains("Keine Gruppen eingetragen.")) break;
-                            this.Gruppen = (from htmlNode in childNode.ChildNodes[1].ChildNodes
-                                            where htmlNode.Name.Equals("a")
-                                            select
-                                                new Group(
-                                                    Convert.ToInt32(
-                                                        Utility.GetTagContents(
-                                                            htmlNode.GetAttributeValue("href",
-                                                                "/translatorgroups?id=-1#top"),
-                                                            "/translatorgroups?id=", "#top")[0]), htmlNode.InnerText))
-                                .ToArray();
-                            break;
-                        case "Industrie":
-                            if (childNode.ChildNodes[1].InnerText.Contains("Keine Unternehmen eingetragen.")) break;
-                            List<Industry> lIndustries = new List<Industry>();
-                            foreach (
-                                HtmlNode htmlNode in
-                                    childNode.ChildNodes[1].ChildNodes.Where(htmlNode => htmlNode.Name.Equals("a")))
-                            {
-                                Industry.IndustryType lIndustryType;
-                                if (htmlNode.NextSibling.InnerText.Contains("Studio"))
-                                    lIndustryType = Industry.IndustryType.Studio;
-                                else if (htmlNode.NextSibling.InnerText.Contains("Publisher"))
-                                    lIndustryType = Industry.IndustryType.Publisher;
-                                else if (htmlNode.NextSibling.InnerText.Contains("Producer"))
-                                    lIndustryType = Industry.IndustryType.Producer;
-                                else lIndustryType = Industry.IndustryType.None;
-
-                                lIndustries.Add(new Industry(Convert.ToInt32(
-                                    Utility.GetTagContents(
-                                        htmlNode.GetAttributeValue("href", "/industry?id=-1#top"),
-                                        "/industry?id=", "#top")[0]), htmlNode.InnerText, lIndustryType));
-                            }
-                            this.Industrie = lIndustries.ToArray();
-                            break;
-                        case "Lizenz":
-                            this.Lizensiert = childNode.ChildNodes[1].InnerText.StartsWith("Lizenziert!");
-                            break;
-                        case "Beschreibung:":
-                            childNode.FirstChild.FirstChild.Remove();
-                            this.Beschreibung = "";
-                            foreach (HtmlNode htmlNode in childNode.FirstChild.ChildNodes)
-                            {
-                                if (htmlNode.Name.Equals("br")) this.Beschreibung += "\n";
-                                else this.Beschreibung += htmlNode.InnerText;
-                            }
-                            if (this.Beschreibung.StartsWith("\n")) this.Beschreibung = this.Beschreibung.TrimStart();
-                            break;
-                    }
-                }
-
-                return new ProxerResult();
+                return
+                    new ProxerResult<IEnumerable<Manga>>(
+                        (from childNode in lDocument.DocumentNode.ChildNodes[5].FirstChild.FirstChild.ChildNodes
+                            let lId =
+                                Convert.ToInt32(
+                                    childNode.FirstChild.GetAttributeValue("href", "/info/-1#top").Split('/')[2].Split(
+                                        '#')
+                                        [0])
+                            select new Manga(childNode.FirstChild.GetAttributeValue("title", "ERROR"), lId, senpai))
+                            .ToArray());
             }
             catch
             {
-                return new ProxerResult(ErrorHandler.HandleError(this._senpai, lResponse).Exceptions);
+                return new ProxerResult<IEnumerable<Manga>>(ErrorHandler.HandleError(senpai, lResponse).Exceptions);
             }
         }
 
@@ -761,6 +689,170 @@ namespace Azuria.Main
             catch
             {
                 return new ProxerResult((await ErrorHandler.HandleError(this._senpai, lResponse, false)).Exceptions);
+            }
+        }
+
+        private async Task<ProxerResult> InitMain()
+        {
+            HtmlDocument lDocument = new HtmlDocument();
+            Func<string, ProxerResult> lCheckFunc = s =>
+            {
+                if (!string.IsNullOrEmpty(s) &&
+                    s.Equals(
+                        "<div class=\"inner\"><h3>Du hast keine Berechtigung um diese Seite zu betreten.</h3></div>"))
+                    return new ProxerResult(new Exception[] {new NoAccessException(nameof(this.InitMain))});
+
+                return new ProxerResult();
+            };
+            ProxerResult<string> lResult =
+                await
+                    HttpUtility.GetResponseErrorHandling(
+                        "https://proxer.me/info/" + this.Id + "?format=raw",
+                        null,
+                        this._senpai.ErrHandler,
+                        this._senpai,
+                        new[] {lCheckFunc});
+
+            if (!lResult.Success)
+                return new ProxerResult(lResult.Exceptions);
+
+            string lResponse = lResult.Result;
+
+            try
+            {
+                lDocument.LoadHtml(lResponse);
+
+                HtmlNode lTableNode =
+                    lDocument.DocumentNode.ChildNodes[5]
+                        .ChildNodes[2].FirstChild.ChildNodes[1].FirstChild;
+                foreach (HtmlNode childNode in lTableNode.ChildNodes.Where(childNode => childNode.Name.Equals("tr")))
+                {
+                    switch (childNode.FirstChild.FirstChild.InnerText)
+                    {
+                        case "Original Titel":
+                            this.Name = childNode.ChildNodes[1].InnerText;
+                            break;
+                        case "Eng. Titel":
+                            this.EnglischTitel = childNode.ChildNodes[1].InnerText;
+                            break;
+                        case "Ger. Titel":
+                            this.DeutschTitel = childNode.ChildNodes[1].InnerText;
+                            break;
+                        case "Jap. Titel":
+                            this.JapanTitel = childNode.ChildNodes[1].InnerText;
+                            break;
+                        case "Synonym":
+                            this.Synonym = childNode.ChildNodes[1].InnerText;
+                            break;
+                        case "Genre":
+                            List<string> lGenreList = new List<string>();
+                            foreach (HtmlNode htmlNode in childNode.ChildNodes[1].ChildNodes.ToList())
+                            {
+                                if (htmlNode.Name.Equals("a"))
+                                    lGenreList.Add(htmlNode.InnerText);
+                            }
+                            this.Genre = lGenreList.ToArray();
+                            break;
+                        case "FSK":
+                            this.Fsk = new Dictionary<Uri, string>();
+                            foreach (
+                                HtmlNode htmlNode in
+                                    childNode.ChildNodes[1].ChildNodes.ToList()
+                                        .Where(htmlNode => htmlNode.Name.Equals("span") &&
+                                                           !this.Fsk.ContainsValue(htmlNode
+                                                               .GetAttributeValue(
+                                                                   "title", "ERROR"))))
+                            {
+                                this.Fsk.Add(
+                                    new Uri("https://proxer.me" +
+                                            htmlNode.FirstChild.GetAttributeValue("src",
+                                                "/")),
+                                    htmlNode.GetAttributeValue("title", "ERROR"));
+                            }
+                            break;
+                        case "Season":
+                            List<string> lSeasonList = new List<string>();
+                            foreach (HtmlNode htmlNode in childNode.ChildNodes[1].ChildNodes.ToList())
+                            {
+                                if (htmlNode.Name.Equals("a"))
+                                    lSeasonList.Add(htmlNode.InnerText);
+                            }
+                            this.Season = lSeasonList.ToArray();
+                            break;
+                        case "Status":
+                            switch (childNode.ChildNodes[1].InnerText)
+                            {
+                                case "Airing":
+                                    this.Status = AnimeMangaStatus.Airing;
+                                    break;
+                                case "Abgeschlossen":
+                                    this.Status = AnimeMangaStatus.Abgeschlossen;
+                                    break;
+                                case "Nicht erschienen (Pre-Airing)":
+                                    this.Status = AnimeMangaStatus.PreAiring;
+                                    break;
+                                default:
+                                    this.Status = AnimeMangaStatus.Abgebrochen;
+                                    break;
+                            }
+                            break;
+                        case "Gruppen":
+                            if (childNode.ChildNodes[1].InnerText.Contains("Keine Gruppen eingetragen.")) break;
+                            this.Gruppen = (from htmlNode in childNode.ChildNodes[1].ChildNodes
+                                where htmlNode.Name.Equals("a")
+                                select
+                                    new Group(
+                                        Convert.ToInt32(
+                                            Utility.GetTagContents(
+                                                htmlNode.GetAttributeValue("href",
+                                                    "/translatorgroups?id=-1#top"),
+                                                "/translatorgroups?id=", "#top")[0]), htmlNode.InnerText))
+                                .ToArray();
+                            break;
+                        case "Industrie":
+                            if (childNode.ChildNodes[1].InnerText.Contains("Keine Unternehmen eingetragen.")) break;
+                            List<Industry> lIndustries = new List<Industry>();
+                            foreach (
+                                HtmlNode htmlNode in
+                                    childNode.ChildNodes[1].ChildNodes.Where(htmlNode => htmlNode.Name.Equals("a")))
+                            {
+                                Industry.IndustryType lIndustryType;
+                                if (htmlNode.NextSibling.InnerText.Contains("Studio"))
+                                    lIndustryType = Industry.IndustryType.Studio;
+                                else if (htmlNode.NextSibling.InnerText.Contains("Publisher"))
+                                    lIndustryType = Industry.IndustryType.Publisher;
+                                else if (htmlNode.NextSibling.InnerText.Contains("Producer"))
+                                    lIndustryType = Industry.IndustryType.Producer;
+                                else lIndustryType = Industry.IndustryType.None;
+
+                                lIndustries.Add(new Industry(Convert.ToInt32(
+                                    Utility.GetTagContents(
+                                        htmlNode.GetAttributeValue("href", "/industry?id=-1#top"),
+                                        "/industry?id=", "#top")[0]), htmlNode.InnerText, lIndustryType));
+                            }
+                            this.Industrie = lIndustries.ToArray();
+                            break;
+                        case "Lizenz":
+                            this.Lizensiert = childNode.ChildNodes[1].InnerText.StartsWith("Lizenziert!");
+                            break;
+                        case "Beschreibung:":
+                            childNode.FirstChild.FirstChild.Remove();
+                            this.Beschreibung = "";
+                            foreach (HtmlNode htmlNode in childNode.FirstChild.ChildNodes)
+                            {
+                                if (htmlNode.Name.Equals("br")) this.Beschreibung += "\n";
+                                else this.Beschreibung += htmlNode.InnerText;
+                            }
+                            if (this.Beschreibung.StartsWith("\n")) this.Beschreibung = this.Beschreibung.TrimStart();
+                            break;
+                    }
+                }
+
+                return new ProxerResult();
+            }
+            catch
+            {
+                return new ProxerResult(ErrorHandler.HandleError(this._senpai, lResponse).Exceptions);
             }
         }
 
@@ -1000,6 +1092,70 @@ namespace Azuria.Main
                 return lReturn;
             }
 
+            private async Task<ProxerResult> InitChapters()
+            {
+                HtmlDocument lDocument = new HtmlDocument();
+                Func<string, ProxerResult> lCheckFunc = s =>
+                {
+                    if (!string.IsNullOrEmpty(s) &&
+                        s.Equals("Du hast keine Berechtigung um diese Seite zu betreten."))
+                        return new ProxerResult(new Exception[] {new NoAccessException(nameof(this.InitInfo))});
+
+                    return new ProxerResult();
+                };
+                ProxerResult<string> lResult =
+                    await
+                        HttpUtility.GetResponseErrorHandling(
+                            "https://proxer.me/read/" + this.ParentManga.Id + "/" + this.KapitelNr + "/" +
+                            this.Sprache.ToString().ToLower().Substring(0, 2) + "?format=json",
+                            this._senpai.MobileLoginCookies,
+                            this._senpai.ErrHandler,
+                            this._senpai,
+                            new[] {lCheckFunc});
+
+                if (!lResult.Success)
+                    return new ProxerResult(lResult.Exceptions);
+
+                string lResponse = lResult.Result;
+
+                try
+                {
+                    lDocument.LoadHtml(lResponse);
+
+                    HtmlNode[] lAllHtmlNodes = Utility.GetAllHtmlNodes(lDocument.DocumentNode.ChildNodes).ToArray();
+
+                    if (
+                        lAllHtmlNodes.Any(
+                            x =>
+                                x.Name.Equals("img") && x.HasAttributes &&
+                                x.GetAttributeValue("src", "").Equals("/images/misc/stopyui.jpg")))
+                        return new ProxerResult(new Exception[] {new CaptchaException()});
+
+                    if (
+                        lAllHtmlNodes.Any(
+                            x =>
+                                x.Name.Equals("img") && x.HasAttributes &&
+                                x.GetAttributeValue("src", "").Equals("/images/misc/404.png")))
+                        return new ProxerResult(new Exception[] {new WrongResponseException {Response = lResponse}});
+
+                    this.Seiten =
+                        (from s in
+                            Utility.GetTagContents(lDocument.DocumentNode.ChildNodes[1].InnerText.Split(';')[0], "[",
+                                "]")
+                            where !s.StartsWith("[")
+                            select
+                                new Uri("http://upload.proxer.me/manga/" + this.ParentManga.Id + "_" +
+                                        this.Sprache.ToString().ToLower().Substring(0, 2) + "/" + this.KapitelNr + "/" +
+                                        Utility.GetTagContents(s, "\"", "\"")[0])).ToArray();
+
+                    return new ProxerResult();
+                }
+                catch
+                {
+                    return new ProxerResult((await ErrorHandler.HandleError(this._senpai, lResponse, false)).Exceptions);
+                }
+            }
+
             private async Task<ProxerResult> InitInfo()
             {
                 HtmlDocument lDocument = new HtmlDocument();
@@ -1058,7 +1214,7 @@ namespace Azuria.Main
                         HtmlNode childNode in
                             lAllHtmlNodes.First(
                                 x => x.Attributes.Contains("class") && x.Attributes["class"].Value == "details")
-                                         .ChildNodes)
+                                .ChildNodes)
                     {
                         switch (childNode.FirstChild.InnerText)
                         {
@@ -1084,70 +1240,6 @@ namespace Azuria.Main
                                 break;
                         }
                     }
-
-                    return new ProxerResult();
-                }
-                catch
-                {
-                    return new ProxerResult((await ErrorHandler.HandleError(this._senpai, lResponse, false)).Exceptions);
-                }
-            }
-
-            private async Task<ProxerResult> InitChapters()
-            {
-                HtmlDocument lDocument = new HtmlDocument();
-                Func<string, ProxerResult> lCheckFunc = s =>
-                {
-                    if (!string.IsNullOrEmpty(s) &&
-                        s.Equals("Du hast keine Berechtigung um diese Seite zu betreten."))
-                        return new ProxerResult(new Exception[] {new NoAccessException(nameof(this.InitInfo))});
-
-                    return new ProxerResult();
-                };
-                ProxerResult<string> lResult =
-                    await
-                        HttpUtility.GetResponseErrorHandling(
-                            "https://proxer.me/read/" + this.ParentManga.Id + "/" + this.KapitelNr + "/" +
-                            this.Sprache.ToString().ToLower().Substring(0, 2) + "?format=json",
-                            this._senpai.MobileLoginCookies,
-                            this._senpai.ErrHandler,
-                            this._senpai,
-                            new[] {lCheckFunc});
-
-                if (!lResult.Success)
-                    return new ProxerResult(lResult.Exceptions);
-
-                string lResponse = lResult.Result;
-
-                try
-                {
-                    lDocument.LoadHtml(lResponse);
-
-                    HtmlNode[] lAllHtmlNodes = Utility.GetAllHtmlNodes(lDocument.DocumentNode.ChildNodes).ToArray();
-
-                    if (
-                        lAllHtmlNodes.Any(
-                            x =>
-                                x.Name.Equals("img") && x.HasAttributes &&
-                                x.GetAttributeValue("src", "").Equals("/images/misc/stopyui.jpg")))
-                        return new ProxerResult(new Exception[] {new CaptchaException()});
-
-                    if (
-                        lAllHtmlNodes.Any(
-                            x =>
-                                x.Name.Equals("img") && x.HasAttributes &&
-                                x.GetAttributeValue("src", "").Equals("/images/misc/404.png")))
-                        return new ProxerResult(new Exception[] {new WrongResponseException {Response = lResponse}});
-
-                    this.Seiten =
-                        (from s in
-                            Utility.GetTagContents(lDocument.DocumentNode.ChildNodes[1].InnerText.Split(';')[0], "[",
-                                "]")
-                         where !s.StartsWith("[")
-                         select
-                             new Uri("http://upload.proxer.me/manga/" + this.ParentManga.Id + "_" +
-                                     this.Sprache.ToString().ToLower().Substring(0, 2) + "/" + this.KapitelNr + "/" +
-                                     Utility.GetTagContents(s, "\"", "\"")[0])).ToArray();
 
                     return new ProxerResult();
                 }
