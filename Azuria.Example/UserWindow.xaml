@@ -35,6 +35,11 @@
                     </StackPanel>
                 </ScrollViewer>
             </TabItem>
+            <TabItem Header="Letzte Kommentare">
+                <ScrollViewer>
+                    <StackPanel x:Name="CommentStackPanel" Background="#FFE5E5E5" />
+                </ScrollViewer>
+            </TabItem>
             <TabItem Header="Freunde">
                 <ListBox x:Name="FriendListBox" Background="#FFE5E5E5" />
             </TabItem>

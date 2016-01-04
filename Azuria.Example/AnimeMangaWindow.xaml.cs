@@ -7,6 +7,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using Azuria.ErrorHandling;
 using Azuria.Main;
+using Azuria.Main.Minor;
 
 namespace Azuria.Example
 {
@@ -16,10 +17,12 @@ namespace Azuria.Example
     public partial class AnimeMangaWindow : Window
     {
         private readonly IAnimeMangaObject _animeMangaObject;
+        private readonly Senpai _senpai;
 
-        public AnimeMangaWindow(IAnimeMangaObject animeMangaObject)
+        public AnimeMangaWindow(IAnimeMangaObject animeMangaObject, Senpai senpai)
         {
             this._animeMangaObject = animeMangaObject;
+            this._senpai = senpai;
             this.InitializeComponent();
         }
 
@@ -115,6 +118,74 @@ namespace Azuria.Example
             TextBlock lSeitenLinks = new TextBlock();
             lChapter.Seiten.ToList().ForEach(uri => lSeitenLinks.Text += uri.OriginalString + "\n");
             this.KapitelSeitenListView.Children.Add(new Expander {Header = "Seiten", Content = lSeitenLinks});
+        }
+
+        private async void LoadCommentsLatest()
+        {
+            //Gibt die ersten 10 Kommentare(oder weniger, wenn nicht genug vorhanden sind) zurück
+            ProxerResult<IEnumerable<Comment>> lCommentsResult = await this._animeMangaObject.GetCommentsLatest(0, 10);
+
+            if (!lCommentsResult.Success) return;
+
+            foreach (Comment comment in lCommentsResult.Result)
+            {
+                TextBlock lCommentContent = new TextBlock
+                {
+                    TextWrapping = TextWrapping.Wrap,
+                    Text = "Gesamtwertung: " + comment.Sterne + "\n\n" + comment.Kommentar
+                };
+                comment.SubSterne.ToList()
+                    .ForEach(pair => lCommentContent.Text = pair.Key + ": " + pair.Value + "\n" + lCommentContent.Text);
+
+                Button lGotoButton = new Button {Content = "Gehe zu Benutzer"};
+                lGotoButton.Click += (sender, args) => { new UserWindow(comment.Autor, this._senpai).Show(); };
+
+                StackPanel lStackPanel = new StackPanel();
+                lStackPanel.Children.Add(lGotoButton);
+                lStackPanel.Children.Add(lCommentContent);
+
+                Expander lCommentExpander = new Expander
+                {
+                    Header = comment.Autor.UserName + "(" + comment.Autor.Id + ")",
+                    Content = lStackPanel
+                };
+
+                this.LatestCommentsStackPanel.Children.Add(lCommentExpander);
+            }
+        }
+
+        private async void LoadCommentsRating()
+        {
+            //Gibt die ersten 10 Kommentare(oder weniger, wenn nicht genug vorhanden sind) zurück
+            ProxerResult<IEnumerable<Comment>> lCommentsResult = await this._animeMangaObject.GetCommentsRating(0, 10);
+
+            if (!lCommentsResult.Success) return;
+
+            foreach (Comment comment in lCommentsResult.Result)
+            {
+                TextBlock lCommentContent = new TextBlock
+                {
+                    TextWrapping = TextWrapping.Wrap,
+                    Text = "Gesamtwertung: " + comment.Sterne + "\n\n" + comment.Kommentar
+                };
+                comment.SubSterne.ToList()
+                    .ForEach(pair => lCommentContent.Text = pair.Key + ": " + pair.Value + "\n" + lCommentContent.Text);
+
+                Button lGotoButton = new Button {Content = "Gehe zu Benutzer"};
+                lGotoButton.Click += (sender, args) => { new UserWindow(comment.Autor, this._senpai).Show(); };
+
+                StackPanel lStackPanel = new StackPanel();
+                lStackPanel.Children.Add(lGotoButton);
+                lStackPanel.Children.Add(lCommentContent);
+
+                Expander lCommentExpander = new Expander
+                {
+                    Header = comment.Autor.UserName + "(" + comment.Autor.Id + ")",
+                    Content = lStackPanel
+                };
+
+                this.RatingCommentsStackPanel.Children.Add(lCommentExpander);
+            }
         }
 
         private void LoadEpisoden()
@@ -350,6 +421,8 @@ namespace Azuria.Example
                 }
 
             this.LoadInfos();
+            this.LoadCommentsLatest();
+            this.LoadCommentsRating();
 
             switch (this._animeMangaObject.ObjectType)
             {

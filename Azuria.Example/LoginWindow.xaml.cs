@@ -26,7 +26,7 @@ namespace Azuria.Example
         private async void AMButton_Click(object sender, RoutedEventArgs e)
         {
             IAnimeMangaObject lAnimeMangaObject = (await ProxerClass.GetAnimeManga(8455, this._senpai)).OnError(null);
-            new AnimeMangaWindow(lAnimeMangaObject).Show();
+            new AnimeMangaWindow(lAnimeMangaObject, this._senpai).Show();
         }
 
         private async void ConferenceButton_Click(object sender, RoutedEventArgs e)

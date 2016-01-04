@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -8,6 +9,7 @@ using System.Windows.Media.Imaging;
 using Azuria.ErrorHandling;
 using Azuria.Example.Controls;
 using Azuria.Main;
+using Azuria.Main.Minor;
 using Azuria.Main.User;
 
 namespace Azuria.Example
@@ -48,14 +50,14 @@ namespace Azuria.Example
         {
             foreach (Anime favAnime in this._user.FavoritenAnime)
             {
-                this.AnimeFavsPanel.Children.Add(new AnimeMangaProgressControl(favAnime));
+                this.AnimeFavsPanel.Children.Add(new AnimeMangaProgressControl(favAnime, this._senpai));
             }
 
             foreach (
                 KeyValuePair<AnimeMangaProgress, AnimeMangaProgressObject> anime in
                     this._user.Anime)
             {
-                AnimeMangaProgressControl lProgressControl = new AnimeMangaProgressControl(anime.Value);
+                AnimeMangaProgressControl lProgressControl = new AnimeMangaProgressControl(anime.Value, this._senpai);
 
                 switch (anime.Key)
                 {
@@ -79,6 +81,45 @@ namespace Azuria.Example
             }
         }
 
+        private async void InitComments()
+        {
+            //Gibt die ersten 10 Kommentare(oder weniger, wenn nicht genug vorhanden sind) zurück
+            ProxerResult<IEnumerable<Comment>> lCommentsResult = await this._user.GetComments(0, 10);
+
+            if (!lCommentsResult.Success) return;
+
+            foreach (Comment comment in lCommentsResult.Result)
+            {
+                TextBlock lCommentContent = new TextBlock
+                {
+                    TextWrapping = TextWrapping.Wrap,
+                    Text = "Gesamtwertung: " + comment.Sterne + "\n\n" + comment.Kommentar
+                };
+                comment.SubSterne.ToList()
+                    .ForEach(pair => lCommentContent.Text = pair.Key + ": " + pair.Value + "\n" + lCommentContent.Text);
+
+                Button lGotoButton = new Button {Content = "Öffne Anime/Manga"};
+                lGotoButton.Click += async (sender, args) =>
+                {
+                    ProxerResult<IAnimeMangaObject> lResult =
+                        await ProxerClass.GetAnimeManga(comment.AnimeMangaId, this._senpai);
+
+                    if (!lResult.Success)
+                        MessageBox.Show("Es ist ein Fehler beim Abrufen des Anime/Manga aufgetreten!");
+
+                    new AnimeMangaWindow(lResult.Result, this._senpai).Show();
+                };
+
+                StackPanel lStackPanel = new StackPanel();
+                lStackPanel.Children.Add(lGotoButton);
+                lStackPanel.Children.Add(lCommentContent);
+
+                Expander lCommentExpander = new Expander {Header = comment.AnimeMangaId, Content = lStackPanel};
+
+                this.CommentStackPanel.Children.Add(lCommentExpander);
+            }
+        }
+
         private void InitComponents()
         {
             this.Title = "User: " + this._user.UserName;
@@ -98,6 +139,7 @@ namespace Azuria.Example
             this.InitFriends();
             this.InitAnime();
             this.InitManga();
+            this.InitComments();
         }
 
         private void InitFriends()
@@ -124,14 +166,14 @@ namespace Azuria.Example
         {
             foreach (Manga favManga in this._user.FavoritenManga)
             {
-                this.MangaFavsPanel.Children.Add(new AnimeMangaProgressControl(favManga));
+                this.MangaFavsPanel.Children.Add(new AnimeMangaProgressControl(favManga, this._senpai));
             }
 
             foreach (
                 KeyValuePair<AnimeMangaProgress, AnimeMangaProgressObject> manga in
                     this._user.Manga)
             {
-                AnimeMangaProgressControl lProgressControl = new AnimeMangaProgressControl(manga.Value);
+                AnimeMangaProgressControl lProgressControl = new AnimeMangaProgressControl(manga.Value, this._senpai);
 
                 switch (manga.Key)
                 {

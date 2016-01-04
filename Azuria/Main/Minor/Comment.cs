@@ -75,6 +75,36 @@ namespace Azuria.Main.Minor
 
         #region
 
+        private static string ContentToString(HtmlNodeCollection content)
+        {
+            string lString = string.Empty;
+
+            foreach (HtmlNode htmlNode in content)
+            {
+                switch (htmlNode.Name)
+                {
+                    case "#text":
+                        lString += htmlNode.InnerText;
+                        break;
+                    case "br":
+                        lString += "\n";
+                        break;
+                    case "div":
+                        if (htmlNode.Attributes.Contains("class") &&
+                            htmlNode.Attributes["class"].Value.Equals("spoiler"))
+                            lString += "<spoiler>" + ContentToString(htmlNode.ChildNodes[1].ChildNodes) + "</spoiler>";
+                        else goto default;
+
+                        break;
+                    default:
+                        lString += htmlNode.OuterHtml;
+                        break;
+                }
+            }
+
+            return lString.Trim();
+        }
+
         private static ProxerResult<Comment> GetCommentFromNode(HtmlNode commentNode, Senpai senpai, bool isUserPage)
         {
             HtmlNode[] lTableNodes =
@@ -115,7 +145,7 @@ namespace Azuria.Main.Minor
                     lTableNodes[1].ChildNodes.Remove(lTableNodes[1].ChildNodes.FindFirst("table"));
                 }
 
-                string lContent = lTableNodes[1].InnerHtml.Trim();
+                string lContent = ContentToString(lTableNodes[1].ChildNodes);
 
                 int lStars =
                     lTableNodes[2].ChildNodes.FindFirst("p").ChildNodes.Count(
