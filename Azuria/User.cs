@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Azuria.ErrorHandling;
 using Azuria.Exceptions;
 using Azuria.Main;
+using Azuria.Main.Minor;
 using Azuria.Main.User;
 using Azuria.Utilities;
 using Azuria.Utilities.Net;
@@ -320,6 +321,38 @@ namespace Azuria
             }
 
             return new ProxerResult<HtmlNode[]>(lReturn.ToArray());
+        }
+
+        /// <summary>
+        ///     Gibt die Kommentare des <see cref="User" /> chronologisch geordnet zurück.
+        ///     <para>(Vererbt von <see cref="IAnimeMangaObject" />)</para>
+        ///     <para>Mögliche Fehler, die <see cref="ProxerResult" /> enthalten kann:</para>
+        ///     <list type="table">
+        ///         <listheader>
+        ///             <term>Ausnahme</term>
+        ///             <description>Beschreibung</description>
+        ///         </listheader>
+        ///         <item>
+        ///             <term>
+        ///                 <see cref="WrongResponseException" />
+        ///             </term>
+        ///             <description>
+        ///                 <see cref="WrongResponseException" /> wird ausgelöst, wenn die Antwort des Servers nicht der
+        ///                 Erwarteten entspricht.
+        ///             </description>
+        ///         </item>
+        ///     </list>
+        /// </summary>
+        /// <param name="startIndex">Der Start-Index der ausgegebenen Kommentare.</param>
+        /// <param name="count">Die Anzahl der ausgegebenen Kommentare ab dem angegebenen <paramref name="startIndex" />.</param>
+        /// <returns>Eine Aufzählung mit den Kommentaren.</returns>
+        public async Task<ProxerResult<IEnumerable<Comment>>> GetComments(int startIndex, int count)
+        {
+            return
+                await
+                    Comment.GetCommentsFromUrl(startIndex, count,
+                        "https://proxer.me/user/" + this.Id + "/latestcomments/",
+                        "", this._senpai, true);
         }
 
         /// <summary>

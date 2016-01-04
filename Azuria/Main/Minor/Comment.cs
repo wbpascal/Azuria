@@ -14,14 +14,42 @@ namespace Azuria.Main.Minor
     /// </summary>
     public class Comment
     {
+        /// <summary>
+        /// </summary>
+        public enum CommentType
+        {
+            /// <summary>
+            /// </summary>
+            AnimeManga,
+
+            /// <summary>
+            /// </summary>
+            User
+        }
+
         internal Comment(Azuria.User autor, int sterne, string kommentar)
         {
             this.Autor = autor;
             this.Sterne = sterne;
             this.Kommentar = kommentar;
+
+            this.KommentarTyp = CommentType.AnimeManga;
+        }
+
+        internal Comment(int animeMangaId, int sterne, string kommentar)
+        {
+            this.AnimeMangaId = animeMangaId;
+            this.Sterne = sterne;
+            this.Kommentar = kommentar;
+
+            this.KommentarTyp = CommentType.User;
         }
 
         #region Properties
+
+        /// <summary>
+        /// </summary>
+        public int AnimeMangaId { get; set; }
 
         /// <summary>
         /// </summary>
@@ -30,6 +58,10 @@ namespace Azuria.Main.Minor
         /// <summary>
         /// </summary>
         public string Kommentar { get; set; }
+
+        /// <summary>
+        /// </summary>
+        public CommentType KommentarTyp { get; set; }
 
         /// <summary>
         /// </summary>
@@ -43,18 +75,31 @@ namespace Azuria.Main.Minor
 
         #region
 
-        private static ProxerResult<Comment> GetCommentFromNode(HtmlNode commentNode, Senpai senpai)
+        private static ProxerResult<Comment> GetCommentFromNode(HtmlNode commentNode, Senpai senpai, bool isUserPage)
         {
             HtmlNode[] lTableNodes =
                 commentNode.ChildNodes.FindFirst("tr").ChildNodes.Where(node => node.Name.Equals("td")).ToArray();
 
             try
             {
-                Azuria.User lAuthor = new Azuria.User(lTableNodes[0].InnerText.Replace("/t", ""), Convert.ToInt32(
-                    Utility.GetTagContents(
-                        lTableNodes[0].ChildNodes.Where(node => !node.Name.Equals("#text")).ToArray()[1].Attributes[
-                            "href"].Value, "/user/", "#top")
-                        .First()), senpai);
+                Azuria.User lAuthor = Azuria.User.System;
+                int lAnimeMangaId = -1;
+
+                if (isUserPage)
+                {
+                    lAnimeMangaId =
+                        Convert.ToInt32(
+                            Utility.GetTagContents(commentNode.ChildNodes.FindFirst("a").Attributes["href"].Value,
+                                "/info/", "#top").First());
+                }
+                else
+                {
+                    lAuthor = new Azuria.User(lTableNodes[0].InnerText.Replace("/t", ""), Convert.ToInt32(
+                        Utility.GetTagContents(
+                            lTableNodes[0].ChildNodes.FindFirst("a").Attributes[
+                                "href"].Value, "/user/", "#top")
+                            .First()), senpai);
+                }
 
                 Dictionary<string, int> lSubRatings = new Dictionary<string, int>();
                 if (lTableNodes[1].ChildNodes.Any(node => node.Name.Equals("table")))
@@ -78,7 +123,9 @@ namespace Azuria.Main.Minor
                             starNode.Name.Equals("img") && starNode.Attributes.Contains("src") &&
                             starNode.Attributes["src"].Value.Equals("/images/misc/stern.png"));
 
-                return new ProxerResult<Comment>(new Comment(lAuthor, lStars, lContent) {SubSterne = lSubRatings});
+                return isUserPage
+                    ? new ProxerResult<Comment>(new Comment(lAnimeMangaId, lStars, lContent) {SubSterne = lSubRatings})
+                    : new ProxerResult<Comment>(new Comment(lAuthor, lStars, lContent) {SubSterne = lSubRatings});
             }
             catch
             {
@@ -87,7 +134,7 @@ namespace Azuria.Main.Minor
         }
 
         internal static async Task<ProxerResult<IEnumerable<Comment>>> GetCommentsFromUrl(int startIndex, int count,
-            string url, string sort, Senpai senpai)
+            string url, string sort, Senpai senpai, bool isUserPage = false)
         {
             const int lKommentareProSeite = 25;
 
@@ -105,9 +152,16 @@ namespace Azuria.Main.Minor
                     node.Name.Equals("p") && node.Attributes.Contains("align") &&
                     node.Attributes["align"].Value.Equals("center"))) != default(HtmlNode))
                 {
-                    return lNode.InnerText.Equals("Es existieren bisher keine Kommentare.")
-                        ? new ProxerResult(new[] {new WrongResponseException {Response = s}})
-                        : new ProxerResult();
+                    if (lNode.InnerText.Equals("Es existieren bisher keine Kommentare."))
+                        return new ProxerResult(new[] {new WrongResponseException {Response = s}});
+                }
+
+                if ((lNode = lDocument.DocumentNode.ChildNodes.FirstOrDefault(node =>
+                    node.Name.Equals("div") && node.Attributes.Contains("class") &&
+                    node.Attributes["class"].Value.Equals("inner"))) != default(HtmlNode))
+                {
+                    if (lNode.InnerText.Equals("Dieser Benutzer hat bislang keine Kommentare."))
+                        return new ProxerResult(new[] {new WrongResponseException {Response = s}});
                 }
 
                 return new ProxerResult();
@@ -134,7 +188,7 @@ namespace Azuria.Main.Minor
                         if (i >= startIndex%lKommentareProSeite)
                         {
                             lReturn.Add(
-                                GetCommentFromNode(commentNode, senpai)
+                                GetCommentFromNode(commentNode, senpai, isUserPage)
                                     .OnError(new Comment(Azuria.User.System, -1, "ERROR")));
                             count--;
                         }
