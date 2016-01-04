@@ -293,6 +293,37 @@ namespace Azuria.Main
 
 
         /// <summary>
+        ///     Gibt die Kommentare des <see cref="Anime" />, nach ihrer Beliebtheit sortiert, zurück.
+        ///     <para>(Vererbt von <see cref="IAnimeMangaObject" />)</para>
+        ///     <para>Mögliche Fehler, die <see cref="ProxerResult" /> enthalten kann:</para>
+        ///     <list type="table">
+        ///         <listheader>
+        ///             <term>Ausnahme</term>
+        ///             <description>Beschreibung</description>
+        ///         </listheader>
+        ///         <item>
+        ///             <term>
+        ///                 <see cref="WrongResponseException" />
+        ///             </term>
+        ///             <description>
+        ///                 <see cref="WrongResponseException" /> wird ausgelöst, wenn die Antwort des Servers nicht der
+        ///                 Erwarteten entspricht.
+        ///             </description>
+        ///         </item>
+        ///     </list>
+        /// </summary>
+        /// <param name="startIndex">Der Start-Index der ausgegebenen Kommentare.</param>
+        /// <param name="count">Die Anzahl der ausgegebenen Kommentare ab dem angegebenen <paramref name="startIndex" />.</param>
+        /// <returns>Eine Aufzählung mit den Kommentaren.</returns>
+        public async Task<ProxerResult<IEnumerable<Comment>>> GetCommentsRating(int startIndex, int count)
+        {
+            return
+                await
+                    Comment.GetCommentsFromUrl(startIndex, count, "https://proxer.me/info/" + this.Id + "/comments/",
+                        "rating", this._senpai);
+        }
+
+        /// <summary>
         ///     Initialisiert das Objekt.
         ///     <para>(Vererbt von <see cref="IAnimeMangaObject" />)</para>
         ///     <para>Mögliche Fehler, die <see cref="ProxerResult" /> enthalten kann:</para>
@@ -374,7 +405,7 @@ namespace Azuria.Main
         }
 
         /// <summary>
-        ///     Gibt die aktuellen Kommentare des <see cref="Anime" /> zurück.
+        ///     Gibt die Kommentare des <see cref="Anime" /> chronologisch geordnet zurück.
         ///     <para>(Vererbt von <see cref="IAnimeMangaObject" />)</para>
         ///     <para>Mögliche Fehler, die <see cref="ProxerResult" /> enthalten kann:</para>
         ///     <list type="table">
@@ -396,71 +427,12 @@ namespace Azuria.Main
         /// <param name="startIndex">Der Start-Index der ausgegebenen Kommentare.</param>
         /// <param name="count">Die Anzahl der ausgegebenen Kommentare ab dem angegebenen <paramref name="startIndex" />.</param>
         /// <returns>Eine Aufzählung mit den Kommentaren.</returns>
-        public async Task<ProxerResult<IEnumerable<Comment>>> GetComments(int startIndex, int count)
+        public async Task<ProxerResult<IEnumerable<Comment>>> GetCommentsLatest(int startIndex, int count)
         {
-            const int lKommentareProSeite = 25;
-
-            List<Comment> lReturn = new List<Comment>();
-            int lStartSeite = Convert.ToInt32(startIndex/lKommentareProSeite + 1);
-            HtmlDocument lDocument = new HtmlDocument();
-            Func<string, ProxerResult> lCheckFunc = s =>
-            {
-                lDocument = new HtmlDocument();
-                lDocument.LoadHtml(s);
-
-                HtmlNode lNode;
-
-                if ((lNode = lDocument.DocumentNode.ChildNodes.FirstOrDefault(node =>
-                    node.Name.Equals("p") && node.Attributes.Contains("align") &&
-                    node.Attributes["align"].Value.Equals("center"))) != default(HtmlNode))
-                {
-                    return lNode.InnerText.Equals("Es existieren bisher keine Kommentare.")
-                        ? new ProxerResult(new[] {new WrongResponseException {Response = s}})
-                        : new ProxerResult();
-                }
-
-                return new ProxerResult();
-            };
-
-            ProxerResult<string> lResult;
-
-            while (count > 0 &&
-                   (lResult =
-                       await
-                           HttpUtility.GetResponseErrorHandling(
-                               "https://proxer.me/info/" + this.Id + "/comments/" + lStartSeite + "?format=raw",
-                               this._senpai.LoginCookies, this._senpai.ErrHandler, this._senpai, new[] {lCheckFunc}))
-                       .Success)
-            {
-                try
-                {
-                    int i = 0;
-                    foreach (HtmlNode commentNode in lDocument.DocumentNode.ChildNodes.Where(
-                        node =>
-                            node.Name.Equals("table") && node.Attributes.Contains("class") &&
-                            node.Attributes["class"].Value.Equals("details")).TakeWhile(node => count > 0))
-                    {
-                        if (i >= startIndex%lKommentareProSeite)
-                        {
-                            lReturn.Add(
-                                Utility.GetCommentFromNode(commentNode, this._senpai)
-                                    .OnError(new Comment(Azuria.User.System, -1, "ERROR")));
-                            count--;
-                        }
-
-                        i++;
-                    }
-                    lStartSeite++;
-                }
-                catch
-                {
-                    return
-                        new ProxerResult<IEnumerable<Comment>>(
-                            (await ErrorHandler.HandleError(this._senpai, lResult.Result, false)).Exceptions);
-                }
-            }
-
-            return new ProxerResult<IEnumerable<Comment>>(lReturn);
+            return
+                await
+                    Comment.GetCommentsFromUrl(startIndex, count, "https://proxer.me/info/" + this.Id + "/comments/",
+                        "latest", this._senpai);
         }
 
         #endregion
