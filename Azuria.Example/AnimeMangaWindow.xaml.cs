@@ -28,12 +28,12 @@ namespace Azuria.Example
 
         #region
 
-        private static string ArrayToString(IEnumerable<string> array)
+        private static string ArrayToString(IEnumerable<Genre> array)
         {
             StringBuilder builder = new StringBuilder();
-            foreach (string value in array)
+            foreach (Genre value in array)
             {
-                builder.Append(value);
+                builder.Append(value.Name);
                 builder.Append(',');
             }
             return builder.ToString();

@@ -80,6 +80,7 @@
     <Compile Include="Main\IAnimeMangaObject.cs" />
     <Compile Include="Main\Manga.cs" />
     <Compile Include="Main\Minor\Comment.cs" />
+    <Compile Include="Main\Minor\Genre.cs" />
     <Compile Include="Main\Minor\Group.cs" />
     <Compile Include="Main\Minor\Industry.cs" />
     <Compile Include="Main\User\AnimeMangaProgress.cs" />

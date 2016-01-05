@@ -72,7 +72,7 @@ namespace Azuria.Main
         private string _deutschTitel;
         private string _englischTitel;
         private Dictionary<Uri, string> _fsk;
-        private string[] _genre;
+        private Genre[] _genre;
         private Group[] _gruppen;
         private Industry[] _industrie;
         private string _japanTitel;
@@ -163,9 +163,9 @@ namespace Azuria.Main
         ///     <para>Diese Eigenschaft muss durch <see cref="Init" /> initialisiert werden.</para>
         /// </summary>
         /// <seealso cref="Init" />
-        public IEnumerable<string> Genre
+        public IEnumerable<Genre> Genre
         {
-            get { return this._genre ?? new string[0]; }
+            get { return this._genre ?? new Genre[0]; }
             private set { this._genre = value.ToArray(); }
         }
 
@@ -735,11 +735,11 @@ namespace Azuria.Main
                             this.Synonym = childNode.ChildNodes[1].InnerText;
                             break;
                         case "Genre":
-                            List<string> lGenreList = new List<string>();
+                            List<Genre> lGenreList = new List<Genre>();
                             foreach (HtmlNode htmlNode in childNode.ChildNodes[1].ChildNodes.ToList())
                             {
                                 if (htmlNode.Name.Equals("a"))
-                                    lGenreList.Add(htmlNode.InnerText);
+                                    lGenreList.Add(new Genre(htmlNode.InnerText));
                             }
                             this.Genre = lGenreList.ToArray();
                             break;
