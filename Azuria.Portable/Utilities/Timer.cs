@@ -14,7 +14,8 @@ namespace System.Timers
 
     internal sealed class Timer
     {
-        private readonly CancellationTokenSource _ct = new CancellationTokenSource();
+        private CancellationTokenSource _ct;
+        private bool _isFinished;
         private Task _task;
 
         internal Timer()
@@ -50,27 +51,42 @@ namespace System.Timers
 
         private void CreateTask()
         {
-            this._task = new Task(async () =>
+            this._ct = new CancellationTokenSource();
+            this._task = new Task(this.Action, this._ct.Token);
+        }
+
+        private async void Action()
+        {
+            this._isFinished = false;
+            do
             {
-                do
+                if (this._ct.Token.IsCancellationRequested)
                 {
-                    await Task.Delay(TimeSpan.FromMilliseconds(double.IsNaN(this.Interval) ? 1000.0 : this.Interval));
-                    this.Elapsed?.Invoke(this, EventArgs.Empty);
-                } while (this.AutoReset);
-            }, this._ct.Token);
+                    this._isFinished = true;
+                    return;
+                }
+                await Task.Delay(TimeSpan.FromMilliseconds(double.IsNaN(this.Interval) ? 1000.0 : this.Interval));
+                if (this._ct.Token.IsCancellationRequested)
+                {
+                    this._isFinished = true;
+                    return;
+                }
+                this.Elapsed?.Invoke(this, EventArgs.Empty);
+            } while (this.AutoReset);
         }
 
         internal event ElapsedEventHandler Elapsed;
 
         internal void Start()
         {
-            if (this._task.IsCompleted) this.CreateTask();
+            if (this._isFinished) this.CreateTask();
             if (this._task.Status != TaskStatus.Running) this._task.Start();
         }
 
         internal void Stop()
         {
-            if (this._task.Status == TaskStatus.Running && !this._ct.IsCancellationRequested &&
+            if (!this._isFinished &&
+                !this._ct.IsCancellationRequested &&
                 this._ct.Token.CanBeCanceled) this._ct.Cancel();
         }
 
