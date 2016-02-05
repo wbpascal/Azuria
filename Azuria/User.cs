@@ -11,13 +11,14 @@ using Azuria.Utilities;
 using Azuria.Utilities.Net;
 using HtmlAgilityPack;
 using Newtonsoft.Json;
+using Azuria.Main.Search;
 
 namespace Azuria
 {
     /// <summary>
     ///     Repräsentiert einen Proxer-Benutzer
     /// </summary>
-    public class User
+    public class User : ISearchableObject
     {
         /// <summary>
         ///     Representiert das System.

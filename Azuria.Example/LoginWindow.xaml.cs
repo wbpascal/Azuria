@@ -6,6 +6,7 @@ using Azuria.Community;
 using Azuria.ErrorHandling;
 using Azuria.Main;
 using Azuria.Utilities.Net;
+using Azuria.Main.Search;
 
 namespace Azuria.Example
 {
@@ -25,7 +26,7 @@ namespace Azuria.Example
 
         private async void AMButton_Click(object sender, RoutedEventArgs e)
         {
-            IAnimeMangaObject lAnimeMangaObject = (await ProxerClass.GetAnimeManga(8455, this._senpai)).OnError(null);
+            IAnimeMangaObject lAnimeMangaObject = (await ProxerClass.GetAnimeMangaById(8455, this._senpai)).OnError(null);
             new AnimeMangaWindow(lAnimeMangaObject, this._senpai).Show();
         }
 
@@ -64,13 +65,15 @@ namespace Azuria.Example
             //Es wird empfolen jedesmal, wenn ein Benutzer sich einloggt ein neues Senpai-Objekt zu erzeugen, 
             //da es momentan noch keine Reset-Methode gibt und einige Eigenschaften zurückgesetzt werden müssen.
             this._senpai = new Senpai();
-
+            
             //Loggt den Benutzer mit den angegeben Daten ein.
             ProxerResult<bool> lResult = await this._senpai.Login(this.TextBox1.Text, this.PasswordBox1.Password);
             //Unterscheidet, ob der Benutzer eingeloggt wurde oder nicht
-            if (lResult.Success && lResult.Result)
+            if (lResult.Success && lResult.Result) 
+            {
                 //Benutzer wurder erfolgreich eingeloggt
                 MessageBox.Show("Du wurdest erfolgreich eingeloggt!");
+            }
             else
             {
                 //Es ist ein Fehler in der Methode aufgetreten

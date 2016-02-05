@@ -55,7 +55,7 @@ namespace Azuria.Example
                         "/" + lUpdateObject.Number + "/").First());
                 //Rufe den Anime oder Manga der Benachrichtigung ab
                 IAnimeMangaObject lAnimeMangaObject =
-                    (await ProxerClass.GetAnimeManga(lAnimeMangaId, this._senpai)).OnError(null);
+                    (await ProxerClass.GetAnimeMangaById(lAnimeMangaId, this._senpai)).OnError(null);
                 //Öffne das Anime-/Manga-Fenster
                 new AnimeMangaWindow(lAnimeMangaObject, this._senpai).Show();
             }

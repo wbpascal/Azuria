@@ -28,12 +28,12 @@ namespace Azuria.Example
 
         #region
 
-        private static string ArrayToString(IEnumerable<Genre> array)
+        private static string ArrayToString(IEnumerable<GenreObject> array)
         {
             StringBuilder builder = new StringBuilder();
-            foreach (Genre value in array)
+            foreach (GenreObject value in array)
             {
-                builder.Append(value.Name);
+                builder.Append(value.Genre);
                 builder.Append(',');
             }
             return builder.ToString();
@@ -389,9 +389,9 @@ namespace Azuria.Example
 
             //Wird hier nur zu demonstrations Zwecken überprüft, es können vom API aus jede Sprache abgerufen werden, 
             //die auch in der Sprachen-Eigenschaft eingetragen sind
-            if (!lManga.Sprachen.Contains(Manga.Language.English)) return;
+            if (!lManga.Sprachen.Contains(Main.Minor.Language.Englisch)) return;
 
-            ProxerResult<IEnumerable<Manga.Chapter>> lKapitelResult = lManga.GetChapters(Manga.Language.English);
+            ProxerResult<IEnumerable<Manga.Chapter>> lKapitelResult = lManga.GetChapters(Main.Minor.Language.Englisch);
             if (lKapitelResult.Success)
             {
                 lKapitelResult.Result.ToList().ForEach(kapitel => this.KapitelComboBox.Items.Add(kapitel));

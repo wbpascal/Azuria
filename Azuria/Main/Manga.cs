@@ -19,22 +19,6 @@ namespace Azuria.Main
     public class Manga : IAnimeMangaObject
     {
         /// <summary>
-        ///     Eine Enumeration, die die Sprache eines <see cref="Manga" /> darstellt.
-        /// </summary>
-        public enum Language
-        {
-            /// <summary>
-            ///     Die Sprache ist Deutsch.
-            /// </summary>
-            Deutsch,
-
-            /// <summary>
-            ///     Die Sprache ist Englisch.
-            /// </summary>
-            English
-        }
-
-        /// <summary>
         ///     Eine Enumeration, die den Typ des Mangas darstellt.
         /// </summary>
         public enum MangaType
@@ -57,13 +41,15 @@ namespace Azuria.Main
         private string _deutschTitel;
         private string _englischTitel;
         private Dictionary<Uri, string> _fsk;
-        private Genre[] _genre;
+        private GenreObject[] _genre;
         private Group[] _gruppen;
         private Industry[] _industrie;
         private string _japanTitel;
         private string[] _season;
         private Language[] _sprachen;
         private string _synonym;
+
+        internal Manga() { }
 
         internal Manga(string name, int id, Senpai senpai)
         {
@@ -147,9 +133,9 @@ namespace Azuria.Main
         ///     <para>Diese Eigenschaft muss durch <see cref="Init" /> initialisiert werden.</para>
         /// </summary>
         /// <seealso cref="Init" />
-        public IEnumerable<Genre> Genre
+        public IEnumerable<GenreObject> Genre
         {
-            get { return this._genre ?? new Genre[0]; }
+            get { return this._genre ?? new GenreObject[0]; }
             private set { this._genre = value.ToArray(); }
         }
 
@@ -604,7 +590,7 @@ namespace Azuria.Main
                     switch (childNode.FirstChild.InnerText)
                     {
                         case "Englisch":
-                            languageList.Add(Language.English);
+                            languageList.Add(Language.Englisch);
                             break;
                         case "Deutsch":
                             languageList.Add(Language.Deutsch);
@@ -717,11 +703,11 @@ namespace Azuria.Main
                             this.Synonym = childNode.ChildNodes[1].InnerText;
                             break;
                         case "Genre":
-                            List<Genre> lGenreList = new List<Genre>();
+                            List<GenreObject> lGenreList = new List<GenreObject>();
                             foreach (HtmlNode htmlNode in childNode.ChildNodes[1].ChildNodes.ToList())
                             {
                                 if (htmlNode.Name.Equals("a"))
-                                    lGenreList.Add(new Genre(htmlNode.InnerText));
+                                    lGenreList.Add(new GenreObject(htmlNode.InnerText));
                             }
                             this.Genre = lGenreList.ToArray();
                             break;

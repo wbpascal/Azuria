@@ -129,6 +129,12 @@ namespace Azuria.Utilities
                     .Where(x => x.Attributes.Contains(attribute) && x.Attributes[attribute].Value == value);
         }
 
+        internal static HtmlDocument LoadHtmlUtility(this HtmlDocument document, string html) 
+        {
+            document.LoadHtml(html);
+            return document;
+        }
+
         internal static DateTime ToDateTime(string strFdate, string format = "dd.MM.yyyy")
         {
             return DateTime.ParseExact(

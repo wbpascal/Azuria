@@ -80,9 +80,15 @@
     <Compile Include="Main\IAnimeMangaObject.cs" />
     <Compile Include="Main\Manga.cs" />
     <Compile Include="Main\Minor\Comment.cs" />
-    <Compile Include="Main\Minor\Genre.cs" />
+    <Compile Include="Main\Minor\Fsk.cs" />
+    <Compile Include="Main\Minor\FskHelper.cs" />
+    <Compile Include="Main\Minor\GenreObject.cs" />
     <Compile Include="Main\Minor\Group.cs" />
     <Compile Include="Main\Minor\Industry.cs" />
+    <Compile Include="Main\Minor\Language.cs" />
+    <Compile Include="Main\Search\ISearchResultObject.cs" />
+    <Compile Include="Main\Search\SearchHelper.cs" />
+    <Compile Include="Main\Search\SearchResult.cs" />
     <Compile Include="Main\User\AnimeMangaProgress.cs" />
     <Compile Include="Main\User\AnimeMangaProgressObject.cs" />
     <Compile Include="Notifications\AnimeMangaUpdateCollection.cs" />
@@ -109,6 +115,7 @@
     <Compile Include="ErrorHandling\ErrorHandler.cs" />
     <Compile Include="Utilities\Net\HttpUtility.cs" />
     <Compile Include="ErrorHandling\ProxerResult.cs" />
+    <Compile Include="Utilities\SearchUtility.cs" />
     <Compile Include="Utilities\Utility.cs" />
   </ItemGroup>
   <ItemGroup>

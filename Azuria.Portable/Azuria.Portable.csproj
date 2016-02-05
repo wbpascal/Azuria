@@ -102,14 +102,32 @@
     <Compile Include="..\Azuria\Main\Minor\Comment.cs">
       <Link>Main\Minor\Comment.cs</Link>
     </Compile>
-    <Compile Include="..\Azuria\Main\Minor\Genre.cs">
-      <Link>Main\Minor\Genre.cs</Link>
+    <Compile Include="..\Azuria\Main\Minor\Fsk.cs">
+      <Link>Main\Minor\Fsk.cs</Link>
+    </Compile>
+    <Compile Include="..\Azuria\Main\Minor\FskHelper.cs">
+      <Link>Main\Minor\FskHelper.cs</Link>
+    </Compile>
+    <Compile Include="..\Azuria\Main\Minor\GenreObject.cs">
+      <Link>Main\Minor\GenreObject.cs</Link>
     </Compile>
     <Compile Include="..\Azuria\Main\Minor\Group.cs">
       <Link>Main\Minor\Group.cs</Link>
     </Compile>
     <Compile Include="..\Azuria\Main\Minor\Industry.cs">
       <Link>Main\Minor\Industry.cs</Link>
+    </Compile>
+    <Compile Include="..\Azuria\Main\Minor\Language.cs">
+      <Link>Main\Minor\Language.cs</Link>
+    </Compile>
+    <Compile Include="..\Azuria\Main\Search\ISearchResultObject.cs">
+      <Link>Main\Search\ISearchResultObject.cs</Link>
+    </Compile>
+    <Compile Include="..\Azuria\Main\Search\SearchHelper.cs">
+      <Link>Main\Search\SearchHelper.cs</Link>
+    </Compile>
+    <Compile Include="..\Azuria\Main\Search\SearchResult.cs">
+      <Link>Main\Search\SearchResult.cs</Link>
     </Compile>
     <Compile Include="..\Azuria\Main\User\AnimeMangaProgress.cs">
       <Link>Main\User\AnimeMangaProgress.cs</Link>
@@ -158,6 +176,9 @@
     </Compile>
     <Compile Include="..\Azuria\User.cs">
       <Link>User.cs</Link>
+    </Compile>
+    <Compile Include="..\Azuria\Utilities\SearchUtility.cs">
+      <Link>Utilities\SearchUtility.cs</Link>
     </Compile>
     <Compile Include="..\Azuria\Utilities\Utility.cs">
       <Link>Utilities\Utility.cs</Link>

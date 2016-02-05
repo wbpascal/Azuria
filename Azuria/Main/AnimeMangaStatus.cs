@@ -23,6 +23,11 @@
         /// <summary>
         ///     Der <see cref="Anime" /> oder <see cref="Manga" /> ist abgeschlossen.
         /// </summary>
-        Abgeschlossen
+        Abgeschlossen,
+
+        /// <summary>
+        ///     Der Status des <see cref="Anime" /> oder <see cref="Manga" /> ist unbekannt.
+        /// </summary>
+        Unbekannt
     }
 }

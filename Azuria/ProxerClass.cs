@@ -42,7 +42,7 @@ namespace Azuria
         /// <param name="id">Die ID des <see cref="Main.Anime">Anime</see> oder <see cref="Main.Manga">Manga</see>.</param>
         /// <param name="senpai">Der Benutzer. (Muss eingeloggt sein)</param>
         /// <returns>Anime oder Manga der ID (Typecast erforderlich)</returns>
-        public static async Task<ProxerResult<IAnimeMangaObject>> GetAnimeManga(int id, Senpai senpai)
+        public static async Task<ProxerResult<IAnimeMangaObject>> GetAnimeMangaById(int id, Senpai senpai)
         {
             if (senpai == null)
                 return new ProxerResult<IAnimeMangaObject>(new Exception[] {new ArgumentNullException(nameof(senpai))});

@@ -102,7 +102,7 @@ namespace Azuria.Example
                 lGotoButton.Click += async (sender, args) =>
                 {
                     ProxerResult<IAnimeMangaObject> lResult =
-                        await ProxerClass.GetAnimeManga(comment.AnimeMangaId, this._senpai);
+                        await ProxerClass.GetAnimeMangaById(comment.AnimeMangaId, this._senpai);
 
                     if (!lResult.Success)
                         MessageBox.Show("Es ist ein Fehler beim Abrufen des Anime/Manga aufgetreten!");

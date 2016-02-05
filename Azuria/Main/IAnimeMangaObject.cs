@@ -4,13 +4,14 @@ using System.Threading.Tasks;
 using Azuria.ErrorHandling;
 using Azuria.Exceptions;
 using Azuria.Main.Minor;
+using Azuria.Main.Search;
 
 namespace Azuria.Main
 {
     /// <summary>
     ///     Eine Klasse, die einen <see cref="Anime" /> oder <see cref="Manga" /> darstellt.
     /// </summary>
-    public interface IAnimeMangaObject
+    public interface IAnimeMangaObject : ISearchableObject
     {
         #region Properties
 
@@ -48,7 +49,7 @@ namespace Azuria.Main
         ///     Gitb die Genres des <see cref="Anime" /> oder <see cref="Manga" /> zurück.
         ///     <para>(Vererbt von <see cref="IAnimeMangaObject" />)</para>
         /// </summary>
-        IEnumerable<Genre> Genre { get; }
+        IEnumerable<GenreObject> Genre { get; }
 
         /// <summary>
         ///     Gibt die Gruppen zurück, die den <see cref="Anime" /> oder <see cref="Manga" /> übersetzten oder übersetzt haben.
