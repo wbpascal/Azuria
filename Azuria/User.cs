@@ -40,35 +40,24 @@ namespace Azuria
         private string _status;
         private string _userName;
 
-        internal User(string name, int userId, Senpai senpai)
-        {
-            this._senpai = senpai;
-            this._initFuncs = new Func<Task<ProxerResult>>[]
-            {this.InitMainInfo, this.InitInfos, this.InitFriends, this.InitAnime, this.InitManga};
-            this.IstInitialisiert = false;
+        /// <summary>
+        ///     Initialisiert die Klasse mit allen Standardeinstellungen.
+        /// </summary>
+        /// <param name="userId">Die ID des Benutzers</param>
+        /// <param name="senpai">Wird benötigt um einige Eigenschaften abzurufen</param>
+        public User(int userId, Senpai senpai) : this("", userId, senpai)
+        { }
 
-            this.UserName = name;
-            this.Id = userId;
-            this.Avatar =
-                new Uri(
-                    "https://proxer.me/components/com_comprofiler/plugin/templates/default/images/avatar/nophoto_n.png");
+        internal User(string name, int userId, Senpai senpai) : this(name, userId, null, senpai)
+        { }
+
+        internal User(string name, int userId, Uri avatar, int points, Senpai senpai) : this(name, userId, avatar, senpai) 
+        {
+            this.Punkte = points;
         }
 
-        internal User(string name, int userId, Uri avatar, Senpai senpai)
-        {
-            this._senpai = senpai;
-            this._initFuncs = new Func<Task<ProxerResult>>[]
-            {this.InitMainInfo, this.InitInfos, this.InitFriends, this.InitAnime, this.InitManga};
-            this.IstInitialisiert = false;
-
-            this.UserName = name;
-            this.Id = userId;
-            if (avatar != null) this.Avatar = avatar;
-            else
-                this.Avatar =
-                    new Uri(
-                        "https://proxer.me/components/com_comprofiler/plugin/templates/default/images/avatar/nophoto_n.png");
-        }
+        internal User(string name, int userId, Uri avatar, Senpai senpai) : this(name, userId, avatar, false, senpai)
+        { }
 
         internal User(string name, int userId, Uri avatar, bool online, Senpai senpai)
         {
@@ -87,23 +76,6 @@ namespace Azuria
                         "https://proxer.me/components/com_comprofiler/plugin/templates/default/images/avatar/nophoto_n.png");
         }
 
-        /// <summary>
-        ///     Initialisiert die Klasse mit allen Standardeinstellungen.
-        /// </summary>
-        /// <param name="userId">Die ID des Benutzers</param>
-        /// <param name="senpai">Wird benötigt um einige Eigenschaften abzurufen</param>
-        public User(int userId, Senpai senpai)
-        {
-            this._senpai = senpai;
-            this._initFuncs = new Func<Task<ProxerResult>>[]
-            {this.InitMainInfo, this.InitInfos, this.InitFriends, this.InitAnime, this.InitManga};
-            this.IstInitialisiert = false;
-
-            this.Id = userId;
-            this.Avatar =
-                new Uri(
-                    "https://proxer.me/components/com_comprofiler/plugin/templates/default/images/avatar/nophoto_n.png");
-        }
 
         #region Properties
 

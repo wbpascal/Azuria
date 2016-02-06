@@ -4,6 +4,7 @@ using System.Globalization;
 using System.Linq;
 using Azuria.ErrorHandling;
 using HtmlAgilityPack;
+using System.Reflection;
 
 // ReSharper disable LoopCanBeConvertedToQuery
 
@@ -31,7 +32,7 @@ namespace Azuria.Utilities
             return lHtmlNodes;
         }
 
-        internal static List<string> GetTagContents(string source, string startTag, string endTag)
+        internal static List<string> GetTagContents(this string source, string startTag, string endTag)
         {
             List<string> stringsFound = new List<string>();
             int index = source.IndexOf(startTag, StringComparison.Ordinal) + startTag.Length;
@@ -133,6 +134,15 @@ namespace Azuria.Utilities
         {
             document.LoadHtml(html);
             return document;
+        }
+
+        internal static bool HasParameterlessConstructor(this Type type) 
+        {
+            foreach(ConstructorInfo ctor in type.GetTypeInfo().DeclaredConstructors)
+            {
+                if (!ctor.IsPrivate && ctor.GetParameters().Length == 0) return true;
+            }
+            return false;
         }
 
         internal static DateTime ToDateTime(string strFdate, string format = "dd.MM.yyyy")

@@ -1,5 +1,6 @@
 ﻿using Azuria.ErrorHandling;
 using Azuria.Main.Minor;
+using Azuria.Utilities;
 using Azuria.Utilities.Net;
 using HtmlAgilityPack;
 using System;
@@ -44,7 +45,7 @@ namespace Azuria.Main.Search
             ProxerResult<string> lResult =
                 await
                     HttpUtility.GetResponseErrorHandling(
-                        "https://proxer.me/search?s=search" + this._link + "&format=raw&p=" + this._curSite,
+                        "https://proxer.me/" + this._link + "&format=raw&p=" + this._curSite,
                         this._senpai.LoginCookies,
                         this._senpai.ErrHandler,
                         this._senpai);
@@ -68,10 +69,15 @@ namespace Azuria.Main.Search
                 List<T> lSearchResults = new List<T>();
                 foreach (HtmlNode childNode in lNode.ChildNodes)
                 {
-                    if (typeof(T) == typeof(IAnimeMangaObject) || Activator.CreateInstance(typeof(T), true) is IAnimeMangaObject)
+                    if (typeof(T) == typeof(IAnimeMangaObject) || (typeof(T).HasParameterlessConstructor() && Activator.CreateInstance(typeof(T), true) is IAnimeMangaObject))
                     {
                         IAnimeMangaObject lAnimeMangaObject = this.getSearchResultObjectAnimeManga(childNode);
                         if (lAnimeMangaObject != null) lSearchResults.Add((T)lAnimeMangaObject);
+                    }
+                    else if (typeof(T) == typeof(Azuria.User))
+                    {
+                        Azuria.User lUserObject = this.getSearchResultObjectUser(childNode);
+                        if (lUserObject != null) lSearchResults.Add((T)Convert.ChangeType(lUserObject, typeof(T)));
                     }
                 }
                 List<T> lCopyList = this.SearchResults.ToList();
@@ -146,6 +152,20 @@ namespace Azuria.Main.Search
             if ((typeof(T) == typeof(Anime) || typeof(T) == typeof(IAnimeMangaObject)) && lType == typeof(Anime)) return new Anime(lName, lId, this._senpai, lGenreList, lStatus, lAnimeType);
             else if ((typeof(T) == typeof(Manga) || typeof(T) == typeof(IAnimeMangaObject)) && lType == typeof(Manga)) return new Manga(lName, lId, this._senpai, lGenreList, lStatus, lMangaType);
             else return null;
+        }
+
+        private Azuria.User getSearchResultObjectUser(HtmlNode node)
+        {
+            Uri lAvatar = node.FirstChild.FirstChild.Attributes.Contains("src")
+                    ? new Uri("https:" + node.FirstChild.FirstChild.Attributes["src"].Value) : null;
+            string lUsername = node.ChildNodes[1].InnerText;
+            int lUserId;
+            int lPunkte;
+            if (!(node.ChildNodes[1].FirstChild.Attributes.Contains("href")
+                    && int.TryParse(node.ChildNodes[1].FirstChild.Attributes["href"].Value.GetTagContents("/user/", "#top").First(), out lUserId))
+                    || !int.TryParse(node.ChildNodes[7].InnerText, out lPunkte)) return null;
+
+            return new Azuria.User(lUsername, lUserId, lAvatar, lPunkte, this._senpai);
         }
     }
 }

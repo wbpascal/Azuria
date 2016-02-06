@@ -100,6 +100,52 @@ namespace Azuria.Main.Search
         /// <typeparam name="T"></typeparam>
         /// <param name="name"></param>
         /// <param name="senpai"></param>
+        /// <returns></returns>
+        public static async Task<ProxerResult<SearchResult<T>>> Search<T>(string name, Senpai senpai) where T : ISearchableObject
+        {
+            if (typeof(T) == typeof(IAnimeMangaObject) || (typeof(T).HasParameterlessConstructor() && Activator.CreateInstance(typeof(T), true) is IAnimeMangaObject))
+            {
+                SearchResult<T> lSearchResultObject = new SearchResult<T>("search?s=search&name=" + name, senpai);
+                ProxerResult<IEnumerable<T>> lGetSearchResult = await lSearchResultObject.getNextSearchResults();
+                return lGetSearchResult.Success ? new ProxerResult<SearchResult<T>>(lSearchResultObject) 
+                    : new ProxerResult<SearchResult<T>>(lGetSearchResult.Exceptions);
+            }
+            else if (typeof(T) == typeof(Azuria.User))
+            {
+                SearchResult<T> lSearchResultObject = new SearchResult<T>("users?search=" + name, senpai);
+                ProxerResult<IEnumerable<T>> lGetSearchResult = await lSearchResultObject.getNextSearchResults();
+                return lGetSearchResult.Success ? new ProxerResult<SearchResult<T>>(lSearchResultObject)
+                    : new ProxerResult<SearchResult<T>>(lGetSearchResult.Exceptions);
+            }
+
+            return new ProxerResult<SearchResult<T>>(new Exception[0]);
+        }
+
+        /// <summary>
+        ///     
+        ///     <para>Mögliche Fehler, die <see cref="ProxerResult" /> enthalten kann:</para>
+        ///     <list type="table">
+        ///         <listheader>
+        ///             <term>Ausnahme</term>
+        ///             <description>Beschreibung</description>
+        ///         </listheader>
+        ///         <item>
+        ///             <term>
+        ///                 <see cref="WrongResponseException" />
+        ///             </term>
+        ///             <description>Wird ausgelöst, wenn die Antwort des Servers nicht der Erwarteten entspricht.</description>
+        ///         </item>
+        ///         <item>
+        ///             <term>
+        ///                 <see cref="ArgumentNullException" />
+        ///             </term>
+        ///             <description>Wird ausgelöst, wenn <paramref name="senpai" /> null (oder Nothing in Visual Basic) ist.</description>
+        ///         </item>
+        ///     </list>
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="name"></param>
+        /// <param name="senpai"></param>
         /// <param name="genreContains"></param>
         /// <param name="genreExcludes"></param>
         /// <param name="fskContains"></param>
