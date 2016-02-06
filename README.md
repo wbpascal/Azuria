@@ -11,6 +11,11 @@ Dokumentation: http://azuria.infinitesoul.de/help
 
 ---
 
+##Achtung!
+Da sich diese Klassenbibliothek nicht nur auf die offiziellen Funktionen des Proxer API stützt, ist sie abhängig von dem Layout von Proxer. Das bedeutet, dass Änderung an diesem einzelne Funktionen oder ganze Teile dieser Klassenbibliothek lahm legen könne. Sollte dies passieren bemühe ich mich diese Funktionen so schnell wie möglich zu beheben, jedoch teste ich diese nicht täglich darum bitte ich jegliche Fehler, die ich nicht bemerkt habe unter [Issues](https://github.com/InfiniteSoul/Azuria/issues) zu berichten.
+
+---
+
 ##Was ist das?
 Azuria ist eine **inoffizielle** Klassenbibliothek, die sowohl die Funktionen der offiziellen Proxer API, als auch einige weitere Funktionen von Proxer.Me für, wie der Titel schon vermuten mag, .NET Sprachen zur Verfügung stellt. Im Moment existiert nur eine "normale" Version, jedoch ist eine portable und eine für Mono bereits geplant. 
 
