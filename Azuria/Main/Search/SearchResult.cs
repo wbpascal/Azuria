@@ -32,6 +32,11 @@ namespace Azuria.Main.Search
         /// <summary>
         /// 
         /// </summary>
+        public bool SearchFinished { get; private set; }
+
+        /// <summary>
+        /// 
+        /// </summary>
         /// <returns></returns>
         public async Task<ProxerResult<IEnumerable<T>>> getNextSearchResults()
         {
@@ -53,15 +58,20 @@ namespace Azuria.Main.Search
             {
                 lDocument.LoadHtml(lResponse);
                 HtmlNode lNode = lDocument.GetElementbyId("box-table-a");
+                if (lNode == null)
+                {
+                    this.SearchFinished = true;
+                    return new ProxerResult<IEnumerable<T>>(new T[0]);
+                }
                 lNode.ChildNodes.RemoveAt(0);
 
                 List<T> lSearchResults = new List<T>();
                 foreach (HtmlNode childNode in lNode.ChildNodes)
                 {
-                    T lResultObject = (T)Activator.CreateInstance(typeof(T), true);
-                    if (lResultObject is IAnimeMangaObject)
+                    if (typeof(T) == typeof(IAnimeMangaObject) || Activator.CreateInstance(typeof(T), true) is IAnimeMangaObject)
                     {
-                        lSearchResults.Add((T)this.getSearchResultObjectAnimeManga(childNode, (IAnimeMangaObject)lResultObject));
+                        IAnimeMangaObject lAnimeMangaObject = this.getSearchResultObjectAnimeManga(childNode);
+                        if (lAnimeMangaObject != null) lSearchResults.Add((T)lAnimeMangaObject);
                     }
                 }
                 List<T> lCopyList = this.SearchResults.ToList();
@@ -77,7 +87,7 @@ namespace Azuria.Main.Search
             }
         }
 
-        private IAnimeMangaObject getSearchResultObjectAnimeManga(HtmlNode node, IAnimeMangaObject containerObject)
+        private IAnimeMangaObject getSearchResultObjectAnimeManga(HtmlNode node)
         {
             int lId = node.Attributes.Contains("class")
                 ? Convert.ToInt32(node.Attributes["class"].Value.Substring("entry".Length)) : -1;
@@ -106,7 +116,36 @@ namespace Azuria.Main.Search
                         break;
                 }
             }
-            return containerObject is Anime ? new Anime(lName, lId, this._senpai, lGenreList, lStatus) : null;
+            Type lType = typeof(object);
+            Anime.AnimeType lAnimeType = Anime.AnimeType.Unbekannt;
+            Manga.MangaType lMangaType = Manga.MangaType.Unbekannt;
+            switch (node.ChildNodes[3].InnerText)
+            {
+                case "Animeserie":
+                    lType = typeof(Anime);
+                    lAnimeType = Anime.AnimeType.Series;
+                    break;
+                case "OVA":
+                    lType = typeof(Anime);
+                    lAnimeType = Anime.AnimeType.Ova;
+                    break;
+                case "Movie":
+                    lType = typeof(Anime);
+                    lAnimeType = Anime.AnimeType.Movie;
+                    break;
+                case "Mangaserie":
+                    lType = typeof(Manga);
+                    lMangaType = Manga.MangaType.Series;
+                    break;
+                case "One-Shot":
+                    lType = typeof(Manga);
+                    lMangaType = Manga.MangaType.OneShot;
+                    break;
+            }
+
+            if ((typeof(T) == typeof(Anime) || typeof(T) == typeof(IAnimeMangaObject)) && lType == typeof(Anime)) return new Anime(lName, lId, this._senpai, lGenreList, lStatus, lAnimeType);
+            else if ((typeof(T) == typeof(Manga) || typeof(T) == typeof(IAnimeMangaObject)) && lType == typeof(Manga)) return new Manga(lName, lId, this._senpai, lGenreList, lStatus, lMangaType);
+            else return null;
         }
     }
 }

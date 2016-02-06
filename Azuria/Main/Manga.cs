@@ -31,7 +31,12 @@ namespace Azuria.Main
             /// <summary>
             ///     Stellt einen Manga One-Shot dar.
             /// </summary>
-            OneShot
+            OneShot,
+
+            /// <summary>
+            ///     Stellt einen unbekannten Mangatypen dar.
+            /// </summary>
+            Unbekannt
         }
 
         private readonly Func<Task<ProxerResult>>[] _initFuncs;
@@ -62,6 +67,13 @@ namespace Azuria.Main
             this.CoverUri = new Uri("http://cdn.proxer.me/cover/" + this.Id + ".jpg");
 
             this.IstInitialisiert = false;
+        }
+
+        internal Manga(string name, int id, Senpai senpai, IEnumerable<GenreObject> genreList, AnimeMangaStatus status, MangaType type) : this(name, id, senpai) 
+        {
+            this.Genre = genreList;
+            this.Status = status;
+            this.MangaTyp = type;
         }
 
         #region Geerbt

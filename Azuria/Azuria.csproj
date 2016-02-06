@@ -86,7 +86,7 @@
     <Compile Include="Main\Minor\Group.cs" />
     <Compile Include="Main\Minor\Industry.cs" />
     <Compile Include="Main\Minor\Language.cs" />
-    <Compile Include="Main\Search\ISearchResultObject.cs" />
+    <Compile Include="Main\Search\ISearchableObject.cs" />
     <Compile Include="Main\Search\SearchHelper.cs" />
     <Compile Include="Main\Search\SearchResult.cs" />
     <Compile Include="Main\User\AnimeMangaProgress.cs" />

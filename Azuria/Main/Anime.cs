@@ -36,7 +36,12 @@ namespace Azuria.Main
             /// <summary>
             ///     Stellt eine Original Video Animation dar.
             /// </summary>
-            Ova
+            Ova,
+
+            /// <summary>
+            ///     Stellt einen unbekannten Animetypen dar.
+            /// </summary>
+            Unbekannt
         }
 
         /// <summary>
@@ -96,10 +101,11 @@ namespace Azuria.Main
             this.IstInitialisiert = false;
         }
 
-        internal Anime(string name, int id, Senpai senpai, IEnumerable<GenreObject> genreList, AnimeMangaStatus status) : this(name, id, senpai) 
+        internal Anime(string name, int id, Senpai senpai, IEnumerable<GenreObject> genreList, AnimeMangaStatus status, AnimeType type) : this(name, id, senpai) 
         {
             this.Genre = genreList;
             this.Status = status;
+            this.AnimeTyp = type;
         }
 
         #region Geerbt

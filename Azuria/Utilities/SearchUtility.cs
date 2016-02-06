@@ -6,11 +6,15 @@ namespace Azuria.Utilities
 {
     internal class SearchUtility
     {
-        internal static Dictionary<Anime.AnimeType, string> AnimeTypeToString => new Dictionary<Anime.AnimeType, string> 
+        internal static Dictionary<SearchHelper.AnimeMangaType, string> AnimeMangaTypeToString => new Dictionary<SearchHelper.AnimeMangaType, string>
         {
-            {Anime.AnimeType.Series, "animeseries"},
-            {Anime.AnimeType.Movie, "movie"},
-            {Anime.AnimeType.Ova, "ova"}
+            {SearchHelper.AnimeMangaType.AllManga, "all-manga"},
+            {SearchHelper.AnimeMangaType.Mangaseries, "mangaseries"},
+            {SearchHelper.AnimeMangaType.OneShot, "oneshot"},
+            {SearchHelper.AnimeMangaType.Animeseries, "animeseries"},
+            {SearchHelper.AnimeMangaType.Movie, "movie"},
+            {SearchHelper.AnimeMangaType.AllAnime, "all-anime"},
+            {SearchHelper.AnimeMangaType.Ova, "ova"}
         };
 
         internal static Dictionary<SearchHelper.SortAnimeManga, string> SortAnimeMangaToString => new Dictionary<SearchHelper.SortAnimeManga, string>

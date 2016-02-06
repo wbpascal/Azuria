@@ -41,6 +41,41 @@ namespace Azuria.Main.Search
         }
 
         /// <summary>
+        /// 
+        /// </summary>
+        public enum AnimeMangaType
+        {
+            /// <summary>
+            /// 
+            /// </summary>
+            AllAnime,
+            /// <summary>
+            /// 
+            /// </summary>
+            Animeseries,
+            /// <summary>
+            /// 
+            /// </summary>
+            Ova,
+            /// <summary>
+            /// 
+            /// </summary>
+            Movie,
+            /// <summary>
+            /// 
+            /// </summary>
+            AllManga,
+            /// <summary>
+            /// 
+            /// </summary>
+            Mangaseries,
+            /// <summary>
+            /// 
+            /// </summary>
+            OneShot
+        }
+
+        /// <summary>
         ///     
         ///     <para>Mögliche Fehler, die <see cref="ProxerResult" /> enthalten kann:</para>
         ///     <list type="table">
@@ -62,24 +97,26 @@ namespace Azuria.Main.Search
         ///         </item>
         ///     </list>
         /// </summary>
-        /// <param name="name">Die Name des <see cref="Main.Anime">Anime</see>, nach dem gesucht werden soll.</param>
-        /// <param name="type"></param>
-        /// <param name="sprache"></param>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="name"></param>
+        /// <param name="senpai"></param>
         /// <param name="genreContains"></param>
         /// <param name="genreExcludes"></param>
         /// <param name="fskContains"></param>
+        /// <param name="sprache"></param>
         /// <param name="sort"></param>
-        /// <param name="senpai">Der Benutzer. (Muss eingeloggt sein)</param>
-        /// <returns>Anime oder Manga der ID (Typecast erforderlich)</returns>
-        public static async Task<ProxerResult<SearchResult<Anime>>> SearchAnime(string name, Senpai senpai,
-            Anime.AnimeType? type = null, IEnumerable<GenreObject> genreContains = null,
+        /// <param name="type"></param>
+        /// <returns></returns>
+        public static async Task<ProxerResult<SearchResult<T>>> SearchAnimeManga<T>(string name, Senpai senpai,
+            AnimeMangaType? type = null, IEnumerable<GenreObject> genreContains = null,
             IEnumerable<GenreObject> genreExcludes = null, IEnumerable<Fsk> fskContains = null,
-            Language? sprache = null, SortAnimeManga? sort = null)
+            Language? sprache = null, SortAnimeManga? sort = null) where T : IAnimeMangaObject
         {
             if (string.IsNullOrEmpty(name))
-                return new ProxerResult<SearchResult<Anime>>(new Exception[] { new ArgumentNullException(nameof(name)) });
+                return new ProxerResult<SearchResult<T>>(new Exception[] { new ArgumentNullException(nameof(name)) });
 
-            string lAnimeType = type == null ? "all-anime" : SearchUtility.AnimeTypeToString[type.Value];
+            string lType = type == null ? "all" : SearchUtility.AnimeMangaTypeToString.ContainsKey(type.Value)
+                                                    ? SearchUtility.AnimeMangaTypeToString[type.Value] : "all";
             string lLanguage = sprache == null ? "alle" : sprache.Value == Language.Deutsch ? "de" : "en";
             string lGenreContains = "";
             if (genreContains != null)
@@ -109,15 +146,14 @@ namespace Azuria.Main.Search
             string lSortAnime = sort == null ? "" : SearchUtility.SortAnimeMangaToString.ContainsKey(sort.Value)
                                                     ? SearchUtility.SortAnimeMangaToString[sort.Value] : "";
 
-            SearchResult<Anime> lSearchResultObject 
-                    = new SearchResult<Anime>("search?s=search&name=" 
-                                    + name + "&sprache=" + lLanguage + "&typ=" + lAnimeType
+            SearchResult<T> lSearchResultObject
+                    = new SearchResult<T>("search?s=search&name=" + name + "&sprache=" + lLanguage
                                     + "&genre=" + lGenreContains + "&nogenre=" + lGenreExludes
-                                    + "&fsk=" + lFskContains + "&sort=" + lSortAnime, senpai);
-            ProxerResult<IEnumerable<Anime>> lGetSearchResult = await lSearchResultObject.getNextSearchResults();
-            if (!lGetSearchResult.Success) return new ProxerResult<SearchResult<Anime>>(lGetSearchResult.Exceptions);
+                                    + "&fsk=" + lFskContains + "&sort=" + lSortAnime + "&typ=" + lType, senpai);
+            ProxerResult<IEnumerable<T>> lGetSearchResult = await lSearchResultObject.getNextSearchResults();
+            if (!lGetSearchResult.Success) return new ProxerResult<SearchResult<T>>(lGetSearchResult.Exceptions);
 
-            return new ProxerResult<SearchResult<Anime>>(lSearchResultObject);
+            return new ProxerResult<SearchResult<T>>(lSearchResultObject);
         }
     }
 }

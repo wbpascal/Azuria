@@ -120,8 +120,8 @@
     <Compile Include="..\Azuria\Main\Minor\Language.cs">
       <Link>Main\Minor\Language.cs</Link>
     </Compile>
-    <Compile Include="..\Azuria\Main\Search\ISearchResultObject.cs">
-      <Link>Main\Search\ISearchResultObject.cs</Link>
+    <Compile Include="..\Azuria\Main\Search\ISearchableObject.cs">
+      <Link>Main\Search\ISearchableObject.cs</Link>
     </Compile>
     <Compile Include="..\Azuria\Main\Search\SearchHelper.cs">
       <Link>Main\Search\SearchHelper.cs</Link>
