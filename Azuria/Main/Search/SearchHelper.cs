@@ -9,12 +9,13 @@ using Azuria.Utilities;
 namespace Azuria.Main.Search
 {
     /// <summary>
-    /// 
+    /// Eine Klasse, mithilfe dieser eine Suche auf Proxer ausgeführt werden kann.
     /// </summary>
     public class SearchHelper
     {
         /// <summary>
-        /// 
+        /// Eine Enumeration, die die Reihenfolge darstellt, in der die Objekte bei 
+        /// einer <see cref="Anime">Anime-</see> oder <see cref="Manga">Manga-</see>Suche zurückgegeben werden.
         /// </summary>
         public enum SortAnimeManga
         {
@@ -41,7 +42,7 @@ namespace Azuria.Main.Search
         }
 
         /// <summary>
-        /// 
+        /// Eine Enumeration, die den Typen des <see cref="Anime">Anime</see> oder <see cref="Manga">Manga</see> darstellt, nach dem gesucht wird.
         /// </summary>
         public enum AnimeMangaType
         {

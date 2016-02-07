@@ -4,12 +4,12 @@ using System.Collections.Generic;
 namespace Azuria.Main.Minor
 {
     /// <summary>
-    /// 
+    /// Eine Klasse, die ein Genre eines <see cref="Anime">Anime</see> oder <see cref="Manga">Manga</see> darstellt.
     /// </summary>
     public class GenreObject
     {
         /// <summary>
-        /// 
+        /// Eine Enumeration, die einen Genre-Typen darstellt.
         /// </summary>
         public enum GenreType
         {
@@ -199,12 +199,12 @@ namespace Azuria.Main.Minor
         }; 
 
         /// <summary>
-        /// 
+        /// Gibt das Genre zurück, dass durch dieses Objekt dargestellt wird.
         /// </summary>
         public GenreType Genre { get; set; }
 
         /// <summary>
-        /// 
+        /// Gibt den Link zu dem Wikieintrag des Genre zurück.
         /// </summary>
         public Uri WikiLink => new Uri("https://proxer.me/wiki/" + this.Genre);
 

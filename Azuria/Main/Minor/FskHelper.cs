@@ -21,7 +21,7 @@ namespace Azuria.Main.Minor
         };
 
         /// <summary>
-        /// Ein Wörterbuch, dass bei der Umwandlung von Fsk in Strings hilft.
+        /// Ein Wörterbuch, dass bei der Umwandlung von <see cref="Fsk">Fsk</see> in Strings hilft.
         /// </summary>
         public static Dictionary<Fsk, string> FskToStringDictionary => new Dictionary<Fsk, string>
         {

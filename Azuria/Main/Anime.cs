@@ -334,7 +334,7 @@ namespace Azuria.Main
             return
                 await
                     Comment.GetCommentsFromUrl(startIndex, count, "https://proxer.me/info/" + this.Id + "/comments/",
-                        "rating", this._senpai);
+                        "rating", this._senpai, animeMangaId: this.Id);
         }
 
         /// <summary>
@@ -446,7 +446,7 @@ namespace Azuria.Main
             return
                 await
                     Comment.GetCommentsFromUrl(startIndex, count, "https://proxer.me/info/" + this.Id + "/comments/",
-                        "latest", this._senpai);
+                        "latest", this._senpai, animeMangaId: this.Id);
         }
 
         #endregion

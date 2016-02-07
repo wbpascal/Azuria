@@ -11,20 +11,14 @@ using HtmlAgilityPack;
 namespace Azuria.Main.Minor
 {
     /// <summary>
-    /// Stellt einen Kommentar eines <see cref="Anime">Anime</see> oder <see cref="Manga">Manga</see> dar.
+    /// Eine Klasse, die ein Kommentar eines <see cref="Anime">Anime</see> oder <see cref="Manga">Manga</see> darstellt.
     /// </summary>
     public class Comment
-    { 
-        internal Comment(Azuria.User autor, int sterne, string kommentar)
-        {
-            this.Autor = autor;
-            this.Sterne = sterne;
-            this.Kommentar = kommentar;
-        }
-
-        internal Comment(int animeMangaId, int sterne, string kommentar)
+    {
+        internal Comment(Azuria.User author, int animeMangaId, int sterne, string kommentar)
         {
             this.AnimeMangaId = animeMangaId;
+            this.Autor = author;
             this.Sterne = sterne;
             this.Kommentar = kommentar;
         }
@@ -32,24 +26,29 @@ namespace Azuria.Main.Minor
         #region Properties
 
         /// <summary>
+        /// Gibt die Id des <see cref="Anime">Anime</see> oder <see cref="Manga">Manga</see> zurück, auf die der <see cref="Comment">Kommentar</see> verweist.
         /// </summary>
-        public int AnimeMangaId { get; set; }
+        public int AnimeMangaId { get; private set; }
 
         /// <summary>
+        /// Gibt den Autor des <see cref="Comment">Kommentars</see> zurück.
         /// </summary>
-        public Azuria.User Autor { get; set; }
+        public Azuria.User Autor { get; private set; }
 
         /// <summary>
+        /// Gibt den Inhalt des <see cref="Comment">Kommentars</see> zurück.
         /// </summary>
-        public string Kommentar { get; set; }
+        public string Kommentar { get; private set; }
 
         /// <summary>
+        /// Gibt die Sterne der Gesamtwertung des <see cref="Comment">Kommentars</see> zurück.
         /// </summary>
-        public int Sterne { get; set; }
+        public int Sterne { get; private set; }
 
         /// <summary>
+        /// Gibt die Sterne weiterer Bewertungskategorien des <see cref="Comment">Kommentars</see> zurück.
         /// </summary>
-        public Dictionary<string, int> SubSterne { get; set; }
+        public Dictionary<string, int> SubSterne { get; private set; }
 
         #endregion
 
@@ -85,7 +84,8 @@ namespace Azuria.Main.Minor
             return lString.Trim();
         }
 
-        private static ProxerResult<Comment> GetCommentFromNode(HtmlNode commentNode, Senpai senpai, bool isUserPage, Azuria.User author = null)
+        private static ProxerResult<Comment> GetCommentFromNode(HtmlNode commentNode, Senpai senpai
+                    , bool isUserPage, Azuria.User author = null, int animeMangaId = -1)
         {
             HtmlNode[] lTableNodes =
                 commentNode.ChildNodes.FindFirst("tr").ChildNodes.Where(node => node.Name.Equals("td")).ToArray();
@@ -93,7 +93,7 @@ namespace Azuria.Main.Minor
             try
             {
                 Azuria.User lAuthor = author ?? Azuria.User.System;
-                int lAnimeMangaId = -1;
+                int lAnimeMangaId = animeMangaId;
 
                 if (isUserPage)
                 {
@@ -133,23 +133,21 @@ namespace Azuria.Main.Minor
                             starNode.Name.Equals("img") && starNode.Attributes.Contains("src") &&
                             starNode.Attributes["src"].Value.Equals("/images/misc/stern.png"));
 
-                return isUserPage
-                    ? new ProxerResult<Comment>(new Comment(lAnimeMangaId, lStars, lContent) {SubSterne = lSubRatings})
-                    : new ProxerResult<Comment>(new Comment(lAuthor, lStars, lContent) {SubSterne = lSubRatings});
+                return new ProxerResult<Comment>(new Comment(lAuthor, lAnimeMangaId, lStars, lContent) { SubSterne = lSubRatings });
             }
             catch
             {
-                return new ProxerResult<Comment>(new[] {new WrongResponseException()});
+                return new ProxerResult<Comment>(new[] { new WrongResponseException() });
             }
         }
 
         internal static async Task<ProxerResult<IEnumerable<Comment>>> GetCommentsFromUrl(int startIndex, int count,
-            string url, string sort, Senpai senpai, bool isUserPage = false, Azuria.User author = null)
+            string url, string sort, Senpai senpai, bool isUserPage = false, Azuria.User author = null, int animeMangaId = -1)
         {
             const int lKommentareProSeite = 25;
 
             List<Comment> lReturn = new List<Comment>();
-            int lStartSeite = Convert.ToInt32(startIndex/lKommentareProSeite + 1);
+            int lStartSeite = Convert.ToInt32(startIndex / lKommentareProSeite + 1);
             HtmlDocument lDocument = new HtmlDocument();
             Func<string, ProxerResult> lCheckFunc = s =>
             {
@@ -163,7 +161,7 @@ namespace Azuria.Main.Minor
                     node.Attributes["align"].Value.Equals("center"))) != default(HtmlNode))
                 {
                     if (lNode.InnerText.Equals("Es existieren bisher keine Kommentare."))
-                        return new ProxerResult(new[] {new WrongResponseException {Response = s}});
+                        return new ProxerResult(new[] { new WrongResponseException { Response = s } });
                 }
 
                 if ((lNode = lDocument.DocumentNode.ChildNodes.FirstOrDefault(node =>
@@ -171,7 +169,7 @@ namespace Azuria.Main.Minor
                     node.Attributes["class"].Value.Equals("inner"))) != default(HtmlNode))
                 {
                     if (lNode.InnerText.Equals("Dieser Benutzer hat bislang keine Kommentare."))
-                        return new ProxerResult(new[] {new WrongResponseException {Response = s}});
+                        return new ProxerResult(new[] { new WrongResponseException { Response = s } });
                 }
 
                 return new ProxerResult();
@@ -184,7 +182,7 @@ namespace Azuria.Main.Minor
                        await
                            HttpUtility.GetResponseErrorHandling(
                                url + lStartSeite + "?format=raw&sort=" + sort,
-                               senpai.LoginCookies, senpai.ErrHandler, senpai, new[] {lCheckFunc}))
+                               senpai.LoginCookies, senpai.ErrHandler, senpai, new[] { lCheckFunc }))
                        .Success)
             {
                 try
@@ -195,11 +193,11 @@ namespace Azuria.Main.Minor
                             node.Name.Equals("table") && node.Attributes.Contains("class") &&
                             node.Attributes["class"].Value.Equals("details")).TakeWhile(node => count > 0))
                     {
-                        if (i >= startIndex%lKommentareProSeite)
+                        if (i >= startIndex % lKommentareProSeite)
                         {
                             lReturn.Add(
-                                GetCommentFromNode(commentNode, senpai, isUserPage, author)
-                                    .OnError(new Comment(Azuria.User.System, -1, "ERROR")));
+                                GetCommentFromNode(commentNode, senpai, isUserPage, author, animeMangaId)
+                                    .OnError(new Comment(Azuria.User.System, -1, -1, "ERROR")));
                             count--;
                         }
 

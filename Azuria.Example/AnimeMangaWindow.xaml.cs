@@ -123,7 +123,7 @@ namespace Azuria.Example
         private async void LoadCommentsLatest()
         {
             //Gibt die ersten 10 Kommentare(oder weniger, wenn nicht genug vorhanden sind) zurück
-            ProxerResult<IEnumerable<Comment>> lCommentsResult = await this._animeMangaObject.GetCommentsLatest(0, 10);
+            ProxerResult<IEnumerable<Comment>> lCommentsResult = await this._animeMangaObject.GetCommentsLatest(0, 20);
 
             if (!lCommentsResult.Success) return;
 
@@ -157,7 +157,7 @@ namespace Azuria.Example
         private async void LoadCommentsRating()
         {
             //Gibt die ersten 10 Kommentare(oder weniger, wenn nicht genug vorhanden sind) zurück
-            ProxerResult<IEnumerable<Comment>> lCommentsResult = await this._animeMangaObject.GetCommentsRating(0, 10);
+            ProxerResult<IEnumerable<Comment>> lCommentsResult = await this._animeMangaObject.GetCommentsRating(0, 20);
 
             if (!lCommentsResult.Success) return;
 
