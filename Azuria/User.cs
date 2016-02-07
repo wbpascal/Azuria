@@ -325,7 +325,7 @@ namespace Azuria
                 await
                     Comment.GetCommentsFromUrl(startIndex, count,
                         "https://proxer.me/user/" + this.Id + "/latestcomments/",
-                        "", this._senpai, true);
+                        "", this._senpai, true, this);
         }
 
         /// <summary>
