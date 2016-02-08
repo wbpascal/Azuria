@@ -77,7 +77,7 @@ namespace Azuria.Main.Search
         }
 
         /// <summary>
-        ///     
+        ///     Gibt die Ergebnisse einer Proxer-Suche zurück.
         ///     <para>Mögliche Fehler, die <see cref="ProxerResult" /> enthalten kann:</para>
         ///     <list type="table">
         ///         <listheader>
@@ -98,8 +98,8 @@ namespace Azuria.Main.Search
         ///         </item>
         ///     </list>
         /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="name"></param>
+        /// <typeparam name="T">Ein Typ, der von <see cref="ISearchableObject"/> erbt.</typeparam>
+        /// <param name="name">Der String, nachdem gesucht werden soll.</param>
         /// <param name="senpai"></param>
         /// <returns></returns>
         public static async Task<ProxerResult<SearchResult<T>>> Search<T>(string name, Senpai senpai) where T : ISearchableObject
@@ -108,7 +108,7 @@ namespace Azuria.Main.Search
             {
                 SearchResult<T> lSearchResultObject = new SearchResult<T>("search?s=search&name=" + name, senpai);
                 ProxerResult<IEnumerable<T>> lGetSearchResult = await lSearchResultObject.getNextSearchResults();
-                return lGetSearchResult.Success ? new ProxerResult<SearchResult<T>>(lSearchResultObject) 
+                return lGetSearchResult.Success ? new ProxerResult<SearchResult<T>>(lSearchResultObject)
                     : new ProxerResult<SearchResult<T>>(lGetSearchResult.Exceptions);
             }
             else if (typeof(T) == typeof(Azuria.User))
@@ -123,7 +123,7 @@ namespace Azuria.Main.Search
         }
 
         /// <summary>
-        ///     
+        ///     Gibt die Ergebnisse einer <see cref="Anime">Anime-</see> oder <see cref="Manga">Manga-</see>Suche auf Proxer zurück.
         ///     <para>Mögliche Fehler, die <see cref="ProxerResult" /> enthalten kann:</para>
         ///     <list type="table">
         ///         <listheader>
@@ -144,16 +144,16 @@ namespace Azuria.Main.Search
         ///         </item>
         ///     </list>
         /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="name"></param>
+        /// <typeparam name="T">Ein Typ, der von <see cref="IAnimeMangaObject"/> erbt.</typeparam>
+        /// <param name="name">Der String, nach dem gesucht werden soll.</param>
         /// <param name="senpai"></param>
-        /// <param name="genreContains"></param>
-        /// <param name="genreExcludes"></param>
-        /// <param name="fskContains"></param>
-        /// <param name="sprache"></param>
-        /// <param name="sort"></param>
+        /// <param name="genreContains">Alle <see cref="GenreObject">Genre</see>, die die Suchergebnisse enthalten sollen.</param>
+        /// <param name="genreExcludes">Alle <see cref="GenreObject">Genre</see>, die aus den Suchergebnissen ausgeschlossen werden sollen.</param>
+        /// <param name="fskContains">Alle <see cref="Fsk">Fsk</see>, die die Suchergebnisse enthalten sollen.</param>
+        /// <param name="sprache">Die <see cref="Language">Sprache</see>, in der die Suchergebnisse verfügbar sein sollen.</param>
+        /// <param name="sort">Die Reihenfolge, in der Suchergebnisse zurückgegeben werden sollen.</param>
         /// <param name="type"></param>
-        /// <returns></returns>
+        /// <returns>Eine Auflistung aller Suchergebnisse, vom Typ <typeparamref name="T"/></returns>
         public static async Task<ProxerResult<SearchResult<T>>> SearchAnimeManga<T>(string name, Senpai senpai,
             AnimeMangaType? type = null, IEnumerable<GenreObject> genreContains = null,
             IEnumerable<GenreObject> genreExcludes = null, IEnumerable<Fsk> fskContains = null,

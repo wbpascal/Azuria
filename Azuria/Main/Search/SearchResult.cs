@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 namespace Azuria.Main.Search
 {
     /// <summary>
-    /// 
+    /// Eine Klasse, die die Resultate einer Suche auf Proxer zurückgibt.
     /// </summary>
     public class SearchResult<T> where T : ISearchableObject
     {
@@ -26,19 +26,19 @@ namespace Azuria.Main.Search
         }
 
         /// <summary>
-        /// 
+        /// Gibt die Suchergebnisse zurück.
         /// </summary>
         public IEnumerable<T> SearchResults { get; private set; } = new List<T>();
 
         /// <summary>
-        /// 
+        /// Gibt zurück, ob die Suche vollendet ist, das heißt, dass keine weiteren Suchergebnisse mehr geladen werden können.
         /// </summary>
         public bool SearchFinished { get; private set; }
 
         /// <summary>
-        /// 
+        /// Läd die nächste Seite der Suchergebnisse und fügt sie <see cref="SearchResult{T}.SearchResults"/> hinzu.
         /// </summary>
-        /// <returns></returns>
+        /// <returns>Die Suchergebnisse der nächsten Seite.</returns>
         public async Task<ProxerResult<IEnumerable<T>>> getNextSearchResults()
         {
             HtmlDocument lDocument = new HtmlDocument();
