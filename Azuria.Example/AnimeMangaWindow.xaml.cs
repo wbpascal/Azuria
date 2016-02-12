@@ -11,9 +11,6 @@ using Azuria.Main.Minor;
 
 namespace Azuria.Example
 {
-    /// <summary>
-    ///     Interaction logic for AnimeMangaWindow.xaml
-    /// </summary>
     public partial class AnimeMangaWindow : Window
     {
         private readonly IAnimeMangaObject _animeMangaObject;

@@ -6,7 +6,6 @@ using Azuria.Community;
 using Azuria.ErrorHandling;
 using Azuria.Main;
 using Azuria.Utilities.Net;
-using Azuria.Main.Search;
 
 namespace Azuria.Example
 {
@@ -73,6 +72,7 @@ namespace Azuria.Example
             {
                 //Benutzer wurder erfolgreich eingeloggt
                 MessageBox.Show("Du wurdest erfolgreich eingeloggt!");
+                new SearchWindow(this._senpai).Show();
             }
             else
             {

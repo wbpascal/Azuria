@@ -77,9 +77,13 @@
     <Compile Include="Controls\AnimeMangaProgressControl.xaml.cs">
       <DependentUpon>AnimeMangaProgressControl.xaml</DependentUpon>
     </Compile>
+    <Compile Include="SearchWindow.xaml.cs">
+      <DependentUpon>SearchWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="UserWindow.xaml.cs">
       <DependentUpon>UserWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Utilities\Converter\AdditionConverter.cs" />
     <Compile Include="Utilities\Utility.cs" />
     <Page Include="AnimeMangaWindow.xaml">
       <SubType>Designer</SubType>
@@ -109,6 +113,10 @@
       <SubType>Code</SubType>
     </Compile>
     <Page Include="NotificationWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="SearchWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
