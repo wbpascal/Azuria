@@ -1061,7 +1061,7 @@ namespace Azuria.Main
                                 lStreams.Add(
                                     new KeyValuePair<Stream.StreamPartner, Stream>(Stream.StreamPartner.Viewster,
                                         new Stream(
-                                            new Uri(childNode.FirstChild.GetAttributeValue("href", "http://proxer.me/")),
+                                            new Uri("https:" + childNode.FirstChild.GetAttributeValue("href", "http://proxer.me/")),
                                             Stream.StreamPartner.Viewster)));
                                 break;
 
@@ -1069,7 +1069,7 @@ namespace Azuria.Main
                                 lStreams.Add(
                                     new KeyValuePair<Stream.StreamPartner, Stream>(Stream.StreamPartner.Crunchyroll,
                                         new Stream(
-                                            new Uri(childNode.FirstChild.GetAttributeValue("href", "http://proxer.me/")),
+                                            new Uri("https:" + childNode.FirstChild.GetAttributeValue("href", "http://proxer.me/")),
                                             Stream.StreamPartner.Crunchyroll)));
                                 break;
 

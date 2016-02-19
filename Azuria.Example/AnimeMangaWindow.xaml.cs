@@ -119,7 +119,7 @@ namespace Azuria.Example
 
         private async void LoadCommentsLatest()
         {
-            //Gibt die ersten 10 Kommentare(oder weniger, wenn nicht genug vorhanden sind) zurück
+            //Gibt die ersten 20 Kommentare(oder weniger, wenn nicht genug vorhanden sind) zurück
             ProxerResult<IEnumerable<Comment>> lCommentsResult = await this._animeMangaObject.GetCommentsLatest(0, 20);
 
             if (!lCommentsResult.Success) return;
@@ -220,7 +220,7 @@ namespace Azuria.Example
             }
             catch
             {
-                //ignoriert, nur hier in dem Beispiel, sonst sollte hier etwas stehen
+                //ignoriert, nur hier in diesem Beispiel, sonst sollte hier etwas stehen
             }
 
             #region Namen

@@ -77,6 +77,10 @@
     <Compile Include="Controls\AnimeMangaProgressControl.xaml.cs">
       <DependentUpon>AnimeMangaProgressControl.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Controls\Search\AnimeMangaTypeRadioButton.cs" />
+    <Compile Include="Controls\Search\FskCheckBox.cs" />
+    <Compile Include="Controls\Search\GenreCheckBox.cs" />
+    <Compile Include="Controls\Search\SortByRadionButton.cs" />
     <Compile Include="SearchWindow.xaml.cs">
       <DependentUpon>SearchWindow.xaml</DependentUpon>
     </Compile>

@@ -51,7 +51,7 @@ namespace Azuria.Example
 
                 //Speicher die ID des Anime oder Manga ab
                 int lAnimeMangaId =
-                    Convert.ToInt32(Utility.GetTagContents(lUpdateObject.Link.OriginalString, "/watch/",
+                    Convert.ToInt32(lUpdateObject.Link.OriginalString.GetTagContents("/watch/",
                         "/" + lUpdateObject.Number + "/").First());
                 //Rufe den Anime oder Manga der Benachrichtigung ab
                 IAnimeMangaObject lAnimeMangaObject =

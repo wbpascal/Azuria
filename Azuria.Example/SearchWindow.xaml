@@ -5,6 +5,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Azuria.Example"
+        xmlns:control="clr-namespace:Azuria.Example.Controls.Search"
         mc:Ignorable="d"
         Title="SearchWindow" Height="430" Width="565.156" Background="{DynamicResource {x:Static SystemColors.ControlBrushKey}}">
     <Window.Resources>
@@ -22,21 +23,160 @@
                 </Grid>
             </Border>
         </DataTemplate>
+        <DataTemplate x:Key="AnimeMangaSearchResultTemplate">
+            <Border BorderThickness="1" BorderBrush="Black" Margin="5">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="100" />
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <Image Margin="5" Source="{Binding CoverUri}" RenderOptions.BitmapScalingMode="Fant" MaxHeight="50" MaxWidth="50" />
+                    <Label Grid.Column="1" FontWeight="Bold" Content="{Binding Name}" />
+                </Grid>
+            </Border>
+        </DataTemplate>
     </Window.Resources>
     <Grid x:Name="grid">
         <StackPanel x:Name="stackPanel" MaxHeight="{Binding ActualHeight, ElementName=grid}">
             <TextBox x:Name="SearchTextBox" HorizontalAlignment="Center" Height="24" Margin="0,10,0,0" TextWrapping="Wrap" Text="Suchbegriff" Width="277" FontSize="14.667" VerticalAlignment="Top"/>
             <StackPanel Height="19" Margin="2,10,2,0" VerticalAlignment="Center" Orientation="Horizontal" HorizontalAlignment="Center">
                 <RadioButton x:Name="UserRadioButton" Content="User" HorizontalAlignment="Center" Width="87" FontSize="13.333" IsChecked="True"/>
-                <RadioButton x:Name="AnimeMangaRadioButton" Content="Anime / Manga" HorizontalAlignment="Center" Width="113" FontSize="13.333" />
+                <RadioButton x:Name="AnimeMangaRadioButton" Content="Anime / Manga" HorizontalAlignment="Center" Width="113" FontSize="13.333" IsChecked="True" />
             </StackPanel>
-            <Expander x:Name="expander" Header="Expander" Margin="10,5,10,0" Visibility="{Binding IsChecked, Converter={StaticResource BooleanToVisibilityConverter}, ElementName=AnimeMangaRadioButton}" ScrollViewer.VerticalScrollBarVisibility="Auto" MaxHeight="300">
-                <StackPanel Background="#FFD4D4D4" ScrollViewer.VerticalScrollBarVisibility="Disabled">
-
-                </StackPanel>
+            <Expander Header="Expander" Margin="10,5,10,0" Visibility="{Binding IsChecked, Converter={StaticResource BooleanToVisibilityConverter}, ElementName=AnimeMangaRadioButton}" MaxHeight="200">
+                <ScrollViewer VerticalScrollBarVisibility="Auto">
+                    <StackPanel Background="#FFD4D4D4" Margin="10,0" ScrollViewer.VerticalScrollBarVisibility="Disabled">
+                        <Expander Header="Sprache">
+                            <StackPanel Orientation="Horizontal">
+                                <RadioButton x:Name="LanguageAllRadioButton" Content="Alle" Margin="10,0" IsChecked="True"/>
+                                <RadioButton x:Name="LanguageGermanRadioButton" Content="Deutsch" Margin="10,0"/>
+                                <RadioButton x:Name="LanguageEnglishRadioButton" Content="Englisch" Margin="10,0"/>
+                            </StackPanel>
+                        </Expander>
+                        <Expander Header="Typ">
+                            <WrapPanel x:Name="AnimeMangaTypeWrapPanel" MaxHeight="60" Orientation="Vertical" Margin="10,0" >
+                                <control:AnimeMangaTypeRadioButton AnimeMangaType="All" Content="Alles" IsChecked="True" Margin="0,0,0,40"/>
+                                <control:AnimeMangaTypeRadioButton AnimeMangaType="AllAnime" Content="Alle Anime"/>
+                                <control:AnimeMangaTypeRadioButton AnimeMangaType="Animeseries" Content="Anime-Serie"/>
+                                <control:AnimeMangaTypeRadioButton AnimeMangaType="Movie"/>
+                                <control:AnimeMangaTypeRadioButton AnimeMangaType="Ova" Content="OVA/Special"/>
+                                <control:AnimeMangaTypeRadioButton AnimeMangaType="AllManga" Content="Alle Manga"/>
+                                <control:AnimeMangaTypeRadioButton AnimeMangaType="Mangaseries" Content="Manga-Serie"/>
+                                <control:AnimeMangaTypeRadioButton AnimeMangaType="OneShot" Content="One-Shot"/>
+                            </WrapPanel>
+                        </Expander>
+                        <Expander Header="Genre enthält">
+                            <WrapPanel x:Name="GenreContainsWrapPanel" Margin="10,0">
+                                <control:GenreCheckBox Genre="Abenteuer" Margin="0,0,10,0" />
+                                <control:GenreCheckBox Genre="Action" Margin="0,0,10,0" />
+                                <control:GenreCheckBox Genre="Adult" Margin="0,0,10,0" />
+                                <control:GenreCheckBox Genre="Comedy" Margin="0,0,10,0" />
+                                <control:GenreCheckBox Genre="Cyberpunk" Margin="0,0,10,0" />
+                                <control:GenreCheckBox Genre="Drama" Margin="0,0,10,0" />
+                                <control:GenreCheckBox Genre="Ecchi" Margin="0,0,10,0" />
+                                <control:GenreCheckBox Genre="Fantasy" Margin="0,0,10,0" />
+                                <control:GenreCheckBox Genre="Historical" Margin="0,0,10,0" />
+                                <control:GenreCheckBox Genre="Horror" Margin="0,0,10,0" />
+                                <control:GenreCheckBox Genre="Josei" Margin="0,0,10,0" />
+                                <control:GenreCheckBox Genre="Magic" Margin="0,0,10,0" />
+                                <control:GenreCheckBox Genre="MartialArt" Content="Martial-Art" Margin="0,0,10,0" />
+                                <control:GenreCheckBox Genre="Mecha" Margin="0,0,10,0" />
+                                <control:GenreCheckBox Genre="Military" Margin="0,0,10,0" />
+                                <control:GenreCheckBox Genre="Musik" Margin="0,0,10,0" />
+                                <control:GenreCheckBox Genre="Mystery" Margin="0,0,10,0" />
+                                <control:GenreCheckBox Genre="Psychological" Margin="0,0,10,0" />
+                                <control:GenreCheckBox Genre="Romance" Margin="0,0,10,0" />
+                                <control:GenreCheckBox Genre="School" Margin="0,0,10,0" />
+                                <control:GenreCheckBox Genre="SciFi" Margin="0,0,10,0" />
+                                <control:GenreCheckBox Genre="Seinen" Margin="0,0,10,0" />
+                                <control:GenreCheckBox Genre="Shoujou" Margin="0,0,10,0" />
+                                <control:GenreCheckBox Genre="ShoujouAi" Content="Shoujou-Ai" Margin="0,0,10,0" />
+                                <control:GenreCheckBox Genre="Shounen" Margin="0,0,10,0" />
+                                <control:GenreCheckBox Genre="ShounenAi" Content="Shounen-Ai" Margin="0,0,10,0" />
+                                <control:GenreCheckBox Genre="SliceOfLife" Content="Slice of Life" Margin="0,0,10,0" />
+                                <control:GenreCheckBox Genre="Splatter" Margin="0,0,10,0" />
+                                <control:GenreCheckBox Genre="Sport" Margin="0,0,10,0" />
+                                <control:GenreCheckBox Genre="Superpower" Margin="0,0,10,0" />
+                                <control:GenreCheckBox Genre="Vampire" Margin="0,0,10,0" />
+                                <control:GenreCheckBox Genre="Violence" Margin="0,0,10,0" />
+                                <control:GenreCheckBox Genre="Yaoi" Margin="0,0,10,0" />
+                                <control:GenreCheckBox Genre="Yuri" Margin="0,0,10,0" />
+                            </WrapPanel>
+                        </Expander>
+                        <Expander Header="Genre enthält NICHT">
+                            <WrapPanel x:Name="GenreExcludesWrapPanel" Margin="10,0">
+                                <control:GenreCheckBox Genre="Abenteuer" Margin="0,0,10,0" />
+                                <control:GenreCheckBox Genre="Action" Margin="0,0,10,0" />
+                                <control:GenreCheckBox Genre="Adult" Margin="0,0,10,0" />
+                                <control:GenreCheckBox Genre="Comedy" Margin="0,0,10,0" />
+                                <control:GenreCheckBox Genre="Cyberpunk" Margin="0,0,10,0" />
+                                <control:GenreCheckBox Genre="Drama" Margin="0,0,10,0" />
+                                <control:GenreCheckBox Genre="Ecchi" Margin="0,0,10,0" />
+                                <control:GenreCheckBox Genre="Fantasy" Margin="0,0,10,0" />
+                                <control:GenreCheckBox Genre="Historical" Margin="0,0,10,0" />
+                                <control:GenreCheckBox Genre="Horror" Margin="0,0,10,0" />
+                                <control:GenreCheckBox Genre="Josei" Margin="0,0,10,0" />
+                                <control:GenreCheckBox Genre="Magic" Margin="0,0,10,0" />
+                                <control:GenreCheckBox Genre="MartialArt" Content="Martial-Art" Margin="0,0,10,0" />
+                                <control:GenreCheckBox Genre="Mecha" Margin="0,0,10,0" />
+                                <control:GenreCheckBox Genre="Military" Margin="0,0,10,0" />
+                                <control:GenreCheckBox Genre="Musik" Margin="0,0,10,0" />
+                                <control:GenreCheckBox Genre="Mystery" Margin="0,0,10,0" />
+                                <control:GenreCheckBox Genre="Psychological" Margin="0,0,10,0" />
+                                <control:GenreCheckBox Genre="Romance" Margin="0,0,10,0" />
+                                <control:GenreCheckBox Genre="School" Margin="0,0,10,0" />
+                                <control:GenreCheckBox Genre="SciFi" Margin="0,0,10,0" />
+                                <control:GenreCheckBox Genre="Seinen" Margin="0,0,10,0" />
+                                <control:GenreCheckBox Genre="Shoujou" Margin="0,0,10,0" />
+                                <control:GenreCheckBox Genre="ShoujouAi" Content="Shoujou-Ai" Margin="0,0,10,0" />
+                                <control:GenreCheckBox Genre="Shounen" Margin="0,0,10,0" />
+                                <control:GenreCheckBox Genre="ShounenAi" Content="Shounen-Ai" Margin="0,0,10,0" />
+                                <control:GenreCheckBox Genre="SliceOfLife" Content="Slice of Life" Margin="0,0,10,0" />
+                                <control:GenreCheckBox Genre="Splatter" Margin="0,0,10,0" />
+                                <control:GenreCheckBox Genre="Sport" Margin="0,0,10,0" />
+                                <control:GenreCheckBox Genre="Superpower" Margin="0,0,10,0" />
+                                <control:GenreCheckBox Genre="Vampire" Margin="0,0,10,0" />
+                                <control:GenreCheckBox Genre="Violence" Margin="0,0,10,0" />
+                                <control:GenreCheckBox Genre="Yaoi" Margin="0,0,10,0" />
+                                <control:GenreCheckBox Genre="Yuri" Margin="0,0,10,0" />
+                            </WrapPanel>
+                        </Expander>
+                        <Expander Header="Fsk enthält">
+                            <WrapPanel x:Name="FskContainsWrapPanel" Margin="10,0">
+                                <control:FskCheckBox Fsk="Fsk0" Margin="0,0,10,0" />
+                                <control:FskCheckBox Fsk="Fsk6" Margin="0,0,10,0" />
+                                <control:FskCheckBox Fsk="Fsk12" Margin="0,0,10,0" />
+                                <control:FskCheckBox Fsk="Fsk16" Margin="0,0,10,0" />
+                                <control:FskCheckBox Fsk="Fsk18" Margin="0,0,10,0" />
+                                <control:FskCheckBox Fsk="Schimpfwoerter" Margin="0,0,10,0" />
+                                <control:FskCheckBox Fsk="Gewalt" Margin="0,0,10,0" />
+                                <control:FskCheckBox Fsk="Furcht" Margin="0,0,10,0" />
+                                <control:FskCheckBox Fsk="Sex" Margin="0,0,10,0" />
+                            </WrapPanel>
+                        </Expander>
+                        <Expander Header="Sortieren nach">
+                            <StackPanel x:Name="SortByStackPanel" Margin="10,0">
+                                <control:SortByRadionButton SortBy="Relevanz" IsChecked="True"/>
+                                <control:SortByRadionButton SortBy="Name"/>
+                                <control:SortByRadionButton SortBy="Bewertung"/>
+                                <control:SortByRadionButton SortBy="Zugriffe"/>
+                                <control:SortByRadionButton SortBy="EpisodenZahl" Content="Anzahl der Episoden"/>
+                            </StackPanel>
+                        </Expander>
+                    </StackPanel>
+                </ScrollViewer>
             </Expander>
             <Button VerticalAlignment="Top" HorizontalAlignment="Center" Width="80" Height="25" Content="Suche" Margin="0,10,0,0" Click="SearchButton_Click"/>
-            <ListView x:Name="UserSearchResultListBox" Margin="15,10,15,10" ScrollViewer.VerticalScrollBarVisibility="Auto" Height="{Binding MaxHeight, ElementName=stackPanel, Converter={converter:AdditionConverter Value=-120}}" HorizontalContentAlignment="Stretch" ItemTemplate="{StaticResource UserSearchResultTemplate}" Background="{x:Null}" BorderThickness="0">
+            <ListView x:Name="UserSearchResultListBox" Margin="15,10,15,0" ScrollViewer.VerticalScrollBarVisibility="Auto" MaxHeight="{Binding MaxHeight, ElementName=stackPanel, Converter={converter:AdditionConverter Value=-120}}" HorizontalContentAlignment="Stretch" ItemTemplate="{StaticResource UserSearchResultTemplate}" Background="{x:Null}" BorderThickness="0">
+                <ListView.ItemContainerStyle>
+                    <Style TargetType="{x:Type ListViewItem}">
+                        <EventSetter Event="PreviewMouseLeftButtonDown" Handler="ListViewItem_PreviewMouseLeftButtonDown" />
+                        <Setter Property="Focusable" Value="false"/>
+                    </Style>
+                </ListView.ItemContainerStyle>
+            </ListView>
+            <ListView x:Name="AnimeMangaSearchResultListBox" Margin="15,0,15,10" ScrollViewer.VerticalScrollBarVisibility="Auto" MaxHeight="{Binding MaxHeight, ElementName=stackPanel, Converter={converter:AdditionConverter Value=-120}}" HorizontalContentAlignment="Stretch" ItemTemplate="{StaticResource AnimeMangaSearchResultTemplate}" Background="{x:Null}" BorderThickness="0">
                 <ListView.ItemContainerStyle>
                     <Style TargetType="{x:Type ListViewItem}">
                         <EventSetter Event="PreviewMouseLeftButtonDown" Handler="ListViewItem_PreviewMouseLeftButtonDown" />

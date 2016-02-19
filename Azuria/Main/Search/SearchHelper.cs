@@ -49,6 +49,10 @@ namespace Azuria.Main.Search
             /// <summary>
             /// 
             /// </summary>
+            All,
+            /// <summary>
+            /// 
+            /// </summary>
             AllAnime,
             /// <summary>
             /// 

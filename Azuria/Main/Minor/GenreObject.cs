@@ -212,5 +212,14 @@ namespace Azuria.Main.Minor
         {
             this.Genre = TypeDictionary.ContainsKey(name) ? TypeDictionary[name] : GenreType.None;
         }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="genre"></param>
+        public GenreObject(GenreType genre)
+        {
+            this.Genre = genre;
+        }
     }
 }
