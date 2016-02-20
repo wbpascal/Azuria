@@ -8,17 +8,72 @@ using System.Windows.Controls;
 using Azuria.Main.Minor;
 using Azuria.Example.Controls.Search;
 using Azuria.Main;
+using System.Windows.Media;
 
 namespace Azuria.Example
 {
     public partial class SearchWindow : Window
     {
         private readonly Senpai _senpai;
+        private SearchResult<User> _userSearchResults;
+        private SearchResult<IAnimeMangaObject> _animeMangaSearchResults;
 
         public SearchWindow(Senpai senpai)
         {
             this._senpai = senpai;
             InitializeComponent();
+
+            
+        }
+
+        private async void AnimeMangaSearch_ScrollChanged(object sender, ScrollChangedEventArgs e)
+        {
+            //Wenn bis auf an das Ende gescrollt wurde lade die nächsten Ergebnisse
+
+            ScrollViewer lScrollViewer = (ScrollViewer)sender;
+            if (lScrollViewer.VerticalOffset == lScrollViewer.ScrollableHeight && this._animeMangaSearchResults != null)
+            {
+                //Wenn die es keine Ergebnisse mehr gibt gibt dem Benutzer bescheid
+                if(this._animeMangaSearchResults.SearchFinished)
+                {
+                    MessageBox.Show("Es sind keine weiteren Suchergebnisse mehr vorhanden!");
+                    return;
+                }
+
+                ProxerResult<IEnumerable<IAnimeMangaObject>> lResult = await this._animeMangaSearchResults.getNextSearchResults();
+                if (lResult.Success)
+                {
+                    foreach(IAnimeMangaObject lCurAnimeManga in lResult.Result)
+                    {
+                        this.AnimeMangaSearchResultListBox.Items.Add(lCurAnimeManga);
+                    }
+                }
+            }
+        }
+
+        private async void UserSearch_ScrollChanged(object sender, ScrollChangedEventArgs e)
+        {
+            //Wenn bis auf an das Ende gescrollt wurde lade die nächsten Ergebnisse
+
+            ScrollViewer lScrollViewer = (ScrollViewer)sender;
+            if (lScrollViewer.VerticalOffset == lScrollViewer.ScrollableHeight && this._userSearchResults != null)
+            {
+                //Wenn die es keine Ergebnisse mehr gibt gibt dem Benutzer bescheid
+                if (this._userSearchResults.SearchFinished)
+                {
+                    MessageBox.Show("Es sind keine weiteren Suchergebnisse mehr vorhanden!");
+                    return;
+                }
+
+                ProxerResult<IEnumerable<User>> lResult = await this._userSearchResults.getNextSearchResults();
+                if(lResult.Success)
+                {
+                    foreach(User lCurUser in lResult.Result)
+                    {
+                        this.UserSearchResultListBox.Items.Add(lCurUser);
+                    }
+                }
+            }
         }
 
         private void SearchButton_Click(object sender, RoutedEventArgs e)
@@ -95,10 +150,11 @@ namespace Azuria.Example
                 , lGenreContains, lGenreExcludes, lFskIncludes, lLanguage, lSortBy);
             if (lResult.Success)
             {
-                IEnumerable<IAnimeMangaObject> lSearchResult = lResult.Result.SearchResults;
+                this._animeMangaSearchResults = lResult.Result;
+                this._userSearchResults = null;
                 this.AnimeMangaSearchResultListBox.Items.Clear();
                 this.UserSearchResultListBox.Items.Clear();
-                foreach (IAnimeMangaObject lUser in lSearchResult)
+                foreach (IAnimeMangaObject lUser in this._animeMangaSearchResults.SearchResults)
                 {
                     this.AnimeMangaSearchResultListBox.Items.Add(lUser);
                 }
@@ -114,10 +170,11 @@ namespace Azuria.Example
             ProxerResult<SearchResult<User>> lResult = await SearchHelper.Search<User>(this.SearchTextBox.Text, this._senpai);
             if (lResult.Success)
             {
-                IEnumerable<User> lSearchResult = lResult.Result.SearchResults;
+                this._userSearchResults = lResult.Result;
+                this._animeMangaSearchResults = null;
                 this.UserSearchResultListBox.Items.Clear();
                 this.AnimeMangaSearchResultListBox.Items.Clear();
-                foreach (User lUser in lSearchResult)
+                foreach (User lUser in this._userSearchResults.SearchResults)
                 {
                     this.UserSearchResultListBox.Items.Add(lUser);
                 }
@@ -138,6 +195,12 @@ namespace Azuria.Example
             {
                 new AnimeMangaWindow(((ListViewItem)sender).Content as IAnimeMangaObject, this._senpai).Show();
             }
+        }
+
+        private void window_Loaded(object sender, RoutedEventArgs e)
+        {
+            ((VisualTreeHelper.GetChild(this.UserSearchResultListBox, 0) as Decorator).Child as ScrollViewer).ScrollChanged += UserSearch_ScrollChanged;
+            ((VisualTreeHelper.GetChild(this.AnimeMangaSearchResultListBox, 0) as Decorator).Child as ScrollViewer).ScrollChanged += AnimeMangaSearch_ScrollChanged;
         }
     }
 }

@@ -7,7 +7,7 @@
         xmlns:local="clr-namespace:Azuria.Example"
         xmlns:control="clr-namespace:Azuria.Example.Controls.Search"
         mc:Ignorable="d"
-        Title="SearchWindow" Height="430" Width="565.156" Background="{DynamicResource {x:Static SystemColors.ControlBrushKey}}">
+        Title="SearchWindow" Height="430" Width="565.156" Background="{DynamicResource {x:Static SystemColors.ControlBrushKey}}" Loaded="window_Loaded">
     <Window.Resources>
         <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
         <DataTemplate x:Key="UserSearchResultTemplate">
