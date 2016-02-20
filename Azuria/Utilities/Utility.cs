@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using System.Reflection;
 using Azuria.ErrorHandling;
 using HtmlAgilityPack;
-using System.Reflection;
 
 // ReSharper disable LoopCanBeConvertedToQuery
 
@@ -53,6 +53,15 @@ namespace Azuria.Utilities
             return stringsFound;
         }
 
+        internal static bool HasParameterlessConstructor(this Type type)
+        {
+            foreach (ConstructorInfo ctor in type.GetTypeInfo().DeclaredConstructors)
+            {
+                if (!ctor.IsPrivate && ctor.GetParameters().Length == 0) return true;
+            }
+            return false;
+        }
+
         /// <summary>
         ///     Compute Levenshtein distance
         ///     Memory efficient version
@@ -61,7 +70,7 @@ namespace Azuria.Utilities
         /// <param name="sRow"></param>
         /// <param name="sCol"></param>
         /// <returns>0==perfect match | 100==totaly different</returns>
-        internal static int ILd(string sRow, string sCol)
+        internal static int ComputeLevenshtein(string sRow, string sCol)
         {
             int rowLen = sRow.Length;
             int colLen = sCol.Length;
@@ -123,26 +132,17 @@ namespace Azuria.Utilities
             return 100*v0[rowLen]/max;
         }
 
-        internal static IEnumerable<HtmlNode> SelectNodesUtility(this HtmlNode node, string attribute, string value)
-        {
-            return
-                GetAllHtmlNodes(node.ChildNodes)
-                    .Where(x => x.Attributes.Contains(attribute) && x.Attributes[attribute].Value == value);
-        }
-
-        internal static HtmlDocument LoadHtmlUtility(this HtmlDocument document, string html) 
+        internal static HtmlDocument LoadHtmlUtility(this HtmlDocument document, string html)
         {
             document.LoadHtml(html);
             return document;
         }
 
-        internal static bool HasParameterlessConstructor(this Type type) 
+        internal static IEnumerable<HtmlNode> SelectNodesUtility(this HtmlNode node, string attribute, string value)
         {
-            foreach(ConstructorInfo ctor in type.GetTypeInfo().DeclaredConstructors)
-            {
-                if (!ctor.IsPrivate && ctor.GetParameters().Length == 0) return true;
-            }
-            return false;
+            return
+                GetAllHtmlNodes(node.ChildNodes)
+                    .Where(x => x.Attributes.Contains(attribute) && x.Attributes[attribute].Value == value);
         }
 
         internal static DateTime ToDateTime(string strFdate, string format = "dd.MM.yyyy")

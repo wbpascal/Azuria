@@ -44,7 +44,7 @@ namespace Azuria.EventArguments
         /// <summary>
         ///     Gibt ein Objekt zurück, mithilfe dessen die Benachrichtigungen abgerufen werden können.
         /// </summary>
-        public NewsCollection Benachrichtigungen => this._senpai.News;
+        public NewsCollection Notifications => this._senpai.News;
 
         #endregion
     }

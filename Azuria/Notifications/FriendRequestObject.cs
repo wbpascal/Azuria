@@ -79,7 +79,7 @@ namespace Azuria.Notifications
         /// <returns>Die Aktion war erfolgreich. True oder False</returns>
         public async Task<ProxerResult<bool>> AcceptRequest()
         {
-            if (!this._senpai.LoggedIn)
+            if (!this._senpai.IsLoggedIn)
                 return new ProxerResult<bool>(new Exception[] {new NotLoggedInException(this._senpai)});
             if (this._accepted || this._denied) return new ProxerResult<bool>(false);
 
@@ -105,7 +105,7 @@ namespace Azuria.Notifications
         /// <returns>Die Aktion war erfolgreich. True oder False</returns>
         public async Task<ProxerResult<bool>> DenyRequest()
         {
-            if (!this._senpai.LoggedIn)
+            if (!this._senpai.IsLoggedIn)
                 return new ProxerResult<bool>(new Exception[] {new NotLoggedInException(this._senpai)});
             if (this._accepted || this._denied) return new ProxerResult<bool>(false);
 

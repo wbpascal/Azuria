@@ -61,7 +61,7 @@ namespace Azuria.Utilities.Net
             string url, CookieContainer loginCookies, ErrorHandler errorHandler, Senpai senpai,
             Func<string, ProxerResult>[] checkFuncs, bool checkLogin)
         {
-            if (checkLogin && loginCookies != null && !senpai.LoggedIn)
+            if (checkLogin && loginCookies != null && !senpai.IsLoggedIn)
                 return
                     new ProxerResult<Tuple<string, CookieContainer>>(new Exception[] {new NotLoggedInException()});
 
@@ -157,7 +157,7 @@ namespace Azuria.Utilities.Net
             Senpai senpai,
             Func<string, ProxerResult>[] checkFuncs, bool checkLogin)
         {
-            if (checkLogin && loginCookies != null && !senpai.LoggedIn)
+            if (checkLogin && loginCookies != null && !senpai.IsLoggedIn)
                 return
                     new ProxerResult<KeyValuePair<string, CookieContainer>>(new Exception[] {new NotLoggedInException()});
 

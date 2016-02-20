@@ -18,16 +18,16 @@
         /// <summary>
         ///     Der <see cref="Anime" /> oder <see cref="Manga" /> wurde abgebrochen.
         /// </summary>
-        Abgebrochen,
+        Canceled,
 
         /// <summary>
         ///     Der <see cref="Anime" /> oder <see cref="Manga" /> ist abgeschlossen.
         /// </summary>
-        Abgeschlossen,
+        Completed,
 
         /// <summary>
         ///     Der Status des <see cref="Anime" /> oder <see cref="Manga" /> ist unbekannt.
         /// </summary>
-        Unbekannt
+        Unknown
     }
 }

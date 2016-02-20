@@ -83,7 +83,7 @@ namespace Azuria.Notifications
         /// <summary>
         ///     Veraltet. Gibt die Thread-ID zurück.
         /// </summary>
-        [JsonProperty("mid"), Obsolete("Bitte benutzte stattdessen " + nameof(Thread))]
+        [JsonProperty("mid"), Obsolete("Bitte benutzte stattdessen " + nameof(ThreadId))]
         internal int Mid { get; set; }
 
         /// <summary>
@@ -114,7 +114,7 @@ namespace Azuria.Notifications
         ///     Gibt die Thread-ID zurück.
         /// </summary>
         [JsonProperty("thread")]
-        public int Thread { get; set; }
+        public int ThreadId { get; set; }
 
         /// <summary>
         ///     Gibt den Zeitpunkt der News als Unix Timestamp zurück.

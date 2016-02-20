@@ -23,7 +23,7 @@ namespace Azuria.Example
             this._senpai = senpai;
 
             //Überprüfen, ob der Senpai eingeloggt ist, sonst werden die Events nicht abgerufen
-            if (!this._senpai.LoggedIn)
+            if (!this._senpai.IsLoggedIn)
             {
                 MessageBox.Show("Du musst für diese Aktion eingeloggt sein!");
                 return;
@@ -65,7 +65,7 @@ namespace Azuria.Example
         {
             //e enthält die Anzahl der Benachrichtigungen(NotificationCount) 
             //als auch die Benachrichtigungen an sich(Benachrichtigungen)
-            this.LoadAmUpdateNotifications(e.Benachrichtigungen);
+            this.LoadAmUpdateNotifications(e.Notifications);
         }
 
         private void ErrorDuringNotificationFetch(Senpai sender, IEnumerable<Exception> exceptions)
@@ -77,7 +77,7 @@ namespace Azuria.Example
         {
             //e enthält die Anzahl der Benachrichtigungen(NotificationCount) 
             //als auch die Benachrichtigungen an sich(Benachrichtigungen)
-            this.ProcessFriendRequests(e.Benachrichtigungen);
+            this.ProcessFriendRequests(e.Notifications);
         }
 
         private async void LoadAmUpdateNotifications(AnimeMangaUpdateCollection collection)
@@ -202,7 +202,7 @@ namespace Azuria.Example
         {
             //e enthält die Anzahl der Benachrichtigungen(NotificationCount) 
             //als auch die Benachrichtigungen an sich(Benachrichtigungen)
-            this.LoadNewsNotifications(e.Benachrichtigungen);
+            this.LoadNewsNotifications(e.Notifications);
         }
 
         private void NotificationRaised(Senpai sender, IEnumerable<INotificationEventArgs> e)
@@ -250,7 +250,7 @@ namespace Azuria.Example
         {
             //e enthält die Anzahl der Benachrichtigungen(NotificationCount) 
             //als auch die Benachrichtigungen an sich(Benachrichtigungen)
-            this.LoadPmNotifications(e.Benchrichtigungen);
+            this.LoadPmNotifications(e.Notifications);
         }
 
         private async void ProcessFriendRequests(FriendRequestCollection collection)

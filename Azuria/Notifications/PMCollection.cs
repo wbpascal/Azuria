@@ -180,22 +180,19 @@ namespace Azuria.Notifications
                     lDocument.DocumentNode.SelectNodesUtility("class", "conferenceList").ToArray();
 
                 List<PmObject> lPmObjects = new List<PmObject>();
-                if (lNodes != null)
-                {
-                    lPmObjects.AddRange(from curNode in lNodes
-                        let lTitel =
-                            curNode.ChildNodes[curNode.FirstChild.Name.Equals("img") ? 1 : 0].InnerText
-                        let lDatum =
-                            curNode.ChildNodes[curNode.FirstChild.Name.Equals("img") ? 2 : 1].InnerText
-                                .Split('.')
-                        let lTimeStamp =
-                            new DateTime(Convert.ToInt32(lDatum[2]), Convert.ToInt32(lDatum[1]),
-                                Convert.ToInt32(lDatum[0]))
-                        let lId =
-                            Convert.ToInt32(curNode.Attributes["href"].Value.Substring(13,
-                                curNode.Attributes["href"].Value.Length - 17))
-                        select new PmObject(lTitel, lId, lTimeStamp));
-                }
+                lPmObjects.AddRange(from curNode in lNodes
+                    let lTitel =
+                        curNode.ChildNodes[curNode.FirstChild.Name.Equals("img") ? 1 : 0].InnerText
+                    let lDatum =
+                        curNode.ChildNodes[curNode.FirstChild.Name.Equals("img") ? 2 : 1].InnerText
+                            .Split('.')
+                    let lTimeStamp =
+                        new DateTime(Convert.ToInt32(lDatum[2]), Convert.ToInt32(lDatum[1]),
+                            Convert.ToInt32(lDatum[0]))
+                    let lId =
+                        Convert.ToInt32(curNode.Attributes["href"].Value.Substring(13,
+                            curNode.Attributes["href"].Value.Length - 17))
+                    select new PmObject(lTitel, lId, lTimeStamp));
 
                 this._pmObjects = lPmObjects.ToArray();
                 this._notificationObjects = lPmObjects.Cast<INotificationObject>().ToArray();

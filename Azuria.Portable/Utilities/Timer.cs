@@ -49,12 +49,6 @@ namespace System.Timers
 
         #region
 
-        private void CreateTask()
-        {
-            this._ct = new CancellationTokenSource();
-            this._task = new Task(this.Action, this._ct.Token);
-        }
-
         private async void Action()
         {
             this._isFinished = false;
@@ -73,6 +67,12 @@ namespace System.Timers
                 }
                 this.Elapsed?.Invoke(this, EventArgs.Empty);
             } while (this.AutoReset);
+        }
+
+        private void CreateTask()
+        {
+            this._ct = new CancellationTokenSource();
+            this._task = new Task(this.Action, this._ct.Token);
         }
 
         internal event ElapsedEventHandler Elapsed;

@@ -1,14 +1,32 @@
-﻿using Azuria.Main.Search;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Controls;
+using Azuria.Main.Search;
 
 namespace Azuria.Example.Controls.Search
 {
     public class SortByRadionButton : RadioButton
     {
         public static readonly DependencyProperty SortByProperty =
-                DependencyProperty.Register(nameof(SortBy), typeof(SearchHelper.SortAnimeManga)
-                , typeof(SortByRadionButton), new FrameworkPropertyMetadata(SearchHelper.SortAnimeManga.Relevanz, SortByPropertyChanged));
+            DependencyProperty.Register(nameof(SortBy), typeof (SearchHelper.SortAnimeManga)
+                , typeof (SortByRadionButton),
+                new FrameworkPropertyMetadata(SearchHelper.SortAnimeManga.Relevance, SortByPropertyChanged));
+
+        public SortByRadionButton()
+        {
+            this.Content = this.SortBy;
+        }
+
+        #region Properties
+
+        public SearchHelper.SortAnimeManga SortBy
+        {
+            get { return (SearchHelper.SortAnimeManga) this.GetValue(SortByProperty); }
+            set { this.SetValue(SortByProperty, value); }
+        }
+
+        #endregion
+
+        #region
 
         private static void SortByPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
@@ -19,18 +37,6 @@ namespace Azuria.Example.Controls.Search
             }
         }
 
-        public SortByRadionButton()
-        {
-            this.Content = this.SortBy;
-        }
-
-        public SearchHelper.SortAnimeManga SortBy
-        {
-            get { return (SearchHelper.SortAnimeManga)this.GetValue(SortByProperty); }
-            set
-            {
-                this.SetValue(SortByProperty, value);
-            }
-        }
+        #endregion
     }
 }

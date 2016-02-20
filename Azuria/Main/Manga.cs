@@ -54,7 +54,9 @@ namespace Azuria.Main
         private Language[] _sprachen;
         private string _synonym;
 
-        internal Manga() { }
+        internal Manga()
+        {
+        }
 
         internal Manga(string name, int id, Senpai senpai)
         {
@@ -66,10 +68,11 @@ namespace Azuria.Main
             this.Id = id;
             this.CoverUri = new Uri("http://cdn.proxer.me/cover/" + this.Id + ".jpg");
 
-            this.IstInitialisiert = false;
+            this.IsInitialized = false;
         }
 
-        internal Manga(string name, int id, Senpai senpai, IEnumerable<GenreObject> genreList, AnimeMangaStatus status, MangaType type) : this(name, id, senpai) 
+        internal Manga(string name, int id, Senpai senpai, IEnumerable<GenreObject> genreList, AnimeMangaStatus status,
+            MangaType type) : this(name, id, senpai)
         {
             this.Genre = genreList;
             this.Status = status;
@@ -85,7 +88,7 @@ namespace Azuria.Main
         ///     <para>Diese Eigenschaft muss durch <see cref="Init" /> initialisiert werden.</para>
         /// </summary>
         /// <seealso cref="Init" />
-        public string Beschreibung
+        public string Description
         {
             get { return this._beschreibung ?? ""; }
             private set { this._beschreibung = value; }
@@ -104,7 +107,7 @@ namespace Azuria.Main
         ///     Gibt den deutschen Titel des <see cref="Anime" /> oder <see cref="Manga" /> zurück.
         ///     <para>(Vererbt von <see cref="IAnimeMangaObject" />)</para>
         /// </summary>
-        public string DeutschTitel
+        public string GermanTitle
         {
             get { return this._deutschTitel ?? ""; }
             private set { this._deutschTitel = value; }
@@ -117,7 +120,7 @@ namespace Azuria.Main
         ///     <para>Diese Eigenschaft muss durch <see cref="Init" /> initialisiert werden.</para>
         /// </summary>
         /// <seealso cref="Init" />
-        public string EnglischTitel
+        public string EnglishTitle
         {
             get { return this._englischTitel ?? ""; }
             private set { this._englischTitel = value; }
@@ -160,7 +163,7 @@ namespace Azuria.Main
         /// </summary>
         /// <seealso cref="Minor.Group" />
         /// <seealso cref="Init" />
-        public IEnumerable<Group> Gruppen
+        public IEnumerable<Group> Groups
         {
             get { return this._gruppen ?? new Group[0]; }
             private set { this._gruppen = value.ToArray(); }
@@ -182,7 +185,7 @@ namespace Azuria.Main
         /// </summary>
         /// <seealso cref="Minor.Industry" />
         /// <seealso cref="Init" />
-        public IEnumerable<Industry> Industrie
+        public IEnumerable<Industry> Industry
         {
             get { return this._industrie ?? new Industry[0]; }
             private set { this._industrie = value.ToArray(); }
@@ -193,7 +196,7 @@ namespace Azuria.Main
         ///     Gibt zurück, ob das Objekt bereits Initialisiert ist.
         ///     <para>(Vererbt von <see cref="IAnimeMangaObject" />)</para>
         /// </summary>
-        public bool IstInitialisiert { get; private set; }
+        public bool IsInitialized { get; private set; }
 
 
         /// <summary>
@@ -203,7 +206,7 @@ namespace Azuria.Main
         ///     <para>Diese Eigenschaft muss durch <see cref="Init" /> initialisiert werden.</para>
         /// </summary>
         /// <seealso cref="Init" />
-        public string JapanTitel
+        public string JapaneseTitle
         {
             get { return this._japanTitel ?? ""; }
             private set { this._japanTitel = value; }
@@ -217,7 +220,7 @@ namespace Azuria.Main
         ///     <para>Diese Eigenschaft muss durch <see cref="Init" /> initialisiert werden.</para>
         /// </summary>
         /// <seealso cref="Init" />
-        public bool Lizensiert { get; private set; }
+        public bool IsLicensed { get; private set; }
 
 
         /// <summary>
@@ -379,7 +382,7 @@ namespace Azuria.Main
                 }
             }
 
-            this.IstInitialisiert = true;
+            this.IsInitialized = true;
 
             if (lFailedInits < this._initFuncs.Length)
                 lReturn.Success = true;
@@ -602,10 +605,10 @@ namespace Azuria.Main
                     switch (childNode.FirstChild.InnerText)
                     {
                         case "Englisch":
-                            languageList.Add(Language.Englisch);
+                            languageList.Add(Language.English);
                             break;
                         case "Deutsch":
-                            languageList.Add(Language.Deutsch);
+                            languageList.Add(Language.German);
                             break;
                     }
                 }
@@ -703,13 +706,13 @@ namespace Azuria.Main
                             this.Name = childNode.ChildNodes[1].InnerText;
                             break;
                         case "Eng. Titel":
-                            this.EnglischTitel = childNode.ChildNodes[1].InnerText;
+                            this.EnglishTitle = childNode.ChildNodes[1].InnerText;
                             break;
                         case "Ger. Titel":
-                            this.DeutschTitel = childNode.ChildNodes[1].InnerText;
+                            this.GermanTitle = childNode.ChildNodes[1].InnerText;
                             break;
                         case "Jap. Titel":
-                            this.JapanTitel = childNode.ChildNodes[1].InnerText;
+                            this.JapaneseTitle = childNode.ChildNodes[1].InnerText;
                             break;
                         case "Synonym":
                             this.Synonym = childNode.ChildNodes[1].InnerText;
@@ -756,27 +759,26 @@ namespace Azuria.Main
                                     this.Status = AnimeMangaStatus.Airing;
                                     break;
                                 case "Abgeschlossen":
-                                    this.Status = AnimeMangaStatus.Abgeschlossen;
+                                    this.Status = AnimeMangaStatus.Completed;
                                     break;
                                 case "Nicht erschienen (Pre-Airing)":
                                     this.Status = AnimeMangaStatus.PreAiring;
                                     break;
                                 default:
-                                    this.Status = AnimeMangaStatus.Abgebrochen;
+                                    this.Status = AnimeMangaStatus.Canceled;
                                     break;
                             }
                             break;
                         case "Gruppen":
                             if (childNode.ChildNodes[1].InnerText.Contains("Keine Gruppen eingetragen.")) break;
-                            this.Gruppen = (from htmlNode in childNode.ChildNodes[1].ChildNodes
+                            this.Groups = (from htmlNode in childNode.ChildNodes[1].ChildNodes
                                 where htmlNode.Name.Equals("a")
                                 select
                                     new Group(
                                         Convert.ToInt32(
-                                            Utility.GetTagContents(
-                                                htmlNode.GetAttributeValue("href",
-                                                    "/translatorgroups?id=-1#top"),
-                                                "/translatorgroups?id=", "#top")[0]), htmlNode.InnerText))
+                                            htmlNode.GetAttributeValue("href",
+                                                "/translatorgroups?id=-1#top")
+                                                .GetTagContents("/translatorgroups?id=", "#top")[0]), htmlNode.InnerText))
                                 .ToArray();
                             break;
                         case "Industrie":
@@ -788,32 +790,31 @@ namespace Azuria.Main
                             {
                                 Industry.IndustryType lIndustryType;
                                 if (htmlNode.NextSibling.InnerText.Contains("Studio"))
-                                    lIndustryType = Industry.IndustryType.Studio;
+                                    lIndustryType = Minor.Industry.IndustryType.Studio;
                                 else if (htmlNode.NextSibling.InnerText.Contains("Publisher"))
-                                    lIndustryType = Industry.IndustryType.Publisher;
+                                    lIndustryType = Minor.Industry.IndustryType.Publisher;
                                 else if (htmlNode.NextSibling.InnerText.Contains("Producer"))
-                                    lIndustryType = Industry.IndustryType.Producer;
-                                else lIndustryType = Industry.IndustryType.None;
+                                    lIndustryType = Minor.Industry.IndustryType.Producer;
+                                else lIndustryType = Minor.Industry.IndustryType.None;
 
                                 lIndustries.Add(new Industry(Convert.ToInt32(
-                                    Utility.GetTagContents(
-                                        htmlNode.GetAttributeValue("href", "/industry?id=-1#top"),
-                                        "/industry?id=", "#top")[0]), htmlNode.InnerText, lIndustryType));
+                                    htmlNode.GetAttributeValue("href", "/industry?id=-1#top")
+                                        .GetTagContents("/industry?id=", "#top")[0]), htmlNode.InnerText, lIndustryType));
                             }
-                            this.Industrie = lIndustries.ToArray();
+                            this.Industry = lIndustries.ToArray();
                             break;
                         case "Lizenz":
-                            this.Lizensiert = childNode.ChildNodes[1].InnerText.StartsWith("Lizenziert!");
+                            this.IsLicensed = childNode.ChildNodes[1].InnerText.StartsWith("Lizenziert!");
                             break;
                         case "Beschreibung:":
                             childNode.FirstChild.FirstChild.Remove();
-                            this.Beschreibung = "";
+                            this.Description = "";
                             foreach (HtmlNode htmlNode in childNode.FirstChild.ChildNodes)
                             {
-                                if (htmlNode.Name.Equals("br")) this.Beschreibung += "\n";
-                                else this.Beschreibung += htmlNode.InnerText;
+                                if (htmlNode.Name.Equals("br")) this.Description += "\n";
+                                else this.Description += htmlNode.InnerText;
                             }
-                            if (this.Beschreibung.StartsWith("\n")) this.Beschreibung = this.Beschreibung.TrimStart();
+                            if (this.Description.StartsWith("\n")) this.Description = this.Description.TrimStart();
                             break;
                     }
                 }
@@ -1110,13 +1111,13 @@ namespace Azuria.Main
 
                     this.Seiten =
                         (from s in
-                            Utility.GetTagContents(lDocument.DocumentNode.ChildNodes[1].InnerText.Split(';')[0], "[",
+                            lDocument.DocumentNode.ChildNodes[1].InnerText.Split(';')[0].GetTagContents("[",
                                 "]")
                             where !s.StartsWith("[")
                             select
                                 new Uri("http://upload.proxer.me/manga/" + this.ParentManga.Id + "_" +
                                         this.Sprache.ToString().ToLower().Substring(0, 2) + "/" + this.KapitelNr + "/" +
-                                        Utility.GetTagContents(s, "\"", "\"")[0])).ToArray();
+                                        s.GetTagContents("\"", "\"")[0])).ToArray();
 
                     return new ProxerResult();
                 }
@@ -1200,10 +1201,10 @@ namespace Azuria.Main
                                 else
                                     this.ScanlatorGruppe = new Group(
                                         Convert.ToInt32(
-                                            Utility.GetTagContents(
-                                                childNode.ChildNodes[1].FirstChild.GetAttributeValue("href",
-                                                    "/translatorgroups?id=-1#top"),
-                                                "/translatorgroups?id=", "#top")[0]), childNode.ChildNodes[1].InnerText);
+                                            childNode.ChildNodes[1].FirstChild.GetAttributeValue("href",
+                                                "/translatorgroups?id=-1#top")
+                                                .GetTagContents("/translatorgroups?id=", "#top")[0]),
+                                        childNode.ChildNodes[1].InnerText);
                                 break;
                             case "Datum":
                                 this.Datum = Utility.ToDateTime(childNode.ChildNodes[1].InnerText);

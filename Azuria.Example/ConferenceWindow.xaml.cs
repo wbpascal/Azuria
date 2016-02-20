@@ -27,7 +27,7 @@ namespace Azuria.Example
         private async void Button_Click(object sender, RoutedEventArgs e)
         {
             //Versuche die Nachricht zu senden
-            if (!(await this._conference.SendeNachricht(this.InputBox.Text)).OnError(false))
+            if (!(await this._conference.SendMessage(this.InputBox.Text)).OnError(false))
             {
                 //Falls ein Fehler beim Senden der Nachricht aufgetreten ist
                 MessageBox.Show("Die Nachricht konnte nicht gesendet werden!", "Fehler",
@@ -67,15 +67,15 @@ namespace Azuria.Example
             foreach (Conference.Message message in messages)
             {
                 this.ChatBox.Text += "[" + message.TimeStamp + "] " + message.Sender.UserName + ": " +
-                                     message.Nachricht + "\n";
+                                     message.Content + "\n";
             }
         }
 
         private void InitComponents()
         {
-            this.Title = "Konferenz: " + this._conference.Titel;
+            this.Title = "Konferenz: " + this._conference.Title;
 
-            foreach (User teilnehmer in this._conference.Teilnehmer ?? new List<User>())
+            foreach (User teilnehmer in this._conference.Participants ?? new List<User>())
             {
                 TextBlock lTeilnehmerBlock = new TextBlock {DataContext = teilnehmer, Text = teilnehmer.ToString()};
                 lTeilnehmerBlock.MouseLeftButtonDown += this.UserTextBlock_MouseLeftButtonDown;
@@ -84,8 +84,8 @@ namespace Azuria.Example
 
             TextBlock lLeaderBlock = new TextBlock
             {
-                DataContext = this._conference.Leiter,
-                Text = this._conference.Leiter.ToString()
+                DataContext = this._conference.Leader,
+                Text = this._conference.Leader.ToString()
             };
             lLeaderBlock.MouseLeftButtonDown += this.UserTextBlock_MouseLeftButtonDown;
             this.LeiterBox.Items.Add(lLeaderBlock);
@@ -101,13 +101,13 @@ namespace Azuria.Example
         {
             //Eigenschaften der Konferenz initialisieren
             //Nachrichten werden noch nicht abgerufen
-            await this._conference.InitConference();
+            await this._conference.Init();
 
             this.InitComponents();
 
             //Abrufen der Nachrichten im Hintergrund wird aktiviert
             //Durch setzen auf false kann diese Funktion wieder deaktiviert werden
-            this._conference.Aktiv = true;
+            this._conference.Activ = true;
         }
 
         #endregion

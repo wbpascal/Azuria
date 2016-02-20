@@ -67,13 +67,13 @@ namespace Azuria.ErrorHandling
                     this.Save();
                 }
             }
+            /*
             else
-#pragma warning disable 162
             {
                 this.Reset();
                 this.Save();
             }
-#pragma warning restore 162
+            */
         }
 
         /// <summary>

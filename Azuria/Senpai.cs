@@ -72,7 +72,7 @@ namespace Azuria
         private readonly List<bool> _updateNotifications;
         private AnimeMangaUpdateCollection _animeMangaUpdates;
         private FriendRequestCollection _friendUpdates;
-        private bool _loggedIn;
+        private bool _isLoggedIn;
         private NewsCollection _newsUpdates;
         private PmCollection _pmUpdates;
         private int _userId;
@@ -86,7 +86,7 @@ namespace Azuria
             this.ErrHandler = new ErrorHandler();
 
             this._updateNotifications = new List<bool>(new[] {true, false, true, true});
-            this._loggedIn = false;
+            this._isLoggedIn = false;
             this.LoginCookies = new CookieContainer();
 
             this._loginCheckTimer = new Timer
@@ -180,15 +180,15 @@ namespace Azuria
         /// <summary>
         ///     Gibt an, ob der Benutzter noch eingeloggt ist, wird aber nicht überprüft. (nur durch Timer alle 30 Minuten)
         /// </summary>
-        public bool LoggedIn
+        public bool IsLoggedIn
         {
-            get { return this._loggedIn; }
+            get { return this._isLoggedIn; }
             private set
             {
                 if (value)
                 {
                     this._loginCheckTimer.Start();
-                    this._loggedIn = true;
+                    this._isLoggedIn = true;
                     this.UserLoggedInRaised?.Invoke(this, EventArgs.Empty);
                 }
                 else
@@ -196,7 +196,7 @@ namespace Azuria
                     this._loginCheckTimer.Stop();
                     this._notificationCheckTimer.Stop();
                     this._propertyUpdateTimer.Stop();
-                    this._loggedIn = false;
+                    this._isLoggedIn = false;
                     this.UserLoggedOutRaised?.Invoke(this, EventArgs.Empty);
                 }
             }
@@ -302,10 +302,10 @@ namespace Azuria
 
                 if (responseDes["error"].Equals("0"))
                 {
-                    if (!this.LoggedIn) this.LoggedIn = true;
+                    if (!this.IsLoggedIn) this.IsLoggedIn = true;
                     return new ProxerResult<bool>(true);
                 }
-                if (this.LoggedIn) this.LoggedIn = false;
+                if (this.IsLoggedIn) this.IsLoggedIn = false;
                 return new ProxerResult<bool>(false);
             }
             catch
@@ -427,7 +427,7 @@ namespace Azuria
 
         /// <summary>
         ///     Gibt alle Konferenzen des Senpais zurück. ACHTUNG: Bei den Konferenzen muss noch
-        ///     <see cref="Conference.InitConference">InitConference()</see>
+        ///     <see cref="Conference.Init">InitConference()</see>
         ///     aufgerufen werden!
         ///     <para>Mögliche Fehler, die <see cref="ProxerResult" /> enthalten kann:</para>
         ///     <list type="table">
@@ -478,7 +478,7 @@ namespace Azuria
                 lReturn.AddRange(from curNode in lNodes
                     let lId =
                         Convert.ToInt32(
-                            Utility.GetTagContents(curNode.Attributes["href"].Value, "/messages?id=",
+                            curNode.Attributes["href"].Value.GetTagContents("/messages?id=",
                                 "#top")[0])
                     let lTitle = curNode.FirstChild.InnerText
                     select new Conference(lTitle, lId, this));
@@ -518,7 +518,7 @@ namespace Azuria
         /// <seealso cref="Login" />
         public ProxerResult InitNotifications()
         {
-            if (!this.LoggedIn) return new ProxerResult(new Exception[] {new NotLoggedInException(this)});
+            if (!this.IsLoggedIn) return new ProxerResult(new Exception[] {new NotLoggedInException(this)});
 
             this._notificationCheckTimer.Start();
             this._propertyUpdateTimer.Start();
@@ -578,11 +578,11 @@ namespace Azuria
 
                     //Avatar einfügen
                     this.Me = new User(username, this._userId, this);
-                    this.LoggedIn = true;
+                    this.IsLoggedIn = true;
 
                     return new ProxerResult<bool>(true);
                 }
-                this.LoggedIn = false;
+                this.IsLoggedIn = false;
 
                 return new ProxerResult<bool>(false);
             }

@@ -11,44 +11,45 @@ using HtmlAgilityPack;
 namespace Azuria.Main.Minor
 {
     /// <summary>
-    /// Eine Klasse, die ein Kommentar eines <see cref="Anime">Anime</see> oder <see cref="Manga">Manga</see> darstellt.
+    ///     Eine Klasse, die ein Kommentar eines <see cref="Anime">Anime</see> oder <see cref="Manga">Manga</see> darstellt.
     /// </summary>
     public class Comment
     {
         internal Comment(Azuria.User author, int animeMangaId, int sterne, string kommentar)
         {
             this.AnimeMangaId = animeMangaId;
-            this.Autor = author;
-            this.Sterne = sterne;
-            this.Kommentar = kommentar;
+            this.Author = author;
+            this.Stars = sterne;
+            this.Content = kommentar;
         }
 
         #region Properties
 
         /// <summary>
-        /// Gibt die Id des <see cref="Anime">Anime</see> oder <see cref="Manga">Manga</see> zurück, auf die der <see cref="Comment">Kommentar</see> verweist.
+        ///     Gibt die Id des <see cref="Anime">Anime</see> oder <see cref="Manga">Manga</see> zurück, auf die der
+        ///     <see cref="Comment">Kommentar</see> verweist.
         /// </summary>
         public int AnimeMangaId { get; private set; }
 
         /// <summary>
-        /// Gibt den Autor des <see cref="Comment">Kommentars</see> zurück.
+        ///     Gibt den Autor des <see cref="Comment">Kommentars</see> zurück.
         /// </summary>
-        public Azuria.User Autor { get; private set; }
+        public Azuria.User Author { get; private set; }
 
         /// <summary>
-        /// Gibt den Inhalt des <see cref="Comment">Kommentars</see> zurück.
+        ///     Gibt die Sterne weiterer Bewertungskategorien des <see cref="Comment">Kommentars</see> zurück.
         /// </summary>
-        public string Kommentar { get; private set; }
+        public Dictionary<string, int> CategoryStars { get; private set; }
 
         /// <summary>
-        /// Gibt die Sterne der Gesamtwertung des <see cref="Comment">Kommentars</see> zurück.
+        ///     Gibt den Inhalt des <see cref="Comment">Kommentars</see> zurück.
         /// </summary>
-        public int Sterne { get; private set; }
+        public string Content { get; private set; }
 
         /// <summary>
-        /// Gibt die Sterne weiterer Bewertungskategorien des <see cref="Comment">Kommentars</see> zurück.
+        ///     Gibt die Sterne der Gesamtwertung des <see cref="Comment">Kommentars</see> zurück.
         /// </summary>
-        public Dictionary<string, int> SubSterne { get; private set; }
+        public int Stars { get; private set; }
 
         #endregion
 
@@ -85,7 +86,7 @@ namespace Azuria.Main.Minor
         }
 
         private static ProxerResult<Comment> GetCommentFromNode(HtmlNode commentNode, Senpai senpai
-                    , bool isUserPage, Azuria.User author = null, int animeMangaId = -1)
+            , bool isUserPage, Azuria.User author = null, int animeMangaId = -1)
         {
             HtmlNode[] lTableNodes =
                 commentNode.ChildNodes.FindFirst("tr").ChildNodes.Where(node => node.Name.Equals("td")).ToArray();
@@ -99,15 +100,14 @@ namespace Azuria.Main.Minor
                 {
                     lAnimeMangaId =
                         Convert.ToInt32(
-                            Utility.GetTagContents(commentNode.ChildNodes.FindFirst("a").Attributes["href"].Value,
-                                "/info/", "#top").First());
+                            commentNode.ChildNodes.FindFirst("a").Attributes["href"].Value.GetTagContents("/info/",
+                                "#top").First());
                 }
                 else
                 {
                     lAuthor = new Azuria.User(lTableNodes[0].InnerText.Replace("/t", ""), Convert.ToInt32(
-                        Utility.GetTagContents(
-                            lTableNodes[0].ChildNodes.FindFirst("a").Attributes[
-                                "href"].Value, "/user/", "#top")
+                        lTableNodes[0].ChildNodes.FindFirst("a").Attributes[
+                            "href"].Value.GetTagContents("/user/", "#top")
                             .First()), senpai);
                 }
 
@@ -133,21 +133,26 @@ namespace Azuria.Main.Minor
                             starNode.Name.Equals("img") && starNode.Attributes.Contains("src") &&
                             starNode.Attributes["src"].Value.Equals("/images/misc/stern.png"));
 
-                return new ProxerResult<Comment>(new Comment(lAuthor, lAnimeMangaId, lStars, lContent) { SubSterne = lSubRatings });
+                return
+                    new ProxerResult<Comment>(new Comment(lAuthor, lAnimeMangaId, lStars, lContent)
+                    {
+                        CategoryStars = lSubRatings
+                    });
             }
             catch
             {
-                return new ProxerResult<Comment>(new[] { new WrongResponseException() });
+                return new ProxerResult<Comment>(new[] {new WrongResponseException()});
             }
         }
 
         internal static async Task<ProxerResult<IEnumerable<Comment>>> GetCommentsFromUrl(int startIndex, int count,
-            string url, string sort, Senpai senpai, bool isUserPage = false, Azuria.User author = null, int animeMangaId = -1)
+            string url, string sort, Senpai senpai, bool isUserPage = false, Azuria.User author = null,
+            int animeMangaId = -1)
         {
             const int lKommentareProSeite = 25;
 
             List<Comment> lReturn = new List<Comment>();
-            int lStartSeite = Convert.ToInt32(startIndex / lKommentareProSeite + 1);
+            int lStartSeite = Convert.ToInt32(startIndex/lKommentareProSeite + 1);
             HtmlDocument lDocument = new HtmlDocument();
             Func<string, ProxerResult> lCheckFunc = s =>
             {
@@ -161,18 +166,16 @@ namespace Azuria.Main.Minor
                     node.Attributes["align"].Value.Equals("center"))) != default(HtmlNode))
                 {
                     if (lNode.InnerText.Equals("Es existieren bisher keine Kommentare."))
-                        return new ProxerResult(new[] { new WrongResponseException { Response = s } });
+                        return new ProxerResult(new[] {new WrongResponseException {Response = s}});
                 }
 
                 if ((lNode = lDocument.DocumentNode.ChildNodes.FirstOrDefault(node =>
                     node.Name.Equals("div") && node.Attributes.Contains("class") &&
-                    node.Attributes["class"].Value.Equals("inner"))) != default(HtmlNode))
-                {
-                    if (lNode.InnerText.Equals("Dieser Benutzer hat bislang keine Kommentare."))
-                        return new ProxerResult(new[] { new WrongResponseException { Response = s } });
-                }
+                    node.Attributes["class"].Value.Equals("inner"))) == default(HtmlNode)) return new ProxerResult();
 
-                return new ProxerResult();
+                return lNode.InnerText.Equals("Dieser Benutzer hat bislang keine Kommentare.")
+                    ? new ProxerResult(new[] {new WrongResponseException {Response = s}})
+                    : new ProxerResult();
             };
 
             ProxerResult<string> lResult;
@@ -182,7 +185,7 @@ namespace Azuria.Main.Minor
                        await
                            HttpUtility.GetResponseErrorHandling(
                                url + lStartSeite + "?format=raw&sort=" + sort,
-                               senpai.LoginCookies, senpai.ErrHandler, senpai, new[] { lCheckFunc }))
+                               senpai.LoginCookies, senpai.ErrHandler, senpai, new[] {lCheckFunc}))
                        .Success)
             {
                 try
@@ -191,9 +194,10 @@ namespace Azuria.Main.Minor
                     foreach (HtmlNode commentNode in lDocument.DocumentNode.ChildNodes.Where(
                         node =>
                             node.Name.Equals("table") && node.Attributes.Contains("class") &&
+                            // ReSharper disable once AccessToModifiedClosure
                             node.Attributes["class"].Value.Equals("details")).TakeWhile(node => count > 0))
                     {
-                        if (i >= startIndex % lKommentareProSeite)
+                        if (i >= startIndex%lKommentareProSeite)
                         {
                             lReturn.Add(
                                 GetCommentFromNode(commentNode, senpai, isUserPage, author, animeMangaId)

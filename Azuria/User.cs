@@ -6,12 +6,12 @@ using Azuria.ErrorHandling;
 using Azuria.Exceptions;
 using Azuria.Main;
 using Azuria.Main.Minor;
+using Azuria.Main.Search;
 using Azuria.Main.User;
 using Azuria.Utilities;
 using Azuria.Utilities.Net;
 using HtmlAgilityPack;
 using Newtonsoft.Json;
-using Azuria.Main.Search;
 
 namespace Azuria
 {
@@ -46,29 +46,33 @@ namespace Azuria
         /// <param name="userId">Die ID des Benutzers</param>
         /// <param name="senpai">Wird benötigt um einige Eigenschaften abzurufen</param>
         public User(int userId, Senpai senpai) : this("", userId, senpai)
-        { }
+        {
+        }
 
         internal User(string name, int userId, Senpai senpai) : this(name, userId, null, senpai)
-        { }
-
-        internal User(string name, int userId, Uri avatar, int points, Senpai senpai) : this(name, userId, avatar, senpai) 
         {
-            this.Punkte = points;
+        }
+
+        internal User(string name, int userId, Uri avatar, int points, Senpai senpai)
+            : this(name, userId, avatar, senpai)
+        {
+            this.Points = points;
         }
 
         internal User(string name, int userId, Uri avatar, Senpai senpai) : this(name, userId, avatar, false, senpai)
-        { }
+        {
+        }
 
         internal User(string name, int userId, Uri avatar, bool online, Senpai senpai)
         {
             this._senpai = senpai;
             this._initFuncs = new Func<Task<ProxerResult>>[]
             {this.InitMainInfo, this.InitInfos, this.InitFriends, this.InitAnime, this.InitManga};
-            this.IstInitialisiert = false;
+            this.IsInitialized = false;
 
             this.UserName = name;
             this.Id = userId;
-            this.Online = online;
+            this.IsOnline = online;
             if (avatar != null) this.Avatar = avatar;
             else
                 this.Avatar =
@@ -76,13 +80,13 @@ namespace Azuria
                         "https://proxer.me/components/com_comprofiler/plugin/templates/default/images/avatar/nophoto_n.png");
         }
 
-
         #region Properties
 
         /// <summary>
         ///     Gibt alle <see cref="Anime">Anime</see> zurück, die der <see cref="User">Benutzer</see>
         ///     in seinem Profil markiert hat.
         /// </summary>
+        /// <seealso cref="Init" />
         public IEnumerable<KeyValuePair<AnimeMangaProgress, AnimeMangaProgressObject>> Anime
             => this._animeList ??
                new List<KeyValuePair<AnimeMangaProgress, AnimeMangaProgressObject>>();
@@ -110,7 +114,7 @@ namespace Azuria
         ///     <para>Diese Eigenschaft muss durch <see cref="Init" /> initialisiert werden.</para>
         /// </summary>
         /// <seealso cref="Init" />
-        public IEnumerable<Anime> FavoritenAnime
+        public IEnumerable<Anime> FavouriteAnime
         {
             get { return this._favouritenAnime ?? new Anime[0]; }
             private set { this._favouritenAnime = value; }
@@ -122,7 +126,7 @@ namespace Azuria
         ///     <para>Diese Eigenschaft muss durch <see cref="Init" /> initialisiert werden.</para>
         /// </summary>
         /// <seealso cref="Init" />
-        public IEnumerable<Manga> FavoritenManga
+        public IEnumerable<Manga> FavouriteManga
         {
             get { return this._favouritenManga ?? new Manga[0]; }
             private set { this._favouritenManga = value; }
@@ -134,7 +138,7 @@ namespace Azuria
         ///     <para>Diese Eigenschaft muss durch <see cref="Init" /> initialisiert werden.</para>
         /// </summary>
         /// <seealso cref="Init" />
-        public List<User> Freunde
+        public List<User> Friends
         {
             get { return this._freunde ?? new List<User>(); }
             private set { this._freunde = value; }
@@ -173,15 +177,7 @@ namespace Azuria
         /// <summary>
         ///     Gibt an, ob das Objekt bereits Initialisiert ist.
         /// </summary>
-        public bool IstInitialisiert { get; private set; }
-
-        /// <summary>
-        ///     Gibt alle <see cref="Manga">Manga</see> zurück, die der <see cref="User">Benutzer</see>
-        ///     in seinem Profil markiert hat.
-        /// </summary>
-        public IEnumerable<KeyValuePair<AnimeMangaProgress, AnimeMangaProgressObject>> Manga
-            => this._mangaList ??
-               new List<KeyValuePair<AnimeMangaProgress, AnimeMangaProgressObject>>();
+        public bool IsInitialized { get; private set; }
 
         /// <summary>
         ///     Gibt zurück, ob der Benutzter zur Zeit online ist.
@@ -189,7 +185,16 @@ namespace Azuria
         ///     <para>Diese Eigenschaft muss durch <see cref="Init" /> initialisiert werden.</para>
         /// </summary>
         /// <seealso cref="Init" />
-        public bool Online { get; private set; }
+        public bool IsOnline { get; private set; }
+
+        /// <summary>
+        ///     Gibt alle <see cref="Manga">Manga</see> zurück, die der <see cref="User">Benutzer</see>
+        ///     in seinem Profil markiert hat.
+        /// </summary>
+        /// <seealso cref="Init" />
+        public IEnumerable<KeyValuePair<AnimeMangaProgress, AnimeMangaProgressObject>> Manga
+            => this._mangaList ??
+               new List<KeyValuePair<AnimeMangaProgress, AnimeMangaProgressObject>>();
 
         /// <summary>
         ///     Gibt zurück, wie viele Punkte der Benutzter momentan hat.
@@ -197,7 +202,7 @@ namespace Azuria
         ///     <para>Diese Eigenschaft muss durch <see cref="Init" /> initialisiert werden.</para>
         /// </summary>
         /// <seealso cref="Init" />
-        public int Punkte { get; private set; }
+        public int Points { get; private set; }
 
         /// <summary>
         ///     Gibt den Rangnamen des Benutzers zurück.
@@ -205,7 +210,7 @@ namespace Azuria
         ///     <para>Diese Eigenschaft muss durch <see cref="Init" /> initialisiert werden.</para>
         /// </summary>
         /// <seealso cref="Init" />
-        public string Rang
+        public string Ranking
         {
             get { return this._rang ?? ""; }
             private set { this._rang = value; }
@@ -235,6 +240,48 @@ namespace Azuria
         #endregion
 
         #region
+
+        /// <summary>
+        ///     Überprüft, ob zwei Benutzter Freunde sind.
+        ///     <para>Mögliche Fehler, die <see cref="ProxerResult" /> enthalten kann:</para>
+        ///     <list type="table">
+        ///         <listheader>
+        ///             <term>Ausnahme</term>
+        ///             <description>Beschreibung</description>
+        ///         </listheader>
+        ///         <item>
+        ///             <term>
+        ///                 <see cref="InitializeNeededException" />
+        ///             </term>
+        ///             <description>
+        ///                 <see cref="InitializeNeededException" /> wird ausgelöst, wenn die Eigenschaften des Objektes
+        ///                 noch nicht initialisiert sind.
+        ///             </description>
+        ///         </item>
+        ///         <item>
+        ///             <term>
+        ///                 <see cref="ArgumentNullException" />
+        ///             </term>
+        ///             <description>
+        ///                 <see cref="ArgumentNullException" /> wird ausgelöst, wenn <paramref name="user1" /> oder
+        ///                 <paramref name="user2" /> null (oder
+        ///                 Nothing in Visual Basic) sind.
+        ///             </description>
+        ///         </item>
+        ///     </list>
+        /// </summary>
+        /// <param name="user1">Benutzer 1</param>
+        /// <param name="user2">Benutzer 2</param>
+        /// <returns>Benutzer sind Freunde. True oder False.</returns>
+        public static ProxerResult<bool> AreUserFriends(User user1, User user2)
+        {
+            if (user1 == null)
+                return new ProxerResult<bool>(new Exception[] {new ArgumentNullException(nameof(user1))});
+
+            return user2 == null
+                ? new ProxerResult<bool>(new Exception[] {new ArgumentNullException(nameof(user2))})
+                : new ProxerResult<bool>(user1.Friends.Any(item => item.Id == user2.Id));
+        }
 
         private async Task<ProxerResult<HtmlNode[]>> GetAllFriendNodes()
         {
@@ -478,7 +525,7 @@ namespace Azuria
                 }
             }
 
-            this.IstInitialisiert = true;
+            this.IsInitialized = true;
 
             if (lFailedInits < this._initFuncs.Length)
                 lReturn.Success = true;
@@ -523,7 +570,7 @@ namespace Azuria
 
                 lDocument.LoadHtml(lResponse);
 
-                this.FavoritenAnime =
+                this.FavouriteAnime =
                     lDocument.DocumentNode.ChildNodes[5].ChildNodes.Where(
                         x =>
                             x.HasAttributes && x.Attributes.Contains("href") &&
@@ -532,9 +579,8 @@ namespace Azuria
                             favouritenNode =>
                                 new Anime(favouritenNode.Attributes["title"].Value,
                                     Convert.ToInt32(
-                                        Utility.GetTagContents(
-                                            favouritenNode.Attributes["href"].Value,
-                                            "/info/", "#top").First()), this._senpai))
+                                        favouritenNode.Attributes["href"].Value.GetTagContents("/info/", "#top").First()),
+                                    this._senpai))
                         .ToArray();
 
                 foreach (
@@ -631,7 +677,7 @@ namespace Azuria
         {
             if (this.Id == -1) return new ProxerResult();
 
-            this.Freunde = new List<User>();
+            this.Friends = new List<User>();
 
             ProxerResult<HtmlNode[]> lResult = await this.GetAllFriendNodes();
             if (!lResult.Success) return new ProxerResult(lResult.Exceptions);
@@ -654,7 +700,7 @@ namespace Azuria
                         curFriendNode.ChildNodes[1].FirstChild.GetAttributeValue("src",
                             "/images/misc/offlineicon.png").Equals("/images/misc/onlineicon.png");
 
-                    this.Freunde.Add(new User(lUsername, lId, lAvatar, lOnline, this._senpai));
+                    this.Friends.Add(new User(lUsername, lId, lAvatar, lOnline, this._senpai));
                 }
 
                 return new ProxerResult();
@@ -751,15 +797,15 @@ namespace Azuria
                     new Uri("https:" +
                             lProfileNodes[0].ParentNode.ParentNode.ChildNodes[1].ChildNodes[0]
                                 .Attributes["src"].Value);
-                this.Punkte =
+                this.Points =
                     Convert.ToInt32(
-                        Utility.GetTagContents(lProfileNodes[0].FirstChild.InnerText, "Summe: ", " - ")[
+                        lProfileNodes[0].FirstChild.InnerText.GetTagContents("Summe: ", " - ")[
                             0]);
-                this.Rang =
-                    Utility.GetTagContents(lProfileNodes[0].FirstChild.InnerText, this.Punkte + " - ",
+                this.Ranking =
+                    lProfileNodes[0].FirstChild.InnerText.GetTagContents(this.Points + " - ",
                         "[?]")
                         [0];
-                this.Online = lProfileNodes[0].ChildNodes[1].InnerText.Equals("Status Online");
+                this.IsOnline = lProfileNodes[0].ChildNodes[1].InnerText.Equals("Status Online");
                 this.Status = lProfileNodes[0].ChildNodes.Count == 7
                     ? lProfileNodes[0].ChildNodes[6].InnerText
                     : "";
@@ -812,7 +858,7 @@ namespace Azuria
 
                 lDocument.LoadHtml(lResponse);
 
-                this.FavoritenManga =
+                this.FavouriteManga =
                     lDocument.DocumentNode.ChildNodes[5].ChildNodes.Where(
                         x =>
                             x.HasAttributes && x.Attributes.Contains("href") &&
@@ -821,9 +867,8 @@ namespace Azuria
                             favouritenNode =>
                                 new Manga(favouritenNode.Attributes["title"].Value,
                                     Convert.ToInt32(
-                                        Utility.GetTagContents(
-                                            favouritenNode.Attributes["href"].Value,
-                                            "/info/", "#top").First()), this._senpai))
+                                        favouritenNode.Attributes["href"].Value.GetTagContents("/info/", "#top").First()),
+                                    this._senpai))
                         .ToArray();
 
                 foreach (
@@ -914,55 +959,6 @@ namespace Azuria
             {
                 return new ProxerResult((await ErrorHandler.HandleError(this._senpai, lResponse, false)).Exceptions);
             }
-        }
-
-
-        /*
-         * -----------------------------------
-         * --------Statische Methoden---------
-         * -----------------------------------
-        */
-
-        /// <summary>
-        ///     Überprüft, ob zwei Benutzter Freunde sind.
-        ///     <para>Mögliche Fehler, die <see cref="ProxerResult" /> enthalten kann:</para>
-        ///     <list type="table">
-        ///         <listheader>
-        ///             <term>Ausnahme</term>
-        ///             <description>Beschreibung</description>
-        ///         </listheader>
-        ///         <item>
-        ///             <term>
-        ///                 <see cref="InitializeNeededException" />
-        ///             </term>
-        ///             <description>
-        ///                 <see cref="InitializeNeededException" /> wird ausgelöst, wenn die Eigenschaften des Objektes
-        ///                 noch nicht initialisiert sind.
-        ///             </description>
-        ///         </item>
-        ///         <item>
-        ///             <term>
-        ///                 <see cref="ArgumentNullException" />
-        ///             </term>
-        ///             <description>
-        ///                 <see cref="ArgumentNullException" /> wird ausgelöst, wenn <paramref name="user1" /> oder
-        ///                 <paramref name="user2" /> null (oder
-        ///                 Nothing in Visual Basic) sind.
-        ///             </description>
-        ///         </item>
-        ///     </list>
-        /// </summary>
-        /// <param name="user1">Benutzer 1</param>
-        /// <param name="user2">Benutzer 2</param>
-        /// <returns>Benutzer sind Freunde. True oder False.</returns>
-        public static ProxerResult<bool> IsUserFriendOf(User user1, User user2)
-        {
-            if (user1 == null)
-                return new ProxerResult<bool>(new Exception[] {new ArgumentNullException(nameof(user1))});
-
-            return user2 == null
-                ? new ProxerResult<bool>(new Exception[] {new ArgumentNullException(nameof(user2))})
-                : new ProxerResult<bool>(user1.Freunde.Any(item => item.Id == user2.Id));
         }
 
         /// <summary>

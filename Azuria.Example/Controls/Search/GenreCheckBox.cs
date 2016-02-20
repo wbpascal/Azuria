@@ -1,14 +1,32 @@
-﻿using Azuria.Main.Minor;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Controls;
+using Azuria.Main.Minor;
 
 namespace Azuria.Example.Controls.Search
 {
     public class GenreCheckBox : CheckBox
     {
         public static readonly DependencyProperty GenreProperty =
-                DependencyProperty.Register(nameof(Genre), typeof(GenreObject.GenreType)
-                , typeof(GenreCheckBox), new FrameworkPropertyMetadata(GenreObject.GenreType.Abenteuer, GenrePropertyChanged));
+            DependencyProperty.Register(nameof(Genre), typeof (GenreObject.GenreType)
+                , typeof (GenreCheckBox),
+                new FrameworkPropertyMetadata(GenreObject.GenreType.Adventure, GenrePropertyChanged));
+
+        public GenreCheckBox()
+        {
+            this.Content = this.Genre;
+        }
+
+        #region Properties
+
+        public GenreObject.GenreType Genre
+        {
+            get { return (GenreObject.GenreType) this.GetValue(GenreProperty); }
+            set { this.SetValue(GenreProperty, value); }
+        }
+
+        #endregion
+
+        #region
 
         private static void GenrePropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
@@ -19,18 +37,6 @@ namespace Azuria.Example.Controls.Search
             }
         }
 
-        public GenreCheckBox()
-        {
-            this.Content = this.Genre;
-        }
-
-        public GenreObject.GenreType Genre
-        {
-            get { return (GenreObject.GenreType)this.GetValue(GenreProperty); }
-            set
-            {
-                this.SetValue(GenreProperty, value);
-            }
-        }
+        #endregion
     }
 }

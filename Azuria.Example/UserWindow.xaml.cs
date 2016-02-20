@@ -48,7 +48,7 @@ namespace Azuria.Example
 
         private void InitAnime()
         {
-            foreach (Anime favAnime in this._user.FavoritenAnime)
+            foreach (Anime favAnime in this._user.FavouriteAnime)
             {
                 this.AnimeFavsPanel.Children.Add(new AnimeMangaProgressControl(favAnime, this._senpai));
             }
@@ -93,9 +93,9 @@ namespace Azuria.Example
                 TextBlock lCommentContent = new TextBlock
                 {
                     TextWrapping = TextWrapping.Wrap,
-                    Text = "Gesamtwertung: " + comment.Sterne + "\n\n" + comment.Kommentar
+                    Text = "Gesamtwertung: " + comment.Stars + "\n\n" + comment.Content
                 };
-                comment.SubSterne.ToList()
+                comment.CategoryStars.ToList()
                     .ForEach(pair => lCommentContent.Text = pair.Key + ": " + pair.Value + "\n" + lCommentContent.Text);
 
                 Button lGotoButton = new Button {Content = "Öffne Anime/Manga"};
@@ -131,9 +131,9 @@ namespace Azuria.Example
             this.IdLabel.Content = this._user.Id;
             this.UsernameLabel.Content = this._user.UserName;
 
-            this.OnlineLabel.Content = this._user.Online ? "Online" : "Offline";
+            this.OnlineLabel.Content = this._user.IsOnline ? "Online" : "Offline";
             this.OnlineLabel.Foreground =
-                new SolidColorBrush(this._user.Online ? Color.FromRgb(79, 222, 43) : Color.FromRgb(222, 43, 43));
+                new SolidColorBrush(this._user.IsOnline ? Color.FromRgb(79, 222, 43) : Color.FromRgb(222, 43, 43));
 
             this.InitInfo();
             this.InitFriends();
@@ -144,7 +144,7 @@ namespace Azuria.Example
 
         private void InitFriends()
         {
-            foreach (User friend in this._user.Freunde)
+            foreach (User friend in this._user.Friends)
             {
                 TextBlock lFriendBlock = new TextBlock {Text = friend.ToString(), DataContext = friend};
                 lFriendBlock.MouseLeftButtonUp += this.FriendBlock_MouseLeftButtonUp;
@@ -155,8 +155,8 @@ namespace Azuria.Example
 
         private void InitInfo()
         {
-            this.PointsLabel.Content = this._user.Punkte;
-            this.RankLabel.Content = this._user.Rang;
+            this.PointsLabel.Content = this._user.Points;
+            this.RankLabel.Content = this._user.Ranking;
             this.StatusBlock.Text = this._user.Status;
             this.InfoBox.Text = this._user.Info;
             this.InfoHtmlBox.Text = this._user.InfoHtml;
@@ -164,7 +164,7 @@ namespace Azuria.Example
 
         private void InitManga()
         {
-            foreach (Manga favManga in this._user.FavoritenManga)
+            foreach (Manga favManga in this._user.FavouriteManga)
             {
                 this.MangaFavsPanel.Children.Add(new AnimeMangaProgressControl(favManga, this._senpai));
             }
@@ -217,7 +217,7 @@ namespace Azuria.Example
             //Wenn der User schon initialisiert ist brauch das nicht noch einmal gemacht zu werden
             //Dies verringert die Belastung auf die Proxer-Server
             //Die Initialisierungs-Methode kann aber auch aufgerufen werden, um die Infos zu aktualisieren
-            if (!this._user.IstInitialisiert)
+            if (!this._user.IsInitialized)
             {
                 ProxerResult lInitResult = await this._user.Init();
                 if (!lInitResult.Success)

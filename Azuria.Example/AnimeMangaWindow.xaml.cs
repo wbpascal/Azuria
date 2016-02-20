@@ -129,13 +129,13 @@ namespace Azuria.Example
                 TextBlock lCommentContent = new TextBlock
                 {
                     TextWrapping = TextWrapping.Wrap,
-                    Text = "Gesamtwertung: " + comment.Sterne + "\n\n" + comment.Kommentar
+                    Text = "Gesamtwertung: " + comment.Stars + "\n\n" + comment.Content
                 };
-                comment.SubSterne.ToList()
+                comment.CategoryStars.ToList()
                     .ForEach(pair => lCommentContent.Text = pair.Key + ": " + pair.Value + "\n" + lCommentContent.Text);
 
                 Button lGotoButton = new Button {Content = "Gehe zu Benutzer"};
-                lGotoButton.Click += (sender, args) => { new UserWindow(comment.Autor, this._senpai).Show(); };
+                lGotoButton.Click += (sender, args) => { new UserWindow(comment.Author, this._senpai).Show(); };
 
                 StackPanel lStackPanel = new StackPanel();
                 lStackPanel.Children.Add(lGotoButton);
@@ -143,7 +143,7 @@ namespace Azuria.Example
 
                 Expander lCommentExpander = new Expander
                 {
-                    Header = comment.Autor.UserName + "(" + comment.Autor.Id + ")",
+                    Header = comment.Author.UserName + "(" + comment.Author.Id + ")",
                     Content = lStackPanel
                 };
 
@@ -163,13 +163,13 @@ namespace Azuria.Example
                 TextBlock lCommentContent = new TextBlock
                 {
                     TextWrapping = TextWrapping.Wrap,
-                    Text = "Gesamtwertung: " + comment.Sterne + "\n\n" + comment.Kommentar
+                    Text = "Gesamtwertung: " + comment.Stars + "\n\n" + comment.Content
                 };
-                comment.SubSterne.ToList()
+                comment.CategoryStars.ToList()
                     .ForEach(pair => lCommentContent.Text = pair.Key + ": " + pair.Value + "\n" + lCommentContent.Text);
 
                 Button lGotoButton = new Button {Content = "Gehe zu Benutzer"};
-                lGotoButton.Click += (sender, args) => { new UserWindow(comment.Autor, this._senpai).Show(); };
+                lGotoButton.Click += (sender, args) => { new UserWindow(comment.Author, this._senpai).Show(); };
 
                 StackPanel lStackPanel = new StackPanel();
                 lStackPanel.Children.Add(lGotoButton);
@@ -177,7 +177,7 @@ namespace Azuria.Example
 
                 Expander lCommentExpander = new Expander
                 {
-                    Header = comment.Autor.UserName + "(" + comment.Autor.Id + ")",
+                    Header = comment.Author.UserName + "(" + comment.Author.Id + ")",
                     Content = lStackPanel
                 };
 
@@ -200,8 +200,8 @@ namespace Azuria.Example
             }
 
             //Wird hier nur zu demonstrations Zwecken überprüft, es können vom API aus jede Sprache abgerufen werden, 
-            //die auch in der Sprachen-Eigenschaft eingetragen sind
-            if (!lAnime.Sprachen.Contains(Anime.Language.EngSub)) return;
+            //die auch in der AvailableLanguages-Eigenschaft eingetragen sind
+            if (!lAnime.AvailableLanguages.Contains(Anime.Language.EngSub)) return;
 
             ProxerResult<IEnumerable<Anime.Episode>> lEpisodenResult = lAnime.GetEpisodes(Anime.Language.EngSub);
             if (lEpisodenResult.Success)
@@ -232,17 +232,17 @@ namespace Azuria.Example
             });
             this.InfoStackPanel.Children.Add(new Expander
             {
-                Content = this._animeMangaObject.EnglischTitel,
+                Content = this._animeMangaObject.EnglishTitle,
                 Header = "Eng. Titel"
             });
             this.InfoStackPanel.Children.Add(new Expander
             {
-                Content = this._animeMangaObject.DeutschTitel,
+                Content = this._animeMangaObject.GermanTitle,
                 Header = "Ger. Titel"
             });
             this.InfoStackPanel.Children.Add(new Expander
             {
-                Content = this._animeMangaObject.JapanTitel,
+                Content = this._animeMangaObject.JapaneseTitle,
                 Header = "Jap. Titel"
             });
             this.InfoStackPanel.Children.Add(new Expander
@@ -316,7 +316,7 @@ namespace Azuria.Example
             string lGruppenString =
                 "Proxer.Me bietet keinerlei Downloads an. " +
                 "Diesbezüglich leiten wir dich an die betroffenen Sub- und Scanlationgruppen weiter.";
-            this._animeMangaObject.Gruppen.ToList().ForEach(x => lGruppenString += "\n" + x.Name + "[ID:" + x.Id + "]");
+            this._animeMangaObject.Groups.ToList().ForEach(x => lGruppenString += "\n" + x.Name + "[ID:" + x.Id + "]");
             this.InfoStackPanel.Children.Add(new Expander
             {
                 Content =
@@ -334,7 +334,7 @@ namespace Azuria.Example
             #region Industrie
 
             string lIndustrieString = "";
-            this._animeMangaObject.Industrie.ToList()
+            this._animeMangaObject.Industry.ToList()
                 .ForEach(x => lIndustrieString += x.Name + " (" + x.Type + ") [ID:" + x.Id + "]\n");
             this.InfoStackPanel.Children.Add(new Expander
             {
@@ -348,7 +348,7 @@ namespace Azuria.Example
 
             this.InfoStackPanel.Children.Add(new Expander
             {
-                Content = this._animeMangaObject.Lizensiert ? "Lizensiert!" : "Nicht Lizensiert!",
+                Content = this._animeMangaObject.IsLicensed ? "Lizensiert!" : "Nicht Lizensiert!",
                 Header = "Lizen"
             });
 
@@ -361,7 +361,7 @@ namespace Azuria.Example
                 Content =
                     new TextBlock
                     {
-                        Text = this._animeMangaObject.Beschreibung,
+                        Text = this._animeMangaObject.Description,
                         Width = this.InfoStackPanel.ActualWidth - 10,
                         TextWrapping = TextWrapping.WrapWithOverflow
                     },
@@ -385,10 +385,10 @@ namespace Azuria.Example
             }
 
             //Wird hier nur zu demonstrations Zwecken überprüft, es können vom API aus jede Sprache abgerufen werden, 
-            //die auch in der Sprachen-Eigenschaft eingetragen sind
-            if (!lManga.Sprachen.Contains(Main.Minor.Language.Englisch)) return;
+            //die auch in der AvailableLanguages-Eigenschaft eingetragen sind
+            if (!lManga.Sprachen.Contains(Main.Minor.Language.English)) return;
 
-            ProxerResult<IEnumerable<Manga.Chapter>> lKapitelResult = lManga.GetChapters(Main.Minor.Language.Englisch);
+            ProxerResult<IEnumerable<Manga.Chapter>> lKapitelResult = lManga.GetChapters(Main.Minor.Language.English);
             if (lKapitelResult.Success)
             {
                 lKapitelResult.Result.ToList().ForEach(kapitel => this.KapitelComboBox.Items.Add(kapitel));
@@ -408,7 +408,7 @@ namespace Azuria.Example
             }
 
             //Empfohlen: Überprüfen, ob das Objekt bereits initialisiert ist
-            if (!this._animeMangaObject.IstInitialisiert)
+            if (!this._animeMangaObject.IsInitialized)
                 if (!(await this._animeMangaObject.Init()).Success)
                 {
                     MessageBox.Show("Es ist ein Fehler beim Initialisieren des Objekts aufgetreten!", "Fehler",

@@ -229,31 +229,28 @@ namespace Azuria.Notifications
 
                 List<AnimeMangaUpdateObject> lAnimeMangaUpdateObjects = new List<AnimeMangaUpdateObject>();
 
-                if (lNodes != null)
+                foreach (HtmlNode curNode in lNodes.Where(curNode => curNode.InnerText.StartsWith("Lesezeichen:")))
                 {
-                    foreach (HtmlNode curNode in lNodes.Where(curNode => curNode.InnerText.StartsWith("Lesezeichen:")))
+                    string lName;
+                    int lNumber;
+
+                    int lId = Convert.ToInt32(curNode.Id.Substring(12));
+                    string lMessage = curNode.ChildNodes["u"].InnerText;
+                    Uri lLink = new Uri("https://proxer.me" + curNode.Attributes["href"].Value);
+
+                    if (lMessage.IndexOf('#') != -1)
                     {
-                        string lName;
-                        int lNumber;
-
-                        int lId = Convert.ToInt32(curNode.Id.Substring(12));
-                        string lMessage = curNode.ChildNodes["u"].InnerText;
-                        Uri lLink = new Uri("https://proxer.me" + curNode.Attributes["href"].Value);
-
-                        if (lMessage.IndexOf('#') != -1)
-                        {
-                            lName = lMessage.Split('#')[0];
-                            if (!int.TryParse(lMessage.Split('#')[1], out lNumber)) lNumber = -1;
-                        }
-                        else
-                        {
-                            lName = "";
-                            lNumber = -1;
-                        }
-
-                        lAnimeMangaUpdateObjects.Add(new AnimeMangaUpdateObject(lMessage, lName, lNumber,
-                            lLink, lId));
+                        lName = lMessage.Split('#')[0];
+                        if (!int.TryParse(lMessage.Split('#')[1], out lNumber)) lNumber = -1;
                     }
+                    else
+                    {
+                        lName = "";
+                        lNumber = -1;
+                    }
+
+                    lAnimeMangaUpdateObjects.Add(new AnimeMangaUpdateObject(lMessage, lName, lNumber,
+                        lLink, lId));
                 }
 
                 this._animeMangaUpdateObjects = lAnimeMangaUpdateObjects.ToArray();
