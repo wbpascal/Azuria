@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Azuria.ErrorHandling;
+using Azuria.Exceptions;
 using Azuria.Main.Minor;
 using Azuria.Utilities;
 using Azuria.Utilities.Net;
@@ -44,6 +45,7 @@ namespace Azuria.Main.Search
         /// <summary>
         ///     Läd die nächste Seite der Suchergebnisse und fügt sie <see cref="SearchResult{T}.SearchResults" /> hinzu.
         /// </summary>
+        /// <exception cref="WrongResponseException">Wird ausgelöst, wenn die Antwort des Servers nicht der Erwarteten entspricht.</exception>
         /// <returns>Die Suchergebnisse der nächsten Seite.</returns>
         public async Task<ProxerResult<IEnumerable<T>>> GetNextSearchResults()
         {

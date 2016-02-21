@@ -243,33 +243,10 @@ namespace Azuria
 
         /// <summary>
         ///     Überprüft, ob zwei Benutzter Freunde sind.
-        ///     <para>Mögliche Fehler, die <see cref="ProxerResult" /> enthalten kann:</para>
-        ///     <list type="table">
-        ///         <listheader>
-        ///             <term>Ausnahme</term>
-        ///             <description>Beschreibung</description>
-        ///         </listheader>
-        ///         <item>
-        ///             <term>
-        ///                 <see cref="InitializeNeededException" />
-        ///             </term>
-        ///             <description>
-        ///                 <see cref="InitializeNeededException" /> wird ausgelöst, wenn die Eigenschaften des Objektes
-        ///                 noch nicht initialisiert sind.
-        ///             </description>
-        ///         </item>
-        ///         <item>
-        ///             <term>
-        ///                 <see cref="ArgumentNullException" />
-        ///             </term>
-        ///             <description>
-        ///                 <see cref="ArgumentNullException" /> wird ausgelöst, wenn <paramref name="user1" /> oder
-        ///                 <paramref name="user2" /> null (oder
-        ///                 Nothing in Visual Basic) sind.
-        ///             </description>
-        ///         </item>
-        ///     </list>
         /// </summary>
+        /// <exception cref="InitializeNeededException">Wird ausgelöst, wenn die Eigenschaften der Parameter noch nicht initialisiert sind.</exception>
+        /// <exception cref="ArgumentNullException">Wird ausgelöst, wenn <paramref name="user1" /> null (oder Nothing in Visual Basic) ist.</exception>
+        /// <exception cref="ArgumentNullException">Wird ausgelöst, wenn <paramref name="user2" /> null (oder Nothing in Visual Basic) ist.</exception>
         /// <param name="user1">Benutzer 1</param>
         /// <param name="user2">Benutzer 2</param>
         /// <returns>Benutzer sind Freunde. True oder False.</returns>
@@ -346,23 +323,8 @@ namespace Azuria
         /// <summary>
         ///     Gibt die Kommentare des <see cref="User" /> chronologisch geordnet zurück.
         ///     <para>(Vererbt von <see cref="IAnimeMangaObject" />)</para>
-        ///     <para>Mögliche Fehler, die <see cref="ProxerResult" /> enthalten kann:</para>
-        ///     <list type="table">
-        ///         <listheader>
-        ///             <term>Ausnahme</term>
-        ///             <description>Beschreibung</description>
-        ///         </listheader>
-        ///         <item>
-        ///             <term>
-        ///                 <see cref="WrongResponseException" />
-        ///             </term>
-        ///             <description>
-        ///                 <see cref="WrongResponseException" /> wird ausgelöst, wenn die Antwort des Servers nicht der
-        ///                 Erwarteten entspricht.
-        ///             </description>
-        ///         </item>
-        ///     </list>
         /// </summary>
+        /// <exception cref="WrongResponseException">Wird ausgelöst, wenn die Antwort des Servers nicht der Erwarteten entspricht.</exception>
         /// <param name="startIndex">Der Start-Index der ausgegebenen Kommentare.</param>
         /// <param name="count">Die Anzahl der ausgegebenen Kommentare ab dem angegebenen <paramref name="startIndex" />.</param>
         /// <returns>Eine Aufzählung mit den Kommentaren.</returns>
@@ -377,51 +339,11 @@ namespace Azuria
 
         /// <summary>
         ///     Gibt den Benutzernamen eines Benutzers mit der spezifizierten ID zurück.
-        ///     <para>Mögliche Fehler, die <see cref="ProxerResult" /> enthalten kann:</para>
-        ///     <list type="table">
-        ///         <listheader>
-        ///             <term>Ausnahme</term>
-        ///             <description>Beschreibung</description>
-        ///         </listheader>
-        ///         <item>
-        ///             <term>
-        ///                 <see cref="NotLoggedInException" />
-        ///             </term>
-        ///             <description>
-        ///                 <see cref="NotLoggedInException" /> wird ausgelöst, wenn der <see cref="Senpai">Benutzer</see>
-        ///                 nicht eingeloggt ist.
-        ///             </description>
-        ///         </item>
-        ///         <item>
-        ///             <term>
-        ///                 <see cref="WrongResponseException" />
-        ///             </term>
-        ///             <description>
-        ///                 <see cref="WrongResponseException" /> wird ausgelöst, wenn die Antwort des Servers nicht der
-        ///                 Erwarteten entspricht.
-        ///             </description>
-        ///         </item>
-        ///         <item>
-        ///             <term>
-        ///                 <see cref="ArgumentNullException" />
-        ///             </term>
-        ///             <description>
-        ///                 <see cref="ArgumentNullException" /> wird ausgelöst, wenn <paramref name="senpai" /> null
-        ///                 (oder Nothing in Visual Basic) ist.
-        ///             </description>
-        ///         </item>
-        ///         <item>
-        ///             <term>
-        ///                 <see cref="NoAccessException" />
-        ///             </term>
-        ///             <description>
-        ///                 <see cref="NoAccessException" /> wird ausgelöst, wenn Teile der Initialisierung nicht durchgeführt
-        ///                 werden können,
-        ///                 da der <see cref="Senpai">Benutzer</see> nicht die nötigen Rechte dafür hat.
-        ///             </description>
-        ///         </item>
-        ///     </list>
         /// </summary>
+        /// <exception cref="WrongResponseException">Wird ausgelöst, wenn die Antwort des Servers nicht der Erwarteten entspricht.</exception>
+        /// <exception cref="ArgumentNullException">Wird ausgelöst, wenn <paramref name="senpai" /> null (oder Nothing in Visual Basic) ist.</exception>
+        /// <exception cref="NotLoggedInException">Wird ausgelöst, wenn <paramref name="senpai">Benutzer</paramref> nicht eingeloggt ist.</exception>
+        /// <exception cref="NoAccessException">Wird ausgelöst, wenn der <paramref name="senpai">Benutzer</paramref> nicht die nötigen Rechte für die Aktion hat.</exception>
         /// <param name="id">Die ID des Benutzers</param>
         /// <param name="senpai">Login-Cookies werden benötigt</param>
         /// <seealso cref="Senpai.Login" />
@@ -466,40 +388,11 @@ namespace Azuria
         }
 
         /// <summary>
-        ///     Initialisiert die Eigenschaften der Klasse
-        ///     <para>Mögliche Fehler, die <see cref="ProxerResult" /> enthalten kann:</para>
-        ///     <list type="table">
-        ///         <listheader>
-        ///             <term>Ausnahme</term>
-        ///             <description>Beschreibung</description>
-        ///         </listheader>
-        ///         <item>
-        ///             <term>
-        ///                 <see cref="WrongResponseException" />
-        ///             </term>
-        ///             <description>
-        ///                 <see cref="WrongResponseException" /> wird ausgelöst, wenn die Antwort des Servers nicht der
-        ///                 Erwarteten entspricht.
-        ///             </description>
-        ///         </item>
-        ///         <item>
-        ///             <term>
-        ///                 <see cref="NoAccessException" />
-        ///             </term>
-        ///             <description>
-        ///                 <see cref="NoAccessException" /> wird ausgelöst, wenn Teile der Initialisierung nicht durchgeführt
-        ///                 werden können,
-        ///                 da der <see cref="Senpai">Benutzer</see> nicht die nötigen Rechte dafür hat.
-        ///             </description>
-        ///         </item>
-        ///         <item>
-        ///             <term>
-        ///                 <see cref="NotLoggedInException" />
-        ///             </term>
-        ///             <description>Wird ausgelöst, wenn der <see cref="Senpai">Benutzer</see> nicht eingeloggt ist.</description>
-        ///         </item>
-        ///     </list>
+        ///     Initialisiert die Eigenschaften der Klasse.
         /// </summary>
+        /// <exception cref="WrongResponseException">Wird ausgelöst, wenn die Antwort des Servers nicht der Erwarteten entspricht.</exception>
+        /// <exception cref="NotLoggedInException">Wird ausgelöst, wenn der <see cref="Senpai">Benutzer</see> nicht eingeloggt ist.</exception>
+        /// <exception cref="NoAccessException">Wird ausgelöst, wenn Teile der Initialisierung nicht durchgeführt werden können, da der <see cref="Senpai">Benutzer</see> nicht die nötigen Rechte dafür hat.</exception>
         /// <seealso cref="Senpai.Login" />
         public async Task<ProxerResult> Init()
         {
@@ -758,7 +651,6 @@ namespace Azuria
             }
         }
 
-
         private async Task<ProxerResult> InitMainInfo()
         {
             if (this.Id == -1) return new ProxerResult();
@@ -962,30 +854,10 @@ namespace Azuria
         }
 
         /// <summary>
-        ///     Sendet dem <see cref="User">Benutzer</see> eine Freundschaftsanfrage.
-        ///     <para>Mögliche Fehler, die <see cref="ProxerResult" /> enthalten kann:</para>
-        ///     <list type="table">
-        ///         <listheader>
-        ///             <term>Ausnahme</term>
-        ///             <description>Beschreibung</description>
-        ///         </listheader>
-        ///         <item>
-        ///             <term>
-        ///                 <see cref="WrongResponseException" />
-        ///             </term>
-        ///             <description>
-        ///                 <see cref="WrongResponseException" /> wird ausgelöst, wenn die Antwort des Servers nicht der
-        ///                 Erwarteten entspricht.
-        ///             </description>
-        ///         </item>
-        ///         <item>
-        ///             <term>
-        ///                 <see cref="NotLoggedInException" />
-        ///             </term>
-        ///             <description>Wird ausgelöst, wenn der <see cref="Senpai">Benutzer</see> nicht eingeloggt ist.</description>
-        ///         </item>
-        ///     </list>
+        ///     Sendet den <see cref="User">Benutzer</see> eine Freundschaftsanfrage.
         /// </summary>
+        /// <exception cref="WrongResponseException">Wird ausgelöst, wenn die Antwort des Servers nicht der Erwarteten entspricht.</exception>
+        /// <exception cref="NotLoggedInException">Wird ausgelöst, wenn der <see cref="Senpai">Benutzer</see> nicht eingeloggt ist.</exception>
         /// <returns>Einen boolischen Wert, der angibt, ob die Aktion erfolgreich war.</returns>
         public async Task<ProxerResult<bool>> SendFriendRequest()
         {
@@ -1027,7 +899,7 @@ namespace Azuria
         ///     Gibt einen string zurück, der das aktuelle Objekt repräsentiert.
         /// </summary>
         /// <returns>
-        ///     Ein string, der das aktuelle Objekt repräsentiert.
+        ///     Einen string, der das aktuelle Objekt repräsentiert.
         /// </returns>
         public override string ToString()
         {

@@ -20,34 +20,42 @@ namespace Azuria.Main.Search
         public enum AnimeMangaType
         {
             /// <summary>
+            /// Stellt alle <see cref="Anime">Anime-</see> und <see cref="Manga">Manga-</see>Typen dar.
             /// </summary>
             All,
 
             /// <summary>
+            /// Stellt alle <see cref="Anime">Anime-</see>Typen dar.
             /// </summary>
             AllAnime,
 
             /// <summary>
+            /// Stellt eine <see cref="Anime">Anime</see>serie dar.
             /// </summary>
             Animeseries,
 
             /// <summary>
+            /// Stellt eine OVA oder ein Special eines <see cref="Anime">Anime</see> dar.
             /// </summary>
             Ova,
 
             /// <summary>
+            /// Stellt einen Film eines <see cref="Anime">Anime</see> dar.
             /// </summary>
             Movie,
 
             /// <summary>
+            /// Stellt alle <see cref="Manga">Manga-</see>Typen dar.
             /// </summary>
             AllManga,
 
             /// <summary>
+            /// Stellt eine <see cref="Manga">Manga</see>serie dar.
             /// </summary>
             Mangaseries,
 
             /// <summary>
+            /// Stellt einen One-Shot <see cref="Manga">Manga</see> dar.
             /// </summary>
             OneShot
         }
@@ -59,22 +67,27 @@ namespace Azuria.Main.Search
         public enum SortAnimeManga
         {
             /// <summary>
+            /// Stellt die Sortierung nach Relevanz dar.
             /// </summary>
             Relevance,
 
             /// <summary>
+            /// Stellt die Sortierung nach Namen dar.
             /// </summary>
             Name,
 
             /// <summary>
+            /// Stellt die Sortierung nach Bewertung dar.
             /// </summary>
             Rating,
 
             /// <summary>
+            /// Stellt die Sortierung nach Zugriffen dar.
             /// </summary>
             Hits,
 
             /// <summary>
+            /// Stellt die Sortierung nach Episodenanzahl dar.
             /// </summary>
             EpisodeCount
         }
@@ -83,26 +96,10 @@ namespace Azuria.Main.Search
 
         /// <summary>
         ///     Gibt die Ergebnisse einer Proxer-Suche zurück.
-        ///     <para>Mögliche Fehler, die <see cref="ProxerResult" /> enthalten kann:</para>
-        ///     <list type="table">
-        ///         <listheader>
-        ///             <term>Ausnahme</term>
-        ///             <description>Beschreibung</description>
-        ///         </listheader>
-        ///         <item>
-        ///             <term>
-        ///                 <see cref="WrongResponseException" />
-        ///             </term>
-        ///             <description>Wird ausgelöst, wenn die Antwort des Servers nicht der Erwarteten entspricht.</description>
-        ///         </item>
-        ///         <item>
-        ///             <term>
-        ///                 <see cref="ArgumentNullException" />
-        ///             </term>
-        ///             <description>Wird ausgelöst, wenn <paramref name="senpai" /> null (oder Nothing in Visual Basic) ist.</description>
-        ///         </item>
-        ///     </list>
         /// </summary>
+        /// <exception cref="WrongResponseException">Wird ausgelöst, wenn die Antwort des Servers nicht der Erwarteten entspricht.</exception>
+        /// <exception cref="ArgumentNullException">Wird ausgelöst, wenn <paramref name="senpai" /> null (oder Nothing in Visual Basic) ist.</exception>
+        /// <exception cref="ArgumentNullException">Wird ausgelöst, wenn <paramref name="name" /> null (oder Nothing in Visual Basic) ist.</exception>
         /// <typeparam name="T">Ein Typ, der von <see cref="ISearchableObject" /> erbt.</typeparam>
         /// <param name="name">Der String, nachdem gesucht werden soll.</param>
         /// <param name="senpai"></param>
@@ -110,6 +107,11 @@ namespace Azuria.Main.Search
         public static async Task<ProxerResult<SearchResult<T>>> Search<T>(string name, Senpai senpai)
             where T : ISearchableObject
         {
+            if (string.IsNullOrEmpty(name))
+                return new ProxerResult<SearchResult<T>>(new Exception[] { new ArgumentNullException(nameof(name)) });
+            if (senpai == null)
+                return new ProxerResult<SearchResult<T>>(new[] {new ArgumentNullException(nameof(senpai))});
+
             if (typeof (T) == typeof (IAnimeMangaObject) ||
                 (typeof (T).HasParameterlessConstructor() &&
                  Activator.CreateInstance(typeof (T), true) is IAnimeMangaObject))
@@ -135,35 +137,19 @@ namespace Azuria.Main.Search
         /// <summary>
         ///     Gibt die Ergebnisse einer <see cref="Anime">Anime-</see> oder <see cref="Manga">Manga-</see>Suche auf Proxer
         ///     zurück.
-        ///     <para>Mögliche Fehler, die <see cref="ProxerResult" /> enthalten kann:</para>
-        ///     <list type="table">
-        ///         <listheader>
-        ///             <term>Ausnahme</term>
-        ///             <description>Beschreibung</description>
-        ///         </listheader>
-        ///         <item>
-        ///             <term>
-        ///                 <see cref="WrongResponseException" />
-        ///             </term>
-        ///             <description>Wird ausgelöst, wenn die Antwort des Servers nicht der Erwarteten entspricht.</description>
-        ///         </item>
-        ///         <item>
-        ///             <term>
-        ///                 <see cref="ArgumentNullException" />
-        ///             </term>
-        ///             <description>Wird ausgelöst, wenn <paramref name="senpai" /> null (oder Nothing in Visual Basic) ist.</description>
-        ///         </item>
-        ///     </list>
         /// </summary>
+        /// <exception cref="WrongResponseException">Wird ausgelöst, wenn die Antwort des Servers nicht der Erwarteten entspricht.</exception>
+        /// <exception cref="ArgumentNullException">Wird ausgelöst, wenn <paramref name="senpai" /> null (oder Nothing in Visual Basic) ist.</exception>
+        /// <exception cref="ArgumentNullException">Wird ausgelöst, wenn <paramref name="name" /> null (Nothing in Visual Basic) oder leer ist.</exception>
         /// <typeparam name="T">Ein Typ, der von <see cref="IAnimeMangaObject" /> erbt.</typeparam>
         /// <param name="name">Der String, nach dem gesucht werden soll.</param>
-        /// <param name="senpai"></param>
+        /// <param name="senpai">Der Benutzer, der die Suche ausführt</param>
         /// <param name="genreContains">Alle <see cref="GenreObject">Genre</see>, die die Suchergebnisse enthalten sollen.</param>
         /// <param name="genreExcludes">
         ///     Alle <see cref="GenreObject">Genre</see>, die aus den Suchergebnissen ausgeschlossen werden
         ///     sollen.
         /// </param>
-        /// <param name="fskContains">Alle <see cref="Fsk">Fsk</see>, die die Suchergebnisse enthalten sollen.</param>
+        /// <param name="fskContains">Alle <see cref="Fsk">Fsk-</see>Kategorien, die die Suchergebnisse enthalten sollen.</param>
         /// <param name="sprache">Die <see cref="Language">Sprache</see>, in der die Suchergebnisse verfügbar sein sollen.</param>
         /// <param name="sort">Die Reihenfolge, in der Suchergebnisse zurückgegeben werden sollen.</param>
         /// <param name="type"></param>
@@ -175,6 +161,8 @@ namespace Azuria.Main.Search
         {
             if (string.IsNullOrEmpty(name))
                 return new ProxerResult<SearchResult<T>>(new Exception[] {new ArgumentNullException(nameof(name))});
+            if (senpai == null)
+                return new ProxerResult<SearchResult<T>>(new[] { new ArgumentNullException(nameof(senpai)) });
 
             string lType = type == null
                 ? "all"
@@ -218,9 +206,10 @@ namespace Azuria.Main.Search
                                       + "&genre=" + lGenreContains + "&nogenre=" + lGenreExludes
                                       + "&fsk=" + lFskContains + "&sort=" + lSortAnime + "&typ=" + lType, senpai);
             ProxerResult<IEnumerable<T>> lGetSearchResult = await lSearchResultObject.GetNextSearchResults();
-            if (!lGetSearchResult.Success) return new ProxerResult<SearchResult<T>>(lGetSearchResult.Exceptions);
 
-            return new ProxerResult<SearchResult<T>>(lSearchResultObject);
+            return !lGetSearchResult.Success
+                ? new ProxerResult<SearchResult<T>>(lGetSearchResult.Exceptions)
+                : new ProxerResult<SearchResult<T>>(lSearchResultObject);
         }
 
         #endregion

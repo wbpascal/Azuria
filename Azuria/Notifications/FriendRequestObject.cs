@@ -75,6 +75,8 @@ namespace Azuria.Notifications
         /// <summary>
         ///     Akzeptiert die Freundschaftsanfrage.
         /// </summary>
+        /// <exception cref="NotLoggedInException">Wird ausgelöst, wenn der <see cref="Senpai">Benutzer</see> nicht eingeloggt ist.</exception>
+        /// <exception cref="WrongResponseException">Wird ausgelöst, wenn die Antwort des Servers nicht der Erwarteten entspricht.</exception>
         /// <seealso cref="Senpai.Login" />
         /// <returns>Die Aktion war erfolgreich. True oder False</returns>
         public async Task<ProxerResult<bool>> AcceptRequest()
@@ -101,6 +103,8 @@ namespace Azuria.Notifications
         /// <summary>
         ///     Lehnt die Freundschaftsanfrage ab.
         /// </summary>
+        /// <exception cref="NotLoggedInException">Wird ausgelöst, wenn der <see cref="Senpai">Benutzer</see> nicht eingeloggt ist.</exception>
+        /// <exception cref="WrongResponseException">Wird ausgelöst, wenn die Antwort des Servers nicht der Erwarteten entspricht.</exception>
         /// <seealso cref="Senpai.Login" />
         /// <returns>Die Aktion war erfolgreich. True oder False</returns>
         public async Task<ProxerResult<bool>> DenyRequest()

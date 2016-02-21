@@ -281,23 +281,8 @@ namespace Azuria.Main
         /// <summary>
         ///     Gibt die Kommentare des <see cref="Manga" />, nach ihrer Beliebtheit sortiert, zurück.
         ///     <para>(Vererbt von <see cref="IAnimeMangaObject" />)</para>
-        ///     <para>Mögliche Fehler, die <see cref="ProxerResult" /> enthalten kann:</para>
-        ///     <list type="table">
-        ///         <listheader>
-        ///             <term>Ausnahme</term>
-        ///             <description>Beschreibung</description>
-        ///         </listheader>
-        ///         <item>
-        ///             <term>
-        ///                 <see cref="WrongResponseException" />
-        ///             </term>
-        ///             <description>
-        ///                 <see cref="WrongResponseException" /> wird ausgelöst, wenn die Antwort des Servers nicht der
-        ///                 Erwarteten entspricht.
-        ///             </description>
-        ///         </item>
-        ///     </list>
         /// </summary>
+        /// <exception cref="WrongResponseException">Wird ausgelöst, wenn die Antwort des Servers nicht der Erwarteten entspricht.</exception>
         /// <param name="startIndex">Der Start-Index der ausgegebenen Kommentare.</param>
         /// <param name="count">Die Anzahl der ausgegebenen Kommentare ab dem angegebenen <paramref name="startIndex" />.</param>
         /// <returns>Eine Aufzählung mit den Kommentaren.</returns>
@@ -312,51 +297,11 @@ namespace Azuria.Main
         /// <summary>
         ///     Initialisiert das Objekt.
         ///     <para>(Vererbt von <see cref="IAnimeMangaObject" />)</para>
-        ///     <para>Mögliche Fehler, die <see cref="ProxerResult" /> enthalten kann:</para>
-        ///     <list type="table">
-        ///         <listheader>
-        ///             <term>Ausnahme</term>
-        ///             <description>Beschreibung</description>
-        ///         </listheader>
-        ///         <item>
-        ///             <term>
-        ///                 <see cref="NotLoggedInException" />
-        ///             </term>
-        ///             <description>
-        ///                 <see cref="NotLoggedInException" /> wird ausgelöst, wenn der <see cref="Senpai">Benutzer</see>
-        ///                 nicht eingeloggt ist.
-        ///             </description>
-        ///         </item>
-        ///         <item>
-        ///             <term>
-        ///                 <see cref="WrongResponseException" />
-        ///             </term>
-        ///             <description>
-        ///                 <see cref="WrongResponseException" /> wird ausgelöst, wenn die Antwort des Servers nicht der
-        ///                 Erwarteten entspricht.
-        ///             </description>
-        ///         </item>
-        ///         <item>
-        ///             <term>
-        ///                 <see cref="CaptchaException" />
-        ///             </term>
-        ///             <description>
-        ///                 <see cref="CaptchaException" /> wird ausgelöst, wenn der Server das Ausfüllen eines Captchas
-        ///                 erfordert.
-        ///             </description>
-        ///         </item>
-        ///         <item>
-        ///             <term>
-        ///                 <see cref="NoAccessException" />
-        ///             </term>
-        ///             <description>
-        ///                 <see cref="NoAccessException" /> wird ausgelöst, wenn Teile der Initialisierung nicht durchgeführt
-        ///                 werden können,
-        ///                 da der <see cref="Senpai">Benutzer</see> nicht die nötigen Rechte dafür hat.
-        ///             </description>
-        ///         </item>
-        ///     </list>
         /// </summary>
+        /// <exception cref="WrongResponseException">Wird ausgelöst, wenn die Antwort des Servers nicht der Erwarteten entspricht.</exception>
+        /// <exception cref="NotLoggedInException">Wird ausgelöst, wenn der <see cref="Senpai">Benutzer</see> nicht eingeloggt ist.</exception>
+        /// <exception cref="CaptchaException">Wird ausgelöst, wenn der Server das Ausfüllen eines Captchas erfordert.</exception>
+        /// <exception cref="NoAccessException">Wird ausgelöst, wenn Teile der Initialisierung nicht durchgeführt werden können, da der <see cref="Senpai">Benutzer</see> nicht die nötigen Rechte dafür hat.</exception>
         /// <seealso cref="Senpai.Login" />
         public async Task<ProxerResult> Init()
         {
@@ -393,23 +338,8 @@ namespace Azuria.Main
         /// <summary>
         ///     Gibt die Kommentare des <see cref="Manga" /> chronologisch geordnet zurück.
         ///     <para>(Vererbt von <see cref="IAnimeMangaObject" />)</para>
-        ///     <para>Mögliche Fehler, die <see cref="ProxerResult" /> enthalten kann:</para>
-        ///     <list type="table">
-        ///         <listheader>
-        ///             <term>Ausnahme</term>
-        ///             <description>Beschreibung</description>
-        ///         </listheader>
-        ///         <item>
-        ///             <term>
-        ///                 <see cref="WrongResponseException" />
-        ///             </term>
-        ///             <description>
-        ///                 <see cref="WrongResponseException" /> wird ausgelöst, wenn die Antwort des Servers nicht der
-        ///                 Erwarteten entspricht.
-        ///             </description>
-        ///         </item>
-        ///     </list>
         /// </summary>
+        /// <exception cref="WrongResponseException">Wird ausgelöst, wenn die Antwort des Servers nicht der Erwarteten entspricht.</exception>
         /// <param name="startIndex">Der Start-Index der ausgegebenen Kommentare.</param>
         /// <param name="count">Die Anzahl der ausgegebenen Kommentare ab dem angegebenen <paramref name="startIndex" />.</param>
         /// <returns>Eine Aufzählung mit den Kommentaren.</returns>
@@ -459,32 +389,9 @@ namespace Azuria.Main
 
         /// <summary>
         ///     Gibt alle <see cref="Chapter">Kapitel</see> des <see cref="Manga" /> in der ausgewählten Sprache zurück.
-        ///     <para>Mögliche Fehler, die <see cref="ProxerResult" /> enthalten kann:</para>
-        ///     <list type="table">
-        ///         <listheader>
-        ///             <term>Ausnahme</term>
-        ///             <description>Beschreibung</description>
-        ///         </listheader>
-        ///         <item>
-        ///             <term>
-        ///                 <see cref="LanguageNotAvailableException" />
-        ///             </term>
-        ///             <description>
-        ///                 <see cref="LanguageNotAvailableException" /> wird ausgelöst, wenn der Anime nicht in der
-        ///                 angegebenen Sprache verfügbar ist.
-        ///             </description>
-        ///         </item>
-        ///         <item>
-        ///             <term>
-        ///                 <see cref="InitializeNeededException" />
-        ///             </term>
-        ///             <description>
-        ///                 <see cref="InitializeNeededException" /> wird ausgelöst, wenn die Eigenschaften des Objektes
-        ///                 noch nicht initialisiert sind.
-        ///             </description>
-        ///         </item>
-        ///     </list>
         /// </summary>
+        /// <exception cref="LanguageNotAvailableException">Wird ausgelöst, wenn der Manga nicht in der angegebenen Sprache verfügbar ist.</exception>
+        /// <exception cref="InitializeNeededException">Wird ausgelöst, wenn die Eigenschaften des Objektes noch nicht initialisiert sind.</exception>
         /// <param name="lang">Die Sprache der <see cref="Chapter">Kapitel</see>.</param>
         /// <seealso cref="Sprachen" />
         /// <returns>Ein Array mit length = <see cref="KapitelZahl" /></returns>
@@ -506,23 +413,9 @@ namespace Azuria.Main
 
         /// <summary>
         ///     Gibt die aktuell am beliebtesten <see cref="Manga" /> zurück.
-        ///     <para>Mögliche Fehler, die <see cref="ProxerResult" /> enthalten kann:</para>
-        ///     <list type="table">
-        ///         <listheader>
-        ///             <term>Ausnahme</term>
-        ///             <description>Beschreibung</description>
-        ///         </listheader>
-        ///         <item>
-        ///             <term>
-        ///                 <see cref="WrongResponseException" />
-        ///             </term>
-        ///             <description>
-        ///                 <see cref="WrongResponseException" /> wird ausgelöst, wenn die Antwort des Servers nicht der
-        ///                 Erwarteten entspricht.
-        ///             </description>
-        ///         </item>
-        ///     </list>
         /// </summary>
+        /// <exception cref="WrongResponseException">Wird ausgelöst, wenn die Antwort des Servers nicht der Erwarteten entspricht.</exception>
+        /// <param name="senpai">Der aktuelle Benutzer.</param>
         /// <returns>Ein Array mit den aktuell beliebtesten <see cref="Manga" />.</returns>
         public static async Task<ProxerResult<IEnumerable<Manga>>> GetPopularManga(Senpai senpai)
         {
@@ -985,51 +878,11 @@ namespace Azuria.Main
 
             /// <summary>
             ///     Initialisiert das Objekt.
-            ///     <para>Mögliche Fehler, die <see cref="ProxerResult" /> enthalten kann:</para>
-            ///     <list type="table">
-            ///         <listheader>
-            ///             <term>Ausnahme</term>
-            ///             <description>Beschreibung</description>
-            ///         </listheader>
-            ///         <item>
-            ///             <term>
-            ///                 <see cref="NotLoggedInException" />
-            ///             </term>
-            ///             <description>
-            ///                 <see cref="NotLoggedInException" /> wird ausgelöst, wenn der <see cref="Senpai">Benutzer</see>
-            ///                 nicht eingeloggt ist.
-            ///             </description>
-            ///         </item>
-            ///         <item>
-            ///             <term>
-            ///                 <see cref="WrongResponseException" />
-            ///             </term>
-            ///             <description>
-            ///                 <see cref="WrongResponseException" /> wird ausgelöst, wenn die Antwort des Servers nicht der
-            ///                 Erwarteten entspricht.
-            ///             </description>
-            ///         </item>
-            ///         <item>
-            ///             <term>
-            ///                 <see cref="CaptchaException" />
-            ///             </term>
-            ///             <description>
-            ///                 <see cref="CaptchaException" /> wird ausgelöst, wenn die Website das Ausfüllen eines Captcha
-            ///                 erfordert.
-            ///             </description>
-            ///         </item>
-            ///         <item>
-            ///             <term>
-            ///                 <see cref="NoAccessException" />
-            ///             </term>
-            ///             <description>
-            ///                 <see cref="NoAccessException" /> wird ausgelöst, wenn Teile der Initialisierung nicht durchgeführt
-            ///                 werden können,
-            ///                 da der <see cref="Senpai">Benutzer</see> nicht die nötigen Rechte dafür hat.
-            ///             </description>
-            ///         </item>
-            ///     </list>
             /// </summary>
+            /// <exception cref="WrongResponseException">Wird ausgelöst, wenn die Antwort des Servers nicht der Erwarteten entspricht.</exception>
+            /// <exception cref="NotLoggedInException">Wird ausgelöst, wenn der <see cref="Senpai">Benutzer</see> nicht eingeloggt ist.</exception>
+            /// <exception cref="CaptchaException">Wird ausgelöst, wenn der Server das Ausfüllen eines Captchas erfordert.</exception>
+            /// <exception cref="NoAccessException">Wird ausgelöst, wenn Teile der Initialisierung nicht durchgeführt werden können, da der <see cref="Senpai">Benutzer</see> nicht die nötigen Rechte dafür hat.</exception>
             /// <seealso cref="Senpai.Login" />
             public async Task<ProxerResult> Init()
             {
