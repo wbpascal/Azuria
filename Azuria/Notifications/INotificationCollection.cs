@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
-using Azuria.Utilities;
+using Azuria.ErrorHandling;
 
 namespace Azuria.Notifications
 {
@@ -22,6 +22,14 @@ namespace Azuria.Notifications
         #region
 
         /// <summary>
+        ///     Gibt alle aktuellen Benachrichtigungen, die diese Klasse repräsentiert, zurück.
+        ///     <para>(Vererbt von <see cref="INotificationCollection" />)</para>
+        /// </summary>
+        /// <seealso cref="GetNotifications" />
+        /// <returns>Ein Array mit allen aktuellen Benachrichtigungen.</returns>
+        Task<ProxerResult<IEnumerable<INotificationObject>>> GetAllNotifications();
+
+        /// <summary>
         ///     Gibt eine bestimmte Anzahl der aktuellen Benachrichtigungen, die diese Klasse repräsentiert, zurück.
         ///     <para>(Vererbt von <see cref="INotificationCollection" />)</para>
         /// </summary>
@@ -32,14 +40,6 @@ namespace Azuria.Notifications
         ///     Wenn <paramref name="count" /> > Array.length, dann wird der gesamte Array zurückgegeben.
         /// </returns>
         Task<ProxerResult<IEnumerable<INotificationObject>>> GetNotifications(int count);
-
-        /// <summary>
-        ///     Gibt alle aktuellen Benachrichtigungen, die diese Klasse repräsentiert, zurück.
-        ///     <para>(Vererbt von <see cref="INotificationCollection" />)</para>
-        /// </summary>
-        /// <seealso cref="GetNotifications" />
-        /// <returns>Ein Array mit allen aktuellen Benachrichtigungen.</returns>
-        Task<ProxerResult<IEnumerable<INotificationObject>>> GetAllNotifications();
 
         #endregion
     }

@@ -1,11 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Net;
 using System.Threading.Tasks;
+using Azuria.ErrorHandling;
 using Azuria.Exceptions;
-using Azuria.Utilities;
 using Azuria.Utilities.Net;
-using RestSharp;
 
 namespace Azuria.Notifications
 {
@@ -77,32 +75,26 @@ namespace Azuria.Notifications
         /// <summary>
         ///     Akzeptiert die Freundschaftsanfrage.
         /// </summary>
+        /// <exception cref="NotLoggedInException">Wird ausgelöst, wenn der <see cref="Senpai">Benutzer</see> nicht eingeloggt ist.</exception>
+        /// <exception cref="WrongResponseException">Wird ausgelöst, wenn die Antwort des Servers nicht der Erwarteten entspricht.</exception>
         /// <seealso cref="Senpai.Login" />
         /// <returns>Die Aktion war erfolgreich. True oder False</returns>
         public async Task<ProxerResult<bool>> AcceptRequest()
         {
-            if (!this._senpai.LoggedIn)
+            if (!this._senpai.IsLoggedIn)
                 return new ProxerResult<bool>(new Exception[] {new NotLoggedInException(this._senpai)});
             if (this._accepted || this._denied) return new ProxerResult<bool>(false);
 
             Dictionary<string, string> lPostArgs = new Dictionary<string, string> {{"type", "accept"}};
 
-            string lResponse;
+            Func<string, ProxerResult> lCheckFunc =
+                s => !s.StartsWith("{\"error\":0") ? new ProxerResult(new Exception[0]) : new ProxerResult();
 
-            IRestResponse lResponseObject =
-                await
-                    HttpUtility.PostWebRequestResponse(
-                        "https://proxer.me/user/my?format=json&cid=" + this.UserId,
-                        this._senpai.LoginCookies, lPostArgs);
-            if (lResponseObject.StatusCode == HttpStatusCode.OK && !string.IsNullOrEmpty(lResponseObject.Content))
-                lResponse = System.Web.HttpUtility.HtmlDecode(lResponseObject.Content).Replace("\n", "");
-            else return new ProxerResult<bool>(new[] {new WrongResponseException(), lResponseObject.ErrorException});
+            ProxerResult<string> lResult = await
+                HttpUtility.PostResponseErrorHandling("https://proxer.me/user/my?format=json&cid=" + this.UserId,
+                    lPostArgs, this._senpai.LoginCookies, this._senpai.ErrHandler, this._senpai, new[] {lCheckFunc});
 
-            if (string.IsNullOrEmpty(lResponse) ||
-                !Utility.CheckForCorrectResponse(lResponse, this._senpai.ErrHandler))
-                return new ProxerResult<bool>(new Exception[] {new WrongResponseException {Response = lResponse}});
-
-            if (!lResponse.StartsWith("{\"error\":0")) return new ProxerResult<bool>(false);
+            if (!lResult.Success) return new ProxerResult<bool>(lResult.Exceptions);
 
             this._accepted = true;
             return new ProxerResult<bool>(true);
@@ -111,32 +103,26 @@ namespace Azuria.Notifications
         /// <summary>
         ///     Lehnt die Freundschaftsanfrage ab.
         /// </summary>
+        /// <exception cref="NotLoggedInException">Wird ausgelöst, wenn der <see cref="Senpai">Benutzer</see> nicht eingeloggt ist.</exception>
+        /// <exception cref="WrongResponseException">Wird ausgelöst, wenn die Antwort des Servers nicht der Erwarteten entspricht.</exception>
         /// <seealso cref="Senpai.Login" />
         /// <returns>Die Aktion war erfolgreich. True oder False</returns>
         public async Task<ProxerResult<bool>> DenyRequest()
         {
-            if (!this._senpai.LoggedIn)
+            if (!this._senpai.IsLoggedIn)
                 return new ProxerResult<bool>(new Exception[] {new NotLoggedInException(this._senpai)});
             if (this._accepted || this._denied) return new ProxerResult<bool>(false);
 
             Dictionary<string, string> lPostArgs = new Dictionary<string, string> {{"type", "deny"}};
 
-            string lResponse;
+            Func<string, ProxerResult> lCheckFunc =
+                s => !s.StartsWith("{\"error\":0") ? new ProxerResult(new Exception[0]) : new ProxerResult();
 
-            IRestResponse lResponseObject =
-                await
-                    HttpUtility.PostWebRequestResponse(
-                        "https://proxer.me/user/my?format=json&cid=" + this.UserId,
-                        this._senpai.LoginCookies, lPostArgs);
-            if (lResponseObject.StatusCode == HttpStatusCode.OK && !string.IsNullOrEmpty(lResponseObject.Content))
-                lResponse = System.Web.HttpUtility.HtmlDecode(lResponseObject.Content).Replace("\n", "");
-            else return new ProxerResult<bool>(new[] {new WrongResponseException(), lResponseObject.ErrorException});
+            ProxerResult<string> lResult = await
+                HttpUtility.PostResponseErrorHandling("https://proxer.me/user/my?format=json&cid=" + this.UserId,
+                    lPostArgs, this._senpai.LoginCookies, this._senpai.ErrHandler, this._senpai, new[] {lCheckFunc});
 
-            if (string.IsNullOrEmpty(lResponse) ||
-                !Utility.CheckForCorrectResponse(lResponse, this._senpai.ErrHandler))
-                return new ProxerResult<bool>(new Exception[] {new WrongResponseException {Response = lResponse}});
-
-            if (!lResponse.StartsWith("{\"error\":0")) return new ProxerResult<bool>(false);
+            if (!lResult.Success) return new ProxerResult<bool>(lResult.Exceptions);
 
             this._denied = true;
             return new ProxerResult<bool>(true);

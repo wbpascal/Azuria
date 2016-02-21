@@ -19,6 +19,20 @@
                     </ScrollViewer>
                 </Grid>
             </TabItem>
+            <TabItem Header="Kommentare">
+                <TabControl Background="#FFE5E5E5">
+                    <TabItem Header="Neueste" Background="#FFE5E5E5">
+                        <ScrollViewer>
+                            <StackPanel x:Name="LatestCommentsStackPanel" />
+                        </ScrollViewer>
+                    </TabItem>
+                    <TabItem Header="Beliebteste" Background="#FFE5E5E5">
+                        <ScrollViewer>
+                            <StackPanel x:Name="RatingCommentsStackPanel" />
+                        </ScrollViewer>
+                    </TabItem>
+                </TabControl>
+            </TabItem>
             <TabItem x:Name="EpisodenTab" Header="Episoden">
                 <Grid Background="#FFE5E5E5">
                     <ComboBox x:Name="EpisodenComboBox" HorizontalAlignment="Center" Height="22" Margin="0,14,0,0"

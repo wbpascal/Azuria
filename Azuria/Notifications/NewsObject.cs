@@ -81,10 +81,22 @@ namespace Azuria.Notifications
         public string ImageStyle { get; set; }
 
         /// <summary>
+        ///     Veraltet. Gibt die Thread-ID zurück.
+        /// </summary>
+        [JsonProperty("mid"), Obsolete("Bitte benutzte stattdessen " + nameof(ThreadId))]
+        internal int Mid { get; set; }
+
+        /// <summary>
         ///     Gibt die News-ID zurück.
         /// </summary>
         [JsonProperty("nid")]
         public int NewsId { get; set; }
+
+        /// <summary>
+        ///     Veraltet.
+        /// </summary>
+        [JsonProperty("pid"), Obsolete]
+        internal int Pid { get; set; }
 
         /// <summary>
         ///     Gibt die Anzahl der Kommentare zurück.
@@ -102,25 +114,13 @@ namespace Azuria.Notifications
         ///     Gibt die Thread-ID zurück.
         /// </summary>
         [JsonProperty("thread")]
-        public int Thread { get; set; }
+        public int ThreadId { get; set; }
 
         /// <summary>
         ///     Gibt den Zeitpunkt der News als Unix Timestamp zurück.
         /// </summary>
         [JsonProperty("time")]
         public long Time { get; set; }
-
-        /// <summary>
-        ///     Veraltet. Gibt die Thread-ID zurück.
-        /// </summary>
-        [JsonProperty("mid"), Obsolete("Bitte benutzte stattdessen " + nameof(Thread))]
-        internal int Mid { get; set; }
-
-        /// <summary>
-        ///     Veraltet.
-        /// </summary>
-        [JsonProperty("pid"), Obsolete]
-        internal int Pid { get; set; }
 
         #endregion
 

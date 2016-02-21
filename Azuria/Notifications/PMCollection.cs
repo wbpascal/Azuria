@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Azuria.ErrorHandling;
 using Azuria.Exceptions;
 using Azuria.Utilities;
 using Azuria.Utilities.Net;
@@ -36,26 +37,9 @@ namespace Azuria.Notifications
         /// <summary>
         ///     Gibt alle aktuellen Benachrichtigungen, die diese Klasse repräsentiert, zurück.
         ///     <para>(Vererbt von <see cref="INotificationCollection" />)</para>
-        ///     <para>Mögliche Fehler, die <see cref="ProxerResult" /> enthalten kann:</para>
-        ///     <list type="table">
-        ///         <listheader>
-        ///             <term>Ausnahme</term>
-        ///             <description>Beschreibung</description>
-        ///         </listheader>
-        ///         <item>
-        ///             <term>
-        ///                 <see cref="NotLoggedInException" />
-        ///             </term>
-        ///             <description>Wird ausgelöst, wenn der <see cref="Senpai">Benutzer</see> nicht eingeloggt ist.</description>
-        ///         </item>
-        ///         <item>
-        ///             <term>
-        ///                 <see cref="WrongResponseException" />
-        ///             </term>
-        ///             <description>Wird ausgelöst, wenn die Antwort des Servers nicht der Erwarteten entspricht.</description>
-        ///         </item>
-        ///     </list>
         /// </summary>
+        /// <exception cref="NotLoggedInException">Wird ausgelöst, wenn der <see cref="Senpai">Benutzer</see> nicht eingeloggt ist.</exception>
+        /// <exception cref="WrongResponseException">Wird ausgelöst, wenn die Antwort des Servers nicht der Erwarteten entspricht.</exception>
         /// <seealso cref="INotificationCollection.GetNotifications" />
         /// <seealso cref="Senpai.Login" />
         /// <returns>Ein Array mit allen aktuellen Benachrichtigungen.</returns>
@@ -73,26 +57,9 @@ namespace Azuria.Notifications
         /// <summary>
         ///     Gibt eine bestimmte Anzahl der aktuellen Benachrichtigungen, die diese Klasse repräsentiert, zurück.
         ///     <para>(Vererbt von <see cref="INotificationCollection" />)</para>
-        ///     <para>Mögliche Fehler, die <see cref="ProxerResult" /> enthalten kann:</para>
-        ///     <list type="table">
-        ///         <listheader>
-        ///             <term>Ausnahme</term>
-        ///             <description>Beschreibung</description>
-        ///         </listheader>
-        ///         <item>
-        ///             <term>
-        ///                 <see cref="NotLoggedInException" />
-        ///             </term>
-        ///             <description>Wird ausgelöst, wenn der <see cref="Senpai">Benutzer</see> nicht eingeloggt ist.</description>
-        ///         </item>
-        ///         <item>
-        ///             <term>
-        ///                 <see cref="WrongResponseException" />
-        ///             </term>
-        ///             <description>Wird ausgelöst, wenn die Antwort des Servers nicht der Erwarteten entspricht.</description>
-        ///         </item>
-        ///     </list>
         /// </summary>
+        /// <exception cref="NotLoggedInException">Wird ausgelöst, wenn der <see cref="Senpai">Benutzer</see> nicht eingeloggt ist.</exception>
+        /// <exception cref="WrongResponseException">Wird ausgelöst, wenn die Antwort des Servers nicht der Erwarteten entspricht.</exception>
         /// <param name="count">Die Anzahl der Benachrichtigungen</param>
         /// <seealso cref="INotificationCollection.GetAllNotifications">GetAllNotifications Funktion</seealso>
         /// <seealso cref="Senpai.Login" />
@@ -120,70 +87,10 @@ namespace Azuria.Notifications
         #region
 
         /// <summary>
-        ///     Gibt eine bestimmte Anzahl der aktuellen Benachrichtigungen, die diese Klasse repräsentiert, zurück.
-        ///     <para>Mögliche Fehler, die <see cref="ProxerResult" /> enthalten kann:</para>
-        ///     <list type="table">
-        ///         <listheader>
-        ///             <term>Ausnahme</term>
-        ///             <description>Beschreibung</description>
-        ///         </listheader>
-        ///         <item>
-        ///             <term>
-        ///                 <see cref="NotLoggedInException" />
-        ///             </term>
-        ///             <description>Wird ausgelöst, wenn der <see cref="Senpai">Benutzer</see> nicht eingeloggt ist.</description>
-        ///         </item>
-        ///         <item>
-        ///             <term>
-        ///                 <see cref="WrongResponseException" />
-        ///             </term>
-        ///             <description>Wird ausgelöst, wenn die Antwort des Servers nicht der Erwarteten entspricht.</description>
-        ///         </item>
-        ///     </list>
-        /// </summary>
-        /// <param name="count">Die Anzahl der Benachrichtigungen</param>
-        /// <seealso cref="Senpai.Login" />
-        /// <returns>
-        ///     Ein Array mit der Anzahl an Elementen in <paramref name="count" /> spezifiziert.
-        ///     Wenn <paramref name="count" /> > Array.length, dann wird der gesamte Array zurückgegeben.
-        /// </returns>
-        public async Task<ProxerResult<IEnumerable<PmObject>>> GetPrivateMessages(int count)
-        {
-            if (this._notificationObjects != null)
-                return this._notificationObjects.Length >= count
-                    ? new ProxerResult<IEnumerable<PmObject>>(this._pmObjects)
-                    : new ProxerResult<IEnumerable<PmObject>>(this._pmObjects.Take(count).ToArray());
-            ProxerResult lResult;
-            if (!(lResult = await this.GetInfos()).Success)
-                return new ProxerResult<IEnumerable<PmObject>>(lResult.Exceptions);
-
-            return this._notificationObjects.Length >= count
-                ? new ProxerResult<IEnumerable<PmObject>>(this._pmObjects)
-                : new ProxerResult<IEnumerable<PmObject>>(this._pmObjects.Take(count).ToArray());
-        }
-
-        /// <summary>
         ///     Gibt alle aktuellen Benachrichtigungen, die diese Klasse repräsentiert, zurück.
-        ///     <para>Mögliche Fehler, die <see cref="ProxerResult" /> enthalten kann:</para>
-        ///     <list type="table">
-        ///         <listheader>
-        ///             <term>Ausnahme</term>
-        ///             <description>Beschreibung</description>
-        ///         </listheader>
-        ///         <item>
-        ///             <term>
-        ///                 <see cref="NotLoggedInException" />
-        ///             </term>
-        ///             <description>Wird ausgelöst, wenn der <see cref="Senpai">Benutzer</see> nicht eingeloggt ist.</description>
-        ///         </item>
-        ///         <item>
-        ///             <term>
-        ///                 <see cref="WrongResponseException" />
-        ///             </term>
-        ///             <description>Wird ausgelöst, wenn die Antwort des Servers nicht der Erwarteten entspricht.</description>
-        ///         </item>
-        ///     </list>
         /// </summary>
+        /// <exception cref="NotLoggedInException">Wird ausgelöst, wenn der <see cref="Senpai">Benutzer</see> nicht eingeloggt ist.</exception>
+        /// <exception cref="WrongResponseException">Wird ausgelöst, wenn die Antwort des Servers nicht der Erwarteten entspricht.</exception>
         /// <seealso cref="Senpai.Login" />
         /// <returns>Ein Array mit allen aktuellen Benachrichtigungen.</returns>
         public async Task<ProxerResult<IEnumerable<PmObject>>> GetAllPrivateMessages()
@@ -218,26 +125,23 @@ namespace Azuria.Notifications
             {
                 lDocument.LoadHtml(lResponse);
 
-                HtmlNodeCollection lNodes =
-                    lDocument.DocumentNode.SelectNodes("//a[@class='conferenceList']");
+                HtmlNode[] lNodes =
+                    lDocument.DocumentNode.SelectNodesUtility("class", "conferenceList").ToArray();
 
                 List<PmObject> lPmObjects = new List<PmObject>();
-                if (lNodes != null)
-                {
-                    lPmObjects.AddRange(from curNode in lNodes
-                                        let lTitel =
-                                            curNode.ChildNodes[curNode.FirstChild.Name.Equals("img") ? 1 : 0].InnerText
-                                        let lDatum =
-                                            curNode.ChildNodes[curNode.FirstChild.Name.Equals("img") ? 2 : 1].InnerText
-                                                                                                             .Split('.')
-                                        let lTimeStamp =
-                                            new DateTime(Convert.ToInt32(lDatum[2]), Convert.ToInt32(lDatum[1]),
-                                                Convert.ToInt32(lDatum[0]))
-                                        let lId =
-                                            Convert.ToInt32(curNode.Attributes["href"].Value.Substring(13,
-                                                curNode.Attributes["href"].Value.Length - 17))
-                                        select new PmObject(lTitel, lId, lTimeStamp));
-                }
+                lPmObjects.AddRange(from curNode in lNodes
+                    let lTitel =
+                        curNode.ChildNodes[curNode.FirstChild.Name.Equals("img") ? 1 : 0].InnerText
+                    let lDatum =
+                        curNode.ChildNodes[curNode.FirstChild.Name.Equals("img") ? 2 : 1].InnerText
+                            .Split('.')
+                    let lTimeStamp =
+                        new DateTime(Convert.ToInt32(lDatum[2]), Convert.ToInt32(lDatum[1]),
+                            Convert.ToInt32(lDatum[0]))
+                    let lId =
+                        Convert.ToInt32(curNode.Attributes["href"].Value.Substring(13,
+                            curNode.Attributes["href"].Value.Length - 17))
+                    select new PmObject(lTitel, lId, lTimeStamp));
 
                 this._pmObjects = lPmObjects.ToArray();
                 this._notificationObjects = lPmObjects.Cast<INotificationObject>().ToArray();
@@ -248,6 +152,32 @@ namespace Azuria.Notifications
             {
                 return new ProxerResult((await ErrorHandler.HandleError(this._senpai, lResponse, false)).Exceptions);
             }
+        }
+
+        /// <summary>
+        ///     Gibt eine bestimmte Anzahl der aktuellen Benachrichtigungen, die diese Klasse repräsentiert, zurück.
+        /// </summary>
+        /// <exception cref="NotLoggedInException">Wird ausgelöst, wenn der <see cref="Senpai">Benutzer</see> nicht eingeloggt ist.</exception>
+        /// <exception cref="WrongResponseException">Wird ausgelöst, wenn die Antwort des Servers nicht der Erwarteten entspricht.</exception>
+        /// <param name="count">Die Anzahl der Benachrichtigungen</param>
+        /// <seealso cref="Senpai.Login" />
+        /// <returns>
+        ///     Ein Array mit der Anzahl an Elementen in <paramref name="count" /> spezifiziert.
+        ///     Wenn <paramref name="count" /> > Array.length, dann wird der gesamte Array zurückgegeben.
+        /// </returns>
+        public async Task<ProxerResult<IEnumerable<PmObject>>> GetPrivateMessages(int count)
+        {
+            if (this._notificationObjects != null)
+                return this._notificationObjects.Length >= count
+                    ? new ProxerResult<IEnumerable<PmObject>>(this._pmObjects)
+                    : new ProxerResult<IEnumerable<PmObject>>(this._pmObjects.Take(count).ToArray());
+            ProxerResult lResult;
+            if (!(lResult = await this.GetInfos()).Success)
+                return new ProxerResult<IEnumerable<PmObject>>(lResult.Exceptions);
+
+            return this._notificationObjects.Length >= count
+                ? new ProxerResult<IEnumerable<PmObject>>(this._pmObjects)
+                : new ProxerResult<IEnumerable<PmObject>>(this._pmObjects.Take(count).ToArray());
         }
 
         #endregion

@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Windows;
+using System.Windows.Media;
 
 namespace Azuria.Example.Utilities
 {
@@ -7,7 +9,27 @@ namespace Azuria.Example.Utilities
     {
         #region
 
-        internal static List<string> GetTagContents(string source, string startTag, string endTag)
+        internal static IEnumerable<T> FindVisualChildren<T>(this DependencyObject depObj) where T : DependencyObject
+        {
+            if (depObj != null)
+            {
+                for (int i = 0; i < VisualTreeHelper.GetChildrenCount(depObj); i++)
+                {
+                    DependencyObject child = VisualTreeHelper.GetChild(depObj, i);
+                    if (child != null && child is T)
+                    {
+                        yield return (T) child;
+                    }
+
+                    foreach (T childOfChild in FindVisualChildren<T>(child))
+                    {
+                        yield return childOfChild;
+                    }
+                }
+            }
+        }
+
+        internal static List<string> GetTagContents(this string source, string startTag, string endTag)
         {
             List<string> stringsFound = new List<string>();
             int index = source.IndexOf(startTag, StringComparison.Ordinal) + startTag.Length;

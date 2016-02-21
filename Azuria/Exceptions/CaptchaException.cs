@@ -5,7 +5,6 @@ namespace Azuria.Exceptions
     /// <summary>
     ///     Stellte einen Fehler da, der ausgelöst wird, wenn Proxer das ausfüllen eines Captchas fordert.
     /// </summary>
-    [Serializable]
     public class CaptchaException : Exception
     {
         /// <summary>

@@ -25,22 +25,23 @@ namespace Azuria.Notifications
             Benutzer
         }
 
-
         internal PmObject(int conId, string userName, DateTime timeStampDate)
+            : this("", conId, userName, PmType.Benutzer, timeStampDate)
         {
-            this.Type = NotificationObjectType.PrivateMessage;
-            this.MessageTyp = PmType.Benutzer;
-            this.TimeStamp = timeStampDate;
-            this.Id = conId;
-            this.UserName = userName;
         }
 
         internal PmObject(string title, int conId, DateTime timeStampDate)
+            : this(title, conId, "", PmType.Konferenz, timeStampDate)
+        {
+        }
+
+        private PmObject(string title, int conId, string userName, PmType pmType, DateTime timeStamp)
         {
             this.Type = NotificationObjectType.PrivateMessage;
-            this.MessageTyp = PmType.Konferenz;
+            this.MessageTyp = pmType;
             this.ConferenceTitle = title;
-            this.TimeStamp = timeStampDate;
+            this.UserName = userName;
+            this.TimeStamp = timeStamp;
             this.Id = conId;
         }
 

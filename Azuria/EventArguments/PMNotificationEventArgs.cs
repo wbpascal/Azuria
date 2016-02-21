@@ -44,7 +44,7 @@ namespace Azuria.EventArguments
         /// <summary>
         ///     Gibt ein Objekt zurück, mithilfe dessen die Benachrichtigungen abgerufen werden können.
         /// </summary>
-        public PmCollection Benchrichtigungen => this._senpai.PrivateMessages;
+        public PmCollection Notifications => this._senpai.PrivateMessages;
 
         #endregion
     }

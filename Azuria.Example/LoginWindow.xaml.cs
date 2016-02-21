@@ -3,8 +3,8 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using Azuria.Community;
+using Azuria.ErrorHandling;
 using Azuria.Main;
-using Azuria.Utilities;
 using Azuria.Utilities.Net;
 
 namespace Azuria.Example
@@ -22,6 +22,31 @@ namespace Azuria.Example
         }
 
         #region
+
+        private async void AMButton_Click(object sender, RoutedEventArgs e)
+        {
+            IAnimeMangaObject lAnimeMangaObject = (await ProxerClass.GetAnimeMangaById(8455, this._senpai)).OnError(null);
+            new AnimeMangaWindow(lAnimeMangaObject, this._senpai).Show();
+        }
+
+        private async void ConferenceButton_Click(object sender, RoutedEventArgs e)
+        {
+            //Gib alle Konferenzen zurück
+            ProxerResult<List<Conference>> lResult = await this._senpai.GetAllConferences();
+
+            if (lResult.Success && lResult.Result.Any())
+            {
+                //Öffne die erste Konferenz in der Liste
+                new ConferenceWindow(lResult.Result.First(), this._senpai).Show();
+            }
+            else
+            {
+                //Die Methode hat eine Ausnahme ausgelöst oder der Benutzer hat keine Konferenzen
+                MessageBox.Show(lResult.Success
+                    ? "Der Benutzer hat keine Konferenzen!"
+                    : "Es ist ein Fehler während der Anfrage aufgetreten! (Konferenzen)");
+            }
+        }
 
         private async void LoginButton_Click(object sender, RoutedEventArgs e)
         {
@@ -44,8 +69,11 @@ namespace Azuria.Example
             ProxerResult<bool> lResult = await this._senpai.Login(this.TextBox1.Text, this.PasswordBox1.Password);
             //Unterscheidet, ob der Benutzer eingeloggt wurde oder nicht
             if (lResult.Success && lResult.Result)
+            {
                 //Benutzer wurder erfolgreich eingeloggt
                 MessageBox.Show("Du wurdest erfolgreich eingeloggt!");
+                new SearchWindow(this._senpai).Show();
+            }
             else
             {
                 //Es ist ein Fehler in der Methode aufgetreten
@@ -65,35 +93,10 @@ namespace Azuria.Example
             new NotificationWindow(this._senpai).Show();
         }
 
-        private async void ConferenceButton_Click(object sender, RoutedEventArgs e)
-        {
-            //Gib alle Konferenzen zurück
-            ProxerResult<List<Conference>> lResult = await this._senpai.GetAllConferences();
-
-            if (lResult.Success && lResult.Result.Any())
-            {
-                //Öffne die erste Konferenz in der Liste
-                new ConferenceWindow(lResult.Result.First(), this._senpai).Show();
-            }
-            else
-            {
-                //Die Methode hat eine Ausnahme ausgelöst oder der Benutzer hat keine Konferenzen
-                MessageBox.Show(lResult.Success
-                    ? "Der Benutzer hat keine Konferenzen!"
-                    : "Es ist ein Fehler während der Anfrage aufgetreten! (Konferenzen)");
-            }
-        }
-
         private void UserButton_Click(object sender, RoutedEventArgs e)
         {
             //Öffne ein neues User-Fenster, das den User von Senpai darstellt
             new UserWindow(this._senpai.Me, this._senpai).Show();
-        }
-
-        private async void AMButton_Click(object sender, RoutedEventArgs e)
-        {
-            IAnimeMangaObject lAnimeMangaObject = (await ProxerClass.GetAnimeManga(8455, this._senpai)).OnError(null);
-            new AnimeMangaWindow(lAnimeMangaObject).Show();
         }
 
         #endregion

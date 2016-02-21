@@ -27,7 +27,7 @@ namespace Azuria.Community.ConferenceHelper
         #endregion
     }
 
-    internal class MessagesViewModel
+    internal class MessagesModel
     {
         #region Properties
 
@@ -35,7 +35,7 @@ namespace Azuria.Community.ConferenceHelper
         public int Error { get; set; }
 
         [JsonProperty("messages")]
-        public MessageModel[] MessagesModel { get; set; }
+        public MessageModel[] MessageModels { get; set; }
 
         [JsonProperty("uid")]
         public string Uid { get; set; }

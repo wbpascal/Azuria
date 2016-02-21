@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Timers;
 using Azuria.Community.ConferenceHelper;
+using Azuria.ErrorHandling;
 using Azuria.Exceptions;
 using Azuria.Utilities;
 using Azuria.Utilities.Net;
@@ -51,7 +52,7 @@ namespace Azuria.Community
             this.Id = id;
             this._senpai = senpai;
 
-            this._getMessagesTimer = new Timer {Interval = (new TimeSpan(0, 0, 15)).TotalMilliseconds};
+            this._getMessagesTimer = new Timer {Interval = new TimeSpan(0, 0, 15).TotalMilliseconds};
             this._getMessagesTimer.Elapsed += this.OnGetMessagesTimerElapsed;
         }
 
@@ -59,11 +60,11 @@ namespace Azuria.Community
         {
             this._initFuncs = new Func<Task<ProxerResult>>[] {this.GetAllParticipants, this.GetLeader, this.GetTitle};
 
-            this.Titel = title;
+            this.Title = title;
             this.Id = id;
             this._senpai = senpai;
 
-            this._getMessagesTimer = new Timer {Interval = (new TimeSpan(0, 0, 15)).TotalMilliseconds};
+            this._getMessagesTimer = new Timer {Interval = new TimeSpan(0, 0, 15).TotalMilliseconds};
             this._getMessagesTimer.Elapsed += this.OnGetMessagesTimerElapsed;
         }
 
@@ -72,7 +73,7 @@ namespace Azuria.Community
         /// <summary>
         ///     Gibt einen Wert an, ob die Privatnachrichten in einem bestimmten Intervall abgerufen werden, oder legt diesen fest.
         /// </summary>
-        public bool Aktiv
+        public bool Activ
         {
             get { return this._getMessagesTimer.Enabled; }
             set
@@ -93,15 +94,18 @@ namespace Azuria.Community
         /// </summary>
         public int Id { get; }
 
+
+        private bool IsConference { get; set; }
+
         /// <summary>
         ///     Gibt zurück, ob die Konferenz bereits initialisiert ist.
         /// </summary>
-        public bool IstInitialisiert { get; private set; }
+        public bool IsInitialized { get; private set; }
 
         /// <summary>
-        ///     Gibt den Leiter der Konferenz zurück. (<see cref="InitConference" /> muss dafür zunächst einmal aufgerufen werden)
+        ///     Gibt den Leiter der Konferenz zurück. (<see cref="Init" /> muss dafür zunächst einmal aufgerufen werden)
         /// </summary>
-        public User Leiter
+        public User Leader
         {
             get { return this._leiter ?? User.System; }
             private set { this._leiter = value; }
@@ -110,48 +114,326 @@ namespace Azuria.Community
         /// <summary>
         ///     Gibt alle Nachrichten aus der Konferenz in chronoligischer Ordnung zurück.
         /// </summary>
-        public IEnumerable<Message> Nachrichten
+        public IEnumerable<Message> Messages
         {
             get { return this._nachrichten ?? new List<Message>(); }
             private set { this._nachrichten = value; }
         }
 
         /// <summary>
-        ///     Gibt alle Teilnehmer der Konferenz zurück (<see cref="InitConference" /> muss dafür zunächst einmal aufgerufen
+        ///     Gibt alle Teilnehmer der Konferenz zurück (<see cref="Init" /> muss dafür zunächst einmal aufgerufen
         ///     werden)
         /// </summary>
-        public IEnumerable<User> Teilnehmer
+        public IEnumerable<User> Participants
         {
             get { return this._teilnehmer ?? new List<User>(); }
             private set { this._teilnehmer = value; }
         }
 
         /// <summary>
-        ///     Gibt den Titel der Konferenz zurück (<see cref="InitConference" /> muss dafür zunächst einmal aufgerufen werden)
+        ///     Gibt den Titel der Konferenz zurück (<see cref="Init" /> muss dafür zunächst einmal aufgerufen werden)
         /// </summary>
-        public string Titel { get; private set; }
-
-
-        private bool IsConference { get; set; }
+        public string Title { get; private set; }
 
         #endregion
 
         #region
 
-        private void OnGetMessagesTimerElapsed(object s, ElapsedEventArgs eArgs)
+        /// <summary>
+        ///     Blockiert die Konferenz.
+        /// </summary>
+        /// <exception cref="NotLoggedInException">Wird ausgelöst, wenn der <see cref="Senpai">Benutzer</see> nicht eingeloggt ist.</exception>
+        /// <exception cref="WrongResponseException">Wird ausgelöst, wenn die Antwort des Servers nicht der Erwarteten entspricht.</exception>
+        /// <seealso cref="Senpai.Login" />
+        /// <returns>Gibt zurück, ob die Aktion erfolgreich war</returns>
+        public async Task<ProxerResult<bool>> Block()
         {
-            Timer timer = s as Timer;
-            timer?.Stop();
-            this.GetMessagesTimer(timer);
+            ProxerResult<string> lResult =
+                await
+                    HttpUtility.GetResponseErrorHandling(
+                        "http://proxer.me/messages?format=json&json=block&id=" + this.Id,
+                        this._senpai.LoginCookies,
+                        this._senpai.ErrHandler,
+                        this._senpai);
+
+            if (!lResult.Success)
+                return new ProxerResult<bool>(lResult.Exceptions);
+
+            string lResponse = lResult.Result;
+
+            return new ProxerResult<bool>(lResponse.StartsWith("{\"error\":0"));
+        }
+
+        private async Task<ProxerResult<bool>> CheckIsConference()
+        {
+            Dictionary<string, string> lPostArgs = new Dictionary<string, string>
+            {
+                {"message", "/ping"}
+            };
+            ProxerResult<string> lResult =
+                await
+                    HttpUtility.PostResponseErrorHandling(
+                        "https://proxer.me/messages?id=" + this.Id + "&format=json&json=answer",
+                        lPostArgs,
+                        this._senpai.LoginCookies,
+                        this._senpai.ErrHandler,
+                        this._senpai);
+
+            if (!lResult.Success)
+                return new ProxerResult<bool>(lResult.Exceptions);
+
+            string lResponse = lResult.Result;
+            try
+            {
+                Dictionary<string, string> lDict =
+                    JsonConvert.DeserializeObject<Dictionary<string, string>>(lResponse);
+                return new ProxerResult<bool>(lDict["msg"].Equals("Erfolgreich!") &&
+                                              !lDict["message"].Equals("Befehle sind nur in Konferenzen verfügbar."));
+            }
+            catch
+            {
+                return
+                    new ProxerResult<bool>((await ErrorHandler.HandleError(this._senpai, lResponse, false)).Exceptions);
+            }
+        }
+
+        /// <summary>
+        ///     Wird ausgelöst, wenn während des Abrufen der Nachrichten ein Fehler auftritt.
+        /// </summary>
+        public event ErrorDuringPmFetchEventHandler ErrorDuringPmFetchRaised;
+
+        /// <summary>
+        ///     Markiert die Konferenz als Favorit.
+        /// </summary>
+        /// <exception cref="NotLoggedInException">Wird ausgelöst, wenn der <see cref="Senpai">Benutzer</see> nicht eingeloggt ist.</exception>
+        /// <exception cref="WrongResponseException">Wird ausgelöst, wenn die Antwort des Servers nicht der Erwarteten entspricht.</exception>
+        /// <seealso cref="Senpai.Login" />
+        /// <returns>Gibt zurück, ob die Aktion erfolgreich war</returns>
+        public async Task<ProxerResult<bool>> Favour()
+        {
+            ProxerResult<string> lResult =
+                await
+                    HttpUtility.GetResponseErrorHandling(
+                        "http://proxer.me/messages?format=json&json=favour&id=" + this.Id,
+                        this._senpai.LoginCookies,
+                        this._senpai.ErrHandler,
+                        this._senpai);
+
+            if (!lResult.Success)
+                return new ProxerResult<bool>(lResult.Exceptions);
+
+            string lResponse = lResult.Result;
+
+            return new ProxerResult<bool>(lResponse.StartsWith("{\"error\":0"));
+        }
+
+        private async Task<ProxerResult> GetAllMessages()
+        {
+            if (this.Messages != null && this.Messages.ToList().Count > 0)
+                return await this.GetMessages(this.Messages.Last().MessageId);
+
+            if (this.Messages != null && this.Messages.ToList().Count != 0)
+                return new ProxerResult
+                {
+                    Success = false
+                };
+
+            ProxerResult<string> lResult =
+                await
+                    HttpUtility.GetResponseErrorHandling(
+                        "http://proxer.me/messages?format=json&json=messages&id=" + this.Id,
+                        this._senpai.LoginCookies,
+                        this._senpai.ErrHandler,
+                        this._senpai);
+
+            if (!lResult.Success)
+                return new ProxerResult(lResult.Exceptions);
+
+            string lResponse = lResult.Result;
+
+            if (lResponse.Equals("{\"uid\":\"" + this._senpai.Me.Id +
+                                 "\",\"error\":1,\"msg\":\"Ein Fehler ist passiert.\"}"))
+                return new ProxerResult
+                {
+                    Success = false
+                };
+            try
+            {
+                ProxerResult<List<Message>> lResultMessages = await this.ProcessMessages(lResponse);
+                if (!lResultMessages.Success)
+                    return new ProxerResult(new Exception[] {new WrongResponseException(lResponse)});
+
+                this.Messages = lResultMessages.Result;
+
+                if (this.Messages.Any(
+                    x => x.MessageAction == Message.Action.AddUser || x.MessageAction == Message.Action.RemoveUser))
+                    await this.GetAllParticipants();
+                if (this.Messages.Any(x => x.MessageAction == Message.Action.SetLeader) &&
+                    this.IsInitialized)
+                    await this.GetLeader();
+                if (this.Messages.Any(x => x.MessageAction == Message.Action.SetTopic) &&
+                    this.IsInitialized)
+                    await this.GetTitle();
+
+                this.NeuePmRaised?.Invoke(this, this.Messages, true);
+            }
+            catch
+            {
+                return new ProxerResult((await ErrorHandler.HandleError(this._senpai, lResponse, false)).Exceptions);
+            }
+
+            return new ProxerResult();
+        }
+
+        private async Task<ProxerResult> GetAllParticipants()
+        {
+            HtmlDocument lDocument = new HtmlDocument();
+            ProxerResult<string> lResult =
+                await
+                    HttpUtility.GetResponseErrorHandling(
+                        "https://proxer.me/messages?id=" + this.Id + "&format=raw",
+                        this._senpai.LoginCookies,
+                        this._senpai.ErrHandler,
+                        this._senpai);
+
+            if (!lResult.Success)
+                return new ProxerResult(lResult.Exceptions);
+
+            string lResponse = lResult.Result;
+
+            try
+            {
+                lDocument.LoadHtml(lResponse);
+
+                List<User> lTeilnehmer = this.Participants.ToList();
+
+                lTeilnehmer.AddRange(
+                    from curTeilnehmer in lDocument.GetElementbyId("conferenceUsers").ChildNodes[1].ChildNodes
+                    let lUserName = curTeilnehmer.ChildNodes[1].FirstChild.InnerText
+                    let lUserId =
+                        Convert.ToInt32(
+                            curTeilnehmer.ChildNodes[1].FirstChild.Attributes["href"].Value.GetTagContents("/user/",
+                                "#top")[0])
+                    select new User(lUserName, lUserId, this._senpai));
+
+                this.Participants = lTeilnehmer;
+
+                return new ProxerResult();
+            }
+            catch
+            {
+                return new ProxerResult((await ErrorHandler.HandleError(this._senpai, lResponse, false)).Exceptions);
+            }
+        }
+
+        private async Task<ProxerResult> GetLeader()
+        {
+            if (!this.IsConference) return new ProxerResult();
+
+            Dictionary<string, string> lPostArgs = new Dictionary<string, string>
+            {
+                {"message", "/leader"}
+            };
+            ProxerResult<string> lResult =
+                await
+                    HttpUtility.PostResponseErrorHandling(
+                        "https://proxer.me/messages?id=" + this.Id + "&format=json&json=answer",
+                        lPostArgs,
+                        this._senpai.LoginCookies,
+                        this._senpai.ErrHandler,
+                        this._senpai);
+
+            if (!lResult.Success)
+                return new ProxerResult(lResult.Exceptions);
+
+            string lResponse = lResult.Result;
+
+            try
+            {
+                Dictionary<string, string> lDict =
+                    JsonConvert.DeserializeObject<Dictionary<string, string>>(lResponse);
+                if (!lDict["msg"].Equals("Erfolgreich!"))
+                    return new ProxerResult
+                    {
+                        Success = false
+                    };
+
+                this.Leader =
+                    this.Participants?.FirstOrDefault(
+                        x => x.UserName.Equals(lDict["message"].Remove(0, "Konferenzleiter: ".Length))) ?? User.System;
+
+                return new ProxerResult();
+            }
+            catch
+            {
+                return new ProxerResult((await ErrorHandler.HandleError(this._senpai, lResponse, false)).Exceptions);
+            }
+        }
+
+        private async Task<ProxerResult> GetMessages(int mid)
+        {
+            if (this.Messages == null || this.Messages.Count(x => x.MessageId == mid) == 0)
+                return await this.GetAllMessages();
+
+            ProxerResult<string> lResult =
+                await
+                    HttpUtility.GetResponseErrorHandling(
+                        "http://proxer.me/messages?format=json&json=newmessages&id=" + this.Id + "&mid=" + mid,
+                        this._senpai.LoginCookies,
+                        this._senpai.ErrHandler,
+                        this._senpai);
+
+            if (!lResult.Success)
+                return new ProxerResult(lResult.Exceptions);
+
+            string lResponse = lResult.Result;
+
+            if (lResponse.Equals("{\"uid\":\"" + this._senpai.Me.Id +
+                                 "\",\"error\":1,\"msg\":\"Ein Fehler ist passiert.\"}"))
+                return new ProxerResult
+                {
+                    Success = false
+                };
+
+            try
+            {
+                ProxerResult<List<Message>> lResultMessages = await this.ProcessMessages(lResponse);
+                if (!lResultMessages.Success)
+                    return new ProxerResult(new Exception[] {new WrongResponseException(lResponse)});
+
+                List<Message> lNewMessages = lResultMessages.Result;
+
+                if (
+                    lNewMessages.Count(
+                        x => x.MessageAction == Message.Action.AddUser || x.MessageAction == Message.Action.RemoveUser) >
+                    0)
+                    await this.GetAllParticipants();
+                if (lNewMessages.Count(x => x.MessageAction == Message.Action.SetLeader) > 0 &&
+                    this.IsInitialized)
+                    await this.GetLeader();
+                if (lNewMessages.Count(x => x.MessageAction == Message.Action.SetTopic) > 0 &&
+                    this.IsInitialized)
+                    await this.GetTitle();
+
+                this.Messages = this.Messages.Concat(lNewMessages).ToList();
+
+                this.NeuePmRaised?.Invoke(this, lNewMessages, false);
+            }
+            catch
+            {
+                return new ProxerResult((await ErrorHandler.HandleError(this._senpai, lResponse, false)).Exceptions);
+            }
+
+            return new ProxerResult();
         }
 
         private async void GetMessagesTimer(Timer timer)
         {
-            if (this.IstInitialisiert)
+            if (this.IsInitialized)
             {
                 ProxerResult lResult;
-                if (this.Nachrichten != null && this.Nachrichten.Any())
-                    lResult = await this.GetMessages(this.Nachrichten.Last().NachrichtId);
+                if (this.Messages != null && this.Messages.Any())
+                    lResult = await this.GetMessages(this.Messages.Last().MessageId);
                 else lResult = await this.GetAllMessages();
 
                 try
@@ -168,46 +450,62 @@ namespace Azuria.Community
             timer?.Start();
         }
 
-        /// <summary>
-        ///     Wird immer aufgerufen, wenn neue Nachrichten in der Konferenz vorhanden sind.
-        /// </summary>
-        public event NeuePmEventHandler NeuePmRaised;
+        private async Task<ProxerResult> GetTitle()
+        {
+            if (this.IsConference)
+            {
+                Dictionary<string, string> lPostArgs = new Dictionary<string, string>
+                {
+                    {"message", "/topic"}
+                };
 
-        /// <summary>
-        ///     Wird ausgelöst, wenn während des Abrufen der Nachrichten ein Fehler auftritt.
-        /// </summary>
-        public event ErrorDuringPmFetchEventHandler ErrorDuringPmFetchRaised;
+                ProxerResult<string> lResult =
+                    await
+                        HttpUtility.PostResponseErrorHandling(
+                            "https://proxer.me/messages?id=" + this.Id + "&format=json&json=answer",
+                            lPostArgs,
+                            this._senpai.LoginCookies,
+                            this._senpai.ErrHandler,
+                            this._senpai);
+
+                if (!lResult.Success)
+                    return new ProxerResult(lResult.Exceptions);
+
+                string lResponse = lResult.Result;
+
+                try
+                {
+                    Dictionary<string, string> lDict =
+                        JsonConvert.DeserializeObject<Dictionary<string, string>>(lResponse);
+                    if (lDict["msg"].Equals("Erfolgreich!")) this.Title = lDict["message"];
+
+                    return new ProxerResult();
+                }
+                catch
+                {
+                    return new ProxerResult((await ErrorHandler.HandleError(this._senpai, lResponse, false)).Exceptions);
+                }
+            }
+
+            if (this.Participants.ToList().Count > 1)
+                this.Title = this.Participants.Where(x => x.Id != this._senpai.Me.Id).ToArray()[0].UserName;
+
+            return new ProxerResult();
+        }
 
 
         /// <summary>
         ///     Initialisiert die Konferenz.
-        ///     <para>Mögliche Fehler, die <see cref="ProxerResult" /> enthalten kann:</para>
-        ///     <list type="table">
-        ///         <listheader>
-        ///             <term>Ausnahme</term>
-        ///             <description>Beschreibung</description>
-        ///         </listheader>
-        ///         <item>
-        ///             <term>
-        ///                 <see cref="NotLoggedInException" />
-        ///             </term>
-        ///             <description>Wird ausgelöst, wenn der <see cref="Senpai">Benutzer</see> nicht eingeloggt ist.</description>
-        ///         </item>
-        ///         <item>
-        ///             <term>
-        ///                 <see cref="WrongResponseException" />
-        ///             </term>
-        ///             <description>Wird ausgelöst, wenn die Antwort des Servers nicht der Erwarteten entspricht.</description>
-        ///         </item>
-        ///     </list>
         /// </summary>
+        /// <exception cref="NotLoggedInException">Wird ausgelöst, wenn der <see cref="Senpai">Benutzer</see> nicht eingeloggt ist.</exception>
+        /// <exception cref="WrongResponseException">Wird ausgelöst, wenn die Antwort des Servers nicht der Erwarteten entspricht.</exception>
         /// <seealso cref="Senpai.Login" />
-        public async Task<ProxerResult> InitConference()
+        public async Task<ProxerResult> Init()
         {
-            if (!this._senpai.LoggedIn)
+            if (!this._senpai.IsLoggedIn)
                 return new ProxerResult(new Exception[] {new NotLoggedInException(this._senpai)});
 
-            ProxerResult<bool> lIstTeilnehmer = await IstTeilnehmner(this.Id, this._senpai);
+            ProxerResult<bool> lIstTeilnehmer = await Participates(this.Id, this._senpai);
             if (lIstTeilnehmer.Success && !lIstTeilnehmer.Result)
                 return new ProxerResult
                 {
@@ -238,7 +536,7 @@ namespace Azuria.Community
                 }
             }
 
-            this.IstInitialisiert = true;
+            this.IsInitialized = true;
             if (lFailedInits < this._initFuncs.Length)
                 lReturn.Success = true;
 
@@ -246,31 +544,132 @@ namespace Azuria.Community
         }
 
         /// <summary>
-        ///     Sendet eine Nachricht an die Konferenz.
-        ///     <para>Mögliche Fehler, die <see cref="ProxerResult" /> enthalten kann:</para>
-        ///     <list type="table">
-        ///         <listheader>
-        ///             <term>Ausnahme</term>
-        ///             <description>Beschreibung</description>
-        ///         </listheader>
-        ///         <item>
-        ///             <term>
-        ///                 <see cref="NotLoggedInException" />
-        ///             </term>
-        ///             <description>Wird ausgelöst, wenn der <see cref="Senpai">Benutzer</see> nicht eingeloggt ist.</description>
-        ///         </item>
-        ///         <item>
-        ///             <term>
-        ///                 <see cref="WrongResponseException" />
-        ///             </term>
-        ///             <description>Wird ausgelöst, wenn die Antwort des Servers nicht der Erwarteten entspricht.</description>
-        ///         </item>
-        ///     </list>
+        ///     Wird immer aufgerufen, wenn neue Nachrichten in der Konferenz vorhanden sind.
         /// </summary>
+        public event NeuePmEventHandler NeuePmRaised;
+
+        private void OnGetMessagesTimerElapsed(object s, EventArgs eArgs)
+        {
+            Timer timer = s as Timer;
+            timer?.Stop();
+            this.GetMessagesTimer(timer);
+        }
+
+        /// <summary>
+        ///     Gibt zurück, ob Senpai ein Teilnehmer einer Konferenz mit der bestimmten ID ist.
+        /// </summary>
+        /// <exception cref="NotLoggedInException">Wird ausgelöst, wenn der <see cref="Senpai">Benutzer</see> nicht eingeloggt ist.</exception>
+        /// <exception cref="WrongResponseException">Wird ausgelöst, wenn die Antwort des Servers nicht der Erwarteten entspricht.</exception>
+        /// <exception cref="ArgumentNullException">
+        ///     Wird ausgelöst, wenn <paramref name="senpai" /> null (oder Nothing in Visual
+        ///     Basic) ist.
+        /// </exception>
+        /// <param name="id">ID der Konferenz</param>
+        /// <param name="senpai">Muss eingeloggt sein</param>
+        /// <seealso cref="Senpai.Login" />
+        /// <returns>Benutzer ist Teilnehmer der Konferenz. True oder False.</returns>
+        public static async Task<ProxerResult<bool>> Participates(int id, Senpai senpai)
+        {
+            if (senpai == null)
+                return new ProxerResult<bool>(new Exception[] {new ArgumentNullException(nameof(senpai))});
+
+            if (!senpai.IsLoggedIn) return new ProxerResult<bool>(new Exception[] {new NotLoggedInException(senpai)});
+
+            Dictionary<string, string> lPostArgs = new Dictionary<string, string>
+            {
+                {"message", "/ping"}
+            };
+            ProxerResult<string> lResult =
+                await
+                    HttpUtility.PostResponseErrorHandling(
+                        "https://proxer.me/messages?id=" + id + "&format=json&json=answer",
+                        lPostArgs,
+                        senpai.LoginCookies,
+                        senpai.ErrHandler,
+                        senpai);
+
+            if (!lResult.Success)
+                return new ProxerResult<bool>(lResult.Exceptions);
+
+            string lResponse = lResult.Result;
+
+            try
+            {
+                Dictionary<string, string> lDict =
+                    JsonConvert.DeserializeObject<Dictionary<string, string>>(lResponse);
+                return new ProxerResult<bool>(!lDict["msg"].Equals("Ein Fehler ist passiert."));
+            }
+            catch
+            {
+                return new ProxerResult<bool>((await ErrorHandler.HandleError(senpai, lResponse, false)).Exceptions);
+            }
+        }
+
+        private async Task<ProxerResult<List<Message>>> ProcessMessages(string messages)
+        {
+            List<Message> lReturn = new List<Message>();
+
+            try
+            {
+                MessagesModel lMessages = JsonConvert.DeserializeObject<MessagesModel>(messages);
+
+                foreach (MessageModel curMessage in lMessages.MessageModels)
+                {
+                    Message.Action lMessageAction;
+
+                    switch (curMessage.Action)
+                    {
+                        case "addUser":
+                            lMessageAction = Message.Action.AddUser;
+                            break;
+                        case "removeUser":
+                            lMessageAction = Message.Action.RemoveUser;
+                            break;
+                        case "setTopic":
+                            lMessageAction = Message.Action.SetTopic;
+                            break;
+                        case "setLeader":
+                            lMessageAction = Message.Action.SetLeader;
+                            break;
+                        default:
+                            lMessageAction = Message.Action.NoAction;
+                            break;
+                    }
+
+                    User[] lSender =
+                        this.Participants.Where(x => x.Id == Convert.ToInt32(curMessage.Fromid)).ToArray();
+
+                    if (lSender.Any())
+                        lReturn.Insert(0,
+                            new Message(lSender[0], Convert.ToInt32(curMessage.Id), curMessage.Message,
+                                Convert.ToInt32(curMessage.Timestamp), lMessageAction));
+                    else
+                        lReturn.Insert(0,
+                            new Message(
+                                new User(curMessage.Username, Convert.ToInt32(curMessage.Fromid),
+                                    this._senpai), Convert.ToInt32(curMessage.Id), curMessage.Message,
+                                Convert.ToInt32(curMessage.Timestamp), lMessageAction));
+                }
+            }
+            catch
+            {
+                return
+                    new ProxerResult<List<Message>>(
+                        (await ErrorHandler.HandleError(this._senpai, messages, false)).Exceptions);
+            }
+
+            return new ProxerResult<List<Message>>(lReturn);
+        }
+
+        /// <summary>
+        ///     Sendet eine Nachricht an die Konferenz.
+        /// </summary>
+        /// <exception cref="NotLoggedInException">Wird ausgelöst, wenn der <see cref="Senpai">Benutzer</see> nicht eingeloggt ist.</exception>
+        /// <exception cref="WrongResponseException">Wird ausgelöst, wenn die Antwort des Servers nicht der Erwarteten entspricht.</exception>
         /// <param name="nachricht">Die Nachricht, die gesendet werden soll</param>
         /// <seealso cref="Senpai.Login" />
         /// <returns>Gibt zurück, ob die Aktion erfolgreich war</returns>
-        public async Task<ProxerResult<bool>> SendeNachricht(string nachricht)
+        public async Task<ProxerResult<bool>> SendMessage(string nachricht)
         {
             this._getMessagesTimer.Stop();
 
@@ -309,7 +708,7 @@ namespace Azuria.Community
                 }
                 if (lResponseJson["msg"].Equals("Erfolgreich!"))
                 {
-                    await this.GetMessages(this.Nachrichten.Last().NachrichtId);
+                    await this.GetMessages(this.Messages.Last().MessageId);
                     this._getMessagesTimer.Start();
                     return new ProxerResult<bool>(true);
                 }
@@ -327,29 +726,12 @@ namespace Azuria.Community
 
         /// <summary>
         ///     Markiert die Konferenz als ungelesen.
-        ///     <para>Mögliche Fehler, die <see cref="ProxerResult" /> enthalten kann:</para>
-        ///     <list type="table">
-        ///         <listheader>
-        ///             <term>Ausnahme</term>
-        ///             <description>Beschreibung</description>
-        ///         </listheader>
-        ///         <item>
-        ///             <term>
-        ///                 <see cref="NotLoggedInException" />
-        ///             </term>
-        ///             <description>Wird ausgelöst, wenn der <see cref="Senpai">Benutzer</see> nicht eingeloggt ist.</description>
-        ///         </item>
-        ///         <item>
-        ///             <term>
-        ///                 <see cref="WrongResponseException" />
-        ///             </term>
-        ///             <description>Wird ausgelöst, wenn die Antwort des Servers nicht der Erwarteten entspricht.</description>
-        ///         </item>
-        ///     </list>
         /// </summary>
+        /// <exception cref="NotLoggedInException">Wird ausgelöst, wenn der <see cref="Senpai">Benutzer</see> nicht eingeloggt ist.</exception>
+        /// <exception cref="WrongResponseException">Wird ausgelöst, wenn die Antwort des Servers nicht der Erwarteten entspricht.</exception>
         /// <seealso cref="Senpai.Login" />
         /// <returns>Gibt zurück, ob die Aktion erfolgreich war</returns>
-        public async Task<ProxerResult<bool>> AlsUngelesenMarkieren()
+        public async Task<ProxerResult<bool>> SetUnread()
         {
             ProxerResult<string> lResult =
                 await
@@ -368,156 +750,13 @@ namespace Azuria.Community
         }
 
         /// <summary>
-        ///     Markiert die Konferenz als Favorit.
-        ///     <para>Mögliche Fehler, die <see cref="ProxerResult" /> enthalten kann:</para>
-        ///     <list type="table">
-        ///         <listheader>
-        ///             <term>Ausnahme</term>
-        ///             <description>Beschreibung</description>
-        ///         </listheader>
-        ///         <item>
-        ///             <term>
-        ///                 <see cref="NotLoggedInException" />
-        ///             </term>
-        ///             <description>Wird ausgelöst, wenn der <see cref="Senpai">Benutzer</see> nicht eingeloggt ist.</description>
-        ///         </item>
-        ///         <item>
-        ///             <term>
-        ///                 <see cref="WrongResponseException" />
-        ///             </term>
-        ///             <description>Wird ausgelöst, wenn die Antwort des Servers nicht der Erwarteten entspricht.</description>
-        ///         </item>
-        ///     </list>
-        /// </summary>
-        /// <seealso cref="Senpai.Login" />
-        /// <returns>Gibt zurück, ob die Aktion erfolgreich war</returns>
-        public async Task<ProxerResult<bool>> FavoritHinzufuegen()
-        {
-            ProxerResult<string> lResult =
-                await
-                    HttpUtility.GetResponseErrorHandling(
-                        "http://proxer.me/messages?format=json&json=favour&id=" + this.Id,
-                        this._senpai.LoginCookies,
-                        this._senpai.ErrHandler,
-                        this._senpai);
-
-            if (!lResult.Success)
-                return new ProxerResult<bool>(lResult.Exceptions);
-
-            string lResponse = lResult.Result;
-
-            return new ProxerResult<bool>(lResponse.StartsWith("{\"error\":0"));
-        }
-
-        /// <summary>
-        ///     Entfernt die Konferenz aus den Favoriten.
-        ///     <para>Mögliche Fehler, die <see cref="ProxerResult" /> enthalten kann:</para>
-        ///     <list type="table">
-        ///         <listheader>
-        ///             <term>Ausnahme</term>
-        ///             <description>Beschreibung</description>
-        ///         </listheader>
-        ///         <item>
-        ///             <term>
-        ///                 <see cref="NotLoggedInException" />
-        ///             </term>
-        ///             <description>Wird ausgelöst, wenn der <see cref="Senpai">Benutzer</see> nicht eingeloggt ist.</description>
-        ///         </item>
-        ///         <item>
-        ///             <term>
-        ///                 <see cref="WrongResponseException" />
-        ///             </term>
-        ///             <description>Wird ausgelöst, wenn die Antwort des Servers nicht der Erwarteten entspricht.</description>
-        ///         </item>
-        ///     </list>
-        /// </summary>
-        /// <seealso cref="Senpai.Login" />
-        /// <returns>Gibt zurück, ob die Aktion erfolgreich war</returns>
-        public async Task<ProxerResult<bool>> FavoritEntfernen()
-        {
-            ProxerResult<string> lResult =
-                await
-                    HttpUtility.GetResponseErrorHandling(
-                        "http://proxer.me/messages?format=json&json=unfavour&id=" + this.Id,
-                        this._senpai.LoginCookies,
-                        this._senpai.ErrHandler,
-                        this._senpai);
-
-            if (!lResult.Success)
-                return new ProxerResult<bool>(lResult.Exceptions);
-
-            string lResponse = lResult.Result;
-
-            return new ProxerResult<bool>(lResponse.StartsWith("{\"error\":0"));
-        }
-
-        /// <summary>
-        ///     Blockiert die Konferenz.
-        ///     <para>Mögliche Fehler, die <see cref="ProxerResult" /> enthalten kann:</para>
-        ///     <list type="table">
-        ///         <listheader>
-        ///             <term>Ausnahme</term>
-        ///             <description>Beschreibung</description>
-        ///         </listheader>
-        ///         <item>
-        ///             <term>
-        ///                 <see cref="NotLoggedInException" />
-        ///             </term>
-        ///             <description>Wird ausgelöst, wenn der <see cref="Senpai">Benutzer</see> nicht eingeloggt ist.</description>
-        ///         </item>
-        ///         <item>
-        ///             <term>
-        ///                 <see cref="WrongResponseException" />
-        ///             </term>
-        ///             <description>Wird ausgelöst, wenn die Antwort des Servers nicht der Erwarteten entspricht.</description>
-        ///         </item>
-        ///     </list>
-        /// </summary>
-        /// <seealso cref="Senpai.Login" />
-        /// <returns>Gibt zurück, ob die Aktion erfolgreich war</returns>
-        public async Task<ProxerResult<bool>> BlockHinzufuegen()
-        {
-            ProxerResult<string> lResult =
-                await
-                    HttpUtility.GetResponseErrorHandling(
-                        "http://proxer.me/messages?format=json&json=block&id=" + this.Id,
-                        this._senpai.LoginCookies,
-                        this._senpai.ErrHandler,
-                        this._senpai);
-
-            if (!lResult.Success)
-                return new ProxerResult<bool>(lResult.Exceptions);
-
-            string lResponse = lResult.Result;
-
-            return new ProxerResult<bool>(lResponse.StartsWith("{\"error\":0"));
-        }
-
-        /// <summary>
         ///     Entblockt die Konferenz.
-        ///     <para>Mögliche Fehler, die <see cref="ProxerResult" /> enthalten kann:</para>
-        ///     <list type="table">
-        ///         <listheader>
-        ///             <term>Ausnahme</term>
-        ///             <description>Beschreibung</description>
-        ///         </listheader>
-        ///         <item>
-        ///             <term>
-        ///                 <see cref="NotLoggedInException" />
-        ///             </term>
-        ///             <description>Wird ausgelöst, wenn der <see cref="Senpai">Benutzer</see> nicht eingeloggt ist.</description>
-        ///         </item>
-        ///         <item>
-        ///             <term>
-        ///                 <see cref="WrongResponseException" />
-        ///             </term>
-        ///             <description>Wird ausgelöst, wenn die Antwort des Servers nicht der Erwarteten entspricht.</description>
-        ///         </item>
-        ///     </list>
         /// </summary>
+        /// <exception cref="NotLoggedInException">Wird ausgelöst, wenn der <see cref="Senpai">Benutzer</see> nicht eingeloggt ist.</exception>
+        /// <exception cref="WrongResponseException">Wird ausgelöst, wenn die Antwort des Servers nicht der Erwarteten entspricht.</exception>
         /// <seealso cref="Senpai.Login" />
         /// <returns>Gibt zurück, ob die Aktion erfolgreich war</returns>
-        public async Task<ProxerResult<bool>> BlockEntfernen()
+        public async Task<ProxerResult<bool>> Unblock()
         {
             ProxerResult<string> lResult =
                 await
@@ -535,408 +774,29 @@ namespace Azuria.Community
             return new ProxerResult<bool>(lResponse.StartsWith("{\"error\":0"));
         }
 
-
-        private async Task<ProxerResult> GetLeader()
-        {
-            if (!this.IsConference) return new ProxerResult();
-
-            Dictionary<string, string> lPostArgs = new Dictionary<string, string>
-            {
-                {"message", "/leader"}
-            };
-            ProxerResult<string> lResult =
-                await
-                    HttpUtility.PostResponseErrorHandling(
-                        "https://proxer.me/messages?id=" + this.Id + "&format=json&json=answer",
-                        lPostArgs,
-                        this._senpai.LoginCookies,
-                        this._senpai.ErrHandler,
-                        this._senpai);
-
-            if (!lResult.Success)
-                return new ProxerResult(lResult.Exceptions);
-
-            string lResponse = lResult.Result;
-
-            try
-            {
-                Dictionary<string, string> lDict =
-                    JsonConvert.DeserializeObject<Dictionary<string, string>>(lResponse);
-                if (!lDict["msg"].Equals("Erfolgreich!"))
-                    return new ProxerResult
-                    {
-                        Success = false
-                    };
-
-                this.Leiter =
-                    this.Teilnehmer?.FirstOrDefault(
-                        x => x.UserName.Equals(lDict["message"].Remove(0, "Konferenzleiter: ".Length))) ?? User.System;
-
-                return new ProxerResult();
-            }
-            catch
-            {
-                return new ProxerResult((await ErrorHandler.HandleError(this._senpai, lResponse, false)).Exceptions);
-            }
-        }
-
-        private async Task<ProxerResult> GetAllParticipants()
-        {
-            HtmlDocument lDocument = new HtmlDocument();
-            ProxerResult<string> lResult =
-                await
-                    HttpUtility.GetResponseErrorHandling(
-                        "https://proxer.me/messages?id=" + this.Id + "&format=raw",
-                        this._senpai.LoginCookies,
-                        this._senpai.ErrHandler,
-                        this._senpai);
-
-            if (!lResult.Success)
-                return new ProxerResult(lResult.Exceptions);
-
-            string lResponse = lResult.Result;
-
-            try
-            {
-                lDocument.LoadHtml(lResponse);
-
-                HtmlNodeCollection lNodes = lDocument.DocumentNode.SelectNodes("//div[@id='conferenceUsers']");
-                List<User> lTeilnehmer = this.Teilnehmer.ToList();
-
-                lTeilnehmer.AddRange(from curTeilnehmer in lNodes[0].ChildNodes[1].ChildNodes
-                                     let lUserName = curTeilnehmer.ChildNodes[1].FirstChild.InnerText
-                                     let lUserId =
-                                         Convert.ToInt32(
-                                             Utility.GetTagContents(
-                                                 curTeilnehmer.ChildNodes[1].FirstChild.Attributes["href"].Value,
-                                                 "/user/", "#top")[0])
-                                     select new User(lUserName, lUserId, this._senpai));
-
-                this.Teilnehmer = lTeilnehmer;
-
-                return new ProxerResult();
-            }
-            catch
-            {
-                return new ProxerResult((await ErrorHandler.HandleError(this._senpai, lResponse, false)).Exceptions);
-            }
-        }
-
-        private async Task<ProxerResult> GetTitle()
-        {
-            if (this.IsConference)
-            {
-                Dictionary<string, string> lPostArgs = new Dictionary<string, string>
-                {
-                    {"message", "/topic"}
-                };
-
-                ProxerResult<string> lResult =
-                    await
-                        HttpUtility.PostResponseErrorHandling(
-                            "https://proxer.me/messages?id=" + this.Id + "&format=json&json=answer",
-                            lPostArgs,
-                            this._senpai.LoginCookies,
-                            this._senpai.ErrHandler,
-                            this._senpai);
-
-                if (!lResult.Success)
-                    return new ProxerResult(lResult.Exceptions);
-
-                string lResponse = lResult.Result;
-
-                try
-                {
-                    Dictionary<string, string> lDict =
-                        JsonConvert.DeserializeObject<Dictionary<string, string>>(lResponse);
-                    if (lDict["msg"].Equals("Erfolgreich!")) this.Titel = lDict["message"];
-
-                    return new ProxerResult();
-                }
-                catch
-                {
-                    return new ProxerResult((await ErrorHandler.HandleError(this._senpai, lResponse, false)).Exceptions);
-                }
-            }
-
-            if (this.Teilnehmer.ToList().Count > 1)
-                this.Titel = this.Teilnehmer.Where(x => x.Id != this._senpai.Me.Id).ToArray()[0].UserName;
-
-            return new ProxerResult();
-        }
-
-        private async Task<ProxerResult> GetAllMessages()
-        {
-            if (this.Nachrichten != null && this.Nachrichten.ToList().Count > 0)
-                return await this.GetMessages(this.Nachrichten.Last().NachrichtId);
-
-            if (this.Nachrichten != null && this.Nachrichten.ToList().Count != 0)
-                return new ProxerResult
-                {
-                    Success = false
-                };
-
-            ProxerResult<string> lResult =
-                await
-                    HttpUtility.GetResponseErrorHandling(
-                        "http://proxer.me/messages?format=json&json=messages&id=" + this.Id,
-                        this._senpai.LoginCookies,
-                        this._senpai.ErrHandler,
-                        this._senpai);
-
-            if (!lResult.Success)
-                return new ProxerResult(lResult.Exceptions);
-
-            string lResponse = lResult.Result;
-
-            if (lResponse.Equals("{\"uid\":\"" + this._senpai.Me.Id +
-                                 "\",\"error\":1,\"msg\":\"Ein Fehler ist passiert.\"}"))
-                return new ProxerResult
-                {
-                    Success = false
-                };
-            try
-            {
-                ProxerResult<List<Message>> lResultMessages = await this.ProcessMessages(lResponse);
-                if (!lResultMessages.Success)
-                    return new ProxerResult(new Exception[] {new WrongResponseException(lResponse)});
-
-                this.Nachrichten = lResultMessages.Result;
-
-                if (this.Nachrichten.Any(
-                    x => x.Aktion == Message.Action.AddUser || x.Aktion == Message.Action.RemoveUser))
-                    await this.GetAllParticipants();
-                if (this.Nachrichten.Any(x => x.Aktion == Message.Action.SetLeader) &&
-                    this.IstInitialisiert)
-                    await this.GetLeader();
-                if (this.Nachrichten.Any(x => x.Aktion == Message.Action.SetTopic) &&
-                    this.IstInitialisiert)
-                    await this.GetTitle();
-
-                this.NeuePmRaised?.Invoke(this, this.Nachrichten, true);
-            }
-            catch
-            {
-                return new ProxerResult((await ErrorHandler.HandleError(this._senpai, lResponse, false)).Exceptions);
-            }
-
-            return new ProxerResult();
-        }
-
-        private async Task<ProxerResult> GetMessages(int mid)
-        {
-            if (this.Nachrichten == null || this.Nachrichten.Count(x => x.NachrichtId == mid) == 0)
-                return await this.GetAllMessages();
-
-            ProxerResult<string> lResult =
-                await
-                    HttpUtility.GetResponseErrorHandling(
-                        "http://proxer.me/messages?format=json&json=newmessages&id=" + this.Id + "&mid=" + mid,
-                        this._senpai.LoginCookies,
-                        this._senpai.ErrHandler,
-                        this._senpai);
-
-            if (!lResult.Success)
-                return new ProxerResult(lResult.Exceptions);
-
-            string lResponse = lResult.Result;
-
-            if (lResponse.Equals("{\"uid\":\"" + this._senpai.Me.Id +
-                                 "\",\"error\":1,\"msg\":\"Ein Fehler ist passiert.\"}"))
-                return new ProxerResult
-                {
-                    Success = false
-                };
-
-            try
-            {
-                ProxerResult<List<Message>> lResultMessages = await this.ProcessMessages(lResponse);
-                if (!lResultMessages.Success)
-                    return new ProxerResult(new Exception[] {new WrongResponseException(lResponse)});
-
-                List<Message> lNewMessages = lResultMessages.Result;
-
-                if (
-                    lNewMessages.Count(
-                        x => x.Aktion == Message.Action.AddUser || x.Aktion == Message.Action.RemoveUser) >
-                    0)
-                    await this.GetAllParticipants();
-                if (lNewMessages.Count(x => x.Aktion == Message.Action.SetLeader) > 0 &&
-                    this.IstInitialisiert)
-                    await this.GetLeader();
-                if (lNewMessages.Count(x => x.Aktion == Message.Action.SetTopic) > 0 &&
-                    this.IstInitialisiert)
-                    await this.GetTitle();
-
-                this.Nachrichten = this.Nachrichten.Concat(lNewMessages).ToList();
-
-                this.NeuePmRaised?.Invoke(this, lNewMessages, false);
-            }
-            catch
-            {
-                return new ProxerResult((await ErrorHandler.HandleError(this._senpai, lResponse, false)).Exceptions);
-            }
-
-            return new ProxerResult();
-        }
-
-        private async Task<ProxerResult<List<Message>>> ProcessMessages(string messages)
-        {
-            List<Message> lReturn = new List<Message>();
-
-            try
-            {
-                MessagesViewModel lMessages = JsonConvert.DeserializeObject<MessagesViewModel>(messages);
-
-                foreach (MessageModel curMessage in lMessages.MessagesModel)
-                {
-                    Message.Action lMessageAction;
-
-                    switch (curMessage.Action)
-                    {
-                        case "addUser":
-                            lMessageAction = Message.Action.AddUser;
-                            break;
-                        case "removeUser":
-                            lMessageAction = Message.Action.RemoveUser;
-                            break;
-                        case "setTopic":
-                            lMessageAction = Message.Action.SetTopic;
-                            break;
-                        case "setLeader":
-                            lMessageAction = Message.Action.SetLeader;
-                            break;
-                        default:
-                            lMessageAction = Message.Action.NoAction;
-                            break;
-                    }
-
-                    User[] lSender =
-                        this.Teilnehmer.Where(x => x.Id == Convert.ToInt32(curMessage.Fromid)).ToArray();
-
-                    if (lSender.Any())
-                        lReturn.Insert(0,
-                            new Message(lSender[0], Convert.ToInt32(curMessage.Id), curMessage.Message,
-                                Convert.ToInt32(curMessage.Timestamp), lMessageAction));
-                    else
-                        lReturn.Insert(0,
-                            new Message(
-                                new User(curMessage.Username, Convert.ToInt32(curMessage.Fromid),
-                                    this._senpai), Convert.ToInt32(curMessage.Id), curMessage.Message,
-                                Convert.ToInt32(curMessage.Timestamp), lMessageAction));
-                }
-            }
-            catch
-            {
-                return
-                    new ProxerResult<List<Message>>(
-                        (await ErrorHandler.HandleError(this._senpai, messages, false)).Exceptions);
-            }
-
-            return new ProxerResult<List<Message>>(lReturn);
-        }
-
-        private async Task<ProxerResult<bool>> CheckIsConference()
-        {
-            Dictionary<string, string> lPostArgs = new Dictionary<string, string>
-            {
-                {"message", "/ping"}
-            };
-            ProxerResult<string> lResult =
-                await
-                    HttpUtility.PostResponseErrorHandling(
-                        "https://proxer.me/messages?id=" + this.Id + "&format=json&json=answer",
-                        lPostArgs,
-                        this._senpai.LoginCookies,
-                        this._senpai.ErrHandler,
-                        this._senpai);
-
-            if (!lResult.Success)
-                return new ProxerResult<bool>(lResult.Exceptions);
-
-            string lResponse = lResult.Result;
-            try
-            {
-                Dictionary<string, string> lDict =
-                    JsonConvert.DeserializeObject<Dictionary<string, string>>(lResponse);
-                return new ProxerResult<bool>(lDict["msg"].Equals("Erfolgreich!") &&
-                                              !lDict["message"].Equals("Befehle sind nur in Konferenzen verfügbar."));
-            }
-            catch
-            {
-                return
-                    new ProxerResult<bool>((await ErrorHandler.HandleError(this._senpai, lResponse, false)).Exceptions);
-            }
-        }
-
-
         /// <summary>
-        ///     Gibt zurück, ob Senpai ein Teilnehmer einer Konferenz mit der bestimmten ID ist.
-        ///     <para>Mögliche Fehler, die <see cref="ProxerResult" /> enthalten kann:</para>
-        ///     <list type="table">
-        ///         <listheader>
-        ///             <term>Ausnahme</term>
-        ///             <description>Beschreibung</description>
-        ///         </listheader>
-        ///         <item>
-        ///             <term>
-        ///                 <see cref="NotLoggedInException" />
-        ///             </term>
-        ///             <description>Wird ausgelöst, wenn der <see cref="Senpai">Benutzer</see> nicht eingeloggt ist.</description>
-        ///         </item>
-        ///         <item>
-        ///             <term>
-        ///                 <see cref="WrongResponseException" />
-        ///             </term>
-        ///             <description>Wird ausgelöst, wenn die Antwort des Servers nicht der Erwarteten entspricht.</description>
-        ///         </item>
-        ///         <item>
-        ///             <term>
-        ///                 <see cref="ArgumentNullException" />
-        ///             </term>
-        ///             <description>Wird ausgelöst, wenn <paramref name="senpai" /> null (oder Nothing in Visual Basic) ist.</description>
-        ///         </item>
-        ///     </list>
+        ///     Entfernt die Konferenz aus den Favoriten.
         /// </summary>
-        /// <param name="id">ID der Konferenz</param>
-        /// <param name="senpai">Muss eingeloggt sein</param>
+        /// <exception cref="NotLoggedInException">Wird ausgelöst, wenn der <see cref="Senpai">Benutzer</see> nicht eingeloggt ist.</exception>
+        /// <exception cref="WrongResponseException">Wird ausgelöst, wenn die Antwort des Servers nicht der Erwarteten entspricht.</exception>
         /// <seealso cref="Senpai.Login" />
-        /// <returns>Benutzer ist Teilnehmer der Konferenz. True oder False.</returns>
-        public static async Task<ProxerResult<bool>> IstTeilnehmner(int id, Senpai senpai)
+        /// <returns>Gibt zurück, ob die Aktion erfolgreich war</returns>
+        public async Task<ProxerResult<bool>> Unfavour()
         {
-            if (senpai == null)
-                return new ProxerResult<bool>(new Exception[] {new ArgumentNullException(nameof(senpai))});
-
-            if (!senpai.LoggedIn) return new ProxerResult<bool>(new Exception[] {new NotLoggedInException(senpai)});
-
-            Dictionary<string, string> lPostArgs = new Dictionary<string, string>
-            {
-                {"message", "/ping"}
-            };
             ProxerResult<string> lResult =
                 await
-                    HttpUtility.PostResponseErrorHandling(
-                        "https://proxer.me/messages?id=" + id + "&format=json&json=answer",
-                        lPostArgs,
-                        senpai.LoginCookies,
-                        senpai.ErrHandler,
-                        senpai);
+                    HttpUtility.GetResponseErrorHandling(
+                        "http://proxer.me/messages?format=json&json=unfavour&id=" + this.Id,
+                        this._senpai.LoginCookies,
+                        this._senpai.ErrHandler,
+                        this._senpai);
 
             if (!lResult.Success)
                 return new ProxerResult<bool>(lResult.Exceptions);
 
             string lResponse = lResult.Result;
 
-            try
-            {
-                Dictionary<string, string> lDict =
-                    JsonConvert.DeserializeObject<Dictionary<string, string>>(lResponse);
-                return new ProxerResult<bool>(!lDict["msg"].Equals("Ein Fehler ist passiert."));
-            }
-            catch
-            {
-                return new ProxerResult<bool>((await ErrorHandler.HandleError(senpai, lResponse, false)).Exceptions);
-            }
+            return new ProxerResult<bool>(lResponse.StartsWith("{\"error\":0"));
         }
 
         #endregion
@@ -982,40 +842,36 @@ namespace Azuria.Community
                 GetAction
             }
 
-            internal Message(User sender, int mid, string nachricht, int unix, Action aktion)
+            internal Message(User sender, int mid, string nachricht, int unix, Action action)
+                : this(sender, mid, nachricht, Utility.UnixTimeStampToDateTime(unix), action)
             {
-                this.Sender = sender;
-                this.NachrichtId = mid;
-                this.Nachricht = nachricht;
-                this.TimeStamp = Utility.UnixTimeStampToDateTime(unix);
-                this.Aktion = aktion;
             }
 
-            internal Message(User sender, int mid, string nachricht, DateTime date, Action aktion)
+            internal Message(User sender, int mid, string nachricht, DateTime date, Action action)
             {
                 this.Sender = sender;
-                this.NachrichtId = mid;
-                this.Nachricht = nachricht;
+                this.MessageId = mid;
+                this.Content = nachricht;
                 this.TimeStamp = date;
-                this.Aktion = aktion;
+                this.MessageAction = action;
             }
 
             #region Properties
 
             /// <summary>
-            ///     Gibt die Aktion der Nachricht zurück.
-            /// </summary>
-            public Action Aktion { get; }
-
-            /// <summary>
             ///     Gibt den Text der Nachricht zurück.
             /// </summary>
-            public string Nachricht { get; private set; }
+            public string Content { get; private set; }
+
+            /// <summary>
+            ///     Gibt die Aktion der Nachricht zurück.
+            /// </summary>
+            public Action MessageAction { get; }
 
             /// <summary>
             ///     Gibt die ID der Nachricht zurück.
             /// </summary>
-            public int NachrichtId { get; }
+            public int MessageId { get; }
 
             /// <summary>
             ///     Gibt den Sender der Nachricht zurück.

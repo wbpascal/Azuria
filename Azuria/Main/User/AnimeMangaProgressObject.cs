@@ -8,39 +8,6 @@
     public class AnimeMangaProgressObject
     {
         /// <summary>
-        ///     Eine Aufzählung, die die Kategorie darstellt, in der der <see cref="Azuria.User">Benutzer</see> seinen Fortschritt
-        ///     mit
-        ///     dem aktuellen
-        ///     <see cref="Anime">Anime</see> oder <see cref="Manga">Manga</see> eingeordnet hat.
-        /// </summary>
-        public enum AnimeMangaProgress
-        {
-            /// <summary>
-            ///     Der <see cref="Azuria.User">Benutzer</see> hat den <see cref="Anime">Anime</see>
-            ///     oder <see cref="Manga">Manga</see> als bereits geschaut markiert.
-            /// </summary>
-            Finished,
-
-            /// <summary>
-            ///     Der <see cref="Azuria.User">Benutzer</see> schaut den <see cref="Anime">Anime</see>
-            ///     oder <see cref="Manga">Manga</see> momentan.
-            /// </summary>
-            InProgress,
-
-            /// <summary>
-            ///     Der <see cref="Azuria.User">Benutzer</see> hat den <see cref="Anime">Anime</see>
-            ///     oder <see cref="Manga">Manga</see> markiert, dass er ihn noch sehen wird.
-            /// </summary>
-            Planned,
-
-            /// <summary>
-            ///     Der <see cref="Azuria.User">Benutzer</see> hat den <see cref="Anime">Anime</see>
-            ///     oder <see cref="Manga">Manga</see> als abgebrochen markiert.
-            /// </summary>
-            Aborted
-        }
-
-        /// <summary>
         ///     Initialisiert das Objekt.
         /// </summary>
         /// <param name="user">Der Benutzer, der mit dem Fortschritt zusammenhängt.</param>
@@ -58,7 +25,7 @@
         ///     einsortiert hat.
         /// </param>
         public AnimeMangaProgressObject(Azuria.User user, IAnimeMangaObject animeMangaObject, int currentProgress,
-                                        int maxCount, AnimeMangaProgress progress)
+            int maxCount, AnimeMangaProgress progress)
         {
             this.User = user;
             this.AnimeMangaObject = animeMangaObject;

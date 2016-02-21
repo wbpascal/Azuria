@@ -4,6 +4,7 @@ using System.Linq;
 using System.Net;
 using System.Text;
 using System.Threading.Tasks;
+using Azuria.ErrorHandling;
 using Azuria.Exceptions;
 using RestSharp;
 
@@ -24,42 +25,16 @@ namespace Azuria.Utilities.Net
 
         #region
 
-        internal static async Task<IRestResponse> GetWebRequestResponse(string url, CookieContainer cookies)
-        {
-            RestClient lClient = new RestClient(url)
-            {
-                CookieContainer = cookies,
-                Encoding = Encoding.UTF8,
-                Timeout = Timeout
-            };
-            RestRequest lRequest = new RestRequest(Method.GET);
-            return await lClient.ExecuteTaskAsync(lRequest);
-        }
-
-        internal static async Task<IRestResponse> PostWebRequestResponse(string url, CookieContainer cookies,
-                                                                         Dictionary<string, string> postArgs)
-        {
-            RestClient lClient = new RestClient(url)
-            {
-                CookieContainer = cookies,
-                Encoding = Encoding.UTF8,
-                Timeout = Timeout
-            };
-            RestRequest lRequest = new RestRequest(Method.POST);
-            postArgs.ToList().ForEach(x => lRequest.AddParameter(x.Key, x.Value));
-            return await lClient.ExecuteTaskAsync(lRequest);
-        }
-
         internal static async Task<ProxerResult<string>> GetResponseErrorHandling(string url, ErrorHandler errorHandler,
-                                                                                  Senpai senpai)
+            Senpai senpai)
         {
             return await GetResponseErrorHandling(url, null, errorHandler, senpai);
         }
 
         internal static async Task<ProxerResult<string>> GetResponseErrorHandling(string url,
-                                                                                  CookieContainer loginCookies,
-                                                                                  ErrorHandler errorHandler,
-                                                                                  Senpai senpai)
+            CookieContainer loginCookies,
+            ErrorHandler errorHandler,
+            Senpai senpai)
         {
             return
                 await
@@ -67,11 +42,11 @@ namespace Azuria.Utilities.Net
         }
 
         internal static async Task<ProxerResult<string>> GetResponseErrorHandling(string url,
-                                                                                  CookieContainer loginCookies,
-                                                                                  ErrorHandler errorHandler,
-                                                                                  Senpai senpai,
-                                                                                  Func<string, ProxerResult>[]
-                                                                                      checkFuncs)
+            CookieContainer loginCookies,
+            ErrorHandler errorHandler,
+            Senpai senpai,
+            Func<string, ProxerResult>[]
+                checkFuncs)
         {
             ProxerResult<Tuple<string, CookieContainer>> lResult =
                 await
@@ -86,7 +61,7 @@ namespace Azuria.Utilities.Net
             string url, CookieContainer loginCookies, ErrorHandler errorHandler, Senpai senpai,
             Func<string, ProxerResult>[] checkFuncs, bool checkLogin)
         {
-            if (checkLogin && loginCookies != null && !senpai.LoggedIn)
+            if (checkLogin && loginCookies != null && !senpai.IsLoggedIn)
                 return
                     new ProxerResult<Tuple<string, CookieContainer>>(new Exception[] {new NotLoggedInException()});
 
@@ -125,19 +100,31 @@ namespace Azuria.Utilities.Net
                     new Tuple<string, CookieContainer>(lResponse, loginCookies));
         }
 
+        internal static async Task<IRestResponse> GetWebRequestResponse(string url, CookieContainer cookies)
+        {
+            RestClient lClient = new RestClient(url)
+            {
+                CookieContainer = cookies,
+                Encoding = Encoding.UTF8,
+                Timeout = Timeout
+            };
+            RestRequest lRequest = new RestRequest(Method.GET);
+            return await lClient.ExecuteTaskAsync(lRequest);
+        }
+
         internal static async Task<ProxerResult<string>> PostResponseErrorHandling(string url,
-                                                                                   Dictionary<string, string> postArgs,
-                                                                                   ErrorHandler errorHandler,
-                                                                                   Senpai senpai)
+            Dictionary<string, string> postArgs,
+            ErrorHandler errorHandler,
+            Senpai senpai)
         {
             return await PostResponseErrorHandling(url, postArgs, null, errorHandler, senpai);
         }
 
         internal static async Task<ProxerResult<string>> PostResponseErrorHandling(string url,
-                                                                                   Dictionary<string, string> postArgs,
-                                                                                   CookieContainer loginCookies,
-                                                                                   ErrorHandler errorHandler,
-                                                                                   Senpai senpai)
+            Dictionary<string, string> postArgs,
+            CookieContainer loginCookies,
+            ErrorHandler errorHandler,
+            Senpai senpai)
         {
             return
                 await
@@ -146,12 +133,12 @@ namespace Azuria.Utilities.Net
         }
 
         internal static async Task<ProxerResult<string>> PostResponseErrorHandling(string url,
-                                                                                   Dictionary<string, string> postArgs,
-                                                                                   CookieContainer loginCookies,
-                                                                                   ErrorHandler errorHandler,
-                                                                                   Senpai senpai,
-                                                                                   Func<string, ProxerResult>[]
-                                                                                       checkFuncs)
+            Dictionary<string, string> postArgs,
+            CookieContainer loginCookies,
+            ErrorHandler errorHandler,
+            Senpai senpai,
+            Func<string, ProxerResult>[]
+                checkFuncs)
         {
             ProxerResult<KeyValuePair<string, CookieContainer>> lResult =
                 await
@@ -168,7 +155,7 @@ namespace Azuria.Utilities.Net
             Senpai senpai,
             Func<string, ProxerResult>[] checkFuncs, bool checkLogin)
         {
-            if (checkLogin && loginCookies != null && !senpai.LoggedIn)
+            if (checkLogin && loginCookies != null && !senpai.IsLoggedIn)
                 return
                     new ProxerResult<KeyValuePair<string, CookieContainer>>(new Exception[] {new NotLoggedInException()});
 
@@ -205,6 +192,20 @@ namespace Azuria.Utilities.Net
             return
                 new ProxerResult<KeyValuePair<string, CookieContainer>>(
                     new KeyValuePair<string, CookieContainer>(lResponse, loginCookies));
+        }
+
+        internal static async Task<IRestResponse> PostWebRequestResponse(string url, CookieContainer cookies,
+            Dictionary<string, string> postArgs)
+        {
+            RestClient lClient = new RestClient(url)
+            {
+                CookieContainer = cookies,
+                Encoding = Encoding.UTF8,
+                Timeout = Timeout
+            };
+            RestRequest lRequest = new RestRequest(Method.POST);
+            postArgs.ToList().ForEach(x => lRequest.AddParameter(x.Key, x.Value));
+            return await lClient.ExecuteTaskAsync(lRequest);
         }
 
         #endregion

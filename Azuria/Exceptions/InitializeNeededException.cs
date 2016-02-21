@@ -6,7 +6,6 @@ namespace Azuria.Exceptions
     ///     Stellt einen Fehler da, der ausgelöst wird, wenn eine Eigenschaft aufgerufen wird, die das Initialisieren des
     ///     Objektes erfordert.
     /// </summary>
-    [Serializable]
     public class InitializeNeededException : Exception
     {
         /// <summary>

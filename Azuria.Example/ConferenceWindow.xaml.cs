@@ -24,8 +24,31 @@ namespace Azuria.Example
 
         #region
 
+        private async void Button_Click(object sender, RoutedEventArgs e)
+        {
+            //Versuche die Nachricht zu senden
+            if (!(await this._conference.SendMessage(this.InputBox.Text)).OnError(false))
+            {
+                //Falls ein Fehler beim Senden der Nachricht aufgetreten ist
+                MessageBox.Show("Die Nachricht konnte nicht gesendet werden!", "Fehler",
+                    MessageBoxButton.OK,
+                    MessageBoxImage.Error);
+            }
+            else
+            {
+                this.InputBox.Clear();
+            }
+        }
+
+        private void ConferenceOnErrorDuringPmFetchRaised(Conference sender, IEnumerable<Exception> exceptions)
+        {
+            //Falls beim Abrufen der Nachrichten im Hintergrund ein Fehler auftritt wird dieses Event ausgelöst
+            MessageBox.Show("Es ist ein Fehler beim Abrufen der Nachrichten aufgetreten!", "Fehler", MessageBoxButton.OK,
+                MessageBoxImage.Error);
+        }
+
         private void ConferenceOnNeuePmRaised(Conference sender, IEnumerable<Conference.Message> messages,
-                                              bool alleNachrichten)
+            bool alleNachrichten)
         {
             //Hier werden die Nachrichten verarbeitet
 
@@ -44,35 +67,15 @@ namespace Azuria.Example
             foreach (Conference.Message message in messages)
             {
                 this.ChatBox.Text += "[" + message.TimeStamp + "] " + message.Sender.UserName + ": " +
-                                     message.Nachricht + "\n";
+                                     message.Content + "\n";
             }
-        }
-
-        private void ConferenceOnErrorDuringPmFetchRaised(Conference sender, IEnumerable<Exception> exceptions)
-        {
-            //Falls beim Abrufen der Nachrichten im Hintergrund ein Fehler auftritt wird dieses Event ausgelöst
-            MessageBox.Show("Es ist ein Fehler beim Abrufen der Nachrichten aufgetreten!", "Fehler", MessageBoxButton.OK,
-                MessageBoxImage.Error);
-        }
-
-        private async void Window_Loaded(object sender, RoutedEventArgs e)
-        {
-            //Eigenschaften der Konferenz initialisieren
-            //Nachrichten werden noch nicht abgerufen
-            await this._conference.InitConference();
-
-            this.InitComponents();
-
-            //Abrufen der Nachrichten im Hintergrund wird aktiviert
-            //Durch setzen auf false kann diese Funktion wieder deaktiviert werden
-            this._conference.Aktiv = true;
         }
 
         private void InitComponents()
         {
-            this.Title = "Konferenz: " + this._conference.Titel;
+            this.Title = "Konferenz: " + this._conference.Title;
 
-            foreach (User teilnehmer in this._conference.Teilnehmer ?? new List<User>())
+            foreach (User teilnehmer in this._conference.Participants ?? new List<User>())
             {
                 TextBlock lTeilnehmerBlock = new TextBlock {DataContext = teilnehmer, Text = teilnehmer.ToString()};
                 lTeilnehmerBlock.MouseLeftButtonDown += this.UserTextBlock_MouseLeftButtonDown;
@@ -81,8 +84,8 @@ namespace Azuria.Example
 
             TextBlock lLeaderBlock = new TextBlock
             {
-                DataContext = this._conference.Leiter,
-                Text = this._conference.Leiter.ToString()
+                DataContext = this._conference.Leader,
+                Text = this._conference.Leader.ToString()
             };
             lLeaderBlock.MouseLeftButtonDown += this.UserTextBlock_MouseLeftButtonDown;
             this.LeiterBox.Items.Add(lLeaderBlock);
@@ -91,23 +94,20 @@ namespace Azuria.Example
         private void UserTextBlock_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
             TextBlock lTeilnehmerBlock = sender as TextBlock;
-            new UserWindow((lTeilnehmerBlock?.DataContext as User) ?? User.System, this._senpai).Show();
+            new UserWindow(lTeilnehmerBlock?.DataContext as User ?? User.System, this._senpai).Show();
         }
 
-        private async void Button_Click(object sender, RoutedEventArgs e)
+        private async void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            //Versuche die Nachricht zu senden
-            if (!(await this._conference.SendeNachricht(this.InputBox.Text)).OnError(false))
-            {
-                //Falls ein Fehler beim Senden der Nachricht aufgetreten ist
-                MessageBox.Show("Die Nachricht konnte nicht gesendet werden!", "Fehler",
-                    MessageBoxButton.OK,
-                    MessageBoxImage.Error);
-            }
-            else
-            {
-                this.InputBox.Clear();
-            }
+            //Eigenschaften der Konferenz initialisieren
+            //Nachrichten werden noch nicht abgerufen
+            await this._conference.Init();
+
+            this.InitComponents();
+
+            //Abrufen der Nachrichten im Hintergrund wird aktiviert
+            //Durch setzen auf false kann diese Funktion wieder deaktiviert werden
+            this._conference.Activ = true;
         }
 
         #endregion

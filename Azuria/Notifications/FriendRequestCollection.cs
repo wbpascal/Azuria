@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Azuria.ErrorHandling;
 using Azuria.Exceptions;
 using Azuria.Utilities;
 using Azuria.Utilities.Net;
@@ -37,26 +38,9 @@ namespace Azuria.Notifications
         /// <summary>
         ///     Gibt alle aktuellen Benachrichtigungen, die diese Klasse repräsentiert, zurück.
         ///     <para>(Vererbt von <see cref="INotificationCollection" />)</para>
-        ///     <para>Mögliche Fehler, die <see cref="ProxerResult" /> enthalten kann:</para>
-        ///     <list type="table">
-        ///         <listheader>
-        ///             <term>Ausnahme</term>
-        ///             <description>Beschreibung</description>
-        ///         </listheader>
-        ///         <item>
-        ///             <term>
-        ///                 <see cref="NotLoggedInException" />
-        ///             </term>
-        ///             <description>Wird ausgelöst, wenn der <see cref="Senpai">Benutzer</see> nicht eingeloggt ist.</description>
-        ///         </item>
-        ///         <item>
-        ///             <term>
-        ///                 <see cref="WrongResponseException" />
-        ///             </term>
-        ///             <description>Wird ausgelöst, wenn die Antwort des Servers nicht der Erwarteten entspricht.</description>
-        ///         </item>
-        ///     </list>
         /// </summary>
+        /// <exception cref="NotLoggedInException">Wird ausgelöst, wenn der <see cref="Senpai">Benutzer</see> nicht eingeloggt ist.</exception>
+        /// <exception cref="WrongResponseException">Wird ausgelöst, wenn die Antwort des Servers nicht der Erwarteten entspricht.</exception>
         /// <seealso cref="INotificationCollection.GetNotifications" />
         /// <seealso cref="Senpai.Login" />
         /// <returns>Ein Array mit allen aktuellen Benachrichtigungen.</returns>
@@ -74,26 +58,9 @@ namespace Azuria.Notifications
         /// <summary>
         ///     Gibt eine bestimmte Anzahl der aktuellen Benachrichtigungen, die diese Klasse repräsentiert, zurück.
         ///     <para>(Vererbt von <see cref="INotificationCollection" />)</para>
-        ///     <para>Mögliche Fehler, die <see cref="ProxerResult" /> enthalten kann:</para>
-        ///     <list type="table">
-        ///         <listheader>
-        ///             <term>Ausnahme</term>
-        ///             <description>Beschreibung</description>
-        ///         </listheader>
-        ///         <item>
-        ///             <term>
-        ///                 <see cref="NotLoggedInException" />
-        ///             </term>
-        ///             <description>Wird ausgelöst, wenn der <see cref="Senpai">Benutzer</see> nicht eingeloggt ist.</description>
-        ///         </item>
-        ///         <item>
-        ///             <term>
-        ///                 <see cref="WrongResponseException" />
-        ///             </term>
-        ///             <description>Wird ausgelöst, wenn die Antwort des Servers nicht der Erwarteten entspricht.</description>
-        ///         </item>
-        ///     </list>
         /// </summary>
+        /// <exception cref="NotLoggedInException">Wird ausgelöst, wenn der <see cref="Senpai">Benutzer</see> nicht eingeloggt ist.</exception>
+        /// <exception cref="WrongResponseException">Wird ausgelöst, wenn die Antwort des Servers nicht der Erwarteten entspricht.</exception>
         /// <param name="count">Die Anzahl der Benachrichtigungen</param>
         /// <seealso cref="INotificationCollection.GetAllNotifications">GetAllNotifications Funktion</seealso>
         /// <seealso cref="Senpai.Login" />
@@ -121,27 +88,28 @@ namespace Azuria.Notifications
         #region
 
         /// <summary>
-        ///     Gibt eine bestimmte Anzahl der aktuellen Benachrichtigungen, die diese Klasse repräsentiert, zurück.
-        ///     <para>Mögliche Fehler, die <see cref="ProxerResult" /> enthalten kann:</para>
-        ///     <list type="table">
-        ///         <listheader>
-        ///             <term>Ausnahme</term>
-        ///             <description>Beschreibung</description>
-        ///         </listheader>
-        ///         <item>
-        ///             <term>
-        ///                 <see cref="NotLoggedInException" />
-        ///             </term>
-        ///             <description>Wird ausgelöst, wenn der <see cref="Senpai">Benutzer</see> nicht eingeloggt ist.</description>
-        ///         </item>
-        ///         <item>
-        ///             <term>
-        ///                 <see cref="WrongResponseException" />
-        ///             </term>
-        ///             <description>Wird ausgelöst, wenn die Antwort des Servers nicht der Erwarteten entspricht.</description>
-        ///         </item>
-        ///     </list>
+        ///     Gibt alle aktuellen Benachrichtigungen, die diese Klasse repräsentiert, zurück.
         /// </summary>
+        /// <exception cref="NotLoggedInException">Wird ausgelöst, wenn der <see cref="Senpai">Benutzer</see> nicht eingeloggt ist.</exception>
+        /// <exception cref="WrongResponseException">Wird ausgelöst, wenn die Antwort des Servers nicht der Erwarteten entspricht.</exception>
+        /// <seealso cref="Senpai.Login" />
+        /// <returns>Ein Array mit allen aktuellen Benachrichtigungen.</returns>
+        public async Task<ProxerResult<IEnumerable<FriendRequestObject>>> GetAllFriendRequests()
+        {
+            if (this._notificationObjects != null)
+                return new ProxerResult<IEnumerable<FriendRequestObject>>(this._friendRequestObjects);
+
+            ProxerResult lResult;
+            return !(lResult = await this.GetInfos()).Success
+                ? new ProxerResult<IEnumerable<FriendRequestObject>>(lResult.Exceptions)
+                : new ProxerResult<IEnumerable<FriendRequestObject>>(this._friendRequestObjects);
+        }
+
+        /// <summary>
+        ///     Gibt eine bestimmte Anzahl der aktuellen Benachrichtigungen, die diese Klasse repräsentiert, zurück.
+        /// </summary>
+        /// <exception cref="NotLoggedInException">Wird ausgelöst, wenn der <see cref="Senpai">Benutzer</see> nicht eingeloggt ist.</exception>
+        /// <exception cref="WrongResponseException">Wird ausgelöst, wenn die Antwort des Servers nicht der Erwarteten entspricht.</exception>
         /// <param name="count">Die Anzahl der Benachrichtigungen</param>
         /// <seealso cref="Senpai.Login" />
         /// <returns>
@@ -162,41 +130,6 @@ namespace Azuria.Notifications
             return this._notificationObjects.Length >= count
                 ? new ProxerResult<IEnumerable<FriendRequestObject>>(this._friendRequestObjects)
                 : new ProxerResult<IEnumerable<FriendRequestObject>>(this._friendRequestObjects.Take(count).ToArray());
-        }
-
-        /// <summary>
-        ///     Gibt alle aktuellen Benachrichtigungen, die diese Klasse repräsentiert, zurück.
-        ///     <para>Mögliche Fehler, die <see cref="ProxerResult" /> enthalten kann:</para>
-        ///     <list type="table">
-        ///         <listheader>
-        ///             <term>Ausnahme</term>
-        ///             <description>Beschreibung</description>
-        ///         </listheader>
-        ///         <item>
-        ///             <term>
-        ///                 <see cref="NotLoggedInException" />
-        ///             </term>
-        ///             <description>Wird ausgelöst, wenn der <see cref="Senpai">Benutzer</see> nicht eingeloggt ist.</description>
-        ///         </item>
-        ///         <item>
-        ///             <term>
-        ///                 <see cref="WrongResponseException" />
-        ///             </term>
-        ///             <description>Wird ausgelöst, wenn die Antwort des Servers nicht der Erwarteten entspricht.</description>
-        ///         </item>
-        ///     </list>
-        /// </summary>
-        /// <seealso cref="Senpai.Login" />
-        /// <returns>Ein Array mit allen aktuellen Benachrichtigungen.</returns>
-        public async Task<ProxerResult<IEnumerable<FriendRequestObject>>> GetAllFriendRequests()
-        {
-            if (this._notificationObjects != null)
-                return new ProxerResult<IEnumerable<FriendRequestObject>>(this._friendRequestObjects);
-
-            ProxerResult lResult;
-            return !(lResult = await this.GetInfos()).Success
-                ? new ProxerResult<IEnumerable<FriendRequestObject>>(lResult.Exceptions)
-                : new ProxerResult<IEnumerable<FriendRequestObject>>(this._friendRequestObjects);
         }
 
 
@@ -220,31 +153,29 @@ namespace Azuria.Notifications
             {
                 lDocument.LoadHtml(lResponse);
 
-                HtmlNodeCollection lNodes = lDocument.DocumentNode.SelectNodes("//tr");
+                HtmlNode[] lNodes =
+                    Utility.GetAllHtmlNodes(lDocument.DocumentNode.ChildNodes).Where(x => x.Name == "tr").ToArray();
 
-                List<FriendRequestObject> lFriendRequests = new List<FriendRequestObject>();
-
-                if (lNodes != null)
-                    lFriendRequests = (from curNode in lNodes
-                                       where
-                                           curNode.Id.StartsWith("entry") &&
-                                           curNode.FirstChild.FirstChild.Attributes["class"].Value
-                                                                                            .Equals
-                                               ("accept")
-                                       let lUserId =
-                                           Convert.ToInt32(curNode.Id.Replace("entry", ""))
-                                       let lUserName =
-                                           curNode.InnerText.Split("  ".ToCharArray())[0]
-                                       let lDatumSplit =
-                                           curNode.ChildNodes[4].InnerText.Split('-')
-                                       let lDatum =
-                                           new DateTime(Convert.ToInt32(lDatumSplit[0]),
-                                               Convert.ToInt32(lDatumSplit[1]),
-                                               Convert.ToInt32(lDatumSplit[2]))
-                                       select
-                                           new FriendRequestObject(lUserName, lUserId, lDatum,
-                                               this._senpai))
-                        .ToList();
+                List<FriendRequestObject> lFriendRequests = (from curNode in lNodes
+                    where
+                        curNode.Id.StartsWith("entry") &&
+                        curNode.FirstChild.FirstChild.Attributes["class"].Value
+                            .Equals
+                            ("accept")
+                    let lUserId =
+                        Convert.ToInt32(curNode.Id.Replace("entry", ""))
+                    let lUserName =
+                        curNode.InnerText.Split("  ".ToCharArray())[0]
+                    let lDatumSplit =
+                        curNode.ChildNodes[4].InnerText.Split('-')
+                    let lDatum =
+                        new DateTime(Convert.ToInt32(lDatumSplit[0]),
+                            Convert.ToInt32(lDatumSplit[1]),
+                            Convert.ToInt32(lDatumSplit[2]))
+                    select
+                        new FriendRequestObject(lUserName, lUserId, lDatum,
+                            this._senpai))
+                    .ToList();
 
                 this._friendRequestObjects = lFriendRequests.ToArray();
                 this._notificationObjects = lFriendRequests.Cast<INotificationObject>().ToArray();

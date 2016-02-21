@@ -6,7 +6,6 @@ namespace Azuria.Exceptions
     ///     Stellt einen Fehler da, der ausgelöst wird, wenn der Benutzer nicht eingeloggt ist, die Methode dies aber
     ///     erfordert.
     /// </summary>
-    [Serializable]
     public class NotLoggedInException : Exception
     {
         /// <summary>

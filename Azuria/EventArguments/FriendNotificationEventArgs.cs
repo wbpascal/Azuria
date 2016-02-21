@@ -44,7 +44,7 @@ namespace Azuria.EventArguments
         /// <summary>
         ///     Gibt ein Objekt zurück, mithilfe dessen die Benachrichtigungen abgerufen werden können.
         /// </summary>
-        public FriendRequestCollection Benachrichtigungen => this._senpai.FriendRequests;
+        public FriendRequestCollection Notifications => this._senpai.FriendRequests;
 
         #endregion
     }

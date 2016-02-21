@@ -12,6 +12,7 @@
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />
+    <UseMSBuildEngine>false</UseMSBuildEngine>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -23,6 +24,7 @@
     <WarningLevel>4</WarningLevel>
     <DocumentationFile>bin\Debug\Azuria.xml</DocumentationFile>
     <Prefer32Bit>false</Prefer32Bit>
+    <LangVersion>6</LangVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -33,16 +35,13 @@
     <WarningLevel>4</WarningLevel>
     <DocumentationFile>bin\Release\Azuria.xml</DocumentationFile>
     <Prefer32Bit>false</Prefer32Bit>
+    <LangVersion>6</LangVersion>
+    <PlatformTarget>AnyCPU</PlatformTarget>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
-    <Reference Include="System.ServiceModel" />
     <Reference Include="System.Web" />
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="Microsoft.CSharp" />
-    <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
     <Reference Include="WindowsBase" />
     <Reference Include="HtmlAgilityPack, Version=1.4.9.0, Culture=neutral, PublicKeyToken=bd319b19eaf3b43a">
@@ -57,7 +56,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Community\Conference.cs" />
-    <Compile Include="Community\ConferenceHelper\MessagesViewModel.cs" />
+    <Compile Include="Community\ConferenceHelper\MessagesModel.cs" />
     <Compile Include="EventArguments\AMNotificationEventArgs.cs" />
     <Compile Include="EventArguments\FriendNotificationEventArgs.cs" />
     <Compile Include="EventArguments\INotificationEventArgs.cs" />
@@ -75,8 +74,17 @@
     <Compile Include="Main\AnimeMangaType.cs" />
     <Compile Include="Main\IAnimeMangaObject.cs" />
     <Compile Include="Main\Manga.cs" />
+    <Compile Include="Main\Minor\Comment.cs" />
+    <Compile Include="Main\Minor\Fsk.cs" />
+    <Compile Include="Main\Minor\FskHelper.cs" />
+    <Compile Include="Main\Minor\GenreObject.cs" />
     <Compile Include="Main\Minor\Group.cs" />
     <Compile Include="Main\Minor\Industry.cs" />
+    <Compile Include="Main\Minor\Language.cs" />
+    <Compile Include="Main\Search\ISearchableObject.cs" />
+    <Compile Include="Main\Search\SearchHelper.cs" />
+    <Compile Include="Main\Search\SearchResult.cs" />
+    <Compile Include="Main\User\AnimeMangaProgress.cs" />
     <Compile Include="Main\User\AnimeMangaProgressObject.cs" />
     <Compile Include="Notifications\AnimeMangaUpdateCollection.cs" />
     <Compile Include="Notifications\FriendRequestCollection.cs" />
@@ -99,9 +107,10 @@
     <Compile Include="ProxerClass.cs" />
     <Compile Include="Senpai.cs" />
     <Compile Include="User.cs" />
-    <Compile Include="Utilities\ErrorHandler.cs" />
+    <Compile Include="ErrorHandling\ErrorHandler.cs" />
     <Compile Include="Utilities\Net\HttpUtility.cs" />
-    <Compile Include="Utilities\ProxerResult.cs" />
+    <Compile Include="ErrorHandling\ProxerResult.cs" />
+    <Compile Include="Utilities\SearchUtility.cs" />
     <Compile Include="Utilities\Utility.cs" />
   </ItemGroup>
   <ItemGroup>
