@@ -332,7 +332,10 @@ namespace Azuria.Main
         /// <exception cref="WrongResponseException">Wird ausgelöst, wenn die Antwort des Servers nicht der Erwarteten entspricht.</exception>
         /// <exception cref="NotLoggedInException">Wird ausgelöst, wenn der <see cref="Senpai">Benutzer</see> nicht eingeloggt ist.</exception>
         /// <exception cref="CaptchaException">Wird ausgelöst, wenn der Server das Ausfüllen eines Captchas erfordert.</exception>
-        /// <exception cref="NoAccessException">Wird ausgelöst, wenn Teile der Initialisierung nicht durchgeführt werden können, da der <see cref="Senpai">Benutzer</see> nicht die nötigen Rechte dafür hat.</exception>
+        /// <exception cref="NoAccessException">
+        ///     Wird ausgelöst, wenn Teile der Initialisierung nicht durchgeführt werden können, da
+        ///     der <see cref="Senpai">Benutzer</see> nicht die nötigen Rechte dafür hat.
+        /// </exception>
         /// <seealso cref="Senpai.Login" />
         public async Task<ProxerResult> Init()
         {
@@ -418,8 +421,14 @@ namespace Azuria.Main
         /// <summary>
         ///     Gibt die Episoden des <see cref="Anime" /> in einer bestimmten <see cref="Language">Sprache</see> zurück.
         /// </summary>
-        /// <exception cref="LanguageNotAvailableException">Wird ausgelöst, wenn der Anime nicht in der angegebenen Sprache verfügbar ist.</exception>
-        /// <exception cref="InitializeNeededException">Wird ausgelöst, wenn die Eigenschaften des Objektes noch nicht initialisiert sind.</exception>
+        /// <exception cref="LanguageNotAvailableException">
+        ///     Wird ausgelöst, wenn der Anime nicht in der angegebenen Sprache
+        ///     verfügbar ist.
+        /// </exception>
+        /// <exception cref="InitializeNeededException">
+        ///     Wird ausgelöst, wenn die Eigenschaften des Objektes noch nicht
+        ///     initialisiert sind.
+        /// </exception>
         /// <param name="language">Die Sprache der Episoden.</param>
         /// <seealso cref="Episode" />
         /// <returns>Einen Array mit length = <see cref="EpisodeCount" />.</returns>
@@ -443,7 +452,10 @@ namespace Azuria.Main
         ///     Gibt die aktuell am beliebtesten <see cref="Anime" /> zurück.
         /// </summary>
         /// <exception cref="WrongResponseException">Wird ausgelöst, wenn die Antwort des Servers nicht der Erwarteten entspricht.</exception>
-        /// <exception cref="ArgumentNullException">Wird ausgelöst, wenn <paramref name="senpai" /> null (oder Nothing in Visual Basic) ist.</exception>
+        /// <exception cref="ArgumentNullException">
+        ///     Wird ausgelöst, wenn <paramref name="senpai" /> null (oder Nothing in Visual
+        ///     Basic) ist.
+        /// </exception>
         /// <param name="senpai">Der aktuelle Benutzer.</param>
         /// <returns>Ein Array mit den aktuell beliebtesten <see cref="Anime" />.</returns>
         public static async Task<ProxerResult<IEnumerable<Anime>>> GetPopularAnime(Senpai senpai)

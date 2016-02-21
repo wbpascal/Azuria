@@ -20,48 +20,6 @@ namespace Azuria.Utilities
             return true;
         }
 
-        internal static IEnumerable<HtmlNode> GetAllHtmlNodes(HtmlNodeCollection htmlNodeCollection)
-        {
-            List<HtmlNode> lHtmlNodes = new List<HtmlNode>();
-            foreach (HtmlNode htmlNode in htmlNodeCollection)
-            {
-                lHtmlNodes.Add(htmlNode);
-                if (htmlNode.HasChildNodes)
-                    lHtmlNodes = lHtmlNodes.Concat(GetAllHtmlNodes(htmlNode.ChildNodes)).ToList();
-            }
-            return lHtmlNodes;
-        }
-
-        internal static List<string> GetTagContents(this string source, string startTag, string endTag)
-        {
-            List<string> stringsFound = new List<string>();
-            int index = source.IndexOf(startTag, StringComparison.Ordinal) + startTag.Length;
-
-            try
-            {
-                while (index != startTag.Length - 1)
-                {
-                    stringsFound.Add(source.Substring(index,
-                        source.IndexOf(endTag, index, StringComparison.Ordinal) - index));
-                    index = source.IndexOf(startTag, index, StringComparison.Ordinal) + startTag.Length;
-                }
-            }
-            catch
-            {
-                // ignored
-            }
-            return stringsFound;
-        }
-
-        internal static bool HasParameterlessConstructor(this Type type)
-        {
-            foreach (ConstructorInfo ctor in type.GetTypeInfo().DeclaredConstructors)
-            {
-                if (!ctor.IsPrivate && ctor.GetParameters().Length == 0) return true;
-            }
-            return false;
-        }
-
         /// <summary>
         ///     Compute Levenshtein distance
         ///     Memory efficient version
@@ -130,6 +88,48 @@ namespace Azuria.Utilities
             // 0==perfect match 100==totaly different
             int max = Math.Max(rowLen, colLen);
             return 100*v0[rowLen]/max;
+        }
+
+        internal static IEnumerable<HtmlNode> GetAllHtmlNodes(HtmlNodeCollection htmlNodeCollection)
+        {
+            List<HtmlNode> lHtmlNodes = new List<HtmlNode>();
+            foreach (HtmlNode htmlNode in htmlNodeCollection)
+            {
+                lHtmlNodes.Add(htmlNode);
+                if (htmlNode.HasChildNodes)
+                    lHtmlNodes = lHtmlNodes.Concat(GetAllHtmlNodes(htmlNode.ChildNodes)).ToList();
+            }
+            return lHtmlNodes;
+        }
+
+        internal static List<string> GetTagContents(this string source, string startTag, string endTag)
+        {
+            List<string> stringsFound = new List<string>();
+            int index = source.IndexOf(startTag, StringComparison.Ordinal) + startTag.Length;
+
+            try
+            {
+                while (index != startTag.Length - 1)
+                {
+                    stringsFound.Add(source.Substring(index,
+                        source.IndexOf(endTag, index, StringComparison.Ordinal) - index));
+                    index = source.IndexOf(startTag, index, StringComparison.Ordinal) + startTag.Length;
+                }
+            }
+            catch
+            {
+                // ignored
+            }
+            return stringsFound;
+        }
+
+        internal static bool HasParameterlessConstructor(this Type type)
+        {
+            foreach (ConstructorInfo ctor in type.GetTypeInfo().DeclaredConstructors)
+            {
+                if (!ctor.IsPrivate && ctor.GetParameters().Length == 0) return true;
+            }
+            return false;
         }
 
         internal static HtmlDocument LoadHtmlUtility(this HtmlDocument document, string html)

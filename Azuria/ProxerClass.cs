@@ -21,7 +21,10 @@ namespace Azuria
         ///     der spezifizierten ID repräsentiert.
         /// </summary>
         /// <exception cref="WrongResponseException">Wird ausgelöst, wenn die Antwort des Servers nicht der Erwarteten entspricht.</exception>
-        /// <exception cref="ArgumentNullException">Wird ausgelöst, wenn <paramref name="senpai" /> null (oder Nothing in Visual Basic) ist.</exception>
+        /// <exception cref="ArgumentNullException">
+        ///     Wird ausgelöst, wenn <paramref name="senpai" /> null (oder Nothing in Visual
+        ///     Basic) ist.
+        /// </exception>
         /// <param name="id">Die ID des <see cref="Main.Anime">Anime</see> oder <see cref="Main.Manga">Manga</see>.</param>
         /// <param name="senpai">Der Benutzer. (Muss eingeloggt sein)</param>
         /// <returns>Anime oder Manga der ID (Typecast erforderlich)</returns>

@@ -244,9 +244,18 @@ namespace Azuria
         /// <summary>
         ///     Überprüft, ob zwei Benutzter Freunde sind.
         /// </summary>
-        /// <exception cref="InitializeNeededException">Wird ausgelöst, wenn die Eigenschaften der Parameter noch nicht initialisiert sind.</exception>
-        /// <exception cref="ArgumentNullException">Wird ausgelöst, wenn <paramref name="user1" /> null (oder Nothing in Visual Basic) ist.</exception>
-        /// <exception cref="ArgumentNullException">Wird ausgelöst, wenn <paramref name="user2" /> null (oder Nothing in Visual Basic) ist.</exception>
+        /// <exception cref="InitializeNeededException">
+        ///     Wird ausgelöst, wenn die Eigenschaften der Parameter noch nicht
+        ///     initialisiert sind.
+        /// </exception>
+        /// <exception cref="ArgumentNullException">
+        ///     Wird ausgelöst, wenn <paramref name="user1" /> null (oder Nothing in Visual
+        ///     Basic) ist.
+        /// </exception>
+        /// <exception cref="ArgumentNullException">
+        ///     Wird ausgelöst, wenn <paramref name="user2" /> null (oder Nothing in Visual
+        ///     Basic) ist.
+        /// </exception>
         /// <param name="user1">Benutzer 1</param>
         /// <param name="user2">Benutzer 2</param>
         /// <returns>Benutzer sind Freunde. True oder False.</returns>
@@ -341,9 +350,18 @@ namespace Azuria
         ///     Gibt den Benutzernamen eines Benutzers mit der spezifizierten ID zurück.
         /// </summary>
         /// <exception cref="WrongResponseException">Wird ausgelöst, wenn die Antwort des Servers nicht der Erwarteten entspricht.</exception>
-        /// <exception cref="ArgumentNullException">Wird ausgelöst, wenn <paramref name="senpai" /> null (oder Nothing in Visual Basic) ist.</exception>
-        /// <exception cref="NotLoggedInException">Wird ausgelöst, wenn <paramref name="senpai">Benutzer</paramref> nicht eingeloggt ist.</exception>
-        /// <exception cref="NoAccessException">Wird ausgelöst, wenn der <paramref name="senpai">Benutzer</paramref> nicht die nötigen Rechte für die Aktion hat.</exception>
+        /// <exception cref="ArgumentNullException">
+        ///     Wird ausgelöst, wenn <paramref name="senpai" /> null (oder Nothing in Visual
+        ///     Basic) ist.
+        /// </exception>
+        /// <exception cref="NotLoggedInException">
+        ///     Wird ausgelöst, wenn <paramref name="senpai">Benutzer</paramref> nicht
+        ///     eingeloggt ist.
+        /// </exception>
+        /// <exception cref="NoAccessException">
+        ///     Wird ausgelöst, wenn der <paramref name="senpai">Benutzer</paramref> nicht die
+        ///     nötigen Rechte für die Aktion hat.
+        /// </exception>
         /// <param name="id">Die ID des Benutzers</param>
         /// <param name="senpai">Login-Cookies werden benötigt</param>
         /// <seealso cref="Senpai.Login" />
@@ -392,7 +410,10 @@ namespace Azuria
         /// </summary>
         /// <exception cref="WrongResponseException">Wird ausgelöst, wenn die Antwort des Servers nicht der Erwarteten entspricht.</exception>
         /// <exception cref="NotLoggedInException">Wird ausgelöst, wenn der <see cref="Senpai">Benutzer</see> nicht eingeloggt ist.</exception>
-        /// <exception cref="NoAccessException">Wird ausgelöst, wenn Teile der Initialisierung nicht durchgeführt werden können, da der <see cref="Senpai">Benutzer</see> nicht die nötigen Rechte dafür hat.</exception>
+        /// <exception cref="NoAccessException">
+        ///     Wird ausgelöst, wenn Teile der Initialisierung nicht durchgeführt werden können, da
+        ///     der <see cref="Senpai">Benutzer</see> nicht die nötigen Rechte dafür hat.
+        /// </exception>
         /// <seealso cref="Senpai.Login" />
         public async Task<ProxerResult> Init()
         {

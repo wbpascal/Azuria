@@ -301,7 +301,10 @@ namespace Azuria.Main
         /// <exception cref="WrongResponseException">Wird ausgelöst, wenn die Antwort des Servers nicht der Erwarteten entspricht.</exception>
         /// <exception cref="NotLoggedInException">Wird ausgelöst, wenn der <see cref="Senpai">Benutzer</see> nicht eingeloggt ist.</exception>
         /// <exception cref="CaptchaException">Wird ausgelöst, wenn der Server das Ausfüllen eines Captchas erfordert.</exception>
-        /// <exception cref="NoAccessException">Wird ausgelöst, wenn Teile der Initialisierung nicht durchgeführt werden können, da der <see cref="Senpai">Benutzer</see> nicht die nötigen Rechte dafür hat.</exception>
+        /// <exception cref="NoAccessException">
+        ///     Wird ausgelöst, wenn Teile der Initialisierung nicht durchgeführt werden können, da
+        ///     der <see cref="Senpai">Benutzer</see> nicht die nötigen Rechte dafür hat.
+        /// </exception>
         /// <seealso cref="Senpai.Login" />
         public async Task<ProxerResult> Init()
         {
@@ -390,8 +393,14 @@ namespace Azuria.Main
         /// <summary>
         ///     Gibt alle <see cref="Chapter">Kapitel</see> des <see cref="Manga" /> in der ausgewählten Sprache zurück.
         /// </summary>
-        /// <exception cref="LanguageNotAvailableException">Wird ausgelöst, wenn der Manga nicht in der angegebenen Sprache verfügbar ist.</exception>
-        /// <exception cref="InitializeNeededException">Wird ausgelöst, wenn die Eigenschaften des Objektes noch nicht initialisiert sind.</exception>
+        /// <exception cref="LanguageNotAvailableException">
+        ///     Wird ausgelöst, wenn der Manga nicht in der angegebenen Sprache
+        ///     verfügbar ist.
+        /// </exception>
+        /// <exception cref="InitializeNeededException">
+        ///     Wird ausgelöst, wenn die Eigenschaften des Objektes noch nicht
+        ///     initialisiert sind.
+        /// </exception>
         /// <param name="lang">Die Sprache der <see cref="Chapter">Kapitel</see>.</param>
         /// <seealso cref="Sprachen" />
         /// <returns>Ein Array mit length = <see cref="KapitelZahl" /></returns>
@@ -882,7 +891,10 @@ namespace Azuria.Main
             /// <exception cref="WrongResponseException">Wird ausgelöst, wenn die Antwort des Servers nicht der Erwarteten entspricht.</exception>
             /// <exception cref="NotLoggedInException">Wird ausgelöst, wenn der <see cref="Senpai">Benutzer</see> nicht eingeloggt ist.</exception>
             /// <exception cref="CaptchaException">Wird ausgelöst, wenn der Server das Ausfüllen eines Captchas erfordert.</exception>
-            /// <exception cref="NoAccessException">Wird ausgelöst, wenn Teile der Initialisierung nicht durchgeführt werden können, da der <see cref="Senpai">Benutzer</see> nicht die nötigen Rechte dafür hat.</exception>
+            /// <exception cref="NoAccessException">
+            ///     Wird ausgelöst, wenn Teile der Initialisierung nicht durchgeführt werden können, da
+            ///     der <see cref="Senpai">Benutzer</see> nicht die nötigen Rechte dafür hat.
+            /// </exception>
             /// <seealso cref="Senpai.Login" />
             public async Task<ProxerResult> Init()
             {

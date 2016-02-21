@@ -20,42 +20,42 @@ namespace Azuria.Main.Search
         public enum AnimeMangaType
         {
             /// <summary>
-            /// Stellt alle <see cref="Anime">Anime-</see> und <see cref="Manga">Manga-</see>Typen dar.
+            ///     Stellt alle <see cref="Anime">Anime-</see> und <see cref="Manga">Manga-</see>Typen dar.
             /// </summary>
             All,
 
             /// <summary>
-            /// Stellt alle <see cref="Anime">Anime-</see>Typen dar.
+            ///     Stellt alle <see cref="Anime">Anime-</see>Typen dar.
             /// </summary>
             AllAnime,
 
             /// <summary>
-            /// Stellt eine <see cref="Anime">Anime</see>serie dar.
+            ///     Stellt eine <see cref="Anime">Anime</see>serie dar.
             /// </summary>
             Animeseries,
 
             /// <summary>
-            /// Stellt eine OVA oder ein Special eines <see cref="Anime">Anime</see> dar.
+            ///     Stellt eine OVA oder ein Special eines <see cref="Anime">Anime</see> dar.
             /// </summary>
             Ova,
 
             /// <summary>
-            /// Stellt einen Film eines <see cref="Anime">Anime</see> dar.
+            ///     Stellt einen Film eines <see cref="Anime">Anime</see> dar.
             /// </summary>
             Movie,
 
             /// <summary>
-            /// Stellt alle <see cref="Manga">Manga-</see>Typen dar.
+            ///     Stellt alle <see cref="Manga">Manga-</see>Typen dar.
             /// </summary>
             AllManga,
 
             /// <summary>
-            /// Stellt eine <see cref="Manga">Manga</see>serie dar.
+            ///     Stellt eine <see cref="Manga">Manga</see>serie dar.
             /// </summary>
             Mangaseries,
 
             /// <summary>
-            /// Stellt einen One-Shot <see cref="Manga">Manga</see> dar.
+            ///     Stellt einen One-Shot <see cref="Manga">Manga</see> dar.
             /// </summary>
             OneShot
         }
@@ -67,27 +67,27 @@ namespace Azuria.Main.Search
         public enum SortAnimeManga
         {
             /// <summary>
-            /// Stellt die Sortierung nach Relevanz dar.
+            ///     Stellt die Sortierung nach Relevanz dar.
             /// </summary>
             Relevance,
 
             /// <summary>
-            /// Stellt die Sortierung nach Namen dar.
+            ///     Stellt die Sortierung nach Namen dar.
             /// </summary>
             Name,
 
             /// <summary>
-            /// Stellt die Sortierung nach Bewertung dar.
+            ///     Stellt die Sortierung nach Bewertung dar.
             /// </summary>
             Rating,
 
             /// <summary>
-            /// Stellt die Sortierung nach Zugriffen dar.
+            ///     Stellt die Sortierung nach Zugriffen dar.
             /// </summary>
             Hits,
 
             /// <summary>
-            /// Stellt die Sortierung nach Episodenanzahl dar.
+            ///     Stellt die Sortierung nach Episodenanzahl dar.
             /// </summary>
             EpisodeCount
         }
@@ -98,8 +98,14 @@ namespace Azuria.Main.Search
         ///     Gibt die Ergebnisse einer Proxer-Suche zurück.
         /// </summary>
         /// <exception cref="WrongResponseException">Wird ausgelöst, wenn die Antwort des Servers nicht der Erwarteten entspricht.</exception>
-        /// <exception cref="ArgumentNullException">Wird ausgelöst, wenn <paramref name="senpai" /> null (oder Nothing in Visual Basic) ist.</exception>
-        /// <exception cref="ArgumentNullException">Wird ausgelöst, wenn <paramref name="name" /> null (oder Nothing in Visual Basic) ist.</exception>
+        /// <exception cref="ArgumentNullException">
+        ///     Wird ausgelöst, wenn <paramref name="senpai" /> null (oder Nothing in Visual
+        ///     Basic) ist.
+        /// </exception>
+        /// <exception cref="ArgumentNullException">
+        ///     Wird ausgelöst, wenn <paramref name="name" /> null (oder Nothing in Visual
+        ///     Basic) ist.
+        /// </exception>
         /// <typeparam name="T">Ein Typ, der von <see cref="ISearchableObject" /> erbt.</typeparam>
         /// <param name="name">Der String, nachdem gesucht werden soll.</param>
         /// <param name="senpai"></param>
@@ -108,7 +114,7 @@ namespace Azuria.Main.Search
             where T : ISearchableObject
         {
             if (string.IsNullOrEmpty(name))
-                return new ProxerResult<SearchResult<T>>(new Exception[] { new ArgumentNullException(nameof(name)) });
+                return new ProxerResult<SearchResult<T>>(new Exception[] {new ArgumentNullException(nameof(name))});
             if (senpai == null)
                 return new ProxerResult<SearchResult<T>>(new[] {new ArgumentNullException(nameof(senpai))});
 
@@ -139,8 +145,14 @@ namespace Azuria.Main.Search
         ///     zurück.
         /// </summary>
         /// <exception cref="WrongResponseException">Wird ausgelöst, wenn die Antwort des Servers nicht der Erwarteten entspricht.</exception>
-        /// <exception cref="ArgumentNullException">Wird ausgelöst, wenn <paramref name="senpai" /> null (oder Nothing in Visual Basic) ist.</exception>
-        /// <exception cref="ArgumentNullException">Wird ausgelöst, wenn <paramref name="name" /> null (Nothing in Visual Basic) oder leer ist.</exception>
+        /// <exception cref="ArgumentNullException">
+        ///     Wird ausgelöst, wenn <paramref name="senpai" /> null (oder Nothing in Visual
+        ///     Basic) ist.
+        /// </exception>
+        /// <exception cref="ArgumentNullException">
+        ///     Wird ausgelöst, wenn <paramref name="name" /> null (Nothing in Visual Basic)
+        ///     oder leer ist.
+        /// </exception>
         /// <typeparam name="T">Ein Typ, der von <see cref="IAnimeMangaObject" /> erbt.</typeparam>
         /// <param name="name">Der String, nach dem gesucht werden soll.</param>
         /// <param name="senpai">Der Benutzer, der die Suche ausführt</param>
@@ -162,7 +174,7 @@ namespace Azuria.Main.Search
             if (string.IsNullOrEmpty(name))
                 return new ProxerResult<SearchResult<T>>(new Exception[] {new ArgumentNullException(nameof(name))});
             if (senpai == null)
-                return new ProxerResult<SearchResult<T>>(new[] { new ArgumentNullException(nameof(senpai)) });
+                return new ProxerResult<SearchResult<T>>(new[] {new ArgumentNullException(nameof(senpai))});
 
             string lType = type == null
                 ? "all"

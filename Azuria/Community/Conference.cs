@@ -560,7 +560,10 @@ namespace Azuria.Community
         /// </summary>
         /// <exception cref="NotLoggedInException">Wird ausgelöst, wenn der <see cref="Senpai">Benutzer</see> nicht eingeloggt ist.</exception>
         /// <exception cref="WrongResponseException">Wird ausgelöst, wenn die Antwort des Servers nicht der Erwarteten entspricht.</exception>
-        /// <exception cref="ArgumentNullException">Wird ausgelöst, wenn <paramref name="senpai" /> null (oder Nothing in Visual Basic) ist.</exception>
+        /// <exception cref="ArgumentNullException">
+        ///     Wird ausgelöst, wenn <paramref name="senpai" /> null (oder Nothing in Visual
+        ///     Basic) ist.
+        /// </exception>
         /// <param name="id">ID der Konferenz</param>
         /// <param name="senpai">Muss eingeloggt sein</param>
         /// <seealso cref="Senpai.Login" />

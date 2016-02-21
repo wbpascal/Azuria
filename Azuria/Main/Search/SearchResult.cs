@@ -14,6 +14,7 @@ namespace Azuria.Main.Search
     /// <summary>
     ///     Eine Klasse, die die Resultate einer Suche auf Proxer zurückgibt.
     /// </summary>
+    /// <typeparam name="T">Der Typ der Suchresultate.</typeparam>
     public class SearchResult<T> where T : ISearchableObject
     {
         private readonly string _link;
@@ -29,7 +30,7 @@ namespace Azuria.Main.Search
         #region Properties
 
         /// <summary>
-        ///     Gibt zurück, ob die Suche vollendet ist, das heißt, dass keine weiteren Suchergebnisse mehr geladen werden können.
+        ///     Gibt zurück, ob die Suche vollendet ist.
         /// </summary>
         public bool SearchFinished { get; private set; }
 

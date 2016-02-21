@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Azuria.ErrorHandling;
-using Azuria.Exceptions;
 using Azuria.Main.Minor;
 using Azuria.Main.Search;
 

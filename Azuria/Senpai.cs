@@ -414,9 +414,12 @@ namespace Azuria
         public event FriendNotificiationEventHandler FriendNotificationRaised;
 
         /// <summary>
-        ///     Gibt alle Konferenzen des Senpais zurück. <para>ACHTUNG: Bei den Konferenzen muss noch
-        ///     <see cref="Conference.Init">InitConference()</see>
-        ///     aufgerufen werden!</para>
+        ///     Gibt alle Konferenzen des Senpais zurück.
+        ///     <para>
+        ///         ACHTUNG: Bei den Konferenzen muss noch
+        ///         <see cref="Conference.Init">InitConference()</see>
+        ///         aufgerufen werden!
+        ///     </para>
         /// </summary>
         /// <exception cref="WrongResponseException">Wird ausgelöst, wenn die Antwort des Servers nicht der Erwarteten entspricht.</exception>
         /// <exception cref="NotLoggedInException">Wird ausgelöst, wenn der <see cref="Senpai">Benutzer</see> nicht eingeloggt ist.</exception>
