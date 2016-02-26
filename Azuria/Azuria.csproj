@@ -84,6 +84,7 @@
     <Compile Include="Main\Search\ISearchableObject.cs" />
     <Compile Include="Main\Search\SearchHelper.cs" />
     <Compile Include="Main\Search\SearchResult.cs" />
+    <Compile Include="Main\User\AnimeMangaChronicObject.cs" />
     <Compile Include="Main\User\AnimeMangaProgress.cs" />
     <Compile Include="Main\User\AnimeMangaProgressObject.cs" />
     <Compile Include="Notifications\AnimeMangaUpdateCollection.cs" />

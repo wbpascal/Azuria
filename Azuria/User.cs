@@ -67,7 +67,7 @@ namespace Azuria
         {
             this._senpai = senpai;
             this._initFuncs = new Func<Task<ProxerResult>>[]
-            {this.InitMainInfo, this.InitInfos, this.InitFriends, this.InitAnime, this.InitManga};
+            {this.InitMainInfo, this.InitInfos, this.InitFriends, this.InitAnime, this.InitManga, this.InitChronic};
             this.IsInitialized = false;
 
             this.UserName = name;
@@ -107,6 +107,14 @@ namespace Azuria
             }
             private set { this._avatar = value; }
         }
+
+        /// <summary>
+        ///     Gibt die Chronik des Benutzers zurück.
+        ///     <para />
+        ///     <para>Diese Eigenschaft muss durch <see cref="Init" /> initialisiert werden.</para>
+        /// </summary>
+        /// <seealso cref="Init" />
+        public IEnumerable<AnimeMangaChronicObject> Chronic { get; private set; }
 
         /// <summary>
         ///     Gibt die Anime-Favouriten des Benutzers zurück.
@@ -587,6 +595,57 @@ namespace Azuria
             }
         }
 
+        private async Task<ProxerResult> InitChronic()
+        {
+            if (this.Id == -1) return new ProxerResult();
+
+            HtmlDocument lDocument = new HtmlDocument();
+
+            Func<string, ProxerResult> lCheckFunc = s =>
+            {
+                if (!string.IsNullOrEmpty(s) &&
+                    s.Equals(
+                        "<div class=\"inner\">\n<h3>Du hast keine Berechtigung um diese Seite zu betreten.</h3>\n</div>"))
+                    return new ProxerResult(new Exception[] {new NoAccessException(nameof(this.InitChronic))});
+
+                return new ProxerResult();
+            };
+
+            ProxerResult<string> lResult =
+                await
+                    HttpUtility.GetResponseErrorHandling("https://proxer.me/user/" + this.Id + "/chronik?format=raw",
+                        this._senpai.LoginCookies,
+                        this._senpai.ErrHandler,
+                        this._senpai, new[] {lCheckFunc});
+
+            if (!lResult.Success)
+                return new ProxerResult(lResult.Exceptions);
+
+            string lResponse = lResult.Result;
+
+            try
+            {
+                lDocument.LoadHtml(lResponse);
+
+                HtmlNode lTableNode = lDocument.GetElementbyId("box-table-a");
+                lTableNode.ChildNodes.RemoveAt(0);
+                List<AnimeMangaChronicObject> lChronicObjects = new List<AnimeMangaChronicObject>();
+                foreach (HtmlNode chronicNode in lTableNode.ChildNodes)
+                {
+                    ProxerResult<AnimeMangaChronicObject> lParseResult =
+                        AnimeMangaChronicObject.GetChronicObjectFromNode(chronicNode, this._senpai);
+                    if (lParseResult.Success) lChronicObjects.Add(lParseResult.Result);
+                }
+                this.Chronic = lChronicObjects;
+
+                return new ProxerResult();
+            }
+            catch
+            {
+                return new ProxerResult((await ErrorHandler.HandleError(this._senpai, lResponse, false)).Exceptions);
+            }
+        }
+
         private async Task<ProxerResult> InitFriends()
         {
             if (this.Id == -1) return new ProxerResult();
@@ -690,7 +749,8 @@ namespace Azuria
 
             ProxerResult<string> lResult =
                 await
-                    HttpUtility.GetResponseErrorHandling("https://proxer.me/user/" + this.Id, this._senpai.LoginCookies,
+                    HttpUtility.GetResponseErrorHandling("https://proxer.me/user/" + this.Id + "?format=raw",
+                        this._senpai.LoginCookies,
                         this._senpai.ErrHandler,
                         this._senpai, new[] {lCheckFunc});
 

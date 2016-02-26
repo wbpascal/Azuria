@@ -129,6 +129,9 @@
     <Compile Include="..\Azuria\Main\Search\SearchResult.cs">
       <Link>Main\Search\SearchResult.cs</Link>
     </Compile>
+    <Compile Include="..\Azuria\Main\User\AnimeMangaChronicObject.cs">
+      <Link>Main\User\AnimeMangaChronicObject.cs</Link>
+    </Compile>
     <Compile Include="..\Azuria\Main\User\AnimeMangaProgress.cs">
       <Link>Main\User\AnimeMangaProgress.cs</Link>
     </Compile>
