@@ -11,15 +11,6 @@ namespace Azuria.ErrorHandling
     public class ProxerResult<T> : ProxerResult
     {
         /// <summary>
-        ///     Initialisiert die Klasse.
-        /// </summary>
-        public ProxerResult()
-        {
-            this.Success = true;
-            this.Exceptions = new Exception[0];
-        }
-
-        /// <summary>
         ///     Initialisiert die Klasse mit einem Resultat.
         /// </summary>
         /// <param name="result">Das Resultat</param>

@@ -87,6 +87,8 @@
     <Compile Include="Main\User\AnimeMangaChronicObject.cs" />
     <Compile Include="Main\User\AnimeMangaProgress.cs" />
     <Compile Include="Main\User\AnimeMangaProgressObject.cs" />
+    <Compile Include="Main\User\ControlPanel\AnimeMangaFavouriteObject.cs" />
+    <Compile Include="Main\User\ControlPanel\UserControlPanel.cs" />
     <Compile Include="Notifications\AnimeMangaUpdateCollection.cs" />
     <Compile Include="Notifications\FriendRequestCollection.cs" />
     <Compile Include="Notifications\FriendRequestObject.cs" />
@@ -122,6 +124,7 @@
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

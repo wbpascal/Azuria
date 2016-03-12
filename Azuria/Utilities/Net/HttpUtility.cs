@@ -86,7 +86,7 @@ namespace Azuria.Utilities.Net
                 }
                 catch
                 {
-                    return new ProxerResult<Tuple<string, CookieContainer>> {Success = false};
+                    return new ProxerResult<Tuple<string, CookieContainer>>(new Exception[0]);
                 }
             }
 
@@ -180,7 +180,7 @@ namespace Azuria.Utilities.Net
                 }
                 catch
                 {
-                    return new ProxerResult<KeyValuePair<string, CookieContainer>> {Success = false};
+                    return new ProxerResult<KeyValuePair<string, CookieContainer>>(new Exception[0]);
                 }
             }
 

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Threading.Tasks;
 using Azuria.ErrorHandling;
 using Azuria.Exceptions;
@@ -485,8 +486,6 @@ namespace Azuria
 
             try
             {
-                #region Process Nodes
-
                 this._animeList =
                     new List<KeyValuePair<AnimeMangaProgress, AnimeMangaProgressObject>>();
 
@@ -505,89 +504,12 @@ namespace Azuria
                                     this._senpai))
                         .ToArray();
 
-                foreach (
-                    HtmlNode animeNode in
-                        lDocument.DocumentNode.ChildNodes[7].ChildNodes.Where(
-                            x =>
-                                x.HasAttributes && x.Attributes.Contains("id") &&
-                                x.Attributes["id"].Value.StartsWith("entry")))
-                {
-                    Anime lAnime = new Anime(animeNode.ChildNodes[1].InnerText,
-                        Convert.ToInt32(
-                            animeNode.ChildNodes[1].FirstChild.GetAttributeValue("title", "Cover:-1").Split(':')[1]),
-                        this._senpai);
-
-                    this._animeList.Add(
-                        new KeyValuePair<AnimeMangaProgress, AnimeMangaProgressObject>(AnimeMangaProgress.Finished,
-                            new AnimeMangaProgressObject(this, lAnime,
-                                Convert.ToInt32(animeNode.ChildNodes[4].InnerText.Split('/')[0].Trim()),
-                                Convert.ToInt32(animeNode.ChildNodes[4].InnerText.Split('/')[1].Trim()),
-                                AnimeMangaProgress.Finished)));
-                }
-
-                foreach (
-                    HtmlNode animeNode in
-                        lDocument.DocumentNode.ChildNodes[10].ChildNodes.Where(
-                            x =>
-                                x.HasAttributes && x.Attributes.Contains("id") &&
-                                x.Attributes["id"].Value.StartsWith("entry")))
-                {
-                    Anime lAnime = new Anime(animeNode.ChildNodes[1].InnerText,
-                        Convert.ToInt32(
-                            animeNode.ChildNodes[1].FirstChild.GetAttributeValue("title", "Cover:-1").Split(':')[1]),
-                        this._senpai);
-
-                    this._animeList.Add(
-                        new KeyValuePair<AnimeMangaProgress, AnimeMangaProgressObject>(AnimeMangaProgress.InProgress,
-                            new AnimeMangaProgressObject(this, lAnime,
-                                Convert.ToInt32(animeNode.ChildNodes[4].InnerText.Split('/')[0].Trim()),
-                                Convert.ToInt32(animeNode.ChildNodes[4].InnerText.Split('/')[1].Trim()),
-                                AnimeMangaProgress.InProgress)));
-                }
-
-                foreach (
-                    HtmlNode animeNode in
-                        lDocument.DocumentNode.ChildNodes[13].ChildNodes.Where(
-                            x =>
-                                x.HasAttributes && x.Attributes.Contains("id") &&
-                                x.Attributes["id"].Value.StartsWith("entry")))
-                {
-                    Anime lAnime = new Anime(animeNode.ChildNodes[1].InnerText,
-                        Convert.ToInt32(
-                            animeNode.ChildNodes[1].FirstChild.GetAttributeValue("title", "Cover:-1").Split(':')[1]),
-                        this._senpai);
-
-                    this._animeList.Add(
-                        new KeyValuePair<AnimeMangaProgress, AnimeMangaProgressObject>(AnimeMangaProgress.Planned,
-                            new AnimeMangaProgressObject(this, lAnime,
-                                Convert.ToInt32(animeNode.ChildNodes[4].InnerText.Split('/')[0].Trim()),
-                                Convert.ToInt32(animeNode.ChildNodes[4].InnerText.Split('/')[1].Trim()),
-                                AnimeMangaProgress.Planned)));
-                }
-
-                foreach (
-                    HtmlNode animeNode in
-                        lDocument.DocumentNode.ChildNodes[16].ChildNodes.Where(
-                            x =>
-                                x.HasAttributes && x.Attributes.Contains("id") &&
-                                x.Attributes["id"].Value.StartsWith("entry")))
-                {
-                    Anime lAnime = new Anime(animeNode.ChildNodes[1].InnerText,
-                        Convert.ToInt32(
-                            animeNode.ChildNodes[1].FirstChild.GetAttributeValue("title", "Cover:-1").Split(':')[1]),
-                        this._senpai);
-
-                    this._animeList.Add(
-                        new KeyValuePair<AnimeMangaProgress, AnimeMangaProgressObject>(AnimeMangaProgress.Aborted,
-                            new AnimeMangaProgressObject(this, lAnime,
-                                Convert.ToInt32(animeNode.ChildNodes[4].InnerText.Split('/')[0].Trim()),
-                                Convert.ToInt32(animeNode.ChildNodes[4].InnerText.Split('/')[1].Trim()),
-                                AnimeMangaProgress.Aborted)));
-                }
-
-                #endregion
-
-                return new ProxerResult();
+                ProxerResult lProcessResult;
+                return
+                    !(lProcessResult = this.ProcessAnimeMangaProgressNodes<Anime>(lDocument, ref this._animeList))
+                        .Success
+                        ? new ProxerResult(lProcessResult.Exceptions)
+                        : new ProxerResult();
             }
             catch
             {
@@ -824,8 +746,6 @@ namespace Azuria
 
             try
             {
-                #region Process Nodes
-
                 this._mangaList =
                     new List<KeyValuePair<AnimeMangaProgress, AnimeMangaProgressObject>>();
 
@@ -844,94 +764,158 @@ namespace Azuria
                                     this._senpai))
                         .ToArray();
 
-                foreach (
-                    HtmlNode mangaNode in
-                        lDocument.DocumentNode.ChildNodes[7].ChildNodes.Where(
-                            x =>
-                                x.HasAttributes && x.Attributes.Contains("id") &&
-                                x.Attributes["id"].Value.StartsWith("entry")))
-                {
-                    Manga lManga = new Manga(mangaNode.ChildNodes[1].InnerText,
-                        Convert.ToInt32(
-                            mangaNode.ChildNodes[1].FirstChild.GetAttributeValue("title", "Cover:-1").Split(':')[1]),
-                        this._senpai);
-
-                    this._mangaList.Add(
-                        new KeyValuePair<AnimeMangaProgress, AnimeMangaProgressObject>(AnimeMangaProgress.Finished,
-                            new AnimeMangaProgressObject(this, lManga,
-                                Convert.ToInt32(mangaNode.ChildNodes[4].InnerText.Split('/')[0].Trim()),
-                                Convert.ToInt32(mangaNode.ChildNodes[4].InnerText.Split('/')[1].Trim()),
-                                AnimeMangaProgress.Finished)));
-                }
-
-                foreach (
-                    HtmlNode mangaNode in
-                        lDocument.DocumentNode.ChildNodes[10].ChildNodes.Where(
-                            x =>
-                                x.HasAttributes && x.Attributes.Contains("id") &&
-                                x.Attributes["id"].Value.StartsWith("entry")))
-                {
-                    Manga lManga = new Manga(mangaNode.ChildNodes[1].InnerText,
-                        Convert.ToInt32(
-                            mangaNode.ChildNodes[1].FirstChild.GetAttributeValue("title", "Cover:-1").Split(':')[1]),
-                        this._senpai);
-
-                    this._mangaList.Add(
-                        new KeyValuePair<AnimeMangaProgress, AnimeMangaProgressObject>(AnimeMangaProgress.InProgress,
-                            new AnimeMangaProgressObject(this, lManga,
-                                Convert.ToInt32(mangaNode.ChildNodes[4].InnerText.Split('/')[0].Trim()),
-                                Convert.ToInt32(mangaNode.ChildNodes[4].InnerText.Split('/')[1].Trim()),
-                                AnimeMangaProgress.InProgress)));
-                }
-
-                foreach (
-                    HtmlNode mangaNode in
-                        lDocument.DocumentNode.ChildNodes[13].ChildNodes.Where(
-                            x =>
-                                x.HasAttributes && x.Attributes.Contains("id") &&
-                                x.Attributes["id"].Value.StartsWith("entry")))
-                {
-                    Manga lManga = new Manga(mangaNode.ChildNodes[1].InnerText,
-                        Convert.ToInt32(
-                            mangaNode.ChildNodes[1].FirstChild.GetAttributeValue("title", "Cover:-1").Split(':')[1]),
-                        this._senpai);
-
-                    this._mangaList.Add(
-                        new KeyValuePair<AnimeMangaProgress, AnimeMangaProgressObject>(AnimeMangaProgress.Planned,
-                            new AnimeMangaProgressObject(this, lManga,
-                                Convert.ToInt32(mangaNode.ChildNodes[4].InnerText.Split('/')[0].Trim()),
-                                Convert.ToInt32(mangaNode.ChildNodes[4].InnerText.Split('/')[1].Trim()),
-                                AnimeMangaProgress.Planned)));
-                }
-
-                foreach (
-                    HtmlNode mangaNode in
-                        lDocument.DocumentNode.ChildNodes[16].ChildNodes.Where(
-                            x =>
-                                x.HasAttributes && x.Attributes.Contains("id") &&
-                                x.Attributes["id"].Value.StartsWith("entry")))
-                {
-                    Manga lManga = new Manga(mangaNode.ChildNodes[1].InnerText,
-                        Convert.ToInt32(
-                            mangaNode.ChildNodes[1].FirstChild.GetAttributeValue("title", "Cover:-1").Split(':')[1]),
-                        this._senpai);
-
-                    this._mangaList.Add(
-                        new KeyValuePair<AnimeMangaProgress, AnimeMangaProgressObject>(AnimeMangaProgress.Aborted,
-                            new AnimeMangaProgressObject(this, lManga,
-                                Convert.ToInt32(mangaNode.ChildNodes[4].InnerText.Split('/')[0].Trim()),
-                                Convert.ToInt32(mangaNode.ChildNodes[4].InnerText.Split('/')[1].Trim()),
-                                AnimeMangaProgress.Aborted)));
-                }
-
-                #endregion
-
-                return new ProxerResult();
+                ProxerResult lProcessResult;
+                return
+                    !(lProcessResult = this.ProcessAnimeMangaProgressNodes<Manga>(lDocument, ref this._mangaList))
+                        .Success
+                        ? new ProxerResult(lProcessResult.Exceptions)
+                        : new ProxerResult();
             }
             catch
             {
                 return new ProxerResult((await ErrorHandler.HandleError(this._senpai, lResponse, false)).Exceptions);
             }
+        }
+
+        private ProxerResult ProcessAnimeMangaProgressNodes<T>(HtmlDocument htmlDocument,
+            ref List<KeyValuePair<AnimeMangaProgress, AnimeMangaProgressObject>> saveList)
+            where T : IAnimeMangaObject
+        {
+            try
+            {
+                ConstructorInfo lConstructorToInvoke = null;
+                foreach (
+                    ConstructorInfo lDeclaredConstructor in
+                        from lDeclaredConstructor in typeof (T).GetTypeInfo().DeclaredConstructors
+                        let lParameters = lDeclaredConstructor.GetParameters()
+                        where lParameters.Length == 3 && lParameters[0].ParameterType == typeof (string) &&
+                              lParameters[1].ParameterType == typeof (int) &&
+                              lParameters[2].ParameterType == typeof (Senpai)
+                        select lDeclaredConstructor)
+                {
+                    lConstructorToInvoke = lDeclaredConstructor;
+                }
+
+                if (lConstructorToInvoke == null) return new ProxerResult(new Exception[0]);
+
+                #region Process Nodes
+
+                foreach (
+                    HtmlNode animeMangaNode in
+                        htmlDocument.DocumentNode.ChildNodes[7].ChildNodes.Where(
+                            x =>
+                                x.HasAttributes && x.Attributes.Contains("id") &&
+                                x.Attributes["id"].Value.StartsWith("entry")))
+                {
+                    object[] lActivatorParameters =
+                    {
+                        animeMangaNode.ChildNodes[1].InnerText,
+                        Convert.ToInt32(
+                            animeMangaNode.ChildNodes[1].FirstChild.GetAttributeValue("title", "Cover:-1")
+                                .Split(':')[1]),
+                        this._senpai
+                    };
+
+                    IAnimeMangaObject lAnimeManga =
+                        lConstructorToInvoke.Invoke(lActivatorParameters) as IAnimeMangaObject;
+
+                    saveList.Add(
+                        new KeyValuePair<AnimeMangaProgress, AnimeMangaProgressObject>(AnimeMangaProgress.Finished,
+                            new AnimeMangaProgressObject(this, lAnimeManga,
+                                Convert.ToInt32(animeMangaNode.ChildNodes[4].InnerText.Split('/')[0].Trim()),
+                                Convert.ToInt32(animeMangaNode.ChildNodes[4].InnerText.Split('/')[1].Trim()),
+                                AnimeMangaProgress.Finished)));
+                }
+
+                foreach (
+                    HtmlNode animeMangaNode in
+                        htmlDocument.DocumentNode.ChildNodes[10].ChildNodes.Where(
+                            x =>
+                                x.HasAttributes && x.Attributes.Contains("id") &&
+                                x.Attributes["id"].Value.StartsWith("entry")))
+                {
+                    object[] lActivatorParameters =
+                    {
+                        animeMangaNode.ChildNodes[1].InnerText,
+                        Convert.ToInt32(
+                            animeMangaNode.ChildNodes[1].FirstChild.GetAttributeValue("title", "Cover:-1")
+                                .Split(':')[1]),
+                        this._senpai
+                    };
+
+                    IAnimeMangaObject lAnimeManga =
+                        lConstructorToInvoke.Invoke(lActivatorParameters) as IAnimeMangaObject;
+
+                    saveList.Add(
+                        new KeyValuePair<AnimeMangaProgress, AnimeMangaProgressObject>(AnimeMangaProgress.InProgress,
+                            new AnimeMangaProgressObject(this, lAnimeManga,
+                                Convert.ToInt32(animeMangaNode.ChildNodes[4].InnerText.Split('/')[0].Trim()),
+                                Convert.ToInt32(animeMangaNode.ChildNodes[4].InnerText.Split('/')[1].Trim()),
+                                AnimeMangaProgress.Finished)));
+                }
+
+                foreach (
+                    HtmlNode animeMangaNode in
+                        htmlDocument.DocumentNode.ChildNodes[13].ChildNodes.Where(
+                            x =>
+                                x.HasAttributes && x.Attributes.Contains("id") &&
+                                x.Attributes["id"].Value.StartsWith("entry")))
+                {
+                    object[] lActivatorParameters =
+                    {
+                        animeMangaNode.ChildNodes[1].InnerText,
+                        Convert.ToInt32(
+                            animeMangaNode.ChildNodes[1].FirstChild.GetAttributeValue("title", "Cover:-1")
+                                .Split(':')[1]),
+                        this._senpai
+                    };
+
+                    IAnimeMangaObject lAnimeManga =
+                        lConstructorToInvoke.Invoke(lActivatorParameters) as IAnimeMangaObject;
+
+                    saveList.Add(
+                        new KeyValuePair<AnimeMangaProgress, AnimeMangaProgressObject>(AnimeMangaProgress.Planned,
+                            new AnimeMangaProgressObject(this, lAnimeManga,
+                                Convert.ToInt32(animeMangaNode.ChildNodes[4].InnerText.Split('/')[0].Trim()),
+                                Convert.ToInt32(animeMangaNode.ChildNodes[4].InnerText.Split('/')[1].Trim()),
+                                AnimeMangaProgress.Finished)));
+                }
+
+                foreach (
+                    HtmlNode animeMangaNode in
+                        htmlDocument.DocumentNode.ChildNodes[16].ChildNodes.Where(
+                            x =>
+                                x.HasAttributes && x.Attributes.Contains("id") &&
+                                x.Attributes["id"].Value.StartsWith("entry")))
+                {
+                    object[] lActivatorParameters =
+                    {
+                        animeMangaNode.ChildNodes[1].InnerText,
+                        Convert.ToInt32(
+                            animeMangaNode.ChildNodes[1].FirstChild.GetAttributeValue("title", "Cover:-1")
+                                .Split(':')[1]),
+                        this._senpai
+                    };
+
+                    IAnimeMangaObject lAnimeManga =
+                        lConstructorToInvoke.Invoke(lActivatorParameters) as IAnimeMangaObject;
+
+                    saveList.Add(
+                        new KeyValuePair<AnimeMangaProgress, AnimeMangaProgressObject>(AnimeMangaProgress.Aborted,
+                            new AnimeMangaProgressObject(this, lAnimeManga,
+                                Convert.ToInt32(animeMangaNode.ChildNodes[4].InnerText.Split('/')[0].Trim()),
+                                Convert.ToInt32(animeMangaNode.ChildNodes[4].InnerText.Split('/')[1].Trim()),
+                                AnimeMangaProgress.Finished)));
+                }
+
+                #endregion
+            }
+            catch
+            {
+                return new ProxerResult(new Exception[] {new WrongResponseException()});
+            }
+
+            return new ProxerResult();
         }
 
         /// <summary>
@@ -942,7 +926,7 @@ namespace Azuria
         /// <returns>Einen boolischen Wert, der angibt, ob die Aktion erfolgreich war.</returns>
         public async Task<ProxerResult<bool>> SendFriendRequest()
         {
-            if (this.Id == -1) return new ProxerResult<bool> {Success = false};
+            if (this.Id == -1) return new ProxerResult<bool>(new Exception[0]) {Success = false};
 
             Dictionary<string, string> lPostArgs = new Dictionary<string, string>
             {
