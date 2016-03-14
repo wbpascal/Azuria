@@ -35,34 +35,44 @@ namespace Azuria.Main.User
 
         /// <summary>
         /// </summary>
-        public Language Language { get; private set; }
+        public DateTime DateTime { get; private set; }
+
+        /// <summary>
+        /// </summary>
+        public Language Language { get; }
 
         /// <summary>
         ///     Gibt die <see cref="Anime.Episode">Episoden-</see> oder <see cref="Manga.Chapter">Kapitel</see>nummer zurück.
         /// </summary>
-        public int Number { get; private set; }
+        public int Number { get; }
 
         #endregion
 
         #region
 
-        internal static ProxerResult<AnimeMangaChronicObject> GetChronicObjectFromNode(HtmlNode node, Senpai senpai)
+        internal static ProxerResult<AnimeMangaChronicObject> GetChronicObjectFromNode(HtmlNode node, Senpai senpai,
+            bool extended = false)
         {
             try
             {
+                DateTime lDateTime;
                 IAnimeMangaObject lAnimeMangaObject = null;
-                if (node.ChildNodes[4].InnerText.Contains("Anime"))
+                if (node.ChildNodes.Last().InnerText.Contains("Anime") ||
+                    node.ChildNodes.Last().InnerText.Contains("Episode"))
                 {
                     lAnimeMangaObject = new Anime(node.ChildNodes[0].InnerText,
                         Convert.ToInt32(
-                            node.ChildNodes[4].FirstChild.Attributes["href"].Value.GetTagContents("info/", "#top")
+                            node.ChildNodes.Last().FirstChild.Attributes["href"].Value.GetTagContents(
+                                extended ? "watch/" : "info/", extended ? "/" : "#top")
                                 .First()), senpai);
                 }
-                else if (node.ChildNodes[4].InnerText.Contains("Manga"))
+                else if (node.ChildNodes.Last().InnerText.Contains("Manga") ||
+                         node.ChildNodes.Last().InnerText.Contains("Kapitel"))
                 {
                     lAnimeMangaObject = new Manga(node.ChildNodes[0].InnerText,
                         Convert.ToInt32(
-                            node.ChildNodes[4].FirstChild.Attributes["href"].Value.GetTagContents("info/", "#top")
+                            node.ChildNodes.Last().FirstChild.Attributes["href"].Value.GetTagContents(
+                                extended ? "chapter/" : "info/", extended ? "/" : "#top")
                                 .First()), senpai);
                 }
 
@@ -75,7 +85,13 @@ namespace Azuria.Main.User
 
                 return
                     new ProxerResult<AnimeMangaChronicObject>(new AnimeMangaChronicObject(lAnimeMangaObject, lLanguage,
-                        lNumber));
+                        lNumber)
+                    {
+                        DateTime =
+                            DateTime.TryParse(node.ChildNodes[4].InnerText, out lDateTime)
+                                ? lDateTime
+                                : DateTime.MinValue
+                    });
             }
             catch
             {

@@ -28,6 +28,59 @@ namespace Azuria.Main.User.ControlPanel
         /// <summary>
         /// </summary>
         /// <returns></returns>
+        public async Task<ProxerResult<IEnumerable<AnimeMangaChronicObject>>> GetChronic()
+        {
+            HtmlDocument lDocument = new HtmlDocument();
+
+            Func<string, ProxerResult> lCheckFunc = s =>
+            {
+                if (!string.IsNullOrEmpty(s) &&
+                    s.Equals(
+                        "<div class=\"inner\">\n<h3>Du bist nicht eingeloggt. Bitte logge dich ein um diese Aktion durchführen zu können.</h3>\n</div>"))
+                    return new ProxerResult(new Exception[] {new NoAccessException()});
+
+                return new ProxerResult();
+            };
+
+            ProxerResult<string> lResult =
+                await
+                    HttpUtility.GetResponseErrorHandling("https://proxer.me/ucp?s=history&format=raw",
+                        this._senpai.LoginCookies,
+                        this._senpai.ErrHandler,
+                        this._senpai, new[] {lCheckFunc});
+
+            if (!lResult.Success)
+                return new ProxerResult<IEnumerable<AnimeMangaChronicObject>>(lResult.Exceptions);
+
+            string lResponse = lResult.Result;
+
+            try
+            {
+                lDocument.LoadHtml(lResponse);
+
+                HtmlNode lTableNode = lDocument.GetElementbyId("box-table-a");
+                lTableNode.ChildNodes.RemoveAt(0);
+                List<AnimeMangaChronicObject> lChronicObjects = new List<AnimeMangaChronicObject>();
+                foreach (HtmlNode chronicNode in lTableNode.ChildNodes)
+                {
+                    ProxerResult<AnimeMangaChronicObject> lParseResult =
+                        AnimeMangaChronicObject.GetChronicObjectFromNode(chronicNode, this._senpai, true);
+                    if (lParseResult.Success) lChronicObjects.Add(lParseResult.Result);
+                }
+
+                return new ProxerResult<IEnumerable<AnimeMangaChronicObject>>(lChronicObjects);
+            }
+            catch
+            {
+                return
+                    new ProxerResult<IEnumerable<AnimeMangaChronicObject>>(
+                        (await ErrorHandler.HandleError(this._senpai, lResponse, false)).Exceptions);
+            }
+        }
+
+        /// <summary>
+        /// </summary>
+        /// <returns></returns>
         public async Task<ProxerResult<IEnumerable<AnimeMangaFavouriteObject>>> GetFavourites()
         {
             HtmlDocument lDocument = new HtmlDocument();
