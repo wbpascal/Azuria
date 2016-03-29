@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 using Azuria.Exceptions;
 using Newtonsoft.Json;
 
-namespace Azuria.ErrorHandling
+namespace Azuria.Utilities.ErrorHandling
 {
     /// <summary>
     ///     Fehler in HTML-Dateien werden hier frühzeitig erkannt

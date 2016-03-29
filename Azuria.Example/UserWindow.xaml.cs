@@ -6,11 +6,11 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using Azuria.ErrorHandling;
 using Azuria.Example.Controls;
 using Azuria.Main;
 using Azuria.Main.Minor;
 using Azuria.Main.User;
+using Azuria.Utilities.ErrorHandling;
 
 namespace Azuria.Example
 {

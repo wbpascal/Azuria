@@ -2,8 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Azuria.ErrorHandling;
 using Azuria.Exceptions;
+using Azuria.Utilities.ErrorHandling;
 using Azuria.Utilities.Net;
 using HtmlAgilityPack;
 
@@ -24,6 +24,62 @@ namespace Azuria.Main.User.ControlPanel
         }
 
         #region
+
+        /// <summary>
+        /// </summary>
+        /// <returns></returns>
+        public async Task<ProxerResult<IEnumerable<AnimeMangaBookmarkObject>>> GetBookmarks()
+        {
+            HtmlDocument lDocument = new HtmlDocument();
+            List<AnimeMangaBookmarkObject> lAnimeMangaBookmarkObjects = new List<AnimeMangaBookmarkObject>();
+
+            Func<string, ProxerResult> lCheckFunc = s =>
+            {
+                lDocument.LoadHtml(s);
+                HtmlNode lInnerDiv = lDocument.DocumentNode.Descendants()
+                    .FirstOrDefault(node => node.Name.Equals("div") && node.GetAttributeValue("class", "").Equals("inner"));
+                if (lInnerDiv != null && lInnerDiv.FirstChild.InnerText.ToLower().StartsWith("du bist nicht eingeloggt"))
+                    return new ProxerResult(new Exception[] {new NoAccessException()});
+
+                return new ProxerResult();
+            };
+            ProxerResult<string> lResult =
+                await
+                    HttpUtility.GetResponseErrorHandling(
+                        "https://proxer.me/ucp?s=reminder&device=mobile&format=raw",
+                        this._senpai.LoginCookies,
+                        this._senpai.ErrHandler,
+                        this._senpai,
+                        new[] {lCheckFunc});
+
+            if (!lResult.Success)
+                return new ProxerResult<IEnumerable<AnimeMangaBookmarkObject>>(lResult.Exceptions);
+
+            try
+            {
+                foreach (
+                    HtmlNode lBookmarkNode in
+                        lDocument.DocumentNode.Descendants()
+                            .First(
+                                node =>
+                                    node.Name.Equals("ul") &&
+                                    node.GetAttributeValue("data-split-icon", "").Equals("delete")).ChildNodes)
+                {
+                    ProxerResult<AnimeMangaBookmarkObject> lParseResult =
+                        AnimeMangaBookmarkObject.ParseNode(lBookmarkNode, this._senpai);
+
+                    if (lParseResult.Success && lParseResult.Result != null)
+                        lAnimeMangaBookmarkObjects.Add(lParseResult.Result);
+                }
+            }
+            catch
+            {
+                return
+                    new ProxerResult<IEnumerable<AnimeMangaBookmarkObject>>(
+                        (await ErrorHandler.HandleError(this._senpai, lResult.Result, false)).Exceptions);
+            }
+            return new ProxerResult<IEnumerable<AnimeMangaBookmarkObject>>(lAnimeMangaBookmarkObjects);
+        }
 
         /// <summary>
         /// </summary>
@@ -89,7 +145,9 @@ namespace Azuria.Main.User.ControlPanel
             Func<string, ProxerResult> lCheckFunc = s =>
             {
                 lDocument.LoadHtml(s);
-                HtmlNode lInnerDiv = lDocument.DocumentNode.SelectSingleNode("//div[@class='inner']");
+                HtmlNode lInnerDiv =
+                    lDocument.DocumentNode.Descendants()
+                        .FirstOrDefault(node => node.Name.Equals("div") && node.GetAttributeValue("class", "").Equals("inner"));
                 if (lInnerDiv != null && lInnerDiv.FirstChild.InnerText.ToLower().StartsWith("du bist nicht eingeloggt"))
                     return new ProxerResult(new Exception[] {new NoAccessException()});
 
@@ -113,7 +171,11 @@ namespace Azuria.Main.User.ControlPanel
             {
                 foreach (
                     HtmlNode lListNode in
-                        lDocument.DocumentNode.SelectSingleNode("//ul[@data-split-icon='delete']")
+                        lDocument.DocumentNode.Descendants()
+                            .First(
+                                node =>
+                                    node.Name.Equals("ul") &&
+                                    node.GetAttributeValue("data-split-icon", "").Equals("delete"))
                             .ChildNodes.TakeWhile(node => !node.InnerText.ToLower().Equals("top 10 manga"))
                             .Where(node => node.GetAttributeValue("id", "").StartsWith("entry")))
                 {
@@ -134,7 +196,11 @@ namespace Azuria.Main.User.ControlPanel
 
                 foreach (
                     HtmlNode lListNode in
-                        lDocument.DocumentNode.SelectSingleNode("//ul[@data-split-icon='delete']")
+                        lDocument.DocumentNode.Descendants()
+                            .First(
+                                node =>
+                                    node.Name.Equals("ul") &&
+                                    node.GetAttributeValue("data-split-icon", "").Equals("delete"))
                             .ChildNodes.SkipWhile(node => !node.InnerText.ToLower().Equals("top 10 manga"))
                             .Where(node => node.GetAttributeValue("id", "").StartsWith("entry")))
                 {

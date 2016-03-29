@@ -1,10 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Net;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
-using Azuria.ErrorHandling;
 using Azuria.Exceptions;
+using Azuria.Utilities.ErrorHandling;
 using RestSharp.Portable;
 using RestSharp.Portable.HttpClient;
 
@@ -22,6 +23,12 @@ namespace Azuria.Utilities.Net
         ///     Standartwert = 0
         /// </summary>
         public static int Timeout = 0;
+
+        private static readonly string UserAgent = "Azuria.Portable/" +
+                                                    new AssemblyName(
+                                                        typeof (HttpUtility).GetTypeInfo().Assembly.FullName)
+                                                        .Version +
+                                                    "RestSharp.Portable/3.1.0.0";
 
         #region
 
@@ -108,7 +115,8 @@ namespace Azuria.Utilities.Net
             RestClient lClient = new RestClient(url)
             {
                 CookieContainer = cookies,
-                Timeout = TimeSpan.FromMilliseconds(Timeout)
+                Timeout = TimeSpan.FromMilliseconds(Timeout),
+                UserAgent = UserAgent
             };
             RestRequest lRequest = new RestRequest(Method.GET);
             return await lClient.Execute(lRequest);
@@ -205,7 +213,8 @@ namespace Azuria.Utilities.Net
             RestClient lClient = new RestClient(url)
             {
                 CookieContainer = cookies,
-                Timeout = TimeSpan.FromMilliseconds(Timeout)
+                Timeout = TimeSpan.FromMilliseconds(Timeout),
+                UserAgent = UserAgent
             };
             RestRequest lRequest = new RestRequest(Method.POST);
             foreach (KeyValuePair<string, string> pair in postArgs)

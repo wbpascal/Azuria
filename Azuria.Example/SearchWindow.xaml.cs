@@ -3,12 +3,12 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
-using Azuria.ErrorHandling;
 using Azuria.Example.Controls.Search;
 using Azuria.Example.Utilities;
 using Azuria.Main;
 using Azuria.Main.Minor;
 using Azuria.Main.Search;
+using Azuria.Utilities.ErrorHandling;
 
 namespace Azuria.Example
 {

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Reflection;
-using Azuria.ErrorHandling;
+using Azuria.Utilities.ErrorHandling;
 using HtmlAgilityPack;
 
 // ReSharper disable LoopCanBeConvertedToQuery

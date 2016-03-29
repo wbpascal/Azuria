@@ -59,7 +59,9 @@ namespace System.Timers
                     this._isFinished = true;
                     return;
                 }
-                await Task.Delay(TimeSpan.FromMilliseconds(double.IsNaN(this.Interval) ? 1000.0 : this.Interval));
+                await
+                    Task.Delay(TimeSpan.FromMilliseconds(double.IsNaN(this.Interval) ? 1000.0 : this.Interval),
+                        this._ct.Token);
                 if (this._ct.Token.IsCancellationRequested)
                 {
                     this._isFinished = true;

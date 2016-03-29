@@ -87,6 +87,7 @@
     <Compile Include="Main\User\AnimeMangaChronicObject.cs" />
     <Compile Include="Main\User\AnimeMangaProgress.cs" />
     <Compile Include="Main\User\AnimeMangaProgressObject.cs" />
+    <Compile Include="Main\User\ControlPanel\AnimeMangaBookmarkObject.cs" />
     <Compile Include="Main\User\ControlPanel\AnimeMangaFavouriteObject.cs" />
     <Compile Include="Main\User\ControlPanel\UserControlPanel.cs" />
     <Compile Include="Notifications\AnimeMangaUpdateCollection.cs" />
@@ -110,9 +111,9 @@
     <Compile Include="ProxerClass.cs" />
     <Compile Include="Senpai.cs" />
     <Compile Include="User.cs" />
-    <Compile Include="ErrorHandling\ErrorHandler.cs" />
+    <Compile Include="Utilities\ErrorHandling\ErrorHandler.cs" />
     <Compile Include="Utilities\Net\HttpUtility.cs" />
-    <Compile Include="ErrorHandling\ProxerResult.cs" />
+    <Compile Include="Utilities\ErrorHandling\ProxerResult.cs" />
     <Compile Include="Utilities\SearchUtility.cs" />
     <Compile Include="Utilities\Utility.cs" />
   </ItemGroup>

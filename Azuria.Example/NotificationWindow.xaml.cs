@@ -5,12 +5,12 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using Azuria.Community;
-using Azuria.ErrorHandling;
 using Azuria.EventArguments;
 using Azuria.Example.Utilities;
 using Azuria.Exceptions;
 using Azuria.Main;
 using Azuria.Notifications;
+using Azuria.Utilities.ErrorHandling;
 
 namespace Azuria.Example
 {

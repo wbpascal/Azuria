@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
-using Azuria.ErrorHandling;
+using Azuria.Utilities.ErrorHandling;
 using Azuria.Utilities.Net;
 using Newtonsoft.Json;
 

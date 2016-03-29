@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Linq;
-using Azuria.ErrorHandling;
 using Azuria.Exceptions;
 using Azuria.Main.Minor;
 using Azuria.Utilities;
+using Azuria.Utilities.ErrorHandling;
 using HtmlAgilityPack;
 
 namespace Azuria.Main.User

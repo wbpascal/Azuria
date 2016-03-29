@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Azuria.ErrorHandling
+namespace Azuria.Utilities.ErrorHandling
 {
     /// <summary>
     ///     Eine Klasse, die ein Resultat einer Methode des API darstellt.

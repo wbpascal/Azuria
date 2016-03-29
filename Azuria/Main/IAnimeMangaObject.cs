@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using Azuria.ErrorHandling;
 using Azuria.Main.Minor;
 using Azuria.Main.Search;
+using Azuria.Utilities.ErrorHandling;
 
 namespace Azuria.Main
 {

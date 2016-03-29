@@ -5,9 +5,9 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using Azuria.ErrorHandling;
 using Azuria.Main;
 using Azuria.Main.Minor;
+using Azuria.Utilities.ErrorHandling;
 
 namespace Azuria.Example
 {

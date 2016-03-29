@@ -42,12 +42,6 @@
     <Compile Include="..\Azuria\Community\ConferenceHelper\MessagesModel.cs">
       <Link>Community\ConferenceHelper\MessagesModel.cs</Link>
     </Compile>
-    <Compile Include="..\Azuria\ErrorHandling\ErrorHandler.cs">
-      <Link>ErrorHandling\ErrorHandler.cs</Link>
-    </Compile>
-    <Compile Include="..\Azuria\ErrorHandling\ProxerResult.cs">
-      <Link>ErrorHandling\ProxerResult.cs</Link>
-    </Compile>
     <Compile Include="..\Azuria\EventArguments\AMNotificationEventArgs.cs">
       <Link>EventArguments\AMNotificationEventArgs.cs</Link>
     </Compile>
@@ -138,6 +132,15 @@
     <Compile Include="..\Azuria\Main\User\AnimeMangaProgressObject.cs">
       <Link>Main\User\AnimeMangaProgressObject.cs</Link>
     </Compile>
+    <Compile Include="..\Azuria\Main\User\ControlPanel\AnimeMangaBookmarkObject.cs">
+      <Link>Main\User\ControlPanel\AnimeMangaBookmarkObject.cs</Link>
+    </Compile>
+    <Compile Include="..\Azuria\Main\User\ControlPanel\AnimeMangaFavouriteObject.cs">
+      <Link>Main\User\ControlPanel\AnimeMangaFavouriteObject.cs</Link>
+    </Compile>
+    <Compile Include="..\Azuria\Main\User\ControlPanel\UserControlPanel.cs">
+      <Link>Main\User\ControlPanel\UserControlPanel.cs</Link>
+    </Compile>
     <Compile Include="..\Azuria\Notifications\AnimeMangaUpdateCollection.cs">
       <Link>Notifications\AnimeMangaUpdateCollection.cs</Link>
     </Compile>
@@ -180,6 +183,12 @@
     <Compile Include="..\Azuria\User.cs">
       <Link>User.cs</Link>
     </Compile>
+    <Compile Include="..\Azuria\Utilities\ErrorHandling\ErrorHandler.cs">
+      <Link>Utilities\ErrorHandling\ErrorHandler.cs</Link>
+    </Compile>
+    <Compile Include="..\Azuria\Utilities\ErrorHandling\ProxerResult.cs">
+      <Link>Utilities\ErrorHandling\ProxerResult.cs</Link>
+    </Compile>
     <Compile Include="..\Azuria\Utilities\SearchUtility.cs">
       <Link>Utilities\SearchUtility.cs</Link>
     </Compile>
@@ -221,9 +230,7 @@
     <None Include="app.config" />
     <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Main\User\ControlPanel\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
   <Import Project="..\packages\Microsoft.Bcl.Build.1.0.14\tools\Microsoft.Bcl.Build.targets" Condition="Exists('..\packages\Microsoft.Bcl.Build.1.0.14\tools\Microsoft.Bcl.Build.targets')" />
   <Target Name="EnsureBclBuildImported" BeforeTargets="BeforeBuild" Condition="'$(BclBuildImported)' == ''">
