@@ -8,6 +8,7 @@ using Azuria.Utilities;
 using Azuria.Utilities.ErrorHandling;
 using Azuria.Utilities.Net;
 using HtmlAgilityPack;
+using JetBrains.Annotations;
 
 // ReSharper disable LoopCanBeConvertedToQuery
 
@@ -73,6 +74,7 @@ namespace Azuria.Main
         private readonly Func<Task<ProxerResult>>[] _initFuncs;
 
         private readonly Senpai _senpai;
+        private IEnumerable<Language> _availableLanguages;
         private string _beschreibung;
         private string _deutschTitel;
         private string _englischTitel;
@@ -81,6 +83,7 @@ namespace Azuria.Main
         private Group[] _gruppen;
         private Industry[] _industrie;
         private string _japanTitel;
+        private string _name;
         private string[] _season;
         private string _synonym;
 
@@ -88,10 +91,8 @@ namespace Azuria.Main
         {
         }
 
-        /// <exception cref="ArgumentNullException"><paramref name="senpai" /> is <see langword="null" />.</exception>
-        internal Anime(string name, int id, Senpai senpai)
+        internal Anime([NotNull] string name, int id, [NotNull] Senpai senpai)
         {
-            if (senpai == null) throw new ArgumentNullException(nameof(senpai));
             this._senpai = senpai;
             this._initFuncs = new Func<Task<ProxerResult>>[]
             {this.InitMain, this.InitAvailableLang, this.InitEpisodeCount, this.InitType};
@@ -103,7 +104,8 @@ namespace Azuria.Main
             this.IsInitialized = false;
         }
 
-        internal Anime(string name, int id, Senpai senpai, IEnumerable<GenreObject> genreList, AnimeMangaStatus status,
+        internal Anime([NotNull] string name, int id, [NotNull] Senpai senpai,
+            [NotNull] IEnumerable<GenreObject> genreList, AnimeMangaStatus status,
             AnimeType type) : this(name, id, senpai)
         {
             this.Genre = genreList;
@@ -259,7 +261,11 @@ namespace Azuria.Main
         ///     Gibt den Namen des <see cref="Anime" /> oder <see cref="Manga" /> zurück.
         ///     <para>(Vererbt von <see cref="IAnimeMangaObject" />)</para>
         /// </summary>
-        public string Name { get; private set; }
+        public string Name
+        {
+            get { return this._name ?? ""; }
+            private set { this._name = value; }
+        }
 
 
         /// <summary>
@@ -317,6 +323,7 @@ namespace Azuria.Main
         /// <param name="startIndex">Der Start-Index der ausgegebenen Kommentare.</param>
         /// <param name="count">Die Anzahl der ausgegebenen Kommentare ab dem angegebenen <paramref name="startIndex" />.</param>
         /// <returns>Eine Aufzählung mit den Kommentaren.</returns>
+        [ItemNotNull]
         public async Task<ProxerResult<IEnumerable<Comment>>> GetCommentsRating(int startIndex, int count)
         {
             return
@@ -337,6 +344,7 @@ namespace Azuria.Main
         ///     der <see cref="Senpai">Benutzer</see> nicht die nötigen Rechte dafür hat.
         /// </exception>
         /// <seealso cref="Senpai.Login" />
+        [ItemNotNull]
         public async Task<ProxerResult> Init()
         {
             int lFailedInits = 0;
@@ -377,6 +385,7 @@ namespace Azuria.Main
         /// <param name="startIndex">Der Start-Index der ausgegebenen Kommentare.</param>
         /// <param name="count">Die Anzahl der ausgegebenen Kommentare ab dem angegebenen <paramref name="startIndex" />.</param>
         /// <returns>Eine Aufzählung mit den Kommentaren.</returns>
+        [ItemNotNull]
         public async Task<ProxerResult<IEnumerable<Comment>>> GetCommentsLatest(int startIndex, int count)
         {
             return
@@ -404,7 +413,12 @@ namespace Azuria.Main
         /// </summary>
         /// <seealso cref="Language" />
         /// <seealso cref="Init" />
-        public IEnumerable<Language> AvailableLanguages { get; private set; }
+        [NotNull]
+        public IEnumerable<Language> AvailableLanguages
+        {
+            get { return this._availableLanguages ?? new Language[0]; }
+            private set { this._availableLanguages = value; }
+        }
 
         /// <summary>
         ///     Gibt die Episodenanzahl eines <see cref="Anime" /> zurück.
@@ -432,10 +446,10 @@ namespace Azuria.Main
         /// <param name="language">Die Sprache der Episoden.</param>
         /// <seealso cref="Episode" />
         /// <returns>Einen Array mit length = <see cref="EpisodeCount" />.</returns>
+        [NotNull]
+        [ItemNotNull]
         public ProxerResult<IEnumerable<Episode>> GetEpisodes(Language language)
         {
-            if (this.AvailableLanguages == null)
-                return new ProxerResult<IEnumerable<Episode>>(new Exception[] {new InitializeNeededException()});
             if (!this.AvailableLanguages.Contains(language))
                 return new ProxerResult<IEnumerable<Episode>>(new Exception[] {new LanguageNotAvailableException()});
 
@@ -452,17 +466,11 @@ namespace Azuria.Main
         ///     Gibt die aktuell am beliebtesten <see cref="Anime" /> zurück.
         /// </summary>
         /// <exception cref="WrongResponseException">Wird ausgelöst, wenn die Antwort des Servers nicht der Erwarteten entspricht.</exception>
-        /// <exception cref="ArgumentNullException">
-        ///     Wird ausgelöst, wenn <paramref name="senpai" /> null (oder Nothing in Visual
-        ///     Basic) ist.
-        /// </exception>
         /// <param name="senpai">Der aktuelle Benutzer.</param>
         /// <returns>Ein Array mit den aktuell beliebtesten <see cref="Anime" />.</returns>
-        public static async Task<ProxerResult<IEnumerable<Anime>>> GetPopularAnime(Senpai senpai)
+        [ItemNotNull]
+        public static async Task<ProxerResult<IEnumerable<Anime>>> GetPopularAnime([NotNull] Senpai senpai)
         {
-            if (senpai == null)
-                return new ProxerResult<IEnumerable<Anime>>(new Exception[] {new ArgumentNullException(nameof(senpai))});
-
             HtmlDocument lDocument = new HtmlDocument();
             ProxerResult<string> lResult =
                 await
@@ -498,6 +506,7 @@ namespace Azuria.Main
             }
         }
 
+        [ItemNotNull]
         private async Task<ProxerResult> InitAvailableLang()
         {
             HtmlDocument lDocument = new HtmlDocument();
@@ -563,6 +572,7 @@ namespace Azuria.Main
             }
         }
 
+        [ItemNotNull]
         private async Task<ProxerResult> InitEpisodeCount()
         {
             HtmlDocument lDocument = new HtmlDocument();
@@ -605,6 +615,7 @@ namespace Azuria.Main
             return new ProxerResult();
         }
 
+        [ItemNotNull]
         private async Task<ProxerResult> InitMain()
         {
             HtmlDocument lDocument = new HtmlDocument();
@@ -767,6 +778,7 @@ namespace Azuria.Main
             return new ProxerResult();
         }
 
+        [ItemNotNull]
         private async Task<ProxerResult> InitType()
         {
             HtmlDocument lDocument = new HtmlDocument();
@@ -833,7 +845,7 @@ namespace Azuria.Main
             private readonly Senpai _senpai;
             private List<KeyValuePair<Stream.StreamPartner, Stream>> _streams;
 
-            internal Episode(Anime anime, int nr, Language lang, Senpai senpai)
+            internal Episode([NotNull] Anime anime, int nr, Language lang, [NotNull] Senpai senpai)
             {
                 this.ParentAnime = anime;
                 this.EpisodeNr = nr;
@@ -858,6 +870,7 @@ namespace Azuria.Main
             /// <summary>
             ///     Gibt den Anime der Episode zurück.
             /// </summary>
+            [NotNull]
             public Anime ParentAnime { get; set; }
 
             /// <summary>
@@ -865,6 +878,7 @@ namespace Azuria.Main
             ///     <para>Wenn nach Aufruf von Init() immer noch null, dann sind keine Streams für diese Episode verfügbar.</para>
             /// </summary>
             /// <seealso cref="Episode.Init" />
+            [NotNull]
             public IEnumerable<KeyValuePair<Stream.StreamPartner, Stream>> Streams
             {
                 get
@@ -886,6 +900,7 @@ namespace Azuria.Main
             /// <exception cref="NotLoggedInException">Wird ausgelöst, wenn der <see cref="Senpai">Benutzer</see> nicht eingeloggt ist.</exception>
             /// <exception cref="CaptchaException">Wird ausgelöst, wenn der Server das Ausfüllen eines Captchas erfordert.</exception>
             /// <seealso cref="Senpai.Login" />
+            [ItemNotNull]
             public async Task<ProxerResult> Init()
             {
                 HtmlDocument lDocument = new HtmlDocument();
@@ -907,7 +922,7 @@ namespace Azuria.Main
                 {
                     lDocument.LoadHtml(lResponse);
 
-                    HtmlNode[] lAllHtmlNodes = Utility.GetAllHtmlNodes(lDocument.DocumentNode.ChildNodes).ToArray();
+                    HtmlNode[] lAllHtmlNodes = lDocument.DocumentNode.DescendantsAndSelf().ToArray();
 
                     if (
                         lAllHtmlNodes.Any(
@@ -1078,7 +1093,7 @@ namespace Azuria.Main
                     None
                 }
 
-                internal Stream(Uri link, StreamPartner streamPartner)
+                internal Stream([NotNull] Uri link, StreamPartner streamPartner)
                 {
                     this.Link = link;
                     this.Partner = streamPartner;
@@ -1089,6 +1104,7 @@ namespace Azuria.Main
                 /// <summary>
                 ///     Gibt den Link des <see cref="Stream">Streams</see> zurück.
                 /// </summary>
+                [NotNull]
                 public Uri Link { get; private set; }
 
                 /// <summary>

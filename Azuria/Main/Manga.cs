@@ -8,6 +8,7 @@ using Azuria.Utilities;
 using Azuria.Utilities.ErrorHandling;
 using Azuria.Utilities.Net;
 using HtmlAgilityPack;
+using JetBrains.Annotations;
 
 // ReSharper disable LoopCanBeConvertedToQuery
 
@@ -50,6 +51,7 @@ namespace Azuria.Main
         private Group[] _gruppen;
         private Industry[] _industrie;
         private string _japanTitel;
+        private string _name;
         private string[] _season;
         private Language[] _sprachen;
         private string _synonym;
@@ -58,7 +60,7 @@ namespace Azuria.Main
         {
         }
 
-        internal Manga(string name, int id, Senpai senpai)
+        internal Manga([NotNull] string name, int id, [NotNull] Senpai senpai)
         {
             this._senpai = senpai;
             this._initFuncs = new Func<Task<ProxerResult>>[]
@@ -71,7 +73,8 @@ namespace Azuria.Main
             this.IsInitialized = false;
         }
 
-        internal Manga(string name, int id, Senpai senpai, IEnumerable<GenreObject> genreList, AnimeMangaStatus status,
+        internal Manga([NotNull] string name, int id, [NotNull] Senpai senpai,
+            [NotNull] IEnumerable<GenreObject> genreList, AnimeMangaStatus status,
             MangaType type) : this(name, id, senpai)
         {
             this.Genre = genreList;
@@ -227,7 +230,11 @@ namespace Azuria.Main
         ///     Gibt den Namen des <see cref="Anime" /> oder <see cref="Manga" /> zurück.
         ///     <para>(Vererbt von <see cref="IAnimeMangaObject" />)</para>
         /// </summary>
-        public string Name { get; private set; }
+        public string Name
+        {
+            get { return this._name ?? ""; }
+            private set { this._name = value; }
+        }
 
 
         /// <summary>
@@ -380,6 +387,7 @@ namespace Azuria.Main
         ///     <para>Diese Eigenschaft muss durch <see cref="Init" /> initialisiert werden.</para>
         /// </summary>
         /// <seealso cref="Init" />
+        [NotNull]
         public IEnumerable<Language> Sprachen
         {
             get { return this._sprachen ?? new Language[0]; }
@@ -404,10 +412,10 @@ namespace Azuria.Main
         /// <param name="lang">Die Sprache der <see cref="Chapter">Kapitel</see>.</param>
         /// <seealso cref="Sprachen" />
         /// <returns>Ein Array mit length = <see cref="KapitelZahl" /></returns>
+        [NotNull]
+        [ItemNotNull]
         public ProxerResult<IEnumerable<Chapter>> GetChapters(Language lang)
         {
-            if (this.Sprachen == null)
-                return new ProxerResult<IEnumerable<Chapter>>(new Exception[] {new InitializeNeededException()});
             if (!this.Sprachen.Contains(lang))
                 return new ProxerResult<IEnumerable<Chapter>>(new Exception[] {new LanguageNotAvailableException()});
 
@@ -426,11 +434,9 @@ namespace Azuria.Main
         /// <exception cref="WrongResponseException">Wird ausgelöst, wenn die Antwort des Servers nicht der Erwarteten entspricht.</exception>
         /// <param name="senpai">Der aktuelle Benutzer.</param>
         /// <returns>Ein Array mit den aktuell beliebtesten <see cref="Manga" />.</returns>
-        public static async Task<ProxerResult<IEnumerable<Manga>>> GetPopularManga(Senpai senpai)
+        [ItemNotNull]
+        public static async Task<ProxerResult<IEnumerable<Manga>>> GetPopularManga([NotNull] Senpai senpai)
         {
-            if (senpai == null)
-                return new ProxerResult<IEnumerable<Manga>>(new Exception[] {new ArgumentNullException(nameof(senpai))});
-
             HtmlDocument lDocument = new HtmlDocument();
             ProxerResult<string> lResult =
                 await
@@ -466,6 +472,7 @@ namespace Azuria.Main
             }
         }
 
+        [ItemNotNull]
         private async Task<ProxerResult> InitAvailableLang()
         {
             HtmlDocument lDocument = new HtmlDocument();
@@ -525,6 +532,7 @@ namespace Azuria.Main
             }
         }
 
+        [ItemNotNull]
         private async Task<ProxerResult> InitChapterCount()
         {
             HtmlDocument lDocument = new HtmlDocument();
@@ -567,6 +575,7 @@ namespace Azuria.Main
             }
         }
 
+        [ItemNotNull]
         private async Task<ProxerResult> InitMain()
         {
             HtmlDocument lDocument = new HtmlDocument();
@@ -729,6 +738,7 @@ namespace Azuria.Main
             }
         }
 
+        [ItemNotNull]
         private async Task<ProxerResult> InitType()
         {
             HtmlDocument lDocument = new HtmlDocument();
@@ -795,7 +805,7 @@ namespace Azuria.Main
             private string _titel;
             private string _uploaderName;
 
-            internal Chapter(int kapitelNr, Language lang, Manga parentManga, Senpai senpai)
+            internal Chapter(int kapitelNr, Language lang, [NotNull] Manga parentManga, [NotNull] Senpai senpai)
             {
                 this._senpai = senpai;
                 this._initFuncs = new Func<Task<ProxerResult>>[]
@@ -828,12 +838,14 @@ namespace Azuria.Main
             /// <summary>
             ///     Gibt den <see cref="Manga" /> zurück, zu dem das <see cref="Chapter">Kapitel</see> gehört.
             /// </summary>
+            [NotNull]
             public Manga ParentManga { get; set; }
 
             /// <summary>
             ///     Gibt die <see cref="Group">Gruppe</see> zurück, die das Kapitel übersetzt hat.
             /// </summary>
             /// <seealso cref="Init" />
+            [NotNull]
             public Group ScanlatorGruppe
             {
                 get { return this._scanlatorGruppe ?? new Group(-1, ""); }
@@ -844,6 +856,7 @@ namespace Azuria.Main
             ///     Gibt die Links zu den einzelnen Seiten des <see cref="Chapter">Kapitels</see> zurück.
             /// </summary>
             /// <seealso cref="Init" />
+            [NotNull]
             public IEnumerable<Uri> Seiten
             {
                 get { return this._seiten ?? new Uri[0]; }
@@ -859,6 +872,7 @@ namespace Azuria.Main
             ///     Gibt den Titel des <see cref="Chapter">Kapitels</see> zurück.
             /// </summary>
             /// <seealso cref="Init" />
+            [NotNull]
             public string Titel
             {
                 get { return this._titel ?? ""; }
@@ -869,6 +883,7 @@ namespace Azuria.Main
             ///     Gibt den Namen des Uploaders des <see cref="Chapter">Kapitels</see> zurück.
             /// </summary>
             /// <seealso cref="Init" />
+            [NotNull]
             public string UploaderName
             {
                 get { return this._uploaderName ?? ""; }
@@ -896,6 +911,7 @@ namespace Azuria.Main
             ///     der <see cref="Senpai">Benutzer</see> nicht die nötigen Rechte dafür hat.
             /// </exception>
             /// <seealso cref="Senpai.Login" />
+            [ItemNotNull]
             public async Task<ProxerResult> Init()
             {
                 int lFailedInits = 0;
@@ -928,6 +944,7 @@ namespace Azuria.Main
                 return lReturn;
             }
 
+            [ItemNotNull]
             private async Task<ProxerResult> InitChapters()
             {
                 HtmlDocument lDocument = new HtmlDocument();
@@ -958,7 +975,7 @@ namespace Azuria.Main
                 {
                     lDocument.LoadHtml(lResponse);
 
-                    HtmlNode[] lAllHtmlNodes = Utility.GetAllHtmlNodes(lDocument.DocumentNode.ChildNodes).ToArray();
+                    HtmlNode[] lAllHtmlNodes = lDocument.DocumentNode.DescendantsAndSelf().ToArray();
 
                     if (
                         lAllHtmlNodes.Any(
@@ -992,6 +1009,7 @@ namespace Azuria.Main
                 }
             }
 
+            [ItemNotNull]
             private async Task<ProxerResult> InitInfo()
             {
                 HtmlDocument lDocument = new HtmlDocument();
@@ -1018,7 +1036,7 @@ namespace Azuria.Main
 
                 string lResponse = lResult.Result;
 
-                if (lResponse.Contains("Dieses Kapitel ist leider noch nicht verfügbar :/"))
+                if (lResponse == null || lResponse.Contains("Dieses Kapitel ist leider noch nicht verfügbar :/"))
                 {
                     this.Verfuegbar = false;
                     return new ProxerResult();
@@ -1030,7 +1048,7 @@ namespace Azuria.Main
                 {
                     lDocument.LoadHtml(lResponse);
 
-                    HtmlNode[] lAllHtmlNodes = Utility.GetAllHtmlNodes(lDocument.DocumentNode.ChildNodes).ToArray();
+                    HtmlNode[] lAllHtmlNodes = lDocument.DocumentNode.DescendantsAndSelf().ToArray();
 
                     if (
                         lAllHtmlNodes.Any(

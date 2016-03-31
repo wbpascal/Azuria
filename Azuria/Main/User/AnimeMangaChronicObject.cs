@@ -5,6 +5,7 @@ using Azuria.Main.Minor;
 using Azuria.Utilities;
 using Azuria.Utilities.ErrorHandling;
 using HtmlAgilityPack;
+using JetBrains.Annotations;
 
 namespace Azuria.Main.User
 {
@@ -12,7 +13,7 @@ namespace Azuria.Main.User
     /// </summary>
     public class AnimeMangaChronicObject
     {
-        internal AnimeMangaChronicObject(IAnimeMangaObject animeMangaObject, Language language, int number)
+        internal AnimeMangaChronicObject([NotNull] IAnimeMangaObject animeMangaObject, Language language, int number)
         {
             this.AnimeMangaObject = animeMangaObject;
             this.Language = language;
@@ -23,6 +24,7 @@ namespace Azuria.Main.User
 
         /// <summary>
         /// </summary>
+        [NotNull]
         public IAnimeMangaObject AnimeMangaObject { get; }
 
         /// <summary>
@@ -50,7 +52,10 @@ namespace Azuria.Main.User
 
         #region
 
-        internal static ProxerResult<AnimeMangaChronicObject> GetChronicObjectFromNode(HtmlNode node, Senpai senpai,
+        [NotNull]
+        [ItemNotNull]
+        internal static ProxerResult<AnimeMangaChronicObject> GetChronicObjectFromNode([NotNull] HtmlNode node,
+            [NotNull] Senpai senpai,
             bool extended = false)
         {
             try
@@ -83,8 +88,9 @@ namespace Azuria.Main.User
                 else if (node.ChildNodes[2].InnerText.StartsWith("Eng"))
                     lLanguage = Language.English;
 
-                return
-                    new ProxerResult<AnimeMangaChronicObject>(new AnimeMangaChronicObject(lAnimeMangaObject, lLanguage,
+                return lAnimeMangaObject == null
+                    ? new ProxerResult<AnimeMangaChronicObject>(new Exception[] {new WrongResponseException()})
+                    : new ProxerResult<AnimeMangaChronicObject>(new AnimeMangaChronicObject(lAnimeMangaObject, lLanguage,
                         lNumber)
                     {
                         DateTime =

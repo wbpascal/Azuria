@@ -5,6 +5,7 @@ using Azuria.Main;
 using Azuria.Utilities.ErrorHandling;
 using Azuria.Utilities.Net;
 using HtmlAgilityPack;
+using JetBrains.Annotations;
 
 namespace Azuria
 {
@@ -28,11 +29,9 @@ namespace Azuria
         /// <param name="id">Die ID des <see cref="Main.Anime">Anime</see> oder <see cref="Main.Manga">Manga</see>.</param>
         /// <param name="senpai">Der Benutzer. (Muss eingeloggt sein)</param>
         /// <returns>Anime oder Manga der ID (Typecast erforderlich)</returns>
-        public static async Task<ProxerResult<IAnimeMangaObject>> GetAnimeMangaById(int id, Senpai senpai)
+        [ItemNotNull]
+        public static async Task<ProxerResult<IAnimeMangaObject>> GetAnimeMangaById(int id, [NotNull] Senpai senpai)
         {
-            if (senpai == null)
-                return new ProxerResult<IAnimeMangaObject>(new Exception[] {new ArgumentNullException(nameof(senpai))});
-
             HtmlDocument lDocument = new HtmlDocument();
 
             ProxerResult<string> lResult =

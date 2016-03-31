@@ -9,6 +9,7 @@ using Azuria.Utilities;
 using Azuria.Utilities.ErrorHandling;
 using Azuria.Utilities.Net;
 using HtmlAgilityPack;
+using JetBrains.Annotations;
 using Newtonsoft.Json;
 
 namespace Azuria.Community
@@ -73,7 +74,7 @@ namespace Azuria.Community
         /// <summary>
         ///     Gibt einen Wert an, ob die Privatnachrichten in einem bestimmten Intervall abgerufen werden, oder legt diesen fest.
         /// </summary>
-        public bool Activ
+        public bool Active
         {
             get { return this._getMessagesTimer.Enabled; }
             set
@@ -94,7 +95,6 @@ namespace Azuria.Community
         /// </summary>
         public int Id { get; }
 
-
         private bool IsConference { get; set; }
 
         /// <summary>
@@ -105,6 +105,7 @@ namespace Azuria.Community
         /// <summary>
         ///     Gibt den Leiter der Konferenz zurück. (<see cref="Init" /> muss dafür zunächst einmal aufgerufen werden)
         /// </summary>
+        [NotNull]
         public User Leader
         {
             get { return this._leiter ?? User.System; }
@@ -114,6 +115,7 @@ namespace Azuria.Community
         /// <summary>
         ///     Gibt alle Nachrichten aus der Konferenz in chronoligischer Ordnung zurück.
         /// </summary>
+        [NotNull]
         public IEnumerable<Message> Messages
         {
             get { return this._nachrichten ?? new List<Message>(); }
@@ -124,6 +126,7 @@ namespace Azuria.Community
         ///     Gibt alle Teilnehmer der Konferenz zurück (<see cref="Init" /> muss dafür zunächst einmal aufgerufen
         ///     werden)
         /// </summary>
+        [NotNull]
         public IEnumerable<User> Participants
         {
             get { return this._teilnehmer ?? new List<User>(); }
@@ -133,6 +136,7 @@ namespace Azuria.Community
         /// <summary>
         ///     Gibt den Titel der Konferenz zurück (<see cref="Init" /> muss dafür zunächst einmal aufgerufen werden)
         /// </summary>
+        [CanBeNull]
         public string Title { get; private set; }
 
         #endregion
@@ -146,6 +150,7 @@ namespace Azuria.Community
         /// <exception cref="WrongResponseException">Wird ausgelöst, wenn die Antwort des Servers nicht der Erwarteten entspricht.</exception>
         /// <seealso cref="Senpai.Login" />
         /// <returns>Gibt zurück, ob die Aktion erfolgreich war</returns>
+        [ItemNotNull]
         public async Task<ProxerResult<bool>> Block()
         {
             ProxerResult<string> lResult =
@@ -161,9 +166,10 @@ namespace Azuria.Community
 
             string lResponse = lResult.Result;
 
-            return new ProxerResult<bool>(lResponse.StartsWith("{\"error\":0"));
+            return new ProxerResult<bool>(lResponse?.StartsWith("{\"error\":0") ?? false);
         }
 
+        [ItemNotNull]
         private async Task<ProxerResult<bool>> CheckIsConference()
         {
             Dictionary<string, string> lPostArgs = new Dictionary<string, string>
@@ -209,6 +215,7 @@ namespace Azuria.Community
         /// <exception cref="WrongResponseException">Wird ausgelöst, wenn die Antwort des Servers nicht der Erwarteten entspricht.</exception>
         /// <seealso cref="Senpai.Login" />
         /// <returns>Gibt zurück, ob die Aktion erfolgreich war</returns>
+        [ItemNotNull]
         public async Task<ProxerResult<bool>> Favour()
         {
             ProxerResult<string> lResult =
@@ -224,15 +231,16 @@ namespace Azuria.Community
 
             string lResponse = lResult.Result;
 
-            return new ProxerResult<bool>(lResponse.StartsWith("{\"error\":0"));
+            return new ProxerResult<bool>(lResponse?.StartsWith("{\"error\":0") ?? false);
         }
 
+        [ItemNotNull]
         private async Task<ProxerResult> GetAllMessages()
         {
-            if (this.Messages != null && this.Messages.ToList().Count > 0)
+            if (this.Messages.ToList().Count > 0)
                 return await this.GetMessages(this.Messages.Last().MessageId);
 
-            if (this.Messages != null && this.Messages.ToList().Count != 0)
+            if (this.Messages.ToList().Count != 0)
                 return new ProxerResult
                 {
                     Success = false
@@ -251,8 +259,8 @@ namespace Azuria.Community
 
             string lResponse = lResult.Result;
 
-            if (lResponse.Equals("{\"uid\":\"" + this._senpai.Me.Id +
-                                 "\",\"error\":1,\"msg\":\"Ein Fehler ist passiert.\"}"))
+            if (lResponse == null || this._senpai.Me == null || lResponse.Equals("{\"uid\":\"" + this._senpai.Me.Id +
+                                                                                 "\",\"error\":1,\"msg\":\"Ein Fehler ist passiert.\"}"))
                 return new ProxerResult
                 {
                     Success = false
@@ -263,7 +271,7 @@ namespace Azuria.Community
                 if (!lResultMessages.Success)
                     return new ProxerResult(new Exception[] {new WrongResponseException(lResponse)});
 
-                this.Messages = lResultMessages.Result;
+                if (lResultMessages.Result != null) this.Messages = lResultMessages.Result;
 
                 if (this.Messages.Any(
                     x => x.MessageAction == Message.Action.AddUser || x.MessageAction == Message.Action.RemoveUser))
@@ -285,6 +293,7 @@ namespace Azuria.Community
             return new ProxerResult();
         }
 
+        [ItemNotNull]
         private async Task<ProxerResult> GetAllParticipants()
         {
             HtmlDocument lDocument = new HtmlDocument();
@@ -326,6 +335,7 @@ namespace Azuria.Community
             }
         }
 
+        [ItemNotNull]
         private async Task<ProxerResult> GetLeader()
         {
             if (!this.IsConference) return new ProxerResult();
@@ -359,7 +369,7 @@ namespace Azuria.Community
                     };
 
                 this.Leader =
-                    this.Participants?.FirstOrDefault(
+                    this.Participants.FirstOrDefault(
                         x => x.UserName.Equals(lDict["message"].Remove(0, "Konferenzleiter: ".Length))) ?? User.System;
 
                 return new ProxerResult();
@@ -370,15 +380,17 @@ namespace Azuria.Community
             }
         }
 
-        private async Task<ProxerResult> GetMessages(int mid)
+        [ItemNotNull]
+        private async Task<ProxerResult> GetMessages(int startMessageId)
         {
-            if (this.Messages == null || this.Messages.Count(x => x.MessageId == mid) == 0)
+            if (this.Messages.Count(x => x.MessageId == startMessageId) == 0)
                 return await this.GetAllMessages();
 
             ProxerResult<string> lResult =
                 await
                     HttpUtility.GetResponseErrorHandling(
-                        "http://proxer.me/messages?format=json&json=newmessages&id=" + this.Id + "&mid=" + mid,
+                        "http://proxer.me/messages?format=json&json=newmessages&id=" + this.Id + "&mid=" +
+                        startMessageId,
                         this._senpai.LoginCookies,
                         this._senpai.ErrHandler,
                         this._senpai);
@@ -388,8 +400,8 @@ namespace Azuria.Community
 
             string lResponse = lResult.Result;
 
-            if (lResponse.Equals("{\"uid\":\"" + this._senpai.Me.Id +
-                                 "\",\"error\":1,\"msg\":\"Ein Fehler ist passiert.\"}"))
+            if (lResponse == null || this._senpai.Me == null || lResponse.Equals("{\"uid\":\"" + this._senpai.Me.Id +
+                                                                                 "\",\"error\":1,\"msg\":\"Ein Fehler ist passiert.\"}"))
                 return new ProxerResult
                 {
                     Success = false
@@ -398,7 +410,7 @@ namespace Azuria.Community
             try
             {
                 ProxerResult<List<Message>> lResultMessages = await this.ProcessMessages(lResponse);
-                if (!lResultMessages.Success)
+                if (!lResultMessages.Success || lResultMessages.Result == null)
                     return new ProxerResult(new Exception[] {new WrongResponseException(lResponse)});
 
                 List<Message> lNewMessages = lResultMessages.Result;
@@ -427,12 +439,12 @@ namespace Azuria.Community
             return new ProxerResult();
         }
 
-        private async void GetMessagesTimer(Timer timer)
+        private async void GetMessagesTimer([NotNull] Timer timer)
         {
             if (this.IsInitialized)
             {
                 ProxerResult lResult;
-                if (this.Messages != null && this.Messages.Any())
+                if (this.Messages.Any())
                     lResult = await this.GetMessages(this.Messages.Last().MessageId);
                 else lResult = await this.GetAllMessages();
 
@@ -447,9 +459,10 @@ namespace Azuria.Community
                 }
             }
 
-            timer?.Start();
+            timer.Start();
         }
 
+        [ItemNotNull]
         private async Task<ProxerResult> GetTitle()
         {
             if (this.IsConference)
@@ -487,7 +500,7 @@ namespace Azuria.Community
                 }
             }
 
-            if (this.Participants.ToList().Count > 1)
+            if (this.Participants.ToList().Count > 1 && this._senpai.Me != null)
                 this.Title = this.Participants.Where(x => x.Id != this._senpai.Me.Id).ToArray()[0].UserName;
 
             return new ProxerResult();
@@ -500,6 +513,7 @@ namespace Azuria.Community
         /// <exception cref="NotLoggedInException">Wird ausgelöst, wenn der <see cref="Senpai">Benutzer</see> nicht eingeloggt ist.</exception>
         /// <exception cref="WrongResponseException">Wird ausgelöst, wenn die Antwort des Servers nicht der Erwarteten entspricht.</exception>
         /// <seealso cref="Senpai.Login" />
+        [ItemNotNull]
         public async Task<ProxerResult> Init()
         {
             if (!this._senpai.IsLoggedIn)
@@ -552,7 +566,7 @@ namespace Azuria.Community
         {
             Timer timer = s as Timer;
             timer?.Stop();
-            this.GetMessagesTimer(timer);
+            if (timer != null) this.GetMessagesTimer(timer);
         }
 
         /// <summary>
@@ -568,11 +582,9 @@ namespace Azuria.Community
         /// <param name="senpai">Muss eingeloggt sein</param>
         /// <seealso cref="Senpai.Login" />
         /// <returns>Benutzer ist Teilnehmer der Konferenz. True oder False.</returns>
-        public static async Task<ProxerResult<bool>> Participates(int id, Senpai senpai)
+        [ItemNotNull]
+        public static async Task<ProxerResult<bool>> Participates(int id, [NotNull] Senpai senpai)
         {
-            if (senpai == null)
-                return new ProxerResult<bool>(new Exception[] {new ArgumentNullException(nameof(senpai))});
-
             if (!senpai.IsLoggedIn) return new ProxerResult<bool>(new Exception[] {new NotLoggedInException(senpai)});
 
             Dictionary<string, string> lPostArgs = new Dictionary<string, string>
@@ -605,7 +617,8 @@ namespace Azuria.Community
             }
         }
 
-        private async Task<ProxerResult<List<Message>>> ProcessMessages(string messages)
+        [ItemNotNull]
+        private async Task<ProxerResult<List<Message>>> ProcessMessages([NotNull] string messages)
         {
             List<Message> lReturn = new List<Message>();
 
@@ -666,11 +679,21 @@ namespace Azuria.Community
         /// </summary>
         /// <exception cref="NotLoggedInException">Wird ausgelöst, wenn der <see cref="Senpai">Benutzer</see> nicht eingeloggt ist.</exception>
         /// <exception cref="WrongResponseException">Wird ausgelöst, wenn die Antwort des Servers nicht der Erwarteten entspricht.</exception>
+        /// <exception cref="WrongResponseException">
+        ///     Wird ausgelöst, wenn <paramref name="nachricht" /> null (oder Nothing in
+        ///     Visual Basic) oder leer ist.
+        /// </exception>
         /// <param name="nachricht">Die Nachricht, die gesendet werden soll</param>
         /// <seealso cref="Senpai.Login" />
         /// <returns>Gibt zurück, ob die Aktion erfolgreich war</returns>
-        public async Task<ProxerResult<bool>> SendMessage(string nachricht)
+        [ItemNotNull]
+        public async Task<ProxerResult<bool>> SendMessage([NotNull] string nachricht)
         {
+            if (string.IsNullOrEmpty(nachricht))
+                return
+                    new ProxerResult<bool>(new[]
+                    {new ArgumentException("Argument is null or empty", nameof(nachricht))});
+
             this._getMessagesTimer.Stop();
 
             Dictionary<string, string> lPostArgs = new Dictionary<string, string>
@@ -731,6 +754,7 @@ namespace Azuria.Community
         /// <exception cref="WrongResponseException">Wird ausgelöst, wenn die Antwort des Servers nicht der Erwarteten entspricht.</exception>
         /// <seealso cref="Senpai.Login" />
         /// <returns>Gibt zurück, ob die Aktion erfolgreich war</returns>
+        [ItemNotNull]
         public async Task<ProxerResult<bool>> SetUnread()
         {
             ProxerResult<string> lResult =
@@ -746,7 +770,7 @@ namespace Azuria.Community
 
             string lResponse = lResult.Result;
 
-            return new ProxerResult<bool>(lResponse.StartsWith("{\"error\":0"));
+            return new ProxerResult<bool>(lResponse?.StartsWith("{\"error\":0") ?? false);
         }
 
         /// <summary>
@@ -756,6 +780,7 @@ namespace Azuria.Community
         /// <exception cref="WrongResponseException">Wird ausgelöst, wenn die Antwort des Servers nicht der Erwarteten entspricht.</exception>
         /// <seealso cref="Senpai.Login" />
         /// <returns>Gibt zurück, ob die Aktion erfolgreich war</returns>
+        [ItemNotNull]
         public async Task<ProxerResult<bool>> Unblock()
         {
             ProxerResult<string> lResult =
@@ -771,7 +796,7 @@ namespace Azuria.Community
 
             string lResponse = lResult.Result;
 
-            return new ProxerResult<bool>(lResponse.StartsWith("{\"error\":0"));
+            return new ProxerResult<bool>(lResponse?.StartsWith("{\"error\":0") ?? false);
         }
 
         /// <summary>
@@ -781,6 +806,7 @@ namespace Azuria.Community
         /// <exception cref="WrongResponseException">Wird ausgelöst, wenn die Antwort des Servers nicht der Erwarteten entspricht.</exception>
         /// <seealso cref="Senpai.Login" />
         /// <returns>Gibt zurück, ob die Aktion erfolgreich war</returns>
+        [ItemNotNull]
         public async Task<ProxerResult<bool>> Unfavour()
         {
             ProxerResult<string> lResult =
@@ -796,7 +822,7 @@ namespace Azuria.Community
 
             string lResponse = lResult.Result;
 
-            return new ProxerResult<bool>(lResponse.StartsWith("{\"error\":0"));
+            return new ProxerResult<bool>(lResponse?.StartsWith("{\"error\":0") ?? false);
         }
 
         #endregion
@@ -842,12 +868,12 @@ namespace Azuria.Community
                 GetAction
             }
 
-            internal Message(User sender, int mid, string nachricht, int unix, Action action)
+            internal Message([NotNull] User sender, int mid, [NotNull] string nachricht, int unix, Action action)
                 : this(sender, mid, nachricht, Utility.UnixTimeStampToDateTime(unix), action)
             {
             }
 
-            internal Message(User sender, int mid, string nachricht, DateTime date, Action action)
+            internal Message([NotNull] User sender, int mid, [NotNull] string nachricht, DateTime date, Action action)
             {
                 this.Sender = sender;
                 this.MessageId = mid;
@@ -861,6 +887,7 @@ namespace Azuria.Community
             /// <summary>
             ///     Gibt den Text der Nachricht zurück.
             /// </summary>
+            [NotNull]
             public string Content { get; private set; }
 
             /// <summary>
@@ -876,6 +903,7 @@ namespace Azuria.Community
             /// <summary>
             ///     Gibt den Sender der Nachricht zurück.
             /// </summary>
+            [NotNull]
             public User Sender { get; private set; }
 
             /// <summary>

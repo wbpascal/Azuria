@@ -1,4 +1,5 @@
 ﻿using Azuria.Notifications;
+using JetBrains.Annotations;
 
 namespace Azuria.EventArguments
 {
@@ -16,7 +17,7 @@ namespace Azuria.EventArguments
     {
         private readonly Senpai _senpai;
 
-        internal FriendNotificationEventArgs(int count, Senpai senpai)
+        internal FriendNotificationEventArgs(int count, [NotNull] Senpai senpai)
         {
             this._senpai = senpai;
             this.Type = NotificationEventArgsType.Friend;
@@ -44,6 +45,7 @@ namespace Azuria.EventArguments
         /// <summary>
         ///     Gibt ein Objekt zurück, mithilfe dessen die Benachrichtigungen abgerufen werden können.
         /// </summary>
+        [NotNull]
         public FriendRequestCollection Notifications => this._senpai.FriendRequests;
 
         #endregion

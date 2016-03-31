@@ -107,7 +107,7 @@ namespace Azuria.Example
 
             //Abrufen der Nachrichten im Hintergrund wird aktiviert
             //Durch setzen auf false kann diese Funktion wieder deaktiviert werden
-            this._conference.Activ = true;
+            this._conference.Active = true;
         }
 
         #endregion

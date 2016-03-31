@@ -5,6 +5,7 @@ using Azuria.Exceptions;
 using Azuria.Main.Minor;
 using Azuria.Utilities;
 using Azuria.Utilities.ErrorHandling;
+using JetBrains.Annotations;
 
 namespace Azuria.Main.Search
 {
@@ -99,10 +100,6 @@ namespace Azuria.Main.Search
         /// </summary>
         /// <exception cref="WrongResponseException">Wird ausgelöst, wenn die Antwort des Servers nicht der Erwarteten entspricht.</exception>
         /// <exception cref="ArgumentNullException">
-        ///     Wird ausgelöst, wenn <paramref name="senpai" /> null (oder Nothing in Visual
-        ///     Basic) ist.
-        /// </exception>
-        /// <exception cref="ArgumentNullException">
         ///     Wird ausgelöst, wenn <paramref name="name" /> null (oder Nothing in Visual
         ///     Basic) ist.
         /// </exception>
@@ -110,13 +107,12 @@ namespace Azuria.Main.Search
         /// <param name="name">Der String, nachdem gesucht werden soll.</param>
         /// <param name="senpai"></param>
         /// <returns></returns>
-        public static async Task<ProxerResult<SearchResult<T>>> Search<T>(string name, Senpai senpai)
+        [ItemNotNull]
+        public static async Task<ProxerResult<SearchResult<T>>> Search<T>([NotNull] string name, [NotNull] Senpai senpai)
             where T : ISearchableObject
         {
             if (string.IsNullOrEmpty(name))
                 return new ProxerResult<SearchResult<T>>(new Exception[] {new ArgumentNullException(nameof(name))});
-            if (senpai == null)
-                return new ProxerResult<SearchResult<T>>(new[] {new ArgumentNullException(nameof(senpai))});
 
             if (typeof (T) == typeof (IAnimeMangaObject) ||
                 (typeof (T).HasParameterlessConstructor() &&
@@ -146,10 +142,6 @@ namespace Azuria.Main.Search
         /// </summary>
         /// <exception cref="WrongResponseException">Wird ausgelöst, wenn die Antwort des Servers nicht der Erwarteten entspricht.</exception>
         /// <exception cref="ArgumentNullException">
-        ///     Wird ausgelöst, wenn <paramref name="senpai" /> null (oder Nothing in Visual
-        ///     Basic) ist.
-        /// </exception>
-        /// <exception cref="ArgumentNullException">
         ///     Wird ausgelöst, wenn <paramref name="name" /> null (Nothing in Visual Basic)
         ///     oder leer ist.
         /// </exception>
@@ -166,15 +158,15 @@ namespace Azuria.Main.Search
         /// <param name="sort">Die Reihenfolge, in der Suchergebnisse zurückgegeben werden sollen.</param>
         /// <param name="type"></param>
         /// <returns>Eine Auflistung aller Suchergebnisse, vom Typ <typeparamref name="T" /></returns>
-        public static async Task<ProxerResult<SearchResult<T>>> SearchAnimeManga<T>(string name, Senpai senpai,
+        [ItemNotNull]
+        public static async Task<ProxerResult<SearchResult<T>>> SearchAnimeManga<T>([NotNull] string name,
+            [NotNull] Senpai senpai,
             AnimeMangaType? type = null, IEnumerable<GenreObject> genreContains = null,
             IEnumerable<GenreObject> genreExcludes = null, IEnumerable<Fsk> fskContains = null,
             Language? sprache = null, SortAnimeManga? sort = null) where T : IAnimeMangaObject
         {
             if (string.IsNullOrEmpty(name))
                 return new ProxerResult<SearchResult<T>>(new Exception[] {new ArgumentNullException(nameof(name))});
-            if (senpai == null)
-                return new ProxerResult<SearchResult<T>>(new[] {new ArgumentNullException(nameof(senpai))});
 
             string lType = type == null
                 ? "all"

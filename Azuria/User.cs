@@ -12,6 +12,7 @@ using Azuria.Utilities;
 using Azuria.Utilities.ErrorHandling;
 using Azuria.Utilities.Net;
 using HtmlAgilityPack;
+using JetBrains.Annotations;
 using Newtonsoft.Json;
 
 namespace Azuria
@@ -24,13 +25,14 @@ namespace Azuria
         /// <summary>
         ///     Representiert das System.
         /// </summary>
-        public static User System = new User("System", -1, new Senpai());
+        [NotNull] public static User System = new User("System", -1, new Senpai());
 
         private readonly Func<Task<ProxerResult>>[] _initFuncs;
 
         private readonly Senpai _senpai;
         private List<KeyValuePair<AnimeMangaProgress, AnimeMangaProgressObject>> _animeList;
         private Uri _avatar;
+        private IEnumerable<AnimeMangaChronicObject> _chronic;
         private IEnumerable<Anime> _favouritenAnime;
         private IEnumerable<Manga> _favouritenManga;
         private List<User> _freunde;
@@ -46,25 +48,26 @@ namespace Azuria
         /// </summary>
         /// <param name="userId">Die ID des Benutzers</param>
         /// <param name="senpai">Wird benötigt um einige Eigenschaften abzurufen</param>
-        public User(int userId, Senpai senpai) : this("", userId, senpai)
+        public User(int userId, [NotNull] Senpai senpai) : this("", userId, senpai)
         {
         }
 
-        internal User(string name, int userId, Senpai senpai) : this(name, userId, null, senpai)
+        internal User([NotNull] string name, int userId, [NotNull] Senpai senpai) : this(name, userId, null, senpai)
         {
         }
 
-        internal User(string name, int userId, Uri avatar, int points, Senpai senpai)
+        internal User([NotNull] string name, int userId, [CanBeNull] Uri avatar, [NotNull] Senpai senpai)
+            : this(name, userId, avatar, false, senpai)
+        {
+        }
+
+        internal User([NotNull] string name, int userId, [CanBeNull] Uri avatar, int points, [NotNull] Senpai senpai)
             : this(name, userId, avatar, senpai)
         {
             this.Points = points;
         }
 
-        internal User(string name, int userId, Uri avatar, Senpai senpai) : this(name, userId, avatar, false, senpai)
-        {
-        }
-
-        internal User(string name, int userId, Uri avatar, bool online, Senpai senpai)
+        internal User([NotNull] string name, int userId, [CanBeNull] Uri avatar, bool online, [NotNull] Senpai senpai)
         {
             this._senpai = senpai;
             this._initFuncs = new Func<Task<ProxerResult>>[]
@@ -88,6 +91,7 @@ namespace Azuria
         ///     in seinem Profil markiert hat.
         /// </summary>
         /// <seealso cref="Init" />
+        [NotNull]
         public IEnumerable<KeyValuePair<AnimeMangaProgress, AnimeMangaProgressObject>> Anime
             => this._animeList ??
                new List<KeyValuePair<AnimeMangaProgress, AnimeMangaProgressObject>>();
@@ -98,6 +102,7 @@ namespace Azuria
         ///     <para>Diese Eigenschaft muss durch <see cref="Init" /> initialisiert werden.</para>
         /// </summary>
         /// <seealso cref="Init" />
+        [NotNull]
         public Uri Avatar
         {
             get
@@ -115,7 +120,12 @@ namespace Azuria
         ///     <para>Diese Eigenschaft muss durch <see cref="Init" /> initialisiert werden.</para>
         /// </summary>
         /// <seealso cref="Init" />
-        public IEnumerable<AnimeMangaChronicObject> Chronic { get; private set; }
+        [NotNull]
+        public IEnumerable<AnimeMangaChronicObject> Chronic
+        {
+            get { return this._chronic ?? new AnimeMangaChronicObject[0]; }
+            private set { this._chronic = value; }
+        }
 
         /// <summary>
         ///     Gibt die Anime-Favouriten des Benutzers zurück.
@@ -123,6 +133,7 @@ namespace Azuria
         ///     <para>Diese Eigenschaft muss durch <see cref="Init" /> initialisiert werden.</para>
         /// </summary>
         /// <seealso cref="Init" />
+        [NotNull]
         public IEnumerable<Anime> FavouriteAnime
         {
             get { return this._favouritenAnime ?? new Anime[0]; }
@@ -135,6 +146,7 @@ namespace Azuria
         ///     <para>Diese Eigenschaft muss durch <see cref="Init" /> initialisiert werden.</para>
         /// </summary>
         /// <seealso cref="Init" />
+        [NotNull]
         public IEnumerable<Manga> FavouriteManga
         {
             get { return this._favouritenManga ?? new Manga[0]; }
@@ -147,6 +159,7 @@ namespace Azuria
         ///     <para>Diese Eigenschaft muss durch <see cref="Init" /> initialisiert werden.</para>
         /// </summary>
         /// <seealso cref="Init" />
+        [NotNull]
         public List<User> Friends
         {
             get { return this._freunde ?? new List<User>(); }
@@ -165,6 +178,7 @@ namespace Azuria
         ///     <para>Diese Eigenschaft muss durch <see cref="Init" /> initialisiert werden.</para>
         /// </summary>
         /// <seealso cref="Init" />
+        [NotNull]
         public string Info
         {
             get { return this._info ?? ""; }
@@ -177,6 +191,7 @@ namespace Azuria
         ///     <para>Diese Eigenschaft muss durch <see cref="Init" /> initialisiert werden.</para>
         /// </summary>
         /// <seealso cref="Init" />
+        [NotNull]
         public string InfoHtml
         {
             get { return this._infoHtml ?? ""; }
@@ -201,6 +216,7 @@ namespace Azuria
         ///     in seinem Profil markiert hat.
         /// </summary>
         /// <seealso cref="Init" />
+        [NotNull]
         public IEnumerable<KeyValuePair<AnimeMangaProgress, AnimeMangaProgressObject>> Manga
             => this._mangaList ??
                new List<KeyValuePair<AnimeMangaProgress, AnimeMangaProgressObject>>();
@@ -219,6 +235,7 @@ namespace Azuria
         ///     <para>Diese Eigenschaft muss durch <see cref="Init" /> initialisiert werden.</para>
         /// </summary>
         /// <seealso cref="Init" />
+        [NotNull]
         public string Ranking
         {
             get { return this._rang ?? ""; }
@@ -231,6 +248,7 @@ namespace Azuria
         ///     <para>Diese Eigenschaft muss durch <see cref="Init" /> initialisiert werden.</para>
         /// </summary>
         /// <seealso cref="Init" />
+        [NotNull]
         public string Status
         {
             get { return this._status ?? ""; }
@@ -240,6 +258,7 @@ namespace Azuria
         /// <summary>
         ///     Gibt den Benutzernamen des Benutzers zurück.
         /// </summary>
+        [NotNull]
         public string UserName
         {
             get { return this._userName ?? ""; }
@@ -257,27 +276,16 @@ namespace Azuria
         ///     Wird ausgelöst, wenn die Eigenschaften der Parameter noch nicht
         ///     initialisiert sind.
         /// </exception>
-        /// <exception cref="ArgumentNullException">
-        ///     Wird ausgelöst, wenn <paramref name="user1" /> null (oder Nothing in Visual
-        ///     Basic) ist.
-        /// </exception>
-        /// <exception cref="ArgumentNullException">
-        ///     Wird ausgelöst, wenn <paramref name="user2" /> null (oder Nothing in Visual
-        ///     Basic) ist.
-        /// </exception>
         /// <param name="user1">Benutzer 1</param>
         /// <param name="user2">Benutzer 2</param>
         /// <returns>Benutzer sind Freunde. True oder False.</returns>
-        public static ProxerResult<bool> AreUserFriends(User user1, User user2)
+        [NotNull]
+        public static ProxerResult<bool> AreUserFriends([NotNull] User user1, [NotNull] User user2)
         {
-            if (user1 == null)
-                return new ProxerResult<bool>(new Exception[] {new ArgumentNullException(nameof(user1))});
-
-            return user2 == null
-                ? new ProxerResult<bool>(new Exception[] {new ArgumentNullException(nameof(user2))})
-                : new ProxerResult<bool>(user1.Friends.Any(item => item.Id == user2.Id));
+            return new ProxerResult<bool>(user1.Friends.Any(item => item.Id == user2.Id));
         }
 
+        [ItemNotNull]
         private async Task<ProxerResult<HtmlNode[]>> GetAllFriendNodes()
         {
             ProxerResult<string> lResult;
@@ -346,6 +354,7 @@ namespace Azuria
         /// <param name="startIndex">Der Start-Index der ausgegebenen Kommentare.</param>
         /// <param name="count">Die Anzahl der ausgegebenen Kommentare ab dem angegebenen <paramref name="startIndex" />.</param>
         /// <returns>Eine Aufzählung mit den Kommentaren.</returns>
+        [ItemNotNull]
         public async Task<ProxerResult<IEnumerable<Comment>>> GetComments(int startIndex, int count)
         {
             return
@@ -375,11 +384,9 @@ namespace Azuria
         /// <param name="senpai">Login-Cookies werden benötigt</param>
         /// <seealso cref="Senpai.Login" />
         /// <returns></returns>
-        public static async Task<ProxerResult<string>> GetUNameFromId(int id, Senpai senpai)
+        [ItemNotNull]
+        public static async Task<ProxerResult<string>> GetUNameFromId(int id, [NotNull] Senpai senpai)
         {
-            if (senpai == null)
-                return new ProxerResult<string>(new Exception[] {new ArgumentNullException(nameof(senpai))});
-
             HtmlDocument lDocument = new HtmlDocument();
             Func<string, ProxerResult> lCheckFunc = s =>
             {
@@ -424,6 +431,7 @@ namespace Azuria
         ///     der <see cref="Senpai">Benutzer</see> nicht die nötigen Rechte dafür hat.
         /// </exception>
         /// <seealso cref="Senpai.Login" />
+        [ItemNotNull]
         public async Task<ProxerResult> Init()
         {
             int lFailedInits = 0;
@@ -456,6 +464,7 @@ namespace Azuria
             return lReturn;
         }
 
+        [ItemNotNull]
         private async Task<ProxerResult> InitAnime()
         {
             if (this.Id == -1) return new ProxerResult();
@@ -517,6 +526,7 @@ namespace Azuria
             }
         }
 
+        [ItemNotNull]
         private async Task<ProxerResult> InitChronic()
         {
             if (this.Id == -1) return new ProxerResult();
@@ -568,6 +578,7 @@ namespace Azuria
             }
         }
 
+        [ItemNotNull]
         private async Task<ProxerResult> InitFriends()
         {
             if (this.Id == -1) return new ProxerResult();
@@ -575,7 +586,7 @@ namespace Azuria
             this.Friends = new List<User>();
 
             ProxerResult<HtmlNode[]> lResult = await this.GetAllFriendNodes();
-            if (!lResult.Success) return new ProxerResult(lResult.Exceptions);
+            if (!lResult.Success || lResult.Result == null) return new ProxerResult(lResult.Exceptions);
             try
             {
                 foreach (HtmlNode curFriendNode in lResult.Result)
@@ -607,6 +618,7 @@ namespace Azuria
             }
         }
 
+        [ItemNotNull]
         private async Task<ProxerResult> InitInfos()
         {
             if (this.Id == -1) return new ProxerResult();
@@ -653,6 +665,7 @@ namespace Azuria
             }
         }
 
+        [ItemNotNull]
         private async Task<ProxerResult> InitMainInfo()
         {
             if (this.Id == -1) return new ProxerResult();
@@ -716,6 +729,7 @@ namespace Azuria
             }
         }
 
+        [ItemNotNull]
         private async Task<ProxerResult> InitManga()
         {
             if (this.Id == -1) return new ProxerResult();
@@ -777,8 +791,9 @@ namespace Azuria
             }
         }
 
-        private ProxerResult ProcessAnimeMangaProgressNodes<T>(HtmlDocument htmlDocument,
-            ref List<KeyValuePair<AnimeMangaProgress, AnimeMangaProgressObject>> saveList)
+        [NotNull]
+        private ProxerResult ProcessAnimeMangaProgressNodes<T>([NotNull] HtmlDocument htmlDocument,
+            [NotNull] ref List<KeyValuePair<AnimeMangaProgress, AnimeMangaProgressObject>> saveList)
             where T : IAnimeMangaObject
         {
             try
@@ -819,12 +834,13 @@ namespace Azuria
                     IAnimeMangaObject lAnimeManga =
                         lConstructorToInvoke.Invoke(lActivatorParameters) as IAnimeMangaObject;
 
-                    saveList.Add(
-                        new KeyValuePair<AnimeMangaProgress, AnimeMangaProgressObject>(AnimeMangaProgress.Finished,
-                            new AnimeMangaProgressObject(this, lAnimeManga,
-                                Convert.ToInt32(animeMangaNode.ChildNodes[4].InnerText.Split('/')[0].Trim()),
-                                Convert.ToInt32(animeMangaNode.ChildNodes[4].InnerText.Split('/')[1].Trim()),
-                                AnimeMangaProgress.Finished)));
+                    if (lAnimeManga != null)
+                        saveList.Add(
+                            new KeyValuePair<AnimeMangaProgress, AnimeMangaProgressObject>(AnimeMangaProgress.Finished,
+                                new AnimeMangaProgressObject(this, lAnimeManga,
+                                    Convert.ToInt32(animeMangaNode.ChildNodes[4].InnerText.Split('/')[0].Trim()),
+                                    Convert.ToInt32(animeMangaNode.ChildNodes[4].InnerText.Split('/')[1].Trim()),
+                                    AnimeMangaProgress.Finished)));
                 }
 
                 foreach (
@@ -846,12 +862,14 @@ namespace Azuria
                     IAnimeMangaObject lAnimeManga =
                         lConstructorToInvoke.Invoke(lActivatorParameters) as IAnimeMangaObject;
 
-                    saveList.Add(
-                        new KeyValuePair<AnimeMangaProgress, AnimeMangaProgressObject>(AnimeMangaProgress.InProgress,
-                            new AnimeMangaProgressObject(this, lAnimeManga,
-                                Convert.ToInt32(animeMangaNode.ChildNodes[4].InnerText.Split('/')[0].Trim()),
-                                Convert.ToInt32(animeMangaNode.ChildNodes[4].InnerText.Split('/')[1].Trim()),
-                                AnimeMangaProgress.Finished)));
+                    if (lAnimeManga != null)
+                        saveList.Add(
+                            new KeyValuePair<AnimeMangaProgress, AnimeMangaProgressObject>(
+                                AnimeMangaProgress.InProgress,
+                                new AnimeMangaProgressObject(this, lAnimeManga,
+                                    Convert.ToInt32(animeMangaNode.ChildNodes[4].InnerText.Split('/')[0].Trim()),
+                                    Convert.ToInt32(animeMangaNode.ChildNodes[4].InnerText.Split('/')[1].Trim()),
+                                    AnimeMangaProgress.Finished)));
                 }
 
                 foreach (
@@ -873,12 +891,13 @@ namespace Azuria
                     IAnimeMangaObject lAnimeManga =
                         lConstructorToInvoke.Invoke(lActivatorParameters) as IAnimeMangaObject;
 
-                    saveList.Add(
-                        new KeyValuePair<AnimeMangaProgress, AnimeMangaProgressObject>(AnimeMangaProgress.Planned,
-                            new AnimeMangaProgressObject(this, lAnimeManga,
-                                Convert.ToInt32(animeMangaNode.ChildNodes[4].InnerText.Split('/')[0].Trim()),
-                                Convert.ToInt32(animeMangaNode.ChildNodes[4].InnerText.Split('/')[1].Trim()),
-                                AnimeMangaProgress.Finished)));
+                    if (lAnimeManga != null)
+                        saveList.Add(
+                            new KeyValuePair<AnimeMangaProgress, AnimeMangaProgressObject>(AnimeMangaProgress.Planned,
+                                new AnimeMangaProgressObject(this, lAnimeManga,
+                                    Convert.ToInt32(animeMangaNode.ChildNodes[4].InnerText.Split('/')[0].Trim()),
+                                    Convert.ToInt32(animeMangaNode.ChildNodes[4].InnerText.Split('/')[1].Trim()),
+                                    AnimeMangaProgress.Finished)));
                 }
 
                 foreach (
@@ -900,12 +919,13 @@ namespace Azuria
                     IAnimeMangaObject lAnimeManga =
                         lConstructorToInvoke.Invoke(lActivatorParameters) as IAnimeMangaObject;
 
-                    saveList.Add(
-                        new KeyValuePair<AnimeMangaProgress, AnimeMangaProgressObject>(AnimeMangaProgress.Aborted,
-                            new AnimeMangaProgressObject(this, lAnimeManga,
-                                Convert.ToInt32(animeMangaNode.ChildNodes[4].InnerText.Split('/')[0].Trim()),
-                                Convert.ToInt32(animeMangaNode.ChildNodes[4].InnerText.Split('/')[1].Trim()),
-                                AnimeMangaProgress.Finished)));
+                    if (lAnimeManga != null)
+                        saveList.Add(
+                            new KeyValuePair<AnimeMangaProgress, AnimeMangaProgressObject>(AnimeMangaProgress.Aborted,
+                                new AnimeMangaProgressObject(this, lAnimeManga,
+                                    Convert.ToInt32(animeMangaNode.ChildNodes[4].InnerText.Split('/')[0].Trim()),
+                                    Convert.ToInt32(animeMangaNode.ChildNodes[4].InnerText.Split('/')[1].Trim()),
+                                    AnimeMangaProgress.Finished)));
                 }
 
                 #endregion
@@ -924,6 +944,7 @@ namespace Azuria
         /// <exception cref="WrongResponseException">Wird ausgelöst, wenn die Antwort des Servers nicht der Erwarteten entspricht.</exception>
         /// <exception cref="NotLoggedInException">Wird ausgelöst, wenn der <see cref="Senpai">Benutzer</see> nicht eingeloggt ist.</exception>
         /// <returns>Einen boolischen Wert, der angibt, ob die Aktion erfolgreich war.</returns>
+        [ItemNotNull]
         public async Task<ProxerResult<bool>> SendFriendRequest()
         {
             if (this.Id == -1) return new ProxerResult<bool>(new Exception[0]) {Success = false};

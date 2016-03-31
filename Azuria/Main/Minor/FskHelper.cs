@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using JetBrains.Annotations;
 
 namespace Azuria.Main.Minor
 {
@@ -12,6 +13,7 @@ namespace Azuria.Main.Minor
         /// <summary>
         ///     Ein Wörterbuch, dass bei der Umwandlung von <see cref="Fsk">Fsk</see> in Strings hilft.
         /// </summary>
+        [NotNull]
         public static Dictionary<Fsk, string> FskToStringDictionary => new Dictionary<Fsk, string>
         {
             {Fsk.Fsk0, "fsk0"},
@@ -25,6 +27,7 @@ namespace Azuria.Main.Minor
             {Fsk.Sex, "sex"}
         };
 
+        [NotNull]
         internal static Dictionary<string, Fsk> StringToFskDictionary => new Dictionary<string, Fsk>
         {
             {"fsk0", Fsk.Fsk0},

@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using Azuria.Exceptions;
 using Azuria.Utilities.ErrorHandling;
 using Azuria.Utilities.Net;
+using JetBrains.Annotations;
 
 namespace Azuria.Notifications
 {
@@ -16,7 +17,7 @@ namespace Azuria.Notifications
         private bool _accepted;
         private bool _denied;
 
-        internal FriendRequestObject(string userName, int userUserId, Senpai senpai)
+        internal FriendRequestObject([NotNull] string userName, int userUserId, [NotNull] Senpai senpai)
         {
             this._senpai = senpai;
             this.Type = NotificationObjectType.FriendRequest;
@@ -25,7 +26,8 @@ namespace Azuria.Notifications
             this.UserId = userUserId;
         }
 
-        internal FriendRequestObject(string userName, int userUserId, DateTime requestDate, Senpai senpai)
+        internal FriendRequestObject([NotNull] string userName, int userUserId, DateTime requestDate,
+            [NotNull] Senpai senpai)
         {
             this._senpai = senpai;
             this.Type = NotificationObjectType.FriendRequest;
@@ -66,6 +68,7 @@ namespace Azuria.Notifications
         /// <summary>
         ///     Gibt den Namen des <see cref="User">Benutzers</see> zurück, der die Freundschaftsanfrage gestellt hat.
         /// </summary>
+        [NotNull]
         public string UserName { get; private set; }
 
         #endregion
@@ -79,6 +82,7 @@ namespace Azuria.Notifications
         /// <exception cref="WrongResponseException">Wird ausgelöst, wenn die Antwort des Servers nicht der Erwarteten entspricht.</exception>
         /// <seealso cref="Senpai.Login" />
         /// <returns>Die Aktion war erfolgreich. True oder False</returns>
+        [ItemNotNull]
         public async Task<ProxerResult<bool>> AcceptRequest()
         {
             if (!this._senpai.IsLoggedIn)
@@ -107,6 +111,7 @@ namespace Azuria.Notifications
         /// <exception cref="WrongResponseException">Wird ausgelöst, wenn die Antwort des Servers nicht der Erwarteten entspricht.</exception>
         /// <seealso cref="Senpai.Login" />
         /// <returns>Die Aktion war erfolgreich. True oder False</returns>
+        [ItemNotNull]
         public async Task<ProxerResult<bool>> DenyRequest()
         {
             if (!this._senpai.IsLoggedIn)

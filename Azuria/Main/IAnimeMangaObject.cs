@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using Azuria.Main.Minor;
 using Azuria.Main.Search;
 using Azuria.Utilities.ErrorHandling;
+using JetBrains.Annotations;
 
 namespace Azuria.Main
 {
@@ -18,42 +19,49 @@ namespace Azuria.Main
         ///     Gibt den Link zum Cover des <see cref="Anime" /> oder <see cref="Manga" /> zurück.
         ///     <para>(Vererbt von <see cref="IAnimeMangaObject" />)</para>
         /// </summary>
+        [CanBeNull]
         Uri CoverUri { get; }
 
         /// <summary>
         ///     Gibt die Beschreibung des <see cref="Anime" /> oder <see cref="Manga" /> zurück.
         ///     <para>(Vererbt von <see cref="IAnimeMangaObject" />)</para>
         /// </summary>
+        [NotNull]
         string Description { get; }
 
         /// <summary>
         ///     Gibt den englische Titel des <see cref="Anime" /> oder <see cref="Manga" /> zurück.
         ///     <para>(Vererbt von <see cref="IAnimeMangaObject" />)</para>
         /// </summary>
+        [NotNull]
         string EnglishTitle { get; }
 
         /// <summary>
         ///     Gibt die Links zu allen FSK-Beschränkungen des <see cref="Anime" /> oder <see cref="Manga" /> zurück.
         ///     <para>(Vererbt von <see cref="IAnimeMangaObject" />)</para>
         /// </summary>
+        [NotNull]
         Dictionary<Uri, string> Fsk { get; }
 
         /// <summary>
         ///     Gitb die Genres des <see cref="Anime" /> oder <see cref="Manga" /> zurück.
         ///     <para>(Vererbt von <see cref="IAnimeMangaObject" />)</para>
         /// </summary>
+        [NotNull]
         IEnumerable<GenreObject> Genre { get; }
 
         /// <summary>
         ///     Gibt den deutschen Titel des <see cref="Anime" /> oder <see cref="Manga" /> zurück.
         ///     <para>(Vererbt von <see cref="IAnimeMangaObject" />)</para>
         /// </summary>
+        [NotNull]
         string GermanTitle { get; }
 
         /// <summary>
         ///     Gibt die Gruppen zurück, die den <see cref="Anime" /> oder <see cref="Manga" /> übersetzten oder übersetzt haben.
         ///     <para>(Vererbt von <see cref="IAnimeMangaObject" />)</para>
         /// </summary>
+        [NotNull]
         IEnumerable<Group> Groups { get; }
 
         /// <summary>
@@ -66,6 +74,7 @@ namespace Azuria.Main
         ///     Gibt die Industrie des <see cref="Anime" /> oder <see cref="Manga" /> zurück.
         ///     <para>(Vererbt von <see cref="IAnimeMangaObject" />)</para>
         /// </summary>
+        [NotNull]
         IEnumerable<Industry> Industry { get; }
 
         /// <summary>
@@ -84,12 +93,14 @@ namespace Azuria.Main
         ///     Gibt den japanischen Titel des <see cref="Anime" /> oder <see cref="Manga" /> zurück.
         ///     <para>(Vererbt von <see cref="IAnimeMangaObject" />)</para>
         /// </summary>
+        [NotNull]
         string JapaneseTitle { get; }
 
         /// <summary>
         ///     Gibt den Namen des <see cref="Anime" /> oder <see cref="Manga" /> zurück.
         ///     <para>(Vererbt von <see cref="IAnimeMangaObject" />)</para>
         /// </summary>
+        [NotNull]
         string Name { get; }
 
         /// <summary>
@@ -102,6 +113,7 @@ namespace Azuria.Main
         ///     Gibt die Season des <see cref="Anime" /> oder <see cref="Manga" /> zurück.
         ///     <para>(Vererbt von <see cref="IAnimeMangaObject" />)</para>
         /// </summary>
+        [NotNull]
         IEnumerable<string> Season { get; }
 
         /// <summary>
@@ -114,6 +126,7 @@ namespace Azuria.Main
         ///     Gibt das Synonym des <see cref="Anime" /> oder <see cref="Manga" /> zurück.
         ///     <para>(Vererbt von <see cref="IAnimeMangaObject" />)</para>
         /// </summary>
+        [NotNull]
         string Synonym { get; }
 
         #endregion
@@ -127,6 +140,7 @@ namespace Azuria.Main
         /// <param name="startIndex">Der Start-Index der ausgegebenen Kommentare.</param>
         /// <param name="count">Die Anzahl der ausgegebenen Kommentare ab dem angegebenen <paramref name="startIndex" />.</param>
         /// <returns>Eine Aufzählung mit den Kommentaren.</returns>
+        [ItemNotNull]
         Task<ProxerResult<IEnumerable<Comment>>> GetCommentsLatest(int startIndex, int count);
 
         /// <summary>
@@ -136,12 +150,14 @@ namespace Azuria.Main
         /// <param name="startIndex">Der Start-Index der ausgegebenen Kommentare.</param>
         /// <param name="count">Die Anzahl der ausgegebenen Kommentare ab dem angegebenen <paramref name="startIndex" />.</param>
         /// <returns>Eine Aufzählung mit den Kommentaren.</returns>
+        [ItemNotNull]
         Task<ProxerResult<IEnumerable<Comment>>> GetCommentsRating(int startIndex, int count);
 
         /// <summary>
         ///     Initialisiert das Objekt.
         ///     <para>(Vererbt von <see cref="IAnimeMangaObject" />)</para>
         /// </summary>
+        [ItemNotNull]
         Task<ProxerResult> Init();
 
         #endregion

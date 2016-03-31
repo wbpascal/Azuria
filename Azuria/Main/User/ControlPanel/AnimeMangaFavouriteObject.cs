@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using Azuria.Utilities.ErrorHandling;
 using Azuria.Utilities.Net;
+using JetBrains.Annotations;
 using Newtonsoft.Json;
 
 namespace Azuria.Main.User.ControlPanel
@@ -12,7 +13,7 @@ namespace Azuria.Main.User.ControlPanel
     {
         private readonly Senpai _senpai;
 
-        internal AnimeMangaFavouriteObject(int entryId, IAnimeMangaObject animeMangaObject, Senpai senpai)
+        internal AnimeMangaFavouriteObject(int entryId, IAnimeMangaObject animeMangaObject, [NotNull] Senpai senpai)
         {
             this._senpai = senpai;
             this.EntryId = entryId;
@@ -36,6 +37,7 @@ namespace Azuria.Main.User.ControlPanel
         /// <summary>
         /// </summary>
         /// <returns></returns>
+        [ItemNotNull]
         public async Task<ProxerResult<bool>> DeleteEntry()
         {
             ProxerResult<string> lResult =

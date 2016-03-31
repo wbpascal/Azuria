@@ -8,6 +8,7 @@ using Azuria.Utilities;
 using Azuria.Utilities.ErrorHandling;
 using Azuria.Utilities.Net;
 using HtmlAgilityPack;
+using JetBrains.Annotations;
 
 namespace Azuria.Main.Search
 {
@@ -21,7 +22,7 @@ namespace Azuria.Main.Search
         private readonly Senpai _senpai;
         private int _curSite = 1;
 
-        internal SearchResult(string link, Senpai senpai)
+        internal SearchResult(string link, [NotNull] Senpai senpai)
         {
             this._link = link;
             this._senpai = senpai;
@@ -37,6 +38,7 @@ namespace Azuria.Main.Search
         /// <summary>
         ///     Gibt die Suchergebnisse zurück.
         /// </summary>
+        [NotNull]
         public IEnumerable<T> SearchResults { get; private set; } = new List<T>();
 
         #endregion
@@ -48,6 +50,7 @@ namespace Azuria.Main.Search
         /// </summary>
         /// <exception cref="WrongResponseException">Wird ausgelöst, wenn die Antwort des Servers nicht der Erwarteten entspricht.</exception>
         /// <returns>Die Suchergebnisse der nächsten Seite.</returns>
+        [ItemNotNull]
         public async Task<ProxerResult<IEnumerable<T>>> GetNextSearchResults()
         {
             HtmlDocument lDocument = new HtmlDocument();
@@ -104,6 +107,7 @@ namespace Azuria.Main.Search
             }
         }
 
+        [CanBeNull]
         private IAnimeMangaObject GetSearchResultObjectAnimeManga(HtmlNode node)
         {
             int lId = node.Attributes.Contains("class")
@@ -168,6 +172,7 @@ namespace Azuria.Main.Search
             return null;
         }
 
+        [CanBeNull]
         private Azuria.User GetSearchResultObjectUser(HtmlNode node)
         {
             Uri lAvatar = node.FirstChild.FirstChild.Attributes.Contains("src")

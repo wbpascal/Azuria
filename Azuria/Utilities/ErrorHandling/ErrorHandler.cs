@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Azuria.Exceptions;
+using JetBrains.Annotations;
 using Newtonsoft.Json;
 
 namespace Azuria.Utilities.ErrorHandling
@@ -13,11 +14,13 @@ namespace Azuria.Utilities.ErrorHandling
     {
         internal ErrorHandler()
         {
+            this.WrongHtml = new List<string>();
             this.Load();
         }
 
         #region Properties
 
+        [NotNull]
         internal List<string> WrongHtml { get; private set; }
 
         #endregion
@@ -34,6 +37,7 @@ namespace Azuria.Utilities.ErrorHandling
             this.Save();
         }
 
+        [ItemNotNull]
         internal static async Task<ProxerResult> HandleError(Senpai senpai, string wrongHtml, bool checkedLogin)
         {
             ProxerResult<bool> lCheckResult;
@@ -46,6 +50,7 @@ namespace Azuria.Utilities.ErrorHandling
             return new ProxerResult(new Exception[] {new WrongResponseException {Response = wrongHtml}});
         }
 
+        [NotNull]
         internal static ProxerResult HandleError(Senpai senpai, string wrongHtml)
         {
             senpai.ErrHandler.Add(wrongHtml);

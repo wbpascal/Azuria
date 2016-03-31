@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using JetBrains.Annotations;
 
 namespace Azuria.Main.Minor
 {
@@ -194,7 +195,7 @@ namespace Azuria.Main.Minor
             Yuri
         }
 
-        internal GenreObject(string name)
+        internal GenreObject([NotNull] string name)
         {
             this.Genre = TypeDictionary.ContainsKey(name) ? TypeDictionary[name] : GenreType.None;
         }
@@ -215,6 +216,7 @@ namespace Azuria.Main.Minor
         /// </summary>
         public GenreType Genre { get; set; }
 
+        [NotNull]
         internal static Dictionary<string, GenreType> TypeDictionary => new Dictionary<string, GenreType>
         {
             {"Abenteuer", GenreType.Adventure},
@@ -257,6 +259,7 @@ namespace Azuria.Main.Minor
         /// <summary>
         ///     Gibt den Link zu dem Wiki-Eintrag des Genre zurück.
         /// </summary>
+        [NotNull]
         public Uri WikiLink => new Uri("https://proxer.me/wiki/" + this.Genre);
 
         #endregion

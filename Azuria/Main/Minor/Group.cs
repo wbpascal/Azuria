@@ -1,4 +1,6 @@
-﻿namespace Azuria.Main.Minor
+﻿using JetBrains.Annotations;
+
+namespace Azuria.Main.Minor
 {
     /// <summary>
     ///     Eine Klasse, die eine <see cref="Group">Gruppe</see> darstellt, die <see cref="Anime" /> oder <see cref="Manga" />
@@ -6,7 +8,7 @@
     /// </summary>
     public class Group
     {
-        internal Group(int id, string name)
+        internal Group(int id, [NotNull] string name)
         {
             this.Id = id;
             this.Name = name;
@@ -22,6 +24,7 @@
         /// <summary>
         ///     Gibt den Namen der <see cref="Group">Gruppe</see> zurück.
         /// </summary>
+        [NotNull]
         public string Name { get; private set; }
 
         #endregion

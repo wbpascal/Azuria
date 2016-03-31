@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using Azuria.Utilities.ErrorHandling;
+using JetBrains.Annotations;
 
 namespace Azuria.Notifications
 {
@@ -27,6 +28,7 @@ namespace Azuria.Notifications
         /// </summary>
         /// <seealso cref="GetNotifications" />
         /// <returns>Ein Array mit allen aktuellen Benachrichtigungen.</returns>
+        [ItemNotNull]
         Task<ProxerResult<IEnumerable<INotificationObject>>> GetAllNotifications();
 
         /// <summary>
@@ -39,6 +41,7 @@ namespace Azuria.Notifications
         ///     Ein Array mit der Anzahl an Elementen in <paramref name="count" /> spezifiziert.
         ///     Wenn <paramref name="count" /> > Array.length, dann wird der gesamte Array zurückgegeben.
         /// </returns>
+        [ItemNotNull]
         Task<ProxerResult<IEnumerable<INotificationObject>>> GetNotifications(int count);
 
         #endregion

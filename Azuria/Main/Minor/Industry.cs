@@ -1,4 +1,6 @@
-﻿namespace Azuria.Main.Minor
+﻿using JetBrains.Annotations;
+
+namespace Azuria.Main.Minor
 {
     /// <summary>
     ///     Eine Klasse, die die <see cref="Industry">Indurstrie</see> eines <see cref="Anime" /> oder <see cref="Manga" />
@@ -33,7 +35,7 @@
             None
         }
 
-        internal Industry(int id, string name, IndustryType type)
+        internal Industry(int id, [NotNull] string name, IndustryType type)
         {
             this.Id = id;
             this.Name = name;
@@ -50,6 +52,7 @@
         /// <summary>
         ///     Gibt den Namen der <see cref="Industry">Industrie</see> zurück.
         /// </summary>
+        [NotNull]
         public string Name { get; set; }
 
         /// <summary>

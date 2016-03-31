@@ -4,6 +4,7 @@ using Azuria.Exceptions;
 using Azuria.Utilities;
 using Azuria.Utilities.ErrorHandling;
 using HtmlAgilityPack;
+using JetBrains.Annotations;
 
 namespace Azuria.Main.User.ControlPanel
 {
@@ -13,8 +14,9 @@ namespace Azuria.Main.User.ControlPanel
     {
         private readonly Senpai _senpai;
 
-        internal AnimeMangaBookmarkObject(IAnimeMangaObject animeMangaObject, int number, bool isOnline, int entryId,
-            Senpai senpai)
+        internal AnimeMangaBookmarkObject([NotNull] IAnimeMangaObject animeMangaObject, int number, bool isOnline,
+            int entryId,
+            [NotNull] Senpai senpai)
         {
             this._senpai = senpai;
             this.AnimeMangaObject = animeMangaObject;
@@ -27,6 +29,7 @@ namespace Azuria.Main.User.ControlPanel
 
         /// <summary>
         /// </summary>
+        [NotNull]
         public IAnimeMangaObject AnimeMangaObject { get; }
 
         /// <summary>
@@ -46,7 +49,10 @@ namespace Azuria.Main.User.ControlPanel
 
         #region
 
-        internal static ProxerResult<AnimeMangaBookmarkObject> ParseNode(HtmlNode node, Senpai senpai)
+        [NotNull]
+        [ItemCanBeNull]
+        internal static ProxerResult<AnimeMangaBookmarkObject> ParseNode([NotNull] HtmlNode node,
+            [NotNull] Senpai senpai)
         {
             try
             {
@@ -79,8 +85,9 @@ namespace Azuria.Main.User.ControlPanel
                         break;
                 }
 
-                return
-                    new ProxerResult<AnimeMangaBookmarkObject>(new AnimeMangaBookmarkObject(lAnimeMangaObject, lNumber,
+                return lAnimeMangaObject == null
+                    ? new ProxerResult<AnimeMangaBookmarkObject>(new Exception[] {new WrongResponseException()})
+                    : new ProxerResult<AnimeMangaBookmarkObject>(new AnimeMangaBookmarkObject(lAnimeMangaObject, lNumber,
                         lIsOnline, lEntryId, senpai));
             }
             catch

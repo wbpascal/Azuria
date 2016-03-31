@@ -1,4 +1,6 @@
-﻿namespace Azuria.Main.User
+﻿using JetBrains.Annotations;
+
+namespace Azuria.Main.User
 {
     /// <summary>
     ///     Eine Klasse, die den Fortschritt eines <see cref="Azuria.User">Benutzer</see> bei einem
@@ -24,7 +26,8 @@
         ///     Die Kategorie, in der der <paramref name="user">Benutzer</paramref> seinen Fortschritt
         ///     einsortiert hat.
         /// </param>
-        public AnimeMangaProgressObject(Azuria.User user, IAnimeMangaObject animeMangaObject, int currentProgress,
+        public AnimeMangaProgressObject([NotNull] Azuria.User user, [NotNull] IAnimeMangaObject animeMangaObject,
+            int currentProgress,
             int maxCount, AnimeMangaProgress progress)
         {
             this.User = user;
@@ -39,6 +42,7 @@
         /// <summary>
         ///     Gibt den <see cref="Anime">Anime</see> oder <see cref="Manga">Manga</see> zurück, mit dem das Objekt zusammenhängt.
         /// </summary>
+        [NotNull]
         public IAnimeMangaObject AnimeMangaObject { get; }
 
         /// <summary>
@@ -61,6 +65,7 @@
         /// <summary>
         ///     Gibt den <see cref="Azuria.User">Benutzer</see> zurück, mit dem der Fortschritt zusammenhängt.
         /// </summary>
+        [NotNull]
         public Azuria.User User { get; set; }
 
         #endregion

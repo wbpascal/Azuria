@@ -6,6 +6,7 @@ using Azuria.Exceptions;
 using Azuria.Utilities.ErrorHandling;
 using Azuria.Utilities.Net;
 using HtmlAgilityPack;
+using JetBrains.Annotations;
 
 namespace Azuria.Main.User.ControlPanel
 {
@@ -18,7 +19,7 @@ namespace Azuria.Main.User.ControlPanel
         /// <summary>
         /// </summary>
         /// <param name="senpai"></param>
-        public UserControlPanel(Senpai senpai)
+        public UserControlPanel([NotNull] Senpai senpai)
         {
             this._senpai = senpai;
         }
@@ -28,6 +29,7 @@ namespace Azuria.Main.User.ControlPanel
         /// <summary>
         /// </summary>
         /// <returns></returns>
+        [ItemNotNull]
         public async Task<ProxerResult<IEnumerable<AnimeMangaBookmarkObject>>> GetBookmarks()
         {
             HtmlDocument lDocument = new HtmlDocument();
@@ -37,7 +39,8 @@ namespace Azuria.Main.User.ControlPanel
             {
                 lDocument.LoadHtml(s);
                 HtmlNode lInnerDiv = lDocument.DocumentNode.Descendants()
-                    .FirstOrDefault(node => node.Name.Equals("div") && node.GetAttributeValue("class", "").Equals("inner"));
+                    .FirstOrDefault(
+                        node => node.Name.Equals("div") && node.GetAttributeValue("class", "").Equals("inner"));
                 if (lInnerDiv != null && lInnerDiv.FirstChild.InnerText.ToLower().StartsWith("du bist nicht eingeloggt"))
                     return new ProxerResult(new Exception[] {new NoAccessException()});
 
@@ -84,6 +87,7 @@ namespace Azuria.Main.User.ControlPanel
         /// <summary>
         /// </summary>
         /// <returns></returns>
+        [ItemNotNull]
         public async Task<ProxerResult<IEnumerable<AnimeMangaChronicObject>>> GetChronic()
         {
             HtmlDocument lDocument = new HtmlDocument();
@@ -137,6 +141,7 @@ namespace Azuria.Main.User.ControlPanel
         /// <summary>
         /// </summary>
         /// <returns></returns>
+        [ItemNotNull]
         public async Task<ProxerResult<IEnumerable<AnimeMangaFavouriteObject>>> GetFavourites()
         {
             HtmlDocument lDocument = new HtmlDocument();
@@ -147,7 +152,8 @@ namespace Azuria.Main.User.ControlPanel
                 lDocument.LoadHtml(s);
                 HtmlNode lInnerDiv =
                     lDocument.DocumentNode.Descendants()
-                        .FirstOrDefault(node => node.Name.Equals("div") && node.GetAttributeValue("class", "").Equals("inner"));
+                        .FirstOrDefault(
+                            node => node.Name.Equals("div") && node.GetAttributeValue("class", "").Equals("inner"));
                 if (lInnerDiv != null && lInnerDiv.FirstChild.InnerText.ToLower().StartsWith("du bist nicht eingeloggt"))
                     return new ProxerResult(new Exception[] {new NoAccessException()});
 

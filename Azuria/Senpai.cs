@@ -12,6 +12,7 @@ using Azuria.Utilities;
 using Azuria.Utilities.ErrorHandling;
 using Azuria.Utilities.Net;
 using HtmlAgilityPack;
+using JetBrains.Annotations;
 using Newtonsoft.Json;
 
 namespace Azuria
@@ -136,6 +137,7 @@ namespace Azuria
         /// <seealso cref="FriendRequests" />
         /// <seealso cref="News" />
         /// <seealso cref="PrivateMessages" />
+        [NotNull]
         public AnimeMangaUpdateCollection AnimeMangaUpdates
         {
             get
@@ -154,6 +156,7 @@ namespace Azuria
         ///     Gibt den Error-Handler zurück, der benutzt wird, um Fehler in Serverantworten zu bearbeiten und frühzeitig zu
         ///     erkennen.
         /// </summary>
+        [NotNull]
         public ErrorHandler ErrHandler { get; }
 
         /// <summary>
@@ -163,6 +166,7 @@ namespace Azuria
         /// <seealso cref="FriendRequests" />
         /// <seealso cref="News" />
         /// <seealso cref="PrivateMessages" />
+        [NotNull]
         public FriendRequestCollection FriendRequests
         {
             get
@@ -206,11 +210,13 @@ namespace Azuria
         ///     Gibt den CookieContainer zurück, der benutzt wird, um Aktionen im eingeloggten Status auszuführen.
         /// </summary>
         /// <seealso cref="MobileLoginCookies" />
+        [NotNull]
         public CookieContainer LoginCookies { get; private set; }
 
         /// <summary>
         ///     Profil des Senpais.
         /// </summary>
+        [CanBeNull]
         public User Me { get; private set; }
 
         /// <summary>
@@ -218,11 +224,11 @@ namespace Azuria
         ///     Jedoch wird hierbei dem CookieContainer noch Cookies hinzugefügt, sodass die mobile Seite angezeigt wird.
         /// </summary>
         /// <seealso cref="LoginCookies" />
+        [NotNull]
         public CookieContainer MobileLoginCookies
         {
             get
             {
-                if (this.LoginCookies == null) return null;
                 CookieContainer lMobileCookies = new CookieContainer();
                 foreach (Cookie loginCookie in this.LoginCookies.GetCookies(new Uri("https://proxer.me/")))
                 {
@@ -240,6 +246,7 @@ namespace Azuria
         /// <seealso cref="FriendRequests" />
         /// <seealso cref="News" />
         /// <seealso cref="PrivateMessages" />
+        [NotNull]
         public NewsCollection News
         {
             get
@@ -260,6 +267,7 @@ namespace Azuria
         /// <seealso cref="FriendRequests" />
         /// <seealso cref="News" />
         /// <seealso cref="PrivateMessages" />
+        [NotNull]
         public PmCollection PrivateMessages
         {
             get
@@ -282,6 +290,7 @@ namespace Azuria
         /// </summary>
         public event AmNotificationEventHandler AmUpdateNotificationRaised;
 
+        [ItemNotNull]
         internal async Task<ProxerResult<bool>> CheckLogin()
         {
             ProxerResult<Tuple<string, CookieContainer>> lResult =
@@ -290,7 +299,7 @@ namespace Azuria
                         this.LoginCookies,
                         this.ErrHandler, this, new Func<string, ProxerResult>[0], false);
 
-            if (!lResult.Success)
+            if (!lResult.Success || lResult.Result == null)
                 return new ProxerResult<bool>(lResult.Exceptions);
 
             string lResponse = lResult.Result.Item1;
@@ -314,6 +323,7 @@ namespace Azuria
             }
         }
 
+        [ItemNotNull]
         private async Task<ProxerResult> CheckNotifications()
         {
             ProxerResult<string> lResult =
@@ -322,12 +332,12 @@ namespace Azuria
                         this.LoginCookies, this.ErrHandler,
                         this);
 
-            if (!lResult.Success)
+            if (!lResult.Success || lResult.Result == null)
                 return new ProxerResult(lResult.Exceptions);
 
             string lResponse = lResult.Result;
 
-            if (lResponse.StartsWith("1")) return new ProxerResult();
+            if (lResponse.StartsWith("1")) return new ProxerResult {Success = false};
             try
             {
                 List<INotificationEventArgs> lNotificationEventArgs = new List<INotificationEventArgs>();
@@ -394,6 +404,7 @@ namespace Azuria
         ///     Zwingt die Eigenschaften sich beim nächsten Aufruf zu aktualisieren.
         /// </summary>
         /// <exception cref="WrongResponseException">Wird ausgelöst, wenn die Antwort des Servers nicht der Erwarteten entspricht.</exception>
+        [ItemNotNull]
         public async Task<ProxerResult> ForcePropertyReload()
         {
             ProxerResult<bool> lResult;
@@ -425,6 +436,7 @@ namespace Azuria
         /// <exception cref="NotLoggedInException">Wird ausgelöst, wenn der <see cref="Senpai">Benutzer</see> nicht eingeloggt ist.</exception>
         /// <seealso cref="Login" />
         /// <returns>Alle Konferenzen, in denen der Benutzer Teilnehmer ist.</returns>
+        [ItemNotNull]
         public async Task<ProxerResult<List<Conference>>> GetAllConferences()
         {
             ProxerResult<string> lResult =
@@ -443,7 +455,7 @@ namespace Azuria
                 lDocument.LoadHtml(lResponse);
                 List<Conference> lReturn = new List<Conference>();
 
-                IEnumerable<HtmlNode> lNodes = Utility.GetAllHtmlNodes(lDocument.DocumentNode.ChildNodes)
+                IEnumerable<HtmlNode> lNodes = lDocument.DocumentNode.DescendantsAndSelf()
                     .Where(
                         x =>
                             x.Attributes.Contains("class") &&
@@ -473,6 +485,7 @@ namespace Azuria
         /// <exception cref="WrongResponseException">Wird ausgelöst, wenn die Antwort des Servers nicht der Erwarteten entspricht.</exception>
         /// <exception cref="NotLoggedInException">Wird ausgelöst, wenn der <see cref="Senpai">Benutzer</see> nicht eingeloggt ist.</exception>
         /// <seealso cref="Login" />
+        [NotNull]
         public ProxerResult InitNotifications()
         {
             if (!this.IsLoggedIn) return new ProxerResult(new Exception[] {new NotLoggedInException(this)});
@@ -490,7 +503,8 @@ namespace Azuria
         /// <param name="username">Der Benutzername des einzuloggenden Benutzers</param>
         /// <param name="password">Das Passwort des Benutzers</param>
         /// <returns>Gibt zurück, ob der Benutzer erfolgreich eingeloggt wurde.</returns>
-        public async Task<ProxerResult<bool>> Login(string username, string password)
+        [ItemNotNull]
+        public async Task<ProxerResult<bool>> Login([NotNull] string username, [NotNull] string password)
         {
             if (string.IsNullOrEmpty(username) || string.IsNullOrEmpty(password))
                 return new ProxerResult<bool>(false);
@@ -521,7 +535,7 @@ namespace Azuria
                 {
                     this._userId = Convert.ToInt32(responseDes["uid"]);
 
-                    //Avatar einfügen
+                    //TODO: Avatar einfügen
                     this.Me = new User(username, this._userId, this);
                     this.IsLoggedIn = true;
 

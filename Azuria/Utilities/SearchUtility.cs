@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using Azuria.Main.Search;
+using JetBrains.Annotations;
 
 namespace Azuria.Utilities
 {
@@ -7,6 +8,7 @@ namespace Azuria.Utilities
     {
         #region Properties
 
+        [NotNull]
         internal static Dictionary<SearchHelper.AnimeMangaType, string> AnimeMangaTypeToString
             => new Dictionary<SearchHelper.AnimeMangaType, string>
             {
@@ -19,6 +21,7 @@ namespace Azuria.Utilities
                 {SearchHelper.AnimeMangaType.Ova, "ova"}
             };
 
+        [NotNull]
         internal static Dictionary<SearchHelper.SortAnimeManga, string> SortAnimeMangaToString
             => new Dictionary<SearchHelper.SortAnimeManga, string>
             {

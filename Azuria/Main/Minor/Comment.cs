@@ -7,6 +7,7 @@ using Azuria.Utilities;
 using Azuria.Utilities.ErrorHandling;
 using Azuria.Utilities.Net;
 using HtmlAgilityPack;
+using JetBrains.Annotations;
 
 namespace Azuria.Main.Minor
 {
@@ -15,12 +16,13 @@ namespace Azuria.Main.Minor
     /// </summary>
     public class Comment
     {
-        internal Comment(Azuria.User author, int animeMangaId, int sterne, string kommentar)
+        internal Comment([NotNull] Azuria.User author, int animeMangaId, int sterne, [NotNull] string kommentar)
         {
             this.AnimeMangaId = animeMangaId;
             this.Author = author;
             this.Stars = sterne;
             this.Content = kommentar;
+            this.CategoryStars = new Dictionary<string, int>();
         }
 
         #region Properties
@@ -34,16 +36,19 @@ namespace Azuria.Main.Minor
         /// <summary>
         ///     Gibt den Autor des <see cref="Comment">Kommentars</see> zurück.
         /// </summary>
+        [NotNull]
         public Azuria.User Author { get; private set; }
 
         /// <summary>
         ///     Gibt die Sterne weiterer Bewertungskategorien des <see cref="Comment">Kommentars</see> zurück.
         /// </summary>
+        [NotNull]
         public Dictionary<string, int> CategoryStars { get; private set; }
 
         /// <summary>
         ///     Gibt den Inhalt des <see cref="Comment">Kommentars</see> zurück.
         /// </summary>
+        [NotNull]
         public string Content { get; private set; }
 
         /// <summary>
@@ -55,6 +60,7 @@ namespace Azuria.Main.Minor
 
         #region
 
+        [NotNull]
         private static string ContentToString(HtmlNodeCollection content)
         {
             string lString = string.Empty;
@@ -85,7 +91,8 @@ namespace Azuria.Main.Minor
             return lString.Trim();
         }
 
-        private static ProxerResult<Comment> GetCommentFromNode(HtmlNode commentNode, Senpai senpai
+        [NotNull]
+        private static ProxerResult<Comment> GetCommentFromNode([NotNull] HtmlNode commentNode, [NotNull] Senpai senpai
             , bool isUserPage, Azuria.User author = null, int animeMangaId = -1)
         {
             HtmlNode[] lTableNodes =
@@ -145,8 +152,10 @@ namespace Azuria.Main.Minor
             }
         }
 
+        [ItemNotNull]
         internal static async Task<ProxerResult<IEnumerable<Comment>>> GetCommentsFromUrl(int startIndex, int count,
-            string url, string sort, Senpai senpai, bool isUserPage = false, Azuria.User author = null,
+            [NotNull] string url, [NotNull] string sort, [NotNull] Senpai senpai, bool isUserPage = false,
+            Azuria.User author = null,
             int animeMangaId = -1)
         {
             const int lKommentareProSeite = 25;
