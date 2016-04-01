@@ -69,7 +69,7 @@ namespace Azuria.Utilities.ErrorHandling
     public class ProxerResult
     {
         /// <summary>
-        ///     Initialisiert die Klasse.
+        ///     Initialisiert die Klasse mit einem erfolgreichem Resultat.
         /// </summary>
         public ProxerResult()
         {

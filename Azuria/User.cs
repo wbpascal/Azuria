@@ -945,9 +945,9 @@ namespace Azuria
         /// <exception cref="NotLoggedInException">Wird ausgelöst, wenn der <see cref="Senpai">Benutzer</see> nicht eingeloggt ist.</exception>
         /// <returns>Einen boolischen Wert, der angibt, ob die Aktion erfolgreich war.</returns>
         [ItemNotNull]
-        public async Task<ProxerResult<bool>> SendFriendRequest()
+        public async Task<ProxerResult> SendFriendRequest()
         {
-            if (this.Id == -1) return new ProxerResult<bool>(new Exception[0]) {Success = false};
+            if (this.Id == -1) return new ProxerResult(new Exception[0]) {Success = false};
 
             Dictionary<string, string> lPostArgs = new Dictionary<string, string>
             {
@@ -962,22 +962,21 @@ namespace Azuria
                         this._senpai);
 
             if (!lResult.Success)
-                return new ProxerResult<bool>(lResult.Exceptions);
+                return new ProxerResult(lResult.Exceptions);
 
             try
             {
                 Dictionary<string, string> lResultDictionary =
                     JsonConvert.DeserializeObject<Dictionary<string, string>>(lResult.Result);
 
-                return lResultDictionary.ContainsKey("error")
-                    ? new ProxerResult<bool>(lResultDictionary["error"].Equals("0"))
-                    : new ProxerResult<bool>(new Exception[] {new WrongResponseException {Response = lResult.Result}});
+                return lResultDictionary.ContainsKey("error") && lResultDictionary["error"].Equals("0")
+                    ? new ProxerResult()
+                    : new ProxerResult(new Exception[] {new WrongResponseException {Response = lResult.Result}});
             }
             catch
             {
                 return
-                    new ProxerResult<bool>(
-                        (await ErrorHandler.HandleError(this._senpai, lResult.Result, false)).Exceptions);
+                    new ProxerResult((await ErrorHandler.HandleError(this._senpai, lResult.Result, false)).Exceptions);
             }
         }
 

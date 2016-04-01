@@ -151,7 +151,7 @@ namespace Azuria.Community
         /// <seealso cref="Senpai.Login" />
         /// <returns>Gibt zurück, ob die Aktion erfolgreich war</returns>
         [ItemNotNull]
-        public async Task<ProxerResult<bool>> Block()
+        public async Task<ProxerResult> Block()
         {
             ProxerResult<string> lResult =
                 await
@@ -162,11 +162,13 @@ namespace Azuria.Community
                         this._senpai);
 
             if (!lResult.Success)
-                return new ProxerResult<bool>(lResult.Exceptions);
+                return new ProxerResult(lResult.Exceptions);
 
             string lResponse = lResult.Result;
 
-            return new ProxerResult<bool>(lResponse?.StartsWith("{\"error\":0") ?? false);
+            return lResponse?.StartsWith("{\"error\":0") ?? false
+                ? new ProxerResult()
+                : new ProxerResult {Success = false};
         }
 
         [ItemNotNull]
@@ -216,7 +218,7 @@ namespace Azuria.Community
         /// <seealso cref="Senpai.Login" />
         /// <returns>Gibt zurück, ob die Aktion erfolgreich war</returns>
         [ItemNotNull]
-        public async Task<ProxerResult<bool>> Favour()
+        public async Task<ProxerResult> Favour()
         {
             ProxerResult<string> lResult =
                 await
@@ -227,11 +229,13 @@ namespace Azuria.Community
                         this._senpai);
 
             if (!lResult.Success)
-                return new ProxerResult<bool>(lResult.Exceptions);
+                return new ProxerResult(lResult.Exceptions);
 
             string lResponse = lResult.Result;
 
-            return new ProxerResult<bool>(lResponse?.StartsWith("{\"error\":0") ?? false);
+            return lResponse?.StartsWith("{\"error\":0") ?? false
+                ? new ProxerResult()
+                : new ProxerResult {Success = false};
         }
 
         [ItemNotNull]
@@ -679,7 +683,7 @@ namespace Azuria.Community
         /// </summary>
         /// <exception cref="NotLoggedInException">Wird ausgelöst, wenn der <see cref="Senpai">Benutzer</see> nicht eingeloggt ist.</exception>
         /// <exception cref="WrongResponseException">Wird ausgelöst, wenn die Antwort des Servers nicht der Erwarteten entspricht.</exception>
-        /// <exception cref="WrongResponseException">
+        /// <exception cref="ArgumentException">
         ///     Wird ausgelöst, wenn <paramref name="nachricht" /> null (oder Nothing in
         ///     Visual Basic) oder leer ist.
         /// </exception>
@@ -687,11 +691,11 @@ namespace Azuria.Community
         /// <seealso cref="Senpai.Login" />
         /// <returns>Gibt zurück, ob die Aktion erfolgreich war</returns>
         [ItemNotNull]
-        public async Task<ProxerResult<bool>> SendMessage([NotNull] string nachricht)
+        public async Task<ProxerResult> SendMessage([NotNull] string nachricht)
         {
             if (string.IsNullOrEmpty(nachricht))
                 return
-                    new ProxerResult<bool>(new[]
+                    new ProxerResult(new[]
                     {new ArgumentException("Argument is null or empty", nameof(nachricht))});
 
             this._getMessagesTimer.Stop();
@@ -710,7 +714,7 @@ namespace Azuria.Community
                         this._senpai);
 
             if (!lResult.Success)
-                return new ProxerResult<bool>(lResult.Exceptions);
+                return new ProxerResult(lResult.Exceptions);
 
             string lResponse = lResult.Result;
 
@@ -727,24 +731,20 @@ namespace Azuria.Community
                             new Message(User.System, -1, lResponseJson["message"], DateTime.Now,
                                 Message.Action.GetAction)
                         }, false);
-                    return new ProxerResult<bool>(true);
+                    return new ProxerResult();
                 }
-                if (lResponseJson["msg"].Equals("Erfolgreich!"))
-                {
-                    await this.GetMessages(this.Messages.Last().MessageId);
-                    this._getMessagesTimer.Start();
-                    return new ProxerResult<bool>(true);
-                }
+                if (!lResponseJson.Keys.Contains("msg")) return new ProxerResult {Success = false};
+
+                await this.GetMessages(this.Messages.Last().MessageId);
+                this._getMessagesTimer.Start();
+                return new ProxerResult();
             }
             catch
             {
+                this._getMessagesTimer.Start();
                 return
-                    new ProxerResult<bool>((await ErrorHandler.HandleError(this._senpai, lResponse, false)).Exceptions);
+                    new ProxerResult((await ErrorHandler.HandleError(this._senpai, lResponse, false)).Exceptions);
             }
-
-            this._getMessagesTimer.Start();
-
-            return new ProxerResult<bool>(new Exception[] {new WrongResponseException {Response = lResponse}});
         }
 
         /// <summary>
@@ -755,7 +755,7 @@ namespace Azuria.Community
         /// <seealso cref="Senpai.Login" />
         /// <returns>Gibt zurück, ob die Aktion erfolgreich war</returns>
         [ItemNotNull]
-        public async Task<ProxerResult<bool>> SetUnread()
+        public async Task<ProxerResult> SetUnread()
         {
             ProxerResult<string> lResult =
                 await
@@ -766,11 +766,13 @@ namespace Azuria.Community
                         this._senpai);
 
             if (!lResult.Success)
-                return new ProxerResult<bool>(lResult.Exceptions);
+                return new ProxerResult(lResult.Exceptions);
 
             string lResponse = lResult.Result;
 
-            return new ProxerResult<bool>(lResponse?.StartsWith("{\"error\":0") ?? false);
+            return lResponse?.StartsWith("{\"error\":0") ?? false
+                ? new ProxerResult()
+                : new ProxerResult {Success = false};
         }
 
         /// <summary>
@@ -781,7 +783,7 @@ namespace Azuria.Community
         /// <seealso cref="Senpai.Login" />
         /// <returns>Gibt zurück, ob die Aktion erfolgreich war</returns>
         [ItemNotNull]
-        public async Task<ProxerResult<bool>> Unblock()
+        public async Task<ProxerResult> Unblock()
         {
             ProxerResult<string> lResult =
                 await
@@ -792,11 +794,13 @@ namespace Azuria.Community
                         this._senpai);
 
             if (!lResult.Success)
-                return new ProxerResult<bool>(lResult.Exceptions);
+                return new ProxerResult(lResult.Exceptions);
 
             string lResponse = lResult.Result;
 
-            return new ProxerResult<bool>(lResponse?.StartsWith("{\"error\":0") ?? false);
+            return lResponse?.StartsWith("{\"error\":0") ?? false
+                ? new ProxerResult()
+                : new ProxerResult {Success = false};
         }
 
         /// <summary>
@@ -807,7 +811,7 @@ namespace Azuria.Community
         /// <seealso cref="Senpai.Login" />
         /// <returns>Gibt zurück, ob die Aktion erfolgreich war</returns>
         [ItemNotNull]
-        public async Task<ProxerResult<bool>> Unfavour()
+        public async Task<ProxerResult> Unfavour()
         {
             ProxerResult<string> lResult =
                 await
@@ -818,11 +822,13 @@ namespace Azuria.Community
                         this._senpai);
 
             if (!lResult.Success)
-                return new ProxerResult<bool>(lResult.Exceptions);
+                return new ProxerResult(lResult.Exceptions);
 
             string lResponse = lResult.Result;
 
-            return new ProxerResult<bool>(lResponse?.StartsWith("{\"error\":0") ?? false);
+            return lResponse?.StartsWith("{\"error\":0") ?? false
+                ? new ProxerResult()
+                : new ProxerResult {Success = false};
         }
 
         #endregion

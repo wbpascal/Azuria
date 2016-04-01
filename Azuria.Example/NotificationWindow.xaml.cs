@@ -294,19 +294,17 @@ namespace Azuria.Example
                 {
                     case MessageBoxResult.Yes:
                         //Benutzer hat die Freundschaftsanfrage akzeptiert
-                        ProxerResult<bool> lAcceptResult = await requestObject.AcceptRequest();
-                        if (lAcceptResult.Success && lAcceptResult.Result)
-                            MessageBox.Show("Die Freundschaftsanfrage wurde erfolgreich angenommen!");
-                        else
-                            MessageBox.Show("Es ist ein Fehler passiert!");
+                        ProxerResult lAcceptResult = await requestObject.AcceptRequest();
+                        MessageBox.Show(lAcceptResult.Success
+                            ? "Die Freundschaftsanfrage wurde erfolgreich angenommen!"
+                            : "Es ist ein Fehler passiert!");
                         break;
                     case MessageBoxResult.No:
                         //Benutzer hat die Freundschaftsanfrage abgelehnt
-                        ProxerResult<bool> lDenyResult = await requestObject.DenyRequest();
-                        if (lDenyResult.Success && lDenyResult.Result)
-                            MessageBox.Show("Die Freundschaftsanfrage wurde erfolgreich abgelehnt!");
-                        else
-                            MessageBox.Show("Es ist ein Fehler passiert!");
+                        ProxerResult lDenyResult = await requestObject.DenyRequest();
+                        MessageBox.Show(lDenyResult.Success
+                            ? "Die Freundschaftsanfrage wurde erfolgreich abgelehnt!"
+                            : "Es ist ein Fehler passiert!");
                         break;
                 }
             }

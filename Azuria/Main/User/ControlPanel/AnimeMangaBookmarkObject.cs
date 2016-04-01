@@ -1,10 +1,14 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using Azuria.Exceptions;
 using Azuria.Utilities;
 using Azuria.Utilities.ErrorHandling;
+using Azuria.Utilities.Net;
 using HtmlAgilityPack;
 using JetBrains.Annotations;
+using Newtonsoft.Json;
 
 namespace Azuria.Main.User.ControlPanel
 {
@@ -48,6 +52,38 @@ namespace Azuria.Main.User.ControlPanel
         #endregion
 
         #region
+
+        /// <summary>
+        /// </summary>
+        /// <returns></returns>
+        [ItemNotNull]
+        public async Task<ProxerResult> DeleteEntry()
+        {
+            ProxerResult<string> lResult =
+                await
+                    HttpUtility.GetResponseErrorHandling(
+                        "https://proxer.me/ucp?format=json&type=deleteReminder&id=" + this.EntryId,
+                        this._senpai.LoginCookies,
+                        this._senpai.ErrHandler,
+                        this._senpai);
+
+            if (!lResult.Success)
+                return new ProxerResult(lResult.Exceptions);
+
+            string lResponse = lResult.Result;
+
+            try
+            {
+                Dictionary<string, string> responseDes =
+                    JsonConvert.DeserializeObject<Dictionary<string, string>>(lResponse);
+
+                return responseDes["error"].Equals("0") ? new ProxerResult() : new ProxerResult {Success = false};
+            }
+            catch
+            {
+                return new ProxerResult(ErrorHandler.HandleError(this._senpai, lResponse).Exceptions);
+            }
+        }
 
         [NotNull]
         [ItemCanBeNull]

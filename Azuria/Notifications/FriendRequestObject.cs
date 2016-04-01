@@ -83,11 +83,11 @@ namespace Azuria.Notifications
         /// <seealso cref="Senpai.Login" />
         /// <returns>Die Aktion war erfolgreich. True oder False</returns>
         [ItemNotNull]
-        public async Task<ProxerResult<bool>> AcceptRequest()
+        public async Task<ProxerResult> AcceptRequest()
         {
             if (!this._senpai.IsLoggedIn)
-                return new ProxerResult<bool>(new Exception[] {new NotLoggedInException(this._senpai)});
-            if (this._accepted || this._denied) return new ProxerResult<bool>(false);
+                return new ProxerResult(new Exception[] {new NotLoggedInException(this._senpai)});
+            if (this._accepted || this._denied) return new ProxerResult {Success = false};
 
             Dictionary<string, string> lPostArgs = new Dictionary<string, string> {{"type", "accept"}};
 
@@ -98,10 +98,10 @@ namespace Azuria.Notifications
                 HttpUtility.PostResponseErrorHandling("https://proxer.me/user/my?format=json&cid=" + this.UserId,
                     lPostArgs, this._senpai.LoginCookies, this._senpai.ErrHandler, this._senpai, new[] {lCheckFunc});
 
-            if (!lResult.Success) return new ProxerResult<bool>(lResult.Exceptions);
+            if (!lResult.Success) return new ProxerResult(lResult.Exceptions);
 
             this._accepted = true;
-            return new ProxerResult<bool>(true);
+            return new ProxerResult();
         }
 
         /// <summary>
@@ -112,11 +112,11 @@ namespace Azuria.Notifications
         /// <seealso cref="Senpai.Login" />
         /// <returns>Die Aktion war erfolgreich. True oder False</returns>
         [ItemNotNull]
-        public async Task<ProxerResult<bool>> DenyRequest()
+        public async Task<ProxerResult> DenyRequest()
         {
             if (!this._senpai.IsLoggedIn)
-                return new ProxerResult<bool>(new Exception[] {new NotLoggedInException(this._senpai)});
-            if (this._accepted || this._denied) return new ProxerResult<bool>(false);
+                return new ProxerResult(new Exception[] {new NotLoggedInException(this._senpai)});
+            if (this._accepted || this._denied) return new ProxerResult {Success = false};
 
             Dictionary<string, string> lPostArgs = new Dictionary<string, string> {{"type", "deny"}};
 
@@ -127,10 +127,10 @@ namespace Azuria.Notifications
                 HttpUtility.PostResponseErrorHandling("https://proxer.me/user/my?format=json&cid=" + this.UserId,
                     lPostArgs, this._senpai.LoginCookies, this._senpai.ErrHandler, this._senpai, new[] {lCheckFunc});
 
-            if (!lResult.Success) return new ProxerResult<bool>(lResult.Exceptions);
+            if (!lResult.Success) return new ProxerResult(lResult.Exceptions);
 
             this._denied = true;
-            return new ProxerResult<bool>(true);
+            return new ProxerResult();
         }
 
         #endregion

@@ -408,7 +408,7 @@ namespace Azuria
         public async Task<ProxerResult> ForcePropertyReload()
         {
             ProxerResult<bool> lResult;
-            if ((lResult = await this.CheckLogin()).Success == false)
+            if (!(lResult = await this.CheckLogin()).Success)
             {
                 return new ProxerResult(lResult.Exceptions);
             }

@@ -38,7 +38,7 @@ namespace Azuria.Main.User.ControlPanel
         /// </summary>
         /// <returns></returns>
         [ItemNotNull]
-        public async Task<ProxerResult<bool>> DeleteEntry()
+        public async Task<ProxerResult> DeleteEntry()
         {
             ProxerResult<string> lResult =
                 await
@@ -49,7 +49,7 @@ namespace Azuria.Main.User.ControlPanel
                         this._senpai);
 
             if (!lResult.Success)
-                return new ProxerResult<bool>(lResult.Exceptions);
+                return new ProxerResult(lResult.Exceptions);
 
             string lResponse = lResult.Result;
 
@@ -58,11 +58,11 @@ namespace Azuria.Main.User.ControlPanel
                 Dictionary<string, string> responseDes =
                     JsonConvert.DeserializeObject<Dictionary<string, string>>(lResponse);
 
-                return new ProxerResult<bool>(responseDes["error"].Equals("0"));
+                return responseDes["error"].Equals("0") ? new ProxerResult() : new ProxerResult {Success = false};
             }
             catch
             {
-                return new ProxerResult<bool>(ErrorHandler.HandleError(this._senpai, lResponse).Exceptions);
+                return new ProxerResult(ErrorHandler.HandleError(this._senpai, lResponse).Exceptions);
             }
         }
 

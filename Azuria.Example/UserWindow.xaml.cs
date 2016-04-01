@@ -204,7 +204,7 @@ namespace Azuria.Example
 
         private async void SendFriendRequestButton_Click(object sender, RoutedEventArgs e)
         {
-            if ((await this._user.SendFriendRequest()).OnError(false))
+            if ((await this._user.SendFriendRequest()).Success)
                 MessageBox.Show("Die Freundschaftsanfrage wurde erfolgreich versendet!");
             else
                 MessageBox.Show("Es ist ein Fehler beim Versenden der Freundschaftanfrage aufgetreten!", "Fehler",

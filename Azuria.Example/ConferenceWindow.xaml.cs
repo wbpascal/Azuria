@@ -27,7 +27,7 @@ namespace Azuria.Example
         private async void Button_Click(object sender, RoutedEventArgs e)
         {
             //Versuche die Nachricht zu senden
-            if (!(await this._conference.SendMessage(this.InputBox.Text)).OnError(false))
+            if (!(await this._conference.SendMessage(this.InputBox.Text)).Success)
             {
                 //Falls ein Fehler beim Senden der Nachricht aufgetreten ist
                 MessageBox.Show("Die Nachricht konnte nicht gesendet werden!", "Fehler",
@@ -75,7 +75,7 @@ namespace Azuria.Example
         {
             this.Title = "Konferenz: " + this._conference.Title;
 
-            foreach (User teilnehmer in this._conference.Participants ?? new List<User>())
+            foreach (User teilnehmer in this._conference.Participants)
             {
                 TextBlock lTeilnehmerBlock = new TextBlock {DataContext = teilnehmer, Text = teilnehmer.ToString()};
                 lTeilnehmerBlock.MouseLeftButtonDown += this.UserTextBlock_MouseLeftButtonDown;

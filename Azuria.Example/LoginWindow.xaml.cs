@@ -35,7 +35,7 @@ namespace Azuria.Example
             //Gib alle Konferenzen zurück
             ProxerResult<List<Conference>> lResult = await this._senpai.GetAllConferences();
 
-            if (lResult.Success && lResult.Result.Any())
+            if (lResult.Success && lResult.Result != null && lResult.Result.Any())
             {
                 //Öffne die erste Konferenz in der Liste
                 new ConferenceWindow(lResult.Result.First(), this._senpai).Show();
