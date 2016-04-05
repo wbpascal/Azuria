@@ -5,10 +5,9 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              mc:Ignorable="d"
              d:DesignHeight="20" d:DesignWidth="200" MouseLeftButtonDown="ProgressUserControl_MouseLeftButtonDown"
-             Cursor="Hand">
-    <StackPanel Orientation="Horizontal" Loaded="StackPanel_Loaded">
-        <TextBlock
-            Text="{Binding ElementName=ProgressUserControl, Path=AnimeMangaProgressObject.AnimeMangaObject.Name}" />
+             Cursor="Hand" Loaded="ProgressUserControl_Loaded">
+    <StackPanel Orientation="Horizontal">
+        <TextBlock x:Name="AnimeNameTextBlock" />
         <TextBlock Text="{Binding ElementName=ProgressUserControl, Path=AnimeMangaProgressObject.CurrentProgress}"
                    Margin="10,0,0,0" />
         <TextBlock Text="/" />

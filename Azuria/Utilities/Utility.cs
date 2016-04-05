@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Reflection;
+using System.Threading.Tasks;
 using Azuria.Utilities.ErrorHandling;
+using Azuria.Utilities.Initialisation;
 using HtmlAgilityPack;
 using JetBrains.Annotations;
 
@@ -121,6 +123,80 @@ namespace Azuria.Utilities
                 if (!ctor.IsPrivate && ctor.GetParameters().Length == 0) return true;
             }
             return false;
+        }
+
+        internal static bool ImplementsGenericInterface(this Type generic, Type toCheck)
+        {
+            return generic.GetTypeInfo().IsGenericType &&
+                   generic.GetGenericTypeDefinition()
+                       .GetTypeInfo()
+                       .ImplementedInterfaces.Any(type => type.Name.Equals(toCheck.Name));
+        }
+
+        [ItemNotNull]
+        internal static async Task<ProxerResult> InitInitalisableProperties(this object source)
+        {
+            int lFailedInits = 0, lInitialiseFunctions = 0;
+            ProxerResult lReturn = new ProxerResult();
+            foreach (PropertyInfo propertyInfo in source.GetType().GetRuntimeProperties())
+            {
+                if (propertyInfo.PropertyType.ImplementsGenericInterface(typeof (IInitialisableProperty<>)))
+                {
+                    lInitialiseFunctions++;
+                    try
+                    {
+                        object lInitialisableObject = propertyInfo.GetMethod.Invoke(source, null);
+                        ProxerResult lResult = await (Task<ProxerResult>) lInitialisableObject.GetType()
+                            .GetTypeInfo()
+                            .GetDeclaredMethod("FetchObject")
+                            .Invoke(lInitialisableObject, null);
+
+                        if (!lResult.Success)
+                        {
+                            lReturn.AddExceptions(lResult.Exceptions);
+                            lFailedInits++;
+                        }
+                    }
+                    catch
+                    {
+                        lFailedInits++;
+                    }
+                }
+            }
+
+            if (lFailedInits < lInitialiseFunctions)
+                lReturn.Success = true;
+
+            return lReturn;
+        }
+
+        internal static bool IsFullyInitialised(this object objectToTest)
+        {
+            int lInitialisedProperties = 0, lInitialiseFunctions = 0;
+            foreach (PropertyInfo propertyInfo in objectToTest.GetType().GetRuntimeProperties())
+            {
+                if (propertyInfo.PropertyType.ImplementsGenericInterface(typeof (IInitialisableProperty<>)))
+                {
+                    lInitialiseFunctions++;
+                    try
+                    {
+                        bool lIsInitialised =
+                            (bool) propertyInfo.GetMethod.Invoke(objectToTest, null)
+                                .GetType()
+                                .GetTypeInfo()
+                                .GetDeclaredProperty("IsInitialisedOnce")
+                                .GetMethod.Invoke(objectToTest, null);
+
+                        if (lIsInitialised) lInitialisedProperties++;
+                    }
+                    catch
+                    {
+                        return false;
+                    }
+                }
+            }
+
+            return lInitialisedProperties == lInitialiseFunctions;
         }
 
         [NotNull]

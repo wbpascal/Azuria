@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.Contracts;
 using System.Linq;
 using System.Threading.Tasks;
 using Azuria.Exceptions;
@@ -80,7 +81,6 @@ namespace Azuria.Main.Minor
                             htmlNode.Attributes["class"].Value.Equals("spoiler"))
                             lString += "<spoiler>" + ContentToString(htmlNode.ChildNodes[1].ChildNodes) + "</spoiler>";
                         else goto default;
-
                         break;
                     default:
                         lString += htmlNode.OuterHtml;
@@ -88,7 +88,7 @@ namespace Azuria.Main.Minor
                 }
             }
 
-            return lString.Trim();
+            return lString.Trim().Replace("<br>", "\n");
         }
 
         [NotNull]

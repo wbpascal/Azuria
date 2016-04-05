@@ -6,6 +6,7 @@ using Azuria.Exceptions;
 using Azuria.Main.Minor;
 using Azuria.Utilities;
 using Azuria.Utilities.ErrorHandling;
+using Azuria.Utilities.Initialisation;
 using Azuria.Utilities.Net;
 using HtmlAgilityPack;
 using JetBrains.Annotations;
@@ -40,138 +41,89 @@ namespace Azuria.Main
             Unbekannt
         }
 
-        private readonly Func<Task<ProxerResult>>[] _initFuncs;
-
         private readonly Senpai _senpai;
-        private string _beschreibung;
-        private string _deutschTitel;
-        private string _englischTitel;
-        private Dictionary<Uri, string> _fsk;
-        private GenreObject[] _genre;
-        private Group[] _gruppen;
-        private Industry[] _industrie;
-        private string _japanTitel;
-        private string _name;
-        private string[] _season;
-        private Language[] _sprachen;
-        private string _synonym;
 
+        [UsedImplicitly]
         internal Manga()
         {
+            this.AvailableLanguages = new ProxerInitialisableProperty<IEnumerable<Language>>(this.InitAvailableLang);
+            this.ChapterCount = new ProxerInitialisableProperty<int>(this.InitChapterCount);
+            this.Description = new ProxerInitialisableProperty<string>(this.InitMain);
+            this.EnglishTitle = new ProxerInitialisableProperty<string>(this.InitMain);
+            this.Fsk = new ProxerInitialisableProperty<Dictionary<Uri, string>>(this.InitMain);
+            this.Genre = new ProxerInitialisableProperty<IEnumerable<GenreObject>>(this.InitMain);
+            this.GermanTitle = new ProxerInitialisableProperty<string>(this.InitMain);
+            this.Groups = new ProxerInitialisableProperty<IEnumerable<Group>>(this.InitMain);
+            this.Industry = new ProxerInitialisableProperty<IEnumerable<Industry>>(this.InitMain);
+            this.IsLicensed = new ProxerInitialisableProperty<bool>(this.InitMain);
+            this.JapaneseTitle = new ProxerInitialisableProperty<string>(this.InitMain);
+            this.MangaTyp = new ProxerInitialisableProperty<MangaType>(this.InitType);
+            this.Name = new ProxerInitialisableProperty<string>(this.InitMain);
+            this.Season = new ProxerInitialisableProperty<IEnumerable<string>>(this.InitMain);
+            this.Status = new ProxerInitialisableProperty<AnimeMangaStatus>(this.InitMain);
+            this.Synonym = new ProxerInitialisableProperty<string>(this.InitMain);
         }
 
-        internal Manga([NotNull] string name, int id, [NotNull] Senpai senpai)
+        internal Manga([NotNull] string name, int id, [NotNull] Senpai senpai) : this()
         {
-            this._senpai = senpai;
-            this._initFuncs = new Func<Task<ProxerResult>>[]
-            {this.InitMain, this.InitAvailableLang, this.InitChapterCount, this.InitType};
-            this.ObjectType = AnimeMangaType.Manga;
-            this.Name = name;
             this.Id = id;
-            this.CoverUri = new Uri("http://cdn.proxer.me/cover/" + this.Id + ".jpg");
+            this._senpai = senpai;
 
-            this.IsInitialized = false;
+            this.Name = new ProxerInitialisableProperty<string>(this.InitMain, name);
         }
 
         internal Manga([NotNull] string name, int id, [NotNull] Senpai senpai,
             [NotNull] IEnumerable<GenreObject> genreList, AnimeMangaStatus status,
             MangaType type) : this(name, id, senpai)
         {
-            this.Genre = genreList;
-            this.Status = status;
-            this.MangaTyp = type;
+            this.Genre = new ProxerInitialisableProperty<IEnumerable<GenreObject>>(this.InitMain, genreList);
+            this.Status = new ProxerInitialisableProperty<AnimeMangaStatus>(this.InitMain, status);
+            this.MangaTyp = new ProxerInitialisableProperty<MangaType>(this.InitType, type);
         }
 
         #region Geerbt
 
         /// <summary>
-        ///     Gibt die Beschreibung des <see cref="Anime" /> oder <see cref="Manga" /> zurück.
-        ///     <para>(Vererbt von <see cref="IAnimeMangaObject" />)</para>
-        ///     <para />
-        ///     <para>Diese Eigenschaft muss durch <see cref="Init" /> initialisiert werden.</para>
-        /// </summary>
-        /// <seealso cref="Init" />
-        public string Description
-        {
-            get { return this._beschreibung ?? ""; }
-            private set { this._beschreibung = value; }
-        }
-
-
-        /// <summary>
         ///     Gibt den Link zum Cover des <see cref="Anime" /> oder <see cref="Manga" /> zurück.
         ///     <para>(Vererbt von <see cref="IAnimeMangaObject" />)</para>
-        ///     <para />
-        ///     <para>Diese Eigenschaft muss durch <see cref="Init" /> initialisiert werden.</para>
         /// </summary>
-        public Uri CoverUri { get; }
+        public Uri CoverUri => new Uri("http://cdn.proxer.me/cover/" + this.Id + ".jpg");
+
+        /// <summary>
+        ///     Gibt die Beschreibung des <see cref="Anime" /> oder <see cref="Manga" /> zurück.
+        ///     <para>(Vererbt von <see cref="IAnimeMangaObject" />)</para>
+        /// </summary>
+        public ProxerInitialisableProperty<string> Description { get; }
+
+        /// <summary>
+        ///     Gibt den englische Titel des <see cref="Anime" /> oder <see cref="Manga" /> zurück.
+        ///     <para>(Vererbt von <see cref="IAnimeMangaObject" />)</para>
+        /// </summary>
+        public ProxerInitialisableProperty<string> EnglishTitle { get; }
+
+        /// <summary>
+        ///     Gibt die Links zu allen FSK-Beschränkungen des <see cref="Anime" /> oder <see cref="Manga" /> zurück.
+        ///     <para>(Vererbt von <see cref="IAnimeMangaObject" />)</para>
+        /// </summary>
+        public ProxerInitialisableProperty<Dictionary<Uri, string>> Fsk { get; }
+
+        /// <summary>
+        ///     Gitb die Genres des <see cref="Anime" /> oder <see cref="Manga" /> zurück.
+        ///     <para>(Vererbt von <see cref="IAnimeMangaObject" />)</para>
+        /// </summary>
+        public ProxerInitialisableProperty<IEnumerable<GenreObject>> Genre { get; }
 
         /// <summary>
         ///     Gibt den deutschen Titel des <see cref="Anime" /> oder <see cref="Manga" /> zurück.
         ///     <para>(Vererbt von <see cref="IAnimeMangaObject" />)</para>
         /// </summary>
-        public string GermanTitle
-        {
-            get { return this._deutschTitel ?? ""; }
-            private set { this._deutschTitel = value; }
-        }
-
-        /// <summary>
-        ///     Gibt den Englische Titel des <see cref="Anime" /> oder <see cref="Manga" /> zurück.
-        ///     <para>(Vererbt von <see cref="IAnimeMangaObject" />)</para>
-        ///     <para />
-        ///     <para>Diese Eigenschaft muss durch <see cref="Init" /> initialisiert werden.</para>
-        /// </summary>
-        /// <seealso cref="Init" />
-        public string EnglishTitle
-        {
-            get { return this._englischTitel ?? ""; }
-            private set { this._englischTitel = value; }
-        }
-
-
-        /// <summary>
-        ///     Gibt die Links zu allen FSK-Beschränkungen des <see cref="Anime" /> oder <see cref="Manga" /> zurück.
-        ///     <para>(Vererbt von <see cref="IAnimeMangaObject" />)</para>
-        ///     <para />
-        ///     <para>Diese Eigenschaft muss durch <see cref="Init" /> initialisiert werden.</para>
-        /// </summary>
-        /// <seealso cref="Init" />
-        public Dictionary<Uri, string> Fsk
-        {
-            get { return this._fsk ?? new Dictionary<Uri, string>(); }
-            private set { this._fsk = value; }
-        }
-
-
-        /// <summary>
-        ///     Gitb die Genres des <see cref="Anime" /> oder <see cref="Manga" /> zurück.
-        ///     <para>(Vererbt von <see cref="IAnimeMangaObject" />)</para>
-        ///     <para />
-        ///     <para>Diese Eigenschaft muss durch <see cref="Init" /> initialisiert werden.</para>
-        /// </summary>
-        /// <seealso cref="Init" />
-        public IEnumerable<GenreObject> Genre
-        {
-            get { return this._genre ?? new GenreObject[0]; }
-            private set { this._genre = value.ToArray(); }
-        }
-
+        public ProxerInitialisableProperty<string> GermanTitle { get; }
 
         /// <summary>
         ///     Gibt die Gruppen zurück, die den <see cref="Anime" /> oder <see cref="Manga" /> übersetzten oder übersetzt haben.
         ///     <para>(Vererbt von <see cref="IAnimeMangaObject" />)</para>
-        ///     <para />
-        ///     <para>Diese Eigenschaft muss durch <see cref="Init" /> initialisiert werden.</para>
         /// </summary>
-        /// <seealso cref="Minor.Group" />
-        /// <seealso cref="Init" />
-        public IEnumerable<Group> Groups
-        {
-            get { return this._gruppen ?? new Group[0]; }
-            private set { this._gruppen = value.ToArray(); }
-        }
-
+        public ProxerInitialisableProperty<IEnumerable<Group>> Groups { get; }
 
         /// <summary>
         ///     Gibt die ID des <see cref="Anime" /> oder <see cref="Manga" /> zurück.
@@ -179,117 +131,73 @@ namespace Azuria.Main
         /// </summary>
         public int Id { get; }
 
-
         /// <summary>
         ///     Gibt die Industrie des <see cref="Anime" /> oder <see cref="Manga" /> zurück.
         ///     <para>(Vererbt von <see cref="IAnimeMangaObject" />)</para>
-        ///     <para />
-        ///     <para>Diese Eigenschaft muss durch <see cref="Init" /> initialisiert werden.</para>
         /// </summary>
-        /// <seealso cref="Minor.Industry" />
-        /// <seealso cref="Init" />
-        public IEnumerable<Industry> Industry
-        {
-            get { return this._industrie ?? new Industry[0]; }
-            private set { this._industrie = value.ToArray(); }
-        }
-
-
-        /// <summary>
-        ///     Gibt zurück, ob das Objekt bereits Initialisiert ist.
-        ///     <para>(Vererbt von <see cref="IAnimeMangaObject" />)</para>
-        /// </summary>
-        public bool IsInitialized { get; private set; }
-
-
-        /// <summary>
-        ///     Gibt den japanischen Titel des <see cref="Anime" /> oder <see cref="Manga" /> zurück.
-        ///     <para>(Vererbt von <see cref="IAnimeMangaObject" />)</para>
-        ///     <para />
-        ///     <para>Diese Eigenschaft muss durch <see cref="Init" /> initialisiert werden.</para>
-        /// </summary>
-        /// <seealso cref="Init" />
-        public string JapaneseTitle
-        {
-            get { return this._japanTitel ?? ""; }
-            private set { this._japanTitel = value; }
-        }
-
+        public ProxerInitialisableProperty<IEnumerable<Industry>> Industry { get; }
 
         /// <summary>
         ///     Gibt zurück, ob der <see cref="Anime" /> oder <see cref="Manga" /> lizensiert ist.
         ///     <para>(Vererbt von <see cref="IAnimeMangaObject" />)</para>
-        ///     <para />
-        ///     <para>Diese Eigenschaft muss durch <see cref="Init" /> initialisiert werden.</para>
         /// </summary>
-        /// <seealso cref="Init" />
-        public bool IsLicensed { get; private set; }
+        public ProxerInitialisableProperty<bool> IsLicensed { get; }
 
+        /// <summary>
+        ///     Gibt den japanischen Titel des <see cref="Anime" /> oder <see cref="Manga" /> zurück.
+        ///     <para>(Vererbt von <see cref="IAnimeMangaObject" />)</para>
+        /// </summary>
+        public ProxerInitialisableProperty<string> JapaneseTitle { get; }
 
         /// <summary>
         ///     Gibt den Namen des <see cref="Anime" /> oder <see cref="Manga" /> zurück.
         ///     <para>(Vererbt von <see cref="IAnimeMangaObject" />)</para>
         /// </summary>
-        public string Name
-        {
-            get { return this._name ?? ""; }
-            private set { this._name = value; }
-        }
-
+        public ProxerInitialisableProperty<string> Name { get; }
 
         /// <summary>
         ///     Gibt zurück, ob es sich um einen <see cref="Anime" /> oder <see cref="Manga" /> handelt.
         ///     <para>(Vererbt von <see cref="IAnimeMangaObject" />)</para>
-        ///     <para />
-        ///     <para>Diese Eigenschaft muss durch <see cref="Init" /> initialisiert werden.</para>
         /// </summary>
-        /// <seealso cref="AnimeMangaType" />
-        public AnimeMangaType ObjectType { get; }
-
+        public AnimeMangaType ObjectType => AnimeMangaType.Manga;
 
         /// <summary>
         ///     Gibt die Season des <see cref="Anime" /> oder <see cref="Manga" /> zurück.
         ///     <para>(Vererbt von <see cref="IAnimeMangaObject" />)</para>
-        ///     <para />
-        ///     <para>Diese Eigenschaft muss durch <see cref="Init" /> initialisiert werden.</para>
         /// </summary>
-        /// <seealso cref="Init" />
-        public IEnumerable<string> Season
-        {
-            get { return this._season ?? new string[0]; }
-            private set { this._season = value.ToArray(); }
-        }
-
+        public ProxerInitialisableProperty<IEnumerable<string>> Season { get; }
 
         /// <summary>
         ///     Gibt den Status des <see cref="Anime" /> oder <see cref="Manga" /> zurück.
         ///     <para>(Vererbt von <see cref="IAnimeMangaObject" />)</para>
-        ///     <para />
-        ///     <para>Diese Eigenschaft muss durch <see cref="Init" /> initialisiert werden.</para>
         /// </summary>
-        /// <seealso cref="AnimeMangaStatus" />
-        /// <seealso cref="Init" />
-        public AnimeMangaStatus Status { get; private set; }
-
+        public ProxerInitialisableProperty<AnimeMangaStatus> Status { get; }
 
         /// <summary>
         ///     Gibt das Synonym des <see cref="Anime" /> oder <see cref="Manga" /> zurück.
         ///     <para>(Vererbt von <see cref="IAnimeMangaObject" />)</para>
-        ///     <para />
-        ///     <para>Diese Eigenschaft muss durch <see cref="Init" /> initialisiert werden.</para>
         /// </summary>
-        /// <seealso cref="Init" />
-        public string Synonym
+        public ProxerInitialisableProperty<string> Synonym { get; }
+
+        /// <summary>
+        ///     Gibt die Kommentare des <see cref="Anime" /> oder <see cref="Manga" /> chronologisch geordnet zurück.
+        ///     <para>(Vererbt von <see cref="IAnimeMangaObject" />)</para>
+        /// </summary>
+        /// <param name="startIndex">Der Start-Index der ausgegebenen Kommentare.</param>
+        /// <param name="count">Die Anzahl der ausgegebenen Kommentare ab dem angegebenen <paramref name="startIndex" />.</param>
+        /// <returns>Eine Aufzählung mit den Kommentaren.</returns>
+        public async Task<ProxerResult<IEnumerable<Comment>>> GetCommentsLatest(int startIndex, int count)
         {
-            get { return this._synonym ?? ""; }
-            private set { this._synonym = value; }
+            return
+                await
+                    Comment.GetCommentsFromUrl(startIndex, count, "https://proxer.me/info/" + this.Id + "/comments/",
+                        "latest", this._senpai, animeMangaId: this.Id);
         }
 
         /// <summary>
-        ///     Gibt die Kommentare des <see cref="Manga" />, nach ihrer Beliebtheit sortiert, zurück.
+        ///     Gibt die Kommentare des <see cref="Anime" /> oder <see cref="Manga" />, nach ihrer Beliebtheit sortiert, zurück.
         ///     <para>(Vererbt von <see cref="IAnimeMangaObject" />)</para>
         /// </summary>
-        /// <exception cref="WrongResponseException">Wird ausgelöst, wenn die Antwort des Servers nicht der Erwarteten entspricht.</exception>
         /// <param name="startIndex">Der Start-Index der ausgegebenen Kommentare.</param>
         /// <param name="count">Die Anzahl der ausgegebenen Kommentare ab dem angegebenen <paramref name="startIndex" />.</param>
         /// <returns>Eine Aufzählung mit den Kommentaren.</returns>
@@ -305,60 +213,9 @@ namespace Azuria.Main
         ///     Initialisiert das Objekt.
         ///     <para>(Vererbt von <see cref="IAnimeMangaObject" />)</para>
         /// </summary>
-        /// <exception cref="WrongResponseException">Wird ausgelöst, wenn die Antwort des Servers nicht der Erwarteten entspricht.</exception>
-        /// <exception cref="NotLoggedInException">Wird ausgelöst, wenn der <see cref="Senpai">Benutzer</see> nicht eingeloggt ist.</exception>
-        /// <exception cref="CaptchaException">Wird ausgelöst, wenn der Server das Ausfüllen eines Captchas erfordert.</exception>
-        /// <exception cref="NoAccessException">
-        ///     Wird ausgelöst, wenn Teile der Initialisierung nicht durchgeführt werden können, da
-        ///     der <see cref="Senpai">Benutzer</see> nicht die nötigen Rechte dafür hat.
-        /// </exception>
-        /// <seealso cref="Senpai.Login" />
         public async Task<ProxerResult> Init()
         {
-            int lFailedInits = 0;
-            ProxerResult lReturn = new ProxerResult();
-
-            foreach (Func<Task<ProxerResult>> initFunc in this._initFuncs)
-            {
-                try
-                {
-                    ProxerResult lResult = await initFunc.Invoke();
-                    if (lResult.Success) continue;
-
-                    lReturn.AddExceptions(lResult.Exceptions);
-                    lFailedInits++;
-                }
-                catch
-                {
-                    return new ProxerResult
-                    {
-                        Success = false
-                    };
-                }
-            }
-
-            this.IsInitialized = true;
-
-            if (lFailedInits < this._initFuncs.Length)
-                lReturn.Success = true;
-
-            return lReturn;
-        }
-
-        /// <summary>
-        ///     Gibt die Kommentare des <see cref="Manga" /> chronologisch geordnet zurück.
-        ///     <para>(Vererbt von <see cref="IAnimeMangaObject" />)</para>
-        /// </summary>
-        /// <exception cref="WrongResponseException">Wird ausgelöst, wenn die Antwort des Servers nicht der Erwarteten entspricht.</exception>
-        /// <param name="startIndex">Der Start-Index der ausgegebenen Kommentare.</param>
-        /// <param name="count">Die Anzahl der ausgegebenen Kommentare ab dem angegebenen <paramref name="startIndex" />.</param>
-        /// <returns>Eine Aufzählung mit den Kommentaren.</returns>
-        public async Task<ProxerResult<IEnumerable<Comment>>> GetCommentsLatest(int startIndex, int count)
-        {
-            return
-                await
-                    Comment.GetCommentsFromUrl(startIndex, count, "https://proxer.me/info/" + this.Id + "/comments/",
-                        "latest", this._senpai, animeMangaId: this.Id);
+            return await this.InitInitalisableProperties();
         }
 
         #endregion
@@ -366,33 +223,22 @@ namespace Azuria.Main
         #region Properties
 
         /// <summary>
-        ///     Gibt die Anzahl der Kapitel zurück.
-        ///     <para />
-        ///     <para>Diese Eigenschaft muss durch <see cref="Init" /> initialisiert werden.</para>
+        ///     Gibt die verfügbaren Sprachen zurück.
         /// </summary>
-        /// <seealso cref="Init" />
-        public int KapitelZahl { get; private set; }
+        [NotNull]
+        public ProxerInitialisableProperty<IEnumerable<Language>> AvailableLanguages { get; }
+
+        /// <summary>
+        ///     Gibt die Anzahl der Kapitel zurück.
+        /// </summary>
+        [NotNull]
+        public ProxerInitialisableProperty<int> ChapterCount { get; }
 
         /// <summary>
         ///     Gibt den Typ eines Anime zurück.
-        ///     <para />
-        ///     <para>Diese Eigenschaft muss durch <see cref="Init" /> initialisiert werden.</para>
         /// </summary>
-        /// <seealso cref="Init" />
-        public MangaType MangaTyp { get; private set; }
-
-        /// <summary>
-        ///     Gibt die verfügbaren Sprachen zurück.
-        ///     <para />
-        ///     <para>Diese Eigenschaft muss durch <see cref="Init" /> initialisiert werden.</para>
-        /// </summary>
-        /// <seealso cref="Init" />
         [NotNull]
-        public IEnumerable<Language> Sprachen
-        {
-            get { return this._sprachen ?? new Language[0]; }
-            private set { this._sprachen = value.ToArray(); }
-        }
+        public ProxerInitialisableProperty<MangaType> MangaTyp { get; }
 
         #endregion
 
@@ -405,22 +251,18 @@ namespace Azuria.Main
         ///     Wird ausgelöst, wenn der Manga nicht in der angegebenen Sprache
         ///     verfügbar ist.
         /// </exception>
-        /// <exception cref="InitializeNeededException">
-        ///     Wird ausgelöst, wenn die Eigenschaften des Objektes noch nicht
-        ///     initialisiert sind.
-        /// </exception>
         /// <param name="lang">Die Sprache der <see cref="Chapter">Kapitel</see>.</param>
-        /// <seealso cref="Sprachen" />
-        /// <returns>Ein Array mit length = <see cref="KapitelZahl" /></returns>
+        /// <seealso cref="AvailableLanguages" />
+        /// <returns>Ein Array mit length = <see cref="ChapterCount" /></returns>
         [NotNull]
         [ItemNotNull]
-        public ProxerResult<IEnumerable<Chapter>> GetChapters(Language lang)
+        public async Task<ProxerResult<IEnumerable<Chapter>>> GetChapters(Language lang)
         {
-            if (!this.Sprachen.Contains(lang))
+            if (!(await this.AvailableLanguages.GetObject(new Language[0])).Contains(lang))
                 return new ProxerResult<IEnumerable<Chapter>>(new Exception[] {new LanguageNotAvailableException()});
 
             List<Chapter> lChapters = new List<Chapter>();
-            for (int i = 1; i <= this.KapitelZahl; i++)
+            for (int i = 1; i <= await this.ChapterCount.GetObject(-1); i++)
             {
                 lChapters.Add(new Chapter(i, lang, this, this._senpai));
             }
@@ -522,7 +364,7 @@ namespace Azuria.Main
                     }
                 }
 
-                this.Sprachen = languageList.ToArray();
+                this.AvailableLanguages.SetInitialisedObject(languageList.ToArray());
 
                 return new ProxerResult();
             }
@@ -562,10 +404,10 @@ namespace Azuria.Main
             {
                 lDocument.LoadHtml(lResponse);
 
-                this.KapitelZahl =
+                this.ChapterCount.SetInitialisedObject(
                     Convert.ToInt32(
                         lDocument.DocumentNode.ChildNodes[4]
-                            .ChildNodes[5].FirstChild.ChildNodes[1].InnerText);
+                            .ChildNodes[5].FirstChild.ChildNodes[1].InnerText));
 
                 return new ProxerResult();
             }
@@ -614,19 +456,19 @@ namespace Azuria.Main
                     switch (childNode.FirstChild.FirstChild.InnerText)
                     {
                         case "Original Titel":
-                            this.Name = childNode.ChildNodes[1].InnerText;
+                            this.Name.SetInitialisedObject(childNode.ChildNodes[1].InnerText);
                             break;
                         case "Eng. Titel":
-                            this.EnglishTitle = childNode.ChildNodes[1].InnerText;
+                            this.EnglishTitle.SetInitialisedObject(childNode.ChildNodes[1].InnerText);
                             break;
                         case "Ger. Titel":
-                            this.GermanTitle = childNode.ChildNodes[1].InnerText;
+                            this.GermanTitle.SetInitialisedObject(childNode.ChildNodes[1].InnerText);
                             break;
                         case "Jap. Titel":
-                            this.JapaneseTitle = childNode.ChildNodes[1].InnerText;
+                            this.JapaneseTitle.SetInitialisedObject(childNode.ChildNodes[1].InnerText);
                             break;
                         case "Synonym":
-                            this.Synonym = childNode.ChildNodes[1].InnerText;
+                            this.Synonym.SetInitialisedObject(childNode.ChildNodes[1].InnerText);
                             break;
                         case "Genre":
                             List<GenreObject> lGenreList = new List<GenreObject>();
@@ -635,24 +477,25 @@ namespace Azuria.Main
                                 if (htmlNode.Name.Equals("a"))
                                     lGenreList.Add(new GenreObject(htmlNode.InnerText));
                             }
-                            this.Genre = lGenreList.ToArray();
+                            this.Genre.SetInitialisedObject(lGenreList.ToArray());
                             break;
                         case "FSK":
-                            this.Fsk = new Dictionary<Uri, string>();
+                            Dictionary<Uri, string> lTempDict = new Dictionary<Uri, string>();
                             foreach (
                                 HtmlNode htmlNode in
                                     childNode.ChildNodes[1].ChildNodes.ToList()
                                         .Where(htmlNode => htmlNode.Name.Equals("span") &&
-                                                           !this.Fsk.ContainsValue(htmlNode
+                                                           !lTempDict.ContainsValue(htmlNode
                                                                .GetAttributeValue(
                                                                    "title", "ERROR"))))
                             {
-                                this.Fsk.Add(
+                                lTempDict.Add(
                                     new Uri("https://proxer.me" +
                                             htmlNode.FirstChild.GetAttributeValue("src",
                                                 "/")),
                                     htmlNode.GetAttributeValue("title", "ERROR"));
                             }
+                            this.Fsk.SetInitialisedObject(lTempDict);
                             break;
                         case "Season":
                             List<string> lSeasonList = new List<string>();
@@ -661,36 +504,35 @@ namespace Azuria.Main
                                 if (htmlNode.Name.Equals("a"))
                                     lSeasonList.Add(htmlNode.InnerText);
                             }
-                            this.Season = lSeasonList.ToArray();
+                            this.Season.SetInitialisedObject(lSeasonList);
                             break;
                         case "Status":
                             switch (childNode.ChildNodes[1].InnerText)
                             {
                                 case "Airing":
-                                    this.Status = AnimeMangaStatus.Airing;
+                                    this.Status.SetInitialisedObject(AnimeMangaStatus.Airing);
                                     break;
                                 case "Abgeschlossen":
-                                    this.Status = AnimeMangaStatus.Completed;
+                                    this.Status.SetInitialisedObject(AnimeMangaStatus.Completed);
                                     break;
                                 case "Nicht erschienen (Pre-Airing)":
-                                    this.Status = AnimeMangaStatus.PreAiring;
+                                    this.Status.SetInitialisedObject(AnimeMangaStatus.PreAiring);
                                     break;
                                 default:
-                                    this.Status = AnimeMangaStatus.Canceled;
+                                    this.Status.SetInitialisedObject(AnimeMangaStatus.Canceled);
                                     break;
                             }
                             break;
                         case "Gruppen":
                             if (childNode.ChildNodes[1].InnerText.Contains("Keine Gruppen eingetragen.")) break;
-                            this.Groups = (from htmlNode in childNode.ChildNodes[1].ChildNodes
+                            this.Groups.SetInitialisedObject(from htmlNode in childNode.ChildNodes[1].ChildNodes
                                 where htmlNode.Name.Equals("a")
                                 select
                                     new Group(
                                         Convert.ToInt32(
                                             htmlNode.GetAttributeValue("href",
                                                 "/translatorgroups?id=-1#top")
-                                                .GetTagContents("/translatorgroups?id=", "#top")[0]), htmlNode.InnerText))
-                                .ToArray();
+                                                .GetTagContents("/translatorgroups?id=", "#top")[0]), htmlNode.InnerText));
                             break;
                         case "Industrie":
                             if (childNode.ChildNodes[1].InnerText.Contains("Keine Unternehmen eingetragen.")) break;
@@ -712,30 +554,32 @@ namespace Azuria.Main
                                     htmlNode.GetAttributeValue("href", "/industry?id=-1#top")
                                         .GetTagContents("/industry?id=", "#top")[0]), htmlNode.InnerText, lIndustryType));
                             }
-                            this.Industry = lIndustries.ToArray();
+                            this.Industry.SetInitialisedObject(lIndustries.ToArray());
                             break;
                         case "Lizenz":
-                            this.IsLicensed = childNode.ChildNodes[1].InnerText.StartsWith("Lizenziert!");
+                            this.IsLicensed.SetInitialisedObject(
+                                childNode.ChildNodes[1].InnerText.StartsWith("Lizenziert!"));
                             break;
                         case "Beschreibung:":
                             childNode.FirstChild.FirstChild.Remove();
-                            this.Description = "";
+                            string lTempString = "";
                             foreach (HtmlNode htmlNode in childNode.FirstChild.ChildNodes)
                             {
-                                if (htmlNode.Name.Equals("br")) this.Description += "\n";
-                                else this.Description += htmlNode.InnerText;
+                                if (htmlNode.Name.Equals("br")) lTempString += "\n";
+                                else lTempString += htmlNode.InnerText;
                             }
-                            if (this.Description.StartsWith("\n")) this.Description = this.Description.TrimStart();
+                            if (lTempString.StartsWith("\n")) lTempString = lTempString.TrimStart();
+                            this.Description.SetInitialisedObject(lTempString);
                             break;
                     }
                 }
-
-                return new ProxerResult();
             }
             catch
             {
                 return new ProxerResult(ErrorHandler.HandleError(this._senpai, lResponse).Exceptions);
             }
+
+            return new ProxerResult();
         }
 
         [ItemNotNull]
@@ -773,13 +617,13 @@ namespace Azuria.Main
                 switch (lNode.Attributes["value"].Value)
                 {
                     case "mangaseries":
-                        this.MangaTyp = MangaType.Series;
+                        this.MangaTyp.SetInitialisedObject(MangaType.Series);
                         break;
                     case "oneshot":
-                        this.MangaTyp = MangaType.OneShot;
+                        this.MangaTyp.SetInitialisedObject(MangaType.OneShot);
                         break;
                     default:
-                        this.MangaTyp = MangaType.Series;
+                        this.MangaTyp.SetInitialisedObject(MangaType.Series);
                         break;
                 }
             }
@@ -798,103 +642,75 @@ namespace Azuria.Main
         /// </summary>
         public class Chapter
         {
-            private readonly Func<Task<ProxerResult>>[] _initFuncs;
             private readonly Senpai _senpai;
-            private Group _scanlatorGruppe;
-            private Uri[] _seiten;
-            private string _titel;
-            private string _uploaderName;
 
-            internal Chapter(int kapitelNr, Language lang, [NotNull] Manga parentManga, [NotNull] Senpai senpai)
+            internal Chapter(int chapterNumber, Language lang, [NotNull] Manga parentManga, [NotNull] Senpai senpai)
             {
                 this._senpai = senpai;
-                this._initFuncs = new Func<Task<ProxerResult>>[]
-                {this.InitInfo, this.InitChapters};
-                this.KapitelNr = kapitelNr;
-                this.Sprache = lang;
+                this.ChapterNumber = chapterNumber;
+                this.Language = lang;
                 this.ParentManga = parentManga;
 
-                this.IstInitialisiert = false;
+                this.Available = new ProxerInitialisableProperty<bool>(this.InitInfo);
+                this.Date = new ProxerInitialisableProperty<DateTime>(this.InitInfo);
+                this.Pages = new ProxerInitialisableProperty<IEnumerable<Uri>>(this.InitPages);
+                this.ScanlatorGroup = new ProxerInitialisableProperty<Group>(this.InitInfo);
+                this.Titel = new ProxerInitialisableProperty<string>(this.InitInfo);
+                this.UploaderName = new ProxerInitialisableProperty<string>(this.InitInfo);
             }
 
             #region Properties
 
             /// <summary>
-            ///     Gibt das Erscheinungsdatum des <see cref="Chapter">Kapitels</see> zurück.
+            ///     Gibt zurück, ob das <see cref="Chapter">Kapitel</see> verfügbar ist.
             /// </summary>
-            /// <seealso cref="Init" />
-            public DateTime Datum { get; private set; }
-
-            /// <summary>
-            ///     Gibt zurück, ob das Objekt bereits initialisiert ist.
-            /// </summary>
-            public bool IstInitialisiert { get; private set; }
+            public ProxerInitialisableProperty<bool> Available { get; }
 
             /// <summary>
             ///     Gibt die Nummer des <see cref="Chapter">Kapitels</see> zurück.
             /// </summary>
-            public int KapitelNr { get; }
+            public int ChapterNumber { get; }
+
+            /// <summary>
+            ///     Gibt das Erscheinungsdatum des <see cref="Chapter">Kapitels</see> zurück.
+            /// </summary>
+            [NotNull]
+            public ProxerInitialisableProperty<DateTime> Date { get; }
+
+            /// <summary>
+            ///     Gibt die <see cref="Minor.Language">Sprache</see> des <see cref="Chapter">Kapitels</see> zurück.
+            /// </summary>
+            public Language Language { get; }
+
+            /// <summary>
+            ///     Gibt die Links zu den einzelnen Seiten des <see cref="Chapter">Kapitels</see> zurück.
+            /// </summary>
+            [NotNull]
+            public ProxerInitialisableProperty<IEnumerable<Uri>> Pages { get; }
 
             /// <summary>
             ///     Gibt den <see cref="Manga" /> zurück, zu dem das <see cref="Chapter">Kapitel</see> gehört.
             /// </summary>
             [NotNull]
-            public Manga ParentManga { get; set; }
+            public Manga ParentManga { get; }
 
             /// <summary>
             ///     Gibt die <see cref="Group">Gruppe</see> zurück, die das Kapitel übersetzt hat.
             /// </summary>
-            /// <seealso cref="Init" />
             [NotNull]
-            public Group ScanlatorGruppe
-            {
-                get { return this._scanlatorGruppe ?? new Group(-1, ""); }
-                private set { this._scanlatorGruppe = value; }
-            }
-
-            /// <summary>
-            ///     Gibt die Links zu den einzelnen Seiten des <see cref="Chapter">Kapitels</see> zurück.
-            /// </summary>
-            /// <seealso cref="Init" />
-            [NotNull]
-            public IEnumerable<Uri> Seiten
-            {
-                get { return this._seiten ?? new Uri[0]; }
-                private set { this._seiten = value.ToArray(); }
-            }
-
-            /// <summary>
-            ///     Gibt die <see cref="Language">Sprache</see> des <see cref="Chapter">Kapitels</see> zurück.
-            /// </summary>
-            public Language Sprache { get; }
+            public ProxerInitialisableProperty<Group> ScanlatorGroup { get; }
 
             /// <summary>
             ///     Gibt den Titel des <see cref="Chapter">Kapitels</see> zurück.
             /// </summary>
-            /// <seealso cref="Init" />
             [NotNull]
-            public string Titel
-            {
-                get { return this._titel ?? ""; }
-                private set { this._titel = value; }
-            }
+            public ProxerInitialisableProperty<string> Titel { get; }
 
             /// <summary>
             ///     Gibt den Namen des Uploaders des <see cref="Chapter">Kapitels</see> zurück.
             /// </summary>
-            /// <seealso cref="Init" />
             [NotNull]
-            public string UploaderName
-            {
-                get { return this._uploaderName ?? ""; }
-                private set { this._uploaderName = value; }
-            }
-
-            /// <summary>
-            ///     Gibt zurück, ob das <see cref="Chapter">Kapitel</see> verfügbar ist.
-            /// </summary>
-            /// <seealso cref="Init" />
-            public bool Verfuegbar { get; private set; }
+            public ProxerInitialisableProperty<string> UploaderName { get; }
 
             #endregion
 
@@ -912,101 +728,10 @@ namespace Azuria.Main
             /// </exception>
             /// <seealso cref="Senpai.Login" />
             [ItemNotNull]
+            [Obsolete("Bitte benutze die Methoden der jeweiligen Eigenschaften, um sie zu initalisieren!")]
             public async Task<ProxerResult> Init()
             {
-                int lFailedInits = 0;
-                ProxerResult lReturn = new ProxerResult();
-
-                foreach (Func<Task<ProxerResult>> initFunc in this._initFuncs)
-                {
-                    try
-                    {
-                        ProxerResult lResult = await initFunc.Invoke();
-                        if (lResult.Success) continue;
-
-                        lReturn.AddExceptions(lResult.Exceptions);
-                        lFailedInits++;
-                    }
-                    catch
-                    {
-                        return new ProxerResult
-                        {
-                            Success = false
-                        };
-                    }
-                }
-
-                this.IstInitialisiert = true;
-
-                if (lFailedInits < this._initFuncs.Length)
-                    lReturn.Success = true;
-
-                return lReturn;
-            }
-
-            [ItemNotNull]
-            private async Task<ProxerResult> InitChapters()
-            {
-                HtmlDocument lDocument = new HtmlDocument();
-                Func<string, ProxerResult> lCheckFunc = s =>
-                {
-                    if (!string.IsNullOrEmpty(s) &&
-                        s.Equals("Du hast keine Berechtigung um diese Seite zu betreten."))
-                        return new ProxerResult(new Exception[] {new NoAccessException(nameof(this.InitInfo))});
-
-                    return new ProxerResult();
-                };
-                ProxerResult<string> lResult =
-                    await
-                        HttpUtility.GetResponseErrorHandling(
-                            "https://proxer.me/read/" + this.ParentManga.Id + "/" + this.KapitelNr + "/" +
-                            this.Sprache.ToString().ToLower().Substring(0, 2) + "?format=json",
-                            this._senpai.MobileLoginCookies,
-                            this._senpai.ErrHandler,
-                            this._senpai,
-                            new[] {lCheckFunc});
-
-                if (!lResult.Success)
-                    return new ProxerResult(lResult.Exceptions);
-
-                string lResponse = lResult.Result;
-
-                try
-                {
-                    lDocument.LoadHtml(lResponse);
-
-                    HtmlNode[] lAllHtmlNodes = lDocument.DocumentNode.DescendantsAndSelf().ToArray();
-
-                    if (
-                        lAllHtmlNodes.Any(
-                            x =>
-                                x.Name.Equals("img") && x.HasAttributes &&
-                                x.GetAttributeValue("src", "").Equals("/images/misc/stopyui.jpg")))
-                        return new ProxerResult(new Exception[] {new CaptchaException()});
-
-                    if (
-                        lAllHtmlNodes.Any(
-                            x =>
-                                x.Name.Equals("img") && x.HasAttributes &&
-                                x.GetAttributeValue("src", "").Equals("/images/misc/404.png")))
-                        return new ProxerResult(new Exception[] {new WrongResponseException {Response = lResponse}});
-
-                    this.Seiten =
-                        (from s in
-                            lDocument.DocumentNode.ChildNodes[1].InnerText.Split(';')[0].GetTagContents("[",
-                                "]")
-                            where !s.StartsWith("[")
-                            select
-                                new Uri("http://upload.proxer.me/manga/" + this.ParentManga.Id + "_" +
-                                        this.Sprache.ToString().ToLower().Substring(0, 2) + "/" + this.KapitelNr + "/" +
-                                        s.GetTagContents("\"", "\"")[0])).ToArray();
-
-                    return new ProxerResult();
-                }
-                catch
-                {
-                    return new ProxerResult((await ErrorHandler.HandleError(this._senpai, lResponse, false)).Exceptions);
-                }
+                return await this.InitInitalisableProperties();
             }
 
             [ItemNotNull]
@@ -1024,8 +749,8 @@ namespace Azuria.Main
                 ProxerResult<string> lResult =
                     await
                         HttpUtility.GetResponseErrorHandling(
-                            "https://proxer.me/chapter/" + this.ParentManga.Id + "/" + this.KapitelNr + "/" +
-                            this.Sprache.ToString().ToLower().Substring(0, 2) + "?format=raw",
+                            "https://proxer.me/chapter/" + this.ParentManga.Id + "/" + this.ChapterNumber + "/" +
+                            this.Language.ToString().ToLower().Substring(0, 2) + "?format=raw",
                             null,
                             this._senpai.ErrHandler,
                             this._senpai,
@@ -1038,11 +763,11 @@ namespace Azuria.Main
 
                 if (lResponse == null || lResponse.Contains("Dieses Kapitel ist leider noch nicht verfügbar :/"))
                 {
-                    this.Verfuegbar = false;
+                    this.Available.SetInitialisedObject(false);
                     return new ProxerResult();
                 }
 
-                this.Verfuegbar = true;
+                this.Available.SetInitialisedObject(true);
 
                 try
                 {
@@ -1073,27 +798,90 @@ namespace Azuria.Main
                         switch (childNode.FirstChild.InnerText)
                         {
                             case "Titel":
-                                this.Titel = childNode.ChildNodes[1].InnerText;
+                                this.Titel.SetInitialisedObject(childNode.ChildNodes[1].InnerText);
                                 break;
                             case "Uploader":
-                                this.UploaderName = childNode.ChildNodes[1].InnerText;
+                                this.UploaderName.SetInitialisedObject(childNode.ChildNodes[1].InnerText);
                                 break;
                             case "Scanlator-Gruppe":
                                 if (childNode.ChildNodes[1].InnerText.Equals("siehe Kapitelcredits"))
-                                    this.ScanlatorGruppe = new Group(-1, "siehe Kapitelcredits");
+                                    this.ScanlatorGroup.SetInitialisedObject(new Group(-1, "siehe Kapitelcredits"));
                                 else
-                                    this.ScanlatorGruppe = new Group(
+                                    this.ScanlatorGroup.SetInitialisedObject(new Group(
                                         Convert.ToInt32(
                                             childNode.ChildNodes[1].FirstChild.GetAttributeValue("href",
                                                 "/translatorgroups?id=-1#top")
                                                 .GetTagContents("/translatorgroups?id=", "#top")[0]),
-                                        childNode.ChildNodes[1].InnerText);
+                                        childNode.ChildNodes[1].InnerText));
                                 break;
                             case "Datum":
-                                this.Datum = Utility.ToDateTime(childNode.ChildNodes[1].InnerText);
+                                this.Date.SetInitialisedObject(Utility.ToDateTime(childNode.ChildNodes[1].InnerText));
                                 break;
                         }
                     }
+
+                    return new ProxerResult();
+                }
+                catch
+                {
+                    return new ProxerResult((await ErrorHandler.HandleError(this._senpai, lResponse, false)).Exceptions);
+                }
+            }
+
+            [ItemNotNull]
+            private async Task<ProxerResult> InitPages()
+            {
+                HtmlDocument lDocument = new HtmlDocument();
+                Func<string, ProxerResult> lCheckFunc = s =>
+                {
+                    if (!string.IsNullOrEmpty(s) &&
+                        s.Equals("Du hast keine Berechtigung um diese Seite zu betreten."))
+                        return new ProxerResult(new Exception[] {new NoAccessException(nameof(this.InitInfo))});
+
+                    return new ProxerResult();
+                };
+                ProxerResult<string> lResult =
+                    await
+                        HttpUtility.GetResponseErrorHandling(
+                            "https://proxer.me/read/" + this.ParentManga.Id + "/" + this.ChapterNumber + "/" +
+                            this.Language.ToString().ToLower().Substring(0, 2) + "?format=json",
+                            this._senpai.MobileLoginCookies,
+                            this._senpai.ErrHandler,
+                            this._senpai,
+                            new[] {lCheckFunc});
+
+                if (!lResult.Success)
+                    return new ProxerResult(lResult.Exceptions);
+
+                string lResponse = lResult.Result;
+
+                try
+                {
+                    lDocument.LoadHtml(lResponse);
+
+                    HtmlNode[] lAllHtmlNodes = lDocument.DocumentNode.DescendantsAndSelf().ToArray();
+
+                    if (
+                        lAllHtmlNodes.Any(
+                            x =>
+                                x.Name.Equals("img") && x.HasAttributes &&
+                                x.GetAttributeValue("src", "").Equals("/images/misc/stopyui.jpg")))
+                        return new ProxerResult(new Exception[] {new CaptchaException()});
+
+                    if (
+                        lAllHtmlNodes.Any(
+                            x =>
+                                x.Name.Equals("img") && x.HasAttributes &&
+                                x.GetAttributeValue("src", "").Equals("/images/misc/404.png")))
+                        return new ProxerResult(new Exception[] {new WrongResponseException {Response = lResponse}});
+
+                    this.Pages.SetInitialisedObject(
+                        (from s in lDocument.DocumentNode.ChildNodes[1].InnerText.Split(';')[0].GetTagContents("[", "]")
+                            where !s.StartsWith("[")
+                            select new Uri("http://upload.proxer.me/manga/" + this.ParentManga.Id + "_" +
+                                           this.Language.ToString().ToLower().Substring(0, 2) + "/" + this.ChapterNumber +
+                                           "/" +
+                                           s.GetTagContents("\"", "\"")[0])).ToArray());
 
                     return new ProxerResult();
                 }
@@ -1111,7 +899,7 @@ namespace Azuria.Main
             /// </returns>
             public override string ToString()
             {
-                return "Kapitel " + this.KapitelNr;
+                return "Kapitel " + this.ChapterNumber;
             }
 
             #endregion

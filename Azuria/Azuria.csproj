@@ -68,7 +68,6 @@
     <Compile Include="EventArguments\NotificationEventArgsType.cs" />
     <Compile Include="EventArguments\PMNotificationEventArgs.cs" />
     <Compile Include="Exceptions\CaptchaException.cs" />
-    <Compile Include="Exceptions\InitializeNeededException.cs" />
     <Compile Include="Exceptions\LanguageNotAvailableException.cs" />
     <Compile Include="Exceptions\NoAccessException.cs" />
     <Compile Include="Exceptions\NotLoggedInException.cs" />
@@ -116,6 +115,8 @@
     <Compile Include="Senpai.cs" />
     <Compile Include="User.cs" />
     <Compile Include="Utilities\ErrorHandling\ErrorHandler.cs" />
+    <Compile Include="Utilities\Initialisation\IInitialisableProperty.cs" />
+    <Compile Include="Utilities\Initialisation\ProxerInitialisableProperty.cs" />
     <Compile Include="Utilities\Net\HttpUtility.cs" />
     <Compile Include="Utilities\ErrorHandling\ProxerResult.cs" />
     <Compile Include="Utilities\SearchUtility.cs" />

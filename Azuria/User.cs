@@ -10,6 +10,7 @@ using Azuria.Main.Search;
 using Azuria.Main.User;
 using Azuria.Utilities;
 using Azuria.Utilities.ErrorHandling;
+using Azuria.Utilities.Initialisation;
 using Azuria.Utilities.Net;
 using HtmlAgilityPack;
 using JetBrains.Annotations;
@@ -27,21 +28,7 @@ namespace Azuria
         /// </summary>
         [NotNull] public static User System = new User("System", -1, new Senpai());
 
-        private readonly Func<Task<ProxerResult>>[] _initFuncs;
-
         private readonly Senpai _senpai;
-        private List<KeyValuePair<AnimeMangaProgress, AnimeMangaProgressObject>> _animeList;
-        private Uri _avatar;
-        private IEnumerable<AnimeMangaChronicObject> _chronic;
-        private IEnumerable<Anime> _favouritenAnime;
-        private IEnumerable<Manga> _favouritenManga;
-        private List<User> _freunde;
-        private string _info;
-        private string _infoHtml;
-        private List<KeyValuePair<AnimeMangaProgress, AnimeMangaProgressObject>> _mangaList;
-        private string _rang;
-        private string _status;
-        private string _userName;
 
         /// <summary>
         ///     Initialisiert die Klasse mit allen Standardeinstellungen.
@@ -64,24 +51,36 @@ namespace Azuria
         internal User([NotNull] string name, int userId, [CanBeNull] Uri avatar, int points, [NotNull] Senpai senpai)
             : this(name, userId, avatar, senpai)
         {
-            this.Points = points;
+            this.Points = new ProxerInitialisableProperty<int>(this.InitMainInfo, points);
         }
 
         internal User([NotNull] string name, int userId, [CanBeNull] Uri avatar, bool online, [NotNull] Senpai senpai)
         {
             this._senpai = senpai;
-            this._initFuncs = new Func<Task<ProxerResult>>[]
-            {this.InitMainInfo, this.InitInfos, this.InitFriends, this.InitAnime, this.InitManga, this.InitChronic};
-            this.IsInitialized = false;
-
-            this.UserName = name;
             this.Id = userId;
-            this.IsOnline = online;
-            if (avatar != null) this.Avatar = avatar;
-            else
-                this.Avatar =
-                    new Uri(
-                        "https://proxer.me/components/com_comprofiler/plugin/templates/default/images/avatar/nophoto_n.png");
+
+            this.Anime =
+                new ProxerInitialisableProperty<IEnumerable<KeyValuePair<AnimeMangaProgress, AnimeMangaProgressObject>>>
+                    (this.InitAnime);
+            this.Avatar = new ProxerInitialisableProperty<Uri>(this.InitMainInfo,
+                avatar ?? new Uri("https://cdn.proxer.me/avatar/nophoto.png"))
+            {
+                IsInitialisedOnce = avatar != null
+            };
+            this.Chronic = new ProxerInitialisableProperty<IEnumerable<AnimeMangaChronicObject>>(this.InitChronic);
+            this.FavouriteAnime = new ProxerInitialisableProperty<IEnumerable<Anime>>(this.InitAnime);
+            this.FavouriteManga = new ProxerInitialisableProperty<IEnumerable<Manga>>(this.InitManga);
+            this.Friends = new ProxerInitialisableProperty<IEnumerable<User>>(this.InitFriends);
+            this.Info = new ProxerInitialisableProperty<string>(this.InitInfos);
+            this.InfoHtml = new ProxerInitialisableProperty<string>(this.InitInfos);
+            this.IsOnline = new ProxerInitialisableProperty<bool>(this.InitMainInfo, online);
+            this.Manga =
+                new ProxerInitialisableProperty<IEnumerable<KeyValuePair<AnimeMangaProgress, AnimeMangaProgressObject>>>
+                    (this.InitManga);
+            this.Points = new ProxerInitialisableProperty<int>(this.InitMainInfo);
+            this.Ranking = new ProxerInitialisableProperty<string>(this.InitMainInfo);
+            this.Status = new ProxerInitialisableProperty<string>(this.InitMainInfo);
+            this.UserName = new ProxerInitialisableProperty<string>(this.InitMainInfo, name);
         }
 
         #region Properties
@@ -90,81 +89,39 @@ namespace Azuria
         ///     Gibt alle <see cref="Anime">Anime</see> zurück, die der <see cref="User">Benutzer</see>
         ///     in seinem Profil markiert hat.
         /// </summary>
-        /// <seealso cref="Init" />
         [NotNull]
-        public IEnumerable<KeyValuePair<AnimeMangaProgress, AnimeMangaProgressObject>> Anime
-            => this._animeList ??
-               new List<KeyValuePair<AnimeMangaProgress, AnimeMangaProgressObject>>();
+        public ProxerInitialisableProperty<IEnumerable<KeyValuePair<AnimeMangaProgress, AnimeMangaProgressObject>>>
+            Anime { get; }
 
         /// <summary>
         ///     Gibt den Link zu dem Avatar des Benutzers zurück.
-        ///     <para />
-        ///     <para>Diese Eigenschaft muss durch <see cref="Init" /> initialisiert werden.</para>
         /// </summary>
-        /// <seealso cref="Init" />
         [NotNull]
-        public Uri Avatar
-        {
-            get
-            {
-                return this._avatar ??
-                       new Uri(
-                           "https://proxer.me/components/com_comprofiler/plugin/templates/default/images/avatar/nophoto_n.png");
-            }
-            private set { this._avatar = value; }
-        }
+        public ProxerInitialisableProperty<Uri> Avatar { get; }
 
         /// <summary>
         ///     Gibt die Chronik des Benutzers zurück.
-        ///     <para />
-        ///     <para>Diese Eigenschaft muss durch <see cref="Init" /> initialisiert werden.</para>
         /// </summary>
-        /// <seealso cref="Init" />
         [NotNull]
-        public IEnumerable<AnimeMangaChronicObject> Chronic
-        {
-            get { return this._chronic ?? new AnimeMangaChronicObject[0]; }
-            private set { this._chronic = value; }
-        }
+        public ProxerInitialisableProperty<IEnumerable<AnimeMangaChronicObject>> Chronic { get; }
 
         /// <summary>
         ///     Gibt die Anime-Favouriten des Benutzers zurück.
-        ///     <para />
-        ///     <para>Diese Eigenschaft muss durch <see cref="Init" /> initialisiert werden.</para>
         /// </summary>
-        /// <seealso cref="Init" />
         [NotNull]
-        public IEnumerable<Anime> FavouriteAnime
-        {
-            get { return this._favouritenAnime ?? new Anime[0]; }
-            private set { this._favouritenAnime = value; }
-        }
+        public ProxerInitialisableProperty<IEnumerable<Anime>> FavouriteAnime { get; }
 
         /// <summary>
         ///     Gibt die Manga-Favouriten des Benutzers zurück.
-        ///     <para />
-        ///     <para>Diese Eigenschaft muss durch <see cref="Init" /> initialisiert werden.</para>
         /// </summary>
-        /// <seealso cref="Init" />
         [NotNull]
-        public IEnumerable<Manga> FavouriteManga
-        {
-            get { return this._favouritenManga ?? new Manga[0]; }
-            private set { this._favouritenManga = value; }
-        }
+        public ProxerInitialisableProperty<IEnumerable<Manga>> FavouriteManga { get; }
 
         /// <summary>
         ///     Gibt die Freunde des Benutzers in einer Liste zurück.
-        ///     <para />
-        ///     <para>Diese Eigenschaft muss durch <see cref="Init" /> initialisiert werden.</para>
         /// </summary>
-        /// <seealso cref="Init" />
         [NotNull]
-        public List<User> Friends
-        {
-            get { return this._freunde ?? new List<User>(); }
-            private set { this._freunde = value; }
-        }
+        public ProxerInitialisableProperty<IEnumerable<User>> Friends { get; }
 
         /// <summary>
         ///     Gibt die ID des Benutzers zurück.
@@ -174,96 +131,58 @@ namespace Azuria
         /// <summary>
         ///     Gibt die Info des Benutzers als Text-Dokument zurück.
         ///     Dabei werden sämtliche Html-Eigenschaften ignoriert.
-        ///     <para />
-        ///     <para>Diese Eigenschaft muss durch <see cref="Init" /> initialisiert werden.</para>
         /// </summary>
-        /// <seealso cref="Init" />
         [NotNull]
-        public string Info
-        {
-            get { return this._info ?? ""; }
-            private set { this._info = value; }
-        }
+        public ProxerInitialisableProperty<string> Info { get; }
 
         /// <summary>
         ///     Gibt die Info des Benutzers als Html-Dokument zurück.
-        ///     <para />
-        ///     <para>Diese Eigenschaft muss durch <see cref="Init" /> initialisiert werden.</para>
         /// </summary>
-        /// <seealso cref="Init" />
         [NotNull]
-        public string InfoHtml
-        {
-            get { return this._infoHtml ?? ""; }
-            private set { this._infoHtml = value; }
-        }
+        public ProxerInitialisableProperty<string> InfoHtml { get; }
 
         /// <summary>
         ///     Gibt an, ob das Objekt bereits Initialisiert ist.
         /// </summary>
-        public bool IsInitialized { get; private set; }
+        public bool IsInitialized => this.IsFullyInitialised();
 
         /// <summary>
         ///     Gibt zurück, ob der Benutzter zur Zeit online ist.
-        ///     <para />
-        ///     <para>Diese Eigenschaft muss durch <see cref="Init" /> initialisiert werden.</para>
         /// </summary>
-        /// <seealso cref="Init" />
-        public bool IsOnline { get; private set; }
+        [NotNull]
+        public ProxerInitialisableProperty<bool> IsOnline { get; }
 
         /// <summary>
         ///     Gibt alle <see cref="Manga">Manga</see> zurück, die der <see cref="User">Benutzer</see>
         ///     in seinem Profil markiert hat.
         /// </summary>
-        /// <seealso cref="Init" />
         [NotNull]
-        public IEnumerable<KeyValuePair<AnimeMangaProgress, AnimeMangaProgressObject>> Manga
-            => this._mangaList ??
-               new List<KeyValuePair<AnimeMangaProgress, AnimeMangaProgressObject>>();
+        public ProxerInitialisableProperty<IEnumerable<KeyValuePair<AnimeMangaProgress, AnimeMangaProgressObject>>>
+            Manga { get; }
 
         /// <summary>
         ///     Gibt zurück, wie viele Punkte der Benutzter momentan hat.
-        ///     <para />
-        ///     <para>Diese Eigenschaft muss durch <see cref="Init" /> initialisiert werden.</para>
         /// </summary>
-        /// <seealso cref="Init" />
-        public int Points { get; private set; }
+        [NotNull]
+        public ProxerInitialisableProperty<int> Points { get; }
 
         /// <summary>
         ///     Gibt den Rangnamen des Benutzers zurück.
-        ///     <para />
-        ///     <para>Diese Eigenschaft muss durch <see cref="Init" /> initialisiert werden.</para>
         /// </summary>
-        /// <seealso cref="Init" />
         [NotNull]
-        public string Ranking
-        {
-            get { return this._rang ?? ""; }
-            private set { this._rang = value; }
-        }
+        public ProxerInitialisableProperty<string> Ranking { get; }
 
         /// <summary>
         ///     Gibt den Status des Benutzers zurück.
-        ///     <para />
-        ///     <para>Diese Eigenschaft muss durch <see cref="Init" /> initialisiert werden.</para>
         /// </summary>
-        /// <seealso cref="Init" />
         [NotNull]
-        public string Status
-        {
-            get { return this._status ?? ""; }
-            private set { this._status = value; }
-        }
+        public ProxerInitialisableProperty<string> Status { get; }
 
         /// <summary>
         ///     Gibt den Benutzernamen des Benutzers zurück.
         /// </summary>
         [NotNull]
-        public string UserName
-        {
-            get { return this._userName ?? ""; }
-            private set { this._userName = value; }
-        }
+        public ProxerInitialisableProperty<string> UserName { get; }
 
         #endregion
 
@@ -272,17 +191,15 @@ namespace Azuria
         /// <summary>
         ///     Überprüft, ob zwei Benutzter Freunde sind.
         /// </summary>
-        /// <exception cref="InitializeNeededException">
-        ///     Wird ausgelöst, wenn die Eigenschaften der Parameter noch nicht
-        ///     initialisiert sind.
-        /// </exception>
         /// <param name="user1">Benutzer 1</param>
         /// <param name="user2">Benutzer 2</param>
         /// <returns>Benutzer sind Freunde. True oder False.</returns>
         [NotNull]
-        public static ProxerResult<bool> AreUserFriends([NotNull] User user1, [NotNull] User user2)
+        public static async Task<ProxerResult<bool>> AreUserFriends([NotNull] User user1, [NotNull] User user2)
         {
-            return new ProxerResult<bool>(user1.Friends.Any(item => item.Id == user2.Id));
+            return
+                new ProxerResult<bool>(
+                    (await user1.Friends.GetObject()).OnError(new User[0]).Any(item => item.Id == user2.Id));
         }
 
         [ItemNotNull]
@@ -432,36 +349,10 @@ namespace Azuria
         /// </exception>
         /// <seealso cref="Senpai.Login" />
         [ItemNotNull]
+        [Obsolete("Bitte benutze die Methoden der jeweiligen Eigenschaften, um sie zu initalisieren!")]
         public async Task<ProxerResult> Init()
         {
-            int lFailedInits = 0;
-            ProxerResult lReturn = new ProxerResult();
-
-            foreach (Func<Task<ProxerResult>> initFunc in this._initFuncs)
-            {
-                try
-                {
-                    ProxerResult lResult;
-                    if ((lResult = await initFunc.Invoke()).Success) continue;
-
-                    lReturn.AddExceptions(lResult.Exceptions);
-                    lFailedInits++;
-                }
-                catch
-                {
-                    return new ProxerResult
-                    {
-                        Success = false
-                    };
-                }
-            }
-
-            this.IsInitialized = true;
-
-            if (lFailedInits < this._initFuncs.Length)
-                lReturn.Success = true;
-
-            return lReturn;
+            return await this.InitInitalisableProperties();
         }
 
         [ItemNotNull]
@@ -495,30 +386,27 @@ namespace Azuria
 
             try
             {
-                this._animeList =
-                    new List<KeyValuePair<AnimeMangaProgress, AnimeMangaProgressObject>>();
+                this.Anime.SetInitialisedObject(new List<KeyValuePair<AnimeMangaProgress, AnimeMangaProgressObject>>());
 
                 lDocument.LoadHtml(lResponse);
 
-                this.FavouriteAnime =
-                    lDocument.DocumentNode.ChildNodes[5].ChildNodes.Where(
-                        x =>
-                            x.HasAttributes && x.Attributes.Contains("href") &&
-                            x.Attributes["href"].Value.StartsWith("/info/"))
-                        .Select(
-                            favouritenNode =>
-                                new Anime(favouritenNode.Attributes["title"].Value,
-                                    Convert.ToInt32(
-                                        favouritenNode.Attributes["href"].Value.GetTagContents("/info/", "#top").First()),
-                                    this._senpai))
-                        .ToArray();
+                this.FavouriteAnime.SetInitialisedObject(lDocument.DocumentNode.ChildNodes[5].ChildNodes.Where(
+                    x =>
+                        x.HasAttributes && x.Attributes.Contains("href") &&
+                        x.Attributes["href"].Value.StartsWith("/info/"))
+                    .Select(
+                        favouritenNode =>
+                            new Anime(favouritenNode.Attributes["title"].Value,
+                                Convert.ToInt32(
+                                    favouritenNode.Attributes["href"].Value.GetTagContents("/info/", "#top").First()),
+                                this._senpai))
+                    .ToArray());
 
-                ProxerResult lProcessResult;
-                return
-                    !(lProcessResult = this.ProcessAnimeMangaProgressNodes<Anime>(lDocument, ref this._animeList))
-                        .Success
-                        ? new ProxerResult(lProcessResult.Exceptions)
-                        : new ProxerResult();
+                ProxerResult<IEnumerable<KeyValuePair<AnimeMangaProgress, AnimeMangaProgressObject>>> lProcessResult =
+                    this.ProcessAnimeMangaProgressNodes<Anime>(lDocument);
+                if (!lProcessResult.Success) return new ProxerResult(lProcessResult.Exceptions);
+                this.Anime.SetInitialisedObject(lProcessResult.Result);
+                return new ProxerResult();
             }
             catch
             {
@@ -568,7 +456,7 @@ namespace Azuria
                         AnimeMangaChronicObject.GetChronicObjectFromNode(chronicNode, this._senpai);
                     if (lParseResult.Success) lChronicObjects.Add(lParseResult.Result);
                 }
-                this.Chronic = lChronicObjects;
+                this.Chronic.SetInitialisedObject(lChronicObjects);
 
                 return new ProxerResult();
             }
@@ -583,12 +471,11 @@ namespace Azuria
         {
             if (this.Id == -1) return new ProxerResult();
 
-            this.Friends = new List<User>();
-
             ProxerResult<HtmlNode[]> lResult = await this.GetAllFriendNodes();
             if (!lResult.Success || lResult.Result == null) return new ProxerResult(lResult.Exceptions);
             try
             {
+                List<User> lFriendList = new List<User>();
                 foreach (HtmlNode curFriendNode in lResult.Result)
                 {
                     string lUsername = curFriendNode.ChildNodes[2].InnerText;
@@ -597,17 +484,17 @@ namespace Azuria
                             curFriendNode.Attributes["id"].Value.Substring("entry".Length));
                     Uri lAvatar = curFriendNode.ChildNodes[2].GetAttributeValue("title", "Avatar:")
                         .Equals("Avatar:")
-                        ? new Uri(
-                            "https://proxer.me/components/com_comprofiler/plugin/templates/default/images/avatar/nophoto_n.png")
-                        : new Uri("https://proxer.me/images/comprofiler/" +
+                        ? new Uri("https://cdn.proxer.me/avatar/nophoto.png")
+                        : new Uri("https://proxer.me/avatar/" +
                                   curFriendNode.ChildNodes[2].GetAttributeValue("title", "Avatar:")
                                       .Split(':')[1]);
                     bool lOnline =
                         curFriendNode.ChildNodes[1].FirstChild.GetAttributeValue("src",
                             "/images/misc/offlineicon.png").Equals("/images/misc/onlineicon.png");
 
-                    this.Friends.Add(new User(lUsername, lId, lAvatar, lOnline, this._senpai));
+                    lFriendList.Add(new User(lUsername, lId, lAvatar, lOnline, this._senpai));
                 }
+                this.Friends.SetInitialisedObject(lFriendList);
 
                 return new ProxerResult();
             }
@@ -654,8 +541,8 @@ namespace Azuria
                 HtmlNode[] lProfileNodes =
                     lDocument.DocumentNode.SelectNodesUtility("class", "profile").ToArray();
 
-                this.Info = lProfileNodes[0].ChildNodes[10].InnerText;
-                this.InfoHtml = lProfileNodes[0].ChildNodes[10].InnerHtml;
+                this.Info.SetInitialisedObject(lProfileNodes[0].ChildNodes[10].InnerText);
+                this.InfoHtml.SetInitialisedObject(lProfileNodes[0].ChildNodes[10].InnerHtml);
 
                 return new ProxerResult();
             }
@@ -701,25 +588,22 @@ namespace Azuria
                 HtmlNode[] lProfileNodes =
                     lDocument.DocumentNode.SelectNodesUtility("class", "profile").ToArray();
 
-                this.Avatar =
-                    new Uri("https:" +
-                            lProfileNodes[0].ParentNode.ParentNode.ChildNodes[1].ChildNodes[0]
-                                .Attributes["src"].Value);
-                this.Points =
-                    Convert.ToInt32(
-                        lProfileNodes[0].FirstChild.InnerText.GetTagContents("Summe: ", " - ")[
-                            0]);
-                this.Ranking =
-                    lProfileNodes[0].FirstChild.InnerText.GetTagContents(this.Points + " - ",
-                        "[?]")
-                        [0];
-                this.IsOnline = lProfileNodes[0].ChildNodes[1].InnerText.Equals("Status Online");
-                this.Status = lProfileNodes[0].ChildNodes.Count == 7
+                this.Avatar.SetInitialisedObject(new Uri("https:" +
+                                                         lProfileNodes[0].ParentNode.ParentNode.ChildNodes[1].ChildNodes
+                                                             [0]
+                                                             .Attributes["src"].Value));
+                this.Points.SetInitialisedObject(Convert.ToInt32(
+                    lProfileNodes[0].FirstChild.InnerText.GetTagContents("Summe: ", " - ")[
+                        0]));
+                this.Ranking.SetInitialisedObject(
+                    lProfileNodes[0].FirstChild.InnerText.GetTagContents(
+                        this.Points.GetObjectIfInitialised(-1) + " - ", "[?]")[0]);
+                this.IsOnline.SetInitialisedObject(lProfileNodes[0].ChildNodes[1].InnerText.Equals("Status Online"));
+                this.Status.SetInitialisedObject(lProfileNodes[0].ChildNodes.Count == 7
                     ? lProfileNodes[0].ChildNodes[6].InnerText
-                    : "";
+                    : "");
 
-                this.UserName =
-                    lDocument.GetElementbyId("pageMetaAjax").InnerText.Split(' ')[1];
+                this.UserName.SetInitialisedObject(lDocument.GetElementbyId("pageMetaAjax").InnerText.Split(' ')[1]);
 
                 return new ProxerResult();
             }
@@ -760,30 +644,25 @@ namespace Azuria
 
             try
             {
-                this._mangaList =
-                    new List<KeyValuePair<AnimeMangaProgress, AnimeMangaProgressObject>>();
-
                 lDocument.LoadHtml(lResponse);
 
-                this.FavouriteManga =
-                    lDocument.DocumentNode.ChildNodes[5].ChildNodes.Where(
-                        x =>
-                            x.HasAttributes && x.Attributes.Contains("href") &&
-                            x.Attributes["href"].Value.StartsWith("/info/"))
-                        .Select(
-                            favouritenNode =>
-                                new Manga(favouritenNode.Attributes["title"].Value,
-                                    Convert.ToInt32(
-                                        favouritenNode.Attributes["href"].Value.GetTagContents("/info/", "#top").First()),
-                                    this._senpai))
-                        .ToArray();
+                this.FavouriteManga.SetInitialisedObject(lDocument.DocumentNode.ChildNodes[5].ChildNodes.Where(
+                    x =>
+                        x.HasAttributes && x.Attributes.Contains("href") &&
+                        x.Attributes["href"].Value.StartsWith("/info/"))
+                    .Select(
+                        favouritenNode =>
+                            new Manga(favouritenNode.Attributes["title"].Value,
+                                Convert.ToInt32(
+                                    favouritenNode.Attributes["href"].Value.GetTagContents("/info/", "#top").First()),
+                                this._senpai))
+                    .ToArray());
 
-                ProxerResult lProcessResult;
-                return
-                    !(lProcessResult = this.ProcessAnimeMangaProgressNodes<Manga>(lDocument, ref this._mangaList))
-                        .Success
-                        ? new ProxerResult(lProcessResult.Exceptions)
-                        : new ProxerResult();
+                ProxerResult<IEnumerable<KeyValuePair<AnimeMangaProgress, AnimeMangaProgressObject>>> lProcessResult =
+                    this.ProcessAnimeMangaProgressNodes<Manga>(lDocument);
+                if (!lProcessResult.Success) return new ProxerResult(lProcessResult.Exceptions);
+                this.Manga.SetInitialisedObject(lProcessResult.Result);
+                return new ProxerResult();
             }
             catch
             {
@@ -792,8 +671,8 @@ namespace Azuria
         }
 
         [NotNull]
-        private ProxerResult ProcessAnimeMangaProgressNodes<T>([NotNull] HtmlDocument htmlDocument,
-            [NotNull] ref List<KeyValuePair<AnimeMangaProgress, AnimeMangaProgressObject>> saveList)
+        private ProxerResult<IEnumerable<KeyValuePair<AnimeMangaProgress, AnimeMangaProgressObject>>>
+            ProcessAnimeMangaProgressNodes<T>([NotNull] HtmlDocument htmlDocument)
             where T : IAnimeMangaObject
         {
             try
@@ -811,10 +690,15 @@ namespace Azuria
                     lConstructorToInvoke = lDeclaredConstructor;
                 }
 
-                if (lConstructorToInvoke == null) return new ProxerResult(new Exception[0]);
+                if (lConstructorToInvoke == null)
+                    return
+                        new ProxerResult<IEnumerable<KeyValuePair<AnimeMangaProgress, AnimeMangaProgressObject>>>(
+                            new Exception[0]);
 
                 #region Process Nodes
 
+                List<KeyValuePair<AnimeMangaProgress, AnimeMangaProgressObject>> lReturnList =
+                    new List<KeyValuePair<AnimeMangaProgress, AnimeMangaProgressObject>>();
                 foreach (
                     HtmlNode animeMangaNode in
                         htmlDocument.DocumentNode.ChildNodes[7].ChildNodes.Where(
@@ -835,7 +719,7 @@ namespace Azuria
                         lConstructorToInvoke.Invoke(lActivatorParameters) as IAnimeMangaObject;
 
                     if (lAnimeManga != null)
-                        saveList.Add(
+                        lReturnList.Add(
                             new KeyValuePair<AnimeMangaProgress, AnimeMangaProgressObject>(AnimeMangaProgress.Finished,
                                 new AnimeMangaProgressObject(this, lAnimeManga,
                                     Convert.ToInt32(animeMangaNode.ChildNodes[4].InnerText.Split('/')[0].Trim()),
@@ -863,7 +747,7 @@ namespace Azuria
                         lConstructorToInvoke.Invoke(lActivatorParameters) as IAnimeMangaObject;
 
                     if (lAnimeManga != null)
-                        saveList.Add(
+                        lReturnList.Add(
                             new KeyValuePair<AnimeMangaProgress, AnimeMangaProgressObject>(
                                 AnimeMangaProgress.InProgress,
                                 new AnimeMangaProgressObject(this, lAnimeManga,
@@ -892,7 +776,7 @@ namespace Azuria
                         lConstructorToInvoke.Invoke(lActivatorParameters) as IAnimeMangaObject;
 
                     if (lAnimeManga != null)
-                        saveList.Add(
+                        lReturnList.Add(
                             new KeyValuePair<AnimeMangaProgress, AnimeMangaProgressObject>(AnimeMangaProgress.Planned,
                                 new AnimeMangaProgressObject(this, lAnimeManga,
                                     Convert.ToInt32(animeMangaNode.ChildNodes[4].InnerText.Split('/')[0].Trim()),
@@ -920,7 +804,7 @@ namespace Azuria
                         lConstructorToInvoke.Invoke(lActivatorParameters) as IAnimeMangaObject;
 
                     if (lAnimeManga != null)
-                        saveList.Add(
+                        lReturnList.Add(
                             new KeyValuePair<AnimeMangaProgress, AnimeMangaProgressObject>(AnimeMangaProgress.Aborted,
                                 new AnimeMangaProgressObject(this, lAnimeManga,
                                     Convert.ToInt32(animeMangaNode.ChildNodes[4].InnerText.Split('/')[0].Trim()),
@@ -929,13 +813,17 @@ namespace Azuria
                 }
 
                 #endregion
+
+                return
+                    new ProxerResult<IEnumerable<KeyValuePair<AnimeMangaProgress, AnimeMangaProgressObject>>>(
+                        lReturnList);
             }
             catch
             {
-                return new ProxerResult(new Exception[] {new WrongResponseException()});
+                return
+                    new ProxerResult<IEnumerable<KeyValuePair<AnimeMangaProgress, AnimeMangaProgressObject>>>(
+                        new Exception[] {new WrongResponseException()});
             }
-
-            return new ProxerResult();
         }
 
         /// <summary>
@@ -988,7 +876,7 @@ namespace Azuria
         /// </returns>
         public override string ToString()
         {
-            return this.UserName + " [" + this.Id + "]";
+            return this.UserName.GetObjectIfInitialised("ERROR") + " [" + this.Id + "]";
         }
 
         #endregion

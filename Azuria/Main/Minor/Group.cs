@@ -8,6 +8,10 @@ namespace Azuria.Main.Minor
     /// </summary>
     public class Group
     {
+        /// <summary>
+        /// </summary>
+        public static Group Error = new Group(-1, "ERROR");
+
         internal Group(int id, [NotNull] string name)
         {
             this.Id = id;

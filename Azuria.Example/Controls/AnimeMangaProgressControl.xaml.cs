@@ -36,13 +36,15 @@ namespace Azuria.Example.Controls
 
         #region
 
+        private async void ProgressUserControl_Loaded(object sender, RoutedEventArgs e)
+        {
+            this.AnimeNameTextBlock.Text =
+                await this.AnimeMangaProgressObject?.AnimeMangaObject.Name.GetObject("ERROR") ?? "";
+        }
+
         private void ProgressUserControl_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
             new AnimeMangaWindow(this.AnimeMangaProgressObject.AnimeMangaObject, this._senpai).Show();
-        }
-
-        private void StackPanel_Loaded(object sender, RoutedEventArgs e)
-        {
         }
 
         #endregion

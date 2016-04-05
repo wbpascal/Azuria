@@ -34,6 +34,7 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <DocumentationFile>bin\Release\Azuria.Portable.XML</DocumentationFile>
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="..\Azuria\Community\Conference.cs">
@@ -188,6 +189,12 @@
     </Compile>
     <Compile Include="..\Azuria\Utilities\ErrorHandling\ProxerResult.cs">
       <Link>Utilities\ErrorHandling\ProxerResult.cs</Link>
+    </Compile>
+    <Compile Include="..\Azuria\Utilities\Initialisation\IInitialisableProperty.cs">
+      <Link>Utilities\Initialisation\IInitialisableProperty.cs</Link>
+    </Compile>
+    <Compile Include="..\Azuria\Utilities\Initialisation\ProxerInitialisableProperty.cs">
+      <Link>Utilities\Initialisation\ProxerInitialisableProperty.cs</Link>
     </Compile>
     <Compile Include="..\Azuria\Utilities\SearchUtility.cs">
       <Link>Utilities\SearchUtility.cs</Link>

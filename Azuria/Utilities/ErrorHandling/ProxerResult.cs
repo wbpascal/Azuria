@@ -52,12 +52,15 @@ namespace Azuria.Utilities.ErrorHandling
         ///     Eine Methode, die <paramref name="returnObject" /> zurückgibt, wenn <see cref="ProxerResult.Success" /> = false,
         ///     sonst wird das <see cref="Result">Resultat</see> zurückgegeben.
         /// </summary>
-        /// <param name="returnObject">Das Objekt, dass zurückgegeben wird, wenn <see cref="ProxerResult.Success" /> = false.</param>
+        /// <param name="returnObject">
+        ///     Das Objekt, dass zurückgegeben wird, wenn <see cref="ProxerResult.Success" /> = false oder
+        ///     <see cref="ProxerResult{T}.Result" /> = null (oder Nothing in VisualBasic).
+        /// </param>
         /// <returns>Ein Objekt mit dem Typ <typeparamref name="T" /></returns>
-        [CanBeNull]
-        public T OnError([CanBeNull] T returnObject)
+        [NotNull]
+        public T OnError([NotNull] T returnObject)
         {
-            return this.Success ? this.Result : returnObject;
+            return this.Success && this.Result != null ? this.Result : returnObject;
         }
 
         #endregion

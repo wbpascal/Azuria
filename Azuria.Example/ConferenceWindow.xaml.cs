@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -47,7 +48,7 @@ namespace Azuria.Example
                 MessageBoxImage.Error);
         }
 
-        private void ConferenceOnNeuePmRaised(Conference sender, IEnumerable<Conference.Message> messages,
+        private async void ConferenceOnNeuePmRaised(Conference sender, IEnumerable<Conference.Message> messages,
             bool alleNachrichten)
         {
             //Hier werden die Nachrichten verarbeitet
@@ -66,16 +67,17 @@ namespace Azuria.Example
 
             foreach (Conference.Message message in messages)
             {
-                this.ChatBox.Text += "[" + message.TimeStamp + "] " + message.Sender.UserName + ": " +
+                this.ChatBox.Text += "[" + message.TimeStamp + "] " + await message.Sender.UserName.GetObject("ERROR") +
+                                     ": " +
                                      message.Content + "\n";
             }
         }
 
-        private void InitComponents()
+        private async Task InitComponents()
         {
-            this.Title = "Konferenz: " + this._conference.Title;
+            this.Title = "Konferenz: " + (await this._conference.Title.GetObject()).OnError("ERROR");
 
-            foreach (User teilnehmer in this._conference.Participants)
+            foreach (User teilnehmer in (await this._conference.Participants.GetObject()).OnError(new User[0]))
             {
                 TextBlock lTeilnehmerBlock = new TextBlock {DataContext = teilnehmer, Text = teilnehmer.ToString()};
                 lTeilnehmerBlock.MouseLeftButtonDown += this.UserTextBlock_MouseLeftButtonDown;
@@ -84,8 +86,8 @@ namespace Azuria.Example
 
             TextBlock lLeaderBlock = new TextBlock
             {
-                DataContext = this._conference.Leader,
-                Text = this._conference.Leader.ToString()
+                DataContext = (await this._conference.Leader.GetObject()).OnError(User.System),
+                Text = (await this._conference.Leader.GetObject()).OnError(User.System).ToString()
             };
             lLeaderBlock.MouseLeftButtonDown += this.UserTextBlock_MouseLeftButtonDown;
             this.LeiterBox.Items.Add(lLeaderBlock);
@@ -99,11 +101,7 @@ namespace Azuria.Example
 
         private async void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            //Eigenschaften der Konferenz initialisieren
-            //Nachrichten werden noch nicht abgerufen
-            await this._conference.Init();
-
-            this.InitComponents();
+            await this.InitComponents();
 
             //Abrufen der Nachrichten im Hintergrund wird aktiviert
             //Durch setzen auf false kann diese Funktion wieder deaktiviert werden

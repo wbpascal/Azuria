@@ -35,6 +35,10 @@ namespace Azuria.Main.Minor
             None
         }
 
+        /// <summary>
+        /// </summary>
+        public static Industry Error = new Industry(-1, "ERROR", IndustryType.None);
+
         internal Industry(int id, [NotNull] string name, IndustryType type)
         {
             this.Id = id;
