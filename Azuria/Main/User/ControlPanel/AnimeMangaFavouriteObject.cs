@@ -24,11 +24,15 @@ namespace Azuria.Main.User.ControlPanel
 
         /// <summary>
         /// </summary>
-        public IAnimeMangaObject AnimeMangaObject { get; private set; }
+        public IAnimeMangaObject AnimeMangaObject { get; }
 
         /// <summary>
         /// </summary>
-        public int EntryId { get; set; }
+        public AnimeMangaType AnimeMangaType => this.AnimeMangaObject.ObjectType;
+
+        /// <summary>
+        /// </summary>
+        public int EntryId { get; }
 
         #endregion
 

@@ -38,6 +38,10 @@ namespace Azuria.Main.User.ControlPanel
 
         /// <summary>
         /// </summary>
+        public AnimeMangaType AnimeMangaType => this.AnimeMangaObject.ObjectType;
+
+        /// <summary>
+        /// </summary>
         public int EntryId { get; }
 
         /// <summary>

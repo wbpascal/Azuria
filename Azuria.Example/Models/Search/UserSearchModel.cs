@@ -15,6 +15,7 @@ namespace Azuria.Example.Models.Search
         public Uri Avatar { get; private set; }
 
         public string UserName { get; private set; }
+
         public User UserObject { get; }
 
         #endregion

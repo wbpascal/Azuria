@@ -4,7 +4,6 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
 using Azuria.Example.Controls.Search;
-using Azuria.Example.Models;
 using Azuria.Example.Models.Search;
 using Azuria.Example.Utilities;
 using Azuria.Main;
@@ -149,7 +148,8 @@ namespace Azuria.Example
             }
             else if (((ListViewItem) sender).Content is AnimeMangaSearchModel)
             {
-                new AnimeMangaWindow((((ListViewItem) sender).Content as AnimeMangaSearchModel)?.AnimeMangaObject, this._senpai).Show();
+                new AnimeMangaWindow((((ListViewItem) sender).Content as AnimeMangaSearchModel)?.AnimeMangaObject,
+                    this._senpai).Show();
             }
         }
 

@@ -56,10 +56,16 @@ namespace Azuria.Example
             }
 
             foreach (
-                KeyValuePair<AnimeMangaProgress, AnimeMangaProgressObject> anime in
-                    await this._user.Anime.GetObject(new KeyValuePair<AnimeMangaProgress, AnimeMangaProgressObject>[0]))
+                KeyValuePair<AnimeMangaProgress, AnimeMangaProgressObject<Anime>> anime in
+                    await
+                        this._user.Anime.GetObject(
+                            new KeyValuePair<AnimeMangaProgress, AnimeMangaProgressObject<Anime>>[0]))
             {
-                AnimeMangaProgressControl lProgressControl = new AnimeMangaProgressControl(anime.Value, this._senpai);
+                AnimeMangaProgressControl lProgressControl =
+                    new AnimeMangaProgressControl(
+                        new AnimeMangaProgressObject<IAnimeMangaObject>(anime.Value.User, anime.Value.AnimeMangaObject,
+                            anime.Value.EntryId, anime.Value.CurrentProgress, anime.Value.MaxCount, anime.Value.Progress,
+                            this._senpai), this._senpai);
 
                 switch (anime.Key)
                 {
@@ -175,10 +181,16 @@ namespace Azuria.Example
             }
 
             foreach (
-                KeyValuePair<AnimeMangaProgress, AnimeMangaProgressObject> manga in
-                    await this._user.Manga.GetObject(new KeyValuePair<AnimeMangaProgress, AnimeMangaProgressObject>[0]))
+                KeyValuePair<AnimeMangaProgress, AnimeMangaProgressObject<Manga>> manga in
+                    await
+                        this._user.Manga.GetObject(
+                            new KeyValuePair<AnimeMangaProgress, AnimeMangaProgressObject<Manga>>[0]))
             {
-                AnimeMangaProgressControl lProgressControl = new AnimeMangaProgressControl(manga.Value, this._senpai);
+                AnimeMangaProgressControl lProgressControl =
+                    new AnimeMangaProgressControl(new AnimeMangaProgressObject<IAnimeMangaObject>(manga.Value.User,
+                        manga.Value.AnimeMangaObject,
+                        manga.Value.EntryId, manga.Value.CurrentProgress, manga.Value.MaxCount, manga.Value.Progress,
+                        this._senpai), this._senpai);
 
                 switch (manga.Key)
                 {

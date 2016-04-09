@@ -136,6 +136,9 @@
     <Compile Include="..\Azuria\Main\User\ControlPanel\AnimeMangaFavouriteObject.cs">
       <Link>Main\User\ControlPanel\AnimeMangaFavouriteObject.cs</Link>
     </Compile>
+    <Compile Include="..\Azuria\Main\User\ControlPanel\AnimeMangaUcpObject.cs">
+      <Link>Main\User\ControlPanel\AnimeMangaUcpObject.cs</Link>
+    </Compile>
     <Compile Include="..\Azuria\Main\User\ControlPanel\UserControlPanel.cs">
       <Link>Main\User\ControlPanel\UserControlPanel.cs</Link>
     </Compile>

@@ -10,7 +10,8 @@ namespace Azuria.Example.Controls
     {
         private readonly Senpai _senpai;
 
-        public AnimeMangaProgressControl(AnimeMangaProgressObject animeMangaProgressObject, Senpai senpai)
+        public AnimeMangaProgressControl(AnimeMangaProgressObject<IAnimeMangaObject> animeMangaProgressObject,
+            Senpai senpai)
         {
             this._senpai = senpai;
             //Die Werte der Controls werden mit Bindings gelöst
@@ -23,14 +24,14 @@ namespace Azuria.Example.Controls
             this._senpai = senpai;
             //Die Werte der Controls werden mit Bindings gelöst
             //Dies ist eine Möglichkeit einen Favoriten darzustellen (nicht empfohlen)
-            this.AnimeMangaProgressObject = new AnimeMangaProgressObject(User.System, animeMangaObject, -1, -1,
-                AnimeMangaProgress.Finished);
+            this.AnimeMangaProgressObject = new AnimeMangaProgressObject<IAnimeMangaObject>(User.System,
+                animeMangaObject, -1, -1, -1, AnimeMangaProgress.Finished, senpai);
             this.InitializeComponent();
         }
 
         #region Properties
 
-        public AnimeMangaProgressObject AnimeMangaProgressObject { get; set; }
+        public AnimeMangaProgressObject<IAnimeMangaObject> AnimeMangaProgressObject { get; set; }
 
         #endregion
 
