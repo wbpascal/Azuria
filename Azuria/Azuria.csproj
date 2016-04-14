@@ -77,7 +77,7 @@
     <Compile Include="Main\AnimeMangaType.cs" />
     <Compile Include="Main\IAnimeMangaObject.cs" />
     <Compile Include="Main\Manga.cs" />
-    <Compile Include="Main\Minor\Comment.cs" />
+    <Compile Include="Main\User\Comment.cs" />
     <Compile Include="Main\Minor\Fsk.cs" />
     <Compile Include="Main\Minor\FskHelper.cs" />
     <Compile Include="Main\Minor\GenreObject.cs" />

@@ -5,7 +5,6 @@ using System.Reflection;
 using System.Threading.Tasks;
 using Azuria.Exceptions;
 using Azuria.Main;
-using Azuria.Main.Minor;
 using Azuria.Main.Search;
 using Azuria.Main.User;
 using Azuria.Utilities;

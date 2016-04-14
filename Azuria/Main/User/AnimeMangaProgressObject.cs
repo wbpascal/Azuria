@@ -1,5 +1,10 @@
 ﻿using System;
 using System.Linq;
+using System.Threading.Tasks;
+using Azuria.Exceptions;
+using Azuria.Utilities.ErrorHandling;
+using Azuria.Utilities.Initialisation;
+using Azuria.Utilities.Net;
 using HtmlAgilityPack;
 using JetBrains.Annotations;
 
@@ -12,7 +17,9 @@ namespace Azuria.Main.User
     /// </summary>
     public class AnimeMangaProgressObject<T> where T : IAnimeMangaObject
     {
-        private readonly Senpai _senpai;
+        /// <summary>
+        /// </summary>
+        [NotNull] protected readonly Senpai Senpai;
 
         /// <summary>
         ///     Initialisiert das Objekt.
@@ -37,13 +44,15 @@ namespace Azuria.Main.User
             int entryId, int currentProgress,
             int maxCount, AnimeMangaProgress progress, [NotNull] Senpai senpai)
         {
-            this._senpai = senpai;
+            this.Senpai = senpai;
             this.User = user;
             this.AnimeMangaObject = animeMangaObject;
             this.EntryId = entryId;
             this.CurrentProgress = currentProgress;
             this.MaxCount = maxCount;
             this.Progress = progress;
+
+            this.Comment = new ProxerInitialisableProperty<Comment>(this.InitComment);
         }
 
         #region Properties
@@ -53,6 +62,11 @@ namespace Azuria.Main.User
         /// </summary>
         [NotNull]
         public T AnimeMangaObject { get; }
+
+        /// <summary>
+        /// </summary>
+        [NotNull]
+        public ProxerInitialisableProperty<Comment> Comment { get; }
 
         /// <summary>
         ///     Gibt den aktuellen Fortschritt aus oder legt diesen fest.
@@ -83,6 +97,55 @@ namespace Azuria.Main.User
         #endregion
 
         #region
+
+        private async Task<ProxerResult> InitComment()
+        {
+            HtmlDocument lDocument = new HtmlDocument();
+            Func<string, ProxerResult> lCheckFunc = s =>
+            {
+                if (!string.IsNullOrEmpty(s) &&
+                    s.Equals(
+                        "<div class=\"inner\"><h3>Bitte logge dich ein.</h3></div>"))
+                    return new ProxerResult(new Exception[] {new NoAccessException(nameof(this.InitComment))});
+
+                return new ProxerResult();
+            };
+            ProxerResult<string> lResult =
+                await
+                    HttpUtility.GetResponseErrorHandling(
+                        "https://proxer.me/comment?id=" + this.EntryId + "&format=raw",
+                        this.Senpai.LoginCookies,
+                        this.Senpai.ErrHandler,
+                        this.Senpai,
+                        new[] {lCheckFunc});
+
+            if (!lResult.Success)
+                return new ProxerResult(lResult.Exceptions);
+
+            string lResponse = lResult.Result;
+
+            try
+            {
+                lDocument.LoadHtml(lResponse);
+
+                HtmlNode lInnerDiv = lDocument.GetElementbyId("inner");
+                if (lInnerDiv == null) return new ProxerResult(new[] {new WrongResponseException()});
+
+                ProxerResult<Comment> lParseResult =
+                    Main.User.Comment.GetCommentFromNode(lInnerDiv.ChildNodes.FindFirst("table"), this.Senpai, true,
+                        this.User);
+
+                if (!lParseResult.Success || lParseResult.Result == null)
+                    return new ProxerResult(lParseResult.Exceptions);
+
+                this.Comment.SetInitialisedObject(lParseResult.Result);
+                return new ProxerResult();
+            }
+            catch
+            {
+                return new ProxerResult((await ErrorHandler.HandleError(this.Senpai, lResponse, false)).Exceptions);
+            }
+        }
 
         [NotNull]
         internal static AnimeMangaProgressObject<T> ParseFromHtmlNode([NotNull] HtmlNode node, Azuria.User user,

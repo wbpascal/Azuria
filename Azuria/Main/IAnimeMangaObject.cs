@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Azuria.Main.Minor;
 using Azuria.Main.Search;
+using Azuria.Main.User;
 using Azuria.Utilities.ErrorHandling;
 using Azuria.Utilities.Initialisation;
 using JetBrains.Annotations;

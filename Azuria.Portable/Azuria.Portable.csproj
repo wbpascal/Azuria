@@ -91,9 +91,6 @@
     <Compile Include="..\Azuria\Main\Manga.cs">
       <Link>Main\Manga.cs</Link>
     </Compile>
-    <Compile Include="..\Azuria\Main\Minor\Comment.cs">
-      <Link>Main\Minor\Comment.cs</Link>
-    </Compile>
     <Compile Include="..\Azuria\Main\Minor\Fsk.cs">
       <Link>Main\Minor\Fsk.cs</Link>
     </Compile>
@@ -129,6 +126,9 @@
     </Compile>
     <Compile Include="..\Azuria\Main\User\AnimeMangaProgressObject.cs">
       <Link>Main\User\AnimeMangaProgressObject.cs</Link>
+    </Compile>
+    <Compile Include="..\Azuria\Main\User\Comment.cs">
+      <Link>Main\User\Comment.cs</Link>
     </Compile>
     <Compile Include="..\Azuria\Main\User\ControlPanel\AnimeMangaBookmarkObject.cs">
       <Link>Main\User\ControlPanel\AnimeMangaBookmarkObject.cs</Link>

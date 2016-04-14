@@ -57,7 +57,7 @@ namespace Azuria.Utilities.Net
         {
             ProxerResult<Tuple<string, CookieContainer>> lResult =
                 await
-                    GetResponseErrorHandling(url, loginCookies, errorHandler, senpai, checkFuncs, loginCookies == null);
+                    GetResponseErrorHandling(url, loginCookies, errorHandler, senpai, checkFuncs, loginCookies != null);
 
             return lResult.Success && lResult.Result != null
                 ? new ProxerResult<string>(lResult.Result.Item1)
@@ -151,7 +151,7 @@ namespace Azuria.Utilities.Net
             ProxerResult<KeyValuePair<string, CookieContainer>> lResult =
                 await
                     PostResponseErrorHandling(url, postArgs, loginCookies, errorHandler, senpai, checkFuncs,
-                        loginCookies == null);
+                        loginCookies != null);
 
             return lResult.Success
                 ? new ProxerResult<string>(lResult.Result.Key)

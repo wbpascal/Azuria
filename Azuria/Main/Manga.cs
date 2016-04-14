@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Azuria.Exceptions;
 using Azuria.Main.Minor;
+using Azuria.Main.User;
 using Azuria.Utilities;
 using Azuria.Utilities.ErrorHandling;
 using Azuria.Utilities.Initialisation;

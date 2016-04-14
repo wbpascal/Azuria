@@ -10,8 +10,6 @@ namespace Azuria.Main.User.ControlPanel
     /// <typeparam name="T"></typeparam>
     public class AnimeMangaUcpObject<T> : AnimeMangaProgressObject<T> where T : IAnimeMangaObject
     {
-        private readonly Senpai _senpai;
-
         /// <summary>
         ///     Initialisiert das Objekt.
         /// </summary>
@@ -35,7 +33,6 @@ namespace Azuria.Main.User.ControlPanel
             int currentProgress, int maxCount, AnimeMangaProgress progress, [NotNull] Senpai senpai)
             : base(user, animeMangaObject, entryId, currentProgress, maxCount, progress, senpai)
         {
-            this._senpai = senpai;
         }
 
         private AnimeMangaUcpObject([NotNull] AnimeMangaProgressObject<T> baseClass, [NotNull] Senpai senpai)

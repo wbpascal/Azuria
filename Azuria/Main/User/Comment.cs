@@ -9,7 +9,7 @@ using Azuria.Utilities.Net;
 using HtmlAgilityPack;
 using JetBrains.Annotations;
 
-namespace Azuria.Main.Minor
+namespace Azuria.Main.User
 {
     /// <summary>
     ///     Eine Klasse, die ein Kommentar eines <see cref="Anime">Anime</see> oder <see cref="Manga">Manga</see> darstellt.
@@ -52,7 +52,8 @@ namespace Azuria.Main.Minor
         public string Content { get; private set; }
 
         /// <summary>
-        ///     Gibt die Sterne der Gesamtwertung des <see cref="Comment">Kommentars</see> zurück.
+        ///     Gibt die Sterne der Gesamtwertung des <see cref="Comment">Kommentars</see> zurück. Es wird -1 zurückgegeben, wenn
+        ///     keine Bewertung abgegeben wurde.
         /// </summary>
         public int Stars { get; private set; }
 
@@ -91,7 +92,7 @@ namespace Azuria.Main.Minor
         }
 
         [NotNull]
-        private static ProxerResult<Comment> GetCommentFromNode([NotNull] HtmlNode commentNode, [NotNull] Senpai senpai
+        internal static ProxerResult<Comment> GetCommentFromNode([NotNull] HtmlNode commentNode, [NotNull] Senpai senpai
             , bool isUserPage, Azuria.User author = null, int animeMangaId = -1)
         {
             HtmlNode[] lTableNodes =
@@ -133,8 +134,9 @@ namespace Azuria.Main.Minor
 
                 string lContent = ContentToString(lTableNodes[1].ChildNodes);
 
-                int lStars =
-                    lTableNodes[2].ChildNodes.FindFirst("p").ChildNodes.Count(
+                int lStars = lTableNodes[2].ChildNodes.FindFirst("p").InnerText.Equals("Keine Bewertung")
+                    ? -1
+                    : lTableNodes[2].ChildNodes.FindFirst("p").ChildNodes.Count(
                         starNode =>
                             starNode.Name.Equals("img") && starNode.Attributes.Contains("src") &&
                             starNode.Attributes["src"].Value.Equals("/images/misc/stern.png"));
@@ -154,8 +156,7 @@ namespace Azuria.Main.Minor
         [ItemNotNull]
         internal static async Task<ProxerResult<IEnumerable<Comment>>> GetCommentsFromUrl(int startIndex, int count,
             [NotNull] string url, [NotNull] string sort, [NotNull] Senpai senpai, bool isUserPage = false,
-            Azuria.User author = null,
-            int animeMangaId = -1)
+            Azuria.User author = null, int animeMangaId = -1)
         {
             const int lKommentareProSeite = 25;
 
