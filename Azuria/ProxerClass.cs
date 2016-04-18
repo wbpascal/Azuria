@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Net;
 using System.Threading.Tasks;
 using Azuria.Exceptions;
 using Azuria.Main;
@@ -27,22 +28,22 @@ namespace Azuria
         ///     Basic) ist.
         /// </exception>
         /// <param name="id">Die ID des <see cref="Main.Anime">Anime</see> oder <see cref="Main.Manga">Manga</see>.</param>
-        /// <param name="senpai">Der Benutzer. (Muss eingeloggt sein)</param>
+        /// <param name="senpai">Der Benutzer. (Muss nicht eingeloggt sein)</param>
         /// <returns>Anime oder Manga der ID (Typecast erforderlich)</returns>
         [ItemNotNull]
         public static async Task<ProxerResult<IAnimeMangaObject>> GetAnimeMangaById(int id, [NotNull] Senpai senpai)
         {
             HtmlDocument lDocument = new HtmlDocument();
 
-            ProxerResult<string> lResult =
+            ProxerResult<Tuple<string, CookieContainer>> lResult =
                 await
                     HttpUtility.GetResponseErrorHandling("https://proxer.me/info/" + id + "?format=raw",
-                        senpai.LoginCookies, senpai.ErrHandler, senpai);
+                        senpai.LoginCookies, senpai.ErrHandler, senpai, new Func<string, ProxerResult>[0], false);
 
-            if (!lResult.Success)
+            if (!lResult.Success || lResult.Result == null)
                 return new ProxerResult<IAnimeMangaObject>(lResult.Exceptions);
 
-            string lResponse = lResult.Result;
+            string lResponse = lResult.Result.Item1;
 
             try
             {

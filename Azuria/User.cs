@@ -305,6 +305,7 @@ namespace Azuria
         /// <seealso cref="Senpai.Login" />
         /// <returns></returns>
         [ItemNotNull]
+        [Obsolete("Erzeuge ein neues Objekt mit der Id und rufe den Username des Objektes ab.", true)]
         public static async Task<ProxerResult<string>> GetUNameFromId(int id, [NotNull] Senpai senpai)
         {
             HtmlDocument lDocument = new HtmlDocument();
@@ -827,12 +828,13 @@ namespace Azuria
         ///     Sendet den <see cref="User">Benutzer</see> eine Freundschaftsanfrage.
         /// </summary>
         /// <exception cref="WrongResponseException">Wird ausgelöst, wenn die Antwort des Servers nicht der Erwarteten entspricht.</exception>
-        /// <exception cref="NotLoggedInException">Wird ausgelöst, wenn der <see cref="Senpai">Benutzer</see> nicht eingeloggt ist.</exception>
+        /// <exception cref="NotLoggedInException">Wird ausgelöst, wenn der <see cref="Senpai">Benutzer</see>, der die Anfrage schickt, nicht eingeloggt ist.</exception>
+        /// <exception cref="InvalidUserException">Wird ausgelöst, wenn der <see cref="Senpai">Benutzer</see>, an den die Anfrage geschickt wird, nicht gültig ist.</exception>
         /// <returns>Einen boolischen Wert, der angibt, ob die Aktion erfolgreich war.</returns>
         [ItemNotNull]
         public async Task<ProxerResult> SendFriendRequest()
         {
-            if (this.Id == -1) return new ProxerResult(new Exception[0]) {Success = false};
+            if (this.Id == -1) return new ProxerResult(new[] {new InvalidUserException()});
 
             Dictionary<string, string> lPostArgs = new Dictionary<string, string>
             {
@@ -854,9 +856,10 @@ namespace Azuria
                 Dictionary<string, string> lResultDictionary =
                     JsonConvert.DeserializeObject<Dictionary<string, string>>(lResult.Result);
 
-                return lResultDictionary.ContainsKey("error") && lResultDictionary["error"].Equals("0")
-                    ? new ProxerResult()
-                    : new ProxerResult(new Exception[] {new WrongResponseException {Response = lResult.Result}});
+                return new ProxerResult
+                {
+                    Success = lResultDictionary.ContainsKey("error") && lResultDictionary["error"].Equals("0")
+                };
             }
             catch
             {

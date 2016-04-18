@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
@@ -32,7 +33,7 @@ namespace Azuria.Example
         private async void ConferenceButton_Click(object sender, RoutedEventArgs e)
         {
             //Gib alle Konferenzen zurück
-            ProxerResult<List<Conference>> lResult = await this._senpai.GetAllConferences();
+            ProxerResult<IEnumerable<Conference>> lResult = await this._senpai.GetAllConferences();
 
             if (lResult.Success && lResult.Result != null && lResult.Result.Any())
             {

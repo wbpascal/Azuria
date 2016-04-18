@@ -75,7 +75,6 @@ namespace Azuria.Main
 
         private readonly Senpai _senpai;
 
-        [UsedImplicitly]
         internal Anime()
         {
             this.AnimeTyp = new ProxerInitialisableProperty<AnimeType>(this.InitType);

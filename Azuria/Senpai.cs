@@ -426,18 +426,13 @@ namespace Azuria
 
         /// <summary>
         ///     Gibt alle Konferenzen des Senpais zurück.
-        ///     <para>
-        ///         ACHTUNG: Bei den Konferenzen muss noch
-        ///         <see cref="Conference.Init">InitConference()</see>
-        ///         aufgerufen werden!
-        ///     </para>
         /// </summary>
         /// <exception cref="WrongResponseException">Wird ausgelöst, wenn die Antwort des Servers nicht der Erwarteten entspricht.</exception>
         /// <exception cref="NotLoggedInException">Wird ausgelöst, wenn der <see cref="Senpai">Benutzer</see> nicht eingeloggt ist.</exception>
         /// <seealso cref="Login" />
         /// <returns>Alle Konferenzen, in denen der Benutzer Teilnehmer ist.</returns>
         [ItemNotNull]
-        public async Task<ProxerResult<List<Conference>>> GetAllConferences()
+        public async Task<ProxerResult<IEnumerable<Conference>>> GetAllConferences()
         {
             ProxerResult<string> lResult =
                 await
@@ -445,7 +440,7 @@ namespace Azuria
                         this);
 
             if (!lResult.Success)
-                return new ProxerResult<List<Conference>>(lResult.Exceptions);
+                return new ProxerResult<IEnumerable<Conference>>(lResult.Exceptions);
 
             string lResponse = lResult.Result;
 
@@ -469,12 +464,12 @@ namespace Azuria
                     let lTitle = curNode.FirstChild.InnerText
                     select new Conference(lTitle, lId, this));
 
-                return new ProxerResult<List<Conference>>(lReturn);
+                return new ProxerResult<IEnumerable<Conference>>(lReturn);
             }
             catch
             {
                 return
-                    new ProxerResult<List<Conference>>(
+                    new ProxerResult<IEnumerable<Conference>>(
                         (await ErrorHandler.HandleError(this, lResponse, false)).Exceptions);
             }
         }

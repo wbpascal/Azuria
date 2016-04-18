@@ -180,12 +180,12 @@ namespace Azuria.Utilities
                     lInitialiseFunctions++;
                     try
                     {
+                        object lPropertyObject;
                         bool lIsInitialised =
-                            (bool) propertyInfo.GetMethod.Invoke(objectToTest, null)
+                            (bool) (lPropertyObject = propertyInfo.GetValue(objectToTest))
                                 .GetType()
                                 .GetTypeInfo()
-                                .GetDeclaredProperty("IsInitialisedOnce")
-                                .GetMethod.Invoke(objectToTest, null);
+                                .GetDeclaredProperty("IsInitialisedOnce").GetValue(lPropertyObject);
 
                         if (lIsInitialised) lInitialisedProperties++;
                     }
