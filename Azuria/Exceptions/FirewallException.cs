@@ -4,25 +4,25 @@ namespace Azuria.Exceptions
 {
     /// <summary>
     /// </summary>
-    public class InvalidUserException : Exception
+    public class FirewallException : Exception
     {
         /// <summary>
-        ///     Initialisiert eine neue Instanz der <see cref="InvalidUserException" />-Klasse.
+        ///     Initialisiert eine neue Instanz der <see cref="FirewallException" />-Klasse.
         /// </summary>
-        public InvalidUserException()
+        public FirewallException()
         {
         }
 
         /// <summary>
-        ///     Initialisiert eine neue Instanz der <see cref="InvalidUserException" />-Klasse mit einer angegebenen Fehlermeldung.
+        ///     Initialisiert eine neue Instanz der <see cref="FirewallException" />-Klasse mit einer angegebenen Fehlermeldung.
         /// </summary>
         /// <param name="message">Die Fehlermeldung, in der die Ursache der Ausnahme erklärt wird.</param>
-        public InvalidUserException(string message) : base(message)
+        public FirewallException(string message) : base(message)
         {
         }
 
         /// <summary>
-        ///     Initialisiert eine neue Instanz der <see cref="InvalidUserException" />-Klasse mit einer
+        ///     Initialisiert eine neue Instanz der <see cref="FirewallException" />-Klasse mit einer
         ///     angegebenen Fehlermeldung und einem Verweis auf die innere Ausnahme, die diese Ausnahme verursacht hat.
         /// </summary>
         /// <param name="message">Die Fehlermeldung, in der die Ursache der Ausnahme erklärt wird.</param>
@@ -30,7 +30,7 @@ namespace Azuria.Exceptions
         ///     Die Ausnahme, die die aktuelle Ausnahme ausgelöst hat, oder ein Nullverweis (Nothing in Visual Basic),
         ///     wenn keine innere Ausnahme angegeben ist.
         /// </param>
-        public InvalidUserException(string message, Exception inner) : base(message, inner)
+        public FirewallException(string message, Exception inner) : base(message, inner)
         {
         }
     }

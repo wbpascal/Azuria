@@ -357,9 +357,9 @@ namespace Azuria.Main.User.ControlPanel
                 string lAnimeMangaName = lInfoNode.ChildNodes.FindFirst("h2")?.InnerText ?? "";
                 int lEntryId = Convert.ToInt32(htmlNode.GetAttributeValue("id", "entry-1").Substring("entry".Length));
 
-                IAnimeMangaObject lAnimeMangaObject = typeof (T) == typeof (Anime)
+                IAnimeMangaObject lAnimeMangaObject = typeof(T) == typeof(Anime)
                     ? new Anime(lAnimeMangaName, lAnimeMangaId, this._senpai)
-                    : typeof (T) == typeof (Manga)
+                    : typeof(T) == typeof(Manga)
                         ? (IAnimeMangaObject) new Manga(lAnimeMangaName, lAnimeMangaId, this._senpai)
                         : null;
 
@@ -384,11 +384,11 @@ namespace Azuria.Main.User.ControlPanel
                 ConstructorInfo lConstructorToInvoke = null;
                 foreach (
                     ConstructorInfo lDeclaredConstructor in
-                        from lDeclaredConstructor in typeof (T).GetTypeInfo().DeclaredConstructors
+                        from lDeclaredConstructor in typeof(T).GetTypeInfo().DeclaredConstructors
                         let lParameters = lDeclaredConstructor.GetParameters()
-                        where lParameters.Length == 3 && lParameters[0].ParameterType == typeof (string) &&
-                              lParameters[1].ParameterType == typeof (int) &&
-                              lParameters[2].ParameterType == typeof (Senpai)
+                        where lParameters.Length == 3 && lParameters[0].ParameterType == typeof(string) &&
+                              lParameters[1].ParameterType == typeof(int) &&
+                              lParameters[2].ParameterType == typeof(Senpai)
                         select lDeclaredConstructor)
                 {
                     lConstructorToInvoke = lDeclaredConstructor;

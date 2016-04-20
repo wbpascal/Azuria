@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Net;
-using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Azuria.Utilities.ErrorHandling;
@@ -13,6 +11,8 @@ namespace Azuria.Utilities.Net
 {
     internal static class CloudflareSolver
     {
+        #region
+
         internal static async Task<ProxerResult> Solve([NotNull] string response, [NotNull] CookieContainer cookies)
         {
             try
@@ -29,7 +29,7 @@ namespace Azuria.Utilities.Net
 
                 if (!string.IsNullOrEmpty(lChallengeId.Trim()) || !string.IsNullOrEmpty(lChallengePass.Trim()) ||
                     lCloudflareAnswer == int.MinValue)
-                    return new ProxerResult { Success = false };
+                    return new ProxerResult {Success = false};
 
                 await Task.Delay(4000);
 
@@ -38,7 +38,7 @@ namespace Azuria.Utilities.Net
                         HttpUtility.GetWebRequestResponse(
                             $"https://proxer.me/cdn-cgi/l/chk_jschl?jschl_vc={lChallengeId}&pass={lChallengePass}&jschl_answer={lCloudflareAnswer}",
                             cookies,
-                            new Dictionary<string, string>()
+                            new Dictionary<string, string>
                             {
                                 {"Referer", "https://proxer.me/login?format=json&action=test"}
                             });
@@ -50,5 +50,7 @@ namespace Azuria.Utilities.Net
                 return new ProxerResult {Success = false};
             }
         }
+
+        #endregion
     }
 }

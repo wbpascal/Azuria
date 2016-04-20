@@ -523,12 +523,12 @@ namespace Azuria
 
             try
             {
-                Dictionary<string, string> responseDes =
+                Dictionary<string, string> lDeserialisedResponse =
                     JsonConvert.DeserializeObject<Dictionary<string, string>>(lResponse);
 
-                if (responseDes["error"].Equals("0"))
+                if (lDeserialisedResponse["error"].Equals("0"))
                 {
-                    this._userId = Convert.ToInt32(responseDes["uid"]);
+                    this._userId = Convert.ToInt32(lDeserialisedResponse["uid"]);
 
                     //TODO: Avatar einfügen
                     this.Me = new User(username, this._userId, this);
@@ -536,6 +536,9 @@ namespace Azuria
 
                     return new ProxerResult<bool>(true);
                 }
+                if (lDeserialisedResponse["message"].Equals("Too many connections. Try again later."))
+                    return new ProxerResult<bool>(new[] {new FirewallException()});
+
                 this.IsLoggedIn = false;
 
                 return new ProxerResult<bool>(false);

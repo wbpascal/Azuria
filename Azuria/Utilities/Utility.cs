@@ -140,7 +140,7 @@ namespace Azuria.Utilities
             ProxerResult lReturn = new ProxerResult();
             foreach (PropertyInfo propertyInfo in source.GetType().GetRuntimeProperties())
             {
-                if (propertyInfo.PropertyType.ImplementsGenericInterface(typeof (IInitialisableProperty<>)))
+                if (propertyInfo.PropertyType.ImplementsGenericInterface(typeof(IInitialisableProperty<>)))
                 {
                     lInitialiseFunctions++;
                     try
@@ -175,7 +175,7 @@ namespace Azuria.Utilities
             int lInitialisedProperties = 0, lInitialiseFunctions = 0;
             foreach (PropertyInfo propertyInfo in objectToTest.GetType().GetRuntimeProperties())
             {
-                if (propertyInfo.PropertyType.ImplementsGenericInterface(typeof (IInitialisableProperty<>)))
+                if (propertyInfo.PropertyType.ImplementsGenericInterface(typeof(IInitialisableProperty<>)))
                 {
                     lInitialiseFunctions++;
                     try

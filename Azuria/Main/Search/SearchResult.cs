@@ -81,17 +81,17 @@ namespace Azuria.Main.Search
                 List<T> lSearchResults = new List<T>();
                 foreach (HtmlNode childNode in lNode.ChildNodes)
                 {
-                    if (typeof (T) == typeof (IAnimeMangaObject) ||
-                        (typeof (T).HasParameterlessConstructor() &&
-                         Activator.CreateInstance(typeof (T), true) is IAnimeMangaObject))
+                    if (typeof(T) == typeof(IAnimeMangaObject) ||
+                        (typeof(T).HasParameterlessConstructor() &&
+                         Activator.CreateInstance(typeof(T), true) is IAnimeMangaObject))
                     {
                         IAnimeMangaObject lAnimeMangaObject = this.GetSearchResultObjectAnimeManga(childNode);
                         if (lAnimeMangaObject != null) lSearchResults.Add((T) lAnimeMangaObject);
                     }
-                    else if (typeof (T) == typeof (Azuria.User))
+                    else if (typeof(T) == typeof(Azuria.User))
                     {
                         Azuria.User lUserObject = this.GetSearchResultObjectUser(childNode);
-                        if (lUserObject != null) lSearchResults.Add((T) Convert.ChangeType(lUserObject, typeof (T)));
+                        if (lUserObject != null) lSearchResults.Add((T) Convert.ChangeType(lUserObject, typeof(T)));
                     }
                 }
                 List<T> lCopyList = this.SearchResults.ToList();
@@ -138,36 +138,36 @@ namespace Azuria.Main.Search
                         break;
                 }
             }
-            Type lType = typeof (object);
+            Type lType = typeof(object);
             Anime.AnimeType lAnimeType = Anime.AnimeType.Unbekannt;
             Manga.MangaType lMangaType = Manga.MangaType.Unbekannt;
             switch (node.ChildNodes[3].InnerText)
             {
                 case "Animeserie":
-                    lType = typeof (Anime);
+                    lType = typeof(Anime);
                     lAnimeType = Anime.AnimeType.Series;
                     break;
                 case "OVA":
-                    lType = typeof (Anime);
+                    lType = typeof(Anime);
                     lAnimeType = Anime.AnimeType.Ova;
                     break;
                 case "Movie":
-                    lType = typeof (Anime);
+                    lType = typeof(Anime);
                     lAnimeType = Anime.AnimeType.Movie;
                     break;
                 case "Mangaserie":
-                    lType = typeof (Manga);
+                    lType = typeof(Manga);
                     lMangaType = Manga.MangaType.Series;
                     break;
                 case "One-Shot":
-                    lType = typeof (Manga);
+                    lType = typeof(Manga);
                     lMangaType = Manga.MangaType.OneShot;
                     break;
             }
 
-            if ((typeof (T) == typeof (Anime) || typeof (T) == typeof (IAnimeMangaObject)) && lType == typeof (Anime))
+            if ((typeof(T) == typeof(Anime) || typeof(T) == typeof(IAnimeMangaObject)) && lType == typeof(Anime))
                 return new Anime(lName, lId, this._senpai, lGenreList, lStatus, lAnimeType);
-            if ((typeof (T) == typeof (Manga) || typeof (T) == typeof (IAnimeMangaObject)) && lType == typeof (Manga))
+            if ((typeof(T) == typeof(Manga) || typeof(T) == typeof(IAnimeMangaObject)) && lType == typeof(Manga))
                 return new Manga(lName, lId, this._senpai, lGenreList, lStatus, lMangaType);
             return null;
         }

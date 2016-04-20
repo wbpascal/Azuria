@@ -73,6 +73,7 @@
     <Compile Include="EventArguments\PMNotificationEventArgs.cs" />
     <Compile Include="Exceptions\CaptchaException.cs" />
     <Compile Include="Exceptions\CloudflareException.cs" />
+    <Compile Include="Exceptions\FirewallException.cs" />
     <Compile Include="Exceptions\InvalidUserException.cs" />
     <Compile Include="Exceptions\LanguageNotAvailableException.cs" />
     <Compile Include="Exceptions\NoAccessException.cs" />

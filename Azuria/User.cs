@@ -687,11 +687,11 @@ namespace Azuria
                 ConstructorInfo lConstructorToInvoke = null;
                 foreach (
                     ConstructorInfo lDeclaredConstructor in
-                        from lDeclaredConstructor in typeof (T).GetTypeInfo().DeclaredConstructors
+                        from lDeclaredConstructor in typeof(T).GetTypeInfo().DeclaredConstructors
                         let lParameters = lDeclaredConstructor.GetParameters()
-                        where lParameters.Length == 3 && lParameters[0].ParameterType == typeof (string) &&
-                              lParameters[1].ParameterType == typeof (int) &&
-                              lParameters[2].ParameterType == typeof (Senpai)
+                        where lParameters.Length == 3 && lParameters[0].ParameterType == typeof(string) &&
+                              lParameters[1].ParameterType == typeof(int) &&
+                              lParameters[2].ParameterType == typeof(Senpai)
                         select lDeclaredConstructor)
                 {
                     lConstructorToInvoke = lDeclaredConstructor;
@@ -828,8 +828,14 @@ namespace Azuria
         ///     Sendet den <see cref="User">Benutzer</see> eine Freundschaftsanfrage.
         /// </summary>
         /// <exception cref="WrongResponseException">Wird ausgelöst, wenn die Antwort des Servers nicht der Erwarteten entspricht.</exception>
-        /// <exception cref="NotLoggedInException">Wird ausgelöst, wenn der <see cref="Senpai">Benutzer</see>, der die Anfrage schickt, nicht eingeloggt ist.</exception>
-        /// <exception cref="InvalidUserException">Wird ausgelöst, wenn der <see cref="Senpai">Benutzer</see>, an den die Anfrage geschickt wird, nicht gültig ist.</exception>
+        /// <exception cref="NotLoggedInException">
+        ///     Wird ausgelöst, wenn der <see cref="Senpai">Benutzer</see>, der die Anfrage
+        ///     schickt, nicht eingeloggt ist.
+        /// </exception>
+        /// <exception cref="InvalidUserException">
+        ///     Wird ausgelöst, wenn der <see cref="Senpai">Benutzer</see>, an den die Anfrage
+        ///     geschickt wird, nicht gültig ist.
+        /// </exception>
         /// <returns>Einen boolischen Wert, der angibt, ob die Aktion erfolgreich war.</returns>
         [ItemNotNull]
         public async Task<ProxerResult> SendFriendRequest()

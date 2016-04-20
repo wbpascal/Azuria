@@ -114,9 +114,9 @@ namespace Azuria.Main.Search
             if (string.IsNullOrEmpty(name))
                 return new ProxerResult<SearchResult<T>>(new Exception[] {new ArgumentNullException(nameof(name))});
 
-            if (typeof (T) == typeof (IAnimeMangaObject) ||
-                (typeof (T).HasParameterlessConstructor() &&
-                 Activator.CreateInstance(typeof (T), true) is IAnimeMangaObject))
+            if (typeof(T) == typeof(IAnimeMangaObject) ||
+                (typeof(T).HasParameterlessConstructor() &&
+                 Activator.CreateInstance(typeof(T), true) is IAnimeMangaObject))
             {
                 SearchResult<T> lSearchResultObject = new SearchResult<T>("search?s=search&name=" + name, senpai);
                 ProxerResult<IEnumerable<T>> lGetSearchResult = await lSearchResultObject.GetNextSearchResults();
@@ -124,7 +124,7 @@ namespace Azuria.Main.Search
                     ? new ProxerResult<SearchResult<T>>(lSearchResultObject)
                     : new ProxerResult<SearchResult<T>>(lGetSearchResult.Exceptions);
             }
-            if (typeof (T) == typeof (Azuria.User))
+            if (typeof(T) == typeof(Azuria.User))
             {
                 SearchResult<T> lSearchResultObject = new SearchResult<T>("users?search=" + name, senpai);
                 ProxerResult<IEnumerable<T>> lGetSearchResult = await lSearchResultObject.GetNextSearchResults();

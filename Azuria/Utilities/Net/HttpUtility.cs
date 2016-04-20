@@ -26,13 +26,12 @@ namespace Azuria.Utilities.Net
         public static int Timeout = 0;
 
         /// <summary>
-        /// 
         /// </summary>
         public static bool SolveCloudflare = true;
 
         [NotNull] private static readonly string UserAgent =
-            "Azuria/" + typeof (HttpUtility).GetTypeInfo().Assembly.GetName().Version + " RestSharp/" +
-            typeof (HttpUtility).GetTypeInfo()
+            "Azuria/" + typeof(HttpUtility).GetTypeInfo().Assembly.GetName().Version + " RestSharp/" +
+            typeof(HttpUtility).GetTypeInfo()
                 .Assembly.GetReferencedAssemblies()
                 .First(name => name.Name.Equals("RestSharp"))
                 .Version;
@@ -72,7 +71,8 @@ namespace Azuria.Utilities.Net
         [ItemNotNull]
         internal static async Task<ProxerResult<Tuple<string, CookieContainer>>> GetResponseErrorHandling(
             [NotNull] string url, [CanBeNull] CookieContainer loginCookies, [NotNull] ErrorHandler errorHandler,
-            [NotNull] Senpai senpai, [CanBeNull] Func<string, ProxerResult>[] checkFuncs, bool checkLogin, int recursion = 0)
+            [NotNull] Senpai senpai, [CanBeNull] Func<string, ProxerResult>[] checkFuncs, bool checkLogin,
+            int recursion = 0)
         {
             if (recursion >= 2)
                 return new ProxerResult<Tuple<string, CookieContainer>>(new[] {new CloudflareException()});
@@ -92,11 +92,12 @@ namespace Azuria.Utilities.Net
             {
                 ProxerResult lSolveResult =
                     await
-                        CloudflareSolver.Solve(System.Web.HttpUtility.HtmlDecode(lResponseObject.Content).Replace("\n", ""),
+                        CloudflareSolver.Solve(
+                            System.Web.HttpUtility.HtmlDecode(lResponseObject.Content).Replace("\n", ""),
                             loginCookies);
 
                 if (!lSolveResult.Success)
-                    return new ProxerResult<Tuple<string, CookieContainer>>(new[] { new CloudflareException() });
+                    return new ProxerResult<Tuple<string, CookieContainer>>(new[] {new CloudflareException()});
 
                 return
                     await
@@ -190,7 +191,7 @@ namespace Azuria.Utilities.Net
             [CanBeNull] Func<string, ProxerResult>[] checkFuncs, bool checkLogin, int recursion = 0)
         {
             if (recursion >= 2)
-                return new ProxerResult<KeyValuePair<string, CookieContainer>>(new[] { new CloudflareException() });
+                return new ProxerResult<KeyValuePair<string, CookieContainer>>(new[] {new CloudflareException()});
             if ((checkLogin && loginCookies != null && !senpai.IsLoggedIn) || (checkLogin && loginCookies == null))
                 return
                     new ProxerResult<KeyValuePair<string, CookieContainer>>(new Exception[] {new NotLoggedInException()});
@@ -207,7 +208,8 @@ namespace Azuria.Utilities.Net
             {
                 ProxerResult lSolveResult =
                     await
-                        CloudflareSolver.Solve(System.Web.HttpUtility.HtmlDecode(lResponseObject.Content).Replace("\n", ""),
+                        CloudflareSolver.Solve(
+                            System.Web.HttpUtility.HtmlDecode(lResponseObject.Content).Replace("\n", ""),
                             loginCookies);
 
                 if (!lSolveResult.Success)
@@ -216,7 +218,7 @@ namespace Azuria.Utilities.Net
                 return
                     await
                         PostResponseErrorHandling(url, postArgs, loginCookies, errorHandler, senpai, checkFuncs,
-                            checkLogin, recursion+1);
+                            checkLogin, recursion + 1);
             }
             else
                 return
@@ -250,7 +252,8 @@ namespace Azuria.Utilities.Net
 
         [ItemNotNull]
         internal static async Task<IRestResponse> PostWebRequestResponse([NotNull] string url,
-            [CanBeNull] CookieContainer cookies, [NotNull] Dictionary<string, string> postArgs, [CanBeNull] Dictionary<string, string> headers)
+            [CanBeNull] CookieContainer cookies, [NotNull] Dictionary<string, string> postArgs,
+            [CanBeNull] Dictionary<string, string> headers)
         {
             RestClient lClient = new RestClient(url)
             {
