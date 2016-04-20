@@ -43,6 +43,10 @@
       <HintPath>..\packages\JetBrains.Annotations.10.0.0\lib\net20\JetBrains.Annotations.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="JsEval">
+      <HintPath>..\Libraries\JsEval.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.JScript" />
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Web" />
@@ -68,6 +72,7 @@
     <Compile Include="EventArguments\NotificationEventArgsType.cs" />
     <Compile Include="EventArguments\PMNotificationEventArgs.cs" />
     <Compile Include="Exceptions\CaptchaException.cs" />
+    <Compile Include="Exceptions\CloudflareException.cs" />
     <Compile Include="Exceptions\InvalidUserException.cs" />
     <Compile Include="Exceptions\LanguageNotAvailableException.cs" />
     <Compile Include="Exceptions\NoAccessException.cs" />
@@ -119,6 +124,7 @@
     <Compile Include="Utilities\ErrorHandling\ErrorHandler.cs" />
     <Compile Include="Utilities\Initialisation\IInitialisableProperty.cs" />
     <Compile Include="Utilities\Initialisation\ProxerInitialisableProperty.cs" />
+    <Compile Include="Utilities\Net\CloudflareSolver.cs" />
     <Compile Include="Utilities\Net\HttpUtility.cs" />
     <Compile Include="Utilities\ErrorHandling\ProxerResult.cs" />
     <Compile Include="Utilities\SearchUtility.cs" />

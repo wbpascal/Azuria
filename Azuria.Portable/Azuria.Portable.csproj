@@ -64,6 +64,9 @@
     <Compile Include="..\Azuria\Exceptions\CaptchaException.cs">
       <Link>Exceptions\CaptchaException.cs</Link>
     </Compile>
+    <Compile Include="..\Azuria\Exceptions\InvalidUserException.cs">
+      <Link>Exceptions\InvalidUserException.cs</Link>
+    </Compile>
     <Compile Include="..\Azuria\Exceptions\LanguageNotAvailableException.cs">
       <Link>Exceptions\LanguageNotAvailableException.cs</Link>
     </Compile>
