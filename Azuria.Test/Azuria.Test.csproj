@@ -56,7 +56,9 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
+    <Compile Include="AnimeTest.cs" />
     <Compile Include="ConferenceTest.cs" />
+    <Compile Include="MangaTest.cs" />
     <Compile Include="Utility\ClassExtensions.cs" />
     <Compile Include="Credentials.cs" />
     <Compile Include="Attributes\LoginRequiredAttribute.cs" />
@@ -74,9 +76,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="JavaScript1.js" />
   </ItemGroup>
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">

@@ -50,19 +50,19 @@ namespace Azuria.Main
             this.AvailableLanguages = new InitialisableProperty<IEnumerable<Language>>(this.InitAvailableLang);
             this.ChapterCount = new InitialisableProperty<int>(this.InitChapterCount);
             this.Description = new InitialisableProperty<string>(this.InitMain);
-            this.EnglishTitle = new InitialisableProperty<string>(this.InitMain);
+            this.EnglishTitle = new InitialisableProperty<string>(this.InitMain, string.Empty) { IsInitialisedOnce = false };
             this.Fsk = new InitialisableProperty<Dictionary<Uri, string>>(this.InitMain);
             this.Genre = new InitialisableProperty<IEnumerable<GenreObject>>(this.InitMain);
-            this.GermanTitle = new InitialisableProperty<string>(this.InitMain);
+            this.GermanTitle = new InitialisableProperty<string>(this.InitMain, string.Empty) { IsInitialisedOnce = false };
             this.Groups = new InitialisableProperty<IEnumerable<Group>>(this.InitMain);
             this.Industry = new InitialisableProperty<IEnumerable<Industry>>(this.InitMain);
             this.IsLicensed = new InitialisableProperty<bool>(this.InitMain);
-            this.JapaneseTitle = new InitialisableProperty<string>(this.InitMain);
+            this.JapaneseTitle = new InitialisableProperty<string>(this.InitMain, string.Empty) { IsInitialisedOnce = false };
             this.MangaTyp = new InitialisableProperty<MangaType>(this.InitType);
-            this.Name = new InitialisableProperty<string>(this.InitMain);
+            this.Name = new InitialisableProperty<string>(this.InitMain, string.Empty) { IsInitialisedOnce = false };
             this.Season = new InitialisableProperty<IEnumerable<string>>(this.InitMain);
             this.Status = new InitialisableProperty<AnimeMangaStatus>(this.InitMain);
-            this.Synonym = new InitialisableProperty<string>(this.InitMain);
+            this.Synonym = new InitialisableProperty<string>(this.InitMain, string.Empty) { IsInitialisedOnce = false };
         }
 
         internal Manga([NotNull] string name, int id, [NotNull] Senpai senpai) : this()

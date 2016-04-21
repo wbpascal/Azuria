@@ -1,10 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Security.Cryptography;
 using System.Threading.Tasks;
 using Azuria.Exceptions;
-using Azuria.Main;
 using Azuria.Main.User;
 using Azuria.Test.Attributes;
 using Azuria.Test.Utility;
@@ -20,23 +18,6 @@ namespace Azuria.Test
     public class UserTest
     {
         private readonly Senpai _senpai = SenpaiTest.Senpai;
-
-        [Test, Order(1)]
-        public async Task AnimeTest()
-        {
-            Assert.IsNotNull(this._senpai.Me);
-
-            IEnumerable<KeyValuePair<AnimeMangaProgress, AnimeMangaProgressObject<Anime>>> lAnimeList =
-                await
-                    this._senpai.Me.Anime.GetObject(
-                        new KeyValuePair<AnimeMangaProgress, AnimeMangaProgressObject<Anime>>[0]);
-            IEnumerable<Anime> lFavouriteAnime = await this._senpai.Me.FavouriteAnime.GetObject(new Anime[0]);
-
-            Assert.IsNotEmpty(lAnimeList);
-            Assert.IsNotEmpty(lFavouriteAnime);
-
-            await Task.Delay(2000);
-        }
 
         [Test, Order(3)]
         public async Task AreUserFriendsTest()
@@ -122,22 +103,6 @@ namespace Azuria.Test
             Assert.IsTrue(lIsOnlineResult.Success);
         }
 
-        [Test, Order(1)]
-        public async Task MangaTest()
-        {
-            Assert.IsNotNull(this._senpai.Me);
-
-            IEnumerable<KeyValuePair<AnimeMangaProgress, AnimeMangaProgressObject<Manga>>> lMangaList =
-                await
-                    this._senpai.Me.Manga.GetObject(
-                        new KeyValuePair<AnimeMangaProgress, AnimeMangaProgressObject<Manga>>[0]);
-            IEnumerable<Manga> lFavouriteManga = await this._senpai.Me.FavouriteManga.GetObject(new Manga[0]);
-
-            Assert.IsNotEmpty(lMangaList);
-            Assert.IsNotEmpty(lFavouriteManga);
-
-            await Task.Delay(2000);
-        }
 
         [Test, Order(1)]
         public async Task PointsTest()
