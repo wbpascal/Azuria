@@ -227,7 +227,7 @@ namespace Azuria
                 (lResult =
                     await
                         HttpUtility.GetResponseErrorHandling(
-                            "https://proxer.me/user/" + this.Id + "/connections/" + lSeite + "?format=raw",
+                            new Uri("https://proxer.me/user/" + this.Id + "/connections/" + lSeite + "?format=raw"),
                             this._senpai.LoginCookies
                             , this._senpai.ErrHandler, this._senpai, new[] {lCheckFunc})).Success)
             {
@@ -321,7 +321,8 @@ namespace Azuria
 
             ProxerResult<string> lResult =
                 await
-                    HttpUtility.GetResponseErrorHandling("https://proxer.me/user/" + id + "/overview?format=raw",
+                    HttpUtility.GetResponseErrorHandling(
+                        new Uri("https://proxer.me/user/" + id + "/overview?format=raw"),
                         senpai.LoginCookies,
                         senpai.ErrHandler,
                         senpai, new[] {lCheckFunc});
@@ -378,7 +379,8 @@ namespace Azuria
 
             ProxerResult<string> lResult =
                 await
-                    HttpUtility.GetResponseErrorHandling("https://proxer.me/user/" + this.Id + "/anime?format=raw",
+                    HttpUtility.GetResponseErrorHandling(
+                        new Uri("https://proxer.me/user/" + this.Id + "/anime?format=raw"),
                         this._senpai.LoginCookies,
                         this._senpai.ErrHandler,
                         this._senpai, new[] {lCheckFunc});
@@ -439,7 +441,8 @@ namespace Azuria
 
             ProxerResult<string> lResult =
                 await
-                    HttpUtility.GetResponseErrorHandling("https://proxer.me/user/" + this.Id + "/chronik?format=raw",
+                    HttpUtility.GetResponseErrorHandling(
+                        new Uri("https://proxer.me/user/" + this.Id + "/chronik?format=raw"),
                         this._senpai.LoginCookies,
                         this._senpai.ErrHandler,
                         this._senpai, new[] {lCheckFunc});
@@ -530,7 +533,8 @@ namespace Azuria
 
             ProxerResult<string> lResult =
                 await
-                    HttpUtility.GetResponseErrorHandling("https://proxer.me/user/" + this.Id + "/about?format=raw",
+                    HttpUtility.GetResponseErrorHandling(
+                        new Uri("https://proxer.me/user/" + this.Id + "/about?format=raw"),
                         this._senpai.LoginCookies,
                         this._senpai.ErrHandler,
                         this._senpai, new[] {lCheckFunc});
@@ -577,7 +581,7 @@ namespace Azuria
 
             ProxerResult<string> lResult =
                 await
-                    HttpUtility.GetResponseErrorHandling("https://proxer.me/user/" + this.Id + "?format=raw",
+                    HttpUtility.GetResponseErrorHandling(new Uri("https://proxer.me/user/" + this.Id + "?format=raw"),
                         this._senpai.LoginCookies,
                         this._senpai.ErrHandler,
                         this._senpai, new[] {lCheckFunc});
@@ -638,7 +642,8 @@ namespace Azuria
 
             ProxerResult<string> lResult =
                 await
-                    HttpUtility.GetResponseErrorHandling("https://proxer.me/user/" + this.Id + "/manga?format=raw",
+                    HttpUtility.GetResponseErrorHandling(
+                        new Uri("https://proxer.me/user/" + this.Id + "/manga?format=raw"),
                         this._senpai.LoginCookies,
                         this._senpai.ErrHandler,
                         this._senpai, new[] {lCheckFunc});
@@ -848,7 +853,7 @@ namespace Azuria
             };
             ProxerResult<string> lResult =
                 await
-                    HttpUtility.PostResponseErrorHandling("https://proxer.me/user/" + this.Id + "?format=json",
+                    HttpUtility.PostResponseErrorHandling(new Uri("https://proxer.me/user/" + this.Id + "?format=json"),
                         lPostArgs,
                         this._senpai.LoginCookies,
                         this._senpai.ErrHandler,

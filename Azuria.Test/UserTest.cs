@@ -34,6 +34,8 @@ namespace Azuria.Test
 
             Assert.IsNotEmpty(lAnimeList);
             Assert.IsNotEmpty(lFavouriteAnime);
+
+            await Task.Delay(2000);
         }
 
         [Test, Order(3)]
@@ -80,6 +82,8 @@ namespace Azuria.Test
             Assert.IsTrue(lCommentsResult.Success);
             Assert.IsNotNull(lCommentsResult.Result);
             Assert.IsTrue(lCommentsResult.Result.Count() <= 20);
+
+            await Task.Delay(2000);
         }
 
         [Test, Order(1)]
@@ -133,6 +137,8 @@ namespace Azuria.Test
 
             Assert.IsNotEmpty(lMangaList);
             Assert.IsNotEmpty(lFavouriteManga);
+
+            await Task.Delay(2000);
         }
 
         [Test, Order(1)]
@@ -162,6 +168,8 @@ namespace Azuria.Test
             Assert.IsNotEmpty(lInvalidUserResut.Exceptions);
             Assert.IsTrue(
                 lInvalidUserResut.Exceptions.Any(exception => exception.GetType() == typeof(InvalidUserException)));
+
+            await Task.Delay(2000);
         }
 
         [Test, Order(1)]

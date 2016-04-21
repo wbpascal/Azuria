@@ -29,6 +29,8 @@ namespace Azuria.Test
             Assert.IsTrue(lNotLoggedInResult.Success);
             Assert.IsFalse(lNotLoggedInResult.Result);
             Assert.IsFalse(lNewSenpai.IsLoggedIn);
+
+            await Task.Delay(2000);
         }
 
         [Test]
@@ -38,6 +40,8 @@ namespace Azuria.Test
             ProxerResult lNotLoggedInResult = await (Task<ProxerResult>) lPrivateSenpai.Invoke("CheckNotifications");
 
             Assert.IsTrue(lNotLoggedInResult.Success);
+
+            await Task.Delay(2000);
         }
 
         [Test]
@@ -70,6 +74,8 @@ namespace Azuria.Test
             Assert.IsTrue(lConferences.Success);
             Assert.IsNotNull(lConferences.Result);
             Assert.IsNotEmpty(lConferences.Result);
+
+            await Task.Delay(2000);
         }
 
         [Test]
@@ -94,7 +100,9 @@ namespace Azuria.Test
         public async Task LoginTest()
         {
             ProxerResult<bool> lValid = await Senpai.Login(Credentials.Username, Credentials.Password);
+            await Task.Delay(2000);
             ProxerResult<bool> lInvalidInput = await new Senpai().Login("", "");
+            await Task.Delay(2000);
             ProxerResult<bool> lWrongCredentials = await new Senpai().Login("Test", "WrongPassword");
 
             Assert.IsTrue(lValid.Success);
@@ -103,6 +111,8 @@ namespace Azuria.Test
             Assert.IsFalse(lInvalidInput.Result);
             Assert.IsTrue(lWrongCredentials.Success);
             Assert.IsFalse(lWrongCredentials.Result);
+
+            await Task.Delay(2000);
         }
 
         [Test]

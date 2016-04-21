@@ -95,7 +95,8 @@ namespace Azuria.Notifications
                 s => !s.StartsWith("{\"error\":0") ? new ProxerResult(new Exception[0]) : new ProxerResult();
 
             ProxerResult<string> lResult = await
-                HttpUtility.PostResponseErrorHandling("https://proxer.me/user/my?format=json&cid=" + this.UserId,
+                HttpUtility.PostResponseErrorHandling(
+                    new Uri("https://proxer.me/user/my?format=json&cid=" + this.UserId),
                     lPostArgs, this._senpai.LoginCookies, this._senpai.ErrHandler, this._senpai, new[] {lCheckFunc});
 
             if (!lResult.Success) return new ProxerResult(lResult.Exceptions);
@@ -124,7 +125,8 @@ namespace Azuria.Notifications
                 s => !s.StartsWith("{\"error\":0") ? new ProxerResult(new Exception[0]) : new ProxerResult();
 
             ProxerResult<string> lResult = await
-                HttpUtility.PostResponseErrorHandling("https://proxer.me/user/my?format=json&cid=" + this.UserId,
+                HttpUtility.PostResponseErrorHandling(
+                    new Uri("https://proxer.me/user/my?format=json&cid=" + this.UserId),
                     lPostArgs, this._senpai.LoginCookies, this._senpai.ErrHandler, this._senpai, new[] {lCheckFunc});
 
             if (!lResult.Success) return new ProxerResult(lResult.Exceptions);

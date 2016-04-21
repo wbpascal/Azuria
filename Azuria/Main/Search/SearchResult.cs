@@ -57,7 +57,7 @@ namespace Azuria.Main.Search
             ProxerResult<string> lResult =
                 await
                     HttpUtility.GetResponseErrorHandling(
-                        "https://proxer.me/" + this._link + "&format=raw&p=" + this._curSite,
+                        new Uri("https://proxer.me/" + this._link + "&format=raw&p=" + this._curSite),
                         this._senpai.LoginCookies,
                         this._senpai.ErrHandler,
                         this._senpai);

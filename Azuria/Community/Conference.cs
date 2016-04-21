@@ -143,7 +143,7 @@ namespace Azuria.Community
             ProxerResult<string> lResult =
                 await
                     HttpUtility.GetResponseErrorHandling(
-                        "http://proxer.me/messages?format=json&json=block&id=" + this.Id,
+                        new Uri("http://proxer.me/messages?format=json&json=block&id=" + this.Id),
                         this._senpai.LoginCookies,
                         this._senpai.ErrHandler,
                         this._senpai);
@@ -168,7 +168,7 @@ namespace Azuria.Community
             ProxerResult<string> lResult =
                 await
                     HttpUtility.PostResponseErrorHandling(
-                        "https://proxer.me/messages?id=" + this.Id + "&format=json&json=answer",
+                        new Uri("https://proxer.me/messages?id=" + this.Id + "&format=json&json=answer"),
                         lPostArgs,
                         this._senpai.LoginCookies,
                         this._senpai.ErrHandler,
@@ -212,7 +212,7 @@ namespace Azuria.Community
             ProxerResult<string> lResult =
                 await
                     HttpUtility.GetResponseErrorHandling(
-                        "http://proxer.me/messages?format=json&json=favour&id=" + this.Id,
+                        new Uri("http://proxer.me/messages?format=json&json=favour&id=" + this.Id),
                         this._senpai.LoginCookies,
                         this._senpai.ErrHandler,
                         this._senpai);
@@ -242,7 +242,7 @@ namespace Azuria.Community
             ProxerResult<string> lResult =
                 await
                     HttpUtility.GetResponseErrorHandling(
-                        "http://proxer.me/messages?format=json&json=messages&id=" + this.Id,
+                        new Uri("http://proxer.me/messages?format=json&json=messages&id=" + this.Id),
                         this._senpai.LoginCookies,
                         this._senpai.ErrHandler,
                         this._senpai);
@@ -293,7 +293,7 @@ namespace Azuria.Community
             ProxerResult<string> lResult =
                 await
                     HttpUtility.GetResponseErrorHandling(
-                        "https://proxer.me/messages?id=" + this.Id + "&format=raw",
+                        new Uri("https://proxer.me/messages?id=" + this.Id + "&format=raw"),
                         this._senpai.LoginCookies,
                         this._senpai.ErrHandler,
                         this._senpai);
@@ -340,7 +340,7 @@ namespace Azuria.Community
             ProxerResult<string> lResult =
                 await
                     HttpUtility.PostResponseErrorHandling(
-                        "https://proxer.me/messages?id=" + this.Id + "&format=json&json=answer",
+                        new Uri("https://proxer.me/messages?id=" + this.Id + "&format=json&json=answer"),
                         lPostArgs,
                         this._senpai.LoginCookies,
                         this._senpai.ErrHandler,
@@ -386,8 +386,8 @@ namespace Azuria.Community
             ProxerResult<string> lResult =
                 await
                     HttpUtility.GetResponseErrorHandling(
-                        "http://proxer.me/messages?format=json&json=newmessages&id=" + this.Id + "&mid=" +
-                        startMessageId,
+                        new Uri("http://proxer.me/messages?format=json&json=newmessages&id=" + this.Id + "&mid=" +
+                                startMessageId),
                         this._senpai.LoginCookies,
                         this._senpai.ErrHandler,
                         this._senpai);
@@ -469,7 +469,7 @@ namespace Azuria.Community
                 ProxerResult<string> lResult =
                     await
                         HttpUtility.PostResponseErrorHandling(
-                            "https://proxer.me/messages?id=" + this.Id + "&format=json&json=answer",
+                            new Uri("https://proxer.me/messages?id=" + this.Id + "&format=json&json=answer"),
                             lPostArgs,
                             this._senpai.LoginCookies,
                             this._senpai.ErrHandler,
@@ -553,7 +553,7 @@ namespace Azuria.Community
             ProxerResult<string> lResult =
                 await
                     HttpUtility.PostResponseErrorHandling(
-                        "https://proxer.me/messages?id=" + id + "&format=json&json=answer",
+                        new Uri("https://proxer.me/messages?id=" + id + "&format=json&json=answer"),
                         lPostArgs,
                         senpai.LoginCookies,
                         senpai.ErrHandler,
@@ -664,7 +664,7 @@ namespace Azuria.Community
             ProxerResult<string> lResult =
                 await
                     HttpUtility.PostResponseErrorHandling(
-                        "https://proxer.me/messages?id=" + this.Id + "&format=json&json=answer",
+                        new Uri("https://proxer.me/messages?id=" + this.Id + "&format=json&json=answer"),
                         lPostArgs,
                         this._senpai.LoginCookies,
                         this._senpai.ErrHandler,
@@ -717,7 +717,7 @@ namespace Azuria.Community
             ProxerResult<string> lResult =
                 await
                     HttpUtility.GetResponseErrorHandling(
-                        "http://proxer.me/messages?format=json&json=setUnread&id=" + this.Id,
+                        new Uri("http://proxer.me/messages?format=json&json=setUnread&id=" + this.Id),
                         this._senpai.LoginCookies,
                         this._senpai.ErrHandler,
                         this._senpai);
@@ -745,7 +745,7 @@ namespace Azuria.Community
             ProxerResult<string> lResult =
                 await
                     HttpUtility.GetResponseErrorHandling(
-                        "http://proxer.me/messages?format=json&json=unblock&id=" + this.Id,
+                        new Uri("http://proxer.me/messages?format=json&json=unblock&id=" + this.Id),
                         this._senpai.LoginCookies,
                         this._senpai.ErrHandler,
                         this._senpai);
@@ -773,7 +773,7 @@ namespace Azuria.Community
             ProxerResult<string> lResult =
                 await
                     HttpUtility.GetResponseErrorHandling(
-                        "http://proxer.me/messages?format=json&json=unfavour&id=" + this.Id,
+                        new Uri("http://proxer.me/messages?format=json&json=unfavour&id=" + this.Id),
                         this._senpai.LoginCookies,
                         this._senpai.ErrHandler,
                         this._senpai);

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Azuria.Utilities.ErrorHandling;
 using Azuria.Utilities.Net;
@@ -47,7 +48,7 @@ namespace Azuria.Main.User.ControlPanel
             ProxerResult<string> lResult =
                 await
                     HttpUtility.GetResponseErrorHandling(
-                        "https://proxer.me/ucp?format=json&type=deleteFavorite&id=" + this.EntryId,
+                        new Uri("https://proxer.me/ucp?format=json&type=deleteFavorite&id=" + this.EntryId),
                         this._senpai.LoginCookies,
                         this._senpai.ErrHandler,
                         this._senpai);

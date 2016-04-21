@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Net;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
@@ -13,7 +12,8 @@ namespace Azuria.Utilities.Net
     {
         #region
 
-        internal static async Task<ProxerResult> Solve([NotNull] string response, [NotNull] CookieContainer cookies)
+        internal static async Task<ProxerResult> Solve([NotNull] string response, [NotNull] CookieContainer cookies,
+            [NotNull] Uri originalUri)
         {
             try
             {
@@ -22,7 +22,7 @@ namespace Azuria.Utilities.Net
                 string lWierdEquasion =
                     new Regex($"({lWierdVar}\\S+?);a.value = parseInt").Match(response).Groups[1].Value;
                 string lScript = "var " + lWierdVarMatch + lWierdEquasion;
-                int lCloudflareAnswer = Convert.ToInt32(JsEval.Eval(lScript)) + "proxer.me".Length;
+                int lCloudflareAnswer = Convert.ToInt32(JsEval.Eval(lScript)) + originalUri.Host.Length;
 
                 string lChallengeId = new Regex("name=\"jschl_vc\" value=\"(\\w+)\"").Match(response).Groups[1].Value;
                 string lChallengePass = new Regex("name=\"pass\" value=\"(.+?)\"").Match(response).Groups[1].Value;
@@ -36,12 +36,9 @@ namespace Azuria.Utilities.Net
                 IRestResponse lGetResult =
                     await
                         HttpUtility.GetWebRequestResponse(
-                            $"https://proxer.me/cdn-cgi/l/chk_jschl?jschl_vc={lChallengeId}&pass={lChallengePass}&jschl_answer={lCloudflareAnswer}",
-                            cookies,
-                            new Dictionary<string, string>
-                            {
-                                {"Referer", "https://proxer.me/login?format=json&action=test"}
-                            });
+                            new Uri(
+                                $"{originalUri.Scheme}://{originalUri.Host}/cdn-cgi/l/chk_jschl?jschl_vc={lChallengeId}&pass={lChallengePass}&jschl_answer={lCloudflareAnswer}"),
+                            cookies, null);
 
                 return new ProxerResult {Success = lGetResult.StatusCode == HttpStatusCode.OK};
             }

@@ -113,7 +113,7 @@ namespace Azuria.Main.User
             ProxerResult<string> lResult =
                 await
                     HttpUtility.GetResponseErrorHandling(
-                        "https://proxer.me/comment?id=" + this.EntryId + "&format=raw",
+                        new Uri("https://proxer.me/comment?id=" + this.EntryId + "&format=raw"),
                         this.Senpai.LoginCookies,
                         this.Senpai.ErrHandler,
                         this.Senpai,

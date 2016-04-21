@@ -82,7 +82,7 @@ namespace Azuria.Main.User.ControlPanel
 
             ProxerResult<string> lResult =
                 await
-                    HttpUtility.GetResponseErrorHandling("https://proxer.me/ucp?s=anime&format=raw",
+                    HttpUtility.GetResponseErrorHandling(new Uri("https://proxer.me/ucp?s=anime&format=raw"),
                         this._senpai.LoginCookies,
                         this._senpai.ErrHandler,
                         this._senpai, new[] {lCheckFunc});
@@ -126,7 +126,7 @@ namespace Azuria.Main.User.ControlPanel
             ProxerResult<string> lResult =
                 await
                     HttpUtility.GetResponseErrorHandling(
-                        "https://proxer.me/ucp?s=reminder&format=raw",
+                        new Uri("https://proxer.me/ucp?s=reminder&format=raw"),
                         this._senpai.MobileLoginCookies,
                         this._senpai.ErrHandler,
                         this._senpai,
@@ -183,7 +183,7 @@ namespace Azuria.Main.User.ControlPanel
 
             ProxerResult<string> lResult =
                 await
-                    HttpUtility.GetResponseErrorHandling("https://proxer.me/ucp?s=history&format=raw",
+                    HttpUtility.GetResponseErrorHandling(new Uri("https://proxer.me/ucp?s=history&format=raw"),
                         this._senpai.LoginCookies,
                         this._senpai.ErrHandler,
                         this._senpai, new[] {lCheckFunc});
@@ -241,7 +241,7 @@ namespace Azuria.Main.User.ControlPanel
             ProxerResult<string> lResult =
                 await
                     HttpUtility.GetResponseErrorHandling(
-                        "https://proxer.me/ucp?s=topten&format=raw",
+                        new Uri("https://proxer.me/ucp?s=topten&format=raw"),
                         this._senpai.MobileLoginCookies,
                         this._senpai.ErrHandler,
                         this._senpai,
@@ -316,7 +316,7 @@ namespace Azuria.Main.User.ControlPanel
 
             ProxerResult<string> lResult =
                 await
-                    HttpUtility.GetResponseErrorHandling("https://proxer.me/ucp?s=manga&format=raw",
+                    HttpUtility.GetResponseErrorHandling(new Uri("https://proxer.me/ucp?s=manga&format=raw"),
                         this._senpai.LoginCookies,
                         this._senpai.ErrHandler,
                         this._senpai, new[] {lCheckFunc});

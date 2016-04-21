@@ -193,7 +193,7 @@ namespace Azuria.Main.User
                    (lResult =
                        await
                            HttpUtility.GetResponseErrorHandling(
-                               url + lStartSeite + "?format=raw&sort=" + sort,
+                               new Uri(url + lStartSeite + "?format=raw&sort=" + sort),
                                senpai.LoginCookies, senpai.ErrHandler, senpai, new[] {lCheckFunc}))
                        .Success)
             {

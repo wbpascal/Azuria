@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Azuria.Exceptions;
@@ -111,7 +112,7 @@ namespace Azuria.Notifications
             ProxerResult<string> lResult =
                 await
                     HttpUtility.GetResponseErrorHandling(
-                        "https://proxer.me/notifications?format=json&s=news&p=1",
+                        new Uri("https://proxer.me/notifications?format=json&s=news&p=1"),
                         this._senpai.LoginCookies,
                         this._senpai.ErrHandler,
                         this._senpai);

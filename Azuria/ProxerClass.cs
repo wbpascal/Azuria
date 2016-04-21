@@ -37,7 +37,7 @@ namespace Azuria
 
             ProxerResult<Tuple<string, CookieContainer>> lResult =
                 await
-                    HttpUtility.GetResponseErrorHandling("https://proxer.me/info/" + id + "?format=raw",
+                    HttpUtility.GetResponseErrorHandling(new Uri("https://proxer.me/info/" + id + "?format=raw"),
                         senpai.LoginCookies, senpai.ErrHandler, senpai, new Func<string, ProxerResult>[0], false);
 
             if (!lResult.Success || lResult.Result == null)

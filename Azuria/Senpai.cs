@@ -295,7 +295,7 @@ namespace Azuria
         {
             ProxerResult<Tuple<string, CookieContainer>> lResult =
                 await
-                    HttpUtility.GetResponseErrorHandling("https://proxer.me/login?format=json&action=login",
+                    HttpUtility.GetResponseErrorHandling(new Uri("https://proxer.me/login?format=json&action=login"),
                         this.LoginCookies,
                         this.ErrHandler, this, new Func<string, ProxerResult>[0], false);
 
@@ -328,7 +328,7 @@ namespace Azuria
         {
             ProxerResult<string> lResult =
                 await
-                    HttpUtility.GetResponseErrorHandling("https://proxer.me/notifications?format=raw&s=count",
+                    HttpUtility.GetResponseErrorHandling(new Uri("https://proxer.me/notifications?format=raw&s=count"),
                         this.LoginCookies, this.ErrHandler,
                         this);
 
@@ -436,7 +436,8 @@ namespace Azuria
         {
             ProxerResult<string> lResult =
                 await
-                    HttpUtility.GetResponseErrorHandling("http://proxer.me/messages", this.LoginCookies, this.ErrHandler,
+                    HttpUtility.GetResponseErrorHandling(new Uri("http://proxer.me/messages"), this.LoginCookies,
+                        this.ErrHandler,
                         this);
 
             if (!lResult.Success)
@@ -512,7 +513,7 @@ namespace Azuria
 
             ProxerResult<KeyValuePair<string, CookieContainer>> lResult =
                 await
-                    HttpUtility.PostResponseErrorHandling("https://proxer.me/login?format=json&action=login",
+                    HttpUtility.PostResponseErrorHandling(new Uri("https://proxer.me/login?format=json&action=login"),
                         postArgs, this.LoginCookies, this.ErrHandler, this, new Func<string, ProxerResult>[0], false);
 
             if (!lResult.Success)
@@ -530,8 +531,10 @@ namespace Azuria
                 {
                     this._userId = Convert.ToInt32(lDeserialisedResponse["uid"]);
 
-                    //TODO: Avatar einfügen
-                    this.Me = new User(username, this._userId, this);
+                    this.Me = new User(username, this._userId,
+                        lDeserialisedResponse.ContainsKey("avatar")
+                            ? new Uri("https://cdn.proxer.me/avatar/" + lDeserialisedResponse["avatar"])
+                            : null, this);
                     this.IsLoggedIn = true;
 
                     return new ProxerResult<bool>(true);

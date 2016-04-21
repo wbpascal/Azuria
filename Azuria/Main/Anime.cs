@@ -315,7 +315,7 @@ namespace Azuria.Main
             ProxerResult<string> lResult =
                 await
                     HttpUtility.GetResponseErrorHandling(
-                        "https://proxer.me/anime?format=raw",
+                        new Uri("https://proxer.me/anime?format=raw"),
                         null,
                         senpai.ErrHandler,
                         senpai);
@@ -361,7 +361,7 @@ namespace Azuria.Main
             ProxerResult<string> lResult =
                 await
                     HttpUtility.GetResponseErrorHandling(
-                        "https://proxer.me/edit/entry/" + this.Id + "/languages?format=raw",
+                        new Uri("https://proxer.me/edit/entry/" + this.Id + "/languages?format=raw"),
                         this._senpai.LoginCookies,
                         this._senpai.ErrHandler,
                         this._senpai,
@@ -427,7 +427,7 @@ namespace Azuria.Main
             ProxerResult<string> lResult =
                 await
                     HttpUtility.GetResponseErrorHandling(
-                        "https://proxer.me/edit/entry/" + this.Id + "/count?format=raw",
+                        new Uri("https://proxer.me/edit/entry/" + this.Id + "/count?format=raw"),
                         this._senpai.LoginCookies,
                         this._senpai.ErrHandler,
                         this._senpai,
@@ -470,7 +470,7 @@ namespace Azuria.Main
             ProxerResult<string> lResult =
                 await
                     HttpUtility.GetResponseErrorHandling(
-                        "https://proxer.me/info/" + this.Id + "?format=raw",
+                        new Uri("https://proxer.me/info/" + this.Id + "?format=raw"),
                         null,
                         this._senpai.ErrHandler,
                         this._senpai,
@@ -634,7 +634,7 @@ namespace Azuria.Main
             ProxerResult<string> lResult =
                 await
                     HttpUtility.GetResponseErrorHandling(
-                        "https://proxer.me/edit/entry/" + this.Id + "/medium?format=raw",
+                        new Uri("https://proxer.me/edit/entry/" + this.Id + "/medium?format=raw"),
                         this._senpai.LoginCookies,
                         this._senpai.ErrHandler,
                         this._senpai,
@@ -744,8 +744,8 @@ namespace Azuria.Main
                 ProxerResult<string> lResult =
                     await
                         HttpUtility.GetResponseErrorHandling(
-                            "https://proxer.me/watch/" + this.ParentAnime.Id + "/" + this.EpisodeNumber + "/" +
-                            this.Language.ToString().ToLower(),
+                            new Uri("https://proxer.me/watch/" + this.ParentAnime.Id + "/" + this.EpisodeNumber + "/" +
+                                    this.Language.ToString().ToLower()),
                             this._senpai.MobileLoginCookies,
                             this._senpai.ErrHandler,
                             this._senpai);

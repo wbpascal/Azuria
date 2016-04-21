@@ -39,14 +39,14 @@ namespace Azuria.Utilities.Net
         #region
 
         [ItemNotNull]
-        internal static async Task<ProxerResult<string>> GetResponseErrorHandling([NotNull] string url,
+        internal static async Task<ProxerResult<string>> GetResponseErrorHandling([NotNull] Uri url,
             [NotNull] ErrorHandler errorHandler, [NotNull] Senpai senpai)
         {
             return await GetResponseErrorHandling(url, null, errorHandler, senpai);
         }
 
         [ItemNotNull]
-        internal static async Task<ProxerResult<string>> GetResponseErrorHandling([NotNull] string url,
+        internal static async Task<ProxerResult<string>> GetResponseErrorHandling([NotNull] Uri url,
             [CanBeNull] CookieContainer loginCookies, [NotNull] ErrorHandler errorHandler, [NotNull] Senpai senpai)
         {
             return
@@ -55,7 +55,7 @@ namespace Azuria.Utilities.Net
         }
 
         [ItemNotNull]
-        internal static async Task<ProxerResult<string>> GetResponseErrorHandling([NotNull] string url,
+        internal static async Task<ProxerResult<string>> GetResponseErrorHandling([NotNull] Uri url,
             [CanBeNull] CookieContainer loginCookies, [NotNull] ErrorHandler errorHandler, [NotNull] Senpai senpai,
             [CanBeNull] Func<string, ProxerResult>[] checkFuncs)
         {
@@ -70,7 +70,7 @@ namespace Azuria.Utilities.Net
 
         [ItemNotNull]
         internal static async Task<ProxerResult<Tuple<string, CookieContainer>>> GetResponseErrorHandling(
-            [NotNull] string url, [CanBeNull] CookieContainer loginCookies, [NotNull] ErrorHandler errorHandler,
+            [NotNull] Uri url, [CanBeNull] CookieContainer loginCookies, [NotNull] ErrorHandler errorHandler,
             [NotNull] Senpai senpai, [CanBeNull] Func<string, ProxerResult>[] checkFuncs, bool checkLogin,
             int recursion = 0)
         {
@@ -94,7 +94,7 @@ namespace Azuria.Utilities.Net
                     await
                         CloudflareSolver.Solve(
                             System.Web.HttpUtility.HtmlDecode(lResponseObject.Content).Replace("\n", ""),
-                            loginCookies);
+                            loginCookies, url);
 
                 if (!lSolveResult.Success)
                     return new ProxerResult<Tuple<string, CookieContainer>>(new[] {new CloudflareException()});
@@ -135,7 +135,7 @@ namespace Azuria.Utilities.Net
         }
 
         [ItemNotNull]
-        internal static async Task<IRestResponse> GetWebRequestResponse([NotNull] string url,
+        internal static async Task<IRestResponse> GetWebRequestResponse([NotNull] Uri url,
             [CanBeNull] CookieContainer cookies, [CanBeNull] Dictionary<string, string> headers)
         {
             RestClient lClient = new RestClient(url)
@@ -151,14 +151,14 @@ namespace Azuria.Utilities.Net
         }
 
         [ItemNotNull]
-        internal static async Task<ProxerResult<string>> PostResponseErrorHandling([NotNull] string url,
+        internal static async Task<ProxerResult<string>> PostResponseErrorHandling([NotNull] Uri url,
             [NotNull] Dictionary<string, string> postArgs, [NotNull] ErrorHandler errorHandler, [NotNull] Senpai senpai)
         {
             return await PostResponseErrorHandling(url, postArgs, null, errorHandler, senpai);
         }
 
         [ItemNotNull]
-        internal static async Task<ProxerResult<string>> PostResponseErrorHandling([NotNull] string url,
+        internal static async Task<ProxerResult<string>> PostResponseErrorHandling([NotNull] Uri url,
             [NotNull] Dictionary<string, string> postArgs, [CanBeNull] CookieContainer loginCookies,
             [NotNull] ErrorHandler errorHandler, [NotNull] Senpai senpai)
         {
@@ -169,7 +169,7 @@ namespace Azuria.Utilities.Net
         }
 
         [ItemNotNull]
-        internal static async Task<ProxerResult<string>> PostResponseErrorHandling([NotNull] string url,
+        internal static async Task<ProxerResult<string>> PostResponseErrorHandling([NotNull] Uri url,
             [NotNull] Dictionary<string, string> postArgs, [CanBeNull] CookieContainer loginCookies,
             [NotNull] ErrorHandler errorHandler, [NotNull] Senpai senpai,
             [CanBeNull] Func<string, ProxerResult>[] checkFuncs)
@@ -186,7 +186,7 @@ namespace Azuria.Utilities.Net
 
         [ItemNotNull]
         internal static async Task<ProxerResult<KeyValuePair<string, CookieContainer>>> PostResponseErrorHandling(
-            [NotNull] string url, [NotNull] Dictionary<string, string> postArgs,
+            [NotNull] Uri url, [NotNull] Dictionary<string, string> postArgs,
             [CanBeNull] CookieContainer loginCookies, [NotNull] ErrorHandler errorHandler, [NotNull] Senpai senpai,
             [CanBeNull] Func<string, ProxerResult>[] checkFuncs, bool checkLogin, int recursion = 0)
         {
@@ -210,7 +210,7 @@ namespace Azuria.Utilities.Net
                     await
                         CloudflareSolver.Solve(
                             System.Web.HttpUtility.HtmlDecode(lResponseObject.Content).Replace("\n", ""),
-                            loginCookies);
+                            loginCookies, url);
 
                 if (!lSolveResult.Success)
                     return new ProxerResult<KeyValuePair<string, CookieContainer>>(new[] {new CloudflareException()});
@@ -251,7 +251,7 @@ namespace Azuria.Utilities.Net
         }
 
         [ItemNotNull]
-        internal static async Task<IRestResponse> PostWebRequestResponse([NotNull] string url,
+        internal static async Task<IRestResponse> PostWebRequestResponse([NotNull] Uri url,
             [CanBeNull] CookieContainer cookies, [NotNull] Dictionary<string, string> postArgs,
             [CanBeNull] Dictionary<string, string> headers)
         {

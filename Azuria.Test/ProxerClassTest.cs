@@ -15,8 +15,10 @@ namespace Azuria.Test
         {
             ProxerResult<IAnimeMangaObject> lValidAnimeResult =
                 await ProxerClass.GetAnimeMangaById(8455, SenpaiTest.Senpai);
+            await Task.Delay(2000);
             ProxerResult<IAnimeMangaObject> lValidMangaResult =
                 await ProxerClass.GetAnimeMangaById(7834, SenpaiTest.Senpai);
+            await Task.Delay(2000);
             ProxerResult<IAnimeMangaObject> lInvalidResult = await ProxerClass.GetAnimeMangaById(-1, SenpaiTest.Senpai);
 
             Assert.IsTrue(lValidAnimeResult.Success && lValidAnimeResult.Result != null);

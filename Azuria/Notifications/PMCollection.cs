@@ -114,7 +114,7 @@ namespace Azuria.Notifications
             ProxerResult<string> lResult =
                 await
                     HttpUtility.GetResponseErrorHandling(
-                        "https://proxer.me/messages?format=raw&s=notification",
+                        new Uri("https://proxer.me/messages?format=raw&s=notification"),
                         this._senpai.LoginCookies,
                         this._senpai.ErrHandler,
                         this._senpai);
