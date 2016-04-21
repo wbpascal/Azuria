@@ -100,9 +100,7 @@ namespace Azuria.Test
             Assert.IsNotNull(this._senpai.Me);
 
             //Ich wette diesen String hat keiner in seinem Profil stehen
-            byte[] lRandomBytes = new byte[8];
-            new Random().NextBytes(lRandomBytes);
-            string lRandomHexString = new RSACryptoServiceProvider().Encrypt(lRandomBytes, true).ToHexString();
+            string lRandomHexString = RandomUtility.GetRandomHexString();
 
             string lInfo = await this._senpai.Me.Info.GetObject(lRandomHexString);
             //Assert.Pass($"Original: {lRandomBytes.ToHexString()} ; Encrypted: {lRandomHexString}");

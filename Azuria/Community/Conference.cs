@@ -49,10 +49,12 @@ namespace Azuria.Community
             this.Id = id;
             this._senpai = senpai;
 
-            this.Leader = new ProxerInitialisableProperty<User>(this.GetLeader);
-            this.Participants = new ProxerInitialisableProperty<IEnumerable<User>>(this.GetAllParticipants);
-            this.Title = new ProxerInitialisableProperty<string>(this.GetTitle);
-            this.IsConference = new ProxerInitialisableProperty<bool>(this.CheckIsConference);
+            this.IsBlocked = new SetableInitialisableProperty<bool>(this.GetConferenceOptions, this.SetBlock);
+            this.IsFavourite = new SetableInitialisableProperty<bool>(this.GetConferenceOptions, this.SetFavourite);
+            this.Leader = new InitialisableProperty<User>(this.GetLeader);
+            this.Participants = new InitialisableProperty<IEnumerable<User>>(this.GetMainInfo);
+            this.Title = new InitialisableProperty<string>(this.GetTitle);
+            this.IsConference = new InitialisableProperty<bool>(this.CheckIsConference);
 
             this._getMessagesTimer = new Timer {Interval = new TimeSpan(0, 0, 15).TotalMilliseconds};
             this._getMessagesTimer.Elapsed += this.OnGetMessagesTimerElapsed;
@@ -60,7 +62,7 @@ namespace Azuria.Community
 
         internal Conference(string title, int id, Senpai senpai) : this(id, senpai)
         {
-            this.Title = new ProxerInitialisableProperty<string>(this.GetTitle, title);
+            this.Title = new InitialisableProperty<string>(this.GetTitle, title);
         }
 
         #region Properties
@@ -89,8 +91,22 @@ namespace Azuria.Community
         /// </summary>
         public int Id { get; }
 
+        /// <summary>
+        ///     Gibt einen Wert an, ob die aktuelle Konferenz vom <see cref="Senpai.Me">Benutzer</see> blockiert wird, oder legt
+        ///     diesen fest.
+        /// </summary>
         [NotNull]
-        private ProxerInitialisableProperty<bool> IsConference { get; }
+        public SetableInitialisableProperty<bool> IsBlocked { get; }
+
+        [NotNull]
+        private InitialisableProperty<bool> IsConference { get; }
+
+        /// <summary>
+        ///     Gibt einen Wert an, ob die aktuelle Konferenz ein Favorit vom <see cref="Senpai.Me">Benutzer</see> ist, oder legt
+        ///     diesen fest.
+        /// </summary>
+        [NotNull]
+        public SetableInitialisableProperty<bool> IsFavourite { get; }
 
         /// <summary>
         ///     Gibt zurück, ob die Konferenz bereits initialisiert ist.
@@ -101,7 +117,7 @@ namespace Azuria.Community
         ///     Gibt den Leiter der Konferenz zurück.
         /// </summary>
         [NotNull]
-        public ProxerInitialisableProperty<User> Leader { get; }
+        public InitialisableProperty<User> Leader { get; }
 
         /// <summary>
         ///     Gibt alle Nachrichten aus der Konferenz in chronoligischer Ordnung zurück.
@@ -114,31 +130,23 @@ namespace Azuria.Community
         }
 
         /// <summary>
-        ///     Gibt alle Teilnehmer der Konferenz zurück (<see cref="Init" /> muss dafür zunächst einmal aufgerufen
-        ///     werden)
+        ///     Gibt alle Teilnehmer der Konferenz zurück.
         /// </summary>
         [NotNull]
-        public ProxerInitialisableProperty<IEnumerable<User>> Participants { get; }
+        public InitialisableProperty<IEnumerable<User>> Participants { get; }
 
         /// <summary>
-        ///     Gibt den Titel der Konferenz zurück (<see cref="Init" /> muss dafür zunächst einmal aufgerufen werden)
+        ///     Gibt den Titel der Konferenz zurück.
         /// </summary>
         [NotNull]
-        public ProxerInitialisableProperty<string> Title { get; }
+        public InitialisableProperty<string> Title { get; }
 
         #endregion
 
         #region
 
-        /// <summary>
-        ///     Blockiert die Konferenz.
-        /// </summary>
-        /// <exception cref="NotLoggedInException">Wird ausgelöst, wenn der <see cref="Senpai">Benutzer</see> nicht eingeloggt ist.</exception>
-        /// <exception cref="WrongResponseException">Wird ausgelöst, wenn die Antwort des Servers nicht der Erwarteten entspricht.</exception>
-        /// <seealso cref="Senpai.Login" />
-        /// <returns>Gibt zurück, ob die Aktion erfolgreich war</returns>
         [ItemNotNull]
-        public async Task<ProxerResult> Block()
+        private async Task<ProxerResult> Block()
         {
             ProxerResult<string> lResult =
                 await
@@ -199,15 +207,8 @@ namespace Azuria.Community
         /// </summary>
         public event ErrorDuringPmFetchEventHandler ErrorDuringPmFetchRaised;
 
-        /// <summary>
-        ///     Markiert die Konferenz als Favorit.
-        /// </summary>
-        /// <exception cref="NotLoggedInException">Wird ausgelöst, wenn der <see cref="Senpai">Benutzer</see> nicht eingeloggt ist.</exception>
-        /// <exception cref="WrongResponseException">Wird ausgelöst, wenn die Antwort des Servers nicht der Erwarteten entspricht.</exception>
-        /// <seealso cref="Senpai.Login" />
-        /// <returns>Gibt zurück, ob die Aktion erfolgreich war</returns>
         [ItemNotNull]
-        public async Task<ProxerResult> Favour()
+        private async Task<ProxerResult> Favour()
         {
             ProxerResult<string> lResult =
                 await
@@ -268,7 +269,7 @@ namespace Azuria.Community
 
                 if (this.Messages.Any(
                     x => x.MessageAction == Message.Action.AddUser || x.MessageAction == Message.Action.RemoveUser))
-                    await this.GetAllParticipants();
+                    await this.GetMainInfo();
                 if (this.Messages.Any(x => x.MessageAction == Message.Action.SetLeader) &&
                     this.IsInitialized)
                     await this.GetLeader();
@@ -286,14 +287,12 @@ namespace Azuria.Community
             return new ProxerResult();
         }
 
-        [ItemNotNull]
-        private async Task<ProxerResult> GetAllParticipants()
+        private async Task<ProxerResult> GetConferenceOptions()
         {
-            HtmlDocument lDocument = new HtmlDocument();
             ProxerResult<string> lResult =
                 await
                     HttpUtility.GetResponseErrorHandling(
-                        new Uri("https://proxer.me/messages?id=" + this.Id + "&format=raw"),
+                        new Uri("http://proxer.me/messages?format=json&json=messages&id=" + this.Id),
                         this._senpai.LoginCookies,
                         this._senpai.ErrHandler,
                         this._senpai);
@@ -303,22 +302,18 @@ namespace Azuria.Community
 
             string lResponse = lResult.Result;
 
+            if (lResponse == null || this._senpai.Me == null || lResponse.Equals("{\"uid\":\"" + this._senpai.Me.Id +
+                                                                                 "\",\"error\":1,\"msg\":\"Ein Fehler ist passiert.\"}"))
+                return new ProxerResult
+                {
+                    Success = false
+                };
+
             try
             {
-                lDocument.LoadHtml(lResponse);
-
-                List<User> lTeilnehmer = new List<User>();
-
-                lTeilnehmer.AddRange(
-                    from curTeilnehmer in lDocument.GetElementbyId("conferenceUsers").ChildNodes[1].ChildNodes
-                    let lUserName = curTeilnehmer.ChildNodes[1].FirstChild.InnerText
-                    let lUserId =
-                        Convert.ToInt32(
-                            curTeilnehmer.ChildNodes[1].FirstChild.Attributes["href"].Value.GetTagContents("/user/",
-                                "#top")[0])
-                    select new User(lUserName, lUserId, this._senpai));
-
-                this.Participants.SetInitialisedObject(lTeilnehmer);
+                MessagesModel lConferenceJson = JsonConvert.DeserializeObject<MessagesModel>(lResponse);
+                this.IsBlocked.SetInitialisedObject(lConferenceJson.Blocked == 1);
+                this.IsFavourite.SetInitialisedObject(lConferenceJson.Favourite == 1);
 
                 return new ProxerResult();
             }
@@ -331,7 +326,11 @@ namespace Azuria.Community
         [ItemNotNull]
         private async Task<ProxerResult> GetLeader()
         {
-            if (!(await this.IsConference.GetObject()).OnError(false)) return new ProxerResult();
+            if (!(await this.IsConference.GetObject()).OnError(false))
+            {
+                this.Leader.SetInitialisedObject(User.System);
+                return new ProxerResult();
+            }
 
             Dictionary<string, string> lPostArgs = new Dictionary<string, string>
             {
@@ -368,6 +367,47 @@ namespace Azuria.Community
                             x =>
                                 x.UserName.GetObjectIfInitialised("")
                                     .Equals(lDict["message"].Remove(0, "Konferenzleiter: ".Length))) ?? User.System);
+
+                return new ProxerResult();
+            }
+            catch
+            {
+                return new ProxerResult((await ErrorHandler.HandleError(this._senpai, lResponse, false)).Exceptions);
+            }
+        }
+
+        [ItemNotNull]
+        private async Task<ProxerResult> GetMainInfo()
+        {
+            HtmlDocument lDocument = new HtmlDocument();
+            ProxerResult<string> lResult =
+                await
+                    HttpUtility.GetResponseErrorHandling(
+                        new Uri("https://proxer.me/messages?id=" + this.Id + "&format=raw"),
+                        this._senpai.LoginCookies,
+                        this._senpai.ErrHandler,
+                        this._senpai);
+
+            if (!lResult.Success)
+                return new ProxerResult(lResult.Exceptions);
+
+            string lResponse = lResult.Result;
+
+            lDocument.LoadHtml(lResponse);
+            try
+            {
+                List<User> lTeilnehmer = new List<User>();
+
+                lTeilnehmer.AddRange(
+                    from curTeilnehmer in lDocument.GetElementbyId("conferenceUsers").ChildNodes[1].ChildNodes
+                    let lUserName = curTeilnehmer.ChildNodes[1].FirstChild.InnerText
+                    let lUserId =
+                        Convert.ToInt32(
+                            curTeilnehmer.ChildNodes[1].FirstChild.Attributes["href"].Value.GetTagContents("/user/",
+                                "#top")[0])
+                    select new User(lUserName, lUserId, this._senpai));
+
+                this.Participants.SetInitialisedObject(lTeilnehmer);
 
                 return new ProxerResult();
             }
@@ -416,7 +456,7 @@ namespace Azuria.Community
                     lNewMessages.Count(
                         x => x.MessageAction == Message.Action.AddUser || x.MessageAction == Message.Action.RemoveUser) >
                     0)
-                    await this.GetAllParticipants();
+                    await this.GetMainInfo();
                 if (lNewMessages.Count(x => x.MessageAction == Message.Action.SetLeader) > 0 &&
                     this.IsInitialized)
                     await this.GetLeader();
@@ -584,6 +624,8 @@ namespace Azuria.Community
             try
             {
                 MessagesModel lMessages = JsonConvert.DeserializeObject<MessagesModel>(messages);
+                this.IsBlocked.SetInitialisedObject(lMessages.Blocked == 1);
+                this.IsFavourite.SetInitialisedObject(lMessages.Favourite == 1);
 
                 foreach (MessageModel curMessage in lMessages.MessageModels)
                 {
@@ -704,6 +746,16 @@ namespace Azuria.Community
             }
         }
 
+        private async Task<ProxerResult> SetBlock(bool isBlocked)
+        {
+            return isBlocked ? await this.Block() : await this.Unblock();
+        }
+
+        private async Task<ProxerResult> SetFavourite(bool isFavourite)
+        {
+            return isFavourite ? await this.Favour() : await this.Unfavour();
+        }
+
         /// <summary>
         ///     Markiert die Konferenz als ungelesen.
         /// </summary>
@@ -732,15 +784,8 @@ namespace Azuria.Community
                 : new ProxerResult {Success = false};
         }
 
-        /// <summary>
-        ///     Entblockt die Konferenz.
-        /// </summary>
-        /// <exception cref="NotLoggedInException">Wird ausgelöst, wenn der <see cref="Senpai">Benutzer</see> nicht eingeloggt ist.</exception>
-        /// <exception cref="WrongResponseException">Wird ausgelöst, wenn die Antwort des Servers nicht der Erwarteten entspricht.</exception>
-        /// <seealso cref="Senpai.Login" />
-        /// <returns>Gibt zurück, ob die Aktion erfolgreich war</returns>
         [ItemNotNull]
-        public async Task<ProxerResult> Unblock()
+        private async Task<ProxerResult> Unblock()
         {
             ProxerResult<string> lResult =
                 await
@@ -760,15 +805,8 @@ namespace Azuria.Community
                 : new ProxerResult {Success = false};
         }
 
-        /// <summary>
-        ///     Entfernt die Konferenz aus den Favoriten.
-        /// </summary>
-        /// <exception cref="NotLoggedInException">Wird ausgelöst, wenn der <see cref="Senpai">Benutzer</see> nicht eingeloggt ist.</exception>
-        /// <exception cref="WrongResponseException">Wird ausgelöst, wenn die Antwort des Servers nicht der Erwarteten entspricht.</exception>
-        /// <seealso cref="Senpai.Login" />
-        /// <returns>Gibt zurück, ob die Aktion erfolgreich war</returns>
         [ItemNotNull]
-        public async Task<ProxerResult> Unfavour()
+        private async Task<ProxerResult> Unfavour()
         {
             ProxerResult<string> lResult =
                 await

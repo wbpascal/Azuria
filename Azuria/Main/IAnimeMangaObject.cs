@@ -29,42 +29,42 @@ namespace Azuria.Main
         ///     <para>(Vererbt von <see cref="IAnimeMangaObject" />)</para>
         /// </summary>
         [NotNull]
-        ProxerInitialisableProperty<string> Description { get; }
+        InitialisableProperty<string> Description { get; }
 
         /// <summary>
         ///     Gibt den englische Titel des <see cref="Anime" /> oder <see cref="Manga" /> zurück.
         ///     <para>(Vererbt von <see cref="IAnimeMangaObject" />)</para>
         /// </summary>
         [NotNull]
-        ProxerInitialisableProperty<string> EnglishTitle { get; }
+        InitialisableProperty<string> EnglishTitle { get; }
 
         /// <summary>
         ///     Gibt die Links zu allen FSK-Beschränkungen des <see cref="Anime" /> oder <see cref="Manga" /> zurück.
         ///     <para>(Vererbt von <see cref="IAnimeMangaObject" />)</para>
         /// </summary>
         [NotNull]
-        ProxerInitialisableProperty<Dictionary<Uri, string>> Fsk { get; }
+        InitialisableProperty<Dictionary<Uri, string>> Fsk { get; }
 
         /// <summary>
         ///     Gitb die Genres des <see cref="Anime" /> oder <see cref="Manga" /> zurück.
         ///     <para>(Vererbt von <see cref="IAnimeMangaObject" />)</para>
         /// </summary>
         [NotNull]
-        ProxerInitialisableProperty<IEnumerable<GenreObject>> Genre { get; }
+        InitialisableProperty<IEnumerable<GenreObject>> Genre { get; }
 
         /// <summary>
         ///     Gibt den deutschen Titel des <see cref="Anime" /> oder <see cref="Manga" /> zurück.
         ///     <para>(Vererbt von <see cref="IAnimeMangaObject" />)</para>
         /// </summary>
         [NotNull]
-        ProxerInitialisableProperty<string> GermanTitle { get; }
+        InitialisableProperty<string> GermanTitle { get; }
 
         /// <summary>
         ///     Gibt die Gruppen zurück, die den <see cref="Anime" /> oder <see cref="Manga" /> übersetzten oder übersetzt haben.
         ///     <para>(Vererbt von <see cref="IAnimeMangaObject" />)</para>
         /// </summary>
         [NotNull]
-        ProxerInitialisableProperty<IEnumerable<Group>> Groups { get; }
+        InitialisableProperty<IEnumerable<Group>> Groups { get; }
 
         /// <summary>
         ///     Gibt die ID des <see cref="Anime" /> oder <see cref="Manga" /> zurück.
@@ -77,28 +77,28 @@ namespace Azuria.Main
         ///     <para>(Vererbt von <see cref="IAnimeMangaObject" />)</para>
         /// </summary>
         [NotNull]
-        ProxerInitialisableProperty<IEnumerable<Industry>> Industry { get; }
+        InitialisableProperty<IEnumerable<Industry>> Industry { get; }
 
         /// <summary>
         ///     Gibt zurück, ob der <see cref="Anime" /> oder <see cref="Manga" /> lizensiert ist.
         ///     <para>(Vererbt von <see cref="IAnimeMangaObject" />)</para>
         /// </summary>
         [NotNull]
-        ProxerInitialisableProperty<bool> IsLicensed { get; }
+        InitialisableProperty<bool> IsLicensed { get; }
 
         /// <summary>
         ///     Gibt den japanischen Titel des <see cref="Anime" /> oder <see cref="Manga" /> zurück.
         ///     <para>(Vererbt von <see cref="IAnimeMangaObject" />)</para>
         /// </summary>
         [NotNull]
-        ProxerInitialisableProperty<string> JapaneseTitle { get; }
+        InitialisableProperty<string> JapaneseTitle { get; }
 
         /// <summary>
         ///     Gibt den Namen des <see cref="Anime" /> oder <see cref="Manga" /> zurück.
         ///     <para>(Vererbt von <see cref="IAnimeMangaObject" />)</para>
         /// </summary>
         [NotNull]
-        ProxerInitialisableProperty<string> Name { get; }
+        InitialisableProperty<string> Name { get; }
 
         /// <summary>
         ///     Gibt zurück, ob es sich um einen <see cref="Anime" /> oder <see cref="Manga" /> handelt.
@@ -111,20 +111,20 @@ namespace Azuria.Main
         ///     <para>(Vererbt von <see cref="IAnimeMangaObject" />)</para>
         /// </summary>
         [NotNull]
-        ProxerInitialisableProperty<IEnumerable<string>> Season { get; }
+        InitialisableProperty<IEnumerable<string>> Season { get; }
 
         /// <summary>
         ///     Gibt den Status des <see cref="Anime" /> oder <see cref="Manga" /> zurück.
         ///     <para>(Vererbt von <see cref="IAnimeMangaObject" />)</para>
         /// </summary>
-        ProxerInitialisableProperty<AnimeMangaStatus> Status { get; }
+        InitialisableProperty<AnimeMangaStatus> Status { get; }
 
         /// <summary>
         ///     Gibt das Synonym des <see cref="Anime" /> oder <see cref="Manga" /> zurück.
         ///     <para>(Vererbt von <see cref="IAnimeMangaObject" />)</para>
         /// </summary>
         [NotNull]
-        ProxerInitialisableProperty<string> Synonym { get; }
+        InitialisableProperty<string> Synonym { get; }
 
         #endregion
 

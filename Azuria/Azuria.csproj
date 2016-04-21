@@ -124,7 +124,8 @@
     <Compile Include="User.cs" />
     <Compile Include="Utilities\ErrorHandling\ErrorHandler.cs" />
     <Compile Include="Utilities\Initialisation\IInitialisableProperty.cs" />
-    <Compile Include="Utilities\Initialisation\ProxerInitialisableProperty.cs" />
+    <Compile Include="Utilities\Initialisation\InitialisableProperty.cs" />
+    <Compile Include="Utilities\Initialisation\SetableInitialisableProperty.cs" />
     <Compile Include="Utilities\Net\CloudflareSolver.cs" />
     <Compile Include="Utilities\Net\HttpUtility.cs" />
     <Compile Include="Utilities\ErrorHandling\ProxerResult.cs" />

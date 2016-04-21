@@ -90,6 +90,8 @@ namespace Azuria.Utilities.Net
             else if (lResponseObject.StatusCode == HttpStatusCode.ServiceUnavailable &&
                      !string.IsNullOrEmpty(lResponseObject.Content))
             {
+                if (!SolveCloudflare)
+                    return new ProxerResult<Tuple<string, CookieContainer>>(new[] {new CloudflareException()});
                 ProxerResult lSolveResult =
                     await
                         CloudflareSolver.Solve(
@@ -206,6 +208,8 @@ namespace Azuria.Utilities.Net
             else if (lResponseObject.StatusCode == HttpStatusCode.ServiceUnavailable &&
                      !string.IsNullOrEmpty(lResponseObject.Content))
             {
+                if (!SolveCloudflare)
+                    return new ProxerResult<KeyValuePair<string, CookieContainer>>(new[] {new CloudflareException()});
                 ProxerResult lSolveResult =
                     await
                         CloudflareSolver.Solve(

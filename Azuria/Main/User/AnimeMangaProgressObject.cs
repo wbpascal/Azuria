@@ -52,7 +52,7 @@ namespace Azuria.Main.User
             this.MaxCount = maxCount;
             this.Progress = progress;
 
-            this.Comment = new ProxerInitialisableProperty<Comment>(this.InitComment);
+            this.Comment = new InitialisableProperty<Comment>(this.InitComment);
         }
 
         #region Properties
@@ -66,7 +66,7 @@ namespace Azuria.Main.User
         /// <summary>
         /// </summary>
         [NotNull]
-        public ProxerInitialisableProperty<Comment> Comment { get; }
+        public InitialisableProperty<Comment> Comment { get; }
 
         /// <summary>
         ///     Gibt den aktuellen Fortschritt aus oder legt diesen fest.

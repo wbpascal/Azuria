@@ -50,7 +50,7 @@ namespace Azuria
         internal User([NotNull] string name, int userId, [CanBeNull] Uri avatar, int points, [NotNull] Senpai senpai)
             : this(name, userId, avatar, senpai)
         {
-            this.Points = new ProxerInitialisableProperty<int>(this.InitMainInfo, points);
+            this.Points = new InitialisableProperty<int>(this.InitMainInfo, points);
         }
 
         internal User([NotNull] string name, int userId, [CanBeNull] Uri avatar, bool online, [NotNull] Senpai senpai)
@@ -59,29 +59,29 @@ namespace Azuria
             this.Id = userId;
 
             this.Anime =
-                new ProxerInitialisableProperty
+                new InitialisableProperty
                     <IEnumerable<KeyValuePair<AnimeMangaProgress, AnimeMangaProgressObject<Anime>>>>
                     (this.InitAnime);
-            this.Avatar = new ProxerInitialisableProperty<Uri>(this.InitMainInfo,
+            this.Avatar = new InitialisableProperty<Uri>(this.InitMainInfo,
                 avatar ?? new Uri("https://cdn.proxer.me/avatar/nophoto.png"))
             {
                 IsInitialisedOnce = avatar != null
             };
-            this.Chronic = new ProxerInitialisableProperty<IEnumerable<AnimeMangaChronicObject>>(this.InitChronic);
-            this.FavouriteAnime = new ProxerInitialisableProperty<IEnumerable<Anime>>(this.InitAnime);
-            this.FavouriteManga = new ProxerInitialisableProperty<IEnumerable<Manga>>(this.InitManga);
-            this.Friends = new ProxerInitialisableProperty<IEnumerable<User>>(this.InitFriends);
-            this.Info = new ProxerInitialisableProperty<string>(this.InitInfos);
-            this.InfoHtml = new ProxerInitialisableProperty<string>(this.InitInfos);
-            this.IsOnline = new ProxerInitialisableProperty<bool>(this.InitMainInfo, online);
+            this.Chronic = new InitialisableProperty<IEnumerable<AnimeMangaChronicObject>>(this.InitChronic);
+            this.FavouriteAnime = new InitialisableProperty<IEnumerable<Anime>>(this.InitAnime);
+            this.FavouriteManga = new InitialisableProperty<IEnumerable<Manga>>(this.InitManga);
+            this.Friends = new InitialisableProperty<IEnumerable<User>>(this.InitFriends);
+            this.Info = new InitialisableProperty<string>(this.InitInfos);
+            this.InfoHtml = new InitialisableProperty<string>(this.InitInfos);
+            this.IsOnline = new InitialisableProperty<bool>(this.InitMainInfo, online);
             this.Manga =
-                new ProxerInitialisableProperty
+                new InitialisableProperty
                     <IEnumerable<KeyValuePair<AnimeMangaProgress, AnimeMangaProgressObject<Manga>>>>
                     (this.InitManga);
-            this.Points = new ProxerInitialisableProperty<int>(this.InitMainInfo);
-            this.Ranking = new ProxerInitialisableProperty<string>(this.InitMainInfo);
-            this.Status = new ProxerInitialisableProperty<string>(this.InitMainInfo);
-            this.UserName = new ProxerInitialisableProperty<string>(this.InitMainInfo, name);
+            this.Points = new InitialisableProperty<int>(this.InitMainInfo);
+            this.Ranking = new InitialisableProperty<string>(this.InitMainInfo);
+            this.Status = new InitialisableProperty<string>(this.InitMainInfo);
+            this.UserName = new InitialisableProperty<string>(this.InitMainInfo, name);
         }
 
         #region Properties
@@ -92,38 +92,38 @@ namespace Azuria
         /// </summary>
         [NotNull]
         public
-            ProxerInitialisableProperty<IEnumerable<KeyValuePair<AnimeMangaProgress, AnimeMangaProgressObject<Anime>>>>
+            InitialisableProperty<IEnumerable<KeyValuePair<AnimeMangaProgress, AnimeMangaProgressObject<Anime>>>>
             Anime { get; }
 
         /// <summary>
         ///     Gibt den Link zu dem Avatar des Benutzers zurück.
         /// </summary>
         [NotNull]
-        public ProxerInitialisableProperty<Uri> Avatar { get; }
+        public InitialisableProperty<Uri> Avatar { get; }
 
         /// <summary>
         ///     Gibt die Chronik des Benutzers zurück.
         /// </summary>
         [NotNull]
-        public ProxerInitialisableProperty<IEnumerable<AnimeMangaChronicObject>> Chronic { get; }
+        public InitialisableProperty<IEnumerable<AnimeMangaChronicObject>> Chronic { get; }
 
         /// <summary>
         ///     Gibt die Anime-Favouriten des Benutzers zurück.
         /// </summary>
         [NotNull]
-        public ProxerInitialisableProperty<IEnumerable<Anime>> FavouriteAnime { get; }
+        public InitialisableProperty<IEnumerable<Anime>> FavouriteAnime { get; }
 
         /// <summary>
         ///     Gibt die Manga-Favouriten des Benutzers zurück.
         /// </summary>
         [NotNull]
-        public ProxerInitialisableProperty<IEnumerable<Manga>> FavouriteManga { get; }
+        public InitialisableProperty<IEnumerable<Manga>> FavouriteManga { get; }
 
         /// <summary>
         ///     Gibt die Freunde des Benutzers in einer Liste zurück.
         /// </summary>
         [NotNull]
-        public ProxerInitialisableProperty<IEnumerable<User>> Friends { get; }
+        public InitialisableProperty<IEnumerable<User>> Friends { get; }
 
         /// <summary>
         ///     Gibt die ID des Benutzers zurück.
@@ -135,13 +135,13 @@ namespace Azuria
         ///     Dabei werden sämtliche Html-Eigenschaften ignoriert.
         /// </summary>
         [NotNull]
-        public ProxerInitialisableProperty<string> Info { get; }
+        public InitialisableProperty<string> Info { get; }
 
         /// <summary>
         ///     Gibt die Info des Benutzers als Html-Dokument zurück.
         /// </summary>
         [NotNull]
-        public ProxerInitialisableProperty<string> InfoHtml { get; }
+        public InitialisableProperty<string> InfoHtml { get; }
 
         /// <summary>
         ///     Gibt an, ob das Objekt bereits Initialisiert ist.
@@ -152,7 +152,7 @@ namespace Azuria
         ///     Gibt zurück, ob der Benutzter zur Zeit online ist.
         /// </summary>
         [NotNull]
-        public ProxerInitialisableProperty<bool> IsOnline { get; }
+        public InitialisableProperty<bool> IsOnline { get; }
 
         /// <summary>
         ///     Gibt alle <see cref="Manga">Manga</see> zurück, die der <see cref="User">Benutzer</see>
@@ -160,32 +160,32 @@ namespace Azuria
         /// </summary>
         [NotNull]
         public
-            ProxerInitialisableProperty<IEnumerable<KeyValuePair<AnimeMangaProgress, AnimeMangaProgressObject<Manga>>>>
+            InitialisableProperty<IEnumerable<KeyValuePair<AnimeMangaProgress, AnimeMangaProgressObject<Manga>>>>
             Manga { get; }
 
         /// <summary>
         ///     Gibt zurück, wie viele Punkte der Benutzter momentan hat.
         /// </summary>
         [NotNull]
-        public ProxerInitialisableProperty<int> Points { get; }
+        public InitialisableProperty<int> Points { get; }
 
         /// <summary>
         ///     Gibt den Rangnamen des Benutzers zurück.
         /// </summary>
         [NotNull]
-        public ProxerInitialisableProperty<string> Ranking { get; }
+        public InitialisableProperty<string> Ranking { get; }
 
         /// <summary>
         ///     Gibt den Status des Benutzers zurück.
         /// </summary>
         [NotNull]
-        public ProxerInitialisableProperty<string> Status { get; }
+        public InitialisableProperty<string> Status { get; }
 
         /// <summary>
         ///     Gibt den Benutzernamen des Benutzers zurück.
         /// </summary>
         [NotNull]
-        public ProxerInitialisableProperty<string> UserName { get; }
+        public InitialisableProperty<string> UserName { get; }
 
         #endregion
 

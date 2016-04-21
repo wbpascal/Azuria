@@ -26,12 +26,12 @@ namespace Azuria.Main.User.ControlPanel
         {
             this._senpai = senpai;
 
-            this.Anime = new ProxerInitialisableProperty<IEnumerable<AnimeMangaUcpObject<Anime>>>(this.InitAnime);
-            this.Bookmarks = new ProxerInitialisableProperty<IEnumerable<AnimeMangaBookmarkObject>>(this.InitBookmarks);
-            this.Chronic = new ProxerInitialisableProperty<IEnumerable<AnimeMangaChronicObject>>(this.InitChronic);
+            this.Anime = new InitialisableProperty<IEnumerable<AnimeMangaUcpObject<Anime>>>(this.InitAnime);
+            this.Bookmarks = new InitialisableProperty<IEnumerable<AnimeMangaBookmarkObject>>(this.InitBookmarks);
+            this.Chronic = new InitialisableProperty<IEnumerable<AnimeMangaChronicObject>>(this.InitChronic);
             this.Favourites =
-                new ProxerInitialisableProperty<IEnumerable<AnimeMangaFavouriteObject>>(this.InitFavourites);
-            this.Manga = new ProxerInitialisableProperty<IEnumerable<AnimeMangaUcpObject<Manga>>>(this.InitManga);
+                new InitialisableProperty<IEnumerable<AnimeMangaFavouriteObject>>(this.InitFavourites);
+            this.Manga = new InitialisableProperty<IEnumerable<AnimeMangaUcpObject<Manga>>>(this.InitManga);
         }
 
         #region Properties
@@ -39,27 +39,27 @@ namespace Azuria.Main.User.ControlPanel
         /// <summary>
         /// </summary>
         [NotNull]
-        public ProxerInitialisableProperty<IEnumerable<AnimeMangaUcpObject<Anime>>> Anime { get; }
+        public InitialisableProperty<IEnumerable<AnimeMangaUcpObject<Anime>>> Anime { get; }
 
         /// <summary>
         /// </summary>
         [NotNull]
-        public ProxerInitialisableProperty<IEnumerable<AnimeMangaBookmarkObject>> Bookmarks { get; }
+        public InitialisableProperty<IEnumerable<AnimeMangaBookmarkObject>> Bookmarks { get; }
 
         /// <summary>
         /// </summary>
         [NotNull]
-        public ProxerInitialisableProperty<IEnumerable<AnimeMangaChronicObject>> Chronic { get; }
+        public InitialisableProperty<IEnumerable<AnimeMangaChronicObject>> Chronic { get; }
 
         /// <summary>
         /// </summary>
         [NotNull]
-        public ProxerInitialisableProperty<IEnumerable<AnimeMangaFavouriteObject>> Favourites { get; }
+        public InitialisableProperty<IEnumerable<AnimeMangaFavouriteObject>> Favourites { get; }
 
         /// <summary>
         /// </summary>
         [NotNull]
-        public ProxerInitialisableProperty<IEnumerable<AnimeMangaUcpObject<Manga>>> Manga { get; }
+        public InitialisableProperty<IEnumerable<AnimeMangaUcpObject<Manga>>> Manga { get; }
 
         #endregion
 

@@ -67,18 +67,6 @@ namespace Azuria.Test
         }
 
         [Test]
-        public async Task GetConferencesTest()
-        {
-            ProxerResult<IEnumerable<Conference>> lConferences = await Senpai.GetAllConferences();
-
-            Assert.IsTrue(lConferences.Success);
-            Assert.IsNotNull(lConferences.Result);
-            Assert.IsNotEmpty(lConferences.Result);
-
-            await Task.Delay(2000);
-        }
-
-        [Test]
         public void InitNotificationsTest()
         {
             ProxerResult lValid = Senpai.InitNotifications();

@@ -8,24 +8,32 @@ namespace Azuria.Utilities.Initialisation
     /// <summary>
     /// </summary>
     /// <typeparam name="T"></typeparam>
-    public class ProxerInitialisableProperty<T> : IInitialisableProperty<T>
+    public class SetableInitialisableProperty<T> : IInitialisableProperty<T>
     {
         [NotNull] private readonly Func<Task<ProxerResult>> _initMethod;
+
+        [NotNull] private readonly Func<T, Task<ProxerResult>> _setMethod;
+
         [CanBeNull] private T _initialisedObject;
 
         /// <summary>
         /// </summary>
         /// <param name="initMethod"></param>
-        public ProxerInitialisableProperty([NotNull] Func<Task<ProxerResult>> initMethod)
+        /// <param name="setMethod"></param>
+        public SetableInitialisableProperty([NotNull] Func<Task<ProxerResult>> initMethod,
+            [NotNull] Func<T, Task<ProxerResult>> setMethod)
         {
             this._initMethod = initMethod;
+            this._setMethod = setMethod;
             this.IsInitialisedOnce = false;
         }
 
-        internal ProxerInitialisableProperty([NotNull] Func<Task<ProxerResult>> initMethod,
+        internal SetableInitialisableProperty([NotNull] Func<Task<ProxerResult>> initMethod,
+            [NotNull] Func<T, Task<ProxerResult>> setMethod,
             [NotNull] T initialisationResult)
         {
             this._initMethod = initMethod;
+            this._setMethod = setMethod;
             this._initialisedObject = initialisationResult;
             this.IsInitialisedOnce = true;
         }
@@ -35,33 +43,19 @@ namespace Azuria.Utilities.Initialisation
         /// <summary>
         ///     Mindestens einmal Initialisiert
         /// </summary>
-        public bool IsInitialisedOnce { get; internal set; }
+        public bool IsInitialisedOnce { get; private set; }
 
         /// <summary>
         /// </summary>
         /// <returns></returns>
-        [ItemNotNull]
-        public async Task<ProxerResult<T>> GetObject()
+        public async Task<ProxerResult> FetchObject()
         {
-            if (this.IsInitialisedOnce && this._initialisedObject != null)
-                return new ProxerResult<T>(this._initialisedObject);
-
-            return await this.GetNewObject();
+            return await this.GetObject();
         }
 
         /// <summary>
         /// </summary>
         /// <returns></returns>
-        [ItemNotNull]
-        public async Task<T> GetObject([NotNull] T onError)
-        {
-            return (await this.GetObject()).OnError(onError);
-        }
-
-        /// <summary>
-        /// </summary>
-        /// <returns></returns>
-        [ItemNotNull]
         public async Task<ProxerResult<T>> GetNewObject()
         {
             ProxerResult lInitialiseResult = await this._initMethod.Invoke();
@@ -75,7 +69,6 @@ namespace Azuria.Utilities.Initialisation
         /// </summary>
         /// <param name="onError"></param>
         /// <returns></returns>
-        [ItemNotNull]
         [ContractAnnotation("null=>canbenull")]
         public async Task<T> GetNewObject(T onError)
         {
@@ -85,25 +78,25 @@ namespace Azuria.Utilities.Initialisation
         /// <summary>
         /// </summary>
         /// <returns></returns>
-        [ItemNotNull]
-        public async Task<ProxerResult> FetchObject()
+        public async Task<ProxerResult<T>> GetObject()
         {
-            return await this.GetObject();
+            if (this.IsInitialisedOnce && this._initialisedObject != null)
+                return new ProxerResult<T>(this._initialisedObject);
+
+            return await this.GetNewObject();
+        }
+
+        /// <summary>
+        /// </summary>
+        /// <returns></returns>
+        public async Task<T> GetObject(T onError)
+        {
+            return (await this.GetObject()).OnError(onError);
         }
 
         #endregion
 
         #region
-
-        /// <summary>
-        /// </summary>
-        /// <param name="ifNot"></param>
-        /// <returns></returns>
-        [NotNull]
-        public T GetObjectIfInitialised(T ifNot)
-        {
-            return this.IsInitialisedOnce && this._initialisedObject != null ? this._initialisedObject : ifNot;
-        }
 
         internal void SetInitialisedObject(T initialisedObject)
         {
@@ -117,6 +110,19 @@ namespace Azuria.Utilities.Initialisation
             this._initialisedObject = initialisedObject;
             this.IsInitialisedOnce = true;
             return initialisedObject;
+        }
+
+        /// <summary>
+        /// </summary>
+        /// <param name="newObject"></param>
+        /// <returns></returns>
+        [ItemNotNull]
+        public async Task<ProxerResult<T>> SetObject([NotNull] T newObject)
+        {
+            ProxerResult lInvokeResult = await this._setMethod.Invoke(newObject);
+            if (!lInvokeResult.Success) return new ProxerResult<T>(lInvokeResult.Exceptions);
+            this._initialisedObject = newObject;
+            return new ProxerResult<T>(this._initialisedObject);
         }
 
         #endregion

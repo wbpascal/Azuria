@@ -77,22 +77,22 @@ namespace Azuria.Main
 
         internal Anime()
         {
-            this.AnimeTyp = new ProxerInitialisableProperty<AnimeType>(this.InitType);
-            this.AvailableLanguages = new ProxerInitialisableProperty<IEnumerable<Language>>(this.InitAvailableLang);
-            this.Description = new ProxerInitialisableProperty<string>(this.InitMain);
-            this.EnglishTitle = new ProxerInitialisableProperty<string>(this.InitMain);
-            this.EpisodeCount = new ProxerInitialisableProperty<int>(this.InitEpisodeCount);
-            this.Fsk = new ProxerInitialisableProperty<Dictionary<Uri, string>>(this.InitMain);
-            this.Genre = new ProxerInitialisableProperty<IEnumerable<GenreObject>>(this.InitMain);
-            this.GermanTitle = new ProxerInitialisableProperty<string>(this.InitMain);
-            this.Groups = new ProxerInitialisableProperty<IEnumerable<Group>>(this.InitMain);
-            this.Industry = new ProxerInitialisableProperty<IEnumerable<Industry>>(this.InitMain);
-            this.IsLicensed = new ProxerInitialisableProperty<bool>(this.InitMain);
-            this.JapaneseTitle = new ProxerInitialisableProperty<string>(this.InitMain);
-            this.Name = new ProxerInitialisableProperty<string>(this.InitMain);
-            this.Season = new ProxerInitialisableProperty<IEnumerable<string>>(this.InitMain);
-            this.Status = new ProxerInitialisableProperty<AnimeMangaStatus>(this.InitMain);
-            this.Synonym = new ProxerInitialisableProperty<string>(this.InitMain);
+            this.AnimeTyp = new InitialisableProperty<AnimeType>(this.InitType);
+            this.AvailableLanguages = new InitialisableProperty<IEnumerable<Language>>(this.InitAvailableLang);
+            this.Description = new InitialisableProperty<string>(this.InitMain);
+            this.EnglishTitle = new InitialisableProperty<string>(this.InitMain);
+            this.EpisodeCount = new InitialisableProperty<int>(this.InitEpisodeCount);
+            this.Fsk = new InitialisableProperty<Dictionary<Uri, string>>(this.InitMain);
+            this.Genre = new InitialisableProperty<IEnumerable<GenreObject>>(this.InitMain);
+            this.GermanTitle = new InitialisableProperty<string>(this.InitMain);
+            this.Groups = new InitialisableProperty<IEnumerable<Group>>(this.InitMain);
+            this.Industry = new InitialisableProperty<IEnumerable<Industry>>(this.InitMain);
+            this.IsLicensed = new InitialisableProperty<bool>(this.InitMain);
+            this.JapaneseTitle = new InitialisableProperty<string>(this.InitMain);
+            this.Name = new InitialisableProperty<string>(this.InitMain);
+            this.Season = new InitialisableProperty<IEnumerable<string>>(this.InitMain);
+            this.Status = new InitialisableProperty<AnimeMangaStatus>(this.InitMain);
+            this.Synonym = new InitialisableProperty<string>(this.InitMain);
         }
 
         internal Anime([NotNull] string name, int id, [NotNull] Senpai senpai) : this()
@@ -100,16 +100,16 @@ namespace Azuria.Main
             this.Id = id;
             this._senpai = senpai;
 
-            this.Name = new ProxerInitialisableProperty<string>(this.InitMain, name);
+            this.Name = new InitialisableProperty<string>(this.InitMain, name);
         }
 
         internal Anime([NotNull] string name, int id, [NotNull] Senpai senpai,
             [NotNull] IEnumerable<GenreObject> genreList, AnimeMangaStatus status,
             AnimeType type) : this(name, id, senpai)
         {
-            this.Genre = new ProxerInitialisableProperty<IEnumerable<GenreObject>>(this.InitMain, genreList);
-            this.Status = new ProxerInitialisableProperty<AnimeMangaStatus>(this.InitMain, status);
-            this.AnimeTyp = new ProxerInitialisableProperty<AnimeType>(this.InitType, type);
+            this.Genre = new InitialisableProperty<IEnumerable<GenreObject>>(this.InitMain, genreList);
+            this.Status = new InitialisableProperty<AnimeMangaStatus>(this.InitMain, status);
+            this.AnimeTyp = new InitialisableProperty<AnimeType>(this.InitType, type);
         }
 
         #region Geerbt
@@ -124,37 +124,37 @@ namespace Azuria.Main
         ///     Gibt die Beschreibung des <see cref="Anime" /> oder <see cref="Manga" /> zurück.
         ///     <para>(Vererbt von <see cref="IAnimeMangaObject" />)</para>
         /// </summary>
-        public ProxerInitialisableProperty<string> Description { get; }
+        public InitialisableProperty<string> Description { get; }
 
         /// <summary>
         ///     Gibt den englische Titel des <see cref="Anime" /> oder <see cref="Manga" /> zurück.
         ///     <para>(Vererbt von <see cref="IAnimeMangaObject" />)</para>
         /// </summary>
-        public ProxerInitialisableProperty<string> EnglishTitle { get; }
+        public InitialisableProperty<string> EnglishTitle { get; }
 
         /// <summary>
         ///     Gibt die Links zu allen FSK-Beschränkungen des <see cref="Anime" /> oder <see cref="Manga" /> zurück.
         ///     <para>(Vererbt von <see cref="IAnimeMangaObject" />)</para>
         /// </summary>
-        public ProxerInitialisableProperty<Dictionary<Uri, string>> Fsk { get; }
+        public InitialisableProperty<Dictionary<Uri, string>> Fsk { get; }
 
         /// <summary>
         ///     Gitb die Genres des <see cref="Anime" /> oder <see cref="Manga" /> zurück.
         ///     <para>(Vererbt von <see cref="IAnimeMangaObject" />)</para>
         /// </summary>
-        public ProxerInitialisableProperty<IEnumerable<GenreObject>> Genre { get; }
+        public InitialisableProperty<IEnumerable<GenreObject>> Genre { get; }
 
         /// <summary>
         ///     Gibt den deutschen Titel des <see cref="Anime" /> oder <see cref="Manga" /> zurück.
         ///     <para>(Vererbt von <see cref="IAnimeMangaObject" />)</para>
         /// </summary>
-        public ProxerInitialisableProperty<string> GermanTitle { get; }
+        public InitialisableProperty<string> GermanTitle { get; }
 
         /// <summary>
         ///     Gibt die Gruppen zurück, die den <see cref="Anime" /> oder <see cref="Manga" /> übersetzten oder übersetzt haben.
         ///     <para>(Vererbt von <see cref="IAnimeMangaObject" />)</para>
         /// </summary>
-        public ProxerInitialisableProperty<IEnumerable<Group>> Groups { get; }
+        public InitialisableProperty<IEnumerable<Group>> Groups { get; }
 
         /// <summary>
         ///     Gibt die ID des <see cref="Anime" /> oder <see cref="Manga" /> zurück.
@@ -166,25 +166,25 @@ namespace Azuria.Main
         ///     Gibt die Industrie des <see cref="Anime" /> oder <see cref="Manga" /> zurück.
         ///     <para>(Vererbt von <see cref="IAnimeMangaObject" />)</para>
         /// </summary>
-        public ProxerInitialisableProperty<IEnumerable<Industry>> Industry { get; }
+        public InitialisableProperty<IEnumerable<Industry>> Industry { get; }
 
         /// <summary>
         ///     Gibt zurück, ob der <see cref="Anime" /> oder <see cref="Manga" /> lizensiert ist.
         ///     <para>(Vererbt von <see cref="IAnimeMangaObject" />)</para>
         /// </summary>
-        public ProxerInitialisableProperty<bool> IsLicensed { get; }
+        public InitialisableProperty<bool> IsLicensed { get; }
 
         /// <summary>
         ///     Gibt den japanischen Titel des <see cref="Anime" /> oder <see cref="Manga" /> zurück.
         ///     <para>(Vererbt von <see cref="IAnimeMangaObject" />)</para>
         /// </summary>
-        public ProxerInitialisableProperty<string> JapaneseTitle { get; }
+        public InitialisableProperty<string> JapaneseTitle { get; }
 
         /// <summary>
         ///     Gibt den Namen des <see cref="Anime" /> oder <see cref="Manga" /> zurück.
         ///     <para>(Vererbt von <see cref="IAnimeMangaObject" />)</para>
         /// </summary>
-        public ProxerInitialisableProperty<string> Name { get; }
+        public InitialisableProperty<string> Name { get; }
 
         /// <summary>
         ///     Gibt zurück, ob es sich um einen <see cref="Anime" /> oder <see cref="Manga" /> handelt.
@@ -196,19 +196,19 @@ namespace Azuria.Main
         ///     Gibt die Season des <see cref="Anime" /> oder <see cref="Manga" /> zurück.
         ///     <para>(Vererbt von <see cref="IAnimeMangaObject" />)</para>
         /// </summary>
-        public ProxerInitialisableProperty<IEnumerable<string>> Season { get; }
+        public InitialisableProperty<IEnumerable<string>> Season { get; }
 
         /// <summary>
         ///     Gibt den Status des <see cref="Anime" /> oder <see cref="Manga" /> zurück.
         ///     <para>(Vererbt von <see cref="IAnimeMangaObject" />)</para>
         /// </summary>
-        public ProxerInitialisableProperty<AnimeMangaStatus> Status { get; }
+        public InitialisableProperty<AnimeMangaStatus> Status { get; }
 
         /// <summary>
         ///     Gibt das Synonym des <see cref="Anime" /> oder <see cref="Manga" /> zurück.
         ///     <para>(Vererbt von <see cref="IAnimeMangaObject" />)</para>
         /// </summary>
-        public ProxerInitialisableProperty<string> Synonym { get; }
+        public InitialisableProperty<string> Synonym { get; }
 
         /// <summary>
         ///     Gibt die Kommentare des <see cref="Anime" /> oder <see cref="Manga" /> chronologisch geordnet zurück.
@@ -257,20 +257,20 @@ namespace Azuria.Main
         ///     Gibt den Typ eines Anime zurück.
         /// </summary>
         [NotNull]
-        public ProxerInitialisableProperty<AnimeType> AnimeTyp { get; }
+        public InitialisableProperty<AnimeType> AnimeTyp { get; }
 
         /// <summary>
         ///     Gibt die verfügbaren Sprachen des <see cref="Anime" /> zurück.
         /// </summary>
         /// <seealso cref="Language" />
         [NotNull]
-        public ProxerInitialisableProperty<IEnumerable<Language>> AvailableLanguages { get; }
+        public InitialisableProperty<IEnumerable<Language>> AvailableLanguages { get; }
 
         /// <summary>
         ///     Gibt die Episodenanzahl eines <see cref="Anime" /> zurück.
         /// </summary>
         [NotNull]
-        public ProxerInitialisableProperty<int> EpisodeCount { get; }
+        public InitialisableProperty<int> EpisodeCount { get; }
 
         #endregion
 
@@ -692,7 +692,7 @@ namespace Azuria.Main
                 this._senpai = senpai;
 
                 this.Streams =
-                    new ProxerInitialisableProperty<IEnumerable<KeyValuePair<Stream.StreamPartner, Stream>>>(
+                    new InitialisableProperty<IEnumerable<KeyValuePair<Stream.StreamPartner, Stream>>>(
                         this.InitInfo);
             }
 
@@ -718,7 +718,7 @@ namespace Azuria.Main
             ///     Gibt die vorhandenen Streams der Episode zurück.
             /// </summary>
             [NotNull]
-            public ProxerInitialisableProperty<IEnumerable<KeyValuePair<Stream.StreamPartner, Stream>>> Streams { get; }
+            public InitialisableProperty<IEnumerable<KeyValuePair<Stream.StreamPartner, Stream>>> Streams { get; }
 
             #endregion
 
