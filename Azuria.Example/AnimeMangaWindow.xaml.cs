@@ -9,6 +9,7 @@ using System.Windows.Media.Imaging;
 using Azuria.Main;
 using Azuria.Main.Minor;
 using Azuria.Main.User;
+using Azuria.Main.User.Comment;
 using Azuria.Utilities.ErrorHandling;
 
 namespace Azuria.Example
@@ -128,9 +129,9 @@ namespace Azuria.Example
                 TextBlock lCommentContent = new TextBlock
                 {
                     TextWrapping = TextWrapping.Wrap,
-                    Text = "Gesamtwertung: " + comment.Stars + "\n\n" + comment.Content
+                    Text = "Gesamtwertung: " + comment.Rating + "\n\n" + comment.Content
                 };
-                comment.CategoryStars.ToList()
+                comment.SubRatings.ToList()
                     .ForEach(pair => lCommentContent.Text = pair.Key + ": " + pair.Value + "\n" + lCommentContent.Text);
 
                 Button lGotoButton = new Button {Content = "Gehe zu Benutzer"};
@@ -162,9 +163,9 @@ namespace Azuria.Example
                 TextBlock lCommentContent = new TextBlock
                 {
                     TextWrapping = TextWrapping.Wrap,
-                    Text = "Gesamtwertung: " + comment.Stars + "\n\n" + comment.Content
+                    Text = "Gesamtwertung: " + comment.Rating + "\n\n" + comment.Content
                 };
-                comment.CategoryStars.ToList()
+                comment.SubRatings.ToList()
                     .ForEach(pair => lCommentContent.Text = pair.Key + ": " + pair.Value + "\n" + lCommentContent.Text);
 
                 Button lGotoButton = new Button {Content = "Gehe zu Benutzer"};

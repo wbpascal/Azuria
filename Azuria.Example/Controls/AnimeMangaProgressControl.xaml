@@ -8,7 +8,7 @@
              Cursor="Hand" Loaded="ProgressUserControl_Loaded">
     <StackPanel Orientation="Horizontal">
         <TextBlock x:Name="AnimeNameTextBlock" />
-        <TextBlock Text="{Binding ElementName=ProgressUserControl, Path=AnimeMangaProgressObject.CurrentProgress}"
+        <TextBlock Text="{Binding ElementName=ProgressUserControl, Path=AnimeMangaProgressObject.Progress}"
                    Margin="10,0,0,0" />
         <TextBlock Text="/" />
         <TextBlock Text="{Binding ElementName=ProgressUserControl, Path=AnimeMangaProgressObject.MaxCount}" />

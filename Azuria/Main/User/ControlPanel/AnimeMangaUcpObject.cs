@@ -1,4 +1,6 @@
-﻿using Azuria.Exceptions;
+﻿using System.Threading.Tasks;
+using Azuria.Exceptions;
+using Azuria.Main.User.Comment;
 using Azuria.Utilities.ErrorHandling;
 using HtmlAgilityPack;
 using JetBrains.Annotations;
@@ -19,35 +21,44 @@ namespace Azuria.Main.User.ControlPanel
         ///     zusammenhängt.
         /// </param>
         /// <param name="entryId"></param>
-        /// <param name="currentProgress">Der aktuelle Fortschritt.</param>
-        /// <param name="maxCount">
-        ///     Die maximale Anzahl der <see cref="Anime.Episode">Episoden</see> oder
-        ///     <see cref="Manga.Chapter">Kapitel</see>.
-        /// </param>
-        /// <param name="progress">
+        /// <param name="progress">Der aktuelle Fortschritt.</param>
+        /// <param name="progressState">
         ///     Die Kategorie, in der der <paramref name="user">Benutzer</paramref> seinen Fortschritt
         ///     einsortiert hat.
         /// </param>
         /// <param name="senpai"></param>
         public AnimeMangaUcpObject([NotNull] Azuria.User user, [NotNull] T animeMangaObject, int entryId,
-            int currentProgress, int maxCount, AnimeMangaProgress progress, [NotNull] Senpai senpai)
-            : base(user, animeMangaObject, entryId, currentProgress, maxCount, progress, senpai)
+            AnimeMangaProgress progress, AnimeMangaProgressState progressState, [NotNull] Senpai senpai)
+            : base(user, animeMangaObject, entryId, progress, progressState, senpai)
         {
         }
 
         private AnimeMangaUcpObject([NotNull] AnimeMangaProgressObject<T> baseClass, [NotNull] Senpai senpai)
             : this(
-                baseClass.User, baseClass.AnimeMangaObject, baseClass.EntryId, baseClass.CurrentProgress,
-                baseClass.MaxCount, baseClass.Progress, senpai)
+                baseClass.User, baseClass.AnimeMangaObject, baseClass.EntryId, baseClass.Progress,
+                baseClass.ProgressState, senpai)
         {
         }
 
         #region
 
+        /// <summary>
+        /// </summary>
+        /// <returns></returns>
+        public async Task<ProxerResult<EditableComment>> GetEditableComment()
+        {
+            ProxerResult<EditableComment> lCommentFetchResult =
+                await EditableComment.GetEditableComment(this.EntryId, this.AnimeMangaObject.Id, this.Senpai);
+            if (!lCommentFetchResult.Success || lCommentFetchResult.Result == null)
+                return new ProxerResult<EditableComment>(lCommentFetchResult.Exceptions);
+
+            return new ProxerResult<EditableComment>(lCommentFetchResult.Result);
+        }
+
         [NotNull]
         internal new static ProxerResult<AnimeMangaUcpObject<T>> ParseFromHtmlNode([NotNull] HtmlNode node,
             Azuria.User user,
-            T animeMangaObject, AnimeMangaProgress progress,
+            T animeMangaObject, AnimeMangaProgressState progress,
             [NotNull] Senpai senpai)
         {
             try

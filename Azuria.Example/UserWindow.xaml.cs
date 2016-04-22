@@ -12,6 +12,7 @@ using Azuria.Example.Controls;
 using Azuria.Main;
 using Azuria.Main.Minor;
 using Azuria.Main.User;
+using Azuria.Main.User.Comment;
 using Azuria.Utilities.ErrorHandling;
 
 namespace Azuria.Example
@@ -56,33 +57,33 @@ namespace Azuria.Example
             }
 
             foreach (
-                KeyValuePair<AnimeMangaProgress, AnimeMangaProgressObject<Anime>> anime in
+                KeyValuePair<AnimeMangaProgressState, AnimeMangaProgressObject<Anime>> anime in
                     await
                         this._user.Anime.GetObject(
-                            new KeyValuePair<AnimeMangaProgress, AnimeMangaProgressObject<Anime>>[0]))
+                            new KeyValuePair<AnimeMangaProgressState, AnimeMangaProgressObject<Anime>>[0]))
             {
                 AnimeMangaProgressControl lProgressControl =
                     new AnimeMangaProgressControl(
                         new AnimeMangaProgressObject<IAnimeMangaObject>(anime.Value.User, anime.Value.AnimeMangaObject,
-                            anime.Value.EntryId, anime.Value.CurrentProgress, anime.Value.MaxCount, anime.Value.Progress,
+                            anime.Value.EntryId, anime.Value.Progress, anime.Value.ProgressState,
                             this._senpai), this._senpai);
 
                 switch (anime.Key)
                 {
                     //Anime wurde bereits geschaut
-                    case AnimeMangaProgress.Finished:
+                    case AnimeMangaProgressState.Finished:
                         this.AnimeGeschautPanel.Children.Add(lProgressControl);
                         break;
                     //Anime wird gerade geschaut
-                    case AnimeMangaProgress.InProgress:
+                    case AnimeMangaProgressState.InProgress:
                         this.AnimeAmSchauenPanel.Children.Add(lProgressControl);
                         break;
                     //Anime wird noch geschaut
-                    case AnimeMangaProgress.Planned:
+                    case AnimeMangaProgressState.Planned:
                         this.AnimeWirdNochGeschautPanel.Children.Add(lProgressControl);
                         break;
                     //Anime wurde abgebrochen
-                    case AnimeMangaProgress.Aborted:
+                    case AnimeMangaProgressState.Aborted:
                         this.AnimeAbgebrochenPanel.Children.Add(lProgressControl);
                         break;
                 }
@@ -101,9 +102,9 @@ namespace Azuria.Example
                 TextBlock lCommentContent = new TextBlock
                 {
                     TextWrapping = TextWrapping.Wrap,
-                    Text = "Gesamtwertung: " + comment.Stars + "\n\n" + comment.Content
+                    Text = "Gesamtwertung: " + comment.Rating + "\n\n" + comment.Content
                 };
-                comment.CategoryStars.ToList()
+                comment.SubRatings.ToList()
                     .ForEach(pair => lCommentContent.Text = pair.Key + ": " + pair.Value + "\n" + lCommentContent.Text);
 
                 Button lGotoButton = new Button {Content = "Öffne Anime/Manga"};
@@ -181,33 +182,33 @@ namespace Azuria.Example
             }
 
             foreach (
-                KeyValuePair<AnimeMangaProgress, AnimeMangaProgressObject<Manga>> manga in
+                KeyValuePair<AnimeMangaProgressState, AnimeMangaProgressObject<Manga>> manga in
                     await
                         this._user.Manga.GetObject(
-                            new KeyValuePair<AnimeMangaProgress, AnimeMangaProgressObject<Manga>>[0]))
+                            new KeyValuePair<AnimeMangaProgressState, AnimeMangaProgressObject<Manga>>[0]))
             {
                 AnimeMangaProgressControl lProgressControl =
                     new AnimeMangaProgressControl(new AnimeMangaProgressObject<IAnimeMangaObject>(manga.Value.User,
                         manga.Value.AnimeMangaObject,
-                        manga.Value.EntryId, manga.Value.CurrentProgress, manga.Value.MaxCount, manga.Value.Progress,
+                        manga.Value.EntryId, manga.Value.Progress, manga.Value.ProgressState,
                         this._senpai), this._senpai);
 
                 switch (manga.Key)
                 {
                     //Manga wurde bereits gelesen
-                    case AnimeMangaProgress.Finished:
+                    case AnimeMangaProgressState.Finished:
                         this.MangaGelesenPanel.Children.Add(lProgressControl);
                         break;
                     //Manga wird gerade gelesen
-                    case AnimeMangaProgress.InProgress:
+                    case AnimeMangaProgressState.InProgress:
                         this.MangaAmLesenPanel.Children.Add(lProgressControl);
                         break;
                     //Manga wird noch gelesen
-                    case AnimeMangaProgress.Planned:
+                    case AnimeMangaProgressState.Planned:
                         this.MangaWirdNochGelesenPanel.Children.Add(lProgressControl);
                         break;
                     //Manga wurde abgebrochen
-                    case AnimeMangaProgress.Aborted:
+                    case AnimeMangaProgressState.Aborted:
                         this.MangaAbgebrochenPanel.Children.Add(lProgressControl);
                         break;
                 }

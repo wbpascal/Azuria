@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Azuria.Exceptions;
 using Azuria.Main.User;
+using Azuria.Main.User.Comment;
 using Azuria.Test.Attributes;
 using Azuria.Test.Utility;
 using Azuria.Utilities.ErrorHandling;

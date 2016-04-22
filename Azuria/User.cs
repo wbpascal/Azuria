@@ -7,6 +7,7 @@ using Azuria.Exceptions;
 using Azuria.Main;
 using Azuria.Main.Search;
 using Azuria.Main.User;
+using Azuria.Main.User.Comment;
 using Azuria.Utilities;
 using Azuria.Utilities.ErrorHandling;
 using Azuria.Utilities.Initialisation;
@@ -60,7 +61,7 @@ namespace Azuria
 
             this.Anime =
                 new InitialisableProperty
-                    <IEnumerable<KeyValuePair<AnimeMangaProgress, AnimeMangaProgressObject<Anime>>>>
+                    <IEnumerable<KeyValuePair<AnimeMangaProgressState, AnimeMangaProgressObject<Anime>>>>
                     (this.InitAnime);
             this.Avatar = new InitialisableProperty<Uri>(this.InitMainInfo,
                 avatar ?? new Uri("https://cdn.proxer.me/avatar/nophoto.png"))
@@ -76,7 +77,7 @@ namespace Azuria
             this.IsOnline = new InitialisableProperty<bool>(this.InitMainInfo, online);
             this.Manga =
                 new InitialisableProperty
-                    <IEnumerable<KeyValuePair<AnimeMangaProgress, AnimeMangaProgressObject<Manga>>>>
+                    <IEnumerable<KeyValuePair<AnimeMangaProgressState, AnimeMangaProgressObject<Manga>>>>
                     (this.InitManga);
             this.Points = new InitialisableProperty<int>(this.InitMainInfo);
             this.Ranking = new InitialisableProperty<string>(this.InitMainInfo);
@@ -92,7 +93,7 @@ namespace Azuria
         /// </summary>
         [NotNull]
         public
-            InitialisableProperty<IEnumerable<KeyValuePair<AnimeMangaProgress, AnimeMangaProgressObject<Anime>>>>
+            InitialisableProperty<IEnumerable<KeyValuePair<AnimeMangaProgressState, AnimeMangaProgressObject<Anime>>>>
             Anime { get; }
 
         /// <summary>
@@ -160,7 +161,7 @@ namespace Azuria
         /// </summary>
         [NotNull]
         public
-            InitialisableProperty<IEnumerable<KeyValuePair<AnimeMangaProgress, AnimeMangaProgressObject<Manga>>>>
+            InitialisableProperty<IEnumerable<KeyValuePair<AnimeMangaProgressState, AnimeMangaProgressObject<Manga>>>>
             Manga { get; }
 
         /// <summary>
@@ -393,7 +394,7 @@ namespace Azuria
             try
             {
                 this.Anime.SetInitialisedObject(
-                    new List<KeyValuePair<AnimeMangaProgress, AnimeMangaProgressObject<Anime>>>());
+                    new List<KeyValuePair<AnimeMangaProgressState, AnimeMangaProgressObject<Anime>>>());
 
                 lDocument.LoadHtml(lResponse);
 
@@ -409,7 +410,7 @@ namespace Azuria
                                 this._senpai))
                     .ToArray());
 
-                ProxerResult<IEnumerable<KeyValuePair<AnimeMangaProgress, AnimeMangaProgressObject<Anime>>>>
+                ProxerResult<IEnumerable<KeyValuePair<AnimeMangaProgressState, AnimeMangaProgressObject<Anime>>>>
                     lProcessResult =
                         this.ProcessAnimeMangaProgressNodes<Anime>(lDocument);
                 if (!lProcessResult.Success) return new ProxerResult(lProcessResult.Exceptions);
@@ -669,7 +670,7 @@ namespace Azuria
                                 this._senpai))
                     .ToArray());
 
-                ProxerResult<IEnumerable<KeyValuePair<AnimeMangaProgress, AnimeMangaProgressObject<Manga>>>>
+                ProxerResult<IEnumerable<KeyValuePair<AnimeMangaProgressState, AnimeMangaProgressObject<Manga>>>>
                     lProcessResult =
                         this.ProcessAnimeMangaProgressNodes<Manga>(lDocument);
                 if (!lProcessResult.Success) return new ProxerResult(lProcessResult.Exceptions);
@@ -683,7 +684,7 @@ namespace Azuria
         }
 
         [NotNull]
-        private ProxerResult<IEnumerable<KeyValuePair<AnimeMangaProgress, AnimeMangaProgressObject<T>>>>
+        private ProxerResult<IEnumerable<KeyValuePair<AnimeMangaProgressState, AnimeMangaProgressObject<T>>>>
             ProcessAnimeMangaProgressNodes<T>([NotNull] HtmlDocument htmlDocument)
             where T : IAnimeMangaObject
         {
@@ -704,13 +705,14 @@ namespace Azuria
 
                 if (lConstructorToInvoke == null)
                     return
-                        new ProxerResult<IEnumerable<KeyValuePair<AnimeMangaProgress, AnimeMangaProgressObject<T>>>>(
+                        new ProxerResult
+                            <IEnumerable<KeyValuePair<AnimeMangaProgressState, AnimeMangaProgressObject<T>>>>(
                             new Exception[0]);
 
                 #region Process Nodes
 
-                List<KeyValuePair<AnimeMangaProgress, AnimeMangaProgressObject<T>>> lReturnList =
-                    new List<KeyValuePair<AnimeMangaProgress, AnimeMangaProgressObject<T>>>();
+                List<KeyValuePair<AnimeMangaProgressState, AnimeMangaProgressObject<T>>> lReturnList =
+                    new List<KeyValuePair<AnimeMangaProgressState, AnimeMangaProgressObject<T>>>();
                 foreach (
                     HtmlNode animeMangaNode in
                         htmlDocument.DocumentNode.ChildNodes[7].ChildNodes.Where(
@@ -731,10 +733,10 @@ namespace Azuria
 
                     if (lAnimeManga != null)
                         lReturnList.Add(
-                            new KeyValuePair<AnimeMangaProgress, AnimeMangaProgressObject<T>>(
-                                AnimeMangaProgress.Finished,
+                            new KeyValuePair<AnimeMangaProgressState, AnimeMangaProgressObject<T>>(
+                                AnimeMangaProgressState.Finished,
                                 AnimeMangaProgressObject<T>.ParseFromHtmlNode(animeMangaNode, this, lAnimeManga,
-                                    AnimeMangaProgress.Finished, this._senpai)));
+                                    AnimeMangaProgressState.Finished, this._senpai)));
                 }
 
                 foreach (
@@ -757,10 +759,10 @@ namespace Azuria
 
                     if (lAnimeManga != null)
                         lReturnList.Add(
-                            new KeyValuePair<AnimeMangaProgress, AnimeMangaProgressObject<T>>(
-                                AnimeMangaProgress.InProgress,
+                            new KeyValuePair<AnimeMangaProgressState, AnimeMangaProgressObject<T>>(
+                                AnimeMangaProgressState.InProgress,
                                 AnimeMangaProgressObject<T>.ParseFromHtmlNode(animeMangaNode, this, lAnimeManga,
-                                    AnimeMangaProgress.InProgress, this._senpai)));
+                                    AnimeMangaProgressState.InProgress, this._senpai)));
                 }
 
                 foreach (
@@ -783,10 +785,10 @@ namespace Azuria
 
                     if (lAnimeManga != null)
                         lReturnList.Add(
-                            new KeyValuePair<AnimeMangaProgress, AnimeMangaProgressObject<T>>(
-                                AnimeMangaProgress.Planned,
+                            new KeyValuePair<AnimeMangaProgressState, AnimeMangaProgressObject<T>>(
+                                AnimeMangaProgressState.Planned,
                                 AnimeMangaProgressObject<T>.ParseFromHtmlNode(animeMangaNode, this, lAnimeManga,
-                                    AnimeMangaProgress.Planned, this._senpai)));
+                                    AnimeMangaProgressState.Planned, this._senpai)));
                 }
 
                 foreach (
@@ -809,22 +811,22 @@ namespace Azuria
 
                     if (lAnimeManga != null)
                         lReturnList.Add(
-                            new KeyValuePair<AnimeMangaProgress, AnimeMangaProgressObject<T>>(
-                                AnimeMangaProgress.Aborted,
+                            new KeyValuePair<AnimeMangaProgressState, AnimeMangaProgressObject<T>>(
+                                AnimeMangaProgressState.Aborted,
                                 AnimeMangaProgressObject<T>.ParseFromHtmlNode(animeMangaNode, this, lAnimeManga,
-                                    AnimeMangaProgress.Aborted, this._senpai)));
+                                    AnimeMangaProgressState.Aborted, this._senpai)));
                 }
 
                 #endregion
 
                 return
-                    new ProxerResult<IEnumerable<KeyValuePair<AnimeMangaProgress, AnimeMangaProgressObject<T>>>>(
+                    new ProxerResult<IEnumerable<KeyValuePair<AnimeMangaProgressState, AnimeMangaProgressObject<T>>>>(
                         lReturnList);
             }
             catch
             {
                 return
-                    new ProxerResult<IEnumerable<KeyValuePair<AnimeMangaProgress, AnimeMangaProgressObject<T>>>>(
+                    new ProxerResult<IEnumerable<KeyValuePair<AnimeMangaProgressState, AnimeMangaProgressObject<T>>>>(
                         new Exception[] {new WrongResponseException()});
             }
         }

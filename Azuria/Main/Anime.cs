@@ -4,7 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Azuria.Exceptions;
 using Azuria.Main.Minor;
-using Azuria.Main.User;
+using Azuria.Main.User.Comment;
 using Azuria.Utilities;
 using Azuria.Utilities.ErrorHandling;
 using Azuria.Utilities.Initialisation;
@@ -80,19 +80,28 @@ namespace Azuria.Main
             this.AnimeTyp = new InitialisableProperty<AnimeType>(this.InitType);
             this.AvailableLanguages = new InitialisableProperty<IEnumerable<Language>>(this.InitAvailableLang);
             this.Description = new InitialisableProperty<string>(this.InitMain);
-            this.EnglishTitle = new InitialisableProperty<string>(this.InitMain, string.Empty) {IsInitialisedOnce = false};
+            this.EnglishTitle = new InitialisableProperty<string>(this.InitMain, string.Empty)
+            {
+                IsInitialisedOnce = false
+            };
             this.EpisodeCount = new InitialisableProperty<int>(this.InitEpisodeCount);
             this.Fsk = new InitialisableProperty<Dictionary<Uri, string>>(this.InitMain);
             this.Genre = new InitialisableProperty<IEnumerable<GenreObject>>(this.InitMain);
-            this.GermanTitle = new InitialisableProperty<string>(this.InitMain, string.Empty) { IsInitialisedOnce = false };
+            this.GermanTitle = new InitialisableProperty<string>(this.InitMain, string.Empty)
+            {
+                IsInitialisedOnce = false
+            };
             this.Groups = new InitialisableProperty<IEnumerable<Group>>(this.InitMain);
             this.Industry = new InitialisableProperty<IEnumerable<Industry>>(this.InitMain);
             this.IsLicensed = new InitialisableProperty<bool>(this.InitMain);
-            this.JapaneseTitle = new InitialisableProperty<string>(this.InitMain, string.Empty) { IsInitialisedOnce = false };
-            this.Name = new InitialisableProperty<string>(this.InitMain, string.Empty) { IsInitialisedOnce = false };
+            this.JapaneseTitle = new InitialisableProperty<string>(this.InitMain, string.Empty)
+            {
+                IsInitialisedOnce = false
+            };
+            this.Name = new InitialisableProperty<string>(this.InitMain, string.Empty) {IsInitialisedOnce = false};
             this.Season = new InitialisableProperty<IEnumerable<string>>(this.InitMain);
             this.Status = new InitialisableProperty<AnimeMangaStatus>(this.InitMain);
-            this.Synonym = new InitialisableProperty<string>(this.InitMain, string.Empty) { IsInitialisedOnce = false };
+            this.Synonym = new InitialisableProperty<string>(this.InitMain, string.Empty) {IsInitialisedOnce = false};
         }
 
         internal Anime([NotNull] string name, int id, [NotNull] Senpai senpai) : this()

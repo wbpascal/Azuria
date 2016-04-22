@@ -423,7 +423,7 @@ namespace Azuria.Main.User.ControlPanel
                         ProxerResult<AnimeMangaUcpObject<T>> lParseResult =
                             AnimeMangaUcpObject<T>.ParseFromHtmlNode(animeMangaNode, this._senpai.Me,
                                 lAnimeManga,
-                                AnimeMangaProgress.Finished, this._senpai);
+                                AnimeMangaProgressState.Finished, this._senpai);
 
                         if (lParseResult.Success && lParseResult.Result != null) lReturnList.Add(lParseResult.Result);
                     }
@@ -452,7 +452,7 @@ namespace Azuria.Main.User.ControlPanel
                         ProxerResult<AnimeMangaUcpObject<T>> lParseResult =
                             AnimeMangaUcpObject<T>.ParseFromHtmlNode(animeMangaNode, this._senpai.Me,
                                 lAnimeManga,
-                                AnimeMangaProgress.InProgress, this._senpai);
+                                AnimeMangaProgressState.InProgress, this._senpai);
 
                         if (lParseResult.Success && lParseResult.Result != null) lReturnList.Add(lParseResult.Result);
                     }
@@ -481,7 +481,7 @@ namespace Azuria.Main.User.ControlPanel
                         ProxerResult<AnimeMangaUcpObject<T>> lParseResult =
                             AnimeMangaUcpObject<T>.ParseFromHtmlNode(animeMangaNode, this._senpai.Me,
                                 lAnimeManga,
-                                AnimeMangaProgress.Planned, this._senpai);
+                                AnimeMangaProgressState.Planned, this._senpai);
 
                         if (lParseResult.Success && lParseResult.Result != null) lReturnList.Add(lParseResult.Result);
                     }
@@ -510,7 +510,7 @@ namespace Azuria.Main.User.ControlPanel
                         ProxerResult<AnimeMangaUcpObject<T>> lParseResult =
                             AnimeMangaUcpObject<T>.ParseFromHtmlNode(animeMangaNode, this._senpai.Me,
                                 lAnimeManga,
-                                AnimeMangaProgress.Aborted, this._senpai);
+                                AnimeMangaProgressState.Aborted, this._senpai);
 
                         if (lParseResult.Success && lParseResult.Result != null) lReturnList.Add(lParseResult.Result);
                     }

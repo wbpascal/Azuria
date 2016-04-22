@@ -25,7 +25,7 @@ namespace Azuria.Example.Controls
             //Die Werte der Controls werden mit Bindings gelöst
             //Dies ist eine Möglichkeit einen Favoriten darzustellen (nicht empfohlen)
             this.AnimeMangaProgressObject = new AnimeMangaProgressObject<IAnimeMangaObject>(User.System,
-                animeMangaObject, -1, -1, -1, AnimeMangaProgress.Finished, senpai);
+                animeMangaObject, -1, new AnimeMangaProgress(-1, -1), AnimeMangaProgressState.Finished, senpai);
             this.InitializeComponent();
         }
 

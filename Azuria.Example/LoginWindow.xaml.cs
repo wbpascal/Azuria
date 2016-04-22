@@ -5,6 +5,7 @@ using System.Windows;
 using System.Windows.Controls;
 using Azuria.Community;
 using Azuria.Main;
+using Azuria.Main.User.ControlPanel;
 using Azuria.Utilities.ErrorHandling;
 using Azuria.Utilities.Net;
 

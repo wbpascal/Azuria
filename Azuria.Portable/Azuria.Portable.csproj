@@ -133,8 +133,17 @@
     <Compile Include="..\Azuria\Main\User\AnimeMangaProgressObject.cs">
       <Link>Main\User\AnimeMangaProgressObject.cs</Link>
     </Compile>
-    <Compile Include="..\Azuria\Main\User\Comment.cs">
-      <Link>Main\User\Comment.cs</Link>
+    <Compile Include="..\Azuria\Main\User\AnimeMangaProgressState.cs">
+      <Link>Main\User\AnimeMangaProgressState.cs</Link>
+    </Compile>
+    <Compile Include="..\Azuria\Main\User\Comment\Comment.cs">
+      <Link>Main\User\Comment\Comment.cs</Link>
+    </Compile>
+    <Compile Include="..\Azuria\Main\User\Comment\EditableComment.cs">
+      <Link>Main\User\Comment\EditableComment.cs</Link>
+    </Compile>
+    <Compile Include="..\Azuria\Main\User\Comment\RatingCategory.cs">
+      <Link>Main\User\Comment\RatingCategory.cs</Link>
     </Compile>
     <Compile Include="..\Azuria\Main\User\ControlPanel\AnimeMangaBookmarkObject.cs">
       <Link>Main\User\ControlPanel\AnimeMangaBookmarkObject.cs</Link>

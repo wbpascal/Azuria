@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Azuria.Main;
 using Azuria.Main.Minor;
 using Azuria.Main.User;
+using Azuria.Main.User.Comment;
 using Azuria.Test.Attributes;
 using Azuria.Test.Utility;
 using Azuria.Utilities.ErrorHandling;
@@ -111,10 +112,10 @@ namespace Azuria.Test
         {
             Assert.IsNotNull(this._senpai.Me);
 
-            IEnumerable<KeyValuePair<AnimeMangaProgress, AnimeMangaProgressObject<Anime>>> lAnimeList =
+            IEnumerable<KeyValuePair<AnimeMangaProgressState, AnimeMangaProgressObject<Anime>>> lAnimeList =
                 await
                     this._senpai.Me.Anime.GetObject(
-                        new KeyValuePair<AnimeMangaProgress, AnimeMangaProgressObject<Anime>>[0]);
+                        new KeyValuePair<AnimeMangaProgressState, AnimeMangaProgressObject<Anime>>[0]);
             IEnumerable<Anime> lFavouriteAnime = await this._senpai.Me.FavouriteAnime.GetObject(new Anime[0]);
 
             Assert.IsNotEmpty(lAnimeList);
