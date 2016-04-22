@@ -75,6 +75,46 @@ namespace Azuria.Main.User.Comment
 
         #region
 
+        /// <summary>
+        /// </summary>
+        /// <returns></returns>
+        public async Task<ProxerResult> Delete()
+        {
+            ProxerResult<string> lResult =
+                await
+                    HttpUtility.GetResponseErrorHandling(
+                        new Uri($"https://proxer.me/comment?format=json&json=delete&id={this._entryId}"),
+                        this._senpai.LoginCookies,
+                        this._senpai.ErrHandler,
+                        this._senpai);
+
+            if (!lResult.Success)
+                return new ProxerResult<EditableComment>(lResult.Exceptions);
+
+            string lResponse = lResult.Result;
+
+            try
+            {
+                Dictionary<string, string> lDeserialisedResponse =
+                    JsonConvert.DeserializeObject<Dictionary<string, string>>(lResponse);
+
+                if (lDeserialisedResponse.ContainsKey("msg") &&
+                    lDeserialisedResponse["msg"].StartsWith("Du bist nicht eingeloggt"))
+                    return new ProxerResult(new[] {new NotLoggedInException()});
+
+                return new ProxerResult
+                {
+                    Success = lDeserialisedResponse.ContainsKey("error") && lDeserialisedResponse["error"].Equals("0")
+                };
+            }
+            catch
+            {
+                return
+                    new ProxerResult<EditableComment>(
+                        (await ErrorHandler.HandleError(this._senpai, lResponse, false)).Exceptions);
+            }
+        }
+
         internal static async Task<ProxerResult<EditableComment>> GetEditableComment(int entryId,
             int animeMangaObject, Senpai senpai)
         {

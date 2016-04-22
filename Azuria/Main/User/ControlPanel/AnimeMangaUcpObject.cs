@@ -45,6 +45,18 @@ namespace Azuria.Main.User.ControlPanel
         /// <summary>
         /// </summary>
         /// <returns></returns>
+        public async Task<ProxerResult> DeleteEntry()
+        {
+            ProxerResult<EditableComment> lEditableCommentFetchResult = await this.GetEditableComment();
+            if (!lEditableCommentFetchResult.Success || lEditableCommentFetchResult.Result == null)
+                return new ProxerResult(lEditableCommentFetchResult.Exceptions);
+
+            return await lEditableCommentFetchResult.Result.Delete();
+        }
+
+        /// <summary>
+        /// </summary>
+        /// <returns></returns>
         public async Task<ProxerResult<EditableComment>> GetEditableComment()
         {
             ProxerResult<EditableComment> lCommentFetchResult =
