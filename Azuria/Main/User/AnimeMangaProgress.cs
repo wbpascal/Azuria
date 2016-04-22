@@ -1,35 +1,29 @@
 ﻿namespace Azuria.Main.User
 {
     /// <summary>
-    ///     Eine Aufzählung, die die Kategorie darstellt, in der der <see cref="Azuria.User">Benutzer</see> seinen Fortschritt
-    ///     mit
-    ///     dem aktuellen
-    ///     <see cref="Anime">Anime</see> oder <see cref="Manga">Manga</see> eingeordnet hat.
     /// </summary>
-    public enum AnimeMangaProgress
+    public class AnimeMangaProgress
     {
         /// <summary>
-        ///     Der <see cref="Azuria.User">Benutzer</see> hat den <see cref="Anime">Anime</see>
-        ///     oder <see cref="Manga">Manga</see> als bereits geschaut markiert.
         /// </summary>
-        Finished,
+        /// <param name="currentProgress"></param>
+        /// <param name="maxProgress"></param>
+        public AnimeMangaProgress(int currentProgress, int maxProgress)
+        {
+            this.CurrentProgress = currentProgress;
+            this.MaxProgress = maxProgress;
+        }
+
+        #region Properties
 
         /// <summary>
-        ///     Der <see cref="Azuria.User">Benutzer</see> schaut den <see cref="Anime">Anime</see>
-        ///     oder <see cref="Manga">Manga</see> momentan.
         /// </summary>
-        InProgress,
+        public int CurrentProgress { get; }
 
         /// <summary>
-        ///     Der <see cref="Azuria.User">Benutzer</see> hat den <see cref="Anime">Anime</see>
-        ///     oder <see cref="Manga">Manga</see> markiert, dass er ihn noch sehen wird.
         /// </summary>
-        Planned,
+        public int MaxProgress { get; }
 
-        /// <summary>
-        ///     Der <see cref="Azuria.User">Benutzer</see> hat den <see cref="Anime">Anime</see>
-        ///     oder <see cref="Manga">Manga</see> als abgebrochen markiert.
-        /// </summary>
-        Aborted
+        #endregion
     }
 }

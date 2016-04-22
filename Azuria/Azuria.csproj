@@ -39,6 +39,14 @@
     <PlatformTarget>AnyCPU</PlatformTarget>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="JetBrains.Annotations, Version=10.0.0.0, Culture=neutral, PublicKeyToken=1010a0d8d6380325, processorArchitecture=MSIL">
+      <HintPath>..\packages\JetBrains.Annotations.10.0.0\lib\net20\JetBrains.Annotations.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="JsEval">
+      <HintPath>..\Libraries\JsEval.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.JScript" />
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Web" />
@@ -64,7 +72,9 @@
     <Compile Include="EventArguments\NotificationEventArgsType.cs" />
     <Compile Include="EventArguments\PMNotificationEventArgs.cs" />
     <Compile Include="Exceptions\CaptchaException.cs" />
-    <Compile Include="Exceptions\InitializeNeededException.cs" />
+    <Compile Include="Exceptions\CloudflareException.cs" />
+    <Compile Include="Exceptions\FirewallException.cs" />
+    <Compile Include="Exceptions\InvalidUserException.cs" />
     <Compile Include="Exceptions\LanguageNotAvailableException.cs" />
     <Compile Include="Exceptions\NoAccessException.cs" />
     <Compile Include="Exceptions\NotLoggedInException.cs" />
@@ -74,7 +84,8 @@
     <Compile Include="Main\AnimeMangaType.cs" />
     <Compile Include="Main\IAnimeMangaObject.cs" />
     <Compile Include="Main\Manga.cs" />
-    <Compile Include="Main\Minor\Comment.cs" />
+    <Compile Include="Main\User\AnimeMangaProgress.cs" />
+    <Compile Include="Main\User\Comment\Comment.cs" />
     <Compile Include="Main\Minor\Fsk.cs" />
     <Compile Include="Main\Minor\FskHelper.cs" />
     <Compile Include="Main\Minor\GenreObject.cs" />
@@ -84,8 +95,15 @@
     <Compile Include="Main\Search\ISearchableObject.cs" />
     <Compile Include="Main\Search\SearchHelper.cs" />
     <Compile Include="Main\Search\SearchResult.cs" />
-    <Compile Include="Main\User\AnimeMangaProgress.cs" />
+    <Compile Include="Main\User\AnimeMangaChronicObject.cs" />
+    <Compile Include="Main\User\AnimeMangaProgressState.cs" />
     <Compile Include="Main\User\AnimeMangaProgressObject.cs" />
+    <Compile Include="Main\User\Comment\RatingCategory.cs" />
+    <Compile Include="Main\User\ControlPanel\AnimeMangaBookmarkObject.cs" />
+    <Compile Include="Main\User\ControlPanel\AnimeMangaFavouriteObject.cs" />
+    <Compile Include="Main\User\ControlPanel\AnimeMangaUcpObject.cs" />
+    <Compile Include="Main\User\Comment\EditableComment.cs" />
+    <Compile Include="Main\User\ControlPanel\UserControlPanel.cs" />
     <Compile Include="Notifications\AnimeMangaUpdateCollection.cs" />
     <Compile Include="Notifications\FriendRequestCollection.cs" />
     <Compile Include="Notifications\FriendRequestObject.cs" />
@@ -107,9 +125,13 @@
     <Compile Include="ProxerClass.cs" />
     <Compile Include="Senpai.cs" />
     <Compile Include="User.cs" />
-    <Compile Include="ErrorHandling\ErrorHandler.cs" />
+    <Compile Include="Utilities\ErrorHandling\ErrorHandler.cs" />
+    <Compile Include="Utilities\Initialisation\IInitialisableProperty.cs" />
+    <Compile Include="Utilities\Initialisation\InitialisableProperty.cs" />
+    <Compile Include="Utilities\Initialisation\SetableInitialisableProperty.cs" />
+    <Compile Include="Utilities\Net\CloudflareSolver.cs" />
     <Compile Include="Utilities\Net\HttpUtility.cs" />
-    <Compile Include="ErrorHandling\ProxerResult.cs" />
+    <Compile Include="Utilities\ErrorHandling\ProxerResult.cs" />
     <Compile Include="Utilities\SearchUtility.cs" />
     <Compile Include="Utilities\Utility.cs" />
   </ItemGroup>
@@ -121,6 +143,7 @@
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

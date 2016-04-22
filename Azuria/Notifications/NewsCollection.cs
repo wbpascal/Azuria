@@ -1,9 +1,11 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Azuria.ErrorHandling;
 using Azuria.Exceptions;
+using Azuria.Utilities.ErrorHandling;
 using Azuria.Utilities.Net;
+using JetBrains.Annotations;
 using Newtonsoft.Json;
 
 namespace Azuria.Notifications
@@ -17,7 +19,7 @@ namespace Azuria.Notifications
         private NewsObject[] _newsObjects;
         private INotificationObject[] _notificationObjects;
 
-        internal NewsCollection(Senpai senpai)
+        internal NewsCollection([NotNull] Senpai senpai)
         {
             this._senpai = senpai;
             this.Type = NotificationObjectType.News;
@@ -91,6 +93,7 @@ namespace Azuria.Notifications
         /// <exception cref="WrongResponseException">Wird ausgelöst, wenn die Antwort des Servers nicht der Erwarteten entspricht.</exception>
         /// <seealso cref="Senpai.Login" />
         /// <returns>Ein Array mit allen aktuellen Benachrichtigungen.</returns>
+        [ItemNotNull]
         public async Task<ProxerResult<IEnumerable<NewsObject>>> GetAllNews()
         {
             if (this._notificationObjects != null)
@@ -103,12 +106,13 @@ namespace Azuria.Notifications
         }
 
 
+        [ItemNotNull]
         private async Task<ProxerResult> GetInfos()
         {
             ProxerResult<string> lResult =
                 await
                     HttpUtility.GetResponseErrorHandling(
-                        "https://proxer.me/notifications?format=json&s=news&p=1",
+                        new Uri("https://proxer.me/notifications?format=json&s=news&p=1"),
                         this._senpai.LoginCookies,
                         this._senpai.ErrHandler,
                         this._senpai);
@@ -118,7 +122,7 @@ namespace Azuria.Notifications
 
             string lResponse = lResult.Result;
 
-            if (!lResponse.StartsWith("{\"error\":0"))
+            if (lResponse == null || !lResponse.StartsWith("{\"error\":0"))
                 return new ProxerResult
                 {
                     Success = false
@@ -153,6 +157,7 @@ namespace Azuria.Notifications
         ///     Ein Array mit der Anzahl an Elementen in <paramref name="count" /> spezifiziert.
         ///     Wenn <paramref name="count" /> > Array.length, dann wird der gesamte Array zurückgegeben.
         /// </returns>
+        [ItemNotNull]
         public async Task<ProxerResult<IEnumerable<NewsObject>>> GetNews(int count)
         {
             if (this._notificationObjects != null)

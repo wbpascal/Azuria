@@ -196,3 +196,4 @@ FakesAssemblies/
 *.opt
 Proxer.API.sln.GhostDoc.xml
 *.mrx
+Azuria.Test/Credentials.cs

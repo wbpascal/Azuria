@@ -1,9 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using Azuria.ErrorHandling;
 using Azuria.Exceptions;
+using Azuria.Utilities.ErrorHandling;
 using Azuria.Utilities.Net;
+using JetBrains.Annotations;
 
 namespace Azuria.Notifications
 {
@@ -16,7 +17,7 @@ namespace Azuria.Notifications
         private bool _accepted;
         private bool _denied;
 
-        internal FriendRequestObject(string userName, int userUserId, Senpai senpai)
+        internal FriendRequestObject([NotNull] string userName, int userUserId, [NotNull] Senpai senpai)
         {
             this._senpai = senpai;
             this.Type = NotificationObjectType.FriendRequest;
@@ -25,7 +26,8 @@ namespace Azuria.Notifications
             this.UserId = userUserId;
         }
 
-        internal FriendRequestObject(string userName, int userUserId, DateTime requestDate, Senpai senpai)
+        internal FriendRequestObject([NotNull] string userName, int userUserId, DateTime requestDate,
+            [NotNull] Senpai senpai)
         {
             this._senpai = senpai;
             this.Type = NotificationObjectType.FriendRequest;
@@ -66,6 +68,7 @@ namespace Azuria.Notifications
         /// <summary>
         ///     Gibt den Namen des <see cref="User">Benutzers</see> zurück, der die Freundschaftsanfrage gestellt hat.
         /// </summary>
+        [NotNull]
         public string UserName { get; private set; }
 
         #endregion
@@ -79,11 +82,12 @@ namespace Azuria.Notifications
         /// <exception cref="WrongResponseException">Wird ausgelöst, wenn die Antwort des Servers nicht der Erwarteten entspricht.</exception>
         /// <seealso cref="Senpai.Login" />
         /// <returns>Die Aktion war erfolgreich. True oder False</returns>
-        public async Task<ProxerResult<bool>> AcceptRequest()
+        [ItemNotNull]
+        public async Task<ProxerResult> AcceptRequest()
         {
             if (!this._senpai.IsLoggedIn)
-                return new ProxerResult<bool>(new Exception[] {new NotLoggedInException(this._senpai)});
-            if (this._accepted || this._denied) return new ProxerResult<bool>(false);
+                return new ProxerResult(new Exception[] {new NotLoggedInException(this._senpai)});
+            if (this._accepted || this._denied) return new ProxerResult {Success = false};
 
             Dictionary<string, string> lPostArgs = new Dictionary<string, string> {{"type", "accept"}};
 
@@ -91,13 +95,14 @@ namespace Azuria.Notifications
                 s => !s.StartsWith("{\"error\":0") ? new ProxerResult(new Exception[0]) : new ProxerResult();
 
             ProxerResult<string> lResult = await
-                HttpUtility.PostResponseErrorHandling("https://proxer.me/user/my?format=json&cid=" + this.UserId,
+                HttpUtility.PostResponseErrorHandling(
+                    new Uri("https://proxer.me/user/my?format=json&cid=" + this.UserId),
                     lPostArgs, this._senpai.LoginCookies, this._senpai.ErrHandler, this._senpai, new[] {lCheckFunc});
 
-            if (!lResult.Success) return new ProxerResult<bool>(lResult.Exceptions);
+            if (!lResult.Success) return new ProxerResult(lResult.Exceptions);
 
             this._accepted = true;
-            return new ProxerResult<bool>(true);
+            return new ProxerResult();
         }
 
         /// <summary>
@@ -107,11 +112,12 @@ namespace Azuria.Notifications
         /// <exception cref="WrongResponseException">Wird ausgelöst, wenn die Antwort des Servers nicht der Erwarteten entspricht.</exception>
         /// <seealso cref="Senpai.Login" />
         /// <returns>Die Aktion war erfolgreich. True oder False</returns>
-        public async Task<ProxerResult<bool>> DenyRequest()
+        [ItemNotNull]
+        public async Task<ProxerResult> DenyRequest()
         {
             if (!this._senpai.IsLoggedIn)
-                return new ProxerResult<bool>(new Exception[] {new NotLoggedInException(this._senpai)});
-            if (this._accepted || this._denied) return new ProxerResult<bool>(false);
+                return new ProxerResult(new Exception[] {new NotLoggedInException(this._senpai)});
+            if (this._accepted || this._denied) return new ProxerResult {Success = false};
 
             Dictionary<string, string> lPostArgs = new Dictionary<string, string> {{"type", "deny"}};
 
@@ -119,13 +125,14 @@ namespace Azuria.Notifications
                 s => !s.StartsWith("{\"error\":0") ? new ProxerResult(new Exception[0]) : new ProxerResult();
 
             ProxerResult<string> lResult = await
-                HttpUtility.PostResponseErrorHandling("https://proxer.me/user/my?format=json&cid=" + this.UserId,
+                HttpUtility.PostResponseErrorHandling(
+                    new Uri("https://proxer.me/user/my?format=json&cid=" + this.UserId),
                     lPostArgs, this._senpai.LoginCookies, this._senpai.ErrHandler, this._senpai, new[] {lCheckFunc});
 
-            if (!lResult.Success) return new ProxerResult<bool>(lResult.Exceptions);
+            if (!lResult.Success) return new ProxerResult(lResult.Exceptions);
 
             this._denied = true;
-            return new ProxerResult<bool>(true);
+            return new ProxerResult();
         }
 
         #endregion

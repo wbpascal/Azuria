@@ -2,11 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Azuria.ErrorHandling;
 using Azuria.Exceptions;
-using Azuria.Utilities;
+using Azuria.Utilities.ErrorHandling;
 using Azuria.Utilities.Net;
 using HtmlAgilityPack;
+using JetBrains.Annotations;
 
 namespace Azuria.Notifications
 {
@@ -20,7 +20,7 @@ namespace Azuria.Notifications
         private INotificationObject[] _notificationObjects;
 
 
-        internal FriendRequestCollection(Senpai senpai)
+        internal FriendRequestCollection([NotNull] Senpai senpai)
         {
             this._senpai = senpai;
             this.Type = NotificationObjectType.FriendRequest;
@@ -94,6 +94,7 @@ namespace Azuria.Notifications
         /// <exception cref="WrongResponseException">Wird ausgelöst, wenn die Antwort des Servers nicht der Erwarteten entspricht.</exception>
         /// <seealso cref="Senpai.Login" />
         /// <returns>Ein Array mit allen aktuellen Benachrichtigungen.</returns>
+        [ItemNotNull]
         public async Task<ProxerResult<IEnumerable<FriendRequestObject>>> GetAllFriendRequests()
         {
             if (this._notificationObjects != null)
@@ -116,6 +117,7 @@ namespace Azuria.Notifications
         ///     Ein Array mit der Anzahl an Elementen in <paramref name="count" /> spezifiziert.
         ///     Wenn <paramref name="count" /> > Array.length, dann wird der gesamte Array zurückgegeben.
         /// </returns>
+        [ItemNotNull]
         public async Task<ProxerResult<IEnumerable<FriendRequestObject>>> GetFriendRequests(int count)
         {
             if (this._notificationObjects != null)
@@ -133,13 +135,14 @@ namespace Azuria.Notifications
         }
 
 
+        [ItemNotNull]
         private async Task<ProxerResult> GetInfos()
         {
             HtmlDocument lDocument = new HtmlDocument();
             ProxerResult<string> lResult =
                 await
                     HttpUtility.GetResponseErrorHandling(
-                        "https://proxer.me/user/my/connections?format=raw",
+                        new Uri("https://proxer.me/user/my/connections?format=raw"),
                         this._senpai.LoginCookies,
                         this._senpai.ErrHandler,
                         this._senpai);
@@ -153,8 +156,7 @@ namespace Azuria.Notifications
             {
                 lDocument.LoadHtml(lResponse);
 
-                HtmlNode[] lNodes =
-                    Utility.GetAllHtmlNodes(lDocument.DocumentNode.ChildNodes).Where(x => x.Name == "tr").ToArray();
+                IEnumerable<HtmlNode> lNodes = lDocument.DocumentNode.DescendantsAndSelf().Where(x => x.Name == "tr");
 
                 List<FriendRequestObject> lFriendRequests = (from curNode in lNodes
                     where

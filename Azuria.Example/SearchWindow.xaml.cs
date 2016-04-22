@@ -3,12 +3,13 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
-using Azuria.ErrorHandling;
 using Azuria.Example.Controls.Search;
+using Azuria.Example.Models.Search;
 using Azuria.Example.Utilities;
 using Azuria.Main;
 using Azuria.Main.Minor;
 using Azuria.Main.Search;
+using Azuria.Utilities.ErrorHandling;
 
 namespace Azuria.Example
 {
@@ -98,9 +99,12 @@ namespace Azuria.Example
                 this._userSearchResults = null;
                 this.AnimeMangaSearchResultListBox.Items.Clear();
                 this.UserSearchResultListBox.Items.Clear();
-                foreach (IAnimeMangaObject lUser in this._animeMangaSearchResults.SearchResults)
+                foreach (
+                    IAnimeMangaObject lAnimeMangaObject in
+                        this._animeMangaSearchResults?.SearchResults ?? new IAnimeMangaObject[0])
                 {
-                    this.AnimeMangaSearchResultListBox.Items.Add(lUser);
+                    this.AnimeMangaSearchResultListBox.Items.Add(
+                        await new AnimeMangaSearchModel(lAnimeMangaObject).InitProperties());
                 }
             }
             else
@@ -111,7 +115,7 @@ namespace Azuria.Example
 
         private async void AnimeMangaSearch_ScrollChanged(object sender, ScrollChangedEventArgs e)
         {
-            //Wenn bis auf an das Ende gescrollt wurde lade die nächsten Ergebnisse
+            //Wenn bis an das Ende gescrollt wurde lade die nächsten Ergebnisse
 
             ScrollViewer lScrollViewer = (ScrollViewer) sender;
             if (lScrollViewer.VerticalOffset == lScrollViewer.ScrollableHeight && this._animeMangaSearchResults != null)
@@ -129,7 +133,8 @@ namespace Azuria.Example
                 {
                     foreach (IAnimeMangaObject lCurAnimeManga in lResult.Result)
                     {
-                        this.AnimeMangaSearchResultListBox.Items.Add(lCurAnimeManga);
+                        this.AnimeMangaSearchResultListBox.Items.Add(
+                            await new AnimeMangaSearchModel(lCurAnimeManga).InitProperties());
                     }
                 }
             }
@@ -137,13 +142,14 @@ namespace Azuria.Example
 
         private void ListViewItem_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
-            if (((ListViewItem) sender).Content is User)
+            if (((ListViewItem) sender).Content is UserSearchModel)
             {
-                new UserWindow(((ListViewItem) sender).Content as User, this._senpai).Show();
+                new UserWindow((((ListViewItem) sender).Content as UserSearchModel)?.UserObject, this._senpai).Show();
             }
-            else if (((ListViewItem) sender).Content is IAnimeMangaObject)
+            else if (((ListViewItem) sender).Content is AnimeMangaSearchModel)
             {
-                new AnimeMangaWindow(((ListViewItem) sender).Content as IAnimeMangaObject, this._senpai).Show();
+                new AnimeMangaWindow((((ListViewItem) sender).Content as AnimeMangaSearchModel)?.AnimeMangaObject,
+                    this._senpai).Show();
             }
         }
 
@@ -171,7 +177,7 @@ namespace Azuria.Example
                 this.AnimeMangaSearchResultListBox.Items.Clear();
                 foreach (User lUser in this._userSearchResults.SearchResults)
                 {
-                    this.UserSearchResultListBox.Items.Add(lUser);
+                    this.UserSearchResultListBox.Items.Add(await new UserSearchModel(lUser).InitProperties());
                 }
             }
             else
@@ -182,7 +188,7 @@ namespace Azuria.Example
 
         private async void UserSearch_ScrollChanged(object sender, ScrollChangedEventArgs e)
         {
-            //Wenn bis auf an das Ende gescrollt wurde lade die nächsten Ergebnisse
+            //Wenn bis an das Ende gescrollt wurde lade die nächsten Ergebnisse
 
             ScrollViewer lScrollViewer = (ScrollViewer) sender;
             if (lScrollViewer.VerticalOffset == lScrollViewer.ScrollableHeight && this._userSearchResults != null)
@@ -199,7 +205,7 @@ namespace Azuria.Example
                 {
                     foreach (User lCurUser in lResult.Result)
                     {
-                        this.UserSearchResultListBox.Items.Add(lCurUser);
+                        this.UserSearchResultListBox.Items.Add(await new UserSearchModel(lCurUser).InitProperties());
                     }
                 }
             }

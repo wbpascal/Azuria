@@ -1,4 +1,6 @@
-﻿namespace Azuria.Notifications
+﻿using JetBrains.Annotations;
+
+namespace Azuria.Notifications
 {
     /// <summary>
     ///     Eine Klasse, die die Informationen einer Benachrichtigung darstellt.
@@ -11,6 +13,7 @@
         ///     Gibt die Nachricht der Benachrichtigung als Text zurück.
         ///     <para>(Vererbt von <see cref="INotificationObject" />)</para>
         /// </summary>
+        [NotNull]
         string Message { get; }
 
         /// <summary>

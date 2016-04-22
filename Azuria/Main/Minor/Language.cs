@@ -13,6 +13,11 @@
         /// <summary>
         ///     Die Sprache des <see cref="Anime">Anime</see> oder <see cref="Manga">Manga</see> ist Englisch.
         /// </summary>
-        English
+        English,
+
+        /// <summary>
+        ///     Die Sprache des <see cref="Anime">Anime</see> oder <see cref="Manga">Manga</see> ist unbekannt.
+        /// </summary>
+        Unkown
     }
 }

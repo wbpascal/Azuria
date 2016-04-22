@@ -1,4 +1,5 @@
 ﻿using System;
+using JetBrains.Annotations;
 
 namespace Azuria.Notifications
 {
@@ -8,7 +9,7 @@ namespace Azuria.Notifications
     /// </summary>
     public class AnimeMangaUpdateObject : INotificationObject
     {
-        internal AnimeMangaUpdateObject(string message)
+        internal AnimeMangaUpdateObject([NotNull] string message)
         {
             this.Type = NotificationObjectType.AnimeManga;
             this.Message = message;
@@ -18,7 +19,8 @@ namespace Azuria.Notifications
             this.Id = -1;
         }
 
-        internal AnimeMangaUpdateObject(string message, string name, int number, Uri link, int id)
+        internal AnimeMangaUpdateObject([NotNull] string message, [NotNull] string name, int number,
+            [CanBeNull] Uri link, int id)
         {
             this.Type = NotificationObjectType.AnimeManga;
             this.Message = message;
@@ -55,11 +57,13 @@ namespace Azuria.Notifications
         ///     Gibt den Link zur <see cref="Main.Anime.Episode">Episode</see> oder zum
         ///     <see cref="Main.Manga.Chapter">Kapitel</see> zurück.
         /// </summary>
+        [CanBeNull]
         public Uri Link { get; private set; }
 
         /// <summary>
         ///     Gibt den Namen des <see cref="Main.Anime">Anime</see> oder <see cref="Main.Manga">Manga</see> zurück.
         /// </summary>
+        [NotNull]
         public string Name { get; }
 
         /// <summary>

@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Net;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
-using Azuria.ErrorHandling;
 using Azuria.Exceptions;
+using Azuria.Utilities.ErrorHandling;
+using JetBrains.Annotations;
 using RestSharp.Portable;
 using RestSharp.Portable.HttpClient;
 
@@ -23,43 +25,48 @@ namespace Azuria.Utilities.Net
         /// </summary>
         public static int Timeout = 0;
 
+        [NotNull] private static readonly string UserAgent = "Azuria.Portable/" +
+                                                             new AssemblyName(
+                                                                 typeof(HttpUtility).GetTypeInfo().Assembly.FullName)
+                                                                 .Version +
+                                                             "RestSharp.Portable/3.1.0.0";
+
         #region
 
-        internal static async Task<ProxerResult<string>> GetResponseErrorHandling(string url, ErrorHandler errorHandler,
-            Senpai senpai)
+        [ItemNotNull]
+        internal static async Task<ProxerResult<string>> GetResponseErrorHandling(Uri url,
+            [NotNull] ErrorHandler errorHandler, [NotNull] Senpai senpai)
         {
             return await GetResponseErrorHandling(url, null, errorHandler, senpai);
         }
 
-        internal static async Task<ProxerResult<string>> GetResponseErrorHandling(string url,
-            CookieContainer loginCookies,
-            ErrorHandler errorHandler,
-            Senpai senpai)
+        [ItemNotNull]
+        internal static async Task<ProxerResult<string>> GetResponseErrorHandling([NotNull] Uri url,
+            [CanBeNull] CookieContainer loginCookies, [NotNull] ErrorHandler errorHandler, [NotNull] Senpai senpai)
         {
             return
                 await
                     GetResponseErrorHandling(url, loginCookies, errorHandler, senpai, new Func<string, ProxerResult>[0]);
         }
 
-        internal static async Task<ProxerResult<string>> GetResponseErrorHandling(string url,
-            CookieContainer loginCookies,
-            ErrorHandler errorHandler,
-            Senpai senpai,
-            Func<string, ProxerResult>[]
-                checkFuncs)
+        [ItemNotNull]
+        internal static async Task<ProxerResult<string>> GetResponseErrorHandling([NotNull] Uri url,
+            [CanBeNull] CookieContainer loginCookies, [NotNull] ErrorHandler errorHandler, [NotNull] Senpai senpai,
+            [CanBeNull] Func<string, ProxerResult>[] checkFuncs)
         {
             ProxerResult<Tuple<string, CookieContainer>> lResult =
                 await
                     GetResponseErrorHandling(url, loginCookies, errorHandler, senpai, checkFuncs, loginCookies == null);
 
-            return lResult.Success
+            return lResult.Success && lResult.Result != null
                 ? new ProxerResult<string>(lResult.Result.Item1)
                 : new ProxerResult<string>(lResult.Exceptions);
         }
 
+        [ItemNotNull]
         internal static async Task<ProxerResult<Tuple<string, CookieContainer>>> GetResponseErrorHandling(
-            string url, CookieContainer loginCookies, ErrorHandler errorHandler, Senpai senpai,
-            Func<string, ProxerResult>[] checkFuncs, bool checkLogin)
+            [NotNull] Uri url, [CanBeNull] CookieContainer loginCookies, [NotNull] ErrorHandler errorHandler,
+            [NotNull] Senpai senpai, [CanBeNull] Func<string, ProxerResult>[] checkFuncs, bool checkLogin)
         {
             if (checkLogin && loginCookies != null && !senpai.IsLoggedIn)
                 return
@@ -79,19 +86,20 @@ namespace Azuria.Utilities.Net
                     new ProxerResult<Tuple<string, CookieContainer>>(new[]
                     {new WrongResponseException()});
 
-            foreach (Func<string, ProxerResult> checkFunc in checkFuncs)
-            {
-                try
+            if (checkFuncs != null)
+                foreach (Func<string, ProxerResult> checkFunc in checkFuncs)
                 {
-                    ProxerResult lResult = checkFunc?.Invoke(lResponse) ?? new ProxerResult {Success = false};
-                    if (!lResult.Success)
-                        return new ProxerResult<Tuple<string, CookieContainer>>(lResult.Exceptions);
+                    try
+                    {
+                        ProxerResult lResult = checkFunc?.Invoke(lResponse) ?? new ProxerResult {Success = false};
+                        if (!lResult.Success)
+                            return new ProxerResult<Tuple<string, CookieContainer>>(lResult.Exceptions);
+                    }
+                    catch
+                    {
+                        return new ProxerResult<Tuple<string, CookieContainer>>(new Exception[0]) {Success = false};
+                    }
                 }
-                catch
-                {
-                    return new ProxerResult<Tuple<string, CookieContainer>> {Success = false};
-                }
-            }
 
             if (string.IsNullOrEmpty(lResponse) || !Utility.CheckForCorrectResponse(lResponse, errorHandler))
                 return
@@ -103,30 +111,31 @@ namespace Azuria.Utilities.Net
                     new Tuple<string, CookieContainer>(lResponse, loginCookies));
         }
 
-        internal static async Task<IRestResponse> GetWebRequestResponse(string url, CookieContainer cookies)
+        [ItemNotNull]
+        internal static async Task<IRestResponse> GetWebRequestResponse([NotNull] Uri url,
+            [CanBeNull] CookieContainer cookies)
         {
             RestClient lClient = new RestClient(url)
             {
                 CookieContainer = cookies,
-                Timeout = TimeSpan.FromMilliseconds(Timeout)
+                Timeout = TimeSpan.FromMilliseconds(Timeout),
+                UserAgent = UserAgent
             };
             RestRequest lRequest = new RestRequest(Method.GET);
             return await lClient.Execute(lRequest);
         }
 
-        internal static async Task<ProxerResult<string>> PostResponseErrorHandling(string url,
-            Dictionary<string, string> postArgs,
-            ErrorHandler errorHandler,
-            Senpai senpai)
+        [ItemNotNull]
+        internal static async Task<ProxerResult<string>> PostResponseErrorHandling([NotNull] Uri url,
+            [NotNull] Dictionary<string, string> postArgs, [NotNull] ErrorHandler errorHandler, [NotNull] Senpai senpai)
         {
             return await PostResponseErrorHandling(url, postArgs, null, errorHandler, senpai);
         }
 
-        internal static async Task<ProxerResult<string>> PostResponseErrorHandling(string url,
-            Dictionary<string, string> postArgs,
-            CookieContainer loginCookies,
-            ErrorHandler errorHandler,
-            Senpai senpai)
+        [ItemNotNull]
+        internal static async Task<ProxerResult<string>> PostResponseErrorHandling([NotNull] Uri url,
+            [NotNull] Dictionary<string, string> postArgs, [CanBeNull] CookieContainer loginCookies,
+            [NotNull] ErrorHandler errorHandler, [NotNull] Senpai senpai)
         {
             return
                 await
@@ -134,13 +143,11 @@ namespace Azuria.Utilities.Net
                         new Func<string, ProxerResult>[0]);
         }
 
-        internal static async Task<ProxerResult<string>> PostResponseErrorHandling(string url,
-            Dictionary<string, string> postArgs,
-            CookieContainer loginCookies,
-            ErrorHandler errorHandler,
-            Senpai senpai,
-            Func<string, ProxerResult>[]
-                checkFuncs)
+        [ItemNotNull]
+        internal static async Task<ProxerResult<string>> PostResponseErrorHandling([NotNull] Uri url,
+            [NotNull] Dictionary<string, string> postArgs, [CanBeNull] CookieContainer loginCookies,
+            [NotNull] ErrorHandler errorHandler, [NotNull] Senpai senpai,
+            [CanBeNull] Func<string, ProxerResult>[] checkFuncs)
         {
             ProxerResult<KeyValuePair<string, CookieContainer>> lResult =
                 await
@@ -152,10 +159,11 @@ namespace Azuria.Utilities.Net
                 : new ProxerResult<string>(lResult.Exceptions);
         }
 
+        [ItemNotNull]
         internal static async Task<ProxerResult<KeyValuePair<string, CookieContainer>>> PostResponseErrorHandling(
-            string url, Dictionary<string, string> postArgs, CookieContainer loginCookies, ErrorHandler errorHandler,
-            Senpai senpai,
-            Func<string, ProxerResult>[] checkFuncs, bool checkLogin)
+            [NotNull] Uri url, [NotNull] Dictionary<string, string> postArgs,
+            [CanBeNull] CookieContainer loginCookies, [NotNull] ErrorHandler errorHandler, [NotNull] Senpai senpai,
+            [CanBeNull] Func<string, ProxerResult>[] checkFuncs, bool checkLogin)
         {
             if (checkLogin && loginCookies != null && !senpai.IsLoggedIn)
                 return
@@ -175,19 +183,23 @@ namespace Azuria.Utilities.Net
                     new ProxerResult<KeyValuePair<string, CookieContainer>>(new[]
                     {new WrongResponseException()});
 
-            foreach (Func<string, ProxerResult> checkFunc in checkFuncs)
-            {
-                try
+            if (checkFuncs != null)
+                foreach (Func<string, ProxerResult> checkFunc in checkFuncs)
                 {
-                    ProxerResult lResult = checkFunc?.Invoke(lResponse) ?? new ProxerResult {Success = false};
-                    if (!lResult.Success)
-                        return new ProxerResult<KeyValuePair<string, CookieContainer>>(lResult.Exceptions);
+                    try
+                    {
+                        ProxerResult lResult = checkFunc?.Invoke(lResponse) ?? new ProxerResult {Success = false};
+                        if (!lResult.Success)
+                            return new ProxerResult<KeyValuePair<string, CookieContainer>>(lResult.Exceptions);
+                    }
+                    catch
+                    {
+                        return new ProxerResult<KeyValuePair<string, CookieContainer>>(new Exception[0])
+                        {
+                            Success = false
+                        };
+                    }
                 }
-                catch
-                {
-                    return new ProxerResult<KeyValuePair<string, CookieContainer>> {Success = false};
-                }
-            }
 
             if (string.IsNullOrEmpty(lResponse) || !Utility.CheckForCorrectResponse(lResponse, errorHandler))
                 return
@@ -199,13 +211,15 @@ namespace Azuria.Utilities.Net
                     new KeyValuePair<string, CookieContainer>(lResponse, loginCookies));
         }
 
-        internal static async Task<IRestResponse> PostWebRequestResponse(string url, CookieContainer cookies,
-            Dictionary<string, string> postArgs)
+        [ItemNotNull]
+        internal static async Task<IRestResponse> PostWebRequestResponse([NotNull] Uri url,
+            [CanBeNull] CookieContainer cookies, [NotNull] Dictionary<string, string> postArgs)
         {
             RestClient lClient = new RestClient(url)
             {
                 CookieContainer = cookies,
-                Timeout = TimeSpan.FromMilliseconds(Timeout)
+                Timeout = TimeSpan.FromMilliseconds(Timeout),
+                UserAgent = UserAgent
             };
             RestRequest lRequest = new RestRequest(Method.POST);
             foreach (KeyValuePair<string, string> pair in postArgs)

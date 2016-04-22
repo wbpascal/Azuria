@@ -1,4 +1,5 @@
 ﻿using Azuria.Notifications;
+using JetBrains.Annotations;
 
 namespace Azuria.EventArguments
 {
@@ -16,7 +17,7 @@ namespace Azuria.EventArguments
     {
         private readonly Senpai _senpai;
 
-        internal AmNotificationEventArgs(int count, Senpai senpai)
+        internal AmNotificationEventArgs(int count, [NotNull] Senpai senpai)
         {
             this._senpai = senpai;
             this.Type = NotificationEventArgsType.AnimeManga;
@@ -44,6 +45,7 @@ namespace Azuria.EventArguments
         /// <summary>
         ///     Gibt ein Objekt zurück, mithilfe dessen die Benachrichtigungen abgerufen werden können.
         /// </summary>
+        [NotNull]
         public AnimeMangaUpdateCollection Notifications => this._senpai.AnimeMangaUpdates;
 
         #endregion

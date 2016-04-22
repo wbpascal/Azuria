@@ -1,8 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using JetBrains.Annotations;
 
-namespace Azuria.ErrorHandling
+namespace Azuria.Utilities.ErrorHandling
 {
     /// <summary>
     ///     Eine Klasse, die ein Resultat einer Methode des API darstellt.
@@ -10,20 +11,16 @@ namespace Azuria.ErrorHandling
     /// <typeparam name="T">Der Typ des Resultats.</typeparam>
     public class ProxerResult<T> : ProxerResult
     {
-        /// <summary>
-        ///     Initialisiert die Klasse.
-        /// </summary>
-        public ProxerResult()
+        [UsedImplicitly]
+        private ProxerResult()
         {
-            this.Success = true;
-            this.Exceptions = new Exception[0];
         }
 
         /// <summary>
         ///     Initialisiert die Klasse mit einem Resultat.
         /// </summary>
         /// <param name="result">Das Resultat</param>
-        public ProxerResult(T result)
+        public ProxerResult([NotNull] T result)
         {
             this.Success = true;
             this.Result = result;
@@ -34,7 +31,7 @@ namespace Azuria.ErrorHandling
         ///     Initialisiert die Klasse mit Fehlermeldungen.
         /// </summary>
         /// <param name="exceptions">Die Fehlermeldungen.</param>
-        public ProxerResult(IEnumerable<Exception> exceptions) : base(exceptions)
+        public ProxerResult([NotNull] IEnumerable<Exception> exceptions) : base(exceptions)
         {
         }
 
@@ -44,6 +41,7 @@ namespace Azuria.ErrorHandling
         ///     Gibt das Resultat zurück, das die Klasse repräsentiert, oder legt dieses fest.
         /// </summary>
         /// <value>Ist null, wenn <see cref="ProxerResult.Success" /> == false</value>
+        [CanBeNull]
         public T Result { get; set; }
 
         #endregion
@@ -54,11 +52,15 @@ namespace Azuria.ErrorHandling
         ///     Eine Methode, die <paramref name="returnObject" /> zurückgibt, wenn <see cref="ProxerResult.Success" /> = false,
         ///     sonst wird das <see cref="Result">Resultat</see> zurückgegeben.
         /// </summary>
-        /// <param name="returnObject">Das Objekt, dass zurückgegeben wird, wenn <see cref="ProxerResult.Success" /> = false.</param>
+        /// <param name="returnObject">
+        ///     Das Objekt, dass zurückgegeben wird, wenn <see cref="ProxerResult.Success" /> = false oder
+        ///     <see cref="ProxerResult{T}.Result" /> = null (oder Nothing in VisualBasic).
+        /// </param>
         /// <returns>Ein Objekt mit dem Typ <typeparamref name="T" /></returns>
-        public T OnError(T returnObject)
+        [NotNull]
+        public T OnError([NotNull] T returnObject)
         {
-            return this.Success ? this.Result : returnObject;
+            return this.Success && this.Result != null ? this.Result : returnObject;
         }
 
         #endregion
@@ -70,7 +72,7 @@ namespace Azuria.ErrorHandling
     public class ProxerResult
     {
         /// <summary>
-        ///     Initialisiert die Klasse.
+        ///     Initialisiert die Klasse mit einem erfolgreichem Resultat.
         /// </summary>
         public ProxerResult()
         {
@@ -82,7 +84,7 @@ namespace Azuria.ErrorHandling
         ///     Initialisiert die Klasse mit Fehlermeldungen.
         /// </summary>
         /// <param name="exceptions">Die Fehlermeldungen.</param>
-        public ProxerResult(IEnumerable<Exception> exceptions)
+        public ProxerResult([NotNull] IEnumerable<Exception> exceptions)
         {
             this.Success = false;
             this.Exceptions = exceptions;
@@ -94,6 +96,7 @@ namespace Azuria.ErrorHandling
         ///     Gibt die Fehler zurück, die während der Ausführung aufgetreten sind, oder legt diese fest.
         /// </summary>
         /// <value>Ist null, wenn <see cref="Success" /> == true</value>
+        [NotNull]
         public IEnumerable<Exception> Exceptions { get; set; }
 
         /// <summary>
@@ -109,7 +112,7 @@ namespace Azuria.ErrorHandling
         ///     Fügt den <see cref="Exceptions">Ausnahmen</see> eine weiter hinzu.
         /// </summary>
         /// <param name="exception">Die Ausnahme die hinzugefügt werden soll.</param>
-        public void AddException(Exception exception)
+        public void AddException([NotNull] Exception exception)
         {
             List<Exception> lExceptions = this.Exceptions.ToList();
             lExceptions.Add(exception);
@@ -122,7 +125,7 @@ namespace Azuria.ErrorHandling
         ///     Fügt den <see cref="Exceptions">Ausnahmen</see> weitere hinzu.
         /// </summary>
         /// <param name="exception">Die Ausnahme die hinzugefügt werden soll.</param>
-        public void AddExceptions(IEnumerable<Exception> exception)
+        public void AddExceptions([NotNull] IEnumerable<Exception> exception)
         {
             List<Exception> lExceptions = this.Exceptions.ToList();
             lExceptions.AddRange(exception);

@@ -2,11 +2,12 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Azuria.ErrorHandling;
 using Azuria.Exceptions;
 using Azuria.Utilities;
+using Azuria.Utilities.ErrorHandling;
 using Azuria.Utilities.Net;
 using HtmlAgilityPack;
+using JetBrains.Annotations;
 
 namespace Azuria.Notifications
 {
@@ -21,7 +22,7 @@ namespace Azuria.Notifications
         private AnimeMangaUpdateObject[] _animeMangaUpdateObjects;
         private INotificationObject[] _notificationObjects;
 
-        internal AnimeMangaUpdateCollection(Senpai senpai)
+        internal AnimeMangaUpdateCollection([NotNull] Senpai senpai)
         {
             this._senpai = senpai;
             this.Type = NotificationObjectType.AnimeManga;
@@ -99,6 +100,7 @@ namespace Azuria.Notifications
         ///     Ein Array mit der Anzahl an Elementen in <paramref name="count" /> spezifiziert.
         ///     Wenn <paramref name="count" /> > Array.length, dann wird der gesamte Array zurückgegeben.
         /// </returns>
+        [ItemNotNull]
         public async Task<ProxerResult<IEnumerable<AnimeMangaUpdateObject>>> GetAnimeMangaUpdates(int count)
         {
             if (this._animeMangaUpdateObjects != null)
@@ -124,6 +126,7 @@ namespace Azuria.Notifications
         /// <exception cref="WrongResponseException">Wird ausgelöst, wenn die Antwort des Servers nicht der Erwarteten entspricht.</exception>
         /// <seealso cref="Senpai.Login" />
         /// <returns>Ein Array mit allen aktuellen Benachrichtigungen.</returns>
+        [ItemNotNull]
         public async Task<ProxerResult<IEnumerable<AnimeMangaUpdateObject>>> GetAllAnimeMangaUpdates()
         {
             if (this._animeMangaUpdateObjects != null)
@@ -136,13 +139,14 @@ namespace Azuria.Notifications
         }
 
 
+        [ItemNotNull]
         private async Task<ProxerResult> GetInfos()
         {
             HtmlDocument lDocument = new HtmlDocument();
             ProxerResult<string> lResult =
                 await
                     HttpUtility.GetResponseErrorHandling(
-                        "https://proxer.me/components/com_proxer/misc/notifications_misc.php",
+                        new Uri("https://proxer.me/components/com_proxer/misc/notifications_misc.php"),
                         this._senpai.LoginCookies,
                         this._senpai.ErrHandler,
                         this._senpai);

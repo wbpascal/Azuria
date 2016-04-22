@@ -1,5 +1,6 @@
 ﻿using System;
 using Azuria.Community;
+using JetBrains.Annotations;
 
 namespace Azuria.Notifications
 {
@@ -25,17 +26,17 @@ namespace Azuria.Notifications
             Benutzer
         }
 
-        internal PmObject(int conId, string userName, DateTime timeStampDate)
+        internal PmObject(int conId, [NotNull] string userName, DateTime timeStampDate)
             : this("", conId, userName, PmType.Benutzer, timeStampDate)
         {
         }
 
-        internal PmObject(string title, int conId, DateTime timeStampDate)
+        internal PmObject([NotNull] string title, int conId, DateTime timeStampDate)
             : this(title, conId, "", PmType.Konferenz, timeStampDate)
         {
         }
 
-        private PmObject(string title, int conId, string userName, PmType pmType, DateTime timeStamp)
+        private PmObject([NotNull] string title, int conId, [NotNull] string userName, PmType pmType, DateTime timeStamp)
         {
             this.Type = NotificationObjectType.PrivateMessage;
             this.MessageTyp = pmType;
@@ -67,6 +68,7 @@ namespace Azuria.Notifications
         ///     Gibt den Titel der <see cref="Conference">Sender-Konferenz</see> zurück.
         ///     <para>(Ist nur vorhanden, wenn <see cref="MessageTyp" /> = <see cref="PmType.Konferenz" />)</para>
         /// </summary>
+        [NotNull]
         public string ConferenceTitle { get; }
 
         /// <summary>
@@ -88,6 +90,7 @@ namespace Azuria.Notifications
         ///     Gibt den Benutzernamen des Senders zurück.
         ///     <para>(Ist nur vorhanden, wenn <see cref="MessageTyp" /> = <see cref="PmType.Benutzer" />)</para>
         /// </summary>
+        [NotNull]
         public string UserName { get; }
 
         #endregion

@@ -13,6 +13,11 @@
         /// <summary>
         ///     Das Objekt ist ein <see cref="Manga" />.
         /// </summary>
-        Manga
+        Manga,
+
+        /// <summary>
+        ///     Der Typ des Objekts ist unbekannt.
+        /// </summary>
+        Unknown
     }
 }

@@ -2,10 +2,12 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
-using Azuria.ErrorHandling;
 using Azuria.Exceptions;
+using Azuria.Utilities.ErrorHandling;
+using JetBrains.Annotations;
 using RestSharp;
 
 namespace Azuria.Utilities.Net
@@ -23,72 +25,106 @@ namespace Azuria.Utilities.Net
         /// </summary>
         public static int Timeout = 0;
 
+        /// <summary>
+        /// </summary>
+        public static bool SolveCloudflare = true;
+
+        [NotNull] private static readonly string UserAgent =
+            "Azuria/" + typeof(HttpUtility).GetTypeInfo().Assembly.GetName().Version + " RestSharp/" +
+            typeof(HttpUtility).GetTypeInfo()
+                .Assembly.GetReferencedAssemblies()
+                .First(name => name.Name.Equals("RestSharp"))
+                .Version;
+
         #region
 
-        internal static async Task<ProxerResult<string>> GetResponseErrorHandling(string url, ErrorHandler errorHandler,
-            Senpai senpai)
+        [ItemNotNull]
+        internal static async Task<ProxerResult<string>> GetResponseErrorHandling([NotNull] Uri url,
+            [NotNull] ErrorHandler errorHandler, [NotNull] Senpai senpai)
         {
             return await GetResponseErrorHandling(url, null, errorHandler, senpai);
         }
 
-        internal static async Task<ProxerResult<string>> GetResponseErrorHandling(string url,
-            CookieContainer loginCookies,
-            ErrorHandler errorHandler,
-            Senpai senpai)
+        [ItemNotNull]
+        internal static async Task<ProxerResult<string>> GetResponseErrorHandling([NotNull] Uri url,
+            [CanBeNull] CookieContainer loginCookies, [NotNull] ErrorHandler errorHandler, [NotNull] Senpai senpai)
         {
             return
                 await
                     GetResponseErrorHandling(url, loginCookies, errorHandler, senpai, new Func<string, ProxerResult>[0]);
         }
 
-        internal static async Task<ProxerResult<string>> GetResponseErrorHandling(string url,
-            CookieContainer loginCookies,
-            ErrorHandler errorHandler,
-            Senpai senpai,
-            Func<string, ProxerResult>[]
-                checkFuncs)
+        [ItemNotNull]
+        internal static async Task<ProxerResult<string>> GetResponseErrorHandling([NotNull] Uri url,
+            [CanBeNull] CookieContainer loginCookies, [NotNull] ErrorHandler errorHandler, [NotNull] Senpai senpai,
+            [CanBeNull] Func<string, ProxerResult>[] checkFuncs)
         {
             ProxerResult<Tuple<string, CookieContainer>> lResult =
                 await
-                    GetResponseErrorHandling(url, loginCookies, errorHandler, senpai, checkFuncs, loginCookies == null);
+                    GetResponseErrorHandling(url, loginCookies, errorHandler, senpai, checkFuncs, loginCookies != null);
 
-            return lResult.Success
+            return lResult.Success && lResult.Result != null
                 ? new ProxerResult<string>(lResult.Result.Item1)
                 : new ProxerResult<string>(lResult.Exceptions);
         }
 
+        [ItemNotNull]
         internal static async Task<ProxerResult<Tuple<string, CookieContainer>>> GetResponseErrorHandling(
-            string url, CookieContainer loginCookies, ErrorHandler errorHandler, Senpai senpai,
-            Func<string, ProxerResult>[] checkFuncs, bool checkLogin)
+            [NotNull] Uri url, [CanBeNull] CookieContainer loginCookies, [NotNull] ErrorHandler errorHandler,
+            [NotNull] Senpai senpai, [CanBeNull] Func<string, ProxerResult>[] checkFuncs, bool checkLogin,
+            int recursion = 0)
         {
-            if (checkLogin && loginCookies != null && !senpai.IsLoggedIn)
+            if (recursion >= 2)
+                return new ProxerResult<Tuple<string, CookieContainer>>(new[] {new CloudflareException()});
+            if ((checkLogin && loginCookies != null && !senpai.IsLoggedIn) || (checkLogin && loginCookies == null))
                 return
                     new ProxerResult<Tuple<string, CookieContainer>>(new Exception[] {new NotLoggedInException()});
 
             string lResponse;
+            loginCookies = loginCookies ?? new CookieContainer();
 
             IRestResponse lResponseObject =
-                await GetWebRequestResponse(url, loginCookies);
+                await GetWebRequestResponse(url, loginCookies, null);
             if (lResponseObject.StatusCode == HttpStatusCode.OK && !string.IsNullOrEmpty(lResponseObject.Content))
                 lResponse = System.Web.HttpUtility.HtmlDecode(lResponseObject.Content).Replace("\n", "");
+            else if (lResponseObject.StatusCode == HttpStatusCode.ServiceUnavailable &&
+                     !string.IsNullOrEmpty(lResponseObject.Content))
+            {
+                if (!SolveCloudflare)
+                    return new ProxerResult<Tuple<string, CookieContainer>>(new[] {new CloudflareException()});
+                ProxerResult lSolveResult =
+                    await
+                        CloudflareSolver.Solve(
+                            System.Web.HttpUtility.HtmlDecode(lResponseObject.Content).Replace("\n", ""),
+                            loginCookies, url);
+
+                if (!lSolveResult.Success)
+                    return new ProxerResult<Tuple<string, CookieContainer>>(new[] {new CloudflareException()});
+
+                return
+                    await
+                        GetResponseErrorHandling(url, loginCookies, errorHandler, senpai, checkFuncs, checkLogin,
+                            recursion + 1);
+            }
             else
                 return
                     new ProxerResult<Tuple<string, CookieContainer>>(new[]
                     {new WrongResponseException(), lResponseObject.ErrorException});
 
-            foreach (Func<string, ProxerResult> checkFunc in checkFuncs)
-            {
-                try
+            if (checkFuncs != null)
+                foreach (Func<string, ProxerResult> checkFunc in checkFuncs)
                 {
-                    ProxerResult lResult = checkFunc?.Invoke(lResponse) ?? new ProxerResult {Success = false};
-                    if (!lResult.Success)
-                        return new ProxerResult<Tuple<string, CookieContainer>>(lResult.Exceptions);
+                    try
+                    {
+                        ProxerResult lResult = checkFunc?.Invoke(lResponse) ?? new ProxerResult {Success = false};
+                        if (!lResult.Success)
+                            return new ProxerResult<Tuple<string, CookieContainer>>(lResult.Exceptions);
+                    }
+                    catch
+                    {
+                        return new ProxerResult<Tuple<string, CookieContainer>>(new Exception[0]);
+                    }
                 }
-                catch
-                {
-                    return new ProxerResult<Tuple<string, CookieContainer>> {Success = false};
-                }
-            }
 
             if (string.IsNullOrEmpty(lResponse) || !Utility.CheckForCorrectResponse(lResponse, errorHandler))
                 return
@@ -100,31 +136,33 @@ namespace Azuria.Utilities.Net
                     new Tuple<string, CookieContainer>(lResponse, loginCookies));
         }
 
-        internal static async Task<IRestResponse> GetWebRequestResponse(string url, CookieContainer cookies)
+        [ItemNotNull]
+        internal static async Task<IRestResponse> GetWebRequestResponse([NotNull] Uri url,
+            [CanBeNull] CookieContainer cookies, [CanBeNull] Dictionary<string, string> headers)
         {
             RestClient lClient = new RestClient(url)
             {
                 CookieContainer = cookies,
                 Encoding = Encoding.UTF8,
-                Timeout = Timeout
+                Timeout = Timeout,
+                UserAgent = UserAgent
             };
             RestRequest lRequest = new RestRequest(Method.GET);
+            headers?.ToList().ForEach(header => lRequest.AddHeader(header.Key, header.Value));
             return await lClient.ExecuteTaskAsync(lRequest);
         }
 
-        internal static async Task<ProxerResult<string>> PostResponseErrorHandling(string url,
-            Dictionary<string, string> postArgs,
-            ErrorHandler errorHandler,
-            Senpai senpai)
+        [ItemNotNull]
+        internal static async Task<ProxerResult<string>> PostResponseErrorHandling([NotNull] Uri url,
+            [NotNull] Dictionary<string, string> postArgs, [NotNull] ErrorHandler errorHandler, [NotNull] Senpai senpai)
         {
             return await PostResponseErrorHandling(url, postArgs, null, errorHandler, senpai);
         }
 
-        internal static async Task<ProxerResult<string>> PostResponseErrorHandling(string url,
-            Dictionary<string, string> postArgs,
-            CookieContainer loginCookies,
-            ErrorHandler errorHandler,
-            Senpai senpai)
+        [ItemNotNull]
+        internal static async Task<ProxerResult<string>> PostResponseErrorHandling([NotNull] Uri url,
+            [NotNull] Dictionary<string, string> postArgs, [CanBeNull] CookieContainer loginCookies,
+            [NotNull] ErrorHandler errorHandler, [NotNull] Senpai senpai)
         {
             return
                 await
@@ -132,57 +170,79 @@ namespace Azuria.Utilities.Net
                         new Func<string, ProxerResult>[0]);
         }
 
-        internal static async Task<ProxerResult<string>> PostResponseErrorHandling(string url,
-            Dictionary<string, string> postArgs,
-            CookieContainer loginCookies,
-            ErrorHandler errorHandler,
-            Senpai senpai,
-            Func<string, ProxerResult>[]
-                checkFuncs)
+        [ItemNotNull]
+        internal static async Task<ProxerResult<string>> PostResponseErrorHandling([NotNull] Uri url,
+            [NotNull] Dictionary<string, string> postArgs, [CanBeNull] CookieContainer loginCookies,
+            [NotNull] ErrorHandler errorHandler, [NotNull] Senpai senpai,
+            [CanBeNull] Func<string, ProxerResult>[] checkFuncs)
         {
             ProxerResult<KeyValuePair<string, CookieContainer>> lResult =
                 await
                     PostResponseErrorHandling(url, postArgs, loginCookies, errorHandler, senpai, checkFuncs,
-                        loginCookies == null);
+                        loginCookies != null);
 
             return lResult.Success
                 ? new ProxerResult<string>(lResult.Result.Key)
                 : new ProxerResult<string>(lResult.Exceptions);
         }
 
+        [ItemNotNull]
         internal static async Task<ProxerResult<KeyValuePair<string, CookieContainer>>> PostResponseErrorHandling(
-            string url, Dictionary<string, string> postArgs, CookieContainer loginCookies, ErrorHandler errorHandler,
-            Senpai senpai,
-            Func<string, ProxerResult>[] checkFuncs, bool checkLogin)
+            [NotNull] Uri url, [NotNull] Dictionary<string, string> postArgs,
+            [CanBeNull] CookieContainer loginCookies, [NotNull] ErrorHandler errorHandler, [NotNull] Senpai senpai,
+            [CanBeNull] Func<string, ProxerResult>[] checkFuncs, bool checkLogin, int recursion = 0)
         {
-            if (checkLogin && loginCookies != null && !senpai.IsLoggedIn)
+            if (recursion >= 2)
+                return new ProxerResult<KeyValuePair<string, CookieContainer>>(new[] {new CloudflareException()});
+            if ((checkLogin && loginCookies != null && !senpai.IsLoggedIn) || (checkLogin && loginCookies == null))
                 return
                     new ProxerResult<KeyValuePair<string, CookieContainer>>(new Exception[] {new NotLoggedInException()});
 
             string lResponse;
+            loginCookies = loginCookies ?? new CookieContainer();
 
             IRestResponse lResponseObject =
-                await PostWebRequestResponse(url, loginCookies, postArgs);
+                await PostWebRequestResponse(url, loginCookies, postArgs, null);
             if (lResponseObject.StatusCode == HttpStatusCode.OK && !string.IsNullOrEmpty(lResponseObject.Content))
                 lResponse = System.Web.HttpUtility.HtmlDecode(lResponseObject.Content).Replace("\n", "");
+            else if (lResponseObject.StatusCode == HttpStatusCode.ServiceUnavailable &&
+                     !string.IsNullOrEmpty(lResponseObject.Content))
+            {
+                if (!SolveCloudflare)
+                    return new ProxerResult<KeyValuePair<string, CookieContainer>>(new[] {new CloudflareException()});
+                ProxerResult lSolveResult =
+                    await
+                        CloudflareSolver.Solve(
+                            System.Web.HttpUtility.HtmlDecode(lResponseObject.Content).Replace("\n", ""),
+                            loginCookies, url);
+
+                if (!lSolveResult.Success)
+                    return new ProxerResult<KeyValuePair<string, CookieContainer>>(new[] {new CloudflareException()});
+
+                return
+                    await
+                        PostResponseErrorHandling(url, postArgs, loginCookies, errorHandler, senpai, checkFuncs,
+                            checkLogin, recursion + 1);
+            }
             else
                 return
                     new ProxerResult<KeyValuePair<string, CookieContainer>>(new[]
                     {new WrongResponseException(), lResponseObject.ErrorException});
 
-            foreach (Func<string, ProxerResult> checkFunc in checkFuncs)
-            {
-                try
+            if (checkFuncs != null)
+                foreach (Func<string, ProxerResult> checkFunc in checkFuncs)
                 {
-                    ProxerResult lResult = checkFunc?.Invoke(lResponse) ?? new ProxerResult {Success = false};
-                    if (!lResult.Success)
-                        return new ProxerResult<KeyValuePair<string, CookieContainer>>(lResult.Exceptions);
+                    try
+                    {
+                        ProxerResult lResult = checkFunc?.Invoke(lResponse) ?? new ProxerResult {Success = false};
+                        if (!lResult.Success)
+                            return new ProxerResult<KeyValuePair<string, CookieContainer>>(lResult.Exceptions);
+                    }
+                    catch
+                    {
+                        return new ProxerResult<KeyValuePair<string, CookieContainer>>(new Exception[0]);
+                    }
                 }
-                catch
-                {
-                    return new ProxerResult<KeyValuePair<string, CookieContainer>> {Success = false};
-                }
-            }
 
             if (string.IsNullOrEmpty(lResponse) || !Utility.CheckForCorrectResponse(lResponse, errorHandler))
                 return
@@ -194,16 +254,20 @@ namespace Azuria.Utilities.Net
                     new KeyValuePair<string, CookieContainer>(lResponse, loginCookies));
         }
 
-        internal static async Task<IRestResponse> PostWebRequestResponse(string url, CookieContainer cookies,
-            Dictionary<string, string> postArgs)
+        [ItemNotNull]
+        internal static async Task<IRestResponse> PostWebRequestResponse([NotNull] Uri url,
+            [CanBeNull] CookieContainer cookies, [NotNull] Dictionary<string, string> postArgs,
+            [CanBeNull] Dictionary<string, string> headers)
         {
             RestClient lClient = new RestClient(url)
             {
                 CookieContainer = cookies,
                 Encoding = Encoding.UTF8,
-                Timeout = Timeout
+                Timeout = Timeout,
+                UserAgent = UserAgent
             };
             RestRequest lRequest = new RestRequest(Method.POST);
+            headers?.ToList().ForEach(header => lRequest.AddHeader(header.Key, header.Value));
             postArgs.ToList().ForEach(x => lRequest.AddParameter(x.Key, x.Value));
             return await lClient.ExecuteTaskAsync(lRequest);
         }

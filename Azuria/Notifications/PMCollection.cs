@@ -2,11 +2,12 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Azuria.ErrorHandling;
 using Azuria.Exceptions;
 using Azuria.Utilities;
+using Azuria.Utilities.ErrorHandling;
 using Azuria.Utilities.Net;
 using HtmlAgilityPack;
+using JetBrains.Annotations;
 
 namespace Azuria.Notifications
 {
@@ -19,7 +20,7 @@ namespace Azuria.Notifications
         private INotificationObject[] _notificationObjects;
         private PmObject[] _pmObjects;
 
-        internal PmCollection(Senpai senpai)
+        internal PmCollection([NotNull] Senpai senpai)
         {
             this._senpai = senpai;
             this.Type = NotificationObjectType.PrivateMessage;
@@ -93,6 +94,7 @@ namespace Azuria.Notifications
         /// <exception cref="WrongResponseException">Wird ausgelöst, wenn die Antwort des Servers nicht der Erwarteten entspricht.</exception>
         /// <seealso cref="Senpai.Login" />
         /// <returns>Ein Array mit allen aktuellen Benachrichtigungen.</returns>
+        [ItemNotNull]
         public async Task<ProxerResult<IEnumerable<PmObject>>> GetAllPrivateMessages()
         {
             if (this._notificationObjects != null)
@@ -105,13 +107,14 @@ namespace Azuria.Notifications
         }
 
 
+        [ItemNotNull]
         private async Task<ProxerResult> GetInfos()
         {
             HtmlDocument lDocument = new HtmlDocument();
             ProxerResult<string> lResult =
                 await
                     HttpUtility.GetResponseErrorHandling(
-                        "https://proxer.me/messages?format=raw&s=notification",
+                        new Uri("https://proxer.me/messages?format=raw&s=notification"),
                         this._senpai.LoginCookies,
                         this._senpai.ErrHandler,
                         this._senpai);
@@ -165,6 +168,7 @@ namespace Azuria.Notifications
         ///     Ein Array mit der Anzahl an Elementen in <paramref name="count" /> spezifiziert.
         ///     Wenn <paramref name="count" /> > Array.length, dann wird der gesamte Array zurückgegeben.
         /// </returns>
+        [ItemNotNull]
         public async Task<ProxerResult<IEnumerable<PmObject>>> GetPrivateMessages(int count)
         {
             if (this._notificationObjects != null)
