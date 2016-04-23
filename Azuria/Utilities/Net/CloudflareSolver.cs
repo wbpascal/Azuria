@@ -1,10 +1,7 @@
 ﻿using System;
-using System.Net;
 using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 using Azuria.Utilities.ErrorHandling;
 using JetBrains.Annotations;
-using RestSharp;
 
 namespace Azuria.Utilities.Net
 {
@@ -12,8 +9,7 @@ namespace Azuria.Utilities.Net
     {
         #region
 
-        internal static async Task<ProxerResult> Solve([NotNull] string response, [NotNull] CookieContainer cookies,
-            [NotNull] Uri originalUri)
+        internal static ProxerResult<string> Solve([NotNull] string response, [NotNull] Uri originalUri)
         {
             try
             {
@@ -29,22 +25,13 @@ namespace Azuria.Utilities.Net
 
                 if (!string.IsNullOrEmpty(lChallengeId.Trim()) || !string.IsNullOrEmpty(lChallengePass.Trim()) ||
                     lCloudflareAnswer == int.MinValue)
-                    return new ProxerResult {Success = false};
+                    return new ProxerResult<string>(new Exception[0]);
 
-                await Task.Delay(4000);
-
-                IRestResponse lGetResult =
-                    await
-                        HttpUtility.GetWebRequestResponse(
-                            new Uri(
-                                $"{originalUri.Scheme}://{originalUri.Host}/cdn-cgi/l/chk_jschl?jschl_vc={lChallengeId}&pass={lChallengePass}&jschl_answer={lCloudflareAnswer}"),
-                            cookies, null);
-
-                return new ProxerResult {Success = lGetResult.StatusCode == HttpStatusCode.OK};
+                return new ProxerResult<string>($"jschl_vc={lChallengeId}&pass={lChallengePass}&jschl_answer={lCloudflareAnswer}");
             }
             catch
             {
-                return new ProxerResult {Success = false};
+                return new ProxerResult<string>(new Exception[0]);
             }
         }
 
