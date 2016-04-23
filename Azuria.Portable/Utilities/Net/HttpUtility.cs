@@ -24,6 +24,10 @@ namespace Azuria.Utilities.Net
         ///     Standartwert = 0
         /// </summary>
         public static int Timeout = 0;
+        
+        /// <summary>
+        /// </summary>
+        public static bool SolveCloudflare = true;
 
         [NotNull] private static readonly string UserAgent = "Azuria.Portable/" +
                                                              new AssemblyName(
@@ -66,7 +70,7 @@ namespace Azuria.Utilities.Net
         [ItemNotNull]
         internal static async Task<ProxerResult<Tuple<string, CookieContainer>>> GetResponseErrorHandling(
             [NotNull] Uri url, [CanBeNull] CookieContainer loginCookies, [NotNull] ErrorHandler errorHandler,
-            [NotNull] Senpai senpai, [CanBeNull] Func<string, ProxerResult>[] checkFuncs, bool checkLogin)
+            [NotNull] Senpai senpai, [CanBeNull] Func<string, ProxerResult>[] checkFuncs, bool checkLogin, int recursion = 0)
         {
             if (checkLogin && loginCookies != null && !senpai.IsLoggedIn)
                 return
@@ -75,12 +79,39 @@ namespace Azuria.Utilities.Net
             string lResponse;
 
             IRestResponse lResponseObject =
-                await GetWebRequestResponse(url, loginCookies);
+                await GetWebRequestResponse(url, loginCookies, null);
             string lResponseString = Encoding.UTF8.GetString(lResponseObject.RawBytes, 0,
                 lResponseObject.RawBytes.Length);
 
             if (lResponseObject.StatusCode == HttpStatusCode.OK && !string.IsNullOrEmpty(lResponseString))
                 lResponse = WebUtility.HtmlDecode(lResponseString).Replace("\n", "");
+            else if (lResponseObject.StatusCode == HttpStatusCode.ServiceUnavailable &&
+                     !string.IsNullOrEmpty(lResponseString))
+            {
+                if (!SolveCloudflare)
+                    return new ProxerResult<Tuple<string, CookieContainer>>(new[] { new CloudflareException() });
+                ProxerResult<string> lSolveResult =
+                    CloudflareSolver.Solve(WebUtility.HtmlDecode(lResponseString).Replace("\n", ""), url);
+
+                if (!lSolveResult.Success)
+                    return new ProxerResult<Tuple<string, CookieContainer>>(new[] { new CloudflareException() });
+
+                await Task.Delay(4000);
+
+                IRestResponse lGetResult =
+                    await
+                        GetWebRequestResponse(
+                            new Uri($"{url.Scheme}://{url.Host}/cdn-cgi/l/chk_jschl?{lSolveResult.Result}"),
+                            loginCookies, null);
+
+                if (lGetResult.StatusCode != HttpStatusCode.OK)
+                    return new ProxerResult<Tuple<string, CookieContainer>>(new[] { new CloudflareException() });
+
+                return
+                    await
+                        GetResponseErrorHandling(url, loginCookies, errorHandler, senpai, checkFuncs, checkLogin,
+                            recursion + 1);
+            }
             else
                 return
                     new ProxerResult<Tuple<string, CookieContainer>>(new[]
@@ -113,7 +144,7 @@ namespace Azuria.Utilities.Net
 
         [ItemNotNull]
         internal static async Task<IRestResponse> GetWebRequestResponse([NotNull] Uri url,
-            [CanBeNull] CookieContainer cookies)
+            [CanBeNull] CookieContainer cookies, Dictionary<string, string> headers)
         {
             RestClient lClient = new RestClient(url)
             {
@@ -122,6 +153,12 @@ namespace Azuria.Utilities.Net
                 UserAgent = UserAgent
             };
             RestRequest lRequest = new RestRequest(Method.GET);
+            if (headers == null) return await lClient.Execute(lRequest);
+
+            foreach (KeyValuePair<string, string> header in headers)
+            {
+                lRequest.AddHeader(header.Key, header.Value);
+            }
             return await lClient.Execute(lRequest);
         }
 
@@ -163,7 +200,7 @@ namespace Azuria.Utilities.Net
         internal static async Task<ProxerResult<KeyValuePair<string, CookieContainer>>> PostResponseErrorHandling(
             [NotNull] Uri url, [NotNull] Dictionary<string, string> postArgs,
             [CanBeNull] CookieContainer loginCookies, [NotNull] ErrorHandler errorHandler, [NotNull] Senpai senpai,
-            [CanBeNull] Func<string, ProxerResult>[] checkFuncs, bool checkLogin)
+            [CanBeNull] Func<string, ProxerResult>[] checkFuncs, bool checkLogin, int recursion = 0)
         {
             if (checkLogin && loginCookies != null && !senpai.IsLoggedIn)
                 return
@@ -172,12 +209,39 @@ namespace Azuria.Utilities.Net
             string lResponse;
 
             IRestResponse lResponseObject =
-                await PostWebRequestResponse(url, loginCookies, postArgs);
+                await PostWebRequestResponse(url, loginCookies, postArgs, null);
             string lResponseString = Encoding.UTF8.GetString(lResponseObject.RawBytes, 0,
                 lResponseObject.RawBytes.Length);
 
             if (lResponseObject.StatusCode == HttpStatusCode.OK && !string.IsNullOrEmpty(lResponseString))
                 lResponse = WebUtility.HtmlDecode(lResponseString).Replace("\n", "");
+            else if (lResponseObject.StatusCode == HttpStatusCode.ServiceUnavailable &&
+                     !string.IsNullOrEmpty(lResponseString))
+            {
+                if (!SolveCloudflare)
+                    return new ProxerResult<KeyValuePair<string, CookieContainer>>(new[] { new CloudflareException() });
+                ProxerResult<string> lSolveResult =
+                     CloudflareSolver.Solve(WebUtility.HtmlDecode(lResponseString).Replace("\n", ""), url);
+
+                if (!lSolveResult.Success)
+                    return new ProxerResult<KeyValuePair<string, CookieContainer>>(new[] { new CloudflareException() });
+
+                await Task.Delay(4000);
+
+                IRestResponse lGetResult =
+                    await
+                        PostWebRequestResponse(
+                            new Uri($"{url.Scheme}://{url.Host}/cdn-cgi/l/chk_jschl?{lSolveResult.Result}"),
+                            loginCookies, new Dictionary<string, string>(), null);
+
+                if (lGetResult.StatusCode != HttpStatusCode.OK)
+                    return new ProxerResult<KeyValuePair<string, CookieContainer>>(new[] { new CloudflareException() });
+
+                return
+                    await
+                        PostResponseErrorHandling(url, postArgs, loginCookies, errorHandler, senpai, checkFuncs,
+                            checkLogin, recursion + 1);
+            }
             else
                 return
                     new ProxerResult<KeyValuePair<string, CookieContainer>>(new[]
@@ -213,7 +277,7 @@ namespace Azuria.Utilities.Net
 
         [ItemNotNull]
         internal static async Task<IRestResponse> PostWebRequestResponse([NotNull] Uri url,
-            [CanBeNull] CookieContainer cookies, [NotNull] Dictionary<string, string> postArgs)
+            [CanBeNull] CookieContainer cookies, [NotNull] Dictionary<string, string> postArgs, Dictionary<string, string> headers)
         {
             RestClient lClient = new RestClient(url)
             {
@@ -222,6 +286,11 @@ namespace Azuria.Utilities.Net
                 UserAgent = UserAgent
             };
             RestRequest lRequest = new RestRequest(Method.POST);
+            if(headers != null)
+                foreach (KeyValuePair<string, string> header in headers)
+                {
+                    lRequest.AddHeader(header.Key, header.Value);
+                }
             foreach (KeyValuePair<string, string> pair in postArgs)
                 lRequest.AddParameter(pair.Key, pair.Value);
 
