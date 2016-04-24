@@ -7,8 +7,8 @@ using Azuria.Main.Minor;
 using Azuria.Main.User.Comment;
 using Azuria.Utilities;
 using Azuria.Utilities.ErrorHandling;
-using Azuria.Utilities.Initialisation;
 using Azuria.Utilities.Net;
+using Azuria.Utilities.Properties;
 using HtmlAgilityPack;
 using JetBrains.Annotations;
 

@@ -2,6 +2,7 @@
 using Azuria.Exceptions;
 using Azuria.Main.User.Comment;
 using Azuria.Utilities.ErrorHandling;
+using Azuria.Utilities.Properties;
 using HtmlAgilityPack;
 using JetBrains.Annotations;
 
@@ -31,6 +32,9 @@ namespace Azuria.Main.User.ControlPanel
             AnimeMangaProgress progress, AnimeMangaProgressState progressState, [NotNull] Senpai senpai)
             : base(user, animeMangaObject, entryId, progress, progressState, senpai)
         {
+            this.Comment = new InitialisableProperty<EditableComment>(this.GetEditableComment);
+            this.Progress = new EditableAnimeMangaProgress(progress.CurrentProgress, progress.MaxProgress,
+                this.GetCurrentProgress, this.SetCurrentProgress);
         }
 
         private AnimeMangaUcpObject([NotNull] AnimeMangaProgressObject<T> baseClass, [NotNull] Senpai senpai)
@@ -40,6 +44,20 @@ namespace Azuria.Main.User.ControlPanel
         {
         }
 
+        #region Properties
+
+        /// <summary>
+        /// </summary>
+        [NotNull]
+        public new InitialisableProperty<EditableComment> Comment { get; }
+
+        /// <summary>
+        /// </summary>
+        [NotNull]
+        public new EditableAnimeMangaProgress Progress { get; }
+
+        #endregion
+
         #region
 
         /// <summary>
@@ -47,24 +65,34 @@ namespace Azuria.Main.User.ControlPanel
         /// <returns></returns>
         public async Task<ProxerResult> DeleteEntry()
         {
-            ProxerResult<EditableComment> lEditableCommentFetchResult = await this.GetEditableComment();
+            ProxerResult<EditableComment> lEditableCommentFetchResult = await this.Comment.GetObject();
             if (!lEditableCommentFetchResult.Success || lEditableCommentFetchResult.Result == null)
                 return new ProxerResult(lEditableCommentFetchResult.Exceptions);
 
             return await lEditableCommentFetchResult.Result.Delete();
         }
 
+        private async Task<ProxerResult<int>> GetCurrentProgress()
+        {
+            ProxerResult<EditableComment> lEditableCommentFetchResult = await this.Comment.GetObject();
+            if (!lEditableCommentFetchResult.Success || lEditableCommentFetchResult.Result == null)
+                return new ProxerResult<int>(lEditableCommentFetchResult.Exceptions);
+
+            return await lEditableCommentFetchResult.Result.Progress.CurrentProgress.Get();
+        }
+
         /// <summary>
         /// </summary>
         /// <returns></returns>
-        public async Task<ProxerResult<EditableComment>> GetEditableComment()
+        private async Task<ProxerResult> GetEditableComment()
         {
             ProxerResult<EditableComment> lCommentFetchResult =
                 await EditableComment.GetEditableComment(this.EntryId, this.AnimeMangaObject.Id, this.Senpai);
             if (!lCommentFetchResult.Success || lCommentFetchResult.Result == null)
-                return new ProxerResult<EditableComment>(lCommentFetchResult.Exceptions);
+                return new ProxerResult(lCommentFetchResult.Exceptions);
 
-            return new ProxerResult<EditableComment>(lCommentFetchResult.Result);
+            this.Comment.SetInitialisedObject(lCommentFetchResult.Result);
+            return new ProxerResult();
         }
 
         [NotNull]
@@ -83,6 +111,15 @@ namespace Azuria.Main.User.ControlPanel
             {
                 return new ProxerResult<AnimeMangaUcpObject<T>>(new[] {new WrongResponseException()});
             }
+        }
+
+        private async Task<ProxerResult> SetCurrentProgress(int newProgress)
+        {
+            ProxerResult<EditableComment> lEditableCommentFetchResult = await this.Comment.GetObject();
+            if (!lEditableCommentFetchResult.Success || lEditableCommentFetchResult.Result == null)
+                return new ProxerResult(lEditableCommentFetchResult.Exceptions);
+
+            return await lEditableCommentFetchResult.Result.Progress.CurrentProgress.Set(newProgress);
         }
 
         #endregion

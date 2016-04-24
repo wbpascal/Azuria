@@ -103,6 +103,7 @@
     <Compile Include="Main\User\ControlPanel\AnimeMangaFavouriteObject.cs" />
     <Compile Include="Main\User\ControlPanel\AnimeMangaUcpObject.cs" />
     <Compile Include="Main\User\Comment\EditableComment.cs" />
+    <Compile Include="Main\User\ControlPanel\EditableAnimeMangaProgress.cs" />
     <Compile Include="Main\User\ControlPanel\UserControlPanel.cs" />
     <Compile Include="Notifications\AnimeMangaUpdateCollection.cs" />
     <Compile Include="Notifications\FriendRequestCollection.cs" />
@@ -126,12 +127,13 @@
     <Compile Include="Senpai.cs" />
     <Compile Include="User.cs" />
     <Compile Include="Utilities\ErrorHandling\ErrorHandler.cs" />
-    <Compile Include="Utilities\Initialisation\IInitialisableProperty.cs" />
-    <Compile Include="Utilities\Initialisation\InitialisableProperty.cs" />
-    <Compile Include="Utilities\Initialisation\SetableInitialisableProperty.cs" />
+    <Compile Include="Utilities\Properties\IInitialisableProperty.cs" />
+    <Compile Include="Utilities\Properties\InitialisableProperty.cs" />
+    <Compile Include="Utilities\Properties\SetableInitialisableProperty.cs" />
     <Compile Include="Utilities\Net\CloudflareSolver.cs" />
     <Compile Include="Utilities\Net\HttpUtility.cs" />
     <Compile Include="Utilities\ErrorHandling\ProxerResult.cs" />
+    <Compile Include="Utilities\Properties\AsyncProperty.cs" />
     <Compile Include="Utilities\SearchUtility.cs" />
     <Compile Include="Utilities\Utility.cs" />
   </ItemGroup>
@@ -143,7 +145,9 @@
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Utilities\Initialisation\" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

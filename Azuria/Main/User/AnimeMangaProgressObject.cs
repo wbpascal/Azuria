@@ -3,8 +3,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using Azuria.Exceptions;
 using Azuria.Utilities.ErrorHandling;
-using Azuria.Utilities.Initialisation;
 using Azuria.Utilities.Net;
+using Azuria.Utilities.Properties;
 using HtmlAgilityPack;
 using JetBrains.Annotations;
 

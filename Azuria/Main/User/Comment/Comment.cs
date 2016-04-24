@@ -16,17 +16,20 @@ namespace Azuria.Main.User.Comment
     /// </summary>
     public class Comment
     {
-        internal Comment([NotNull] Azuria.User author, int animeMangaId, int sterne, [NotNull] string kommentar)
+        internal Comment([NotNull] Azuria.User author, int animeMangaId, int sterne, [NotNull] string kommentar,
+            AnimeMangaProgressState progressState)
         {
             this.AnimeMangaId = animeMangaId;
             this.Author = author;
             this.Rating = sterne;
             this.Content = kommentar;
+            this.ProgressState = progressState;
             this.SubRatings = new Dictionary<RatingCategory, int>();
         }
 
         internal Comment([NotNull] Azuria.User author, int animeMangaId, int sterne, [NotNull] string kommentar,
-            Dictionary<RatingCategory, int> subRatings) : this(author, animeMangaId, sterne, kommentar)
+            Dictionary<RatingCategory, int> subRatings, AnimeMangaProgressState progressState)
+            : this(author, animeMangaId, sterne, kommentar, progressState)
         {
             this.SubRatings = subRatings;
         }
@@ -50,6 +53,10 @@ namespace Azuria.Main.User.Comment
         /// </summary>
         [NotNull]
         public string Content { get; protected set; }
+
+        /// <summary>
+        /// </summary>
+        public AnimeMangaProgressState ProgressState { get; set; }
 
         /// <summary>
         ///     Gibt die Sterne der Gesamtwertung des <see cref="Comment">Kommentars</see> zurück. Es wird -1 zurückgegeben, wenn
@@ -172,7 +179,8 @@ namespace Azuria.Main.User.Comment
                         {
                             lReturn.Add(
                                 ParseComment(commentNode, senpai, isUserPage, author, animeMangaId)
-                                    .OnError(new Comment(Azuria.User.System, -1, -1, "ERROR")));
+                                    .OnError(new Comment(Azuria.User.System, -1, -1, "ERROR",
+                                        AnimeMangaProgressState.Unknown)));
                             count--;
                         }
 
@@ -260,11 +268,19 @@ namespace Azuria.Main.User.Comment
                             starNode.Name.Equals("img") && starNode.Attributes.Contains("src") &&
                             starNode.Attributes["src"].Value.Equals("/images/misc/stern.png"));
 
+                AnimeMangaProgressState lProgressState = AnimeMangaProgressState.Unknown;
+                string lProgressString = lTableNodes[2].ChildNodes.FindFirst("b").NextSibling.InnerText;
+                if (lProgressString.StartsWith("Geschaut") || lProgressString.StartsWith("Gelesen"))
+                    lProgressState = AnimeMangaProgressState.Finished;
+                else if(lProgressString.StartsWith("Am Schauen") || lProgressString.StartsWith("Am Lesen"))
+                    lProgressState = AnimeMangaProgressState.InProgress;
+                else if(lProgressString.StartsWith("Wird noch geschaut") || lProgressString.StartsWith("Wird noch gelesen"))
+                    lProgressState = AnimeMangaProgressState.Planned;
+                else if(lProgressString.StartsWith("Abgebrochen"))
+                    lProgressState = AnimeMangaProgressState.Aborted;
+
                 return
-                    new ProxerResult<Comment>(new Comment(lAuthor, lAnimeMangaId, lStars, lContent)
-                    {
-                        SubRatings = lSubRatings
-                    });
+                    new ProxerResult<Comment>(new Comment(lAuthor, lAnimeMangaId, lStars, lContent, lSubRatings, lProgressState));
             }
             catch
             {

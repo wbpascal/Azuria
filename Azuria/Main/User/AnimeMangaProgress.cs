@@ -5,6 +5,11 @@
     public class AnimeMangaProgress
     {
         /// <summary>
+        /// 
+        /// </summary>
+        public static AnimeMangaProgress Error = new AnimeMangaProgress(-1, -1);
+
+        /// <summary>
         /// </summary>
         /// <param name="currentProgress"></param>
         /// <param name="maxProgress"></param>

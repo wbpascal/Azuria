@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 using Azuria.Utilities.ErrorHandling;
 using JetBrains.Annotations;
 
-namespace Azuria.Utilities.Initialisation
+namespace Azuria.Utilities.Properties
 {
     /// <summary>
     /// </summary>

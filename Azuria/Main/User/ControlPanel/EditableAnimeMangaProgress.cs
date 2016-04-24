@@ -1,0 +1,39 @@
+﻿using System;
+using System.Threading.Tasks;
+using Azuria.Utilities.ErrorHandling;
+using Azuria.Utilities.Properties;
+using JetBrains.Annotations;
+
+namespace Azuria.Main.User.ControlPanel
+{
+    /// <summary>
+    /// 
+    /// </summary>
+    public class EditableAnimeMangaProgress : AnimeMangaProgress
+    {
+        internal EditableAnimeMangaProgress(int currentProgress, int maxProgress,
+            Func<int, Task<ProxerResult>> setProgressFunc) : base(currentProgress, maxProgress)
+        {
+            this.CurrentProgress = new AsyncProperty<int>(currentProgress, setFunc:
+                i =>
+                    i > this.MaxProgress
+                        ? new Task<ProxerResult>(() => new ProxerResult(new[] {new IndexOutOfRangeException()}))
+                        : setProgressFunc.Invoke(i));
+        }
+
+        internal EditableAnimeMangaProgress(int currentProgress, int maxProgress, Func<Task<ProxerResult<int>>> getProgressFunc,
+            Func<int, Task<ProxerResult>> setProgressFunc) : base(currentProgress, maxProgress)
+        {
+            this.CurrentProgress = new AsyncProperty<int>(currentProgress, getProgressFunc, i =>
+                i > this.MaxProgress
+                    ? new Task<ProxerResult>(() => new ProxerResult(new[] {new IndexOutOfRangeException()}))
+                    : setProgressFunc.Invoke(i));
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        [NotNull]
+        public new AsyncProperty<int> CurrentProgress { get; }
+    }
+}

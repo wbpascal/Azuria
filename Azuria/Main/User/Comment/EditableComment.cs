@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Azuria.Exceptions;
+using Azuria.Main.User.ControlPanel;
 using Azuria.Utilities.ErrorHandling;
 using Azuria.Utilities.Net;
 using HtmlAgilityPack;
@@ -18,14 +19,13 @@ namespace Azuria.Main.User.Comment
         private readonly int _entryId;
         [NotNull] private readonly Senpai _senpai;
 
-        internal EditableComment(int entryId, Comment baseObject, AnimeMangaProgress progress,
-            AnimeMangaProgressState progressState, Senpai senpai)
+        internal EditableComment(int entryId, Comment baseObject, AnimeMangaProgress progress, Senpai senpai)
             : base(
-                baseObject.Author, baseObject.AnimeMangaId, baseObject.Rating, baseObject.Content, baseObject.SubRatings
-                )
+                baseObject.Author, baseObject.AnimeMangaId, baseObject.Rating, baseObject.Content, baseObject.SubRatings,
+                baseObject.ProgressState)
         {
-            this.Progress = progress;
-            this.ProgressState = progressState;
+            this.Progress = new EditableAnimeMangaProgress(progress.CurrentProgress, progress.MaxProgress,
+                this.IncrementCurrentProgress);
             this._entryId = entryId;
             this._senpai = senpai;
         }
@@ -45,11 +45,7 @@ namespace Azuria.Main.User.Comment
         /// <summary>
         /// </summary>
         [NotNull]
-        public AnimeMangaProgress Progress { get; set; }
-
-        /// <summary>
-        /// </summary>
-        public AnimeMangaProgressState ProgressState { get; set; }
+        public EditableAnimeMangaProgress Progress { get; }
 
         /// <summary>
         ///     Gibt die Sterne der Gesamtwertung des <see cref="Comment">Kommentars</see> zurück. Es wird -1 zurückgegeben, wenn
@@ -75,6 +71,13 @@ namespace Azuria.Main.User.Comment
 
         #region
 
+        private async Task<ProxerResult> IncrementCurrentProgress(int newProgress)
+        {
+            Dictionary<string, string> lPostArgs = this.GetPostArgs();
+            lPostArgs["episode"] = newProgress.ToString();
+            return await this.Save(lPostArgs);
+        }
+
         /// <summary>
         /// </summary>
         /// <returns></returns>
@@ -89,7 +92,7 @@ namespace Azuria.Main.User.Comment
                         this._senpai);
 
             if (!lResult.Success)
-                return new ProxerResult<EditableComment>(lResult.Exceptions);
+                return new ProxerResult(lResult.Exceptions);
 
             string lResponse = lResult.Result;
 
@@ -110,7 +113,7 @@ namespace Azuria.Main.User.Comment
             catch
             {
                 return
-                    new ProxerResult<EditableComment>(
+                    new ProxerResult(
                         (await ErrorHandler.HandleError(this._senpai, lResponse, false)).Exceptions);
             }
         }
@@ -268,8 +271,8 @@ namespace Azuria.Main.User.Comment
                             .GetAttributeValue("value", "-1")));
 
             return new EditableComment(entryId,
-                new Comment(senpai.Me ?? Azuria.User.System, animeMangaId, lRating, lContent, lSubRatings), lProgress,
-                lProgressState, senpai);
+                new Comment(senpai.Me ?? Azuria.User.System, animeMangaId, lRating, lContent, lSubRatings,
+                    lProgressState), lProgress, senpai);
         }
 
         /// <summary>
@@ -277,17 +280,22 @@ namespace Azuria.Main.User.Comment
         /// <returns></returns>
         public async Task<ProxerResult> Save()
         {
+            return await this.Save(this.GetPostArgs());
+        }
+
+        private async Task<ProxerResult> Save(Dictionary<string, string> postArgs)
+        {
             ProxerResult<string> lResult =
                 await
                     HttpUtility.PostResponseErrorHandling(
                         new Uri($"https://proxer.me/comment?format=json&json=edit&id={this._entryId}"),
-                        this.GetPostArgs(),
+                        postArgs,
                         this._senpai.LoginCookies,
                         this._senpai.ErrHandler,
                         this._senpai);
 
             if (!lResult.Success)
-                return new ProxerResult<EditableComment>(lResult.Exceptions);
+                return new ProxerResult(lResult.Exceptions);
 
             string lResponse = lResult.Result;
 
@@ -298,7 +306,7 @@ namespace Azuria.Main.User.Comment
 
                 if (lDeserialisedResponse.ContainsKey("msg") &&
                     lDeserialisedResponse["msg"].StartsWith("Du bist nicht eingeloggt"))
-                    return new ProxerResult(new[] {new NotLoggedInException()});
+                    return new ProxerResult(new[] { new NotLoggedInException() });
 
                 return new ProxerResult
                 {
@@ -308,7 +316,7 @@ namespace Azuria.Main.User.Comment
             catch
             {
                 return
-                    new ProxerResult<EditableComment>(
+                    new ProxerResult(
                         (await ErrorHandler.HandleError(this._senpai, lResponse, false)).Exceptions);
             }
         }

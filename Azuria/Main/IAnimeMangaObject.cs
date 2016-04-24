@@ -5,7 +5,7 @@ using Azuria.Main.Minor;
 using Azuria.Main.Search;
 using Azuria.Main.User.Comment;
 using Azuria.Utilities.ErrorHandling;
-using Azuria.Utilities.Initialisation;
+using Azuria.Utilities.Properties;
 using JetBrains.Annotations;
 
 namespace Azuria.Main

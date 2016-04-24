@@ -5,7 +5,7 @@ using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
 using Azuria.Utilities.ErrorHandling;
-using Azuria.Utilities.Initialisation;
+using Azuria.Utilities.Properties;
 using HtmlAgilityPack;
 using JetBrains.Annotations;
 

@@ -157,6 +157,9 @@
     <Compile Include="..\Azuria\Main\User\ControlPanel\AnimeMangaUcpObject.cs">
       <Link>Main\User\ControlPanel\AnimeMangaUcpObject.cs</Link>
     </Compile>
+    <Compile Include="..\Azuria\Main\User\ControlPanel\EditableAnimeMangaProgress.cs">
+      <Link>Main\User\ControlPanel\EditableAnimeMangaProgress.cs</Link>
+    </Compile>
     <Compile Include="..\Azuria\Main\User\ControlPanel\UserControlPanel.cs">
       <Link>Main\User\ControlPanel\UserControlPanel.cs</Link>
     </Compile>
@@ -208,17 +211,20 @@
     <Compile Include="..\Azuria\Utilities\ErrorHandling\ProxerResult.cs">
       <Link>Utilities\ErrorHandling\ProxerResult.cs</Link>
     </Compile>
-    <Compile Include="..\Azuria\Utilities\Initialisation\IInitialisableProperty.cs">
-      <Link>Utilities\Initialisation\IInitialisableProperty.cs</Link>
-    </Compile>
-    <Compile Include="..\Azuria\Utilities\Initialisation\InitialisableProperty.cs">
-      <Link>Utilities\Initialisation\InitialisableProperty.cs</Link>
-    </Compile>
-    <Compile Include="..\Azuria\Utilities\Initialisation\SetableInitialisableProperty.cs">
-      <Link>Utilities\Initialisation\SetableInitialisableProperty.cs</Link>
-    </Compile>
     <Compile Include="..\Azuria\Utilities\Net\CloudflareSolver.cs">
       <Link>Utilities\Net\CloudflareSolver.cs</Link>
+    </Compile>
+    <Compile Include="..\Azuria\Utilities\Properties\AsyncProperty.cs">
+      <Link>Utilities\Properties\AsyncProperty.cs</Link>
+    </Compile>
+    <Compile Include="..\Azuria\Utilities\Properties\IInitialisableProperty.cs">
+      <Link>Utilities\Properties\IInitialisableProperty.cs</Link>
+    </Compile>
+    <Compile Include="..\Azuria\Utilities\Properties\InitialisableProperty.cs">
+      <Link>Utilities\Properties\InitialisableProperty.cs</Link>
+    </Compile>
+    <Compile Include="..\Azuria\Utilities\Properties\SetableInitialisableProperty.cs">
+      <Link>Utilities\Properties\SetableInitialisableProperty.cs</Link>
     </Compile>
     <Compile Include="..\Azuria\Utilities\SearchUtility.cs">
       <Link>Utilities\SearchUtility.cs</Link>
