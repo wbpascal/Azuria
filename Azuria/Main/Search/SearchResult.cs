@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Threading.Tasks;
 using Azuria.Exceptions;
 using Azuria.Main.Minor;
@@ -54,18 +55,18 @@ namespace Azuria.Main.Search
         public async Task<ProxerResult<IEnumerable<T>>> GetNextSearchResults()
         {
             HtmlDocument lDocument = new HtmlDocument();
-            ProxerResult<string> lResult =
+            ProxerResult<Tuple<string, CookieContainer>> lResult =
                 await
                     HttpUtility.GetResponseErrorHandling(
                         new Uri("https://proxer.me/" + this._link + "&format=raw&p=" + this._curSite),
                         this._senpai.LoginCookies,
                         this._senpai.ErrHandler,
-                        this._senpai);
+                        this._senpai, new Func<string, ProxerResult>[0], false);
 
-            if (!lResult.Success)
+            if (!lResult.Success || lResult.Result == null)
                 return new ProxerResult<IEnumerable<T>>(lResult.Exceptions);
 
-            string lResponse = lResult.Result;
+            string lResponse = lResult.Result.Item1;
 
             try
             {
