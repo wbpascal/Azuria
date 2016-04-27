@@ -21,7 +21,7 @@ namespace Azuria.Main.Search
     {
         private readonly string _link;
         private readonly Senpai _senpai;
-        private int _curSite = 1;
+        private int _curPage = 1;
 
         internal SearchResult(string link, [NotNull] Senpai senpai)
         {
@@ -58,7 +58,7 @@ namespace Azuria.Main.Search
             ProxerResult<Tuple<string, CookieContainer>> lResult =
                 await
                     HttpUtility.GetResponseErrorHandling(
-                        new Uri("https://proxer.me/" + this._link + "&format=raw&p=" + this._curSite),
+                        new Uri("https://proxer.me/" + this._link + "&format=raw&p=" + this._curPage),
                         this._senpai.LoginCookies,
                         this._senpai.ErrHandler,
                         this._senpai, new Func<string, ProxerResult>[0], false);
@@ -72,15 +72,15 @@ namespace Azuria.Main.Search
             {
                 lDocument.LoadHtml(lResponse);
                 HtmlNode lNode = lDocument.GetElementbyId("box-table-a");
-                if (lNode == null)
+                if (lNode == null || !lNode.ChildNodes.Any() ||
+                    lNode.ChildNodes.Count(node => node.Name.Equals("tr")) == 1)
                 {
                     this.SearchFinished = true;
                     return new ProxerResult<IEnumerable<T>>(new T[0]);
                 }
-                lNode.ChildNodes.RemoveAt(0);
 
                 List<T> lSearchResults = new List<T>();
-                foreach (HtmlNode childNode in lNode.ChildNodes)
+                foreach (HtmlNode childNode in lNode.ChildNodes.Where(node => node.Name.Equals("tr")).Skip(1))
                 {
                     if (typeof(T) == typeof(IAnimeMangaObject) ||
                         (typeof(T).HasParameterlessConstructor() &&
@@ -99,7 +99,7 @@ namespace Azuria.Main.Search
                 lCopyList.AddRange(lSearchResults);
                 this.SearchResults = lCopyList;
 
-                this._curSite++;
+                this._curPage++;
                 return new ProxerResult<IEnumerable<T>>(lSearchResults);
             }
             catch

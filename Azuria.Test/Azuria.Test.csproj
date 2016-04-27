@@ -59,6 +59,7 @@
     <Compile Include="AnimeTest.cs" />
     <Compile Include="ConferenceTest.cs" />
     <Compile Include="MangaTest.cs" />
+    <Compile Include="SearchTest.cs" />
     <Compile Include="Utility\ClassExtensions.cs" />
     <Compile Include="Credentials.cs" />
     <Compile Include="Attributes\LoginRequiredAttribute.cs" />

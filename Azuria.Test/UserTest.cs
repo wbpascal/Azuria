@@ -89,13 +89,6 @@ namespace Azuria.Test
             Assert.AreNotEqual(lInfo, lRandomHexString, $"WTF-String: {lRandomHexString}");
         }
 
-        [Test, Order(2)]
-        public void IsInitialisedTest()
-        {
-            Assert.IsNotNull(this._senpai.Me);
-            Assert.IsTrue(this._senpai.Me.IsInitialized);
-        }
-
         [Test, Order(1)]
         public async Task IsOnlineTest()
         {
