@@ -27,7 +27,9 @@ namespace Azuria.Utilities.Net
                     lCloudflareAnswer == int.MinValue)
                     return new ProxerResult<string>(new Exception[0]);
 
-                return new ProxerResult<string>($"jschl_vc={lChallengeId}&pass={lChallengePass}&jschl_answer={lCloudflareAnswer}");
+                return
+                    new ProxerResult<string>(
+                        $"jschl_vc={lChallengeId}&pass={lChallengePass}&jschl_answer={lCloudflareAnswer}");
             }
             catch
             {

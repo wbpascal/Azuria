@@ -269,10 +269,10 @@ namespace Azuria.Example
             //Hier werden nur die FSK-Infobilder dargestellt, es können aber noch Infos zu den Bilder dargestellt werden (Values)
             //Die Values enthalten jeweils einen kleinen Satz, der das FSK-Bild kurz beschreibt
             StackPanel lFskPanel = new StackPanel {Orientation = Orientation.Horizontal, Height = 80};
-            (await this._animeMangaObject.Fsk.GetObject(new Dictionary<Uri, string>())).Keys.ToList()
-                .ForEach(uri => lFskPanel.Children.Add(new Image
+            (await this._animeMangaObject.Fsk.GetObject(new FskObject[0])).ToList()
+                .ForEach(o => lFskPanel.Children.Add(new Image
                 {
-                    Source = new BitmapImage(uri),
+                    Source = new BitmapImage(o.FskPictureUri),
                     Width = 80,
                     Height = 80
                 }));

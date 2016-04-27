@@ -7,7 +7,6 @@ using JetBrains.Annotations;
 namespace Azuria.Main.User.ControlPanel
 {
     /// <summary>
-    /// 
     /// </summary>
     public class EditableAnimeMangaProgress : AnimeMangaProgress
     {
@@ -21,7 +20,8 @@ namespace Azuria.Main.User.ControlPanel
                         : setProgressFunc.Invoke(i));
         }
 
-        internal EditableAnimeMangaProgress(int currentProgress, int maxProgress, Func<Task<ProxerResult<int>>> getProgressFunc,
+        internal EditableAnimeMangaProgress(int currentProgress, int maxProgress,
+            Func<Task<ProxerResult<int>>> getProgressFunc,
             Func<int, Task<ProxerResult>> setProgressFunc) : base(currentProgress, maxProgress)
         {
             this.CurrentProgress = new AsyncProperty<int>(currentProgress, getProgressFunc, i =>
@@ -30,10 +30,13 @@ namespace Azuria.Main.User.ControlPanel
                     : setProgressFunc.Invoke(i));
         }
 
+        #region Properties
+
         /// <summary>
-        /// 
         /// </summary>
         [NotNull]
         public new AsyncProperty<int> CurrentProgress { get; }
+
+        #endregion
     }
 }

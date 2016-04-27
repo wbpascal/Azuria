@@ -106,6 +106,9 @@
     <Compile Include="..\Azuria\Main\Minor\FskHelper.cs">
       <Link>Main\Minor\FskHelper.cs</Link>
     </Compile>
+    <Compile Include="..\Azuria\Main\Minor\FskObject.cs">
+      <Link>Main\Minor\FskObject.cs</Link>
+    </Compile>
     <Compile Include="..\Azuria\Main\Minor\GenreObject.cs">
       <Link>Main\Minor\GenreObject.cs</Link>
     </Compile>

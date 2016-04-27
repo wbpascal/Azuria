@@ -71,13 +71,6 @@ namespace Azuria.Main.User.Comment
 
         #region
 
-        private async Task<ProxerResult> IncrementCurrentProgress(int newProgress)
-        {
-            Dictionary<string, string> lPostArgs = this.GetPostArgs();
-            lPostArgs["episode"] = newProgress.ToString();
-            return await this.Save(lPostArgs);
-        }
-
         /// <summary>
         /// </summary>
         /// <returns></returns>
@@ -182,6 +175,13 @@ namespace Azuria.Main.User.Comment
             }
 
             return lReturn;
+        }
+
+        private async Task<ProxerResult> IncrementCurrentProgress(int newProgress)
+        {
+            Dictionary<string, string> lPostArgs = this.GetPostArgs();
+            lPostArgs["episode"] = newProgress.ToString();
+            return await this.Save(lPostArgs);
         }
 
         private static EditableComment ParseEditabelComment(HtmlNode node, int entryId, int animeMangaId,
@@ -306,7 +306,7 @@ namespace Azuria.Main.User.Comment
 
                 if (lDeserialisedResponse.ContainsKey("msg") &&
                     lDeserialisedResponse["msg"].StartsWith("Du bist nicht eingeloggt"))
-                    return new ProxerResult(new[] { new NotLoggedInException() });
+                    return new ProxerResult(new[] {new NotLoggedInException()});
 
                 return new ProxerResult
                 {

@@ -5,7 +5,6 @@
     public class AnimeMangaProgress
     {
         /// <summary>
-        /// 
         /// </summary>
         public static AnimeMangaProgress Error = new AnimeMangaProgress(-1, -1);
 

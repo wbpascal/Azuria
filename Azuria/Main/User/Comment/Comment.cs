@@ -272,15 +272,17 @@ namespace Azuria.Main.User.Comment
                 string lProgressString = lTableNodes[2].ChildNodes.FindFirst("b").NextSibling.InnerText;
                 if (lProgressString.StartsWith("Geschaut") || lProgressString.StartsWith("Gelesen"))
                     lProgressState = AnimeMangaProgressState.Finished;
-                else if(lProgressString.StartsWith("Am Schauen") || lProgressString.StartsWith("Am Lesen"))
+                else if (lProgressString.StartsWith("Am Schauen") || lProgressString.StartsWith("Am Lesen"))
                     lProgressState = AnimeMangaProgressState.InProgress;
-                else if(lProgressString.StartsWith("Wird noch geschaut") || lProgressString.StartsWith("Wird noch gelesen"))
+                else if (lProgressString.StartsWith("Wird noch geschaut") ||
+                         lProgressString.StartsWith("Wird noch gelesen"))
                     lProgressState = AnimeMangaProgressState.Planned;
-                else if(lProgressString.StartsWith("Abgebrochen"))
+                else if (lProgressString.StartsWith("Abgebrochen"))
                     lProgressState = AnimeMangaProgressState.Aborted;
 
                 return
-                    new ProxerResult<Comment>(new Comment(lAuthor, lAnimeMangaId, lStars, lContent, lSubRatings, lProgressState));
+                    new ProxerResult<Comment>(new Comment(lAuthor, lAnimeMangaId, lStars, lContent, lSubRatings,
+                        lProgressState));
             }
             catch
             {

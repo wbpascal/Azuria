@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Azuria.Main;
@@ -76,12 +75,12 @@ namespace Azuria.Test
         {
             Assert.IsNotNull(this._anime);
 
-            ProxerResult<Dictionary<Uri, string>> lFskResult = await this._anime.Fsk.GetObject();
+            ProxerResult<IEnumerable<FskObject>> lFskResult = await this._anime.Fsk.GetObject();
             Assert.IsTrue(lFskResult.Success);
             Assert.IsNotNull(lFskResult.Result);
             if (lFskResult.Result.Any())
             {
-                Assert.IsTrue(lFskResult.Result.First().Key.OriginalString.EndsWith(".png"));
+                Assert.IsTrue(lFskResult.Result.All(o => o.FskPictureUri.OriginalString.EndsWith(".png")));
             }
             else
             {

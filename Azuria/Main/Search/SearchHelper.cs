@@ -103,9 +103,17 @@ namespace Azuria.Main.Search
         ///     Wird ausgelöst, wenn <paramref name="name" /> null (oder Nothing in Visual
         ///     Basic) ist.
         /// </exception>
+        /// <exception cref="NotLoggedInException">
+        ///     Wird ausgelöst, wenn nach einem <see cref="Anime">Anime</see> oder
+        ///     <see cref="Manga">Manga</see> gesucht wird und der <paramref name="senpai">Benutzer</paramref> nicht eingeloggt
+        ///     ist.
+        /// </exception>
         /// <typeparam name="T">Ein Typ, der von <see cref="ISearchableObject" /> erbt.</typeparam>
         /// <param name="name">Der String, nachdem gesucht werden soll.</param>
-        /// <param name="senpai"></param>
+        /// <param name="senpai">
+        ///     Der Benutzer, der die Suche ausführt. Muss eingeloggt sein, wenn nach einem
+        ///     <see cref="Anime">Anime</see> oder <see cref="Manga">Manga</see> gesucht wird.
+        /// </param>
         /// <returns></returns>
         [ItemNotNull]
         public static async Task<ProxerResult<SearchResult<T>>> Search<T>([NotNull] string name, [NotNull] Senpai senpai)
@@ -145,9 +153,13 @@ namespace Azuria.Main.Search
         ///     Wird ausgelöst, wenn <paramref name="name" /> null (Nothing in Visual Basic)
         ///     oder leer ist.
         /// </exception>
+        /// <exception cref="NotLoggedInException">
+        ///     Wird ausgelöst, wenn der <paramref name="senpai">Benutzer</paramref> nicht
+        ///     eingeloggt ist.
+        /// </exception>
         /// <typeparam name="T">Ein Typ, der von <see cref="IAnimeMangaObject" /> erbt.</typeparam>
         /// <param name="name">Der String, nach dem gesucht werden soll.</param>
-        /// <param name="senpai">Der Benutzer, der die Suche ausführt</param>
+        /// <param name="senpai">Der Benutzer, der die Suche ausführt. Muss eingeloggt sein.</param>
         /// <param name="genreContains">Alle <see cref="GenreObject">Genre</see>, die die Suchergebnisse enthalten sollen.</param>
         /// <param name="genreExcludes">
         ///     Alle <see cref="GenreObject">Genre</see>, die aus den Suchergebnissen ausgeschlossen werden
@@ -161,8 +173,8 @@ namespace Azuria.Main.Search
         [ItemNotNull]
         public static async Task<ProxerResult<SearchResult<T>>> SearchAnimeManga<T>([NotNull] string name,
             [NotNull] Senpai senpai,
-            AnimeMangaType? type = null, IEnumerable<GenreObject> genreContains = null,
-            IEnumerable<GenreObject> genreExcludes = null, IEnumerable<Fsk> fskContains = null,
+            AnimeMangaType? type = null, IEnumerable<GenreObject.GenreType> genreContains = null,
+            IEnumerable<GenreObject.GenreType> genreExcludes = null, IEnumerable<Fsk> fskContains = null,
             Language? sprache = null, SortAnimeManga? sort = null) where T : IAnimeMangaObject
         {
             if (string.IsNullOrEmpty(name))
@@ -177,18 +189,20 @@ namespace Azuria.Main.Search
             string lGenreContains = "";
             if (genreContains != null)
             {
-                foreach (GenreObject curGenre in genreContains)
+                foreach (GenreObject.GenreType curGenre in genreContains)
                 {
-                    lGenreContains += curGenre.Genre + "+";
+                    lGenreContains += curGenre + "+";
                 }
+                if (lGenreContains.EndsWith("+")) lGenreContains = lGenreContains.Remove(lGenreContains.Length - 1);
             }
             string lGenreExludes = "";
             if (genreExcludes != null)
             {
-                foreach (GenreObject curGenre in genreExcludes)
+                foreach (GenreObject.GenreType curGenre in genreExcludes)
                 {
-                    lGenreExludes += curGenre.Genre + "+";
+                    lGenreExludes += curGenre + "+";
                 }
+                if (lGenreExludes.EndsWith("+")) lGenreExludes = lGenreExludes.Remove(lGenreExludes.Length - 1);
             }
             string lFskContains = "";
             if (fskContains != null)
@@ -198,6 +212,7 @@ namespace Azuria.Main.Search
                     if (FskHelper.FskToStringDictionary.ContainsKey(curFsk))
                         lFskContains += FskHelper.FskToStringDictionary[curFsk] + "+";
                 }
+                if (lFskContains.EndsWith("+")) lFskContains = lFskContains.Remove(lGenreExludes.Length - 1);
             }
             string lSortAnime = sort == null
                 ? ""

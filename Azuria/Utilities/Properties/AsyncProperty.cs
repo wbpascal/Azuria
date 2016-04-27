@@ -6,29 +6,29 @@ using JetBrains.Annotations;
 namespace Azuria.Utilities.Properties
 {
     /// <summary>
-    /// 
     /// </summary>
     public class AsyncProperty<T>
     {
-        private T _currentValue;
         [CanBeNull] private readonly Func<Task<ProxerResult<T>>> _getFunc;
         [CanBeNull] private readonly Func<T, Task<ProxerResult>> _setFunc;
+        private T _currentValue;
 
         /// <summary>
-        /// 
         /// </summary>
         /// <param name="initialValue"></param>
         /// <param name="getFunc"></param>
         /// <param name="setFunc"></param>
-        public AsyncProperty(T initialValue, Func<Task<ProxerResult<T>>> getFunc = null, Func<T, Task<ProxerResult>> setFunc = null)
+        public AsyncProperty(T initialValue, Func<Task<ProxerResult<T>>> getFunc = null,
+            Func<T, Task<ProxerResult>> setFunc = null)
         {
             this._currentValue = initialValue;
             this._getFunc = getFunc;
             this._setFunc = setFunc;
         }
 
+        #region
+
         /// <summary>
-        /// 
         /// </summary>
         /// <returns></returns>
         public async Task<ProxerResult<T>> Get()
@@ -44,7 +44,6 @@ namespace Azuria.Utilities.Properties
         }
 
         /// <summary>
-        /// 
         /// </summary>
         /// <param name="newValue"></param>
         /// <returns></returns>
@@ -54,7 +53,7 @@ namespace Azuria.Utilities.Properties
             else
             {
                 ProxerResult lSetObjectResult = await this._setFunc.Invoke(newValue);
-                if(!lSetObjectResult.Success)
+                if (!lSetObjectResult.Success)
                     return new ProxerResult(lSetObjectResult.Exceptions);
 
                 this._currentValue = newValue;
@@ -62,5 +61,7 @@ namespace Azuria.Utilities.Properties
 
             return new ProxerResult();
         }
+
+        #endregion
     }
 }

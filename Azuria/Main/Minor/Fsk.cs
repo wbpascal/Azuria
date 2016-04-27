@@ -49,6 +49,11 @@
         /// <summary>
         ///     Der <see cref="Anime">Anime</see> oder <see cref="Manga">Manga</see> enthält Geschlechtsverkehr.
         /// </summary>
-        Sex
+        Sex,
+
+        /// <summary>
+        ///     Die FSK des <see cref="Anime">Anime</see> oder <see cref="Manga">Manga</see> ist nicht bekannt.
+        /// </summary>
+        Unknown
     }
 }

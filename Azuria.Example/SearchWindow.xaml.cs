@@ -51,21 +51,21 @@ namespace Azuria.Example
                 }
             }
 
-            List<GenreObject> lGenreContains = new List<GenreObject>();
+            List<GenreObject.GenreType> lGenreContains = new List<GenreObject.GenreType>();
             foreach (GenreCheckBox lCurCheckBox in this.GenreContainsWrapPanel.FindVisualChildren<GenreCheckBox>())
             {
                 if (lCurCheckBox.IsChecked.Value)
                 {
-                    lGenreContains.Add(new GenreObject(lCurCheckBox.Genre));
+                    lGenreContains.Add(lCurCheckBox.Genre);
                 }
             }
 
-            List<GenreObject> lGenreExcludes = new List<GenreObject>();
+            List<GenreObject.GenreType> lGenreExcludes = new List<GenreObject.GenreType>();
             foreach (GenreCheckBox lCurCheckBox in this.GenreExcludesWrapPanel.FindVisualChildren<GenreCheckBox>())
             {
                 if (lCurCheckBox.IsChecked.Value)
                 {
-                    lGenreExcludes.Add(new GenreObject(lCurCheckBox.Genre));
+                    lGenreExcludes.Add(lCurCheckBox.Genre);
                 }
             }
 

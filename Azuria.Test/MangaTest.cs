@@ -121,12 +121,12 @@ namespace Azuria.Test
         {
             Assert.IsNotNull(this._manga);
 
-            ProxerResult<Dictionary<Uri, string>> lFskResult = await this._manga.Fsk.GetObject();
+            ProxerResult<IEnumerable<FskObject>> lFskResult = await this._manga.Fsk.GetObject();
             Assert.IsTrue(lFskResult.Success);
             Assert.IsNotNull(lFskResult.Result);
             if (lFskResult.Result.Any())
             {
-                Assert.IsTrue(lFskResult.Result.First().Key.OriginalString.EndsWith(".png"));
+                Assert.IsTrue(lFskResult.Result.All(o => o.FskPictureUri.OriginalString.EndsWith(".png")));
             }
             else
             {

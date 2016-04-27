@@ -33,8 +33,7 @@
         Aborted = 3,
 
         /// <summary>
-        /// 
         /// </summary>
-        Unknown = 4,
+        Unknown = 4
     }
 }

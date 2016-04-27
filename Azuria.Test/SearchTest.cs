@@ -2,7 +2,9 @@
 using System.Linq;
 using System.Threading.Tasks;
 using Azuria.Main;
+using Azuria.Main.Minor;
 using Azuria.Main.Search;
+using Azuria.Test.Attributes;
 using Azuria.Utilities.ErrorHandling;
 using NUnit.Framework;
 
@@ -11,20 +13,40 @@ namespace Azuria.Test
     [TestFixture]
     public class SearchTest
     {
-        [Test]
+        [Test, LoginRequired]
         public async Task AnimeMangaSearch()
         {
-            string lTest = Utility.RandomUtility.GetRandomHexString();
             ProxerResult<SearchResult<Anime>> lSearchResult =
-                await SearchHelper.SearchAnimeManga<Anime>("Code Geass", new Senpai(),
-                    SearchHelper.AnimeMangaType.AllAnime);
+                await SearchHelper.SearchAnimeManga<Anime>("a", SenpaiTest.Senpai,
+                    SearchHelper.AnimeMangaType.Animeseries,
+                    new[] {GenreObject.GenreType.Action, GenreObject.GenreType.Mecha},
+                    new[]
+                    {GenreObject.GenreType.Fantasy, GenreObject.GenreType.Romance},
+                    new[] {Fsk.Fsk16, Fsk.BadWords}, Language.German);
 
             Assert.IsTrue(lSearchResult.Success);
             Assert.IsNotNull(lSearchResult.Result);
             Assert.IsTrue(lSearchResult.Result.SearchResults.Any());
             Assert.IsTrue(
                 lSearchResult.Result.SearchResults.All(
-                    anime => anime.Name.GetObjectIfInitialised("ERROR").ToLower().Contains("code geass")));
+                    anime => anime.Name.GetObjectIfInitialised("ERROR").ToLower().Contains("a")));
+
+            foreach (Anime searchResult in lSearchResult.Result.SearchResults)
+            {
+                Assert.IsTrue((await searchResult.Name.GetObject("ERROR")).Contains("a"));
+                Assert.IsTrue(
+                    (await searchResult.Genre.GetObject(new GenreObject[0])).Count(
+                        o => o.Genre == GenreObject.GenreType.Action || o.Genre == GenreObject.GenreType.Mecha) == 2);
+                Assert.IsFalse(
+                    (await searchResult.Genre.GetObject(new GenreObject[0])).Any(
+                        o => o.Genre == GenreObject.GenreType.Fantasy || o.Genre == GenreObject.GenreType.Romance));
+                Assert.IsTrue(
+                    (await searchResult.Fsk.GetObject(new FskObject[0])).Count(
+                        o => o.Fsk == Fsk.Fsk16 || o.Fsk == Fsk.BadWords) == 2);
+                Assert.IsTrue(
+                    (await searchResult.AvailableLanguages.GetObject(new Anime.Language[0])).Any(
+                        language => language == Anime.Language.GerDub || language == Anime.Language.GerSub));
+            }
 
             int lOldSearchResultsCount = lSearchResult.Result.SearchResults.Count();
             while (!lSearchResult.Result.SearchFinished)

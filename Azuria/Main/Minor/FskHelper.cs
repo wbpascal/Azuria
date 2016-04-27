@@ -14,7 +14,7 @@ namespace Azuria.Main.Minor
         ///     Ein Wörterbuch, dass bei der Umwandlung von <see cref="Fsk">Fsk</see> in Strings hilft.
         /// </summary>
         [NotNull]
-        public static Dictionary<Fsk, string> FskToStringDictionary => new Dictionary<Fsk, string>
+        internal static Dictionary<Fsk, string> FskToStringDictionary => new Dictionary<Fsk, string>
         {
             {Fsk.Fsk0, "fsk0"},
             {Fsk.Fsk6, "fsk6"},
@@ -24,7 +24,8 @@ namespace Azuria.Main.Minor
             {Fsk.BadWords, "bad_language"},
             {Fsk.Violence, "violence"},
             {Fsk.Fear, "fear"},
-            {Fsk.Sex, "sex"}
+            {Fsk.Sex, "sex"},
+            {Fsk.Unknown, "unknown"}
         };
 
         [NotNull]
@@ -38,7 +39,8 @@ namespace Azuria.Main.Minor
             {"bad_language", Fsk.BadWords},
             {"violence", Fsk.Violence},
             {"fear", Fsk.Fear},
-            {"sex", Fsk.Sex}
+            {"sex", Fsk.Sex},
+            {"unknown", Fsk.Unknown}
         };
 
         #endregion

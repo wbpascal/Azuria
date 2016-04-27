@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Reflection;
-using System.Reflection.Emit;
 using System.Text;
 using System.Threading.Tasks;
 using Azuria.Exceptions;
@@ -108,8 +107,8 @@ namespace Azuria.Utilities.Net
                             new Uri($"{url.Scheme}://{url.Host}/cdn-cgi/l/chk_jschl?{lSolveResult.Result}"),
                             loginCookies, null);
 
-                if(lGetResult.StatusCode != HttpStatusCode.OK)
-                    return new ProxerResult<Tuple<string, CookieContainer>>(new[] { new CloudflareException() });
+                if (lGetResult.StatusCode != HttpStatusCode.OK)
+                    return new ProxerResult<Tuple<string, CookieContainer>>(new[] {new CloudflareException()});
 
                 return
                     await
@@ -221,11 +220,11 @@ namespace Azuria.Utilities.Net
                 if (!SolveCloudflare)
                     return new ProxerResult<KeyValuePair<string, CookieContainer>>(new[] {new CloudflareException()});
                 ProxerResult<string> lSolveResult =
-                     CloudflareSolver.Solve(
-                         System.Web.HttpUtility.HtmlDecode(lResponseObject.Content).Replace("\n", ""), url);
+                    CloudflareSolver.Solve(
+                        System.Web.HttpUtility.HtmlDecode(lResponseObject.Content).Replace("\n", ""), url);
 
                 if (!lSolveResult.Success)
-                    return new ProxerResult<KeyValuePair<string, CookieContainer>>(new[] { new CloudflareException() });
+                    return new ProxerResult<KeyValuePair<string, CookieContainer>>(new[] {new CloudflareException()});
 
                 await Task.Delay(4000);
 
@@ -233,10 +232,10 @@ namespace Azuria.Utilities.Net
                     await
                         PostWebRequestResponse(
                             new Uri($"{url.Scheme}://{url.Host}/cdn-cgi/l/chk_jschl?{lSolveResult.Result}"),
-                            loginCookies, new Dictionary<string, string>(),  null);
+                            loginCookies, new Dictionary<string, string>(), null);
 
                 if (lGetResult.StatusCode != HttpStatusCode.OK)
-                    return new ProxerResult<KeyValuePair<string, CookieContainer>>(new[] { new CloudflareException() });
+                    return new ProxerResult<KeyValuePair<string, CookieContainer>>(new[] {new CloudflareException()});
 
                 return
                     await

@@ -85,7 +85,7 @@ namespace Azuria.Main
                 IsInitialisedOnce = false
             };
             this.EpisodeCount = new InitialisableProperty<int>(this.InitEpisodeCount);
-            this.Fsk = new InitialisableProperty<Dictionary<Uri, string>>(this.InitMain);
+            this.Fsk = new InitialisableProperty<IEnumerable<FskObject>>(this.InitMain);
             this.Genre = new InitialisableProperty<IEnumerable<GenreObject>>(this.InitMain);
             this.GermanTitle = new InitialisableProperty<string>(this.InitMain, string.Empty)
             {
@@ -145,7 +145,7 @@ namespace Azuria.Main
         ///     Gibt die Links zu allen FSK-Beschränkungen des <see cref="Anime" /> oder <see cref="Manga" /> zurück.
         ///     <para>(Vererbt von <see cref="IAnimeMangaObject" />)</para>
         /// </summary>
-        public InitialisableProperty<Dictionary<Uri, string>> Fsk { get; }
+        public InitialisableProperty<IEnumerable<FskObject>> Fsk { get; }
 
         /// <summary>
         ///     Gitb die Genres des <see cref="Anime" /> oder <see cref="Manga" /> zurück.
@@ -526,22 +526,28 @@ namespace Azuria.Main
                             this.Genre.SetInitialisedObject(lGenreList.ToArray());
                             break;
                         case "FSK":
-                            Dictionary<Uri, string> lTempDict = new Dictionary<Uri, string>();
+                            List<FskObject> lTempList = new List<FskObject>();
                             foreach (
                                 HtmlNode htmlNode in
                                     childNode.ChildNodes[1].ChildNodes.ToList()
                                         .Where(htmlNode => htmlNode.Name.Equals("span") &&
-                                                           !lTempDict.ContainsValue(htmlNode
-                                                               .GetAttributeValue(
-                                                                   "title", "ERROR"))))
+                                                           lTempList.All(
+                                                               o =>
+                                                                   o.Fsk !=
+                                                                   FskHelper.StringToFskDictionary[
+                                                                       htmlNode.FirstChild.GetAttributeValue("src",
+                                                                           "/images/fsk/unknown.png")
+                                                                           .GetTagContents("fsk/", ".png")
+                                                                           .First()])))
                             {
-                                lTempDict.Add(
-                                    new Uri("https://proxer.me" +
-                                            htmlNode.FirstChild.GetAttributeValue("src",
-                                                "/")),
-                                    htmlNode.GetAttributeValue("title", "ERROR"));
+                                string lFskString = htmlNode.FirstChild.GetAttributeValue("src",
+                                    "/images/fsk/unknown.png")
+                                    .GetTagContents("fsk/", ".png")
+                                    .First();
+                                lTempList.Add(new FskObject(FskHelper.StringToFskDictionary[lFskString],
+                                    new Uri($"https://proxer.me/images/fsk/{lFskString}.png")));
                             }
-                            this.Fsk.SetInitialisedObject(lTempDict);
+                            this.Fsk.SetInitialisedObject(lTempList);
                             break;
                         case "Season":
                             List<string> lSeasonList = new List<string>();
@@ -740,13 +746,13 @@ namespace Azuria.Main
             /// <exception cref="NotLoggedInException">Wird ausgelöst, wenn der <see cref="Senpai">Benutzer</see> nicht eingeloggt ist.</exception>
             /// <exception cref="CaptchaException">Wird ausgelöst, wenn der Server das Ausfüllen eines Captchas erfordert.</exception>
             /// <seealso cref="Senpai.Login" />
-            [ItemNotNull]
-            [Obsolete("Bitte benutze die Methoden der jeweiligen Eigenschaften, um sie zu initalisieren!")]
+            [ItemNotNull, Obsolete("Bitte benutze die Methoden der jeweiligen Eigenschaften, um sie zu initalisieren!")]
             public async Task<ProxerResult> Init()
             {
                 return await this.InitInitalisableProperties();
             }
 
+            [ItemNotNull]
             private async Task<ProxerResult> InitInfo()
             {
                 HtmlDocument lDocument = new HtmlDocument();

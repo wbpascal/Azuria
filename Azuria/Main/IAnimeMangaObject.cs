@@ -43,7 +43,7 @@ namespace Azuria.Main
         ///     <para>(Vererbt von <see cref="IAnimeMangaObject" />)</para>
         /// </summary>
         [NotNull]
-        InitialisableProperty<Dictionary<Uri, string>> Fsk { get; }
+        InitialisableProperty<IEnumerable<FskObject>> Fsk { get; }
 
         /// <summary>
         ///     Gitb die Genres des <see cref="Anime" /> oder <see cref="Manga" /> zurück.
