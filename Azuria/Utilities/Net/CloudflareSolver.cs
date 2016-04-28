@@ -23,7 +23,7 @@ namespace Azuria.Utilities.Net
                 string lChallengeId = new Regex("name=\"jschl_vc\" value=\"(\\w+)\"").Match(response).Groups[1].Value;
                 string lChallengePass = new Regex("name=\"pass\" value=\"(.+?)\"").Match(response).Groups[1].Value;
 
-                if (!string.IsNullOrEmpty(lChallengeId.Trim()) || !string.IsNullOrEmpty(lChallengePass.Trim()) ||
+                if (string.IsNullOrEmpty(lChallengeId.Trim()) || string.IsNullOrEmpty(lChallengePass.Trim()) ||
                     lCloudflareAnswer == int.MinValue)
                     return new ProxerResult<string>(new Exception[0]);
 

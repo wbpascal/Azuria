@@ -35,26 +35,7 @@ namespace Azuria
         /// </summary>
         /// <param name="userId">Die ID des Benutzers</param>
         /// <param name="senpai">Wird benötigt um einige Eigenschaften abzurufen</param>
-        public User(int userId, [NotNull] Senpai senpai) : this("", userId, senpai)
-        {
-        }
-
-        internal User([NotNull] string name, int userId, [NotNull] Senpai senpai) : this(name, userId, null, senpai)
-        {
-        }
-
-        internal User([NotNull] string name, int userId, [CanBeNull] Uri avatar, [NotNull] Senpai senpai)
-            : this(name, userId, avatar, false, senpai)
-        {
-        }
-
-        internal User([NotNull] string name, int userId, [CanBeNull] Uri avatar, int points, [NotNull] Senpai senpai)
-            : this(name, userId, avatar, senpai)
-        {
-            this.Points = new InitialisableProperty<int>(this.InitMainInfo, points);
-        }
-
-        internal User([NotNull] string name, int userId, [CanBeNull] Uri avatar, bool online, [NotNull] Senpai senpai)
+        public User(int userId, [NotNull] Senpai senpai)
         {
             this._senpai = senpai;
             this.Id = userId;
@@ -64,9 +45,9 @@ namespace Azuria
                     <IEnumerable<KeyValuePair<AnimeMangaProgressState, AnimeMangaProgressObject<Anime>>>>
                     (this.InitAnime);
             this.Avatar = new InitialisableProperty<Uri>(this.InitMainInfo,
-                avatar ?? new Uri("https://cdn.proxer.me/avatar/nophoto.png"))
+                new Uri("https://cdn.proxer.me/avatar/nophoto.png"))
             {
-                IsInitialisedOnce = avatar != null
+                IsInitialisedOnce = false
             };
             this.Chronic = new InitialisableProperty<IEnumerable<AnimeMangaChronicObject>>(this.InitChronic);
             this.FavouriteAnime = new InitialisableProperty<IEnumerable<Anime>>(this.InitAnime);
@@ -74,7 +55,7 @@ namespace Azuria
             this.Friends = new InitialisableProperty<IEnumerable<User>>(this.InitFriends);
             this.Info = new InitialisableProperty<string>(this.InitInfos);
             this.InfoHtml = new InitialisableProperty<string>(this.InitInfos);
-            this.IsOnline = new InitialisableProperty<bool>(this.InitMainInfo, online);
+            this.IsOnline = new InitialisableProperty<bool>(this.InitMainInfo);
             this.Manga =
                 new InitialisableProperty
                     <IEnumerable<KeyValuePair<AnimeMangaProgressState, AnimeMangaProgressObject<Manga>>>>
@@ -82,7 +63,30 @@ namespace Azuria
             this.Points = new InitialisableProperty<int>(this.InitMainInfo);
             this.Ranking = new InitialisableProperty<string>(this.InitMainInfo);
             this.Status = new InitialisableProperty<string>(this.InitMainInfo);
+            this.UserName = new InitialisableProperty<string>(this.InitMainInfo);
+        }
+
+        internal User([NotNull] string name, int userId, [NotNull] Senpai senpai) : this(userId, senpai)
+        {
             this.UserName = new InitialisableProperty<string>(this.InitMainInfo, name);
+        }
+
+        internal User([NotNull] string name, int userId, [NotNull] Uri avatar, [NotNull] Senpai senpai)
+            : this(name, userId, senpai)
+        {
+            this.Avatar = new InitialisableProperty<Uri>(this.InitMainInfo, avatar);
+        }
+
+        internal User([NotNull] string name, int userId, [NotNull] Uri avatar, int points, [NotNull] Senpai senpai)
+            : this(name, userId, avatar, senpai)
+        {
+            this.Points = new InitialisableProperty<int>(this.InitMainInfo, points);
+        }
+
+        internal User([NotNull] string name, int userId, [NotNull] Uri avatar, bool online, [NotNull] Senpai senpai)
+            : this(name, userId, avatar, senpai)
+        {
+            this.IsOnline = new InitialisableProperty<bool>(this.InitMainInfo, online);
         }
 
         #region Properties

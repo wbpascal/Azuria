@@ -480,7 +480,7 @@ namespace Azuria.Main
                 await
                     HttpUtility.GetResponseErrorHandling(
                         new Uri("https://proxer.me/info/" + this.Id + "?format=raw"),
-                        null,
+                        this._senpai.LoginCookies,
                         this._senpai.ErrHandler,
                         this._senpai,
                         new[] {lCheckFunc});
