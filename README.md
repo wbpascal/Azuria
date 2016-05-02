@@ -1,55 +1,54 @@
-# Azuria - Ein Proxer.Me API in .NET (inoffiziell)
+# Azuria - A Proxer.Me API in .NET (inofficial)
 
 ##Status
 Master-Branch: [![Build status](https://ci.appveyor.com/api/projects/status/eenr5ksrjakegl0e/branch/master?svg=true)](https://ci.appveyor.com/project/InfiniteSoul/massive-octo-wookie/branch/master)
 
-Neuester Commit: [![Build status](https://ci.appveyor.com/api/projects/status/eenr5ksrjakegl0e?svg=true)](https://ci.appveyor.com/project/InfiniteSoul/massive-octo-wookie)
+Newest Commit: [![Build status](https://ci.appveyor.com/api/projects/status/eenr5ksrjakegl0e?svg=true)](https://ci.appveyor.com/project/InfiniteSoul/massive-octo-wookie)
 
 Issues: [![Stories in Ready](https://badge.waffle.io/InfiniteSoul/azuria.svg?label=ready&title=Ready)](http://waffle.io/InfiniteSoul/azuria)
 
-Dokumentation: http://azuria.infinitesoul.de/help
+Documentation: http://azuria.infinitesoul.de/help (only available in German atm)
 
 ---
 
-##Achtung!
-Da sich diese Klassenbibliothek nicht nur auf die offiziellen Funktionen des Proxer API stützt, ist sie abhängig von dem Layout von Proxer. Das bedeutet, dass Änderung an diesem einzelne Funktionen oder ganze Teile dieser Klassenbibliothek lahm legen könne. Sollte dies passieren bemühe ich mich diese Funktionen so schnell wie möglich zu beheben, jedoch teste ich diese nicht täglich darum bitte ich jegliche Fehler, die ich nicht bemerkt habe unter [Issues](https://github.com/InfiniteSoul/Azuria/issues) zu berichten.
+##Warning!
+Because this Class Library implements not only the official API of Proxer.Me it is dependent on the Layout of the Website too. This implies that every change that is being made to the website, even little ones, can break parts or the entirety of this Class Library. If under any circumstances problems arise in result of the aforementioned problem, I ask you to report it to the  [issue Page](https://github.com/InfiniteSoul/Azuria/issues).
 
 ---
 
-##Was ist das?
-Azuria ist eine **inoffizielle** Klassenbibliothek, die sowohl die Funktionen der offiziellen Proxer API, als auch einige weitere Funktionen von Proxer.Me für, wie der Titel schon vermuten mag, .NET Sprachen zur Verfügung stellt. Im Moment existiert nur eine "normale" Version, jedoch ist eine portable und eine für Mono bereits geplant. 
+##What does this do?
+Azuria is a **inofficial** Class Library, which exposes the functions of the official Proxer.Me API as well as a lot more to .NET compatible languages. The whole project consists at the moment of a "normal" class library in .NET 4.5, which means, albeit not tested enough, that it can be used in a Mono environment, and a portable version. 
 
 
-##Wie installiere ich es?
-Entweder du gehst auf die [Website](http://azuria.infinitesoul.de) und lädst dir entweder die stabile oder die neueste Version runter oder du gibst folgendes in die NuGet-Konsole ein:
+##Ok nice! Then... How do I install it?
+The currently most reliable method is to install it via NuGet. To install it via NuGet you have to open a compatible console (for example the build-in one in visual studio) and type in:
 ```
 PM> Install-Package Azuria
 ```
 
-##Die Klasse `ProxerResult`
-Diese Klasse ist eine Hilfsklasse und sie tritt fast überall auf, insbesondere, wenn die Klassenbibliothek mit Proxer kommuniziert. Sie tritt immer als Rückgabewert auf und gibt dem Anwender jede menge Möglichkeiten zu überprüfen, ob die Methode planmäßig verlaufen ist, indem sie die folgenden Eigenschaften und Methoden bereitstellt:
+##The `ProxerResult` class
+This class is used as a return type in a lot of methods and aims to help with handling errors encountered during runtime. The class exposes the following important members:
 
-####Die `Success` Eigenschaft 
-Diese Eigenschaft gibt an, ob die Methode erfolgreich war, die dieses Objekt zurückgegeben hat. Wenn diese Eigenschaft einen falschen Wahrheitswert zurückgibt, so kann die `Exceptions` Eigenschaft weiterhelfen.
+####The `Success` Property 
+As the name may entail it returns a true boolean value if the method was a success and a false one if it wasn't. If the method failed to execute more information as to why it did can be found in the `Exceptions` property.
 
-####Die `Exceptions` Eigenschaft
-Hier werden alle Ausnahmen gesammelt, die während der Ausführung der Methode und der dazugehörigen Untermethoden aufgerufen werde. Diese kann aber auch Ausnahmen enthalten, wenn die `Success` Eigenschaft einen wahren Wahrheitswert zurückgibt, wie bei den `Init()` Methoden einiger Klassen.
+####The `Exceptions` Property
+Like mentioned in the description of the `Success` property this property returns all exceptions that happened during the execution of the method. This does not always mean the method failed! The only realiable method to check whether the method failed is to look at the `Success` property.
 
-####Die `Result` Eigenschaft (Nur in der Unterklasse `ProxerResult<T>`)
-Diese Eigenschaft gibt das Resultat der Methode zurück und ist vom Typ `T`. Hier muss jedoch beachtet werden, dass wenn die `Success` Eigenschaft einen falschen Wahrheitswert zurückgibt diese Eigenschaft auch einen NULL-Wert zurückgeben kann.
+####The `Result` Property (Only available in the `ProxerResult<T>` subclass)
+This property returns the result of the method if it returns anything else than `ProxerResult` or `Task<ProxerResult>`. The returned result is always of type T if `Success` is true and null if not.
 
 ####Die `OnError(T)` Methode (Nur in der Unterklasse `ProxerResult<T>`)
-Diese Methode gibt einen festgelegten Wert zurück, wenn nach der Ausführung der Methode die `Success` Eigenschaft einen falschen Wahrheitswert zurückgibt. Ansonsten wird der Rückgabewert der Methode zurückgegeben. Verwendung in C#:
+If the method failed to execute and as a result the `Success` property returns false, this method automatically returns a specified object of type T. If the method executed normaly without problems it just returns the value specified in `Result`. Example in C#:
 ```csharp
 bool loggedIn = (await senpai.Login("benutzername", "passwort")).OnError(false);
 ```
-In diesem Beispiel wird der Senpai durch die Methode eingeloggt und es wird zurückgegeben, ob die Aktion erfolgreich war. Wenn nun aber ein Fehler bei der Ausführung der Methode aufgetreten ist, z.B. ist der Proxer-Server nicht verfügbar, dann wird automatisch `false` zurückgegeben. Dies kann gut benutzt werden, um den Quellcode zu vereinfachen und keine zu großen `if` Blöcke zu bauen.
 
 
-##Noch Fragen? 
-Dann schaue dir am besten mal das Beispielprojekt `Azuria.Example` an oder schau in der [Dokumentation] (http://azuria.infinitesoul.de/help) nach. Diese sind immer auf dem aktuellsten Stand mit der Master-Branch. 
+##Still questions? 
+Then look at the `Azuria.Example` project or the [documentation] (http://azuria.infinitesoul.de/help) (documentation only available in german at the moment).
 
-## Externe Abhängigkeiten
+## Other dependencies
 
 [JSON .NET](https://www.nuget.org/packages/Newtonsoft.Json/)
 
@@ -57,4 +56,4 @@ Dann schaue dir am besten mal das Beispielprojekt `Azuria.Example` an oder schau
 
 [RestSharp](http://restsharp.org/)
 
-Diese können auch mit dem Befehl `nuget restore` heruntergeladen werden.
+These can be downloaded with the help of the `nuget restore` command.
