@@ -46,7 +46,7 @@ bool loggedIn = (await senpai.Login("benutzername", "passwort")).OnError(false);
 
 
 ##Still questions? 
-Then look at the `Azuria.Example` project or the [documentation] (http://azuria.infinitesoul.de/help) (documentation only available in german at the moment).
+Then take a look at the [documentation] (http://azuria.infinitesoul.de/help) (documentation only available in german at the moment).
 
 ## Other dependencies
 
