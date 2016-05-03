@@ -339,8 +339,7 @@ namespace Azuria.Main.User.ControlPanel
                 return new ProxerResult((await ErrorHandler.HandleError(this._senpai, lResponse, false)).Exceptions);
             }
         }
-
-        [ItemNotNull]
+        
         private ProxerResult<AnimeMangaFavouriteObject> ParseFavourite<T>([NotNull] HtmlNode htmlNode)
             where T : IAnimeMangaObject
         {

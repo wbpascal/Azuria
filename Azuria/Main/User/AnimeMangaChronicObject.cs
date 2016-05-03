@@ -53,7 +53,6 @@ namespace Azuria.Main.User
         #region
 
         [NotNull]
-        [ItemNotNull]
         internal static ProxerResult<AnimeMangaChronicObject> GetChronicObjectFromNode([NotNull] HtmlNode node,
             [NotNull] Senpai senpai,
             bool extended = false)

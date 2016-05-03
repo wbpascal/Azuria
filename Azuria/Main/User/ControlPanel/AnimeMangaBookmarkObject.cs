@@ -90,7 +90,6 @@ namespace Azuria.Main.User.ControlPanel
         }
 
         [NotNull]
-        [ItemCanBeNull]
         internal static ProxerResult<AnimeMangaBookmarkObject> ParseNode([NotNull] HtmlNode node,
             [NotNull] Senpai senpai)
         {

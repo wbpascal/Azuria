@@ -71,13 +71,13 @@ namespace Azuria
             this.UserName = new InitialisableProperty<string>(this.InitMainInfo, name);
         }
 
-        internal User([NotNull] string name, int userId, [NotNull] Uri avatar, [NotNull] Senpai senpai)
+        internal User([NotNull] string name, int userId, [CanBeNull] Uri avatar, [NotNull] Senpai senpai)
             : this(name, userId, senpai)
         {
-            this.Avatar = new InitialisableProperty<Uri>(this.InitMainInfo, avatar);
+            this.Avatar = new InitialisableProperty<Uri>(this.InitMainInfo, avatar ?? new Uri("https://cdn.proxer.me/avatar/nophoto.png"));
         }
 
-        internal User([NotNull] string name, int userId, [NotNull] Uri avatar, int points, [NotNull] Senpai senpai)
+        internal User([NotNull] string name, int userId, [CanBeNull] Uri avatar, int points, [NotNull] Senpai senpai)
             : this(name, userId, avatar, senpai)
         {
             this.Points = new InitialisableProperty<int>(this.InitMainInfo, points);
