@@ -5,6 +5,7 @@ using Azuria.Exceptions;
 using Azuria.Main.Minor;
 using Azuria.Utilities;
 using Azuria.Utilities.ErrorHandling;
+using Azuria.Utilities.Extensions;
 using JetBrains.Annotations;
 
 namespace Azuria.Main.Search

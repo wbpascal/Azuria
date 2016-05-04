@@ -2,8 +2,8 @@
 using System.Linq;
 using Azuria.Exceptions;
 using Azuria.Main.Minor;
-using Azuria.Utilities;
 using Azuria.Utilities.ErrorHandling;
+using Azuria.Utilities.Extensions;
 using HtmlAgilityPack;
 using JetBrains.Annotations;
 

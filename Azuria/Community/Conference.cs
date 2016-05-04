@@ -7,6 +7,7 @@ using Azuria.Community.ConferenceHelper;
 using Azuria.Exceptions;
 using Azuria.Utilities;
 using Azuria.Utilities.ErrorHandling;
+using Azuria.Utilities.Extensions;
 using Azuria.Utilities.Net;
 using Azuria.Utilities.Properties;
 using HtmlAgilityPack;
@@ -553,7 +554,7 @@ namespace Azuria.Community
         [Obsolete("Bitte benutze die Methoden der jeweiligen Eigenschaften, um sie zu initalisieren!")]
         public async Task<ProxerResult> Init()
         {
-            return await this.InitInitalisableProperties();
+            return await this.InitAllInitalisableProperties();
         }
 
         /// <summary>

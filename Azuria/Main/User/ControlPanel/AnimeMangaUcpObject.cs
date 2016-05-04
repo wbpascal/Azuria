@@ -13,34 +13,24 @@ namespace Azuria.Main.User.ControlPanel
     /// <typeparam name="T"></typeparam>
     public class AnimeMangaUcpObject<T> : AnimeMangaProgressObject<T> where T : IAnimeMangaObject
     {
-        /// <summary>
-        ///     Initialisiert das Objekt.
-        /// </summary>
-        /// <param name="user">Der Benutzer, der mit dem Fortschritt zusammenhängt.</param>
-        /// <param name="animeMangaObject">
-        ///     Der <see cref="Anime">Anime</see> oder <see cref="Manga">Manga</see>, mit dem das Objekt
-        ///     zusammenhängt.
-        /// </param>
-        /// <param name="entryId"></param>
-        /// <param name="progress">Der aktuelle Fortschritt.</param>
-        /// <param name="progressState">
-        ///     Die Kategorie, in der der <paramref name="user">Benutzer</paramref> seinen Fortschritt
-        ///     einsortiert hat.
-        /// </param>
-        /// <param name="senpai"></param>
-        public AnimeMangaUcpObject([NotNull] Azuria.User user, [NotNull] T animeMangaObject, int entryId,
-            AnimeMangaProgress progress, AnimeMangaProgressState progressState, [NotNull] Senpai senpai)
+        [CanBeNull] private readonly UserControlPanel _controlPanel;
+
+        internal AnimeMangaUcpObject([NotNull] Azuria.User user, [NotNull] T animeMangaObject, int entryId,
+            AnimeMangaProgress progress, AnimeMangaProgressState progressState, [NotNull] Senpai senpai,
+            [CanBeNull] UserControlPanel controlPanel = null)
             : base(user, animeMangaObject, entryId, progress, progressState, senpai)
         {
+            this._controlPanel = controlPanel;
             this.Comment = new InitialisableProperty<EditableComment>(this.GetEditableComment);
             this.Progress = new EditableAnimeMangaProgress(progress.CurrentProgress, progress.MaxProgress,
                 this.GetCurrentProgress, this.SetCurrentProgress);
         }
 
-        private AnimeMangaUcpObject([NotNull] AnimeMangaProgressObject<T> baseClass, [NotNull] Senpai senpai)
+        private AnimeMangaUcpObject([NotNull] AnimeMangaProgressObject<T> baseClass, [NotNull] Senpai senpai,
+            [CanBeNull] UserControlPanel controlPanel = null)
             : this(
                 baseClass.User, baseClass.AnimeMangaObject, baseClass.EntryId, baseClass.Progress,
-                baseClass.ProgressState, senpai)
+                baseClass.ProgressState, senpai, controlPanel)
         {
         }
 
@@ -69,7 +59,12 @@ namespace Azuria.Main.User.ControlPanel
             if (!lEditableCommentFetchResult.Success || lEditableCommentFetchResult.Result == null)
                 return new ProxerResult(lEditableCommentFetchResult.Exceptions);
 
-            return await lEditableCommentFetchResult.Result.Delete();
+            ProxerResult lDeleteResult = await lEditableCommentFetchResult.Result.Delete();
+            if (!lDeleteResult.Success) return lDeleteResult;
+
+            this._controlPanel?.DeleteEntry<T>(this.EntryId);
+
+            return new ProxerResult();
         }
 
         private async Task<ProxerResult<int>> GetCurrentProgress()

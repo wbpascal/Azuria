@@ -214,6 +214,18 @@
     <Compile Include="..\Azuria\Utilities\ErrorHandling\ProxerResult.cs">
       <Link>Utilities\ErrorHandling\ProxerResult.cs</Link>
     </Compile>
+    <Compile Include="..\Azuria\Utilities\Extensions\HtmlAgilityPackExtensions.cs">
+      <Link>Utilities\Extensions\HtmlAgilityPackExtensions.cs</Link>
+    </Compile>
+    <Compile Include="..\Azuria\Utilities\Extensions\InitialisationExtensions.cs">
+      <Link>Utilities\Extensions\InitialisationExtensions.cs</Link>
+    </Compile>
+    <Compile Include="..\Azuria\Utilities\Extensions\StringExtensions.cs">
+      <Link>Utilities\Extensions\StringExtensions.cs</Link>
+    </Compile>
+    <Compile Include="..\Azuria\Utilities\Extensions\TypeExtensions.cs">
+      <Link>Utilities\Extensions\TypeExtensions.cs</Link>
+    </Compile>
     <Compile Include="..\Azuria\Utilities\Net\CloudflareSolver.cs">
       <Link>Utilities\Net\CloudflareSolver.cs</Link>
     </Compile>

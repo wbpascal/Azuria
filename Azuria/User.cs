@@ -8,8 +8,8 @@ using Azuria.Main;
 using Azuria.Main.Search;
 using Azuria.Main.User;
 using Azuria.Main.User.Comment;
-using Azuria.Utilities;
 using Azuria.Utilities.ErrorHandling;
+using Azuria.Utilities.Extensions;
 using Azuria.Utilities.Net;
 using Azuria.Utilities.Properties;
 using HtmlAgilityPack;
@@ -74,7 +74,8 @@ namespace Azuria
         internal User([NotNull] string name, int userId, [CanBeNull] Uri avatar, [NotNull] Senpai senpai)
             : this(name, userId, senpai)
         {
-            this.Avatar = new InitialisableProperty<Uri>(this.InitMainInfo, avatar ?? new Uri("https://cdn.proxer.me/avatar/nophoto.png"));
+            this.Avatar = new InitialisableProperty<Uri>(this.InitMainInfo,
+                avatar ?? new Uri("https://cdn.proxer.me/avatar/nophoto.png"));
         }
 
         internal User([NotNull] string name, int userId, [CanBeNull] Uri avatar, int points, [NotNull] Senpai senpai)
@@ -362,7 +363,7 @@ namespace Azuria
         [Obsolete("Bitte benutze die Methoden der jeweiligen Eigenschaften, um sie zu initalisieren!")]
         public async Task<ProxerResult> Init()
         {
-            return await this.InitInitalisableProperties();
+            return await this.InitAllInitalisableProperties();
         }
 
         [ItemNotNull]

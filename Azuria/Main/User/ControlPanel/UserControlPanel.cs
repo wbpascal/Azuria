@@ -4,8 +4,8 @@ using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
 using Azuria.Exceptions;
-using Azuria.Utilities;
 using Azuria.Utilities.ErrorHandling;
+using Azuria.Utilities.Extensions;
 using Azuria.Utilities.Net;
 using Azuria.Utilities.Properties;
 using HtmlAgilityPack;
@@ -64,6 +64,22 @@ namespace Azuria.Main.User.ControlPanel
         #endregion
 
         #region
+
+        internal void DeleteEntry<T>(int entryId) where T : IAnimeMangaObject
+        {
+            if (typeof(T) == typeof(Anime) && this.Anime.IsInitialisedOnce)
+            {
+                this.Anime.GetObjectIfInitialised(new AnimeMangaUcpObject<Anime>[0])
+                    .ToList()
+                    .RemoveAll(ucpObject => ucpObject.EntryId == entryId);
+            }
+            else if (typeof(T) == typeof(Manga) && this.Manga.IsInitialisedOnce)
+            {
+                this.Manga.GetObjectIfInitialised(new AnimeMangaUcpObject<Manga>[0])
+                    .ToList()
+                    .RemoveAll(ucpObject => ucpObject.EntryId == entryId);
+            }
+        }
 
         [ItemNotNull]
         private async Task<ProxerResult> InitAnime()
@@ -339,7 +355,7 @@ namespace Azuria.Main.User.ControlPanel
                 return new ProxerResult((await ErrorHandler.HandleError(this._senpai, lResponse, false)).Exceptions);
             }
         }
-        
+
         private ProxerResult<AnimeMangaFavouriteObject> ParseFavourite<T>([NotNull] HtmlNode htmlNode)
             where T : IAnimeMangaObject
         {

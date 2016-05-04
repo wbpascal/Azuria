@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using Azuria.Main.Minor;
 using Azuria.Main.Search;
 using Azuria.Main.User.Comment;
+using Azuria.Main.User.ControlPanel;
 using Azuria.Utilities.ErrorHandling;
 using Azuria.Utilities.Properties;
 using JetBrains.Annotations;
@@ -129,6 +130,11 @@ namespace Azuria.Main
         #endregion
 
         #region
+
+        /// <summary>
+        /// </summary>
+        /// <returns></returns>
+        Task<ProxerResult> AddToPlanned(UserControlPanel userControlPanel = null);
 
         /// <summary>
         ///     Gibt die Kommentare des <see cref="Anime" /> oder <see cref="Manga" /> chronologisch geordnet zurück.

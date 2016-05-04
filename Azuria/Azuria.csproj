@@ -82,6 +82,7 @@
     <Compile Include="Main\Anime.cs" />
     <Compile Include="Main\AnimeMangaStatus.cs" />
     <Compile Include="Main\AnimeMangaType.cs" />
+    <Compile Include="Main\IAnimeMangaContent.cs" />
     <Compile Include="Main\IAnimeMangaObject.cs" />
     <Compile Include="Main\Manga.cs" />
     <Compile Include="Main\Minor\FskObject.cs" />
@@ -128,6 +129,10 @@
     <Compile Include="Senpai.cs" />
     <Compile Include="User.cs" />
     <Compile Include="Utilities\ErrorHandling\ErrorHandler.cs" />
+    <Compile Include="Utilities\Extensions\HtmlAgilityPackExtensions.cs" />
+    <Compile Include="Utilities\Extensions\InitialisationExtensions.cs" />
+    <Compile Include="Utilities\Extensions\StringExtensions.cs" />
+    <Compile Include="Utilities\Extensions\TypeExtensions.cs" />
     <Compile Include="Utilities\Properties\IInitialisableProperty.cs" />
     <Compile Include="Utilities\Properties\InitialisableProperty.cs" />
     <Compile Include="Utilities\Properties\SetableInitialisableProperty.cs" />
