@@ -69,15 +69,21 @@ namespace Azuria.Main.User.ControlPanel
         {
             if (typeof(T) == typeof(Anime) && this.Anime.IsInitialisedOnce)
             {
-                this.Anime.GetObjectIfInitialised(new AnimeMangaUcpObject<Anime>[0])
-                    .ToList()
-                    .RemoveAll(ucpObject => ucpObject.EntryId == entryId);
+                List<AnimeMangaUcpObject<Anime>> lAnimeList =
+                    this.Anime.GetObjectIfInitialised(new AnimeMangaUcpObject<Anime>[0]).ToList();
+                if (!lAnimeList.Any()) return;
+
+                lAnimeList.RemoveAll(ucpObject => ucpObject?.EntryId == entryId);
+                this.Anime.SetInitialisedObject(lAnimeList);
             }
             else if (typeof(T) == typeof(Manga) && this.Manga.IsInitialisedOnce)
             {
-                this.Manga.GetObjectIfInitialised(new AnimeMangaUcpObject<Manga>[0])
-                    .ToList()
-                    .RemoveAll(ucpObject => ucpObject.EntryId == entryId);
+                List<AnimeMangaUcpObject<Manga>> lMangaList =
+                    this.Manga.GetObjectIfInitialised(new AnimeMangaUcpObject<Manga>[0]).ToList();
+                if (!lMangaList.Any()) return;
+
+                lMangaList.RemoveAll(ucpObject => ucpObject?.EntryId == entryId);
+                this.Manga.SetInitialisedObject(lMangaList);
             }
         }
 
