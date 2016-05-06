@@ -1,11 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using Azuria.Main;
 using Azuria.Main.User.ControlPanel;
 using Azuria.Test.Attributes;
+using Azuria.Utilities.ErrorHandling;
 using NUnit.Framework;
 
 namespace Azuria.Test
@@ -20,12 +18,11 @@ namespace Azuria.Test
         {
             this._controlPanel = new UserControlPanel(SenpaiTest.Senpai);
 
-            var lFetchAnimeResult = await this._controlPanel.Anime.GetObject();
+            ProxerResult<IEnumerable<AnimeMangaUcpObject<Anime>>> lFetchAnimeResult =
+                await this._controlPanel.Anime.GetObject();
             Assert.IsTrue(lFetchAnimeResult.Success);
             Assert.IsNotNull(lFetchAnimeResult.Result);
             Assert.IsNotEmpty(lFetchAnimeResult.Result);
-
-            
         }
     }
 }

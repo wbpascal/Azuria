@@ -6,6 +6,7 @@ using Azuria.Main;
 using Azuria.Main.Minor;
 using Azuria.Main.User;
 using Azuria.Main.User.Comment;
+using Azuria.Main.User.ControlPanel;
 using Azuria.Test.Attributes;
 using Azuria.Test.Utility;
 using Azuria.Utilities.ErrorHandling;
@@ -26,6 +27,26 @@ namespace Azuria.Test
             Assert.IsNotNull(this._manga);
             IEnumerable<Language> lLanguages = await this._manga.AvailableLanguages.GetObject(new Language[0]);
             Assert.IsNotEmpty(lLanguages);
+        }
+
+        [Test, Order(4)]
+        public async Task Chapter_AddBookmarkTest()
+        {
+            Assert.IsNotNull(this._manga);
+            Assert.IsNotNull(this._chapter);
+
+            await Task.Delay(2000);
+
+            ProxerResult<AnimeMangaBookmarkObject<Manga>> lChapterBookmark =
+                await this._chapter.AddToBookmarks();
+            Assert.IsTrue(lChapterBookmark.Success);
+            Assert.IsNotNull(lChapterBookmark.Result);
+            Assert.AreEqual(lChapterBookmark.Result.ContentObject.ParentObject.Id, this._manga.Id);
+
+            await Task.Delay(2000);
+
+            ProxerResult lDeleteResult = await lChapterBookmark.Result.DeleteEntry();
+            Assert.IsTrue(lDeleteResult.Success);
         }
 
         [Test, Order(4)]
@@ -166,11 +187,11 @@ namespace Azuria.Test
             Assert.IsNotNull(lChaper.Result);
             Assert.IsTrue(lChaper.Result.Count() == await this._manga.ChapterCount.GetObject(int.MinValue));
             Assert.IsTrue(lChaper.Result.All(chapter => chapter.Language == lAvailableLanguages.First()));
-            Assert.IsTrue(lChaper.Result.All(chapter => chapter.ParentManga == this._manga));
+            Assert.IsTrue(lChaper.Result.All(chapter => chapter.ParentObject == this._manga));
 
             foreach (Manga.Chapter chapter in lChaper.Result)
             {
-                if (await chapter.Available.GetObject(false))
+                if (await chapter.IsAvailable.GetObject(false))
                 {
                     this._chapter = chapter;
                     break;
@@ -290,8 +311,8 @@ namespace Azuria.Test
         public async Task MangaTypeTest()
         {
             Assert.IsNotNull(this._manga);
-            Manga.MangaType lMangaType = await this._manga.MangaTyp.GetObject(Manga.MangaType.Unbekannt);
-            Assert.AreNotEqual(lMangaType, Manga.MangaType.Unbekannt);
+            Manga.MangaType lMangaType = await this._manga.MangaTyp.GetObject(Manga.MangaType.Unknown);
+            Assert.AreNotEqual(lMangaType, Manga.MangaType.Unknown);
         }
 
         [Test, Order(2)]

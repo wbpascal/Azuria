@@ -45,7 +45,7 @@ namespace Azuria.Main
             /// <summary>
             ///     Stellt einen unbekannten Animetypen dar.
             /// </summary>
-            Unbekannt
+            Unknown
         }
 
         /// <summary>
@@ -71,7 +71,11 @@ namespace Azuria.Main
             /// <summary>
             ///     Der Anime ist Deutsch vertont.
             /// </summary>
-            GerDub
+            GerDub,
+
+            /// <summary>
+            /// </summary>
+            Unknown
         }
 
         private readonly Senpai _senpai;
@@ -704,21 +708,62 @@ namespace Azuria.Main
         /// <summary>
         ///     Eine Klasse, die die <see cref="Episode">Episode</see> eines <see cref="Anime" /> darstellt.
         /// </summary>
-        public class Episode
+        public class Episode : IAnimeMangaContent<Anime>
         {
             private readonly Senpai _senpai;
 
-            internal Episode([NotNull] Anime anime, int number, Language lang, [NotNull] Senpai senpai)
+            internal Episode([NotNull] Anime anime, int index, Language lang, [NotNull] Senpai senpai)
             {
-                this.ParentAnime = anime;
-                this.EpisodeNumber = number;
+                this.ParentObject = anime;
+                this.ContentIndex = index;
                 this.Language = lang;
                 this._senpai = senpai;
 
+                this.IsAvailable = new InitialisableProperty<bool>(this.InitInfo);
                 this.Streams =
                     new InitialisableProperty<IEnumerable<KeyValuePair<Stream.StreamPartner, Stream>>>(
                         this.InitInfo);
             }
+
+            internal Episode([NotNull] Anime anime, int index, Language lang, bool isAvailable, [NotNull] Senpai senpai)
+                : this(anime, index, lang, senpai)
+            {
+                this.IsAvailable = new InitialisableProperty<bool>(this.InitInfo, isAvailable);
+            }
+
+            #region Geerbt
+
+            /// <summary>
+            /// </summary>
+            /// <returns></returns>
+            public async Task<ProxerResult<AnimeMangaBookmarkObject<Anime>>> AddToBookmarks(
+                UserControlPanel userControlPanel = null)
+            {
+                userControlPanel = userControlPanel ?? new UserControlPanel(this._senpai);
+                return await userControlPanel.AddToBookmarks(this);
+            }
+
+            /// <summary>
+            /// </summary>
+            public Anime ParentObject { get; }
+
+            /// <summary>
+            /// </summary>
+            public InitialisableProperty<bool> IsAvailable { get; }
+
+            /// <summary>
+            /// </summary>
+            public int ContentIndex { get; }
+
+            Minor.Language IAnimeMangaContent<Anime>.GeneralLanguage
+                =>
+                    this.Language == Language.GerSub || this.Language == Language.GerDub
+                        ? Minor.Language.German
+                        : this.Language == Language.EngSub || this.Language == Language.EngDub
+                            ? Minor.Language.English
+                            : Minor.Language.Unkown;
+
+            #endregion
 
             #region Properties
 
@@ -731,12 +776,6 @@ namespace Azuria.Main
             ///     Gibt die Sprache der Episode zurück.
             /// </summary>
             public Language Language { get; }
-
-            /// <summary>
-            ///     Gibt den Anime der Episode zurück.
-            /// </summary>
-            [NotNull]
-            public Anime ParentAnime { get; set; }
 
             /// <summary>
             ///     Gibt die vorhandenen Streams der Episode zurück.
@@ -768,7 +807,7 @@ namespace Azuria.Main
                 ProxerResult<string> lResult =
                     await
                         HttpUtility.GetResponseErrorHandling(
-                            new Uri("https://proxer.me/watch/" + this.ParentAnime.Id + "/" + this.EpisodeNumber + "/" +
+                            new Uri("https://proxer.me/watch/" + this.ParentObject.Id + "/" + this.EpisodeNumber + "/" +
                                     this.Language.ToString().ToLower()),
                             this._senpai.MobileLoginCookies,
                             this._senpai.ErrHandler,
@@ -871,6 +910,7 @@ namespace Azuria.Main
                                 break;
                         }
                         this.Streams.SetInitialisedObject(lStreams);
+                        this.IsAvailable.SetInitialisedObject(lStreams.Any());
                     }
 
                     return new ProxerResult();

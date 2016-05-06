@@ -5,6 +5,7 @@ using Azuria.Main;
 using Azuria.Main.Minor;
 using Azuria.Main.User;
 using Azuria.Main.User.Comment;
+using Azuria.Main.User.ControlPanel;
 using Azuria.Test.Attributes;
 using Azuria.Test.Utility;
 using Azuria.Utilities.ErrorHandling;
@@ -22,8 +23,8 @@ namespace Azuria.Test
         public async Task AnimeTypeTest()
         {
             Assert.IsNotNull(this._anime);
-            Anime.AnimeType lAnimeType = await this._anime.AnimeTyp.GetObject(Anime.AnimeType.Unbekannt);
-            Assert.AreNotEqual(lAnimeType, Anime.AnimeType.Unbekannt);
+            Anime.AnimeType lAnimeType = await this._anime.AnimeTyp.GetObject(Anime.AnimeType.Unknown);
+            Assert.AreNotEqual(lAnimeType, Anime.AnimeType.Unknown);
         }
 
         [Test, Order(2)]
@@ -139,7 +140,20 @@ namespace Azuria.Test
             Assert.IsNotNull(lEpisodes.Result);
             Assert.IsTrue(lEpisodes.Result.Count() == await this._anime.EpisodeCount.GetObject(int.MinValue));
             Assert.IsTrue(lEpisodes.Result.All(episode => episode.Language == lAvailableLanguages.First()));
-            Assert.IsTrue(lEpisodes.Result.All(episode => episode.ParentAnime == this._anime));
+            Assert.IsTrue(lEpisodes.Result.All(episode => episode.ParentObject == this._anime));
+
+            await Task.Delay(2000);
+
+            ProxerResult<AnimeMangaBookmarkObject<Anime>> lEpisodeBookmark =
+                await lEpisodes.Result.First().AddToBookmarks();
+            Assert.IsTrue(lEpisodeBookmark.Success);
+            Assert.IsNotNull(lEpisodeBookmark.Result);
+            Assert.AreEqual(lEpisodeBookmark.Result.ContentObject.ParentObject.Id, this._anime.Id);
+
+            await Task.Delay(2000);
+
+            ProxerResult lDeleteResult = await lEpisodeBookmark.Result.DeleteEntry();
+            Assert.IsTrue(lDeleteResult.Success);
         }
 
         [Test, Order(2)]

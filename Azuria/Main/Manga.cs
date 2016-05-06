@@ -40,7 +40,7 @@ namespace Azuria.Main
             /// <summary>
             ///     Stellt einen unbekannten Mangatypen dar.
             /// </summary>
-            Unbekannt
+            Unknown
         }
 
         private readonly Senpai _senpai;
@@ -271,20 +271,20 @@ namespace Azuria.Main
         ///     Wird ausgelöst, wenn der Manga nicht in der angegebenen Sprache
         ///     verfügbar ist.
         /// </exception>
-        /// <param name="lang">Die Sprache der <see cref="Chapter">Kapitel</see>.</param>
+        /// <param name="language">Die Sprache der <see cref="Chapter">Kapitel</see>.</param>
         /// <seealso cref="AvailableLanguages" />
         /// <returns>Ein Array mit length = <see cref="ChapterCount" /></returns>
         [NotNull]
         [ItemNotNull]
-        public async Task<ProxerResult<IEnumerable<Chapter>>> GetChapters(Language lang)
+        public async Task<ProxerResult<IEnumerable<Chapter>>> GetChapters(Language language)
         {
-            if (!(await this.AvailableLanguages.GetObject(new Language[0])).Contains(lang))
+            if (!(await this.AvailableLanguages.GetObject(new Language[0])).Contains(language))
                 return new ProxerResult<IEnumerable<Chapter>>(new Exception[] {new LanguageNotAvailableException()});
 
             List<Chapter> lChapters = new List<Chapter>();
             for (int i = 1; i <= await this.ChapterCount.GetObject(-1); i++)
             {
-                lChapters.Add(new Chapter(i, lang, this, this._senpai));
+                lChapters.Add(new Chapter(this, i, language, this._senpai));
             }
 
             return new ProxerResult<IEnumerable<Chapter>>(lChapters.ToArray());
@@ -666,18 +666,18 @@ namespace Azuria.Main
         /// <summary>
         ///     Eine Klasse, die ein <see cref="Chapter">Kapitel</see> eines <see cref="Manga">Mangas</see> darstellt.
         /// </summary>
-        public class Chapter
+        public class Chapter : IAnimeMangaContent<Manga>
         {
             private readonly Senpai _senpai;
 
-            internal Chapter(int chapterNumber, Language lang, [NotNull] Manga parentManga, [NotNull] Senpai senpai)
+            internal Chapter([NotNull] Manga parentManga, int chapterNumber, Language lang, [NotNull] Senpai senpai)
             {
                 this._senpai = senpai;
-                this.ChapterNumber = chapterNumber;
+                this.ContentIndex = chapterNumber;
                 this.Language = lang;
-                this.ParentManga = parentManga;
+                this.ParentObject = parentManga;
 
-                this.Available = new InitialisableProperty<bool>(this.InitInfo);
+                this.IsAvailable = new InitialisableProperty<bool>(this.InitInfo);
                 this.Date = new InitialisableProperty<DateTime>(this.InitInfo);
                 this.Pages = new InitialisableProperty<IEnumerable<Uri>>(this.InitPages);
                 this.ScanlatorGroup = new InitialisableProperty<Group>(this.InitInfo);
@@ -685,17 +685,41 @@ namespace Azuria.Main
                 this.UploaderName = new InitialisableProperty<string>(this.InitInfo);
             }
 
+            internal Chapter([NotNull] Manga parentManga, int chapterNumber, Language lang, bool isOnline,
+                [NotNull] Senpai senpai) : this(parentManga, chapterNumber, lang, senpai)
+            {
+                this.IsAvailable = new InitialisableProperty<bool>(this.InitInfo, isOnline);
+            }
+
+            #region Geerbt
+
+            /// <summary>
+            /// </summary>
+            /// <returns></returns>
+            public async Task<ProxerResult<AnimeMangaBookmarkObject<Manga>>> AddToBookmarks(
+                UserControlPanel userControlPanel = null)
+            {
+                userControlPanel = userControlPanel ?? new UserControlPanel(this._senpai);
+                return await userControlPanel.AddToBookmarks(this);
+            }
+
+            /// <summary>
+            /// </summary>
+            public Manga ParentObject { get; }
+
+            Language IAnimeMangaContent<Manga>.GeneralLanguage => this.Language;
+
+            /// <summary>
+            /// </summary>
+            public InitialisableProperty<bool> IsAvailable { get; }
+
+            /// <summary>
+            /// </summary>
+            public int ContentIndex { get; }
+
+            #endregion
+
             #region Properties
-
-            /// <summary>
-            ///     Gibt zurück, ob das <see cref="Chapter">Kapitel</see> verfügbar ist.
-            /// </summary>
-            public InitialisableProperty<bool> Available { get; }
-
-            /// <summary>
-            ///     Gibt die Nummer des <see cref="Chapter">Kapitels</see> zurück.
-            /// </summary>
-            public int ChapterNumber { get; }
 
             /// <summary>
             ///     Gibt das Erscheinungsdatum des <see cref="Chapter">Kapitels</see> zurück.
@@ -713,12 +737,6 @@ namespace Azuria.Main
             /// </summary>
             [NotNull]
             public InitialisableProperty<IEnumerable<Uri>> Pages { get; }
-
-            /// <summary>
-            ///     Gibt den <see cref="Manga" /> zurück, zu dem das <see cref="Chapter">Kapitel</see> gehört.
-            /// </summary>
-            [NotNull]
-            public Manga ParentManga { get; }
 
             /// <summary>
             ///     Gibt die <see cref="Group">Gruppe</see> zurück, die das Kapitel übersetzt hat.
@@ -775,7 +793,7 @@ namespace Azuria.Main
                 ProxerResult<string> lResult =
                     await
                         HttpUtility.GetResponseErrorHandling(
-                            new Uri("https://proxer.me/chapter/" + this.ParentManga.Id + "/" + this.ChapterNumber + "/" +
+                            new Uri("https://proxer.me/chapter/" + this.ParentObject.Id + "/" + this.ContentIndex + "/" +
                                     this.Language.ToString().ToLower().Substring(0, 2) + "?format=raw"),
                             null,
                             this._senpai.ErrHandler,
@@ -789,11 +807,11 @@ namespace Azuria.Main
 
                 if (lResponse == null || lResponse.Contains("Dieses Kapitel ist leider noch nicht verfügbar :/"))
                 {
-                    this.Available.SetInitialisedObject(false);
+                    this.IsAvailable.SetInitialisedObject(false);
                     return new ProxerResult();
                 }
 
-                this.Available.SetInitialisedObject(true);
+                this.IsAvailable.SetInitialisedObject(true);
 
                 try
                 {
@@ -869,7 +887,7 @@ namespace Azuria.Main
                 ProxerResult<string> lResult =
                     await
                         HttpUtility.GetResponseErrorHandling(
-                            new Uri("https://proxer.me/read/" + this.ParentManga.Id + "/" + this.ChapterNumber + "/" +
+                            new Uri("https://proxer.me/read/" + this.ParentObject.Id + "/" + this.ContentIndex + "/" +
                                     this.Language.ToString().ToLower().Substring(0, 2) + "?format=json"),
                             this._senpai.MobileLoginCookies,
                             this._senpai.ErrHandler,
@@ -904,8 +922,8 @@ namespace Azuria.Main
                     this.Pages.SetInitialisedObject(
                         (from s in lDocument.DocumentNode.ChildNodes[1].InnerText.Split(';')[0].GetTagContents("[", "]")
                             where !s.StartsWith("[")
-                            select new Uri("http://upload.proxer.me/manga/" + this.ParentManga.Id + "_" +
-                                           this.Language.ToString().ToLower().Substring(0, 2) + "/" + this.ChapterNumber +
+                            select new Uri("http://upload.proxer.me/manga/" + this.ParentObject.Id + "_" +
+                                           this.Language.ToString().ToLower().Substring(0, 2) + "/" + this.ContentIndex +
                                            "/" +
                                            s.GetTagContents("\"", "\"")[0])).ToArray());
 
@@ -925,7 +943,7 @@ namespace Azuria.Main
             /// </returns>
             public override string ToString()
             {
-                return "Kapitel " + this.ChapterNumber;
+                return "Chapter " + this.ContentIndex;
             }
 
             #endregion

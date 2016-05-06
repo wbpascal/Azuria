@@ -140,8 +140,8 @@ namespace Azuria.Main.Search
                 }
             }
             Type lType = typeof(object);
-            Anime.AnimeType lAnimeType = Anime.AnimeType.Unbekannt;
-            Manga.MangaType lMangaType = Manga.MangaType.Unbekannt;
+            Anime.AnimeType lAnimeType = Anime.AnimeType.Unknown;
+            Manga.MangaType lMangaType = Manga.MangaType.Unknown;
             switch (node.ChildNodes[3].InnerText)
             {
                 case "Animeserie":

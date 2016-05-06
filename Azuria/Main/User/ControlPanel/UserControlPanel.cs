@@ -4,12 +4,14 @@ using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
 using Azuria.Exceptions;
+using Azuria.Main.Minor;
 using Azuria.Utilities.ErrorHandling;
 using Azuria.Utilities.Extensions;
 using Azuria.Utilities.Net;
 using Azuria.Utilities.Properties;
 using HtmlAgilityPack;
 using JetBrains.Annotations;
+using Newtonsoft.Json;
 
 namespace Azuria.Main.User.ControlPanel
 {
@@ -21,17 +23,22 @@ namespace Azuria.Main.User.ControlPanel
 
         /// <summary>
         /// </summary>
+        /// <exception cref="NotLoggedInException">Raised when <paramref name="senpai" /> is not logged in.</exception>
         /// <param name="senpai"></param>
         public UserControlPanel([NotNull] Senpai senpai)
         {
             this._senpai = senpai;
+            if (!this._senpai.IsLoggedIn) throw new NotLoggedInException(this._senpai);
 
             this.Anime = new InitialisableProperty<IEnumerable<AnimeMangaUcpObject<Anime>>>(this.InitAnime);
-            this.Bookmarks = new InitialisableProperty<IEnumerable<AnimeMangaBookmarkObject>>(this.InitBookmarks);
+            this.AnimeBookmarks =
+                new InitialisableProperty<IEnumerable<AnimeMangaBookmarkObject<Anime>>>(this.InitBookmarks);
             this.Chronic = new InitialisableProperty<IEnumerable<AnimeMangaChronicObject>>(this.InitChronic);
             this.Favourites =
                 new InitialisableProperty<IEnumerable<AnimeMangaFavouriteObject>>(this.InitFavourites);
             this.Manga = new InitialisableProperty<IEnumerable<AnimeMangaUcpObject<Manga>>>(this.InitManga);
+            this.MangaBookmarks =
+                new InitialisableProperty<IEnumerable<AnimeMangaBookmarkObject<Manga>>>(this.InitBookmarks);
         }
 
         #region Properties
@@ -44,7 +51,7 @@ namespace Azuria.Main.User.ControlPanel
         /// <summary>
         /// </summary>
         [NotNull]
-        public InitialisableProperty<IEnumerable<AnimeMangaBookmarkObject>> Bookmarks { get; }
+        public InitialisableProperty<IEnumerable<AnimeMangaBookmarkObject<Anime>>> AnimeBookmarks { get; }
 
         /// <summary>
         /// </summary>
@@ -61,9 +68,112 @@ namespace Azuria.Main.User.ControlPanel
         [NotNull]
         public InitialisableProperty<IEnumerable<AnimeMangaUcpObject<Manga>>> Manga { get; }
 
+        /// <summary>
+        /// </summary>
+        [NotNull]
+        public InitialisableProperty<IEnumerable<AnimeMangaBookmarkObject<Manga>>> MangaBookmarks { get; }
+
         #endregion
 
         #region
+
+        /// <summary>
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="animeMangaContent"></param>
+        /// <returns></returns>
+        public async Task<ProxerResult<AnimeMangaBookmarkObject<T>>> AddToBookmarks<T>(
+            [NotNull] IAnimeMangaContent<T> animeMangaContent) where T : IAnimeMangaObject
+        {
+            string lLanguageString = "";
+            string lCategoryString = "";
+
+            if (typeof(T) == typeof(Anime))
+            {
+                lLanguageString = (animeMangaContent as Anime.Episode)?.Language.ToString().ToLower();
+                lCategoryString = "watch";
+            }
+            else if (typeof(T) == typeof(Manga))
+            {
+                lLanguageString = animeMangaContent.GeneralLanguage == Language.English
+                    ? "en"
+                    : animeMangaContent.GeneralLanguage == Language.German ? "de" : "";
+                lCategoryString = "chapter";
+            }
+
+            if (string.IsNullOrEmpty(lLanguageString) || string.IsNullOrEmpty(lCategoryString))
+                return
+                    new ProxerResult<AnimeMangaBookmarkObject<T>>(new[]
+                    {new ArgumentException(nameof(animeMangaContent))});
+
+            ProxerResult<string> lResult =
+                await
+                    HttpUtility.GetResponseErrorHandling(
+                        new Uri(
+                            $"https://proxer.me/{lCategoryString}/{animeMangaContent.ParentObject.Id}/{animeMangaContent.ContentIndex}/{lLanguageString}?format=json&type=reminder&title=reminder_this"),
+                        this._senpai.LoginCookies,
+                        this._senpai.ErrHandler,
+                        this._senpai);
+
+            if (!lResult.Success)
+                return new ProxerResult<AnimeMangaBookmarkObject<T>>(lResult.Exceptions);
+
+            string lResponse = lResult.Result;
+
+            try
+            {
+                Dictionary<string, string> lDeserialisedResponse =
+                    JsonConvert.DeserializeObject<Dictionary<string, string>>(lResponse);
+
+                if (lDeserialisedResponse.ContainsKey("msg") &&
+                    lDeserialisedResponse["msg"].StartsWith("Du bist nicht eingeloggt"))
+                    return new ProxerResult<AnimeMangaBookmarkObject<T>>(new[] {new NotLoggedInException()});
+
+                if (
+                    !(lDeserialisedResponse.ContainsKey("title") && lDeserialisedResponse["title"].Equals("Watchlist") ||
+                      lDeserialisedResponse["title"].Equals("Readlist")))
+                    return new ProxerResult<AnimeMangaBookmarkObject<T>>(new[] {new WrongResponseException(lResponse)});
+
+                if (typeof(T) == typeof(Anime))
+                {
+                    AnimeMangaBookmarkObject<T> lBookmarkReturn =
+                        (await this.AnimeBookmarks.GetNewObject(new AnimeMangaBookmarkObject<Anime>[0]))
+                            .FirstOrDefault(
+                                o =>
+                                    o.ContentObject.ParentObject.Id == animeMangaContent.ParentObject.Id &&
+                                    o.ContentObject.GeneralLanguage == animeMangaContent.GeneralLanguage &&
+                                    o.ContentObject.ContentIndex == animeMangaContent.ContentIndex) as
+                            AnimeMangaBookmarkObject<T>;
+
+                    return lBookmarkReturn == null
+                        ? new ProxerResult<AnimeMangaBookmarkObject<T>>(new Exception[0])
+                        : new ProxerResult<AnimeMangaBookmarkObject<T>>(lBookmarkReturn);
+                }
+                if (typeof(T) == typeof(Manga))
+                {
+                    AnimeMangaBookmarkObject<T> lBookmarkReturn =
+                        (await this.MangaBookmarks.GetNewObject(new AnimeMangaBookmarkObject<Manga>[0]))
+                            .FirstOrDefault(
+                                o =>
+                                    o.ContentObject.ParentObject.Id == animeMangaContent.ParentObject.Id &&
+                                    o.ContentObject.GeneralLanguage == animeMangaContent.GeneralLanguage &&
+                                    o.ContentObject.ContentIndex == animeMangaContent.ContentIndex) as
+                            AnimeMangaBookmarkObject<T>;
+
+                    return lBookmarkReturn == null
+                        ? new ProxerResult<AnimeMangaBookmarkObject<T>>(new Exception[0])
+                        : new ProxerResult<AnimeMangaBookmarkObject<T>>(lBookmarkReturn);
+                }
+
+                return new ProxerResult<AnimeMangaBookmarkObject<T>>(new Exception[0]);
+            }
+            catch
+            {
+                return
+                    new ProxerResult<AnimeMangaBookmarkObject<T>>(
+                        (await ErrorHandler.HandleError(this._senpai, lResponse, false)).Exceptions);
+            }
+        }
 
         internal void DeleteEntry<T>(int entryId) where T : IAnimeMangaObject
         {
@@ -132,7 +242,8 @@ namespace Azuria.Main.User.ControlPanel
         private async Task<ProxerResult> InitBookmarks()
         {
             HtmlDocument lDocument = new HtmlDocument();
-            List<AnimeMangaBookmarkObject> lAnimeMangaBookmarkObjects = new List<AnimeMangaBookmarkObject>();
+            List<AnimeMangaBookmarkObject<Anime>> lAnimeBookmarkObjects = new List<AnimeMangaBookmarkObject<Anime>>();
+            List<AnimeMangaBookmarkObject<Manga>> lMangaBookmarkObjects = new List<AnimeMangaBookmarkObject<Manga>>();
 
             Func<string, ProxerResult> lCheckFunc = s =>
             {
@@ -169,10 +280,15 @@ namespace Azuria.Main.User.ControlPanel
                                     node.GetAttributeValue("data-split-icon", "").Equals("delete")).ChildNodes)
                 {
                     lParses++;
-                    ProxerResult<AnimeMangaBookmarkObject> lParseResult =
-                        AnimeMangaBookmarkObject.ParseNode(lBookmarkNode, this._senpai);
+                    ProxerResult<AnimeMangaBookmarkObject<Anime>> lAnimeParseResult =
+                        AnimeMangaBookmarkObject<Anime>.ParseNode(lBookmarkNode, this._senpai);
+                    ProxerResult<AnimeMangaBookmarkObject<Manga>> lMangaParseResult =
+                        AnimeMangaBookmarkObject<Manga>.ParseNode(lBookmarkNode, this._senpai);
 
-                    if (lParseResult.Success) lAnimeMangaBookmarkObjects.Add(lParseResult.Result);
+                    if (lAnimeParseResult.Success && lAnimeParseResult.Result != null)
+                        lAnimeBookmarkObjects.Add(lAnimeParseResult.Result);
+                    else if (lMangaParseResult.Success && lMangaParseResult.Result != null)
+                        lMangaBookmarkObjects.Add(lMangaParseResult.Result);
                     else lFailedParses++;
                 }
 
@@ -183,7 +299,8 @@ namespace Azuria.Main.User.ControlPanel
                 return new ProxerResult((await ErrorHandler.HandleError(this._senpai, lResult.Result, false)).Exceptions);
             }
 
-            this.Bookmarks.SetInitialisedObject(lAnimeMangaBookmarkObjects);
+            this.AnimeBookmarks.SetInitialisedObject(lAnimeBookmarkObjects);
+            this.MangaBookmarks.SetInitialisedObject(lMangaBookmarkObjects);
             return new ProxerResult();
         }
 

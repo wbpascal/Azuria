@@ -94,6 +94,12 @@
     <Compile Include="..\Azuria\Main\AnimeMangaType.cs">
       <Link>Main\AnimeMangaType.cs</Link>
     </Compile>
+    <Compile Include="..\Azuria\Main\IAnimeMangaContent.cs">
+      <Link>Main\IAnimeMangaContent.cs</Link>
+    </Compile>
+    <Compile Include="..\Azuria\Main\IAnimeMangaContentBase.cs">
+      <Link>Main\IAnimeMangaContentBase.cs</Link>
+    </Compile>
     <Compile Include="..\Azuria\Main\IAnimeMangaObject.cs">
       <Link>Main\IAnimeMangaObject.cs</Link>
     </Compile>
