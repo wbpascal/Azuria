@@ -17,35 +17,35 @@ using Newtonsoft.Json;
 namespace Azuria.Community
 {
     /// <summary>
-    ///     Repräsentiert eine Proxer-Konferenz.
+    ///     Represents a messaging Conference.
     /// </summary>
     public class Conference
     {
         /// <summary>
-        ///     Stellt eine Methode da, die ausgelöst wird, wenn während des Abrufen der Nachrichten ein Fehler auftritt.
+        ///     Represent a method, which is raised when an exception is thrown during the message fetching.
         /// </summary>
-        /// <param name="sender">Die Konferenz, die das Event aufgerufen hat.</param>
-        /// <param name="exceptions">Die Ausnahmen, die ausgelöst wurden.</param>
+        /// <param name="sender">The conference that raised the event.</param>
+        /// <param name="exceptions">The exceptions thrown.</param>
         public delegate void ErrorDuringPmFetchEventHandler(Conference sender, IEnumerable<Exception> exceptions);
 
         /// <summary>
-        ///     Stellt eine Methode da, die ausgelöst wird, wenn neue Nachrichten in der Konferenz vorhanden sind.
+        ///     Represents a method, which is raised when new messages were recieved or once everytime Active is set to true.
         /// </summary>
-        /// <param name="sender">Die Konferenz, die das Event aufgerufen hat.</param>
-        /// <param name="e">Die neuen Nachrichten. Beim ersten mal werden hier alle Nachrichten aufgeführt.</param>
-        /// <param name="alleNachrichten">Gibt an, ob alle Nachrichten geholt wurden oder nur die neuesten.</param>
-        public delegate void NeuePmEventHandler(Conference sender, IEnumerable<Message> e, bool alleNachrichten);
+        /// <param name="sender">The conference that raised the event.</param>
+        /// <param name="e">Contains the new messages. If <paramref name="completeFetch"/> is true it contains the last 15 messages of the conference.</param>
+        /// <param name="completeFetch">Returns if every message of the conference(15 most recent) was fetched or only unread ones.</param>
+        public delegate void NeuePmEventHandler(Conference sender, IEnumerable<Message> e, bool completeFetch);
 
         private readonly Timer _getMessagesTimer;
         private readonly Senpai _senpai;
         private IEnumerable<Message> _nachrichten;
 
         /// <summary>
-        ///     Standard-Konstruktor der Klasse.
+        ///     Initialises a new instance of the Conference class.
         /// </summary>
-        /// <param name="id">Die ID der Konferenz</param>
-        /// <param name="senpai">Muss Teilnehmer der Konferenz sein. Darf nicht null sein.</param>
-        public Conference(int id, Senpai senpai)
+        /// <param name="id">The if of the conference.</param>
+        /// <param name="senpai">The user which is logged in and part of the conference.</param>
+        public Conference(int id, [NotNull] Senpai senpai)
         {
             this.Id = id;
             this._senpai = senpai;
@@ -69,7 +69,7 @@ namespace Azuria.Community
         #region Properties
 
         /// <summary>
-        ///     Gibt einen Wert an, ob die Privatnachrichten in einem bestimmten Intervall abgerufen werden, oder legt diesen fest.
+        ///     Gets or sets a value indicating whether the conference is currently fetching new messages.
         /// </summary>
         public bool Active
         {
@@ -88,13 +88,12 @@ namespace Azuria.Community
         }
 
         /// <summary>
-        ///     Gibt die ID der Konferenz zurück
+        ///     Gets the Id of the conference.
         /// </summary>
         public int Id { get; }
 
         /// <summary>
-        ///     Gibt einen Wert an, ob die aktuelle Konferenz vom <see cref="Senpai.Me">Benutzer</see> blockiert wird, oder legt
-        ///     diesen fest.
+        ///     Gets or sets a value indicating whether the <see cref="Senpai.Me">User</see> blocks the current conference or not.
         /// </summary>
         [NotNull]
         public SetableInitialisableProperty<bool> IsBlocked { get; }
@@ -103,25 +102,24 @@ namespace Azuria.Community
         private InitialisableProperty<bool> IsConference { get; }
 
         /// <summary>
-        ///     Gibt einen Wert an, ob die aktuelle Konferenz ein Favorit vom <see cref="Senpai.Me">Benutzer</see> ist, oder legt
-        ///     diesen fest.
+        ///     Gets or sets a value indicating whether the current conference is currently a favourite of the <see cref="Senpai.Me">User</see>.
         /// </summary>
         [NotNull]
         public SetableInitialisableProperty<bool> IsFavourite { get; }
 
         /// <summary>
-        ///     Gibt zurück, ob die Konferenz bereits initialisiert ist.
+        ///     Gets a value indicating whether the current object is fully initialised.
         /// </summary>
         public bool IsInitialized => this.IsFullyInitialised();
 
         /// <summary>
-        ///     Gibt den Leiter der Konferenz zurück.
+        ///     Gets a <see cref="User"/> that is the current leader of the conference.
         /// </summary>
         [NotNull]
         public InitialisableProperty<User> Leader { get; }
 
         /// <summary>
-        ///     Gibt alle Nachrichten aus der Konferenz in chronoligischer Ordnung zurück.
+        ///     Gets all messages of the current conference in chronological order.
         /// </summary>
         [NotNull]
         public IEnumerable<Message> Messages
@@ -131,13 +129,13 @@ namespace Azuria.Community
         }
 
         /// <summary>
-        ///     Gibt alle Teilnehmer der Konferenz zurück.
+        ///     Gets all participants of the current conference.
         /// </summary>
         [NotNull]
         public InitialisableProperty<IEnumerable<User>> Participants { get; }
 
         /// <summary>
-        ///     Gibt den Titel der Konferenz zurück.
+        ///     Gets the current title of the current conference.
         /// </summary>
         [NotNull]
         public InitialisableProperty<string> Title { get; }
@@ -204,7 +202,7 @@ namespace Azuria.Community
         }
 
         /// <summary>
-        ///     Wird ausgelöst, wenn während des Abrufen der Nachrichten ein Fehler auftritt.
+        ///     Occurs when one or multiple exceptions are thrown during message fetching.
         /// </summary>
         public event ErrorDuringPmFetchEventHandler ErrorDuringPmFetchRaised;
 
@@ -545,10 +543,10 @@ namespace Azuria.Community
 
 
         /// <summary>
-        ///     Initialisiert die Konferenz.
+        ///     Initialises every property of the current class.
         /// </summary>
-        /// <exception cref="NotLoggedInException">Wird ausgelöst, wenn der <see cref="Senpai">Benutzer</see> nicht eingeloggt ist.</exception>
-        /// <exception cref="WrongResponseException">Wird ausgelöst, wenn die Antwort des Servers nicht der Erwarteten entspricht.</exception>
+        /// <exception cref="NotLoggedInException">Thrown when the <see cref="Senpai">User</see> is not logged in.</exception>
+        /// <exception cref="WrongResponseException">Thrown when the server response is not expected.</exception>
         /// <seealso cref="Senpai.Login" />
         [ItemNotNull]
         [Obsolete("Bitte benutze die Methoden der jeweiligen Eigenschaften, um sie zu initalisieren!")]
@@ -558,7 +556,7 @@ namespace Azuria.Community
         }
 
         /// <summary>
-        ///     Wird immer aufgerufen, wenn neue Nachrichten in der Konferenz vorhanden sind.
+        ///     Occurs when new messages were recieved or once everytime Active is set to true.
         /// </summary>
         public event NeuePmEventHandler NeuePmRaised;
 
@@ -570,18 +568,13 @@ namespace Azuria.Community
         }
 
         /// <summary>
-        ///     Gibt zurück, ob Senpai ein Teilnehmer einer Konferenz mit der bestimmten ID ist.
+        ///     Returns if the <paramref name="senpai">User</paramref> is part of the conference.
         /// </summary>
-        /// <exception cref="NotLoggedInException">Wird ausgelöst, wenn der <see cref="Senpai">Benutzer</see> nicht eingeloggt ist.</exception>
-        /// <exception cref="WrongResponseException">Wird ausgelöst, wenn die Antwort des Servers nicht der Erwarteten entspricht.</exception>
-        /// <exception cref="ArgumentNullException">
-        ///     Wird ausgelöst, wenn <paramref name="senpai" /> null (oder Nothing in Visual
-        ///     Basic) ist.
-        /// </exception>
-        /// <param name="id">ID der Konferenz</param>
-        /// <param name="senpai">Muss eingeloggt sein</param>
-        /// <seealso cref="Senpai.Login" />
-        /// <returns>Benutzer ist Teilnehmer der Konferenz. True oder False.</returns>
+        /// <exception cref="NotLoggedInException">Thrown when the <see cref="Senpai">User</see> is not logged in.</exception>
+        /// <exception cref="WrongResponseException">Thrown when the server response is not expected.</exception>
+        /// <param name="id">The Id of the <see cref="Conference"/></param>
+        /// <param name="senpai">The user which is tested.</param>
+        /// <returns>Whether the <paramref name="senpai">User</paramref> is part of the conference.</returns>
         [ItemNotNull]
         public static async Task<ProxerResult<bool>> Participates(int id, [NotNull] Senpai senpai)
         {
@@ -679,17 +672,12 @@ namespace Azuria.Community
         }
 
         /// <summary>
-        ///     Sendet eine Nachricht an die Konferenz.
+        ///     Sends a message to the current conference.
         /// </summary>
-        /// <exception cref="NotLoggedInException">Wird ausgelöst, wenn der <see cref="Senpai">Benutzer</see> nicht eingeloggt ist.</exception>
-        /// <exception cref="WrongResponseException">Wird ausgelöst, wenn die Antwort des Servers nicht der Erwarteten entspricht.</exception>
-        /// <exception cref="ArgumentException">
-        ///     Wird ausgelöst, wenn <paramref name="nachricht" /> null (oder Nothing in
-        ///     Visual Basic) oder leer ist.
-        /// </exception>
-        /// <param name="nachricht">Die Nachricht, die gesendet werden soll</param>
-        /// <seealso cref="Senpai.Login" />
-        /// <returns>Gibt zurück, ob die Aktion erfolgreich war</returns>
+        /// <exception cref="NotLoggedInException">Thrown when the <see cref="Senpai">User</see> is not logged in.</exception>
+        /// <exception cref="WrongResponseException">Thrown when the server response is not expected.</exception>
+        /// <param name="nachricht">The content of the message that is being send.</param>
+        /// <returns>Whether the action was successfull.</returns>
         [ItemNotNull]
         public async Task<ProxerResult> SendMessage([NotNull] string nachricht)
         {
@@ -758,12 +746,12 @@ namespace Azuria.Community
         }
 
         /// <summary>
-        ///     Markiert die Konferenz als ungelesen.
+        ///     Marks the current conference as unread.
         /// </summary>
-        /// <exception cref="NotLoggedInException">Wird ausgelöst, wenn der <see cref="Senpai">Benutzer</see> nicht eingeloggt ist.</exception>
-        /// <exception cref="WrongResponseException">Wird ausgelöst, wenn die Antwort des Servers nicht der Erwarteten entspricht.</exception>
+        /// <exception cref="NotLoggedInException">Thrown when the <see cref="Senpai">User</see> is not logged in.</exception>
+        /// <exception cref="WrongResponseException">Thrown when the server response is not expected.</exception>
         /// <seealso cref="Senpai.Login" />
-        /// <returns>Gibt zurück, ob die Aktion erfolgreich war</returns>
+        /// <returns>Whether the action was successfull.</returns>
         [ItemNotNull]
         public async Task<ProxerResult> SetUnread()
         {
@@ -830,42 +818,42 @@ namespace Azuria.Community
         #endregion
 
         /// <summary>
-        ///     Repräsentiert die jeweilige einzelne Nachricht in der Konferenz.
+        ///     Represents a single message of a <see cref="Conference"/>
         /// </summary>
         public class Message
         {
             /// <summary>
-            ///     Die Aktion der Nachricht.
+            ///     The action of the message.
             /// </summary>
             public enum Action
             {
                 /// <summary>
-                ///     Normale Nachricht, nur Text.
+                ///     Normal message, only text content.
                 /// </summary>
                 NoAction,
 
                 /// <summary>
-                ///     Ein Benutzer wurde hinzugefügt.
+                ///     A user was added to the conference.
                 /// </summary>
                 AddUser,
 
                 /// <summary>
-                ///     Ein Benutzer wurde entfernt.
+                ///     A user was removed from the conference.
                 /// </summary>
                 RemoveUser,
 
                 /// <summary>
-                ///     Der Leiter der Konferenz wurde geändert.
+                ///     The leader of the conference was changed.
                 /// </summary>
                 SetLeader,
 
                 /// <summary>
-                ///     Das Thema der Konferenz wurde geändert.
+                ///     The topic of the conference was changed.
                 /// </summary>
                 SetTopic,
 
                 /// <summary>
-                ///     Immer wenn von der JSON direkt etwas zurückgegeben wird z.B. bei /leader
+                ///     A message was returned directly by the system. Happens most of the times if the user issued a command.
                 /// </summary>
                 GetAction
             }
@@ -887,29 +875,29 @@ namespace Azuria.Community
             #region Properties
 
             /// <summary>
-            ///     Gibt den Text der Nachricht zurück.
+            ///     Gets the message content.
             /// </summary>
             [NotNull]
             public string Content { get; private set; }
 
             /// <summary>
-            ///     Gibt die Aktion der Nachricht zurück.
+            ///     Gets the action of the message.
             /// </summary>
             public Action MessageAction { get; }
 
             /// <summary>
-            ///     Gibt die ID der Nachricht zurück.
+            ///     Gets the Id of the current message.
             /// </summary>
             public int MessageId { get; }
 
             /// <summary>
-            ///     Gibt den Sender der Nachricht zurück.
+            ///     Gets the sender of the current message.
             /// </summary>
             [NotNull]
             public User Sender { get; private set; }
 
             /// <summary>
-            ///     Gibt das Datum der Nachricht zurück.
+            ///     Gets the timestamp of the current message.
             /// </summary>
             public DateTime TimeStamp { get; private set; }
 
