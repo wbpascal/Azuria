@@ -175,6 +175,68 @@ namespace Azuria.Main.User.ControlPanel
             }
         }
 
+        /// <summary>
+        /// </summary>
+        /// <param name="animeMangaObject"></param>
+        /// <returns></returns>
+        public async Task<ProxerResult<AnimeMangaUcpObject<T>>> AddToPlanned<T>(
+            [NotNull] T animeMangaObject) where T : IAnimeMangaObject
+        {
+            ProxerResult<string> lResult =
+                await
+                    HttpUtility.PostResponseErrorHandling(
+                        new Uri(
+                            $"https://proxer.me/info/{animeMangaObject.Id}?format=json&json=note"),
+                        new Dictionary<string, string> {{"checkPost", "1"}},
+                        this._senpai.LoginCookies,
+                        this._senpai.ErrHandler,
+                        this._senpai);
+
+            if (!lResult.Success)
+                return new ProxerResult<AnimeMangaUcpObject<T>>(lResult.Exceptions);
+
+            string lResponse = lResult.Result;
+
+            try
+            {
+                Dictionary<string, string> lDeserialisedResponse =
+                    JsonConvert.DeserializeObject<Dictionary<string, string>>(lResponse);
+
+                if (lDeserialisedResponse.ContainsKey("msg") &&
+                    lDeserialisedResponse["msg"].StartsWith("Du bist nicht eingeloggt"))
+                    return new ProxerResult<AnimeMangaUcpObject<T>>(new[] {new NotLoggedInException()});
+
+                if (typeof(T) == typeof(Anime))
+                {
+                    AnimeMangaUcpObject<T> lUcpObject =
+                        (await this.Anime.GetNewObject(new AnimeMangaUcpObject<Anime>[0])).FirstOrDefault(
+                            o => o.AnimeMangaObject.Id == animeMangaObject.Id) as AnimeMangaUcpObject<T>;
+
+                    return lUcpObject == null
+                        ? new ProxerResult<AnimeMangaUcpObject<T>>(new Exception[0])
+                        : new ProxerResult<AnimeMangaUcpObject<T>>(lUcpObject);
+                }
+                if (typeof(T) == typeof(Manga))
+                {
+                    AnimeMangaUcpObject<T> lUcpObject =
+                        (await this.Manga.GetNewObject(new AnimeMangaUcpObject<Manga>[0])).FirstOrDefault(
+                            o => o.AnimeMangaObject.Id == animeMangaObject.Id) as AnimeMangaUcpObject<T>;
+
+                    return lUcpObject == null
+                        ? new ProxerResult<AnimeMangaUcpObject<T>>(new Exception[0])
+                        : new ProxerResult<AnimeMangaUcpObject<T>>(lUcpObject);
+                }
+
+                return new ProxerResult<AnimeMangaUcpObject<T>>(new Exception[0]);
+            }
+            catch
+            {
+                return
+                    new ProxerResult<AnimeMangaUcpObject<T>>(
+                        (await ErrorHandler.HandleError(this._senpai, lResponse, false)).Exceptions);
+            }
+        }
+
         internal void DeleteEntry<T>(int entryId) where T : IAnimeMangaObject
         {
             if (typeof(T) == typeof(Anime) && this.Anime.IsInitialisedOnce)

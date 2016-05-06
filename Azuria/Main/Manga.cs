@@ -231,11 +231,10 @@ namespace Azuria.Main
 
         /// <summary>
         /// </summary>
-        /// <param name="userControlPanel"></param>
         /// <returns></returns>
-        public Task<ProxerResult> AddToPlanned(UserControlPanel userControlPanel = null)
+        async Task<ProxerResult> IAnimeMangaObject.AddToPlanned(UserControlPanel userControlPanel)
         {
-            throw new NotImplementedException();
+            return await this.AddToPlanned(userControlPanel);
         }
 
         #endregion
@@ -263,6 +262,17 @@ namespace Azuria.Main
         #endregion
 
         #region
+
+        /// <summary>
+        /// </summary>
+        /// <param name="userControlPanel"></param>
+        /// <returns></returns>
+        public async Task<ProxerResult<AnimeMangaUcpObject<Manga>>> AddToPlanned(
+            UserControlPanel userControlPanel = null)
+        {
+            userControlPanel = userControlPanel ?? new UserControlPanel(this._senpai);
+            return await userControlPanel.AddToPlanned(this);
+        }
 
         /// <summary>
         ///     Gibt alle <see cref="Chapter">Kapitel</see> des <see cref="Manga" /> in der ausgewählten Sprache zurück.

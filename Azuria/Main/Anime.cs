@@ -266,9 +266,9 @@ namespace Azuria.Main
         /// <summary>
         /// </summary>
         /// <returns></returns>
-        public Task<ProxerResult> AddToPlanned(UserControlPanel userControlPanel = null)
+        async Task<ProxerResult> IAnimeMangaObject.AddToPlanned(UserControlPanel userControlPanel)
         {
-            throw new NotImplementedException();
+            return await this.AddToPlanned(userControlPanel);
         }
 
         #endregion
@@ -297,6 +297,17 @@ namespace Azuria.Main
         #endregion
 
         #region
+
+        /// <summary>
+        /// </summary>
+        /// <param name="userControlPanel"></param>
+        /// <returns></returns>
+        public async Task<ProxerResult<AnimeMangaUcpObject<Anime>>> AddToPlanned(
+            UserControlPanel userControlPanel = null)
+        {
+            userControlPanel = userControlPanel ?? new UserControlPanel(this._senpai);
+            return await userControlPanel.AddToPlanned(this);
+        }
 
         /// <summary>
         ///     Gibt die Episoden des <see cref="Anime" /> in einer bestimmten <see cref="Language">Sprache</see> zurück.

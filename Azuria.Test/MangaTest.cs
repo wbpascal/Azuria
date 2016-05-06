@@ -22,6 +22,16 @@ namespace Azuria.Test
         private Manga.Chapter _chapter;
 
         [Test, Order(2)]
+        public async Task AddToPlanned()
+        {
+            Assert.IsNotNull(this._manga);
+            ProxerResult<AnimeMangaUcpObject<Manga>> lAddToPlannedResult = await this._manga.AddToPlanned();
+            Assert.IsTrue(lAddToPlannedResult.Success);
+            Assert.IsNotNull(lAddToPlannedResult.Result);
+            Assert.AreEqual(lAddToPlannedResult.Result.AnimeMangaObject.Id, this._manga.Id);
+        }
+
+        [Test, Order(2)]
         public async Task AvailableLanguagesTest()
         {
             Assert.IsNotNull(this._manga);

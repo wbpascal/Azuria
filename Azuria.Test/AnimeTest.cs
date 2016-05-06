@@ -20,6 +20,16 @@ namespace Azuria.Test
         private Anime _anime;
 
         [Test, Order(2)]
+        public async Task AddToPlanned()
+        {
+            Assert.IsNotNull(this._anime);
+            ProxerResult<AnimeMangaUcpObject<Anime>> lAddToPlannedResult = await this._anime.AddToPlanned();
+            Assert.IsTrue(lAddToPlannedResult.Success);
+            Assert.IsNotNull(lAddToPlannedResult.Result);
+            Assert.AreEqual(lAddToPlannedResult.Result.AnimeMangaObject.Id, this._anime.Id);
+        }
+
+        [Test, Order(2)]
         public async Task AnimeTypeTest()
         {
             Assert.IsNotNull(this._anime);
