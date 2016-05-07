@@ -4,14 +4,10 @@ using JetBrains.Annotations;
 namespace Azuria.EventArguments
 {
     /// <summary>
-    ///     Stellt die Eventdaten für die Benachrichtigungen bereit.
-    ///     <para>(Vererbt von <see cref="INotificationEventArgs" />)</para>
+    ///     Represents the event details for <see cref="Senpai.FriendNotificationRaised">news notifications</see>.
     /// </summary>
     /// <seealso cref="AmNotificationEventArgs" />
     /// <seealso cref="FriendNotificationEventArgs" />
-    /// <seealso cref="INotificationEventArgs" />
-    /// <seealso cref="NewsNotificationEventArgs" />
-    /// <seealso cref="NotificationEventArgsType" />
     /// <seealso cref="PmNotificationEventArgs" />
     public class NewsNotificationEventArgs : INotificationEventArgs
     {
@@ -43,7 +39,7 @@ namespace Azuria.EventArguments
         #region Properties
 
         /// <summary>
-        ///     Gibt ein Objekt zurück, mithilfe dessen die Benachrichtigungen abgerufen werden können.
+        ///     Gets an object with the help of which the notifications can be retrieved.
         /// </summary>
         [NotNull]
         public NewsCollection Notifications => this._senpai.News;

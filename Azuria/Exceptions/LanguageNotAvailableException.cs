@@ -1,38 +1,37 @@
 ﻿using System;
+using Azuria.Main;
 
 namespace Azuria.Exceptions
 {
     /// <summary>
-    ///     Stellt einen Fehler da, der ausgelöst wird, wenn ein Anime oder Manga in einer Sprache abgerufen wird, in der es
-    ///     nicht verfügbar ist.
+    ///     Represents an exception that is thrown when a <see cref="Manga.Chapter" /> or <see cref="Anime.Episode" /> was
+    ///     requested in a language it is not available in.
     /// </summary>
     public class LanguageNotAvailableException : Exception
     {
         /// <summary>
-        ///     Initialisiert eine neue Instanz der <see cref="LanguageNotAvailableException" />-Klasse.
+        ///     Initialises a new instance of the <see cref="LanguageNotAvailableException" /> class.
         /// </summary>
         public LanguageNotAvailableException()
         {
         }
 
         /// <summary>
-        ///     Initialisiert eine neue Instanz der <see cref="LanguageNotAvailableException" />-Klasse mit einer angegebenen
-        ///     Fehlermeldung.
+        ///     Initializes a new instance of the <see cref="LanguageNotAvailableException" /> class with a specified error
+        ///     message.
         /// </summary>
-        /// <param name="message">Die Fehlermeldung, in der die Ursache der Ausnahme erklärt wird.</param>
+        /// <param name="message">The error message string.</param>
         public LanguageNotAvailableException(string message) : base(message)
         {
         }
 
         /// <summary>
-        ///     Initialisiert eine neue Instanz der <see cref="LanguageNotAvailableException" />-Klasse mit einer
-        ///     angegebenen Fehlermeldung und einem Verweis auf die innere Ausnahme, die diese Ausnahme verursacht hat.
+        ///     Initializes a new instance of the <see cref="LanguageNotAvailableException" /> class with a specified error message
+        ///     and a
+        ///     reference to the inner exception that is the cause of this exception.
         /// </summary>
-        /// <param name="message">Die Fehlermeldung, in der die Ursache der Ausnahme erklärt wird.</param>
-        /// <param name="inner">
-        ///     Die Ausnahme, die die aktuelle Ausnahme ausgelöst hat, oder ein Nullverweis (Nothing in Visual Basic),
-        ///     wenn keine innere Ausnahme angegeben ist.
-        /// </param>
+        /// <param name="message">The error message string.</param>
+        /// <param name="inner">The inner exception reference.</param>
         public LanguageNotAvailableException(string message, Exception inner) : base(message, inner)
         {
         }

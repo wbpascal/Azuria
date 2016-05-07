@@ -3,40 +3,51 @@
 namespace Azuria.Exceptions
 {
     /// <summary>
-    ///     Stellt eine Ausnahme dar, die ausgelöst wird, wenn der <see cref="Senpai">User</see> keine Berechtigung hat eine
-    ///     Seite anzusehen.
+    ///     Represents an exception that is thrown when a request was made to which the <see cref="Senpai" /> has no access to.
     /// </summary>
     public class NoAccessException : Exception
     {
         /// <summary>
-        ///     Initialisiert eine neue Instanz der <see cref="NoAccessException" />-Klasse.
+        ///     Initialises a new instance of the <see cref="NoAccessException" /> class.
         /// </summary>
         public NoAccessException()
         {
         }
 
         /// <summary>
-        ///     Initialisiert eine neue Instanz der <see cref="NoAccessException" />-Klasse mit einer angegebenen Fehlermeldung.
+        ///     Initialises a new instance of the <see cref="NotLoggedInException" /> class.
         /// </summary>
-        /// <param name="message">
-        ///     Die Fehlermeldung, in der die Ursache der Ausnahme erklärt wird.
-        ///     Kann bei dieser Klasse auch den Namen einer Methode darstellen, die diese Ausnahme ausgelöst hat.
-        /// </param>
+        /// <param name="senpai">The user that has no access to the action.</param>
+        public NoAccessException(Senpai senpai)
+        {
+            this.Senpai = senpai;
+        }
+
+        /// <summary>
+        ///     Initializes a new instance of the <see cref="NoAccessException" /> class with a specified error message.
+        /// </summary>
+        /// <param name="message">The error message string.</param>
         public NoAccessException(string message) : base(message)
         {
         }
 
         /// <summary>
-        ///     Initialisiert eine neue Instanz der <see cref="NoAccessException" />-Klasse mit einer
-        ///     angegebenen Fehlermeldung und einem Verweis auf die innere Ausnahme, die diese Ausnahme verursacht hat.
+        ///     Initializes a new instance of the <see cref="NoAccessException" /> class with a specified error message and a
+        ///     reference to the inner exception that is the cause of this exception.
         /// </summary>
-        /// <param name="message">Die Fehlermeldung, in der die Ursache der Ausnahme erklärt wird.</param>
-        /// <param name="inner">
-        ///     Die Ausnahme, die die aktuelle Ausnahme ausgelöst hat, oder ein Nullverweis (Nothing in Visual Basic),
-        ///     wenn keine innere Ausnahme angegeben ist.
-        /// </param>
+        /// <param name="message">The error message string.</param>
+        /// <param name="inner">The inner exception reference.</param>
         public NoAccessException(string message, Exception inner) : base(message, inner)
         {
         }
+
+        #region Properties
+
+        /// <summary>
+        ///     Gets the <see cref="Senpai" /> object which is connected to this exception.
+        /// </summary>
+        public Senpai Senpai { get; set; }
+
+        #endregion
     }
 }

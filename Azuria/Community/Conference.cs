@@ -32,7 +32,10 @@ namespace Azuria.Community
         ///     Represents a method, which is raised when new messages were recieved or once everytime Active is set to true.
         /// </summary>
         /// <param name="sender">The conference that raised the event.</param>
-        /// <param name="e">Contains the new messages. If <paramref name="completeFetch"/> is true it contains the last 15 messages of the conference.</param>
+        /// <param name="e">
+        ///     Contains the new messages. If <paramref name="completeFetch" /> is true it contains the last 15
+        ///     messages of the conference.
+        /// </param>
         /// <param name="completeFetch">Returns if every message of the conference(15 most recent) was fetched or only unread ones.</param>
         public delegate void NeuePmEventHandler(Conference sender, IEnumerable<Message> e, bool completeFetch);
 
@@ -102,7 +105,8 @@ namespace Azuria.Community
         private InitialisableProperty<bool> IsConference { get; }
 
         /// <summary>
-        ///     Gets or sets a value indicating whether the current conference is currently a favourite of the <see cref="Senpai.Me">User</see>.
+        ///     Gets or sets a value indicating whether the current conference is currently a favourite of the
+        ///     <see cref="Senpai.Me">User</see>.
         /// </summary>
         [NotNull]
         public SetableInitialisableProperty<bool> IsFavourite { get; }
@@ -113,7 +117,7 @@ namespace Azuria.Community
         public bool IsInitialized => this.IsFullyInitialised();
 
         /// <summary>
-        ///     Gets a <see cref="User"/> that is the current leader of the conference.
+        ///     Gets a <see cref="User" /> that is the current leader of the conference.
         /// </summary>
         [NotNull]
         public InitialisableProperty<User> Leader { get; }
@@ -572,7 +576,7 @@ namespace Azuria.Community
         /// </summary>
         /// <exception cref="NotLoggedInException">Thrown when the <see cref="Senpai">User</see> is not logged in.</exception>
         /// <exception cref="WrongResponseException">Thrown when the server response is not expected.</exception>
-        /// <param name="id">The Id of the <see cref="Conference"/></param>
+        /// <param name="id">The Id of the <see cref="Conference" /></param>
         /// <param name="senpai">The user which is tested.</param>
         /// <returns>Whether the <paramref name="senpai">User</paramref> is part of the conference.</returns>
         [ItemNotNull]
@@ -818,7 +822,7 @@ namespace Azuria.Community
         #endregion
 
         /// <summary>
-        ///     Represents a single message of a <see cref="Conference"/>
+        ///     Represents a single message of a <see cref="Conference" />
         /// </summary>
         public class Message
         {

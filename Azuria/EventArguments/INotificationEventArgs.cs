@@ -1,25 +1,23 @@
 ﻿namespace Azuria.EventArguments
 {
     /// <summary>
-    ///     Stellt die Eventdaten für die Benachrichtigungen bereit.
+    ///     Represents the event details of the notification events.
     /// </summary>
     /// <seealso cref="AmNotificationEventArgs" />
     /// <seealso cref="FriendNotificationEventArgs" />
-    /// <seealso cref="INotificationEventArgs" />
     /// <seealso cref="NewsNotificationEventArgs" />
-    /// <seealso cref="NotificationEventArgsType" />
     /// <seealso cref="PmNotificationEventArgs" />
     public interface INotificationEventArgs
     {
         #region Properties
 
         /// <summary>
-        ///     Gibt die Anzahl der Benachrichtigungen zurück.
+        ///     Gets the notification count. (Inherited from <see cref="INotificationEventArgs" />)
         /// </summary>
         int NotificationCount { get; }
 
         /// <summary>
-        ///     Gibt den Typ der Benachrichtigung zurück.
+        ///     Gets the notification type. (Inherited from <see cref="INotificationEventArgs" />)
         /// </summary>
         NotificationEventArgsType Type { get; }
 

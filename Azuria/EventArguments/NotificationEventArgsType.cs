@@ -1,14 +1,8 @@
 ﻿namespace Azuria.EventArguments
 {
     /// <summary>
-    ///     Repräsentiert die Typen der Benachrichtigungs-Eventdaten.
+    ///     Represents the type of the notification event argument.
     /// </summary>
-    /// <seealso cref="AmNotificationEventArgs" />
-    /// <seealso cref="FriendNotificationEventArgs" />
-    /// <seealso cref="INotificationEventArgs" />
-    /// <seealso cref="NewsNotificationEventArgs" />
-    /// <seealso cref="NotificationEventArgsType" />
-    /// <seealso cref="PmNotificationEventArgs" />
     public enum NotificationEventArgsType
     {
         /// <summary>

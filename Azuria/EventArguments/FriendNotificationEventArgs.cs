@@ -4,14 +4,11 @@ using JetBrains.Annotations;
 namespace Azuria.EventArguments
 {
     /// <summary>
-    ///     Stellt die Eventdaten für die Benachrichtigungen bereit.
-    ///     <para>(Vererbt von <see cref="INotificationEventArgs" />)</para>
+    ///     Represents the event details for new <see cref="Senpai.FriendNotificationRaised">friend request notifications</see>
+    ///     .
     /// </summary>
     /// <seealso cref="AmNotificationEventArgs" />
-    /// <seealso cref="FriendNotificationEventArgs" />
-    /// <seealso cref="INotificationEventArgs" />
     /// <seealso cref="NewsNotificationEventArgs" />
-    /// <seealso cref="NotificationEventArgsType" />
     /// <seealso cref="PmNotificationEventArgs" />
     public class FriendNotificationEventArgs : INotificationEventArgs
     {
@@ -27,14 +24,12 @@ namespace Azuria.EventArguments
         #region Geerbt
 
         /// <summary>
-        ///     Gibt die Anzahl der Benachrichtigungen zurück.
-        ///     <para>(Vererbt von <see cref="INotificationEventArgs" />)</para>
+        ///     Gets the notification count. (Inherited from <see cref="INotificationEventArgs" />)
         /// </summary>
         public int NotificationCount { get; }
 
         /// <summary>
-        ///     Gibt den Typ der Benachrichtigung zurück.
-        ///     <para>(Vererbt von <see cref="INotificationEventArgs" />)</para>
+        ///     Gets the notification type. (Inherited from <see cref="INotificationEventArgs" />)
         /// </summary>
         public NotificationEventArgsType Type { get; }
 
@@ -43,7 +38,7 @@ namespace Azuria.EventArguments
         #region Properties
 
         /// <summary>
-        ///     Gibt ein Objekt zurück, mithilfe dessen die Benachrichtigungen abgerufen werden können.
+        ///     Gets an object with the help of which the notifications can be retrieved.
         /// </summary>
         [NotNull]
         public FriendRequestCollection Notifications => this._senpai.FriendRequests;

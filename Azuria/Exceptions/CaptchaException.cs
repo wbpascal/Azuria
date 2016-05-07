@@ -3,34 +3,31 @@
 namespace Azuria.Exceptions
 {
     /// <summary>
-    ///     Stellte einen Fehler da, der ausgelöst wird, wenn Proxer das ausfüllen eines Captchas fordert.
+    ///     Represents an exception that is thrown when a request encounters a captcha.
     /// </summary>
     public class CaptchaException : Exception
     {
         /// <summary>
-        ///     Initialisiert eine neue Instanz der <see cref="CaptchaException" />-Klasse.
+        ///     Initialises a new instance of the <see cref="CaptchaException" /> class.
         /// </summary>
         public CaptchaException()
         {
         }
 
         /// <summary>
-        ///     Initialisiert eine neue Instanz der <see cref="CaptchaException" />-Klasse mit einer angegebenen Fehlermeldung.
+        ///     Initializes a new instance of the <see cref="CaptchaException" /> class with a specified error message.
         /// </summary>
-        /// <param name="message">Die Fehlermeldung, in der die Ursache der Ausnahme erklärt wird.</param>
+        /// <param name="message">The error message string.</param>
         public CaptchaException(string message) : base(message)
         {
         }
 
         /// <summary>
-        ///     Initialisiert eine neue Instanz der <see cref="CaptchaException" />-Klasse mit einer
-        ///     angegebenen Fehlermeldung und einem Verweis auf die innere Ausnahme, die diese Ausnahme verursacht hat.
+        ///     Initializes a new instance of the <see cref="CaptchaException" /> class with a specified error message and a
+        ///     reference to the inner exception that is the cause of this exception.
         /// </summary>
-        /// <param name="message">Die Fehlermeldung, in der die Ursache der Ausnahme erklärt wird.</param>
-        /// <param name="inner">
-        ///     Die Ausnahme, die die aktuelle Ausnahme ausgelöst hat, oder ein Nullverweis (Nothing in Visual Basic),
-        ///     wenn keine innere Ausnahme angegeben ist.
-        /// </param>
+        /// <param name="message">The error message string.</param>
+        /// <param name="inner">The inner exception reference.</param>
         public CaptchaException(string message, Exception inner) : base(message, inner)
         {
         }
