@@ -38,7 +38,7 @@ Like mentioned in the description of the `Success` property this property return
 ####The `Result` Property (Only available in the `ProxerResult<T>` subclass)
 This property returns the result of the method if it returns anything else than `ProxerResult` or `Task<ProxerResult>`. The returned result is always of type T if `Success` is true and null if not.
 
-####Die `OnError(T)` Methode (Nur in der Unterklasse `ProxerResult<T>`)
+####The `OnError(T)` Method (Only available in the `ProxerResult<T>` subclass)
 If the method failed to execute and as a result the `Success` property returns false, this method automatically returns a specified object of type T. If the method executed normaly without problems it just returns the value specified in `Result`. Example in C#:
 ```csharp
 bool loggedIn = (await senpai.Login("benutzername", "passwort")).OnError(false);
@@ -48,12 +48,11 @@ bool loggedIn = (await senpai.Login("benutzername", "passwort")).OnError(false);
 ##Still questions? 
 Then take a look at the [documentation] (http://azuria.infinitesoul.de/help) (documentation only available in german at the moment).
 
-## Other dependencies
+## Special thanks
+To the authors of the following libraries:
 
 [JSON .NET](https://www.nuget.org/packages/Newtonsoft.Json/)
 
 [HtmlAgilityPack](https://htmlagilitypack.codeplex.com/)
 
 [RestSharp](http://restsharp.org/)
-
-These can be downloaded with the help of the `nuget restore` command.
