@@ -56,3 +56,5 @@ To the authors of the following libraries:
 [HtmlAgilityPack](https://htmlagilitypack.codeplex.com/)
 
 [RestSharp](http://restsharp.org/)
+
+[Jint](https://github.com/sebastienros/jint)
