@@ -1,22 +1,22 @@
 ﻿namespace Azuria.Main.Minor
 {
     /// <summary>
-    ///     Eine Enumeration, die die Sprache eines <see cref="Anime">Anime</see> oder <see cref="Manga">Manga</see> darstellt.
+    ///     Represents an enumeration wich describes the language of an <see cref="Anime">Anime</see> or <see cref="Manga">Manga</see>.
     /// </summary>
     public enum Language
     {
         /// <summary>
-        ///     Die Sprache des <see cref="Anime">Anime</see> oder <see cref="Manga">Manga</see> ist Deutsch.
+        ///     The language of the <see cref="Anime">Anime</see> or <see cref="Manga">Manga</see> is german.
         /// </summary>
         German,
 
         /// <summary>
-        ///     Die Sprache des <see cref="Anime">Anime</see> oder <see cref="Manga">Manga</see> ist Englisch.
+        ///     The language of the <see cref="Anime">Anime</see> or <see cref="Manga">Manga</see> is english.
         /// </summary>
         English,
 
         /// <summary>
-        ///     Die Sprache des <see cref="Anime">Anime</see> oder <see cref="Manga">Manga</see> ist unbekannt.
+        ///     The language of the <see cref="Anime">Anime</see> or <see cref="Manga">Manga</see> is unknown.
         /// </summary>
         Unkown
     }

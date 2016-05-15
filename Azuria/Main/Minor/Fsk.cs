@@ -1,58 +1,58 @@
 ﻿namespace Azuria.Main.Minor
 {
     /// <summary>
-    ///     Eine Enumeration, die die freiwillige Selbstkontrolle eines <see cref="Anime">Anime</see> oder
-    ///     <see cref="Manga">Manga</see> darstellt.
+    ///     Represents an enumeration which aims to help categorizing an <see cref="Anime">Anime</see> or
+    ///     <see cref="Manga">Manga</see> for certain age groups. ("Freiwillige Selbstkontrolle")
     /// </summary>
     public enum Fsk
     {
         /// <summary>
-        ///     Der <see cref="Anime">Anime</see> oder <see cref="Manga">Manga</see> ist für alle Altersgruppen geeignet.
+        ///     The <see cref="Anime">Anime</see> or <see cref="Manga">Manga</see> is suitable for all age groups.
         /// </summary>
         Fsk0,
 
         /// <summary>
-        ///     Der <see cref="Anime">Anime</see> oder <see cref="Manga">Manga</see> ist für Personen ab 6 Jahren geeignet.
+        ///     The <see cref="Anime">Anime</see> or <see cref="Manga">Manga</see> is only suitable for persons of age 6 or older.
         /// </summary>
         Fsk6,
 
         /// <summary>
-        ///     Der <see cref="Anime">Anime</see> oder <see cref="Manga">Manga</see> ist für Personen ab 12 Jahren geeignet.
+        ///     The <see cref="Anime">Anime</see> or <see cref="Manga">Manga</see> is only suitable for persons of age 12 or older.
         /// </summary>
         Fsk12,
 
         /// <summary>
-        ///     Der <see cref="Anime">Anime</see> oder <see cref="Manga">Manga</see> ist für Personen ab 16 Jahren geeignet.
+        ///     The <see cref="Anime">Anime</see> or <see cref="Manga">Manga</see> is only suitable for persons of age 16 or older.
         /// </summary>
         Fsk16,
 
         /// <summary>
-        ///     Der <see cref="Anime">Anime</see> oder <see cref="Manga">Manga</see> ist für Personen ab 18 Jahren geeignet.
+        ///     The <see cref="Anime">Anime</see> or <see cref="Manga">Manga</see> is only suitable for persons of age 18 or older.
         /// </summary>
         Fsk18,
 
         /// <summary>
-        ///     Der <see cref="Anime">Anime</see> oder <see cref="Manga">Manga</see> enthält Kraftausdrücke.
+        ///     The <see cref="Anime">Anime</see> or <see cref="Manga">Manga</see> contains violent language.
         /// </summary>
         BadWords,
 
         /// <summary>
-        ///     Der <see cref="Anime">Anime</see> oder <see cref="Manga">Manga</see> enthält Gewalt.
+        ///     The <see cref="Anime">Anime</see> or <see cref="Manga">Manga</see> contains violence.
         /// </summary>
         Violence,
 
         /// <summary>
-        ///     Der <see cref="Anime">Anime</see> oder <see cref="Manga">Manga</see> könnte zu Furcht bei einigen Personen führen.
+        ///     The <see cref="Anime">Anime</see> or <see cref="Manga">Manga</see> could invoke feelings of fear for some persons.
         /// </summary>
         Fear,
 
         /// <summary>
-        ///     Der <see cref="Anime">Anime</see> oder <see cref="Manga">Manga</see> enthält Geschlechtsverkehr.
+        ///     The <see cref="Anime">Anime</see> or <see cref="Manga">Manga</see> contains sexually explicit content.
         /// </summary>
         Sex,
 
         /// <summary>
-        ///     Die FSK des <see cref="Anime">Anime</see> oder <see cref="Manga">Manga</see> ist nicht bekannt.
+        ///     The age group of the <see cref="Anime">Anime</see> or <see cref="Manga">Manga</see> is unknown.
         /// </summary>
         Unknown
     }

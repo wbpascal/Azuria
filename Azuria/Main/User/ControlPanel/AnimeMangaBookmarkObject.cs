@@ -101,23 +101,23 @@ namespace Azuria.Main.User.ControlPanel
                     case "Animeserie":
                     case "Movie":
                     case "OVA":
-                        Anime.Language lAnimeLanguage = Anime.Language.Unknown;
+                        AnimeLanguage lAnimeLanguage = AnimeLanguage.Unknown;
                         switch (node.FirstChild.ChildNodes[3].InnerText.ToLower())
                         {
                             case "engsub":
-                                lAnimeLanguage = Anime.Language.EngSub;
+                                lAnimeLanguage = AnimeLanguage.EngSub;
                                 break;
                             case "engdub":
-                                lAnimeLanguage = Anime.Language.EngDub;
+                                lAnimeLanguage = AnimeLanguage.EngDub;
                                 break;
                             case "gersub":
-                                lAnimeLanguage = Anime.Language.GerSub;
+                                lAnimeLanguage = AnimeLanguage.GerSub;
                                 break;
                             case "gerdub":
-                                lAnimeLanguage = Anime.Language.GerDub;
+                                lAnimeLanguage = AnimeLanguage.GerDub;
                                 break;
                         }
-                        if (lAnimeLanguage == Anime.Language.Unknown)
+                        if (lAnimeLanguage == AnimeLanguage.Unknown)
                             return new ProxerResult<AnimeMangaBookmarkObject<T>>(new Exception[0]);
                         lAnimeMangaObject = new Anime.Episode(new Anime(lAnimeMangaTitle, lAnimeMangaId, senpai),
                             lNumber, lAnimeLanguage, lIsOnline, senpai);
@@ -153,6 +153,7 @@ namespace Azuria.Main.User.ControlPanel
                 return new ProxerResult<AnimeMangaBookmarkObject<T>>(new[] {new WrongResponseException()});
             }
         }
+
 
         #endregion
     }

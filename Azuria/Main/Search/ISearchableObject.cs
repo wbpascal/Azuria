@@ -1,7 +1,7 @@
 ﻿namespace Azuria.Main.Search
 {
     /// <summary>
-    ///     Eine Klasse, die ein Objekt darstellt, nach dem gesucht werden kann.
+    ///     An interface representing a class which can be searched for via <see cref="SearchHelper"/>
     /// </summary>
     public interface ISearchableObject
     {

@@ -4,6 +4,7 @@ using JetBrains.Annotations;
 namespace Azuria.Main.Minor
 {
     /// <summary>
+    /// Represents a class that contains a <see cref="Fsk"/>-value and some additional informations associated with the value.
     /// </summary>
     public class FskObject
     {

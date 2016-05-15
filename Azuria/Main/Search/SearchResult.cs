@@ -14,9 +14,9 @@ using JetBrains.Annotations;
 namespace Azuria.Main.Search
 {
     /// <summary>
-    ///     Eine Klasse, die die Resultate einer Suche auf Proxer zurückgibt.
+    ///     Represents a class that helps to fetch following search results after the inital search.
     /// </summary>
-    /// <typeparam name="T">Der Typ der Suchresultate.</typeparam>
+    /// <typeparam name="T">The type of the search results.</typeparam>
     public class SearchResult<T> where T : ISearchableObject
     {
         private readonly string _link;
@@ -47,10 +47,10 @@ namespace Azuria.Main.Search
         #region
 
         /// <summary>
-        ///     Läd die nächste Seite der Suchergebnisse und fügt sie <see cref="SearchResult{T}.SearchResults" /> hinzu.
+        ///     Loads the next page of search results and adds them to the <see cref="SearchResult{T}.SearchResults" /> property.
         /// </summary>
-        /// <exception cref="WrongResponseException">Wird ausgelöst, wenn die Antwort des Servers nicht der Erwarteten entspricht.</exception>
-        /// <returns>Die Suchergebnisse der nächsten Seite.</returns>
+        /// <exception cref="WrongResponseException">Thrown when the server response is not expected.</exception>
+        /// <returns>A collection of the search results from the fetched page.</returns>
         [ItemNotNull]
         public async Task<ProxerResult<IEnumerable<T>>> GetNextSearchResults()
         {
@@ -140,21 +140,21 @@ namespace Azuria.Main.Search
                 }
             }
             Type lType = typeof(object);
-            Anime.AnimeType lAnimeType = Anime.AnimeType.Unknown;
+            AnimeType lAnimeType = AnimeType.Unknown;
             Manga.MangaType lMangaType = Manga.MangaType.Unknown;
             switch (node.ChildNodes[3].InnerText)
             {
                 case "Animeserie":
                     lType = typeof(Anime);
-                    lAnimeType = Anime.AnimeType.Series;
+                    lAnimeType = AnimeType.Series;
                     break;
                 case "OVA":
                     lType = typeof(Anime);
-                    lAnimeType = Anime.AnimeType.Ova;
+                    lAnimeType = AnimeType.Ova;
                     break;
                 case "Movie":
                     lType = typeof(Anime);
-                    lAnimeType = Anime.AnimeType.Movie;
+                    lAnimeType = AnimeType.Movie;
                     break;
                 case "Mangaserie":
                     lType = typeof(Manga);

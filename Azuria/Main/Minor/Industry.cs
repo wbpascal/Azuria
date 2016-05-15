@@ -3,41 +3,40 @@
 namespace Azuria.Main.Minor
 {
     /// <summary>
-    ///     Eine Klasse, die die <see cref="Industry">Indurstrie</see> eines <see cref="Anime" /> oder <see cref="Manga" />
-    ///     darstellt.
+    ///     Represents a class which describes the <see cref="Industry"/> of an <see cref="Anime" /> or <see cref="Manga" />.
     /// </summary>
     public class Industry
     {
         /// <summary>
-        ///     Eine Enumeration, die den Typen der <see cref="Industry">Industrie</see> eines <see cref="Anime" /> oder
-        ///     <see cref="Manga" /> darstellt.
+        ///     Represents an enumeration which describes the type of the <see cref="Industry"/>.
         /// </summary>
         public enum IndustryType
         {
             /// <summary>
-            ///     Es handelt sich um einen Publisher.
+            ///     Represents a publisher.
             /// </summary>
             Publisher,
 
             /// <summary>
-            ///     Es handelt sich um ein Studio.
+            ///     Represents a studio.
             /// </summary>
             Studio,
 
             /// <summary>
-            ///     Es handelt sich um einen Produzenten.
+            ///     Represents a producer.
             /// </summary>
             Producer,
 
             /// <summary>
-            ///     Es wurde nichts spezifiziert.
+            ///     Represents an unkown type.
             /// </summary>
-            None
+            Unknown
         }
 
         /// <summary>
+        /// Represents an error.
         /// </summary>
-        public static Industry Error = new Industry(-1, "ERROR", IndustryType.None);
+        public static Industry Error = new Industry(-1, "ERROR", IndustryType.Unknown);
 
         internal Industry(int id, [NotNull] string name, IndustryType type)
         {
@@ -49,18 +48,18 @@ namespace Azuria.Main.Minor
         #region Properties
 
         /// <summary>
-        ///     Gibt die ID der <see cref="Industry">Industrie</see> zurück.
+        ///     Gets the id of the <see cref="Industry"/>.
         /// </summary>
         public int Id { get; set; }
 
         /// <summary>
-        ///     Gibt den Namen der <see cref="Industry">Industrie</see> zurück.
+        ///     Gets the name of the <see cref="Industry"/>.
         /// </summary>
         [NotNull]
         public string Name { get; set; }
 
         /// <summary>
-        ///     Gibt den <see cref="IndustryType">Typ</see> der <see cref="Industry">Industrie</see> zurück.
+        ///     Gets the <see cref="IndustryType">type</see> of the <see cref="Industry"/>.
         /// </summary>
         public IndustryType Type { get; set; }
 

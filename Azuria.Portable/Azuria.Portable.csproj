@@ -106,6 +106,12 @@
     <Compile Include="..\Azuria\Main\Manga.cs">
       <Link>Main\Manga.cs</Link>
     </Compile>
+    <Compile Include="..\Azuria\Main\Minor\AnimeLanguage.cs">
+      <Link>Main\Minor\AnimeLanguage.cs</Link>
+    </Compile>
+    <Compile Include="..\Azuria\Main\Minor\AnimeType.cs">
+      <Link>Main\Minor\AnimeType.cs</Link>
+    </Compile>
     <Compile Include="..\Azuria\Main\Minor\Fsk.cs">
       <Link>Main\Minor\Fsk.cs</Link>
     </Compile>

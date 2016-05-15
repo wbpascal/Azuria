@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Threading.Tasks;
 using Azuria.Exceptions;
 using Azuria.Main.Minor;
@@ -49,7 +50,7 @@ namespace Azuria.Main
         internal Manga()
         {
             this.AvailableLanguages = new InitialisableProperty<IEnumerable<Language>>(this.InitAvailableLang);
-            this.ChapterCount = new InitialisableProperty<int>(this.InitChapterCount);
+            this.ContentCount = new InitialisableProperty<int>(this.InitChapterCount);
             this.Description = new InitialisableProperty<string>(this.InitMain);
             this.EnglishTitle = new InitialisableProperty<string>(this.InitMain, string.Empty)
             {
@@ -99,6 +100,11 @@ namespace Azuria.Main
         ///     <para>(Vererbt von <see cref="IAnimeMangaObject" />)</para>
         /// </summary>
         public Uri CoverUri => new Uri("http://cdn.proxer.me/cover/" + this.Id + ".jpg");
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public InitialisableProperty<int> ContentCount { get; }
 
         /// <summary>
         ///     Gibt die Beschreibung des <see cref="Anime" /> oder <see cref="Manga" /> zurück.
@@ -248,12 +254,6 @@ namespace Azuria.Main
         public InitialisableProperty<IEnumerable<Language>> AvailableLanguages { get; }
 
         /// <summary>
-        ///     Gibt die Anzahl der Kapitel zurück.
-        /// </summary>
-        [NotNull]
-        public InitialisableProperty<int> ChapterCount { get; }
-
-        /// <summary>
         ///     Gibt den Typ eines Anime zurück.
         /// </summary>
         [NotNull]
@@ -283,7 +283,7 @@ namespace Azuria.Main
         /// </exception>
         /// <param name="language">Die Sprache der <see cref="Chapter">Kapitel</see>.</param>
         /// <seealso cref="AvailableLanguages" />
-        /// <returns>Ein Array mit length = <see cref="ChapterCount" /></returns>
+        /// <returns>Ein Array mit length = <see cref="ContentCount" /></returns>
         [NotNull]
         [ItemNotNull]
         public async Task<ProxerResult<IEnumerable<Chapter>>> GetChapters(Language language)
@@ -292,7 +292,7 @@ namespace Azuria.Main
                 return new ProxerResult<IEnumerable<Chapter>>(new Exception[] {new LanguageNotAvailableException()});
 
             List<Chapter> lChapters = new List<Chapter>();
-            for (int i = 1; i <= await this.ChapterCount.GetObject(-1); i++)
+            for (int i = 1; i <= await this.ContentCount.GetObject(-1); i++)
             {
                 lChapters.Add(new Chapter(this, i, language, this._senpai));
             }
@@ -434,7 +434,7 @@ namespace Azuria.Main
             {
                 lDocument.LoadHtml(lResponse);
 
-                this.ChapterCount.SetInitialisedObject(
+                this.ContentCount.SetInitialisedObject(
                     Convert.ToInt32(
                         lDocument.DocumentNode.ChildNodes[4]
                             .ChildNodes[5].FirstChild.ChildNodes[1].InnerText));
@@ -451,28 +451,19 @@ namespace Azuria.Main
         private async Task<ProxerResult> InitMain()
         {
             HtmlDocument lDocument = new HtmlDocument();
-            Func<string, ProxerResult> lCheckFunc = s =>
-            {
-                if (!string.IsNullOrEmpty(s) &&
-                    s.Equals(
-                        "<div class=\"inner\"><h3>Du hast keine Berechtigung um diese Seite zu betreten.</h3></div>"))
-                    return new ProxerResult(new Exception[] {new NoAccessException(nameof(this.InitMain))});
-
-                return new ProxerResult();
-            };
-            ProxerResult<string> lResult =
+            ProxerResult<Tuple<string, CookieContainer>> lResult =
                 await
                     HttpUtility.GetResponseErrorHandling(
                         new Uri("https://proxer.me/info/" + this.Id + "?format=raw"),
                         null,
                         this._senpai.ErrHandler,
                         this._senpai,
-                        new[] {lCheckFunc});
+                        new Func<string, ProxerResult>[0], false);
 
-            if (!lResult.Success)
+            if (!lResult.Success || lResult.Result == null)
                 return new ProxerResult(lResult.Exceptions);
 
-            string lResponse = lResult.Result;
+            string lResponse = lResult.Result.Item1;
 
             try
             {
@@ -584,7 +575,7 @@ namespace Azuria.Main
                                     lIndustryType = Minor.Industry.IndustryType.Publisher;
                                 else if (htmlNode.NextSibling.InnerText.Contains("Producer"))
                                     lIndustryType = Minor.Industry.IndustryType.Producer;
-                                else lIndustryType = Minor.Industry.IndustryType.None;
+                                else lIndustryType = Minor.Industry.IndustryType.Unknown;
 
                                 lIndustries.Add(new Industry(Convert.ToInt32(
                                     htmlNode.GetAttributeValue("href", "/industry?id=-1#top")

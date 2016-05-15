@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Threading.Tasks;
 using Azuria.Exceptions;
 using Azuria.Main.Minor;
@@ -22,74 +23,18 @@ namespace Azuria.Main
     /// </summary>
     public class Anime : IAnimeMangaObject
     {
-        /// <summary>
-        ///     Eine Enumeration, die die Verschiedenen Typen eines Anime darstellt.
-        /// </summary>
-        public enum AnimeType
-        {
-            /// <summary>
-            ///     Stellt eine Anime-Serie dar.
-            /// </summary>
-            Series,
-
-            /// <summary>
-            ///     Stellt einen Film dar.
-            /// </summary>
-            Movie,
-
-            /// <summary>
-            ///     Stellt eine Original Video Animation dar.
-            /// </summary>
-            Ova,
-
-            /// <summary>
-            ///     Stellt einen unbekannten Animetypen dar.
-            /// </summary>
-            Unknown
-        }
-
-        /// <summary>
-        ///     Eine Enumeration, die die Sprache eines <see cref="Anime" /> darstellt.
-        /// </summary>
-        public enum Language
-        {
-            /// <summary>
-            ///     Der Anime besitzt Deutsche Untertitel.
-            /// </summary>
-            GerSub,
-
-            /// <summary>
-            ///     Der Anime besitzt Englische Untertitel.
-            /// </summary>
-            EngSub,
-
-            /// <summary>
-            ///     Der Anime ist Englisch vertont.
-            /// </summary>
-            EngDub,
-
-            /// <summary>
-            ///     Der Anime ist Deutsch vertont.
-            /// </summary>
-            GerDub,
-
-            /// <summary>
-            /// </summary>
-            Unknown
-        }
-
         private readonly Senpai _senpai;
 
         internal Anime()
         {
             this.AnimeTyp = new InitialisableProperty<AnimeType>(this.InitType);
-            this.AvailableLanguages = new InitialisableProperty<IEnumerable<Language>>(this.InitAvailableLang);
+            this.AvailableLanguages = new InitialisableProperty<IEnumerable<AnimeLanguage>>(this.InitAvailableLang);
+            this.ContentCount = new InitialisableProperty<int>(this.InitEpisodeCount);
             this.Description = new InitialisableProperty<string>(this.InitMain);
             this.EnglishTitle = new InitialisableProperty<string>(this.InitMain, string.Empty)
             {
                 IsInitialisedOnce = false
             };
-            this.EpisodeCount = new InitialisableProperty<int>(this.InitEpisodeCount);
             this.Fsk = new InitialisableProperty<IEnumerable<FskObject>>(this.InitMain);
             this.Genre = new InitialisableProperty<IEnumerable<GenreObject>>(this.InitMain);
             this.GermanTitle = new InitialisableProperty<string>(this.InitMain, string.Empty)
@@ -133,6 +78,11 @@ namespace Azuria.Main
         ///     <para>(Vererbt von <see cref="IAnimeMangaObject" />)</para>
         /// </summary>
         public Uri CoverUri => new Uri("http://cdn.proxer.me/cover/" + this.Id + ".jpg");
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public InitialisableProperty<int> ContentCount { get; }
 
         /// <summary>
         ///     Gibt die Beschreibung des <see cref="Anime" /> oder <see cref="Manga" /> zurück.
@@ -286,13 +236,7 @@ namespace Azuria.Main
         /// </summary>
         /// <seealso cref="Language" />
         [NotNull]
-        public InitialisableProperty<IEnumerable<Language>> AvailableLanguages { get; }
-
-        /// <summary>
-        ///     Gibt die Episodenanzahl eines <see cref="Anime" /> zurück.
-        /// </summary>
-        [NotNull]
-        public InitialisableProperty<int> EpisodeCount { get; }
+        public InitialisableProperty<IEnumerable<AnimeLanguage>> AvailableLanguages { get; }
 
         #endregion
 
@@ -318,16 +262,16 @@ namespace Azuria.Main
         /// </exception>
         /// <param name="language">Die Sprache der Episoden.</param>
         /// <seealso cref="Episode" />
-        /// <returns>Einen Array mit length = <see cref="EpisodeCount" />.</returns>
+        /// <returns>Einen Array mit length = <see cref="ContentCount" />.</returns>
         [NotNull]
         [ItemNotNull]
-        public async Task<ProxerResult<IEnumerable<Episode>>> GetEpisodes(Language language)
+        public async Task<ProxerResult<IEnumerable<Episode>>> GetEpisodes(AnimeLanguage language)
         {
-            if (!(await this.AvailableLanguages.GetObject(new Language[0])).Contains(language))
+            if (!(await this.AvailableLanguages.GetObject(new AnimeLanguage[0])).Contains(language))
                 return new ProxerResult<IEnumerable<Episode>>(new Exception[] {new LanguageNotAvailableException()});
 
             List<Episode> lEpisodes = new List<Episode>();
-            for (int i = 1; i <= await this.EpisodeCount.GetObject(-1); i++)
+            for (int i = 1; i <= await this.ContentCount.GetObject(-1); i++)
             {
                 lEpisodes.Add(new Episode(this, i, language, this._senpai));
             }
@@ -409,7 +353,7 @@ namespace Azuria.Main
             {
                 lDocument.LoadHtml(lResponse);
 
-                List<Language> languageList = new List<Language>();
+                List<AnimeLanguage> languageList = new List<AnimeLanguage>();
                 foreach (
                     HtmlNode childNode in
                         lDocument.DocumentNode.ChildNodes[4]
@@ -421,16 +365,16 @@ namespace Azuria.Main
                     switch (childNode.FirstChild.InnerText)
                     {
                         case "GerSub":
-                            languageList.Add(Language.GerSub);
+                            languageList.Add(AnimeLanguage.GerSub);
                             break;
                         case "EngSub":
-                            languageList.Add(Language.EngSub);
+                            languageList.Add(AnimeLanguage.EngSub);
                             break;
                         case "EngDub":
-                            languageList.Add(Language.EngDub);
+                            languageList.Add(AnimeLanguage.EngDub);
                             break;
                         case "GerDub":
-                            languageList.Add(Language.GerDub);
+                            languageList.Add(AnimeLanguage.GerDub);
                             break;
                     }
                 }
@@ -475,7 +419,7 @@ namespace Azuria.Main
             {
                 lDocument.LoadHtml(lResponse);
 
-                this.EpisodeCount.SetInitialisedObject(
+                this.ContentCount.SetInitialisedObject(
                     Convert.ToInt32(
                         lDocument.DocumentNode.ChildNodes[4].ChildNodes[5].FirstChild.ChildNodes[1].InnerText));
             }
@@ -491,28 +435,19 @@ namespace Azuria.Main
         private async Task<ProxerResult> InitMain()
         {
             HtmlDocument lDocument = new HtmlDocument();
-            Func<string, ProxerResult> lCheckFunc = s =>
-            {
-                if (!string.IsNullOrEmpty(s) &&
-                    s.Equals(
-                        "<div class=\"inner\"><h3>Du hast keine Berechtigung um diese Seite zu betreten.</h3></div>"))
-                    return new ProxerResult(new Exception[] {new NoAccessException(nameof(this.InitMain))});
-
-                return new ProxerResult();
-            };
-            ProxerResult<string> lResult =
+            ProxerResult<Tuple<string, CookieContainer>> lResult =
                 await
                     HttpUtility.GetResponseErrorHandling(
                         new Uri("https://proxer.me/info/" + this.Id + "?format=raw"),
                         this._senpai.LoginCookies,
                         this._senpai.ErrHandler,
                         this._senpai,
-                        new[] {lCheckFunc});
+                        new Func<string, ProxerResult>[0], false);
 
-            if (!lResult.Success)
+            if (!lResult.Success || lResult.Result == null)
                 return new ProxerResult(lResult.Exceptions);
 
-            string lResponse = lResult.Result;
+            string lResponse = lResult.Result.Item1;
 
             try
             {
@@ -624,7 +559,7 @@ namespace Azuria.Main
                                     lIndustryType = Minor.Industry.IndustryType.Publisher;
                                 else if (htmlNode.NextSibling.InnerText.Contains("Producer"))
                                     lIndustryType = Minor.Industry.IndustryType.Producer;
-                                else lIndustryType = Minor.Industry.IndustryType.None;
+                                else lIndustryType = Minor.Industry.IndustryType.Unknown;
 
                                 lIndustries.Add(new Industry(Convert.ToInt32(
                                     htmlNode.GetAttributeValue("href", "/industry?id=-1#top")
@@ -723,7 +658,7 @@ namespace Azuria.Main
         {
             private readonly Senpai _senpai;
 
-            internal Episode([NotNull] Anime anime, int index, Language lang, [NotNull] Senpai senpai)
+            internal Episode([NotNull] Anime anime, int index, AnimeLanguage lang, [NotNull] Senpai senpai)
             {
                 this.ParentObject = anime;
                 this.ContentIndex = index;
@@ -736,7 +671,7 @@ namespace Azuria.Main
                         this.InitInfo);
             }
 
-            internal Episode([NotNull] Anime anime, int index, Language lang, bool isAvailable, [NotNull] Senpai senpai)
+            internal Episode([NotNull] Anime anime, int index, AnimeLanguage lang, bool isAvailable, [NotNull] Senpai senpai)
                 : this(anime, index, lang, senpai)
             {
                 this.IsAvailable = new InitialisableProperty<bool>(this.InitInfo, isAvailable);
@@ -768,9 +703,9 @@ namespace Azuria.Main
 
             Minor.Language IAnimeMangaContent<Anime>.GeneralLanguage
                 =>
-                    this.Language == Language.GerSub || this.Language == Language.GerDub
+                    this.Language == AnimeLanguage.GerSub || this.Language == AnimeLanguage.GerDub
                         ? Minor.Language.German
-                        : this.Language == Language.EngSub || this.Language == Language.EngDub
+                        : this.Language == AnimeLanguage.EngSub || this.Language == AnimeLanguage.EngDub
                             ? Minor.Language.English
                             : Minor.Language.Unkown;
 
@@ -786,7 +721,7 @@ namespace Azuria.Main
             /// <summary>
             ///     Gibt die Sprache der Episode zurück.
             /// </summary>
-            public Language Language { get; }
+            public AnimeLanguage Language { get; }
 
             /// <summary>
             ///     Gibt die vorhandenen Streams der Episode zurück.

@@ -86,6 +86,8 @@
     <Compile Include="Main\IAnimeMangaContentBase.cs" />
     <Compile Include="Main\IAnimeMangaObject.cs" />
     <Compile Include="Main\Manga.cs" />
+    <Compile Include="Main\Minor\AnimeLanguage.cs" />
+    <Compile Include="Main\Minor\AnimeType.cs" />
     <Compile Include="Main\Minor\FskObject.cs" />
     <Compile Include="Main\User\AnimeMangaProgress.cs" />
     <Compile Include="Main\User\Comment\Comment.cs" />

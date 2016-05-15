@@ -26,6 +26,12 @@ namespace Azuria.Main
         Uri CoverUri { get; }
 
         /// <summary>
+        /// 
+        /// </summary>
+        [NotNull]
+        InitialisableProperty<int> ContentCount { get; }
+
+        /// <summary>
         ///     Gibt die Beschreibung des <see cref="Anime" /> oder <see cref="Manga" /> zurück.
         ///     <para>(Vererbt von <see cref="IAnimeMangaObject" />)</para>
         /// </summary>

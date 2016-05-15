@@ -5,192 +5,192 @@ using JetBrains.Annotations;
 namespace Azuria.Main.Minor
 {
     /// <summary>
-    ///     Eine Klasse, die ein Genre eines <see cref="Anime">Anime</see> oder <see cref="Manga">Manga</see> darstellt.
+    ///     Represents a class that describes the genre of an <see cref="Anime">Anime</see> or <see cref="Manga">Manga</see>.
     /// </summary>
     public class GenreObject
     {
         /// <summary>
-        ///     Eine Enumeration, die einen Genre-Typen darstellt.
+        ///     Represents an enumeration which contains every possible genre for an <see cref="Anime">Anime</see> or <see cref="Manga">Manga</see>.
         /// </summary>
         public enum GenreType
         {
             /// <summary>
-            ///     Stellt das Genre Abenteuer dar.
+            ///     Represents the Adventure genre.
             /// </summary>
             Adventure,
 
             /// <summary>
-            ///     Stellt das Genre Action dar.
+            ///     Represents the Action genre.
             /// </summary>
             Action,
 
             /// <summary>
-            ///     Stellt das Genre Adult dar.
+            ///     Represents the Adult genre.
             /// </summary>
             Adult,
 
             /// <summary>
-            ///     Stellt das Genre Comedy dar.
+            ///     Represents the Comedy genre.
             /// </summary>
             Comedy,
 
             /// <summary>
-            ///     Stellt das Genre Cyberpunk dar.
+            ///     Represents the Cyberpunk genre.
             /// </summary>
             Cyberpunk,
 
             /// <summary>
-            ///     Stellt das Genre Drama dar.
+            ///     Represents the Drama genre.
             /// </summary>
             Drama,
 
             /// <summary>
-            ///     Stellt das Genre Ecchi dar.
+            ///     Represents the Ecchi genre.
             /// </summary>
             Ecchi,
 
             /// <summary>
-            ///     Stellt das Genre Fantasy dar.
+            ///     Represents the Fantasy genre.
             /// </summary>
             Fantasy,
 
             /// <summary>
-            ///     Stellt das Genre Harem dar.
+            ///     Represents the Harem genre.
             /// </summary>
             Harem,
 
             /// <summary>
-            ///     Stellt das Genre Historical dar.
+            ///     Represents the Historical genre.
             /// </summary>
             Historical,
 
             /// <summary>
-            ///     Stellt das Genre Horror dar.
+            ///     Represents the Horror genre.
             /// </summary>
             Horror,
 
             /// <summary>
-            ///     Stellt das Genre Josei dar.
+            ///     Represents the Josei genre.
             /// </summary>
             Josei,
 
             /// <summary>
-            ///     Stellt das Genre Magic dar.
+            ///     Represents the Magic genre.
             /// </summary>
             Magic,
 
             /// <summary>
-            ///     Stellt das Genre MartialArt dar.
+            ///     Represents the MartialArt genre.
             /// </summary>
             MartialArt,
 
             /// <summary>
-            ///     Stellt das Genre Mecha dar.
+            ///     Represents the MartialArt genre.
             /// </summary>
             Mecha,
 
             /// <summary>
-            ///     Stellt das Genre Military dar.
+            ///     Represents the Military genre.
             /// </summary>
             Military,
 
             /// <summary>
-            ///     Stellt das Genre Musik dar.
+            ///     Represents the Music genre.
             /// </summary>
             Music,
 
             /// <summary>
-            ///     Stellt das Genre Mystery dar.
+            ///     Represents the Mystery genre.
             /// </summary>
             Mystery,
 
             /// <summary>
-            ///     Stellt kein Genre dar.
+            ///     Represents no genre.
             /// </summary>
             None,
 
             /// <summary>
-            ///     Stellt das Genre Psychological dar.
+            ///     Represents the Psychological genre.
             /// </summary>
             Psychological,
 
             /// <summary>
-            ///     Stellt das Genre Romance dar.
+            ///     Represents the Romance genre.
             /// </summary>
             Romance,
 
             /// <summary>
-            ///     Stellt das Genre School dar.
+            ///     Represents the School genre.
             /// </summary>
             School,
 
             /// <summary>
-            ///     Stellt das Genre SciFi dar.
+            ///     Represents the SciFi genre.
             /// </summary>
             SciFi,
 
             /// <summary>
-            ///     Stellt das Genre Seinen dar.
+            ///     Represents the Seinen genre.
             /// </summary>
             Seinen,
 
             /// <summary>
-            ///     Stellt das Genre Shoujou dar.
+            ///     Represents the Shoujou genre.
             /// </summary>
             Shoujou,
 
             /// <summary>
-            ///     Stellt das Genre ShoujouAi dar.
+            ///     Represents the ShoujouAi genre.
             /// </summary>
             ShoujouAi,
 
             /// <summary>
-            ///     Stellt das Genre Shounen dar.
+            ///     Represents the Shounen genre.
             /// </summary>
             Shounen,
 
             /// <summary>
-            ///     Stellt das Genre ShounenAi dar.
+            ///     Represents the ShounenAi genre.
             /// </summary>
             ShounenAi,
 
             /// <summary>
-            ///     Stellt das Genre SliceOfLife dar.
+            ///     Represents the SliceOfLife genre.
             /// </summary>
             SliceOfLife,
 
             /// <summary>
-            ///     Stellt das Genre Splatter dar.
+            ///     Represents the Splatter genre.
             /// </summary>
             Splatter,
 
             /// <summary>
-            ///     Stellt das Genre Sport dar.
+            ///     Represents the Sport genre.
             /// </summary>
             Sport,
 
             /// <summary>
-            ///     Stellt das Genre Superpower dar.
+            ///     Represents the Superpower genre.
             /// </summary>
             Superpower,
 
             /// <summary>
-            ///     Stellt das Genre Vampire dar.
+            ///     Represents the Vampire genre.
             /// </summary>
             Vampire,
 
             /// <summary>
-            ///     Stellt das Genre Violence dar.
+            ///     Represents the Violence genre.
             /// </summary>
             Violence,
 
             /// <summary>
-            ///     Stellt das Genre Yaoi dar.
+            ///     Represents the Yaoi genre.
             /// </summary>
             Yaoi,
 
             /// <summary>
-            ///     Stellt das Genre Yuri dar.
+            ///     Represents the Yuri genre.
             /// </summary>
             Yuri
         }
@@ -201,9 +201,9 @@ namespace Azuria.Main.Minor
         }
 
         /// <summary>
-        ///     Erzeugt ein neues <see cref="GenreObject">GenreObject</see>-Objekt mit einem angegebenen Genre.
+        ///     Initialises a <see cref="GenreObject">GenreObject</see> with a specified genre.
         /// </summary>
-        /// <param name="genre">Das Genre, das mit diesem Objekt dargestellt werden soll.</param>
+        /// <param name="genre">The genre that is represented by the object.</param>
         public GenreObject(GenreType genre)
         {
             this.Genre = genre;
@@ -212,9 +212,9 @@ namespace Azuria.Main.Minor
         #region Properties
 
         /// <summary>
-        ///     Gibt das Genre zurück, dass durch dieses Objekt dargestellt wird.
+        ///     Gets the genre this object is associated with.
         /// </summary>
-        public GenreType Genre { get; set; }
+        public GenreType Genre { get; }
 
         [NotNull]
         internal static Dictionary<string, GenreType> TypeDictionary => new Dictionary<string, GenreType>
@@ -257,7 +257,7 @@ namespace Azuria.Main.Minor
         };
 
         /// <summary>
-        ///     Gibt den Link zu dem Wiki-Eintrag des Genre zurück.
+        ///     Gets the link to the wiki entry associated with this <see cref="Genre"/>.
         /// </summary>
         [NotNull]
         public Uri WikiLink => new Uri("https://proxer.me/wiki/" + this.Genre);

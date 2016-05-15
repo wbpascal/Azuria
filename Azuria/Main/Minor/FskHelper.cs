@@ -4,15 +4,12 @@ using JetBrains.Annotations;
 namespace Azuria.Main.Minor
 {
     /// <summary>
-    ///     Eine Klasse, die einige Hilfestellungen gibt, um mit der <see cref="Fsk">Fsk-Enumeration</see> zu arbeiten.
+    ///     Represents a class which aims to help working with the <see cref="Fsk">Fsk-enumeration</see>.
     /// </summary>
     public static class FskHelper
     {
         #region Properties
 
-        /// <summary>
-        ///     Ein Wörterbuch, dass bei der Umwandlung von <see cref="Fsk">Fsk</see> in Strings hilft.
-        /// </summary>
         [NotNull]
         internal static Dictionary<Fsk, string> FskToStringDictionary => new Dictionary<Fsk, string>
         {
