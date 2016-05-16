@@ -102,7 +102,6 @@ namespace Azuria.Main
         public Uri CoverUri => new Uri("http://cdn.proxer.me/cover/" + this.Id + ".jpg");
 
         /// <summary>
-        /// 
         /// </summary>
         public InitialisableProperty<int> ContentCount { get; }
 

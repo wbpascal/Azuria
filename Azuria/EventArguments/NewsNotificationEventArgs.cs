@@ -23,14 +23,12 @@ namespace Azuria.EventArguments
         #region Geerbt
 
         /// <summary>
-        ///     Gibt die Anzahl der Benachrichtigungen zurück.
-        ///     <para>(Vererbt von <see cref="INotificationEventArgs" />)</para>
+        ///     Gets the notification count. (Inherited from <see cref="INotificationEventArgs" />)
         /// </summary>
         public int NotificationCount { get; }
 
         /// <summary>
-        ///     Gibt den Typ der Benachrichtigung zurück.
-        ///     <para>(Vererbt von <see cref="INotificationEventArgs" />)</para>
+        ///     Gets the notification type. (Inherited from <see cref="INotificationEventArgs" />)
         /// </summary>
         public NotificationEventArgsType Type { get; }
 

@@ -10,7 +10,8 @@ namespace Azuria.Main.Minor
     public class GenreObject
     {
         /// <summary>
-        ///     Represents an enumeration which contains every possible genre for an <see cref="Anime">Anime</see> or <see cref="Manga">Manga</see>.
+        ///     Represents an enumeration which contains every possible genre for an <see cref="Anime">Anime</see> or
+        ///     <see cref="Manga">Manga</see>.
         /// </summary>
         public enum GenreType
         {
@@ -257,7 +258,7 @@ namespace Azuria.Main.Minor
         };
 
         /// <summary>
-        ///     Gets the link to the wiki entry associated with this <see cref="Genre"/>.
+        ///     Gets the link to the wiki entry associated with this <see cref="Genre" />.
         /// </summary>
         [NotNull]
         public Uri WikiLink => new Uri("https://proxer.me/wiki/" + this.Genre);

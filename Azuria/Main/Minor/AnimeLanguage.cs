@@ -26,7 +26,7 @@
         GerDub,
 
         /// <summary>
-        /// The language of the Anime is unknown.
+        ///     The language of the Anime is unknown.
         /// </summary>
         Unknown
     }

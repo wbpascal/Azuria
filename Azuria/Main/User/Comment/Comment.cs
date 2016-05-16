@@ -12,7 +12,7 @@ using JetBrains.Annotations;
 namespace Azuria.Main.User.Comment
 {
     /// <summary>
-    ///     Eine Klasse, die ein Kommentar eines <see cref="Anime">Anime</see> oder <see cref="Manga">Manga</see> darstellt.
+    ///     Represents a comment for an <see cref="Anime">Anime</see> or <see cref="Manga">Manga</see>.
     /// </summary>
     public class Comment
     {
@@ -37,35 +37,34 @@ namespace Azuria.Main.User.Comment
         #region Properties
 
         /// <summary>
-        ///     Gibt die Id des <see cref="Anime">Anime</see> oder <see cref="Manga">Manga</see> zurück, auf die der
-        ///     <see cref="Comment">Kommentar</see> verweist.
+        ///     Gets the Id of the <see cref="Anime">Anime</see> or <see cref="Manga">Manga</see> this comment is for.
         /// </summary>
-        public int AnimeMangaId { get; private set; }
+        public int AnimeMangaId { get; }
 
         /// <summary>
-        ///     Gibt den Autor des <see cref="Comment">Kommentars</see> zurück.
+        ///     Gets the author of this comment.
         /// </summary>
         [NotNull]
-        public Azuria.User Author { get; private set; }
+        public Azuria.User Author { get; }
 
         /// <summary>
-        ///     Gibt den Inhalt des <see cref="Comment">Kommentars</see> zurück.
+        ///     Gets the content of this comment. Spoilers are wrapped in tags.
         /// </summary>
         [NotNull]
         public string Content { get; protected set; }
 
         /// <summary>
+        ///     Gets the category the author has put his progress of the <see cref="Anime" /> or <see cref="Manga" /> in.
         /// </summary>
-        public AnimeMangaProgressState ProgressState { get; set; }
+        public AnimeMangaProgressState ProgressState { get; }
 
         /// <summary>
-        ///     Gibt die Sterne der Gesamtwertung des <see cref="Comment">Kommentars</see> zurück. Es wird -1 zurückgegeben, wenn
-        ///     keine Bewertung abgegeben wurde.
+        ///     Gets the overall rating the <see cref="Author" /> gave. Returns -1 if no rating was found.
         /// </summary>
         public int Rating { get; protected set; }
 
         /// <summary>
-        ///     Gibt die Sterne weiterer Bewertungskategorien des <see cref="Comment">Kommentars</see> zurück.
+        ///     Gets the rating of all subcategories.
         /// </summary>
         [NotNull]
         public Dictionary<RatingCategory, int> SubRatings { get; protected set; }

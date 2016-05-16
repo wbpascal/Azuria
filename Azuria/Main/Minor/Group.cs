@@ -3,12 +3,13 @@
 namespace Azuria.Main.Minor
 {
     /// <summary>
-    ///     Represents a class which describes a <see cref="Group"/>, who translates <see cref="Anime" /> or <see cref="Manga" />.
+    ///     Represents a class which describes a <see cref="Group" />, who translates <see cref="Anime" /> or
+    ///     <see cref="Manga" />.
     /// </summary>
     public class Group
     {
         /// <summary>
-        /// Represents an error.
+        ///     Represents an error.
         /// </summary>
         public static Group Error = new Group(-1, "ERROR");
 
@@ -21,12 +22,12 @@ namespace Azuria.Main.Minor
         #region Properties
 
         /// <summary>
-        ///     Gets the id of the <see cref="Group"/>.
+        ///     Gets the id of the <see cref="Group" />.
         /// </summary>
         public int Id { get; }
 
         /// <summary>
-        ///     Gets the name of the <see cref="Group"/>.
+        ///     Gets the name of the <see cref="Group" />.
         /// </summary>
         [NotNull]
         public string Name { get; }

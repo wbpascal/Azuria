@@ -6,22 +6,22 @@
     public enum NotificationEventArgsType
     {
         /// <summary>
-        ///     <see cref="AmNotificationEventArgs" />
+        ///     Represents <see cref="AmNotificationEventArgs" />.
         /// </summary>
         AnimeManga,
 
         /// <summary>
-        ///     <see cref="FriendNotificationEventArgs" />
+        ///     Represents <see cref="FriendNotificationEventArgs" />.
         /// </summary>
         Friend,
 
         /// <summary>
-        ///     <see cref="NewsNotificationEventArgs" />
+        ///     Represents <see cref="NewsNotificationEventArgs" />.
         /// </summary>
         News,
 
         /// <summary>
-        ///     <see cref="PmNotificationEventArgs" />
+        ///     Represents <see cref="PmNotificationEventArgs" />.
         /// </summary>
         PrivateMessage
     }

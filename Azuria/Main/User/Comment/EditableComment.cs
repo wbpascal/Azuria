@@ -13,6 +13,7 @@ using Newtonsoft.Json;
 namespace Azuria.Main.User.Comment
 {
     /// <summary>
+    ///     Represents an editable comment for an <see cref="Anime">Anime</see> or <see cref="Manga">Manga</see>.
     /// </summary>
     public class EditableComment : Comment
     {
@@ -33,7 +34,8 @@ namespace Azuria.Main.User.Comment
         #region Properties
 
         /// <summary>
-        ///     Gibt den Inhalt des <see cref="Comment">Kommentars</see> zurück.
+        ///     Gets or sets the content of this comment.
+        ///     If the content was set the method <see cref="Save()" /> must be called to send the information to the server.
         /// </summary>
         [NotNull]
         public new string Content
@@ -43,13 +45,15 @@ namespace Azuria.Main.User.Comment
         }
 
         /// <summary>
+        ///     Gets a object with the help of which the progress can be set or retrieved.
+        ///     Calling <see cref="Save()" /> is not necessary after changing the progress.
         /// </summary>
         [NotNull]
         public EditableAnimeMangaProgress Progress { get; }
 
         /// <summary>
-        ///     Gibt die Sterne der Gesamtwertung des <see cref="Comment">Kommentars</see> zurück. Es wird -1 zurückgegeben, wenn
-        ///     keine Bewertung abgegeben wurde.
+        ///     Gets the overall rating the author gave. Returns -1 if no rating was found.
+        ///     If the content was set the method <see cref="Save()" /> must be called to send the information to the server.
         /// </summary>
         public new int Rating
         {
@@ -58,7 +62,8 @@ namespace Azuria.Main.User.Comment
         }
 
         /// <summary>
-        ///     Gibt die Sterne weiterer Bewertungskategorien des <see cref="Comment">Kommentars</see> zurück.
+        ///     Gets the rating of all subcategories.
+        ///     If the content was set the method <see cref="Save()" /> must be called to send the information to the server.
         /// </summary>
         [NotNull]
         public new Dictionary<RatingCategory, int> SubRatings
@@ -72,8 +77,9 @@ namespace Azuria.Main.User.Comment
         #region
 
         /// <summary>
+        ///     Deletes the whole entry from the server.
         /// </summary>
-        /// <returns></returns>
+        /// <returns>If the action was successfull.</returns>
         public async Task<ProxerResult> Delete()
         {
             ProxerResult<string> lResult =
@@ -276,8 +282,9 @@ namespace Azuria.Main.User.Comment
         }
 
         /// <summary>
+        ///     Saves the current entry to the server.
         /// </summary>
-        /// <returns></returns>
+        /// <returns>If the action was successfull.</returns>
         public async Task<ProxerResult> Save()
         {
             return await this.Save(this.GetPostArgs());

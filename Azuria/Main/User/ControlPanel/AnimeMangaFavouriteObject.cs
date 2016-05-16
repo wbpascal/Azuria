@@ -9,12 +9,14 @@ using Newtonsoft.Json;
 namespace Azuria.Main.User.ControlPanel
 {
     /// <summary>
+    ///     Represents an <see cref="Anime" /> or <see cref="Manga" /> which is a favourite of the user.
     /// </summary>
-    public class AnimeMangaFavouriteObject
+    /// <typeparam name="T">Specifies if the favourite is an <see cref="Anime" /> or <see cref="Manga" />.</typeparam>
+    public class AnimeMangaFavouriteObject<T> where T : IAnimeMangaObject
     {
         private readonly Senpai _senpai;
 
-        internal AnimeMangaFavouriteObject(int entryId, IAnimeMangaObject animeMangaObject, [NotNull] Senpai senpai)
+        internal AnimeMangaFavouriteObject(int entryId, [NotNull] T animeMangaObject, [NotNull] Senpai senpai)
         {
             this._senpai = senpai;
             this.EntryId = entryId;
@@ -24,14 +26,12 @@ namespace Azuria.Main.User.ControlPanel
         #region Properties
 
         /// <summary>
+        ///     Gets the <see cref="Anime" /> or <see cref="Manga" /> which is a favourite of the user.
         /// </summary>
-        public IAnimeMangaObject AnimeMangaObject { get; }
+        public T AnimeMangaObject { get; }
 
         /// <summary>
-        /// </summary>
-        public AnimeMangaType AnimeMangaType => this.AnimeMangaObject.ObjectType;
-
-        /// <summary>
+        ///     Gets the entry id of this favourite.
         /// </summary>
         public int EntryId { get; }
 
@@ -40,10 +40,15 @@ namespace Azuria.Main.User.ControlPanel
         #region
 
         /// <summary>
+        ///     Deletes the entry from the server and optionaly localy from an <see cref="UserControlPanel" />-object.
         /// </summary>
-        /// <returns></returns>
+        /// <param name="userControlPanel">
+        ///     An UCP-object of the senpai this object was created with to delete this entry from. This
+        ///     parameter is optional. The entry will be deleted from the server anyway.
+        /// </param>
+        /// <returns>If the action was successfull.</returns>
         [ItemNotNull]
-        public async Task<ProxerResult> DeleteEntry()
+        public async Task<ProxerResult> DeleteEntry([CanBeNull] UserControlPanel userControlPanel = null)
         {
             ProxerResult<string> lResult =
                 await
@@ -63,7 +68,10 @@ namespace Azuria.Main.User.ControlPanel
                 Dictionary<string, string> responseDes =
                     JsonConvert.DeserializeObject<Dictionary<string, string>>(lResponse);
 
-                return responseDes["error"].Equals("0") ? new ProxerResult() : new ProxerResult {Success = false};
+                if (!responseDes["error"].Equals("0")) return new ProxerResult {Success = false};
+
+                userControlPanel?.DeleteFavourite(this);
+                return new ProxerResult();
             }
             catch
             {

@@ -19,17 +19,16 @@ namespace Azuria.Main
         #region Properties
 
         /// <summary>
+        /// </summary>
+        [NotNull]
+        InitialisableProperty<int> ContentCount { get; }
+
+        /// <summary>
         ///     Gibt den Link zum Cover des <see cref="Anime" /> oder <see cref="Manga" /> zurück.
         ///     <para>(Vererbt von <see cref="IAnimeMangaObject" />)</para>
         /// </summary>
         [NotNull]
         Uri CoverUri { get; }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        [NotNull]
-        InitialisableProperty<int> ContentCount { get; }
 
         /// <summary>
         ///     Gibt die Beschreibung des <see cref="Anime" /> oder <see cref="Manga" /> zurück.

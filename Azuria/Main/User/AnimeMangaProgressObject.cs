@@ -139,6 +139,20 @@ namespace Azuria.Main.User
             }
         }
 
+        /// <summary>
+        /// </summary>
+        /// <param name="animeMangaObject"></param>
+        /// <param name="user"></param>
+        /// <param name="senpai"></param>
+        /// <returns></returns>
+        public static async Task<AnimeMangaProgressObject<T>> GetEmptyBookmarkObjectFromAnimeMangaObject(
+            [NotNull] T animeMangaObject, [NotNull] Azuria.User user, [NotNull] Senpai senpai)
+        {
+            return new AnimeMangaProgressObject<T>(user, animeMangaObject, -1,
+                new AnimeMangaProgress(0, await animeMangaObject.ContentCount.GetObject(-1)),
+                AnimeMangaProgressState.Unknown, senpai);
+        }
+
         private async Task<ProxerResult> InitComment()
         {
             ProxerResult<Comment.Comment> lCommentFetchResult = await this.GetComment();
@@ -168,20 +182,5 @@ namespace Azuria.Main.User
         }
 
         #endregion
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="animeMangaObject"></param>
-        /// <param name="user"></param>
-        /// <param name="senpai"></param>
-        /// <returns></returns>
-        public static async Task<AnimeMangaProgressObject<T>> GetEmptyBookmarkObjectFromAnimeMangaObject(
-            [NotNull] T animeMangaObject, [NotNull] Azuria.User user, [NotNull] Senpai senpai)
-        {
-            return new AnimeMangaProgressObject<T>(user, animeMangaObject, -1,
-                new AnimeMangaProgress(0, await animeMangaObject.ContentCount.GetObject(-1)),
-                AnimeMangaProgressState.Unknown, senpai);
-        }
     }
 }

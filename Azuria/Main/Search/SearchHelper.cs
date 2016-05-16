@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using Azuria.Exceptions;
 using Azuria.Main.Minor;
 using Azuria.Utilities;
 using Azuria.Utilities.ErrorHandling;
@@ -16,7 +15,8 @@ namespace Azuria.Main.Search
     public class SearchHelper
     {
         /// <summary>
-        ///     An enumeration which describes the type of the <see cref="Anime">Anime</see> or <see cref="Manga">Manga</see> that is being searched for.
+        ///     An enumeration which describes the type of the <see cref="Anime">Anime</see> or <see cref="Manga">Manga</see> that
+        ///     is being searched for.
         /// </summary>
         public enum AnimeMangaType
         {
@@ -62,7 +62,8 @@ namespace Azuria.Main.Search
         }
 
         /// <summary>
-        ///     An enumeration which describes the order in which the <see cref="Anime">Anime</see> or <see cref="Manga">Manga</see> are being returned after a search.
+        ///     An enumeration which describes the order in which the <see cref="Anime">Anime</see> or
+        ///     <see cref="Manga">Manga</see> are being returned after a search.
         /// </summary>
         public enum SortAnimeManga
         {
@@ -97,19 +98,11 @@ namespace Azuria.Main.Search
         /// <summary>
         ///     Executes a search with the specified options.
         /// </summary>
-        /// <exception cref="WrongResponseException">Thrown when the server response is not expected.</exception>
-        /// <exception cref="ArgumentNullException">
-        ///     Thrown when <paramref name="name" /> is null (or Nothing in Visual
-        ///     Basic).
-        /// </exception>
-        /// <exception cref="NotLoggedInException">
-        ///     Thrown when searching for an <see cref="Anime">Anime</see> or
-        ///     <see cref="Manga">Manga</see> and the <paramref name="senpai"/> is not logged in.
-        /// </exception>
         /// <typeparam name="T">A type that is derived from <see cref="ISearchableObject" />.</typeparam>
         /// <param name="name">The search term.</param>
         /// <param name="senpai">
-        ///     The user that executes the search. He needs to be logged in if searching for an <see cref="Anime">Anime</see> or <see cref="Manga">Manga</see>.
+        ///     The user that executes the search. He needs to be logged in if searching for an <see cref="Anime">Anime</see> or
+        ///     <see cref="Manga">Manga</see>.
         /// </param>
         /// <returns>A collection of the search results.</returns>
         [ItemNotNull]
@@ -144,27 +137,32 @@ namespace Azuria.Main.Search
         /// <summary>
         ///     Executes an <see cref="Anime">Anime-</see> or <see cref="Manga">Manga</see>search.
         /// </summary>
-        /// <exception cref="WrongResponseException">Thrown when the server response is not expected.</exception>
-        /// <exception cref="ArgumentNullException">
-        ///     Thrown when <paramref name="name" /> is null (or Nothing in Visual
-        ///     Basic).
-        /// </exception>
-        /// <exception cref="NotLoggedInException">
-        ///     Thrown when the <paramref name="senpai"/> is not logged in.
-        /// </exception>
-        /// <typeparam name="T">A type that is derived from <see cref="IAnimeMangaObject" /> or <see cref="IAnimeMangaObject"/> itself if searching for both <see cref="Anime"/> and <see cref="Manga"/>.</typeparam>
+        /// <typeparam name="T">
+        ///     A type that is derived from <see cref="IAnimeMangaObject" /> or <see cref="IAnimeMangaObject" />
+        ///     itself if searching for both <see cref="Anime" /> and <see cref="Manga" />.
+        /// </typeparam>
         /// <param name="name">The search term.</param>
         /// <param name="senpai">
         ///     The user that executes the search. He needs to be logged in.
         /// </param>
-        /// <param name="genreContains">The <see cref="GenreObject">genres</see> which every <see cref="Anime"/> Or <see cref="Manga"/> has to contain.</param>
-        /// <param name="genreExcludes">
-        ///     The <see cref="GenreObject">genres</see> which every <see cref="Anime"/> Or <see cref="Manga"/> should NOT contain.
+        /// <param name="genreContains">
+        ///     The <see cref="GenreObject">genres</see> which every <see cref="Anime" /> Or
+        ///     <see cref="Manga" /> has to contain.
         /// </param>
-        /// <param name="fskContains">The <see cref="Fsk">Fsk-</see>categories which every <see cref="Anime"/> Or <see cref="Manga"/> has to contain.</param>
-        /// <param name="sprache">The <see cref="Language"/> that every <see cref="Anime"/> or <see cref="Manga"/> has to be available in.</param>
+        /// <param name="genreExcludes">
+        ///     The <see cref="GenreObject">genres</see> which every <see cref="Anime" /> Or <see cref="Manga" /> should NOT
+        ///     contain.
+        /// </param>
+        /// <param name="fskContains">
+        ///     The <see cref="Fsk">Fsk-</see>categories which every <see cref="Anime" /> Or
+        ///     <see cref="Manga" /> has to contain.
+        /// </param>
+        /// <param name="sprache">
+        ///     The <see cref="Language" /> that every <see cref="Anime" /> or <see cref="Manga" /> has to be
+        ///     available in.
+        /// </param>
         /// <param name="sort">The order in which the objects are returned.</param>
-        /// <param name="type">The type of the <see cref="Anime"/> or <see cref="Manga"/> that is being searched for</param>
+        /// <param name="type">The type of the <see cref="Anime" /> or <see cref="Manga" /> that is being searched for</param>
         /// <returns>A collection of the search results.</returns>
         [ItemNotNull]
         public static async Task<ProxerResult<SearchResult<T>>> SearchAnimeManga<T>([NotNull] string name,

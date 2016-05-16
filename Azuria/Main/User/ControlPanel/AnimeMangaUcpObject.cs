@@ -9,39 +9,37 @@ using JetBrains.Annotations;
 namespace Azuria.Main.User.ControlPanel
 {
     /// <summary>
+    ///     Represents an entry in the <see cref="UserControlPanel" /> of an <see cref="Anime" /> or <see cref="Manga" />.
     /// </summary>
-    /// <typeparam name="T"></typeparam>
+    /// <typeparam name="T">Specifies if the entry is an <see cref="Anime" /> or <see cref="Manga" />.</typeparam>
     public class AnimeMangaUcpObject<T> : AnimeMangaProgressObject<T> where T : IAnimeMangaObject
     {
-        [CanBeNull] private readonly UserControlPanel _controlPanel;
-
         internal AnimeMangaUcpObject([NotNull] Azuria.User user, [NotNull] T animeMangaObject, int entryId,
-            AnimeMangaProgress progress, AnimeMangaProgressState progressState, [NotNull] Senpai senpai,
-            [CanBeNull] UserControlPanel controlPanel = null)
+            AnimeMangaProgress progress, AnimeMangaProgressState progressState, [NotNull] Senpai senpai)
             : base(user, animeMangaObject, entryId, progress, progressState, senpai)
         {
-            this._controlPanel = controlPanel;
             this.Comment = new InitialisableProperty<EditableComment>(this.GetEditableComment);
             this.Progress = new EditableAnimeMangaProgress(progress.CurrentProgress, progress.MaxProgress,
                 this.GetCurrentProgress, this.SetCurrentProgress);
         }
 
-        private AnimeMangaUcpObject([NotNull] AnimeMangaProgressObject<T> baseClass, [NotNull] Senpai senpai,
-            [CanBeNull] UserControlPanel controlPanel = null)
+        private AnimeMangaUcpObject([NotNull] AnimeMangaProgressObject<T> baseClass, [NotNull] Senpai senpai)
             : this(
                 baseClass.User, baseClass.AnimeMangaObject, baseClass.EntryId, baseClass.Progress,
-                baseClass.ProgressState, senpai, controlPanel)
+                baseClass.ProgressState, senpai)
         {
         }
 
         #region Properties
 
         /// <summary>
+        ///     Gets an editable comment associated with this entry.
         /// </summary>
         [NotNull]
         public new InitialisableProperty<EditableComment> Comment { get; }
 
         /// <summary>
+        ///     Gets a progress object that can be used to get and set the progress of the current entry.
         /// </summary>
         [NotNull]
         public new EditableAnimeMangaProgress Progress { get; }
@@ -51,9 +49,14 @@ namespace Azuria.Main.User.ControlPanel
         #region
 
         /// <summary>
+        ///     Deletes the entry from the server and optionaly localy from an <see cref="UserControlPanel" />-object.
         /// </summary>
-        /// <returns></returns>
-        public async Task<ProxerResult> DeleteEntry()
+        /// <param name="userControlPanel">
+        ///     An UCP-object of the senpai this object was created with to delete this entry from. This
+        ///     parameter is optional. The entry will be deleted from the server anyway.
+        /// </param>
+        /// <returns>If the action was successfull.</returns>
+        public async Task<ProxerResult> DeleteEntry([CanBeNull] UserControlPanel userControlPanel = null)
         {
             ProxerResult<EditableComment> lEditableCommentFetchResult = await this.Comment.GetObject();
             if (!lEditableCommentFetchResult.Success || lEditableCommentFetchResult.Result == null)
@@ -62,7 +65,7 @@ namespace Azuria.Main.User.ControlPanel
             ProxerResult lDeleteResult = await lEditableCommentFetchResult.Result.Delete();
             if (!lDeleteResult.Success) return lDeleteResult;
 
-            this._controlPanel?.DeleteEntry<T>(this.EntryId);
+            userControlPanel?.DeleteEntry(this);
 
             return new ProxerResult();
         }
@@ -76,9 +79,6 @@ namespace Azuria.Main.User.ControlPanel
             return await lEditableCommentFetchResult.Result.Progress.CurrentProgress.Get();
         }
 
-        /// <summary>
-        /// </summary>
-        /// <returns></returns>
         private async Task<ProxerResult> GetEditableComment()
         {
             ProxerResult<EditableComment> lCommentFetchResult =

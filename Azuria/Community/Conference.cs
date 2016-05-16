@@ -549,8 +549,6 @@ namespace Azuria.Community
         /// <summary>
         ///     Initialises every property of the current class.
         /// </summary>
-        /// <exception cref="NotLoggedInException">Thrown when the <see cref="Senpai">User</see> is not logged in.</exception>
-        /// <exception cref="WrongResponseException">Thrown when the server response is not expected.</exception>
         /// <seealso cref="Senpai.Login" />
         [ItemNotNull]
         [Obsolete("Bitte benutze die Methoden der jeweiligen Eigenschaften, um sie zu initalisieren!")]
@@ -574,8 +572,6 @@ namespace Azuria.Community
         /// <summary>
         ///     Returns if the <paramref name="senpai">User</paramref> is part of the conference.
         /// </summary>
-        /// <exception cref="NotLoggedInException">Thrown when the <see cref="Senpai">User</see> is not logged in.</exception>
-        /// <exception cref="WrongResponseException">Thrown when the server response is not expected.</exception>
         /// <param name="id">The Id of the <see cref="Conference" /></param>
         /// <param name="senpai">The user which is tested.</param>
         /// <returns>Whether the <paramref name="senpai">User</paramref> is part of the conference.</returns>
@@ -678,8 +674,6 @@ namespace Azuria.Community
         /// <summary>
         ///     Sends a message to the current conference.
         /// </summary>
-        /// <exception cref="NotLoggedInException">Thrown when the <see cref="Senpai">User</see> is not logged in.</exception>
-        /// <exception cref="WrongResponseException">Thrown when the server response is not expected.</exception>
         /// <param name="nachricht">The content of the message that is being send.</param>
         /// <returns>Whether the action was successfull.</returns>
         [ItemNotNull]
@@ -752,8 +746,6 @@ namespace Azuria.Community
         /// <summary>
         ///     Marks the current conference as unread.
         /// </summary>
-        /// <exception cref="NotLoggedInException">Thrown when the <see cref="Senpai">User</see> is not logged in.</exception>
-        /// <exception cref="WrongResponseException">Thrown when the server response is not expected.</exception>
         /// <seealso cref="Senpai.Login" />
         /// <returns>Whether the action was successfull.</returns>
         [ItemNotNull]

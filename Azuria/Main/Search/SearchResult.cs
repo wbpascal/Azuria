@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
-using Azuria.Exceptions;
 using Azuria.Main.Minor;
 using Azuria.Utilities.ErrorHandling;
 using Azuria.Utilities.Extensions;
@@ -49,7 +48,6 @@ namespace Azuria.Main.Search
         /// <summary>
         ///     Loads the next page of search results and adds them to the <see cref="SearchResult{T}.SearchResults" /> property.
         /// </summary>
-        /// <exception cref="WrongResponseException">Thrown when the server response is not expected.</exception>
         /// <returns>A collection of the search results from the fetched page.</returns>
         [ItemNotNull]
         public async Task<ProxerResult<IEnumerable<T>>> GetNextSearchResults()

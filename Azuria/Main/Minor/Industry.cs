@@ -3,12 +3,12 @@
 namespace Azuria.Main.Minor
 {
     /// <summary>
-    ///     Represents a class which describes the <see cref="Industry"/> of an <see cref="Anime" /> or <see cref="Manga" />.
+    ///     Represents a class which describes the <see cref="Industry" /> of an <see cref="Anime" /> or <see cref="Manga" />.
     /// </summary>
     public class Industry
     {
         /// <summary>
-        ///     Represents an enumeration which describes the type of the <see cref="Industry"/>.
+        ///     Represents an enumeration which describes the type of the <see cref="Industry" />.
         /// </summary>
         public enum IndustryType
         {
@@ -34,7 +34,7 @@ namespace Azuria.Main.Minor
         }
 
         /// <summary>
-        /// Represents an error.
+        ///     Represents an error.
         /// </summary>
         public static Industry Error = new Industry(-1, "ERROR", IndustryType.Unknown);
 
@@ -48,18 +48,18 @@ namespace Azuria.Main.Minor
         #region Properties
 
         /// <summary>
-        ///     Gets the id of the <see cref="Industry"/>.
+        ///     Gets the id of the <see cref="Industry" />.
         /// </summary>
         public int Id { get; set; }
 
         /// <summary>
-        ///     Gets the name of the <see cref="Industry"/>.
+        ///     Gets the name of the <see cref="Industry" />.
         /// </summary>
         [NotNull]
         public string Name { get; set; }
 
         /// <summary>
-        ///     Gets the <see cref="IndustryType">type</see> of the <see cref="Industry"/>.
+        ///     Gets the <see cref="IndustryType">type</see> of the <see cref="Industry" />.
         /// </summary>
         public IndustryType Type { get; set; }
 

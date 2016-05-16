@@ -80,7 +80,6 @@ namespace Azuria.Main
         public Uri CoverUri => new Uri("http://cdn.proxer.me/cover/" + this.Id + ".jpg");
 
         /// <summary>
-        /// 
         /// </summary>
         public InitialisableProperty<int> ContentCount { get; }
 
@@ -671,7 +670,8 @@ namespace Azuria.Main
                         this.InitInfo);
             }
 
-            internal Episode([NotNull] Anime anime, int index, AnimeLanguage lang, bool isAvailable, [NotNull] Senpai senpai)
+            internal Episode([NotNull] Anime anime, int index, AnimeLanguage lang, bool isAvailable,
+                [NotNull] Senpai senpai)
                 : this(anime, index, lang, senpai)
             {
                 this.IsAvailable = new InitialisableProperty<bool>(this.InitInfo, isAvailable);
@@ -701,7 +701,7 @@ namespace Azuria.Main
             /// </summary>
             public int ContentIndex { get; }
 
-            Minor.Language IAnimeMangaContent<Anime>.GeneralLanguage
+            Language IAnimeMangaContent<Anime>.GeneralLanguage
                 =>
                     this.Language == AnimeLanguage.GerSub || this.Language == AnimeLanguage.GerDub
                         ? Minor.Language.German

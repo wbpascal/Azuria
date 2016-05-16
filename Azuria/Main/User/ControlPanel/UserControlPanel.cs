@@ -16,15 +16,17 @@ using Newtonsoft.Json;
 namespace Azuria.Main.User.ControlPanel
 {
     /// <summary>
+    ///     Represents the User-Control-Panel of a specified user.
     /// </summary>
     public class UserControlPanel
     {
         private readonly Senpai _senpai;
 
         /// <summary>
+        ///     Inititalises a new instance of the <see cref="UserControlPanel" /> class with a specified user.
         /// </summary>
         /// <exception cref="NotLoggedInException">Raised when <paramref name="senpai" /> is not logged in.</exception>
-        /// <param name="senpai"></param>
+        /// <param name="senpai">The user that owns this User-Control-Panel.</param>
         public UserControlPanel([NotNull] Senpai senpai)
         {
             this._senpai = senpai;
@@ -33,9 +35,12 @@ namespace Azuria.Main.User.ControlPanel
             this.Anime = new InitialisableProperty<IEnumerable<AnimeMangaUcpObject<Anime>>>(this.InitAnime);
             this.AnimeBookmarks =
                 new InitialisableProperty<IEnumerable<AnimeMangaBookmarkObject<Anime>>>(this.InitBookmarks);
-            this.Chronic = new InitialisableProperty<IEnumerable<AnimeMangaChronicObject>>(this.InitChronic);
-            this.Favourites =
-                new InitialisableProperty<IEnumerable<AnimeMangaFavouriteObject>>(this.InitFavourites);
+            this.AnimeChronic = new InitialisableProperty<IEnumerable<AnimeMangaChronicObject<Anime>>>(this.InitChronic);
+            this.MangaChronic = new InitialisableProperty<IEnumerable<AnimeMangaChronicObject<Manga>>>(this.InitChronic);
+            this.AnimeFavourites =
+                new InitialisableProperty<IEnumerable<AnimeMangaFavouriteObject<Anime>>>(this.InitFavourites);
+            this.MangaFavourites =
+                new InitialisableProperty<IEnumerable<AnimeMangaFavouriteObject<Manga>>>(this.InitFavourites);
             this.Manga = new InitialisableProperty<IEnumerable<AnimeMangaUcpObject<Manga>>>(this.InitManga);
             this.MangaBookmarks =
                 new InitialisableProperty<IEnumerable<AnimeMangaBookmarkObject<Manga>>>(this.InitBookmarks);
@@ -44,44 +49,67 @@ namespace Azuria.Main.User.ControlPanel
         #region Properties
 
         /// <summary>
+        ///     Gets all <see cref="Main.Anime">Anime</see> progress entries of the user.
         /// </summary>
         [NotNull]
         public InitialisableProperty<IEnumerable<AnimeMangaUcpObject<Anime>>> Anime { get; }
 
         /// <summary>
+        ///     Gets all bookmarks of the user that are <see cref="Main.Anime">Anime</see>.
         /// </summary>
         [NotNull]
         public InitialisableProperty<IEnumerable<AnimeMangaBookmarkObject<Anime>>> AnimeBookmarks { get; }
 
         /// <summary>
+        ///     Gets the chronic entries of the user that are <see cref="Main.Anime">Anime</see>.
         /// </summary>
         [NotNull]
-        public InitialisableProperty<IEnumerable<AnimeMangaChronicObject>> Chronic { get; }
+        public InitialisableProperty<IEnumerable<AnimeMangaChronicObject<Anime>>> AnimeChronic { get; }
 
         /// <summary>
+        ///     Gets all favourites of the user that are <see cref="Main.Anime">Anime</see>.
         /// </summary>
         [NotNull]
-        public InitialisableProperty<IEnumerable<AnimeMangaFavouriteObject>> Favourites { get; }
+        public InitialisableProperty<IEnumerable<AnimeMangaFavouriteObject<Anime>>> AnimeFavourites { get; }
 
         /// <summary>
+        ///     Gets all <see cref="Main.Manga">Manga</see> progress entries of the user.
         /// </summary>
         [NotNull]
         public InitialisableProperty<IEnumerable<AnimeMangaUcpObject<Manga>>> Manga { get; }
 
         /// <summary>
+        ///     Gets all bookmarks of the user that are <see cref="Main.Manga">Manga</see>.
         /// </summary>
         [NotNull]
         public InitialisableProperty<IEnumerable<AnimeMangaBookmarkObject<Manga>>> MangaBookmarks { get; }
+
+        /// <summary>
+        ///     Gets the chronic entries of the user that are <see cref="Main.Manga">Manga</see>.
+        /// </summary>
+        [NotNull]
+        public InitialisableProperty<IEnumerable<AnimeMangaChronicObject<Manga>>> MangaChronic { get; }
+
+        /// <summary>
+        ///     Gets all favourites of the user that are <see cref="Main.Manga">Manga</see>.
+        /// </summary>
+        [NotNull]
+        public InitialisableProperty<IEnumerable<AnimeMangaFavouriteObject<Manga>>> MangaFavourites { get; }
 
         #endregion
 
         #region
 
         /// <summary>
+        ///     Adds a specified <see cref="Main.Anime.Episode">Episode</see> or <see cref="Main.Manga.Chapter">Chapter</see> to
+        ///     the bookmarks.
         /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="animeMangaContent"></param>
-        /// <returns></returns>
+        /// <typeparam name="T">Whether an <see cref="Main.Anime">Anime</see> or <see cref="Main.Manga">Manga</see> is added.</typeparam>
+        /// <param name="animeMangaContent">
+        ///     The <see cref="Main.Anime.Episode">Episode</see> or
+        ///     <see cref="Main.Manga.Chapter">Chapter</see> that is added.
+        /// </param>
+        /// <returns>If the action was successful and if it was, the entry that was added.</returns>
         public async Task<ProxerResult<AnimeMangaBookmarkObject<T>>> AddToBookmarks<T>(
             [NotNull] IAnimeMangaContent<T> animeMangaContent) where T : IAnimeMangaObject
         {
@@ -176,9 +204,14 @@ namespace Azuria.Main.User.ControlPanel
         }
 
         /// <summary>
+        ///     Adds a specified <see cref="Main.Anime">Anime</see> or <see cref="Main.Manga">Manga</see> to the planned list.
         /// </summary>
-        /// <param name="animeMangaObject"></param>
-        /// <returns></returns>
+        /// <typeparam name="T">Whether an <see cref="Main.Anime">Anime</see> or <see cref="Main.Manga">Manga</see> is added.</typeparam>
+        /// <param name="animeMangaObject">
+        ///     The <see cref="Main.Anime">Anime</see> or <see cref="Main.Manga">Manga</see> that is
+        ///     added.
+        /// </param>
+        /// <returns>If the action was successful and if it was, the entry that was added.</returns>
         public async Task<ProxerResult<AnimeMangaUcpObject<T>>> AddToPlanned<T>(
             [NotNull] T animeMangaObject) where T : IAnimeMangaObject
         {
@@ -237,7 +270,40 @@ namespace Azuria.Main.User.ControlPanel
             }
         }
 
-        internal void DeleteEntry<T>(int entryId) where T : IAnimeMangaObject
+        /// <summary>
+        ///     Deletes an entry from <see cref="AnimeBookmarks" /> or <see cref="MangaBookmarks" /> and simultaneously from the
+        ///     server.
+        /// </summary>
+        /// <typeparam name="T">Whether an <see cref="Main.Anime">Anime</see> or <see cref="Main.Manga">Manga</see> is deleted.</typeparam>
+        /// <param name="animeMangaBookmarkObject">The entry that is to be deleted.</param>
+        public void DeleteBookmark<T>(AnimeMangaBookmarkObject<T> animeMangaBookmarkObject) where T : IAnimeMangaObject
+        {
+            if (typeof(T) == typeof(Anime) && this.Anime.IsInitialisedOnce)
+            {
+                List<AnimeMangaBookmarkObject<Anime>> lAnimeList =
+                    this.AnimeBookmarks.GetObjectIfInitialised(new AnimeMangaBookmarkObject<Anime>[0]).ToList();
+                if (!lAnimeList.Any()) return;
+
+                lAnimeList.RemoveAll(favouriteObject => favouriteObject?.EntryId == animeMangaBookmarkObject.EntryId);
+                this.AnimeBookmarks.SetInitialisedObject(lAnimeList);
+            }
+            else if (typeof(T) == typeof(Manga) && this.Manga.IsInitialisedOnce)
+            {
+                List<AnimeMangaBookmarkObject<Manga>> lMangaList =
+                    this.MangaBookmarks.GetObjectIfInitialised(new AnimeMangaBookmarkObject<Manga>[0]).ToList();
+                if (!lMangaList.Any()) return;
+
+                lMangaList.RemoveAll(favouriteObject => favouriteObject?.EntryId == animeMangaBookmarkObject.EntryId);
+                this.MangaBookmarks.SetInitialisedObject(lMangaList);
+            }
+        }
+
+        /// <summary>
+        ///     Deletes an entry from <see cref="Anime" /> or <see cref="Manga" /> and simultaneously from the server.
+        /// </summary>
+        /// <typeparam name="T">Whether an <see cref="Main.Anime">Anime</see> or <see cref="Main.Manga">Manga</see> is deleted.</typeparam>
+        /// <param name="animeMangaUcpObject">The entry that is to be deleted.</param>
+        public void DeleteEntry<T>(AnimeMangaUcpObject<T> animeMangaUcpObject) where T : IAnimeMangaObject
         {
             if (typeof(T) == typeof(Anime) && this.Anime.IsInitialisedOnce)
             {
@@ -245,7 +311,7 @@ namespace Azuria.Main.User.ControlPanel
                     this.Anime.GetObjectIfInitialised(new AnimeMangaUcpObject<Anime>[0]).ToList();
                 if (!lAnimeList.Any()) return;
 
-                lAnimeList.RemoveAll(ucpObject => ucpObject?.EntryId == entryId);
+                lAnimeList.RemoveAll(ucpObject => ucpObject?.EntryId == animeMangaUcpObject.EntryId);
                 this.Anime.SetInitialisedObject(lAnimeList);
             }
             else if (typeof(T) == typeof(Manga) && this.Manga.IsInitialisedOnce)
@@ -254,8 +320,37 @@ namespace Azuria.Main.User.ControlPanel
                     this.Manga.GetObjectIfInitialised(new AnimeMangaUcpObject<Manga>[0]).ToList();
                 if (!lMangaList.Any()) return;
 
-                lMangaList.RemoveAll(ucpObject => ucpObject?.EntryId == entryId);
+                lMangaList.RemoveAll(ucpObject => ucpObject?.EntryId == animeMangaUcpObject.EntryId);
                 this.Manga.SetInitialisedObject(lMangaList);
+            }
+        }
+
+        /// <summary>
+        ///     Deletes an entry from <see cref="AnimeFavourites" /> or <see cref="MangaFavourites" /> and simultaneously from the
+        ///     server.
+        /// </summary>
+        /// <typeparam name="T">Whether an <see cref="Main.Anime">Anime</see> or <see cref="Main.Manga">Manga</see> is deleted.</typeparam>
+        /// <param name="animeMangaFavouriteObject">The entry that is to be deleted.</param>
+        public void DeleteFavourite<T>(AnimeMangaFavouriteObject<T> animeMangaFavouriteObject)
+            where T : IAnimeMangaObject
+        {
+            if (typeof(T) == typeof(Anime) && this.Anime.IsInitialisedOnce)
+            {
+                List<AnimeMangaFavouriteObject<Anime>> lAnimeList =
+                    this.AnimeFavourites.GetObjectIfInitialised(new AnimeMangaFavouriteObject<Anime>[0]).ToList();
+                if (!lAnimeList.Any()) return;
+
+                lAnimeList.RemoveAll(favouriteObject => favouriteObject?.EntryId == animeMangaFavouriteObject.EntryId);
+                this.AnimeFavourites.SetInitialisedObject(lAnimeList);
+            }
+            else if (typeof(T) == typeof(Manga) && this.Manga.IsInitialisedOnce)
+            {
+                List<AnimeMangaFavouriteObject<Manga>> lMangaList =
+                    this.MangaFavourites.GetObjectIfInitialised(new AnimeMangaFavouriteObject<Manga>[0]).ToList();
+                if (!lMangaList.Any()) return;
+
+                lMangaList.RemoveAll(favouriteObject => favouriteObject?.EntryId == animeMangaFavouriteObject.EntryId);
+                this.MangaFavourites.SetInitialisedObject(lMangaList);
             }
         }
 
@@ -343,9 +438,9 @@ namespace Azuria.Main.User.ControlPanel
                 {
                     lParses++;
                     ProxerResult<AnimeMangaBookmarkObject<Anime>> lAnimeParseResult =
-                        AnimeMangaBookmarkObject<Anime>.ParseNode(lBookmarkNode, this._senpai);
+                        AnimeMangaBookmarkObject<Anime>.ParseNodeFromUcp(lBookmarkNode, this._senpai);
                     ProxerResult<AnimeMangaBookmarkObject<Manga>> lMangaParseResult =
-                        AnimeMangaBookmarkObject<Manga>.ParseNode(lBookmarkNode, this._senpai);
+                        AnimeMangaBookmarkObject<Manga>.ParseNodeFromUcp(lBookmarkNode, this._senpai);
 
                     if (lAnimeParseResult.Success && lAnimeParseResult.Result != null)
                         lAnimeBookmarkObjects.Add(lAnimeParseResult.Result);
@@ -370,7 +465,8 @@ namespace Azuria.Main.User.ControlPanel
         private async Task<ProxerResult> InitChronic()
         {
             HtmlDocument lDocument = new HtmlDocument();
-            List<AnimeMangaChronicObject> lChronicObjects = new List<AnimeMangaChronicObject>();
+            List<AnimeMangaChronicObject<Anime>> lAnimeChronicObjects = new List<AnimeMangaChronicObject<Anime>>();
+            List<AnimeMangaChronicObject<Manga>> lMangaChronicObjects = new List<AnimeMangaChronicObject<Manga>>();
 
             Func<string, ProxerResult> lCheckFunc = s =>
             {
@@ -402,10 +498,17 @@ namespace Azuria.Main.User.ControlPanel
                 foreach (HtmlNode chronicNode in lDocument.GetElementbyId("box-table-a").ChildNodes.Skip(1))
                 {
                     lParses++;
-                    ProxerResult<AnimeMangaChronicObject> lParseResult =
-                        AnimeMangaChronicObject.GetChronicObjectFromNode(chronicNode, this._senpai, true);
+                    ProxerResult<AnimeMangaChronicObject<IAnimeMangaObject>> lParseResult =
+                        AnimeMangaChronicObject<IAnimeMangaObject>.GetChronicObjectFromNode(chronicNode, this._senpai,
+                            true);
 
-                    if (lParseResult.Success) lChronicObjects.Add(lParseResult.Result);
+                    if (lParseResult.Success && lParseResult.Result != null)
+                    {
+                        if (lParseResult.Result.AnimeMangaObject is Anime)
+                            lAnimeChronicObjects.Add((AnimeMangaChronicObject<Anime>) lParseResult.Result);
+                        else if (lParseResult.Result.AnimeMangaObject is Manga)
+                            lMangaChronicObjects.Add((AnimeMangaChronicObject<Manga>) lParseResult.Result);
+                    }
                     else lFailedParses++;
                 }
 
@@ -417,7 +520,8 @@ namespace Azuria.Main.User.ControlPanel
                     new ProxerResult((await ErrorHandler.HandleError(this._senpai, lResponse, false)).Exceptions);
             }
 
-            this.Chronic.SetInitialisedObject(lChronicObjects);
+            this.AnimeChronic.SetInitialisedObject(lAnimeChronicObjects);
+            this.MangaChronic.SetInitialisedObject(lMangaChronicObjects);
             return new ProxerResult();
         }
 
@@ -425,7 +529,8 @@ namespace Azuria.Main.User.ControlPanel
         private async Task<ProxerResult> InitFavourites()
         {
             HtmlDocument lDocument = new HtmlDocument();
-            List<AnimeMangaFavouriteObject> lAnimeMangaFavouriteObjects = new List<AnimeMangaFavouriteObject>();
+            List<AnimeMangaFavouriteObject<Anime>> lAnimeFavouriteObjects = new List<AnimeMangaFavouriteObject<Anime>>();
+            List<AnimeMangaFavouriteObject<Manga>> lMangaFavouriteObjects = new List<AnimeMangaFavouriteObject<Manga>>();
 
             Func<string, ProxerResult> lCheckFunc = s =>
             {
@@ -467,8 +572,8 @@ namespace Azuria.Main.User.ControlPanel
                             .Where(node => node.GetAttributeValue("id", "").StartsWith("entry")))
                 {
                     lParses++;
-                    ProxerResult<AnimeMangaFavouriteObject> lParseResult = this.ParseFavourite<Anime>(lListNode);
-                    if (lParseResult.Success) lAnimeMangaFavouriteObjects.Add(lParseResult.Result);
+                    ProxerResult<AnimeMangaFavouriteObject<Anime>> lParseResult = this.ParseFavourite<Anime>(lListNode);
+                    if (lParseResult.Success) lAnimeFavouriteObjects.Add(lParseResult.Result);
                     else lFailedParses++;
                 }
 
@@ -483,8 +588,8 @@ namespace Azuria.Main.User.ControlPanel
                             .Where(node => node.GetAttributeValue("id", "").StartsWith("entry")))
                 {
                     lParses++;
-                    ProxerResult<AnimeMangaFavouriteObject> lParseResult = this.ParseFavourite<Manga>(lListNode);
-                    if (lParseResult.Success) lAnimeMangaFavouriteObjects.Add(lParseResult.Result);
+                    ProxerResult<AnimeMangaFavouriteObject<Manga>> lParseResult = this.ParseFavourite<Manga>(lListNode);
+                    if (lParseResult.Success) lMangaFavouriteObjects.Add(lParseResult.Result);
                     else lFailedParses++;
                 }
 
@@ -496,7 +601,8 @@ namespace Azuria.Main.User.ControlPanel
                     new ProxerResult((await ErrorHandler.HandleError(this._senpai, lResponse, false)).Exceptions);
             }
 
-            this.Favourites.SetInitialisedObject(lAnimeMangaFavouriteObjects);
+            this.AnimeFavourites.SetInitialisedObject(lAnimeFavouriteObjects);
+            this.MangaFavourites.SetInitialisedObject(lMangaFavouriteObjects);
             return new ProxerResult();
         }
 
@@ -541,7 +647,7 @@ namespace Azuria.Main.User.ControlPanel
             }
         }
 
-        private ProxerResult<AnimeMangaFavouriteObject> ParseFavourite<T>([NotNull] HtmlNode htmlNode)
+        private ProxerResult<AnimeMangaFavouriteObject<T>> ParseFavourite<T>([NotNull] HtmlNode htmlNode)
             where T : IAnimeMangaObject
         {
             try
@@ -550,7 +656,7 @@ namespace Azuria.Main.User.ControlPanel
                     htmlNode.ChildNodes.First(
                         node => node.Name == "a" && node.GetAttributeValue("href", "").StartsWith("/info"));
 
-                if (lInfoNode == null) return new ProxerResult<AnimeMangaFavouriteObject>(new Exception[0]);
+                if (lInfoNode == null) return new ProxerResult<AnimeMangaFavouriteObject<T>>(new Exception[0]);
 
                 int lAnimeMangaId =
                     Convert.ToInt32(lInfoNode.GetAttributeValue("href", "/info/-1").Substring("/info/".Length));
@@ -564,13 +670,13 @@ namespace Azuria.Main.User.ControlPanel
                         : null;
 
                 return lAnimeMangaObject == null
-                    ? new ProxerResult<AnimeMangaFavouriteObject>(new Exception[0])
-                    : new ProxerResult<AnimeMangaFavouriteObject>(new AnimeMangaFavouriteObject(lEntryId,
-                        lAnimeMangaObject, this._senpai));
+                    ? new ProxerResult<AnimeMangaFavouriteObject<T>>(new Exception[0])
+                    : new ProxerResult<AnimeMangaFavouriteObject<T>>(new AnimeMangaFavouriteObject<T>(lEntryId,
+                        (T) lAnimeMangaObject, this._senpai));
             }
             catch
             {
-                return new ProxerResult<AnimeMangaFavouriteObject>(new Exception[0]);
+                return new ProxerResult<AnimeMangaFavouriteObject<T>>(new Exception[0]);
             }
         }
 

@@ -1,7 +1,8 @@
 ﻿namespace Azuria.Main.Minor
 {
     /// <summary>
-    ///     Represents an enumeration wich describes the language of an <see cref="Anime">Anime</see> or <see cref="Manga">Manga</see>.
+    ///     Represents an enumeration wich describes the language of an <see cref="Anime">Anime</see> or
+    ///     <see cref="Manga">Manga</see>.
     /// </summary>
     public enum Language
     {

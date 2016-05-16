@@ -7,6 +7,7 @@ using JetBrains.Annotations;
 namespace Azuria.Main.User.ControlPanel
 {
     /// <summary>
+    ///     Represents an editable progress for an <see cref="Anime" /> or <see cref="Manga" />.
     /// </summary>
     public class EditableAnimeMangaProgress : AnimeMangaProgress
     {
@@ -33,6 +34,7 @@ namespace Azuria.Main.User.ControlPanel
         #region Properties
 
         /// <summary>
+        ///     Gets an object with the help of which the progress can be set or retrieved.
         /// </summary>
         [NotNull]
         public new AsyncProperty<int> CurrentProgress { get; }

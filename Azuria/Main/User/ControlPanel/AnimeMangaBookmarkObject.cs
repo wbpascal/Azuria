@@ -14,7 +14,9 @@ using Newtonsoft.Json;
 namespace Azuria.Main.User.ControlPanel
 {
     /// <summary>
+    ///     Represents an <see cref="Anime" /> or <see cref="Manga" /> the user has bookmarked for himself.
     /// </summary>
+    /// <typeparam name="T">Specifies if the bookmark is an <see cref="Anime" /> or <see cref="Manga" />.</typeparam>
     public class AnimeMangaBookmarkObject<T> where T : IAnimeMangaObject
     {
         private readonly Senpai _senpai;
@@ -30,11 +32,13 @@ namespace Azuria.Main.User.ControlPanel
         #region Properties
 
         /// <summary>
+        ///     Gets the <see cref="Anime.Episode" /> or <see cref="Manga.Chapter" /> the user has bookmarked.
         /// </summary>
         [NotNull]
         public IAnimeMangaContent<T> ContentObject { get; }
 
         /// <summary>
+        ///     Gets the entry id of this bookmark.
         /// </summary>
         public int EntryId { get; }
 
@@ -43,10 +47,15 @@ namespace Azuria.Main.User.ControlPanel
         #region
 
         /// <summary>
+        ///     Deletes the entry from the server and optionaly localy from an <see cref="UserControlPanel" />-object.
         /// </summary>
-        /// <returns></returns>
+        /// <param name="userControlPanel">
+        ///     An UCP-object of the senpai this object was created with to delete this entry from. This
+        ///     parameter is optional. The entry will be deleted from the server anyway.
+        /// </param>
+        /// <returns>If the action was successfull.</returns>
         [ItemNotNull]
-        public async Task<ProxerResult> DeleteEntry()
+        public async Task<ProxerResult> DeleteEntry([CanBeNull] UserControlPanel userControlPanel = null)
         {
             ProxerResult<string> lResult =
                 await
@@ -66,7 +75,10 @@ namespace Azuria.Main.User.ControlPanel
                 Dictionary<string, string> responseDes =
                     JsonConvert.DeserializeObject<Dictionary<string, string>>(lResponse);
 
-                return responseDes["error"].Equals("0") ? new ProxerResult() : new ProxerResult {Success = false};
+                if (!responseDes["error"].Equals("0")) return new ProxerResult {Success = false};
+
+                userControlPanel?.DeleteBookmark(this);
+                return new ProxerResult();
             }
             catch
             {
@@ -75,7 +87,7 @@ namespace Azuria.Main.User.ControlPanel
         }
 
         [NotNull]
-        internal static ProxerResult<AnimeMangaBookmarkObject<T>> ParseNode([NotNull] HtmlNode node,
+        internal static ProxerResult<AnimeMangaBookmarkObject<T>> ParseNodeFromUcp([NotNull] HtmlNode node,
             [NotNull] Senpai senpai)
         {
             try
@@ -153,7 +165,6 @@ namespace Azuria.Main.User.ControlPanel
                 return new ProxerResult<AnimeMangaBookmarkObject<T>>(new[] {new WrongResponseException()});
             }
         }
-
 
         #endregion
     }

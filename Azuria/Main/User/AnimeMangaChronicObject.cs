@@ -11,9 +11,9 @@ namespace Azuria.Main.User
 {
     /// <summary>
     /// </summary>
-    public class AnimeMangaChronicObject
+    public class AnimeMangaChronicObject<T> where T : IAnimeMangaObject
     {
-        internal AnimeMangaChronicObject([NotNull] IAnimeMangaObject animeMangaObject, Language language, int number)
+        internal AnimeMangaChronicObject([NotNull] T animeMangaObject, Language language, int number)
         {
             this.AnimeMangaObject = animeMangaObject;
             this.Language = language;
@@ -25,15 +25,7 @@ namespace Azuria.Main.User
         /// <summary>
         /// </summary>
         [NotNull]
-        public IAnimeMangaObject AnimeMangaObject { get; }
-
-        /// <summary>
-        /// </summary>
-        public AnimeMangaType AnimeMangaType
-            =>
-                this.AnimeMangaObject is Anime
-                    ? AnimeMangaType.Anime
-                    : this.AnimeMangaObject is Manga ? AnimeMangaType.Manga : AnimeMangaType.Unknown;
+        public T AnimeMangaObject { get; }
 
         /// <summary>
         /// </summary>
@@ -53,7 +45,7 @@ namespace Azuria.Main.User
         #region
 
         [NotNull]
-        internal static ProxerResult<AnimeMangaChronicObject> GetChronicObjectFromNode([NotNull] HtmlNode node,
+        internal static ProxerResult<AnimeMangaChronicObject<T>> GetChronicObjectFromNode([NotNull] HtmlNode node,
             [NotNull] Senpai senpai,
             bool extended = false)
         {
@@ -87,9 +79,10 @@ namespace Azuria.Main.User
                 else if (node.ChildNodes[2].InnerText.StartsWith("Eng"))
                     lLanguage = Language.English;
 
-                return lAnimeMangaObject == null
-                    ? new ProxerResult<AnimeMangaChronicObject>(new Exception[] {new WrongResponseException()})
-                    : new ProxerResult<AnimeMangaChronicObject>(new AnimeMangaChronicObject(lAnimeMangaObject, lLanguage,
+                return !(lAnimeMangaObject is T)
+                    ? new ProxerResult<AnimeMangaChronicObject<T>>(new Exception[] {new WrongResponseException()})
+                    : new ProxerResult<AnimeMangaChronicObject<T>>(new AnimeMangaChronicObject<T>(
+                        (T) lAnimeMangaObject, lLanguage,
                         lNumber)
                     {
                         DateTime =
@@ -100,8 +93,19 @@ namespace Azuria.Main.User
             }
             catch
             {
-                return new ProxerResult<AnimeMangaChronicObject>(new Exception[] {new WrongResponseException()});
+                return new ProxerResult<AnimeMangaChronicObject<T>>(new Exception[] {new WrongResponseException()});
             }
+        }
+
+        /// <summary>
+        /// </summary>
+        /// <param name="instance"></param>
+        public static explicit operator AnimeMangaChronicObject<T>(AnimeMangaChronicObject<IAnimeMangaObject> instance)
+        {
+            return new AnimeMangaChronicObject<T>((T) instance.AnimeMangaObject, instance.Language, instance.Number)
+            {
+                DateTime = instance.DateTime
+            };
         }
 
         #endregion
