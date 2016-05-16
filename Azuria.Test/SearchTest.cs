@@ -44,8 +44,8 @@ namespace Azuria.Test
                     (await searchResult.Fsk.GetObject(new FskObject[0])).Count(
                         o => o.Fsk == Fsk.Fsk16 || o.Fsk == Fsk.BadWords) == 2);
                 Assert.IsTrue(
-                    (await searchResult.AvailableLanguages.GetObject(new Anime.Language[0])).Any(
-                        language => language == Anime.Language.GerDub || language == Anime.Language.GerSub));
+                    (await searchResult.AvailableLanguages.GetObject(new AnimeLanguage[0])).Any(
+                        language => language == AnimeLanguage.GerDub || language == AnimeLanguage.GerSub));
             }
 
             int lOldSearchResultsCount = lSearchResult.Result.SearchResults.Count();

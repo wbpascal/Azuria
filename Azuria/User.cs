@@ -49,7 +49,7 @@ namespace Azuria
             {
                 IsInitialisedOnce = false
             };
-            this.Chronic = new InitialisableProperty<IEnumerable<AnimeMangaChronicObject>>(this.InitChronic);
+            this.AnimeChronic = new InitialisableProperty<IEnumerable<AnimeMangaChronicObject<Anime>>>(this.InitChronic);
             this.FavouriteAnime = new InitialisableProperty<IEnumerable<Anime>>(this.InitAnime);
             this.FavouriteManga = new InitialisableProperty<IEnumerable<Manga>>(this.InitManga);
             this.Friends = new InitialisableProperty<IEnumerable<User>>(this.InitFriends);
@@ -60,6 +60,7 @@ namespace Azuria
                 new InitialisableProperty
                     <IEnumerable<KeyValuePair<AnimeMangaProgressState, AnimeMangaProgressObject<Manga>>>>
                     (this.InitManga);
+            this.MangaChronic = new InitialisableProperty<IEnumerable<AnimeMangaChronicObject<Manga>>>(this.InitChronic);
             this.Points = new InitialisableProperty<int>(this.InitMainInfo);
             this.Ranking = new InitialisableProperty<string>(this.InitMainInfo);
             this.Status = new InitialisableProperty<string>(this.InitMainInfo);
@@ -102,16 +103,16 @@ namespace Azuria
             Anime { get; }
 
         /// <summary>
+        ///     Gibt die Chronik des Benutzers zurück.
+        /// </summary>
+        [NotNull]
+        public InitialisableProperty<IEnumerable<AnimeMangaChronicObject<Anime>>> AnimeChronic { get; }
+
+        /// <summary>
         ///     Gibt den Link zu dem Avatar des Benutzers zurück.
         /// </summary>
         [NotNull]
         public InitialisableProperty<Uri> Avatar { get; }
-
-        /// <summary>
-        ///     Gibt die Chronik des Benutzers zurück.
-        /// </summary>
-        [NotNull]
-        public InitialisableProperty<IEnumerable<AnimeMangaChronicObject>> Chronic { get; }
 
         /// <summary>
         ///     Gibt die Anime-Favouriten des Benutzers zurück.
@@ -168,6 +169,12 @@ namespace Azuria
         public
             InitialisableProperty<IEnumerable<KeyValuePair<AnimeMangaProgressState, AnimeMangaProgressObject<Manga>>>>
             Manga { get; }
+
+        /// <summary>
+        ///     Gibt die Chronik des Benutzers zurück.
+        /// </summary>
+        [NotNull]
+        public InitialisableProperty<IEnumerable<AnimeMangaChronicObject<Manga>>> MangaChronic { get; }
 
         /// <summary>
         ///     Gibt zurück, wie viele Punkte der Benutzter momentan hat.
@@ -434,6 +441,8 @@ namespace Azuria
             if (this.Id == -1) return new ProxerResult();
 
             HtmlDocument lDocument = new HtmlDocument();
+            List<AnimeMangaChronicObject<Anime>> lAnimeChronicObjects = new List<AnimeMangaChronicObject<Anime>>();
+            List<AnimeMangaChronicObject<Manga>> lMangaChronicObjects = new List<AnimeMangaChronicObject<Manga>>();
 
             Func<string, ProxerResult> lCheckFunc = s =>
             {
@@ -464,14 +473,28 @@ namespace Azuria
 
                 HtmlNode lTableNode = lDocument.GetElementbyId("box-table-a");
                 lTableNode.ChildNodes.RemoveAt(0);
-                List<AnimeMangaChronicObject> lChronicObjects = new List<AnimeMangaChronicObject>();
+
+                int lFailedParses = 0;
+                int lParses = 0;
                 foreach (HtmlNode chronicNode in lTableNode.ChildNodes)
                 {
-                    ProxerResult<AnimeMangaChronicObject> lParseResult =
-                        AnimeMangaChronicObject.GetChronicObjectFromNode(chronicNode, this._senpai);
-                    if (lParseResult.Success) lChronicObjects.Add(lParseResult.Result);
+                    lParses++;
+                    ProxerResult<AnimeMangaChronicObject<IAnimeMangaObject>> lParseResult =
+                        AnimeMangaChronicObject<IAnimeMangaObject>.GetChronicObjectFromNode(chronicNode, this._senpai);
+
+                    if (lParseResult.Success && lParseResult.Result != null)
+                    {
+                        if (lParseResult.Result.AnimeMangaObject is Anime)
+                            lAnimeChronicObjects.Add((AnimeMangaChronicObject<Anime>) lParseResult.Result);
+                        else if (lParseResult.Result.AnimeMangaObject is Manga)
+                            lMangaChronicObjects.Add((AnimeMangaChronicObject<Manga>) lParseResult.Result);
+                    }
+                    else lFailedParses++;
                 }
-                this.Chronic.SetInitialisedObject(lChronicObjects);
+
+                if (lParses == lFailedParses) return new ProxerResult {Success = false};
+                this.AnimeChronic.SetInitialisedObject(lAnimeChronicObjects);
+                this.MangaChronic.SetInitialisedObject(lMangaChronicObjects);
 
                 return new ProxerResult();
             }

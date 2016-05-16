@@ -143,7 +143,7 @@ namespace Azuria.Test
         public async Task EpisodeCountTest()
         {
             Assert.IsNotNull(this._manga);
-            int lChapterCount = await this._manga.ChapterCount.GetObject(int.MinValue);
+            int lChapterCount = await this._manga.ContentCount.GetObject(int.MinValue);
             Assert.AreNotEqual(lChapterCount, int.MinValue);
         }
 
@@ -195,7 +195,7 @@ namespace Azuria.Test
                 await this._manga.GetChapters(lAvailableLanguages.First());
             Assert.IsTrue(lChaper.Success);
             Assert.IsNotNull(lChaper.Result);
-            Assert.IsTrue(lChaper.Result.Count() == await this._manga.ChapterCount.GetObject(int.MinValue));
+            Assert.IsTrue(lChaper.Result.Count() == await this._manga.ContentCount.GetObject(int.MinValue));
             Assert.IsTrue(lChaper.Result.All(chapter => chapter.Language == lAvailableLanguages.First()));
             Assert.IsTrue(lChaper.Result.All(chapter => chapter.ParentObject == this._manga));
 

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Azuria.Exceptions;
+using Azuria.Main;
 using Azuria.Main.User;
 using Azuria.Main.User.Comment;
 using Azuria.Test.Attributes;
@@ -27,6 +28,8 @@ namespace Azuria.Test
             ProxerResult<bool> lAreUserFriendsResult = await User.AreUserFriends(this._senpai.Me, User.System);
             Assert.IsTrue(lAreUserFriendsResult.Success);
             Assert.IsFalse(lAreUserFriendsResult.Result);
+
+            await Task.Delay(2000);
         }
 
         [Test, Order(1)]
@@ -40,11 +43,22 @@ namespace Azuria.Test
         }
 
         [Test, Order(1)]
-        public async Task ChronicTest()
+        public async Task AnimeChronicTest()
         {
             Assert.IsNotNull(this._senpai.Me);
-            IEnumerable<AnimeMangaChronicObject> lChronic =
-                await this._senpai.Me.Chronic.GetObject(new AnimeMangaChronicObject[0]);
+            IEnumerable<AnimeMangaChronicObject<Anime>> lChronic =
+                await this._senpai.Me.AnimeChronic.GetObject(new AnimeMangaChronicObject<Anime>[0]);
+            Assert.IsNotEmpty(lChronic);
+
+            await Task.Delay(2000);
+        }
+
+        [Test, Order(1)]
+        public async Task MangaChronicTest()
+        {
+            Assert.IsNotNull(this._senpai.Me);
+            IEnumerable<AnimeMangaChronicObject<Manga>> lChronic =
+                await this._senpai.Me.MangaChronic.GetObject(new AnimeMangaChronicObject<Manga>[0]);
             Assert.IsNotEmpty(lChronic);
         }
 
@@ -87,6 +101,8 @@ namespace Azuria.Test
             string lInfo = await this._senpai.Me.Info.GetObject(lRandomHexString);
             //Assert.Pass($"Original: {lRandomBytes.ToHexString()} ; Encrypted: {lRandomHexString}");
             Assert.AreNotEqual(lInfo, lRandomHexString, $"WTF-String: {lRandomHexString}");
+
+            await Task.Delay(2000);
         }
 
         [Test, Order(1)]
@@ -119,7 +135,6 @@ namespace Azuria.Test
         {
             Assert.IsNotNull(this._senpai.Me);
             ProxerResult lInvalidUserResut = await User.System.SendFriendRequest();
-            ProxerResult lValidUserResult = await this._senpai.Me.SendFriendRequest();
 
             Assert.IsFalse(lInvalidUserResut.Success);
             Assert.IsNotEmpty(lInvalidUserResut.Exceptions);
@@ -152,6 +167,8 @@ namespace Azuria.Test
             Assert.IsNotNull(this._senpai.Me);
             string lUsername = await this._senpai.Me.UserName.GetObject(string.Empty);
             Assert.AreEqual(lUsername, Credentials.Username);
+
+            await Task.Delay(2000);
         }
     }
 }

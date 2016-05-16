@@ -33,16 +33,16 @@ namespace Azuria.Test
         public async Task AnimeTypeTest()
         {
             Assert.IsNotNull(this._anime);
-            Anime.AnimeType lAnimeType = await this._anime.AnimeTyp.GetObject(Anime.AnimeType.Unknown);
-            Assert.AreNotEqual(lAnimeType, Anime.AnimeType.Unknown);
+            AnimeType lAnimeType = await this._anime.AnimeTyp.GetObject(AnimeType.Unknown);
+            Assert.AreNotEqual(lAnimeType, AnimeType.Unknown);
         }
 
         [Test, Order(2)]
         public async Task AvailableLanguagesTest()
         {
             Assert.IsNotNull(this._anime);
-            IEnumerable<Anime.Language> lLanguages =
-                await this._anime.AvailableLanguages.GetObject(new Anime.Language[0]);
+            IEnumerable<AnimeLanguage> lLanguages =
+                await this._anime.AvailableLanguages.GetObject(new AnimeLanguage[0]);
             Assert.IsNotEmpty(lLanguages);
         }
 
@@ -77,7 +77,7 @@ namespace Azuria.Test
         public async Task EpisodeCountTest()
         {
             Assert.IsNotNull(this._anime);
-            int lEpisodeCount = await this._anime.EpisodeCount.GetObject(int.MinValue);
+            int lEpisodeCount = await this._anime.ContentCount.GetObject(int.MinValue);
             Assert.AreNotEqual(lEpisodeCount, int.MinValue);
         }
 
@@ -140,15 +140,15 @@ namespace Azuria.Test
         {
             Assert.IsNotNull(this._anime);
 
-            IEnumerable<Anime.Language> lAvailableLanguages =
-                await this._anime.AvailableLanguages.GetObject(new Anime.Language[0]);
+            IEnumerable<AnimeLanguage> lAvailableLanguages =
+                await this._anime.AvailableLanguages.GetObject(new AnimeLanguage[0]);
             Assert.IsNotEmpty(lAvailableLanguages);
 
             ProxerResult<IEnumerable<Anime.Episode>> lEpisodes =
                 await this._anime.GetEpisodes(lAvailableLanguages.First());
             Assert.IsTrue(lEpisodes.Success);
             Assert.IsNotNull(lEpisodes.Result);
-            Assert.IsTrue(lEpisodes.Result.Count() == await this._anime.EpisodeCount.GetObject(int.MinValue));
+            Assert.IsTrue(lEpisodes.Result.Count() == await this._anime.ContentCount.GetObject(int.MinValue));
             Assert.IsTrue(lEpisodes.Result.All(episode => episode.Language == lAvailableLanguages.First()));
             Assert.IsTrue(lEpisodes.Result.All(episode => episode.ParentObject == this._anime));
 
