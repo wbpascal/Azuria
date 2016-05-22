@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Net;
-using System.Net.Http;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
@@ -25,7 +24,7 @@ namespace Azuria.Utilities.Net
         ///     Standartwert = 5000
         /// </summary>
         public static int Timeout = 5000;
-        
+
         /// <summary>
         /// </summary>
         public static bool SolveCloudflare = true;
@@ -71,7 +70,8 @@ namespace Azuria.Utilities.Net
         [ItemNotNull]
         internal static async Task<ProxerResult<Tuple<string, CookieContainer>>> GetResponseErrorHandling(
             [NotNull] Uri url, [CanBeNull] CookieContainer loginCookies, [NotNull] ErrorHandler errorHandler,
-            [NotNull] Senpai senpai, [CanBeNull] Func<string, ProxerResult>[] checkFuncs, bool checkLogin, int recursion = 0)
+            [NotNull] Senpai senpai, [CanBeNull] Func<string, ProxerResult>[] checkFuncs, bool checkLogin,
+            int recursion = 0)
         {
             if (checkLogin && loginCookies != null && !senpai.IsLoggedIn)
                 return
@@ -87,7 +87,7 @@ namespace Azuria.Utilities.Net
             }
             catch (Exception ex)
             {
-                return new ProxerResult<Tuple<string, CookieContainer>>(new[] { ex });
+                return new ProxerResult<Tuple<string, CookieContainer>>(new[] {ex});
             }
             string lResponseString = Encoding.UTF8.GetString(lResponseObject.RawBytes, 0,
                 lResponseObject.RawBytes.Length);
@@ -98,12 +98,12 @@ namespace Azuria.Utilities.Net
                      !string.IsNullOrEmpty(lResponseString))
             {
                 if (!SolveCloudflare)
-                    return new ProxerResult<Tuple<string, CookieContainer>>(new[] { new CloudflareException() });
+                    return new ProxerResult<Tuple<string, CookieContainer>>(new[] {new CloudflareException()});
                 ProxerResult<string> lSolveResult =
                     CloudflareSolver.Solve(WebUtility.HtmlDecode(lResponseString).Replace("\n", ""), url);
 
                 if (!lSolveResult.Success)
-                    return new ProxerResult<Tuple<string, CookieContainer>>(new[] { new CloudflareException() });
+                    return new ProxerResult<Tuple<string, CookieContainer>>(new[] {new CloudflareException()});
 
                 await Task.Delay(4000);
 
@@ -118,11 +118,11 @@ namespace Azuria.Utilities.Net
                 }
                 catch (TaskCanceledException)
                 {
-                    return new ProxerResult<Tuple<string, CookieContainer>>(new[] { new TimeoutException() });
+                    return new ProxerResult<Tuple<string, CookieContainer>>(new[] {new TimeoutException()});
                 }
 
                 if (lGetResult.StatusCode != HttpStatusCode.OK)
-                    return new ProxerResult<Tuple<string, CookieContainer>>(new[] { new CloudflareException() });
+                    return new ProxerResult<Tuple<string, CookieContainer>>(new[] {new CloudflareException()});
 
                 return
                     await
@@ -231,7 +231,7 @@ namespace Azuria.Utilities.Net
                 lResponseObject =
                     await PostWebRequestResponse(url, loginCookies, postArgs, null);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 return new ProxerResult<Tuple<string, CookieContainer>>(new[] {ex});
             }
@@ -244,12 +244,12 @@ namespace Azuria.Utilities.Net
                      !string.IsNullOrEmpty(lResponseString))
             {
                 if (!SolveCloudflare)
-                    return new ProxerResult<Tuple<string, CookieContainer>>(new[] { new CloudflareException() });
+                    return new ProxerResult<Tuple<string, CookieContainer>>(new[] {new CloudflareException()});
                 ProxerResult<string> lSolveResult =
-                     CloudflareSolver.Solve(WebUtility.HtmlDecode(lResponseString).Replace("\n", ""), url);
+                    CloudflareSolver.Solve(WebUtility.HtmlDecode(lResponseString).Replace("\n", ""), url);
 
                 if (!lSolveResult.Success)
-                    return new ProxerResult<Tuple<string, CookieContainer>>(new[] { new CloudflareException() });
+                    return new ProxerResult<Tuple<string, CookieContainer>>(new[] {new CloudflareException()});
 
                 await Task.Delay(4000);
 
@@ -264,11 +264,11 @@ namespace Azuria.Utilities.Net
                 }
                 catch (TaskCanceledException)
                 {
-                    return new ProxerResult<Tuple<string, CookieContainer>>(new[] { new TimeoutException() });
+                    return new ProxerResult<Tuple<string, CookieContainer>>(new[] {new TimeoutException()});
                 }
 
                 if (lGetResult.StatusCode != HttpStatusCode.OK)
-                    return new ProxerResult<Tuple<string, CookieContainer>>(new[] { new CloudflareException() });
+                    return new ProxerResult<Tuple<string, CookieContainer>>(new[] {new CloudflareException()});
 
                 return
                     await
@@ -310,7 +310,8 @@ namespace Azuria.Utilities.Net
 
         [ItemNotNull]
         internal static async Task<IRestResponse> PostWebRequestResponse([NotNull] Uri url,
-            [CanBeNull] CookieContainer cookies, [NotNull] Dictionary<string, string> postArgs, Dictionary<string, string> headers)
+            [CanBeNull] CookieContainer cookies, [NotNull] Dictionary<string, string> postArgs,
+            Dictionary<string, string> headers)
         {
             RestClient lClient = new RestClient(url)
             {
@@ -319,7 +320,7 @@ namespace Azuria.Utilities.Net
                 UserAgent = UserAgent
             };
             RestRequest lRequest = new RestRequest(Method.POST);
-            if(headers != null)
+            if (headers != null)
                 foreach (KeyValuePair<string, string> header in headers)
                 {
                     lRequest.AddHeader(header.Key, header.Value);

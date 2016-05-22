@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Azuria.Exceptions;
 using Azuria.Main;
 using Azuria.Main.User;
+using Azuria.Main.User.Comment;
 using Azuria.Test.Attributes;
 using Azuria.Test.Utility;
 using Azuria.Utilities.ErrorHandling;
@@ -24,7 +25,7 @@ namespace Azuria.Test
         public async Task AnimeChronicTest()
         {
             Assert.IsNotNull(this._senpai.Me);
-            var lChronicResult =
+            ProxerResult<IEnumerable<AnimeMangaChronicObject<Anime>>> lChronicResult =
                 await this._senpai.Me.AnimeChronic.GetObject();
             Assert.IsTrue(lChronicResult.Success);
             Assert.IsNotNull(lChronicResult.Result);
@@ -66,7 +67,8 @@ namespace Azuria.Test
         public async Task GetCommentsTest()
         {
             Assert.IsNotNull(this._senpai.Me);
-            var lCommentsResult = await this._senpai.Me.GetComments(0, 20);
+            ProxerResult<IEnumerable<Comment<IAnimeMangaObject>>> lCommentsResult =
+                await this._senpai.Me.GetComments(0, 20);
             Assert.IsTrue(lCommentsResult.Success);
             Assert.IsNotNull(lCommentsResult.Result);
             Assert.IsTrue(lCommentsResult.Result.Count() <= 20);

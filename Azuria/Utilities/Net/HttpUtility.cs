@@ -90,7 +90,7 @@ namespace Azuria.Utilities.Net
             }
             catch (TaskCanceledException)
             {
-                return new ProxerResult<Tuple<string, CookieContainer>>(new[] { new TimeoutException() });
+                return new ProxerResult<Tuple<string, CookieContainer>>(new[] {new TimeoutException()});
             }
             if (lResponseObject.StatusCode == HttpStatusCode.OK && !string.IsNullOrEmpty(lResponseObject.Content))
                 lResponse = System.Web.HttpUtility.HtmlDecode(lResponseObject.Content).Replace("\n", "");
@@ -119,7 +119,7 @@ namespace Azuria.Utilities.Net
                 }
                 catch (TaskCanceledException)
                 {
-                    return new ProxerResult<Tuple<string, CookieContainer>>(new[] { new TimeoutException() });
+                    return new ProxerResult<Tuple<string, CookieContainer>>(new[] {new TimeoutException()});
                 }
 
                 if (lGetResult.StatusCode != HttpStatusCode.OK)
