@@ -2,6 +2,7 @@
 using System.Linq;
 using Azuria.Exceptions;
 using Azuria.Main.Minor;
+using Azuria.Main.User.ControlPanel;
 using Azuria.Utilities.ErrorHandling;
 using Azuria.Utilities.Extensions;
 using HtmlAgilityPack;
@@ -10,35 +11,36 @@ using JetBrains.Annotations;
 namespace Azuria.Main.User
 {
     /// <summary>
+    ///     Represents an entry in the chronic of a <see cref="Azuria.User" />. Detailed information, like
+    ///     <see cref="AnimeMangaChronicObject{T}.DateTime" /> are only supplied if fetched from a
+    ///     <see cref="UserControlPanel" /> instance.
     /// </summary>
+    /// <typeparam name="T">
+    ///     Wether the content object this object points to is from an <see cref="Anime" /> or
+    ///     <see cref="Manga" />.
+    /// </typeparam>
     public class AnimeMangaChronicObject<T> where T : IAnimeMangaObject
     {
-        internal AnimeMangaChronicObject([NotNull] T animeMangaObject, Language language, int number)
+        internal AnimeMangaChronicObject([NotNull] IAnimeMangaContent<T> animeMangaObject,
+            DateTime dateTime = default(DateTime))
         {
             this.AnimeMangaObject = animeMangaObject;
-            this.Language = language;
-            this.Number = number;
+            this.DateTime = dateTime;
         }
 
         #region Properties
 
         /// <summary>
+        ///     Gets the <see cref="Anime.Episode" /> or <see cref="Manga.Chapter" /> this entry is for.
         /// </summary>
         [NotNull]
-        public T AnimeMangaObject { get; }
+        public IAnimeMangaContent<T> AnimeMangaObject { get; }
 
         /// <summary>
+        ///     Gets the time when the entry was made. Only available if the object was fetched from a
+        ///     <see cref="UserControlPanel" />.
         /// </summary>
-        public DateTime DateTime { get; private set; }
-
-        /// <summary>
-        /// </summary>
-        public Language Language { get; }
-
-        /// <summary>
-        ///     Gibt die <see cref="Anime.Episode">Episoden-</see> oder <see cref="Manga.Chapter">Kapitel</see>nummer zurück.
-        /// </summary>
-        public int Number { get; }
+        public DateTime DateTime { get; }
 
         #endregion
 
@@ -46,8 +48,7 @@ namespace Azuria.Main.User
 
         [NotNull]
         internal static ProxerResult<AnimeMangaChronicObject<T>> GetChronicObjectFromNode([NotNull] HtmlNode node,
-            [NotNull] Senpai senpai,
-            bool extended = false)
+            [NotNull] Senpai senpai, bool extended = false)
         {
             try
             {
@@ -74,22 +75,48 @@ namespace Azuria.Main.User
 
                 int lNumber = Convert.ToInt32(node.ChildNodes[1].InnerText);
                 Language lLanguage = Language.Unkown;
+                AnimeLanguage lAnimeLanguage = AnimeLanguage.Unknown;
                 if (node.ChildNodes[2].InnerText.StartsWith("Ger") || node.ChildNodes[2].InnerText.Equals("Deutsch"))
+                {
                     lLanguage = Language.German;
-                else if (node.ChildNodes[2].InnerText.StartsWith("Eng"))
-                    lLanguage = Language.English;
-
-                return !(lAnimeMangaObject is T)
-                    ? new ProxerResult<AnimeMangaChronicObject<T>>(new Exception[] {new WrongResponseException()})
-                    : new ProxerResult<AnimeMangaChronicObject<T>>(new AnimeMangaChronicObject<T>(
-                        (T) lAnimeMangaObject, lLanguage,
-                        lNumber)
+                    switch (node.ChildNodes[2].InnerText)
                     {
-                        DateTime =
+                        case "GerSub":
+                            lAnimeLanguage = AnimeLanguage.GerSub;
+                            break;
+                        case "GerDub":
+                            lAnimeLanguage = AnimeLanguage.GerDub;
+                            break;
+                    }
+                }
+                else if (node.ChildNodes[2].InnerText.StartsWith("Eng"))
+                {
+                    lLanguage = Language.English;
+                    switch (node.ChildNodes[2].InnerText)
+                    {
+                        case "EngSub":
+                            lAnimeLanguage = AnimeLanguage.EngSub;
+                            break;
+                        case "EngDub":
+                            lAnimeLanguage = AnimeLanguage.EngDub;
+                            break;
+                    }
+                }
+
+                IAnimeMangaContentBase lAnimeMangaContentBase = lAnimeMangaObject is Anime
+                    ? new Anime.Episode((Anime) lAnimeMangaObject, lNumber, lAnimeLanguage, senpai)
+                    : lAnimeMangaObject != null
+                        ? (IAnimeMangaContentBase)
+                            new Manga.Chapter((Manga) lAnimeMangaObject, lNumber, lLanguage, senpai)
+                        : null;
+
+                return lAnimeMangaContentBase == null
+                    ? new ProxerResult<AnimeMangaChronicObject<T>>(new Exception[] {new WrongResponseException()})
+                    : new ProxerResult<AnimeMangaChronicObject<T>>(
+                        new AnimeMangaChronicObject<T>((IAnimeMangaContent<T>) lAnimeMangaContentBase,
                             DateTime.TryParse(node.ChildNodes[4].InnerText, out lDateTime)
                                 ? lDateTime
-                                : DateTime.MinValue
-                    });
+                                : DateTime.MinValue));
             }
             catch
             {
@@ -102,10 +129,7 @@ namespace Azuria.Main.User
         /// <param name="instance"></param>
         public static explicit operator AnimeMangaChronicObject<T>(AnimeMangaChronicObject<IAnimeMangaObject> instance)
         {
-            return new AnimeMangaChronicObject<T>((T) instance.AnimeMangaObject, instance.Language, instance.Number)
-            {
-                DateTime = instance.DateTime
-            };
+            return new AnimeMangaChronicObject<T>((IAnimeMangaContent<T>) instance.AnimeMangaObject, instance.DateTime);
         }
 
         #endregion

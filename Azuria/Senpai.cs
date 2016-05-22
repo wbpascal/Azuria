@@ -427,9 +427,6 @@ namespace Azuria
         /// <summary>
         ///     Gibt alle Konferenzen des Senpais zurück.
         /// </summary>
-        /// <exception cref="WrongResponseException">Wird ausgelöst, wenn die Antwort des Servers nicht der Erwarteten entspricht.</exception>
-        /// <exception cref="NotLoggedInException">Wird ausgelöst, wenn der <see cref="Senpai">Benutzer</see> nicht eingeloggt ist.</exception>
-        /// <seealso cref="Login" />
         /// <returns>Alle Konferenzen, in denen der Benutzer Teilnehmer ist.</returns>
         [ItemNotNull]
         public async Task<ProxerResult<IEnumerable<Conference>>> GetAllConferences()
@@ -478,9 +475,6 @@ namespace Azuria
         /// <summary>
         ///     Initialisiert die Benachrichtigungen.
         /// </summary>
-        /// <exception cref="WrongResponseException">Wird ausgelöst, wenn die Antwort des Servers nicht der Erwarteten entspricht.</exception>
-        /// <exception cref="NotLoggedInException">Wird ausgelöst, wenn der <see cref="Senpai">Benutzer</see> nicht eingeloggt ist.</exception>
-        /// <seealso cref="Login" />
         [NotNull]
         public ProxerResult InitNotifications()
         {
@@ -495,7 +489,6 @@ namespace Azuria
         /// <summary>
         ///     Loggt den Benutzer ein.
         /// </summary>
-        /// <exception cref="WrongResponseException">Wird ausgelöst, wenn die Antwort des Servers nicht der Erwarteten entspricht.</exception>
         /// <param name="username">Der Benutzername des einzuloggenden Benutzers</param>
         /// <param name="password">Das Passwort des Benutzers</param>
         /// <returns>Gibt zurück, ob der Benutzer erfolgreich eingeloggt wurde.</returns>
@@ -511,16 +504,16 @@ namespace Azuria
                 {"password", password}
             };
 
-            ProxerResult<KeyValuePair<string, CookieContainer>> lResult =
+            ProxerResult<Tuple<string, CookieContainer>> lResult =
                 await
                     HttpUtility.PostResponseErrorHandling(new Uri("https://proxer.me/login?format=json&action=login"),
                         postArgs, this.LoginCookies, this.ErrHandler, this, new Func<string, ProxerResult>[0], false);
 
-            if (!lResult.Success)
+            if (!lResult.Success || lResult.Result == null)
                 return new ProxerResult<bool>(lResult.Exceptions);
 
-            string lResponse = lResult.Result.Key;
-            this.LoginCookies = lResult.Result.Value;
+            string lResponse = lResult.Result.Item1;
+            this.LoginCookies = lResult.Result.Item2;
 
             try
             {
@@ -532,6 +525,55 @@ namespace Azuria
                     this._userId = Convert.ToInt32(lDeserialisedResponse["uid"]);
 
                     this.Me = new User(username, this._userId,
+                        lDeserialisedResponse.ContainsKey("avatar")
+                            ? new Uri("https://cdn.proxer.me/avatar/" + lDeserialisedResponse["avatar"])
+                            : null, this);
+                    this.IsLoggedIn = true;
+
+                    return new ProxerResult<bool>(true);
+                }
+                if (lDeserialisedResponse["message"].Equals("Too many connections. Try again later."))
+                    return new ProxerResult<bool>(new[] {new FirewallException()});
+
+                this.IsLoggedIn = false;
+
+                return new ProxerResult<bool>(false);
+            }
+            catch
+            {
+                return new ProxerResult<bool>(ErrorHandler.HandleError(this, lResponse).Exceptions);
+            }
+        }
+
+        /// <summary>
+        ///     Loggt den Benutzer ein.
+        /// </summary>
+        /// <param name="cookieContainer"></param>
+        /// <exception cref="WrongResponseException">Wird ausgelöst, wenn die Antwort des Servers nicht der Erwarteten entspricht.</exception>
+        /// <returns>Gibt zurück, ob der Benutzer erfolgreich eingeloggt wurde.</returns>
+        [ItemNotNull]
+        public async Task<ProxerResult<bool>> Login([NotNull] CookieContainer cookieContainer)
+        {
+            ProxerResult<Tuple<string, CookieContainer>> lResult =
+                await
+                    HttpUtility.GetResponseErrorHandling(new Uri("https://proxer.me/login?format=json&action=login"),
+                        cookieContainer, this.ErrHandler, this, new Func<string, ProxerResult>[0], false);
+
+            if (!lResult.Success || lResult.Result == null)
+                return new ProxerResult<bool>(lResult.Exceptions);
+
+            string lResponse = lResult.Result.Item1;
+
+            try
+            {
+                Dictionary<string, string> lDeserialisedResponse =
+                    JsonConvert.DeserializeObject<Dictionary<string, string>>(lResponse);
+
+                if (lDeserialisedResponse["error"].Equals("0"))
+                {
+                    this._userId = Convert.ToInt32(lDeserialisedResponse["uid"]);
+                    this.LoginCookies = lResult.Result.Item2;
+                    this.Me = new User(this._userId,
                         lDeserialisedResponse.ContainsKey("avatar")
                             ? new Uri("https://cdn.proxer.me/avatar/" + lDeserialisedResponse["avatar"])
                             : null, this);

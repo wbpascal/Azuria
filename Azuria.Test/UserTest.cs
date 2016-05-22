@@ -5,7 +5,6 @@ using System.Threading.Tasks;
 using Azuria.Exceptions;
 using Azuria.Main;
 using Azuria.Main.User;
-using Azuria.Main.User.Comment;
 using Azuria.Test.Attributes;
 using Azuria.Test.Utility;
 using Azuria.Utilities.ErrorHandling;
@@ -20,6 +19,19 @@ namespace Azuria.Test
     public class UserTest
     {
         private readonly Senpai _senpai = SenpaiTest.Senpai;
+
+        [Test, Order(1)]
+        public async Task AnimeChronicTest()
+        {
+            Assert.IsNotNull(this._senpai.Me);
+            var lChronicResult =
+                await this._senpai.Me.AnimeChronic.GetObject();
+            Assert.IsTrue(lChronicResult.Success);
+            Assert.IsNotNull(lChronicResult.Result);
+            Assert.IsNotEmpty(lChronicResult.Result);
+
+            await Task.Delay(2000);
+        }
 
         [Test, Order(3)]
         public async Task AreUserFriendsTest()
@@ -43,26 +55,6 @@ namespace Azuria.Test
         }
 
         [Test, Order(1)]
-        public async Task AnimeChronicTest()
-        {
-            Assert.IsNotNull(this._senpai.Me);
-            IEnumerable<AnimeMangaChronicObject<Anime>> lChronic =
-                await this._senpai.Me.AnimeChronic.GetObject(new AnimeMangaChronicObject<Anime>[0]);
-            Assert.IsNotEmpty(lChronic);
-
-            await Task.Delay(2000);
-        }
-
-        [Test, Order(1)]
-        public async Task MangaChronicTest()
-        {
-            Assert.IsNotNull(this._senpai.Me);
-            IEnumerable<AnimeMangaChronicObject<Manga>> lChronic =
-                await this._senpai.Me.MangaChronic.GetObject(new AnimeMangaChronicObject<Manga>[0]);
-            Assert.IsNotEmpty(lChronic);
-        }
-
-        [Test, Order(1)]
         public async Task FriendsTest()
         {
             Assert.IsNotNull(this._senpai.Me);
@@ -74,7 +66,7 @@ namespace Azuria.Test
         public async Task GetCommentsTest()
         {
             Assert.IsNotNull(this._senpai.Me);
-            ProxerResult<IEnumerable<Comment>> lCommentsResult = await this._senpai.Me.GetComments(0, 20);
+            var lCommentsResult = await this._senpai.Me.GetComments(0, 20);
             Assert.IsTrue(lCommentsResult.Success);
             Assert.IsNotNull(lCommentsResult.Result);
             Assert.IsTrue(lCommentsResult.Result.Count() <= 20);
@@ -111,6 +103,15 @@ namespace Azuria.Test
             Assert.IsNotNull(this._senpai.Me);
             ProxerResult<bool> lIsOnlineResult = await this._senpai.Me.IsOnline.GetObject();
             Assert.IsTrue(lIsOnlineResult.Success);
+        }
+
+        [Test, Order(1)]
+        public async Task MangaChronicTest()
+        {
+            Assert.IsNotNull(this._senpai.Me);
+            IEnumerable<AnimeMangaChronicObject<Manga>> lChronic =
+                await this._senpai.Me.MangaChronic.GetObject(new AnimeMangaChronicObject<Manga>[0]);
+            Assert.IsNotEmpty(lChronic);
         }
 
 

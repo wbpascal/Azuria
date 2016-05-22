@@ -196,36 +196,6 @@ namespace Azuria.Main
         public InitialisableProperty<string> Synonym { get; }
 
         /// <summary>
-        ///     Gibt die Kommentare des <see cref="Anime" /> oder <see cref="Manga" /> chronologisch geordnet zurück.
-        ///     <para>(Vererbt von <see cref="IAnimeMangaObject" />)</para>
-        /// </summary>
-        /// <param name="startIndex">Der Start-Index der ausgegebenen Kommentare.</param>
-        /// <param name="count">Die Anzahl der ausgegebenen Kommentare ab dem angegebenen <paramref name="startIndex" />.</param>
-        /// <returns>Eine Aufzählung mit den Kommentaren.</returns>
-        public async Task<ProxerResult<IEnumerable<Comment>>> GetCommentsLatest(int startIndex, int count)
-        {
-            return
-                await
-                    Comment.GetCommentsFromUrl(startIndex, count, "https://proxer.me/info/" + this.Id + "/comments/",
-                        "latest", this._senpai, animeMangaId: this.Id);
-        }
-
-        /// <summary>
-        ///     Gibt die Kommentare des <see cref="Anime" /> oder <see cref="Manga" />, nach ihrer Beliebtheit sortiert, zurück.
-        ///     <para>(Vererbt von <see cref="IAnimeMangaObject" />)</para>
-        /// </summary>
-        /// <param name="startIndex">Der Start-Index der ausgegebenen Kommentare.</param>
-        /// <param name="count">Die Anzahl der ausgegebenen Kommentare ab dem angegebenen <paramref name="startIndex" />.</param>
-        /// <returns>Eine Aufzählung mit den Kommentaren.</returns>
-        public async Task<ProxerResult<IEnumerable<Comment>>> GetCommentsRating(int startIndex, int count)
-        {
-            return
-                await
-                    Comment.GetCommentsFromUrl(startIndex, count, "https://proxer.me/info/" + this.Id + "/comments/",
-                        "rating", this._senpai, animeMangaId: this.Id);
-        }
-
-        /// <summary>
         ///     Initialisiert das Objekt.
         ///     <para>(Vererbt von <see cref="IAnimeMangaObject" />)</para>
         /// </summary>
@@ -297,6 +267,38 @@ namespace Azuria.Main
             }
 
             return new ProxerResult<IEnumerable<Chapter>>(lChapters.ToArray());
+        }
+
+        /// <summary>
+        ///     Gibt die Kommentare des <see cref="Anime" /> oder <see cref="Manga" /> chronologisch geordnet zurück.
+        ///     <para>(Vererbt von <see cref="IAnimeMangaObject" />)</para>
+        /// </summary>
+        /// <param name="startIndex">Der Start-Index der ausgegebenen Kommentare.</param>
+        /// <param name="count">Die Anzahl der ausgegebenen Kommentare ab dem angegebenen <paramref name="startIndex" />.</param>
+        /// <returns>Eine Aufzählung mit den Kommentaren.</returns>
+        public async Task<ProxerResult<IEnumerable<Comment<Manga>>>> GetCommentsLatest(int startIndex, int count)
+        {
+            return
+                await
+                    Comment<Manga>.GetCommentsFromUrl(startIndex, count,
+                        "https://proxer.me/info/" + this.Id + "/comments/",
+                        "latest", this._senpai, this);
+        }
+
+        /// <summary>
+        ///     Gibt die Kommentare des <see cref="Anime" /> oder <see cref="Manga" />, nach ihrer Beliebtheit sortiert, zurück.
+        ///     <para>(Vererbt von <see cref="IAnimeMangaObject" />)</para>
+        /// </summary>
+        /// <param name="startIndex">Der Start-Index der ausgegebenen Kommentare.</param>
+        /// <param name="count">Die Anzahl der ausgegebenen Kommentare ab dem angegebenen <paramref name="startIndex" />.</param>
+        /// <returns>Eine Aufzählung mit den Kommentaren.</returns>
+        public async Task<ProxerResult<IEnumerable<Comment<Manga>>>> GetCommentsRating(int startIndex, int count)
+        {
+            return
+                await
+                    Comment<Manga>.GetCommentsFromUrl(startIndex, count,
+                        "https://proxer.me/info/" + this.Id + "/comments/",
+                        "rating", this._senpai, this);
         }
 
         /// <summary>
@@ -763,14 +765,6 @@ namespace Azuria.Main
             /// <summary>
             ///     Initialisiert das Objekt.
             /// </summary>
-            /// <exception cref="WrongResponseException">Wird ausgelöst, wenn die Antwort des Servers nicht der Erwarteten entspricht.</exception>
-            /// <exception cref="NotLoggedInException">Wird ausgelöst, wenn der <see cref="Senpai">Benutzer</see> nicht eingeloggt ist.</exception>
-            /// <exception cref="CaptchaException">Wird ausgelöst, wenn der Server das Ausfüllen eines Captchas erfordert.</exception>
-            /// <exception cref="NoAccessException">
-            ///     Wird ausgelöst, wenn Teile der Initialisierung nicht durchgeführt werden können, da
-            ///     der <see cref="Senpai">Benutzer</see> nicht die nötigen Rechte dafür hat.
-            /// </exception>
-            /// <seealso cref="Senpai.Login" />
             [ItemNotNull]
             [Obsolete("Bitte benutze die Methoden der jeweiligen Eigenschaften, um sie zu initalisieren!")]
             public async Task<ProxerResult> Init()

@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Threading.Tasks;
 using Azuria.Exceptions;
+using Azuria.Main.User.Comment;
 using Azuria.Utilities.ErrorHandling;
 using Azuria.Utilities.Net;
 using Azuria.Utilities.Properties;
@@ -11,31 +12,28 @@ using JetBrains.Annotations;
 namespace Azuria.Main.User
 {
     /// <summary>
-    ///     Eine Klasse, die den Fortschritt eines <see cref="Azuria.User">Benutzer</see> bei einem
-    ///     <see cref="Anime">Anime</see>
-    ///     oder <see cref="Manga">Manga</see> darstellt.
+    ///     Represents a progress entry of a <see cref="Azuria.User" /> of an <see cref="Anime" /> or <see cref="Manga" />.
     /// </summary>
     public class AnimeMangaProgressObject<T> where T : IAnimeMangaObject
     {
         /// <summary>
+        ///     The user that is issuing requests.
         /// </summary>
         [NotNull] protected readonly Senpai Senpai;
 
         /// <summary>
-        ///     Initialisiert das Objekt.
+        ///     Intitialises a new instance of the <see cref="AnimeMangaProgressObject{T}" /> class.
         /// </summary>
-        /// <param name="user">Der Benutzer, der mit dem Fortschritt zusammenhängt.</param>
+        /// <param name="user">The <see cref="Azuria.User" /> which the entry belongs to.</param>
         /// <param name="animeMangaObject">
-        ///     Der <see cref="Anime">Anime</see> oder <see cref="Manga">Manga</see>, mit dem das Objekt
-        ///     zusammenhängt.
+        ///     The <see cref="Anime" /> or <see cref="Manga" /> this entry is about.
         /// </param>
-        /// <param name="entryId"></param>
-        /// <param name="progress">Der aktuelle Fortschritt.</param>
+        /// <param name="entryId">The id of the entry.</param>
+        /// <param name="progress">The current progress.</param>
         /// <param name="progressState">
-        ///     Die Kategorie, in der der <paramref name="user">Benutzer</paramref> seinen Fortschritt
-        ///     einsortiert hat.
+        ///     The category the user has categorised his progress in.
         /// </param>
-        /// <param name="senpai"></param>
+        /// <param name="senpai">The user that is issuing requests. Needs to be logged in if the comment needs to be fetched.</param>
         public AnimeMangaProgressObject([NotNull] Azuria.User user, [NotNull] T animeMangaObject,
             int entryId, AnimeMangaProgress progress, AnimeMangaProgressState progressState, [NotNull] Senpai senpai)
         {
@@ -46,38 +44,40 @@ namespace Azuria.Main.User
             this.Progress = progress;
             this.ProgressState = progressState;
 
-            this.Comment = new InitialisableProperty<Comment.Comment>(this.InitComment);
+            this.Comment = new InitialisableProperty<Comment<T>>(this.InitComment);
         }
 
         #region Properties
 
         /// <summary>
-        ///     Gibt den <see cref="Anime">Anime</see> oder <see cref="Manga">Manga</see> zurück, mit dem das Objekt zusammenhängt.
+        ///     Gets the <see cref="Anime" /> or <see cref="Manga" /> the entry is about.
         /// </summary>
         [NotNull]
         public T AnimeMangaObject { get; }
 
         /// <summary>
+        ///     Gets the comment associated with the entry.
         /// </summary>
         [NotNull]
-        public InitialisableProperty<Comment.Comment> Comment { get; }
+        public InitialisableProperty<Comment<T>> Comment { get; }
 
         /// <summary>
+        ///     Gets the id of the entry.
         /// </summary>
         public int EntryId { get; set; }
 
         /// <summary>
-        ///     Gibt den aktuellen Fortschritt aus.
+        ///     Gets the current progress.
         /// </summary>
         public AnimeMangaProgress Progress { get; private set; }
 
         /// <summary>
-        ///     Gibt die Kategorie, in der der <see cref="User">Benutzer</see> seinen Fortschritt einsortiert hat zurück.
+        ///     Gets the category the user has categorised his progress in.
         /// </summary>
         public AnimeMangaProgressState ProgressState { get; }
 
         /// <summary>
-        ///     Gibt den <see cref="Azuria.User">Benutzer</see> zurück, mit dem der Fortschritt zusammenhängt.
+        ///     Gets the user the entry belongs to.
         /// </summary>
         [NotNull]
         public Azuria.User User { get; }
@@ -87,9 +87,10 @@ namespace Azuria.Main.User
         #region
 
         /// <summary>
+        ///     Fetches the comment associated with the entry.
         /// </summary>
-        /// <returns></returns>
-        protected async Task<ProxerResult<Comment.Comment>> GetComment()
+        /// <returns>If the action was successful and if it was the comment that was fetched.</returns>
+        protected async Task<ProxerResult<Comment<T>>> GetComment()
         {
             HtmlDocument lDocument = new HtmlDocument();
             Func<string, ProxerResult> lCheckFunc = s =>
@@ -111,7 +112,7 @@ namespace Azuria.Main.User
                         new[] {lCheckFunc});
 
             if (!lResult.Success)
-                return new ProxerResult<Comment.Comment>(lResult.Exceptions);
+                return new ProxerResult<Comment<T>>(lResult.Exceptions);
 
             string lResponse = lResult.Result;
 
@@ -120,32 +121,33 @@ namespace Azuria.Main.User
                 lDocument.LoadHtml(lResponse);
 
                 HtmlNode lInnerDiv = lDocument.GetElementbyId("inner");
-                if (lInnerDiv == null) return new ProxerResult<Comment.Comment>(new[] {new WrongResponseException()});
+                if (lInnerDiv == null) return new ProxerResult<Comment<T>>(new[] {new WrongResponseException()});
 
-                ProxerResult<Comment.Comment> lParseResult =
-                    Main.User.Comment.Comment.ParseComment(lInnerDiv.ChildNodes.FindFirst("table"), this.Senpai, true,
-                        this.User);
+                ProxerResult<Comment<T>> lParseResult =
+                    await Comment<T>.ParseComment(lInnerDiv.ChildNodes.FindFirst("table"), this.Senpai,
+                        this.AnimeMangaObject, true, this.User);
 
                 if (!lParseResult.Success || lParseResult.Result == null)
-                    return new ProxerResult<Comment.Comment>(lParseResult.Exceptions);
+                    return new ProxerResult<Comment<T>>(lParseResult.Exceptions);
 
-                return new ProxerResult<Comment.Comment>(lParseResult.Result);
+                return new ProxerResult<Comment<T>>(lParseResult.Result);
             }
             catch
             {
                 return
-                    new ProxerResult<Comment.Comment>(
+                    new ProxerResult<Comment<T>>(
                         (await ErrorHandler.HandleError(this.Senpai, lResponse, false)).Exceptions);
             }
         }
 
         /// <summary>
+        ///     Creates an empty <see cref="AnimeMangaProgressObject{T}" />.
         /// </summary>
-        /// <param name="animeMangaObject"></param>
-        /// <param name="user"></param>
-        /// <param name="senpai"></param>
-        /// <returns></returns>
-        public static async Task<AnimeMangaProgressObject<T>> GetEmptyBookmarkObjectFromAnimeMangaObject(
+        /// <param name="animeMangaObject">The <see cref="Anime" /> or <see cref="Manga" /> of the entry.</param>
+        /// <param name="user">The user the entry belongs to.</param>
+        /// <param name="senpai">The user that is issuing the request.</param>
+        /// <returns>Returns the empty <see cref="AnimeMangaProgressObject{T}" />.</returns>
+        public static async Task<AnimeMangaProgressObject<T>> GetEmptyProgressObjectFromAnimeMangaObject(
             [NotNull] T animeMangaObject, [NotNull] Azuria.User user, [NotNull] Senpai senpai)
         {
             return new AnimeMangaProgressObject<T>(user, animeMangaObject, -1,
@@ -155,7 +157,7 @@ namespace Azuria.Main.User
 
         private async Task<ProxerResult> InitComment()
         {
-            ProxerResult<Comment.Comment> lCommentFetchResult = await this.GetComment();
+            ProxerResult<Comment<T>> lCommentFetchResult = await this.GetComment();
             if (!lCommentFetchResult.Success || lCommentFetchResult.Result == null)
                 return new ProxerResult(lCommentFetchResult.Exceptions);
 

@@ -17,7 +17,7 @@ Because this Class Library implements not only the official API of Proxer.Me it 
 ---
 
 ##What does this do?
-Azuria is a **inofficial** Class Library, which exposes the functions of the official Proxer.Me API as well as a lot more to .NET compatible languages. The whole project consists at the moment of a "normal" class library in .NET 4.5, which means, albeit not tested enough, that it can be used in a Mono environment, and a portable version. 
+Azuria is an **inofficial** Class Library, which exposes the functions of the official Proxer.Me API as well as a lot more to .NET compatible languages. The whole project consists at the moment of a "normal" class library in .NET 4.5, which means, albeit not tested enough, that it can be used in a Mono environment, and a portable version. 
 
 
 ##Ok nice! Then... How do I install it?

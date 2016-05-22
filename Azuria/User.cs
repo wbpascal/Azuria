@@ -72,6 +72,13 @@ namespace Azuria
             this.UserName = new InitialisableProperty<string>(this.InitMainInfo, name);
         }
 
+        internal User(int userId, [CanBeNull] Uri avatar, [NotNull] Senpai senpai)
+            : this(userId, senpai)
+        {
+            this.Avatar = new InitialisableProperty<Uri>(this.InitMainInfo,
+                avatar ?? new Uri("https://cdn.proxer.me/avatar/nophoto.png"));
+        }
+
         internal User([NotNull] string name, int userId, [CanBeNull] Uri avatar, [NotNull] Senpai senpai)
             : this(name, userId, senpai)
         {
@@ -288,13 +295,13 @@ namespace Azuria
         /// <param name="count">Die Anzahl der ausgegebenen Kommentare ab dem angegebenen <paramref name="startIndex" />.</param>
         /// <returns>Eine Aufzählung mit den Kommentaren.</returns>
         [ItemNotNull]
-        public async Task<ProxerResult<IEnumerable<Comment>>> GetComments(int startIndex, int count)
+        public async Task<ProxerResult<IEnumerable<Comment<IAnimeMangaObject>>>> GetComments(int startIndex, int count)
         {
             return
                 await
-                    Comment.GetCommentsFromUrl(startIndex, count,
+                    Comment<IAnimeMangaObject>.GetCommentsFromUrl(startIndex, count,
                         "https://proxer.me/user/" + this.Id + "/latestcomments/",
-                        "", this._senpai, true, this);
+                        "", this._senpai, null, true, this);
         }
 
         /// <summary>
@@ -315,7 +322,6 @@ namespace Azuria
         /// </exception>
         /// <param name="id">Die ID des Benutzers</param>
         /// <param name="senpai">Login-Cookies werden benötigt</param>
-        /// <seealso cref="Senpai.Login" />
         /// <returns></returns>
         [ItemNotNull]
         [Obsolete("Erzeuge ein neues Objekt mit der Id und rufe den Username des Objektes ab.", true)]
@@ -359,13 +365,6 @@ namespace Azuria
         /// <summary>
         ///     Initialisiert die Eigenschaften der Klasse.
         /// </summary>
-        /// <exception cref="WrongResponseException">Wird ausgelöst, wenn die Antwort des Servers nicht der Erwarteten entspricht.</exception>
-        /// <exception cref="NotLoggedInException">Wird ausgelöst, wenn der <see cref="Senpai">Benutzer</see> nicht eingeloggt ist.</exception>
-        /// <exception cref="NoAccessException">
-        ///     Wird ausgelöst, wenn Teile der Initialisierung nicht durchgeführt werden können, da
-        ///     der <see cref="Senpai">Benutzer</see> nicht die nötigen Rechte dafür hat.
-        /// </exception>
-        /// <seealso cref="Senpai.Login" />
         [ItemNotNull]
         [Obsolete("Bitte benutze die Methoden der jeweiligen Eigenschaften, um sie zu initalisieren!")]
         public async Task<ProxerResult> Init()

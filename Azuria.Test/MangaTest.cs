@@ -217,19 +217,19 @@ namespace Azuria.Test
         {
             Assert.IsNotNull(this._manga);
 
-            ProxerResult<IEnumerable<Comment>> lLatestComments1 = await this._manga.GetCommentsLatest(0, 2);
+            ProxerResult<IEnumerable<Comment<Manga>>> lLatestComments1 = await this._manga.GetCommentsLatest(0, 2);
             Assert.IsTrue(lLatestComments1.Success);
             Assert.IsNotNull(lLatestComments1.Result);
             Assert.IsNotEmpty(lLatestComments1.Result);
-            Assert.IsTrue(lLatestComments1.Result.First().AnimeMangaId == this._manga.Id);
+            Assert.IsTrue(lLatestComments1.Result.First().AnimeMangaObject.Id == this._manga.Id);
 
             await Task.Delay(2000);
 
-            ProxerResult<IEnumerable<Comment>> lLatestComments2 = await this._manga.GetCommentsLatest(1, 2);
+            ProxerResult<IEnumerable<Comment<Manga>>> lLatestComments2 = await this._manga.GetCommentsLatest(1, 2);
             Assert.IsTrue(lLatestComments2.Success);
             Assert.IsNotNull(lLatestComments2.Result);
             Assert.IsNotEmpty(lLatestComments2.Result);
-            Assert.IsTrue(lLatestComments2.Result.First().AnimeMangaId == this._manga.Id);
+            Assert.IsTrue(lLatestComments2.Result.First().AnimeMangaObject.Id == this._manga.Id);
 
             Assert.AreEqual(lLatestComments1.Result.Last().Author.Id, lLatestComments2.Result.First().Author.Id);
         }
@@ -266,19 +266,19 @@ namespace Azuria.Test
         {
             Assert.IsNotNull(this._manga);
 
-            ProxerResult<IEnumerable<Comment>> lRatingComments1 = await this._manga.GetCommentsRating(0, 2);
+            ProxerResult<IEnumerable<Comment<Manga>>> lRatingComments1 = await this._manga.GetCommentsRating(0, 2);
             Assert.IsTrue(lRatingComments1.Success);
             Assert.IsNotNull(lRatingComments1.Result);
             Assert.IsNotEmpty(lRatingComments1.Result);
-            Assert.IsTrue(lRatingComments1.Result.First().AnimeMangaId == this._manga.Id);
+            Assert.IsTrue(lRatingComments1.Result.First().AnimeMangaObject.Id == this._manga.Id);
 
             await Task.Delay(2000);
 
-            ProxerResult<IEnumerable<Comment>> lRatingComments2 = await this._manga.GetCommentsRating(1, 2);
+            ProxerResult<IEnumerable<Comment<Manga>>> lRatingComments2 = await this._manga.GetCommentsRating(1, 2);
             Assert.IsTrue(lRatingComments2.Success);
             Assert.IsNotNull(lRatingComments2.Result);
             Assert.IsNotEmpty(lRatingComments2.Result);
-            Assert.IsTrue(lRatingComments2.Result.First().AnimeMangaId == this._manga.Id);
+            Assert.IsTrue(lRatingComments2.Result.First().AnimeMangaObject.Id == this._manga.Id);
 
             Assert.AreEqual(lRatingComments1.Result.Last().Author.Id, lRatingComments2.Result.First().Author.Id);
         }

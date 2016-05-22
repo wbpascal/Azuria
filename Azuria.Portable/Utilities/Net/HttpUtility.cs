@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Net;
+using System.Net.Http;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
@@ -21,9 +22,9 @@ namespace Azuria.Utilities.Net
         /// <summary>
         ///     Gibt die Zeit in Millisekunden zurück, die der Client auf eine Antwort wartet bis er abbricht, oder legt diese
         ///     fest.
-        ///     Standartwert = 0
+        ///     Standartwert = 5000
         /// </summary>
-        public static int Timeout = 0;
+        public static int Timeout = 5000;
         
         /// <summary>
         /// </summary>
@@ -78,8 +79,16 @@ namespace Azuria.Utilities.Net
 
             string lResponse;
 
-            IRestResponse lResponseObject =
-                await GetWebRequestResponse(url, loginCookies, null);
+            IRestResponse lResponseObject;
+            try
+            {
+                lResponseObject =
+                    await GetWebRequestResponse(url, loginCookies, null);
+            }
+            catch (Exception ex)
+            {
+                return new ProxerResult<Tuple<string, CookieContainer>>(new[] { ex });
+            }
             string lResponseString = Encoding.UTF8.GetString(lResponseObject.RawBytes, 0,
                 lResponseObject.RawBytes.Length);
 
@@ -98,11 +107,19 @@ namespace Azuria.Utilities.Net
 
                 await Task.Delay(4000);
 
-                IRestResponse lGetResult =
-                    await
-                        GetWebRequestResponse(
-                            new Uri($"{url.Scheme}://{url.Host}/cdn-cgi/l/chk_jschl?{lSolveResult.Result}"),
-                            loginCookies, null);
+                IRestResponse lGetResult;
+                try
+                {
+                    lGetResult =
+                        await
+                            PostWebRequestResponse(
+                                new Uri($"{url.Scheme}://{url.Host}/cdn-cgi/l/chk_jschl?{lSolveResult.Result}"),
+                                loginCookies, new Dictionary<string, string>(), null);
+                }
+                catch (TaskCanceledException)
+                {
+                    return new ProxerResult<Tuple<string, CookieContainer>>(new[] { new TimeoutException() });
+                }
 
                 if (lGetResult.StatusCode != HttpStatusCode.OK)
                     return new ProxerResult<Tuple<string, CookieContainer>>(new[] { new CloudflareException() });
@@ -149,7 +166,7 @@ namespace Azuria.Utilities.Net
             RestClient lClient = new RestClient(url)
             {
                 CookieContainer = cookies,
-                Timeout = TimeSpan.FromMilliseconds(Timeout),
+                Timeout = TimeSpan.FromMilliseconds(Timeout == 0 ? 5000 : Timeout),
                 UserAgent = UserAgent
             };
             RestRequest lRequest = new RestRequest(Method.GET);
@@ -186,30 +203,38 @@ namespace Azuria.Utilities.Net
             [NotNull] ErrorHandler errorHandler, [NotNull] Senpai senpai,
             [CanBeNull] Func<string, ProxerResult>[] checkFuncs)
         {
-            ProxerResult<KeyValuePair<string, CookieContainer>> lResult =
+            ProxerResult<Tuple<string, CookieContainer>> lResult =
                 await
                     PostResponseErrorHandling(url, postArgs, loginCookies, errorHandler, senpai, checkFuncs,
                         loginCookies == null);
 
-            return lResult.Success
-                ? new ProxerResult<string>(lResult.Result.Key)
+            return lResult.Success && lResult.Result != null
+                ? new ProxerResult<string>(lResult.Result.Item1)
                 : new ProxerResult<string>(lResult.Exceptions);
         }
 
         [ItemNotNull]
-        internal static async Task<ProxerResult<KeyValuePair<string, CookieContainer>>> PostResponseErrorHandling(
+        internal static async Task<ProxerResult<Tuple<string, CookieContainer>>> PostResponseErrorHandling(
             [NotNull] Uri url, [NotNull] Dictionary<string, string> postArgs,
             [CanBeNull] CookieContainer loginCookies, [NotNull] ErrorHandler errorHandler, [NotNull] Senpai senpai,
             [CanBeNull] Func<string, ProxerResult>[] checkFuncs, bool checkLogin, int recursion = 0)
         {
             if (checkLogin && loginCookies != null && !senpai.IsLoggedIn)
                 return
-                    new ProxerResult<KeyValuePair<string, CookieContainer>>(new Exception[] {new NotLoggedInException()});
+                    new ProxerResult<Tuple<string, CookieContainer>>(new Exception[] {new NotLoggedInException()});
 
             string lResponse;
 
-            IRestResponse lResponseObject =
-                await PostWebRequestResponse(url, loginCookies, postArgs, null);
+            IRestResponse lResponseObject;
+            try
+            {
+                lResponseObject =
+                    await PostWebRequestResponse(url, loginCookies, postArgs, null);
+            }
+            catch(Exception ex)
+            {
+                return new ProxerResult<Tuple<string, CookieContainer>>(new[] {ex});
+            }
             string lResponseString = Encoding.UTF8.GetString(lResponseObject.RawBytes, 0,
                 lResponseObject.RawBytes.Length);
 
@@ -219,23 +244,31 @@ namespace Azuria.Utilities.Net
                      !string.IsNullOrEmpty(lResponseString))
             {
                 if (!SolveCloudflare)
-                    return new ProxerResult<KeyValuePair<string, CookieContainer>>(new[] { new CloudflareException() });
+                    return new ProxerResult<Tuple<string, CookieContainer>>(new[] { new CloudflareException() });
                 ProxerResult<string> lSolveResult =
                      CloudflareSolver.Solve(WebUtility.HtmlDecode(lResponseString).Replace("\n", ""), url);
 
                 if (!lSolveResult.Success)
-                    return new ProxerResult<KeyValuePair<string, CookieContainer>>(new[] { new CloudflareException() });
+                    return new ProxerResult<Tuple<string, CookieContainer>>(new[] { new CloudflareException() });
 
                 await Task.Delay(4000);
 
-                IRestResponse lGetResult =
-                    await
-                        PostWebRequestResponse(
-                            new Uri($"{url.Scheme}://{url.Host}/cdn-cgi/l/chk_jschl?{lSolveResult.Result}"),
-                            loginCookies, new Dictionary<string, string>(), null);
+                IRestResponse lGetResult;
+                try
+                {
+                    lGetResult =
+                        await
+                            PostWebRequestResponse(
+                                new Uri($"{url.Scheme}://{url.Host}/cdn-cgi/l/chk_jschl?{lSolveResult.Result}"),
+                                loginCookies, new Dictionary<string, string>(), null);
+                }
+                catch (TaskCanceledException)
+                {
+                    return new ProxerResult<Tuple<string, CookieContainer>>(new[] { new TimeoutException() });
+                }
 
                 if (lGetResult.StatusCode != HttpStatusCode.OK)
-                    return new ProxerResult<KeyValuePair<string, CookieContainer>>(new[] { new CloudflareException() });
+                    return new ProxerResult<Tuple<string, CookieContainer>>(new[] { new CloudflareException() });
 
                 return
                     await
@@ -244,7 +277,7 @@ namespace Azuria.Utilities.Net
             }
             else
                 return
-                    new ProxerResult<KeyValuePair<string, CookieContainer>>(new[]
+                    new ProxerResult<Tuple<string, CookieContainer>>(new[]
                     {new WrongResponseException()});
 
             if (checkFuncs != null)
@@ -254,11 +287,11 @@ namespace Azuria.Utilities.Net
                     {
                         ProxerResult lResult = checkFunc?.Invoke(lResponse) ?? new ProxerResult {Success = false};
                         if (!lResult.Success)
-                            return new ProxerResult<KeyValuePair<string, CookieContainer>>(lResult.Exceptions);
+                            return new ProxerResult<Tuple<string, CookieContainer>>(lResult.Exceptions);
                     }
                     catch
                     {
-                        return new ProxerResult<KeyValuePair<string, CookieContainer>>(new Exception[0])
+                        return new ProxerResult<Tuple<string, CookieContainer>>(new Exception[0])
                         {
                             Success = false
                         };
@@ -267,12 +300,12 @@ namespace Azuria.Utilities.Net
 
             if (string.IsNullOrEmpty(lResponse) || !Utility.CheckForCorrectResponse(lResponse, errorHandler))
                 return
-                    new ProxerResult<KeyValuePair<string, CookieContainer>>(new Exception[]
+                    new ProxerResult<Tuple<string, CookieContainer>>(new Exception[]
                     {new WrongResponseException {Response = lResponse}});
 
             return
-                new ProxerResult<KeyValuePair<string, CookieContainer>>(
-                    new KeyValuePair<string, CookieContainer>(lResponse, loginCookies));
+                new ProxerResult<Tuple<string, CookieContainer>>(
+                    new Tuple<string, CookieContainer>(lResponse, loginCookies));
         }
 
         [ItemNotNull]
@@ -282,7 +315,7 @@ namespace Azuria.Utilities.Net
             RestClient lClient = new RestClient(url)
             {
                 CookieContainer = cookies,
-                Timeout = TimeSpan.FromMilliseconds(Timeout),
+                Timeout = TimeSpan.FromMilliseconds(Timeout == 0 ? 5000 : Timeout),
                 UserAgent = UserAgent
             };
             RestRequest lRequest = new RestRequest(Method.POST);

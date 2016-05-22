@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Azuria.Exceptions;
 using Azuria.Utilities.ErrorHandling;
 using Azuria.Utilities.Extensions;
 using Azuria.Utilities.Net;
@@ -39,10 +38,7 @@ namespace Azuria.Notifications
         ///     Gibt alle aktuellen Benachrichtigungen, die diese Klasse repräsentiert, zurück.
         ///     <para>(Vererbt von <see cref="INotificationCollection" />)</para>
         /// </summary>
-        /// <exception cref="NotLoggedInException">Wird ausgelöst, wenn der <see cref="Senpai">Benutzer</see> nicht eingeloggt ist.</exception>
-        /// <exception cref="WrongResponseException">Wird ausgelöst, wenn die Antwort des Servers nicht der Erwarteten entspricht.</exception>
         /// <seealso cref="INotificationCollection.GetNotifications" />
-        /// <seealso cref="Senpai.Login" />
         /// <returns>Ein Array mit allen aktuellen Benachrichtigungen.</returns>
         public async Task<ProxerResult<IEnumerable<INotificationObject>>> GetAllNotifications()
         {
@@ -59,11 +55,8 @@ namespace Azuria.Notifications
         ///     Gibt eine bestimmte Anzahl der aktuellen Benachrichtigungen, die diese Klasse repräsentiert, zurück.
         ///     <para>(Vererbt von <see cref="INotificationCollection" />)</para>
         /// </summary>
-        /// <exception cref="NotLoggedInException">Wird ausgelöst, wenn der <see cref="Senpai">Benutzer</see> nicht eingeloggt ist.</exception>
-        /// <exception cref="WrongResponseException">Wird ausgelöst, wenn die Antwort des Servers nicht der Erwarteten entspricht.</exception>
         /// <param name="count">Die Anzahl der Benachrichtigungen</param>
         /// <seealso cref="INotificationCollection.GetAllNotifications">GetAllNotifications Funktion</seealso>
-        /// <seealso cref="Senpai.Login" />
         /// <returns>
         ///     Ein Array mit der Anzahl an Elementen in <paramref name="count" /> spezifiziert.
         ///     Wenn <paramref name="count" /> > Array.length, dann wird der gesamte Array zurückgegeben.
@@ -90,9 +83,6 @@ namespace Azuria.Notifications
         /// <summary>
         ///     Gibt alle aktuellen Benachrichtigungen, die diese Klasse repräsentiert, zurück.
         /// </summary>
-        /// <exception cref="NotLoggedInException">Wird ausgelöst, wenn der <see cref="Senpai">Benutzer</see> nicht eingeloggt ist.</exception>
-        /// <exception cref="WrongResponseException">Wird ausgelöst, wenn die Antwort des Servers nicht der Erwarteten entspricht.</exception>
-        /// <seealso cref="Senpai.Login" />
         /// <returns>Ein Array mit allen aktuellen Benachrichtigungen.</returns>
         [ItemNotNull]
         public async Task<ProxerResult<IEnumerable<PmObject>>> GetAllPrivateMessages()
@@ -160,10 +150,7 @@ namespace Azuria.Notifications
         /// <summary>
         ///     Gibt eine bestimmte Anzahl der aktuellen Benachrichtigungen, die diese Klasse repräsentiert, zurück.
         /// </summary>
-        /// <exception cref="NotLoggedInException">Wird ausgelöst, wenn der <see cref="Senpai">Benutzer</see> nicht eingeloggt ist.</exception>
-        /// <exception cref="WrongResponseException">Wird ausgelöst, wenn die Antwort des Servers nicht der Erwarteten entspricht.</exception>
         /// <param name="count">Die Anzahl der Benachrichtigungen</param>
-        /// <seealso cref="Senpai.Login" />
         /// <returns>
         ///     Ein Array mit der Anzahl an Elementen in <paramref name="count" /> spezifiziert.
         ///     Wenn <paramref name="count" /> > Array.length, dann wird der gesamte Array zurückgegeben.

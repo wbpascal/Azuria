@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Azuria.Main.Minor;
 using Azuria.Main.Search;
-using Azuria.Main.User.Comment;
 using Azuria.Main.User.ControlPanel;
 using Azuria.Utilities.ErrorHandling;
 using Azuria.Utilities.Properties;
@@ -140,26 +139,6 @@ namespace Azuria.Main
         /// </summary>
         /// <returns></returns>
         Task<ProxerResult> AddToPlanned(UserControlPanel userControlPanel = null);
-
-        /// <summary>
-        ///     Gibt die Kommentare des <see cref="Anime" /> oder <see cref="Manga" /> chronologisch geordnet zurück.
-        ///     <para>(Vererbt von <see cref="IAnimeMangaObject" />)</para>
-        /// </summary>
-        /// <param name="startIndex">Der Start-Index der ausgegebenen Kommentare.</param>
-        /// <param name="count">Die Anzahl der ausgegebenen Kommentare ab dem angegebenen <paramref name="startIndex" />.</param>
-        /// <returns>Eine Aufzählung mit den Kommentaren.</returns>
-        [ItemNotNull]
-        Task<ProxerResult<IEnumerable<Comment>>> GetCommentsLatest(int startIndex, int count);
-
-        /// <summary>
-        ///     Gibt die Kommentare des <see cref="Anime" /> oder <see cref="Manga" />, nach ihrer Beliebtheit sortiert, zurück.
-        ///     <para>(Vererbt von <see cref="IAnimeMangaObject" />)</para>
-        /// </summary>
-        /// <param name="startIndex">Der Start-Index der ausgegebenen Kommentare.</param>
-        /// <param name="count">Die Anzahl der ausgegebenen Kommentare ab dem angegebenen <paramref name="startIndex" />.</param>
-        /// <returns>Eine Aufzählung mit den Kommentaren.</returns>
-        [ItemNotNull]
-        Task<ProxerResult<IEnumerable<Comment>>> GetCommentsRating(int startIndex, int count);
 
         /// <summary>
         ///     Initialisiert das Objekt.

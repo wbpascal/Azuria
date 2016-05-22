@@ -14,12 +14,12 @@ namespace Azuria.Main.User.Comment
     /// <summary>
     ///     Represents a comment for an <see cref="Anime">Anime</see> or <see cref="Manga">Manga</see>.
     /// </summary>
-    public class Comment
+    public class Comment<T> where T : IAnimeMangaObject
     {
-        internal Comment([NotNull] Azuria.User author, int animeMangaId, int sterne, [NotNull] string kommentar,
+        internal Comment([NotNull] Azuria.User author, T animeMangaObject, int sterne, [NotNull] string kommentar,
             AnimeMangaProgressState progressState)
         {
-            this.AnimeMangaId = animeMangaId;
+            this.AnimeMangaObject = animeMangaObject;
             this.Author = author;
             this.Rating = sterne;
             this.Content = kommentar;
@@ -27,9 +27,9 @@ namespace Azuria.Main.User.Comment
             this.SubRatings = new Dictionary<RatingCategory, int>();
         }
 
-        internal Comment([NotNull] Azuria.User author, int animeMangaId, int sterne, [NotNull] string kommentar,
+        internal Comment([NotNull] Azuria.User author, T animeMangaObject, int sterne, [NotNull] string kommentar,
             Dictionary<RatingCategory, int> subRatings, AnimeMangaProgressState progressState)
-            : this(author, animeMangaId, sterne, kommentar, progressState)
+            : this(author, animeMangaObject, sterne, kommentar, progressState)
         {
             this.SubRatings = subRatings;
         }
@@ -37,9 +37,9 @@ namespace Azuria.Main.User.Comment
         #region Properties
 
         /// <summary>
-        ///     Gets the Id of the <see cref="Anime">Anime</see> or <see cref="Manga">Manga</see> this comment is for.
+        ///     Gets the <see cref="Anime">Anime</see> or <see cref="Manga">Manga</see> this comment is for.
         /// </summary>
-        public int AnimeMangaId { get; }
+        public T AnimeMangaObject { get; }
 
         /// <summary>
         ///     Gets the author of this comment.
@@ -56,7 +56,7 @@ namespace Azuria.Main.User.Comment
         /// <summary>
         ///     Gets the category the author has put his progress of the <see cref="Anime" /> or <see cref="Manga" /> in.
         /// </summary>
-        public AnimeMangaProgressState ProgressState { get; }
+        public AnimeMangaProgressState ProgressState { get; protected set; }
 
         /// <summary>
         ///     Gets the overall rating the <see cref="Author" /> gave. Returns -1 if no rating was found.
@@ -122,13 +122,14 @@ namespace Azuria.Main.User.Comment
         }
 
         [ItemNotNull]
-        internal static async Task<ProxerResult<IEnumerable<Comment>>> GetCommentsFromUrl(int startIndex, int count,
-            [NotNull] string url, [NotNull] string sort, [NotNull] Senpai senpai, bool isUserPage = false,
-            Azuria.User author = null, int animeMangaId = -1)
+        internal static async Task<ProxerResult<IEnumerable<Comment<T>>>> GetCommentsFromUrl(int startIndex, int count,
+            [NotNull] string url, [NotNull] string sort, [NotNull] Senpai senpai, T animeMangaObject,
+            bool isUserPage = false,
+            Azuria.User author = null)
         {
             const int lKommentareProSeite = 25;
 
-            List<Comment> lReturn = new List<Comment>();
+            List<Comment<T>> lReturn = new List<Comment<T>>();
             int lStartSeite = Convert.ToInt32(startIndex/lKommentareProSeite + 1);
             HtmlDocument lDocument = new HtmlDocument();
             Func<string, ProxerResult> lCheckFunc = s =>
@@ -177,8 +178,8 @@ namespace Azuria.Main.User.Comment
                         if (i >= startIndex%lKommentareProSeite)
                         {
                             lReturn.Add(
-                                ParseComment(commentNode, senpai, isUserPage, author, animeMangaId)
-                                    .OnError(new Comment(Azuria.User.System, -1, -1, "ERROR",
+                                (await ParseComment(commentNode, senpai, animeMangaObject, isUserPage, author))
+                                    .OnError(new Comment<T>(Azuria.User.System, animeMangaObject, -1, "ERROR",
                                         AnimeMangaProgressState.Unknown)));
                             count--;
                         }
@@ -190,17 +191,19 @@ namespace Azuria.Main.User.Comment
                 catch
                 {
                     return
-                        new ProxerResult<IEnumerable<Comment>>(
+                        new ProxerResult<IEnumerable<Comment<T>>>(
                             (await ErrorHandler.HandleError(senpai, lResult.Result, false)).Exceptions);
                 }
             }
 
-            return new ProxerResult<IEnumerable<Comment>>(lReturn);
+            return new ProxerResult<IEnumerable<Comment<T>>>(lReturn);
         }
 
         [NotNull]
-        internal static ProxerResult<Comment> ParseComment([NotNull] HtmlNode commentNode, [NotNull] Senpai senpai
-            , bool isUserPage, Azuria.User author = null, int animeMangaId = -1)
+        internal static async Task<ProxerResult<Comment<T>>> ParseComment([NotNull] HtmlNode commentNode,
+            [NotNull] Senpai senpai,
+            T animeMangaObject
+            , bool isUserPage, Azuria.User author = null)
         {
             HtmlNode[] lTableNodes =
                 commentNode.ChildNodes.FindFirst("tr").ChildNodes.Where(node => node.Name.Equals("td")).ToArray();
@@ -208,14 +211,22 @@ namespace Azuria.Main.User.Comment
             try
             {
                 Azuria.User lAuthor = author ?? Azuria.User.System;
-                int lAnimeMangaId = animeMangaId;
+                IAnimeMangaObject lAnimeMangaObject = animeMangaObject;
 
                 if (isUserPage)
                 {
-                    lAnimeMangaId =
-                        Convert.ToInt32(
-                            commentNode.ChildNodes.FindFirst("a").Attributes["href"].Value.GetTagContents("/info/",
-                                "#top").First());
+                    int lAnimeMangaId = Convert.ToInt32(
+                        commentNode.ChildNodes.FindFirst("a").Attributes["href"].Value.GetTagContents("/info/",
+                            "#top").First());
+                    string lAnimeMangaTitle =
+                        commentNode.ChildNodes.FindFirst("a").InnerText.Trim();
+                    lAnimeMangaObject = typeof(T) == typeof(Anime)
+                        ? new Anime(lAnimeMangaTitle, lAnimeMangaId, senpai)
+                        : typeof(T) == typeof(Manga)
+                            ? new Manga(lAnimeMangaTitle, lAnimeMangaId, senpai)
+                            : typeof(T) == typeof(IAnimeMangaObject)
+                                ? (await ProxerClass.GetAnimeMangaById(lAnimeMangaId, senpai)).OnError(null)
+                                : null;
                 }
                 else
                 {
@@ -280,12 +291,13 @@ namespace Azuria.Main.User.Comment
                     lProgressState = AnimeMangaProgressState.Aborted;
 
                 return
-                    new ProxerResult<Comment>(new Comment(lAuthor, lAnimeMangaId, lStars, lContent, lSubRatings,
+                    new ProxerResult<Comment<T>>(new Comment<T>(lAuthor, (T) lAnimeMangaObject, lStars, lContent,
+                        lSubRatings,
                         lProgressState));
             }
             catch
             {
-                return new ProxerResult<Comment>(new[] {new WrongResponseException()});
+                return new ProxerResult<Comment<T>>(new[] {new WrongResponseException()});
             }
         }
 

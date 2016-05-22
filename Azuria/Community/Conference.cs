@@ -549,7 +549,6 @@ namespace Azuria.Community
         /// <summary>
         ///     Initialises every property of the current class.
         /// </summary>
-        /// <seealso cref="Senpai.Login" />
         [ItemNotNull]
         [Obsolete("Bitte benutze die Methoden der jeweiligen Eigenschaften, um sie zu initalisieren!")]
         public async Task<ProxerResult> Init()
@@ -746,7 +745,6 @@ namespace Azuria.Community
         /// <summary>
         ///     Marks the current conference as unread.
         /// </summary>
-        /// <seealso cref="Senpai.Login" />
         /// <returns>Whether the action was successfull.</returns>
         [ItemNotNull]
         public async Task<ProxerResult> SetUnread()

@@ -57,8 +57,8 @@ namespace Azuria.Utilities.ErrorHandling
         ///     <see cref="ProxerResult{T}.Result" /> = null (oder Nothing in VisualBasic).
         /// </param>
         /// <returns>Ein Objekt mit dem Typ <typeparamref name="T" /></returns>
-        [NotNull]
-        public T OnError([NotNull] T returnObject)
+        [CanBeNull]
+        public T OnError([CanBeNull] T returnObject)
         {
             return this.Success && this.Result != null ? this.Result : returnObject;
         }

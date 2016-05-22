@@ -16,6 +16,7 @@ namespace Azuria.Test
     [TestFixture, LoginRequired]
     public class ConferenceTest
     {
+        private const int ConferenceId = 87114;
         private readonly Senpai _senpai = SenpaiTest.Senpai;
         private Conference _conference;
 
@@ -80,7 +81,7 @@ namespace Azuria.Test
                 InitialisableProperty<bool> lIsConferenceProperty =
                     (InitialisableProperty<bool>) lPrivateConference.GetProperty("IsConference");
 
-                if (!await lIsConferenceProperty.GetObject(false)) continue;
+                if (!await lIsConferenceProperty.GetObject(false) || conference.Id != ConferenceId) continue;
                 this._conference = conference;
                 Assert.Pass();
             }

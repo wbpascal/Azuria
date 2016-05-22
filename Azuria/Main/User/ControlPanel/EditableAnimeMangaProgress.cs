@@ -34,7 +34,7 @@ namespace Azuria.Main.User.ControlPanel
         #region Properties
 
         /// <summary>
-        ///     Gets an object with the help of which the progress can be set or retrieved.
+        ///     Gets an object with the help of which the current progress can be set or retrieved.
         /// </summary>
         [NotNull]
         public new AsyncProperty<int> CurrentProgress { get; }

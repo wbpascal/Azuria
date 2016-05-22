@@ -15,14 +15,15 @@ namespace Azuria.Main.User.Comment
     /// <summary>
     ///     Represents an editable comment for an <see cref="Anime">Anime</see> or <see cref="Manga">Manga</see>.
     /// </summary>
-    public class EditableComment : Comment
+    public class EditableComment<T> : Comment<T> where T : IAnimeMangaObject
     {
         private readonly int _entryId;
         [NotNull] private readonly Senpai _senpai;
 
-        internal EditableComment(int entryId, Comment baseObject, AnimeMangaProgress progress, Senpai senpai)
+        internal EditableComment(int entryId, Comment<T> baseObject, AnimeMangaProgress progress, Senpai senpai)
             : base(
-                baseObject.Author, baseObject.AnimeMangaId, baseObject.Rating, baseObject.Content, baseObject.SubRatings,
+                baseObject.Author, baseObject.AnimeMangaObject, baseObject.Rating, baseObject.Content,
+                baseObject.SubRatings,
                 baseObject.ProgressState)
         {
             this.Progress = new EditableAnimeMangaProgress(progress.CurrentProgress, progress.MaxProgress,
@@ -52,7 +53,17 @@ namespace Azuria.Main.User.Comment
         public EditableAnimeMangaProgress Progress { get; }
 
         /// <summary>
-        ///     Gets the overall rating the author gave. Returns -1 if no rating was found.
+        ///     Gets or sets the category the user has categorised his progress in.
+        ///     If the content was set the method <see cref="Save()" /> must be called to send the information to the server.
+        /// </summary>
+        public new AnimeMangaProgressState ProgressState
+        {
+            get { return base.ProgressState; }
+            set { base.ProgressState = value; }
+        }
+
+        /// <summary>
+        ///     Gets or sets the overall rating the author gave. Returns -1 if no rating was found.
         ///     If the content was set the method <see cref="Save()" /> must be called to send the information to the server.
         /// </summary>
         public new int Rating
@@ -62,7 +73,7 @@ namespace Azuria.Main.User.Comment
         }
 
         /// <summary>
-        ///     Gets the rating of all subcategories.
+        ///     Gets or sets the rating of all subcategories.
         ///     If the content was set the method <see cref="Save()" /> must be called to send the information to the server.
         /// </summary>
         [NotNull]
@@ -117,8 +128,8 @@ namespace Azuria.Main.User.Comment
             }
         }
 
-        internal static async Task<ProxerResult<EditableComment>> GetEditableComment(int entryId,
-            int animeMangaObject, Senpai senpai)
+        internal static async Task<ProxerResult<EditableComment<T>>> GetEditableComment(int entryId,
+            T animeMangaObject, Senpai senpai)
         {
             HtmlDocument lDocument = new HtmlDocument();
             Func<string, ProxerResult> lCheckFunc = s =>
@@ -140,7 +151,7 @@ namespace Azuria.Main.User.Comment
                         new[] {lCheckFunc});
 
             if (!lResult.Success)
-                return new ProxerResult<EditableComment>(lResult.Exceptions);
+                return new ProxerResult<EditableComment<T>>(lResult.Exceptions);
 
             string lResponse = lResult.Result;
 
@@ -149,19 +160,20 @@ namespace Azuria.Main.User.Comment
                 lDocument.LoadHtml(lResponse);
 
                 HtmlNode lInnerDiv = lDocument.GetElementbyId("inner");
-                if (lInnerDiv == null) return new ProxerResult<EditableComment>(new[] {new WrongResponseException()});
+                if (lInnerDiv == null)
+                    return new ProxerResult<EditableComment<T>>(new[] {new WrongResponseException()});
 
                 if (lInnerDiv.ChildNodes.FindFirst("table").ChildNodes.Count == 1)
-                    return new ProxerResult<EditableComment>(new[] {new NoAccessException()});
+                    return new ProxerResult<EditableComment<T>>(new[] {new NoAccessException()});
 
-                return new ProxerResult<EditableComment>(ParseEditabelComment(
+                return new ProxerResult<EditableComment<T>>(ParseEditabelComment(
                     lInnerDiv.ChildNodes.FindFirst("table").ChildNodes.First(node => node.ChildNodes.Count == 3),
                     entryId, animeMangaObject, senpai));
             }
             catch
             {
                 return
-                    new ProxerResult<EditableComment>(
+                    new ProxerResult<EditableComment<T>>(
                         (await ErrorHandler.HandleError(senpai, lResponse, false)).Exceptions);
             }
         }
@@ -190,7 +202,7 @@ namespace Azuria.Main.User.Comment
             return await this.Save(lPostArgs);
         }
 
-        private static EditableComment ParseEditabelComment(HtmlNode node, int entryId, int animeMangaId,
+        private static EditableComment<T> ParseEditabelComment(HtmlNode node, int entryId, T animeMangaObject,
             Senpai senpai)
         {
             int lRating =
@@ -276,8 +288,8 @@ namespace Azuria.Main.User.Comment
                         lMusicSelectNode.ChildNodes.First(htmlNode => htmlNode.Attributes.Contains("selected"))
                             .GetAttributeValue("value", "-1")));
 
-            return new EditableComment(entryId,
-                new Comment(senpai.Me ?? Azuria.User.System, animeMangaId, lRating, lContent, lSubRatings,
+            return new EditableComment<T>(entryId,
+                new Comment<T>(senpai.Me ?? Azuria.User.System, animeMangaObject, lRating, lContent, lSubRatings,
                     lProgressState), lProgress, senpai);
         }
 
