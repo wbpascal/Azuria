@@ -478,15 +478,17 @@ namespace Azuria
                 foreach (HtmlNode chronicNode in lTableNode.ChildNodes)
                 {
                     lParses++;
-                    ProxerResult<AnimeMangaChronicObject<IAnimeMangaObject>> lParseResult =
-                        AnimeMangaChronicObject<IAnimeMangaObject>.GetChronicObjectFromNode(chronicNode, this._senpai);
+                    ProxerResult<AnimeMangaChronicObject<Anime>> lAnimeParseResult =
+                        AnimeMangaChronicObject<Anime>.GetChronicObjectFromNode(chronicNode, this._senpai);
+                    ProxerResult<AnimeMangaChronicObject<Manga>> lMangaParseResult =
+                        AnimeMangaChronicObject<Manga>.GetChronicObjectFromNode(chronicNode, this._senpai);
 
-                    if (lParseResult.Success && lParseResult.Result != null)
+                    if (lAnimeParseResult.Success && lAnimeParseResult.Result != null)
                     {
-                        if (lParseResult.Result.AnimeMangaObject is Anime)
-                            lAnimeChronicObjects.Add((AnimeMangaChronicObject<Anime>) lParseResult.Result);
-                        else if (lParseResult.Result.AnimeMangaObject is Manga)
-                            lMangaChronicObjects.Add((AnimeMangaChronicObject<Manga>) lParseResult.Result);
+                        lAnimeChronicObjects.Add(lAnimeParseResult.Result);
+                    }else if (lMangaParseResult.Success && lMangaParseResult.Result != null)
+                    {
+                        lMangaChronicObjects.Add(lMangaParseResult.Result);
                     }
                     else lFailedParses++;
                 }

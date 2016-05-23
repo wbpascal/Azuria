@@ -1,14 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Net;
+using System.Net.Http;
 using System.Reflection;
-using System.Text;
 using System.Threading.Tasks;
 using Azuria.Exceptions;
 using Azuria.Utilities.ErrorHandling;
 using JetBrains.Annotations;
-using RestSharp;
 
 namespace Azuria.Utilities.Net
 {
@@ -29,17 +27,18 @@ namespace Azuria.Utilities.Net
         /// </summary>
         public static bool SolveCloudflare = true;
 
+#if PORTABLE
         [NotNull] private static readonly string UserAgent =
-            "Azuria/" + typeof(HttpUtility).GetTypeInfo().Assembly.GetName().Version + " RestSharp/" +
-            typeof(HttpUtility).GetTypeInfo()
-                .Assembly.GetReferencedAssemblies()
-                .First(name => name.Name.Equals("RestSharp"))
-                .Version;
-
+            "Azuria.Portable/" + typeof(HttpUtility).GetTypeInfo().Assembly.GetName().Version;
+#else
+        [NotNull]
+        private static readonly string UserAgent =
+            "Azuria/" + typeof(HttpUtility).GetTypeInfo().Assembly.GetName().Version;
+#endif
         #region
 
         [ItemNotNull]
-        internal static async Task<ProxerResult<string>> GetResponseErrorHandling([NotNull] Uri url,
+        internal static async Task<ProxerResult<string>> GetResponseErrorHandling(Uri url,
             [NotNull] ErrorHandler errorHandler, [NotNull] Senpai senpai)
         {
             return await GetResponseErrorHandling(url, null, errorHandler, senpai);
@@ -61,7 +60,7 @@ namespace Azuria.Utilities.Net
         {
             ProxerResult<Tuple<string, CookieContainer>> lResult =
                 await
-                    GetResponseErrorHandling(url, loginCookies, errorHandler, senpai, checkFuncs, loginCookies != null);
+                    GetResponseErrorHandling(url, loginCookies, errorHandler, senpai, checkFuncs, loginCookies == null);
 
             return lResult.Success && lResult.Result != null
                 ? new ProxerResult<string>(lResult.Result.Item1)
@@ -74,41 +73,41 @@ namespace Azuria.Utilities.Net
             [NotNull] Senpai senpai, [CanBeNull] Func<string, ProxerResult>[] checkFuncs, bool checkLogin,
             int recursion = 0)
         {
-            if (recursion >= 2)
-                return new ProxerResult<Tuple<string, CookieContainer>>(new[] {new CloudflareException()});
-            if ((checkLogin && loginCookies != null && !senpai.IsLoggedIn) || (checkLogin && loginCookies == null))
+            if (checkLogin && loginCookies != null && !senpai.IsLoggedIn)
                 return
-                    new ProxerResult<Tuple<string, CookieContainer>>(new Exception[] {new NotLoggedInException()});
+                    new ProxerResult<Tuple<string, CookieContainer>>(new Exception[] { new NotLoggedInException() });
 
-            string lResponse;
             loginCookies = loginCookies ?? new CookieContainer();
+            string lResponse;
 
-            IRestResponse lResponseObject;
+            HttpResponseMessage lResponseObject;
             try
             {
-                lResponseObject = await GetWebRequestResponse(url, loginCookies, null);
+                lResponseObject =
+                    await GetWebRequestResponse(url, loginCookies, null);
             }
-            catch (TaskCanceledException)
+            catch (Exception ex)
             {
-                return new ProxerResult<Tuple<string, CookieContainer>>(new[] {new TimeoutException()});
+                return new ProxerResult<Tuple<string, CookieContainer>>(new[] { ex });
             }
-            if (lResponseObject.StatusCode == HttpStatusCode.OK && !string.IsNullOrEmpty(lResponseObject.Content))
-                lResponse = System.Web.HttpUtility.HtmlDecode(lResponseObject.Content).Replace("\n", "");
+            string lResponseString = await lResponseObject.Content.ReadAsStringAsync();
+
+            if (lResponseObject.StatusCode == HttpStatusCode.OK && !string.IsNullOrEmpty(lResponseString))
+                lResponse = WebUtility.HtmlDecode(lResponseString).Replace("\n", "");
             else if (lResponseObject.StatusCode == HttpStatusCode.ServiceUnavailable &&
-                     !string.IsNullOrEmpty(lResponseObject.Content))
+                     !string.IsNullOrEmpty(lResponseString))
             {
                 if (!SolveCloudflare)
-                    return new ProxerResult<Tuple<string, CookieContainer>>(new[] {new CloudflareException()});
+                    return new ProxerResult<Tuple<string, CookieContainer>>(new[] { new CloudflareException() });
                 ProxerResult<string> lSolveResult =
-                    CloudflareSolver.Solve(
-                        System.Web.HttpUtility.HtmlDecode(lResponseObject.Content).Replace("\n", ""), url);
+                    CloudflareSolver.Solve(WebUtility.HtmlDecode(lResponseString).Replace("\n", ""), url);
 
                 if (!lSolveResult.Success)
-                    return new ProxerResult<Tuple<string, CookieContainer>>(new[] {new CloudflareException()});
+                    return new ProxerResult<Tuple<string, CookieContainer>>(new[] { new CloudflareException() });
 
                 await Task.Delay(4000);
 
-                IRestResponse lGetResult;
+                HttpResponseMessage lGetResult;
                 try
                 {
                     lGetResult =
@@ -119,11 +118,11 @@ namespace Azuria.Utilities.Net
                 }
                 catch (TaskCanceledException)
                 {
-                    return new ProxerResult<Tuple<string, CookieContainer>>(new[] {new TimeoutException()});
+                    return new ProxerResult<Tuple<string, CookieContainer>>(new[] { new TimeoutException() });
                 }
 
                 if (lGetResult.StatusCode != HttpStatusCode.OK)
-                    return new ProxerResult<Tuple<string, CookieContainer>>(new[] {new CloudflareException()});
+                    return new ProxerResult<Tuple<string, CookieContainer>>(new[] { new CloudflareException() });
 
                 return
                     await
@@ -133,20 +132,20 @@ namespace Azuria.Utilities.Net
             else
                 return
                     new ProxerResult<Tuple<string, CookieContainer>>(new[]
-                    {new WrongResponseException(), lResponseObject.ErrorException});
+                    {new WrongResponseException()});
 
             if (checkFuncs != null)
                 foreach (Func<string, ProxerResult> checkFunc in checkFuncs)
                 {
                     try
                     {
-                        ProxerResult lResult = checkFunc?.Invoke(lResponse) ?? new ProxerResult {Success = false};
+                        ProxerResult lResult = checkFunc?.Invoke(lResponse) ?? new ProxerResult { Success = false };
                         if (!lResult.Success)
                             return new ProxerResult<Tuple<string, CookieContainer>>(lResult.Exceptions);
                     }
                     catch
                     {
-                        return new ProxerResult<Tuple<string, CookieContainer>>(new Exception[0]);
+                        return new ProxerResult<Tuple<string, CookieContainer>>(new Exception[0]) { Success = false };
                     }
                 }
 
@@ -161,19 +160,28 @@ namespace Azuria.Utilities.Net
         }
 
         [ItemNotNull]
-        internal static async Task<IRestResponse> GetWebRequestResponse([NotNull] Uri url,
+        internal static async Task<HttpResponseMessage> GetWebRequestResponse([NotNull] Uri url,
             [CanBeNull] CookieContainer cookies, [CanBeNull] Dictionary<string, string> headers)
         {
-            RestClient lClient = new RestClient(url)
+            using (
+                HttpClient lClient =
+                    new HttpClient(new HttpClientHandler
+                    {
+                        AllowAutoRedirect = true,
+                        CookieContainer = cookies,
+                        UseCookies = true
+                    }))
             {
-                CookieContainer = cookies,
-                Encoding = Encoding.UTF8,
-                Timeout = Timeout,
-                UserAgent = UserAgent
-            };
-            RestRequest lRequest = new RestRequest(Method.GET);
-            headers?.ToList().ForEach(header => lRequest.AddHeader(header.Key, header.Value));
-            return await lClient.ExecuteTaskAsync(lRequest);
+                lClient.Timeout = TimeSpan.FromSeconds(Timeout);
+                lClient.DefaultRequestHeaders.TryAddWithoutValidation("User-Agent", UserAgent);
+                if (headers == null) return await lClient.GetAsync(url);
+                foreach (KeyValuePair<string, string> header in headers)
+                {
+                    lClient.DefaultRequestHeaders.TryAddWithoutValidation(header.Key, header.Value);
+                }
+
+                return await lClient.GetAsync(url);
+            }
         }
 
         [ItemNotNull]
@@ -203,7 +211,7 @@ namespace Azuria.Utilities.Net
             ProxerResult<Tuple<string, CookieContainer>> lResult =
                 await
                     PostResponseErrorHandling(url, postArgs, loginCookies, errorHandler, senpai, checkFuncs,
-                        loginCookies != null);
+                        loginCookies == null);
 
             return lResult.Success && lResult.Result != null
                 ? new ProxerResult<string>(lResult.Result.Item1)
@@ -216,41 +224,41 @@ namespace Azuria.Utilities.Net
             [CanBeNull] CookieContainer loginCookies, [NotNull] ErrorHandler errorHandler, [NotNull] Senpai senpai,
             [CanBeNull] Func<string, ProxerResult>[] checkFuncs, bool checkLogin, int recursion = 0)
         {
-            if (recursion >= 2)
-                return new ProxerResult<Tuple<string, CookieContainer>>(new[] {new CloudflareException()});
-            if ((checkLogin && loginCookies != null && !senpai.IsLoggedIn) || (checkLogin && loginCookies == null))
+            if (checkLogin && loginCookies != null && !senpai.IsLoggedIn)
                 return
-                    new ProxerResult<Tuple<string, CookieContainer>>(new Exception[] {new NotLoggedInException()});
+                    new ProxerResult<Tuple<string, CookieContainer>>(new Exception[] { new NotLoggedInException() });
 
-            string lResponse;
             loginCookies = loginCookies ?? new CookieContainer();
+            string lResponse;
 
-            IRestResponse lResponseObject;
+            HttpResponseMessage lResponseObject;
             try
             {
-                lResponseObject = await PostWebRequestResponse(url, loginCookies, postArgs, null);
+                lResponseObject =
+                    await PostWebRequestResponse(url, loginCookies, postArgs, null);
             }
-            catch (TaskCanceledException)
+            catch (Exception ex)
             {
-                return new ProxerResult<Tuple<string, CookieContainer>>(new[] {new TimeoutException()});
+                return new ProxerResult<Tuple<string, CookieContainer>>(new[] { ex });
             }
-            if (lResponseObject.StatusCode == HttpStatusCode.OK && !string.IsNullOrEmpty(lResponseObject.Content))
-                lResponse = System.Web.HttpUtility.HtmlDecode(lResponseObject.Content).Replace("\n", "");
+            string lResponseString = await lResponseObject.Content.ReadAsStringAsync();
+
+            if (lResponseObject.StatusCode == HttpStatusCode.OK && !string.IsNullOrEmpty(lResponseString))
+                lResponse = WebUtility.HtmlDecode(lResponseString).Replace("\n", "");
             else if (lResponseObject.StatusCode == HttpStatusCode.ServiceUnavailable &&
-                     !string.IsNullOrEmpty(lResponseObject.Content))
+                     !string.IsNullOrEmpty(lResponseString))
             {
                 if (!SolveCloudflare)
-                    return new ProxerResult<Tuple<string, CookieContainer>>(new[] {new CloudflareException()});
+                    return new ProxerResult<Tuple<string, CookieContainer>>(new[] { new CloudflareException() });
                 ProxerResult<string> lSolveResult =
-                    CloudflareSolver.Solve(
-                        System.Web.HttpUtility.HtmlDecode(lResponseObject.Content).Replace("\n", ""), url);
+                    CloudflareSolver.Solve(WebUtility.HtmlDecode(lResponseString).Replace("\n", ""), url);
 
                 if (!lSolveResult.Success)
-                    return new ProxerResult<Tuple<string, CookieContainer>>(new[] {new CloudflareException()});
+                    return new ProxerResult<Tuple<string, CookieContainer>>(new[] { new CloudflareException() });
 
                 await Task.Delay(4000);
 
-                IRestResponse lGetResult;
+                HttpResponseMessage lGetResult;
                 try
                 {
                     lGetResult =
@@ -261,11 +269,11 @@ namespace Azuria.Utilities.Net
                 }
                 catch (TaskCanceledException)
                 {
-                    return new ProxerResult<Tuple<string, CookieContainer>>(new[] {new TimeoutException()});
+                    return new ProxerResult<Tuple<string, CookieContainer>>(new[] { new TimeoutException() });
                 }
 
                 if (lGetResult.StatusCode != HttpStatusCode.OK)
-                    return new ProxerResult<Tuple<string, CookieContainer>>(new[] {new CloudflareException()});
+                    return new ProxerResult<Tuple<string, CookieContainer>>(new[] { new CloudflareException() });
 
                 return
                     await
@@ -275,20 +283,23 @@ namespace Azuria.Utilities.Net
             else
                 return
                     new ProxerResult<Tuple<string, CookieContainer>>(new[]
-                    {new WrongResponseException(), lResponseObject.ErrorException});
+                    {new WrongResponseException()});
 
             if (checkFuncs != null)
                 foreach (Func<string, ProxerResult> checkFunc in checkFuncs)
                 {
                     try
                     {
-                        ProxerResult lResult = checkFunc?.Invoke(lResponse) ?? new ProxerResult {Success = false};
+                        ProxerResult lResult = checkFunc?.Invoke(lResponse) ?? new ProxerResult { Success = false };
                         if (!lResult.Success)
                             return new ProxerResult<Tuple<string, CookieContainer>>(lResult.Exceptions);
                     }
                     catch
                     {
-                        return new ProxerResult<Tuple<string, CookieContainer>>(new Exception[0]);
+                        return new ProxerResult<Tuple<string, CookieContainer>>(new Exception[0])
+                        {
+                            Success = false
+                        };
                     }
                 }
 
@@ -303,23 +314,31 @@ namespace Azuria.Utilities.Net
         }
 
         [ItemNotNull]
-        internal static async Task<IRestResponse> PostWebRequestResponse([NotNull] Uri url,
+        internal static async Task<HttpResponseMessage> PostWebRequestResponse([NotNull] Uri url,
             [CanBeNull] CookieContainer cookies, [NotNull] Dictionary<string, string> postArgs,
             [CanBeNull] Dictionary<string, string> headers)
         {
-            RestClient lClient = new RestClient(url)
+            using (
+                HttpClient lClient =
+                    new HttpClient(new HttpClientHandler
+                    {
+                        AllowAutoRedirect = true,
+                        CookieContainer = cookies,
+                        UseCookies = true
+                    }))
             {
-                CookieContainer = cookies,
-                Encoding = Encoding.UTF8,
-                Timeout = Timeout,
-                UserAgent = UserAgent
-            };
-            RestRequest lRequest = new RestRequest(Method.POST);
-            headers?.ToList().ForEach(header => lRequest.AddHeader(header.Key, header.Value));
-            postArgs.ToList().ForEach(x => lRequest.AddParameter(x.Key, x.Value));
-            return await lClient.ExecuteTaskAsync(lRequest);
+                lClient.Timeout = TimeSpan.FromSeconds(Timeout);
+                lClient.DefaultRequestHeaders.TryAddWithoutValidation("User-Agent", UserAgent);
+                if (headers == null) return await lClient.PostAsync(url, new FormUrlEncodedContent(postArgs));
+                foreach (KeyValuePair<string, string> header in headers)
+                {
+                    lClient.DefaultRequestHeaders.Add(header.Key, header.Value);
+                }
+
+                return await lClient.PostAsync(url, new FormUrlEncodedContent(postArgs));
+            }
         }
 
-        #endregion
+#endregion
     }
 }

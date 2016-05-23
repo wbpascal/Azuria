@@ -103,8 +103,9 @@ namespace Azuria.Main.User
                     }
                 }
 
-                IAnimeMangaContentBase lAnimeMangaContentBase = lAnimeMangaObject is Anime
-                    ? new Anime.Episode((Anime) lAnimeMangaObject, lNumber, lAnimeLanguage, senpai)
+                Anime lAnime = lAnimeMangaObject as Anime;
+                IAnimeMangaContentBase lAnimeMangaContentBase = lAnime != null
+                    ? new Anime.Episode(lAnime, lNumber, lAnimeLanguage, senpai)
                     : lAnimeMangaObject != null
                         ? (IAnimeMangaContentBase)
                             new Manga.Chapter((Manga) lAnimeMangaObject, lNumber, lLanguage, senpai)
