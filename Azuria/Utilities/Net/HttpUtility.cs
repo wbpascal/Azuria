@@ -31,10 +31,10 @@ namespace Azuria.Utilities.Net
         [NotNull] private static readonly string UserAgent =
             "Azuria.Portable/" + typeof(HttpUtility).GetTypeInfo().Assembly.GetName().Version;
 #else
-        [NotNull]
-        private static readonly string UserAgent =
+        [NotNull] private static readonly string UserAgent =
             "Azuria/" + typeof(HttpUtility).GetTypeInfo().Assembly.GetName().Version;
 #endif
+
         #region
 
         [ItemNotNull]
@@ -75,7 +75,7 @@ namespace Azuria.Utilities.Net
         {
             if (checkLogin && loginCookies != null && !senpai.IsLoggedIn)
                 return
-                    new ProxerResult<Tuple<string, CookieContainer>>(new Exception[] { new NotLoggedInException() });
+                    new ProxerResult<Tuple<string, CookieContainer>>(new Exception[] {new NotLoggedInException()});
 
             loginCookies = loginCookies ?? new CookieContainer();
             string lResponse;
@@ -88,7 +88,7 @@ namespace Azuria.Utilities.Net
             }
             catch (Exception ex)
             {
-                return new ProxerResult<Tuple<string, CookieContainer>>(new[] { ex });
+                return new ProxerResult<Tuple<string, CookieContainer>>(new[] {ex});
             }
             string lResponseString = await lResponseObject.Content.ReadAsStringAsync();
 
@@ -98,12 +98,12 @@ namespace Azuria.Utilities.Net
                      !string.IsNullOrEmpty(lResponseString))
             {
                 if (!SolveCloudflare)
-                    return new ProxerResult<Tuple<string, CookieContainer>>(new[] { new CloudflareException() });
+                    return new ProxerResult<Tuple<string, CookieContainer>>(new[] {new CloudflareException()});
                 ProxerResult<string> lSolveResult =
                     CloudflareSolver.Solve(WebUtility.HtmlDecode(lResponseString).Replace("\n", ""), url);
 
                 if (!lSolveResult.Success)
-                    return new ProxerResult<Tuple<string, CookieContainer>>(new[] { new CloudflareException() });
+                    return new ProxerResult<Tuple<string, CookieContainer>>(new[] {new CloudflareException()});
 
                 await Task.Delay(4000);
 
@@ -118,11 +118,11 @@ namespace Azuria.Utilities.Net
                 }
                 catch (TaskCanceledException)
                 {
-                    return new ProxerResult<Tuple<string, CookieContainer>>(new[] { new TimeoutException() });
+                    return new ProxerResult<Tuple<string, CookieContainer>>(new[] {new TimeoutException()});
                 }
 
                 if (lGetResult.StatusCode != HttpStatusCode.OK)
-                    return new ProxerResult<Tuple<string, CookieContainer>>(new[] { new CloudflareException() });
+                    return new ProxerResult<Tuple<string, CookieContainer>>(new[] {new CloudflareException()});
 
                 return
                     await
@@ -139,13 +139,13 @@ namespace Azuria.Utilities.Net
                 {
                     try
                     {
-                        ProxerResult lResult = checkFunc?.Invoke(lResponse) ?? new ProxerResult { Success = false };
+                        ProxerResult lResult = checkFunc?.Invoke(lResponse) ?? new ProxerResult {Success = false};
                         if (!lResult.Success)
                             return new ProxerResult<Tuple<string, CookieContainer>>(lResult.Exceptions);
                     }
                     catch
                     {
-                        return new ProxerResult<Tuple<string, CookieContainer>>(new Exception[0]) { Success = false };
+                        return new ProxerResult<Tuple<string, CookieContainer>>(new Exception[0]) {Success = false};
                     }
                 }
 
@@ -226,7 +226,7 @@ namespace Azuria.Utilities.Net
         {
             if (checkLogin && loginCookies != null && !senpai.IsLoggedIn)
                 return
-                    new ProxerResult<Tuple<string, CookieContainer>>(new Exception[] { new NotLoggedInException() });
+                    new ProxerResult<Tuple<string, CookieContainer>>(new Exception[] {new NotLoggedInException()});
 
             loginCookies = loginCookies ?? new CookieContainer();
             string lResponse;
@@ -239,7 +239,7 @@ namespace Azuria.Utilities.Net
             }
             catch (Exception ex)
             {
-                return new ProxerResult<Tuple<string, CookieContainer>>(new[] { ex });
+                return new ProxerResult<Tuple<string, CookieContainer>>(new[] {ex});
             }
             string lResponseString = await lResponseObject.Content.ReadAsStringAsync();
 
@@ -249,12 +249,12 @@ namespace Azuria.Utilities.Net
                      !string.IsNullOrEmpty(lResponseString))
             {
                 if (!SolveCloudflare)
-                    return new ProxerResult<Tuple<string, CookieContainer>>(new[] { new CloudflareException() });
+                    return new ProxerResult<Tuple<string, CookieContainer>>(new[] {new CloudflareException()});
                 ProxerResult<string> lSolveResult =
                     CloudflareSolver.Solve(WebUtility.HtmlDecode(lResponseString).Replace("\n", ""), url);
 
                 if (!lSolveResult.Success)
-                    return new ProxerResult<Tuple<string, CookieContainer>>(new[] { new CloudflareException() });
+                    return new ProxerResult<Tuple<string, CookieContainer>>(new[] {new CloudflareException()});
 
                 await Task.Delay(4000);
 
@@ -269,11 +269,11 @@ namespace Azuria.Utilities.Net
                 }
                 catch (TaskCanceledException)
                 {
-                    return new ProxerResult<Tuple<string, CookieContainer>>(new[] { new TimeoutException() });
+                    return new ProxerResult<Tuple<string, CookieContainer>>(new[] {new TimeoutException()});
                 }
 
                 if (lGetResult.StatusCode != HttpStatusCode.OK)
-                    return new ProxerResult<Tuple<string, CookieContainer>>(new[] { new CloudflareException() });
+                    return new ProxerResult<Tuple<string, CookieContainer>>(new[] {new CloudflareException()});
 
                 return
                     await
@@ -290,7 +290,7 @@ namespace Azuria.Utilities.Net
                 {
                     try
                     {
-                        ProxerResult lResult = checkFunc?.Invoke(lResponse) ?? new ProxerResult { Success = false };
+                        ProxerResult lResult = checkFunc?.Invoke(lResponse) ?? new ProxerResult {Success = false};
                         if (!lResult.Success)
                             return new ProxerResult<Tuple<string, CookieContainer>>(lResult.Exceptions);
                     }
@@ -339,6 +339,6 @@ namespace Azuria.Utilities.Net
             }
         }
 
-#endregion
+        #endregion
     }
 }

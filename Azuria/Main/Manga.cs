@@ -172,12 +172,6 @@ namespace Azuria.Main
         public InitialisableProperty<string> Name { get; }
 
         /// <summary>
-        ///     Gibt zurück, ob es sich um einen <see cref="Anime" /> oder <see cref="Manga" /> handelt.
-        ///     <para>(Vererbt von <see cref="IAnimeMangaObject" />)</para>
-        /// </summary>
-        public AnimeMangaType ObjectType => AnimeMangaType.Manga;
-
-        /// <summary>
         ///     Gibt die Season des <see cref="Anime" /> oder <see cref="Manga" /> zurück.
         ///     <para>(Vererbt von <see cref="IAnimeMangaObject" />)</para>
         /// </summary>
@@ -227,6 +221,12 @@ namespace Azuria.Main
         /// </summary>
         [NotNull]
         public InitialisableProperty<MangaType> MangaTyp { get; }
+
+        /// <summary>
+        ///     Gibt zurück, ob es sich um einen <see cref="Anime" /> oder <see cref="Manga" /> handelt.
+        ///     <para>(Vererbt von <see cref="IAnimeMangaObject" />)</para>
+        /// </summary>
+        public AnimeMangaType ObjectType => AnimeMangaType.Manga;
 
         #endregion
 

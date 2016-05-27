@@ -21,11 +21,11 @@ namespace Azuria.Main.User.ControlPanel
     {
         private readonly Senpai _senpai;
 
-        internal AnimeMangaBookmarkObject([NotNull] IAnimeMangaContent<T> contentObject, int entryId,
+        internal AnimeMangaBookmarkObject([NotNull] IAnimeMangaContent<T> animeMangaContentObject, int entryId,
             [NotNull] Senpai senpai)
         {
             this._senpai = senpai;
-            this.ContentObject = contentObject;
+            this.AnimeMangaContentObject = animeMangaContentObject;
             this.EntryId = entryId;
         }
 
@@ -35,7 +35,7 @@ namespace Azuria.Main.User.ControlPanel
         ///     Gets the <see cref="Anime.Episode" /> or <see cref="Manga.Chapter" /> the user has bookmarked.
         /// </summary>
         [NotNull]
-        public IAnimeMangaContent<T> ContentObject { get; }
+        public IAnimeMangaContent<T> AnimeMangaContentObject { get; }
 
         /// <summary>
         ///     Gets the entry id of this bookmark.

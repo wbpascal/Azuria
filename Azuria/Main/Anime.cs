@@ -74,120 +74,103 @@ namespace Azuria.Main
         #region Geerbt
 
         /// <summary>
-        ///     Gibt den Link zum Cover des <see cref="Anime" /> oder <see cref="Manga" /> zurück.
-        ///     <para>(Vererbt von <see cref="IAnimeMangaObject" />)</para>
-        /// </summary>
-        public Uri CoverUri => new Uri("http://cdn.proxer.me/cover/" + this.Id + ".jpg");
-
-        /// <summary>
+        ///     Gets the count of the <see cref="Episode">Episodes</see> the <see cref="Anime" /> contains.
         /// </summary>
         public InitialisableProperty<int> ContentCount { get; }
 
         /// <summary>
-        ///     Gibt die Beschreibung des <see cref="Anime" /> oder <see cref="Manga" /> zurück.
-        ///     <para>(Vererbt von <see cref="IAnimeMangaObject" />)</para>
+        ///     Gets the link to the cover of the <see cref="Anime" />.
+        /// </summary>
+        public Uri CoverUri => new Uri($"https://cdn.proxer.me/cover/{this.Id}.jpg");
+
+        /// <summary>
+        ///     Gets the description of the <see cref="Anime" />.
         /// </summary>
         public InitialisableProperty<string> Description { get; }
 
         /// <summary>
-        ///     Gibt den englische Titel des <see cref="Anime" /> oder <see cref="Manga" /> zurück.
-        ///     <para>(Vererbt von <see cref="IAnimeMangaObject" />)</para>
+        ///     Gets the english title of the <see cref="Anime" />.
         /// </summary>
         public InitialisableProperty<string> EnglishTitle { get; }
 
         /// <summary>
-        ///     Gibt die Links zu allen FSK-Beschränkungen des <see cref="Anime" /> oder <see cref="Manga" /> zurück.
-        ///     <para>(Vererbt von <see cref="IAnimeMangaObject" />)</para>
+        ///     Gets an enumeration of the age restrictions of the <see cref="Anime" />.
         /// </summary>
         public InitialisableProperty<IEnumerable<FskObject>> Fsk { get; }
 
         /// <summary>
-        ///     Gitb die Genres des <see cref="Anime" /> oder <see cref="Manga" /> zurück.
-        ///     <para>(Vererbt von <see cref="IAnimeMangaObject" />)</para>
+        ///     Gets an enumeration of all the genre of the <see cref="Anime" /> contains.
         /// </summary>
         public InitialisableProperty<IEnumerable<GenreObject>> Genre { get; }
 
         /// <summary>
-        ///     Gibt den deutschen Titel des <see cref="Anime" /> oder <see cref="Manga" /> zurück.
-        ///     <para>(Vererbt von <see cref="IAnimeMangaObject" />)</para>
+        ///     Gets the german title of the <see cref="Anime" />.
         /// </summary>
         public InitialisableProperty<string> GermanTitle { get; }
 
         /// <summary>
-        ///     Gibt die Gruppen zurück, die den <see cref="Anime" /> oder <see cref="Manga" /> übersetzten oder übersetzt haben.
-        ///     <para>(Vererbt von <see cref="IAnimeMangaObject" />)</para>
+        ///     Gets an enumeration of all the groups that translated the <see cref="Anime" />.
         /// </summary>
         public InitialisableProperty<IEnumerable<Group>> Groups { get; }
 
         /// <summary>
-        ///     Gibt die ID des <see cref="Anime" /> oder <see cref="Manga" /> zurück.
-        ///     <para>(Vererbt von <see cref="IAnimeMangaObject" />)</para>
+        ///     Gets the Id of the <see cref="Anime" />.
         /// </summary>
         public int Id { get; }
 
         /// <summary>
-        ///     Gibt die Industrie des <see cref="Anime" /> oder <see cref="Manga" /> zurück.
-        ///     <para>(Vererbt von <see cref="IAnimeMangaObject" />)</para>
+        ///     Gets an enumeration of all the companies that were involved in making the <see cref="Anime" />.
         /// </summary>
         public InitialisableProperty<IEnumerable<Industry>> Industry { get; }
 
         /// <summary>
-        ///     Gibt zurück, ob der <see cref="Anime" /> oder <see cref="Manga" /> lizensiert ist.
-        ///     <para>(Vererbt von <see cref="IAnimeMangaObject" />)</para>
+        ///     Gets if the <see cref="Anime" /> is licensed by a german company.
         /// </summary>
         public InitialisableProperty<bool> IsLicensed { get; }
 
         /// <summary>
-        ///     Gibt den japanischen Titel des <see cref="Anime" /> oder <see cref="Manga" /> zurück.
-        ///     <para>(Vererbt von <see cref="IAnimeMangaObject" />)</para>
+        ///     Gets the japanese title of the <see cref="Anime" />.
         /// </summary>
         public InitialisableProperty<string> JapaneseTitle { get; }
 
         /// <summary>
-        ///     Gibt den Namen des <see cref="Anime" /> oder <see cref="Manga" /> zurück.
-        ///     <para>(Vererbt von <see cref="IAnimeMangaObject" />)</para>
+        ///     Gets the original title of the <see cref="Anime" />.
         /// </summary>
         public InitialisableProperty<string> Name { get; }
 
         /// <summary>
-        ///     Gibt zurück, ob es sich um einen <see cref="Anime" /> oder <see cref="Manga" /> handelt.
-        ///     <para>(Vererbt von <see cref="IAnimeMangaObject" />)</para>
-        /// </summary>
-        public AnimeMangaType ObjectType => AnimeMangaType.Anime;
-
-        /// <summary>
-        ///     Gibt die Season des <see cref="Anime" /> oder <see cref="Manga" /> zurück.
-        ///     <para>(Vererbt von <see cref="IAnimeMangaObject" />)</para>
+        ///     Gets the seasons the <see cref="Anime" /> aired in. If the enumerable only contains one value the value is always
+        ///     the start season of the <see cref="Anime" />.
         /// </summary>
         public InitialisableProperty<IEnumerable<string>> Season { get; }
 
         /// <summary>
-        ///     Gibt den Status des <see cref="Anime" /> oder <see cref="Manga" /> zurück.
-        ///     <para>(Vererbt von <see cref="IAnimeMangaObject" />)</para>
+        ///     Gets the status of the <see cref="Anime" />.
         /// </summary>
         public InitialisableProperty<AnimeMangaStatus> Status { get; }
 
         /// <summary>
-        ///     Gibt das Synonym des <see cref="Anime" /> oder <see cref="Manga" /> zurück.
-        ///     <para>(Vererbt von <see cref="IAnimeMangaObject" />)</para>
+        ///     Gets the synonym the <see cref="Anime" /> is also known as.
         /// </summary>
         public InitialisableProperty<string> Synonym { get; }
 
         /// <summary>
-        ///     Initialisiert das Objekt.
-        ///     <para>(Vererbt von <see cref="IAnimeMangaObject" />)</para>
+        ///     Adds the <see cref="Anime" /> to the planned list. If <paramref name="userControlPanel" /> is specified the object
+        ///     is also added to the corresponding <see cref="UserControlPanel.Anime" />-enumeration.
+        /// </summary>
+        /// <param name="userControlPanel">The object which, if specified, this object is added to.</param>
+        /// <returns>If the action was successful.</returns>
+        async Task<ProxerResult> IAnimeMangaObject.AddToPlanned(UserControlPanel userControlPanel)
+        {
+            return await this.AddToPlanned(userControlPanel);
+        }
+
+        /// <summary>
+        ///     Initialises the object.
         /// </summary>
         public async Task<ProxerResult> Init()
         {
             return await this.InitAllInitalisableProperties();
-        }
-
-        /// <summary>
-        /// </summary>
-        /// <returns></returns>
-        async Task<ProxerResult> IAnimeMangaObject.AddToPlanned(UserControlPanel userControlPanel)
-        {
-            return await this.AddToPlanned(userControlPanel);
         }
 
         #endregion
@@ -195,15 +178,14 @@ namespace Azuria.Main
         #region Properties
 
         /// <summary>
-        ///     Gibt den Typ eines Anime zurück.
+        ///     Gets the type of the <see cref="Anime" />.
         /// </summary>
         [NotNull]
         public InitialisableProperty<AnimeType> AnimeTyp { get; }
 
         /// <summary>
-        ///     Gibt die verfügbaren Sprachen des <see cref="Anime" /> zurück.
+        ///     Gets the languages this <see cref="Anime" /> is available in.
         /// </summary>
-        /// <seealso cref="Language" />
         [NotNull]
         public InitialisableProperty<IEnumerable<AnimeLanguage>> AvailableLanguages { get; }
 
@@ -212,9 +194,11 @@ namespace Azuria.Main
         #region
 
         /// <summary>
+        ///     Adds the <see cref="Anime" /> to the planned list. If <paramref name="userControlPanel" /> is specified the object
+        ///     is also added to the corresponding <see cref="UserControlPanel.Anime" />-enumeration.
         /// </summary>
-        /// <param name="userControlPanel"></param>
-        /// <returns></returns>
+        /// <param name="userControlPanel">The object which, if specified, this object is added to.</param>
+        /// <returns>If the action was successful.</returns>
         public async Task<ProxerResult<AnimeMangaUcpObject<Anime>>> AddToPlanned(
             UserControlPanel userControlPanel = null)
         {
@@ -223,12 +207,11 @@ namespace Azuria.Main
         }
 
         /// <summary>
-        ///     Gibt die Kommentare des <see cref="Anime" /> oder <see cref="Manga" /> chronologisch geordnet zurück.
-        ///     <para>(Vererbt von <see cref="IAnimeMangaObject" />)</para>
+        ///     Gets the comments of the <see cref="Anime" /> in a chronological order.
         /// </summary>
-        /// <param name="startIndex">Der Start-Index der ausgegebenen Kommentare.</param>
-        /// <param name="count">Die Anzahl der ausgegebenen Kommentare ab dem angegebenen <paramref name="startIndex" />.</param>
-        /// <returns>Eine Aufzählung mit den Kommentaren.</returns>
+        /// <param name="startIndex">The offset of the comments parsed.</param>
+        /// <param name="count">The count of the returned comments starting at <paramref name="startIndex" />.</param>
+        /// <returns>If the action was successful and if it was an enumeration of the comments.</returns>
         public async Task<ProxerResult<IEnumerable<Comment<Anime>>>> GetCommentsLatest(int startIndex, int count)
         {
             return
@@ -239,12 +222,11 @@ namespace Azuria.Main
         }
 
         /// <summary>
-        ///     Gibt die Kommentare des <see cref="Anime" /> oder <see cref="Manga" />, nach ihrer Beliebtheit sortiert, zurück.
-        ///     <para>(Vererbt von <see cref="IAnimeMangaObject" />)</para>
+        ///     Gets the comments of the <see cref="Anime" /> ordered by rating.
         /// </summary>
-        /// <param name="startIndex">Der Start-Index der ausgegebenen Kommentare.</param>
-        /// <param name="count">Die Anzahl der ausgegebenen Kommentare ab dem angegebenen <paramref name="startIndex" />.</param>
-        /// <returns>Eine Aufzählung mit den Kommentaren.</returns>
+        /// <param name="startIndex">The offset of the comments parsed.</param>
+        /// <param name="count">The count of the returned comments starting at <paramref name="startIndex" />.</param>
+        /// <returns>If the action was successful and if it was an enumeration of the comments.</returns>
         public async Task<ProxerResult<IEnumerable<Comment<Anime>>>> GetCommentsRating(int startIndex, int count)
         {
             return
@@ -255,15 +237,11 @@ namespace Azuria.Main
         }
 
         /// <summary>
-        ///     Gibt die Episoden des <see cref="Anime" /> in einer bestimmten <see cref="Language">Sprache</see> zurück.
+        ///     Returns all <see cref="Episode">epsiodes</see> of the <see cref="Anime" /> in a specified language.
         /// </summary>
-        /// <exception cref="LanguageNotAvailableException">
-        ///     Wird ausgelöst, wenn der Anime nicht in der angegebenen Sprache
-        ///     verfügbar ist.
-        /// </exception>
-        /// <param name="language">Die Sprache der Episoden.</param>
+        /// <param name="language">The language of the episodes.</param>
         /// <seealso cref="Episode" />
-        /// <returns>Einen Array mit length = <see cref="ContentCount" />.</returns>
+        /// <returns>An enumeration of <see cref="Episode">episodes</see> with a count of <see cref="ContentCount" />.</returns>
         [NotNull]
         [ItemNotNull]
         public async Task<ProxerResult<IEnumerable<Episode>>> GetEpisodes(AnimeLanguage language)
@@ -281,11 +259,10 @@ namespace Azuria.Main
         }
 
         /// <summary>
-        ///     Gibt die aktuell am beliebtesten <see cref="Anime" /> zurück.
+        ///     Returns the currently most popular <see cref="Anime" />.
         /// </summary>
-        /// <exception cref="WrongResponseException">Wird ausgelöst, wenn die Antwort des Servers nicht der Erwarteten entspricht.</exception>
-        /// <param name="senpai">Der aktuelle Benutzer.</param>
-        /// <returns>Ein Array mit den aktuell beliebtesten <see cref="Anime" />.</returns>
+        /// <param name="senpai">The user that makes the request.</param>
+        /// <returns>An enumeration of the currently most popular <see cref="Anime" />.</returns>
         [ItemNotNull]
         public static async Task<ProxerResult<IEnumerable<Anime>>> GetPopularAnime([NotNull] Senpai senpai)
         {
@@ -653,7 +630,7 @@ namespace Azuria.Main
         #endregion
 
         /// <summary>
-        ///     Eine Klasse, die die <see cref="Episode">Episode</see> eines <see cref="Anime" /> darstellt.
+        ///     Represents an episode of an <see cref="Anime" />.
         /// </summary>
         public class Episode : IAnimeMangaContent<Anime>
         {
@@ -682,28 +659,20 @@ namespace Azuria.Main
             #region Geerbt
 
             /// <summary>
+            ///     Gets the <see cref="Episode" />-number.
             /// </summary>
-            /// <returns></returns>
-            public async Task<ProxerResult<AnimeMangaBookmarkObject<Anime>>> AddToBookmarks(
-                UserControlPanel userControlPanel = null)
-            {
-                userControlPanel = userControlPanel ?? new UserControlPanel(this._senpai);
-                return await userControlPanel.AddToBookmarks(this);
-            }
+            public int ContentIndex { get; }
 
             /// <summary>
-            /// </summary>
-            public Anime ParentObject { get; }
-
-            /// <summary>
+            ///     Gets if the <see cref="Episode" /> is available.
             /// </summary>
             public InitialisableProperty<bool> IsAvailable { get; }
 
             /// <summary>
+            ///     Gets whether the language of the <see cref="Anime.Episode" /> is <see cref="Language.English">english</see> or
+            ///     <see cref="Language.German">german</see>.
             /// </summary>
-            public int ContentIndex { get; }
-
-            Language IAnimeMangaContent<Anime>.GeneralLanguage
+            public Language GeneralLanguage
                 =>
                     this.Language == AnimeLanguage.GerSub || this.Language == AnimeLanguage.GerDub
                         ? Minor.Language.German
@@ -711,22 +680,40 @@ namespace Azuria.Main
                             ? Minor.Language.English
                             : Minor.Language.Unkown;
 
+            /// <summary>
+            ///     Gets the <see cref="Anime" /> this <see cref="Episode" /> belongs to.
+            /// </summary>
+            public Anime ParentObject { get; }
+
+            /// <summary>
+            ///     Adds the <see cref="Episode" /> to the bookmarks. If <paramref name="userControlPanel" /> is specified the object
+            ///     is also added to the corresponding <see cref="UserControlPanel.AnimeBookmarks" />-enumeration.
+            /// </summary>
+            /// <param name="userControlPanel">The object which, if specified, this object is added to.</param>
+            /// <returns>If the action was successful.</returns>
+            public async Task<ProxerResult<AnimeMangaBookmarkObject<Anime>>> AddToBookmarks(
+                UserControlPanel userControlPanel = null)
+            {
+                userControlPanel = userControlPanel ?? new UserControlPanel(this._senpai);
+                return await userControlPanel.AddToBookmarks(this);
+            }
+
             #endregion
 
             #region Properties
 
             /// <summary>
-            ///     Gibt die Nummer der Episode zurück.
+            ///     Gets the number of the episode.
             /// </summary>
             public int EpisodeNumber { get; set; }
 
             /// <summary>
-            ///     Gibt die Sprache der Episode zurück.
+            ///     Gets the language of the episode
             /// </summary>
             public AnimeLanguage Language { get; }
 
             /// <summary>
-            ///     Gibt die vorhandenen Streams der Episode zurück.
+            ///     Gets the available streams of the episode.
             /// </summary>
             [NotNull]
             public InitialisableProperty<IEnumerable<KeyValuePair<Stream.StreamPartner, Stream>>> Streams { get; }
@@ -736,7 +723,7 @@ namespace Azuria.Main
             #region
 
             /// <summary>
-            ///     Initialisiert das Objekt.
+            ///     Initialises the object.
             /// </summary>
             [ItemNotNull, Obsolete("Bitte benutze die Methoden der jeweiligen Eigenschaften, um sie zu initalisieren!")]
             public async Task<ProxerResult> Init()
@@ -879,59 +866,57 @@ namespace Azuria.Main
             #endregion
 
             /// <summary>
-            ///     Eine Klasse, die einen <see cref="Stream">Stream</see> einer <see cref="Episode">Episode</see> eines
-            ///     <see cref="Anime" />
-            ///     darstellt.
+            ///     Represents a stream of an <see cref="Episode" /> of an <see cref="Anime" />.
             /// </summary>
             public class Stream
             {
                 /// <summary>
-                ///     Eine Enumeration, die alle unterstützten Streampartner aufführt.
+                ///     Represents a streampartner.
                 /// </summary>
                 public enum StreamPartner
                 {
                     /// <summary>
-                    ///     Stellt den Streampartner Crunchyroll dar.
+                    ///     Represents the streampartner Crunchyroll.
                     /// </summary>
                     Crunchyroll,
 
                     /// <summary>
-                    ///     Stellt den Streampartner Viewster dar.
+                    ///     Represents the streampartner Viewster.
                     /// </summary>
                     Viewster,
 
                     /// <summary>
-                    ///     Stellt den Streampartner Streamcloud dar.
+                    ///     Represents the streampartner Streamcloud.
                     /// </summary>
                     Streamcloud,
 
                     /// <summary>
-                    ///     Stellt den Streampartner MP4Upload dar.
+                    ///     Represents the streampartner MP4Upload.
                     /// </summary>
                     Mp4Upload,
 
                     /// <summary>
-                    ///     Stellt den Streampartner Dailymotion dar.
+                    ///     Represents the streampartner Dailymotion.
                     /// </summary>
                     Dailymotion,
 
                     /// <summary>
-                    ///     Stellt den Streampartner Videobam dar.
+                    ///     Represents the streampartner Videobam.
                     /// </summary>
                     Videobam,
 
                     /// <summary>
-                    ///     Stellt den Streampartner YourUpload dar.
+                    ///     Represents the streampartner YourUpload.
                     /// </summary>
                     YourUpload,
 
                     /// <summary>
-                    ///     Stellt den hauseigenen Stream von Proxer dar.
+                    ///     Represents the internal streampartner of Proxer.Me.
                     /// </summary>
                     ProxerStream,
 
                     /// <summary>
-                    ///     Stellt keinen Streampartner dar.
+                    ///     Represents no streampartner.
                     /// </summary>
                     None
                 }
@@ -945,13 +930,13 @@ namespace Azuria.Main
                 #region Properties
 
                 /// <summary>
-                ///     Gibt den Link des <see cref="Stream">Streams</see> zurück.
+                ///     Gets the link of the stream.
                 /// </summary>
                 [NotNull]
                 public Uri Link { get; private set; }
 
                 /// <summary>
-                ///     Gibt den <see cref="StreamPartner">Streampartner</see> des <see cref="Stream">Streams</see> zurück.
+                ///     Gets the streampartner of the stream.
                 /// </summary>
                 public StreamPartner Partner { get; private set; }
 

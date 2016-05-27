@@ -21,10 +21,10 @@ namespace Azuria.Main.User
     /// </typeparam>
     public class AnimeMangaChronicObject<T> where T : IAnimeMangaObject
     {
-        internal AnimeMangaChronicObject([NotNull] IAnimeMangaContent<T> animeMangaObject,
+        internal AnimeMangaChronicObject([NotNull] IAnimeMangaContent<T> animeMangaContentObject,
             DateTime dateTime = default(DateTime))
         {
-            this.AnimeMangaObject = animeMangaObject;
+            this.AnimeMangaContentObject = animeMangaContentObject;
             this.DateTime = dateTime;
         }
 
@@ -34,7 +34,7 @@ namespace Azuria.Main.User
         ///     Gets the <see cref="Anime.Episode" /> or <see cref="Manga.Chapter" /> this entry is for.
         /// </summary>
         [NotNull]
-        public IAnimeMangaContent<T> AnimeMangaObject { get; }
+        public IAnimeMangaContent<T> AnimeMangaContentObject { get; }
 
         /// <summary>
         ///     Gets the time when the entry was made. Only available if the object was fetched from a
@@ -130,7 +130,8 @@ namespace Azuria.Main.User
         /// <param name="instance"></param>
         public static explicit operator AnimeMangaChronicObject<T>(AnimeMangaChronicObject<IAnimeMangaObject> instance)
         {
-            return new AnimeMangaChronicObject<T>((IAnimeMangaContent<T>) instance.AnimeMangaObject, instance.DateTime);
+            return new AnimeMangaChronicObject<T>((IAnimeMangaContent<T>) instance.AnimeMangaContentObject,
+                instance.DateTime);
         }
 
         #endregion

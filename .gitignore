@@ -197,3 +197,5 @@ FakesAssemblies/
 Proxer.API.sln.GhostDoc.xml
 *.mrx
 Azuria.Test/Credentials.cs
+wrap
+global.json

@@ -157,7 +157,7 @@ namespace Azuria
         ///     erkennen.
         /// </summary>
         [NotNull]
-        public ErrorHandler ErrHandler { get; }
+        public ErrorHandler ErrHandler { get; protected set; }
 
         /// <summary>
         ///     Gibt ein Objekt zurück, mithilfe dessen alle Freundschafts-Benachrichtigungen abgerufen werden könne.
@@ -187,7 +187,7 @@ namespace Azuria
         public bool IsLoggedIn
         {
             get { return this._isLoggedIn; }
-            private set
+            protected set
             {
                 if (value)
                 {
@@ -211,13 +211,13 @@ namespace Azuria
         /// </summary>
         /// <seealso cref="MobileLoginCookies" />
         [NotNull]
-        public CookieContainer LoginCookies { get; private set; }
+        public CookieContainer LoginCookies { get; protected set; }
 
         /// <summary>
         ///     Profil des Senpais.
         /// </summary>
         [CanBeNull]
-        public User Me { get; private set; }
+        public User Me { get; protected set; }
 
         /// <summary>
         ///     Gibt den CookieContainer zurück, der benutzt wird, um Aktionen im eingeloggten Status auszuführen.

@@ -158,7 +158,7 @@ namespace Azuria.Test
                 await lEpisodes.Result.First().AddToBookmarks();
             Assert.IsTrue(lEpisodeBookmark.Success);
             Assert.IsNotNull(lEpisodeBookmark.Result);
-            Assert.AreEqual(lEpisodeBookmark.Result.ContentObject.ParentObject.Id, this._anime.Id);
+            Assert.AreEqual(lEpisodeBookmark.Result.AnimeMangaContentObject.ParentObject.Id, this._anime.Id);
 
             await Task.Delay(2000);
 
@@ -261,13 +261,6 @@ namespace Azuria.Test
             string lHexString = RandomUtility.GetRandomHexString();
             string lName = await this._anime.Name.GetObject(lHexString);
             Assert.AreNotEqual(lName, lHexString);
-        }
-
-        [Test, Order(2)]
-        public void ObjectTypeTest()
-        {
-            Assert.IsNotNull(this._anime);
-            Assert.AreEqual(this._anime.ObjectType, AnimeMangaType.Anime);
         }
 
         [Test, Order(2)]

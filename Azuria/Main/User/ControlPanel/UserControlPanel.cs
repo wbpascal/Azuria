@@ -61,7 +61,7 @@ namespace Azuria.Main.User.ControlPanel
         public InitialisableProperty<IEnumerable<AnimeMangaBookmarkObject<Anime>>> AnimeBookmarks { get; }
 
         /// <summary>
-        ///     Gets the chronic entries of the user that are <see cref="Main.Anime">Anime</see>.
+        ///     Gets the chronic entries of the 50 most recent of the user that are <see cref="Main.Anime">Anime</see>.
         /// </summary>
         [NotNull]
         public InitialisableProperty<IEnumerable<AnimeMangaChronicObject<Anime>>> AnimeChronic { get; }
@@ -85,7 +85,7 @@ namespace Azuria.Main.User.ControlPanel
         public InitialisableProperty<IEnumerable<AnimeMangaBookmarkObject<Manga>>> MangaBookmarks { get; }
 
         /// <summary>
-        ///     Gets the chronic entries of the user that are <see cref="Main.Manga">Manga</see>.
+        ///     Gets the chronic entries of the 50 most recent of the user that are <see cref="Main.Manga">Manga</see>.
         /// </summary>
         [NotNull]
         public InitialisableProperty<IEnumerable<AnimeMangaChronicObject<Manga>>> MangaChronic { get; }
@@ -168,9 +168,9 @@ namespace Azuria.Main.User.ControlPanel
                         (await this.AnimeBookmarks.GetNewObject(new AnimeMangaBookmarkObject<Anime>[0]))
                             .FirstOrDefault(
                                 o =>
-                                    o.ContentObject.ParentObject.Id == animeMangaContent.ParentObject.Id &&
-                                    o.ContentObject.GeneralLanguage == animeMangaContent.GeneralLanguage &&
-                                    o.ContentObject.ContentIndex == animeMangaContent.ContentIndex) as
+                                    o.AnimeMangaContentObject.ParentObject.Id == animeMangaContent.ParentObject.Id &&
+                                    o.AnimeMangaContentObject.GeneralLanguage == animeMangaContent.GeneralLanguage &&
+                                    o.AnimeMangaContentObject.ContentIndex == animeMangaContent.ContentIndex) as
                             AnimeMangaBookmarkObject<T>;
 
                     return lBookmarkReturn == null
@@ -183,9 +183,9 @@ namespace Azuria.Main.User.ControlPanel
                         (await this.MangaBookmarks.GetNewObject(new AnimeMangaBookmarkObject<Manga>[0]))
                             .FirstOrDefault(
                                 o =>
-                                    o.ContentObject.ParentObject.Id == animeMangaContent.ParentObject.Id &&
-                                    o.ContentObject.GeneralLanguage == animeMangaContent.GeneralLanguage &&
-                                    o.ContentObject.ContentIndex == animeMangaContent.ContentIndex) as
+                                    o.AnimeMangaContentObject.ParentObject.Id == animeMangaContent.ParentObject.Id &&
+                                    o.AnimeMangaContentObject.GeneralLanguage == animeMangaContent.GeneralLanguage &&
+                                    o.AnimeMangaContentObject.ContentIndex == animeMangaContent.ContentIndex) as
                             AnimeMangaBookmarkObject<T>;
 
                     return lBookmarkReturn == null
@@ -498,16 +498,20 @@ namespace Azuria.Main.User.ControlPanel
                 foreach (HtmlNode chronicNode in lDocument.GetElementbyId("box-table-a").ChildNodes.Skip(1))
                 {
                     lParses++;
-                    ProxerResult<AnimeMangaChronicObject<IAnimeMangaObject>> lParseResult =
-                        AnimeMangaChronicObject<IAnimeMangaObject>.GetChronicObjectFromNode(chronicNode, this._senpai,
+                    ProxerResult<AnimeMangaChronicObject<Anime>> lAnimeParseResult =
+                        AnimeMangaChronicObject<Anime>.GetChronicObjectFromNode(chronicNode, this._senpai,
+                            true);
+                    ProxerResult<AnimeMangaChronicObject<Manga>> lMangaParseResult =
+                        AnimeMangaChronicObject<Manga>.GetChronicObjectFromNode(chronicNode, this._senpai,
                             true);
 
-                    if (lParseResult.Success && lParseResult.Result != null)
+                    if (lAnimeParseResult.Success && lAnimeParseResult.Result != null)
                     {
-                        if (lParseResult.Result.AnimeMangaObject is Anime)
-                            lAnimeChronicObjects.Add((AnimeMangaChronicObject<Anime>) lParseResult.Result);
-                        else if (lParseResult.Result.AnimeMangaObject is Manga)
-                            lMangaChronicObjects.Add((AnimeMangaChronicObject<Manga>) lParseResult.Result);
+                        lAnimeChronicObjects.Add(lAnimeParseResult.Result);
+                    }
+                    else if (lMangaParseResult.Success && lMangaParseResult.Result != null)
+                    {
+                        lMangaChronicObjects.Add(lMangaParseResult.Result);
                     }
                     else lFailedParses++;
                 }

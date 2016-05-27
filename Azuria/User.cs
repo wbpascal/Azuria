@@ -486,7 +486,8 @@ namespace Azuria
                     if (lAnimeParseResult.Success && lAnimeParseResult.Result != null)
                     {
                         lAnimeChronicObjects.Add(lAnimeParseResult.Result);
-                    }else if (lMangaParseResult.Success && lMangaParseResult.Result != null)
+                    }
+                    else if (lMangaParseResult.Success && lMangaParseResult.Result != null)
                     {
                         lMangaChronicObjects.Add(lMangaParseResult.Result);
                     }

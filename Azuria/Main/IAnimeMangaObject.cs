@@ -11,122 +11,105 @@ using JetBrains.Annotations;
 namespace Azuria.Main
 {
     /// <summary>
-    ///     Eine Klasse, die einen <see cref="Anime" /> oder <see cref="Manga" /> darstellt.
+    ///     Represents an <see cref="Anime" /> or <see cref="Manga" />.
     /// </summary>
     public interface IAnimeMangaObject : ISearchableObject
     {
         #region Properties
 
         /// <summary>
+        ///     Gets the count of the <see cref="Anime.Episode">Episodes</see> or <see cref="Manga.Chapter">Chapters</see> the
+        ///     <see cref="Anime" /> or <see cref="Manga" /> contains.
         /// </summary>
         [NotNull]
         InitialisableProperty<int> ContentCount { get; }
 
         /// <summary>
-        ///     Gibt den Link zum Cover des <see cref="Anime" /> oder <see cref="Manga" /> zurück.
-        ///     <para>(Vererbt von <see cref="IAnimeMangaObject" />)</para>
+        ///     Gets the link to the cover of the <see cref="Anime" /> or <see cref="Manga" />.
         /// </summary>
         [NotNull]
         Uri CoverUri { get; }
 
         /// <summary>
-        ///     Gibt die Beschreibung des <see cref="Anime" /> oder <see cref="Manga" /> zurück.
-        ///     <para>(Vererbt von <see cref="IAnimeMangaObject" />)</para>
+        ///     Gets the description of the <see cref="Anime" /> or <see cref="Manga" />.
         /// </summary>
         [NotNull]
         InitialisableProperty<string> Description { get; }
 
         /// <summary>
-        ///     Gibt den englische Titel des <see cref="Anime" /> oder <see cref="Manga" /> zurück.
-        ///     <para>(Vererbt von <see cref="IAnimeMangaObject" />)</para>
+        ///     Gets the english title of the <see cref="Anime" /> or <see cref="Manga" />.
         /// </summary>
         [NotNull]
         InitialisableProperty<string> EnglishTitle { get; }
 
         /// <summary>
-        ///     Gibt die Links zu allen FSK-Beschränkungen des <see cref="Anime" /> oder <see cref="Manga" /> zurück.
-        ///     <para>(Vererbt von <see cref="IAnimeMangaObject" />)</para>
+        ///     Gets an enumeration of the age restrictions of the <see cref="Anime" /> or <see cref="Manga" />.
         /// </summary>
         [NotNull]
         InitialisableProperty<IEnumerable<FskObject>> Fsk { get; }
 
         /// <summary>
-        ///     Gitb die Genres des <see cref="Anime" /> oder <see cref="Manga" /> zurück.
-        ///     <para>(Vererbt von <see cref="IAnimeMangaObject" />)</para>
+        ///     Gets an enumeration of all the genre of the <see cref="Anime" /> or <see cref="Manga" /> contains.
         /// </summary>
         [NotNull]
         InitialisableProperty<IEnumerable<GenreObject>> Genre { get; }
 
         /// <summary>
-        ///     Gibt den deutschen Titel des <see cref="Anime" /> oder <see cref="Manga" /> zurück.
-        ///     <para>(Vererbt von <see cref="IAnimeMangaObject" />)</para>
+        ///     Gets the german title of the <see cref="Anime" /> or <see cref="Manga" />.
         /// </summary>
         [NotNull]
         InitialisableProperty<string> GermanTitle { get; }
 
         /// <summary>
-        ///     Gibt die Gruppen zurück, die den <see cref="Anime" /> oder <see cref="Manga" /> übersetzten oder übersetzt haben.
-        ///     <para>(Vererbt von <see cref="IAnimeMangaObject" />)</para>
+        ///     Gets an enumeration of all the groups that translated the <see cref="Anime" /> or <see cref="Manga" />.
         /// </summary>
         [NotNull]
         InitialisableProperty<IEnumerable<Group>> Groups { get; }
 
         /// <summary>
-        ///     Gibt die ID des <see cref="Anime" /> oder <see cref="Manga" /> zurück.
-        ///     <para>(Vererbt von <see cref="IAnimeMangaObject" />)</para>
+        ///     Gets the Id of the <see cref="Anime" /> or <see cref="Manga" />.
         /// </summary>
         int Id { get; }
 
         /// <summary>
-        ///     Gibt die Industrie des <see cref="Anime" /> oder <see cref="Manga" /> zurück.
-        ///     <para>(Vererbt von <see cref="IAnimeMangaObject" />)</para>
+        ///     Gets an enumeration of all the companies that were involved in making the <see cref="Anime" /> or
+        ///     <see cref="Manga" />.
         /// </summary>
         [NotNull]
         InitialisableProperty<IEnumerable<Industry>> Industry { get; }
 
         /// <summary>
-        ///     Gibt zurück, ob der <see cref="Anime" /> oder <see cref="Manga" /> lizensiert ist.
-        ///     <para>(Vererbt von <see cref="IAnimeMangaObject" />)</para>
+        ///     Gets if the <see cref="Anime" /> or <see cref="Manga" /> is licensed by a german company.
         /// </summary>
         [NotNull]
         InitialisableProperty<bool> IsLicensed { get; }
 
         /// <summary>
-        ///     Gibt den japanischen Titel des <see cref="Anime" /> oder <see cref="Manga" /> zurück.
-        ///     <para>(Vererbt von <see cref="IAnimeMangaObject" />)</para>
+        ///     Gets the japanese title of the <see cref="Anime" /> or <see cref="Manga" />.
         /// </summary>
         [NotNull]
         InitialisableProperty<string> JapaneseTitle { get; }
 
         /// <summary>
-        ///     Gibt den Namen des <see cref="Anime" /> oder <see cref="Manga" /> zurück.
-        ///     <para>(Vererbt von <see cref="IAnimeMangaObject" />)</para>
+        ///     Gets the original title of the <see cref="Anime" /> or <see cref="Manga" />.
         /// </summary>
         [NotNull]
         InitialisableProperty<string> Name { get; }
 
         /// <summary>
-        ///     Gibt zurück, ob es sich um einen <see cref="Anime" /> oder <see cref="Manga" /> handelt.
-        ///     <para>(Vererbt von <see cref="IAnimeMangaObject" />)</para>
-        /// </summary>
-        AnimeMangaType ObjectType { get; }
-
-        /// <summary>
-        ///     Gibt die Season des <see cref="Anime" /> oder <see cref="Manga" /> zurück.
-        ///     <para>(Vererbt von <see cref="IAnimeMangaObject" />)</para>
+        ///     Gets the seasons the <see cref="Anime" /> or <see cref="Manga" /> aired in. If the enumerable only contains one
+        ///     value the value is always the start season of the <see cref="Anime" /> or <see cref="Manga" />.
         /// </summary>
         [NotNull]
         InitialisableProperty<IEnumerable<string>> Season { get; }
 
         /// <summary>
-        ///     Gibt den Status des <see cref="Anime" /> oder <see cref="Manga" /> zurück.
-        ///     <para>(Vererbt von <see cref="IAnimeMangaObject" />)</para>
+        ///     Gets the status of the <see cref="Anime" /> or <see cref="Manga" />.
         /// </summary>
         InitialisableProperty<AnimeMangaStatus> Status { get; }
 
         /// <summary>
-        ///     Gibt das Synonym des <see cref="Anime" /> oder <see cref="Manga" /> zurück.
-        ///     <para>(Vererbt von <see cref="IAnimeMangaObject" />)</para>
+        ///     Gets the synonym the <see cref="Anime" /> or <see cref="Manga" /> is also known as.
         /// </summary>
         [NotNull]
         InitialisableProperty<string> Synonym { get; }
@@ -136,16 +119,19 @@ namespace Azuria.Main
         #region
 
         /// <summary>
+        ///     Adds the <see cref="Anime" /> or <see cref="Manga" /> to the planned list. If <paramref name="userControlPanel" />
+        ///     is specified the object is also added to the corresponding <see cref="UserControlPanel.Anime" />- or
+        ///     <see cref="UserControlPanel.Manga" />-enumeration.
         /// </summary>
-        /// <returns></returns>
+        /// <param name="userControlPanel">The object which, if specified, the object is added to.</param>
+        /// <returns>If the action was successful.</returns>
         Task<ProxerResult> AddToPlanned(UserControlPanel userControlPanel = null);
 
         /// <summary>
-        ///     Initialisiert das Objekt.
-        ///     <para>(Vererbt von <see cref="IAnimeMangaObject" />)</para>
+        ///     Initialises the object.
         /// </summary>
         [ItemNotNull]
-        [Obsolete("Bitte benutze die Methoden der jeweiligen Eigenschaften, um sie zu initalisieren!")]
+        [Obsolete("Please use the methods provided by the properties!")]
         Task<ProxerResult> Init();
 
         #endregion

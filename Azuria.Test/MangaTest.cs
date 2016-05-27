@@ -51,7 +51,7 @@ namespace Azuria.Test
                 await this._chapter.AddToBookmarks();
             Assert.IsTrue(lChapterBookmark.Success);
             Assert.IsNotNull(lChapterBookmark.Result);
-            Assert.AreEqual(lChapterBookmark.Result.ContentObject.ParentObject.Id, this._manga.Id);
+            Assert.AreEqual(lChapterBookmark.Result.AnimeMangaContentObject.ParentObject.Id, this._manga.Id);
 
             await Task.Delay(2000);
 
