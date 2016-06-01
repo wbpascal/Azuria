@@ -1,32 +1,32 @@
 ﻿namespace Azuria.Main
 {
     /// <summary>
-    ///     Eine Enumeration, die den Status eines <see cref="Anime" /> oder <see cref="Manga" /> darstellt.
+    ///     Represents the airing status of an <see cref="Anime" /> or <see cref="Manga" />.
     /// </summary>
     public enum AnimeMangaStatus
     {
         /// <summary>
-        ///     Der <see cref="Anime" /> oder <see cref="Manga" /> ist noch nicht erschienen.
+        ///     The <see cref="Anime" /> or <see cref="Manga" /> is currently not published.
         /// </summary>
         PreAiring,
 
         /// <summary>
-        ///     Der <see cref="Anime" /> oder <see cref="Manga" /> wird momentan ausgestrahlt.
+        ///     The <see cref="Anime" /> or <see cref="Manga" /> is currently airing.
         /// </summary>
         Airing,
 
         /// <summary>
-        ///     Der <see cref="Anime" /> oder <see cref="Manga" /> wurde abgebrochen.
+        ///     The <see cref="Anime" /> or <see cref="Manga" /> was cancelled
         /// </summary>
-        Canceled,
+        Cancelled,
 
         /// <summary>
-        ///     Der <see cref="Anime" /> oder <see cref="Manga" /> ist abgeschlossen.
+        ///     The <see cref="Anime" /> or <see cref="Manga" /> is finished
         /// </summary>
         Completed,
 
         /// <summary>
-        ///     Der Status des <see cref="Anime" /> oder <see cref="Manga" /> ist unbekannt.
+        ///     The airing status of the <see cref="Anime" /> or <see cref="Manga" /> is unknown.
         /// </summary>
         Unknown
     }

@@ -133,7 +133,7 @@ namespace Azuria.Main.Search
                         lStatus = AnimeMangaStatus.Airing;
                         break;
                     case "Abgebrochen":
-                        lStatus = AnimeMangaStatus.Canceled;
+                        lStatus = AnimeMangaStatus.Cancelled;
                         break;
                 }
             }

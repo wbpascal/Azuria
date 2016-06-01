@@ -93,9 +93,6 @@
     <Compile Include="..\Azuria\Main\AnimeMangaStatus.cs">
       <Link>Main\AnimeMangaStatus.cs</Link>
     </Compile>
-    <Compile Include="..\Azuria\Main\AnimeMangaType.cs">
-      <Link>Main\AnimeMangaType.cs</Link>
-    </Compile>
     <Compile Include="..\Azuria\Main\IAnimeMangaContent.cs">
       <Link>Main\IAnimeMangaContent.cs</Link>
     </Compile>
@@ -180,38 +177,38 @@
     <Compile Include="..\Azuria\Main\User\ControlPanel\UserControlPanel.cs">
       <Link>Main\User\ControlPanel\UserControlPanel.cs</Link>
     </Compile>
-    <Compile Include="..\Azuria\Notifications\AnimeMangaUpdateCollection.cs">
-      <Link>Notifications\AnimeMangaUpdateCollection.cs</Link>
+    <Compile Include="..\Azuria\Notifications\AnimeMangaNotification.cs">
+      <Link>Notifications\AnimeMangaNotification.cs</Link>
     </Compile>
-    <Compile Include="..\Azuria\Notifications\AnimeMangaUpdateObject.cs">
-      <Link>Notifications\AnimeMangaUpdateObject.cs</Link>
+    <Compile Include="..\Azuria\Notifications\AnimeMangaNotificationCollection.cs">
+      <Link>Notifications\AnimeMangaNotificationCollection.cs</Link>
     </Compile>
-    <Compile Include="..\Azuria\Notifications\FriendRequestCollection.cs">
-      <Link>Notifications\FriendRequestCollection.cs</Link>
+    <Compile Include="..\Azuria\Notifications\FriendRequestNotification.cs">
+      <Link>Notifications\FriendRequestNotification.cs</Link>
     </Compile>
-    <Compile Include="..\Azuria\Notifications\FriendRequestObject.cs">
-      <Link>Notifications\FriendRequestObject.cs</Link>
+    <Compile Include="..\Azuria\Notifications\FriendRequestNotificationCollection.cs">
+      <Link>Notifications\FriendRequestNotificationCollection.cs</Link>
+    </Compile>
+    <Compile Include="..\Azuria\Notifications\INotification.cs">
+      <Link>Notifications\INotification.cs</Link>
     </Compile>
     <Compile Include="..\Azuria\Notifications\INotificationCollection.cs">
       <Link>Notifications\INotificationCollection.cs</Link>
     </Compile>
-    <Compile Include="..\Azuria\Notifications\INotificationObject.cs">
-      <Link>Notifications\INotificationObject.cs</Link>
+    <Compile Include="..\Azuria\Notifications\NewsNotification.cs">
+      <Link>Notifications\NewsNotification.cs</Link>
     </Compile>
-    <Compile Include="..\Azuria\Notifications\NewsCollection.cs">
-      <Link>Notifications\NewsCollection.cs</Link>
+    <Compile Include="..\Azuria\Notifications\NewsNotificationCollection.cs">
+      <Link>Notifications\NewsNotificationCollection.cs</Link>
     </Compile>
-    <Compile Include="..\Azuria\Notifications\NewsObject.cs">
-      <Link>Notifications\NewsObject.cs</Link>
+    <Compile Include="..\Azuria\Notifications\NotificationType.cs">
+      <Link>Notifications\NotificationType.cs</Link>
     </Compile>
-    <Compile Include="..\Azuria\Notifications\NotificationObjectType.cs">
-      <Link>Notifications\NotificationObjectType.cs</Link>
+    <Compile Include="..\Azuria\Notifications\PrivateMessageNotification.cs">
+      <Link>Notifications\PrivateMessageNotification.cs</Link>
     </Compile>
-    <Compile Include="..\Azuria\Notifications\PMCollection.cs">
-      <Link>Notifications\PMCollection.cs</Link>
-    </Compile>
-    <Compile Include="..\Azuria\Notifications\PMObject.cs">
-      <Link>Notifications\PMObject.cs</Link>
+    <Compile Include="..\Azuria\Notifications\PrivateMessageNotificationCollection.cs">
+      <Link>Notifications\PrivateMessageNotificationCollection.cs</Link>
     </Compile>
     <Compile Include="..\Azuria\ProxerClass.cs">
       <Link>ProxerClass.cs</Link>

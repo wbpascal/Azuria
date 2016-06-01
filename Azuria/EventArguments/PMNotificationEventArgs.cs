@@ -40,7 +40,7 @@ namespace Azuria.EventArguments
         ///     Gets an object with the help of which the notifications can be retrieved.
         /// </summary>
         [NotNull]
-        public PmCollection Notifications => this._senpai.PrivateMessages;
+        public PrivateMessageNotificationCollection Notifications => this._senpai.PrivateMessages;
 
         #endregion
     }

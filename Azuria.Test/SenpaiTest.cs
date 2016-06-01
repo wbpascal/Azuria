@@ -45,22 +45,22 @@ namespace Azuria.Test
         [Test]
         public async Task ForcePropertyReloadTest()
         {
-            AnimeMangaUpdateCollection lAnimeMangaUpdateCollection = Senpai.AnimeMangaUpdates;
-            FriendRequestCollection lFriendRequests = Senpai.FriendRequests;
-            NewsCollection lNews = Senpai.News;
-            PmCollection lPrivateMessageNotifications = Senpai.PrivateMessages;
+            AnimeMangaNotificationCollection lAnimeMangaNotificationCollection = Senpai.AnimeMangaNotifications;
+            FriendRequestNotificationCollection lFriendRequestsNotification = Senpai.FriendRequestsNotification;
+            NewsNotificationCollection lNewsNotification = Senpai.NewsNotification;
+            PrivateMessageNotificationCollection lPrivateMessageNotifications = Senpai.PrivateMessages;
 
-            Assert.AreSame(lAnimeMangaUpdateCollection, Senpai.AnimeMangaUpdates);
-            Assert.AreSame(lFriendRequests, Senpai.FriendRequests);
-            Assert.AreSame(lNews, Senpai.News);
+            Assert.AreSame(lAnimeMangaNotificationCollection, Senpai.AnimeMangaNotifications);
+            Assert.AreSame(lFriendRequestsNotification, Senpai.FriendRequestsNotification);
+            Assert.AreSame(lNewsNotification, Senpai.NewsNotification);
             Assert.AreSame(lPrivateMessageNotifications, Senpai.PrivateMessages);
 
             ProxerResult lPropertyReloadResult = await Senpai.ForcePropertyReload();
             Assert.IsTrue(lPropertyReloadResult.Success);
 
-            Assert.AreNotSame(lAnimeMangaUpdateCollection, Senpai.AnimeMangaUpdates);
-            Assert.AreNotSame(lFriendRequests, Senpai.FriendRequests);
-            Assert.AreNotSame(lNews, Senpai.News);
+            Assert.AreNotSame(lAnimeMangaNotificationCollection, Senpai.AnimeMangaNotifications);
+            Assert.AreNotSame(lFriendRequestsNotification, Senpai.FriendRequestsNotification);
+            Assert.AreNotSame(lNewsNotification, Senpai.NewsNotification);
             Assert.AreNotSame(lPrivateMessageNotifications, Senpai.PrivateMessages);
         }
 

@@ -71,11 +71,11 @@ namespace Azuria
         private readonly Timer _notificationCheckTimer;
         private readonly Timer _propertyUpdateTimer;
         private readonly List<bool> _updateNotifications;
-        private AnimeMangaUpdateCollection _animeMangaUpdates;
-        private FriendRequestCollection _friendUpdates;
+        private AnimeMangaNotificationCollection _animeMangaNotifications;
+        private FriendRequestNotificationCollection _friendUpdates;
         private bool _isLoggedIn;
-        private NewsCollection _newsUpdates;
-        private PmCollection _pmUpdates;
+        private NewsNotificationCollection _newsNotificationUpdates;
+        private PrivateMessageNotificationCollection _privateMessageNotificationUpdates;
         private int _userId;
 
 
@@ -133,22 +133,22 @@ namespace Azuria
         /// <summary>
         ///     Gibt ein Objekt zurück, mithilfe dessen alle Anime- und Manga-Benachrichtigungen abgerufen werden könne.
         /// </summary>
-        /// <seealso cref="AnimeMangaUpdates" />
-        /// <seealso cref="FriendRequests" />
-        /// <seealso cref="News" />
+        /// <seealso cref="AnimeMangaNotifications" />
+        /// <seealso cref="FriendRequestsNotification" />
+        /// <seealso cref="NewsNotification" />
         /// <seealso cref="PrivateMessages" />
         [NotNull]
-        public AnimeMangaUpdateCollection AnimeMangaUpdates
+        public AnimeMangaNotificationCollection AnimeMangaNotifications
         {
             get
             {
-                if (!this._updateNotifications[0] && this._animeMangaUpdates != null)
-                    return this._animeMangaUpdates;
+                if (!this._updateNotifications[0] && this._animeMangaNotifications != null)
+                    return this._animeMangaNotifications;
 
-                this._animeMangaUpdates = new AnimeMangaUpdateCollection(this);
+                this._animeMangaNotifications = new AnimeMangaNotificationCollection(this);
                 this._updateNotifications[0] = false;
 
-                return this._animeMangaUpdates;
+                return this._animeMangaNotifications;
             }
         }
 
@@ -162,18 +162,18 @@ namespace Azuria
         /// <summary>
         ///     Gibt ein Objekt zurück, mithilfe dessen alle Freundschafts-Benachrichtigungen abgerufen werden könne.
         /// </summary>
-        /// <seealso cref="AnimeMangaUpdates" />
-        /// <seealso cref="FriendRequests" />
-        /// <seealso cref="News" />
+        /// <seealso cref="AnimeMangaNotifications" />
+        /// <seealso cref="FriendRequestsNotification" />
+        /// <seealso cref="NewsNotification" />
         /// <seealso cref="PrivateMessages" />
         [NotNull]
-        public FriendRequestCollection FriendRequests
+        public FriendRequestNotificationCollection FriendRequestsNotification
         {
             get
             {
                 if (!this._updateNotifications[1] && this._friendUpdates != null) return this._friendUpdates;
 
-                this._friendUpdates = new FriendRequestCollection(this);
+                this._friendUpdates = new FriendRequestNotificationCollection(this);
                 this._updateNotifications[1] = false;
 
                 return this._friendUpdates;
@@ -242,42 +242,42 @@ namespace Azuria
         /// <summary>
         ///     Gibt ein Objekt zurück, mithilfe dessen alle News abgerufen werden könne.
         /// </summary>
-        /// <seealso cref="AnimeMangaUpdates" />
-        /// <seealso cref="FriendRequests" />
-        /// <seealso cref="News" />
+        /// <seealso cref="AnimeMangaNotifications" />
+        /// <seealso cref="FriendRequestsNotification" />
+        /// <seealso cref="NewsNotification" />
         /// <seealso cref="PrivateMessages" />
         [NotNull]
-        public NewsCollection News
+        public NewsNotificationCollection NewsNotification
         {
             get
             {
-                if (!this._updateNotifications[2] && this._newsUpdates != null) return this._newsUpdates;
+                if (!this._updateNotifications[2] && this._newsNotificationUpdates != null) return this._newsNotificationUpdates;
 
-                this._newsUpdates = new NewsCollection(this);
+                this._newsNotificationUpdates = new NewsNotificationCollection(this);
                 this._updateNotifications[2] = false;
 
-                return this._newsUpdates;
+                return this._newsNotificationUpdates;
             }
         }
 
         /// <summary>
         ///     Gibt ein Objekt zurück, mithilfe dessen alle Privat-Nachricht-Benachrichtigungen abgerufen werden könne.
         /// </summary>
-        /// <seealso cref="AnimeMangaUpdates" />
-        /// <seealso cref="FriendRequests" />
-        /// <seealso cref="News" />
+        /// <seealso cref="AnimeMangaNotifications" />
+        /// <seealso cref="FriendRequestsNotification" />
+        /// <seealso cref="NewsNotification" />
         /// <seealso cref="PrivateMessages" />
         [NotNull]
-        public PmCollection PrivateMessages
+        public PrivateMessageNotificationCollection PrivateMessages
         {
             get
             {
-                if (!this._updateNotifications[3] && this._pmUpdates != null) return this._pmUpdates;
+                if (!this._updateNotifications[3] && this._privateMessageNotificationUpdates != null) return this._privateMessageNotificationUpdates;
 
-                this._pmUpdates = new PmCollection(this);
+                this._privateMessageNotificationUpdates = new PrivateMessageNotificationCollection(this);
                 this._updateNotifications[3] = false;
 
-                return this._pmUpdates;
+                return this._privateMessageNotificationUpdates;
             }
         }
 

@@ -5,119 +5,123 @@ using Newtonsoft.Json;
 namespace Azuria.Notifications
 {
     /// <summary>
-    ///     Eine Klasse, die eine Nachricht darstellt.
+    ///     Represents a news notification.
     /// </summary>
-    public class NewsObject : INotificationObject
+    public class NewsNotification : INotification
     {
-        internal NewsObject()
+        internal NewsNotification()
         {
-            this.Type = NotificationObjectType.News;
+            this.Type = NotificationType.News;
         }
 
         #region Geerbt
 
         /// <summary>
-        ///     Gibt die Nachricht der Benachrichtigung als Text zurück.
-        ///     <para>(Vererbt von <see cref="INotificationObject" />)</para>
+        ///     Gets the message of the notification.
         /// </summary>
         public string Message => this.Description;
 
         /// <summary>
-        ///     Gibt den Typ der Benachrichtigung zurück.
-        ///     <para>(Vererbt von <see cref="INotificationObject" />)</para>
+        ///     Gets the type of the notification.
         /// </summary>
-        public NotificationObjectType Type { get; }
+        public NotificationType Type { get; }
 
         #endregion
 
         #region Properties
 
         /// <summary>
-        ///     Gibt die ID des Authors zurück.
+        ///     Gets the id of the author.
         /// </summary>
         [JsonProperty("uid")]
         public int AuthorId { get; set; }
 
         /// <summary>
-        ///     Gibt den Benutzernamen des Authors zurück.
+        ///     Gets the username of the author.
         /// </summary>
         [JsonProperty("uname")]
         public string AuthorName { get; set; }
 
         /// <summary>
-        ///     Gibt die ID der Kategorie, in der sich die News befindet, zurück.
+        ///     Gets the category id of the news.
         /// </summary>
         [JsonProperty("catid")]
         public int CategoryId { get; set; }
 
         /// <summary>
-        ///     Gibt den Namen der Kategorie, in der sich die News befindet, zurück.
+        ///     Gets the category name of the news.
         /// </summary>
         [JsonProperty("catname")]
         public string CategoryName { get; set; }
 
         /// <summary>
-        ///     Gibt eine Kurzbeschreibung der News zurück.
+        ///     Gets the description of the news.
         /// </summary>
         [JsonProperty("description")]
         public string Description { get; set; }
 
         /// <summary>
-        ///     Gibt die Aufrufe der News zurück.
+        ///     Gets the hits of the news.
         /// </summary>
         [JsonProperty("hits")]
         public int Hits { get; set; }
 
         /// <summary>
-        ///     Gibt die Bild-ID der News zurück.
+        ///     Gets the title image of the news.
+        /// </summary>
+        public Uri Image => new Uri($"http://cdn.proxer.me/news/{this.NewsId}_{this.ImageId}.png");
+
+        /// <summary>
+        ///     Gets the image id with the help of which the image can be retrieved.
         /// </summary>
         [JsonProperty("image_id")]
         public string ImageId { get; set; }
 
         /// <summary>
-        ///     Gibt Angaben zum CSS-Style des Bildes zurück.
+        ///     Gets infos about the css style of the image.
         /// </summary>
+        /// <seealso cref="ImageId" />
         [JsonProperty("image_style")]
         public string ImageStyle { get; set; }
 
         /// <summary>
-        ///     Veraltet. Gibt die Thread-ID zurück.
+        ///     Obsolete. Gets the thread id.
         /// </summary>
-        [JsonProperty("mid"), Obsolete("Bitte benutzte stattdessen " + nameof(ThreadId))]
+        [JsonProperty("mid"), Obsolete("Use " + nameof(ThreadId))]
         internal int Mid { get; set; }
 
         /// <summary>
-        ///     Gibt die News-ID zurück.
+        ///     Gets the news id.
         /// </summary>
         [JsonProperty("nid")]
         public int NewsId { get; set; }
 
         /// <summary>
-        ///     Veraltet.
+        ///     Obsolete.
         /// </summary>
         [JsonProperty("pid"), Obsolete]
         internal int Pid { get; set; }
 
         /// <summary>
-        ///     Gibt die Anzahl der Kommentare zurück.
+        ///     Gets the post count of the news.
         /// </summary>
         [JsonProperty("posts")]
         public int Posts { get; set; }
 
         /// <summary>
-        ///     Gibt die Überschrift der News zurück.
+        ///     Gets the headline of the news.
         /// </summary>
         [JsonProperty("subject")]
         public string Subject { get; set; }
 
         /// <summary>
-        ///     Gibt die Thread-ID zurück.
+        ///     Gets the thread id.
         /// </summary>
         [JsonProperty("thread")]
         public int ThreadId { get; set; }
 
         /// <summary>
-        ///     Gibt den Zeitpunkt der News als Unix Timestamp zurück.
+        ///     Gets the date of the news as a unix timestamp.
         /// </summary>
         [JsonProperty("time")]
         public long Time { get; set; }

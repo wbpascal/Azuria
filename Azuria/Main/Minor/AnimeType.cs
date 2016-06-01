@@ -6,22 +6,22 @@
     public enum AnimeType
     {
         /// <summary>
-        ///     Describes a series.
+        ///     Represents a series.
         /// </summary>
         Series,
 
         /// <summary>
-        ///     Descibes a movie.
+        ///     Represents a movie.
         /// </summary>
         Movie,
 
         /// <summary>
-        ///     Describes a "Original Video Animation".
+        ///     Represents an "Original Video Animation".
         /// </summary>
         Ova,
 
         /// <summary>
-        ///     Describes an unkown Anime-Type.
+        ///     Represents an unkown type.
         /// </summary>
         Unknown
     }

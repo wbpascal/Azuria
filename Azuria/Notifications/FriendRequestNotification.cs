@@ -9,28 +9,28 @@ using JetBrains.Annotations;
 namespace Azuria.Notifications
 {
     /// <summary>
-    ///     Eine Klasse, die eine Freundschaftsanfrage aus den Benachrichtigungen darstellt.
+    ///     Represents a friend request notification.
     /// </summary>
-    public class FriendRequestObject : INotificationObject
+    public class FriendRequestNotification : INotification
     {
         private readonly Senpai _senpai;
         private bool _accepted;
         private bool _denied;
 
-        internal FriendRequestObject([NotNull] string userName, int userUserId, [NotNull] Senpai senpai)
+        internal FriendRequestNotification([NotNull] string userName, int userUserId, [NotNull] Senpai senpai)
         {
             this._senpai = senpai;
-            this.Type = NotificationObjectType.FriendRequest;
+            this.Type = NotificationType.FriendRequest;
             this.Message = userName;
             this.UserName = userName;
             this.UserId = userUserId;
         }
 
-        internal FriendRequestObject([NotNull] string userName, int userUserId, DateTime requestDate,
+        internal FriendRequestNotification([NotNull] string userName, int userUserId, DateTime requestDate,
             [NotNull] Senpai senpai)
         {
             this._senpai = senpai;
-            this.Type = NotificationObjectType.FriendRequest;
+            this.Type = NotificationType.FriendRequest;
             this.Message = userName;
             this.UserName = userName;
             this.UserId = userUserId;
@@ -40,33 +40,31 @@ namespace Azuria.Notifications
         #region Geerbt
 
         /// <summary>
-        ///     Gibt die Nachricht der Benachrichtigung als Text zurück.
-        ///     <para>(Vererbt von <see cref="INotificationObject" />)</para>
+        ///     Gets the message of the notification.
         /// </summary>
         public string Message { get; }
 
         /// <summary>
-        ///     Gibt den Typ der Benachrichtigung zurück.
-        ///     <para>(Vererbt von <see cref="INotificationObject" />)</para>
+        ///     Gets the type of the notification.
         /// </summary>
-        public NotificationObjectType Type { get; }
+        public NotificationType Type { get; }
 
         #endregion
 
         #region Properties
 
         /// <summary>
-        ///     Gibt das Datum der Freundschaftsanfrage zurück.
+        ///     Gets the date of the friend request.
         /// </summary>
         public DateTime Date { get; private set; }
 
         /// <summary>
-        ///     Gibt die ID des <see cref="User">Benutzers</see> zurück, der die Freundschaftsanfrage gestellt hat.
+        ///     Gets the id of the user who send the friend request.
         /// </summary>
         public int UserId { get; }
 
         /// <summary>
-        ///     Gibt den Namen des <see cref="User">Benutzers</see> zurück, der die Freundschaftsanfrage gestellt hat.
+        ///     Gets the user name of the user who send the friend request.
         /// </summary>
         [NotNull]
         public string UserName { get; private set; }
@@ -76,9 +74,9 @@ namespace Azuria.Notifications
         #region
 
         /// <summary>
-        ///     Akzeptiert die Freundschaftsanfrage.
+        ///     Accepts the friend request.
         /// </summary>
-        /// <returns>Die Aktion war erfolgreich. True oder False</returns>
+        /// <returns>If the action was successful.</returns>
         [ItemNotNull]
         public async Task<ProxerResult> AcceptRequest()
         {
@@ -103,9 +101,9 @@ namespace Azuria.Notifications
         }
 
         /// <summary>
-        ///     Lehnt die Freundschaftsanfrage ab.
+        ///     Denies the friend request.
         /// </summary>
-        /// <returns>Die Aktion war erfolgreich. True oder False</returns>
+        /// <returns>If the action was successful.</returns>
         [ItemNotNull]
         public async Task<ProxerResult> DenyRequest()
         {

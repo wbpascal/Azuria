@@ -6,43 +6,37 @@ using JetBrains.Annotations;
 namespace Azuria.Notifications
 {
     /// <summary>
-    ///     Eine Klasse, die eine Sammlung von Benachrichtigungen darstellt.
+    ///     Represents a collection of notifications.
     /// </summary>
     public interface INotificationCollection
     {
         #region Properties
 
         /// <summary>
-        ///     Gibt den Typ der Benachrichtigung zurück.
-        ///     <para>(Vererbt von <see cref="INotificationCollection" />)</para>
+        ///     Gets the type of the notifications.
         /// </summary>
-        NotificationObjectType Type { get; }
+        NotificationType Type { get; }
 
         #endregion
 
         #region
 
         /// <summary>
-        ///     Gibt alle aktuellen Benachrichtigungen, die diese Klasse repräsentiert, zurück.
-        ///     <para>(Vererbt von <see cref="INotificationCollection" />)</para>
+        ///     Gets all notifications of the current <see cref="Type" />.
         /// </summary>
-        /// <seealso cref="GetNotifications" />
-        /// <returns>Ein Array mit allen aktuellen Benachrichtigungen.</returns>
+        /// <returns>An enumeration of notifications.</returns>
         [ItemNotNull]
-        Task<ProxerResult<IEnumerable<INotificationObject>>> GetAllNotifications();
+        Task<ProxerResult<IEnumerable<INotification>>> GetAllNotifications();
 
         /// <summary>
-        ///     Gibt eine bestimmte Anzahl der aktuellen Benachrichtigungen, die diese Klasse repräsentiert, zurück.
-        ///     <para>(Vererbt von <see cref="INotificationCollection" />)</para>
+        ///     Gets a specified <paramref name="count" /> of notifications from the current ones.
         /// </summary>
-        /// <param name="count">Die Anzahl der Benachrichtigungen</param>
-        /// <seealso cref="GetAllNotifications">GetAllNotifications Funktion</seealso>
+        /// <param name="count">The notification count.</param>
         /// <returns>
-        ///     Ein Array mit der Anzahl an Elementen in <paramref name="count" /> spezifiziert.
-        ///     Wenn <paramref name="count" /> > Array.length, dann wird der gesamte Array zurückgegeben.
+        ///     An enumeration of notifications with a maximum length of <paramref name="count" />.
         /// </returns>
         [ItemNotNull]
-        Task<ProxerResult<IEnumerable<INotificationObject>>> GetNotifications(int count);
+        Task<ProxerResult<IEnumerable<INotification>>> GetNotifications(int count);
 
         #endregion
     }

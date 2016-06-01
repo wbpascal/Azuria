@@ -19,7 +19,7 @@ using JetBrains.Annotations;
 namespace Azuria.Main
 {
     /// <summary>
-    ///     Eine Klasse, die einen <see cref="Anime" /> darstellt.
+    ///     Represents an anime.
     /// </summary>
     public class Anime : IAnimeMangaObject
     {
@@ -184,7 +184,7 @@ namespace Azuria.Main
         public InitialisableProperty<AnimeType> AnimeTyp { get; }
 
         /// <summary>
-        ///     Gets the languages this <see cref="Anime" /> is available in.
+        ///     Gets the languages the <see cref="Anime" /> is available in.
         /// </summary>
         [NotNull]
         public InitialisableProperty<IEnumerable<AnimeLanguage>> AvailableLanguages { get; }
@@ -211,7 +211,7 @@ namespace Azuria.Main
         /// </summary>
         /// <param name="startIndex">The offset of the comments parsed.</param>
         /// <param name="count">The count of the returned comments starting at <paramref name="startIndex" />.</param>
-        /// <returns>If the action was successful and if it was an enumeration of the comments.</returns>
+        /// <returns>If the action was successful and if it was, an enumeration of the comments.</returns>
         public async Task<ProxerResult<IEnumerable<Comment<Anime>>>> GetCommentsLatest(int startIndex, int count)
         {
             return
@@ -226,7 +226,7 @@ namespace Azuria.Main
         /// </summary>
         /// <param name="startIndex">The offset of the comments parsed.</param>
         /// <param name="count">The count of the returned comments starting at <paramref name="startIndex" />.</param>
-        /// <returns>If the action was successful and if it was an enumeration of the comments.</returns>
+        /// <returns>If the action was successful and if it was, an enumeration of the comments.</returns>
         public async Task<ProxerResult<IEnumerable<Comment<Anime>>>> GetCommentsRating(int startIndex, int count)
         {
             return
@@ -508,7 +508,7 @@ namespace Azuria.Main
                                     this.Status.SetInitialisedObject(AnimeMangaStatus.PreAiring);
                                     break;
                                 default:
-                                    this.Status.SetInitialisedObject(AnimeMangaStatus.Canceled);
+                                    this.Status.SetInitialisedObject(AnimeMangaStatus.Cancelled);
                                     break;
                             }
                             break;
@@ -669,7 +669,7 @@ namespace Azuria.Main
             public InitialisableProperty<bool> IsAvailable { get; }
 
             /// <summary>
-            ///     Gets whether the language of the <see cref="Anime.Episode" /> is <see cref="Language.English">english</see> or
+            ///     Gets whether the language of the <see cref="Episode" /> is <see cref="Language.English">english</see> or
             ///     <see cref="Language.German">german</see>.
             /// </summary>
             public Language GeneralLanguage
