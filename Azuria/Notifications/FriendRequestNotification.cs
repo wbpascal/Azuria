@@ -92,7 +92,7 @@ namespace Azuria.Notifications
             ProxerResult<string> lResult = await
                 HttpUtility.PostResponseErrorHandling(
                     new Uri("https://proxer.me/user/my?format=json&cid=" + this.UserId),
-                    lPostArgs, this._senpai.LoginCookies, this._senpai.ErrHandler, this._senpai, new[] {lCheckFunc});
+                    lPostArgs, this._senpai.LoginCookies, this._senpai, new[] {lCheckFunc});
 
             if (!lResult.Success) return new ProxerResult(lResult.Exceptions);
 
@@ -119,7 +119,7 @@ namespace Azuria.Notifications
             ProxerResult<string> lResult = await
                 HttpUtility.PostResponseErrorHandling(
                     new Uri("https://proxer.me/user/my?format=json&cid=" + this.UserId),
-                    lPostArgs, this._senpai.LoginCookies, this._senpai.ErrHandler, this._senpai, new[] {lCheckFunc});
+                    lPostArgs, this._senpai.LoginCookies, this._senpai, new[] {lCheckFunc});
 
             if (!lResult.Success) return new ProxerResult(lResult.Exceptions);
 

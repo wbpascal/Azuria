@@ -89,7 +89,7 @@ namespace Azuria.Main.User
         /// <summary>
         ///     Fetches the comment associated with the entry.
         /// </summary>
-        /// <returns>If the action was successful and if it was the comment that was fetched.</returns>
+        /// <returns>If the action was successful and if it was, the comment that was fetched.</returns>
         protected async Task<ProxerResult<Comment<T>>> GetComment()
         {
             HtmlDocument lDocument = new HtmlDocument();
@@ -107,7 +107,6 @@ namespace Azuria.Main.User
                     HttpUtility.GetResponseErrorHandling(
                         new Uri($"https://proxer.me/comment?id={this.EntryId}&format=raw"),
                         this.Senpai.LoginCookies,
-                        this.Senpai.ErrHandler,
                         this.Senpai,
                         new[] {lCheckFunc});
 

@@ -58,7 +58,6 @@ namespace Azuria.Main.Search
                     HttpUtility.GetResponseErrorHandling(
                         new Uri("https://proxer.me/" + this._link + "&format=raw&p=" + this._curPage),
                         this._senpai.LoginCookies,
-                        this._senpai.ErrHandler,
                         this._senpai, new Func<string, ProxerResult>[0], typeof(T) != typeof(Azuria.User));
 
             if (!lResult.Success || lResult.Result == null)

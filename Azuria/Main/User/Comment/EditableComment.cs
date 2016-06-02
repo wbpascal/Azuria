@@ -98,7 +98,6 @@ namespace Azuria.Main.User.Comment
                     HttpUtility.GetResponseErrorHandling(
                         new Uri($"https://proxer.me/comment?format=json&json=delete&id={this._entryId}"),
                         this._senpai.LoginCookies,
-                        this._senpai.ErrHandler,
                         this._senpai);
 
             if (!lResult.Success)
@@ -146,7 +145,6 @@ namespace Azuria.Main.User.Comment
                     HttpUtility.GetResponseErrorHandling(
                         new Uri($"https://proxer.me/comment?id={entryId}&s=edit&format=raw"),
                         senpai.LoginCookies,
-                        senpai.ErrHandler,
                         senpai,
                         new[] {lCheckFunc});
 
@@ -310,7 +308,6 @@ namespace Azuria.Main.User.Comment
                         new Uri($"https://proxer.me/comment?format=json&json=edit&id={this._entryId}"),
                         postArgs,
                         this._senpai.LoginCookies,
-                        this._senpai.ErrHandler,
                         this._senpai);
 
             if (!lResult.Success)

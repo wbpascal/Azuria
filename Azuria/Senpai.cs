@@ -84,8 +84,6 @@ namespace Azuria
         /// </summary>
         public Senpai()
         {
-            this.ErrHandler = new ErrorHandler();
-
             this._updateNotifications = new List<bool>(new[] {true, false, true, true});
             this._isLoggedIn = false;
             this.LoginCookies = new CookieContainer();
@@ -151,13 +149,6 @@ namespace Azuria
                 return this._animeMangaNotifications;
             }
         }
-
-        /// <summary>
-        ///     Gibt den Error-Handler zurück, der benutzt wird, um Fehler in Serverantworten zu bearbeiten und frühzeitig zu
-        ///     erkennen.
-        /// </summary>
-        [NotNull]
-        public ErrorHandler ErrHandler { get; protected set; }
 
         /// <summary>
         ///     Gibt ein Objekt zurück, mithilfe dessen alle Freundschafts-Benachrichtigungen abgerufen werden könne.
@@ -251,7 +242,8 @@ namespace Azuria
         {
             get
             {
-                if (!this._updateNotifications[2] && this._newsNotificationUpdates != null) return this._newsNotificationUpdates;
+                if (!this._updateNotifications[2] && this._newsNotificationUpdates != null)
+                    return this._newsNotificationUpdates;
 
                 this._newsNotificationUpdates = new NewsNotificationCollection(this);
                 this._updateNotifications[2] = false;
@@ -272,7 +264,8 @@ namespace Azuria
         {
             get
             {
-                if (!this._updateNotifications[3] && this._privateMessageNotificationUpdates != null) return this._privateMessageNotificationUpdates;
+                if (!this._updateNotifications[3] && this._privateMessageNotificationUpdates != null)
+                    return this._privateMessageNotificationUpdates;
 
                 this._privateMessageNotificationUpdates = new PrivateMessageNotificationCollection(this);
                 this._updateNotifications[3] = false;
@@ -296,8 +289,7 @@ namespace Azuria
             ProxerResult<Tuple<string, CookieContainer>> lResult =
                 await
                     HttpUtility.GetResponseErrorHandling(new Uri("https://proxer.me/login?format=json&action=login"),
-                        this.LoginCookies,
-                        this.ErrHandler, this, new Func<string, ProxerResult>[0], false);
+                        this.LoginCookies, this, new Func<string, ProxerResult>[0], false);
 
             if (!lResult.Success || lResult.Result == null)
                 return new ProxerResult<bool>(lResult.Exceptions);
@@ -329,8 +321,7 @@ namespace Azuria
             ProxerResult<string> lResult =
                 await
                     HttpUtility.GetResponseErrorHandling(new Uri("https://proxer.me/notifications?format=raw&s=count"),
-                        this.LoginCookies, this.ErrHandler,
-                        this);
+                        this.LoginCookies, this);
 
             if (!lResult.Success || lResult.Result == null)
                 return new ProxerResult(lResult.Exceptions);
@@ -433,9 +424,7 @@ namespace Azuria
         {
             ProxerResult<string> lResult =
                 await
-                    HttpUtility.GetResponseErrorHandling(new Uri("http://proxer.me/messages"), this.LoginCookies,
-                        this.ErrHandler,
-                        this);
+                    HttpUtility.GetResponseErrorHandling(new Uri("http://proxer.me/messages"), this.LoginCookies, this);
 
             if (!lResult.Success)
                 return new ProxerResult<IEnumerable<Conference>>(lResult.Exceptions);
@@ -507,7 +496,7 @@ namespace Azuria
             ProxerResult<Tuple<string, CookieContainer>> lResult =
                 await
                     HttpUtility.PostResponseErrorHandling(new Uri("https://proxer.me/login?format=json&action=login"),
-                        postArgs, this.LoginCookies, this.ErrHandler, this, new Func<string, ProxerResult>[0], false);
+                        postArgs, this.LoginCookies, this, new Func<string, ProxerResult>[0], false);
 
             if (!lResult.Success || lResult.Result == null)
                 return new ProxerResult<bool>(lResult.Exceptions);
@@ -557,7 +546,7 @@ namespace Azuria
             ProxerResult<Tuple<string, CookieContainer>> lResult =
                 await
                     HttpUtility.GetResponseErrorHandling(new Uri("https://proxer.me/login?format=json&action=login"),
-                        cookieContainer, this.ErrHandler, this, new Func<string, ProxerResult>[0], false);
+                        cookieContainer, this, new Func<string, ProxerResult>[0], false);
 
             if (!lResult.Success || lResult.Result == null)
                 return new ProxerResult<bool>(lResult.Exceptions);

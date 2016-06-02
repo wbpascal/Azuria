@@ -248,8 +248,7 @@ namespace Azuria
                     await
                         HttpUtility.GetResponseErrorHandling(
                             new Uri("https://proxer.me/user/" + this.Id + "/connections/" + lSeite + "?format=raw"),
-                            this._senpai.LoginCookies
-                            , this._senpai.ErrHandler, this._senpai, new[] {lCheckFunc})).Success)
+                            this._senpai.LoginCookies, this._senpai, new[] {lCheckFunc})).Success)
             {
                 HtmlDocument lDocument = new HtmlDocument();
                 lDocument.LoadHtml(lResult.Result);
@@ -343,7 +342,6 @@ namespace Azuria
                     HttpUtility.GetResponseErrorHandling(
                         new Uri("https://proxer.me/user/" + id + "/overview?format=raw"),
                         senpai.LoginCookies,
-                        senpai.ErrHandler,
                         senpai, new[] {lCheckFunc});
 
             if (!lResult.Success)
@@ -394,7 +392,6 @@ namespace Azuria
                     HttpUtility.GetResponseErrorHandling(
                         new Uri("https://proxer.me/user/" + this.Id + "/anime?format=raw"),
                         this._senpai.LoginCookies,
-                        this._senpai.ErrHandler,
                         this._senpai, new[] {lCheckFunc});
 
             if (!lResult.Success)
@@ -458,7 +455,6 @@ namespace Azuria
                     HttpUtility.GetResponseErrorHandling(
                         new Uri("https://proxer.me/user/" + this.Id + "/chronik?format=raw"),
                         this._senpai.LoginCookies,
-                        this._senpai.ErrHandler,
                         this._senpai, new[] {lCheckFunc});
 
             if (!lResult.Success)
@@ -567,7 +563,6 @@ namespace Azuria
                     HttpUtility.GetResponseErrorHandling(
                         new Uri("https://proxer.me/user/" + this.Id + "/about?format=raw"),
                         this._senpai.LoginCookies,
-                        this._senpai.ErrHandler,
                         this._senpai, new[] {lCheckFunc});
 
             if (!lResult.Success)
@@ -614,7 +609,6 @@ namespace Azuria
                 await
                     HttpUtility.GetResponseErrorHandling(new Uri("https://proxer.me/user/" + this.Id + "?format=raw"),
                         this._senpai.LoginCookies,
-                        this._senpai.ErrHandler,
                         this._senpai, new[] {lCheckFunc});
 
             if (!lResult.Success)
@@ -676,7 +670,6 @@ namespace Azuria
                     HttpUtility.GetResponseErrorHandling(
                         new Uri("https://proxer.me/user/" + this.Id + "/manga?format=raw"),
                         this._senpai.LoginCookies,
-                        this._senpai.ErrHandler,
                         this._senpai, new[] {lCheckFunc});
 
             if (!lResult.Success)
@@ -888,7 +881,6 @@ namespace Azuria
                     HttpUtility.PostResponseErrorHandling(new Uri("https://proxer.me/user/" + this.Id + "?format=json"),
                         lPostArgs,
                         this._senpai.LoginCookies,
-                        this._senpai.ErrHandler,
                         this._senpai);
 
             if (!lResult.Success)

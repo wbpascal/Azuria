@@ -126,7 +126,6 @@ namespace Azuria.Notifications
                     HttpUtility.GetResponseErrorHandling(
                         new Uri("https://proxer.me/components/com_proxer/misc/notifications_misc.php"),
                         this._senpai.LoginCookies,
-                        this._senpai.ErrHandler,
                         this._senpai);
 
             if (!lResult.Success)

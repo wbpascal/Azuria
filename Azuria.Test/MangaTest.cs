@@ -336,13 +336,6 @@ namespace Azuria.Test
         }
 
         [Test, Order(2)]
-        public void ObjectTypeTest()
-        {
-            Assert.IsNotNull(this._manga);
-            Assert.AreEqual(this._manga.ObjectType, AnimeMangaType.Manga);
-        }
-
-        [Test, Order(2)]
         public async Task SeasonTest()
         {
             Assert.IsNotNull(this._manga);

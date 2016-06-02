@@ -42,7 +42,7 @@ namespace Azuria.EventArguments
         ///     Gets an object with the help of which the notifications can be retrieved.
         /// </summary>
         [NotNull]
-        public AnimeMangaUpdateCollection Notifications => this._senpai.AnimeMangaUpdates;
+        public AnimeMangaNotificationCollection Notifications => this._senpai.AnimeMangaNotifications;
 
         #endregion
     }

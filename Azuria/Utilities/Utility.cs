@@ -1,5 +1,4 @@
 ﻿using System;
-using Azuria.Utilities.ErrorHandling;
 using JetBrains.Annotations;
 
 // ReSharper disable LoopCanBeConvertedToQuery
@@ -9,12 +8,6 @@ namespace Azuria.Utilities
     internal static class Utility
     {
         #region
-
-        internal static bool CheckForCorrectResponse([NotNull] string response, [NotNull] ErrorHandler errHandler)
-        {
-            //return errHandler.WrongHtml.All(curErrorResponse => ILd(response, curErrorResponse) > 15);
-            return true;
-        }
 
         /// <summary>
         ///     Compute Levenshtein distance

@@ -62,7 +62,6 @@ namespace Azuria.Main.User.ControlPanel
                     HttpUtility.GetResponseErrorHandling(
                         new Uri("https://proxer.me/ucp?format=json&type=deleteReminder&id=" + this.EntryId),
                         this._senpai.LoginCookies,
-                        this._senpai.ErrHandler,
                         this._senpai);
 
             if (!lResult.Success)

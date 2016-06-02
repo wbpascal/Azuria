@@ -11,19 +11,18 @@ using JetBrains.Annotations;
 namespace Azuria.Utilities.Net
 {
     /// <summary>
-    ///     Eine Klasse, die alle Methoden darstellt, um per HTTP- und HTTPS-
-    ///     Protokol mit dem Server zu kommunizieren.
+    ///     Represents a class that communicates with the server via HTTP and HTTPS.
     /// </summary>
     public class HttpUtility
     {
         /// <summary>
-        ///     Gibt die Zeit in Millisekunden zurück, die der Client auf eine Antwort wartet bis er abbricht, oder legt diese
-        ///     fest.
-        ///     Standartwert = 5000
+        ///     The time in milliseconds that represents the timeout on requests.
+        ///     Default value = 5000
         /// </summary>
         public static int Timeout = 5000;
 
         /// <summary>
+        ///     Whether cloudflare firewall encounters should be automatically solved.
         /// </summary>
         public static bool SolveCloudflare = true;
 
@@ -38,29 +37,28 @@ namespace Azuria.Utilities.Net
         #region
 
         [ItemNotNull]
-        internal static async Task<ProxerResult<string>> GetResponseErrorHandling(Uri url,
-            [NotNull] ErrorHandler errorHandler, [NotNull] Senpai senpai)
+        internal static async Task<ProxerResult<string>> GetResponseErrorHandling(Uri url, [NotNull] Senpai senpai)
         {
-            return await GetResponseErrorHandling(url, null, errorHandler, senpai);
+            return await GetResponseErrorHandling(url, null, senpai);
         }
 
         [ItemNotNull]
         internal static async Task<ProxerResult<string>> GetResponseErrorHandling([NotNull] Uri url,
-            [CanBeNull] CookieContainer loginCookies, [NotNull] ErrorHandler errorHandler, [NotNull] Senpai senpai)
+            [CanBeNull] CookieContainer loginCookies, [NotNull] Senpai senpai)
         {
             return
                 await
-                    GetResponseErrorHandling(url, loginCookies, errorHandler, senpai, new Func<string, ProxerResult>[0]);
+                    GetResponseErrorHandling(url, loginCookies, senpai, new Func<string, ProxerResult>[0]);
         }
 
         [ItemNotNull]
         internal static async Task<ProxerResult<string>> GetResponseErrorHandling([NotNull] Uri url,
-            [CanBeNull] CookieContainer loginCookies, [NotNull] ErrorHandler errorHandler, [NotNull] Senpai senpai,
+            [CanBeNull] CookieContainer loginCookies, [NotNull] Senpai senpai,
             [CanBeNull] Func<string, ProxerResult>[] checkFuncs)
         {
             ProxerResult<Tuple<string, CookieContainer>> lResult =
                 await
-                    GetResponseErrorHandling(url, loginCookies, errorHandler, senpai, checkFuncs, loginCookies == null);
+                    GetResponseErrorHandling(url, loginCookies, senpai, checkFuncs, loginCookies == null);
 
             return lResult.Success && lResult.Result != null
                 ? new ProxerResult<string>(lResult.Result.Item1)
@@ -69,9 +67,8 @@ namespace Azuria.Utilities.Net
 
         [ItemNotNull]
         internal static async Task<ProxerResult<Tuple<string, CookieContainer>>> GetResponseErrorHandling(
-            [NotNull] Uri url, [CanBeNull] CookieContainer loginCookies, [NotNull] ErrorHandler errorHandler,
-            [NotNull] Senpai senpai, [CanBeNull] Func<string, ProxerResult>[] checkFuncs, bool checkLogin,
-            int recursion = 0)
+            [NotNull] Uri url, [CanBeNull] CookieContainer loginCookies, [NotNull] Senpai senpai,
+            [CanBeNull] Func<string, ProxerResult>[] checkFuncs, bool checkLogin, int recursion = 0)
         {
             if (checkLogin && loginCookies != null && !senpai.IsLoggedIn)
                 return
@@ -126,7 +123,7 @@ namespace Azuria.Utilities.Net
 
                 return
                     await
-                        GetResponseErrorHandling(url, loginCookies, errorHandler, senpai, checkFuncs, checkLogin,
+                        GetResponseErrorHandling(url, loginCookies, senpai, checkFuncs, checkLogin,
                             recursion + 1);
             }
             else
@@ -149,7 +146,7 @@ namespace Azuria.Utilities.Net
                     }
                 }
 
-            if (string.IsNullOrEmpty(lResponse) || !Utility.CheckForCorrectResponse(lResponse, errorHandler))
+            if (string.IsNullOrEmpty(lResponse))
                 return
                     new ProxerResult<Tuple<string, CookieContainer>>(new Exception[]
                     {new WrongResponseException {Response = lResponse}});
@@ -186,31 +183,30 @@ namespace Azuria.Utilities.Net
 
         [ItemNotNull]
         internal static async Task<ProxerResult<string>> PostResponseErrorHandling([NotNull] Uri url,
-            [NotNull] Dictionary<string, string> postArgs, [NotNull] ErrorHandler errorHandler, [NotNull] Senpai senpai)
+            [NotNull] Dictionary<string, string> postArgs, [NotNull] Senpai senpai)
         {
-            return await PostResponseErrorHandling(url, postArgs, null, errorHandler, senpai);
+            return await PostResponseErrorHandling(url, postArgs, null, senpai);
         }
 
         [ItemNotNull]
         internal static async Task<ProxerResult<string>> PostResponseErrorHandling([NotNull] Uri url,
             [NotNull] Dictionary<string, string> postArgs, [CanBeNull] CookieContainer loginCookies,
-            [NotNull] ErrorHandler errorHandler, [NotNull] Senpai senpai)
+            [NotNull] Senpai senpai)
         {
             return
                 await
-                    PostResponseErrorHandling(url, postArgs, loginCookies, errorHandler, senpai,
+                    PostResponseErrorHandling(url, postArgs, loginCookies, senpai,
                         new Func<string, ProxerResult>[0]);
         }
 
         [ItemNotNull]
         internal static async Task<ProxerResult<string>> PostResponseErrorHandling([NotNull] Uri url,
             [NotNull] Dictionary<string, string> postArgs, [CanBeNull] CookieContainer loginCookies,
-            [NotNull] ErrorHandler errorHandler, [NotNull] Senpai senpai,
-            [CanBeNull] Func<string, ProxerResult>[] checkFuncs)
+            [NotNull] Senpai senpai, [CanBeNull] Func<string, ProxerResult>[] checkFuncs)
         {
             ProxerResult<Tuple<string, CookieContainer>> lResult =
                 await
-                    PostResponseErrorHandling(url, postArgs, loginCookies, errorHandler, senpai, checkFuncs,
+                    PostResponseErrorHandling(url, postArgs, loginCookies, senpai, checkFuncs,
                         loginCookies == null);
 
             return lResult.Success && lResult.Result != null
@@ -221,7 +217,7 @@ namespace Azuria.Utilities.Net
         [ItemNotNull]
         internal static async Task<ProxerResult<Tuple<string, CookieContainer>>> PostResponseErrorHandling(
             [NotNull] Uri url, [NotNull] Dictionary<string, string> postArgs,
-            [CanBeNull] CookieContainer loginCookies, [NotNull] ErrorHandler errorHandler, [NotNull] Senpai senpai,
+            [CanBeNull] CookieContainer loginCookies, [NotNull] Senpai senpai,
             [CanBeNull] Func<string, ProxerResult>[] checkFuncs, bool checkLogin, int recursion = 0)
         {
             if (checkLogin && loginCookies != null && !senpai.IsLoggedIn)
@@ -277,7 +273,7 @@ namespace Azuria.Utilities.Net
 
                 return
                     await
-                        PostResponseErrorHandling(url, postArgs, loginCookies, errorHandler, senpai, checkFuncs,
+                        PostResponseErrorHandling(url, postArgs, loginCookies, senpai, checkFuncs,
                             checkLogin, recursion + 1);
             }
             else
@@ -303,7 +299,7 @@ namespace Azuria.Utilities.Net
                     }
                 }
 
-            if (string.IsNullOrEmpty(lResponse) || !Utility.CheckForCorrectResponse(lResponse, errorHandler))
+            if (string.IsNullOrEmpty(lResponse))
                 return
                     new ProxerResult<Tuple<string, CookieContainer>>(new Exception[]
                     {new WrongResponseException {Response = lResponse}});

@@ -140,7 +140,6 @@ namespace Azuria.Main.User.ControlPanel
                         new Uri(
                             $"https://proxer.me/{lCategoryString}/{animeMangaContent.ParentObject.Id}/{animeMangaContent.ContentIndex}/{lLanguageString}?format=json&type=reminder&title=reminder_this"),
                         this._senpai.LoginCookies,
-                        this._senpai.ErrHandler,
                         this._senpai);
 
             if (!lResult.Success)
@@ -222,7 +221,6 @@ namespace Azuria.Main.User.ControlPanel
                             $"https://proxer.me/info/{animeMangaObject.Id}?format=json&json=note"),
                         new Dictionary<string, string> {{"checkPost", "1"}},
                         this._senpai.LoginCookies,
-                        this._senpai.ErrHandler,
                         this._senpai);
 
             if (!lResult.Success)
@@ -373,7 +371,6 @@ namespace Azuria.Main.User.ControlPanel
                 await
                     HttpUtility.GetResponseErrorHandling(new Uri("https://proxer.me/ucp?s=anime&format=raw"),
                         this._senpai.LoginCookies,
-                        this._senpai.ErrHandler,
                         this._senpai, new[] {lCheckFunc});
 
             if (!lResult.Success || lResult.Result == null)
@@ -418,7 +415,6 @@ namespace Azuria.Main.User.ControlPanel
                     HttpUtility.GetResponseErrorHandling(
                         new Uri("https://proxer.me/ucp?s=reminder&format=raw"),
                         this._senpai.MobileLoginCookies,
-                        this._senpai.ErrHandler,
                         this._senpai,
                         new[] {lCheckFunc});
 
@@ -482,7 +478,6 @@ namespace Azuria.Main.User.ControlPanel
                 await
                     HttpUtility.GetResponseErrorHandling(new Uri("https://proxer.me/ucp?s=history&format=raw"),
                         this._senpai.LoginCookies,
-                        this._senpai.ErrHandler,
                         this._senpai, new[] {lCheckFunc});
 
             if (!lResult.Success) return new ProxerResult(lResult.Exceptions);
@@ -553,7 +548,6 @@ namespace Azuria.Main.User.ControlPanel
                     HttpUtility.GetResponseErrorHandling(
                         new Uri("https://proxer.me/ucp?s=topten&format=raw"),
                         this._senpai.MobileLoginCookies,
-                        this._senpai.ErrHandler,
                         this._senpai,
                         new[] {lCheckFunc});
 
@@ -629,7 +623,6 @@ namespace Azuria.Main.User.ControlPanel
                 await
                     HttpUtility.GetResponseErrorHandling(new Uri("https://proxer.me/ucp?s=manga&format=raw"),
                         this._senpai.LoginCookies,
-                        this._senpai.ErrHandler,
                         this._senpai, new[] {lCheckFunc});
 
             if (!lResult.Success || lResult.Result == null)

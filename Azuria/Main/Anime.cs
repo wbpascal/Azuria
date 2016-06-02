@@ -272,7 +272,6 @@ namespace Azuria.Main
                     HttpUtility.GetResponseErrorHandling(
                         new Uri("https://proxer.me/anime?format=raw"),
                         null,
-                        senpai.ErrHandler,
                         senpai);
 
             if (!lResult.Success)
@@ -318,7 +317,6 @@ namespace Azuria.Main
                     HttpUtility.GetResponseErrorHandling(
                         new Uri("https://proxer.me/edit/entry/" + this.Id + "/languages?format=raw"),
                         this._senpai.LoginCookies,
-                        this._senpai.ErrHandler,
                         this._senpai,
                         new[] {lCheckFunc});
 
@@ -384,7 +382,6 @@ namespace Azuria.Main
                     HttpUtility.GetResponseErrorHandling(
                         new Uri("https://proxer.me/edit/entry/" + this.Id + "/count?format=raw"),
                         this._senpai.LoginCookies,
-                        this._senpai.ErrHandler,
                         this._senpai,
                         new[] {lCheckFunc});
 
@@ -418,7 +415,6 @@ namespace Azuria.Main
                     HttpUtility.GetResponseErrorHandling(
                         new Uri("https://proxer.me/info/" + this.Id + "?format=raw"),
                         this._senpai.LoginCookies,
-                        this._senpai.ErrHandler,
                         this._senpai,
                         new Func<string, ProxerResult>[0], false);
 
@@ -588,7 +584,6 @@ namespace Azuria.Main
                     HttpUtility.GetResponseErrorHandling(
                         new Uri("https://proxer.me/edit/entry/" + this.Id + "/medium?format=raw"),
                         this._senpai.LoginCookies,
-                        this._senpai.ErrHandler,
                         this._senpai,
                         new[] {lCheckFunc});
 
@@ -741,7 +736,6 @@ namespace Azuria.Main
                             new Uri("https://proxer.me/watch/" + this.ParentObject.Id + "/" + this.EpisodeNumber + "/" +
                                     this.Language.ToString().ToLower()),
                             this._senpai.MobileLoginCookies,
-                            this._senpai.ErrHandler,
                             this._senpai);
 
                 if (!lResult.Success)

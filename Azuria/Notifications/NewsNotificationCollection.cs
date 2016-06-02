@@ -97,7 +97,6 @@ namespace Azuria.Notifications
                     HttpUtility.GetResponseErrorHandling(
                         new Uri("https://proxer.me/notifications?format=json&s=news&p=1"),
                         this._senpai.LoginCookies,
-                        this._senpai.ErrHandler,
                         this._senpai);
 
             if (!lResult.Success)

@@ -41,7 +41,7 @@ namespace Azuria.EventArguments
         ///     Gets an object with the help of which the notifications can be retrieved.
         /// </summary>
         [NotNull]
-        public FriendRequestCollection Notifications => this._senpai.FriendRequests;
+        public FriendRequestNotificationCollection Notifications => this._senpai.FriendRequestsNotification;
 
         #endregion
     }

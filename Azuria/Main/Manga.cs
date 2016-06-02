@@ -294,7 +294,6 @@ namespace Azuria.Main
                     HttpUtility.GetResponseErrorHandling(
                         new Uri("https://proxer.me/manga?format=raw"),
                         null,
-                        senpai.ErrHandler,
                         senpai);
 
             if (!lResult.Success)
@@ -340,7 +339,6 @@ namespace Azuria.Main
                     HttpUtility.GetResponseErrorHandling(
                         new Uri("http://proxer.me/edit/entry/" + this.Id + "/languages?format=raw"),
                         this._senpai.LoginCookies,
-                        this._senpai.ErrHandler,
                         this._senpai,
                         new[] {lCheckFunc});
 
@@ -400,7 +398,6 @@ namespace Azuria.Main
                     HttpUtility.GetResponseErrorHandling(
                         new Uri("http://proxer.me/edit/entry/" + this.Id + "/count?format=raw"),
                         this._senpai.LoginCookies,
-                        this._senpai.ErrHandler,
                         this._senpai,
                         new[] {lCheckFunc});
 
@@ -435,7 +432,6 @@ namespace Azuria.Main
                     HttpUtility.GetResponseErrorHandling(
                         new Uri("https://proxer.me/info/" + this.Id + "?format=raw"),
                         null,
-                        this._senpai.ErrHandler,
                         this._senpai,
                         new Func<string, ProxerResult>[0], false);
 
@@ -605,7 +601,6 @@ namespace Azuria.Main
                     HttpUtility.GetResponseErrorHandling(
                         new Uri("http://proxer.me/edit/entry/" + this.Id + "/medium?format=raw"),
                         this._senpai.LoginCookies,
-                        this._senpai.ErrHandler,
                         this._senpai,
                         new[] {lCheckFunc});
 
@@ -778,7 +773,6 @@ namespace Azuria.Main
                             new Uri("https://proxer.me/chapter/" + this.ParentObject.Id + "/" + this.ContentIndex + "/" +
                                     this.Language.ToString().ToLower().Substring(0, 2) + "?format=raw"),
                             null,
-                            this._senpai.ErrHandler,
                             this._senpai,
                             new[] {lCheckFunc});
 
@@ -872,7 +866,6 @@ namespace Azuria.Main
                             new Uri("https://proxer.me/read/" + this.ParentObject.Id + "/" + this.ContentIndex + "/" +
                                     this.Language.ToString().ToLower().Substring(0, 2) + "?format=json"),
                             this._senpai.MobileLoginCookies,
-                            this._senpai.ErrHandler,
                             this._senpai,
                             new[] {lCheckFunc});
 

@@ -163,7 +163,7 @@ namespace Azuria.Main.User.Comment
                        await
                            HttpUtility.GetResponseErrorHandling(
                                new Uri(url + lStartSeite + "?format=raw&sort=" + sort),
-                               senpai.LoginCookies, senpai.ErrHandler, senpai, new[] {lCheckFunc}))
+                               senpai.LoginCookies, senpai, new[] {lCheckFunc}))
                        .Success)
             {
                 try

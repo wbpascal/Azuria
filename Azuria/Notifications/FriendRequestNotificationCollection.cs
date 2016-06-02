@@ -124,7 +124,6 @@ namespace Azuria.Notifications
                     HttpUtility.GetResponseErrorHandling(
                         new Uri("https://proxer.me/user/my/connections?format=raw"),
                         this._senpai.LoginCookies,
-                        this._senpai.ErrHandler,
                         this._senpai);
 
             if (!lResult.Success)

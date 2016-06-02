@@ -6,6 +6,7 @@ using JetBrains.Annotations;
 namespace Azuria.Utilities.Properties
 {
     /// <summary>
+    ///     Represents a property where the get- and set-method is asynchronous.
     /// </summary>
     public class AsyncProperty<T>
     {
@@ -14,10 +15,17 @@ namespace Azuria.Utilities.Properties
         private T _currentValue;
 
         /// <summary>
+        ///     Initialises a new instance with an initial value and optional get- and set-methods.
         /// </summary>
-        /// <param name="initialValue"></param>
-        /// <param name="getFunc"></param>
-        /// <param name="setFunc"></param>
+        /// <param name="initialValue">The initial value.</param>
+        /// <param name="getFunc">
+        ///     An optional get-method. If not set the <see cref="Get" />-method always just returns the current
+        ///     value.
+        /// </param>
+        /// <param name="setFunc">
+        ///     An optional set-method. If not set the <see cref="Set" />-method always just sets the value to
+        ///     the passed one.
+        /// </param>
         public AsyncProperty(T initialValue, Func<Task<ProxerResult<T>>> getFunc = null,
             Func<T, Task<ProxerResult>> setFunc = null)
         {
@@ -29,8 +37,10 @@ namespace Azuria.Utilities.Properties
         #region
 
         /// <summary>
+        ///     Executes, if specified, the get-function that was specified in the constructor and then returns the current value.
+        ///     If the function was not set just the current value will be returned.
         /// </summary>
-        /// <returns></returns>
+        /// <returns>If the action was successful and if it was, the new value.</returns>
         public async Task<ProxerResult<T>> Get()
         {
             if (this._getFunc == null) return new ProxerResult<T>(this._currentValue);
@@ -44,9 +54,12 @@ namespace Azuria.Utilities.Properties
         }
 
         /// <summary>
+        ///     Executes, if specified, the set-funtion that was specified in the cunstructor and then sets the current value to
+        ///     the value of <paramref name="newValue" />. If the function was not set the current value will only be set to the
+        ///     value of <paramref name="newValue" />.
         /// </summary>
-        /// <param name="newValue"></param>
-        /// <returns></returns>
+        /// <param name="newValue">The new value.</param>
+        /// <returns>If the action was successful.</returns>
         public async Task<ProxerResult> Set(T newValue)
         {
             if (this._setFunc == null) this._currentValue = newValue;

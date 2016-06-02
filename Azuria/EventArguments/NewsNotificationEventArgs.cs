@@ -40,7 +40,7 @@ namespace Azuria.EventArguments
         ///     Gets an object with the help of which the notifications can be retrieved.
         /// </summary>
         [NotNull]
-        public NewsCollection Notifications => this._senpai.News;
+        public NewsNotificationCollection Notifications => this._senpai.NewsNotification;
 
         #endregion
     }
