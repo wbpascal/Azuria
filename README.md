@@ -7,7 +7,7 @@ Newest Commit: [![Build status](https://ci.appveyor.com/api/projects/status/eenr
 
 Issues: [![Stories in Ready](https://badge.waffle.io/InfiniteSoul/azuria.svg?label=ready&title=Ready)](http://waffle.io/InfiniteSoul/azuria)
 
-Documentation: http://azuria.infinitesoul.de/help (only available in German atm)
+Documentation: http://infinitesoul.de/azuria/help (only available in German atm)
 
 ---
 
@@ -46,7 +46,7 @@ bool loggedIn = (await senpai.Login("benutzername", "passwort")).OnError(false);
 
 
 ##Still questions? 
-Then take a look at the [documentation] (http://azuria.infinitesoul.de/help) (documentation only available in german at the moment).
+Then take a look at the [documentation] (http://infinitesoul.de/azuria/help) (documentation only available in german at the moment).
 
 ## Special thanks
 To the authors of the following libraries:
