@@ -6,17 +6,18 @@ using JetBrains.Annotations;
 namespace Azuria.Utilities.Properties
 {
     /// <summary>
-    ///     Read-Only
+    ///     Represents a property that can be initialised.
     /// </summary>
-    /// <typeparam name="T"></typeparam>
+    /// <typeparam name="T">The type of the property.</typeparam>
     public class InitialisableProperty<T> : IInitialisableProperty<T>
     {
         [NotNull] private readonly Func<Task<ProxerResult>> _initMethod;
         [CanBeNull] private T _initialisedObject;
 
         /// <summary>
+        ///     Initialises a new instance with a specified initialisation method.
         /// </summary>
-        /// <param name="initMethod"></param>
+        /// <param name="initMethod">The initialisation method.</param>
         public InitialisableProperty([NotNull] Func<Task<ProxerResult>> initMethod)
         {
             this._initMethod = initMethod;
@@ -34,13 +35,14 @@ namespace Azuria.Utilities.Properties
         #region Geerbt
 
         /// <summary>
-        ///     Mindestens einmal Initialisiert
+        ///     Gets a value whether the property was already initialised at least once.
         /// </summary>
         public bool IsInitialisedOnce { get; internal set; }
 
         /// <summary>
+        ///     Initialises the property if it is not already.
         /// </summary>
-        /// <returns></returns>
+        /// <returns>If the action was successful and if it was, the value of this property.</returns>
         public async Task<ProxerResult<T>> GetObject()
         {
             if (this.IsInitialisedOnce && this._initialisedObject != null)
@@ -50,16 +52,22 @@ namespace Azuria.Utilities.Properties
         }
 
         /// <summary>
+        ///     Initialises the property if it is not already.
         /// </summary>
-        /// <returns></returns>
+        /// <param name="onError">A value that is returned if the action was not successful.</param>
+        /// <returns>
+        ///     If the action was successful and if it was, the value of this property. If it was not then
+        ///     <paramref name="onError" /> is returned.
+        /// </returns>
         public async Task<T> GetObject([NotNull] T onError)
         {
             return (await this.GetObject()).OnError(onError);
         }
 
         /// <summary>
+        ///     Gets a new value for the property independent of it being already initialised.
         /// </summary>
-        /// <returns></returns>
+        /// <returns>If the action was successful and if it was, the value of this property.</returns>
         public async Task<ProxerResult<T>> GetNewObject()
         {
             ProxerResult lInitialiseResult = await this._initMethod.Invoke();
@@ -70,9 +78,13 @@ namespace Azuria.Utilities.Properties
         }
 
         /// <summary>
+        ///     Gets a new value for the property independent of it being already initialised.
         /// </summary>
-        /// <param name="onError"></param>
-        /// <returns></returns>
+        /// <param name="onError">A value that is returned if the action was not successful.</param>
+        /// <returns>
+        ///     If the action was successful and if it was, the value of this property. If it was not then
+        ///     <paramref name="onError" /> is returned.
+        /// </returns>
         [ContractAnnotation("null=>canbenull")]
         public async Task<T> GetNewObject(T onError)
         {
@@ -80,8 +92,9 @@ namespace Azuria.Utilities.Properties
         }
 
         /// <summary>
+        ///     Fetches a new value for the property without returning the new value.
         /// </summary>
-        /// <returns></returns>
+        /// <returns>If the action was successful.</returns>
         public async Task<ProxerResult> FetchObject()
         {
             return await this.GetObject();
@@ -92,9 +105,11 @@ namespace Azuria.Utilities.Properties
         #region
 
         /// <summary>
+        ///     Gets the current value of the property if the property was initialised at least once. If it was not the returns the
+        ///     value specified in <paramref name="ifNot" />.
         /// </summary>
-        /// <param name="ifNot"></param>
-        /// <returns></returns>
+        /// <param name="ifNot">The value that is returned if the property was not initialised at least once.</param>
+        /// <returns>The current value or the value of <paramref name="ifNot" />.</returns>
         [NotNull]
         public T GetObjectIfInitialised(T ifNot)
         {

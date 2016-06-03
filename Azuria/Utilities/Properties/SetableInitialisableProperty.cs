@@ -6,8 +6,9 @@ using JetBrains.Annotations;
 namespace Azuria.Utilities.Properties
 {
     /// <summary>
+    ///     Represents a property that can be initialised and set.
     /// </summary>
-    /// <typeparam name="T"></typeparam>
+    /// <typeparam name="T">The type of the property.</typeparam>
     public class SetableInitialisableProperty<T> : IInitialisableProperty<T>
     {
         [NotNull] private readonly Func<Task<ProxerResult>> _initMethod;
@@ -17,9 +18,10 @@ namespace Azuria.Utilities.Properties
         [CanBeNull] private T _initialisedObject;
 
         /// <summary>
+        ///     Initialises a new instance with a specified initialisation method and a set method.
         /// </summary>
-        /// <param name="initMethod"></param>
-        /// <param name="setMethod"></param>
+        /// <param name="initMethod">The initialisation method.</param>
+        /// <param name="setMethod">The set method.</param>
         public SetableInitialisableProperty([NotNull] Func<Task<ProxerResult>> initMethod,
             [NotNull] Func<T, Task<ProxerResult>> setMethod)
         {
@@ -41,21 +43,39 @@ namespace Azuria.Utilities.Properties
         #region Geerbt
 
         /// <summary>
-        ///     Mindestens einmal Initialisiert
+        ///     Gets a value whether the property was already initialised at least once.
         /// </summary>
-        public bool IsInitialisedOnce { get; private set; }
+        public bool IsInitialisedOnce { get; internal set; }
 
         /// <summary>
+        ///     Initialises the property if it is not already.
         /// </summary>
-        /// <returns></returns>
-        public async Task<ProxerResult> FetchObject()
+        /// <returns>If the action was successful and if it was, the value of this property.</returns>
+        public async Task<ProxerResult<T>> GetObject()
         {
-            return await this.GetObject();
+            if (this.IsInitialisedOnce && this._initialisedObject != null)
+                return new ProxerResult<T>(this._initialisedObject);
+
+            return await this.GetNewObject();
         }
 
         /// <summary>
+        ///     Initialises the property if it is not already.
         /// </summary>
-        /// <returns></returns>
+        /// <param name="onError">A value that is returned if the action was not successful.</param>
+        /// <returns>
+        ///     If the action was successful and if it was, the value of this property. If it was not then
+        ///     <paramref name="onError" /> is returned.
+        /// </returns>
+        public async Task<T> GetObject([NotNull] T onError)
+        {
+            return (await this.GetObject()).OnError(onError);
+        }
+
+        /// <summary>
+        ///     Gets a new value for the property independent of it being already initialised.
+        /// </summary>
+        /// <returns>If the action was successful and if it was, the value of this property.</returns>
         public async Task<ProxerResult<T>> GetNewObject()
         {
             ProxerResult lInitialiseResult = await this._initMethod.Invoke();
@@ -66,9 +86,13 @@ namespace Azuria.Utilities.Properties
         }
 
         /// <summary>
+        ///     Gets a new value for the property independent of it being already initialised.
         /// </summary>
-        /// <param name="onError"></param>
-        /// <returns></returns>
+        /// <param name="onError">A value that is returned if the action was not successful.</param>
+        /// <returns>
+        ///     If the action was successful and if it was, the value of this property. If it was not then
+        ///     <paramref name="onError" /> is returned.
+        /// </returns>
         [ContractAnnotation("null=>canbenull")]
         public async Task<T> GetNewObject(T onError)
         {
@@ -76,22 +100,12 @@ namespace Azuria.Utilities.Properties
         }
 
         /// <summary>
+        ///     Fetches a new value for the property without returning the new value.
         /// </summary>
-        /// <returns></returns>
-        public async Task<ProxerResult<T>> GetObject()
+        /// <returns>If the action was successful.</returns>
+        public async Task<ProxerResult> FetchObject()
         {
-            if (this.IsInitialisedOnce && this._initialisedObject != null)
-                return new ProxerResult<T>(this._initialisedObject);
-
-            return await this.GetNewObject();
-        }
-
-        /// <summary>
-        /// </summary>
-        /// <returns></returns>
-        public async Task<T> GetObject(T onError)
-        {
-            return (await this.GetObject()).OnError(onError);
+            return await this.GetObject();
         }
 
         #endregion
@@ -113,15 +127,16 @@ namespace Azuria.Utilities.Properties
         }
 
         /// <summary>
+        ///     Sets the value of the property to the value of <paramref name="newValue" />.
         /// </summary>
-        /// <param name="newObject"></param>
-        /// <returns></returns>
+        /// <param name="newValue">The new value of the property.</param>
+        /// <returns>If the action was successful and if it was, the current value of the property.</returns>
         [ItemNotNull]
-        public async Task<ProxerResult<T>> SetObject([NotNull] T newObject)
+        public async Task<ProxerResult<T>> SetObject([NotNull] T newValue)
         {
-            ProxerResult lInvokeResult = await this._setMethod.Invoke(newObject);
+            ProxerResult lInvokeResult = await this._setMethod.Invoke(newValue);
             if (!lInvokeResult.Success) return new ProxerResult<T>(lInvokeResult.Exceptions);
-            this._initialisedObject = newObject;
+            this._initialisedObject = newValue;
             return new ProxerResult<T>(this._initialisedObject);
         }
 

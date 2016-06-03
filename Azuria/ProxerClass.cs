@@ -19,17 +19,14 @@ namespace Azuria
         #region
 
         /// <summary>
-        ///     Gibt ein Objekt zurück, dass einen Anime oder Manga
-        ///     der spezifizierten ID repräsentiert.
+        ///     Gets an <see cref="Anime" /> or <see cref="Manga" /> of a specified id.
         /// </summary>
-        /// <exception cref="WrongResponseException">Wird ausgelöst, wenn die Antwort des Servers nicht der Erwarteten entspricht.</exception>
-        /// <exception cref="ArgumentNullException">
-        ///     Wird ausgelöst, wenn <paramref name="senpai" /> null (oder Nothing in Visual
-        ///     Basic) ist.
-        /// </exception>
-        /// <param name="id">Die ID des <see cref="Anime">Anime</see> oder <see cref="Manga">Manga</see>.</param>
-        /// <param name="senpai">Der Benutzer. (Muss nicht eingeloggt sein)</param>
-        /// <returns>Anime oder Manga der ID (Typecast erforderlich)</returns>
+        /// <param name="id">The id of the <see cref="Anime" /> or <see cref="Manga" />.</param>
+        /// <param name="senpai">The user that makes the request.</param>
+        /// <returns>
+        ///     If the action was successful and if it was, an object representing either an <see cref="Anime" /> or
+        ///     <see cref="Manga" />.
+        /// </returns>
         [ItemNotNull]
         public static async Task<ProxerResult<IAnimeMangaObject>> GetAnimeMangaById(int id, [NotNull] Senpai senpai)
         {

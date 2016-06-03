@@ -6,9 +6,9 @@ using JetBrains.Annotations;
 namespace Azuria.Utilities.ErrorHandling
 {
     /// <summary>
-    ///     Eine Klasse, die ein Resultat einer Methode des API darstellt.
+    ///     Represents a result of a method.
     /// </summary>
-    /// <typeparam name="T">Der Typ des Resultats.</typeparam>
+    /// <typeparam name="T">The type of the result.</typeparam>
     public class ProxerResult<T> : ProxerResult
     {
         [UsedImplicitly]
@@ -17,9 +17,9 @@ namespace Azuria.Utilities.ErrorHandling
         }
 
         /// <summary>
-        ///     Initialisiert die Klasse mit einem Resultat.
+        ///     Initialises a new instance with a specified result and indicates that the method was successful.
         /// </summary>
-        /// <param name="result">Das Resultat</param>
+        /// <param name="result">The result.</param>
         public ProxerResult([NotNull] T result)
         {
             this.Success = true;
@@ -28,9 +28,10 @@ namespace Azuria.Utilities.ErrorHandling
         }
 
         /// <summary>
-        ///     Initialisiert die Klasse mit Fehlermeldungen.
+        ///     Initialises a new instance with the exceptions that were thrown during method execution and indicates that the
+        ///     method failed to execute.
         /// </summary>
-        /// <param name="exceptions">Die Fehlermeldungen.</param>
+        /// <param name="exceptions">The exception that were thrown during method execution.</param>
         public ProxerResult([NotNull] IEnumerable<Exception> exceptions) : base(exceptions)
         {
         }
@@ -38,9 +39,8 @@ namespace Azuria.Utilities.ErrorHandling
         #region Properties
 
         /// <summary>
-        ///     Gibt das Resultat zurück, das die Klasse repräsentiert, oder legt dieses fest.
+        ///     Gets the result of the method if the method was successful.
         /// </summary>
-        /// <value>Ist null, wenn <see cref="ProxerResult.Success" /> == false</value>
         [CanBeNull]
         public T Result { get; set; }
 
@@ -49,14 +49,13 @@ namespace Azuria.Utilities.ErrorHandling
         #region
 
         /// <summary>
-        ///     Eine Methode, die <paramref name="returnObject" /> zurückgibt, wenn <see cref="ProxerResult.Success" /> = false,
-        ///     sonst wird das <see cref="Result">Resultat</see> zurückgegeben.
+        ///     Returns the result of the method if the method was successful. Otherwise returns the value of
+        ///     <paramref name="returnObject" />.
         /// </summary>
         /// <param name="returnObject">
-        ///     Das Objekt, dass zurückgegeben wird, wenn <see cref="ProxerResult.Success" /> = false oder
-        ///     <see cref="ProxerResult{T}.Result" /> = null (oder Nothing in VisualBasic).
+        ///     The value that will be returned if the method was not executed successfully.
         /// </param>
-        /// <returns>Ein Objekt mit dem Typ <typeparamref name="T" /></returns>
+        /// <returns>An object of type <typeparamref name="T" />.</returns>
         [CanBeNull]
         public T OnError([CanBeNull] T returnObject)
         {
@@ -67,12 +66,12 @@ namespace Azuria.Utilities.ErrorHandling
     }
 
     /// <summary>
-    ///     Eine Klasse, die ein Resultat einer Methode des API darstellt.
+    ///     Represents a result of a method.
     /// </summary>
     public class ProxerResult
     {
         /// <summary>
-        ///     Initialisiert die Klasse mit einem erfolgreichem Resultat.
+        ///     Initialises a new instance and indicates that the method executed successfully.
         /// </summary>
         public ProxerResult()
         {
@@ -81,9 +80,10 @@ namespace Azuria.Utilities.ErrorHandling
         }
 
         /// <summary>
-        ///     Initialisiert die Klasse mit Fehlermeldungen.
+        ///     Initialises a new instance with the exceptions that were thrown during method execution and indicates that the
+        ///     method failed to execute.
         /// </summary>
-        /// <param name="exceptions">Die Fehlermeldungen.</param>
+        /// <param name="exceptions">The exception that were thrown during method execution.</param>
         public ProxerResult([NotNull] IEnumerable<Exception> exceptions)
         {
             this.Success = false;
@@ -109,9 +109,9 @@ namespace Azuria.Utilities.ErrorHandling
         #region
 
         /// <summary>
-        ///     Fügt den <see cref="Exceptions">Ausnahmen</see> eine weiter hinzu.
+        ///     Adds an exception to the collection that were thrown during method execution.
         /// </summary>
-        /// <param name="exception">Die Ausnahme die hinzugefügt werden soll.</param>
+        /// <param name="exception">The exception that is added to the collection.</param>
         public void AddException([NotNull] Exception exception)
         {
             List<Exception> lExceptions = this.Exceptions.ToList();
@@ -122,9 +122,9 @@ namespace Azuria.Utilities.ErrorHandling
         }
 
         /// <summary>
-        ///     Fügt den <see cref="Exceptions">Ausnahmen</see> weitere hinzu.
+        ///     Adds multiple exceptions to the collection that were thrown during method execution.
         /// </summary>
-        /// <param name="exception">Die Ausnahme die hinzugefügt werden soll.</param>
+        /// <param name="exception">The exception that are added to the collection.</param>
         public void AddExceptions([NotNull] IEnumerable<Exception> exception)
         {
             List<Exception> lExceptions = this.Exceptions.ToList();

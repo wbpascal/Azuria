@@ -7,6 +7,7 @@ using System.Timers;
 using Azuria.Community;
 using Azuria.EventArguments;
 using Azuria.Exceptions;
+using Azuria.Main;
 using Azuria.Notifications;
 using Azuria.Utilities.ErrorHandling;
 using Azuria.Utilities.Extensions;
@@ -18,53 +19,50 @@ using Newtonsoft.Json;
 namespace Azuria
 {
     /// <summary>
-    ///     Der Benutzer der Anwendung an sich
+    ///     Represents a user that makes requests to the proxer servers.
     /// </summary>
     public class Senpai
     {
         /// <summary>
-        ///     Stellt die Methode da, die ausgelöst wird, wenn neue Anime- oder Manga-Benachrichtigungen verfügbar sind.
+        ///     Represents a method that is executed when new anime or manga notifications are available.
         /// </summary>
-        /// <param name="sender">Der Benutzer, der die Benachrichtigung empfangen hat.</param>
-        /// <param name="e">Die Benachrichtigungen.</param>
+        /// <param name="sender">The user that recieved the notifications.</param>
+        /// <param name="e">The notifications.</param>
         public delegate void AmNotificationEventHandler(Senpai sender, AmNotificationEventArgs e);
 
         /// <summary>
-        ///     Stellt eine Methode da, die ausgelöst, wenn während des Abrufen der Benachrichtigungen eine Ausnahme ausgelöst
-        ///     wird.
+        ///     Represents a method that is executed when exceptions were thrown during the fetching of the notifications.
         /// </summary>
-        /// <param name="sender">Der Benutzer, bei dem der Error aufgetreten ist.</param>
-        /// <param name="exceptions">Die Ausnahmen, die aufgetreten sind.</param>
+        /// <param name="sender">The user that should have recieved the notifications.</param>
+        /// <param name="exceptions">The exceptions that were thrown.</param>
         public delegate void ErrorDuringNotificationFetchEventHandler(Senpai sender, IEnumerable<Exception> exceptions);
 
         /// <summary>
-        ///     Stellt die Methode da, die ausgelöst wird, wenn neue Freundschafts-Benachrichtigungen verfügbar sind.
+        ///     Represents a method that is executed when new friend request notifications are available.
         /// </summary>
-        /// <param name="sender">Der Benutzer, der die Benachrichtigung empfangen hat.</param>
-        /// <param name="e">Die Benachrichtigungen.</param>
+        /// <param name="sender">The user that recieved the notifications.</param>
+        /// <param name="e">The notifications.</param>
         public delegate void FriendNotificiationEventHandler(Senpai sender, FriendNotificationEventArgs e);
 
         /// <summary>
-        ///     Stellt die Methode da, die ausgelöst wird, wenn neue News verfügbar sind.
+        ///     Represents a method that is executed when new news notifications are available.
         /// </summary>
-        /// <param name="sender">Der Benutzer, der die Benachrichtigung empfangen hat.</param>
-        /// <param name="e">Die Benachrichtigungen.</param>
+        /// <param name="sender">The user that recieved the notifications.</param>
+        /// <param name="e">The notifications.</param>
         public delegate void NewsNotificationEventHandler(Senpai sender, NewsNotificationEventArgs e);
 
         /// <summary>
-        ///     Stellt die Methode da, die ausgelöst wird, wenn neue Benachrichtigungen aller Art verfügbar sind.
-        ///     Wird nur ausgelöst, wenn mindestens eine Benachrichtigung ausgelöst wurde aber wird nur höchstens bei
-        ///     jeden Durchgang einmal ausgelöst.
+        ///     Represents a method that is executed when at least one new notification is available.
         /// </summary>
-        /// <param name="sender">Der Benutzer, der die Benachrichtigung empfangen hat.</param>
-        /// <param name="e">Eine Aufzählung aller Benachrichtigungen.</param>
+        /// <param name="sender">The user that recieved the notifications.</param>
+        /// <param name="e">The notifications.</param>
         public delegate void NotificationEventHandler(Senpai sender, IEnumerable<INotificationEventArgs> e);
 
         /// <summary>
-        ///     Stellt die Methode da, die ausgelöst wird, wenn neue Privat-Nachricht-Benachrichtigungen verfügbar sind.
+        ///     Represents a method that is executed when new private message notifications are available.
         /// </summary>
-        /// <param name="sender">Der Benutzer, der die Benachrichtigung empfangen hat.</param>
-        /// <param name="e">Die Benachrichtigungen.</param>
+        /// <param name="sender">The user that recieved the notifications.</param>
+        /// <param name="e">The notifications.</param>
         public delegate void PmNotificationEventHandler(Senpai sender, PmNotificationEventArgs e);
 
         private readonly Timer _loginCheckTimer;
@@ -80,7 +78,7 @@ namespace Azuria
 
 
         /// <summary>
-        ///     Standard-Konstruktor der Klasse.
+        ///     Initialises a new instance of the class.
         /// </summary>
         public Senpai()
         {
@@ -129,12 +127,8 @@ namespace Azuria
         #region Properties
 
         /// <summary>
-        ///     Gibt ein Objekt zurück, mithilfe dessen alle Anime- und Manga-Benachrichtigungen abgerufen werden könne.
+        ///     Gets the current <see cref="Anime" /> and <see cref="Manga" /> notifications.
         /// </summary>
-        /// <seealso cref="AnimeMangaNotifications" />
-        /// <seealso cref="FriendRequestsNotification" />
-        /// <seealso cref="NewsNotification" />
-        /// <seealso cref="PrivateMessages" />
         [NotNull]
         public AnimeMangaNotificationCollection AnimeMangaNotifications
         {
@@ -151,12 +145,8 @@ namespace Azuria
         }
 
         /// <summary>
-        ///     Gibt ein Objekt zurück, mithilfe dessen alle Freundschafts-Benachrichtigungen abgerufen werden könne.
+        ///     Gets the current friend request notifications.
         /// </summary>
-        /// <seealso cref="AnimeMangaNotifications" />
-        /// <seealso cref="FriendRequestsNotification" />
-        /// <seealso cref="NewsNotification" />
-        /// <seealso cref="PrivateMessages" />
         [NotNull]
         public FriendRequestNotificationCollection FriendRequestsNotification
         {
@@ -173,7 +163,7 @@ namespace Azuria
 
 
         /// <summary>
-        ///     Gibt an, ob der Benutzter noch eingeloggt ist, wird aber nicht überprüft. (nur durch Timer alle 30 Minuten)
+        ///     Gets if the user is currently logged in. Is checked every 30 minutes through a timer.
         /// </summary>
         public bool IsLoggedIn
         {
@@ -184,7 +174,6 @@ namespace Azuria
                 {
                     this._loginCheckTimer.Start();
                     this._isLoggedIn = true;
-                    this.UserLoggedInRaised?.Invoke(this, EventArgs.Empty);
                 }
                 else
                 {
@@ -198,23 +187,21 @@ namespace Azuria
         }
 
         /// <summary>
-        ///     Gibt den CookieContainer zurück, der benutzt wird, um Aktionen im eingeloggten Status auszuführen.
+        ///     Gets the cookies that are used to make requests to the server with this user.
         /// </summary>
-        /// <seealso cref="MobileLoginCookies" />
         [NotNull]
         public CookieContainer LoginCookies { get; protected set; }
 
         /// <summary>
-        ///     Profil des Senpais.
+        ///     Gets the profile of the user.
         /// </summary>
         [CanBeNull]
         public User Me { get; protected set; }
 
         /// <summary>
-        ///     Gibt den CookieContainer zurück, der benutzt wird, um Aktionen im eingeloggten Status auszuführen.
-        ///     Jedoch wird hierbei dem CookieContainer noch Cookies hinzugefügt, sodass die mobile Seite angezeigt wird.
+        ///     Gets the cookies that are used to make requests to the server with this user. Unlike <see cref="LoginCookies" />
+        ///     contains this cookie container some additional cookies to request a response that is intended for mobile usage.
         /// </summary>
-        /// <seealso cref="LoginCookies" />
         [NotNull]
         public CookieContainer MobileLoginCookies
         {
@@ -231,12 +218,8 @@ namespace Azuria
         }
 
         /// <summary>
-        ///     Gibt ein Objekt zurück, mithilfe dessen alle News abgerufen werden könne.
+        ///     Gets the current news notifications.
         /// </summary>
-        /// <seealso cref="AnimeMangaNotifications" />
-        /// <seealso cref="FriendRequestsNotification" />
-        /// <seealso cref="NewsNotification" />
-        /// <seealso cref="PrivateMessages" />
         [NotNull]
         public NewsNotificationCollection NewsNotification
         {
@@ -253,12 +236,8 @@ namespace Azuria
         }
 
         /// <summary>
-        ///     Gibt ein Objekt zurück, mithilfe dessen alle Privat-Nachricht-Benachrichtigungen abgerufen werden könne.
+        ///     Gets the current private message notifications.
         /// </summary>
-        /// <seealso cref="AnimeMangaNotifications" />
-        /// <seealso cref="FriendRequestsNotification" />
-        /// <seealso cref="NewsNotification" />
-        /// <seealso cref="PrivateMessages" />
         [NotNull]
         public PrivateMessageNotificationCollection PrivateMessages
         {
@@ -279,7 +258,8 @@ namespace Azuria
         #region
 
         /// <summary>
-        ///     Wird ausgelöst, wenn neue Anime Folgen oder Manga Kapitel vorhanden sind. (15 Minuten Intervall)
+        ///     Occurs when new <see cref="Anime" /> or <see cref="Manga" /> notifications are available. Notifications are checked
+        ///     in a 15 minute interval.
         /// </summary>
         public event AmNotificationEventHandler AmUpdateNotificationRaised;
 
@@ -387,14 +367,13 @@ namespace Azuria
         }
 
         /// <summary>
-        ///     Wird ausgelöst, wenn während des Abrufens der Benachríchtigungen eine Ausnahme aufgetreten ist.
+        ///     Occurs when exceptions were thrown during the fetching of the notifications.
         /// </summary>
         public event ErrorDuringNotificationFetchEventHandler ErrorDuringNotificationFetch;
 
         /// <summary>
-        ///     Zwingt die Eigenschaften sich beim nächsten Aufruf zu aktualisieren.
+        ///     Forces the properties to refresh themselves on the next call.
         /// </summary>
-        /// <exception cref="WrongResponseException">Wird ausgelöst, wenn die Antwort des Servers nicht der Erwarteten entspricht.</exception>
         [ItemNotNull]
         public async Task<ProxerResult> ForcePropertyReload()
         {
@@ -411,14 +390,14 @@ namespace Azuria
         }
 
         /// <summary>
-        ///     Wird ausgelöst, wenn eine neue Freundschaftsanfrage aussteht. (15 Minuten Intervall)
+        ///     Occurs when new friend request notifications are available. Notifications are checked in a 15 minute interval.
         /// </summary>
         public event FriendNotificiationEventHandler FriendNotificationRaised;
 
         /// <summary>
-        ///     Gibt alle Konferenzen des Senpais zurück.
+        ///     Fetches all messaging conferences the user is part of.
         /// </summary>
-        /// <returns>Alle Konferenzen, in denen der Benutzer Teilnehmer ist.</returns>
+        /// <returns>If the action was successful and if it was, an enumeration of the conferences.</returns>
         [ItemNotNull]
         public async Task<ProxerResult<IEnumerable<Conference>>> GetAllConferences()
         {
@@ -462,7 +441,7 @@ namespace Azuria
         }
 
         /// <summary>
-        ///     Initialisiert die Benachrichtigungen.
+        ///     Initialises the notifications. Is needed in order for the notifications to be checked in a set interval.
         /// </summary>
         [NotNull]
         public ProxerResult InitNotifications()
@@ -476,11 +455,11 @@ namespace Azuria
         }
 
         /// <summary>
-        ///     Loggt den Benutzer ein.
+        ///     Logs the user in.
         /// </summary>
-        /// <param name="username">Der Benutzername des einzuloggenden Benutzers</param>
-        /// <param name="password">Das Passwort des Benutzers</param>
-        /// <returns>Gibt zurück, ob der Benutzer erfolgreich eingeloggt wurde.</returns>
+        /// <param name="username">The username of the user.</param>
+        /// <param name="password">The password of the user.</param>
+        /// <returns>If the action was successful and if it was, whether the user was successfully logged in.</returns>
         [ItemNotNull]
         public async Task<ProxerResult<bool>> Login([NotNull] string username, [NotNull] string password)
         {
@@ -535,11 +514,10 @@ namespace Azuria
         }
 
         /// <summary>
-        ///     Loggt den Benutzer ein.
+        ///     Logs the user in.
         /// </summary>
-        /// <param name="cookieContainer"></param>
-        /// <exception cref="WrongResponseException">Wird ausgelöst, wenn die Antwort des Servers nicht der Erwarteten entspricht.</exception>
-        /// <returns>Gibt zurück, ob der Benutzer erfolgreich eingeloggt wurde.</returns>
+        /// <param name="cookieContainer">The cookies that contain the logged in state of the user.</param>
+        /// <returns>If the action was successful and if it was, whether the user was successfully logged in.</returns>
         [ItemNotNull]
         public async Task<ProxerResult<bool>> Login([NotNull] CookieContainer cookieContainer)
         {
@@ -584,28 +562,23 @@ namespace Azuria
         }
 
         /// <summary>
-        ///     Wird ausgelöst, wenn neue ungelesene News vorhanden sind. (15 Minuten Intervall)
+        ///     Occurs when new news notifications are available. Notifications are checked in a 15 minute interval.
         /// </summary>
         public event NewsNotificationEventHandler NewsNotificationRaised;
 
 
         /// <summary>
-        ///     Wird bei allen Benachrichtigungen ausgelöst. (15 Minuten Intervall)
+        ///     Occurs when new notifications are available. Notifications are checked in a 15 minute interval.
         /// </summary>
         public event NotificationEventHandler NotificationRaised;
 
         /// <summary>
-        ///     Wird ausgelöst, wenn ungelesene PMs vorhanden sind. (15 Minuten Intervall)
+        ///     Occurs when new private message notifications are available. Notifications are checked in a 15 minute interval.
         /// </summary>
         public event PmNotificationEventHandler PmNotificationRaised;
 
         /// <summary>
-        ///     Wird ausgelöst, wenn der <see cref="Senpai">Benutzer</see> sich eingeloggt hat.
-        /// </summary>
-        public event EventHandler UserLoggedInRaised;
-
-        /// <summary>
-        ///     Wird ausgelöst, wenn die Login-Cookies verfallen sind. (15 Minuten Intervall)
+        ///     Occurs when the login cookies of the user are invalid and therefore the user is not logged in anymore.
         /// </summary>
         public event EventHandler UserLoggedOutRaised;
 
