@@ -7,8 +7,6 @@ Newest Commit: [![Build status](https://ci.appveyor.com/api/projects/status/eenr
 
 Issues: [![Stories in Ready](https://badge.waffle.io/InfiniteSoul/azuria.svg?label=ready&title=Ready)](http://waffle.io/InfiniteSoul/azuria)
 
-Documentation: http://infinitesoul.de/azuria/help (only available in German atm)
-
 ---
 
 ##Warning!
@@ -44,17 +42,11 @@ If the method failed to execute and as a result the `Success` property returns f
 bool loggedIn = (await senpai.Login("benutzername", "passwort")).OnError(false);
 ```
 
-
-##Still questions? 
-Then take a look at the [documentation] (http://infinitesoul.de/azuria/help) (documentation only available in german at the moment).
-
 ## Special thanks
 To the authors of the following libraries:
 
 [JSON .NET](https://www.nuget.org/packages/Newtonsoft.Json/)
 
 [HtmlAgilityPack](https://htmlagilitypack.codeplex.com/)
-
-[RestSharp](http://restsharp.org/)
 
 [Jint](https://github.com/sebastienros/jint)
