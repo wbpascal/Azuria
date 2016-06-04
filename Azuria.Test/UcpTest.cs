@@ -21,7 +21,7 @@ namespace Azuria.Test
         [Test, Order(1)]
         public async Task AnimeBookmarkTest()
         {
-            this._controlPanel = new UserControlPanel(SenpaiTest.Senpai);
+            this._controlPanel = this._controlPanel ?? new UserControlPanel(SenpaiTest.Senpai);
 
             ProxerResult<IEnumerable<AnimeMangaBookmarkObject<Anime>>> lFetchAnimeResult =
                 await this._controlPanel.AnimeBookmarks.GetObject();
@@ -40,7 +40,7 @@ namespace Azuria.Test
         [Test, Order(1)]
         public async Task AnimeChronicTest()
         {
-            this._controlPanel = new UserControlPanel(SenpaiTest.Senpai);
+            this._controlPanel = this._controlPanel ?? new UserControlPanel(SenpaiTest.Senpai);
 
             ProxerResult<IEnumerable<AnimeMangaChronicObject<Anime>>> lFetchAnimeResult =
                 await this._controlPanel.AnimeChronic.GetObject();
@@ -59,7 +59,7 @@ namespace Azuria.Test
         [Test, Order(1)]
         public async Task AnimeFavouriteTest()
         {
-            this._controlPanel = new UserControlPanel(SenpaiTest.Senpai);
+            this._controlPanel = this._controlPanel ?? new UserControlPanel(SenpaiTest.Senpai);
 
             ProxerResult<IEnumerable<AnimeMangaFavouriteObject<Anime>>> lFetchAnimeResult =
                 await this._controlPanel.AnimeFavourites.GetObject();
@@ -74,7 +74,7 @@ namespace Azuria.Test
         [Test, Order(1)]
         public async Task AnimeUcpObjectTest()
         {
-            this._controlPanel = new UserControlPanel(SenpaiTest.Senpai);
+            this._controlPanel = this._controlPanel ?? new UserControlPanel(SenpaiTest.Senpai);
 
             ProxerResult<IEnumerable<AnimeMangaUcpObject<Anime>>> lFetchAnimeResult =
                 await this._controlPanel.Anime.GetObject();
@@ -144,12 +144,33 @@ namespace Azuria.Test
             Assert.IsNotEmpty(lFetchAnimeResult.Result);
 
             EditableAnimeMangaProgress lEditableProgress = lFetchAnimeResult.Result.First().Progress;
+            ProxerResult<int> lGetResult = await lEditableProgress.CurrentProgress.Get();
+            Assert.IsTrue(lGetResult.Success);
+            int lProgress = lGetResult.Result;
+            ProxerResult lSetResult = await lEditableProgress.CurrentProgress.Set(0);
+            Assert.IsTrue(lSetResult.Success);
+
+            await Task.Delay(2000);
+
+            lFetchAnimeResult =
+                await this._controlPanel.Anime.GetNewObject();
+            Assert.IsNotNull(lFetchAnimeResult.Result);
+            Assert.IsNotEmpty(lFetchAnimeResult.Result);
+
+            lEditableProgress = lFetchAnimeResult.Result.First().Progress;
+            lGetResult = await lEditableProgress.CurrentProgress.Get();
+            Assert.IsTrue(lGetResult.Success);
+            Assert.AreEqual(lGetResult.Result, 0);
+            lSetResult = await lEditableProgress.CurrentProgress.Set(lProgress);
+            Assert.IsTrue(lSetResult.Success);
+
+            await Task.Delay(2000);
         }
 
         [Test, Order(1)]
         public async Task MangaBookmarkTest()
         {
-            this._controlPanel = new UserControlPanel(SenpaiTest.Senpai);
+            this._controlPanel = this._controlPanel ?? new UserControlPanel(SenpaiTest.Senpai);
 
             ProxerResult<IEnumerable<AnimeMangaBookmarkObject<Manga>>> lFetchMangaResult =
                 await this._controlPanel.MangaBookmarks.GetObject();
@@ -168,7 +189,7 @@ namespace Azuria.Test
         [Test, Order(1)]
         public async Task MangaChronicTest()
         {
-            this._controlPanel = new UserControlPanel(SenpaiTest.Senpai);
+            this._controlPanel = this._controlPanel ?? new UserControlPanel(SenpaiTest.Senpai);
 
             ProxerResult<IEnumerable<AnimeMangaChronicObject<Manga>>> lFetchMangaResult =
                 await this._controlPanel.MangaChronic.GetObject();
@@ -187,7 +208,7 @@ namespace Azuria.Test
         [Test, Order(1)]
         public async Task MangaFavouriteTest()
         {
-            this._controlPanel = new UserControlPanel(SenpaiTest.Senpai);
+            this._controlPanel = this._controlPanel ?? new UserControlPanel(SenpaiTest.Senpai);
 
             ProxerResult<IEnumerable<AnimeMangaFavouriteObject<Manga>>> lFetchMangaResult =
                 await this._controlPanel.MangaFavourites.GetObject();
@@ -202,7 +223,7 @@ namespace Azuria.Test
         [Test, Order(1)]
         public async Task MangaUcpObjectTest()
         {
-            this._controlPanel = new UserControlPanel(SenpaiTest.Senpai);
+            this._controlPanel = this._controlPanel ?? new UserControlPanel(SenpaiTest.Senpai);
 
             ProxerResult<IEnumerable<AnimeMangaUcpObject<Manga>>> lFetchMangaResult =
                 await this._controlPanel.Manga.GetObject();

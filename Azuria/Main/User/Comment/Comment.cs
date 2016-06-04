@@ -16,20 +16,20 @@ namespace Azuria.Main.User.Comment
     /// </summary>
     public class Comment<T> where T : IAnimeMangaObject
     {
-        internal Comment([NotNull] Azuria.User author, T animeMangaObject, int sterne, [NotNull] string kommentar,
+        internal Comment([NotNull] Azuria.User author, T animeMangaObject, int rating, [NotNull] string comment,
             AnimeMangaProgressState progressState)
         {
             this.AnimeMangaObject = animeMangaObject;
             this.Author = author;
-            this.Rating = sterne;
-            this.Content = kommentar;
+            this.Rating = rating;
+            this.Content = comment;
             this.ProgressState = progressState;
             this.SubRatings = new Dictionary<RatingCategory, int>();
         }
 
-        internal Comment([NotNull] Azuria.User author, T animeMangaObject, int sterne, [NotNull] string kommentar,
+        internal Comment([NotNull] Azuria.User author, T animeMangaObject, int rating, [NotNull] string comment,
             Dictionary<RatingCategory, int> subRatings, AnimeMangaProgressState progressState)
-            : this(author, animeMangaObject, sterne, kommentar, progressState)
+            : this(author, animeMangaObject, rating, comment, progressState)
         {
             this.SubRatings = subRatings;
         }

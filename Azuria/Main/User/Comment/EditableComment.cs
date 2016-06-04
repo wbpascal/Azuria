@@ -229,7 +229,7 @@ namespace Azuria.Main.User.Comment
                     Convert.ToInt32(
                         lEpisodeSelectNode.ChildNodes.FirstOrDefault(
                             htmlNode => htmlNode.Attributes.Contains("selected"))?
-                            .GetAttributeValue("value", "-1") ?? "-1"),
+                            .GetAttributeValue("value", "-1") ?? "0"),
                     lEpisodeSelectNode.ChildNodes.Count(htmlNode => htmlNode.Name.Equals("option")) - 1);
 
             Dictionary<RatingCategory, int> lSubRatings = new Dictionary<RatingCategory, int>();

@@ -26,6 +26,11 @@ namespace Azuria.Utilities.Extensions
                        .ImplementedInterfaces.Any(type => type.Name.Equals(toCheck.Name));
         }
 
+        internal static bool ImplementsInterface([NotNull] this Type type, [NotNull] Type interfaceToCheck)
+        {
+            return type.GetTypeInfo().ImplementedInterfaces.Contains(interfaceToCheck);
+        }
+
         #endregion
     }
 }

@@ -81,8 +81,7 @@ namespace Azuria.Main.Search
                 foreach (HtmlNode childNode in lNode.ChildNodes.Where(node => node.Name.Equals("tr")).Skip(1))
                 {
                     if (typeof(T) == typeof(IAnimeMangaObject) ||
-                        (typeof(T).HasParameterlessConstructor() &&
-                         Activator.CreateInstance(typeof(T), true) is IAnimeMangaObject))
+                        typeof(T).ImplementsInterface(typeof(IAnimeMangaObject)))
                     {
                         IAnimeMangaObject lAnimeMangaObject = this.GetSearchResultObjectAnimeManga(childNode);
                         if (lAnimeMangaObject != null) lSearchResults.Add((T) lAnimeMangaObject);
