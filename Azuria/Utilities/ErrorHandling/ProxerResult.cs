@@ -93,14 +93,13 @@ namespace Azuria.Utilities.ErrorHandling
         #region Properties
 
         /// <summary>
-        ///     Gibt die Fehler zurück, die während der Ausführung aufgetreten sind, oder legt diese fest.
+        ///     Gets the exceptions that were thrown during method execution.
         /// </summary>
-        /// <value>Ist null, wenn <see cref="Success" /> == true</value>
         [NotNull]
         public IEnumerable<Exception> Exceptions { get; set; }
 
         /// <summary>
-        ///     Gibt zurück, ob die Methode erfolg hatte, oder legt dieses fest.
+        ///     Gets a value that indicates whether the method executed successfully.
         /// </summary>
         public bool Success { get; set; }
 

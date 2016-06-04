@@ -8,9 +8,6 @@ namespace Azuria.EventArguments
     ///     Represents the event details for new <see cref="Anime" /> or <see cref="Manga" />
     ///     <see cref="Senpai.AmUpdateNotificationRaised">notifications</see>.
     /// </summary>
-    /// <seealso cref="FriendNotificationEventArgs" />
-    /// <seealso cref="NewsNotificationEventArgs" />
-    /// <seealso cref="PmNotificationEventArgs" />
     public class AmNotificationEventArgs : INotificationEventArgs
     {
         private readonly Senpai _senpai;

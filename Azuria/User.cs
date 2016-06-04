@@ -19,22 +19,22 @@ using Newtonsoft.Json;
 namespace Azuria
 {
     /// <summary>
-    ///     Repräsentiert einen Proxer-Benutzer
+    ///     Represents a user of proxer.
     /// </summary>
     public class User : ISearchableObject
     {
         /// <summary>
-        ///     Representiert das System.
+        ///     Represents the system as a user.
         /// </summary>
         [NotNull] public static User System = new User("System", -1, new Senpai());
 
         private readonly Senpai _senpai;
 
         /// <summary>
-        ///     Initialisiert die Klasse mit allen Standardeinstellungen.
+        ///     Initialises a new instance of the class.
         /// </summary>
-        /// <param name="userId">Die ID des Benutzers</param>
-        /// <param name="senpai">Wird benötigt um einige Eigenschaften abzurufen</param>
+        /// <param name="userId">The id of the user.</param>
+        /// <param name="senpai">The user that makes the requests.</param>
         public User(int userId, [NotNull] Senpai senpai)
         {
             this._senpai = senpai;
@@ -50,8 +50,8 @@ namespace Azuria
                 IsInitialisedOnce = false
             };
             this.AnimeChronic = new InitialisableProperty<IEnumerable<AnimeMangaChronicObject<Anime>>>(this.InitChronic);
-            this.FavouriteAnime = new InitialisableProperty<IEnumerable<Anime>>(this.InitAnime);
-            this.FavouriteManga = new InitialisableProperty<IEnumerable<Manga>>(this.InitManga);
+            this.AnimeFavourites = new InitialisableProperty<IEnumerable<Anime>>(this.InitAnime);
+            this.MangaFavourites = new InitialisableProperty<IEnumerable<Manga>>(this.InitManga);
             this.Friends = new InitialisableProperty<IEnumerable<User>>(this.InitFriends);
             this.Info = new InitialisableProperty<string>(this.InitInfos);
             this.InfoHtml = new InitialisableProperty<string>(this.InitInfos);
@@ -101,8 +101,7 @@ namespace Azuria
         #region Properties
 
         /// <summary>
-        ///     Gibt alle <see cref="Anime">Anime</see> zurück, die der <see cref="User">Benutzer</see>
-        ///     in seinem Profil markiert hat.
+        ///     Gets all <see cref="Main.Anime" /> the <see cref="User" /> has in his profile.
         /// </summary>
         [NotNull]
         public
@@ -110,67 +109,54 @@ namespace Azuria
             Anime { get; }
 
         /// <summary>
-        ///     Gibt die Chronik des Benutzers zurück.
+        ///     Gets the chronic entries of the 50 most recent of the user that are <see cref="Main.Anime">Anime</see>.
         /// </summary>
         [NotNull]
         public InitialisableProperty<IEnumerable<AnimeMangaChronicObject<Anime>>> AnimeChronic { get; }
 
         /// <summary>
-        ///     Gibt den Link zu dem Avatar des Benutzers zurück.
+        ///     Gets all favourites of the user that are <see cref="Main.Anime">Anime</see>.
+        /// </summary>
+        [NotNull]
+        public InitialisableProperty<IEnumerable<Anime>> AnimeFavourites { get; }
+
+        /// <summary>
+        ///     Gets the avatar of the user.
         /// </summary>
         [NotNull]
         public InitialisableProperty<Uri> Avatar { get; }
 
         /// <summary>
-        ///     Gibt die Anime-Favouriten des Benutzers zurück.
-        /// </summary>
-        [NotNull]
-        public InitialisableProperty<IEnumerable<Anime>> FavouriteAnime { get; }
-
-        /// <summary>
-        ///     Gibt die Manga-Favouriten des Benutzers zurück.
-        /// </summary>
-        [NotNull]
-        public InitialisableProperty<IEnumerable<Manga>> FavouriteManga { get; }
-
-        /// <summary>
-        ///     Gibt die Freunde des Benutzers in einer Liste zurück.
+        ///     Gets an enumeration containing the friends of the user.
         /// </summary>
         [NotNull]
         public InitialisableProperty<IEnumerable<User>> Friends { get; }
 
         /// <summary>
-        ///     Gibt die ID des Benutzers zurück.
+        ///     Gets the id of the user.
         /// </summary>
         public int Id { get; }
 
         /// <summary>
-        ///     Gibt die Info des Benutzers als Text-Dokument zurück.
-        ///     Dabei werden sämtliche Html-Eigenschaften ignoriert.
+        ///     Gets the info of the user. All HTML elements are ignored.
         /// </summary>
         [NotNull]
         public InitialisableProperty<string> Info { get; }
 
         /// <summary>
-        ///     Gibt die Info des Benutzers als Html-Dokument zurück.
+        ///     Gets the info of the user as an HTML document.
         /// </summary>
         [NotNull]
         public InitialisableProperty<string> InfoHtml { get; }
 
         /// <summary>
-        ///     Gibt an, ob das Objekt bereits Initialisiert ist.
-        /// </summary>
-        public bool IsInitialized => this.IsFullyInitialised();
-
-        /// <summary>
-        ///     Gibt zurück, ob der Benutzter zur Zeit online ist.
+        ///     Gets whether the user is currently online.
         /// </summary>
         [NotNull]
         public InitialisableProperty<bool> IsOnline { get; }
 
         /// <summary>
-        ///     Gibt alle <see cref="Manga">Manga</see> zurück, die der <see cref="User">Benutzer</see>
-        ///     in seinem Profil markiert hat.
+        ///     Gets all <see cref="Main.Manga" /> the <see cref="User" /> has in his profile.
         /// </summary>
         [NotNull]
         public
@@ -178,31 +164,37 @@ namespace Azuria
             Manga { get; }
 
         /// <summary>
-        ///     Gibt die Chronik des Benutzers zurück.
+        ///     Gets the chronic entries of the 50 most recent of the user that are <see cref="Main.Manga">Manga</see>.
         /// </summary>
         [NotNull]
         public InitialisableProperty<IEnumerable<AnimeMangaChronicObject<Manga>>> MangaChronic { get; }
 
         /// <summary>
-        ///     Gibt zurück, wie viele Punkte der Benutzter momentan hat.
+        ///     Gets all favourites of the user that are <see cref="Main.Manga">Manga</see>.
+        /// </summary>
+        [NotNull]
+        public InitialisableProperty<IEnumerable<Manga>> MangaFavourites { get; }
+
+        /// <summary>
+        ///     Gets the current number of total points the user has.
         /// </summary>
         [NotNull]
         public InitialisableProperty<int> Points { get; }
 
         /// <summary>
-        ///     Gibt den Rangnamen des Benutzers zurück.
+        ///     Gets the name of the rank the user is currently in.
         /// </summary>
         [NotNull]
         public InitialisableProperty<string> Ranking { get; }
 
         /// <summary>
-        ///     Gibt den Status des Benutzers zurück.
+        ///     Gets the current status of the user.
         /// </summary>
         [NotNull]
         public InitialisableProperty<string> Status { get; }
 
         /// <summary>
-        ///     Gibt den Benutzernamen des Benutzers zurück.
+        ///     Gets the username of the user.
         /// </summary>
         [NotNull]
         public InitialisableProperty<string> UserName { get; }
@@ -212,17 +204,17 @@ namespace Azuria
         #region
 
         /// <summary>
-        ///     Überprüft, ob zwei Benutzter Freunde sind.
+        ///     Checks if two users are friends.
         /// </summary>
-        /// <param name="user1">Benutzer 1</param>
-        /// <param name="user2">Benutzer 2</param>
-        /// <returns>Benutzer sind Freunde. True oder False.</returns>
+        /// <param name="user1">The first user.</param>
+        /// <param name="user2">The second user.</param>
+        /// <returns>If the action was successful and if it was whether they are friends.</returns>
         [NotNull]
         public static async Task<ProxerResult<bool>> AreUserFriends([NotNull] User user1, [NotNull] User user2)
         {
             return
                 new ProxerResult<bool>(
-                    (await user1.Friends.GetObject()).OnError(new User[0]).Any(item => item.Id == user2.Id));
+                    (await user1.Friends.GetObject()).OnError(new User[0])?.Any(item => item.Id == user2.Id) ?? false);
         }
 
         [ItemNotNull]
@@ -286,13 +278,11 @@ namespace Azuria
         }
 
         /// <summary>
-        ///     Gibt die Kommentare des <see cref="User" /> chronologisch geordnet zurück.
-        ///     <para>(Vererbt von <see cref="IAnimeMangaObject" />)</para>
+        ///     Gets the comments of the <see cref="User" /> in a chronological order.
         /// </summary>
-        /// <exception cref="WrongResponseException">Wird ausgelöst, wenn die Antwort des Servers nicht der Erwarteten entspricht.</exception>
-        /// <param name="startIndex">Der Start-Index der ausgegebenen Kommentare.</param>
-        /// <param name="count">Die Anzahl der ausgegebenen Kommentare ab dem angegebenen <paramref name="startIndex" />.</param>
-        /// <returns>Eine Aufzählung mit den Kommentaren.</returns>
+        /// <param name="startIndex">The offset of the comments parsed.</param>
+        /// <param name="count">The count of the returned comments starting at <paramref name="startIndex" />.</param>
+        /// <returns>If the action was successful and if it was, an enumeration of the comments.</returns>
         [ItemNotNull]
         public async Task<ProxerResult<IEnumerable<Comment<IAnimeMangaObject>>>> GetComments(int startIndex, int count)
         {
@@ -304,64 +294,7 @@ namespace Azuria
         }
 
         /// <summary>
-        ///     Gibt den Benutzernamen eines Benutzers mit der spezifizierten ID zurück.
-        /// </summary>
-        /// <exception cref="WrongResponseException">Wird ausgelöst, wenn die Antwort des Servers nicht der Erwarteten entspricht.</exception>
-        /// <exception cref="ArgumentNullException">
-        ///     Wird ausgelöst, wenn <paramref name="senpai" /> null (oder Nothing in Visual
-        ///     Basic) ist.
-        /// </exception>
-        /// <exception cref="NotLoggedInException">
-        ///     Wird ausgelöst, wenn <paramref name="senpai">Benutzer</paramref> nicht
-        ///     eingeloggt ist.
-        /// </exception>
-        /// <exception cref="NoAccessException">
-        ///     Wird ausgelöst, wenn der <paramref name="senpai">Benutzer</paramref> nicht die
-        ///     nötigen Rechte für die Aktion hat.
-        /// </exception>
-        /// <param name="id">Die ID des Benutzers</param>
-        /// <param name="senpai">Login-Cookies werden benötigt</param>
-        /// <returns></returns>
-        [ItemNotNull]
-        [Obsolete("Erzeuge ein neues Objekt mit der Id und rufe den Username des Objektes ab.", true)]
-        public static async Task<ProxerResult<string>> GetUNameFromId(int id, [NotNull] Senpai senpai)
-        {
-            HtmlDocument lDocument = new HtmlDocument();
-            Func<string, ProxerResult> lCheckFunc = s =>
-            {
-                if (!string.IsNullOrEmpty(s) &&
-                    s.Equals(
-                        "<div class=\"inner\">\n<h3>Du hast keine Berechtigung um diese Seite zu betreten.</h3>\n</div>"))
-                    return new ProxerResult(new Exception[] {new NoAccessException(nameof(GetUNameFromId))});
-
-                return new ProxerResult();
-            };
-
-            ProxerResult<string> lResult =
-                await
-                    HttpUtility.GetResponseErrorHandling(
-                        new Uri("https://proxer.me/user/" + id + "/overview?format=raw"),
-                        senpai.LoginCookies,
-                        senpai, new[] {lCheckFunc});
-
-            if (!lResult.Success)
-                return new ProxerResult<string>(lResult.Exceptions);
-
-            string lResponse = lResult.Result;
-
-            try
-            {
-                lDocument.LoadHtml(lResponse);
-                return new ProxerResult<string>(lDocument.GetElementbyId("pageMetaAjax").InnerText.Split(' ')[1]);
-            }
-            catch
-            {
-                return new ProxerResult<string>((await ErrorHandler.HandleError(senpai, lResponse, false)).Exceptions);
-            }
-        }
-
-        /// <summary>
-        ///     Initialisiert die Eigenschaften der Klasse.
+        ///     Initialises the object.
         /// </summary>
         [ItemNotNull]
         [Obsolete("Bitte benutze die Methoden der jeweiligen Eigenschaften, um sie zu initalisieren!")]
@@ -406,7 +339,7 @@ namespace Azuria
 
                 lDocument.LoadHtml(lResponse);
 
-                this.FavouriteAnime.SetInitialisedObject(lDocument.DocumentNode.ChildNodes[5].ChildNodes.Where(
+                this.AnimeFavourites.SetInitialisedObject(lDocument.DocumentNode.ChildNodes[5].ChildNodes.Where(
                     x =>
                         x.HasAttributes && x.Attributes.Contains("href") &&
                         x.Attributes["href"].Value.StartsWith("/info/"))
@@ -681,7 +614,7 @@ namespace Azuria
             {
                 lDocument.LoadHtml(lResponse);
 
-                this.FavouriteManga.SetInitialisedObject(lDocument.DocumentNode.ChildNodes[5].ChildNodes.Where(
+                this.MangaFavourites.SetInitialisedObject(lDocument.DocumentNode.ChildNodes[5].ChildNodes.Where(
                     x =>
                         x.HasAttributes && x.Attributes.Contains("href") &&
                         x.Attributes["href"].Value.StartsWith("/info/"))
@@ -855,20 +788,12 @@ namespace Azuria
         }
 
         /// <summary>
-        ///     Sendet den <see cref="User">Benutzer</see> eine Freundschaftsanfrage.
+        ///     Sends the user a friend request.
         /// </summary>
-        /// <exception cref="WrongResponseException">Wird ausgelöst, wenn die Antwort des Servers nicht der Erwarteten entspricht.</exception>
-        /// <exception cref="NotLoggedInException">
-        ///     Wird ausgelöst, wenn der <see cref="Senpai">Benutzer</see>, der die Anfrage
-        ///     schickt, nicht eingeloggt ist.
-        /// </exception>
-        /// <exception cref="InvalidUserException">
-        ///     Wird ausgelöst, wenn der <see cref="Senpai">Benutzer</see>, an den die Anfrage
-        ///     geschickt wird, nicht gültig ist.
-        /// </exception>
-        /// <returns>Einen boolischen Wert, der angibt, ob die Aktion erfolgreich war.</returns>
+        /// <param name="senpai">The user that sends the friend request.</param>
+        /// <returns>If the action was successful.</returns>
         [ItemNotNull]
-        public async Task<ProxerResult> SendFriendRequest()
+        public async Task<ProxerResult> SendFriendRequest([NotNull] Senpai senpai)
         {
             if (this.Id == -1) return new ProxerResult(new[] {new InvalidUserException()});
 
@@ -880,8 +805,8 @@ namespace Azuria
                 await
                     HttpUtility.PostResponseErrorHandling(new Uri("https://proxer.me/user/" + this.Id + "?format=json"),
                         lPostArgs,
-                        this._senpai.LoginCookies,
-                        this._senpai);
+                        senpai.LoginCookies,
+                        senpai);
 
             if (!lResult.Success)
                 return new ProxerResult(lResult.Exceptions);
@@ -904,10 +829,10 @@ namespace Azuria
         }
 
         /// <summary>
-        ///     Gibt einen string zurück, der das aktuelle Objekt repräsentiert.
+        ///     Returns a string that represents the current object.
         /// </summary>
         /// <returns>
-        ///     Einen string, der das aktuelle Objekt repräsentiert.
+        ///     A string that represents the current object.
         /// </returns>
         public override string ToString()
         {

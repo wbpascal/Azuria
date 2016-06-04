@@ -6,9 +6,6 @@ namespace Azuria.EventArguments
     /// <summary>
     ///     Represents the event details for <see cref="Senpai.FriendNotificationRaised">news notifications</see>.
     /// </summary>
-    /// <seealso cref="AmNotificationEventArgs" />
-    /// <seealso cref="FriendNotificationEventArgs" />
-    /// <seealso cref="PmNotificationEventArgs" />
     public class NewsNotificationEventArgs : INotificationEventArgs
     {
         private readonly Senpai _senpai;

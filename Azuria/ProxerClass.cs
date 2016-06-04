@@ -11,8 +11,7 @@ using JetBrains.Annotations;
 namespace Azuria
 {
     /// <summary>
-    ///     Eine Klasse, die alle Funktionen beherbergt, die Funktionen von Proxer.Me darstellen, aber nicht in andere Klassen
-    ///     reinpassen.
+    ///     Some random functions that are to be moved later.
     /// </summary>
     public static class ProxerClass
     {

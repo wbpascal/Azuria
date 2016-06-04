@@ -137,7 +137,7 @@ namespace Azuria.Test
         public async Task SendFriendsRequestTest()
         {
             Assert.IsNotNull(this._senpai.Me);
-            ProxerResult lInvalidUserResut = await User.System.SendFriendRequest();
+            ProxerResult lInvalidUserResut = await User.System.SendFriendRequest(this._senpai);
 
             Assert.IsFalse(lInvalidUserResut.Success);
             Assert.IsNotEmpty(lInvalidUserResut.Exceptions);

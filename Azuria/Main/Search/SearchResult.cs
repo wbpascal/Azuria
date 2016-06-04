@@ -31,12 +31,13 @@ namespace Azuria.Main.Search
         #region Properties
 
         /// <summary>
-        ///     Gibt zurück, ob die Suche vollendet ist.
+        ///     Gets whether no more new search results are available.
         /// </summary>
         public bool SearchFinished { get; private set; }
 
         /// <summary>
-        ///     Gibt die Suchergebnisse zurück.
+        ///     Gets all search results that were already fetched. To fetch the next one execute
+        ///     <see cref="GetNextSearchResults" />.
         /// </summary>
         [NotNull]
         public IEnumerable<T> SearchResults { get; private set; } = new List<T>();
