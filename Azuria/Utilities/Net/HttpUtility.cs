@@ -160,6 +160,16 @@ namespace Azuria.Utilities.Net
         internal static async Task<HttpResponseMessage> GetWebRequestResponse([NotNull] Uri url,
             [CanBeNull] CookieContainer cookies, [CanBeNull] Dictionary<string, string> headers)
         {
+#if PORTABLE
+            using (
+                HttpClient lClient =
+                    new HttpClient(new NativeMessageHandler
+                    {
+                        AllowAutoRedirect = true,
+                        CookieContainer = cookies,
+                        UseCookies = true
+                    }))
+#else
             using (
                 HttpClient lClient =
                     new HttpClient(new HttpClientHandler
@@ -168,6 +178,7 @@ namespace Azuria.Utilities.Net
                         CookieContainer = cookies,
                         UseCookies = true
                     }))
+#endif
             {
                 lClient.Timeout = TimeSpan.FromSeconds(Timeout);
                 lClient.DefaultRequestHeaders.TryAddWithoutValidation("User-Agent", UserAgent);
@@ -314,6 +325,16 @@ namespace Azuria.Utilities.Net
             [CanBeNull] CookieContainer cookies, [NotNull] Dictionary<string, string> postArgs,
             [CanBeNull] Dictionary<string, string> headers)
         {
+#if PORTABLE
+            using (
+                HttpClient lClient =
+                    new HttpClient(new NativeMessageHandler
+                    {
+                        AllowAutoRedirect = true,
+                        CookieContainer = cookies,
+                        UseCookies = true
+                    }))
+#else
             using (
                 HttpClient lClient =
                     new HttpClient(new HttpClientHandler
@@ -322,6 +343,7 @@ namespace Azuria.Utilities.Net
                         CookieContainer = cookies,
                         UseCookies = true
                     }))
+#endif
             {
                 lClient.Timeout = TimeSpan.FromSeconds(Timeout);
                 lClient.DefaultRequestHeaders.TryAddWithoutValidation("User-Agent", UserAgent);
