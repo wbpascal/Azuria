@@ -21,7 +21,7 @@ namespace Azuria.Notifications
         public delegate void FriendRequestNotificationEventHandler(
             Senpai sender, IEnumerable<FriendRequestNotification> e);
 
-        private static readonly double TimerDelay = TimeSpan.FromSeconds(15).TotalMilliseconds;
+        private static readonly double TimerDelay = TimeSpan.FromMinutes(15).TotalMilliseconds;
 
         private static readonly Timer Timer = new Timer(TimerDelay)
         {

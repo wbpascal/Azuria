@@ -21,7 +21,7 @@ namespace Azuria.Notifications
         public delegate void PrivateMessageNotificationEventHandler(
             Senpai sender, IEnumerable<PrivateMessageNotification> e);
 
-        private static readonly double TimerDelay = TimeSpan.FromSeconds(15).TotalMilliseconds;
+        private static readonly double TimerDelay = TimeSpan.FromMinutes(15).TotalMilliseconds;
 
         private static readonly Timer Timer = new Timer(TimerDelay)
         {

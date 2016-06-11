@@ -20,7 +20,7 @@ namespace Azuria.Notifications
         /// <param name="e">The notifications.</param>
         public delegate void AnimeMangaNotificationEventHandler(Senpai sender, IEnumerable<AnimeMangaNotification> e);
 
-        private static readonly double TimerDelay = TimeSpan.FromSeconds(15).TotalMilliseconds;
+        private static readonly double TimerDelay = TimeSpan.FromMinutes(15).TotalMilliseconds;
 
         private static readonly Timer Timer = new Timer(TimerDelay)
         {

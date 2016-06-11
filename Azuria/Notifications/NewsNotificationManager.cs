@@ -20,7 +20,7 @@ namespace Azuria.Notifications
         /// <param name="e">The notifications. Maximum length of 50 elements.</param>
         public delegate void NewsNotificationEventHandler(Senpai sender, IEnumerable<NewsNotification> e);
 
-        private static readonly double TimerDelay = TimeSpan.FromSeconds(15).TotalMilliseconds;
+        private static readonly double TimerDelay = TimeSpan.FromMinutes(15).TotalMilliseconds;
 
         private static readonly Timer Timer = new Timer(TimerDelay)
         {
