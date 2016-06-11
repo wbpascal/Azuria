@@ -1,0 +1,122 @@
+﻿using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using Azuria.Utilities.ErrorHandling;
+using Azuria.Utilities.Net;
+using HtmlAgilityPack;
+using JetBrains.Annotations;
+
+namespace Azuria.Notifications
+{
+    /// <summary>
+    /// </summary>
+    public class FriendRequestNotificationEnumerator : INotificationEnumerator<FriendRequestNotification>
+    {
+        private readonly Senpai _senpai;
+        private int _itemIndex = -1;
+        private FriendRequestNotification[] _notifications = new FriendRequestNotification[0];
+
+        internal FriendRequestNotificationEnumerator(Senpai senpai)
+        {
+            this._senpai = senpai;
+        }
+
+        #region Geerbt
+
+        /// <summary>Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.</summary>
+        public void Dispose()
+        {
+            //nothing to do
+        }
+
+        /// <summary>Advances the enumerator to the next element of the collection.</summary>
+        /// <returns>
+        ///     true if the enumerator was successfully advanced to the next element; false if the enumerator has passed the
+        ///     end of the collection.
+        /// </returns>
+        /// <exception cref="T:System.InvalidOperationException">The collection was modified after the enumerator was created. </exception>
+        public bool MoveNext()
+        {
+            this._itemIndex++;
+            if (this._notifications.Any()) return this._itemIndex < this._notifications.Length;
+
+            Task<ProxerResult> lGetNotificationsTask = this.GetNotifications();
+            lGetNotificationsTask.Wait();
+            return lGetNotificationsTask.Result.Success && this._notifications.Any();
+        }
+
+        /// <summary>Sets the enumerator to its initial position, which is before the first element in the collection.</summary>
+        /// <exception cref="T:System.InvalidOperationException">The collection was modified after the enumerator was created. </exception>
+        public void Reset()
+        {
+            this._itemIndex = -1;
+            this._notifications = new FriendRequestNotification[0];
+        }
+
+        /// <summary>Gets the element in the collection at the current position of the enumerator.</summary>
+        /// <returns>The element in the collection at the current position of the enumerator.</returns>
+        public FriendRequestNotification Current => this._notifications[this._itemIndex];
+
+        /// <summary>Gets the current element in the collection.</summary>
+        /// <returns>The current element in the collection.</returns>
+        object IEnumerator.Current => this.Current;
+
+        #endregion
+
+        #region
+
+        [ItemNotNull]
+        private async Task<ProxerResult> GetNotifications()
+        {
+            HtmlDocument lDocument = new HtmlDocument();
+            ProxerResult<string> lResult =
+                await
+                    HttpUtility.GetResponseErrorHandling(
+                        new Uri("https://proxer.me/user/my/connections?format=raw"),
+                        this._senpai.LoginCookies,
+                        this._senpai);
+
+            if (!lResult.Success)
+                return new ProxerResult(lResult.Exceptions);
+
+            string lResponse = lResult.Result;
+
+            try
+            {
+                lDocument.LoadHtml(lResponse);
+
+                IEnumerable<HtmlNode> lNodes = lDocument.DocumentNode.DescendantsAndSelf().Where(x => x.Name == "tr");
+
+                this._notifications = (from curNode in lNodes
+                    where
+                        curNode.Id.StartsWith("entry") &&
+                        curNode.FirstChild.FirstChild.Attributes["class"].Value
+                            .Equals
+                            ("accept")
+                    let lUserId =
+                        Convert.ToInt32(curNode.Id.Replace("entry", ""))
+                    let lUserName =
+                        curNode.InnerText.Split("  ".ToCharArray())[0]
+                    let lDatumSplit =
+                        curNode.ChildNodes[4].InnerText.Split('-')
+                    let lDatum =
+                        new DateTime(Convert.ToInt32(lDatumSplit[0]),
+                            Convert.ToInt32(lDatumSplit[1]),
+                            Convert.ToInt32(lDatumSplit[2]))
+                    select
+                        new FriendRequestNotification(lUserName, lUserId, lDatum,
+                            this._senpai)).ToArray();
+
+                return new ProxerResult();
+            }
+            catch
+            {
+                return new ProxerResult((await ErrorHandler.HandleError(this._senpai, lResponse, false)).Exceptions);
+            }
+        }
+
+        #endregion
+    }
+}

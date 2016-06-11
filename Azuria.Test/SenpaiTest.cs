@@ -45,34 +45,7 @@ namespace Azuria.Test
         [Test]
         public async Task ForcePropertyReloadTest()
         {
-            AnimeMangaNotificationCollection lAnimeMangaNotificationCollection = Senpai.AnimeMangaNotifications;
-            FriendRequestNotificationCollection lFriendRequestsNotification = Senpai.FriendRequestsNotification;
-            NewsNotificationCollection lNewsNotification = Senpai.NewsNotification;
-            PrivateMessageNotificationCollection lPrivateMessageNotifications = Senpai.PrivateMessages;
-
-            Assert.AreSame(lAnimeMangaNotificationCollection, Senpai.AnimeMangaNotifications);
-            Assert.AreSame(lFriendRequestsNotification, Senpai.FriendRequestsNotification);
-            Assert.AreSame(lNewsNotification, Senpai.NewsNotification);
-            Assert.AreSame(lPrivateMessageNotifications, Senpai.PrivateMessages);
-
-            ProxerResult lPropertyReloadResult = await Senpai.ForcePropertyReload();
-            Assert.IsTrue(lPropertyReloadResult.Success);
-
-            Assert.AreNotSame(lAnimeMangaNotificationCollection, Senpai.AnimeMangaNotifications);
-            Assert.AreNotSame(lFriendRequestsNotification, Senpai.FriendRequestsNotification);
-            Assert.AreNotSame(lNewsNotification, Senpai.NewsNotification);
-            Assert.AreNotSame(lPrivateMessageNotifications, Senpai.PrivateMessages);
-        }
-
-        [Test]
-        public void InitNotificationsTest()
-        {
-            ProxerResult lValid = Senpai.InitNotifications();
-            ProxerResult lNotLoggedIn = new Senpai().InitNotifications();
-
-            Assert.IsTrue(lValid.Success);
-            Assert.IsTrue(!lNotLoggedIn.Success &&
-                          lNotLoggedIn.Exceptions.Any(exception => exception.GetType() == typeof(NotLoggedInException)));
+            //TODO: Test ForceCheckLogin
         }
 
         [Test]

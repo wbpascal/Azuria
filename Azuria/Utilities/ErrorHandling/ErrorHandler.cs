@@ -13,7 +13,7 @@ namespace Azuria.Utilities.ErrorHandling
         internal static async Task<ProxerResult> HandleError(Senpai senpai, string wrongHtml, bool checkedLogin)
         {
             ProxerResult<bool> lCheckResult;
-            if (!checkedLogin && (lCheckResult = await senpai.CheckLogin()).Success && !lCheckResult.Result)
+            if (!checkedLogin && (lCheckResult = await senpai.ForceCheckLogin()).Success && !lCheckResult.Result)
             {
                 return new ProxerResult(new Exception[] {new NotLoggedInException(senpai)});
             }

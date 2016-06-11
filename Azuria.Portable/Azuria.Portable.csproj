@@ -45,24 +45,6 @@
     <Compile Include="..\Azuria\Community\ConferenceHelper\MessagesModel.cs">
       <Link>Community\ConferenceHelper\MessagesModel.cs</Link>
     </Compile>
-    <Compile Include="..\Azuria\EventArguments\AMNotificationEventArgs.cs">
-      <Link>EventArguments\AMNotificationEventArgs.cs</Link>
-    </Compile>
-    <Compile Include="..\Azuria\EventArguments\FriendNotificationEventArgs.cs">
-      <Link>EventArguments\FriendNotificationEventArgs.cs</Link>
-    </Compile>
-    <Compile Include="..\Azuria\EventArguments\INotificationEventArgs.cs">
-      <Link>EventArguments\INotificationEventArgs.cs</Link>
-    </Compile>
-    <Compile Include="..\Azuria\EventArguments\NewsNotificationEventArgs.cs">
-      <Link>EventArguments\NewsNotificationEventArgs.cs</Link>
-    </Compile>
-    <Compile Include="..\Azuria\EventArguments\NotificationEventArgsType.cs">
-      <Link>EventArguments\NotificationEventArgsType.cs</Link>
-    </Compile>
-    <Compile Include="..\Azuria\EventArguments\PMNotificationEventArgs.cs">
-      <Link>EventArguments\PMNotificationEventArgs.cs</Link>
-    </Compile>
     <Compile Include="..\Azuria\Exceptions\CaptchaException.cs">
       <Link>Exceptions\CaptchaException.cs</Link>
     </Compile>
@@ -183,11 +165,23 @@
     <Compile Include="..\Azuria\Notifications\AnimeMangaNotificationCollection.cs">
       <Link>Notifications\AnimeMangaNotificationCollection.cs</Link>
     </Compile>
+    <Compile Include="..\Azuria\Notifications\AnimeMangaNotificationEnumerator.cs">
+      <Link>Notifications\AnimeMangaNotificationEnumerator.cs</Link>
+    </Compile>
+    <Compile Include="..\Azuria\Notifications\AnimeMangaNotificationManager.cs">
+      <Link>Notifications\AnimeMangaNotificationManager.cs</Link>
+    </Compile>
     <Compile Include="..\Azuria\Notifications\FriendRequestNotification.cs">
       <Link>Notifications\FriendRequestNotification.cs</Link>
     </Compile>
     <Compile Include="..\Azuria\Notifications\FriendRequestNotificationCollection.cs">
       <Link>Notifications\FriendRequestNotificationCollection.cs</Link>
+    </Compile>
+    <Compile Include="..\Azuria\Notifications\FriendRequestNotificationEnumerator.cs">
+      <Link>Notifications\FriendRequestNotificationEnumerator.cs</Link>
+    </Compile>
+    <Compile Include="..\Azuria\Notifications\FriendRequestNotificationManager.cs">
+      <Link>Notifications\FriendRequestNotificationManager.cs</Link>
     </Compile>
     <Compile Include="..\Azuria\Notifications\INotification.cs">
       <Link>Notifications\INotification.cs</Link>
@@ -195,11 +189,20 @@
     <Compile Include="..\Azuria\Notifications\INotificationCollection.cs">
       <Link>Notifications\INotificationCollection.cs</Link>
     </Compile>
+    <Compile Include="..\Azuria\Notifications\INotificationEnumerator.cs">
+      <Link>Notifications\INotificationEnumerator.cs</Link>
+    </Compile>
     <Compile Include="..\Azuria\Notifications\NewsNotification.cs">
       <Link>Notifications\NewsNotification.cs</Link>
     </Compile>
     <Compile Include="..\Azuria\Notifications\NewsNotificationCollection.cs">
       <Link>Notifications\NewsNotificationCollection.cs</Link>
+    </Compile>
+    <Compile Include="..\Azuria\Notifications\NewsNotificationEnumerator.cs">
+      <Link>Notifications\NewsNotificationEnumerator.cs</Link>
+    </Compile>
+    <Compile Include="..\Azuria\Notifications\NewsNotificationManager.cs">
+      <Link>Notifications\NewsNotificationManager.cs</Link>
     </Compile>
     <Compile Include="..\Azuria\Notifications\NotificationType.cs">
       <Link>Notifications\NotificationType.cs</Link>
@@ -209,6 +212,12 @@
     </Compile>
     <Compile Include="..\Azuria\Notifications\PrivateMessageNotificationCollection.cs">
       <Link>Notifications\PrivateMessageNotificationCollection.cs</Link>
+    </Compile>
+    <Compile Include="..\Azuria\Notifications\PrivateMessageNotificationEnumerator.cs">
+      <Link>Notifications\PrivateMessageNotificationEnumerator.cs</Link>
+    </Compile>
+    <Compile Include="..\Azuria\Notifications\PrivateMessageNotificationManager.cs">
+      <Link>Notifications\PrivateMessageNotificationManager.cs</Link>
     </Compile>
     <Compile Include="..\Azuria\ProxerClass.cs">
       <Link>ProxerClass.cs</Link>
@@ -233,6 +242,9 @@
     </Compile>
     <Compile Include="..\Azuria\Utilities\Extensions\StringExtensions.cs">
       <Link>Utilities\Extensions\StringExtensions.cs</Link>
+    </Compile>
+    <Compile Include="..\Azuria\Utilities\Extensions\TimerExtensions.cs">
+      <Link>Utilities\Extensions\TimerExtensions.cs</Link>
     </Compile>
     <Compile Include="..\Azuria\Utilities\Extensions\TypeExtensions.cs">
       <Link>Utilities\Extensions\TypeExtensions.cs</Link>
