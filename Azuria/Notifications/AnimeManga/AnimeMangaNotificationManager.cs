@@ -15,12 +15,18 @@ namespace Azuria.Notifications.AnimeManga
     public static class AnimeMangaNotificationManager
     {
         /// <summary>
-        ///     Represents a method that is executed when new private message notifications are available.
         /// </summary>
         /// <param name="sender">The user that recieved the notifications.</param>
         /// <param name="e">The notifications.</param>
-        public delegate void AnimeMangaNotificationEventHandler(
-            Senpai sender, IEnumerable<AnimeMangaNotification<IAnimeMangaObject>> e);
+        public delegate void AnimeNotificationEventHandler(
+            Senpai sender, IEnumerable<AnimeMangaNotification<Anime>> e);
+
+        /// <summary>
+        /// </summary>
+        /// <param name="sender">The user that recieved the notifications.</param>
+        /// <param name="e">The notifications.</param>
+        public delegate void MangaNotificationEventHandler(
+            Senpai sender, IEnumerable<AnimeMangaNotification<Manga>> e);
 
         private static readonly double TimerDelay = TimeSpan.FromMinutes(15).TotalMilliseconds;
 
@@ -29,8 +35,11 @@ namespace Azuria.Notifications.AnimeManga
             AutoReset = true
         };
 
-        private static readonly Dictionary<Senpai, List<AnimeMangaNotificationEventHandler>> CallbackDictionary =
-            new Dictionary<Senpai, List<AnimeMangaNotificationEventHandler>>();
+        private static readonly Dictionary<Senpai, List<AnimeNotificationEventHandler>> AnimeCallbackDictionary =
+            new Dictionary<Senpai, List<AnimeNotificationEventHandler>>();
+
+        private static readonly Dictionary<Senpai, List<MangaNotificationEventHandler>> MangaCallbackDictionary =
+            new Dictionary<Senpai, List<MangaNotificationEventHandler>>();
 
         static AnimeMangaNotificationManager()
         {
@@ -42,17 +51,36 @@ namespace Azuria.Notifications.AnimeManga
 
         private static async void CheckNotifications()
         {
-            foreach (Senpai senpai in CallbackDictionary.Keys)
+            foreach (Senpai senpai in AnimeCallbackDictionary.Keys)
             {
                 ProxerResult<int> lNotificationCountResult = await GetAvailableNotificationsCount(senpai);
                 if (!lNotificationCountResult.Success || lNotificationCountResult.Result == 0) continue;
-                AnimeMangaNotification<IAnimeMangaObject>[] lNotifications =
-                    new AnimeMangaNotificationCollection(senpai).Take(lNotificationCountResult.Result).ToArray();
-                foreach (AnimeMangaNotificationEventHandler notificationCallback in CallbackDictionary[senpai])
+                AnimeMangaNotification<Anime>[] lNotifications =
+                    new AnimeMangaNotificationCollection<Anime>(senpai, lNotificationCountResult.Result).ToArray();
+                foreach (AnimeNotificationEventHandler notificationCallback in AnimeCallbackDictionary[senpai])
                 {
                     notificationCallback?.Invoke(senpai, lNotifications);
                 }
             }
+            foreach (Senpai senpai in MangaCallbackDictionary.Keys)
+            {
+                ProxerResult<int> lNotificationCountResult = await GetAvailableNotificationsCount(senpai);
+                if (!lNotificationCountResult.Success || lNotificationCountResult.Result == 0) continue;
+                AnimeMangaNotification<Manga>[] lNotifications =
+                    new AnimeMangaNotificationCollection<Manga>(senpai, lNotificationCountResult.Result).ToArray();
+                foreach (MangaNotificationEventHandler notificationCallback in MangaCallbackDictionary[senpai])
+                {
+                    notificationCallback?.Invoke(senpai, lNotifications);
+                }
+            }
+        }
+
+        /// <summary>
+        /// </summary>
+        /// <returns></returns>
+        public static INotificationCollection<AnimeMangaNotification<Anime>> GetAnimeNotifications(Senpai senpai)
+        {
+            return new AnimeMangaNotificationCollection<Anime>(senpai);
         }
 
         /// <summary>
@@ -87,20 +115,31 @@ namespace Azuria.Notifications.AnimeManga
         /// <summary>
         /// </summary>
         /// <returns></returns>
-        public static INotificationCollection<AnimeMangaNotification<IAnimeMangaObject>> GetNotifications(Senpai senpai)
+        public static INotificationCollection<AnimeMangaNotification<Manga>> GetMangaNotifications(Senpai senpai)
         {
-            return new AnimeMangaNotificationCollection(senpai);
+            return new AnimeMangaNotificationCollection<Manga>(senpai);
         }
 
         /// <summary>
         /// </summary>
         /// <param name="senpai"></param>
         /// <param name="eventHandler"></param>
-        public static void RegisterNotificationCallback(Senpai senpai, AnimeMangaNotificationEventHandler eventHandler)
+        public static void RegisterAnimeNotificationCallback(Senpai senpai, AnimeNotificationEventHandler eventHandler)
         {
-            if (CallbackDictionary.ContainsKey(senpai) && !CallbackDictionary[senpai].Contains(eventHandler))
-                CallbackDictionary[senpai].Add(eventHandler);
-            else CallbackDictionary.Add(senpai, new List<AnimeMangaNotificationEventHandler>(new[] {eventHandler}));
+            if (AnimeCallbackDictionary.ContainsKey(senpai) && !AnimeCallbackDictionary[senpai].Contains(eventHandler))
+                AnimeCallbackDictionary[senpai].Add(eventHandler);
+            else AnimeCallbackDictionary.Add(senpai, new List<AnimeNotificationEventHandler>(new[] {eventHandler}));
+        }
+
+        /// <summary>
+        /// </summary>
+        /// <param name="senpai"></param>
+        /// <param name="eventHandler"></param>
+        public static void RegisterMangaNotificationCallback(Senpai senpai, MangaNotificationEventHandler eventHandler)
+        {
+            if (MangaCallbackDictionary.ContainsKey(senpai) && !MangaCallbackDictionary[senpai].Contains(eventHandler))
+                MangaCallbackDictionary[senpai].Add(eventHandler);
+            else MangaCallbackDictionary.Add(senpai, new List<MangaNotificationEventHandler>(new[] {eventHandler}));
         }
 
         #endregion

@@ -1,14 +1,9 @@
 ﻿using System;
-using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
-using Azuria.Exceptions;
-using Azuria.Notifications;
 using Azuria.Test.Utility;
 using Azuria.Utilities.ErrorHandling;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NUnit.Framework;
-using Assert = NUnit.Framework.Assert;
 
 namespace Azuria.Test
 {
@@ -18,34 +13,16 @@ namespace Azuria.Test
         public static Senpai Senpai = new Senpai();
 
         [Test]
-        public async Task CheckLoginTest()
+        public async Task ForceCheckLoginTest()
         {
             Senpai lNewSenpai = new Senpai();
-            PrivateObject lPrivateSenpai = new PrivateObject(lNewSenpai);
-            ProxerResult<bool> lNotLoggedInResult = await (Task<ProxerResult<bool>>) lPrivateSenpai.Invoke("CheckLogin");
+            ProxerResult<bool> lNotLoggedInResult = await lNewSenpai.ForceCheckLogin();
 
             Assert.IsTrue(lNotLoggedInResult.Success);
             Assert.IsFalse(lNotLoggedInResult.Result);
             Assert.IsFalse(lNewSenpai.IsLoggedIn);
 
             await Task.Delay(2000);
-        }
-
-        [Test]
-        public async Task CheckNotificationsTest()
-        {
-            PrivateObject lPrivateSenpai = new PrivateObject(Senpai);
-            ProxerResult lNotLoggedInResult = await (Task<ProxerResult>) lPrivateSenpai.Invoke("CheckNotifications");
-
-            Assert.IsTrue(lNotLoggedInResult.Success);
-
-            await Task.Delay(2000);
-        }
-
-        [Test]
-        public async Task ForcePropertyReloadTest()
-        {
-            //TODO: Test ForceCheckLogin
         }
 
         [Test]

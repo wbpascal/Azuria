@@ -8,13 +8,16 @@ namespace Azuria.Notifications.AnimeManga
     /// <summary>
     ///     Represents a collection of <see cref="Anime" />- and <see cref="Manga" />-notifications.
     /// </summary>
-    public class AnimeMangaNotificationCollection : INotificationCollection<AnimeMangaNotification<IAnimeMangaObject>>
+    public class AnimeMangaNotificationCollection<T> : INotificationCollection<AnimeMangaNotification<T>>
+        where T : IAnimeMangaObject
     {
+        private readonly int _maxNotificationsToParse;
         private readonly Senpai _senpai;
 
-        internal AnimeMangaNotificationCollection([NotNull] Senpai senpai)
+        internal AnimeMangaNotificationCollection([NotNull] Senpai senpai, int maxNotificationsToParse = -1)
         {
             this._senpai = senpai;
+            this._maxNotificationsToParse = maxNotificationsToParse;
             this.Type = NotificationType.AnimeManga;
         }
 
@@ -28,14 +31,14 @@ namespace Azuria.Notifications.AnimeManga
         /// <summary>
         /// </summary>
         /// <returns></returns>
-        public INotificationEnumerator<AnimeMangaNotification<IAnimeMangaObject>> GetEnumerator()
+        public INotificationEnumerator<AnimeMangaNotification<T>> GetEnumerator()
         {
-            return new AnimeMangaNotificationEnumerator(this._senpai);
+            return new AnimeMangaNotificationEnumerator<T>(this._senpai, this._maxNotificationsToParse);
         }
 
         /// <summary>Returns an enumerator that iterates through the collection.</summary>
         /// <returns>An enumerator that can be used to iterate through the collection.</returns>
-        IEnumerator<AnimeMangaNotification<IAnimeMangaObject>> IEnumerable<AnimeMangaNotification<IAnimeMangaObject>>.
+        IEnumerator<AnimeMangaNotification<T>> IEnumerable<AnimeMangaNotification<T>>.
             GetEnumerator()
         {
             return this.GetEnumerator();

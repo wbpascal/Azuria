@@ -14,17 +14,20 @@ namespace Azuria.Notifications.AnimeManga
 {
     /// <summary>
     /// </summary>
-    public class AnimeMangaNotificationEnumerator : INotificationEnumerator<AnimeMangaNotification<IAnimeMangaObject>>
+    public class AnimeMangaNotificationEnumerator<T> : INotificationEnumerator<AnimeMangaNotification<T>>
+        where T : IAnimeMangaObject
     {
+        private readonly int _maxNotificationsCountToParse;
         private readonly Senpai _senpai;
         private int _itemIndex = -1;
 
-        private AnimeMangaNotification<IAnimeMangaObject>[] _notifications =
-            new AnimeMangaNotification<IAnimeMangaObject>[0];
+        private AnimeMangaNotification<T>[] _notifications =
+            new AnimeMangaNotification<T>[0];
 
-        internal AnimeMangaNotificationEnumerator(Senpai senpai)
+        internal AnimeMangaNotificationEnumerator(Senpai senpai, int maxNotificationsCountToParse = -1)
         {
             this._senpai = senpai;
+            this._maxNotificationsCountToParse = maxNotificationsCountToParse;
         }
 
         #region Geerbt
@@ -56,12 +59,12 @@ namespace Azuria.Notifications.AnimeManga
         public void Reset()
         {
             this._itemIndex = -1;
-            this._notifications = new AnimeMangaNotification<IAnimeMangaObject>[0];
+            this._notifications = new AnimeMangaNotification<T>[0];
         }
 
         /// <summary>Gets the element in the collection at the current position of the enumerator.</summary>
         /// <returns>The element in the collection at the current position of the enumerator.</returns>
-        public AnimeMangaNotification<IAnimeMangaObject> Current => this._notifications[this._itemIndex];
+        public AnimeMangaNotification<T> Current => this._notifications[this._itemIndex];
 
         /// <summary>Gets the current element in the collection.</summary>
         /// <returns>The current element in the collection.</returns>
@@ -94,11 +97,15 @@ namespace Azuria.Notifications.AnimeManga
                 HtmlNode[] lNodes =
                     lDocument.DocumentNode.SelectNodesUtility("class", "notificationList").ToArray();
 
-                List<AnimeMangaNotification<IAnimeMangaObject>> lAnimeMangaUpdateObjects =
-                    new List<AnimeMangaNotification<IAnimeMangaObject>>();
+                List<AnimeMangaNotification<T>> lAnimeMangaUpdateObjects =
+                    new List<AnimeMangaNotification<T>>();
 
+                int lNotificationsParsed = 0;
                 foreach (HtmlNode curNode in lNodes.Where(curNode => curNode.InnerText.StartsWith("Lesezeichen:")))
                 {
+                    if (this._maxNotificationsCountToParse != -1 &&
+                        lNotificationsParsed >= this._maxNotificationsCountToParse) break;
+
                     string lName;
                     int lNumber;
                     Type lContentParentType = curNode.GetAttributeValue("href", "").StartsWith("/watch")
@@ -121,14 +128,16 @@ namespace Azuria.Notifications.AnimeManga
                         lNumber = -1;
                     }
                     //TODO: Add Language
-                    if (lContentParentType == typeof(Anime))
+                    if (typeof(T) == typeof(Anime) && lContentParentType == typeof(Anime))
                         lAnimeMangaUpdateObjects.Add(
-                            new AnimeMangaNotification<IAnimeMangaObject>(new Anime(lName, lId, this._senpai), lNumber,
-                                this._senpai));
+                            new AnimeMangaNotification<Anime>(new Anime(lName, lId, this._senpai), lNumber,
+                                this._senpai) as AnimeMangaNotification<T>);
                     else if (lContentParentType == typeof(Manga))
                         lAnimeMangaUpdateObjects.Add(
-                            new AnimeMangaNotification<IAnimeMangaObject>(new Manga(lName, lId, this._senpai),
-                                lNumber, this._senpai));
+                            new AnimeMangaNotification<Manga>(new Manga(lName, lId, this._senpai),
+                                lNumber, this._senpai) as AnimeMangaNotification<T>);
+
+                    lNotificationsParsed++;
                 }
 
                 this._notifications = lAnimeMangaUpdateObjects.ToArray();
