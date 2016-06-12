@@ -5,20 +5,22 @@ using System.Linq;
 using System.Threading.Tasks;
 using Azuria.Utilities.ErrorHandling;
 using Azuria.Utilities.Net;
-using HtmlAgilityPack;
 using JetBrains.Annotations;
+using Newtonsoft.Json;
 
-namespace Azuria.Notifications
+namespace Azuria.Notifications.News
 {
     /// <summary>
     /// </summary>
-    public class FriendRequestNotificationEnumerator : INotificationEnumerator<FriendRequestNotification>
+    public class NewsNotificationEnumerator : INotificationEnumerator<NewsNotification>
     {
+        private const int NewsPerPage = 15;
         private readonly Senpai _senpai;
-        private int _itemIndex = -1;
-        private FriendRequestNotification[] _notifications = new FriendRequestNotification[0];
+        private NewsNotification[] _currentPageContent;
+        private int _currentPageItemIndex = 14;
+        private int _nextPageToLoad = 1;
 
-        internal FriendRequestNotificationEnumerator(Senpai senpai)
+        internal NewsNotificationEnumerator(Senpai senpai)
         {
             this._senpai = senpai;
         }
@@ -39,25 +41,27 @@ namespace Azuria.Notifications
         /// <exception cref="T:System.InvalidOperationException">The collection was modified after the enumerator was created. </exception>
         public bool MoveNext()
         {
-            this._itemIndex++;
-            if (this._notifications.Any()) return this._itemIndex < this._notifications.Length;
+            this._currentPageItemIndex++;
+            if (this._currentPageItemIndex < NewsPerPage) return true;
 
-            Task<ProxerResult> lGetNotificationsTask = this.GetNotifications();
-            lGetNotificationsTask.Wait();
-            return lGetNotificationsTask.Result.Success && this._notifications.Any();
+            this._currentPageItemIndex = 0;
+            Task<ProxerResult> lNextPageTask = this.GetNextPage();
+            lNextPageTask.Wait();
+            return lNextPageTask.Result.Success && this._currentPageContent.Any();
         }
 
         /// <summary>Sets the enumerator to its initial position, which is before the first element in the collection.</summary>
         /// <exception cref="T:System.InvalidOperationException">The collection was modified after the enumerator was created. </exception>
         public void Reset()
         {
-            this._itemIndex = -1;
-            this._notifications = new FriendRequestNotification[0];
+            this._nextPageToLoad = 1;
+            this._currentPageItemIndex = 14;
+            this._currentPageContent = new NewsNotification[0];
         }
 
         /// <summary>Gets the element in the collection at the current position of the enumerator.</summary>
         /// <returns>The element in the collection at the current position of the enumerator.</returns>
-        public FriendRequestNotification Current => this._notifications[this._itemIndex];
+        public NewsNotification Current => this._currentPageContent[this._currentPageItemIndex];
 
         /// <summary>Gets the current element in the collection.</summary>
         /// <returns>The current element in the collection.</returns>
@@ -68,13 +72,12 @@ namespace Azuria.Notifications
         #region
 
         [ItemNotNull]
-        private async Task<ProxerResult> GetNotifications()
+        private async Task<ProxerResult> GetNextPage()
         {
-            HtmlDocument lDocument = new HtmlDocument();
             ProxerResult<string> lResult =
                 await
                     HttpUtility.GetResponseErrorHandling(
-                        new Uri("https://proxer.me/user/my/connections?format=raw"),
+                        new Uri("https://proxer.me/notifications?format=json&s=news&p=" + this._nextPageToLoad),
                         this._senpai.LoginCookies,
                         this._senpai);
 
@@ -83,32 +86,26 @@ namespace Azuria.Notifications
 
             string lResponse = lResult.Result;
 
+            if (lResponse == null || !lResponse.StartsWith("{\"error\":0"))
+                return new ProxerResult
+                {
+                    Success = false
+                };
+
             try
             {
-                lDocument.LoadHtml(lResponse);
+                Dictionary<string, List<NewsNotification>> lDeserialized =
+                    JsonConvert.DeserializeObject<Dictionary<string, List<NewsNotification>>>("{" +
+                                                                                              lResponse.Substring(
+                                                                                                  "{\"error\":0,".Length));
 
-                IEnumerable<HtmlNode> lNodes = lDocument.DocumentNode.DescendantsAndSelf().Where(x => x.Name == "tr");
+                this._currentPageContent = lDeserialized["notifications"].ToArray();
+                foreach (NewsNotification newsNotification in this._currentPageContent)
+                {
+                    newsNotification.Senpai = this._senpai;
+                }
 
-                this._notifications = (from curNode in lNodes
-                    where
-                        curNode.Id.StartsWith("entry") &&
-                        curNode.FirstChild.FirstChild.Attributes["class"].Value
-                            .Equals
-                            ("accept")
-                    let lUserId =
-                        Convert.ToInt32(curNode.Id.Replace("entry", ""))
-                    let lUserName =
-                        curNode.InnerText.Split("  ".ToCharArray())[0]
-                    let lDatumSplit =
-                        curNode.ChildNodes[4].InnerText.Split('-')
-                    let lDatum =
-                        new DateTime(Convert.ToInt32(lDatumSplit[0]),
-                            Convert.ToInt32(lDatumSplit[1]),
-                            Convert.ToInt32(lDatumSplit[2]))
-                    select
-                        new FriendRequestNotification(lUserName, lUserId, lDatum,
-                            this._senpai)).ToArray();
-
+                this._nextPageToLoad++;
                 return new ProxerResult();
             }
             catch

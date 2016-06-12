@@ -1,25 +1,25 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
 using Azuria.Utilities.ErrorHandling;
-using Azuria.Utilities.Extensions;
 using Azuria.Utilities.Net;
 using HtmlAgilityPack;
 using JetBrains.Annotations;
 
-namespace Azuria.Notifications
+namespace Azuria.Notifications.FriendRequest
 {
     /// <summary>
     /// </summary>
-    public class AnimeMangaNotificationEnumerator : INotificationEnumerator<AnimeMangaNotification>
+    public class FriendRequestNotificationEnumerator : INotificationEnumerator<FriendRequestNotification>
     {
         private readonly Senpai _senpai;
         private int _itemIndex = -1;
-        private AnimeMangaNotification[] _notifications = new AnimeMangaNotification[0];
+        private FriendRequestNotification[] _notifications = new FriendRequestNotification[0];
 
-        internal AnimeMangaNotificationEnumerator(Senpai senpai)
+        internal FriendRequestNotificationEnumerator(Senpai senpai)
         {
             this._senpai = senpai;
         }
@@ -53,12 +53,12 @@ namespace Azuria.Notifications
         public void Reset()
         {
             this._itemIndex = -1;
-            this._notifications = new AnimeMangaNotification[0];
+            this._notifications = new FriendRequestNotification[0];
         }
 
         /// <summary>Gets the element in the collection at the current position of the enumerator.</summary>
         /// <returns>The element in the collection at the current position of the enumerator.</returns>
-        public AnimeMangaNotification Current => this._notifications[this._itemIndex];
+        public FriendRequestNotification Current => this._notifications[this._itemIndex];
 
         /// <summary>Gets the current element in the collection.</summary>
         /// <returns>The current element in the collection.</returns>
@@ -75,7 +75,7 @@ namespace Azuria.Notifications
             ProxerResult<string> lResult =
                 await
                     HttpUtility.GetResponseErrorHandling(
-                        new Uri("https://proxer.me/components/com_proxer/misc/notifications_misc.php"),
+                        new Uri("https://proxer.me/user/my/connections?format=raw"),
                         this._senpai.LoginCookies,
                         this._senpai);
 
@@ -88,34 +88,23 @@ namespace Azuria.Notifications
             {
                 lDocument.LoadHtml(lResponse);
 
-                HtmlNode[] lNodes =
-                    lDocument.DocumentNode.SelectNodesUtility("class", "notificationList").ToArray();
+                IEnumerable<HtmlNode> lNodes = lDocument.DocumentNode.DescendantsAndSelf().Where(x => x.Name == "tr");
 
-                List<AnimeMangaNotification> lAnimeMangaUpdateObjects = new List<AnimeMangaNotification>();
-
-                foreach (HtmlNode curNode in lNodes.Where(curNode => curNode.InnerText.StartsWith("Lesezeichen:")))
-                {
-                    string lName;
-                    int lNumber;
-
-                    int lId = Convert.ToInt32(curNode.Id.Substring(12));
-                    string lMessage = curNode.ChildNodes["u"].InnerText;
-
-                    if (lMessage.IndexOf('#') != -1)
-                    {
-                        lName = lMessage.Split('#')[0];
-                        if (!int.TryParse(lMessage.Split('#')[1], out lNumber)) lNumber = -1;
-                    }
-                    else
-                    {
-                        lName = "";
-                        lNumber = -1;
-                    }
-
-                    lAnimeMangaUpdateObjects.Add(new AnimeMangaNotification(lMessage, lName, lNumber, lId));
-                }
-
-                this._notifications = lAnimeMangaUpdateObjects.ToArray();
+                this._notifications = (from curNode in lNodes
+                    where
+                        curNode.Id.StartsWith("entry") &&
+                        curNode.FirstChild.FirstChild.Attributes["class"].Value
+                            .Equals
+                            ("accept")
+                    let lUserId =
+                        Convert.ToInt32(curNode.Id.Replace("entry", ""))
+                    let lUserName =
+                        curNode.InnerText.Split("  ".ToCharArray())[0]
+                    let lDatum =
+                        DateTime.ParseExact(curNode.ChildNodes[4].InnerText, "yyyy-MM-dd", CultureInfo.InvariantCulture)
+                    select
+                        new FriendRequestNotification(new User(lUserName, lUserId, this._senpai), lDatum,
+                            this._senpai)).ToArray();
 
                 return new ProxerResult();
             }

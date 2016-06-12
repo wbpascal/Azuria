@@ -2,19 +2,19 @@
 using System.Collections.Generic;
 using JetBrains.Annotations;
 
-namespace Azuria.Notifications
+namespace Azuria.Notifications.FriendRequest
 {
     /// <summary>
-    ///     Represents a collection of news notifications.
+    ///     Represents a collection of friend request notifications.
     /// </summary>
-    public class NewsNotificationCollection : INotificationCollection<NewsNotification>
+    public class FriendRequestNotificationCollection : INotificationCollection<FriendRequestNotification>
     {
         private readonly Senpai _senpai;
 
-        internal NewsNotificationCollection([NotNull] Senpai senpai)
+        internal FriendRequestNotificationCollection([NotNull] Senpai senpai)
         {
             this._senpai = senpai;
-            this.Type = NotificationType.News;
+            this.Type = NotificationType.FriendRequest;
         }
 
         #region Geerbt
@@ -24,18 +24,19 @@ namespace Azuria.Notifications
         /// </summary>
         public NotificationType Type { get; }
 
-        /// <summary>Returns an enumerator that iterates through the collection.</summary>
-        /// <returns>An enumerator that can be used to iterate through the collection.</returns>
-        IEnumerator<NewsNotification> IEnumerable<NewsNotification>.GetEnumerator()
+        /// <summary>
+        /// </summary>
+        /// <returns></returns>
+        public INotificationEnumerator<FriendRequestNotification> GetEnumerator()
         {
-            return this.GetEnumerator();
+            return new FriendRequestNotificationEnumerator(this._senpai);
         }
 
         /// <summary>Returns an enumerator that iterates through the collection.</summary>
         /// <returns>An enumerator that can be used to iterate through the collection.</returns>
-        public INotificationEnumerator<NewsNotification> GetEnumerator()
+        IEnumerator<FriendRequestNotification> IEnumerable<FriendRequestNotification>.GetEnumerator()
         {
-            return new NewsNotificationEnumerator(this._senpai);
+            return this.GetEnumerator();
         }
 
         /// <summary>Returns an enumerator that iterates through a collection.</summary>

@@ -1,14 +1,16 @@
 ﻿using System;
 using System.Collections;
+using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
+using Azuria.Community;
 using Azuria.Utilities.ErrorHandling;
 using Azuria.Utilities.Extensions;
 using Azuria.Utilities.Net;
 using HtmlAgilityPack;
 using JetBrains.Annotations;
 
-namespace Azuria.Notifications
+namespace Azuria.Notifications.PrivateMessage
 {
     /// <summary>
     /// </summary>
@@ -93,16 +95,15 @@ namespace Azuria.Notifications
                 this._notifications = (from curNode in lNodes
                     let lTitel =
                         curNode.ChildNodes[curNode.FirstChild.Name.Equals("img") ? 1 : 0].InnerText
-                    let lDatum =
-                        curNode.ChildNodes[curNode.FirstChild.Name.Equals("img") ? 2 : 1].InnerText
-                            .Split('.')
                     let lTimeStamp =
-                        new DateTime(Convert.ToInt32(lDatum[2]), Convert.ToInt32(lDatum[1]),
-                            Convert.ToInt32(lDatum[0]))
+                        DateTime.ParseExact(
+                            curNode.ChildNodes[curNode.FirstChild.Name.Equals("img") ? 2 : 1].InnerText, "dd.MM.yyyy",
+                            CultureInfo.InvariantCulture)
                     let lId =
-                        Convert.ToInt32(curNode.Attributes["href"].Value.Substring(13,
-                            curNode.Attributes["href"].Value.Length - 17))
-                    select new PrivateMessageNotification(lTitel, lId, lTimeStamp)).ToArray();
+                        Convert.ToInt32(
+                            curNode.Attributes["href"].Value.GetTagContents("?id=", "#top").FirstOrDefault() ?? "-1")
+                    select new PrivateMessageNotification(new Conference(lTitel, lId, this._senpai), lTimeStamp))
+                    .ToArray();
 
                 return new ProxerResult();
             }

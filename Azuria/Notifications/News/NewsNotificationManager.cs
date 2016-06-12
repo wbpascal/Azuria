@@ -7,19 +7,18 @@ using Azuria.Exceptions;
 using Azuria.Utilities.ErrorHandling;
 using Azuria.Utilities.Net;
 
-namespace Azuria.Notifications
+namespace Azuria.Notifications.News
 {
     /// <summary>
     /// </summary>
-    public class PrivateMessageNotificationManager
+    public static class NewsNotificationManager
     {
         /// <summary>
-        ///     Represents a method that is executed when new private message notifications are available.
+        ///     Represents a method that is executed when new news notifications are available.
         /// </summary>
         /// <param name="sender">The user that recieved the notifications.</param>
-        /// <param name="e">The notifications.</param>
-        public delegate void PrivateMessageNotificationEventHandler(
-            Senpai sender, IEnumerable<PrivateMessageNotification> e);
+        /// <param name="e">The notifications. Maximum length of 50 elements.</param>
+        public delegate void NewsNotificationEventHandler(Senpai sender, IEnumerable<NewsNotification> e);
 
         private static readonly double TimerDelay = TimeSpan.FromMinutes(15).TotalMilliseconds;
 
@@ -28,10 +27,10 @@ namespace Azuria.Notifications
             AutoReset = true
         };
 
-        private static readonly Dictionary<Senpai, List<PrivateMessageNotificationEventHandler>> CallbackDictionary =
-            new Dictionary<Senpai, List<PrivateMessageNotificationEventHandler>>();
+        private static readonly Dictionary<Senpai, List<NewsNotificationEventHandler>> CallbackDictionary =
+            new Dictionary<Senpai, List<NewsNotificationEventHandler>>();
 
-        static PrivateMessageNotificationManager()
+        static NewsNotificationManager()
         {
             Timer.Elapsed += (sender, args) => CheckNotifications();
             Timer.Enabled = true;
@@ -39,26 +38,15 @@ namespace Azuria.Notifications
 
         #region
 
-        /// <summary>
-        /// </summary>
-        /// <param name="senpai"></param>
-        /// <param name="eventHandler"></param>
-        public static void AddEventCallback(Senpai senpai, PrivateMessageNotificationEventHandler eventHandler)
-        {
-            if (CallbackDictionary.ContainsKey(senpai) && !CallbackDictionary[senpai].Contains(eventHandler))
-                CallbackDictionary[senpai].Add(eventHandler);
-            else CallbackDictionary.Add(senpai, new List<PrivateMessageNotificationEventHandler>(new[] {eventHandler}));
-        }
-
         private static async void CheckNotifications()
         {
             foreach (Senpai senpai in CallbackDictionary.Keys)
             {
                 ProxerResult<int> lNotificationCountResult = await GetAvailableNotificationsCount(senpai);
                 if (!lNotificationCountResult.Success || lNotificationCountResult.Result == 0) continue;
-                PrivateMessageNotification[] lNotifications =
-                    new PrivateMessageNotificationCollection(senpai).Take(lNotificationCountResult.Result).ToArray();
-                foreach (PrivateMessageNotificationEventHandler notificationCallback in CallbackDictionary[senpai])
+                NewsNotification[] lNotifications =
+                    new NewsNotificationCollection(senpai).Take(Math.Min(lNotificationCountResult.Result, 50)).ToArray();
+                foreach (NewsNotificationEventHandler notificationCallback in CallbackDictionary[senpai])
                 {
                     notificationCallback?.Invoke(senpai, lNotifications);
                 }
@@ -86,7 +74,7 @@ namespace Azuria.Notifications
                 string[] lResponseSplit = lResponse.Split('#');
                 return lResponseSplit.Length < 6
                     ? new ProxerResult<int>(new Exception[] {new WrongResponseException {Response = lResponse}})
-                    : new ProxerResult<int>(Convert.ToInt32(lResponseSplit[3]));
+                    : new ProxerResult<int>(Convert.ToInt32(lResponseSplit[5]));
             }
             catch
             {
@@ -97,9 +85,20 @@ namespace Azuria.Notifications
         /// <summary>
         /// </summary>
         /// <returns></returns>
-        public static INotificationCollection<PrivateMessageNotification> GetNotifications(Senpai senpai)
+        public static INotificationCollection<NewsNotification> GetNotifications(Senpai senpai)
         {
-            return new PrivateMessageNotificationCollection(senpai);
+            return new NewsNotificationCollection(senpai);
+        }
+
+        /// <summary>
+        /// </summary>
+        /// <param name="senpai"></param>
+        /// <param name="eventHandler"></param>
+        public static void RegisterNotificationCallback(Senpai senpai, NewsNotificationEventHandler eventHandler)
+        {
+            if (CallbackDictionary.ContainsKey(senpai) && !CallbackDictionary[senpai].Contains(eventHandler))
+                CallbackDictionary[senpai].Add(eventHandler);
+            else CallbackDictionary.Add(senpai, new List<NewsNotificationEventHandler>(new[] {eventHandler}));
         }
 
         #endregion

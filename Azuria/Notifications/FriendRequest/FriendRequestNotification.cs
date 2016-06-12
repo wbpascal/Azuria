@@ -1,12 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using Azuria.Exceptions;
 using Azuria.Utilities.ErrorHandling;
 using Azuria.Utilities.Net;
 using JetBrains.Annotations;
 
-namespace Azuria.Notifications
+namespace Azuria.Notifications.FriendRequest
 {
     /// <summary>
     ///     Represents a friend request notification.
@@ -14,40 +13,22 @@ namespace Azuria.Notifications
     public class FriendRequestNotification : INotification
     {
         private readonly Senpai _senpai;
-        private bool _accepted;
-        private bool _denied;
+        private bool _handled;
 
-        internal FriendRequestNotification([NotNull] string userName, int userUserId, [NotNull] Senpai senpai)
-        {
-            this._senpai = senpai;
-            this.Type = NotificationType.FriendRequest;
-            this.Message = userName;
-            this.UserName = userName;
-            this.UserId = userUserId;
-        }
-
-        internal FriendRequestNotification([NotNull] string userName, int userUserId, DateTime requestDate,
+        internal FriendRequestNotification([NotNull] User user, DateTime requestDate,
             [NotNull] Senpai senpai)
         {
-            this._senpai = senpai;
-            this.Type = NotificationType.FriendRequest;
-            this.Message = userName;
-            this.UserName = userName;
-            this.UserId = userUserId;
             this.Date = requestDate;
+            this.User = user;
+            this._senpai = senpai;
         }
 
         #region Geerbt
 
         /// <summary>
-        ///     Gets the message of the notification.
-        /// </summary>
-        public string Message { get; }
-
-        /// <summary>
         ///     Gets the type of the notification.
         /// </summary>
-        public NotificationType Type { get; }
+        public NotificationType Type => NotificationType.FriendRequest;
 
         #endregion
 
@@ -56,18 +37,13 @@ namespace Azuria.Notifications
         /// <summary>
         ///     Gets the date of the friend request.
         /// </summary>
-        public DateTime Date { get; private set; }
+        public DateTime Date { get; }
 
         /// <summary>
-        ///     Gets the id of the user who send the friend request.
-        /// </summary>
-        public int UserId { get; }
-
-        /// <summary>
-        ///     Gets the user name of the user who send the friend request.
+        ///     Gets the user that send the friend request.
         /// </summary>
         [NotNull]
-        public string UserName { get; private set; }
+        public User User { get; }
 
         #endregion
 
@@ -80,9 +56,7 @@ namespace Azuria.Notifications
         [ItemNotNull]
         public async Task<ProxerResult> AcceptRequest()
         {
-            if (!this._senpai.IsLoggedIn)
-                return new ProxerResult(new Exception[] {new NotLoggedInException(this._senpai)});
-            if (this._accepted || this._denied) return new ProxerResult {Success = false};
+            if (this._handled) return new ProxerResult {Success = false};
 
             Dictionary<string, string> lPostArgs = new Dictionary<string, string> {{"type", "accept"}};
 
@@ -91,12 +65,12 @@ namespace Azuria.Notifications
 
             ProxerResult<string> lResult = await
                 HttpUtility.PostResponseErrorHandling(
-                    new Uri("https://proxer.me/user/my?format=json&cid=" + this.UserId),
+                    new Uri("https://proxer.me/user/my?format=json&cid=" + this.User.Id),
                     lPostArgs, this._senpai.LoginCookies, this._senpai, new[] {lCheckFunc});
 
             if (!lResult.Success) return new ProxerResult(lResult.Exceptions);
 
-            this._accepted = true;
+            this._handled = true;
             return new ProxerResult();
         }
 
@@ -107,9 +81,7 @@ namespace Azuria.Notifications
         [ItemNotNull]
         public async Task<ProxerResult> DenyRequest()
         {
-            if (!this._senpai.IsLoggedIn)
-                return new ProxerResult(new Exception[] {new NotLoggedInException(this._senpai)});
-            if (this._accepted || this._denied) return new ProxerResult {Success = false};
+            if (this._handled) return new ProxerResult {Success = false};
 
             Dictionary<string, string> lPostArgs = new Dictionary<string, string> {{"type", "deny"}};
 
@@ -118,12 +90,12 @@ namespace Azuria.Notifications
 
             ProxerResult<string> lResult = await
                 HttpUtility.PostResponseErrorHandling(
-                    new Uri("https://proxer.me/user/my?format=json&cid=" + this.UserId),
+                    new Uri("https://proxer.me/user/my?format=json&cid=" + this.User.Id),
                     lPostArgs, this._senpai.LoginCookies, this._senpai, new[] {lCheckFunc});
 
             if (!lResult.Success) return new ProxerResult(lResult.Exceptions);
 
-            this._denied = true;
+            this._handled = true;
             return new ProxerResult();
         }
 

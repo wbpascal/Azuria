@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using JetBrains.Annotations;
 
-namespace Azuria.Notifications
+namespace Azuria.Notifications.PrivateMessage
 {
     /// <summary>
     ///     Represents a collection of private message notifications.

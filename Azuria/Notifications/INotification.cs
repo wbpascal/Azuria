@@ -1,6 +1,4 @@
-﻿using JetBrains.Annotations;
-
-namespace Azuria.Notifications
+﻿namespace Azuria.Notifications
 {
     /// <summary>
     ///     Represents a notification.
@@ -8,12 +6,6 @@ namespace Azuria.Notifications
     public interface INotification
     {
         #region Properties
-
-        /// <summary>
-        ///     Gets the message of the notification.
-        /// </summary>
-        [NotNull]
-        string Message { get; }
 
         /// <summary>
         ///     Gets the type of the notification.

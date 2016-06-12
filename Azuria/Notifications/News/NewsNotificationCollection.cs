@@ -1,21 +1,20 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
-using Azuria.Main;
 using JetBrains.Annotations;
 
-namespace Azuria.Notifications
+namespace Azuria.Notifications.News
 {
     /// <summary>
-    ///     Represents a collection of <see cref="Anime" />- and <see cref="Manga" />-notifications.
+    ///     Represents a collection of news notifications.
     /// </summary>
-    public class AnimeMangaNotificationCollection : INotificationCollection<AnimeMangaNotification>
+    public class NewsNotificationCollection : INotificationCollection<NewsNotification>
     {
         private readonly Senpai _senpai;
 
-        internal AnimeMangaNotificationCollection([NotNull] Senpai senpai)
+        internal NewsNotificationCollection([NotNull] Senpai senpai)
         {
             this._senpai = senpai;
-            this.Type = NotificationType.AnimeManga;
+            this.Type = NotificationType.News;
         }
 
         #region Geerbt
@@ -25,19 +24,18 @@ namespace Azuria.Notifications
         /// </summary>
         public NotificationType Type { get; }
 
-        /// <summary>
-        /// </summary>
-        /// <returns></returns>
-        public INotificationEnumerator<AnimeMangaNotification> GetEnumerator()
+        /// <summary>Returns an enumerator that iterates through the collection.</summary>
+        /// <returns>An enumerator that can be used to iterate through the collection.</returns>
+        IEnumerator<NewsNotification> IEnumerable<NewsNotification>.GetEnumerator()
         {
-            return new AnimeMangaNotificationEnumerator(this._senpai);
+            return this.GetEnumerator();
         }
 
         /// <summary>Returns an enumerator that iterates through the collection.</summary>
         /// <returns>An enumerator that can be used to iterate through the collection.</returns>
-        IEnumerator<AnimeMangaNotification> IEnumerable<AnimeMangaNotification>.GetEnumerator()
+        public INotificationEnumerator<NewsNotification> GetEnumerator()
         {
-            return this.GetEnumerator();
+            return new NewsNotificationEnumerator(this._senpai);
         }
 
         /// <summary>Returns an enumerator that iterates through a collection.</summary>
