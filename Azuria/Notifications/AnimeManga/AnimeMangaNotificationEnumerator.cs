@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Azuria.Main;
+using Azuria.Main.Minor;
 using Azuria.Utilities.ErrorHandling;
 using Azuria.Utilities.Extensions;
 using Azuria.Utilities.Net;
@@ -15,7 +16,7 @@ namespace Azuria.Notifications.AnimeManga
     /// <summary>
     /// </summary>
     public class AnimeMangaNotificationEnumerator<T> : INotificationEnumerator<AnimeMangaNotification<T>>
-        where T : IAnimeMangaObject
+        where T : class, IAnimeMangaObject
     {
         private readonly int _maxNotificationsCountToParse;
         private readonly Senpai _senpai;
@@ -114,12 +115,55 @@ namespace Azuria.Notifications.AnimeManga
 
                     if (lContentParentType == null) continue;
 
-                    int lId = Convert.ToInt32(curNode.Id.Substring("notification".Length));
+                    int lAnimeMangaId = Convert.ToInt32(curNode.GetAttributeValue("href", "/watch/-1/").Split('/')[2]);
                     string lMessage = curNode.ChildNodes["u"].InnerText;
+
+                    #region Language
+                    AnimeLanguage lAnimeLanguage = AnimeLanguage.Unknown;
+                    Language lLanguage = Language.Unkown;
+                    if (lContentParentType == typeof(Anime))
+                    {
+                        switch (
+                            curNode.GetAttributeValue("href", "/watch/-1/error#top")
+                                .Split('/')
+                                .Last()
+                                .Split('#')
+                                .First())
+                        {
+                            case "engsub":
+                                lAnimeLanguage = AnimeLanguage.EngSub;
+                                break;
+                            case "engdub":
+                                lAnimeLanguage = AnimeLanguage.EngDub;
+                                break;
+                            case "gersub":
+                                lAnimeLanguage = AnimeLanguage.GerSub;
+                                break;
+                            case "gerdub":
+                                lAnimeLanguage = AnimeLanguage.GerDub;
+                                break;
+                        }
+                    }else if (lContentParentType == typeof(Manga))
+                    {
+                        switch (curNode.GetAttributeValue("href", "/watch/-1/error#top")
+                                .Split('/')
+                                .Last()
+                                .Split('#')
+                                .First())
+                        {
+                            case "en":
+                                lLanguage = Language.English;
+                                break;
+                            case "de":
+                                lLanguage = Language.German;
+                                break;
+                        }
+                    }
+                    #endregion
 
                     if (lMessage.IndexOf('#') != -1)
                     {
-                        lName = lMessage.Split('#')[0];
+                        lName = lMessage.Split('#')[0].Trim();
                         if (!int.TryParse(lMessage.Split('#')[1], out lNumber)) lNumber = -1;
                     }
                     else
@@ -127,15 +171,19 @@ namespace Azuria.Notifications.AnimeManga
                         lName = "";
                         lNumber = -1;
                     }
-                    //TODO: Add Language
+
                     if (typeof(T) == typeof(Anime) && lContentParentType == typeof(Anime))
-                        lAnimeMangaUpdateObjects.Add(
-                            new AnimeMangaNotification<Anime>(new Anime(lName, lId, this._senpai), lNumber,
-                                this._senpai) as AnimeMangaNotification<T>);
+                        lAnimeMangaUpdateObjects.AddIf(
+                            new AnimeMangaNotification<Anime>(
+                                new Anime.Episode(new Anime(lName, lAnimeMangaId, this._senpai), lNumber, lAnimeLanguage,
+                                    this._senpai), this._senpai) as AnimeMangaNotification<T>,
+                            notification => notification != null);
                     else if (lContentParentType == typeof(Manga))
-                        lAnimeMangaUpdateObjects.Add(
-                            new AnimeMangaNotification<Manga>(new Manga(lName, lId, this._senpai),
-                                lNumber, this._senpai) as AnimeMangaNotification<T>);
+                        lAnimeMangaUpdateObjects.AddIf(
+                            new AnimeMangaNotification<Manga>(
+                                new Manga.Chapter(new Manga(lName, lAnimeMangaId, this._senpai),
+                                    lNumber, lLanguage, this._senpai), this._senpai) as AnimeMangaNotification<T>,
+                            notification => notification != null);
 
                     lNotificationsParsed++;
                 }

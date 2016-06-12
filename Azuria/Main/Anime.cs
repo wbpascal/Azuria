@@ -698,11 +698,6 @@ namespace Azuria.Main
             #region Properties
 
             /// <summary>
-            ///     Gets the number of the episode.
-            /// </summary>
-            public int EpisodeNumber { get; set; }
-
-            /// <summary>
             ///     Gets the language of the episode
             /// </summary>
             public AnimeLanguage Language { get; }
@@ -733,7 +728,7 @@ namespace Azuria.Main
                 ProxerResult<string> lResult =
                     await
                         HttpUtility.GetResponseErrorHandling(
-                            new Uri("https://proxer.me/watch/" + this.ParentObject.Id + "/" + this.EpisodeNumber + "/" +
+                            new Uri("https://proxer.me/watch/" + this.ParentObject.Id + "/" + this.ContentIndex + "/" +
                                     this.Language.ToString().ToLower()),
                             this._senpai.MobileLoginCookies,
                             this._senpai);
@@ -854,7 +849,7 @@ namespace Azuria.Main
             /// </returns>
             public override string ToString()
             {
-                return "Episode " + this.EpisodeNumber;
+                return "Episode " + this.ContentIndex;
             }
 
             #endregion

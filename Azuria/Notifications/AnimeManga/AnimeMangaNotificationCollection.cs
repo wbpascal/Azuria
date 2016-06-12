@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using Azuria.Main;
 using JetBrains.Annotations;
@@ -9,7 +10,7 @@ namespace Azuria.Notifications.AnimeManga
     ///     Represents a collection of <see cref="Anime" />- and <see cref="Manga" />-notifications.
     /// </summary>
     public class AnimeMangaNotificationCollection<T> : INotificationCollection<AnimeMangaNotification<T>>
-        where T : IAnimeMangaObject
+        where T : class, IAnimeMangaObject
     {
         private readonly int _maxNotificationsToParse;
         private readonly Senpai _senpai;
@@ -18,15 +19,14 @@ namespace Azuria.Notifications.AnimeManga
         {
             this._senpai = senpai;
             this._maxNotificationsToParse = maxNotificationsToParse;
-            this.Type = NotificationType.AnimeManga;
         }
 
-        #region Geerbt
-
         /// <summary>
-        ///     Gets the type of the notifications.
+        /// 
         /// </summary>
-        public NotificationType Type { get; }
+        public NotificationType Type => typeof(T) == typeof(Anime) ? NotificationType.Anime : NotificationType.Manga;
+
+        #region Geerbt
 
         /// <summary>
         /// </summary>

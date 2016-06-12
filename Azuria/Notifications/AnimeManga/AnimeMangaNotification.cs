@@ -6,16 +6,11 @@ namespace Azuria.Notifications.AnimeManga
     /// <summary>
     ///     Represents an <see cref="Anime" />- or <see cref="Manga" />-notification.
     /// </summary>
-    public class AnimeMangaNotification<T> : INotification where T : IAnimeMangaObject
+    public class AnimeMangaNotification<T> : INotification where T : class, IAnimeMangaObject
     {
-        internal AnimeMangaNotification(T parentObject, int lIndex, Senpai senpai)
+        internal AnimeMangaNotification(IAnimeMangaContent<T> contentObject, Senpai senpai)
         {
-            this.ContentObject = (typeof(T) == typeof(Anime)
-                ? new Anime.Episode(new Anime(parentObject.Name.GetObjectIfInitialised(""), parentObject.Id, senpai),
-                    lIndex, AnimeLanguage.Unknown, senpai)
-                : (IAnimeMangaContentBase)
-                    new Manga.Chapter(new Manga(parentObject.Name.GetObjectIfInitialised(""), parentObject.Id, senpai),
-                        lIndex, Language.Unkown, senpai)) as IAnimeMangaContent<T>;
+            this.ContentObject = contentObject;
         }
 
         #region Geerbt
@@ -23,7 +18,7 @@ namespace Azuria.Notifications.AnimeManga
         /// <summary>
         ///     Gets the type of the notification.
         /// </summary>
-        public NotificationType Type => NotificationType.AnimeManga;
+        public NotificationType Type => typeof(T) == typeof(Anime) ? NotificationType.Anime : NotificationType.Manga;
 
         #endregion
 

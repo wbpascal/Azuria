@@ -21,8 +21,13 @@
         PrivateMessage,
 
         /// <summary>
-        ///     Represents an anime- or manga-notification.
+        ///     Represents an anime-notification.
         /// </summary>
-        AnimeManga
+        Anime,
+
+        /// <summary>
+        /// Represents a manga-notification.
+        /// </summary>
+        Manga,
     }
 }

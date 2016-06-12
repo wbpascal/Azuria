@@ -240,6 +240,9 @@
     <Compile Include="..\Azuria\Utilities\Extensions\InitialisationExtensions.cs">
       <Link>Utilities\Extensions\InitialisationExtensions.cs</Link>
     </Compile>
+    <Compile Include="..\Azuria\Utilities\Extensions\ListExtensions.cs">
+      <Link>Utilities\Extensions\ListExtensions.cs</Link>
+    </Compile>
     <Compile Include="..\Azuria\Utilities\Extensions\StringExtensions.cs">
       <Link>Utilities\Extensions\StringExtensions.cs</Link>
     </Compile>
