@@ -30,7 +30,7 @@ namespace Azuria.Notifications.News
         /// <summary>Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.</summary>
         public void Dispose()
         {
-            //nothing to do
+            this._currentPageContent = new NewsNotification[0];
         }
 
         /// <summary>Advances the enumerator to the next element of the collection.</summary>

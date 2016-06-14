@@ -30,7 +30,7 @@ namespace Azuria.Notifications.PrivateMessage
         /// <summary>Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.</summary>
         public void Dispose()
         {
-            //nothing to do
+            this._notifications = new PrivateMessageNotification[0];
         }
 
         /// <summary>Advances the enumerator to the next element of the collection.</summary>

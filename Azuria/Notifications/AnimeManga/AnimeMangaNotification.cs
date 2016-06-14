@@ -1,5 +1,4 @@
 ﻿using Azuria.Main;
-using Azuria.Main.Minor;
 
 namespace Azuria.Notifications.AnimeManga
 {

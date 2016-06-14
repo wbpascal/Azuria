@@ -26,8 +26,8 @@
         Anime,
 
         /// <summary>
-        /// Represents a manga-notification.
+        ///     Represents a manga-notification.
         /// </summary>
-        Manga,
+        Manga
     }
 }

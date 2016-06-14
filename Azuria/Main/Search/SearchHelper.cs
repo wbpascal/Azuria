@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Threading.Tasks;
 using Azuria.Main.Minor;
 using Azuria.Utilities;
 using Azuria.Utilities.ErrorHandling;
@@ -105,8 +104,8 @@ namespace Azuria.Main.Search
         ///     <see cref="Manga">Manga</see>.
         /// </param>
         /// <returns>A collection of the search results.</returns>
-        [ItemNotNull]
-        public static async Task<ProxerResult<SearchResult<T>>> Search<T>([NotNull] string name, [NotNull] Senpai senpai)
+        [NotNull]
+        public static ProxerResult<SearchResult<T>> Search<T>([NotNull] string name, [NotNull] Senpai senpai)
             where T : ISearchableObject
         {
             if (string.IsNullOrEmpty(name))
@@ -116,22 +115,12 @@ namespace Azuria.Main.Search
                 (typeof(T).HasParameterlessConstructor() &&
                  Activator.CreateInstance(typeof(T), true) is IAnimeMangaObject))
             {
-                SearchResult<T> lSearchResultObject = new SearchResult<T>("search?s=search&name=" + name, senpai);
-                ProxerResult<IEnumerable<T>> lGetSearchResult = await lSearchResultObject.GetNextSearchResults();
-                return lGetSearchResult.Success
-                    ? new ProxerResult<SearchResult<T>>(lSearchResultObject)
-                    : new ProxerResult<SearchResult<T>>(lGetSearchResult.Exceptions);
-            }
-            if (typeof(T) == typeof(Azuria.User))
-            {
-                SearchResult<T> lSearchResultObject = new SearchResult<T>("users?search=" + name, senpai);
-                ProxerResult<IEnumerable<T>> lGetSearchResult = await lSearchResultObject.GetNextSearchResults();
-                return lGetSearchResult.Success
-                    ? new ProxerResult<SearchResult<T>>(lSearchResultObject)
-                    : new ProxerResult<SearchResult<T>>(lGetSearchResult.Exceptions);
+                return new ProxerResult<SearchResult<T>>(new SearchResult<T>("search?s=search&name=" + name, senpai));
             }
 
-            return new ProxerResult<SearchResult<T>>(new Exception[0]);
+            return typeof(T) == typeof(Azuria.User)
+                ? new ProxerResult<SearchResult<T>>(new SearchResult<T>("users?search=" + name, senpai))
+                : new ProxerResult<SearchResult<T>>(new Exception[0]);
         }
 
         /// <summary>
@@ -164,8 +153,8 @@ namespace Azuria.Main.Search
         /// <param name="sort">The order in which the objects are returned.</param>
         /// <param name="type">The type of the <see cref="Anime" /> or <see cref="Manga" /> that is being searched for</param>
         /// <returns>A collection of the search results.</returns>
-        [ItemNotNull]
-        public static async Task<ProxerResult<SearchResult<T>>> SearchAnimeManga<T>([NotNull] string name,
+        [NotNull]
+        public static ProxerResult<SearchResult<T>> SearchAnimeManga<T>([NotNull] string name,
             [NotNull] Senpai senpai,
             AnimeMangaType? type = null, IEnumerable<GenreObject.GenreType> genreContains = null,
             IEnumerable<GenreObject.GenreType> genreExcludes = null, IEnumerable<Fsk> fskContains = null,
@@ -214,15 +203,11 @@ namespace Azuria.Main.Search
                     ? SearchUtility.SortAnimeMangaToString[sort.Value]
                     : "";
 
-            SearchResult<T> lSearchResultObject
-                = new SearchResult<T>("search?s=search&name=" + name + "&sprache=" + lLanguage
-                                      + "&genre=" + lGenreContains + "&nogenre=" + lGenreExludes
-                                      + "&fsk=" + lFskContains + "&sort=" + lSortAnime + "&typ=" + lType, senpai);
-            ProxerResult<IEnumerable<T>> lGetSearchResult = await lSearchResultObject.GetNextSearchResults();
-
-            return !lGetSearchResult.Success
-                ? new ProxerResult<SearchResult<T>>(lGetSearchResult.Exceptions)
-                : new ProxerResult<SearchResult<T>>(lSearchResultObject);
+            return
+                new ProxerResult<SearchResult<T>>(
+                    new SearchResult<T>("search?s=search&name=" + name + "&sprache=" + lLanguage
+                                        + "&genre=" + lGenreContains + "&nogenre=" + lGenreExludes
+                                        + "&fsk=" + lFskContains + "&sort=" + lSortAnime + "&typ=" + lType, senpai));
         }
 
         #endregion

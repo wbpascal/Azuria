@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using Azuria.Main;
 using JetBrains.Annotations;
@@ -21,12 +20,11 @@ namespace Azuria.Notifications.AnimeManga
             this._maxNotificationsToParse = maxNotificationsToParse;
         }
 
+        #region Geerbt
+
         /// <summary>
-        /// 
         /// </summary>
         public NotificationType Type => typeof(T) == typeof(Anime) ? NotificationType.Anime : NotificationType.Manga;
-
-        #region Geerbt
 
         /// <summary>
         /// </summary>

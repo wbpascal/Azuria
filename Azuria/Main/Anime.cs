@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
@@ -21,6 +22,7 @@ namespace Azuria.Main
     /// <summary>
     ///     Represents an anime.
     /// </summary>
+    [DebuggerDisplay("Anime: {Name} [{Id}]")]
     public class Anime : IAnimeMangaObject
     {
         private readonly Senpai _senpai;

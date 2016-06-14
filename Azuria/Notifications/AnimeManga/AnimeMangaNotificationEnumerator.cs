@@ -36,7 +36,7 @@ namespace Azuria.Notifications.AnimeManga
         /// <summary>Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.</summary>
         public void Dispose()
         {
-            //nothing to do
+            this._notifications = new AnimeMangaNotification<T>[0];
         }
 
         /// <summary>Advances the enumerator to the next element of the collection.</summary>
@@ -119,6 +119,7 @@ namespace Azuria.Notifications.AnimeManga
                     string lMessage = curNode.ChildNodes["u"].InnerText;
 
                     #region Language
+
                     AnimeLanguage lAnimeLanguage = AnimeLanguage.Unknown;
                     Language lLanguage = Language.Unkown;
                     if (lContentParentType == typeof(Anime))
@@ -143,13 +144,14 @@ namespace Azuria.Notifications.AnimeManga
                                 lAnimeLanguage = AnimeLanguage.GerDub;
                                 break;
                         }
-                    }else if (lContentParentType == typeof(Manga))
+                    }
+                    else if (lContentParentType == typeof(Manga))
                     {
                         switch (curNode.GetAttributeValue("href", "/watch/-1/error#top")
-                                .Split('/')
-                                .Last()
-                                .Split('#')
-                                .First())
+                            .Split('/')
+                            .Last()
+                            .Split('#')
+                            .First())
                         {
                             case "en":
                                 lLanguage = Language.English;
@@ -159,6 +161,7 @@ namespace Azuria.Notifications.AnimeManga
                                 break;
                         }
                     }
+
                     #endregion
 
                     if (lMessage.IndexOf('#') != -1)
