@@ -57,6 +57,7 @@ namespace Azuria.Notifications.AnimeManga
                 if (!lNotificationCountResult.Success || lNotificationCountResult.Result == 0) continue;
                 AnimeMangaNotification<Anime>[] lNotifications =
                     new AnimeMangaNotificationCollection<Anime>(senpai, lNotificationCountResult.Result).ToArray();
+                if (!lNotifications.Any()) continue;
                 foreach (AnimeNotificationEventHandler notificationCallback in AnimeCallbackDictionary[senpai])
                 {
                     notificationCallback?.Invoke(senpai, lNotifications);
@@ -68,11 +69,38 @@ namespace Azuria.Notifications.AnimeManga
                 if (!lNotificationCountResult.Success || lNotificationCountResult.Result == 0) continue;
                 AnimeMangaNotification<Manga>[] lNotifications =
                     new AnimeMangaNotificationCollection<Manga>(senpai, lNotificationCountResult.Result).ToArray();
+                if (!lNotifications.Any()) continue;
                 foreach (MangaNotificationEventHandler notificationCallback in MangaCallbackDictionary[senpai])
                 {
                     notificationCallback?.Invoke(senpai, lNotifications);
                 }
             }
+        }
+
+        /// <summary>
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="notification"></param>
+        /// <param name="senpai"></param>
+        /// <returns></returns>
+        public static async Task<ProxerResult> DeleteNotification<T>(this AnimeMangaNotification<T> notification,
+            Senpai senpai) where T : class, IAnimeMangaObject
+        {
+            Dictionary<string, string> lPostArgs = new Dictionary<string, string>
+            {
+                {"id", notification.NotificationId.ToString()}
+            };
+
+            ProxerResult<string> lResult =
+                await
+                    HttpUtility.PostResponseErrorHandling(
+                        new Uri("https://proxer.me/notifications?format=json&s=deleteNotification"), lPostArgs,
+                        senpai.LoginCookies, senpai);
+
+            if (!lResult.Success || lResult.Result == null)
+                return new ProxerResult(lResult.Exceptions);
+
+            return new ProxerResult {Success = lResult.Result.Contains("\"error\":0")};
         }
 
         /// <summary>
@@ -104,7 +132,7 @@ namespace Azuria.Notifications.AnimeManga
                 string[] lResponseSplit = lResponse.Split('#');
                 return lResponseSplit.Length < 6
                     ? new ProxerResult<int>(new Exception[] {new WrongResponseException {Response = lResponse}})
-                    : new ProxerResult<int>(Convert.ToInt32(lResponseSplit[3]));
+                    : new ProxerResult<int>(Convert.ToInt32(lResponseSplit[6]));
             }
             catch
             {

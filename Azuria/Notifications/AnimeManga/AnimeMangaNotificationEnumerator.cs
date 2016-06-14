@@ -101,7 +101,9 @@ namespace Azuria.Notifications.AnimeManga
                 List<AnimeMangaNotification<T>> lAnimeMangaUpdateObjects =
                     new List<AnimeMangaNotification<T>>();
 
-                int lNotificationsParsed = 0;
+                IEnumerable<HtmlNode> lNotAnimeManga =
+                    lNodes.TakeWhile(node => !node.InnerText.StartsWith("Lesezeichen:"));
+                int lNotificationsParsed = lNotAnimeManga.Count();
                 foreach (HtmlNode curNode in lNodes.Where(curNode => curNode.InnerText.StartsWith("Lesezeichen:")))
                 {
                     if (this._maxNotificationsCountToParse != -1 &&
@@ -116,6 +118,7 @@ namespace Azuria.Notifications.AnimeManga
                     if (lContentParentType == null) continue;
 
                     int lAnimeMangaId = Convert.ToInt32(curNode.GetAttributeValue("href", "/watch/-1/").Split('/')[2]);
+                    int lNotificationId = Convert.ToInt32(curNode.Id.Substring("notification".Length));
                     string lMessage = curNode.ChildNodes["u"].InnerText;
 
                     #region Language
@@ -177,13 +180,13 @@ namespace Azuria.Notifications.AnimeManga
 
                     if (typeof(T) == typeof(Anime) && lContentParentType == typeof(Anime))
                         lAnimeMangaUpdateObjects.AddIf(
-                            new AnimeMangaNotification<Anime>(
+                            new AnimeMangaNotification<Anime>(lNotificationId,
                                 new Anime.Episode(new Anime(lName, lAnimeMangaId, this._senpai), lNumber, lAnimeLanguage,
                                     this._senpai), this._senpai) as AnimeMangaNotification<T>,
                             notification => notification != null);
                     else if (lContentParentType == typeof(Manga))
                         lAnimeMangaUpdateObjects.AddIf(
-                            new AnimeMangaNotification<Manga>(
+                            new AnimeMangaNotification<Manga>(lNotificationId,
                                 new Manga.Chapter(new Manga(lName, lAnimeMangaId, this._senpai),
                                     lNumber, lLanguage, this._senpai), this._senpai) as AnimeMangaNotification<T>,
                             notification => notification != null);

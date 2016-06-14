@@ -1,4 +1,6 @@
-﻿using Azuria.Main;
+﻿using System.Threading.Tasks;
+using Azuria.Main;
+using Azuria.Utilities.ErrorHandling;
 
 namespace Azuria.Notifications.AnimeManga
 {
@@ -7,9 +9,13 @@ namespace Azuria.Notifications.AnimeManga
     /// </summary>
     public class AnimeMangaNotification<T> : INotification where T : class, IAnimeMangaObject
     {
-        internal AnimeMangaNotification(IAnimeMangaContent<T> contentObject, Senpai senpai)
+        private readonly Senpai _senpai;
+
+        internal AnimeMangaNotification(int notificationId, IAnimeMangaContent<T> contentObject, Senpai senpai)
         {
+            this._senpai = senpai;
             this.ContentObject = contentObject;
+            this.NotificationId = notificationId;
         }
 
         #region Geerbt
@@ -26,6 +32,22 @@ namespace Azuria.Notifications.AnimeManga
         /// <summary>
         /// </summary>
         public IAnimeMangaContent<T> ContentObject { get; }
+
+        /// <summary>
+        /// </summary>
+        public int NotificationId { get; }
+
+        #endregion
+
+        #region
+
+        /// <summary>
+        /// </summary>
+        /// <returns></returns>
+        public async Task<ProxerResult> Delete()
+        {
+            return await this.DeleteNotification(this._senpai);
+        }
 
         #endregion
     }
