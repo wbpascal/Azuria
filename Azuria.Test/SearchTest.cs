@@ -16,22 +16,22 @@ namespace Azuria.Test
         [Test, LoginRequired]
         public async Task AnimeMangaSearch()
         {
-            ProxerResult<SearchResult<Anime>> lSearchResult =
-                await SearchHelper.SearchAnimeManga<Anime>("a", SenpaiTest.Senpai,
-                    SearchHelper.AnimeMangaType.Animeseries,
-                    new[] {GenreObject.GenreType.Action, GenreObject.GenreType.Mecha},
-                    new[]
-                    {GenreObject.GenreType.Fantasy, GenreObject.GenreType.Romance},
-                    new[] {Fsk.Fsk16, Fsk.BadWords}, Language.German);
+            ProxerResult<SearchResult<Anime>> lSearchResult = SearchHelper.SearchAnimeManga<Anime>("a",
+                SenpaiTest.Senpai,
+                SearchHelper.AnimeMangaType.Animeseries,
+                new[] {GenreObject.GenreType.Action, GenreObject.GenreType.Mecha},
+                new[]
+                {GenreObject.GenreType.Fantasy, GenreObject.GenreType.Romance},
+                new[] {Fsk.Fsk16, Fsk.BadWords}, Language.German);
 
             Assert.IsTrue(lSearchResult.Success);
             Assert.IsNotNull(lSearchResult.Result);
-            Assert.IsTrue(lSearchResult.Result.SearchResults.Any());
+            Assert.IsTrue(lSearchResult.Result.Take(10).Any());
             Assert.IsTrue(
-                lSearchResult.Result.SearchResults.All(
+                lSearchResult.Result.Take(10).All(
                     anime => anime.Name.GetObjectIfInitialised("ERROR").ToLower().Contains("a")));
 
-            foreach (Anime searchResult in lSearchResult.Result.SearchResults)
+            foreach (Anime searchResult in lSearchResult.Result.Take(10))
             {
                 Assert.IsTrue((await searchResult.Name.GetObject("ERROR")).Contains("a"));
                 Assert.IsTrue(
@@ -48,55 +48,21 @@ namespace Azuria.Test
                         language => language == AnimeLanguage.GerDub || language == AnimeLanguage.GerSub));
             }
 
-            int lOldSearchResultsCount = lSearchResult.Result.SearchResults.Count();
-            while (!lSearchResult.Result.SearchFinished)
-            {
-                ProxerResult<IEnumerable<Anime>> lNewSearchResults = await lSearchResult.Result.GetNextSearchResults();
-
-                Assert.IsTrue(lNewSearchResults.Success);
-                Assert.IsNotNull(lNewSearchResults.Result);
-
-                int lNewSearchResultsCount = lSearchResult.Result.SearchResults.Count();
-                if (lNewSearchResultsCount == lOldSearchResultsCount || !lNewSearchResults.Result.Any())
-                    Assert.IsTrue(lSearchResult.Result.SearchFinished);
-
-                lOldSearchResultsCount = lNewSearchResultsCount;
-
-                await Task.Delay(1000);
-            }
-
             await Task.Delay(2000);
         }
 
         [Test]
         public async Task UserSearch()
         {
-            ProxerResult<SearchResult<User>> lSearchResult =
-                await SearchHelper.Search<User>(Credentials.Username, new Senpai());
+            ProxerResult<SearchResult<User>> lSearchResult = SearchHelper.Search<User>(Credentials.Username,
+                new Senpai());
 
             Assert.IsTrue(lSearchResult.Success);
             Assert.IsNotNull(lSearchResult.Result);
-            Assert.IsTrue(lSearchResult.Result.SearchResults.Any());
+            Assert.IsTrue(lSearchResult.Result.Take(10).Any());
             Assert.IsTrue(
-                (await lSearchResult.Result.SearchResults.First().UserName.GetObject("ERROR")).Equals(
+                (await lSearchResult.Result.Take(1).First().UserName.GetObject("ERROR")).Equals(
                     Credentials.Username));
-
-            int lOldSearchResultsCount = lSearchResult.Result.SearchResults.Count();
-            while (!lSearchResult.Result.SearchFinished)
-            {
-                ProxerResult<IEnumerable<User>> lNewSearchResults = await lSearchResult.Result.GetNextSearchResults();
-
-                Assert.IsTrue(lNewSearchResults.Success);
-                Assert.IsNotNull(lNewSearchResults.Result);
-
-                int lNewSearchResultsCount = lSearchResult.Result.SearchResults.Count();
-                if (lNewSearchResultsCount == lOldSearchResultsCount || !lNewSearchResults.Result.Any())
-                    Assert.IsTrue(lSearchResult.Result.SearchFinished);
-
-                lOldSearchResultsCount = lNewSearchResultsCount;
-
-                await Task.Delay(1000);
-            }
 
             await Task.Delay(2000);
         }
