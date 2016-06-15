@@ -63,6 +63,7 @@ namespace Azuria
                 else
                 {
                     this._loginCheckTimer.Stop();
+                    if (this._isLoggedIn == false) return;
                     this._isLoggedIn = false;
                     this.UserLoggedOutRaised?.Invoke(this, EventArgs.Empty);
                 }
