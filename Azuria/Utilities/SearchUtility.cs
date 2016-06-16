@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using Azuria.Main.Search;
+using Azuria.Search;
 using JetBrains.Annotations;
 
 namespace Azuria.Utilities

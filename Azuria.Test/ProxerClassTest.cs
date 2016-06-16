@@ -1,5 +1,5 @@
 ﻿using System.Threading.Tasks;
-using Azuria.Main;
+using Azuria.AnimeManga;
 using Azuria.Test.Attributes;
 using Azuria.Utilities.ErrorHandling;
 using NUnit.Framework;

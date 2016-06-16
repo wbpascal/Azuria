@@ -94,8 +94,8 @@ namespace Azuria.Test
         {
             Assert.IsNotNull(this._conference, "this._conference == null");
 
-            User lLeader = await this._conference.Leader.GetObject(User.System);
-            Assert.AreNotSame(lLeader, User.System);
+            User.User lLeader = await this._conference.Leader.GetObject(User.User.System);
+            Assert.AreNotSame(lLeader, User.User.System);
         }
 
         [Test, Order(3), NUnit.Framework.Timeout(30000)]
@@ -147,7 +147,7 @@ namespace Azuria.Test
         {
             Assert.IsNotNull(this._conference, "this._conference == null");
 
-            IEnumerable<User> lParticipants = await this._conference.Participants.GetObject(new User[0]);
+            IEnumerable<User.User> lParticipants = await this._conference.Participants.GetObject(new User.User[0]);
             Assert.IsNotEmpty(lParticipants, "Participants.Count == 0");
         }
 

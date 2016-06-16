@@ -26,7 +26,7 @@ namespace Azuria.Notifications.News
 
         /// <summary>
         /// </summary>
-        public User Author => new User(this.AuthorName, this.AuthorId, this.Senpai);
+        public User.User Author => new User.User(this.AuthorName, this.AuthorId, this.Senpai);
 
         /// <summary>
         ///     Gets the id of the author.

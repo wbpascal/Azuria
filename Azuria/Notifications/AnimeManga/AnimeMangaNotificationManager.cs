@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Timers;
+using Azuria.AnimeManga;
 using Azuria.Exceptions;
-using Azuria.Main;
 using Azuria.Utilities.ErrorHandling;
 using Azuria.Utilities.Net;
 

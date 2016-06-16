@@ -1,9 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Azuria.Main;
-using Azuria.Main.Minor;
-using Azuria.Main.Search;
+using Azuria.AnimeManga;
+using Azuria.Search;
 using Azuria.Test.Attributes;
 using Azuria.Utilities.ErrorHandling;
 using NUnit.Framework;
@@ -54,7 +53,7 @@ namespace Azuria.Test
         [Test]
         public async Task UserSearch()
         {
-            ProxerResult<SearchResult<User>> lSearchResult = SearchHelper.Search<User>(Credentials.Username,
+            ProxerResult<SearchResult<User.User>> lSearchResult = SearchHelper.Search<User.User>(Credentials.Username,
                 new Senpai());
 
             Assert.IsTrue(lSearchResult.Success);

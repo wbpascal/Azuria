@@ -15,7 +15,7 @@ namespace Azuria.Notifications.FriendRequest
         private readonly Senpai _senpai;
         private bool _handled;
 
-        internal FriendRequestNotification([NotNull] User user, DateTime requestDate,
+        internal FriendRequestNotification([NotNull] User.User user, DateTime requestDate,
             [NotNull] Senpai senpai)
         {
             this.Date = requestDate;
@@ -43,7 +43,7 @@ namespace Azuria.Notifications.FriendRequest
         ///     Gets the user that send the friend request.
         /// </summary>
         [NotNull]
-        public User User { get; }
+        public User.User User { get; }
 
         #endregion
 

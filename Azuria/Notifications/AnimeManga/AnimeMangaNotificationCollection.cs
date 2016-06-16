@@ -1,6 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
-using Azuria.Main;
+using Azuria.AnimeManga;
 using JetBrains.Annotations;
 
 namespace Azuria.Notifications.AnimeManga

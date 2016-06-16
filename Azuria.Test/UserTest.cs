@@ -2,12 +2,12 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Azuria.AnimeManga;
 using Azuria.Exceptions;
-using Azuria.Main;
-using Azuria.Main.User;
-using Azuria.Main.User.Comment;
 using Azuria.Test.Attributes;
 using Azuria.Test.Utility;
+using Azuria.User;
+using Azuria.User.Comment;
 using Azuria.Utilities.ErrorHandling;
 using NUnit.Framework;
 
@@ -38,7 +38,7 @@ namespace Azuria.Test
         public async Task AreUserFriendsTest()
         {
             Assert.IsNotNull(this._senpai.Me);
-            ProxerResult<bool> lAreUserFriendsResult = await User.AreUserFriends(this._senpai.Me, User.System);
+            ProxerResult<bool> lAreUserFriendsResult = await User.User.AreUserFriends(this._senpai.Me, User.User.System);
             Assert.IsTrue(lAreUserFriendsResult.Success);
             Assert.IsFalse(lAreUserFriendsResult.Result);
 
@@ -59,7 +59,7 @@ namespace Azuria.Test
         public async Task FriendsTest()
         {
             Assert.IsNotNull(this._senpai.Me);
-            IEnumerable<User> lFriends = await this._senpai.Me.Friends.GetObject(new User[0]);
+            IEnumerable<User.User> lFriends = await this._senpai.Me.Friends.GetObject(new User.User[0]);
             Assert.IsNotEmpty(lFriends);
         }
 
@@ -137,7 +137,7 @@ namespace Azuria.Test
         public async Task SendFriendsRequestTest()
         {
             Assert.IsNotNull(this._senpai.Me);
-            ProxerResult lInvalidUserResut = await User.System.SendFriendRequest(this._senpai);
+            ProxerResult lInvalidUserResut = await User.User.System.SendFriendRequest(this._senpai);
 
             Assert.IsFalse(lInvalidUserResut.Success);
             Assert.IsNotEmpty(lInvalidUserResut.Exceptions);

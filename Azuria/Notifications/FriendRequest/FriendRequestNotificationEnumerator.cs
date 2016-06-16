@@ -103,7 +103,7 @@ namespace Azuria.Notifications.FriendRequest
                     let lDatum =
                         DateTime.ParseExact(curNode.ChildNodes[4].InnerText, "yyyy-MM-dd", CultureInfo.InvariantCulture)
                     select
-                        new FriendRequestNotification(new User(lUserName, lUserId, this._senpai), lDatum,
+                        new FriendRequestNotification(new User.User(lUserName, lUserId, this._senpai), lDatum,
                             this._senpai)).ToArray();
 
                 return new ProxerResult();

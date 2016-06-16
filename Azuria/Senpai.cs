@@ -80,7 +80,7 @@ namespace Azuria
         ///     Gets the profile of the user.
         /// </summary>
         [CanBeNull]
-        public User Me { get; protected set; }
+        public User.User Me { get; protected set; }
 
         /// <summary>
         ///     Gets the cookies that are used to make requests to the server with this user. Unlike <see cref="LoginCookies" />
@@ -225,7 +225,7 @@ namespace Azuria
                 {
                     this._userId = Convert.ToInt32(lDeserialisedResponse["uid"]);
 
-                    this.Me = new User(username, this._userId,
+                    this.Me = new User.User(username, this._userId,
                         lDeserialisedResponse.ContainsKey("avatar")
                             ? new Uri("https://cdn.proxer.me/avatar/" + lDeserialisedResponse["avatar"])
                             : null, this);
@@ -273,7 +273,7 @@ namespace Azuria
                 {
                     this._userId = Convert.ToInt32(lDeserialisedResponse["uid"]);
                     this.LoginCookies = lResult.Result.Item2;
-                    this.Me = new User(this._userId,
+                    this.Me = new User.User(this._userId,
                         lDeserialisedResponse.ContainsKey("avatar")
                             ? new Uri("https://cdn.proxer.me/avatar/" + lDeserialisedResponse["avatar"])
                             : null, this);

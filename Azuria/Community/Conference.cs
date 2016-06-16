@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using System.Timers;
 using Azuria.Community.ConferenceHelper;
 using Azuria.Exceptions;
+using Azuria.User;
 using Azuria.Utilities;
 using Azuria.Utilities.ErrorHandling;
 using Azuria.Utilities.Extensions;
@@ -55,8 +56,8 @@ namespace Azuria.Community
 
             this.IsBlocked = new SetableInitialisableProperty<bool>(this.GetConferenceOptions, this.SetBlock);
             this.IsFavourite = new SetableInitialisableProperty<bool>(this.GetConferenceOptions, this.SetFavourite);
-            this.Leader = new InitialisableProperty<User>(this.GetLeader);
-            this.Participants = new InitialisableProperty<IEnumerable<User>>(this.GetMainInfo);
+            this.Leader = new InitialisableProperty<User.User>(this.GetLeader);
+            this.Participants = new InitialisableProperty<IEnumerable<User.User>>(this.GetMainInfo);
             this.Title = new InitialisableProperty<string>(this.GetTitle);
             this.IsConference = new InitialisableProperty<bool>(this.CheckIsConference);
 
@@ -120,7 +121,7 @@ namespace Azuria.Community
         ///     Gets a <see cref="User" /> that is the current leader of the conference.
         /// </summary>
         [NotNull]
-        public InitialisableProperty<User> Leader { get; }
+        public InitialisableProperty<User.User> Leader { get; }
 
         /// <summary>
         ///     Gets all messages of the current conference in chronological order.
@@ -136,7 +137,7 @@ namespace Azuria.Community
         ///     Gets all participants of the current conference.
         /// </summary>
         [NotNull]
-        public InitialisableProperty<IEnumerable<User>> Participants { get; }
+        public InitialisableProperty<IEnumerable<User.User>> Participants { get; }
 
         /// <summary>
         ///     Gets the current title of the current conference.
@@ -326,7 +327,7 @@ namespace Azuria.Community
         {
             if (!(await this.IsConference.GetObject()).OnError(false))
             {
-                this.Leader.SetInitialisedObject(User.System);
+                this.Leader.SetInitialisedObject(User.User.System);
                 return new ProxerResult();
             }
 
@@ -359,11 +360,11 @@ namespace Azuria.Community
 
                 this.Leader.SetInitialisedObject
                     ((await this.Participants.GetObject())
-                        .OnError(new User[0])
+                        .OnError(new User.User[0])
                         .FirstOrDefault(
                             x =>
                                 x.UserName.GetObjectIfInitialised("")
-                                    .Equals(lDict["message"].Remove(0, "Konferenzleiter: ".Length))) ?? User.System);
+                                    .Equals(lDict["message"].Remove(0, "Konferenzleiter: ".Length))) ?? User.User.System);
 
                 return new ProxerResult();
             }
@@ -392,7 +393,7 @@ namespace Azuria.Community
             lDocument.LoadHtml(lResponse);
             try
             {
-                List<User> lTeilnehmer = new List<User>();
+                List<User.User> lTeilnehmer = new List<User.User>();
 
                 lTeilnehmer.AddRange(
                     from curTeilnehmer in lDocument.GetElementbyId("conferenceUsers").ChildNodes[1].ChildNodes
@@ -401,7 +402,7 @@ namespace Azuria.Community
                         Convert.ToInt32(
                             curTeilnehmer.ChildNodes[1].FirstChild.Attributes["href"].Value.GetTagContents("/user/",
                                 "#top")[0])
-                    select new User(lUserName, lUserId, this._senpai));
+                    select new User.User(lUserName, lUserId, this._senpai));
 
                 this.Participants.SetInitialisedObject(lTeilnehmer);
 
@@ -528,8 +529,8 @@ namespace Azuria.Community
                 }
             }
 
-            if ((await this.Participants.GetObject()).OnError(new User[0]).Count() > 1 && this._senpai.Me != null)
-                this.Title.SetInitialisedObject(await (await this.Participants.GetObject()).OnError(new User[0])
+            if ((await this.Participants.GetObject()).OnError(new User.User[0]).Count() > 1 && this._senpai.Me != null)
+                this.Title.SetInitialisedObject(await (await this.Participants.GetObject()).OnError(new User.User[0])
                     .Where(x => x.Id != this._senpai.Me.Id)
                     .ToArray()[0].UserName.GetObject("ERROR"));
 
@@ -633,8 +634,8 @@ namespace Azuria.Community
                             break;
                     }
 
-                    User[] lSender =
-                        (await this.Participants.GetObject()).OnError(new User[0])
+                    User.User[] lSender =
+                        (await this.Participants.GetObject()).OnError(new User.User[0])
                             .Where(x => x.Id == Convert.ToInt32(curMessage.Fromid))
                             .ToArray();
 
@@ -645,7 +646,7 @@ namespace Azuria.Community
                     else
                         lReturn.Insert(0,
                             new Message(
-                                new User(curMessage.Username, Convert.ToInt32(curMessage.Fromid),
+                                new User.User(curMessage.Username, Convert.ToInt32(curMessage.Fromid),
                                     this._senpai), Convert.ToInt32(curMessage.Id), curMessage.Message,
                                 Convert.ToInt32(curMessage.Timestamp), lMessageAction));
                 }
@@ -702,7 +703,7 @@ namespace Azuria.Community
                     this.NeuePmRaised?.Invoke(this,
                         new List<Message>
                         {
-                            new Message(User.System, -1, lResponseJson["message"], DateTime.Now,
+                            new Message(User.User.System, -1, lResponseJson["message"], DateTime.Now,
                                 Message.Action.GetAction)
                         }, false);
                     return new ProxerResult();
@@ -838,12 +839,12 @@ namespace Azuria.Community
                 GetAction
             }
 
-            internal Message([NotNull] User sender, int mid, [NotNull] string nachricht, int unix, Action action)
+            internal Message([NotNull] User.User sender, int mid, [NotNull] string nachricht, int unix, Action action)
                 : this(sender, mid, nachricht, Utility.UnixTimeStampToDateTime(unix), action)
             {
             }
 
-            internal Message([NotNull] User sender, int mid, [NotNull] string nachricht, DateTime date, Action action)
+            internal Message([NotNull] User.User sender, int mid, [NotNull] string nachricht, DateTime date, Action action)
             {
                 this.Sender = sender;
                 this.MessageId = mid;
@@ -874,7 +875,7 @@ namespace Azuria.Community
             ///     Gets the sender of the current message.
             /// </summary>
             [NotNull]
-            public User Sender { get; private set; }
+            public User.User Sender { get; private set; }
 
             /// <summary>
             ///     Gets the timestamp of the current message.

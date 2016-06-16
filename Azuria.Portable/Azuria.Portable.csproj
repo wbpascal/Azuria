@@ -39,6 +39,51 @@
     <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="..\Azuria\AnimeManga\Anime.cs">
+      <Link>AnimeManga\Anime.cs</Link>
+    </Compile>
+    <Compile Include="..\Azuria\AnimeManga\AnimeLanguage.cs">
+      <Link>AnimeManga\AnimeLanguage.cs</Link>
+    </Compile>
+    <Compile Include="..\Azuria\AnimeManga\AnimeMangaStatus.cs">
+      <Link>AnimeManga\AnimeMangaStatus.cs</Link>
+    </Compile>
+    <Compile Include="..\Azuria\AnimeManga\AnimeType.cs">
+      <Link>AnimeManga\AnimeType.cs</Link>
+    </Compile>
+    <Compile Include="..\Azuria\AnimeManga\Fsk.cs">
+      <Link>AnimeManga\Fsk.cs</Link>
+    </Compile>
+    <Compile Include="..\Azuria\AnimeManga\FskHelper.cs">
+      <Link>AnimeManga\FskHelper.cs</Link>
+    </Compile>
+    <Compile Include="..\Azuria\AnimeManga\FskObject.cs">
+      <Link>AnimeManga\FskObject.cs</Link>
+    </Compile>
+    <Compile Include="..\Azuria\AnimeManga\GenreObject.cs">
+      <Link>AnimeManga\GenreObject.cs</Link>
+    </Compile>
+    <Compile Include="..\Azuria\AnimeManga\Group.cs">
+      <Link>AnimeManga\Group.cs</Link>
+    </Compile>
+    <Compile Include="..\Azuria\AnimeManga\IAnimeMangaContent.cs">
+      <Link>AnimeManga\IAnimeMangaContent.cs</Link>
+    </Compile>
+    <Compile Include="..\Azuria\AnimeManga\IAnimeMangaContentBase.cs">
+      <Link>AnimeManga\IAnimeMangaContentBase.cs</Link>
+    </Compile>
+    <Compile Include="..\Azuria\AnimeManga\IAnimeMangaObject.cs">
+      <Link>AnimeManga\IAnimeMangaObject.cs</Link>
+    </Compile>
+    <Compile Include="..\Azuria\AnimeManga\Industry.cs">
+      <Link>AnimeManga\Industry.cs</Link>
+    </Compile>
+    <Compile Include="..\Azuria\AnimeManga\Language.cs">
+      <Link>AnimeManga\Language.cs</Link>
+    </Compile>
+    <Compile Include="..\Azuria\AnimeManga\Manga.cs">
+      <Link>AnimeManga\Manga.cs</Link>
+    </Compile>
     <Compile Include="..\Azuria\Community\Conference.cs">
       <Link>Community\Conference.cs</Link>
     </Compile>
@@ -68,99 +113,6 @@
     </Compile>
     <Compile Include="..\Azuria\Exceptions\WrongResponseException.cs">
       <Link>Exceptions\WrongResponseException.cs</Link>
-    </Compile>
-    <Compile Include="..\Azuria\Main\Anime.cs">
-      <Link>Main\Anime.cs</Link>
-    </Compile>
-    <Compile Include="..\Azuria\Main\AnimeMangaStatus.cs">
-      <Link>Main\AnimeMangaStatus.cs</Link>
-    </Compile>
-    <Compile Include="..\Azuria\Main\IAnimeMangaContent.cs">
-      <Link>Main\IAnimeMangaContent.cs</Link>
-    </Compile>
-    <Compile Include="..\Azuria\Main\IAnimeMangaContentBase.cs">
-      <Link>Main\IAnimeMangaContentBase.cs</Link>
-    </Compile>
-    <Compile Include="..\Azuria\Main\IAnimeMangaObject.cs">
-      <Link>Main\IAnimeMangaObject.cs</Link>
-    </Compile>
-    <Compile Include="..\Azuria\Main\Manga.cs">
-      <Link>Main\Manga.cs</Link>
-    </Compile>
-    <Compile Include="..\Azuria\Main\Minor\AnimeLanguage.cs">
-      <Link>Main\Minor\AnimeLanguage.cs</Link>
-    </Compile>
-    <Compile Include="..\Azuria\Main\Minor\AnimeType.cs">
-      <Link>Main\Minor\AnimeType.cs</Link>
-    </Compile>
-    <Compile Include="..\Azuria\Main\Minor\Fsk.cs">
-      <Link>Main\Minor\Fsk.cs</Link>
-    </Compile>
-    <Compile Include="..\Azuria\Main\Minor\FskHelper.cs">
-      <Link>Main\Minor\FskHelper.cs</Link>
-    </Compile>
-    <Compile Include="..\Azuria\Main\Minor\FskObject.cs">
-      <Link>Main\Minor\FskObject.cs</Link>
-    </Compile>
-    <Compile Include="..\Azuria\Main\Minor\GenreObject.cs">
-      <Link>Main\Minor\GenreObject.cs</Link>
-    </Compile>
-    <Compile Include="..\Azuria\Main\Minor\Group.cs">
-      <Link>Main\Minor\Group.cs</Link>
-    </Compile>
-    <Compile Include="..\Azuria\Main\Minor\Industry.cs">
-      <Link>Main\Minor\Industry.cs</Link>
-    </Compile>
-    <Compile Include="..\Azuria\Main\Minor\Language.cs">
-      <Link>Main\Minor\Language.cs</Link>
-    </Compile>
-    <Compile Include="..\Azuria\Main\Search\ISearchableObject.cs">
-      <Link>Main\Search\ISearchableObject.cs</Link>
-    </Compile>
-    <Compile Include="..\Azuria\Main\Search\SearchHelper.cs">
-      <Link>Main\Search\SearchHelper.cs</Link>
-    </Compile>
-    <Compile Include="..\Azuria\Main\Search\SearchResult.cs">
-      <Link>Main\Search\SearchResult.cs</Link>
-    </Compile>
-    <Compile Include="..\Azuria\Main\Search\SearchResultEnumerator.cs">
-      <Link>Main\Search\SearchResultEnumerator.cs</Link>
-    </Compile>
-    <Compile Include="..\Azuria\Main\User\AnimeMangaChronicObject.cs">
-      <Link>Main\User\AnimeMangaChronicObject.cs</Link>
-    </Compile>
-    <Compile Include="..\Azuria\Main\User\AnimeMangaProgress.cs">
-      <Link>Main\User\AnimeMangaProgress.cs</Link>
-    </Compile>
-    <Compile Include="..\Azuria\Main\User\AnimeMangaProgressObject.cs">
-      <Link>Main\User\AnimeMangaProgressObject.cs</Link>
-    </Compile>
-    <Compile Include="..\Azuria\Main\User\AnimeMangaProgressState.cs">
-      <Link>Main\User\AnimeMangaProgressState.cs</Link>
-    </Compile>
-    <Compile Include="..\Azuria\Main\User\Comment\Comment.cs">
-      <Link>Main\User\Comment\Comment.cs</Link>
-    </Compile>
-    <Compile Include="..\Azuria\Main\User\Comment\EditableComment.cs">
-      <Link>Main\User\Comment\EditableComment.cs</Link>
-    </Compile>
-    <Compile Include="..\Azuria\Main\User\Comment\RatingCategory.cs">
-      <Link>Main\User\Comment\RatingCategory.cs</Link>
-    </Compile>
-    <Compile Include="..\Azuria\Main\User\ControlPanel\AnimeMangaBookmarkObject.cs">
-      <Link>Main\User\ControlPanel\AnimeMangaBookmarkObject.cs</Link>
-    </Compile>
-    <Compile Include="..\Azuria\Main\User\ControlPanel\AnimeMangaFavouriteObject.cs">
-      <Link>Main\User\ControlPanel\AnimeMangaFavouriteObject.cs</Link>
-    </Compile>
-    <Compile Include="..\Azuria\Main\User\ControlPanel\AnimeMangaUcpObject.cs">
-      <Link>Main\User\ControlPanel\AnimeMangaUcpObject.cs</Link>
-    </Compile>
-    <Compile Include="..\Azuria\Main\User\ControlPanel\EditableAnimeMangaProgress.cs">
-      <Link>Main\User\ControlPanel\EditableAnimeMangaProgress.cs</Link>
-    </Compile>
-    <Compile Include="..\Azuria\Main\User\ControlPanel\UserControlPanel.cs">
-      <Link>Main\User\ControlPanel\UserControlPanel.cs</Link>
     </Compile>
     <Compile Include="..\Azuria\Notifications\AnimeManga\AnimeMangaNotification.cs">
       <Link>Notifications\AnimeManga\AnimeMangaNotification.cs</Link>
@@ -225,11 +177,59 @@
     <Compile Include="..\Azuria\ProxerClass.cs">
       <Link>ProxerClass.cs</Link>
     </Compile>
+    <Compile Include="..\Azuria\Search\ISearchableObject.cs">
+      <Link>Search\ISearchableObject.cs</Link>
+    </Compile>
+    <Compile Include="..\Azuria\Search\SearchHelper.cs">
+      <Link>Search\SearchHelper.cs</Link>
+    </Compile>
+    <Compile Include="..\Azuria\Search\SearchResult.cs">
+      <Link>Search\SearchResult.cs</Link>
+    </Compile>
+    <Compile Include="..\Azuria\Search\SearchResultEnumerator.cs">
+      <Link>Search\SearchResultEnumerator.cs</Link>
+    </Compile>
     <Compile Include="..\Azuria\Senpai.cs">
       <Link>Senpai.cs</Link>
     </Compile>
-    <Compile Include="..\Azuria\User.cs">
-      <Link>User.cs</Link>
+    <Compile Include="..\Azuria\User\AnimeMangaChronicObject.cs">
+      <Link>User\AnimeMangaChronicObject.cs</Link>
+    </Compile>
+    <Compile Include="..\Azuria\User\AnimeMangaProgress.cs">
+      <Link>User\AnimeMangaProgress.cs</Link>
+    </Compile>
+    <Compile Include="..\Azuria\User\AnimeMangaProgressObject.cs">
+      <Link>User\AnimeMangaProgressObject.cs</Link>
+    </Compile>
+    <Compile Include="..\Azuria\User\AnimeMangaProgressState.cs">
+      <Link>User\AnimeMangaProgressState.cs</Link>
+    </Compile>
+    <Compile Include="..\Azuria\User\Comment\Comment.cs">
+      <Link>User\Comment\Comment.cs</Link>
+    </Compile>
+    <Compile Include="..\Azuria\User\Comment\EditableComment.cs">
+      <Link>User\Comment\EditableComment.cs</Link>
+    </Compile>
+    <Compile Include="..\Azuria\User\Comment\RatingCategory.cs">
+      <Link>User\Comment\RatingCategory.cs</Link>
+    </Compile>
+    <Compile Include="..\Azuria\User\ControlPanel\AnimeMangaBookmarkObject.cs">
+      <Link>User\ControlPanel\AnimeMangaBookmarkObject.cs</Link>
+    </Compile>
+    <Compile Include="..\Azuria\User\ControlPanel\AnimeMangaFavouriteObject.cs">
+      <Link>User\ControlPanel\AnimeMangaFavouriteObject.cs</Link>
+    </Compile>
+    <Compile Include="..\Azuria\User\ControlPanel\AnimeMangaUcpObject.cs">
+      <Link>User\ControlPanel\AnimeMangaUcpObject.cs</Link>
+    </Compile>
+    <Compile Include="..\Azuria\User\ControlPanel\EditableAnimeMangaProgress.cs">
+      <Link>User\ControlPanel\EditableAnimeMangaProgress.cs</Link>
+    </Compile>
+    <Compile Include="..\Azuria\User\ControlPanel\UserControlPanel.cs">
+      <Link>User\ControlPanel\UserControlPanel.cs</Link>
+    </Compile>
+    <Compile Include="..\Azuria\User\User.cs">
+      <Link>User\User.cs</Link>
     </Compile>
     <Compile Include="..\Azuria\Utilities\ErrorHandling\ErrorHandler.cs">
       <Link>Utilities\ErrorHandling\ErrorHandler.cs</Link>

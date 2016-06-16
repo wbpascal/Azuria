@@ -1,5 +1,5 @@
 ﻿using System;
-using Azuria.Main;
+using Azuria.AnimeManga;
 
 namespace Azuria.Exceptions
 {

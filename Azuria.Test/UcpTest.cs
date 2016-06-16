@@ -2,12 +2,12 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Azuria.Main;
-using Azuria.Main.User;
-using Azuria.Main.User.Comment;
-using Azuria.Main.User.ControlPanel;
+using Azuria.AnimeManga;
 using Azuria.Test.Attributes;
 using Azuria.Test.Utility;
+using Azuria.User;
+using Azuria.User.Comment;
+using Azuria.User.ControlPanel;
 using Azuria.Utilities.ErrorHandling;
 using NUnit.Framework;
 
