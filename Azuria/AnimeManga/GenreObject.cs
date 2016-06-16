@@ -257,12 +257,6 @@ namespace Azuria.AnimeManga
             {"Yuri", GenreType.Yuri}
         };
 
-        /// <summary>
-        ///     Gets the link to the wiki entry associated with this <see cref="Genre" />.
-        /// </summary>
-        [NotNull]
-        public Uri WikiLink => new Uri("https://proxer.me/wiki/" + this.Genre);
-
         #endregion
     }
 }
