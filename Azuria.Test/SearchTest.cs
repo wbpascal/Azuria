@@ -18,10 +18,10 @@ namespace Azuria.Test
             ProxerResult<SearchResult<Anime>> lSearchResult = SearchHelper.SearchAnimeManga<Anime>("a",
                 SenpaiTest.Senpai,
                 SearchHelper.AnimeMangaType.Animeseries,
-                new[] {GenreObject.GenreType.Action, GenreObject.GenreType.Mecha},
+                new[] {GenreType.Action, GenreType.Mecha},
                 new[]
-                {GenreObject.GenreType.Fantasy, GenreObject.GenreType.Romance},
-                new[] {Fsk.Fsk16, Fsk.BadWords}, Language.German);
+                {GenreType.Fantasy, GenreType.Romance},
+                new[] {FskType.Fsk16, FskType.BadWords}, Language.German);
 
             Assert.IsTrue(lSearchResult.Success);
             Assert.IsNotNull(lSearchResult.Result);
@@ -35,13 +35,13 @@ namespace Azuria.Test
                 Assert.IsTrue((await searchResult.Name.GetObject("ERROR")).Contains("a"));
                 Assert.IsTrue(
                     (await searchResult.Genre.GetObject(new GenreObject[0])).Count(
-                        o => o.Genre == GenreObject.GenreType.Action || o.Genre == GenreObject.GenreType.Mecha) == 2);
+                        o => o.Genre == GenreType.Action || o.Genre == GenreType.Mecha) == 2);
                 Assert.IsFalse(
                     (await searchResult.Genre.GetObject(new GenreObject[0])).Any(
-                        o => o.Genre == GenreObject.GenreType.Fantasy || o.Genre == GenreObject.GenreType.Romance));
+                        o => o.Genre == GenreType.Fantasy || o.Genre == GenreType.Romance));
                 Assert.IsTrue(
                     (await searchResult.Fsk.GetObject(new FskObject[0])).Count(
-                        o => o.Fsk == Fsk.Fsk16 || o.Fsk == Fsk.BadWords) == 2);
+                        o => o.FskType == FskType.Fsk16 || o.FskType == FskType.BadWords) == 2);
                 Assert.IsTrue(
                     (await searchResult.AvailableLanguages.GetObject(new AnimeLanguage[0])).Any(
                         language => language == AnimeLanguage.GerDub || language == AnimeLanguage.GerSub));

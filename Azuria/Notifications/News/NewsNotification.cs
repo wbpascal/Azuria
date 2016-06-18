@@ -27,10 +27,10 @@ namespace Azuria.Notifications.News
         /// <summary>
         /// </summary>
         public User.User Author => new User.User(this.AuthorName, this.AuthorId, this.Senpai);
-        
+
         [JsonProperty("uid")]
         internal int AuthorId { get; set; }
-        
+
         [JsonProperty("uname")]
         internal string AuthorName { get; set; }
 

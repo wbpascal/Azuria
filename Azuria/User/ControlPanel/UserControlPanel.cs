@@ -101,10 +101,14 @@ namespace Azuria.User.ControlPanel
         #region
 
         /// <summary>
-        ///     Adds a specified <see cref="AnimeManga.Anime.Episode">Episode</see> or <see cref="AnimeManga.Manga.Chapter">Chapter</see> to
+        ///     Adds a specified <see cref="AnimeManga.Anime.Episode">Episode</see> or
+        ///     <see cref="AnimeManga.Manga.Chapter">Chapter</see> to
         ///     the bookmarks.
         /// </summary>
-        /// <typeparam name="T">Whether an <see cref="AnimeManga.Anime">Anime</see> or <see cref="AnimeManga.Manga">Manga</see> is added.</typeparam>
+        /// <typeparam name="T">
+        ///     Whether an <see cref="AnimeManga.Anime">Anime</see> or <see cref="AnimeManga.Manga">Manga</see> is
+        ///     added.
+        /// </typeparam>
         /// <param name="animeMangaContent">
         ///     The <see cref="AnimeManga.Anime.Episode">Episode</see> or
         ///     <see cref="AnimeManga.Manga.Chapter">Chapter</see> that is added.
@@ -203,9 +207,13 @@ namespace Azuria.User.ControlPanel
         }
 
         /// <summary>
-        ///     Adds a specified <see cref="AnimeManga.Anime">Anime</see> or <see cref="AnimeManga.Manga">Manga</see> to the planned list.
+        ///     Adds a specified <see cref="AnimeManga.Anime">Anime</see> or <see cref="AnimeManga.Manga">Manga</see> to the
+        ///     planned list.
         /// </summary>
-        /// <typeparam name="T">Whether an <see cref="AnimeManga.Anime">Anime</see> or <see cref="AnimeManga.Manga">Manga</see> is added.</typeparam>
+        /// <typeparam name="T">
+        ///     Whether an <see cref="AnimeManga.Anime">Anime</see> or <see cref="AnimeManga.Manga">Manga</see> is
+        ///     added.
+        /// </typeparam>
         /// <param name="animeMangaObject">
         ///     The <see cref="AnimeManga.Anime">Anime</see> or <see cref="AnimeManga.Manga">Manga</see> that is
         ///     added.
@@ -272,7 +280,10 @@ namespace Azuria.User.ControlPanel
         ///     Deletes an entry from <see cref="AnimeBookmarks" /> or <see cref="MangaBookmarks" /> and simultaneously from the
         ///     server.
         /// </summary>
-        /// <typeparam name="T">Whether an <see cref="AnimeManga.Anime">Anime</see> or <see cref="AnimeManga.Manga">Manga</see> is deleted.</typeparam>
+        /// <typeparam name="T">
+        ///     Whether an <see cref="AnimeManga.Anime">Anime</see> or <see cref="AnimeManga.Manga">Manga</see> is
+        ///     deleted.
+        /// </typeparam>
         /// <param name="animeMangaBookmarkObject">The entry that is to be deleted.</param>
         public void DeleteBookmark<T>(AnimeMangaBookmarkObject<T> animeMangaBookmarkObject) where T : IAnimeMangaObject
         {
@@ -299,7 +310,10 @@ namespace Azuria.User.ControlPanel
         /// <summary>
         ///     Deletes an entry from <see cref="Anime" /> or <see cref="Manga" /> and simultaneously from the server.
         /// </summary>
-        /// <typeparam name="T">Whether an <see cref="AnimeManga.Anime">Anime</see> or <see cref="AnimeManga.Manga">Manga</see> is deleted.</typeparam>
+        /// <typeparam name="T">
+        ///     Whether an <see cref="AnimeManga.Anime">Anime</see> or <see cref="AnimeManga.Manga">Manga</see> is
+        ///     deleted.
+        /// </typeparam>
         /// <param name="animeMangaUcpObject">The entry that is to be deleted.</param>
         public void DeleteEntry<T>(AnimeMangaUcpObject<T> animeMangaUcpObject) where T : IAnimeMangaObject
         {
@@ -327,7 +341,10 @@ namespace Azuria.User.ControlPanel
         ///     Deletes an entry from <see cref="AnimeFavourites" /> or <see cref="MangaFavourites" /> and simultaneously from the
         ///     server.
         /// </summary>
-        /// <typeparam name="T">Whether an <see cref="AnimeManga.Anime">Anime</see> or <see cref="AnimeManga.Manga">Manga</see> is deleted.</typeparam>
+        /// <typeparam name="T">
+        ///     Whether an <see cref="AnimeManga.Anime">Anime</see> or <see cref="AnimeManga.Manga">Manga</see> is
+        ///     deleted.
+        /// </typeparam>
         /// <param name="animeMangaFavouriteObject">The entry that is to be deleted.</param>
         public void DeleteFavourite<T>(AnimeMangaFavouriteObject<T> animeMangaFavouriteObject)
             where T : IAnimeMangaObject

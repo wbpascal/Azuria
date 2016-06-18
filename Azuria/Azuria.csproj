@@ -65,6 +65,8 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AnimeManga\GenreType.cs" />
+    <Compile Include="AnimeManga\TagType.cs" />
     <Compile Include="Community\Conference.cs" />
     <Compile Include="Community\ConferenceHelper\MessagesModel.cs" />
     <Compile Include="Exceptions\CaptchaException.cs" />
@@ -88,7 +90,7 @@
     <Compile Include="Search\SearchResultEnumerator.cs" />
     <Compile Include="User\AnimeMangaProgress.cs" />
     <Compile Include="User\Comment\Comment.cs" />
-    <Compile Include="AnimeManga\Fsk.cs" />
+    <Compile Include="AnimeManga\FskType.cs" />
     <Compile Include="AnimeManga\FskHelper.cs" />
     <Compile Include="AnimeManga\GenreObject.cs" />
     <Compile Include="AnimeManga\Group.cs" />

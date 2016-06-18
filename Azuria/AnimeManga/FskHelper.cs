@@ -4,40 +4,40 @@ using JetBrains.Annotations;
 namespace Azuria.AnimeManga
 {
     /// <summary>
-    ///     Represents a class which aims to help working with the <see cref="Fsk">Fsk-enumeration</see>.
+    ///     Represents a class which aims to help working with the <see cref="FskType">Fsk-enumeration</see>.
     /// </summary>
     public static class FskHelper
     {
         #region Properties
 
         [NotNull]
-        internal static Dictionary<Fsk, string> FskToStringDictionary => new Dictionary<Fsk, string>
+        internal static Dictionary<FskType, string> FskToStringDictionary => new Dictionary<FskType, string>
         {
-            {Fsk.Fsk0, "fsk0"},
-            {Fsk.Fsk6, "fsk6"},
-            {Fsk.Fsk12, "fsk12"},
-            {Fsk.Fsk16, "fsk16"},
-            {Fsk.Fsk18, "fsk18"},
-            {Fsk.BadWords, "bad_language"},
-            {Fsk.Violence, "violence"},
-            {Fsk.Fear, "fear"},
-            {Fsk.Sex, "sex"},
-            {Fsk.Unknown, "unknown"}
+            {FskType.Fsk0, "fsk0"},
+            {FskType.Fsk6, "fsk6"},
+            {FskType.Fsk12, "fsk12"},
+            {FskType.Fsk16, "fsk16"},
+            {FskType.Fsk18, "fsk18"},
+            {FskType.BadWords, "bad_language"},
+            {FskType.Violence, "violence"},
+            {FskType.Fear, "fear"},
+            {FskType.Sex, "sex"},
+            {FskType.Unknown, "unknown"}
         };
 
         [NotNull]
-        internal static Dictionary<string, Fsk> StringToFskDictionary => new Dictionary<string, Fsk>
+        internal static Dictionary<string, FskType> StringToFskDictionary => new Dictionary<string, FskType>
         {
-            {"fsk0", Fsk.Fsk0},
-            {"fsk6", Fsk.Fsk6},
-            {"fsk12", Fsk.Fsk12},
-            {"fsk16", Fsk.Fsk16},
-            {"fsk18", Fsk.Fsk18},
-            {"bad_language", Fsk.BadWords},
-            {"violence", Fsk.Violence},
-            {"fear", Fsk.Fear},
-            {"sex", Fsk.Sex},
-            {"unknown", Fsk.Unknown}
+            {"fsk0", FskType.Fsk0},
+            {"fsk6", FskType.Fsk6},
+            {"fsk12", FskType.Fsk12},
+            {"fsk16", FskType.Fsk16},
+            {"fsk18", FskType.Fsk18},
+            {"bad_language", FskType.BadWords},
+            {"violence", FskType.Violence},
+            {"fear", FskType.Fear},
+            {"sex", FskType.Sex},
+            {"unknown", FskType.Unknown}
         };
 
         #endregion

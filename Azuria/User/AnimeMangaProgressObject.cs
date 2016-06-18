@@ -13,7 +13,8 @@ using JetBrains.Annotations;
 namespace Azuria.User
 {
     /// <summary>
-    ///     Represents a progress entry of a <see cref="Azuria.User.User" /> of an <see cref="Anime" /> or <see cref="Manga" />.
+    ///     Represents a progress entry of a <see cref="Azuria.User.User" /> of an <see cref="Anime" /> or <see cref="Manga" />
+    ///     .
     /// </summary>
     public class AnimeMangaProgressObject<T> where T : IAnimeMangaObject
     {

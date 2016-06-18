@@ -844,7 +844,8 @@ namespace Azuria.Community
             {
             }
 
-            internal Message([NotNull] User.User sender, int mid, [NotNull] string nachricht, DateTime date, Action action)
+            internal Message([NotNull] User.User sender, int mid, [NotNull] string nachricht, DateTime date,
+                Action action)
             {
                 this.Sender = sender;
                 this.MessageId = mid;

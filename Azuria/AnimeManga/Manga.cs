@@ -484,7 +484,7 @@ namespace Azuria.AnimeManga
                                         .Where(htmlNode => htmlNode.Name.Equals("span") &&
                                                            lTempList.All(
                                                                o =>
-                                                                   o.Fsk !=
+                                                                   o.FskType !=
                                                                    FskHelper.StringToFskDictionary[
                                                                        htmlNode.FirstChild.GetAttributeValue("src",
                                                                            "/images/fsk/unknown.png")

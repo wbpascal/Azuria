@@ -142,8 +142,9 @@ namespace Azuria.Search
         ///     The <see cref="GenreObject">genres</see> which every <see cref="Anime" /> Or <see cref="Manga" /> should NOT
         ///     contain.
         /// </param>
+        /// <param name="tagExcludes"></param>
         /// <param name="fskContains">
-        ///     The <see cref="Fsk">Fsk-</see>categories which every <see cref="Anime" /> Or
+        ///     The <see cref="FskType">Fsk-</see>categories which every <see cref="Anime" /> Or
         ///     <see cref="Manga" /> has to contain.
         /// </param>
         /// <param name="sprache">
@@ -152,17 +153,16 @@ namespace Azuria.Search
         /// </param>
         /// <param name="sort">The order in which the objects are returned.</param>
         /// <param name="type">The type of the <see cref="Anime" /> or <see cref="Manga" /> that is being searched for</param>
+        /// <param name="tagContains"></param>
         /// <returns>A collection of the search results.</returns>
         [NotNull]
         public static ProxerResult<SearchResult<T>> SearchAnimeManga<T>([NotNull] string name,
             [NotNull] Senpai senpai,
-            AnimeMangaType? type = null, IEnumerable<GenreObject.GenreType> genreContains = null,
-            IEnumerable<GenreObject.GenreType> genreExcludes = null, IEnumerable<Fsk> fskContains = null,
+            AnimeMangaType? type = null, IEnumerable<GenreType> genreContains = null,
+            IEnumerable<GenreType> genreExcludes = null, IEnumerable<TagType> tagContains = null,
+            IEnumerable<TagType> tagExcludes = null, IEnumerable<FskType> fskContains = null,
             Language? sprache = null, SortAnimeManga? sort = null) where T : IAnimeMangaObject
         {
-            if (string.IsNullOrEmpty(name))
-                return new ProxerResult<SearchResult<T>>(new Exception[] {new ArgumentNullException(nameof(name))});
-
             string lType = type == null
                 ? "all"
                 : SearchUtility.AnimeMangaTypeToString.ContainsKey(type.Value)
@@ -172,7 +172,7 @@ namespace Azuria.Search
             string lGenreContains = "";
             if (genreContains != null)
             {
-                foreach (GenreObject.GenreType curGenre in genreContains)
+                foreach (GenreType curGenre in genreContains)
                 {
                     lGenreContains += curGenre + "+";
                 }
@@ -181,16 +181,34 @@ namespace Azuria.Search
             string lGenreExludes = "";
             if (genreExcludes != null)
             {
-                foreach (GenreObject.GenreType curGenre in genreExcludes)
+                foreach (GenreType curGenre in genreExcludes)
                 {
                     lGenreExludes += curGenre + "+";
                 }
                 if (lGenreExludes.EndsWith("+")) lGenreExludes = lGenreExludes.Remove(lGenreExludes.Length - 1);
             }
+            string lTagContains = "";
+            if (tagContains != null)
+            {
+                foreach (TagType tagType in tagContains)
+                {
+                    lTagContains += (int) tagType + "+";
+                }
+                if (lTagContains.EndsWith("+")) lTagContains = lTagContains.Remove(lTagContains.Length - 1);
+            }
+            string lTagExcludes = "";
+            if (tagExcludes != null)
+            {
+                foreach (TagType tagType in tagExcludes)
+                {
+                    lTagExcludes += (int) tagType + "+";
+                }
+                if (lTagExcludes.EndsWith("+")) lTagExcludes = lTagExcludes.Remove(lTagExcludes.Length - 1);
+            }
             string lFskContains = "";
             if (fskContains != null)
             {
-                foreach (Fsk curFsk in fskContains)
+                foreach (FskType curFsk in fskContains)
                 {
                     if (FskHelper.FskToStringDictionary.ContainsKey(curFsk))
                         lFskContains += FskHelper.FskToStringDictionary[curFsk] + "+";
@@ -205,9 +223,10 @@ namespace Azuria.Search
 
             return
                 new ProxerResult<SearchResult<T>>(
-                    new SearchResult<T>("search?s=search&name=" + name + "&sprache=" + lLanguage
-                                        + "&genre=" + lGenreContains + "&nogenre=" + lGenreExludes
-                                        + "&fsk=" + lFskContains + "&sort=" + lSortAnime + "&typ=" + lType, senpai));
+                    new SearchResult<T>(
+                        $"search?s=search&name={name}&sprache={lLanguage}&genre={lGenreContains}&" +
+                        $"nogenre={lGenreExludes}&tags={lTagContains}&notags={lTagExcludes}&fsk={lFskContains}&" +
+                        $"sort={lSortAnime}&typ={lType}", senpai));
         }
 
         #endregion

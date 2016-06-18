@@ -51,17 +51,20 @@
     <Compile Include="..\Azuria\AnimeManga\AnimeType.cs">
       <Link>AnimeManga\AnimeType.cs</Link>
     </Compile>
-    <Compile Include="..\Azuria\AnimeManga\Fsk.cs">
-      <Link>AnimeManga\Fsk.cs</Link>
-    </Compile>
     <Compile Include="..\Azuria\AnimeManga\FskHelper.cs">
       <Link>AnimeManga\FskHelper.cs</Link>
     </Compile>
     <Compile Include="..\Azuria\AnimeManga\FskObject.cs">
       <Link>AnimeManga\FskObject.cs</Link>
     </Compile>
+    <Compile Include="..\Azuria\AnimeManga\FskType.cs">
+      <Link>AnimeManga\FskType.cs</Link>
+    </Compile>
     <Compile Include="..\Azuria\AnimeManga\GenreObject.cs">
       <Link>AnimeManga\GenreObject.cs</Link>
+    </Compile>
+    <Compile Include="..\Azuria\AnimeManga\GenreType.cs">
+      <Link>AnimeManga\GenreType.cs</Link>
     </Compile>
     <Compile Include="..\Azuria\AnimeManga\Group.cs">
       <Link>AnimeManga\Group.cs</Link>
@@ -83,6 +86,9 @@
     </Compile>
     <Compile Include="..\Azuria\AnimeManga\Manga.cs">
       <Link>AnimeManga\Manga.cs</Link>
+    </Compile>
+    <Compile Include="..\Azuria\AnimeManga\TagType.cs">
+      <Link>AnimeManga\TagType.cs</Link>
     </Compile>
     <Compile Include="..\Azuria\Community\Conference.cs">
       <Link>Community\Conference.cs</Link>

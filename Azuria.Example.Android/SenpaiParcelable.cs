@@ -133,7 +133,7 @@ namespace Azuria.Example.Android
         {
             this.IsLoggedIn = isLoggedIn;
             this.LoginCookies = lCookies;
-            this.Me = new User(meId, this);
+            this.Me = new User.User(meId, this);
         }
     }
 }
