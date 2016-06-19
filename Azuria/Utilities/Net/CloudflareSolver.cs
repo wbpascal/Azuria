@@ -13,11 +13,10 @@ namespace Azuria.Utilities.Net
         {
             try
             {
-                string lWierdVarMatch = new Regex("var\\s*?t,r,a,f,\\s?(\\S+?;)").Match(response).Groups[1].Value;
-                string lWierdVar = lWierdVarMatch.Split('=')[0];
-                string lWierdEquasion =
-                    new Regex($"({lWierdVar}\\S+?);a.value = parseInt").Match(response).Groups[1].Value;
-                string lScript = "var " + lWierdVarMatch + lWierdEquasion;
+                GroupCollection lWierdEquasion =
+                    new Regex(@"(var s, t, o, p[\S\s]+?};)[\S\s]+?(zyrziLd[\S\s]+?)a\.value = parseInt[\S\s]+?;").Match(
+                        response).Groups;
+                string lScript = "var " + lWierdEquasion[1] + lWierdEquasion[2];
                 int lCloudflareAnswer = Convert.ToInt32(JsEval.Eval(lScript)) + originalUri.Host.Length;
 
                 string lChallengeId = new Regex("name=\"jschl_vc\" value=\"(\\w+)\"").Match(response).Groups[1].Value;
