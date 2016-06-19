@@ -21,7 +21,7 @@ namespace Azuria.Test
                 new[] {GenreType.Action, GenreType.Mecha},
                 new[]
                 {GenreType.Fantasy, GenreType.Romance},
-                new[] {FskType.Fsk16, FskType.BadWords}, Language.German);
+                fskContains: new[] {FskType.Fsk16, FskType.BadWords}, language: Language.German);
 
             Assert.IsTrue(lSearchResult.Success);
             Assert.IsNotNull(lSearchResult.Result);

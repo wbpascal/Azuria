@@ -147,7 +147,7 @@ namespace Azuria.Search
         ///     The <see cref="FskType">Fsk-</see>categories which every <see cref="Anime" /> Or
         ///     <see cref="Manga" /> has to contain.
         /// </param>
-        /// <param name="sprache">
+        /// <param name="language">
         ///     The <see cref="Language" /> that every <see cref="Anime" /> or <see cref="Manga" /> has to be
         ///     available in.
         /// </param>
@@ -161,14 +161,14 @@ namespace Azuria.Search
             AnimeMangaType? type = null, IEnumerable<GenreType> genreContains = null,
             IEnumerable<GenreType> genreExcludes = null, IEnumerable<TagType> tagContains = null,
             IEnumerable<TagType> tagExcludes = null, IEnumerable<FskType> fskContains = null,
-            Language? sprache = null, SortAnimeManga? sort = null) where T : IAnimeMangaObject
+            Language? language = null, SortAnimeManga? sort = null) where T : IAnimeMangaObject
         {
             string lType = type == null
                 ? "all"
                 : SearchUtility.AnimeMangaTypeToString.ContainsKey(type.Value)
                     ? SearchUtility.AnimeMangaTypeToString[type.Value]
                     : "all";
-            string lLanguage = sprache == null ? "alle" : sprache.Value == Language.German ? "de" : "en";
+            string lLanguage = language == null ? "alle" : language.Value == Language.German ? "de" : "en";
             string lGenreContains = "";
             if (genreContains != null)
             {
