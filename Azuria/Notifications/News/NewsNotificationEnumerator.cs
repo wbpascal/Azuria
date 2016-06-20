@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Azuria.Exceptions;
 using Azuria.Utilities.ErrorHandling;
 using Azuria.Utilities.Net;
 using JetBrains.Annotations;
@@ -47,6 +48,8 @@ namespace Azuria.Notifications.News
             this._currentPageItemIndex = 0;
             Task<ProxerResult> lNextPageTask = this.GetNextPage();
             lNextPageTask.Wait();
+            if (!lNextPageTask.Result.Success)
+                throw lNextPageTask.Result.Exceptions.FirstOrDefault() ?? new WrongResponseException();
             return lNextPageTask.Result.Success && this._currentPageContent.Any();
         }
 

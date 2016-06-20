@@ -90,11 +90,23 @@
     <Compile Include="..\Azuria\AnimeManga\TagType.cs">
       <Link>AnimeManga\TagType.cs</Link>
     </Compile>
-    <Compile Include="..\Azuria\Community\Conference.cs">
-      <Link>Community\Conference.cs</Link>
+    <Compile Include="..\Azuria\Community\Conference\Conference.cs">
+      <Link>Community\Conference\Conference.cs</Link>
     </Compile>
-    <Compile Include="..\Azuria\Community\ConferenceHelper\MessagesModel.cs">
-      <Link>Community\ConferenceHelper\MessagesModel.cs</Link>
+    <Compile Include="..\Azuria\Community\Conference\Message.cs">
+      <Link>Community\Conference\Message.cs</Link>
+    </Compile>
+    <Compile Include="..\Azuria\Community\Conference\MessageCollection.cs">
+      <Link>Community\Conference\MessageCollection.cs</Link>
+    </Compile>
+    <Compile Include="..\Azuria\Community\Conference\MessageEnumerator.cs">
+      <Link>Community\Conference\MessageEnumerator.cs</Link>
+    </Compile>
+    <Compile Include="..\Azuria\Community\Conference\MessagesModel.cs">
+      <Link>Community\Conference\MessagesModel.cs</Link>
+    </Compile>
+    <Compile Include="..\Azuria\Community\Forum\Forum.cs">
+      <Link>Community\Forum\Forum.cs</Link>
     </Compile>
     <Compile Include="..\Azuria\Exceptions\CaptchaException.cs">
       <Link>Exceptions\CaptchaException.cs</Link>

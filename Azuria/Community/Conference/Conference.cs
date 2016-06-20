@@ -3,10 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Timers;
-using Azuria.Community.ConferenceHelper;
 using Azuria.Exceptions;
 using Azuria.User;
-using Azuria.Utilities;
 using Azuria.Utilities.ErrorHandling;
 using Azuria.Utilities.Extensions;
 using Azuria.Utilities.Net;
@@ -15,7 +13,7 @@ using HtmlAgilityPack;
 using JetBrains.Annotations;
 using Newtonsoft.Json;
 
-namespace Azuria.Community
+namespace Azuria.Community.Conference
 {
     /// <summary>
     ///     Represents a messaging Conference.
@@ -34,15 +32,13 @@ namespace Azuria.Community
         /// </summary>
         /// <param name="sender">The conference that raised the event.</param>
         /// <param name="e">
-        ///     Contains the new messages. If <paramref name="completeFetch" /> is true it contains the last 15
-        ///     messages of the conference.
+        ///     Contains the new messages.
         /// </param>
-        /// <param name="completeFetch">Returns if every message of the conference(15 most recent) was fetched or only unread ones.</param>
-        public delegate void NeuePmEventHandler(Conference sender, IEnumerable<Message> e, bool completeFetch);
+        public delegate void NewPmEventHandler(Conference sender, IEnumerable<Message> e);
 
-        private readonly Timer _getMessagesTimer;
+        private readonly Timer _checkMessagesTimer;
         private readonly Senpai _senpai;
-        private IEnumerable<Message> _nachrichten;
+        private Message _autoLastMessageRecieved;
 
         /// <summary>
         ///     Initialises a new instance of the Conference class.
@@ -61,8 +57,8 @@ namespace Azuria.Community
             this.Title = new InitialisableProperty<string>(this.GetTitle);
             this.IsConference = new InitialisableProperty<bool>(this.CheckIsConference);
 
-            this._getMessagesTimer = new Timer {Interval = new TimeSpan(0, 0, 15).TotalMilliseconds};
-            this._getMessagesTimer.Elapsed += this.OnGetMessagesTimerElapsed;
+            this._checkMessagesTimer = new Timer {Interval = new TimeSpan(0, 0, 15).TotalMilliseconds};
+            this._checkMessagesTimer.Elapsed += this.OnCheckMessagesTimerElapsed;
         }
 
         internal Conference(string title, int id, Senpai senpai) : this(id, senpai)
@@ -75,19 +71,13 @@ namespace Azuria.Community
         /// <summary>
         ///     Gets or sets a value indicating whether the conference is currently fetching new messages.
         /// </summary>
-        public bool Active
+        public bool AutoCheck
         {
-            get { return this._getMessagesTimer.Enabled; }
+            get { return this._checkMessagesTimer.Enabled; }
             set
             {
-                if (value)
-                {
-                    this.GetMessagesTimer(this._getMessagesTimer);
-                }
-                else
-                {
-                    this._getMessagesTimer.Stop();
-                }
+                if (value) this._autoLastMessageRecieved = this.Messages.FirstOrDefault();
+                this._checkMessagesTimer.Enabled = value;
             }
         }
 
@@ -124,14 +114,10 @@ namespace Azuria.Community
         public InitialisableProperty<User.User> Leader { get; }
 
         /// <summary>
-        ///     Gets all messages of the current conference in chronological order.
+        ///     Gets all messages of the current conference ordered by newest first.
         /// </summary>
         [NotNull]
-        public IEnumerable<Message> Messages
-        {
-            get { return this._nachrichten ?? new List<Message>(); }
-            private set { this._nachrichten = value; }
-        }
+        public IEnumerable<Message> Messages => new MessageCollection(this, this._senpai);
 
         /// <summary>
         ///     Gets all participants of the current conference.
@@ -169,6 +155,33 @@ namespace Azuria.Community
                 : new ProxerResult {Success = false};
         }
 
+        private void CheckForNewMessages()
+        {
+            if (this._autoLastMessageRecieved == null && this.Messages.Any())
+                this.NeuePmRaised?.Invoke(this, this.Messages);
+            else
+            {
+                Message[] lNewMessages =
+                    this.Messages.TakeWhile(message => message.MessageId != this._autoLastMessageRecieved.MessageId)
+                        .ToArray();
+                if (!lNewMessages.Any()) return;
+
+#pragma warning disable CS4014
+                if (
+                    lNewMessages.Any(
+                        x =>
+                            x.MessageAction == Message.Action.AddUser ||
+                            x.MessageAction == Message.Action.RemoveUser) && this.Participants.IsInitialisedOnce)
+                    this.GetMainInfo();
+                if (lNewMessages.Any(x => x.MessageAction == Message.Action.SetLeader) &&
+                    this.Leader.IsInitialisedOnce) this.GetLeader();
+                if (lNewMessages.Any(x => x.MessageAction == Message.Action.SetTopic) &&
+                    this.Title.IsInitialisedOnce) this.GetTitle();
+#pragma warning restore CS4014
+                this.NeuePmRaised?.Invoke(this, lNewMessages);
+            }
+        }
+
         [ItemNotNull]
         private async Task<ProxerResult> CheckIsConference()
         {
@@ -204,11 +217,6 @@ namespace Azuria.Community
             }
         }
 
-        /// <summary>
-        ///     Occurs when one or multiple exceptions are thrown during message fetching.
-        /// </summary>
-        public event ErrorDuringPmFetchEventHandler ErrorDuringPmFetchRaised;
-
         [ItemNotNull]
         private async Task<ProxerResult> Favour()
         {
@@ -227,64 +235,6 @@ namespace Azuria.Community
             return lResponse?.StartsWith("{\"error\":0") ?? false
                 ? new ProxerResult()
                 : new ProxerResult {Success = false};
-        }
-
-        [ItemNotNull]
-        private async Task<ProxerResult> GetAllMessages()
-        {
-            if (this.Messages.ToList().Count > 0)
-                return await this.GetMessages(this.Messages.Last().MessageId);
-
-            if (this.Messages.ToList().Count != 0)
-                return new ProxerResult
-                {
-                    Success = false
-                };
-
-            ProxerResult<string> lResult =
-                await
-                    HttpUtility.GetResponseErrorHandling(
-                        new Uri("http://proxer.me/messages?format=json&json=messages&id=" + this.Id),
-                        this._senpai.LoginCookies,
-                        this._senpai);
-
-            if (!lResult.Success)
-                return new ProxerResult(lResult.Exceptions);
-
-            string lResponse = lResult.Result;
-
-            if (lResponse == null || this._senpai.Me == null || lResponse.Equals("{\"uid\":\"" + this._senpai.Me.Id +
-                                                                                 "\",\"error\":1,\"msg\":\"Ein Fehler ist passiert.\"}"))
-                return new ProxerResult
-                {
-                    Success = false
-                };
-            try
-            {
-                ProxerResult<List<Message>> lResultMessages = await this.ProcessMessages(lResponse);
-                if (!lResultMessages.Success)
-                    return new ProxerResult(new Exception[] {new WrongResponseException(lResponse)});
-
-                if (lResultMessages.Result != null) this.Messages = lResultMessages.Result;
-
-                if (this.Messages.Any(
-                    x => x.MessageAction == Message.Action.AddUser || x.MessageAction == Message.Action.RemoveUser))
-                    await this.GetMainInfo();
-                if (this.Messages.Any(x => x.MessageAction == Message.Action.SetLeader) &&
-                    this.IsInitialized)
-                    await this.GetLeader();
-                if (this.Messages.Any(x => x.MessageAction == Message.Action.SetTopic) &&
-                    this.IsInitialized)
-                    await this.GetTitle();
-
-                this.NeuePmRaised?.Invoke(this, this.Messages, true);
-            }
-            catch
-            {
-                return new ProxerResult((await ErrorHandler.HandleError(this._senpai, lResponse, false)).Exceptions);
-            }
-
-            return new ProxerResult();
         }
 
         private async Task<ProxerResult> GetConferenceOptions()
@@ -415,84 +365,6 @@ namespace Azuria.Community
         }
 
         [ItemNotNull]
-        private async Task<ProxerResult> GetMessages(int startMessageId)
-        {
-            if (this.Messages.Count(x => x.MessageId == startMessageId) == 0)
-                return await this.GetAllMessages();
-
-            ProxerResult<string> lResult =
-                await
-                    HttpUtility.GetResponseErrorHandling(
-                        new Uri("http://proxer.me/messages?format=json&json=newmessages&id=" + this.Id + "&mid=" +
-                                startMessageId),
-                        this._senpai.LoginCookies,
-                        this._senpai);
-
-            if (!lResult.Success)
-                return new ProxerResult(lResult.Exceptions);
-
-            string lResponse = lResult.Result;
-
-            if (lResponse == null || this._senpai.Me == null || lResponse.Equals("{\"uid\":\"" + this._senpai.Me.Id +
-                                                                                 "\",\"error\":1,\"msg\":\"Ein Fehler ist passiert.\"}"))
-                return new ProxerResult
-                {
-                    Success = false
-                };
-
-            try
-            {
-                ProxerResult<List<Message>> lResultMessages = await this.ProcessMessages(lResponse);
-                if (!lResultMessages.Success || lResultMessages.Result == null)
-                    return new ProxerResult(new Exception[] {new WrongResponseException(lResponse)});
-
-                List<Message> lNewMessages = lResultMessages.Result;
-
-                if (
-                    lNewMessages.Count(
-                        x => x.MessageAction == Message.Action.AddUser || x.MessageAction == Message.Action.RemoveUser) >
-                    0)
-                    await this.GetMainInfo();
-                if (lNewMessages.Count(x => x.MessageAction == Message.Action.SetLeader) > 0 &&
-                    this.IsInitialized)
-                    await this.GetLeader();
-                if (lNewMessages.Count(x => x.MessageAction == Message.Action.SetTopic) > 0 &&
-                    this.IsInitialized)
-                    await this.GetTitle();
-
-                this.Messages = this.Messages.Concat(lNewMessages).ToList();
-
-                this.NeuePmRaised?.Invoke(this, lNewMessages, false);
-            }
-            catch
-            {
-                return new ProxerResult((await ErrorHandler.HandleError(this._senpai, lResponse, false)).Exceptions);
-            }
-
-            return new ProxerResult();
-        }
-
-        private async void GetMessagesTimer([NotNull] Timer timer)
-        {
-            ProxerResult lResult;
-            if (this.Messages.Any())
-                lResult = await this.GetMessages(this.Messages.Last().MessageId);
-            else lResult = await this.GetAllMessages();
-
-            try
-            {
-                if (!lResult.Success)
-                    this.ErrorDuringPmFetchRaised?.Invoke(this, lResult.Exceptions);
-            }
-            catch
-            {
-                //ignored
-            }
-
-            timer.Start();
-        }
-
-        [ItemNotNull]
         private async Task<ProxerResult> GetTitle()
         {
             if ((await this.IsConference.GetObject()).OnError(false))
@@ -551,13 +423,14 @@ namespace Azuria.Community
         /// <summary>
         ///     Occurs when new messages were recieved or once everytime Active is set to true.
         /// </summary>
-        public event NeuePmEventHandler NeuePmRaised;
+        public event NewPmEventHandler NeuePmRaised;
 
-        private void OnGetMessagesTimerElapsed(object s, EventArgs eArgs)
+        private void OnCheckMessagesTimerElapsed(object s, EventArgs eArgs)
         {
             Timer timer = s as Timer;
             timer?.Stop();
-            if (timer != null) this.GetMessagesTimer(timer);
+            this.CheckForNewMessages();
+            timer?.Start();
         }
 
         /// <summary>
@@ -600,67 +473,6 @@ namespace Azuria.Community
             }
         }
 
-        [ItemNotNull]
-        private async Task<ProxerResult<List<Message>>> ProcessMessages([NotNull] string messages)
-        {
-            List<Message> lReturn = new List<Message>();
-
-            try
-            {
-                MessagesModel lMessages = JsonConvert.DeserializeObject<MessagesModel>(messages);
-                this.IsBlocked.SetInitialisedObject(lMessages.Blocked == 1);
-                this.IsFavourite.SetInitialisedObject(lMessages.Favourite == 1);
-
-                foreach (MessageModel curMessage in lMessages.MessageModels)
-                {
-                    Message.Action lMessageAction;
-
-                    switch (curMessage.Action)
-                    {
-                        case "addUser":
-                            lMessageAction = Message.Action.AddUser;
-                            break;
-                        case "removeUser":
-                            lMessageAction = Message.Action.RemoveUser;
-                            break;
-                        case "setTopic":
-                            lMessageAction = Message.Action.SetTopic;
-                            break;
-                        case "setLeader":
-                            lMessageAction = Message.Action.SetLeader;
-                            break;
-                        default:
-                            lMessageAction = Message.Action.NoAction;
-                            break;
-                    }
-
-                    User.User[] lSender =
-                        (await this.Participants.GetObject()).OnError(new User.User[0])
-                            .Where(x => x.Id == Convert.ToInt32(curMessage.Fromid))
-                            .ToArray();
-
-                    if (lSender.Any())
-                        lReturn.Insert(0,
-                            new Message(lSender[0], Convert.ToInt32(curMessage.Id), curMessage.Message,
-                                Convert.ToInt32(curMessage.Timestamp), lMessageAction));
-                    else
-                        lReturn.Insert(0,
-                            new Message(
-                                new User.User(curMessage.Username, Convert.ToInt32(curMessage.Fromid),
-                                    this._senpai), Convert.ToInt32(curMessage.Id), curMessage.Message,
-                                Convert.ToInt32(curMessage.Timestamp), lMessageAction));
-                }
-            }
-            catch
-            {
-                return
-                    new ProxerResult<List<Message>>(
-                        (await ErrorHandler.HandleError(this._senpai, messages, false)).Exceptions);
-            }
-
-            return new ProxerResult<List<Message>>(lReturn);
-        }
-
         /// <summary>
         ///     Sends a message to the current conference.
         /// </summary>
@@ -674,7 +486,7 @@ namespace Azuria.Community
                     new ProxerResult(new[]
                     {new ArgumentException("Argument is null or empty", nameof(nachricht))});
 
-            this._getMessagesTimer.Stop();
+            this._checkMessagesTimer.Stop();
 
             Dictionary<string, string> lPostArgs = new Dictionary<string, string>
             {
@@ -698,25 +510,19 @@ namespace Azuria.Community
                 Dictionary<string, string> lResponseJson =
                     JsonConvert.DeserializeObject<Dictionary<string, string>>(lResponse);
 
+                if (this.AutoCheck) this.CheckForNewMessages();
                 if (lResponseJson.Keys.Contains("message"))
                 {
-                    this.NeuePmRaised?.Invoke(this,
-                        new List<Message>
-                        {
-                            new Message(User.User.System, -1, lResponseJson["message"], DateTime.Now,
-                                Message.Action.GetAction)
-                        }, false);
                     return new ProxerResult();
                 }
                 if (!lResponseJson.Keys.Contains("msg")) return new ProxerResult {Success = false};
 
-                await this.GetMessages(this.Messages.Last().MessageId);
-                this._getMessagesTimer.Start();
+                this._checkMessagesTimer.Start();
                 return new ProxerResult();
             }
             catch
             {
-                this._getMessagesTimer.Start();
+                this._checkMessagesTimer.Start();
                 return
                     new ProxerResult((await ErrorHandler.HandleError(this._senpai, lResponse, false)).Exceptions);
             }
@@ -797,93 +603,5 @@ namespace Azuria.Community
         }
 
         #endregion
-
-        /// <summary>
-        ///     Represents a single message of a <see cref="Conference" />
-        /// </summary>
-        public class Message
-        {
-            /// <summary>
-            ///     The action of the message.
-            /// </summary>
-            public enum Action
-            {
-                /// <summary>
-                ///     Normal message, only text content.
-                /// </summary>
-                NoAction,
-
-                /// <summary>
-                ///     A user was added to the conference.
-                /// </summary>
-                AddUser,
-
-                /// <summary>
-                ///     A user was removed from the conference.
-                /// </summary>
-                RemoveUser,
-
-                /// <summary>
-                ///     The leader of the conference was changed.
-                /// </summary>
-                SetLeader,
-
-                /// <summary>
-                ///     The topic of the conference was changed.
-                /// </summary>
-                SetTopic,
-
-                /// <summary>
-                ///     A message was returned directly by the system. Happens most of the times if the user issued a command.
-                /// </summary>
-                GetAction
-            }
-
-            internal Message([NotNull] User.User sender, int mid, [NotNull] string nachricht, int unix, Action action)
-                : this(sender, mid, nachricht, Utility.UnixTimeStampToDateTime(unix), action)
-            {
-            }
-
-            internal Message([NotNull] User.User sender, int mid, [NotNull] string nachricht, DateTime date,
-                Action action)
-            {
-                this.Sender = sender;
-                this.MessageId = mid;
-                this.Content = nachricht;
-                this.TimeStamp = date;
-                this.MessageAction = action;
-            }
-
-            #region Properties
-
-            /// <summary>
-            ///     Gets the message content.
-            /// </summary>
-            [NotNull]
-            public string Content { get; private set; }
-
-            /// <summary>
-            ///     Gets the action of the message.
-            /// </summary>
-            public Action MessageAction { get; }
-
-            /// <summary>
-            ///     Gets the Id of the current message.
-            /// </summary>
-            public int MessageId { get; }
-
-            /// <summary>
-            ///     Gets the sender of the current message.
-            /// </summary>
-            [NotNull]
-            public User.User Sender { get; private set; }
-
-            /// <summary>
-            ///     Gets the timestamp of the current message.
-            /// </summary>
-            public DateTime TimeStamp { get; private set; }
-
-            #endregion
-        }
     }
 }

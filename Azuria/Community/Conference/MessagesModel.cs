@@ -1,6 +1,6 @@
 ﻿using Newtonsoft.Json;
 
-namespace Azuria.Community.ConferenceHelper
+namespace Azuria.Community.Conference
 {
     internal class MessageModel
     {
@@ -10,10 +10,10 @@ namespace Azuria.Community.ConferenceHelper
         public string Action { get; set; }
 
         [JsonProperty("fromid")]
-        public string Fromid { get; set; }
+        public int Fromid { get; set; }
 
         [JsonProperty("id")]
-        public string Id { get; set; }
+        public int Id { get; set; }
 
         [JsonProperty("message")]
         public string Message { get; set; }

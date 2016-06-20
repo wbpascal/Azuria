@@ -1,4 +1,4 @@
-﻿namespace Azuria.Forum
+﻿namespace Azuria.Community.Forum
 {
     /// <summary>
     /// </summary>

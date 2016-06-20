@@ -3,6 +3,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Azuria.Community;
+using Azuria.Community.Conference;
 using Azuria.Test.Attributes;
 using Azuria.Test.Utility;
 using Azuria.Utilities.ErrorHandling;
@@ -106,40 +107,28 @@ namespace Azuria.Test
             SemaphoreSlim lSignal = new SemaphoreSlim(0, 2);
             ProxerResult<string> lResult = null;
             string lHexString = RandomUtility.GetRandomHexString();
-            this._conference.ErrorDuringPmFetchRaised += (sender, exceptions) =>
-            {
-                lResult = new ProxerResult<string>("Error") {Success = false};
-                lSignal.Release(2);
-            };
-            this._conference.NeuePmRaised += async (sender, messages, nachrichten) =>
+            this._conference.NeuePmRaised += (sender, messages) =>
             {
                 lResult = new ProxerResult<string>("Neue PM Raised 1") {Success = messages.Any()};
-                if (nachrichten)
+                if (!messages.Any(message => message.Content.Equals(lHexString)))
                 {
-                    ProxerResult lSendMessageResult = await this._conference.SendMessage(lHexString);
-                    if (!lSendMessageResult.Success)
-                    {
-                        lResult = new ProxerResult<string>("Neue PM Raised 2") {Success = false};
-                        lSignal.Release(2);
-                    }
-                }
-                else
-                {
-                    if (!messages.Last().Content.Equals(lHexString))
-                    {
-                        lResult = new ProxerResult<string>("Neue PM Raised 3") {Success = false};
-                    }
+                    lResult = new ProxerResult<string>("Neue PM Raised 3") {Success = false};
                 }
                 lSignal.Release();
             };
 
-            this._conference.Active = true;
-            await lSignal.WaitAsync();
+            this._conference.AutoCheck = true;
+            ProxerResult lSendMessageResult = await this._conference.SendMessage(lHexString);
+            if (lSendMessageResult.Success)
+            {
+                await lSignal.WaitAsync();
+            }
+            else Assert.Fail("Send Message");
 
             Assert.IsNotNull(lResult);
             Assert.IsTrue(lResult.Success, lResult.Result);
 
-            if (this._conference.Active) this._conference.Active = false;
+            if (this._conference.AutoCheck) this._conference.AutoCheck = false;
         }
 
         [Test, Order(2)]

@@ -3,7 +3,8 @@ using System.Collections;
 using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
-using Azuria.Community;
+using Azuria.Community.Conference;
+using Azuria.Exceptions;
 using Azuria.Utilities.ErrorHandling;
 using Azuria.Utilities.Extensions;
 using Azuria.Utilities.Net;
@@ -46,6 +47,8 @@ namespace Azuria.Notifications.PrivateMessage
 
             Task<ProxerResult> lGetNotificationsTask = this.GetNotifications();
             lGetNotificationsTask.Wait();
+            if (!lGetNotificationsTask.Result.Success)
+                throw lGetNotificationsTask.Result.Exceptions.FirstOrDefault() ?? new WrongResponseException();
             return lGetNotificationsTask.Result.Success && this._notifications.Any();
         }
 

@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
+using Azuria.Exceptions;
 using Azuria.Utilities.ErrorHandling;
 using Azuria.Utilities.Net;
 using HtmlAgilityPack;
@@ -45,7 +46,9 @@ namespace Azuria.Notifications.FriendRequest
 
             Task<ProxerResult> lGetNotificationsTask = this.GetNotifications();
             lGetNotificationsTask.Wait();
-            return lGetNotificationsTask.Result.Success && this._notifications.Any();
+            if (!lGetNotificationsTask.Result.Success)
+                throw lGetNotificationsTask.Result.Exceptions.FirstOrDefault() ?? new WrongResponseException();
+            return this._notifications.Any();
         }
 
         /// <summary>Sets the enumerator to its initial position, which is before the first element in the collection.</summary>

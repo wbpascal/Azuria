@@ -67,8 +67,11 @@
   <ItemGroup>
     <Compile Include="AnimeManga\GenreType.cs" />
     <Compile Include="AnimeManga\TagType.cs" />
-    <Compile Include="Community\Conference.cs" />
-    <Compile Include="Community\ConferenceHelper\MessagesModel.cs" />
+    <Compile Include="Community\Conference\Conference.cs" />
+    <Compile Include="Community\Conference\Message.cs" />
+    <Compile Include="Community\Conference\MessageCollection.cs" />
+    <Compile Include="Community\Conference\MessageEnumerator.cs" />
+    <Compile Include="Community\Conference\MessagesModel.cs" />
     <Compile Include="Exceptions\CaptchaException.cs" />
     <Compile Include="Exceptions\CloudflareException.cs" />
     <Compile Include="Exceptions\FirewallException.cs" />
@@ -86,7 +89,7 @@
     <Compile Include="AnimeManga\AnimeLanguage.cs" />
     <Compile Include="AnimeManga\AnimeType.cs" />
     <Compile Include="AnimeManga\FskObject.cs" />
-    <Compile Include="Forum\Forum.cs" />
+    <Compile Include="Community\Forum\Forum.cs" />
     <Compile Include="Search\SearchResultEnumerator.cs" />
     <Compile Include="User\AnimeMangaProgress.cs" />
     <Compile Include="User\Comment\Comment.cs" />
