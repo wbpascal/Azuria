@@ -135,26 +135,6 @@ namespace Azuria.Community.Conference
 
         #region
 
-        [ItemNotNull]
-        private async Task<ProxerResult> Block()
-        {
-            ProxerResult<string> lResult =
-                await
-                    HttpUtility.GetResponseErrorHandling(
-                        new Uri("http://proxer.me/messages?format=json&json=block&id=" + this.Id),
-                        this._senpai.LoginCookies,
-                        this._senpai);
-
-            if (!lResult.Success)
-                return new ProxerResult(lResult.Exceptions);
-
-            string lResponse = lResult.Result;
-
-            return lResponse?.StartsWith("{\"error\":0") ?? false
-                ? new ProxerResult()
-                : new ProxerResult {Success = false};
-        }
-
         private void CheckForNewMessages()
         {
             if (this._autoLastMessageRecieved == null && this.Messages.Any())
@@ -215,26 +195,6 @@ namespace Azuria.Community.Conference
                 return
                     new ProxerResult((await ErrorHandler.HandleError(this._senpai, lResponse, false)).Exceptions);
             }
-        }
-
-        [ItemNotNull]
-        private async Task<ProxerResult> Favour()
-        {
-            ProxerResult<string> lResult =
-                await
-                    HttpUtility.GetResponseErrorHandling(
-                        new Uri("http://proxer.me/messages?format=json&json=favour&id=" + this.Id),
-                        this._senpai.LoginCookies,
-                        this._senpai);
-
-            if (!lResult.Success)
-                return new ProxerResult(lResult.Exceptions);
-
-            string lResponse = lResult.Result;
-
-            return lResponse?.StartsWith("{\"error\":0") ?? false
-                ? new ProxerResult()
-                : new ProxerResult {Success = false};
         }
 
         private async Task<ProxerResult> GetConferenceOptions()
@@ -310,7 +270,7 @@ namespace Azuria.Community.Conference
 
                 this.Leader.SetInitialisedObject
                     ((await this.Participants.GetObject())
-                        .OnError(new User.User[0])
+                        .OnError(new User.User[0])?
                         .FirstOrDefault(
                             x =>
                                 x.UserName.GetObjectIfInitialised("")
@@ -401,8 +361,8 @@ namespace Azuria.Community.Conference
                 }
             }
 
-            if ((await this.Participants.GetObject()).OnError(new User.User[0]).Count() > 1 && this._senpai.Me != null)
-                this.Title.SetInitialisedObject(await (await this.Participants.GetObject()).OnError(new User.User[0])
+            if ((await this.Participants.GetObject()).OnError(new User.User[0])?.Count() > 1 && this._senpai.Me != null)
+                this.Title.SetInitialisedObject(await (await this.Participants.GetObject()).OnError(new User.User[0])?
                     .Where(x => x.Id != this._senpai.Me.Id)
                     .ToArray()[0].UserName.GetObject("ERROR"));
 
@@ -476,21 +436,21 @@ namespace Azuria.Community.Conference
         /// <summary>
         ///     Sends a message to the current conference.
         /// </summary>
-        /// <param name="nachricht">The content of the message that is being send.</param>
+        /// <param name="message">The content of the message that is being send.</param>
         /// <returns>Whether the action was successfull.</returns>
         [ItemNotNull]
-        public async Task<ProxerResult> SendMessage([NotNull] string nachricht)
+        public async Task<ProxerResult> SendMessage([NotNull] string message)
         {
-            if (string.IsNullOrEmpty(nachricht))
+            if (string.IsNullOrEmpty(message))
                 return
                     new ProxerResult(new[]
-                    {new ArgumentException("Argument is null or empty", nameof(nachricht))});
+                    {new ArgumentException("Argument is null or empty", nameof(message))});
 
             this._checkMessagesTimer.Stop();
 
             Dictionary<string, string> lPostArgs = new Dictionary<string, string>
             {
-                {"message", nachricht}
+                {"message", message}
             };
             ProxerResult<string> lResult =
                 await
@@ -530,12 +490,42 @@ namespace Azuria.Community.Conference
 
         private async Task<ProxerResult> SetBlock(bool isBlocked)
         {
-            return isBlocked ? await this.Block() : await this.Unblock();
+            string lAction = isBlocked ? "block" : "unblock";
+            ProxerResult<string> lResult =
+                await
+                    HttpUtility.GetResponseErrorHandling(
+                        new Uri($"http://proxer.me/messages?format=json&json={lAction}&id={this.Id}"),
+                        this._senpai.LoginCookies,
+                        this._senpai);
+
+            if (!lResult.Success)
+                return new ProxerResult(lResult.Exceptions);
+
+            string lResponse = lResult.Result;
+
+            return lResponse?.StartsWith("{\"error\":0") ?? false
+                ? new ProxerResult()
+                : new ProxerResult { Success = false };
         }
 
         private async Task<ProxerResult> SetFavourite(bool isFavourite)
         {
-            return isFavourite ? await this.Favour() : await this.Unfavour();
+            string lAction = isFavourite ? "favour" : "unfavour";
+            ProxerResult<string> lResult =
+                await
+                    HttpUtility.GetResponseErrorHandling(
+                        new Uri($"http://proxer.me/messages?format=json&json={lAction}&id={this.Id}"),
+                        this._senpai.LoginCookies,
+                        this._senpai);
+
+            if (!lResult.Success)
+                return new ProxerResult(lResult.Exceptions);
+
+            string lResponse = lResult.Result;
+
+            return lResponse?.StartsWith("{\"error\":0") ?? false
+                ? new ProxerResult()
+                : new ProxerResult { Success = false };
         }
 
         /// <summary>
@@ -549,46 +539,6 @@ namespace Azuria.Community.Conference
                 await
                     HttpUtility.GetResponseErrorHandling(
                         new Uri("http://proxer.me/messages?format=json&json=setUnread&id=" + this.Id),
-                        this._senpai.LoginCookies,
-                        this._senpai);
-
-            if (!lResult.Success)
-                return new ProxerResult(lResult.Exceptions);
-
-            string lResponse = lResult.Result;
-
-            return lResponse?.StartsWith("{\"error\":0") ?? false
-                ? new ProxerResult()
-                : new ProxerResult {Success = false};
-        }
-
-        [ItemNotNull]
-        private async Task<ProxerResult> Unblock()
-        {
-            ProxerResult<string> lResult =
-                await
-                    HttpUtility.GetResponseErrorHandling(
-                        new Uri("http://proxer.me/messages?format=json&json=unblock&id=" + this.Id),
-                        this._senpai.LoginCookies,
-                        this._senpai);
-
-            if (!lResult.Success)
-                return new ProxerResult(lResult.Exceptions);
-
-            string lResponse = lResult.Result;
-
-            return lResponse?.StartsWith("{\"error\":0") ?? false
-                ? new ProxerResult()
-                : new ProxerResult {Success = false};
-        }
-
-        [ItemNotNull]
-        private async Task<ProxerResult> Unfavour()
-        {
-            ProxerResult<string> lResult =
-                await
-                    HttpUtility.GetResponseErrorHandling(
-                        new Uri("http://proxer.me/messages?format=json&json=unfavour&id=" + this.Id),
                         this._senpai.LoginCookies,
                         this._senpai);
 
