@@ -2,7 +2,7 @@
 
 Build | Tests | Issues | NuGet
 ----- | ----- | ------ | -----
-[![Build status](https://img.shields.io/teamcity/http/ci.infinitesoul.me/s/Azuria_CiBuild.svg)](http://ci.infinitesoul.me/viewType.html?buildTypeId=Azuria_CiBuild&guest=1) | [![Build status](https://img.shields.io/teamcity/http/ci.infinitesoul.me/s/Azuria_DailyTests.svg)](http://ci.infinitesoul.me/viewType.html?buildTypeId=Azuria_DailyTests&guest=1) |[![Stories in Ready](https://badge.waffle.io/InfiniteSoul/azuria.svg?label=ready&title=Ready)](http://waffle.io/InfiniteSoul/azuria) | [![NuGet](https://img.shields.io/nuget/v/Azuria.svg)](https://www.nuget.org/packages/Azuria)
+[![Build status](https://img.shields.io/teamcity/http/ci.infinitesoul.me/s/Azuria_CiBuild.svg)](https://ci.infinitesoul.me/viewType.html?buildTypeId=Azuria_CiBuild&guest=1) | [![Build status](https://img.shields.io/teamcity/http/ci.infinitesoul.me/s/Azuria_DailyTests.svg)](https://ci.infinitesoul.me/viewType.html?buildTypeId=Azuria_DailyTests&guest=1) |[![Stories in Ready](https://badge.waffle.io/InfiniteSoul/azuria.svg?label=ready&title=Ready)](http://waffle.io/InfiniteSoul/azuria) | [![NuGet](https://img.shields.io/nuget/v/Azuria.svg)](https://www.nuget.org/packages/Azuria)
 
 ##Warning!
 Because this Class Library implements not only the official API of Proxer.Me it is dependent on the Layout of the Website too. This implies that every change that is being made to the website, even little ones, can break parts or the entirety of this Class Library. If under any circumstances problems arise in result of the aforementioned problem, I ask you to report it to the  [issue Page](https://github.com/InfiniteSoul/Azuria/issues).
