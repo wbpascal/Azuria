@@ -1,13 +1,15 @@
 ﻿using Android.App;
 using Android.Content;
-using Android.Widget;
 using Android.OS;
+using Android.Widget;
 
 namespace Azuria.Example.Android
 {
     [Activity(Label = "Azuria.Example.Android", MainLauncher = true, Icon = "@drawable/icon")]
     public class LoginActivity : Activity
     {
+        #region
+
         protected override void OnCreate(Bundle bundle)
         {
             base.OnCreate(bundle);
@@ -28,6 +30,7 @@ namespace Azuria.Example.Android
                 this.StartActivity(lMainActivity);
             };
         }
+
+        #endregion
     }
 }
-

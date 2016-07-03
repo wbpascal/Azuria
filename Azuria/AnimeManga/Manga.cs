@@ -2,15 +2,14 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using System.Net;
 using System.Threading.Tasks;
 using Azuria.Exceptions;
 using Azuria.User.Comment;
 using Azuria.User.ControlPanel;
 using Azuria.Utilities.ErrorHandling;
 using Azuria.Utilities.Extensions;
-using Azuria.Utilities.Net;
 using Azuria.Utilities.Properties;
+using Azuria.Utilities.Web;
 using HtmlAgilityPack;
 using JetBrains.Annotations;
 
@@ -72,6 +71,7 @@ namespace Azuria.AnimeManga
             };
             this.MangaTyp = new InitialisableProperty<MangaType>(this.InitType);
             this.Name = new InitialisableProperty<string>(this.InitMain, string.Empty) {IsInitialisedOnce = false};
+            this.Rating = new InitialisableProperty<AnimeMangaRating>(this.InitMain);
             this.Season = new InitialisableProperty<IEnumerable<string>>(this.InitMain);
             this.Status = new InitialisableProperty<AnimeMangaStatus>(this.InitMain);
             this.Synonym = new InitialisableProperty<string>(this.InitMain, string.Empty) {IsInitialisedOnce = false};
@@ -94,7 +94,7 @@ namespace Azuria.AnimeManga
             this.MangaTyp = new InitialisableProperty<MangaType>(this.InitType, type);
         }
 
-        #region Geerbt
+        #region Inherited
 
         /// <summary>
         ///     Gets the count of the <see cref="Chapter">Chapters</see> the <see cref="Manga" /> contains.
@@ -160,6 +160,11 @@ namespace Azuria.AnimeManga
         ///     Gets the original title of the <see cref="Manga" />.
         /// </summary>
         public InitialisableProperty<string> Name { get; }
+
+        /// <summary>
+        ///     Gets the rating of the <see cref="Anime" /> or <see cref="Manga" />.
+        /// </summary>
+        public InitialisableProperty<AnimeMangaRating> Rating { get; }
 
         /// <summary>
         ///     Gets the seasons the <see cref="Manga" /> aired in. If the enumerable only contains one
@@ -427,162 +432,7 @@ namespace Azuria.AnimeManga
         [ItemNotNull]
         private async Task<ProxerResult> InitMain()
         {
-            HtmlDocument lDocument = new HtmlDocument();
-            ProxerResult<Tuple<string, CookieContainer>> lResult =
-                await
-                    HttpUtility.GetResponseErrorHandling(
-                        new Uri("https://proxer.me/info/" + this.Id + "?format=raw"),
-                        null,
-                        this._senpai,
-                        new Func<string, ProxerResult>[0], false);
-
-            if (!lResult.Success || lResult.Result == null)
-                return new ProxerResult(lResult.Exceptions);
-
-            string lResponse = lResult.Result.Item1;
-
-            try
-            {
-                lDocument.LoadHtml(lResponse);
-
-                HtmlNode lTableNode =
-                    lDocument.DocumentNode.ChildNodes[5]
-                        .ChildNodes[2].FirstChild.ChildNodes[1].FirstChild;
-                foreach (HtmlNode childNode in lTableNode.ChildNodes.Where(childNode => childNode.Name.Equals("tr")))
-                {
-                    switch (childNode.FirstChild.FirstChild.InnerText)
-                    {
-                        case "Original Titel":
-                            this.Name.SetInitialisedObject(childNode.ChildNodes[1].InnerText);
-                            break;
-                        case "Eng. Titel":
-                            this.EnglishTitle.SetInitialisedObject(childNode.ChildNodes[1].InnerText);
-                            break;
-                        case "Ger. Titel":
-                            this.GermanTitle.SetInitialisedObject(childNode.ChildNodes[1].InnerText);
-                            break;
-                        case "Jap. Titel":
-                            this.JapaneseTitle.SetInitialisedObject(childNode.ChildNodes[1].InnerText);
-                            break;
-                        case "Synonym":
-                            this.Synonym.SetInitialisedObject(childNode.ChildNodes[1].InnerText);
-                            break;
-                        case "Genre":
-                            List<GenreObject> lGenreList = new List<GenreObject>();
-                            foreach (HtmlNode htmlNode in childNode.ChildNodes[1].ChildNodes.ToList())
-                            {
-                                if (htmlNode.Name.Equals("a"))
-                                    lGenreList.Add(new GenreObject(htmlNode.InnerText));
-                            }
-                            this.Genre.SetInitialisedObject(lGenreList.ToArray());
-                            break;
-                        case "FSK":
-                            List<FskObject> lTempList = new List<FskObject>();
-                            foreach (
-                                HtmlNode htmlNode in
-                                    childNode.ChildNodes[1].ChildNodes.ToList()
-                                        .Where(htmlNode => htmlNode.Name.Equals("span") &&
-                                                           lTempList.All(
-                                                               o =>
-                                                                   o.FskType !=
-                                                                   FskHelper.StringToFskDictionary[
-                                                                       htmlNode.FirstChild.GetAttributeValue("src",
-                                                                           "/images/fsk/unknown.png")
-                                                                           .GetTagContents("/", ".png")
-                                                                           .First()])))
-                            {
-                                string lFskString = htmlNode.FirstChild.GetAttributeValue("src",
-                                    "/images/fsk/unknown.png")
-                                    .GetTagContents("fsk/", ".png")
-                                    .First();
-                                lTempList.Add(new FskObject(FskHelper.StringToFskDictionary[lFskString],
-                                    new Uri($"https://proxer.me/images/fsk/{lFskString}.png")));
-                            }
-                            this.Fsk.SetInitialisedObject(lTempList);
-                            break;
-                        case "Season":
-                            List<string> lSeasonList = new List<string>();
-                            foreach (HtmlNode htmlNode in childNode.ChildNodes[1].ChildNodes.ToList())
-                            {
-                                if (htmlNode.Name.Equals("a"))
-                                    lSeasonList.Add(htmlNode.InnerText);
-                            }
-                            this.Season.SetInitialisedObject(lSeasonList);
-                            break;
-                        case "Status":
-                            switch (childNode.ChildNodes[1].InnerText)
-                            {
-                                case "Airing":
-                                    this.Status.SetInitialisedObject(AnimeMangaStatus.Airing);
-                                    break;
-                                case "Abgeschlossen":
-                                    this.Status.SetInitialisedObject(AnimeMangaStatus.Completed);
-                                    break;
-                                case "Nicht erschienen (Pre-Airing)":
-                                    this.Status.SetInitialisedObject(AnimeMangaStatus.PreAiring);
-                                    break;
-                                default:
-                                    this.Status.SetInitialisedObject(AnimeMangaStatus.Cancelled);
-                                    break;
-                            }
-                            break;
-                        case "Gruppen":
-                            if (childNode.ChildNodes[1].InnerText.Contains("Keine Gruppen eingetragen.")) break;
-                            this.Groups.SetInitialisedObject(from htmlNode in childNode.ChildNodes[1].ChildNodes
-                                where htmlNode.Name.Equals("a")
-                                select
-                                    new Group(
-                                        Convert.ToInt32(
-                                            htmlNode.GetAttributeValue("href",
-                                                "/translatorgroups?id=-1#top")
-                                                .GetTagContents("/translatorgroups?id=", "#top")[0]), htmlNode.InnerText));
-                            break;
-                        case "Industrie":
-                            if (childNode.ChildNodes[1].InnerText.Contains("Keine Unternehmen eingetragen.")) break;
-                            List<Industry> lIndustries = new List<Industry>();
-                            foreach (
-                                HtmlNode htmlNode in
-                                    childNode.ChildNodes[1].ChildNodes.Where(htmlNode => htmlNode.Name.Equals("a")))
-                            {
-                                Industry.IndustryType lIndustryType;
-                                if (htmlNode.NextSibling.InnerText.Contains("Studio"))
-                                    lIndustryType = AnimeManga.Industry.IndustryType.Studio;
-                                else if (htmlNode.NextSibling.InnerText.Contains("Publisher"))
-                                    lIndustryType = AnimeManga.Industry.IndustryType.Publisher;
-                                else if (htmlNode.NextSibling.InnerText.Contains("Producer"))
-                                    lIndustryType = AnimeManga.Industry.IndustryType.Producer;
-                                else lIndustryType = AnimeManga.Industry.IndustryType.Unknown;
-
-                                lIndustries.Add(new Industry(Convert.ToInt32(
-                                    htmlNode.GetAttributeValue("href", "/industry?id=-1#top")
-                                        .GetTagContents("/industry?id=", "#top")[0]), htmlNode.InnerText, lIndustryType));
-                            }
-                            this.Industry.SetInitialisedObject(lIndustries.ToArray());
-                            break;
-                        case "Lizenz":
-                            this.IsLicensed.SetInitialisedObject(
-                                childNode.ChildNodes[1].InnerText.StartsWith("Lizenziert!"));
-                            break;
-                        case "Beschreibung:":
-                            childNode.FirstChild.FirstChild.Remove();
-                            string lTempString = "";
-                            foreach (HtmlNode htmlNode in childNode.FirstChild.ChildNodes)
-                            {
-                                if (htmlNode.Name.Equals("br")) lTempString += "\n";
-                                else lTempString += htmlNode.InnerText;
-                            }
-                            if (lTempString.StartsWith("\n")) lTempString = lTempString.TrimStart();
-                            this.Description.SetInitialisedObject(lTempString);
-                            break;
-                    }
-                }
-            }
-            catch
-            {
-                return new ProxerResult(ErrorHandler.HandleError(this._senpai, lResponse).Exceptions);
-            }
-
-            return new ProxerResult();
+            return await this.InitMainInfo(this._senpai);
         }
 
         [ItemNotNull]
@@ -667,7 +517,7 @@ namespace Azuria.AnimeManga
                 this.IsAvailable = new InitialisableProperty<bool>(this.InitInfo, isOnline);
             }
 
-            #region Geerbt
+            #region Inherited
 
             /// <summary>
             ///     Gets the <see cref="Chapter" />-number.

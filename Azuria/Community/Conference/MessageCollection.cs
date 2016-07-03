@@ -16,7 +16,7 @@ namespace Azuria.Community.Conference
             this._senpai = senpai;
         }
 
-        #region Geerbt
+        #region Inherited
 
         /// <summary>Returns an enumerator that iterates through the collection.</summary>
         /// <returns>An enumerator that can be used to iterate through the collection.</returns>

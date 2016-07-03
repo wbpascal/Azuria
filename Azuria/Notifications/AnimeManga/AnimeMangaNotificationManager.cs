@@ -6,7 +6,7 @@ using System.Timers;
 using Azuria.AnimeManga;
 using Azuria.Exceptions;
 using Azuria.Utilities.ErrorHandling;
-using Azuria.Utilities.Net;
+using Azuria.Utilities.Web;
 
 namespace Azuria.Notifications.AnimeManga
 {

@@ -3,7 +3,7 @@ using System.Text.RegularExpressions;
 using Azuria.Utilities.ErrorHandling;
 using JetBrains.Annotations;
 
-namespace Azuria.Utilities.Net
+namespace Azuria.Utilities.Web
 {
     internal static class CloudflareSolver
     {

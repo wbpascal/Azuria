@@ -1,8 +1,9 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
+
 <resources>
-    <string name="Hello">Hello World, Click Me!</string>
+  <string name="Hello">Hello World, Click Me!</string>
   <string name="Login">Login</string>
   <string name="Username">Username</string>
   <string name="Password">Password</string>
-    <string name="ApplicationName">Azuria.Example.Android</string>
+  <string name="ApplicationName">Azuria.Example.Android</string>
 </resources>

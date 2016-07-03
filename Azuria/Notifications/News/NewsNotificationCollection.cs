@@ -17,7 +17,7 @@ namespace Azuria.Notifications.News
             this.Type = NotificationType.News;
         }
 
-        #region Geerbt
+        #region Inherited
 
         /// <summary>
         ///     Gets the type of the notifications.

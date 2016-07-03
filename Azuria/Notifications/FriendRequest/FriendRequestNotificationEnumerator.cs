@@ -6,7 +6,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Azuria.Exceptions;
 using Azuria.Utilities.ErrorHandling;
-using Azuria.Utilities.Net;
+using Azuria.Utilities.Web;
 using HtmlAgilityPack;
 using JetBrains.Annotations;
 
@@ -25,7 +25,7 @@ namespace Azuria.Notifications.FriendRequest
             this._senpai = senpai;
         }
 
-        #region Geerbt
+        #region Inherited
 
         /// <summary>Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.</summary>
         public void Dispose()

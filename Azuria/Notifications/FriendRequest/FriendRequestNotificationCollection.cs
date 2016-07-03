@@ -17,7 +17,7 @@ namespace Azuria.Notifications.FriendRequest
             this.Type = NotificationType.FriendRequest;
         }
 
-        #region Geerbt
+        #region Inherited
 
         /// <summary>
         ///     Gets the type of the notifications.

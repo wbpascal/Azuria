@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Azuria.Utilities.ErrorHandling;
-using Azuria.Utilities.Net;
+using Azuria.Utilities.Web;
 using JetBrains.Annotations;
 
 namespace Azuria.Notifications.FriendRequest
@@ -23,7 +23,7 @@ namespace Azuria.Notifications.FriendRequest
             this._senpai = senpai;
         }
 
-        #region Geerbt
+        #region Inherited
 
         /// <summary>
         ///     Gets the type of the notification.

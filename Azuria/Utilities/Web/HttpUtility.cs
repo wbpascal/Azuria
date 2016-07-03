@@ -8,7 +8,7 @@ using Azuria.Exceptions;
 using Azuria.Utilities.ErrorHandling;
 using JetBrains.Annotations;
 
-namespace Azuria.Utilities.Net
+namespace Azuria.Utilities.Web
 {
     /// <summary>
     ///     Represents a class that communicates with the server via HTTP and HTTPS.

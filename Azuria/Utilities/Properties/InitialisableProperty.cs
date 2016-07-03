@@ -32,7 +32,7 @@ namespace Azuria.Utilities.Properties
             this.IsInitialisedOnce = true;
         }
 
-        #region Geerbt
+        #region Inherited
 
         /// <summary>
         ///     Gets a value whether the property was already initialised at least once.

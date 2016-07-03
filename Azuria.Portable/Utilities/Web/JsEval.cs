@@ -1,6 +1,6 @@
 ﻿using Jint;
 
-namespace Azuria.Utilities.Net
+namespace Azuria.Utilities.Web
 {
     internal class JsEval
     {

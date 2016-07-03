@@ -2,7 +2,6 @@
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using Azuria.Community;
 using Azuria.Community.Conference;
 using Azuria.Test.Attributes;
 using Azuria.Test.Utility;

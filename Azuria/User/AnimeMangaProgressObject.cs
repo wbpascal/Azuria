@@ -5,8 +5,8 @@ using Azuria.AnimeManga;
 using Azuria.Exceptions;
 using Azuria.User.Comment;
 using Azuria.Utilities.ErrorHandling;
-using Azuria.Utilities.Net;
 using Azuria.Utilities.Properties;
+using Azuria.Utilities.Web;
 using HtmlAgilityPack;
 using JetBrains.Annotations;
 

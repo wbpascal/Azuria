@@ -17,7 +17,7 @@ namespace Azuria.Notifications.PrivateMessage
             this.Type = NotificationType.PrivateMessage;
         }
 
-        #region Geerbt
+        #region Inherited
 
         /// <summary>
         ///     Gets the type of the notifications.

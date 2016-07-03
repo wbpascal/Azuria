@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Azuria.AnimeManga;
 using Azuria.Utilities.ErrorHandling;
-using Azuria.Utilities.Net;
+using Azuria.Utilities.Web;
 using JetBrains.Annotations;
 using Newtonsoft.Json;
 

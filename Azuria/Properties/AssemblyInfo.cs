@@ -11,7 +11,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("InfiniteSoul")]
 [assembly: AssemblyProduct("Azuria")]
-[assembly: AssemblyCopyright("Copyright ©  2016")]
+[assembly: AssemblyCopyright("Copyright InfiniteSoul ©  2016")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -38,4 +38,4 @@ using System.Runtime.InteropServices;
 
 [assembly: AssemblyVersion("0.6.0.*")]
 [assembly: AssemblyFileVersion("0.6.0")]
-[assembly: NeutralResourcesLanguage("de")]
+[assembly: NeutralResourcesLanguage("en")]

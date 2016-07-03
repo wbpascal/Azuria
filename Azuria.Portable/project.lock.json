@@ -1,0 +1,170 @@
+{
+  "locked": false,
+  "version": 2,
+  "targets": {
+    ".NETPortable,Version=v4.5,Profile=Profile259": {
+      "HtmlAgilityPack/1.4.9.4": {
+        "type": "package",
+        "compile": {
+          "lib/portable-net45+netcore45+wpa81+wp8+MonoAndroid+MonoTouch/HtmlAgilityPack.dll": {}
+        },
+        "runtime": {
+          "lib/portable-net45+netcore45+wpa81+wp8+MonoAndroid+MonoTouch/HtmlAgilityPack.dll": {}
+        }
+      },
+      "JetBrains.Annotations/10.1.5": {
+        "type": "package",
+        "compile": {
+          "lib/portable-net4+sl5+netcore45+wpa81+wp8+MonoAndroid1+MonoTouch1/JetBrains.Annotations.PCL328.dll": {}
+        },
+        "runtime": {
+          "lib/portable-net4+sl5+netcore45+wpa81+wp8+MonoAndroid1+MonoTouch1/JetBrains.Annotations.PCL328.dll": {}
+        }
+      },
+      "Jint/2.8.0": {
+        "type": "package",
+        "compile": {
+          "lib/portable-net40+sl50+win+WindowsPhoneApp81+wp80/Jint.dll": {}
+        },
+        "runtime": {
+          "lib/portable-net40+sl50+win+WindowsPhoneApp81+wp80/Jint.dll": {}
+        }
+      },
+      "modernhttpclient/2.4.2": {
+        "type": "package",
+        "compile": {
+          "lib/Portable-Net45+WinRT45+WP8+WPA81/ModernHttpClient.dll": {}
+        },
+        "runtime": {
+          "lib/Portable-Net45+WinRT45+WP8+WPA81/ModernHttpClient.dll": {}
+        }
+      },
+      "Newtonsoft.Json/9.0.1": {
+        "type": "package",
+        "compile": {
+          "lib/portable-net45+wp80+win8+wpa81/Newtonsoft.Json.dll": {}
+        },
+        "runtime": {
+          "lib/portable-net45+wp80+win8+wpa81/Newtonsoft.Json.dll": {}
+        }
+      }
+    }
+  },
+  "libraries": {
+    "HtmlAgilityPack/1.4.9.4": {
+      "sha512": "e0NyiQpHveUzZbMY7I1GCh2Pkzh8Kf3kg4bIgDpWOeHvzloHSnkSccGpnb53Eq4uWxYE/wrRzS3jV56ZkAF2pg==",
+      "type": "package",
+      "path": "HtmlAgilityPack/1.4.9.4",
+      "files": [
+        "HAPIcon.png",
+        "HtmlAgilityPack.1.4.9.4.nupkg.sha512",
+        "HtmlAgilityPack.nuspec",
+        "lib/Net20/HtmlAgilityPack.dll",
+        "lib/Net20/HtmlAgilityPack.pdb",
+        "lib/Net20/HtmlAgilityPack.xml",
+        "lib/Net40-client/HtmlAgilityPack.dll",
+        "lib/Net40-client/HtmlAgilityPack.pdb",
+        "lib/Net40-client/HtmlAgilityPack.xml",
+        "lib/Net40/HtmlAgilityPack.XML",
+        "lib/Net40/HtmlAgilityPack.dll",
+        "lib/Net40/HtmlAgilityPack.pdb",
+        "lib/Net45/HtmlAgilityPack.XML",
+        "lib/Net45/HtmlAgilityPack.dll",
+        "lib/Net45/HtmlAgilityPack.pdb",
+        "lib/NetCore45/HtmlAgilityPack.dll",
+        "lib/NetCore45/HtmlAgilityPack.pdb",
+        "lib/NetCore45/HtmlAgilityPack.pri",
+        "lib/NetCore45/HtmlAgilityPack.xml",
+        "lib/portable-net45+netcore45+wp8+MonoAndroid+MonoTouch/HtmlAgilityPack.dll",
+        "lib/portable-net45+netcore45+wp8+MonoAndroid+MonoTouch/HtmlAgilityPack.pdb",
+        "lib/portable-net45+netcore45+wpa81+wp8+MonoAndroid+MonoTouch/HtmlAgilityPack.dll",
+        "lib/portable-net45+netcore45+wpa81+wp8+MonoAndroid+MonoTouch/HtmlAgilityPack.pdb",
+        "lib/sl5/HtmlAgilityPack.XML",
+        "lib/sl5/HtmlAgilityPack.dll",
+        "lib/sl5/HtmlAgilityPack.pdb",
+        "readme.txt"
+      ]
+    },
+    "JetBrains.Annotations/10.1.5": {
+      "sha512": "LRyTrsiTWsV4C4cUMfdEkAdd8S0BREvj3hXZ1gGr3GZGFf0q2KW3IFGMPOguAxOrWH44Nw12jqr37B1Jph2E6A==",
+      "type": "package",
+      "path": "JetBrains.Annotations/10.1.5",
+      "files": [
+        "JetBrains.Annotations.10.1.5.nupkg.sha512",
+        "JetBrains.Annotations.nuspec",
+        "lib/dotnet/JetBrains.Annotations.Dotnet.dll",
+        "lib/net/JetBrains.Annotations.dll",
+        "lib/net/JetBrains.Annotations.xml",
+        "lib/portable-net4+sl4+wp7+netcore45/JetBrains.Annotations.PCL1.dll",
+        "lib/portable-net4+sl4+wp7+netcore45/JetBrains.Annotations.PCL1.xml",
+        "lib/portable-net4+sl5+netcore45+wpa81+wp8+MonoAndroid1+MonoTouch1/JetBrains.Annotations.PCL328.dll",
+        "lib/portable-net4+sl5+netcore45+wpa81+wp8+MonoAndroid1+MonoTouch1/JetBrains.Annotations.PCL328.xml"
+      ]
+    },
+    "Jint/2.8.0": {
+      "sha512": "QKx6thHm8iWHhyxURaRoFzi/rczDn9iMfQNmWCWiwQi3B//J6Ocu0V/BMzUSLLBCu1XvlnVvrwf2gqVbQUiAbg==",
+      "type": "package",
+      "path": "Jint/2.8.0",
+      "files": [
+        "Jint.2.8.0.nupkg.sha512",
+        "Jint.nuspec",
+        "lib/portable-net40+sl50+win+WindowsPhoneApp81+wp80/Jint.dll"
+      ]
+    },
+    "modernhttpclient/2.4.2": {
+      "sha512": "Srkrjz2wBCh7af+AGqpPkJ3FSSFSruzg9mHVwwXiklf9gx2L1Ss2M+p2Mf4Fw17AOe6yPuJwdu4AAoslc6zP+w==",
+      "type": "package",
+      "path": "modernhttpclient/2.4.2",
+      "files": [
+        "lib/ModernHttpClient-2.4.1.zip",
+        "lib/MonoAndroid/ModernHttpClient.dll",
+        "lib/MonoAndroid/ModernHttpClient.dll.mdb",
+        "lib/MonoAndroid/OkHttp.dll",
+        "lib/MonoTouch/ModernHttpClient.dll",
+        "lib/MonoTouch/ModernHttpClient.dll.mdb",
+        "lib/Portable-Net45+WinRT45+WP8+WPA81/ModernHttpClient.dll",
+        "lib/Portable-Net45+WinRT45+WP8+WPA81/ModernHttpClient.dll.mdb",
+        "lib/Xamarin.iOS10/ModernHttpClient.dll",
+        "lib/Xamarin.iOS10/ModernHttpClient.dll.mdb",
+        "lib/modernhttpclient.2.4.1.nupkg",
+        "modernhttpclient.2.4.2.nupkg.sha512",
+        "modernhttpclient.nuspec"
+      ]
+    },
+    "Newtonsoft.Json/9.0.1": {
+      "sha512": "U82mHQSKaIk+lpSVCbWYKNavmNH1i5xrExDEquU1i6I5pV6UMOqRnJRSlKO3cMPfcpp0RgDY+8jUXHdQ4IfXvw==",
+      "type": "package",
+      "files": [
+        "Newtonsoft.Json.9.0.1.nupkg.sha512",
+        "Newtonsoft.Json.nuspec",
+        "lib/net20/Newtonsoft.Json.dll",
+        "lib/net20/Newtonsoft.Json.xml",
+        "lib/net35/Newtonsoft.Json.dll",
+        "lib/net35/Newtonsoft.Json.xml",
+        "lib/net40/Newtonsoft.Json.dll",
+        "lib/net40/Newtonsoft.Json.xml",
+        "lib/net45/Newtonsoft.Json.dll",
+        "lib/net45/Newtonsoft.Json.xml",
+        "lib/netstandard1.0/Newtonsoft.Json.dll",
+        "lib/netstandard1.0/Newtonsoft.Json.xml",
+        "lib/portable-net40+sl5+wp80+win8+wpa81/Newtonsoft.Json.dll",
+        "lib/portable-net40+sl5+wp80+win8+wpa81/Newtonsoft.Json.xml",
+        "lib/portable-net45+wp80+win8+wpa81/Newtonsoft.Json.dll",
+        "lib/portable-net45+wp80+win8+wpa81/Newtonsoft.Json.xml",
+        "tools/install.ps1"
+      ]
+    }
+  },
+  "projectFileDependencyGroups": {
+    "": [
+      "HtmlAgilityPack >= 1.4.9.4",
+      "JetBrains.Annotations >= 10.1.5",
+      "Jint >= 2.8.0",
+      "Newtonsoft.Json >= 9.0.1",
+      "modernhttpclient >= 2.4.2"
+    ],
+    ".NETPortable,Version=v4.5,Profile=Profile259": []
+  },
+  "tools": {},
+  "projectFileToolGroups": {}
+}

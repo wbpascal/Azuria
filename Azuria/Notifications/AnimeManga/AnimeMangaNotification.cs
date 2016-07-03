@@ -18,7 +18,7 @@ namespace Azuria.Notifications.AnimeManga
             this.NotificationId = notificationId;
         }
 
-        #region Geerbt
+        #region Inherited
 
         /// <summary>
         ///     Gets the type of the notification.

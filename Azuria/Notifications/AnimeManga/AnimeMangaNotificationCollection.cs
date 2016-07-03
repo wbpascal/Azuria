@@ -20,7 +20,7 @@ namespace Azuria.Notifications.AnimeManga
             this._maxNotificationsToParse = maxNotificationsToParse;
         }
 
-        #region Geerbt
+        #region Inherited
 
         /// <summary>
         /// </summary>

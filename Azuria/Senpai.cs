@@ -8,7 +8,7 @@ using Azuria.Community.Conference;
 using Azuria.Exceptions;
 using Azuria.Utilities.ErrorHandling;
 using Azuria.Utilities.Extensions;
-using Azuria.Utilities.Net;
+using Azuria.Utilities.Web;
 using HtmlAgilityPack;
 using JetBrains.Annotations;
 using Newtonsoft.Json;

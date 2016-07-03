@@ -5,7 +5,7 @@ namespace Azuria.Test.Attributes
 {
     public class LoginRequiredAttribute : NUnitAttribute, ITestAction
     {
-        #region Geerbt
+        #region Inherited
 
         /// <summary>Executed before each test is run</summary>
         /// <param name="test">The test that is going to be run.</param>

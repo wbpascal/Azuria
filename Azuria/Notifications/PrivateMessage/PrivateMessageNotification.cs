@@ -15,7 +15,7 @@ namespace Azuria.Notifications.PrivateMessage
             this.TimeStamp = timeStamp;
         }
 
-        #region Geerbt
+        #region Inherited
 
         /// <summary>
         ///     Gets the type of the notification.

@@ -7,8 +7,8 @@ using Azuria.Exceptions;
 using Azuria.User;
 using Azuria.Utilities.ErrorHandling;
 using Azuria.Utilities.Extensions;
-using Azuria.Utilities.Net;
 using Azuria.Utilities.Properties;
+using Azuria.Utilities.Web;
 using HtmlAgilityPack;
 using JetBrains.Annotations;
 using Newtonsoft.Json;
@@ -505,7 +505,7 @@ namespace Azuria.Community.Conference
 
             return lResponse?.StartsWith("{\"error\":0") ?? false
                 ? new ProxerResult()
-                : new ProxerResult { Success = false };
+                : new ProxerResult {Success = false};
         }
 
         private async Task<ProxerResult> SetFavourite(bool isFavourite)
@@ -525,7 +525,7 @@ namespace Azuria.Community.Conference
 
             return lResponse?.StartsWith("{\"error\":0") ?? false
                 ? new ProxerResult()
-                : new ProxerResult { Success = false };
+                : new ProxerResult {Success = false};
         }
 
         /// <summary>
