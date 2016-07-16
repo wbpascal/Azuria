@@ -47,10 +47,9 @@ namespace Azuria.Community.Conference
             this._currentPageIndex++;
             if (this._currentPageIndex < this._currentPageContent.Length) return true;
 
-            Task<ProxerResult> lGetNextPageTask = this.GetNextPage();
-            lGetNextPageTask.Wait();
-            if (!lGetNextPageTask.Result.Success)
-                throw lGetNextPageTask.Result.Exceptions.FirstOrDefault() ?? new WrongResponseException();
+            ProxerResult lGetNextPageResult = Task.Run(this.GetNextPage).Result;
+            if (!lGetNextPageResult.Success)
+                throw lGetNextPageResult.Exceptions.FirstOrDefault() ?? new WrongResponseException();
             this._currentPageIndex = 0;
             return this._currentPageContent.Any();
         }

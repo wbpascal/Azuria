@@ -51,6 +51,7 @@ namespace Azuria.Notifications.AnimeManga
 
         private static async void CheckNotifications()
         {
+            Timer.Stop();
             foreach (Senpai senpai in AnimeCallbackDictionary.Keys)
             {
                 ProxerResult<int> lNotificationCountResult = await GetAvailableNotificationsCount(senpai);
@@ -75,6 +76,7 @@ namespace Azuria.Notifications.AnimeManga
                     notificationCallback?.Invoke(senpai, lNotifications);
                 }
             }
+            Timer.Start();
         }
 
         /// <summary>
@@ -157,6 +159,7 @@ namespace Azuria.Notifications.AnimeManga
             if (AnimeCallbackDictionary.ContainsKey(senpai) && !AnimeCallbackDictionary[senpai].Contains(eventHandler))
                 AnimeCallbackDictionary[senpai].Add(eventHandler);
             else AnimeCallbackDictionary.Add(senpai, new List<AnimeNotificationEventHandler>(new[] {eventHandler}));
+            CheckNotifications();
         }
 
         /// <summary>
@@ -168,6 +171,7 @@ namespace Azuria.Notifications.AnimeManga
             if (MangaCallbackDictionary.ContainsKey(senpai) && !MangaCallbackDictionary[senpai].Contains(eventHandler))
                 MangaCallbackDictionary[senpai].Add(eventHandler);
             else MangaCallbackDictionary.Add(senpai, new List<MangaNotificationEventHandler>(new[] {eventHandler}));
+            CheckNotifications();
         }
 
         #endregion

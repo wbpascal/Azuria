@@ -20,6 +20,11 @@ namespace Azuria.Notifications.News
         /// </summary>
         public NotificationType Type => NotificationType.News;
 
+        /// <summary>
+        ///     Gets the id of the notification.
+        /// </summary>
+        public string NotificationId => this.AuthorId.ToString() + this.CategoryId + this.ThreadId + this.Time;
+
         #endregion
 
         #region Properties

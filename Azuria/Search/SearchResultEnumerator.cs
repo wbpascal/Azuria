@@ -5,6 +5,7 @@ using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
 using Azuria.AnimeManga;
+using Azuria.Exceptions;
 using Azuria.Utilities.ErrorHandling;
 using Azuria.Utilities.Extensions;
 using Azuria.Utilities.Web;
@@ -49,9 +50,9 @@ namespace Azuria.Search
             if (this._searchFinished) return false;
             if (this._currentPageContentIndex >= this._currentPageContent.Length - 1)
             {
-                Task<ProxerResult> lGetNextPageTask = this.GetNextSearchResults();
-                lGetNextPageTask.Wait();
-                if (!lGetNextPageTask.Result.Success || !this._currentPageContent.Any()) return false;
+                ProxerResult lGetSearchResult = Task.Run(this.GetNextSearchResults).Result;
+                if (!lGetSearchResult.Success)
+                    throw lGetSearchResult.Exceptions.FirstOrDefault() ?? new WrongResponseException();
                 this._currentPageContentIndex = -1;
             }
             this._currentPageContentIndex++;

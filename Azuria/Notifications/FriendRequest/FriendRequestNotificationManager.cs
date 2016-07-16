@@ -41,6 +41,7 @@ namespace Azuria.Notifications.FriendRequest
 
         private static async void CheckNotifications()
         {
+            Timer.Stop();
             foreach (Senpai senpai in CallbackDictionary.Keys)
             {
                 ProxerResult<int> lNotificationCountResult = await GetAvailableNotificationsCount(senpai);
@@ -52,6 +53,7 @@ namespace Azuria.Notifications.FriendRequest
                     notificationCallback?.Invoke(senpai, lNotifications);
                 }
             }
+            Timer.Start();
         }
 
         /// <summary>
@@ -101,6 +103,7 @@ namespace Azuria.Notifications.FriendRequest
             if (CallbackDictionary.ContainsKey(senpai) && !CallbackDictionary[senpai].Contains(eventHandler))
                 CallbackDictionary[senpai].Add(eventHandler);
             else CallbackDictionary.Add(senpai, new List<FriendRequestNotificationEventHandler>(new[] {eventHandler}));
+            CheckNotifications();
         }
 
         #endregion

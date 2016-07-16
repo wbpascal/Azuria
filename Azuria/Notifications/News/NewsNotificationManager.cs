@@ -27,8 +27,9 @@ namespace Azuria.Notifications.News
             AutoReset = true
         };
 
-        private static readonly Dictionary<Senpai, List<NewsNotificationEventHandler>> CallbackDictionary =
-            new Dictionary<Senpai, List<NewsNotificationEventHandler>>();
+        private static readonly Dictionary<Senpai, Dictionary<NewsNotificationEventHandler, string>> CallbackDictionary
+            =
+            new Dictionary<Senpai, Dictionary<NewsNotificationEventHandler, string>>();
 
         static NewsNotificationManager()
         {
@@ -40,17 +41,27 @@ namespace Azuria.Notifications.News
 
         private static async void CheckNotifications()
         {
+            Timer.Stop();
             foreach (Senpai senpai in CallbackDictionary.Keys)
             {
                 ProxerResult<int> lNotificationCountResult = await GetAvailableNotificationsCount(senpai);
                 if (!lNotificationCountResult.Success || lNotificationCountResult.Result == 0) continue;
                 NewsNotification[] lNotifications =
                     new NewsNotificationCollection(senpai).Take(Math.Min(lNotificationCountResult.Result, 50)).ToArray();
-                foreach (NewsNotificationEventHandler notificationCallback in CallbackDictionary[senpai])
+                if (!lNotifications.Any()) continue;
+
+                foreach (
+                    KeyValuePair<NewsNotificationEventHandler, string> notificationCallback in
+                        CallbackDictionary[senpai])
                 {
-                    notificationCallback?.Invoke(senpai, lNotifications);
+                    if (notificationCallback.Key == null) continue;
+                    notificationCallback.Key?.Invoke(senpai,
+                        lNotifications.TakeWhile(
+                            notification => notification.NotificationId != notificationCallback.Value));
+                    CallbackDictionary[senpai][notificationCallback.Key] = lNotifications.First().NotificationId;
                 }
             }
+            Timer.Start();
         }
 
         /// <summary>
@@ -96,9 +107,12 @@ namespace Azuria.Notifications.News
         /// <param name="eventHandler"></param>
         public static void RegisterNotificationCallback(Senpai senpai, NewsNotificationEventHandler eventHandler)
         {
-            if (CallbackDictionary.ContainsKey(senpai) && !CallbackDictionary[senpai].Contains(eventHandler))
-                CallbackDictionary[senpai].Add(eventHandler);
-            else CallbackDictionary.Add(senpai, new List<NewsNotificationEventHandler>(new[] {eventHandler}));
+            if (CallbackDictionary.ContainsKey(senpai) && !CallbackDictionary[senpai].ContainsKey(eventHandler))
+                CallbackDictionary[senpai].Add(eventHandler, "-1");
+            else
+                CallbackDictionary.Add(senpai,
+                    new Dictionary<NewsNotificationEventHandler, string> {{eventHandler, "-1"}});
+            CheckNotifications();
         }
 
         #endregion

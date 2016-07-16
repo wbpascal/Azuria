@@ -45,11 +45,10 @@ namespace Azuria.Notifications.PrivateMessage
             this._itemIndex++;
             if (this._notifications.Any()) return this._itemIndex < this._notifications.Length;
 
-            Task<ProxerResult> lGetNotificationsTask = this.GetNotifications();
-            lGetNotificationsTask.Wait();
-            if (!lGetNotificationsTask.Result.Success)
-                throw lGetNotificationsTask.Result.Exceptions.FirstOrDefault() ?? new WrongResponseException();
-            return lGetNotificationsTask.Result.Success && this._notifications.Any();
+            ProxerResult lGetNotificationsResult = Task.Run(this.GetNotifications).Result;
+            if (!lGetNotificationsResult.Success)
+                throw lGetNotificationsResult.Exceptions.FirstOrDefault() ?? new WrongResponseException();
+            return lGetNotificationsResult.Success && this._notifications.Any();
         }
 
         /// <summary>Sets the enumerator to its initial position, which is before the first element in the collection.</summary>
@@ -96,7 +95,7 @@ namespace Azuria.Notifications.PrivateMessage
                     lDocument.DocumentNode.SelectNodesUtility("class", "conferenceList").ToArray();
 
                 this._notifications = (from curNode in lNodes
-                    let lTitel =
+                    let lTitle =
                         curNode.ChildNodes[curNode.FirstChild.Name.Equals("img") ? 1 : 0].InnerText
                     let lTimeStamp =
                         DateTime.ParseExact(
@@ -105,7 +104,7 @@ namespace Azuria.Notifications.PrivateMessage
                     let lId =
                         Convert.ToInt32(
                             curNode.Attributes["href"].Value.GetTagContents("?id=", "#top").FirstOrDefault() ?? "-1")
-                    select new PrivateMessageNotification(new Conference(lTitel, lId, this._senpai), lTimeStamp))
+                    select new PrivateMessageNotification(new Conference(lTitle, lId, this._senpai), lTimeStamp))
                     .ToArray();
 
                 return new ProxerResult();

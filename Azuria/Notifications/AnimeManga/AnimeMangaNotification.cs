@@ -25,6 +25,8 @@ namespace Azuria.Notifications.AnimeManga
         /// </summary>
         public NotificationType Type => typeof(T) == typeof(Anime) ? NotificationType.Anime : NotificationType.Manga;
 
+        string INotification.NotificationId => this.NotificationId.ToString();
+
         #endregion
 
         #region Properties

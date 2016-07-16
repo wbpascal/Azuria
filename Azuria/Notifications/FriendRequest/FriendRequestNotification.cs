@@ -21,6 +21,7 @@ namespace Azuria.Notifications.FriendRequest
             this.Date = requestDate;
             this.User = user;
             this._senpai = senpai;
+            this.NotificationId = user.Id.ToString() + requestDate.Subtract(new DateTime(1970, 1, 1)).TotalSeconds;
         }
 
         #region Inherited
@@ -29,6 +30,11 @@ namespace Azuria.Notifications.FriendRequest
         ///     Gets the type of the notification.
         /// </summary>
         public NotificationType Type => NotificationType.FriendRequest;
+
+        /// <summary>
+        ///     Gets the id of the notification.
+        /// </summary>
+        public string NotificationId { get; }
 
         #endregion
 

@@ -44,10 +44,9 @@ namespace Azuria.Notifications.FriendRequest
             this._itemIndex++;
             if (this._notifications.Any()) return this._itemIndex < this._notifications.Length;
 
-            Task<ProxerResult> lGetNotificationsTask = this.GetNotifications();
-            lGetNotificationsTask.Wait();
-            if (!lGetNotificationsTask.Result.Success)
-                throw lGetNotificationsTask.Result.Exceptions.FirstOrDefault() ?? new WrongResponseException();
+            ProxerResult lGetNotificationsResult = Task.Run(this.GetNotifications).Result;
+            if (!lGetNotificationsResult.Success)
+                throw lGetNotificationsResult.Exceptions.FirstOrDefault() ?? new WrongResponseException();
             return this._notifications.Any();
         }
 

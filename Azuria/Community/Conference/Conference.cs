@@ -55,7 +55,7 @@ namespace Azuria.Community.Conference
             this.Leader = new InitialisableProperty<User.User>(this.GetLeader);
             this.Participants = new InitialisableProperty<IEnumerable<User.User>>(this.GetMainInfo);
             this.Title = new InitialisableProperty<string>(this.GetTitle);
-            this.IsConference = new InitialisableProperty<bool>(this.CheckIsConference);
+            this.CanPerformCommands = new InitialisableProperty<bool>(this.CheckCanPerformCommands);
 
             this._checkMessagesTimer = new Timer {Interval = new TimeSpan(0, 0, 15).TotalMilliseconds};
             this._checkMessagesTimer.Elapsed += this.OnCheckMessagesTimerElapsed;
@@ -81,6 +81,9 @@ namespace Azuria.Community.Conference
             }
         }
 
+        [NotNull]
+        private InitialisableProperty<bool> CanPerformCommands { get; }
+
         /// <summary>
         ///     Gets the Id of the conference.
         /// </summary>
@@ -91,9 +94,6 @@ namespace Azuria.Community.Conference
         /// </summary>
         [NotNull]
         public SetableInitialisableProperty<bool> IsBlocked { get; }
-
-        [NotNull]
-        private InitialisableProperty<bool> IsConference { get; }
 
         /// <summary>
         ///     Gets or sets a value indicating whether the current conference is currently a favourite of the
@@ -135,35 +135,8 @@ namespace Azuria.Community.Conference
 
         #region
 
-        private void CheckForNewMessages()
-        {
-            if (this._autoLastMessageRecieved == null && this.Messages.Any())
-                this.NeuePmRaised?.Invoke(this, this.Messages);
-            else
-            {
-                Message[] lNewMessages =
-                    this.Messages.TakeWhile(message => message.MessageId != this._autoLastMessageRecieved.MessageId)
-                        .ToArray();
-                if (!lNewMessages.Any()) return;
-
-#pragma warning disable CS4014
-                if (
-                    lNewMessages.Any(
-                        x =>
-                            x.MessageAction == Message.Action.AddUser ||
-                            x.MessageAction == Message.Action.RemoveUser) && this.Participants.IsInitialisedOnce)
-                    this.GetMainInfo();
-                if (lNewMessages.Any(x => x.MessageAction == Message.Action.SetLeader) &&
-                    this.Leader.IsInitialisedOnce) this.GetLeader();
-                if (lNewMessages.Any(x => x.MessageAction == Message.Action.SetTopic) &&
-                    this.Title.IsInitialisedOnce) this.GetTitle();
-#pragma warning restore CS4014
-                this.NeuePmRaised?.Invoke(this, lNewMessages);
-            }
-        }
-
         [ItemNotNull]
-        private async Task<ProxerResult> CheckIsConference()
+        private async Task<ProxerResult> CheckCanPerformCommands()
         {
             Dictionary<string, string> lPostArgs = new Dictionary<string, string>
             {
@@ -185,15 +158,42 @@ namespace Azuria.Community.Conference
             {
                 Dictionary<string, string> lDict =
                     JsonConvert.DeserializeObject<Dictionary<string, string>>(lResponse);
-                this.IsConference.SetInitialisedObject(lDict["msg"].Equals("Erfolgreich!") &&
-                                                       !lDict["message"].Equals(
-                                                           "Befehle sind nur in Konferenzen verfügbar."));
+                this.CanPerformCommands.SetInitialisedObject(lDict["msg"].Equals("Erfolgreich!") &&
+                                                             !lDict["message"].Equals(
+                                                                 "Befehle sind nur in Konferenzen verfügbar."));
                 return new ProxerResult();
             }
             catch
             {
                 return
                     new ProxerResult((await ErrorHandler.HandleError(this._senpai, lResponse, false)).Exceptions);
+            }
+        }
+
+        private void CheckForNewMessages()
+        {
+            if (this._autoLastMessageRecieved == null && this.Messages.Any())
+                this.NeuePmRaised?.Invoke(this, this.Messages.ToArray());
+            else
+            {
+                Message[] lNewMessages =
+                    this.Messages.TakeWhile(message => message.MessageId != this._autoLastMessageRecieved.MessageId)
+                        .ToArray();
+                if (!lNewMessages.Any()) return;
+
+#pragma warning disable CS4014
+                if (
+                    lNewMessages.Any(
+                        x =>
+                            x.MessageAction == Message.Action.AddUser ||
+                            x.MessageAction == Message.Action.RemoveUser) && this.Participants.IsInitialisedOnce)
+                    this.GetMainInfo();
+                if (lNewMessages.Any(x => x.MessageAction == Message.Action.SetLeader) &&
+                    this.Leader.IsInitialisedOnce) this.GetLeader();
+                if (lNewMessages.Any(x => x.MessageAction == Message.Action.SetTopic) &&
+                    this.Title.IsInitialisedOnce) this.GetTitle();
+#pragma warning restore CS4014
+                this.NeuePmRaised?.Invoke(this, lNewMessages);
             }
         }
 
@@ -235,7 +235,7 @@ namespace Azuria.Community.Conference
         [ItemNotNull]
         private async Task<ProxerResult> GetLeader()
         {
-            if (!(await this.IsConference.GetObject()).OnError(false))
+            if (!(await this.CanPerformCommands.GetObject()).OnError(false))
             {
                 this.Leader.SetInitialisedObject(User.User.System);
                 return new ProxerResult();
@@ -327,7 +327,7 @@ namespace Azuria.Community.Conference
         [ItemNotNull]
         private async Task<ProxerResult> GetTitle()
         {
-            if ((await this.IsConference.GetObject()).OnError(false))
+            if ((await this.CanPerformCommands.GetObject()).OnError(false))
             {
                 Dictionary<string, string> lPostArgs = new Dictionary<string, string>
                 {

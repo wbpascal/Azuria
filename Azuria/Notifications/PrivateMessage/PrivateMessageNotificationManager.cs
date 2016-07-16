@@ -41,6 +41,7 @@ namespace Azuria.Notifications.PrivateMessage
 
         private static async void CheckNotifications()
         {
+            Timer.Stop();
             foreach (Senpai senpai in CallbackDictionary.Keys)
             {
                 ProxerResult<int> lNotificationCountResult = await GetAvailableNotificationsCount(senpai);
@@ -52,6 +53,7 @@ namespace Azuria.Notifications.PrivateMessage
                     notificationCallback?.Invoke(senpai, lNotifications);
                 }
             }
+            Timer.Start();
         }
 
         /// <summary>
@@ -101,6 +103,7 @@ namespace Azuria.Notifications.PrivateMessage
             if (CallbackDictionary.ContainsKey(senpai) && !CallbackDictionary[senpai].Contains(eventHandler))
                 CallbackDictionary[senpai].Add(eventHandler);
             else CallbackDictionary.Add(senpai, new List<PrivateMessageNotificationEventHandler>(new[] {eventHandler}));
+            CheckNotifications();
         }
 
         #endregion

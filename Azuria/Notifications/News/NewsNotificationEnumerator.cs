@@ -46,11 +46,10 @@ namespace Azuria.Notifications.News
             if (this._currentPageItemIndex < NewsPerPage) return true;
 
             this._currentPageItemIndex = 0;
-            Task<ProxerResult> lNextPageTask = this.GetNextPage();
-            lNextPageTask.Wait();
-            if (!lNextPageTask.Result.Success)
-                throw lNextPageTask.Result.Exceptions.FirstOrDefault() ?? new WrongResponseException();
-            return lNextPageTask.Result.Success && this._currentPageContent.Any();
+            ProxerResult lGetNotificationsResult = Task.Run(this.GetNextPage).Result;
+            if (!lGetNotificationsResult.Success)
+                throw lGetNotificationsResult.Exceptions.FirstOrDefault() ?? new WrongResponseException();
+            return lGetNotificationsResult.Success && this._currentPageContent.Any();
         }
 
         /// <summary>Sets the enumerator to its initial position, which is before the first element in the collection.</summary>
