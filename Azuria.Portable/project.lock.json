@@ -54,7 +54,6 @@
     "HtmlAgilityPack/1.4.9.4": {
       "sha512": "e0NyiQpHveUzZbMY7I1GCh2Pkzh8Kf3kg4bIgDpWOeHvzloHSnkSccGpnb53Eq4uWxYE/wrRzS3jV56ZkAF2pg==",
       "type": "package",
-      "path": "HtmlAgilityPack/1.4.9.4",
       "files": [
         "HAPIcon.png",
         "HtmlAgilityPack.1.4.9.4.nupkg.sha512",
@@ -88,7 +87,6 @@
     "JetBrains.Annotations/10.1.5": {
       "sha512": "LRyTrsiTWsV4C4cUMfdEkAdd8S0BREvj3hXZ1gGr3GZGFf0q2KW3IFGMPOguAxOrWH44Nw12jqr37B1Jph2E6A==",
       "type": "package",
-      "path": "JetBrains.Annotations/10.1.5",
       "files": [
         "JetBrains.Annotations.10.1.5.nupkg.sha512",
         "JetBrains.Annotations.nuspec",
@@ -104,7 +102,6 @@
     "Jint/2.8.0": {
       "sha512": "QKx6thHm8iWHhyxURaRoFzi/rczDn9iMfQNmWCWiwQi3B//J6Ocu0V/BMzUSLLBCu1XvlnVvrwf2gqVbQUiAbg==",
       "type": "package",
-      "path": "Jint/2.8.0",
       "files": [
         "Jint.2.8.0.nupkg.sha512",
         "Jint.nuspec",
@@ -114,7 +111,6 @@
     "modernhttpclient/2.4.2": {
       "sha512": "Srkrjz2wBCh7af+AGqpPkJ3FSSFSruzg9mHVwwXiklf9gx2L1Ss2M+p2Mf4Fw17AOe6yPuJwdu4AAoslc6zP+w==",
       "type": "package",
-      "path": "modernhttpclient/2.4.2",
       "files": [
         "lib/ModernHttpClient-2.4.1.zip",
         "lib/MonoAndroid/ModernHttpClient.dll",

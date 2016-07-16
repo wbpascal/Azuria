@@ -59,9 +59,14 @@ namespace System.Timers
                     this._isFinished = true;
                     return;
                 }
-                await
-                    Task.Delay(TimeSpan.FromMilliseconds(double.IsNaN(this.Interval) ? 1000.0 : this.Interval),
-                        this._ct.Token);
+                try
+                {
+                    await
+                        Task.Delay(TimeSpan.FromMilliseconds(double.IsNaN(this.Interval) ? 1000.0 : this.Interval),
+                            this._ct.Token);
+                }
+                catch (TaskCanceledException)
+                { }
                 if (this._ct.Token.IsCancellationRequested)
                 {
                     this._isFinished = true;
@@ -81,8 +86,9 @@ namespace System.Timers
 
         internal void Start()
         {
-            if (this._isFinished) this.CreateTask();
-            if (this._task.Status != TaskStatus.Running) this._task.Start();
+            if (this._isFinished || this._task.IsCanceled || this._task.IsCompleted || this._task.IsFaulted)
+                this.CreateTask();
+            else this._task.Start();
         }
 
         internal void Stop()
