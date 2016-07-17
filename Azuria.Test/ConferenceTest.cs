@@ -78,10 +78,10 @@ namespace Azuria.Test
             foreach (Conference conference in lConferences.Result)
             {
                 PrivateObject lPrivateConference = new PrivateObject(conference);
-                InitialisableProperty<bool> lIsConferenceProperty =
-                    (InitialisableProperty<bool>) lPrivateConference.GetProperty("IsConference");
+                InitialisableProperty<bool> lCanPerformCommands =
+                    (InitialisableProperty<bool>) lPrivateConference.GetProperty("CanPerformCommands");
 
-                if (!await lIsConferenceProperty.GetObject(false) || conference.Id != ConferenceId) continue;
+                if (!await lCanPerformCommands.GetObject(false) || conference.Id != ConferenceId) continue;
                 this._conference = conference;
                 Assert.Pass();
             }
