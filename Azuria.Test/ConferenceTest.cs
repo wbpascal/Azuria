@@ -85,8 +85,8 @@ namespace Azuria.Test
                 this._conference = conference;
                 Assert.Pass();
             }
-            Assert.Fail("Keine Konfernz gefunden! Um erfolgreich zu testen, muss mindestens eine Konferenz" +
-                        "vorhanden sein!");
+            Assert.Fail("No matching conferences were found! To test successfully there must be " +
+                        "at least one matching conference available!");
         }
 
         [Test, Order(2)]
@@ -108,10 +108,10 @@ namespace Azuria.Test
             string lHexString = RandomUtility.GetRandomHexString();
             this._conference.NeuePmRaised += (sender, messages) =>
             {
-                lResult = new ProxerResult<string>("Neue PM Raised 1") {Success = messages.Any()};
+                lResult = new ProxerResult<string>("New PM Raised 1") {Success = messages.Any()};
                 if (!messages.Any(message => message.Content.Equals(lHexString)))
                 {
-                    lResult = new ProxerResult<string>("Neue PM Raised 3") {Success = false};
+                    lResult = new ProxerResult<string>("New PM Raised 3") {Success = false};
                 }
                 lSignal.Release();
             };

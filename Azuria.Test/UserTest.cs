@@ -89,7 +89,7 @@ namespace Azuria.Test
         {
             Assert.IsNotNull(this._senpai.Me);
 
-            //Ich wette diesen String hat keiner in seinem Profil stehen
+            //I bet no one has this string written in his profile
             string lRandomHexString = RandomUtility.GetRandomHexString();
 
             string lInfo = await this._senpai.Me.Info.GetObject(lRandomHexString);
