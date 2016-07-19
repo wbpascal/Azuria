@@ -18,26 +18,22 @@ namespace Azuria.Notifications.AnimeManga
             this.NotificationId = notificationId;
         }
 
-        #region Inherited
-
-        /// <summary>
-        ///     Gets the type of the notification.
-        /// </summary>
-        public NotificationType Type => typeof(T) == typeof(Anime) ? NotificationType.Anime : NotificationType.Manga;
-
-        string INotification.NotificationId => this.NotificationId.ToString();
-
-        #endregion
-
         #region Properties
 
         /// <summary>
         /// </summary>
         public IAnimeMangaContent<T> ContentObject { get; }
 
+        string INotification.NotificationId => this.NotificationId.ToString();
+
         /// <summary>
         /// </summary>
         public int NotificationId { get; }
+
+        /// <summary>
+        ///     Gets the type of the notification.
+        /// </summary>
+        public NotificationType Type => typeof(T) == typeof(Anime) ? NotificationType.Anime : NotificationType.Manga;
 
         #endregion
 

@@ -17,12 +17,16 @@ namespace Azuria.Notifications.PrivateMessage
             this.Type = NotificationType.PrivateMessage;
         }
 
-        #region Inherited
+        #region Properties
 
         /// <summary>
         ///     Gets the type of the notifications.
         /// </summary>
         public NotificationType Type { get; }
+
+        #endregion
+
+        #region Inherited
 
         /// <summary>
         /// </summary>

@@ -94,7 +94,13 @@ namespace Azuria.AnimeManga
             this.MangaTyp = new InitialisableProperty<MangaType>(this.InitType, type);
         }
 
-        #region Inherited
+        #region Properties
+
+        /// <summary>
+        ///     Gets the languages the <see cref="Manga" /> is available in.
+        /// </summary>
+        [NotNull]
+        public InitialisableProperty<IEnumerable<Language>> AvailableLanguages { get; }
 
         /// <summary>
         ///     Gets the count of the <see cref="Chapter">Chapters</see> the <see cref="Manga" /> contains.
@@ -157,6 +163,12 @@ namespace Azuria.AnimeManga
         public InitialisableProperty<string> JapaneseTitle { get; }
 
         /// <summary>
+        ///     Gets the type of the <see cref="Manga" />.
+        /// </summary>
+        [NotNull]
+        public InitialisableProperty<MangaType> MangaTyp { get; }
+
+        /// <summary>
         ///     Gets the original title of the <see cref="Manga" />.
         /// </summary>
         public InitialisableProperty<string> Name { get; }
@@ -182,6 +194,10 @@ namespace Azuria.AnimeManga
         /// </summary>
         public InitialisableProperty<string> Synonym { get; }
 
+        #endregion
+
+        #region Inherited
+
         /// <summary>
         ///     Adds the <see cref="Manga" /> to the planned list. If <paramref name="userControlPanel" />
         ///     is specified the object is also added to the corresponding <see cref="UserControlPanel.Manga" />-enumeration.
@@ -200,22 +216,6 @@ namespace Azuria.AnimeManga
         {
             return await this.InitAllInitalisableProperties();
         }
-
-        #endregion
-
-        #region Properties
-
-        /// <summary>
-        ///     Gets the languages the <see cref="Manga" /> is available in.
-        /// </summary>
-        [NotNull]
-        public InitialisableProperty<IEnumerable<Language>> AvailableLanguages { get; }
-
-        /// <summary>
-        ///     Gets the type of the <see cref="Manga" />.
-        /// </summary>
-        [NotNull]
-        public InitialisableProperty<MangaType> MangaTyp { get; }
 
         #endregion
 
@@ -299,7 +299,6 @@ namespace Azuria.AnimeManga
                 await
                     HttpUtility.GetResponseErrorHandling(
                         new Uri("https://proxer.me/manga?format=raw"),
-                        null,
                         senpai);
 
             if (!lResult.Success)
@@ -344,7 +343,6 @@ namespace Azuria.AnimeManga
                 await
                     HttpUtility.GetResponseErrorHandling(
                         new Uri("http://proxer.me/edit/entry/" + this.Id + "/languages?format=raw"),
-                        this._senpai.LoginCookies,
                         this._senpai,
                         new[] {lCheckFunc});
 
@@ -383,7 +381,7 @@ namespace Azuria.AnimeManga
             }
             catch
             {
-                return new ProxerResult((await ErrorHandler.HandleError(this._senpai, lResponse, false)).Exceptions);
+                return new ProxerResult(ErrorHandler.HandleError(this._senpai, lResponse, false).Exceptions);
             }
         }
 
@@ -403,7 +401,6 @@ namespace Azuria.AnimeManga
                 await
                     HttpUtility.GetResponseErrorHandling(
                         new Uri("http://proxer.me/edit/entry/" + this.Id + "/count?format=raw"),
-                        this._senpai.LoginCookies,
                         this._senpai,
                         new[] {lCheckFunc});
 
@@ -425,7 +422,7 @@ namespace Azuria.AnimeManga
             }
             catch
             {
-                return new ProxerResult((await ErrorHandler.HandleError(this._senpai, lResponse, false)).Exceptions);
+                return new ProxerResult(ErrorHandler.HandleError(this._senpai, lResponse, false).Exceptions);
             }
         }
 
@@ -451,7 +448,6 @@ namespace Azuria.AnimeManga
                 await
                     HttpUtility.GetResponseErrorHandling(
                         new Uri("http://proxer.me/edit/entry/" + this.Id + "/medium?format=raw"),
-                        this._senpai.LoginCookies,
                         this._senpai,
                         new[] {lCheckFunc});
 
@@ -481,7 +477,7 @@ namespace Azuria.AnimeManga
             }
             catch
             {
-                return new ProxerResult((await ErrorHandler.HandleError(this._senpai, lResponse, false)).Exceptions);
+                return new ProxerResult(ErrorHandler.HandleError(this._senpai, lResponse, false).Exceptions);
             }
 
             return new ProxerResult();
@@ -517,7 +513,7 @@ namespace Azuria.AnimeManga
                 this.IsAvailable = new InitialisableProperty<bool>(this.InitInfo, isOnline);
             }
 
-            #region Inherited
+            #region Properties
 
             /// <summary>
             ///     Gets the <see cref="Chapter" />-number.
@@ -525,9 +521,10 @@ namespace Azuria.AnimeManga
             public int ContentIndex { get; }
 
             /// <summary>
-            ///     Gets if the <see cref="Chapter" /> is available.
+            ///     Returns the release date of the <see cref="Chapter" />.
             /// </summary>
-            public InitialisableProperty<bool> IsAvailable { get; }
+            [NotNull]
+            public InitialisableProperty<DateTime> Date { get; }
 
             /// <summary>
             ///     Gets whether the language of the <see cref="Chapter" /> is
@@ -536,32 +533,9 @@ namespace Azuria.AnimeManga
             public Language GeneralLanguage => this.Language;
 
             /// <summary>
-            ///     Gets the <see cref="Manga" /> this <see cref="Chapter" /> belongs to.
+            ///     Gets if the <see cref="Chapter" /> is available.
             /// </summary>
-            public Manga ParentObject { get; }
-
-            /// <summary>
-            ///     Adds the <see cref="Chapter" /> to the bookmarks. If <paramref name="userControlPanel" /> is specified
-            ///     the object is also added to the corresponding <see cref="UserControlPanel.MangaBookmarks" />-enumeration.
-            /// </summary>
-            /// <param name="userControlPanel">The object which, if specified, this object is added to.</param>
-            /// <returns>If the action was successful.</returns>
-            public async Task<ProxerResult<AnimeMangaBookmarkObject<Manga>>> AddToBookmarks(
-                UserControlPanel userControlPanel = null)
-            {
-                userControlPanel = userControlPanel ?? new UserControlPanel(this._senpai);
-                return await userControlPanel.AddToBookmarks(this);
-            }
-
-            #endregion
-
-            #region Properties
-
-            /// <summary>
-            ///     Returns the release date of the <see cref="Chapter" />.
-            /// </summary>
-            [NotNull]
-            public InitialisableProperty<DateTime> Date { get; }
+            public InitialisableProperty<bool> IsAvailable { get; }
 
             /// <summary>
             ///     Gets the language of the <see cref="Chapter" />.
@@ -573,6 +547,11 @@ namespace Azuria.AnimeManga
             /// </summary>
             [NotNull]
             public InitialisableProperty<IEnumerable<Uri>> Pages { get; }
+
+            /// <summary>
+            ///     Gets the <see cref="Manga" /> this <see cref="Chapter" /> belongs to.
+            /// </summary>
+            public Manga ParentObject { get; }
 
             /// <summary>
             ///     Gets the scanlator-group of the <see cref="Chapter" />.
@@ -591,6 +570,23 @@ namespace Azuria.AnimeManga
             /// </summary>
             [NotNull]
             public InitialisableProperty<string> UploaderName { get; }
+
+            #endregion
+
+            #region Inherited
+
+            /// <summary>
+            ///     Adds the <see cref="Chapter" /> to the bookmarks. If <paramref name="userControlPanel" /> is specified
+            ///     the object is also added to the corresponding <see cref="UserControlPanel.MangaBookmarks" />-enumeration.
+            /// </summary>
+            /// <param name="userControlPanel">The object which, if specified, this object is added to.</param>
+            /// <returns>If the action was successful.</returns>
+            public async Task<ProxerResult<AnimeMangaBookmarkObject<Manga>>> AddToBookmarks(
+                UserControlPanel userControlPanel = null)
+            {
+                userControlPanel = userControlPanel ?? new UserControlPanel(this._senpai);
+                return await userControlPanel.AddToBookmarks(this);
+            }
 
             #endregion
 
@@ -623,7 +619,6 @@ namespace Azuria.AnimeManga
                         HttpUtility.GetResponseErrorHandling(
                             new Uri("https://proxer.me/chapter/" + this.ParentObject.Id + "/" + this.ContentIndex + "/" +
                                     this.Language.ToString().ToLower().Substring(0, 2) + "?format=raw"),
-                            null,
                             this._senpai,
                             new[] {lCheckFunc});
 
@@ -695,7 +690,7 @@ namespace Azuria.AnimeManga
                 }
                 catch
                 {
-                    return new ProxerResult((await ErrorHandler.HandleError(this._senpai, lResponse, false)).Exceptions);
+                    return new ProxerResult(ErrorHandler.HandleError(this._senpai, lResponse, false).Exceptions);
                 }
             }
 
@@ -716,7 +711,6 @@ namespace Azuria.AnimeManga
                         HttpUtility.GetResponseErrorHandling(
                             new Uri("https://proxer.me/read/" + this.ParentObject.Id + "/" + this.ContentIndex + "/" +
                                     this.Language.ToString().ToLower().Substring(0, 2) + "?format=json"),
-                            this._senpai.MobileLoginCookies,
                             this._senpai,
                             new[] {lCheckFunc});
 
@@ -757,7 +751,7 @@ namespace Azuria.AnimeManga
                 }
                 catch
                 {
-                    return new ProxerResult((await ErrorHandler.HandleError(this._senpai, lResponse, false)).Exceptions);
+                    return new ProxerResult(ErrorHandler.HandleError(this._senpai, lResponse, false).Exceptions);
                 }
             }
 

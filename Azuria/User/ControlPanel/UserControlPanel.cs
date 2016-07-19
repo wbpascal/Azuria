@@ -30,7 +30,7 @@ namespace Azuria.User.ControlPanel
         public UserControlPanel([NotNull] Senpai senpai)
         {
             this._senpai = senpai;
-            if (!this._senpai.IsLoggedIn) throw new NotLoggedInException(this._senpai);
+            if (!this._senpai.IsProbablyLoggedIn) throw new NotLoggedInException(this._senpai);
 
             this.Anime = new InitialisableProperty<IEnumerable<AnimeMangaUcpObject<Anime>>>(this.InitAnime);
             this.AnimeBookmarks =
@@ -143,7 +143,6 @@ namespace Azuria.User.ControlPanel
                     HttpUtility.GetResponseErrorHandling(
                         new Uri(
                             $"https://proxer.me/{lCategoryString}/{animeMangaContent.ParentObject.Id}/{animeMangaContent.ContentIndex}/{lLanguageString}?format=json&type=reminder&title=reminder_this"),
-                        this._senpai.LoginCookies,
                         this._senpai);
 
             if (!lResult.Success)
@@ -202,7 +201,7 @@ namespace Azuria.User.ControlPanel
             {
                 return
                     new ProxerResult<AnimeMangaBookmarkObject<T>>(
-                        (await ErrorHandler.HandleError(this._senpai, lResponse, false)).Exceptions);
+                        ErrorHandler.HandleError(this._senpai, lResponse, false).Exceptions);
             }
         }
 
@@ -228,7 +227,6 @@ namespace Azuria.User.ControlPanel
                         new Uri(
                             $"https://proxer.me/info/{animeMangaObject.Id}?format=json&json=note"),
                         new Dictionary<string, string> {{"checkPost", "1"}},
-                        this._senpai.LoginCookies,
                         this._senpai);
 
             if (!lResult.Success)
@@ -272,7 +270,7 @@ namespace Azuria.User.ControlPanel
             {
                 return
                     new ProxerResult<AnimeMangaUcpObject<T>>(
-                        (await ErrorHandler.HandleError(this._senpai, lResponse, false)).Exceptions);
+                        ErrorHandler.HandleError(this._senpai, lResponse, false).Exceptions);
             }
         }
 
@@ -387,7 +385,6 @@ namespace Azuria.User.ControlPanel
             ProxerResult<string> lResult =
                 await
                     HttpUtility.GetResponseErrorHandling(new Uri("https://proxer.me/ucp?s=anime&format=raw"),
-                        this._senpai.LoginCookies,
                         this._senpai, new[] {lCheckFunc});
 
             if (!lResult.Success || lResult.Result == null)
@@ -405,7 +402,7 @@ namespace Azuria.User.ControlPanel
             }
             catch
             {
-                return new ProxerResult((await ErrorHandler.HandleError(this._senpai, lResponse, false)).Exceptions);
+                return new ProxerResult(ErrorHandler.HandleError(this._senpai, lResponse, false).Exceptions);
             }
         }
 
@@ -431,9 +428,8 @@ namespace Azuria.User.ControlPanel
                 await
                     HttpUtility.GetResponseErrorHandling(
                         new Uri("https://proxer.me/ucp?s=reminder&format=raw"),
-                        this._senpai.MobileLoginCookies,
                         this._senpai,
-                        new[] {lCheckFunc});
+                        new[] {lCheckFunc}, useMobileCookies: true);
 
             if (!lResult.Success) return new ProxerResult(lResult.Exceptions);
 
@@ -466,7 +462,7 @@ namespace Azuria.User.ControlPanel
             }
             catch
             {
-                return new ProxerResult((await ErrorHandler.HandleError(this._senpai, lResult.Result, false)).Exceptions);
+                return new ProxerResult(ErrorHandler.HandleError(this._senpai, lResult.Result, false).Exceptions);
             }
 
             this.AnimeBookmarks.SetInitialisedObject(lAnimeBookmarkObjects);
@@ -494,7 +490,6 @@ namespace Azuria.User.ControlPanel
             ProxerResult<string> lResult =
                 await
                     HttpUtility.GetResponseErrorHandling(new Uri("https://proxer.me/ucp?s=history&format=raw"),
-                        this._senpai.LoginCookies,
                         this._senpai, new[] {lCheckFunc});
 
             if (!lResult.Success) return new ProxerResult(lResult.Exceptions);
@@ -533,7 +528,7 @@ namespace Azuria.User.ControlPanel
             catch
             {
                 return
-                    new ProxerResult((await ErrorHandler.HandleError(this._senpai, lResponse, false)).Exceptions);
+                    new ProxerResult(ErrorHandler.HandleError(this._senpai, lResponse, false).Exceptions);
             }
 
             this.AnimeChronic.SetInitialisedObject(lAnimeChronicObjects);
@@ -564,9 +559,8 @@ namespace Azuria.User.ControlPanel
                 await
                     HttpUtility.GetResponseErrorHandling(
                         new Uri("https://proxer.me/ucp?s=topten&format=raw"),
-                        this._senpai.MobileLoginCookies,
                         this._senpai,
-                        new[] {lCheckFunc});
+                        new[] {lCheckFunc}, useMobileCookies: true);
 
             if (!lResult.Success) return new ProxerResult(lResult.Exceptions);
 
@@ -613,7 +607,7 @@ namespace Azuria.User.ControlPanel
             catch
             {
                 return
-                    new ProxerResult((await ErrorHandler.HandleError(this._senpai, lResponse, false)).Exceptions);
+                    new ProxerResult(ErrorHandler.HandleError(this._senpai, lResponse, false).Exceptions);
             }
 
             this.AnimeFavourites.SetInitialisedObject(lAnimeFavouriteObjects);
@@ -639,7 +633,6 @@ namespace Azuria.User.ControlPanel
             ProxerResult<string> lResult =
                 await
                     HttpUtility.GetResponseErrorHandling(new Uri("https://proxer.me/ucp?s=manga&format=raw"),
-                        this._senpai.LoginCookies,
                         this._senpai, new[] {lCheckFunc});
 
             if (!lResult.Success || lResult.Result == null)
@@ -657,7 +650,7 @@ namespace Azuria.User.ControlPanel
             }
             catch
             {
-                return new ProxerResult((await ErrorHandler.HandleError(this._senpai, lResponse, false)).Exceptions);
+                return new ProxerResult(ErrorHandler.HandleError(this._senpai, lResponse, false).Exceptions);
             }
         }
 

@@ -21,6 +21,9 @@ namespace Azuria.Notifications.PrivateMessage
         public delegate void PrivateMessageNotificationEventHandler(
             Senpai sender, IEnumerable<PrivateMessageNotification> e);
 
+        private static readonly Dictionary<Senpai, List<PrivateMessageNotificationEventHandler>> CallbackDictionary =
+            new Dictionary<Senpai, List<PrivateMessageNotificationEventHandler>>();
+
         private static readonly double TimerDelay = TimeSpan.FromMinutes(15).TotalMilliseconds;
 
         private static readonly Timer Timer = new Timer(TimerDelay)
@@ -28,8 +31,6 @@ namespace Azuria.Notifications.PrivateMessage
             AutoReset = true
         };
 
-        private static readonly Dictionary<Senpai, List<PrivateMessageNotificationEventHandler>> CallbackDictionary =
-            new Dictionary<Senpai, List<PrivateMessageNotificationEventHandler>>();
 
         static PrivateMessageNotificationManager()
         {
@@ -64,7 +65,7 @@ namespace Azuria.Notifications.PrivateMessage
             ProxerResult<string> lResult =
                 await
                     HttpUtility.GetResponseErrorHandling(new Uri("https://proxer.me/notifications?format=raw&s=count"),
-                        senpai.LoginCookies, senpai);
+                        senpai);
 
             if (!lResult.Success || lResult.Result == null)
                 return new ProxerResult<int>(lResult.Exceptions);
@@ -81,7 +82,7 @@ namespace Azuria.Notifications.PrivateMessage
             }
             catch
             {
-                return new ProxerResult<int>((await ErrorHandler.HandleError(senpai, lResponse, false)).Exceptions);
+                return new ProxerResult<int>(ErrorHandler.HandleError(senpai, lResponse, false).Exceptions);
             }
         }
 

@@ -108,7 +108,6 @@ namespace Azuria.User
                 await
                     HttpUtility.GetResponseErrorHandling(
                         new Uri($"https://proxer.me/comment?id={this.EntryId}&format=raw"),
-                        this.Senpai.LoginCookies,
                         this.Senpai,
                         new[] {lCheckFunc});
 
@@ -136,8 +135,7 @@ namespace Azuria.User
             catch
             {
                 return
-                    new ProxerResult<Comment<T>>(
-                        (await ErrorHandler.HandleError(this.Senpai, lResponse, false)).Exceptions);
+                    new ProxerResult<Comment<T>>(ErrorHandler.HandleError(this.Senpai, lResponse, false).Exceptions);
             }
         }
 

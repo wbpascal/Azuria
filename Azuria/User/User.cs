@@ -25,7 +25,7 @@ namespace Azuria.User
         /// <summary>
         ///     Represents the system as a user.
         /// </summary>
-        [NotNull] public static User System = new User("System", -1, new Senpai());
+        [NotNull] public static User System = new User("System", -1, new Senpai("System"));
 
         private readonly Senpai _senpai;
 
@@ -239,7 +239,7 @@ namespace Azuria.User
                     await
                         HttpUtility.GetResponseErrorHandling(
                             new Uri("https://proxer.me/user/" + this.Id + "/connections/" + lSeite + "?format=raw"),
-                            this._senpai.LoginCookies, this._senpai, new[] {lCheckFunc})).Success)
+                            this._senpai, new[] {lCheckFunc})).Success)
             {
                 HtmlDocument lDocument = new HtmlDocument();
                 lDocument.LoadHtml(lResult.Result);
@@ -269,7 +269,7 @@ namespace Azuria.User
                 {
                     return
                         new ProxerResult<HtmlNode[]>(
-                            (await ErrorHandler.HandleError(this._senpai, lResult.Result, false)).Exceptions);
+                            ErrorHandler.HandleError(this._senpai, lResult.Result, false).Exceptions);
                 }
             }
 
@@ -323,7 +323,6 @@ namespace Azuria.User
                 await
                     HttpUtility.GetResponseErrorHandling(
                         new Uri("https://proxer.me/user/" + this.Id + "/anime?format=raw"),
-                        this._senpai.LoginCookies,
                         this._senpai, new[] {lCheckFunc});
 
             if (!lResult.Success)
@@ -359,7 +358,7 @@ namespace Azuria.User
             }
             catch
             {
-                return new ProxerResult((await ErrorHandler.HandleError(this._senpai, lResponse, false)).Exceptions);
+                return new ProxerResult(ErrorHandler.HandleError(this._senpai, lResponse, false).Exceptions);
             }
         }
 
@@ -386,7 +385,6 @@ namespace Azuria.User
                 await
                     HttpUtility.GetResponseErrorHandling(
                         new Uri("https://proxer.me/user/" + this.Id + "/chronik?format=raw"),
-                        this._senpai.LoginCookies,
                         this._senpai, new[] {lCheckFunc});
 
             if (!lResult.Success)
@@ -430,7 +428,7 @@ namespace Azuria.User
             }
             catch
             {
-                return new ProxerResult((await ErrorHandler.HandleError(this._senpai, lResponse, false)).Exceptions);
+                return new ProxerResult(ErrorHandler.HandleError(this._senpai, lResponse, false).Exceptions);
             }
         }
 
@@ -494,7 +492,6 @@ namespace Azuria.User
                 await
                     HttpUtility.GetResponseErrorHandling(
                         new Uri("https://proxer.me/user/" + this.Id + "/about?format=raw"),
-                        this._senpai.LoginCookies,
                         this._senpai, new[] {lCheckFunc});
 
             if (!lResult.Success)
@@ -516,7 +513,7 @@ namespace Azuria.User
             }
             catch
             {
-                return new ProxerResult((await ErrorHandler.HandleError(this._senpai, lResponse, false)).Exceptions);
+                return new ProxerResult(ErrorHandler.HandleError(this._senpai, lResponse, false).Exceptions);
             }
         }
 
@@ -540,7 +537,6 @@ namespace Azuria.User
             ProxerResult<string> lResult =
                 await
                     HttpUtility.GetResponseErrorHandling(new Uri("https://proxer.me/user/" + this.Id + "?format=raw"),
-                        this._senpai.LoginCookies,
                         this._senpai, new[] {lCheckFunc});
 
             if (!lResult.Success)
@@ -576,7 +572,7 @@ namespace Azuria.User
             }
             catch
             {
-                return new ProxerResult((await ErrorHandler.HandleError(this._senpai, lResponse, false)).Exceptions);
+                return new ProxerResult(ErrorHandler.HandleError(this._senpai, lResponse, false).Exceptions);
             }
         }
 
@@ -601,7 +597,6 @@ namespace Azuria.User
                 await
                     HttpUtility.GetResponseErrorHandling(
                         new Uri("https://proxer.me/user/" + this.Id + "/manga?format=raw"),
-                        this._senpai.LoginCookies,
                         this._senpai, new[] {lCheckFunc});
 
             if (!lResult.Success)
@@ -634,7 +629,7 @@ namespace Azuria.User
             }
             catch
             {
-                return new ProxerResult((await ErrorHandler.HandleError(this._senpai, lResponse, false)).Exceptions);
+                return new ProxerResult(ErrorHandler.HandleError(this._senpai, lResponse, false).Exceptions);
             }
         }
 
@@ -804,7 +799,6 @@ namespace Azuria.User
                 await
                     HttpUtility.PostResponseErrorHandling(new Uri("https://proxer.me/user/" + this.Id + "?format=json"),
                         lPostArgs,
-                        senpai.LoginCookies,
                         senpai);
 
             if (!lResult.Success)
@@ -823,7 +817,7 @@ namespace Azuria.User
             catch
             {
                 return
-                    new ProxerResult((await ErrorHandler.HandleError(this._senpai, lResult.Result, false)).Exceptions);
+                    new ProxerResult(ErrorHandler.HandleError(this._senpai, lResult.Result, false).Exceptions);
             }
         }
 

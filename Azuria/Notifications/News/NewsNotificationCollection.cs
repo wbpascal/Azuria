@@ -17,12 +17,16 @@ namespace Azuria.Notifications.News
             this.Type = NotificationType.News;
         }
 
-        #region Inherited
+        #region Properties
 
         /// <summary>
         ///     Gets the type of the notifications.
         /// </summary>
         public NotificationType Type { get; }
+
+        #endregion
+
+        #region Inherited
 
         /// <summary>Returns an enumerator that iterates through the collection.</summary>
         /// <returns>An enumerator that can be used to iterate through the collection.</returns>

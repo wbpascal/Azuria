@@ -72,7 +72,19 @@ namespace Azuria.AnimeManga
             this.AnimeTyp = new InitialisableProperty<AnimeType>(this.InitType, type);
         }
 
-        #region Inherited
+        #region Properties
+
+        /// <summary>
+        ///     Gets the type of the <see cref="Anime" />.
+        /// </summary>
+        [NotNull]
+        public InitialisableProperty<AnimeType> AnimeTyp { get; }
+
+        /// <summary>
+        ///     Gets the languages the <see cref="Anime" /> is available in.
+        /// </summary>
+        [NotNull]
+        public InitialisableProperty<IEnumerable<AnimeLanguage>> AvailableLanguages { get; }
 
         /// <summary>
         ///     Gets the count of the <see cref="Episode">Episodes</see> the <see cref="Anime" /> contains.
@@ -160,6 +172,10 @@ namespace Azuria.AnimeManga
         /// </summary>
         public InitialisableProperty<string> Synonym { get; }
 
+        #endregion
+
+        #region Inherited
+
         /// <summary>
         ///     Adds the <see cref="Anime" /> to the planned list. If <paramref name="userControlPanel" /> is specified the object
         ///     is also added to the corresponding <see cref="UserControlPanel.Anime" />-enumeration.
@@ -178,22 +194,6 @@ namespace Azuria.AnimeManga
         {
             return await this.InitAllInitalisableProperties();
         }
-
-        #endregion
-
-        #region Properties
-
-        /// <summary>
-        ///     Gets the type of the <see cref="Anime" />.
-        /// </summary>
-        [NotNull]
-        public InitialisableProperty<AnimeType> AnimeTyp { get; }
-
-        /// <summary>
-        ///     Gets the languages the <see cref="Anime" /> is available in.
-        /// </summary>
-        [NotNull]
-        public InitialisableProperty<IEnumerable<AnimeLanguage>> AvailableLanguages { get; }
 
         #endregion
 
@@ -277,7 +277,6 @@ namespace Azuria.AnimeManga
                 await
                     HttpUtility.GetResponseErrorHandling(
                         new Uri("https://proxer.me/anime?format=raw"),
-                        null,
                         senpai);
 
             if (!lResult.Success)
@@ -322,7 +321,6 @@ namespace Azuria.AnimeManga
                 await
                     HttpUtility.GetResponseErrorHandling(
                         new Uri("https://proxer.me/edit/entry/" + this.Id + "/languages?format=raw"),
-                        this._senpai.LoginCookies,
                         this._senpai,
                         new[] {lCheckFunc});
 
@@ -367,7 +365,7 @@ namespace Azuria.AnimeManga
             }
             catch
             {
-                return new ProxerResult((await ErrorHandler.HandleError(this._senpai, lResponse, false)).Exceptions);
+                return new ProxerResult(ErrorHandler.HandleError(this._senpai, lResponse, false).Exceptions);
             }
         }
 
@@ -387,7 +385,6 @@ namespace Azuria.AnimeManga
                 await
                     HttpUtility.GetResponseErrorHandling(
                         new Uri("https://proxer.me/edit/entry/" + this.Id + "/count?format=raw"),
-                        this._senpai.LoginCookies,
                         this._senpai,
                         new[] {lCheckFunc});
 
@@ -406,7 +403,7 @@ namespace Azuria.AnimeManga
             }
             catch
             {
-                return new ProxerResult((await ErrorHandler.HandleError(this._senpai, lResponse, false)).Exceptions);
+                return new ProxerResult(ErrorHandler.HandleError(this._senpai, lResponse, false).Exceptions);
             }
 
             return new ProxerResult();
@@ -434,7 +431,6 @@ namespace Azuria.AnimeManga
                 await
                     HttpUtility.GetResponseErrorHandling(
                         new Uri("https://proxer.me/edit/entry/" + this.Id + "/medium?format=raw"),
-                        this._senpai.LoginCookies,
                         this._senpai,
                         new[] {lCheckFunc});
 
@@ -467,7 +463,7 @@ namespace Azuria.AnimeManga
             }
             catch
             {
-                return new ProxerResult((await ErrorHandler.HandleError(this._senpai, lResponse, false)).Exceptions);
+                return new ProxerResult(ErrorHandler.HandleError(this._senpai, lResponse, false).Exceptions);
             }
 
             return new ProxerResult();
@@ -502,17 +498,12 @@ namespace Azuria.AnimeManga
                 this.IsAvailable = new InitialisableProperty<bool>(this.InitInfo, isAvailable);
             }
 
-            #region Inherited
+            #region Properties
 
             /// <summary>
             ///     Gets the <see cref="Episode" />-number.
             /// </summary>
             public int ContentIndex { get; }
-
-            /// <summary>
-            ///     Gets if the <see cref="Episode" /> is available.
-            /// </summary>
-            public InitialisableProperty<bool> IsAvailable { get; }
 
             /// <summary>
             ///     Gets whether the language of the <see cref="Episode" /> is <see cref="Language.English">english</see> or
@@ -527,9 +518,29 @@ namespace Azuria.AnimeManga
                             : AnimeManga.Language.Unkown;
 
             /// <summary>
+            ///     Gets if the <see cref="Episode" /> is available.
+            /// </summary>
+            public InitialisableProperty<bool> IsAvailable { get; }
+
+            /// <summary>
+            ///     Gets the language of the episode
+            /// </summary>
+            public AnimeLanguage Language { get; }
+
+            /// <summary>
             ///     Gets the <see cref="Anime" /> this <see cref="Episode" /> belongs to.
             /// </summary>
             public Anime ParentObject { get; }
+
+            /// <summary>
+            ///     Gets the available streams of the episode.
+            /// </summary>
+            [NotNull]
+            public InitialisableProperty<IEnumerable<KeyValuePair<Stream.StreamPartner, Stream>>> Streams { get; }
+
+            #endregion
+
+            #region Inherited
 
             /// <summary>
             ///     Adds the <see cref="Episode" /> to the bookmarks. If <paramref name="userControlPanel" /> is specified the object
@@ -543,21 +554,6 @@ namespace Azuria.AnimeManga
                 userControlPanel = userControlPanel ?? new UserControlPanel(this._senpai);
                 return await userControlPanel.AddToBookmarks(this);
             }
-
-            #endregion
-
-            #region Properties
-
-            /// <summary>
-            ///     Gets the language of the episode
-            /// </summary>
-            public AnimeLanguage Language { get; }
-
-            /// <summary>
-            ///     Gets the available streams of the episode.
-            /// </summary>
-            [NotNull]
-            public InitialisableProperty<IEnumerable<KeyValuePair<Stream.StreamPartner, Stream>>> Streams { get; }
 
             #endregion
 
@@ -581,8 +577,7 @@ namespace Azuria.AnimeManga
                         HttpUtility.GetResponseErrorHandling(
                             new Uri("https://proxer.me/watch/" + this.ParentObject.Id + "/" + this.ContentIndex + "/" +
                                     this.Language.ToString().ToLower()),
-                            this._senpai.MobileLoginCookies,
-                            this._senpai);
+                            this._senpai, new Func<string, ProxerResult>[0], useMobileCookies: true);
 
                 if (!lResult.Success)
                     return new ProxerResult(lResult.Exceptions);
@@ -688,7 +683,7 @@ namespace Azuria.AnimeManga
                 }
                 catch
                 {
-                    return new ProxerResult((await ErrorHandler.HandleError(this._senpai, lResponse, false)).Exceptions);
+                    return new ProxerResult(ErrorHandler.HandleError(this._senpai, lResponse, false).Exceptions);
                 }
             }
 

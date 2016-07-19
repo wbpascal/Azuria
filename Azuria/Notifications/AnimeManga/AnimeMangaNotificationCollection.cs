@@ -20,11 +20,15 @@ namespace Azuria.Notifications.AnimeManga
             this._maxNotificationsToParse = maxNotificationsToParse;
         }
 
-        #region Inherited
+        #region Properties
 
         /// <summary>
         /// </summary>
         public NotificationType Type => typeof(T) == typeof(Anime) ? NotificationType.Anime : NotificationType.Manga;
+
+        #endregion
+
+        #region Inherited
 
         /// <summary>
         /// </summary>

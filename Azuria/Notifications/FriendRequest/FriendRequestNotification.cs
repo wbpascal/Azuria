@@ -24,26 +24,22 @@ namespace Azuria.Notifications.FriendRequest
             this.NotificationId = user.Id.ToString() + requestDate.Subtract(new DateTime(1970, 1, 1)).TotalSeconds;
         }
 
-        #region Inherited
-
-        /// <summary>
-        ///     Gets the type of the notification.
-        /// </summary>
-        public NotificationType Type => NotificationType.FriendRequest;
-
-        /// <summary>
-        ///     Gets the id of the notification.
-        /// </summary>
-        public string NotificationId { get; }
-
-        #endregion
-
         #region Properties
 
         /// <summary>
         ///     Gets the date of the friend request.
         /// </summary>
         public DateTime Date { get; }
+
+        /// <summary>
+        ///     Gets the id of the notification.
+        /// </summary>
+        public string NotificationId { get; }
+
+        /// <summary>
+        ///     Gets the type of the notification.
+        /// </summary>
+        public NotificationType Type => NotificationType.FriendRequest;
 
         /// <summary>
         ///     Gets the user that send the friend request.
@@ -72,7 +68,7 @@ namespace Azuria.Notifications.FriendRequest
             ProxerResult<string> lResult = await
                 HttpUtility.PostResponseErrorHandling(
                     new Uri("https://proxer.me/user/my?format=json&cid=" + this.User.Id),
-                    lPostArgs, this._senpai.LoginCookies, this._senpai, new[] {lCheckFunc});
+                    lPostArgs, this._senpai, new[] {lCheckFunc});
 
             if (!lResult.Success) return new ProxerResult(lResult.Exceptions);
 
@@ -97,7 +93,7 @@ namespace Azuria.Notifications.FriendRequest
             ProxerResult<string> lResult = await
                 HttpUtility.PostResponseErrorHandling(
                     new Uri("https://proxer.me/user/my?format=json&cid=" + this.User.Id),
-                    lPostArgs, this._senpai.LoginCookies, this._senpai, new[] {lCheckFunc});
+                    lPostArgs, this._senpai, new[] {lCheckFunc});
 
             if (!lResult.Success) return new ProxerResult(lResult.Exceptions);
 

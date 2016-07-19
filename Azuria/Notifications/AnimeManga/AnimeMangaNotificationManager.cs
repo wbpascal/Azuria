@@ -28,6 +28,12 @@ namespace Azuria.Notifications.AnimeManga
         public delegate void MangaNotificationEventHandler(
             Senpai sender, IEnumerable<AnimeMangaNotification<Manga>> e);
 
+        private static readonly Dictionary<Senpai, List<AnimeNotificationEventHandler>> AnimeCallbackDictionary =
+            new Dictionary<Senpai, List<AnimeNotificationEventHandler>>();
+
+        private static readonly Dictionary<Senpai, List<MangaNotificationEventHandler>> MangaCallbackDictionary =
+            new Dictionary<Senpai, List<MangaNotificationEventHandler>>();
+
         private static readonly double TimerDelay = TimeSpan.FromMinutes(15).TotalMilliseconds;
 
         private static readonly Timer Timer = new Timer(TimerDelay)
@@ -35,11 +41,6 @@ namespace Azuria.Notifications.AnimeManga
             AutoReset = true
         };
 
-        private static readonly Dictionary<Senpai, List<AnimeNotificationEventHandler>> AnimeCallbackDictionary =
-            new Dictionary<Senpai, List<AnimeNotificationEventHandler>>();
-
-        private static readonly Dictionary<Senpai, List<MangaNotificationEventHandler>> MangaCallbackDictionary =
-            new Dictionary<Senpai, List<MangaNotificationEventHandler>>();
 
         static AnimeMangaNotificationManager()
         {
@@ -96,8 +97,7 @@ namespace Azuria.Notifications.AnimeManga
             ProxerResult<string> lResult =
                 await
                     HttpUtility.PostResponseErrorHandling(
-                        new Uri("https://proxer.me/notifications?format=json&s=deleteNotification"), lPostArgs,
-                        senpai.LoginCookies, senpai);
+                        new Uri("https://proxer.me/notifications?format=json&s=deleteNotification"), lPostArgs, senpai);
 
             if (!lResult.Success || lResult.Result == null)
                 return new ProxerResult(lResult.Exceptions);
@@ -121,7 +121,7 @@ namespace Azuria.Notifications.AnimeManga
             ProxerResult<string> lResult =
                 await
                     HttpUtility.GetResponseErrorHandling(new Uri("https://proxer.me/notifications?format=raw&s=count"),
-                        senpai.LoginCookies, senpai);
+                        senpai);
 
             if (!lResult.Success || lResult.Result == null)
                 return new ProxerResult<int>(lResult.Exceptions);
@@ -138,7 +138,7 @@ namespace Azuria.Notifications.AnimeManga
             }
             catch
             {
-                return new ProxerResult<int>((await ErrorHandler.HandleError(senpai, lResponse, false)).Exceptions);
+                return new ProxerResult<int>(ErrorHandler.HandleError(senpai, lResponse, false).Exceptions);
             }
         }
 

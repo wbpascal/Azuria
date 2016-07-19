@@ -21,6 +21,9 @@ namespace Azuria.Notifications.FriendRequest
         public delegate void FriendRequestNotificationEventHandler(
             Senpai sender, IEnumerable<FriendRequestNotification> e);
 
+        private static readonly Dictionary<Senpai, List<FriendRequestNotificationEventHandler>> CallbackDictionary =
+            new Dictionary<Senpai, List<FriendRequestNotificationEventHandler>>();
+
         private static readonly double TimerDelay = TimeSpan.FromMinutes(15).TotalMilliseconds;
 
         private static readonly Timer Timer = new Timer(TimerDelay)
@@ -28,8 +31,6 @@ namespace Azuria.Notifications.FriendRequest
             AutoReset = true
         };
 
-        private static readonly Dictionary<Senpai, List<FriendRequestNotificationEventHandler>> CallbackDictionary =
-            new Dictionary<Senpai, List<FriendRequestNotificationEventHandler>>();
 
         static FriendRequestNotificationManager()
         {
@@ -64,7 +65,7 @@ namespace Azuria.Notifications.FriendRequest
             ProxerResult<string> lResult =
                 await
                     HttpUtility.GetResponseErrorHandling(new Uri("https://proxer.me/notifications?format=raw&s=count"),
-                        senpai.LoginCookies, senpai);
+                        senpai);
 
             if (!lResult.Success || lResult.Result == null)
                 return new ProxerResult<int>(lResult.Exceptions);
@@ -81,7 +82,7 @@ namespace Azuria.Notifications.FriendRequest
             }
             catch
             {
-                return new ProxerResult<int>((await ErrorHandler.HandleError(senpai, lResponse, false)).Exceptions);
+                return new ProxerResult<int>(ErrorHandler.HandleError(senpai, lResponse, false).Exceptions);
             }
         }
 

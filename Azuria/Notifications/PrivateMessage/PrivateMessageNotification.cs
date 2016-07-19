@@ -17,20 +17,6 @@ namespace Azuria.Notifications.PrivateMessage
                                   this.TimeStamp.Subtract(new DateTime(1970, 1, 1)).TotalSeconds;
         }
 
-        #region Inherited
-
-        /// <summary>
-        ///     Gets the type of the notification.
-        /// </summary>
-        public NotificationType Type => NotificationType.PrivateMessage;
-
-        /// <summary>
-        ///     Gets the id of the notification.
-        /// </summary>
-        public string NotificationId { get; }
-
-        #endregion
-
         #region Properties
 
         /// <summary>
@@ -39,9 +25,19 @@ namespace Azuria.Notifications.PrivateMessage
         public Conference Conference { get; }
 
         /// <summary>
+        ///     Gets the id of the notification.
+        /// </summary>
+        public string NotificationId { get; }
+
+        /// <summary>
         ///     Gets the date of the private message.
         /// </summary>
         public DateTime TimeStamp { get; }
+
+        /// <summary>
+        ///     Gets the type of the notification.
+        /// </summary>
+        public NotificationType Type => NotificationType.PrivateMessage;
 
         #endregion
     }

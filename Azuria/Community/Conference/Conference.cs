@@ -147,7 +147,6 @@ namespace Azuria.Community.Conference
                     HttpUtility.PostResponseErrorHandling(
                         new Uri("https://proxer.me/messages?id=" + this.Id + "&format=json&json=answer"),
                         lPostArgs,
-                        this._senpai.LoginCookies,
                         this._senpai);
 
             if (!lResult.Success)
@@ -166,7 +165,7 @@ namespace Azuria.Community.Conference
             catch
             {
                 return
-                    new ProxerResult((await ErrorHandler.HandleError(this._senpai, lResponse, false)).Exceptions);
+                    new ProxerResult(ErrorHandler.HandleError(this._senpai, lResponse, false).Exceptions);
             }
         }
 
@@ -203,7 +202,6 @@ namespace Azuria.Community.Conference
                 await
                     HttpUtility.GetResponseErrorHandling(
                         new Uri("http://proxer.me/messages?format=json&json=messages&id=" + this.Id),
-                        this._senpai.LoginCookies,
                         this._senpai);
 
             if (!lResult.Success)
@@ -228,7 +226,7 @@ namespace Azuria.Community.Conference
             }
             catch
             {
-                return new ProxerResult((await ErrorHandler.HandleError(this._senpai, lResponse, false)).Exceptions);
+                return new ProxerResult(ErrorHandler.HandleError(this._senpai, lResponse, false).Exceptions);
             }
         }
 
@@ -250,7 +248,6 @@ namespace Azuria.Community.Conference
                     HttpUtility.PostResponseErrorHandling(
                         new Uri("https://proxer.me/messages?id=" + this.Id + "&format=json&json=answer"),
                         lPostArgs,
-                        this._senpai.LoginCookies,
                         this._senpai);
 
             if (!lResult.Success)
@@ -280,7 +277,7 @@ namespace Azuria.Community.Conference
             }
             catch
             {
-                return new ProxerResult((await ErrorHandler.HandleError(this._senpai, lResponse, false)).Exceptions);
+                return new ProxerResult(ErrorHandler.HandleError(this._senpai, lResponse, false).Exceptions);
             }
         }
 
@@ -292,7 +289,6 @@ namespace Azuria.Community.Conference
                 await
                     HttpUtility.GetResponseErrorHandling(
                         new Uri("https://proxer.me/messages?id=" + this.Id + "&format=raw"),
-                        this._senpai.LoginCookies,
                         this._senpai);
 
             if (!lResult.Success)
@@ -320,7 +316,7 @@ namespace Azuria.Community.Conference
             }
             catch
             {
-                return new ProxerResult((await ErrorHandler.HandleError(this._senpai, lResponse, false)).Exceptions);
+                return new ProxerResult(ErrorHandler.HandleError(this._senpai, lResponse, false).Exceptions);
             }
         }
 
@@ -339,7 +335,6 @@ namespace Azuria.Community.Conference
                         HttpUtility.PostResponseErrorHandling(
                             new Uri("https://proxer.me/messages?id=" + this.Id + "&format=json&json=answer"),
                             lPostArgs,
-                            this._senpai.LoginCookies,
                             this._senpai);
 
                 if (!lResult.Success)
@@ -357,7 +352,7 @@ namespace Azuria.Community.Conference
                 }
                 catch
                 {
-                    return new ProxerResult((await ErrorHandler.HandleError(this._senpai, lResponse, false)).Exceptions);
+                    return new ProxerResult(ErrorHandler.HandleError(this._senpai, lResponse, false).Exceptions);
                 }
             }
 
@@ -402,7 +397,8 @@ namespace Azuria.Community.Conference
         [ItemNotNull]
         public static async Task<ProxerResult<bool>> Participates(int id, [NotNull] Senpai senpai)
         {
-            if (!senpai.IsLoggedIn) return new ProxerResult<bool>(new Exception[] {new NotLoggedInException(senpai)});
+            if (!senpai.IsProbablyLoggedIn)
+                return new ProxerResult<bool>(new Exception[] {new NotLoggedInException(senpai)});
 
             Dictionary<string, string> lPostArgs = new Dictionary<string, string>
             {
@@ -413,7 +409,6 @@ namespace Azuria.Community.Conference
                     HttpUtility.PostResponseErrorHandling(
                         new Uri("https://proxer.me/messages?id=" + id + "&format=json&json=answer"),
                         lPostArgs,
-                        senpai.LoginCookies,
                         senpai);
 
             if (!lResult.Success)
@@ -429,7 +424,7 @@ namespace Azuria.Community.Conference
             }
             catch
             {
-                return new ProxerResult<bool>((await ErrorHandler.HandleError(senpai, lResponse, false)).Exceptions);
+                return new ProxerResult<bool>(ErrorHandler.HandleError(senpai, lResponse, false).Exceptions);
             }
         }
 
@@ -457,7 +452,6 @@ namespace Azuria.Community.Conference
                     HttpUtility.PostResponseErrorHandling(
                         new Uri("https://proxer.me/messages?id=" + this.Id + "&format=json&json=answer"),
                         lPostArgs,
-                        this._senpai.LoginCookies,
                         this._senpai);
 
             if (!lResult.Success)
@@ -484,7 +478,7 @@ namespace Azuria.Community.Conference
             {
                 this._checkMessagesTimer.Start();
                 return
-                    new ProxerResult((await ErrorHandler.HandleError(this._senpai, lResponse, false)).Exceptions);
+                    new ProxerResult(ErrorHandler.HandleError(this._senpai, lResponse, false).Exceptions);
             }
         }
 
@@ -495,7 +489,6 @@ namespace Azuria.Community.Conference
                 await
                     HttpUtility.GetResponseErrorHandling(
                         new Uri($"http://proxer.me/messages?format=json&json={lAction}&id={this.Id}"),
-                        this._senpai.LoginCookies,
                         this._senpai);
 
             if (!lResult.Success)
@@ -515,7 +508,6 @@ namespace Azuria.Community.Conference
                 await
                     HttpUtility.GetResponseErrorHandling(
                         new Uri($"http://proxer.me/messages?format=json&json={lAction}&id={this.Id}"),
-                        this._senpai.LoginCookies,
                         this._senpai);
 
             if (!lResult.Success)
@@ -539,7 +531,6 @@ namespace Azuria.Community.Conference
                 await
                     HttpUtility.GetResponseErrorHandling(
                         new Uri("http://proxer.me/messages?format=json&json=setUnread&id=" + this.Id),
-                        this._senpai.LoginCookies,
                         this._senpai);
 
             if (!lResult.Success)

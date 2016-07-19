@@ -27,6 +27,18 @@ namespace Azuria.Community.Conference
             this._senpai = senpai;
         }
 
+        #region Properties
+
+        /// <summary>Gets the element in the collection at the current position of the enumerator.</summary>
+        /// <returns>The element in the collection at the current position of the enumerator.</returns>
+        public Message Current => this._currentPageContent[this._currentPageIndex];
+
+        /// <summary>Gets the current element in the collection.</summary>
+        /// <returns>The current element in the collection.</returns>
+        object IEnumerator.Current => this.Current;
+
+        #endregion
+
         #region Inherited
 
         /// <summary>Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.</summary>
@@ -63,14 +75,6 @@ namespace Azuria.Community.Conference
             this._nextPage = 0;
         }
 
-        /// <summary>Gets the element in the collection at the current position of the enumerator.</summary>
-        /// <returns>The element in the collection at the current position of the enumerator.</returns>
-        public Message Current => this._currentPageContent[this._currentPageIndex];
-
-        /// <summary>Gets the current element in the collection.</summary>
-        /// <returns>The current element in the collection.</returns>
-        object IEnumerator.Current => this.Current;
-
         #endregion
 
         #region
@@ -83,7 +87,6 @@ namespace Azuria.Community.Conference
                     HttpUtility.GetResponseErrorHandling(
                         new Uri(
                             $"http://proxer.me/messages?format=json&json=messages&id={this._conference.Id}&p={this._nextPage}"),
-                        this._senpai.LoginCookies,
                         this._senpai);
 
             if (!lResult.Success)
@@ -107,7 +110,7 @@ namespace Azuria.Community.Conference
             }
             catch
             {
-                return new ProxerResult((await ErrorHandler.HandleError(this._senpai, lResponse, false)).Exceptions);
+                return new ProxerResult(ErrorHandler.HandleError(this._senpai, lResponse, false).Exceptions);
             }
 
             this._nextPage++;
@@ -167,8 +170,7 @@ namespace Azuria.Community.Conference
             catch
             {
                 return
-                    new ProxerResult<Message[]>(
-                        (await ErrorHandler.HandleError(this._senpai, messages, false)).Exceptions);
+                    new ProxerResult<Message[]>(ErrorHandler.HandleError(this._senpai, messages, false).Exceptions);
             }
 
             return new ProxerResult<Message[]>(lReturn.ToArray());

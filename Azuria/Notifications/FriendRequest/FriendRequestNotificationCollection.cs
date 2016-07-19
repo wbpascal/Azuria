@@ -17,12 +17,16 @@ namespace Azuria.Notifications.FriendRequest
             this.Type = NotificationType.FriendRequest;
         }
 
-        #region Inherited
+        #region Properties
 
         /// <summary>
         ///     Gets the type of the notifications.
         /// </summary>
         public NotificationType Type { get; }
+
+        #endregion
+
+        #region Inherited
 
         /// <summary>
         /// </summary>

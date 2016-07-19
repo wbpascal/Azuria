@@ -20,6 +20,10 @@ namespace Azuria.Notifications.News
         /// <param name="e">The notifications. Maximum length of 50 elements.</param>
         public delegate void NewsNotificationEventHandler(Senpai sender, IEnumerable<NewsNotification> e);
 
+        private static readonly Dictionary<Senpai, Dictionary<NewsNotificationEventHandler, string>> CallbackDictionary
+            =
+            new Dictionary<Senpai, Dictionary<NewsNotificationEventHandler, string>>();
+
         private static readonly double TimerDelay = TimeSpan.FromMinutes(15).TotalMilliseconds;
 
         private static readonly Timer Timer = new Timer(TimerDelay)
@@ -27,9 +31,6 @@ namespace Azuria.Notifications.News
             AutoReset = true
         };
 
-        private static readonly Dictionary<Senpai, Dictionary<NewsNotificationEventHandler, string>> CallbackDictionary
-            =
-            new Dictionary<Senpai, Dictionary<NewsNotificationEventHandler, string>>();
 
         static NewsNotificationManager()
         {
@@ -50,6 +51,8 @@ namespace Azuria.Notifications.News
                     new NewsNotificationCollection(senpai).Take(Math.Min(lNotificationCountResult.Result, 50)).ToArray();
                 if (!lNotifications.Any()) continue;
 
+                Dictionary<NewsNotificationEventHandler, string> lChangeDictionary =
+                    new Dictionary<NewsNotificationEventHandler, string>();
                 foreach (
                     KeyValuePair<NewsNotificationEventHandler, string> notificationCallback in
                         CallbackDictionary[senpai])
@@ -58,7 +61,12 @@ namespace Azuria.Notifications.News
                     notificationCallback.Key?.Invoke(senpai,
                         lNotifications.TakeWhile(
                             notification => notification.NotificationId != notificationCallback.Value));
-                    CallbackDictionary[senpai][notificationCallback.Key] = lNotifications.First().NotificationId;
+                    lChangeDictionary.Add(notificationCallback.Key, lNotifications.First().NotificationId);
+                }
+                foreach (KeyValuePair<NewsNotificationEventHandler, string> change in lChangeDictionary)
+                {
+                    if (CallbackDictionary[senpai].ContainsKey(change.Key))
+                        CallbackDictionary[senpai][change.Key] = change.Value;
                 }
             }
             Timer.Start();
@@ -72,7 +80,7 @@ namespace Azuria.Notifications.News
             ProxerResult<string> lResult =
                 await
                     HttpUtility.GetResponseErrorHandling(new Uri("https://proxer.me/notifications?format=raw&s=count"),
-                        senpai.LoginCookies, senpai);
+                        senpai);
 
             if (!lResult.Success || lResult.Result == null)
                 return new ProxerResult<int>(lResult.Exceptions);
@@ -89,7 +97,7 @@ namespace Azuria.Notifications.News
             }
             catch
             {
-                return new ProxerResult<int>((await ErrorHandler.HandleError(senpai, lResponse, false)).Exceptions);
+                return new ProxerResult<int>(ErrorHandler.HandleError(senpai, lResponse, false).Exceptions);
             }
         }
 

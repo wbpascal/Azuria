@@ -2,7 +2,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using System.Net;
 using System.Threading.Tasks;
 using Azuria.AnimeManga;
 using Azuria.Exceptions;
@@ -30,6 +29,18 @@ namespace Azuria.Search
             this._link = link;
             this._senpai = senpai;
         }
+
+        #region Properties
+
+        /// <summary>Gets the element in the collection at the current position of the enumerator.</summary>
+        /// <returns>The element in the collection at the current position of the enumerator.</returns>
+        public T Current => this._currentPageContent[this._currentPageContentIndex];
+
+        /// <summary>Gets the current element in the collection.</summary>
+        /// <returns>The current element in the collection.</returns>
+        object IEnumerator.Current => this.Current;
+
+        #endregion
 
         #region Inherited
 
@@ -68,14 +79,6 @@ namespace Azuria.Search
             this._nextPage = 1;
         }
 
-        /// <summary>Gets the element in the collection at the current position of the enumerator.</summary>
-        /// <returns>The element in the collection at the current position of the enumerator.</returns>
-        public T Current => this._currentPageContent[this._currentPageContentIndex];
-
-        /// <summary>Gets the current element in the collection.</summary>
-        /// <returns>The current element in the collection.</returns>
-        object IEnumerator.Current => this.Current;
-
         #endregion
 
         #region
@@ -84,17 +87,16 @@ namespace Azuria.Search
         private async Task<ProxerResult> GetNextSearchResults()
         {
             HtmlDocument lDocument = new HtmlDocument();
-            ProxerResult<Tuple<string, CookieContainer>> lResult =
+            ProxerResult<string> lResult =
                 await
                     HttpUtility.GetResponseErrorHandling(
                         new Uri("https://proxer.me/" + this._link + "&format=raw&p=" + this._nextPage),
-                        this._senpai.LoginCookies,
-                        this._senpai, new Func<string, ProxerResult>[0], typeof(T) != typeof(User.User));
+                        this._senpai, new Func<string, ProxerResult>[0], checkLogin: typeof(T) != typeof(User.User));
 
             if (!lResult.Success || lResult.Result == null)
                 return new ProxerResult(lResult.Exceptions);
 
-            string lResponse = lResult.Result.Item1;
+            string lResponse = lResult.Result;
 
             try
             {

@@ -13,20 +13,6 @@ namespace Azuria.Notifications.News
         {
         }
 
-        #region Inherited
-
-        /// <summary>
-        ///     Gets the type of the notification.
-        /// </summary>
-        public NotificationType Type => NotificationType.News;
-
-        /// <summary>
-        ///     Gets the id of the notification.
-        /// </summary>
-        public string NotificationId => this.AuthorId.ToString() + this.CategoryId + this.ThreadId + this.Time;
-
-        #endregion
-
         #region Properties
 
         /// <summary>
@@ -90,6 +76,11 @@ namespace Azuria.Notifications.News
         [JsonProperty("nid")]
         public int NewsId { get; set; }
 
+        /// <summary>
+        ///     Gets the id of the notification.
+        /// </summary>
+        public string NotificationId => this.AuthorId.ToString() + this.CategoryId + this.ThreadId + this.Time;
+
         [JsonProperty("pid"), Obsolete]
         internal int Pid { get; set; }
 
@@ -119,6 +110,11 @@ namespace Azuria.Notifications.News
         /// <summary>
         /// </summary>
         public DateTime TimeStamp => Utility.UnixTimeStampToDateTime(this.Time);
+
+        /// <summary>
+        ///     Gets the type of the notification.
+        /// </summary>
+        public NotificationType Type => NotificationType.News;
 
         #endregion
     }

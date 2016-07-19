@@ -25,6 +25,18 @@ namespace Azuria.Notifications.FriendRequest
             this._senpai = senpai;
         }
 
+        #region Properties
+
+        /// <summary>Gets the element in the collection at the current position of the enumerator.</summary>
+        /// <returns>The element in the collection at the current position of the enumerator.</returns>
+        public FriendRequestNotification Current => this._notifications[this._itemIndex];
+
+        /// <summary>Gets the current element in the collection.</summary>
+        /// <returns>The current element in the collection.</returns>
+        object IEnumerator.Current => this.Current;
+
+        #endregion
+
         #region Inherited
 
         /// <summary>Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.</summary>
@@ -58,14 +70,6 @@ namespace Azuria.Notifications.FriendRequest
             this._notifications = new FriendRequestNotification[0];
         }
 
-        /// <summary>Gets the element in the collection at the current position of the enumerator.</summary>
-        /// <returns>The element in the collection at the current position of the enumerator.</returns>
-        public FriendRequestNotification Current => this._notifications[this._itemIndex];
-
-        /// <summary>Gets the current element in the collection.</summary>
-        /// <returns>The current element in the collection.</returns>
-        object IEnumerator.Current => this.Current;
-
         #endregion
 
         #region
@@ -78,7 +82,6 @@ namespace Azuria.Notifications.FriendRequest
                 await
                     HttpUtility.GetResponseErrorHandling(
                         new Uri("https://proxer.me/user/my/connections?format=raw"),
-                        this._senpai.LoginCookies,
                         this._senpai);
 
             if (!lResult.Success)
@@ -112,7 +115,7 @@ namespace Azuria.Notifications.FriendRequest
             }
             catch
             {
-                return new ProxerResult((await ErrorHandler.HandleError(this._senpai, lResponse, false)).Exceptions);
+                return new ProxerResult(ErrorHandler.HandleError(this._senpai, lResponse, false).Exceptions);
             }
         }
 

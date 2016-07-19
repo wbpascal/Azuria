@@ -68,11 +68,16 @@
     <Compile Include="AnimeManga\AnimeMangaRating.cs" />
     <Compile Include="AnimeManga\GenreType.cs" />
     <Compile Include="AnimeManga\TagType.cs" />
+    <Compile Include="Api\ApiInfo.cs" />
+    <Compile Include="Api\v1\ApiRequest.cs" />
+    <Compile Include="Api\v1\ApiRequestBuilder.cs" />
+    <Compile Include="Api\v1\RequestHandler.cs" />
     <Compile Include="Community\Conference\Conference.cs" />
     <Compile Include="Community\Conference\Message.cs" />
     <Compile Include="Community\Conference\MessageCollection.cs" />
     <Compile Include="Community\Conference\MessageEnumerator.cs" />
     <Compile Include="Community\Conference\MessagesModel.cs" />
+    <Compile Include="Exceptions\ApiKeyInsufficentException.cs" />
     <Compile Include="Exceptions\CaptchaException.cs" />
     <Compile Include="Exceptions\CloudflareException.cs" />
     <Compile Include="Exceptions\FirewallException.cs" />
@@ -80,6 +85,8 @@
     <Compile Include="Exceptions\LanguageNotAvailableException.cs" />
     <Compile Include="Exceptions\NoAccessException.cs" />
     <Compile Include="Exceptions\NotLoggedInException.cs" />
+    <Compile Include="Exceptions\ProxerApiException.cs" />
+    <Compile Include="Exceptions\UserAlreadyLoggedInException.cs" />
     <Compile Include="Exceptions\WrongResponseException.cs" />
     <Compile Include="AnimeManga\Anime.cs" />
     <Compile Include="AnimeManga\AnimeMangaStatus.cs" />
@@ -154,6 +161,10 @@
     <Compile Include="Utilities\Properties\IInitialisableProperty.cs" />
     <Compile Include="Utilities\Properties\InitialisableProperty.cs" />
     <Compile Include="Utilities\Properties\SetableInitialisableProperty.cs" />
+    <Compile Include="Api\v1\DataModels\LoginDataModel.cs" />
+    <Compile Include="Api\v1\ErrorCode.cs" />
+    <Compile Include="Api\v1\DataModels\IDataModel.cs" />
+    <Compile Include="Api\v1\ProxerApiResponse.cs" />
     <Compile Include="Utilities\Web\CloudflareSolver.cs" />
     <Compile Include="Utilities\Web\HttpUtility.cs" />
     <Compile Include="Utilities\ErrorHandling\ProxerResult.cs" />

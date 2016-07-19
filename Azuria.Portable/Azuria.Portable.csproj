@@ -93,6 +93,30 @@
     <Compile Include="..\Azuria\AnimeManga\TagType.cs">
       <Link>AnimeManga\TagType.cs</Link>
     </Compile>
+    <Compile Include="..\Azuria\Api\ApiInfo.cs">
+      <Link>Api\ApiInfo.cs</Link>
+    </Compile>
+    <Compile Include="..\Azuria\Api\v1\ApiRequest.cs">
+      <Link>Api\v1\ApiRequest.cs</Link>
+    </Compile>
+    <Compile Include="..\Azuria\Api\v1\ApiRequestBuilder.cs">
+      <Link>Api\v1\ApiRequestBuilder.cs</Link>
+    </Compile>
+    <Compile Include="..\Azuria\Api\v1\DataModels\IDataModel.cs">
+      <Link>Api\v1\DataModels\IDataModel.cs</Link>
+    </Compile>
+    <Compile Include="..\Azuria\Api\v1\DataModels\LoginDataModel.cs">
+      <Link>Api\v1\DataModels\LoginDataModel.cs</Link>
+    </Compile>
+    <Compile Include="..\Azuria\Api\v1\ErrorCode.cs">
+      <Link>Api\v1\ErrorCode.cs</Link>
+    </Compile>
+    <Compile Include="..\Azuria\Api\v1\ProxerApiResponse.cs">
+      <Link>Api\v1\ProxerApiResponse.cs</Link>
+    </Compile>
+    <Compile Include="..\Azuria\Api\v1\RequestHandler.cs">
+      <Link>Api\v1\RequestHandler.cs</Link>
+    </Compile>
     <Compile Include="..\Azuria\Community\Conference\Conference.cs">
       <Link>Community\Conference\Conference.cs</Link>
     </Compile>
@@ -110,6 +134,9 @@
     </Compile>
     <Compile Include="..\Azuria\Community\Forum\Forum.cs">
       <Link>Community\Forum\Forum.cs</Link>
+    </Compile>
+    <Compile Include="..\Azuria\Exceptions\ApiKeyInsufficentException.cs">
+      <Link>Exceptions\ApiKeyInsufficentException.cs</Link>
     </Compile>
     <Compile Include="..\Azuria\Exceptions\CaptchaException.cs">
       <Link>Exceptions\CaptchaException.cs</Link>
@@ -131,6 +158,12 @@
     </Compile>
     <Compile Include="..\Azuria\Exceptions\NotLoggedInException.cs">
       <Link>Exceptions\NotLoggedInException.cs</Link>
+    </Compile>
+    <Compile Include="..\Azuria\Exceptions\ProxerApiException.cs">
+      <Link>Exceptions\ProxerApiException.cs</Link>
+    </Compile>
+    <Compile Include="..\Azuria\Exceptions\UserAlreadyLoggedInException.cs">
+      <Link>Exceptions\UserAlreadyLoggedInException.cs</Link>
     </Compile>
     <Compile Include="..\Azuria\Exceptions\WrongResponseException.cs">
       <Link>Exceptions\WrongResponseException.cs</Link>

@@ -98,7 +98,6 @@ namespace Azuria.User.Comment
                 await
                     HttpUtility.GetResponseErrorHandling(
                         new Uri($"https://proxer.me/comment?format=json&json=delete&id={this._entryId}"),
-                        this._senpai.LoginCookies,
                         this._senpai);
 
             if (!lResult.Success)
@@ -123,8 +122,7 @@ namespace Azuria.User.Comment
             catch
             {
                 return
-                    new ProxerResult(
-                        (await ErrorHandler.HandleError(this._senpai, lResponse, false)).Exceptions);
+                    new ProxerResult(ErrorHandler.HandleError(this._senpai, lResponse, false).Exceptions);
             }
         }
 
@@ -145,7 +143,6 @@ namespace Azuria.User.Comment
                 await
                     HttpUtility.GetResponseErrorHandling(
                         new Uri($"https://proxer.me/comment?id={entryId}&s=edit&format=raw"),
-                        senpai.LoginCookies,
                         senpai,
                         new[] {lCheckFunc});
 
@@ -172,8 +169,7 @@ namespace Azuria.User.Comment
             catch
             {
                 return
-                    new ProxerResult<EditableComment<T>>(
-                        (await ErrorHandler.HandleError(senpai, lResponse, false)).Exceptions);
+                    new ProxerResult<EditableComment<T>>(ErrorHandler.HandleError(senpai, lResponse, false).Exceptions);
             }
         }
 
@@ -308,7 +304,6 @@ namespace Azuria.User.Comment
                     HttpUtility.PostResponseErrorHandling(
                         new Uri($"https://proxer.me/comment?format=json&json=edit&id={this._entryId}"),
                         postArgs,
-                        this._senpai.LoginCookies,
                         this._senpai);
 
             if (!lResult.Success)
@@ -333,8 +328,7 @@ namespace Azuria.User.Comment
             catch
             {
                 return
-                    new ProxerResult(
-                        (await ErrorHandler.HandleError(this._senpai, lResponse, false)).Exceptions);
+                    new ProxerResult(ErrorHandler.HandleError(this._senpai, lResponse, false).Exceptions);
             }
         }
 

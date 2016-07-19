@@ -11,8 +11,9 @@ namespace Azuria.Test.Attributes
         /// <param name="test">The test that is going to be run.</param>
         public void BeforeTest(ITest test)
         {
-            if (!SenpaiTest.Senpai.IsLoggedIn)
-                SenpaiTest.Senpai.Login(Credentials.Username, Credentials.Password).Wait();
+            Api.ApiInfo.InitV1(Credentials.ApiKey);
+            if (!SenpaiTest.Senpai.IsProbablyLoggedIn)
+                SenpaiTest.Senpai.Login(Credentials.Password).Wait();
         }
 
         /// <summary>Executed after each test is run</summary>

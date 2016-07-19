@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Net;
 using System.Threading.Tasks;
 using Azuria.AnimeManga;
 using Azuria.Utilities.ErrorHandling;
@@ -19,17 +18,16 @@ namespace Azuria.Utilities.Extensions
         internal static async Task<ProxerResult> InitMainInfo(this IAnimeMangaObject animeMangaObject, Senpai senpai)
         {
             HtmlDocument lDocument = new HtmlDocument();
-            ProxerResult<Tuple<string, CookieContainer>> lResult =
+            ProxerResult<string> lResult =
                 await
                     HttpUtility.GetResponseErrorHandling(
                         new Uri("https://proxer.me/info/" + animeMangaObject.Id + "?format=raw"),
-                        null, senpai,
-                        new Func<string, ProxerResult>[0], false);
+                        senpai, new Func<string, ProxerResult>[0], checkLogin: false);
 
             if (!lResult.Success || lResult.Result == null)
                 return new ProxerResult(lResult.Exceptions);
 
-            string lResponse = lResult.Result.Item1;
+            string lResponse = lResult.Result;
 
             try
             {

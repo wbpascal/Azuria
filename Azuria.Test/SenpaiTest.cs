@@ -10,20 +10,7 @@ namespace Azuria.Test
     [TestFixture]
     public class SenpaiTest
     {
-        public static Senpai Senpai = new Senpai();
-
-        [Test]
-        public async Task ForceCheckLoginTest()
-        {
-            Senpai lNewSenpai = new Senpai();
-            ProxerResult<bool> lNotLoggedInResult = await lNewSenpai.ForceCheckLogin();
-
-            Assert.IsTrue(lNotLoggedInResult.Success);
-            Assert.IsFalse(lNotLoggedInResult.Result);
-            Assert.IsFalse(lNewSenpai.IsLoggedIn);
-
-            await Task.Delay(2000);
-        }
+        public static Senpai Senpai = new Senpai(Credentials.Username);
 
         [Test]
         public void LoginCookiesTest()
@@ -35,18 +22,11 @@ namespace Azuria.Test
         [Test, Order(1)]
         public async Task LoginTest()
         {
-            ProxerResult<bool> lValid = await Senpai.Login(Credentials.Username, Credentials.Password);
-            await Task.Delay(2000);
-            ProxerResult<bool> lInvalidInput = await new Senpai().Login("", "");
-            await Task.Delay(2000);
-            ProxerResult<bool> lWrongCredentials = await new Senpai().Login("Test", "WrongPassword");
+            Api.ApiInfo.InitV1(Credentials.ApiKey);
 
+            ProxerResult<bool> lValid = await Senpai.Login(Credentials.Password);
             Assert.IsTrue(lValid.Success);
             Assert.IsTrue(lValid.Result);
-            Assert.IsTrue(lInvalidInput.Success);
-            Assert.IsFalse(lInvalidInput.Result);
-            Assert.IsTrue(lWrongCredentials.Success);
-            Assert.IsFalse(lWrongCredentials.Result);
 
             await Task.Delay(2000);
         }

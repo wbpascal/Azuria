@@ -164,7 +164,7 @@ namespace Azuria.User.Comment
                        await
                            HttpUtility.GetResponseErrorHandling(
                                new Uri(url + lStartSeite + "?format=raw&sort=" + sort),
-                               senpai.LoginCookies, senpai, new[] {lCheckFunc}))
+                               senpai, new[] {lCheckFunc}))
                        .Success)
             {
                 try
@@ -193,7 +193,7 @@ namespace Azuria.User.Comment
                 {
                     return
                         new ProxerResult<IEnumerable<Comment<T>>>(
-                            (await ErrorHandler.HandleError(senpai, lResult.Result, false)).Exceptions);
+                            ErrorHandler.HandleError(senpai, lResult.Result, false).Exceptions);
                 }
             }
 

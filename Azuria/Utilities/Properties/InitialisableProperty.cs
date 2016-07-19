@@ -32,12 +32,16 @@ namespace Azuria.Utilities.Properties
             this.IsInitialisedOnce = true;
         }
 
-        #region Inherited
+        #region Properties
 
         /// <summary>
         ///     Gets a value whether the property was already initialised at least once.
         /// </summary>
         public bool IsInitialisedOnce { get; internal set; }
+
+        #endregion
+
+        #region Inherited
 
         /// <summary>
         ///     Initialises the property if it is not already.

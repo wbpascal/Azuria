@@ -53,7 +53,7 @@ namespace Azuria.Test
         public async Task UserSearch()
         {
             ProxerResult<SearchResult<User.User>> lSearchResult = SearchHelper.Search<User.User>(Credentials.Username,
-                new Senpai());
+                new Senpai(Credentials.Username));
 
             Assert.IsTrue(lSearchResult.Success);
             Assert.IsNotNull(lSearchResult.Result);
