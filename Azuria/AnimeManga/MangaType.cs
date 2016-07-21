@@ -1,32 +1,32 @@
 ﻿namespace Azuria.AnimeManga
 {
     /// <summary>
-    ///     Represents an enumeration which describes the type of an <see cref="Anime" />.
+    ///     Represents the type of a manga.
     /// </summary>
-    public enum AnimeType
+    public enum MangaType
     {
         /// <summary>
         ///     Represents a series.
         /// </summary>
-        Series = 0,
+        Series = 4,
 
         /// <summary>
-        ///     Represents a movie.
+        ///     Represents an one-shot.
         /// </summary>
-        Movie = 1,
+        OneShot = 5,
 
         /// <summary>
-        ///     Represents an "Original Video Animation".
+        ///     Represents a doujin.
         /// </summary>
-        Ova = 2,
+        Doujin = 6,
 
         /// <summary>
-        ///     Represents a hentai.
+        ///     Represents a H-Manga.
         /// </summary>
-        Hentai = 3,
+        HManga = 7,
 
         /// <summary>
-        ///     Represents an unkown type.
+        ///     Represents an unkwon type.
         /// </summary>
         Unknown = 8
     }

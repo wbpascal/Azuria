@@ -135,11 +135,11 @@ namespace Azuria.Search
         ///     The user that executes the search. He needs to be logged in.
         /// </param>
         /// <param name="genreContains">
-        ///     The <see cref="GenreObject">genres</see> which every <see cref="Anime" /> Or
+        ///     The <see cref="GenreType">genres</see> which every <see cref="Anime" /> Or
         ///     <see cref="Manga" /> has to contain.
         /// </param>
         /// <param name="genreExcludes">
-        ///     The <see cref="GenreObject">genres</see> which every <see cref="Anime" /> Or <see cref="Manga" /> should NOT
+        ///     The <see cref="GenreType">genres</see> which every <see cref="Anime" /> Or <see cref="Manga" /> should NOT
         ///     contain.
         /// </param>
         /// <param name="tagExcludes"></param>

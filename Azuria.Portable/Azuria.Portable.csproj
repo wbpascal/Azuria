@@ -57,14 +57,11 @@
     <Compile Include="..\Azuria\AnimeManga\FskHelper.cs">
       <Link>AnimeManga\FskHelper.cs</Link>
     </Compile>
-    <Compile Include="..\Azuria\AnimeManga\FskObject.cs">
-      <Link>AnimeManga\FskObject.cs</Link>
-    </Compile>
     <Compile Include="..\Azuria\AnimeManga\FskType.cs">
       <Link>AnimeManga\FskType.cs</Link>
     </Compile>
-    <Compile Include="..\Azuria\AnimeManga\GenreObject.cs">
-      <Link>AnimeManga\GenreObject.cs</Link>
+    <Compile Include="..\Azuria\AnimeManga\GenreHelper.cs">
+      <Link>AnimeManga\GenreHelper.cs</Link>
     </Compile>
     <Compile Include="..\Azuria\AnimeManga\GenreType.cs">
       <Link>AnimeManga\GenreType.cs</Link>
@@ -90,6 +87,9 @@
     <Compile Include="..\Azuria\AnimeManga\Manga.cs">
       <Link>AnimeManga\Manga.cs</Link>
     </Compile>
+    <Compile Include="..\Azuria\AnimeManga\MangaType.cs">
+      <Link>AnimeManga\MangaType.cs</Link>
+    </Compile>
     <Compile Include="..\Azuria\AnimeManga\TagType.cs">
       <Link>AnimeManga\TagType.cs</Link>
     </Compile>
@@ -102,11 +102,32 @@
     <Compile Include="..\Azuria\Api\v1\ApiRequestBuilder.cs">
       <Link>Api\v1\ApiRequestBuilder.cs</Link>
     </Compile>
+    <Compile Include="..\Azuria\Api\v1\Converters\Info\AnimeMangaMediumConverter.cs">
+      <Link>Api\v1\Converters\Info\AnimeMangaMediumConverter.cs</Link>
+    </Compile>
+    <Compile Include="..\Azuria\Api\v1\Converters\Info\CategoryConverter.cs">
+      <Link>Api\v1\Converters\Info\CategoryConverter.cs</Link>
+    </Compile>
+    <Compile Include="..\Azuria\Api\v1\Converters\Info\FskConverter.cs">
+      <Link>Api\v1\Converters\Info\FskConverter.cs</Link>
+    </Compile>
+    <Compile Include="..\Azuria\Api\v1\Converters\Info\GenreConverter.cs">
+      <Link>Api\v1\Converters\Info\GenreConverter.cs</Link>
+    </Compile>
     <Compile Include="..\Azuria\Api\v1\DataModels\IDataModel.cs">
       <Link>Api\v1\DataModels\IDataModel.cs</Link>
     </Compile>
-    <Compile Include="..\Azuria\Api\v1\DataModels\LoginDataModel.cs">
-      <Link>Api\v1\DataModels\LoginDataModel.cs</Link>
+    <Compile Include="..\Azuria\Api\v1\DataModels\Info\GetEntryDataModel.cs">
+      <Link>Api\v1\DataModels\Info\GetEntryDataModel.cs</Link>
+    </Compile>
+    <Compile Include="..\Azuria\Api\v1\DataModels\User\LoginDataModel.cs">
+      <Link>Api\v1\DataModels\User\LoginDataModel.cs</Link>
+    </Compile>
+    <Compile Include="..\Azuria\Api\v1\Enums\AnimeMangaEntryType.cs">
+      <Link>Api\v1\Enums\AnimeMangaEntryType.cs</Link>
+    </Compile>
+    <Compile Include="..\Azuria\Api\v1\Enums\AnimeMangaMedium.cs">
+      <Link>Api\v1\Enums\AnimeMangaMedium.cs</Link>
     </Compile>
     <Compile Include="..\Azuria\Api\v1\ErrorCode.cs">
       <Link>Api\v1\ErrorCode.cs</Link>

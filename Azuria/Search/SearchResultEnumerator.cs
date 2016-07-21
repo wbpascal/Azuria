@@ -143,10 +143,10 @@ namespace Azuria.Search
                 ? Convert.ToInt32(node.Attributes["class"].Value.Substring("entry".Length))
                 : -1;
             string lName = node.ChildNodes[1].InnerText;
-            List<GenreObject> lGenreList = new List<GenreObject>();
+            List<GenreType> lGenreList = new List<GenreType>();
             foreach (string curGenre in node.ChildNodes[2].InnerText.Split(' '))
             {
-                lGenreList.Add(new GenreObject(curGenre));
+                lGenreList.Add(GenreHelper.StringToGenreDictionary[curGenre]);
             }
             AnimeMangaStatus lStatus = AnimeMangaStatus.Unknown;
             if (node.FirstChild.FirstChild.Attributes.Contains("title"))
@@ -169,7 +169,7 @@ namespace Azuria.Search
             }
             Type lType = typeof(object);
             AnimeType lAnimeType = AnimeType.Unknown;
-            Manga.MangaType lMangaType = Manga.MangaType.Unknown;
+            MangaType lMangaType = MangaType.Unknown;
             switch (node.ChildNodes[3].InnerText)
             {
                 case "Animeserie":
@@ -186,11 +186,11 @@ namespace Azuria.Search
                     break;
                 case "Mangaserie":
                     lType = typeof(Manga);
-                    lMangaType = Manga.MangaType.Series;
+                    lMangaType = MangaType.Series;
                     break;
                 case "One-Shot":
                     lType = typeof(Manga);
-                    lMangaType = Manga.MangaType.OneShot;
+                    lMangaType = MangaType.OneShot;
                     break;
             }
 

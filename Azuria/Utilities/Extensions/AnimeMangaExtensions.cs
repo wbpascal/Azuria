@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Azuria.AnimeManga;
+using Azuria.Api.v1;
+using Azuria.Api.v1.DataModels.Info;
+using Azuria.Exceptions;
 using Azuria.Utilities.ErrorHandling;
 using Azuria.Utilities.Web;
 using HtmlAgilityPack;
@@ -43,9 +46,6 @@ namespace Azuria.Utilities.Extensions
                 {
                     switch (childNode.FirstChild.FirstChild.InnerText)
                     {
-                        case "Original Titel":
-                            animeMangaObject.Name.SetInitialisedObject(childNode.ChildNodes[1].InnerText);
-                            break;
                         case "Eng. Titel":
                             animeMangaObject.EnglishTitle.SetInitialisedObject(childNode.ChildNodes[1].InnerText);
                             break;
@@ -58,32 +58,6 @@ namespace Azuria.Utilities.Extensions
                         case "Synonym":
                             animeMangaObject.Synonym.SetInitialisedObject(childNode.ChildNodes[1].InnerText);
                             break;
-                        case "Genre":
-                            List<GenreObject> lGenreList = new List<GenreObject>();
-                            foreach (HtmlNode htmlNode in childNode.ChildNodes[1].ChildNodes.ToList())
-                            {
-                                if (htmlNode.Name.Equals("a"))
-                                    lGenreList.Add(new GenreObject(htmlNode.InnerText));
-                            }
-                            animeMangaObject.Genre.SetInitialisedObject(lGenreList.ToArray());
-                            break;
-                        case "PSK":
-                            List<FskObject> lTempList = new List<FskObject>();
-                            foreach (
-                                HtmlNode htmlNode in
-                                    childNode.ChildNodes[1].ChildNodes.ToList()
-                                        .Where(htmlNode => htmlNode.Name.Equals("span")))
-                            {
-                                string lFskString = htmlNode.FirstChild.GetAttributeValue("src",
-                                    "/images/fsk/unknown.png")
-                                    .GetTagContents("fsk/", ".png")
-                                    .First();
-                                lTempList.AddIf(new FskObject(FskHelper.StringToFskDictionary[lFskString],
-                                    new Uri($"https://proxer.me/images/fsk/{lFskString}.png")),
-                                    fsk => lTempList.All(o => o.FskType != fsk.FskType));
-                            }
-                            animeMangaObject.Fsk.SetInitialisedObject(lTempList);
-                            break;
                         case "Season":
                             List<string> lSeasonList = new List<string>();
                             foreach (HtmlNode htmlNode in childNode.ChildNodes[1].ChildNodes.ToList())
@@ -92,23 +66,6 @@ namespace Azuria.Utilities.Extensions
                                     lSeasonList.Add(htmlNode.InnerText);
                             }
                             animeMangaObject.Season.SetInitialisedObject(lSeasonList);
-                            break;
-                        case "Status":
-                            switch (childNode.ChildNodes[1].InnerText)
-                            {
-                                case "Airing":
-                                    animeMangaObject.Status.SetInitialisedObject(AnimeMangaStatus.Airing);
-                                    break;
-                                case "Abgeschlossen":
-                                    animeMangaObject.Status.SetInitialisedObject(AnimeMangaStatus.Completed);
-                                    break;
-                                case "Nicht erschienen (Pre-Airing)":
-                                    animeMangaObject.Status.SetInitialisedObject(AnimeMangaStatus.PreAiring);
-                                    break;
-                                default:
-                                    animeMangaObject.Status.SetInitialisedObject(AnimeMangaStatus.Cancelled);
-                                    break;
-                            }
                             break;
                         case "Gruppen":
                             if (childNode.ChildNodes[1].InnerText.Contains("Keine Gruppen eingetragen.")) break;
@@ -144,21 +101,6 @@ namespace Azuria.Utilities.Extensions
                             }
                             animeMangaObject.Industry.SetInitialisedObject(lIndustries.ToArray());
                             break;
-                        case "Lizenz":
-                            animeMangaObject.IsLicensed.SetInitialisedObject(
-                                childNode.ChildNodes[1].InnerText.StartsWith("Lizenziert!"));
-                            break;
-                        case "Beschreibung:":
-                            childNode.FirstChild.FirstChild.Remove();
-                            string lTempString = "";
-                            foreach (HtmlNode htmlNode in childNode.FirstChild.ChildNodes)
-                            {
-                                if (htmlNode.Name.Equals("br")) lTempString += "\n";
-                                else lTempString += htmlNode.InnerText;
-                            }
-                            if (lTempString.StartsWith("\n")) lTempString = lTempString.TrimStart();
-                            animeMangaObject.Description.SetInitialisedObject(lTempString);
-                            break;
                     }
                 }
 
@@ -177,6 +119,28 @@ namespace Azuria.Utilities.Extensions
             {
                 return new ProxerResult(ErrorHandler.HandleError(senpai, lResponse).Exceptions);
             }
+
+            return new ProxerResult();
+        }
+
+        internal static async Task<ProxerResult> InitMainInfoApi(this IAnimeMangaObject animeMangaObject, Senpai senpai)
+        {
+            ProxerResult<ProxerApiResponse<GetEntryDataModel>> lResult =
+                await RequestHandler.ApiRequest(ApiRequestBuilder.BuildForGetEntry(animeMangaObject.Id, senpai));
+            if (!lResult.Success || lResult.Result == null) return new ProxerResult(lResult.Exceptions);
+            if (lResult.Result.Error || lResult.Result.Data == null)
+                return new ProxerResult(new[] {new ProxerApiException(lResult.Result.ErrorCode)});
+            GetEntryDataModel lDataModel = lResult.Result.Data;
+
+            animeMangaObject.Name.SetInitialisedObject(lDataModel.Name);
+            animeMangaObject.Description.SetInitialisedObject(lDataModel.Description);
+            animeMangaObject.ContentCount.SetInitialisedObject(lDataModel.ContentCount);
+            animeMangaObject.Status.SetInitialisedObject(lDataModel.State);
+            animeMangaObject.Rating.SetInitialisedObject(lDataModel.Rating);
+            animeMangaObject.Fsk.SetInitialisedObject(lDataModel.Fsk);
+            animeMangaObject.Genre.SetInitialisedObject(lDataModel.Genre);
+            (animeMangaObject as Anime)?.AnimeTyp.SetInitialisedObject((AnimeType) lDataModel.Medium);
+            (animeMangaObject as Manga)?.MangaTyp.SetInitialisedObject((MangaType) lDataModel.Medium);
 
             return new ProxerResult();
         }

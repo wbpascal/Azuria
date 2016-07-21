@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Threading.Tasks;
-using Azuria.Api.v1.DataModels;
 using Azuria.Exceptions;
 using Azuria.Utilities.ErrorHandling;
 using Azuria.Utilities.Web;
@@ -27,7 +26,7 @@ namespace Azuria.Api.v1
             ProxerResult<string> lResult =
                 await
                     HttpUtility.PostResponseErrorHandling(request.Address, request.PostArguments, request.Senpai,
-                        new Func<string, ProxerResult>[0], checkLogin: typeof(T) != typeof(LoginDataModel));
+                        new Func<string, ProxerResult>[0], checkLogin: request.CheckLogin);
 
             if (!lResult.Success) return new ProxerResult<ProxerApiResponse<T>>(lResult.Exceptions);
 

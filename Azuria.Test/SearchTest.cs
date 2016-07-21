@@ -33,14 +33,14 @@ namespace Azuria.Test
             {
                 Assert.IsTrue((await searchResult.Name.GetObject("ERROR")).Contains("a"));
                 Assert.IsTrue(
-                    (await searchResult.Genre.GetObject(new GenreObject[0])).Count(
-                        o => o.Genre == GenreType.Action || o.Genre == GenreType.Mecha) == 2);
+                    (await searchResult.Genre.GetObject(new GenreType[0])).Count(
+                        o => o == GenreType.Action || o == GenreType.Mecha) == 2);
                 Assert.IsFalse(
-                    (await searchResult.Genre.GetObject(new GenreObject[0])).Any(
-                        o => o.Genre == GenreType.Fantasy || o.Genre == GenreType.Romance));
+                    (await searchResult.Genre.GetObject(new GenreType[0])).Any(
+                        o => o == GenreType.Fantasy || o == GenreType.Romance));
                 Assert.IsTrue(
-                    (await searchResult.Fsk.GetObject(new FskObject[0])).Count(
-                        o => o.FskType == FskType.Fsk16 || o.FskType == FskType.BadWords) == 2);
+                    (await searchResult.Fsk.GetObject(new FskType[0])).Count(
+                        o => o == FskType.Fsk16 || o == FskType.BadWords) == 2);
                 Assert.IsTrue(
                     (await searchResult.AvailableLanguages.GetObject(new AnimeLanguage[0])).Any(
                         language => language == AnimeLanguage.GerDub || language == AnimeLanguage.GerSub));

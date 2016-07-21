@@ -10,6 +10,12 @@
             this.Voters = voters;
         }
 
+        internal AnimeMangaRating(int totalStars, int voters)
+        {
+            this.Rating = voters != 0 ? totalStars/voters : 0;
+            this.Voters = voters;
+        }
+
         #region Properties
 
         /// <summary>

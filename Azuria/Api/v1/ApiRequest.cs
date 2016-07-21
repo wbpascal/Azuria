@@ -13,6 +13,8 @@ namespace Azuria.Api.v1
 
         internal Uri Address { get; set; }
 
+        internal bool CheckLogin { get; set; }
+
         internal Dictionary<string, string> PostArguments { get; set; } = new Dictionary<string, string>();
 
         internal Senpai Senpai { get; set; }

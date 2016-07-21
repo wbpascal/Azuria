@@ -34,7 +34,6 @@ namespace Azuria
         }
 
         /// <summary>
-        /// 
         /// </summary>
         /// <param name="senpai"></param>
         public Senpai([NotNull] Senpai senpai)
@@ -171,7 +170,7 @@ namespace Azuria
                     : new ProxerResult<bool>(new[] {new ProxerApiException(lResult.Result.ErrorCode)});
             }
 
-            this.Me = new User.User(lResult.Result.Data.UserId,
+            this.Me = new User.User(this._username, lResult.Result.Data.UserId,
                 new Uri("https://cdn.proxer.me/avatar/" + lResult.Result.Data.Avatar), this);
             this._cookiesCreated = DateTime.Now;
 

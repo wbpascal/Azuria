@@ -4,33 +4,14 @@ using JetBrains.Annotations;
 namespace Azuria.AnimeManga
 {
     /// <summary>
-    ///     Represents a class that describes the genre of an <see cref="Anime">Anime</see> or <see cref="Manga">Manga</see>.
+    ///     Represents a class which aims to help working with the <see cref="FskType">Fsk-enumeration</see>.
     /// </summary>
-    public class GenreObject
+    public static class GenreHelper
     {
-        internal GenreObject([NotNull] string name)
-        {
-            this.Genre = TypeDictionary.ContainsKey(name) ? TypeDictionary[name] : GenreType.None;
-        }
-
-        /// <summary>
-        ///     Initialises a <see cref="GenreObject">GenreObject</see> with a specified genre.
-        /// </summary>
-        /// <param name="genre">The genre that is represented by the object.</param>
-        public GenreObject(GenreType genre)
-        {
-            this.Genre = genre;
-        }
-
         #region Properties
 
-        /// <summary>
-        ///     Gets the genre this object is associated with.
-        /// </summary>
-        public GenreType Genre { get; }
-
         [NotNull]
-        internal static Dictionary<string, GenreType> TypeDictionary => new Dictionary<string, GenreType>
+        internal static Dictionary<string, GenreType> StringToGenreDictionary => new Dictionary<string, GenreType>
         {
             {"Abenteuer", GenreType.Adventure},
             {"Action", GenreType.Action},

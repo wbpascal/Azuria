@@ -23,27 +23,6 @@ namespace Azuria.AnimeManga
     [DebuggerDisplay("Manga: {Name} [{Id}]")]
     public class Manga : IAnimeMangaObject
     {
-        /// <summary>
-        ///     Represents the type of a manga.
-        /// </summary>
-        public enum MangaType
-        {
-            /// <summary>
-            ///     Represents a series
-            /// </summary>
-            Series,
-
-            /// <summary>
-            ///     Represents an one-shot.
-            /// </summary>
-            OneShot,
-
-            /// <summary>
-            ///     Represents an unkwon type.
-            /// </summary>
-            Unknown
-        }
-
         private readonly Senpai _senpai;
 
         [UsedImplicitly]
@@ -56,8 +35,8 @@ namespace Azuria.AnimeManga
             {
                 IsInitialisedOnce = false
             };
-            this.Fsk = new InitialisableProperty<IEnumerable<FskObject>>(this.InitMain);
-            this.Genre = new InitialisableProperty<IEnumerable<GenreObject>>(this.InitMain);
+            this.Fsk = new InitialisableProperty<IEnumerable<FskType>>(this.InitMain);
+            this.Genre = new InitialisableProperty<IEnumerable<GenreType>>(this.InitMain);
             this.GermanTitle = new InitialisableProperty<string>(this.InitMain, string.Empty)
             {
                 IsInitialisedOnce = false
@@ -86,10 +65,10 @@ namespace Azuria.AnimeManga
         }
 
         internal Manga([NotNull] string name, int id, [NotNull] Senpai senpai,
-            [NotNull] IEnumerable<GenreObject> genreList, AnimeMangaStatus status,
+            [NotNull] IEnumerable<GenreType> genreList, AnimeMangaStatus status,
             MangaType type) : this(name, id, senpai)
         {
-            this.Genre = new InitialisableProperty<IEnumerable<GenreObject>>(this.InitMain, genreList);
+            this.Genre = new InitialisableProperty<IEnumerable<GenreType>>(this.InitMain, genreList);
             this.Status = new InitialisableProperty<AnimeMangaStatus>(this.InitMain, status);
             this.MangaTyp = new InitialisableProperty<MangaType>(this.InitType, type);
         }
@@ -125,12 +104,12 @@ namespace Azuria.AnimeManga
         /// <summary>
         ///     Gets an enumeration of the age restrictions of the <see cref="Manga" />.
         /// </summary>
-        public InitialisableProperty<IEnumerable<FskObject>> Fsk { get; }
+        public InitialisableProperty<IEnumerable<FskType>> Fsk { get; }
 
         /// <summary>
         ///     Gets an enumeration of all the genre of the <see cref="Manga" /> contains.
         /// </summary>
-        public InitialisableProperty<IEnumerable<GenreObject>> Genre { get; }
+        public InitialisableProperty<IEnumerable<GenreType>> Genre { get; }
 
         /// <summary>
         ///     Gets the german title of the <see cref="Manga" />.

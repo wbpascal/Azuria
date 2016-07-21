@@ -85,24 +85,17 @@ namespace Azuria.Test
         {
             Assert.IsNotNull(this._anime);
 
-            ProxerResult<IEnumerable<FskObject>> lFskResult = await this._anime.Fsk.GetObject();
+            ProxerResult<IEnumerable<FskType>> lFskResult = await this._anime.Fsk.GetObject();
             Assert.IsTrue(lFskResult.Success);
             Assert.IsNotNull(lFskResult.Result);
-            if (lFskResult.Result.Any())
-            {
-                Assert.IsTrue(lFskResult.Result.All(o => o.FskPictureUri.OriginalString.EndsWith(".png")));
-            }
-            else
-            {
-                Assert.Pass("No fsk found!");
-            }
+            Assert.IsTrue(lFskResult.Result.Any());
         }
 
         [Test, Order(2)]
         public async Task GenreTest()
         {
             Assert.IsNotNull(this._anime);
-            IEnumerable<GenreObject> lGenre = await this._anime.Genre.GetObject(new GenreObject[0]);
+            IEnumerable<GenreType> lGenre = await this._anime.Genre.GetObject(new GenreType[0]);
             Assert.IsNotEmpty(lGenre);
         }
 

@@ -66,11 +66,20 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AnimeManga\AnimeMangaRating.cs" />
+    <Compile Include="AnimeManga\GenreHelper.cs" />
     <Compile Include="AnimeManga\GenreType.cs" />
+    <Compile Include="AnimeManga\MangaType.cs" />
     <Compile Include="AnimeManga\TagType.cs" />
     <Compile Include="Api\ApiInfo.cs" />
     <Compile Include="Api\v1\ApiRequest.cs" />
     <Compile Include="Api\v1\ApiRequestBuilder.cs" />
+    <Compile Include="Api\v1\Converters\Info\AnimeMangaMediumConverter.cs" />
+    <Compile Include="Api\v1\Converters\Info\CategoryConverter.cs" />
+    <Compile Include="Api\v1\Converters\Info\FskConverter.cs" />
+    <Compile Include="Api\v1\Converters\Info\GenreConverter.cs" />
+    <Compile Include="Api\v1\DataModels\Info\GetEntryDataModel.cs" />
+    <Compile Include="Api\v1\Enums\AnimeMangaEntryType.cs" />
+    <Compile Include="Api\v1\Enums\AnimeMangaMedium.cs" />
     <Compile Include="Api\v1\RequestHandler.cs" />
     <Compile Include="Community\Conference\Conference.cs" />
     <Compile Include="Community\Conference\Message.cs" />
@@ -96,14 +105,12 @@
     <Compile Include="AnimeManga\Manga.cs" />
     <Compile Include="AnimeManga\AnimeLanguage.cs" />
     <Compile Include="AnimeManga\AnimeType.cs" />
-    <Compile Include="AnimeManga\FskObject.cs" />
     <Compile Include="Community\Forum\Forum.cs" />
     <Compile Include="Search\SearchResultEnumerator.cs" />
     <Compile Include="User\AnimeMangaProgress.cs" />
     <Compile Include="User\Comment\Comment.cs" />
     <Compile Include="AnimeManga\FskType.cs" />
     <Compile Include="AnimeManga\FskHelper.cs" />
-    <Compile Include="AnimeManga\GenreObject.cs" />
     <Compile Include="AnimeManga\Group.cs" />
     <Compile Include="AnimeManga\Industry.cs" />
     <Compile Include="AnimeManga\Language.cs" />
@@ -161,7 +168,7 @@
     <Compile Include="Utilities\Properties\IInitialisableProperty.cs" />
     <Compile Include="Utilities\Properties\InitialisableProperty.cs" />
     <Compile Include="Utilities\Properties\SetableInitialisableProperty.cs" />
-    <Compile Include="Api\v1\DataModels\LoginDataModel.cs" />
+    <Compile Include="Api\v1\DataModels\User\LoginDataModel.cs" />
     <Compile Include="Api\v1\ErrorCode.cs" />
     <Compile Include="Api\v1\DataModels\IDataModel.cs" />
     <Compile Include="Api\v1\ProxerApiResponse.cs" />
@@ -180,6 +187,7 @@
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

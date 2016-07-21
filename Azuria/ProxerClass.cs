@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Threading.Tasks;
 using Azuria.AnimeManga;
+using Azuria.Api.v1;
+using Azuria.Api.v1.DataModels.Info;
 using Azuria.Exceptions;
 using Azuria.Utilities.ErrorHandling;
 using Azuria.Utilities.Web;
