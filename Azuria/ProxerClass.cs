@@ -1,12 +1,10 @@
-﻿using System;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using Azuria.AnimeManga;
 using Azuria.Api.v1;
 using Azuria.Api.v1.DataModels.Info;
+using Azuria.Api.v1.Enums;
 using Azuria.Exceptions;
 using Azuria.Utilities.ErrorHandling;
-using Azuria.Utilities.Web;
-using HtmlAgilityPack;
 using JetBrains.Annotations;
 
 namespace Azuria
@@ -30,49 +28,18 @@ namespace Azuria
         [ItemNotNull]
         public static async Task<ProxerResult<IAnimeMangaObject>> GetAnimeMangaById(int id, [NotNull] Senpai senpai)
         {
-            HtmlDocument lDocument = new HtmlDocument();
-
-            ProxerResult<string> lResult =
-                await
-                    HttpUtility.GetResponseErrorHandling(new Uri("https://proxer.me/info/" + id + "?format=raw"),
-                        senpai, new Func<string, ProxerResult>[0], checkLogin: false);
-
+            ProxerResult<ProxerApiResponse<EntryDataModel>> lResult =
+                await RequestHandler.ApiRequest(ApiRequestBuilder.BuildForGetEntry(id, senpai));
             if (!lResult.Success || lResult.Result == null)
                 return new ProxerResult<IAnimeMangaObject>(lResult.Exceptions);
-
-            string lResponse = lResult.Result;
-
-            try
-            {
-                lDocument.LoadHtml(lResponse);
-
-                HtmlNode lNode = lDocument.DocumentNode.ChildNodes[1].ChildNodes[1];
-                if (lNode.InnerText.Equals("Episoden"))
-                {
-                    return
-                        new ProxerResult<IAnimeMangaObject>(new Anime(
-                            lDocument.DocumentNode
-                                .ChildNodes[5].ChildNodes[2].FirstChild.ChildNodes[1].FirstChild.ChildNodes[1]
-                                .ChildNodes[1].InnerText, id, senpai));
-                }
-
-                if (lNode.InnerText.Equals("Kapitel"))
-                {
-                    return
-                        new ProxerResult<IAnimeMangaObject>(new Manga(
-                            lDocument.DocumentNode.ChildNodes[5].ChildNodes[2].FirstChild.ChildNodes[1].FirstChild
-                                .ChildNodes[1]
-                                .ChildNodes[1].InnerText, id, senpai));
-                }
-            }
-            catch
-            {
-                return
-                    new ProxerResult<IAnimeMangaObject>(ErrorHandler.HandleError(senpai, lResponse).Exceptions);
-            }
+            if (lResult.Result.Error || lResult.Result.Data == null)
+                return new ProxerResult<IAnimeMangaObject>(new[] {new ProxerApiException(lResult.Result.ErrorCode)});
+            EntryDataModel lDataModel = lResult.Result.Data;
 
             return
-                new ProxerResult<IAnimeMangaObject>(new Exception[] {new WrongResponseException {Response = lResponse}});
+                new ProxerResult<IAnimeMangaObject>(lDataModel.EntryType == AnimeMangaEntryType.Anime
+                    ? new Anime(lDataModel)
+                    : (IAnimeMangaObject) new Manga(lDataModel));
         }
 
         #endregion

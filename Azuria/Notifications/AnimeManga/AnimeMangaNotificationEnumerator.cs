@@ -15,7 +15,7 @@ namespace Azuria.Notifications.AnimeManga
 {
     /// <summary>
     /// </summary>
-    public class AnimeMangaNotificationEnumerator<T> : INotificationEnumerator<AnimeMangaNotification<T>>
+    public sealed class AnimeMangaNotificationEnumerator<T> : INotificationEnumerator<AnimeMangaNotification<T>>
         where T : class, IAnimeMangaObject
     {
         private readonly int _maxNotificationsCountToParse;

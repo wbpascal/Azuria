@@ -14,7 +14,7 @@ namespace Azuria.Notifications.FriendRequest
 {
     /// <summary>
     /// </summary>
-    public class FriendRequestNotificationEnumerator : INotificationEnumerator<FriendRequestNotification>
+    public sealed class FriendRequestNotificationEnumerator : INotificationEnumerator<FriendRequestNotification>
     {
         private readonly Senpai _senpai;
         private int _itemIndex = -1;

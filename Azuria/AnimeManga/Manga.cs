@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
+using Azuria.Api.v1.DataModels.Info;
+using Azuria.Api.v1.Enums;
 using Azuria.Exceptions;
 using Azuria.User.Comment;
 using Azuria.User.ControlPanel;
@@ -29,31 +31,32 @@ namespace Azuria.AnimeManga
         internal Manga()
         {
             this.AvailableLanguages = new InitialisableProperty<IEnumerable<Language>>(this.InitAvailableLang);
-            this.ContentCount = new InitialisableProperty<int>(this.InitChapterCount);
-            this.Description = new InitialisableProperty<string>(this.InitMain);
-            this.EnglishTitle = new InitialisableProperty<string>(this.InitMain, string.Empty)
+            this.Clicks = new InitialisableProperty<int>(this.InitMainApi);
+            this.ContentCount = new InitialisableProperty<int>(this.InitMainApi);
+            this.Description = new InitialisableProperty<string>(this.InitMainApi);
+            this.EnglishTitle = new InitialisableProperty<string>(this.InitNames, string.Empty)
             {
                 IsInitialisedOnce = false
             };
-            this.Fsk = new InitialisableProperty<IEnumerable<FskType>>(this.InitMain);
-            this.Genre = new InitialisableProperty<IEnumerable<GenreType>>(this.InitMain);
-            this.GermanTitle = new InitialisableProperty<string>(this.InitMain, string.Empty)
+            this.Fsk = new InitialisableProperty<IEnumerable<FskType>>(this.InitMainApi);
+            this.Genre = new InitialisableProperty<IEnumerable<GenreType>>(this.InitMainApi);
+            this.GermanTitle = new InitialisableProperty<string>(this.InitNames, string.Empty)
             {
                 IsInitialisedOnce = false
             };
             this.Groups = new InitialisableProperty<IEnumerable<Group>>(this.InitMain);
             this.Industry = new InitialisableProperty<IEnumerable<Industry>>(this.InitMain);
-            this.IsLicensed = new InitialisableProperty<bool>(this.InitMain);
-            this.JapaneseTitle = new InitialisableProperty<string>(this.InitMain, string.Empty)
+            this.IsLicensed = new InitialisableProperty<bool>(this.InitMainApi);
+            this.JapaneseTitle = new InitialisableProperty<string>(this.InitNames, string.Empty)
             {
                 IsInitialisedOnce = false
             };
-            this.MangaTyp = new InitialisableProperty<MangaType>(this.InitType);
-            this.Name = new InitialisableProperty<string>(this.InitMain, string.Empty) {IsInitialisedOnce = false};
-            this.Rating = new InitialisableProperty<AnimeMangaRating>(this.InitMain);
+            this.MangaType = new InitialisableProperty<MangaType>(this.InitMainApi);
+            this.Name = new InitialisableProperty<string>(this.InitMainApi, string.Empty) {IsInitialisedOnce = false};
+            this.Rating = new InitialisableProperty<AnimeMangaRating>(this.InitMainApi);
             this.Season = new InitialisableProperty<IEnumerable<string>>(this.InitMain);
-            this.Status = new InitialisableProperty<AnimeMangaStatus>(this.InitMain);
-            this.Synonym = new InitialisableProperty<string>(this.InitMain, string.Empty) {IsInitialisedOnce = false};
+            this.Status = new InitialisableProperty<AnimeMangaStatus>(this.InitMainApi);
+            this.Synonym = new InitialisableProperty<string>(this.InitNames, string.Empty) {IsInitialisedOnce = false};
         }
 
         internal Manga([NotNull] string name, int id, [NotNull] Senpai senpai) : this()
@@ -61,16 +64,34 @@ namespace Azuria.AnimeManga
             this.Id = id;
             this._senpai = senpai;
 
-            this.Name = new InitialisableProperty<string>(this.InitMain, name);
+            this.Name.SetInitialisedObject(name);
         }
 
         internal Manga([NotNull] string name, int id, [NotNull] Senpai senpai,
             [NotNull] IEnumerable<GenreType> genreList, AnimeMangaStatus status,
             MangaType type) : this(name, id, senpai)
         {
-            this.Genre = new InitialisableProperty<IEnumerable<GenreType>>(this.InitMain, genreList);
-            this.Status = new InitialisableProperty<AnimeMangaStatus>(this.InitMain, status);
-            this.MangaTyp = new InitialisableProperty<MangaType>(this.InitType, type);
+            this.Genre.SetInitialisedObject(genreList);
+            this.MangaType.SetInitialisedObject(type);
+            this.Status.SetInitialisedObject(status);
+        }
+
+        internal Manga(EntryDataModel entryDataModel) : this()
+        {
+            if (entryDataModel.EntryType != AnimeMangaEntryType.Manga)
+                throw new ArgumentException(nameof(entryDataModel.EntryType));
+
+            this.Id = entryDataModel.EntryId;
+            this.Clicks.SetInitialisedObject(entryDataModel.Clicks);
+            this.ContentCount.SetInitialisedObject(entryDataModel.ContentCount);
+            this.Description.SetInitialisedObject(entryDataModel.Description);
+            this.Fsk.SetInitialisedObject(entryDataModel.Fsk);
+            this.Genre.SetInitialisedObject(entryDataModel.Genre);
+            this.IsLicensed.SetInitialisedObject(entryDataModel.IsLicensed);
+            this.MangaType.SetInitialisedObject((MangaType) entryDataModel.Medium);
+            this.Name.SetInitialisedObject(entryDataModel.Name);
+            this.Rating.SetInitialisedObject(entryDataModel.Rating);
+            this.Status.SetInitialisedObject(entryDataModel.State);
         }
 
         #region Properties
@@ -80,6 +101,11 @@ namespace Azuria.AnimeManga
         /// </summary>
         [NotNull]
         public InitialisableProperty<IEnumerable<Language>> AvailableLanguages { get; }
+
+        /// <summary>
+        ///     Gets the total amount of clicks the <see cref="Manga" /> recieved. Is reset every 3 months.
+        /// </summary>
+        public InitialisableProperty<int> Clicks { get; }
 
         /// <summary>
         ///     Gets the count of the <see cref="Chapter">Chapters</see> the <see cref="Manga" /> contains.
@@ -145,7 +171,7 @@ namespace Azuria.AnimeManga
         ///     Gets the type of the <see cref="Manga" />.
         /// </summary>
         [NotNull]
-        public InitialisableProperty<MangaType> MangaTyp { get; }
+        public InitialisableProperty<MangaType> MangaType { get; }
 
         /// <summary>
         ///     Gets the original title of the <see cref="Manga" />.
@@ -365,101 +391,21 @@ namespace Azuria.AnimeManga
         }
 
         [ItemNotNull]
-        private async Task<ProxerResult> InitChapterCount()
-        {
-            HtmlDocument lDocument = new HtmlDocument();
-            Func<string, ProxerResult> lCheckFunc = s =>
-            {
-                if (!string.IsNullOrEmpty(s) &&
-                    s.Equals("Bitte logge dich ein."))
-                    return new ProxerResult(new Exception[] {new NoAccessException(nameof(this.InitChapterCount))});
-
-                return new ProxerResult();
-            };
-            ProxerResult<string> lResult =
-                await
-                    HttpUtility.GetResponseErrorHandling(
-                        new Uri("http://proxer.me/edit/entry/" + this.Id + "/count?format=raw"),
-                        this._senpai,
-                        new[] {lCheckFunc});
-
-            if (!lResult.Success)
-                return new ProxerResult(lResult.Exceptions);
-
-            string lResponse = lResult.Result;
-
-            try
-            {
-                lDocument.LoadHtml(lResponse);
-
-                this.ContentCount.SetInitialisedObject(
-                    Convert.ToInt32(
-                        lDocument.DocumentNode.ChildNodes[4]
-                            .ChildNodes[5].FirstChild.ChildNodes[1].InnerText));
-
-                return new ProxerResult();
-            }
-            catch
-            {
-                return new ProxerResult(ErrorHandler.HandleError(this._senpai, lResponse, false).Exceptions);
-            }
-        }
-
-        [ItemNotNull]
         private async Task<ProxerResult> InitMain()
         {
             return await this.InitMainInfo(this._senpai);
         }
 
         [ItemNotNull]
-        private async Task<ProxerResult> InitType()
+        private async Task<ProxerResult> InitMainApi()
         {
-            HtmlDocument lDocument = new HtmlDocument();
-            Func<string, ProxerResult> lCheckFunc = s =>
-            {
-                if (!string.IsNullOrEmpty(s) &&
-                    s.Equals("Bitte logge dich ein."))
-                    return new ProxerResult(new Exception[] {new NoAccessException(nameof(this.InitType))});
+            return await this.InitMainInfoApi(this._senpai);
+        }
 
-                return new ProxerResult();
-            };
-            ProxerResult<string> lResult =
-                await
-                    HttpUtility.GetResponseErrorHandling(
-                        new Uri("http://proxer.me/edit/entry/" + this.Id + "/medium?format=raw"),
-                        this._senpai,
-                        new[] {lCheckFunc});
-
-            if (!lResult.Success)
-                return new ProxerResult(lResult.Exceptions);
-
-            string lResponse = lResult.Result;
-
-            try
-            {
-                lDocument.LoadHtml(lResponse);
-
-                HtmlNode lNode =
-                    lDocument.GetElementbyId("medium").ChildNodes.First(node => node.Attributes.Contains("selected"));
-                switch (lNode.Attributes["value"].Value)
-                {
-                    case "mangaseries":
-                        this.MangaTyp.SetInitialisedObject(MangaType.Series);
-                        break;
-                    case "oneshot":
-                        this.MangaTyp.SetInitialisedObject(MangaType.OneShot);
-                        break;
-                    default:
-                        this.MangaTyp.SetInitialisedObject(MangaType.Series);
-                        break;
-                }
-            }
-            catch
-            {
-                return new ProxerResult(ErrorHandler.HandleError(this._senpai, lResponse, false).Exceptions);
-            }
-
-            return new ProxerResult();
+        [ItemNotNull]
+        private async Task<ProxerResult> InitNames()
+        {
+            return await this.InitNamesApi(this._senpai);
         }
 
         #endregion

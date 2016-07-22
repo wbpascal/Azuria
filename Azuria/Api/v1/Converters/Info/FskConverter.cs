@@ -17,7 +17,7 @@ namespace Azuria.Api.v1.Converters.Info
         public override object ReadJson(JsonReader reader, Type objectType, object existingValue,
             JsonSerializer serializer)
         {
-            string lValue = reader.Value as string;
+            string lValue = reader.Value.ToString();
             if (string.IsNullOrEmpty(lValue?.Trim())) return new FskType[0];
             return (from fskString in lValue.Split(' ')
                 where FskHelper.StringToFskDictionary.ContainsKey(fskString)

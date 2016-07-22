@@ -12,7 +12,7 @@ namespace System.Timers
     /// <param name="e">Zusätliche Informationen über das ausgelöste Ereigniss.</param>
     public delegate void ElapsedEventHandler(object sender, EventArgs e);
 
-    internal sealed class Timer
+    internal sealed class Timer : IDisposable
     {
         private CancellationTokenSource _ct;
         private bool _isFinished;
@@ -96,6 +96,16 @@ namespace System.Timers
             if (!this._isFinished &&
                 !this._ct.IsCancellationRequested &&
                 this._ct.Token.CanBeCanceled) this._ct.Cancel();
+        }
+
+        #endregion
+
+        #region Implementation of IDisposable
+
+        /// <summary>Führt anwendungsspezifische Aufgaben aus, die mit dem Freigeben, Zurückgeben oder Zurücksetzen von nicht verwalteten Ressourcen zusammenhängen.</summary>
+        public void Dispose()
+        {
+            this._ct.Dispose();
         }
 
         #endregion

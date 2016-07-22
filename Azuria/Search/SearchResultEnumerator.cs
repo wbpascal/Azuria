@@ -15,7 +15,7 @@ namespace Azuria.Search
 {
     /// <summary>
     /// </summary>
-    public class SearchResultEnumerator<T> : IEnumerator<T> where T : ISearchableObject
+    public sealed class SearchResultEnumerator<T> : IEnumerator<T> where T : ISearchableObject
     {
         private readonly string _link;
         private readonly Senpai _senpai;

@@ -15,7 +15,7 @@ namespace Azuria.Notifications.PrivateMessage
 {
     /// <summary>
     /// </summary>
-    public class PrivateMessageNotificationEnumerator : INotificationEnumerator<PrivateMessageNotification>
+    public sealed class PrivateMessageNotificationEnumerator : INotificationEnumerator<PrivateMessageNotification>
     {
         private readonly Senpai _senpai;
         private int _itemIndex = -1;

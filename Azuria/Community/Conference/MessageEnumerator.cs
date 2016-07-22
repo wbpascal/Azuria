@@ -13,7 +13,7 @@ namespace Azuria.Community.Conference
 {
     /// <summary>
     /// </summary>
-    public class MessageEnumerator : IEnumerator<Message>
+    public sealed class MessageEnumerator : IEnumerator<Message>
     {
         private readonly Conference _conference;
         private Message[] _currentPageContent = new Message[0];

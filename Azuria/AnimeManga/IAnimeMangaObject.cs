@@ -17,6 +17,12 @@ namespace Azuria.AnimeManga
         #region Properties
 
         /// <summary>
+        ///     Gets the total amount of clicks the <see cref="Anime" /> or <see cref="Manga" /> recieved. Is reset every 3 months.
+        /// </summary>
+        [NotNull]
+        InitialisableProperty<int> Clicks { get; }
+
+        /// <summary>
         ///     Gets the count of the <see cref="Anime.Episode">Episodes</see> or <see cref="Manga.Chapter">Chapters</see> the
         ///     <see cref="Anime" /> or <see cref="Manga" /> contains.
         /// </summary>

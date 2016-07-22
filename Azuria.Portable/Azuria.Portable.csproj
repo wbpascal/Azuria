@@ -114,11 +114,20 @@
     <Compile Include="..\Azuria\Api\v1\Converters\Info\GenreConverter.cs">
       <Link>Api\v1\Converters\Info\GenreConverter.cs</Link>
     </Compile>
+    <Compile Include="..\Azuria\Api\v1\Converters\Info\IsLicensedConverter.cs">
+      <Link>Api\v1\Converters\Info\IsLicensedConverter.cs</Link>
+    </Compile>
+    <Compile Include="..\Azuria\Api\v1\Converters\Info\NameTypeConverter.cs">
+      <Link>Api\v1\Converters\Info\NameTypeConverter.cs</Link>
+    </Compile>
     <Compile Include="..\Azuria\Api\v1\DataModels\IDataModel.cs">
       <Link>Api\v1\DataModels\IDataModel.cs</Link>
     </Compile>
-    <Compile Include="..\Azuria\Api\v1\DataModels\Info\GetEntryDataModel.cs">
-      <Link>Api\v1\DataModels\Info\GetEntryDataModel.cs</Link>
+    <Compile Include="..\Azuria\Api\v1\DataModels\Info\EntryDataModel.cs">
+      <Link>Api\v1\DataModels\Info\EntryDataModel.cs</Link>
+    </Compile>
+    <Compile Include="..\Azuria\Api\v1\DataModels\Info\NameDataModel.cs">
+      <Link>Api\v1\DataModels\Info\NameDataModel.cs</Link>
     </Compile>
     <Compile Include="..\Azuria\Api\v1\DataModels\User\LoginDataModel.cs">
       <Link>Api\v1\DataModels\User\LoginDataModel.cs</Link>
@@ -128,6 +137,9 @@
     </Compile>
     <Compile Include="..\Azuria\Api\v1\Enums\AnimeMangaMedium.cs">
       <Link>Api\v1\Enums\AnimeMangaMedium.cs</Link>
+    </Compile>
+    <Compile Include="..\Azuria\Api\v1\Enums\AnimeMangaNameType.cs">
+      <Link>Api\v1\Enums\AnimeMangaNameType.cs</Link>
     </Compile>
     <Compile Include="..\Azuria\Api\v1\ErrorCode.cs">
       <Link>Api\v1\ErrorCode.cs</Link>

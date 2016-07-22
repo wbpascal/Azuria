@@ -13,7 +13,7 @@ namespace Azuria.Notifications.News
 {
     /// <summary>
     /// </summary>
-    public class NewsNotificationEnumerator : INotificationEnumerator<NewsNotification>
+    public sealed class NewsNotificationEnumerator : INotificationEnumerator<NewsNotification>
     {
         private const int NewsPerPage = 15;
         private readonly Senpai _senpai;

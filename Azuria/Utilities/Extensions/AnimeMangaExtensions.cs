@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Azuria.AnimeManga;
 using Azuria.Api.v1;
 using Azuria.Api.v1.DataModels.Info;
+using Azuria.Api.v1.Enums;
 using Azuria.Exceptions;
 using Azuria.Utilities.ErrorHandling;
 using Azuria.Utilities.Web;
@@ -46,18 +47,6 @@ namespace Azuria.Utilities.Extensions
                 {
                     switch (childNode.FirstChild.FirstChild.InnerText)
                     {
-                        case "Eng. Titel":
-                            animeMangaObject.EnglishTitle.SetInitialisedObject(childNode.ChildNodes[1].InnerText);
-                            break;
-                        case "Ger. Titel":
-                            animeMangaObject.GermanTitle.SetInitialisedObject(childNode.ChildNodes[1].InnerText);
-                            break;
-                        case "Jap. Titel":
-                            animeMangaObject.JapaneseTitle.SetInitialisedObject(childNode.ChildNodes[1].InnerText);
-                            break;
-                        case "Synonym":
-                            animeMangaObject.Synonym.SetInitialisedObject(childNode.ChildNodes[1].InnerText);
-                            break;
                         case "Season":
                             List<string> lSeasonList = new List<string>();
                             foreach (HtmlNode htmlNode in childNode.ChildNodes[1].ChildNodes.ToList())
@@ -125,22 +114,56 @@ namespace Azuria.Utilities.Extensions
 
         internal static async Task<ProxerResult> InitMainInfoApi(this IAnimeMangaObject animeMangaObject, Senpai senpai)
         {
-            ProxerResult<ProxerApiResponse<GetEntryDataModel>> lResult =
+            ProxerResult<ProxerApiResponse<EntryDataModel>> lResult =
                 await RequestHandler.ApiRequest(ApiRequestBuilder.BuildForGetEntry(animeMangaObject.Id, senpai));
             if (!lResult.Success || lResult.Result == null) return new ProxerResult(lResult.Exceptions);
             if (lResult.Result.Error || lResult.Result.Data == null)
                 return new ProxerResult(new[] {new ProxerApiException(lResult.Result.ErrorCode)});
-            GetEntryDataModel lDataModel = lResult.Result.Data;
+            EntryDataModel lDataModel = lResult.Result.Data;
 
-            animeMangaObject.Name.SetInitialisedObject(lDataModel.Name);
-            animeMangaObject.Description.SetInitialisedObject(lDataModel.Description);
+            (animeMangaObject as Anime)?.AnimeTyp.SetInitialisedObject((AnimeType) lDataModel.Medium);
+            animeMangaObject.Clicks.SetInitialisedObject(lDataModel.Clicks);
             animeMangaObject.ContentCount.SetInitialisedObject(lDataModel.ContentCount);
-            animeMangaObject.Status.SetInitialisedObject(lDataModel.State);
-            animeMangaObject.Rating.SetInitialisedObject(lDataModel.Rating);
+            animeMangaObject.Description.SetInitialisedObject(lDataModel.Description);
             animeMangaObject.Fsk.SetInitialisedObject(lDataModel.Fsk);
             animeMangaObject.Genre.SetInitialisedObject(lDataModel.Genre);
-            (animeMangaObject as Anime)?.AnimeTyp.SetInitialisedObject((AnimeType) lDataModel.Medium);
-            (animeMangaObject as Manga)?.MangaTyp.SetInitialisedObject((MangaType) lDataModel.Medium);
+            animeMangaObject.IsLicensed.SetInitialisedObject(lDataModel.IsLicensed);
+            (animeMangaObject as Manga)?.MangaType.SetInitialisedObject((MangaType) lDataModel.Medium);
+            animeMangaObject.Name.SetInitialisedObject(lDataModel.Name);
+            animeMangaObject.Rating.SetInitialisedObject(lDataModel.Rating);
+            animeMangaObject.Status.SetInitialisedObject(lDataModel.State);
+
+            return new ProxerResult();
+        }
+
+        internal static async Task<ProxerResult> InitNamesApi(this IAnimeMangaObject animeMangaObject, Senpai senpai)
+        {
+            ProxerResult<ProxerApiResponse<NameDataModel[]>> lResult =
+                await RequestHandler.ApiRequest(ApiRequestBuilder.BuildForGetName(animeMangaObject.Id, senpai));
+            if (!lResult.Success || lResult.Result == null) return new ProxerResult(lResult.Exceptions);
+            if (lResult.Result.Error || lResult.Result.Data == null)
+                return new ProxerResult(new[] {new ProxerApiException(lResult.Result.ErrorCode)});
+            foreach (NameDataModel nameDataModel in lResult.Result.Data)
+            {
+                switch (nameDataModel.Type)
+                {
+                    case AnimeMangaNameType.Original:
+                        animeMangaObject.Name.SetInitialisedObject(nameDataModel.Name);
+                        break;
+                    case AnimeMangaNameType.English:
+                        animeMangaObject.EnglishTitle.SetInitialisedObject(nameDataModel.Name);
+                        break;
+                    case AnimeMangaNameType.German:
+                        animeMangaObject.GermanTitle.SetInitialisedObject(nameDataModel.Name);
+                        break;
+                    case AnimeMangaNameType.Japanese:
+                        animeMangaObject.JapaneseTitle.SetInitialisedObject(nameDataModel.Name);
+                        break;
+                    case AnimeMangaNameType.Synonym:
+                        animeMangaObject.Synonym.SetInitialisedObject(nameDataModel.Name);
+                        break;
+                }
+            }
 
             return new ProxerResult();
         }

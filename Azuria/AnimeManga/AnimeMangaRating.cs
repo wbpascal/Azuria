@@ -12,7 +12,7 @@
 
         internal AnimeMangaRating(int totalStars, int voters)
         {
-            this.Rating = voters != 0 ? totalStars/voters : 0;
+            this.Rating = voters != 0 ? totalStars/(double) voters : 0d;
             this.Voters = voters;
         }
 

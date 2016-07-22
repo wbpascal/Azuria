@@ -31,11 +31,21 @@ namespace Azuria.Api.v1
             };
         }
 
-        internal static ApiRequest<GetEntryDataModel> BuildForGetEntry(int entryId, Senpai senpai)
+        internal static ApiRequest<EntryDataModel> BuildForGetEntry(int entryId, Senpai senpai)
         {
-            return new ApiRequest<GetEntryDataModel>
+            return new ApiRequest<EntryDataModel>
             {
                 Address = new Uri(_apiAddress + "/info/entry"),
+                PostArguments = new Dictionary<string, string> {{"id", entryId.ToString()}},
+                Senpai = senpai
+            };
+        }
+
+        internal static ApiRequest<NameDataModel[]> BuildForGetName(int entryId, Senpai senpai)
+        {
+            return new ApiRequest<NameDataModel[]>
+            {
+                Address = new Uri(_apiAddress + "/info/names"),
                 PostArguments = new Dictionary<string, string> {{"id", entryId.ToString()}},
                 Senpai = senpai
             };

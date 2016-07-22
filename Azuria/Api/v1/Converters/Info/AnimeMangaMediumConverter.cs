@@ -16,7 +16,7 @@ namespace Azuria.Api.v1.Converters.Info
         public override object ReadJson(JsonReader reader, Type objectType, object existingValue,
             JsonSerializer serializer)
         {
-            switch (reader.Value as string)
+            switch (reader.Value.ToString())
             {
                 case "animeseries":
                     return AnimeMangaMedium.Animeseries;

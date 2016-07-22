@@ -6,7 +6,7 @@ using Newtonsoft.Json;
 
 namespace Azuria.Api.v1.DataModels.Info
 {
-    internal class GetEntryDataModel : IDataModel
+    internal class EntryDataModel : IDataModel
     {
         #region Properties
 
@@ -19,6 +19,9 @@ namespace Azuria.Api.v1.DataModels.Info
         [JsonProperty("description")]
         internal string Description { get; set; }
 
+        [JsonProperty("id")]
+        internal int EntryId { get; set; }
+
         [JsonProperty("kat")]
         [JsonConverter(typeof(CategoryConverter))]
         internal AnimeMangaEntryType EntryType { get; set; }
@@ -30,6 +33,10 @@ namespace Azuria.Api.v1.DataModels.Info
         [JsonProperty("genre")]
         [JsonConverter(typeof(GenreConverter))]
         internal IEnumerable<GenreType> Genre { get; set; }
+
+        [JsonProperty("license")]
+        [JsonConverter(typeof(IsLicensedConverter))]
+        internal bool IsLicensed { get; set; }
 
         [JsonProperty("medium")]
         [JsonConverter(typeof(AnimeMangaMediumConverter))]
