@@ -7,7 +7,7 @@ namespace Azuria.Api.v1
 {
     internal static class ApiRequestBuilder
     {
-        private static readonly string _apiAddress = "https://proxer.me/api/v1";
+        private const string ApiAddress = "https://proxer.me/api/v1";
 
         #region
 
@@ -15,7 +15,7 @@ namespace Azuria.Api.v1
         {
             return new ApiRequest<LoginDataModel>
             {
-                Address = new Uri(_apiAddress + "/user/login"),
+                Address = new Uri(ApiAddress + "/user/login"),
                 PostArguments = new Dictionary<string, string> {{"username", username}, {"password", password}},
                 Senpai = senpai
             };
@@ -25,7 +25,7 @@ namespace Azuria.Api.v1
         {
             return new ApiRequest
             {
-                Address = new Uri(_apiAddress + "/user/logout"),
+                Address = new Uri(ApiAddress + "/user/logout"),
                 CheckLogin = true,
                 Senpai = senpai
             };
@@ -35,7 +35,7 @@ namespace Azuria.Api.v1
         {
             return new ApiRequest<EntryDataModel>
             {
-                Address = new Uri(_apiAddress + "/info/entry"),
+                Address = new Uri(ApiAddress + "/info/entry"),
                 PostArguments = new Dictionary<string, string> {{"id", entryId.ToString()}},
                 Senpai = senpai
             };
@@ -45,7 +45,17 @@ namespace Azuria.Api.v1
         {
             return new ApiRequest<NameDataModel[]>
             {
-                Address = new Uri(_apiAddress + "/info/names"),
+                Address = new Uri(ApiAddress + "/info/names"),
+                PostArguments = new Dictionary<string, string> {{"id", entryId.ToString()}},
+                Senpai = senpai
+            };
+        }
+
+        internal static ApiRequest<GroupDataModel[]> BuildForGetGroups(int entryId, Senpai senpai)
+        {
+            return new ApiRequest<GroupDataModel[]>
+            {
+                Address = new Uri(ApiAddress + "/info/groups"),
                 PostArguments = new Dictionary<string, string> {{"id", entryId.ToString()}},
                 Senpai = senpai
             };

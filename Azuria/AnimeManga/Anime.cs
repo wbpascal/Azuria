@@ -45,7 +45,7 @@ namespace Azuria.AnimeManga
             {
                 IsInitialisedOnce = false
             };
-            this.Groups = new InitialisableProperty<IEnumerable<Group>>(this.InitMain);
+            this.Groups = new InitialisableProperty<IEnumerable<Group>>(this.InitGroups);
             this.Industry = new InitialisableProperty<IEnumerable<Industry>>(this.InitMain);
             this.IsLicensed = new InitialisableProperty<bool>(this.InitMainApi);
             this.JapaneseTitle = new InitialisableProperty<string>(this.InitNames, string.Empty)
@@ -76,12 +76,14 @@ namespace Azuria.AnimeManga
             this.AnimeTyp.SetInitialisedObject(type);
         }
 
-        internal Anime(EntryDataModel entryDataModel) : this()
+        internal Anime(EntryDataModel entryDataModel, Senpai senpai) : this()
         {
             if (entryDataModel.EntryType != AnimeMangaEntryType.Anime)
                 throw new ArgumentException(nameof(entryDataModel.EntryType));
 
+            this._senpai = senpai;
             this.Id = entryDataModel.EntryId;
+
             this.AnimeTyp.SetInitialisedObject((AnimeType) entryDataModel.Medium);
             this.Clicks.SetInitialisedObject(entryDataModel.Clicks);
             this.ContentCount.SetInitialisedObject(entryDataModel.ContentCount);
@@ -394,6 +396,12 @@ namespace Azuria.AnimeManga
             {
                 return new ProxerResult(ErrorHandler.HandleError(this._senpai, lResponse, false).Exceptions);
             }
+        }
+
+        [ItemNotNull]
+        private async Task<ProxerResult> InitGroups()
+        {
+            return await this.InitGroupsApi(this._senpai);
         }
 
         [ItemNotNull]

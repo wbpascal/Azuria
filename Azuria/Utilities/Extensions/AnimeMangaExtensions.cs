@@ -56,18 +56,6 @@ namespace Azuria.Utilities.Extensions
                             }
                             animeMangaObject.Season.SetInitialisedObject(lSeasonList);
                             break;
-                        case "Gruppen":
-                            if (childNode.ChildNodes[1].InnerText.Contains("Keine Gruppen eingetragen.")) break;
-                            animeMangaObject.Groups.SetInitialisedObject(
-                                from htmlNode in childNode.ChildNodes[1].ChildNodes
-                                where htmlNode.Name.Equals("a")
-                                select
-                                    new Group(
-                                        Convert.ToInt32(
-                                            htmlNode.GetAttributeValue("href",
-                                                "/translatorgroups?id=-1#top")
-                                                .GetTagContents("/translatorgroups?id=", "#top")[0]), htmlNode.InnerText));
-                            break;
                         case "Industrie":
                             if (childNode.ChildNodes[1].InnerText.Contains("Keine Unternehmen eingetragen.")) break;
                             List<Industry> lIndustries = new List<Industry>();
@@ -164,6 +152,20 @@ namespace Azuria.Utilities.Extensions
                         break;
                 }
             }
+
+            return new ProxerResult();
+        }
+
+        internal static async Task<ProxerResult> InitGroupsApi(this IAnimeMangaObject animeMangaObject, Senpai senpai)
+        {
+            ProxerResult<ProxerApiResponse<GroupDataModel[]>> lResult =
+                await RequestHandler.ApiRequest(ApiRequestBuilder.BuildForGetGroups(animeMangaObject.Id, senpai));
+            if (!lResult.Success || lResult.Result == null) return new ProxerResult(lResult.Exceptions);
+            if (lResult.Result.Error || lResult.Result.Data == null)
+                return new ProxerResult(new[] {new ProxerApiException(lResult.Result.ErrorCode)});
+
+            animeMangaObject.Groups.SetInitialisedObject(from groupDataModel in lResult.Result.Data
+                select new Group(groupDataModel));
 
             return new ProxerResult();
         }

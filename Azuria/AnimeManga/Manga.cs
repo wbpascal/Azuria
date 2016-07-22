@@ -44,7 +44,7 @@ namespace Azuria.AnimeManga
             {
                 IsInitialisedOnce = false
             };
-            this.Groups = new InitialisableProperty<IEnumerable<Group>>(this.InitMain);
+            this.Groups = new InitialisableProperty<IEnumerable<Group>>(this.InitGroups);
             this.Industry = new InitialisableProperty<IEnumerable<Industry>>(this.InitMain);
             this.IsLicensed = new InitialisableProperty<bool>(this.InitMainApi);
             this.JapaneseTitle = new InitialisableProperty<string>(this.InitNames, string.Empty)
@@ -76,12 +76,14 @@ namespace Azuria.AnimeManga
             this.Status.SetInitialisedObject(status);
         }
 
-        internal Manga(EntryDataModel entryDataModel) : this()
+        internal Manga(EntryDataModel entryDataModel, Senpai senpai) : this()
         {
             if (entryDataModel.EntryType != AnimeMangaEntryType.Manga)
                 throw new ArgumentException(nameof(entryDataModel.EntryType));
 
+            this._senpai = senpai;
             this.Id = entryDataModel.EntryId;
+
             this.Clicks.SetInitialisedObject(entryDataModel.Clicks);
             this.ContentCount.SetInitialisedObject(entryDataModel.ContentCount);
             this.Description.SetInitialisedObject(entryDataModel.Description);
@@ -391,6 +393,12 @@ namespace Azuria.AnimeManga
         }
 
         [ItemNotNull]
+        private async Task<ProxerResult> InitGroups()
+        {
+            return await this.InitGroupsApi(this._senpai);
+        }
+
+        [ItemNotNull]
         private async Task<ProxerResult> InitMain()
         {
             return await this.InitMainInfo(this._senpai);
@@ -593,17 +601,6 @@ namespace Azuria.AnimeManga
                                 break;
                             case "Uploader":
                                 this.UploaderName.SetInitialisedObject(childNode.ChildNodes[1].InnerText);
-                                break;
-                            case "Scanlator-Gruppe":
-                                if (childNode.ChildNodes[1].InnerText.Equals("siehe Kapitelcredits"))
-                                    this.ScanlatorGroup.SetInitialisedObject(new Group(-1, "siehe Kapitelcredits"));
-                                else
-                                    this.ScanlatorGroup.SetInitialisedObject(new Group(
-                                        Convert.ToInt32(
-                                            childNode.ChildNodes[1].FirstChild.GetAttributeValue("href",
-                                                "/translatorgroups?id=-1#top")
-                                                .GetTagContents("/translatorgroups?id=", "#top")[0]),
-                                        childNode.ChildNodes[1].InnerText));
                                 break;
                             case "Datum":
                                 this.Date.SetInitialisedObject(childNode.ChildNodes[1].InnerText.ToDateTime());

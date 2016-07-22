@@ -77,9 +77,11 @@
     <Compile Include="Api\v1\Converters\Info\CategoryConverter.cs" />
     <Compile Include="Api\v1\Converters\Info\FskConverter.cs" />
     <Compile Include="Api\v1\Converters\Info\GenreConverter.cs" />
+    <Compile Include="Api\v1\Converters\Info\GroupLanguageConverter.cs" />
     <Compile Include="Api\v1\Converters\Info\IsLicensedConverter.cs" />
     <Compile Include="Api\v1\Converters\Info\NameTypeConverter.cs" />
     <Compile Include="Api\v1\DataModels\Info\EntryDataModel.cs" />
+    <Compile Include="Api\v1\DataModels\Info\GroupDataModel.cs" />
     <Compile Include="Api\v1\DataModels\Info\NameDataModel.cs" />
     <Compile Include="Api\v1\Enums\AnimeMangaEntryType.cs" />
     <Compile Include="Api\v1\Enums\AnimeMangaMedium.cs" />

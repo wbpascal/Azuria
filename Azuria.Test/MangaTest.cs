@@ -313,7 +313,7 @@ namespace Azuria.Test
         public async Task MangaTypeTest()
         {
             Assert.IsNotNull(this._manga);
-            MangaType lMangaType = await this._manga.MangaTyp.GetObject(MangaType.Unknown);
+            MangaType lMangaType = await this._manga.MangaType.GetObject(MangaType.Unknown);
             Assert.AreNotEqual(lMangaType, MangaType.Unknown);
         }
 

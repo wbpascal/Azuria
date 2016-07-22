@@ -1,4 +1,5 @@
-﻿using JetBrains.Annotations;
+﻿using Azuria.Api.v1.DataModels.Info;
+using JetBrains.Annotations;
 
 namespace Azuria.AnimeManga
 {
@@ -11,12 +12,13 @@ namespace Azuria.AnimeManga
         /// <summary>
         ///     Represents an error.
         /// </summary>
-        public static Group Error = new Group(-1, "ERROR");
+        public static Group Error = new Group(new GroupDataModel {Id = -1, Name = "ERROR"});
 
-        internal Group(int id, [NotNull] string name)
+        internal Group(GroupDataModel dataModel)
         {
-            this.Id = id;
-            this.Name = name;
+            this.Id = dataModel.Id;
+            this.Name = dataModel.Name;
+            this.Language = dataModel.Language;
         }
 
         #region Properties
@@ -25,6 +27,11 @@ namespace Azuria.AnimeManga
         ///     Gets the id of the <see cref="Group" />.
         /// </summary>
         public int Id { get; }
+
+        /// <summary>
+        ///     Gets the Language of the <see cref="Group" />.
+        /// </summary>
+        public Language Language { get; internal set; } = Language.Unkown;
 
         /// <summary>
         ///     Gets the name of the <see cref="Group" />.

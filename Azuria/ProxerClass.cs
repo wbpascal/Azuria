@@ -38,8 +38,8 @@ namespace Azuria
 
             return
                 new ProxerResult<IAnimeMangaObject>(lDataModel.EntryType == AnimeMangaEntryType.Anime
-                    ? new Anime(lDataModel)
-                    : (IAnimeMangaObject) new Manga(lDataModel));
+                    ? new Anime(lDataModel, senpai)
+                    : (IAnimeMangaObject) new Manga(lDataModel, senpai));
         }
 
         #endregion

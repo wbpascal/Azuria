@@ -114,6 +114,9 @@
     <Compile Include="..\Azuria\Api\v1\Converters\Info\GenreConverter.cs">
       <Link>Api\v1\Converters\Info\GenreConverter.cs</Link>
     </Compile>
+    <Compile Include="..\Azuria\Api\v1\Converters\Info\GroupLanguageConverter.cs">
+      <Link>Api\v1\Converters\Info\GroupLanguageConverter.cs</Link>
+    </Compile>
     <Compile Include="..\Azuria\Api\v1\Converters\Info\IsLicensedConverter.cs">
       <Link>Api\v1\Converters\Info\IsLicensedConverter.cs</Link>
     </Compile>
@@ -125,6 +128,9 @@
     </Compile>
     <Compile Include="..\Azuria\Api\v1\DataModels\Info\EntryDataModel.cs">
       <Link>Api\v1\DataModels\Info\EntryDataModel.cs</Link>
+    </Compile>
+    <Compile Include="..\Azuria\Api\v1\DataModels\Info\GroupDataModel.cs">
+      <Link>Api\v1\DataModels\Info\GroupDataModel.cs</Link>
     </Compile>
     <Compile Include="..\Azuria\Api\v1\DataModels\Info\NameDataModel.cs">
       <Link>Api\v1\DataModels\Info\NameDataModel.cs</Link>
