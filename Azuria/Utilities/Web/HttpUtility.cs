@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Net;
 using System.Net.Http;
 using System.Reflection;
+using System.Text;
 using System.Threading.Tasks;
 using Azuria.Exceptions;
 using Azuria.Utilities.ErrorHandling;
@@ -69,7 +70,10 @@ namespace Azuria.Utilities.Web
             string lResponseString = await lResponseObject.Content.ReadAsStringAsync();
 
             if (lResponseObject.StatusCode == HttpStatusCode.OK && !string.IsNullOrEmpty(lResponseString))
-                lResponse = WebUtility.HtmlDecode(lResponseString).Replace("\n", "");
+            {
+                byte[] lBytes = Encoding.Unicode.GetBytes(lResponseString.Replace("\n", ""));
+                lResponse = Encoding.UTF8.GetString(lBytes, 0, lBytes.Length);
+            }
             else if (lResponseObject.StatusCode == HttpStatusCode.ServiceUnavailable &&
                      !string.IsNullOrEmpty(lResponseString))
             {

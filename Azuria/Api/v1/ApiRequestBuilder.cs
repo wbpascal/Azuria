@@ -13,51 +13,59 @@ namespace Azuria.Api.v1
 
         internal static ApiRequest<LoginDataModel> BuildForLogin(string username, string password, Senpai senpai)
         {
-            return new ApiRequest<LoginDataModel>
+            return new ApiRequest<LoginDataModel>(senpai)
             {
                 Address = new Uri(ApiAddress + "/user/login"),
-                PostArguments = new Dictionary<string, string> {{"username", username}, {"password", password}},
-                Senpai = senpai
+                PostArguments = new Dictionary<string, string> {{"username", username}, {"password", password}}
             };
         }
 
         internal static ApiRequest BuildForLogout(Senpai senpai)
         {
-            return new ApiRequest
+            return new ApiRequest(senpai)
             {
                 Address = new Uri(ApiAddress + "/user/logout"),
-                CheckLogin = true,
-                Senpai = senpai
+                CheckLogin = true
             };
         }
 
         internal static ApiRequest<EntryDataModel> BuildForGetEntry(int entryId, Senpai senpai)
         {
-            return new ApiRequest<EntryDataModel>
+            return new ApiRequest<EntryDataModel>(senpai)
             {
-                Address = new Uri(ApiAddress + "/info/entry"),
-                PostArguments = new Dictionary<string, string> {{"id", entryId.ToString()}},
-                Senpai = senpai
+                Address = new Uri(ApiAddress + "/info/entry?id=" + entryId)
             };
         }
 
         internal static ApiRequest<NameDataModel[]> BuildForGetName(int entryId, Senpai senpai)
         {
-            return new ApiRequest<NameDataModel[]>
+            return new ApiRequest<NameDataModel[]>(senpai)
             {
-                Address = new Uri(ApiAddress + "/info/names"),
-                PostArguments = new Dictionary<string, string> {{"id", entryId.ToString()}},
-                Senpai = senpai
+                Address = new Uri(ApiAddress + "/info/names?id=" + entryId)
             };
         }
 
         internal static ApiRequest<GroupDataModel[]> BuildForGetGroups(int entryId, Senpai senpai)
         {
-            return new ApiRequest<GroupDataModel[]>
+            return new ApiRequest<GroupDataModel[]>(senpai)
             {
-                Address = new Uri(ApiAddress + "/info/groups"),
-                PostArguments = new Dictionary<string, string> {{"id", entryId.ToString()}},
-                Senpai = senpai
+                Address = new Uri(ApiAddress + "/info/groups?id=" + entryId)
+            };
+        }
+
+        internal static ApiRequest<bool> BuildForGetGate(int entryId, Senpai senpai)
+        {
+            return new ApiRequest<bool>(senpai)
+            {
+                Address = new Uri(ApiAddress + "/info/gate?id=" + entryId)
+            };
+        }
+
+        internal static ApiRequest<PublisherDataModel[]> BuildForGetPublisher(int entryId, Senpai senpai)
+        {
+            return new ApiRequest<PublisherDataModel[]>(senpai)
+            {
+                Address = new Uri(ApiAddress + "/info/publisher?id=" + entryId)
             };
         }
 

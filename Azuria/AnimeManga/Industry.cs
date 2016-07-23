@@ -1,4 +1,5 @@
-﻿using JetBrains.Annotations;
+﻿using Azuria.Api.v1.DataModels.Info;
+using JetBrains.Annotations;
 
 namespace Azuria.AnimeManga
 {
@@ -36,16 +37,22 @@ namespace Azuria.AnimeManga
         /// <summary>
         ///     Represents an error.
         /// </summary>
-        public static Industry Error = new Industry(-1, "ERROR", IndustryType.Unknown);
+        public static Industry Error = new Industry(new PublisherDataModel {Id = -1, Name = "ERROR"});
 
-        internal Industry(int id, [NotNull] string name, IndustryType type)
+        internal Industry(PublisherDataModel dataModel)
         {
-            this.Id = id;
-            this.Name = name;
-            this.Type = type;
+            this.Id = dataModel.Id;
+            this.Name = dataModel.Name;
+            this.Type = dataModel.Type;
+            this.Country = dataModel.Country;
         }
 
         #region Properties
+
+        /// <summary>
+        ///     Gets the country the <see cref="Industry" /> is from.
+        /// </summary>
+        public Country Country { get; set; }
 
         /// <summary>
         ///     Gets the id of the <see cref="Industry" />.

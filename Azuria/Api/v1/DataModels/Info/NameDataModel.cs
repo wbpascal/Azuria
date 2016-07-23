@@ -1,4 +1,5 @@
-﻿using Azuria.Api.v1.Enums;
+﻿using Azuria.Api.v1.Converters.Info;
+using Azuria.Api.v1.Enums;
 using Newtonsoft.Json;
 
 namespace Azuria.Api.v1.DataModels.Info
@@ -11,6 +12,7 @@ namespace Azuria.Api.v1.DataModels.Info
         internal string Name { get; set; }
 
         [JsonProperty("type")]
+        [JsonConverter(typeof(NameTypeConverter))]
         internal AnimeMangaNameType Type { get; set; }
 
         #endregion

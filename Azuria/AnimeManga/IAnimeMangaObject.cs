@@ -84,6 +84,12 @@ namespace Azuria.AnimeManga
         InitialisableProperty<IEnumerable<Industry>> Industry { get; }
 
         /// <summary>
+        ///     Gets whether the <see cref="Anime" /> or <see cref="Manga" /> contains H-Content (Adult).
+        /// </summary>
+        [NotNull]
+        InitialisableProperty<bool> IsHContent { get; }
+
+        /// <summary>
         ///     Gets if the <see cref="Anime" /> or <see cref="Manga" /> is licensed by a german company.
         /// </summary>
         [NotNull]
@@ -136,13 +142,6 @@ namespace Azuria.AnimeManga
         /// <param name="userControlPanel">The object which, if specified, the object is added to.</param>
         /// <returns>If the action was successful.</returns>
         Task<ProxerResult> AddToPlanned(UserControlPanel userControlPanel = null);
-
-        /// <summary>
-        ///     Initialises the object.
-        /// </summary>
-        [ItemNotNull]
-        [Obsolete("Please use the methods provided by the properties!")]
-        Task<ProxerResult> Init();
 
         #endregion
     }

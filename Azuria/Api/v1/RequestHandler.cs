@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Net;
 using System.Threading.Tasks;
 using Azuria.Exceptions;
 using Azuria.Utilities.ErrorHandling;
@@ -34,7 +35,7 @@ namespace Azuria.Api.v1
             {
                 ProxerApiResponse<T> lApiResponse = await
                     Task<ProxerApiResponse<T>>.Factory.StartNew(
-                        () => JsonConvert.DeserializeObject<ProxerApiResponse<T>>(lResult.Result));
+                        () => JsonConvert.DeserializeObject<ProxerApiResponse<T>>(WebUtility.HtmlDecode(lResult.Result)));
                 if (!lApiResponse.Error) return new ProxerResult<ProxerApiResponse<T>>(lApiResponse);
                 switch (lApiResponse.ErrorCode)
                 {

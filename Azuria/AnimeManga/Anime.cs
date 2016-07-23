@@ -46,8 +46,9 @@ namespace Azuria.AnimeManga
                 IsInitialisedOnce = false
             };
             this.Groups = new InitialisableProperty<IEnumerable<Group>>(this.InitGroups);
-            this.Industry = new InitialisableProperty<IEnumerable<Industry>>(this.InitMain);
+            this.Industry = new InitialisableProperty<IEnumerable<Industry>>(this.InitIndustry);
             this.IsLicensed = new InitialisableProperty<bool>(this.InitMainApi);
+            this.IsHContent = new InitialisableProperty<bool>(this.InitIsHContent);
             this.JapaneseTitle = new InitialisableProperty<string>(this.InitNames, string.Empty)
             {
                 IsInitialisedOnce = false
@@ -166,6 +167,11 @@ namespace Azuria.AnimeManga
         public InitialisableProperty<IEnumerable<Industry>> Industry { get; }
 
         /// <summary>
+        ///     Gets whether the <see cref="Anime" /> contains H-Content (Adult).
+        /// </summary>
+        public InitialisableProperty<bool> IsHContent { get; }
+
+        /// <summary>
         ///     Gets if the <see cref="Anime" /> is licensed by a german company.
         /// </summary>
         public InitialisableProperty<bool> IsLicensed { get; }
@@ -214,14 +220,6 @@ namespace Azuria.AnimeManga
         async Task<ProxerResult> IAnimeMangaObject.AddToPlanned(UserControlPanel userControlPanel)
         {
             return await this.AddToPlanned(userControlPanel);
-        }
-
-        /// <summary>
-        ///     Initialises the object.
-        /// </summary>
-        public async Task<ProxerResult> Init()
-        {
-            return await this.InitAllInitalisableProperties();
         }
 
         #endregion
@@ -399,27 +397,39 @@ namespace Azuria.AnimeManga
         }
 
         [ItemNotNull]
-        private async Task<ProxerResult> InitGroups()
+        private Task<ProxerResult> InitGroups()
         {
-            return await this.InitGroupsApi(this._senpai);
+            return this.InitGroupsApi(this._senpai);
         }
 
         [ItemNotNull]
-        private async Task<ProxerResult> InitMain()
+        private Task<ProxerResult> InitMain()
         {
-            return await this.InitMainInfo(this._senpai);
+            return this.InitMainInfo(this._senpai);
         }
 
         [ItemNotNull]
-        private async Task<ProxerResult> InitMainApi()
+        private Task<ProxerResult> InitMainApi()
         {
-            return await this.InitMainInfoApi(this._senpai);
+            return this.InitMainInfoApi(this._senpai);
         }
 
         [ItemNotNull]
-        private async Task<ProxerResult> InitNames()
+        private Task<ProxerResult> InitNames()
         {
-            return await this.InitNamesApi(this._senpai);
+            return this.InitNamesApi(this._senpai);
+        }
+
+        [ItemNotNull]
+        private Task<ProxerResult> InitIsHContent()
+        {
+            return this.InitIsHContentApi(this._senpai);
+        }
+
+        [ItemNotNull]
+        private Task<ProxerResult> InitIndustry()
+        {
+            return this.InitIndustryApi(this._senpai);
         }
 
         #endregion

@@ -56,28 +56,6 @@ namespace Azuria.Utilities.Extensions
                             }
                             animeMangaObject.Season.SetInitialisedObject(lSeasonList);
                             break;
-                        case "Industrie":
-                            if (childNode.ChildNodes[1].InnerText.Contains("Keine Unternehmen eingetragen.")) break;
-                            List<Industry> lIndustries = new List<Industry>();
-                            foreach (
-                                HtmlNode htmlNode in
-                                    childNode.ChildNodes[1].ChildNodes.Where(htmlNode => htmlNode.Name.Equals("a")))
-                            {
-                                Industry.IndustryType lIndustryType;
-                                if (htmlNode.NextSibling.InnerText.Contains("Studio"))
-                                    lIndustryType = Industry.IndustryType.Studio;
-                                else if (htmlNode.NextSibling.InnerText.Contains("Publisher"))
-                                    lIndustryType = Industry.IndustryType.Publisher;
-                                else if (htmlNode.NextSibling.InnerText.Contains("Producer"))
-                                    lIndustryType = Industry.IndustryType.Producer;
-                                else lIndustryType = Industry.IndustryType.Unknown;
-
-                                lIndustries.Add(new Industry(Convert.ToInt32(
-                                    htmlNode.GetAttributeValue("href", "/industry?id=-1#top")
-                                        .GetTagContents("/industry?id=", "#top")[0]), htmlNode.InnerText, lIndustryType));
-                            }
-                            animeMangaObject.Industry.SetInitialisedObject(lIndustries.ToArray());
-                            break;
                     }
                 }
 
@@ -166,6 +144,34 @@ namespace Azuria.Utilities.Extensions
 
             animeMangaObject.Groups.SetInitialisedObject(from groupDataModel in lResult.Result.Data
                 select new Group(groupDataModel));
+
+            return new ProxerResult();
+        }
+
+        internal static async Task<ProxerResult> InitIndustryApi(this IAnimeMangaObject animeMangaObject, Senpai senpai)
+        {
+            ProxerResult<ProxerApiResponse<PublisherDataModel[]>> lResult =
+                await RequestHandler.ApiRequest(ApiRequestBuilder.BuildForGetPublisher(animeMangaObject.Id, senpai));
+            if (!lResult.Success || lResult.Result == null) return new ProxerResult(lResult.Exceptions);
+            if (lResult.Result.Error || lResult.Result.Data == null)
+                return new ProxerResult(new[] {new ProxerApiException(lResult.Result.ErrorCode)});
+
+            animeMangaObject.Industry.SetInitialisedObject(from publisherDataModel in lResult.Result.Data
+                select new Industry(publisherDataModel));
+
+            return new ProxerResult();
+        }
+
+        internal static async Task<ProxerResult> InitIsHContentApi(this IAnimeMangaObject animeMangaObject,
+            Senpai senpai)
+        {
+            ProxerResult<ProxerApiResponse<bool>> lResult =
+                await RequestHandler.ApiRequest(ApiRequestBuilder.BuildForGetGate(animeMangaObject.Id, senpai));
+            if (!lResult.Success || lResult.Result == null) return new ProxerResult(lResult.Exceptions);
+            if (lResult.Result.Error)
+                return new ProxerResult(new[] {new ProxerApiException(lResult.Result.ErrorCode)});
+
+            animeMangaObject.IsHContent.SetInitialisedObject(lResult.Result.Data);
 
             return new ProxerResult();
         }

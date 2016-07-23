@@ -54,6 +54,9 @@
     <Compile Include="..\Azuria\AnimeManga\AnimeType.cs">
       <Link>AnimeManga\AnimeType.cs</Link>
     </Compile>
+    <Compile Include="..\Azuria\AnimeManga\Country.cs">
+      <Link>AnimeManga\Country.cs</Link>
+    </Compile>
     <Compile Include="..\Azuria\AnimeManga\FskHelper.cs">
       <Link>AnimeManga\FskHelper.cs</Link>
     </Compile>
@@ -123,6 +126,9 @@
     <Compile Include="..\Azuria\Api\v1\Converters\Info\NameTypeConverter.cs">
       <Link>Api\v1\Converters\Info\NameTypeConverter.cs</Link>
     </Compile>
+    <Compile Include="..\Azuria\Api\v1\Converters\Info\PublisherCountryConverter.cs">
+      <Link>Api\v1\Converters\Info\PublisherCountryConverter.cs</Link>
+    </Compile>
     <Compile Include="..\Azuria\Api\v1\DataModels\IDataModel.cs">
       <Link>Api\v1\DataModels\IDataModel.cs</Link>
     </Compile>
@@ -134,6 +140,9 @@
     </Compile>
     <Compile Include="..\Azuria\Api\v1\DataModels\Info\NameDataModel.cs">
       <Link>Api\v1\DataModels\Info\NameDataModel.cs</Link>
+    </Compile>
+    <Compile Include="..\Azuria\Api\v1\DataModels\Info\PublisherDataModel.cs">
+      <Link>Api\v1\DataModels\Info\PublisherDataModel.cs</Link>
     </Compile>
     <Compile Include="..\Azuria\Api\v1\DataModels\User\LoginDataModel.cs">
       <Link>Api\v1\DataModels\User\LoginDataModel.cs</Link>
