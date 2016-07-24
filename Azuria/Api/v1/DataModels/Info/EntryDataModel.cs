@@ -39,7 +39,7 @@ namespace Azuria.Api.v1.DataModels.Info
         internal bool IsLicensed { get; set; }
 
         [JsonProperty("medium")]
-        [JsonConverter(typeof(AnimeMangaMediumConverter))]
+        [JsonConverter(typeof(MediumConverter))]
         internal AnimeMangaMedium Medium { get; set; }
 
         [JsonProperty("name")]

@@ -333,70 +333,6 @@ namespace Azuria.AnimeManga
         }
 
         [ItemNotNull]
-        private async Task<ProxerResult> InitAvailableLang()
-        {
-            HtmlDocument lDocument = new HtmlDocument();
-            Func<string, ProxerResult> lCheckFunc = s =>
-            {
-                if (!string.IsNullOrEmpty(s) &&
-                    s.Equals("Bitte logge dich ein."))
-                    return new ProxerResult(new Exception[] {new NoAccessException(nameof(this.InitAvailableLang))});
-
-                return new ProxerResult();
-            };
-            ProxerResult<string> lResult =
-                await
-                    HttpUtility.GetResponseErrorHandling(
-                        new Uri("https://proxer.me/edit/entry/" + this.Id + "/languages?format=raw"),
-                        this._senpai,
-                        new[] {lCheckFunc});
-
-            if (!lResult.Success)
-                return new ProxerResult(lResult.Exceptions);
-
-            string lResponse = lResult.Result;
-
-            try
-            {
-                lDocument.LoadHtml(lResponse);
-
-                List<AnimeLanguage> languageList = new List<AnimeLanguage>();
-                foreach (
-                    HtmlNode childNode in
-                        lDocument.DocumentNode.ChildNodes[4]
-                            .ChildNodes[5].ChildNodes.Where(
-                                childNode =>
-                                    childNode.ChildNodes.Count > 3 &&
-                                    childNode.ChildNodes[3].FirstChild.GetAttributeValue("value", "+").Equals("-")))
-                {
-                    switch (childNode.FirstChild.InnerText)
-                    {
-                        case "GerSub":
-                            languageList.Add(AnimeLanguage.GerSub);
-                            break;
-                        case "EngSub":
-                            languageList.Add(AnimeLanguage.EngSub);
-                            break;
-                        case "EngDub":
-                            languageList.Add(AnimeLanguage.EngDub);
-                            break;
-                        case "GerDub":
-                            languageList.Add(AnimeLanguage.GerDub);
-                            break;
-                    }
-                }
-
-                this.AvailableLanguages.SetInitialisedObject(languageList.ToArray());
-
-                return new ProxerResult();
-            }
-            catch
-            {
-                return new ProxerResult(ErrorHandler.HandleError(this._senpai, lResponse, false).Exceptions);
-            }
-        }
-
-        [ItemNotNull]
         private Task<ProxerResult> InitGroups()
         {
             return this.InitGroupsApi(this._senpai);
@@ -430,6 +366,12 @@ namespace Azuria.AnimeManga
         private Task<ProxerResult> InitIndustry()
         {
             return this.InitIndustryApi(this._senpai);
+        }
+
+        [ItemNotNull]
+        private Task<ProxerResult> InitAvailableLang()
+        {
+            return this.InitAvailableLangApi(this._senpai);
         }
 
         #endregion

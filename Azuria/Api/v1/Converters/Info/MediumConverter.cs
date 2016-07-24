@@ -4,7 +4,7 @@ using Newtonsoft.Json;
 
 namespace Azuria.Api.v1.Converters.Info
 {
-    internal class AnimeMangaMediumConverter : JsonConverter
+    internal class MediumConverter : JsonConverter
     {
         #region
 

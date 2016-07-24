@@ -176,6 +176,24 @@ namespace Azuria.Utilities.Extensions
             return new ProxerResult();
         }
 
+        internal static async Task<ProxerResult> InitAvailableLangApi(this IAnimeMangaObject animeMangaObject,
+            Senpai senpai)
+        {
+            ProxerResult<ProxerInfoLanguageResponse> lResult =
+                await
+                    RequestHandler.ApiCustomRequest<ProxerInfoLanguageResponse>(
+                        ApiRequestBuilder.BuildForGetLanguage(animeMangaObject.Id, senpai));
+            if (!lResult.Success || lResult.Result == null) return new ProxerResult(lResult.Exceptions);
+            if (lResult.Result.Error)
+                return new ProxerResult(new[] {new ProxerApiException(lResult.Result.ErrorCode)});
+
+            (animeMangaObject as Anime)?.AvailableLanguages.SetInitialisedObject(
+                lResult.Result.Data.Cast<AnimeLanguage>());
+            (animeMangaObject as Manga)?.AvailableLanguages.SetInitialisedObject(lResult.Result.Data.Cast<Language>());
+
+            return new ProxerResult();
+        }
+
         #endregion
     }
 }

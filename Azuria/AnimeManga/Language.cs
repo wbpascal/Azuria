@@ -9,16 +9,16 @@
         /// <summary>
         ///     The language of the <see cref="Anime">Anime</see> or <see cref="Manga">Manga</see> is german.
         /// </summary>
-        German,
+        German = 0,
 
         /// <summary>
         ///     The language of the <see cref="Anime">Anime</see> or <see cref="Manga">Manga</see> is english.
         /// </summary>
-        English,
+        English = 1,
 
         /// <summary>
         ///     The language of the <see cref="Anime">Anime</see> or <see cref="Manga">Manga</see> is unknown.
         /// </summary>
-        Unkown
+        Unkown = 6
     }
 }

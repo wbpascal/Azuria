@@ -23,6 +23,7 @@ namespace Azuria.Test
         public async Task LoginTest()
         {
             Api.ApiInfo.InitV1(Credentials.ApiKey);
+            Senpai = new Senpai(Credentials.Username);
 
             ProxerResult<bool> lValid = await Senpai.Login(Credentials.Password);
             Assert.IsTrue(lValid.Success);

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using Azuria.Api.v1.DataModels;
 using Azuria.Api.v1.DataModels.Info;
+using Azuria.Api.v1.Enums;
 
 namespace Azuria.Api.v1
 {
@@ -66,6 +67,14 @@ namespace Azuria.Api.v1
             return new ApiRequest<PublisherDataModel[]>(senpai)
             {
                 Address = new Uri(ApiAddress + "/info/publisher?id=" + entryId)
+            };
+        }
+
+        internal static ApiRequest<AnimeMangaLanguage[]> BuildForGetLanguage(int entryId, Senpai senpai)
+        {
+            return new ApiRequest<AnimeMangaLanguage[]>(senpai)
+            {
+                Address = new Uri(ApiAddress + "/info/lang?id=" + entryId)
             };
         }
 

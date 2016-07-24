@@ -1,37 +1,39 @@
-﻿using Newtonsoft.Json;
+﻿using Azuria.Api.v1.Converters.Info;
+using Azuria.Api.v1.Enums;
+using Newtonsoft.Json;
 
 namespace Azuria.Api.v1
 {
-    /// <summary>
-    /// </summary>
-    /// <typeparam name="T"></typeparam>
-    public class ProxerApiResponse<T> : ProxerApiResponse
+    internal class ProxerInfoLanguageResponse : ProxerApiResponse
     {
         #region Properties
 
-        /// <summary>
-        /// </summary>
         [JsonProperty("data")]
-        public T Data { get; set; }
+        [JsonConverter(typeof(LanguageConverter))]
+        internal AnimeMangaLanguage[] Data { get; set; }
 
         #endregion
     }
 
-    /// <summary>
-    /// </summary>
-    public class ProxerApiResponse
+    internal class ProxerApiResponse<T> : ProxerApiResponse
     {
         #region Properties
 
-        /// <summary>
-        /// </summary>
-        [JsonProperty("error")]
-        public bool Error { get; set; }
+        [JsonProperty("data")]
+        internal T Data { get; set; }
 
-        /// <summary>
-        /// </summary>
+        #endregion
+    }
+
+    internal class ProxerApiResponse
+    {
+        #region Properties
+
+        [JsonProperty("error")]
+        internal bool Error { get; set; }
+
         [JsonProperty("code")]
-        public ErrorCode ErrorCode { get; set; } = ErrorCode.NoError;
+        internal ErrorCode ErrorCode { get; set; } = ErrorCode.NoError;
 
         [JsonProperty("message")]
         internal string Message { get; set; }

@@ -74,7 +74,8 @@
     <Compile Include="Api\ApiInfo.cs" />
     <Compile Include="Api\v1\ApiRequest.cs" />
     <Compile Include="Api\v1\ApiRequestBuilder.cs" />
-    <Compile Include="Api\v1\Converters\Info\AnimeMangaMediumConverter.cs" />
+    <Compile Include="Api\v1\Converters\Info\LanguageConverter.cs" />
+    <Compile Include="Api\v1\Converters\Info\MediumConverter.cs" />
     <Compile Include="Api\v1\Converters\Info\CategoryConverter.cs" />
     <Compile Include="Api\v1\Converters\Info\FskConverter.cs" />
     <Compile Include="Api\v1\Converters\Info\GenreConverter.cs" />
@@ -87,6 +88,7 @@
     <Compile Include="Api\v1\DataModels\Info\NameDataModel.cs" />
     <Compile Include="Api\v1\DataModels\Info\PublisherDataModel.cs" />
     <Compile Include="Api\v1\Enums\AnimeMangaEntryType.cs" />
+    <Compile Include="Api\v1\Enums\AnimeMangaLanguage.cs" />
     <Compile Include="Api\v1\Enums\AnimeMangaMedium.cs" />
     <Compile Include="Api\v1\Enums\AnimeMangaNameType.cs" />
     <Compile Include="Api\v1\RequestHandler.cs" />

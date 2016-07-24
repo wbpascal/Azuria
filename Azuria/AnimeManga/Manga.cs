@@ -333,61 +333,9 @@ namespace Azuria.AnimeManga
         }
 
         [ItemNotNull]
-        private async Task<ProxerResult> InitAvailableLang()
+        private Task<ProxerResult> InitAvailableLang()
         {
-            HtmlDocument lDocument = new HtmlDocument();
-            Func<string, ProxerResult> lCheckFunc = s =>
-            {
-                if (!string.IsNullOrEmpty(s) &&
-                    s.Equals("Bitte logge dich ein."))
-                    return new ProxerResult(new Exception[] {new NoAccessException(nameof(this.InitAvailableLang))});
-
-                return new ProxerResult();
-            };
-            ProxerResult<string> lResult =
-                await
-                    HttpUtility.GetResponseErrorHandling(
-                        new Uri("http://proxer.me/edit/entry/" + this.Id + "/languages?format=raw"),
-                        this._senpai,
-                        new[] {lCheckFunc});
-
-            if (!lResult.Success)
-                return new ProxerResult(lResult.Exceptions);
-
-            string lResponse = lResult.Result;
-
-            try
-            {
-                lDocument.LoadHtml(lResponse);
-
-                List<Language> languageList = new List<Language>();
-                foreach (
-                    HtmlNode childNode in
-                        lDocument.DocumentNode.ChildNodes[4]
-                            .ChildNodes[5].ChildNodes.Where(
-                                childNode =>
-                                    childNode.ChildNodes.Count > 3 &&
-                                    childNode.ChildNodes[3].FirstChild.GetAttributeValue("value", "+").Equals("-")))
-                {
-                    switch (childNode.FirstChild.InnerText)
-                    {
-                        case "Englisch":
-                            languageList.Add(Language.English);
-                            break;
-                        case "Deutsch":
-                            languageList.Add(Language.German);
-                            break;
-                    }
-                }
-
-                this.AvailableLanguages.SetInitialisedObject(languageList.ToArray());
-
-                return new ProxerResult();
-            }
-            catch
-            {
-                return new ProxerResult(ErrorHandler.HandleError(this._senpai, lResponse, false).Exceptions);
-            }
+            return this.InitAvailableLangApi(this._senpai);
         }
 
         [ItemNotNull]

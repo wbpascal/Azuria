@@ -105,9 +105,6 @@
     <Compile Include="..\Azuria\Api\v1\ApiRequestBuilder.cs">
       <Link>Api\v1\ApiRequestBuilder.cs</Link>
     </Compile>
-    <Compile Include="..\Azuria\Api\v1\Converters\Info\AnimeMangaMediumConverter.cs">
-      <Link>Api\v1\Converters\Info\AnimeMangaMediumConverter.cs</Link>
-    </Compile>
     <Compile Include="..\Azuria\Api\v1\Converters\Info\CategoryConverter.cs">
       <Link>Api\v1\Converters\Info\CategoryConverter.cs</Link>
     </Compile>
@@ -122,6 +119,12 @@
     </Compile>
     <Compile Include="..\Azuria\Api\v1\Converters\Info\IsLicensedConverter.cs">
       <Link>Api\v1\Converters\Info\IsLicensedConverter.cs</Link>
+    </Compile>
+    <Compile Include="..\Azuria\Api\v1\Converters\Info\LanguageConverter.cs">
+      <Link>Api\v1\Converters\Info\LanguageConverter.cs</Link>
+    </Compile>
+    <Compile Include="..\Azuria\Api\v1\Converters\Info\MediumConverter.cs">
+      <Link>Api\v1\Converters\Info\MediumConverter.cs</Link>
     </Compile>
     <Compile Include="..\Azuria\Api\v1\Converters\Info\NameTypeConverter.cs">
       <Link>Api\v1\Converters\Info\NameTypeConverter.cs</Link>
@@ -149,6 +152,9 @@
     </Compile>
     <Compile Include="..\Azuria\Api\v1\Enums\AnimeMangaEntryType.cs">
       <Link>Api\v1\Enums\AnimeMangaEntryType.cs</Link>
+    </Compile>
+    <Compile Include="..\Azuria\Api\v1\Enums\AnimeMangaLanguage.cs">
+      <Link>Api\v1\Enums\AnimeMangaLanguage.cs</Link>
     </Compile>
     <Compile Include="..\Azuria\Api\v1\Enums\AnimeMangaMedium.cs">
       <Link>Api\v1\Enums\AnimeMangaMedium.cs</Link>

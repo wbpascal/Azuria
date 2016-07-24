@@ -8,26 +8,26 @@
         /// <summary>
         ///     The Anime contains german subtitles.
         /// </summary>
-        GerSub,
+        GerSub = 4,
 
         /// <summary>
         ///     The Anime contains english subtitles.
         /// </summary>
-        EngSub,
+        EngSub = 2,
 
         /// <summary>
         ///     The Anime contains english audio.
         /// </summary>
-        EngDub,
+        EngDub = 3,
 
         /// <summary>
         ///     The Anime contains german audio.
         /// </summary>
-        GerDub,
+        GerDub = 5,
 
         /// <summary>
         ///     The language of the Anime is unknown.
         /// </summary>
-        Unknown
+        Unknown = 6
     }
 }
