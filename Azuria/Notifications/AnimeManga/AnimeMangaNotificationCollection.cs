@@ -30,12 +30,11 @@ namespace Azuria.Notifications.AnimeManga
 
         #region Inherited
 
-        /// <summary>
-        /// </summary>
-        /// <returns></returns>
-        public INotificationEnumerator<AnimeMangaNotification<T>> GetEnumerator()
+        /// <summary>Returns an enumerator that iterates through a collection.</summary>
+        /// <returns>An <see cref="T:System.Collections.IEnumerator" /> object that can be used to iterate through the collection.</returns>
+        IEnumerator IEnumerable.GetEnumerator()
         {
-            return new AnimeMangaNotificationEnumerator<T>(this._senpai, this._maxNotificationsToParse);
+            return this.GetEnumerator();
         }
 
         /// <summary>Returns an enumerator that iterates through the collection.</summary>
@@ -46,11 +45,12 @@ namespace Azuria.Notifications.AnimeManga
             return this.GetEnumerator();
         }
 
-        /// <summary>Returns an enumerator that iterates through a collection.</summary>
-        /// <returns>An <see cref="T:System.Collections.IEnumerator" /> object that can be used to iterate through the collection.</returns>
-        IEnumerator IEnumerable.GetEnumerator()
+        /// <summary>
+        /// </summary>
+        /// <returns></returns>
+        public INotificationEnumerator<AnimeMangaNotification<T>> GetEnumerator()
         {
-            return this.GetEnumerator();
+            return new AnimeMangaNotificationEnumerator<T>(this._senpai, this._maxNotificationsToParse);
         }
 
         #endregion

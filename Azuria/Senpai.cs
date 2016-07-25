@@ -4,7 +4,7 @@ using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
 using Azuria.Api.v1;
-using Azuria.Api.v1.DataModels;
+using Azuria.Api.v1.DataModels.User;
 using Azuria.Community.Conference;
 using Azuria.Exceptions;
 using Azuria.Utilities.ErrorHandling;
@@ -96,13 +96,6 @@ namespace Azuria
         #region
 
         /// <summary>
-        /// </summary>
-        public void UsedCookies()
-        {
-            this._cookiesLastUsed = DateTime.Now;
-        }
-
-        /// <summary>
         ///     Fetches all messaging conferences the user is part of.
         /// </summary>
         /// <returns>If the action was successful and if it was, an enumeration of the conferences.</returns>
@@ -188,6 +181,13 @@ namespace Azuria
                 return new ProxerResult(lResult.Exceptions);
             this._cookiesCreated = DateTime.MinValue;
             return new ProxerResult();
+        }
+
+        /// <summary>
+        /// </summary>
+        public void UsedCookies()
+        {
+            this._cookiesLastUsed = DateTime.Now;
         }
 
         #endregion

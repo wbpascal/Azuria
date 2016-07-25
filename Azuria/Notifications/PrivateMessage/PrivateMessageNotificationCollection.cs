@@ -28,12 +28,11 @@ namespace Azuria.Notifications.PrivateMessage
 
         #region Inherited
 
-        /// <summary>
-        /// </summary>
-        /// <returns></returns>
-        public INotificationEnumerator<PrivateMessageNotification> GetEnumerator()
+        /// <summary>Returns an enumerator that iterates through a collection.</summary>
+        /// <returns>An <see cref="T:System.Collections.IEnumerator" /> object that can be used to iterate through the collection.</returns>
+        IEnumerator IEnumerable.GetEnumerator()
         {
-            return new PrivateMessageNotificationEnumerator(this._senpai);
+            return this.GetEnumerator();
         }
 
         /// <summary>Returns an enumerator that iterates through the collection.</summary>
@@ -43,11 +42,12 @@ namespace Azuria.Notifications.PrivateMessage
             return this.GetEnumerator();
         }
 
-        /// <summary>Returns an enumerator that iterates through a collection.</summary>
-        /// <returns>An <see cref="T:System.Collections.IEnumerator" /> object that can be used to iterate through the collection.</returns>
-        IEnumerator IEnumerable.GetEnumerator()
+        /// <summary>
+        /// </summary>
+        /// <returns></returns>
+        public INotificationEnumerator<PrivateMessageNotification> GetEnumerator()
         {
-            return this.GetEnumerator();
+            return new PrivateMessageNotificationEnumerator(this._senpai);
         }
 
         #endregion

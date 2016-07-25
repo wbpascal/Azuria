@@ -4,6 +4,8 @@ using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
 using Azuria.AnimeManga;
+using Azuria.Api.v1;
+using Azuria.Api.v1.DataModels.User;
 using Azuria.Exceptions;
 using Azuria.Search;
 using Azuria.User.Comment;
@@ -36,6 +38,8 @@ namespace Azuria.User
         /// <param name="senpai">The user that makes the requests.</param>
         public User(int userId, [NotNull] Senpai senpai)
         {
+            //TODO: IsOnline, Ranking
+
             this._senpai = senpai;
             this.Id = userId;
 
@@ -60,9 +64,9 @@ namespace Azuria.User
                     <IEnumerable<KeyValuePair<AnimeMangaProgressState, AnimeMangaProgressObject<Manga>>>>
                     (this.InitManga);
             this.MangaChronic = new InitialisableProperty<IEnumerable<AnimeMangaChronicObject<Manga>>>(this.InitChronic);
-            this.Points = new InitialisableProperty<int>(this.InitMainInfo);
+            this.Points = new InitialisableProperty<UserPoints>(this.InitMainInfo);
             this.Ranking = new InitialisableProperty<string>(this.InitMainInfo);
-            this.Status = new InitialisableProperty<string>(this.InitMainInfo);
+            this.Status = new InitialisableProperty<UserStatus>(this.InitMainInfo);
             this.UserName = new InitialisableProperty<string>(this.InitMainInfo);
         }
 
@@ -88,7 +92,7 @@ namespace Azuria.User
         internal User([NotNull] string name, int userId, [CanBeNull] Uri avatar, int points, [NotNull] Senpai senpai)
             : this(name, userId, avatar, senpai)
         {
-            this.Points = new InitialisableProperty<int>(this.InitMainInfo, points);
+            //this.Points = new InitialisableProperty<UserPoints>(this.InitMainInfo, points);
         }
 
         internal User([NotNull] string name, int userId, [NotNull] Uri avatar, bool online, [NotNull] Senpai senpai)
@@ -178,7 +182,7 @@ namespace Azuria.User
         ///     Gets the current number of total points the user has.
         /// </summary>
         [NotNull]
-        public InitialisableProperty<int> Points { get; }
+        public InitialisableProperty<UserPoints> Points { get; }
 
         /// <summary>
         ///     Gets the name of the rank the user is currently in.
@@ -190,7 +194,7 @@ namespace Azuria.User
         ///     Gets the current status of the user.
         /// </summary>
         [NotNull]
-        public InitialisableProperty<string> Status { get; }
+        public InitialisableProperty<UserStatus> Status { get; }
 
         /// <summary>
         ///     Gets the username of the user.
@@ -296,7 +300,7 @@ namespace Azuria.User
         ///     Initialises the object.
         /// </summary>
         [ItemNotNull]
-        [Obsolete("Bitte benutze die Methoden der jeweiligen Eigenschaften, um sie zu initalisieren!")]
+        [Obsolete]
         public async Task<ProxerResult> Init()
         {
             return await this.InitAllInitalisableProperties();
@@ -522,58 +526,19 @@ namespace Azuria.User
         {
             if (this.Id == -1) return new ProxerResult();
 
-            HtmlDocument lDocument = new HtmlDocument();
+            ProxerResult<ProxerApiResponse<UserInfoDataModel>> lResult =
+                await RequestHandler.ApiRequest(ApiRequestBuilder.BuildForGetUserInfo(this.Id, this._senpai));
+            if (!lResult.Success || lResult.Result == null) return new ProxerResult(lResult.Exceptions);
+            if (lResult.Result.Error || lResult.Result.Data == null)
+                return new ProxerResult(new[] {new ProxerApiException(lResult.Result.ErrorCode)});
 
-            Func<string, ProxerResult> lCheckFunc = s =>
-            {
-                if (!string.IsNullOrEmpty(s) &&
-                    s.Equals(
-                        "<div class=\"inner\">\n<h3>Du hast keine Berechtigung um diese Seite zu betreten.</h3>\n</div>"))
-                    return new ProxerResult(new Exception[] {new NoAccessException(nameof(this.InitMainInfo))});
+            UserInfoDataModel lDataModel = lResult.Result.Data;
+            this.Avatar.SetInitialisedObject(new Uri("http://cdn.proxer.me/avatar/" + lDataModel.Avatar));
+            this.Points.SetInitialisedObject(lDataModel.Points);
+            this.Status.SetInitialisedObject(lDataModel.Status);
+            this.UserName.SetInitialisedObject(lDataModel.Username);
 
-                return new ProxerResult();
-            };
-
-            ProxerResult<string> lResult =
-                await
-                    HttpUtility.GetResponseErrorHandling(new Uri("https://proxer.me/user/" + this.Id + "?format=raw"),
-                        this._senpai, new[] {lCheckFunc});
-
-            if (!lResult.Success)
-                return new ProxerResult(lResult.Exceptions);
-
-            string lResponse = lResult.Result;
-
-            try
-            {
-                lDocument.LoadHtml(lResponse);
-
-                HtmlNode[] lProfileNodes =
-                    lDocument.DocumentNode.SelectNodesUtility("class", "profile").ToArray();
-
-                this.Avatar.SetInitialisedObject(new Uri("https:" +
-                                                         lProfileNodes[0].ParentNode.ParentNode.ChildNodes[1].ChildNodes
-                                                             [0]
-                                                             .Attributes["src"].Value));
-                this.Points.SetInitialisedObject(Convert.ToInt32(
-                    lProfileNodes[0].FirstChild.InnerText.GetTagContents("Summe: ", " - ")[
-                        0]));
-                this.Ranking.SetInitialisedObject(
-                    lProfileNodes[0].FirstChild.InnerText.GetTagContents(
-                        this.Points.GetObjectIfInitialised(-1) + " - ", "[?]")[0]);
-                this.IsOnline.SetInitialisedObject(lProfileNodes[0].ChildNodes[1].InnerText.Equals("Status Online"));
-                this.Status.SetInitialisedObject(lProfileNodes[0].ChildNodes.Count == 7
-                    ? lProfileNodes[0].ChildNodes[6].InnerText
-                    : "");
-
-                this.UserName.SetInitialisedObject(lDocument.GetElementbyId("pageMetaAjax").InnerText.Split(' ')[1]);
-
-                return new ProxerResult();
-            }
-            catch
-            {
-                return new ProxerResult(ErrorHandler.HandleError(this._senpai, lResponse, false).Exceptions);
-            }
+            return new ProxerResult();
         }
 
         [ItemNotNull]

@@ -1,6 +1,6 @@
 ﻿using Newtonsoft.Json;
 
-namespace Azuria.Api.v1.DataModels
+namespace Azuria.Api.v1.DataModels.User
 {
     /// <summary>
     /// </summary>

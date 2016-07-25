@@ -8,9 +8,9 @@ namespace Azuria.Api.v1.Converters.Info
     {
         #region
 
-        public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
+        public override bool CanConvert(Type objectType)
         {
-            writer.WriteValue(value.ToString().ToLowerInvariant());
+            return objectType == typeof(string);
         }
 
         public override object ReadJson(JsonReader reader, Type objectType, object existingValue,
@@ -38,9 +38,9 @@ namespace Azuria.Api.v1.Converters.Info
             return AnimeMangaMedium.Unkown;
         }
 
-        public override bool CanConvert(Type objectType)
+        public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
         {
-            return objectType == typeof(string);
+            writer.WriteValue(value.ToString().ToLowerInvariant());
         }
 
         #endregion

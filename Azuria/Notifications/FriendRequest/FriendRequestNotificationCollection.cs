@@ -28,12 +28,11 @@ namespace Azuria.Notifications.FriendRequest
 
         #region Inherited
 
-        /// <summary>
-        /// </summary>
-        /// <returns></returns>
-        public INotificationEnumerator<FriendRequestNotification> GetEnumerator()
+        /// <summary>Returns an enumerator that iterates through a collection.</summary>
+        /// <returns>An <see cref="T:System.Collections.IEnumerator" /> object that can be used to iterate through the collection.</returns>
+        IEnumerator IEnumerable.GetEnumerator()
         {
-            return new FriendRequestNotificationEnumerator(this._senpai);
+            return this.GetEnumerator();
         }
 
         /// <summary>Returns an enumerator that iterates through the collection.</summary>
@@ -43,11 +42,12 @@ namespace Azuria.Notifications.FriendRequest
             return this.GetEnumerator();
         }
 
-        /// <summary>Returns an enumerator that iterates through a collection.</summary>
-        /// <returns>An <see cref="T:System.Collections.IEnumerator" /> object that can be used to iterate through the collection.</returns>
-        IEnumerator IEnumerable.GetEnumerator()
+        /// <summary>
+        /// </summary>
+        /// <returns></returns>
+        public INotificationEnumerator<FriendRequestNotification> GetEnumerator()
         {
-            return this.GetEnumerator();
+            return new FriendRequestNotificationEnumerator(this._senpai);
         }
 
         #endregion

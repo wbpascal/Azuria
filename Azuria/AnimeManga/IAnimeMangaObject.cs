@@ -113,11 +113,10 @@ namespace Azuria.AnimeManga
         InitialisableProperty<AnimeMangaRating> Rating { get; }
 
         /// <summary>
-        ///     Gets the seasons the <see cref="Anime" /> or <see cref="Manga" /> aired in. If the enumerable only contains one
-        ///     value the value is always the start season of the <see cref="Anime" /> or <see cref="Manga" />.
+        ///     Gets the seasons the <see cref="Anime" /> or <see cref="Manga" /> aired in.
         /// </summary>
         [NotNull]
-        InitialisableProperty<IEnumerable<string>> Season { get; }
+        InitialisableProperty<AnimeMangaSeasonInfo> Season { get; }
 
         /// <summary>
         ///     Gets the status of the <see cref="Anime" /> or <see cref="Manga" />.

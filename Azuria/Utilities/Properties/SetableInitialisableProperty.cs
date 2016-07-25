@@ -52,28 +52,12 @@ namespace Azuria.Utilities.Properties
         #region Inherited
 
         /// <summary>
-        ///     Initialises the property if it is not already.
+        ///     Fetches a new value for the property without returning the new value.
         /// </summary>
-        /// <returns>If the action was successful and if it was, the value of this property.</returns>
-        public async Task<ProxerResult<T>> GetObject()
+        /// <returns>If the action was successful.</returns>
+        public async Task<ProxerResult> FetchObject()
         {
-            if (this.IsInitialisedOnce && this._initialisedObject != null)
-                return new ProxerResult<T>(this._initialisedObject);
-
-            return await this.GetNewObject();
-        }
-
-        /// <summary>
-        ///     Initialises the property if it is not already.
-        /// </summary>
-        /// <param name="onError">A value that is returned if the action was not successful.</param>
-        /// <returns>
-        ///     If the action was successful and if it was, the value of this property. If it was not then
-        ///     <paramref name="onError" /> is returned.
-        /// </returns>
-        public async Task<T> GetObject([NotNull] T onError)
-        {
-            return (await this.GetObject()).OnError(onError);
+            return await this.GetObject();
         }
 
         /// <summary>
@@ -104,12 +88,28 @@ namespace Azuria.Utilities.Properties
         }
 
         /// <summary>
-        ///     Fetches a new value for the property without returning the new value.
+        ///     Initialises the property if it is not already.
         /// </summary>
-        /// <returns>If the action was successful.</returns>
-        public async Task<ProxerResult> FetchObject()
+        /// <returns>If the action was successful and if it was, the value of this property.</returns>
+        public async Task<ProxerResult<T>> GetObject()
         {
-            return await this.GetObject();
+            if (this.IsInitialisedOnce && this._initialisedObject != null)
+                return new ProxerResult<T>(this._initialisedObject);
+
+            return await this.GetNewObject();
+        }
+
+        /// <summary>
+        ///     Initialises the property if it is not already.
+        /// </summary>
+        /// <param name="onError">A value that is returned if the action was not successful.</param>
+        /// <returns>
+        ///     If the action was successful and if it was, the value of this property. If it was not then
+        ///     <paramref name="onError" /> is returned.
+        /// </returns>
+        public async Task<T> GetObject([NotNull] T onError)
+        {
+            return (await this.GetObject()).OnError(onError);
         }
 
         #endregion

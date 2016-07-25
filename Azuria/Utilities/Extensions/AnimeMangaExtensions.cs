@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using System.Threading.Tasks;
 using Azuria.AnimeManga;
 using Azuria.Api.v1;
@@ -8,8 +6,6 @@ using Azuria.Api.v1.DataModels.Info;
 using Azuria.Api.v1.Enums;
 using Azuria.Exceptions;
 using Azuria.Utilities.ErrorHandling;
-using Azuria.Utilities.Web;
-using HtmlAgilityPack;
 using JetBrains.Annotations;
 
 namespace Azuria.Utilities.Extensions
@@ -19,65 +15,70 @@ namespace Azuria.Utilities.Extensions
         #region
 
         [ItemNotNull]
-        internal static async Task<ProxerResult> InitMainInfo(this IAnimeMangaObject animeMangaObject, Senpai senpai)
+        internal static async Task<ProxerResult> InitAvailableLangApi(this IAnimeMangaObject animeMangaObject,
+            Senpai senpai)
         {
-            HtmlDocument lDocument = new HtmlDocument();
-            ProxerResult<string> lResult =
+            ProxerResult<ProxerInfoLanguageResponse> lResult =
                 await
-                    HttpUtility.GetResponseErrorHandling(
-                        new Uri("https://proxer.me/info/" + animeMangaObject.Id + "?format=raw"),
-                        senpai, new Func<string, ProxerResult>[0], checkLogin: false);
+                    RequestHandler.ApiCustomRequest<ProxerInfoLanguageResponse>(
+                        ApiRequestBuilder.BuildForGetLanguage(animeMangaObject.Id, senpai));
+            if (!lResult.Success || lResult.Result == null) return new ProxerResult(lResult.Exceptions);
+            if (lResult.Result.Error)
+                return new ProxerResult(new[] {new ProxerApiException(lResult.Result.ErrorCode)});
 
-            if (!lResult.Success || lResult.Result == null)
-                return new ProxerResult(lResult.Exceptions);
-
-            string lResponse = lResult.Result;
-
-            try
-            {
-                lDocument.LoadHtml(lResponse);
-
-                HtmlNode lTableNode =
-                    lDocument.DocumentNode.ChildNodes[5]
-                        .ChildNodes[2].FirstChild.ChildNodes[1].FirstChild;
-
-                #region Info Table
-
-                foreach (HtmlNode childNode in lTableNode.ChildNodes.Where(childNode => childNode.Name.Equals("tr")))
-                {
-                    switch (childNode.FirstChild.FirstChild.InnerText)
-                    {
-                        case "Season":
-                            List<string> lSeasonList = new List<string>();
-                            foreach (HtmlNode htmlNode in childNode.ChildNodes[1].ChildNodes.ToList())
-                            {
-                                if (htmlNode.Name.Equals("a"))
-                                    lSeasonList.Add(htmlNode.InnerText);
-                            }
-                            animeMangaObject.Season.SetInitialisedObject(lSeasonList);
-                            break;
-                    }
-                }
-
-                #endregion
-
-                double lRating =
-                    Convert.ToDouble(
-                        lDocument.DocumentNode.SelectNodesUtility("class", "average")
-                            .First()
-                            .InnerText.Replace('.', ','));
-                int lVoters =
-                    Convert.ToInt32(lDocument.DocumentNode.SelectNodesUtility("class", "votes").First().InnerText);
-                animeMangaObject.Rating.SetInitialisedObject(new AnimeMangaRating(lRating, lVoters));
-            }
-            catch
-            {
-                return new ProxerResult(ErrorHandler.HandleError(senpai, lResponse).Exceptions);
-            }
+            (animeMangaObject as Anime)?.AvailableLanguages.SetInitialisedObject(
+                lResult.Result.Data.Cast<AnimeLanguage>());
+            (animeMangaObject as Manga)?.AvailableLanguages.SetInitialisedObject(lResult.Result.Data.Cast<Language>());
 
             return new ProxerResult();
         }
 
+        [ItemNotNull]
+        internal static async Task<ProxerResult> InitGroupsApi(this IAnimeMangaObject animeMangaObject, Senpai senpai)
+        {
+            ProxerResult<ProxerApiResponse<GroupDataModel[]>> lResult =
+                await RequestHandler.ApiRequest(ApiRequestBuilder.BuildForGetGroups(animeMangaObject.Id, senpai));
+            if (!lResult.Success || lResult.Result == null) return new ProxerResult(lResult.Exceptions);
+            if (lResult.Result.Error || lResult.Result.Data == null)
+                return new ProxerResult(new[] {new ProxerApiException(lResult.Result.ErrorCode)});
+
+            animeMangaObject.Groups.SetInitialisedObject(from groupDataModel in lResult.Result.Data
+                select new Group(groupDataModel));
+
+            return new ProxerResult();
+        }
+
+        [ItemNotNull]
+        internal static async Task<ProxerResult> InitIndustryApi(this IAnimeMangaObject animeMangaObject, Senpai senpai)
+        {
+            ProxerResult<ProxerApiResponse<PublisherDataModel[]>> lResult =
+                await RequestHandler.ApiRequest(ApiRequestBuilder.BuildForGetPublisher(animeMangaObject.Id, senpai));
+            if (!lResult.Success || lResult.Result == null) return new ProxerResult(lResult.Exceptions);
+            if (lResult.Result.Error || lResult.Result.Data == null)
+                return new ProxerResult(new[] {new ProxerApiException(lResult.Result.ErrorCode)});
+
+            animeMangaObject.Industry.SetInitialisedObject(from publisherDataModel in lResult.Result.Data
+                select new Industry(publisherDataModel));
+
+            return new ProxerResult();
+        }
+
+        [ItemNotNull]
+        internal static async Task<ProxerResult> InitIsHContentApi(this IAnimeMangaObject animeMangaObject,
+            Senpai senpai)
+        {
+            ProxerResult<ProxerApiResponse<bool>> lResult =
+                await RequestHandler.ApiRequest(ApiRequestBuilder.BuildForGetGate(animeMangaObject.Id, senpai));
+            if (!lResult.Success || lResult.Result == null) return new ProxerResult(lResult.Exceptions);
+            if (lResult.Result.Error)
+                return new ProxerResult(new[] {new ProxerApiException(lResult.Result.ErrorCode)});
+
+            animeMangaObject.IsHContent.SetInitialisedObject(lResult.Result.Data);
+
+            return new ProxerResult();
+        }
+
+        [ItemNotNull]
         internal static async Task<ProxerResult> InitMainInfoApi(this IAnimeMangaObject animeMangaObject, Senpai senpai)
         {
             ProxerResult<ProxerApiResponse<EntryDataModel>> lResult =
@@ -102,6 +103,7 @@ namespace Azuria.Utilities.Extensions
             return new ProxerResult();
         }
 
+        [ItemNotNull]
         internal static async Task<ProxerResult> InitNamesApi(this IAnimeMangaObject animeMangaObject, Senpai senpai)
         {
             ProxerResult<ProxerApiResponse<NameDataModel[]>> lResult =
@@ -134,62 +136,18 @@ namespace Azuria.Utilities.Extensions
             return new ProxerResult();
         }
 
-        internal static async Task<ProxerResult> InitGroupsApi(this IAnimeMangaObject animeMangaObject, Senpai senpai)
+        internal static async Task<ProxerResult> InitSeasonsApi(this IAnimeMangaObject animeMangaObject, Senpai senpai)
         {
-            ProxerResult<ProxerApiResponse<GroupDataModel[]>> lResult =
-                await RequestHandler.ApiRequest(ApiRequestBuilder.BuildForGetGroups(animeMangaObject.Id, senpai));
+            ProxerResult<ProxerApiResponse<SeasonDataModel[]>> lResult =
+                await RequestHandler.ApiRequest(ApiRequestBuilder.BuildForGetSeason(animeMangaObject.Id, senpai));
             if (!lResult.Success || lResult.Result == null) return new ProxerResult(lResult.Exceptions);
             if (lResult.Result.Error || lResult.Result.Data == null)
                 return new ProxerResult(new[] {new ProxerApiException(lResult.Result.ErrorCode)});
+            SeasonDataModel[] lData = lResult.Result.Data;
 
-            animeMangaObject.Groups.SetInitialisedObject(from groupDataModel in lResult.Result.Data
-                select new Group(groupDataModel));
-
-            return new ProxerResult();
-        }
-
-        internal static async Task<ProxerResult> InitIndustryApi(this IAnimeMangaObject animeMangaObject, Senpai senpai)
-        {
-            ProxerResult<ProxerApiResponse<PublisherDataModel[]>> lResult =
-                await RequestHandler.ApiRequest(ApiRequestBuilder.BuildForGetPublisher(animeMangaObject.Id, senpai));
-            if (!lResult.Success || lResult.Result == null) return new ProxerResult(lResult.Exceptions);
-            if (lResult.Result.Error || lResult.Result.Data == null)
-                return new ProxerResult(new[] {new ProxerApiException(lResult.Result.ErrorCode)});
-
-            animeMangaObject.Industry.SetInitialisedObject(from publisherDataModel in lResult.Result.Data
-                select new Industry(publisherDataModel));
-
-            return new ProxerResult();
-        }
-
-        internal static async Task<ProxerResult> InitIsHContentApi(this IAnimeMangaObject animeMangaObject,
-            Senpai senpai)
-        {
-            ProxerResult<ProxerApiResponse<bool>> lResult =
-                await RequestHandler.ApiRequest(ApiRequestBuilder.BuildForGetGate(animeMangaObject.Id, senpai));
-            if (!lResult.Success || lResult.Result == null) return new ProxerResult(lResult.Exceptions);
-            if (lResult.Result.Error)
-                return new ProxerResult(new[] {new ProxerApiException(lResult.Result.ErrorCode)});
-
-            animeMangaObject.IsHContent.SetInitialisedObject(lResult.Result.Data);
-
-            return new ProxerResult();
-        }
-
-        internal static async Task<ProxerResult> InitAvailableLangApi(this IAnimeMangaObject animeMangaObject,
-            Senpai senpai)
-        {
-            ProxerResult<ProxerInfoLanguageResponse> lResult =
-                await
-                    RequestHandler.ApiCustomRequest<ProxerInfoLanguageResponse>(
-                        ApiRequestBuilder.BuildForGetLanguage(animeMangaObject.Id, senpai));
-            if (!lResult.Success || lResult.Result == null) return new ProxerResult(lResult.Exceptions);
-            if (lResult.Result.Error)
-                return new ProxerResult(new[] {new ProxerApiException(lResult.Result.ErrorCode)});
-
-            (animeMangaObject as Anime)?.AvailableLanguages.SetInitialisedObject(
-                lResult.Result.Data.Cast<AnimeLanguage>());
-            (animeMangaObject as Manga)?.AvailableLanguages.SetInitialisedObject(lResult.Result.Data.Cast<Language>());
+            if (lData.Length > 1 && !lData[0].Equals(lData[1]))
+                animeMangaObject.Season.SetInitialisedObject(new AnimeMangaSeasonInfo(lData[0], lData[1]));
+            else if (lData.Length > 0) animeMangaObject.Season.SetInitialisedObject(new AnimeMangaSeasonInfo(lData[0]));
 
             return new ProxerResult();
         }

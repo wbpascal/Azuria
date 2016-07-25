@@ -16,16 +16,6 @@ namespace Azuria.Api.v1
 
         #region
 
-        internal static void Init(string apiKey)
-        {
-            _apiKey = apiKey;
-        }
-
-        internal static Task<ProxerResult<ProxerApiResponse<T>>> ApiRequest<T>(ApiRequest<T> request)
-        {
-            return ApiCustomRequest<ProxerApiResponse<T>>(request);
-        }
-
         internal static async Task<ProxerResult<T>> ApiCustomRequest<T>(ApiRequest request) where T : ProxerApiResponse
         {
             request.PostArguments.Add("api_key", _apiKey);
@@ -57,9 +47,19 @@ namespace Azuria.Api.v1
             }
         }
 
+        internal static Task<ProxerResult<ProxerApiResponse<T>>> ApiRequest<T>(ApiRequest<T> request)
+        {
+            return ApiCustomRequest<ProxerApiResponse<T>>(request);
+        }
+
         internal static Task<ProxerResult<ProxerApiResponse>> ApiRequest(ApiRequest request)
         {
             return ApiCustomRequest<ProxerApiResponse>(request);
+        }
+
+        internal static void Init(string apiKey)
+        {
+            _apiKey = apiKey;
         }
 
         #endregion

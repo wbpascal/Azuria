@@ -9,9 +9,9 @@ namespace Azuria.Api.v1.Converters.Info
     {
         #region
 
-        public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
+        public override bool CanConvert(Type objectType)
         {
-            throw new NotImplementedException();
+            return objectType == typeof(string);
         }
 
         public override object ReadJson(JsonReader reader, Type objectType, object existingValue,
@@ -24,9 +24,9 @@ namespace Azuria.Api.v1.Converters.Info
                 select GenreHelper.StringToGenreDictionary[genreString]).ToList();
         }
 
-        public override bool CanConvert(Type objectType)
+        public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
         {
-            return objectType == typeof(string);
+            throw new NotImplementedException();
         }
 
         #endregion

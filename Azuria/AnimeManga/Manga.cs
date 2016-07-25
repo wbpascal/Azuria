@@ -30,34 +30,41 @@ namespace Azuria.AnimeManga
         [UsedImplicitly]
         internal Manga()
         {
-            this.AvailableLanguages = new InitialisableProperty<IEnumerable<Language>>(this.InitAvailableLang);
-            this.Clicks = new InitialisableProperty<int>(this.InitMainApi);
-            this.ContentCount = new InitialisableProperty<int>(this.InitMainApi);
-            this.Description = new InitialisableProperty<string>(this.InitMainApi);
-            this.EnglishTitle = new InitialisableProperty<string>(this.InitNames, string.Empty)
+            this.AvailableLanguages =
+                new InitialisableProperty<IEnumerable<Language>>(() => this.InitAvailableLangApi(this._senpai));
+            this.Clicks = new InitialisableProperty<int>(() => this.InitMainInfoApi(this._senpai));
+            this.ContentCount = new InitialisableProperty<int>(() => this.InitMainInfoApi(this._senpai));
+            this.Description = new InitialisableProperty<string>(() => this.InitMainInfoApi(this._senpai));
+            this.EnglishTitle = new InitialisableProperty<string>(() => this.InitNamesApi(this._senpai), string.Empty)
             {
                 IsInitialisedOnce = false
             };
-            this.Fsk = new InitialisableProperty<IEnumerable<FskType>>(this.InitMainApi);
-            this.Genre = new InitialisableProperty<IEnumerable<GenreType>>(this.InitMainApi);
-            this.GermanTitle = new InitialisableProperty<string>(this.InitNames, string.Empty)
+            this.Fsk = new InitialisableProperty<IEnumerable<FskType>>(() => this.InitMainInfoApi(this._senpai));
+            this.Genre = new InitialisableProperty<IEnumerable<GenreType>>(() => this.InitMainInfoApi(this._senpai));
+            this.GermanTitle = new InitialisableProperty<string>(() => this.InitNamesApi(this._senpai), string.Empty)
             {
                 IsInitialisedOnce = false
             };
-            this.Groups = new InitialisableProperty<IEnumerable<Group>>(this.InitGroups);
-            this.Industry = new InitialisableProperty<IEnumerable<Industry>>(this.InitIndustry);
-            this.IsLicensed = new InitialisableProperty<bool>(this.InitMainApi);
-            this.IsHContent = new InitialisableProperty<bool>(this.InitIsHContent);
-            this.JapaneseTitle = new InitialisableProperty<string>(this.InitNames, string.Empty)
+            this.Groups = new InitialisableProperty<IEnumerable<Group>>(() => this.InitGroupsApi(this._senpai));
+            this.Industry = new InitialisableProperty<IEnumerable<Industry>>(() => this.InitIndustryApi(this._senpai));
+            this.IsLicensed = new InitialisableProperty<bool>(() => this.InitMainInfoApi(this._senpai));
+            this.IsHContent = new InitialisableProperty<bool>(() => this.InitIsHContentApi(this._senpai));
+            this.JapaneseTitle = new InitialisableProperty<string>(() => this.InitNamesApi(this._senpai), string.Empty)
             {
                 IsInitialisedOnce = false
             };
-            this.MangaType = new InitialisableProperty<MangaType>(this.InitMainApi);
-            this.Name = new InitialisableProperty<string>(this.InitMainApi, string.Empty) {IsInitialisedOnce = false};
-            this.Rating = new InitialisableProperty<AnimeMangaRating>(this.InitMainApi);
-            this.Season = new InitialisableProperty<IEnumerable<string>>(this.InitMain);
-            this.Status = new InitialisableProperty<AnimeMangaStatus>(this.InitMainApi);
-            this.Synonym = new InitialisableProperty<string>(this.InitNames, string.Empty) {IsInitialisedOnce = false};
+            this.MangaType = new InitialisableProperty<MangaType>(() => this.InitMainInfoApi(this._senpai));
+            this.Name = new InitialisableProperty<string>(() => this.InitMainInfoApi(this._senpai), string.Empty)
+            {
+                IsInitialisedOnce = false
+            };
+            this.Rating = new InitialisableProperty<AnimeMangaRating>(() => this.InitMainInfoApi(this._senpai));
+            this.Season = new InitialisableProperty<AnimeMangaSeasonInfo>(() => this.InitSeasonsApi(this._senpai));
+            this.Status = new InitialisableProperty<AnimeMangaStatus>(() => this.InitMainInfoApi(this._senpai));
+            this.Synonym = new InitialisableProperty<string>(() => this.InitNamesApi(this._senpai), string.Empty)
+            {
+                IsInitialisedOnce = false
+            };
         }
 
         internal Manga([NotNull] string name, int id, [NotNull] Senpai senpai) : this()
@@ -195,7 +202,7 @@ namespace Azuria.AnimeManga
         ///     Gets the seasons the <see cref="Manga" /> aired in. If the enumerable only contains one
         ///     value the value is always the start season of the <see cref="Manga" />.
         /// </summary>
-        public InitialisableProperty<IEnumerable<string>> Season { get; }
+        public InitialisableProperty<AnimeMangaSeasonInfo> Season { get; }
 
         /// <summary>
         ///     Gets the status of the <see cref="Manga" />.
@@ -332,48 +339,6 @@ namespace Azuria.AnimeManga
             }
         }
 
-        [ItemNotNull]
-        private Task<ProxerResult> InitAvailableLang()
-        {
-            return this.InitAvailableLangApi(this._senpai);
-        }
-
-        [ItemNotNull]
-        private Task<ProxerResult> InitGroups()
-        {
-            return this.InitGroupsApi(this._senpai);
-        }
-
-        [ItemNotNull]
-        private Task<ProxerResult> InitMain()
-        {
-            return this.InitMainInfo(this._senpai);
-        }
-
-        [ItemNotNull]
-        private Task<ProxerResult> InitMainApi()
-        {
-            return this.InitMainInfoApi(this._senpai);
-        }
-
-        [ItemNotNull]
-        private Task<ProxerResult> InitNames()
-        {
-            return this.InitNamesApi(this._senpai);
-        }
-
-        [ItemNotNull]
-        private Task<ProxerResult> InitIsHContent()
-        {
-            return this.InitIsHContentApi(this._senpai);
-        }
-
-        [ItemNotNull]
-        private Task<ProxerResult> InitIndustry()
-        {
-            return this.InitIndustryApi(this._senpai);
-        }
-
         #endregion
 
         /// <summary>
@@ -418,8 +383,7 @@ namespace Azuria.AnimeManga
             public InitialisableProperty<DateTime> Date { get; }
 
             /// <summary>
-            ///     Gets whether the language of the <see cref="Chapter" /> is
-            ///     <see cref="Language.English">english</see> or <see cref="Language.German">german</see>.
+            ///     Gets the general language (english/german) of the <see cref="Chapter" />.
             /// </summary>
             public Language GeneralLanguage => this.Language;
 

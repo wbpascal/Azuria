@@ -11,8 +11,7 @@ namespace Azuria.Api.v1.DataModels.Info
         [JsonProperty("id")]
         internal int Id { get; set; }
 
-        [JsonProperty("country")]
-        [JsonConverter(typeof(GroupLanguageConverter))]
+        [JsonProperty("country"), JsonConverter(typeof(GroupLanguageConverter))]
         internal Language Language { get; set; }
 
         [JsonProperty("name")]

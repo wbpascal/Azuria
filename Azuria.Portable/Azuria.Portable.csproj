@@ -48,6 +48,12 @@
     <Compile Include="..\Azuria\AnimeManga\AnimeMangaRating.cs">
       <Link>AnimeManga\AnimeMangaRating.cs</Link>
     </Compile>
+    <Compile Include="..\Azuria\AnimeManga\AnimeMangaSeason.cs">
+      <Link>AnimeManga\AnimeMangaSeason.cs</Link>
+    </Compile>
+    <Compile Include="..\Azuria\AnimeManga\AnimeMangaSeasonInfo.cs">
+      <Link>AnimeManga\AnimeMangaSeasonInfo.cs</Link>
+    </Compile>
     <Compile Include="..\Azuria\AnimeManga\AnimeMangaStatus.cs">
       <Link>AnimeManga\AnimeMangaStatus.cs</Link>
     </Compile>
@@ -93,6 +99,9 @@
     <Compile Include="..\Azuria\AnimeManga\MangaType.cs">
       <Link>AnimeManga\MangaType.cs</Link>
     </Compile>
+    <Compile Include="..\Azuria\AnimeManga\Season.cs">
+      <Link>AnimeManga\Season.cs</Link>
+    </Compile>
     <Compile Include="..\Azuria\AnimeManga\TagType.cs">
       <Link>AnimeManga\TagType.cs</Link>
     </Compile>
@@ -132,6 +141,9 @@
     <Compile Include="..\Azuria\Api\v1\Converters\Info\PublisherCountryConverter.cs">
       <Link>Api\v1\Converters\Info\PublisherCountryConverter.cs</Link>
     </Compile>
+    <Compile Include="..\Azuria\Api\v1\Converters\User\UnixToDateTimeConverter.cs">
+      <Link>Api\v1\Converters\User\UnixToDateTimeConverter.cs</Link>
+    </Compile>
     <Compile Include="..\Azuria\Api\v1\DataModels\IDataModel.cs">
       <Link>Api\v1\DataModels\IDataModel.cs</Link>
     </Compile>
@@ -147,8 +159,14 @@
     <Compile Include="..\Azuria\Api\v1\DataModels\Info\PublisherDataModel.cs">
       <Link>Api\v1\DataModels\Info\PublisherDataModel.cs</Link>
     </Compile>
+    <Compile Include="..\Azuria\Api\v1\DataModels\Info\SeasonDataModel.cs">
+      <Link>Api\v1\DataModels\Info\SeasonDataModel.cs</Link>
+    </Compile>
     <Compile Include="..\Azuria\Api\v1\DataModels\User\LoginDataModel.cs">
       <Link>Api\v1\DataModels\User\LoginDataModel.cs</Link>
+    </Compile>
+    <Compile Include="..\Azuria\Api\v1\DataModels\User\UserInfoDataModel.cs">
+      <Link>Api\v1\DataModels\User\UserInfoDataModel.cs</Link>
     </Compile>
     <Compile Include="..\Azuria\Api\v1\Enums\AnimeMangaEntryType.cs">
       <Link>Api\v1\Enums\AnimeMangaEntryType.cs</Link>
@@ -338,6 +356,12 @@
     </Compile>
     <Compile Include="..\Azuria\User\User.cs">
       <Link>User\User.cs</Link>
+    </Compile>
+    <Compile Include="..\Azuria\User\UserPoints.cs">
+      <Link>User\UserPoints.cs</Link>
+    </Compile>
+    <Compile Include="..\Azuria\User\UserStatus.cs">
+      <Link>User\UserStatus.cs</Link>
     </Compile>
     <Compile Include="..\Azuria\Utilities\ErrorHandling\ErrorHandler.cs">
       <Link>Utilities\ErrorHandling\ErrorHandler.cs</Link>

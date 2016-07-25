@@ -47,6 +47,19 @@ namespace System.Timers
 
         #endregion
 
+        #region Inherited
+
+        /// <summary>
+        ///     Führt anwendungsspezifische Aufgaben aus, die mit dem Freigeben, Zurückgeben oder Zurücksetzen von nicht
+        ///     verwalteten Ressourcen zusammenhängen.
+        /// </summary>
+        public void Dispose()
+        {
+            this._ct.Dispose();
+        }
+
+        #endregion
+
         #region
 
         private async void Action()
@@ -66,7 +79,8 @@ namespace System.Timers
                             this._ct.Token);
                 }
                 catch (TaskCanceledException)
-                { }
+                {
+                }
                 if (this._ct.Token.IsCancellationRequested)
                 {
                     this._isFinished = true;
@@ -96,16 +110,6 @@ namespace System.Timers
             if (!this._isFinished &&
                 !this._ct.IsCancellationRequested &&
                 this._ct.Token.CanBeCanceled) this._ct.Cancel();
-        }
-
-        #endregion
-
-        #region Implementation of IDisposable
-
-        /// <summary>Führt anwendungsspezifische Aufgaben aus, die mit dem Freigeben, Zurückgeben oder Zurücksetzen von nicht verwalteten Ressourcen zusammenhängen.</summary>
-        public void Dispose()
-        {
-            this._ct.Dispose();
         }
 
         #endregion

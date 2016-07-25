@@ -66,10 +66,13 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AnimeManga\AnimeMangaRating.cs" />
+    <Compile Include="AnimeManga\AnimeMangaSeason.cs" />
+    <Compile Include="AnimeManga\AnimeMangaSeasonInfo.cs" />
     <Compile Include="AnimeManga\Country.cs" />
     <Compile Include="AnimeManga\GenreHelper.cs" />
     <Compile Include="AnimeManga\GenreType.cs" />
     <Compile Include="AnimeManga\MangaType.cs" />
+    <Compile Include="AnimeManga\Season.cs" />
     <Compile Include="AnimeManga\TagType.cs" />
     <Compile Include="Api\ApiInfo.cs" />
     <Compile Include="Api\v1\ApiRequest.cs" />
@@ -83,10 +86,13 @@
     <Compile Include="Api\v1\Converters\Info\IsLicensedConverter.cs" />
     <Compile Include="Api\v1\Converters\Info\NameTypeConverter.cs" />
     <Compile Include="Api\v1\Converters\Info\PublisherCountryConverter.cs" />
+    <Compile Include="Api\v1\Converters\User\UnixToDateTimeConverter.cs" />
     <Compile Include="Api\v1\DataModels\Info\EntryDataModel.cs" />
     <Compile Include="Api\v1\DataModels\Info\GroupDataModel.cs" />
     <Compile Include="Api\v1\DataModels\Info\NameDataModel.cs" />
     <Compile Include="Api\v1\DataModels\Info\PublisherDataModel.cs" />
+    <Compile Include="Api\v1\DataModels\Info\SeasonDataModel.cs" />
+    <Compile Include="Api\v1\DataModels\User\UserInfoDataModel.cs" />
     <Compile Include="Api\v1\Enums\AnimeMangaEntryType.cs" />
     <Compile Include="Api\v1\Enums\AnimeMangaLanguage.cs" />
     <Compile Include="Api\v1\Enums\AnimeMangaMedium.cs" />
@@ -168,6 +174,8 @@
     <Compile Include="ProxerClass.cs" />
     <Compile Include="Senpai.cs" />
     <Compile Include="User\User.cs" />
+    <Compile Include="User\UserPoints.cs" />
+    <Compile Include="User\UserStatus.cs" />
     <Compile Include="Utilities\ErrorHandling\ErrorHandler.cs" />
     <Compile Include="Utilities\Extensions\AnimeMangaExtensions.cs" />
     <Compile Include="Utilities\Extensions\HtmlAgilityPackExtensions.cs" />
