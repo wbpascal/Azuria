@@ -90,17 +90,6 @@ namespace Azuria.Test
         }
 
         [Test, Order(4)]
-        public async Task Chapter_TitleTest()
-        {
-            Assert.IsNotNull(this._manga);
-            Assert.IsNotNull(this._chapter);
-
-            string lHexString = RandomUtility.GetRandomHexString();
-            string lTitle = await this._chapter.Titel.GetObject(lHexString);
-            Assert.AreNotEqual(lTitle, lHexString);
-        }
-
-        [Test, Order(4)]
         public async Task Chapter_UploaderNameTest()
         {
             Assert.IsNotNull(this._manga);
@@ -331,10 +320,8 @@ namespace Azuria.Test
         public async Task SeasonTest()
         {
             Assert.IsNotNull(this._manga);
-
-            string lHexString = RandomUtility.GetRandomHexString();
-            IEnumerable<string> lSeason = await this._manga.Season.GetObject(new[] {lHexString});
-            Assert.IsFalse(lSeason.Count() == 1 && lSeason.Contains(lHexString));
+            ProxerResult<AnimeMangaSeasonInfo> lSeasonInfo = await this._manga.Season.GetObject();
+            Assert.IsNotNull(lSeasonInfo.Result);
         }
 
         [Test, Order(2)]

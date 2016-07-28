@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Net;
 using System.Threading.Tasks;
+using Azuria.Api;
 using Azuria.Test.Utility;
 using Azuria.Utilities.ErrorHandling;
 using NUnit.Framework;
@@ -22,7 +23,7 @@ namespace Azuria.Test
         [Test, Order(1)]
         public async Task LoginTest()
         {
-            Api.ApiInfo.InitV1(Credentials.ApiKey);
+            ApiInfo.InitV1(Credentials.ApiKey);
             Senpai = new Senpai(Credentials.Username);
 
             ProxerResult<bool> lValid = await Senpai.Login(Credentials.Password);

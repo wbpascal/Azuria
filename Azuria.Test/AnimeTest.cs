@@ -259,10 +259,8 @@ namespace Azuria.Test
         public async Task SeasonTest()
         {
             Assert.IsNotNull(this._anime);
-
-            string lHexString = RandomUtility.GetRandomHexString();
-            IEnumerable<string> lSeason = await this._anime.Season.GetObject(new[] {lHexString});
-            Assert.IsFalse(lSeason.Count() == 1 && lSeason.Contains(lHexString));
+            AnimeMangaSeasonInfo lSeason = await this._anime.Season.GetObject(null);
+            Assert.IsNotNull(lSeason);
         }
 
         [Test, Order(2)]

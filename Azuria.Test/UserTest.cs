@@ -121,8 +121,8 @@ namespace Azuria.Test
         public async Task PointsTest()
         {
             Assert.IsNotNull(this._senpai.Me);
-            int lPoints = await this._senpai.Me.Points.GetObject(int.MinValue);
-            Assert.AreNotEqual(lPoints, int.MinValue);
+            UserPoints lPoints = await this._senpai.Me.Points.GetObject(null);
+            Assert.IsNotNull(lPoints);
         }
 
         [Test, Order(1)]
@@ -151,8 +151,8 @@ namespace Azuria.Test
         public async Task StatusTest()
         {
             Assert.IsNotNull(this._senpai.Me);
-            string lStatus = await this._senpai.Me.Status.GetObject(string.Empty);
-            Assert.IsNotEmpty(lStatus);
+            UserStatus lStatus = await this._senpai.Me.Status.GetObject(null);
+            Assert.IsNotNull(lStatus);
         }
 
         [Test, Order(3)]
