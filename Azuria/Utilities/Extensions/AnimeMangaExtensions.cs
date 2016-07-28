@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using System.Threading.Tasks;
 using Azuria.AnimeManga;
 using Azuria.Api.v1;
@@ -13,6 +14,26 @@ namespace Azuria.Utilities.Extensions
     internal static class AnimeMangaExtensions
     {
         #region
+
+        internal static async Task<ProxerResult<AnimeMangaContentDataModel[]>> GetContentObjects(
+            this IAnimeMangaObject animeMangaObject, Senpai senpai)
+        {
+            ProxerResult<ProxerApiResponse<ListInfoDataModel>> lResult =
+                await
+                    RequestHandler.ApiRequest(ApiRequestBuilder.BuildForGetListInfo(animeMangaObject.Id,
+                        await animeMangaObject.ContentCount.GetObject(-1), senpai));
+            if (!lResult.Success || lResult.Result == null)
+                return new ProxerResult<AnimeMangaContentDataModel[]>(lResult.Exceptions);
+            if (lResult.Result.Error || lResult.Result.Data == null)
+                return
+                    new ProxerResult<AnimeMangaContentDataModel[]>(new[]
+                    {new ProxerApiException(lResult.Result.ErrorCode)});
+            ListInfoDataModel lData = lResult.Result.Data;
+
+            return lData.EndIndex == -1
+                ? new ProxerResult<AnimeMangaContentDataModel[]>(new Exception[0])
+                : new ProxerResult<AnimeMangaContentDataModel[]>(lData.ContentObjects);
+        }
 
         [ItemNotNull]
         internal static async Task<ProxerResult> InitAvailableLangApi(this IAnimeMangaObject animeMangaObject,

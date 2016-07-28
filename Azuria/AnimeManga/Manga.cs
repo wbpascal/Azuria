@@ -251,7 +251,10 @@ namespace Azuria.AnimeManga
         /// </summary>
         /// <param name="language">The language of the episodes.</param>
         /// <seealso cref="Chapter" />
-        /// <returns>An enumeration of <see cref="Chapter">episodes</see> with a count of <see cref="ContentCount" />.</returns>
+        /// <returns>
+        ///     An enumeration of all available <see cref="Chapter">chapters</see> in the specified
+        ///     <paramref name="language">language</paramref> with a max count of <see cref="ContentCount" />.
+        /// </returns>
         [NotNull]
         [ItemNotNull]
         public async Task<ProxerResult<IEnumerable<Chapter>>> GetChapters(Language language)
@@ -259,13 +262,14 @@ namespace Azuria.AnimeManga
             if (!(await this.AvailableLanguages.GetObject(new Language[0])).Contains(language))
                 return new ProxerResult<IEnumerable<Chapter>>(new Exception[] {new LanguageNotAvailableException()});
 
-            List<Chapter> lChapters = new List<Chapter>();
-            for (int i = 1; i <= await this.ContentCount.GetObject(-1); i++)
-            {
-                lChapters.Add(new Chapter(this, i, language, this._senpai));
-            }
+            ProxerResult<AnimeMangaContentDataModel[]> lContentObjectsResult =
+                await this.GetContentObjects(this._senpai);
+            if (!lContentObjectsResult.Success || lContentObjectsResult.Result == null)
+                return new ProxerResult<IEnumerable<Chapter>>(lContentObjectsResult.Exceptions);
 
-            return new ProxerResult<IEnumerable<Chapter>>(lChapters.ToArray());
+            return new ProxerResult<IEnumerable<Chapter>>(from contentDataModel in lContentObjectsResult.Result
+                where (Language) contentDataModel.Language == language
+                select new Chapter(this, contentDataModel, this._senpai));
         }
 
         /// <summary>
@@ -348,25 +352,19 @@ namespace Azuria.AnimeManga
         {
             private readonly Senpai _senpai;
 
-            internal Chapter([NotNull] Manga parentManga, int chapterNumber, Language lang, [NotNull] Senpai senpai)
+            internal Chapter(Manga manga, AnimeMangaContentDataModel dataModel, Senpai senpai)
             {
                 this._senpai = senpai;
-                this.ContentIndex = chapterNumber;
-                this.Language = lang;
-                this.ParentObject = parentManga;
+                this.ContentIndex = dataModel.ContentIndex;
+                this.Language = (Language) dataModel.Language;
+                this.ParentObject = manga;
+                this.Title = dataModel.Title;
 
                 this.IsAvailable = new InitialisableProperty<bool>(this.InitInfo);
                 this.Date = new InitialisableProperty<DateTime>(this.InitInfo);
                 this.Pages = new InitialisableProperty<IEnumerable<Uri>>(this.InitPages);
                 this.ScanlatorGroup = new InitialisableProperty<Group>(this.InitInfo);
-                this.Titel = new InitialisableProperty<string>(this.InitInfo);
                 this.UploaderName = new InitialisableProperty<string>(this.InitInfo);
-            }
-
-            internal Chapter([NotNull] Manga parentManga, int chapterNumber, Language lang, bool isOnline,
-                [NotNull] Senpai senpai) : this(parentManga, chapterNumber, lang, senpai)
-            {
-                this.IsAvailable = new InitialisableProperty<bool>(this.InitInfo, isOnline);
             }
 
             #region Properties
@@ -418,7 +416,7 @@ namespace Azuria.AnimeManga
             ///     Gets the title of the <see cref="Chapter" />.
             /// </summary>
             [NotNull]
-            public InitialisableProperty<string> Titel { get; }
+            public string Title { get; }
 
             /// <summary>
             ///     Gets the name of the uploader of the <see cref="Chapter" />.
@@ -518,9 +516,6 @@ namespace Azuria.AnimeManga
                     {
                         switch (childNode.FirstChild.InnerText)
                         {
-                            case "Titel":
-                                this.Titel.SetInitialisedObject(childNode.ChildNodes[1].InnerText);
-                                break;
                             case "Uploader":
                                 this.UploaderName.SetInitialisedObject(childNode.ChildNodes[1].InnerText);
                                 break;

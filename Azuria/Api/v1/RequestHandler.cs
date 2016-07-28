@@ -36,7 +36,7 @@ namespace Azuria.Api.v1
                 {
                     case ErrorCode.IpBlocked:
                         return new ProxerResult<T>(new[] {new FirewallException()});
-                    case ErrorCode.ApiKeyNotAuthorised:
+                    case ErrorCode.ApiKeyInsufficientPermissions:
                         return new ProxerResult<T>(new[] {new ApiKeyInsufficentException()});
                 }
                 return new ProxerResult<T>(lApiResponse);

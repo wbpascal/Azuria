@@ -85,7 +85,7 @@ namespace Azuria.User.ControlPanel
         }
 
         [NotNull]
-        internal static ProxerResult<AnimeMangaBookmarkObject<T>> ParseNodeFromUcp([NotNull] HtmlNode node,
+        internal static async Task<ProxerResult<AnimeMangaBookmarkObject<T>>> ParseNodeFromUcp([NotNull] HtmlNode node,
             [NotNull] Senpai senpai)
         {
             try
@@ -129,8 +129,9 @@ namespace Azuria.User.ControlPanel
                         }
                         if (lAnimeLanguage == AnimeLanguage.Unknown)
                             return new ProxerResult<AnimeMangaBookmarkObject<T>>(new Exception[0]);
-                        lAnimeMangaObject = new Anime.Episode(new Anime(lAnimeMangaTitle, lAnimeMangaId, senpai),
-                            lNumber, lAnimeLanguage, lIsOnline, senpai);
+                        lAnimeMangaObject = (await
+                            new Anime(lAnimeMangaTitle, lAnimeMangaId, senpai).GetEpisodes(lAnimeLanguage))
+                            .OnError(new Anime.Episode[0])?.FirstOrDefault(episode => episode.ContentIndex == lNumber);
                         break;
                     case "Mangaserie":
                     case "One-Shot":
@@ -144,8 +145,9 @@ namespace Azuria.User.ControlPanel
                                 lMangaLanguage = Language.English;
                                 break;
                         }
-                        lAnimeMangaObject = new Manga.Chapter(new Manga(lAnimeMangaTitle, lAnimeMangaId, senpai),
-                            lNumber, lMangaLanguage, lIsOnline, senpai);
+                        lAnimeMangaObject = (await
+                            new Manga(lAnimeMangaTitle, lAnimeMangaId, senpai).GetChapters(lMangaLanguage))
+                            .OnError(new Manga.Chapter[0])?.FirstOrDefault(episode => episode.ContentIndex == lNumber);
                         break;
                 }
 

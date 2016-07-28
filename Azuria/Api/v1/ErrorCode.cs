@@ -26,7 +26,7 @@
 
         /// <summary>
         /// </summary>
-        ApiKeyNotAuthorised = 1004,
+        ApiKeyInsufficientPermissions = 1004,
 
         /// <summary>
         /// </summary>

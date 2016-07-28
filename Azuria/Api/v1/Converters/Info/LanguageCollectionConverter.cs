@@ -1,10 +1,11 @@
 ﻿using System;
+using System.Collections.Generic;
 using Azuria.Api.v1.Enums;
 using Newtonsoft.Json;
 
 namespace Azuria.Api.v1.Converters.Info
 {
-    internal class LanguageConverter : JsonConverter
+    internal class LanguageCollectionConverter : LanguageConverter
     {
         #region
 
@@ -20,26 +21,6 @@ namespace Azuria.Api.v1.Converters.Info
             return objectType == typeof(string);
         }
 
-        protected AnimeMangaLanguage GetLanguageFromString(string input)
-        {
-            switch (input)
-            {
-                case "de":
-                    return AnimeMangaLanguage.German;
-                case "en":
-                    return AnimeMangaLanguage.English;
-                case "gersub":
-                    return AnimeMangaLanguage.GerSub;
-                case "gerdub":
-                    return AnimeMangaLanguage.GerDub;
-                case "engsub":
-                    return AnimeMangaLanguage.EngSub;
-                case "engdub":
-                    return AnimeMangaLanguage.EngDub;
-            }
-            return AnimeMangaLanguage.Unkown;
-        }
-
         /// <summary>Reads the JSON representation of the object.</summary>
         /// <param name="reader">The <see cref="T:Newtonsoft.Json.JsonReader" /> to read from.</param>
         /// <param name="objectType">Type of the object.</param>
@@ -49,7 +30,13 @@ namespace Azuria.Api.v1.Converters.Info
         public override object ReadJson(JsonReader reader, Type objectType, object existingValue,
             JsonSerializer serializer)
         {
-            return this.GetLanguageFromString(reader.Value.ToString());
+            List<AnimeMangaLanguage> lLanguages = new List<AnimeMangaLanguage>();
+            while (reader.Read())
+            {
+                if (reader.TokenType == JsonToken.EndArray) break;
+                lLanguages.Add(this.GetLanguageFromString(reader.Value.ToString()));
+            }
+            return lLanguages.ToArray();
         }
 
         /// <summary>Writes the JSON representation of the object.</summary>

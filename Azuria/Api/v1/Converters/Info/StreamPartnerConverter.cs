@@ -1,10 +1,11 @@
 ﻿using System;
-using Azuria.Api.v1.Enums;
+using System.Collections.Generic;
+using Azuria.AnimeManga;
 using Newtonsoft.Json;
 
 namespace Azuria.Api.v1.Converters.Info
 {
-    internal class LanguageConverter : JsonConverter
+    internal class StreamPartnerConverter : JsonConverter
     {
         #region
 
@@ -20,26 +21,6 @@ namespace Azuria.Api.v1.Converters.Info
             return objectType == typeof(string);
         }
 
-        protected AnimeMangaLanguage GetLanguageFromString(string input)
-        {
-            switch (input)
-            {
-                case "de":
-                    return AnimeMangaLanguage.German;
-                case "en":
-                    return AnimeMangaLanguage.English;
-                case "gersub":
-                    return AnimeMangaLanguage.GerSub;
-                case "gerdub":
-                    return AnimeMangaLanguage.GerDub;
-                case "engsub":
-                    return AnimeMangaLanguage.EngSub;
-                case "engdub":
-                    return AnimeMangaLanguage.EngDub;
-            }
-            return AnimeMangaLanguage.Unkown;
-        }
-
         /// <summary>Reads the JSON representation of the object.</summary>
         /// <param name="reader">The <see cref="T:Newtonsoft.Json.JsonReader" /> to read from.</param>
         /// <param name="objectType">Type of the object.</param>
@@ -49,7 +30,36 @@ namespace Azuria.Api.v1.Converters.Info
         public override object ReadJson(JsonReader reader, Type objectType, object existingValue,
             JsonSerializer serializer)
         {
-            return this.GetLanguageFromString(reader.Value.ToString());
+            List<StreamPartner> lStreamPartners = new List<StreamPartner>();
+            foreach (string streamPartner in reader.Value.ToString().Split(','))
+            {
+                switch (streamPartner)
+                {
+                    case "mp4upload":
+                        lStreamPartners.Add(StreamPartner.Mp4Upload);
+                        break;
+                    case "crunchyroll_de":
+                    case "crunchyroll_en":
+                        lStreamPartners.Add(StreamPartner.Crunchyroll);
+                        break;
+                    case "dailymotion":
+                        lStreamPartners.Add(StreamPartner.Dailymotion);
+                        break;
+                    case "proxer-stream":
+                        lStreamPartners.Add(StreamPartner.ProxerStream);
+                        break;
+                    case "streamcloud2":
+                        lStreamPartners.Add(StreamPartner.Streamcloud);
+                        break;
+                    case "viewster":
+                        lStreamPartners.Add(StreamPartner.Viewster);
+                        break;
+                    case "yourupload":
+                        lStreamPartners.Add(StreamPartner.YourUpload);
+                        break;
+                }
+            }
+            return lStreamPartners.ToArray();
         }
 
         /// <summary>Writes the JSON representation of the object.</summary>

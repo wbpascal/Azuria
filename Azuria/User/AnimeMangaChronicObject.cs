@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using System.Threading.Tasks;
 using Azuria.AnimeManga;
 using Azuria.Exceptions;
 using Azuria.User.ControlPanel;
@@ -47,7 +48,8 @@ namespace Azuria.User
         #region
 
         [NotNull]
-        internal static ProxerResult<AnimeMangaChronicObject<T>> GetChronicObjectFromNode([NotNull] HtmlNode node,
+        internal static async Task<ProxerResult<AnimeMangaChronicObject<T>>> GetChronicObjectFromNode(
+            [NotNull] HtmlNode node,
             [NotNull] Senpai senpai, bool extended = false)
         {
             try
@@ -102,13 +104,14 @@ namespace Azuria.User
                             break;
                     }
                 }
-
                 Anime lAnime = lAnimeMangaObject as Anime;
                 IAnimeMangaContentBase lAnimeMangaContentBase = lAnime != null
-                    ? new Anime.Episode(lAnime, lNumber, lAnimeLanguage, senpai)
+                    ? (await ((Anime) lAnimeMangaObject).GetEpisodes(lAnimeLanguage)).OnError(new Anime.Episode[0])?
+                        .FirstOrDefault(episode => episode.ContentIndex == lNumber)
                     : lAnimeMangaObject != null
                         ? (IAnimeMangaContentBase)
-                            new Manga.Chapter((Manga) lAnimeMangaObject, lNumber, lLanguage, senpai)
+                            (await ((Manga) lAnimeMangaObject).GetChapters(lLanguage)).OnError(new Manga.Chapter[0])?
+                                .FirstOrDefault(chapter => chapter.ContentIndex == lNumber)
                         : null;
 
                 return lAnimeMangaContentBase == null

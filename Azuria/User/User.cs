@@ -38,7 +38,7 @@ namespace Azuria.User
         /// <param name="senpai">The user that makes the requests.</param>
         public User(int userId, [NotNull] Senpai senpai)
         {
-            //TODO: IsOnline, Ranking
+            //TODO: Wait for update on official API. IsOnline, Ranking
 
             this._senpai = senpai;
             this.Id = userId;
@@ -409,9 +409,9 @@ namespace Azuria.User
                 {
                     lParses++;
                     ProxerResult<AnimeMangaChronicObject<Anime>> lAnimeParseResult =
-                        AnimeMangaChronicObject<Anime>.GetChronicObjectFromNode(chronicNode, this._senpai);
+                        await AnimeMangaChronicObject<Anime>.GetChronicObjectFromNode(chronicNode, this._senpai);
                     ProxerResult<AnimeMangaChronicObject<Manga>> lMangaParseResult =
-                        AnimeMangaChronicObject<Manga>.GetChronicObjectFromNode(chronicNode, this._senpai);
+                        await AnimeMangaChronicObject<Manga>.GetChronicObjectFromNode(chronicNode, this._senpai);
 
                     if (lAnimeParseResult.Success && lAnimeParseResult.Result != null)
                     {

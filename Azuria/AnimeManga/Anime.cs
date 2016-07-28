@@ -280,21 +280,24 @@ namespace Azuria.AnimeManga
         /// </summary>
         /// <param name="language">The language of the episodes.</param>
         /// <seealso cref="Episode" />
-        /// <returns>An enumeration of <see cref="Episode">episodes</see> with a count of <see cref="ContentCount" />.</returns>
-        [NotNull]
+        /// <returns>
+        ///     An enumeration of all available <see cref="Episode">episodes</see> in the specified
+        ///     <paramref name="language">language</paramref> with a max count of <see cref="ContentCount" />.
+        /// </returns>
         [ItemNotNull]
         public async Task<ProxerResult<IEnumerable<Episode>>> GetEpisodes(AnimeLanguage language)
         {
             if (!(await this.AvailableLanguages.GetObject(new AnimeLanguage[0])).Contains(language))
                 return new ProxerResult<IEnumerable<Episode>>(new Exception[] {new LanguageNotAvailableException()});
 
-            List<Episode> lEpisodes = new List<Episode>();
-            for (int i = 1; i <= await this.ContentCount.GetObject(-1); i++)
-            {
-                lEpisodes.Add(new Episode(this, i, language, this._senpai));
-            }
+            ProxerResult<AnimeMangaContentDataModel[]> lContentObjectsResult =
+                await this.GetContentObjects(this._senpai);
+            if (!lContentObjectsResult.Success || lContentObjectsResult.Result == null)
+                return new ProxerResult<IEnumerable<Episode>>(lContentObjectsResult.Exceptions);
 
-            return new ProxerResult<IEnumerable<Episode>>(lEpisodes.ToArray());
+            return new ProxerResult<IEnumerable<Episode>>(from contentDataModel in lContentObjectsResult.Result
+                where (AnimeLanguage) contentDataModel.Language == language
+                select new Episode(this, contentDataModel, this._senpai));
         }
 
         /// <summary>
@@ -347,24 +350,13 @@ namespace Azuria.AnimeManga
         {
             private readonly Senpai _senpai;
 
-            internal Episode([NotNull] Anime anime, int index, AnimeLanguage lang, [NotNull] Senpai senpai)
+            internal Episode([NotNull] Anime anime, AnimeMangaContentDataModel dataModel, Senpai senpai)
             {
-                this.ParentObject = anime;
-                this.ContentIndex = index;
-                this.Language = lang;
                 this._senpai = senpai;
-
-                this.IsAvailable = new InitialisableProperty<bool>(this.InitInfo);
-                this.Streams =
-                    new InitialisableProperty<IEnumerable<KeyValuePair<Stream.StreamPartner, Stream>>>(
-                        this.InitInfo);
-            }
-
-            internal Episode([NotNull] Anime anime, int index, AnimeLanguage lang, bool isAvailable,
-                [NotNull] Senpai senpai)
-                : this(anime, index, lang, senpai)
-            {
-                this.IsAvailable = new InitialisableProperty<bool>(this.InitInfo, isAvailable);
+                this.ContentIndex = dataModel.ContentIndex;
+                this.Language = (AnimeLanguage) dataModel.Language;
+                this.ParentObject = anime;
+                this.Streams = from streamPartner in dataModel.StreamPartners select new Stream(streamPartner);
             }
 
             #region Properties
@@ -386,11 +378,6 @@ namespace Azuria.AnimeManga
                             : AnimeManga.Language.Unkown;
 
             /// <summary>
-            ///     Gets if the <see cref="Episode" /> is available.
-            /// </summary>
-            public InitialisableProperty<bool> IsAvailable { get; }
-
-            /// <summary>
             ///     Gets the language of the episode
             /// </summary>
             public AnimeLanguage Language { get; }
@@ -404,7 +391,7 @@ namespace Azuria.AnimeManga
             ///     Gets the available streams of the episode.
             /// </summary>
             [NotNull]
-            public InitialisableProperty<IEnumerable<KeyValuePair<Stream.StreamPartner, Stream>>> Streams { get; }
+            public IEnumerable<Stream> Streams { get; }
 
             #endregion
 
@@ -428,134 +415,6 @@ namespace Azuria.AnimeManga
             #region
 
             /// <summary>
-            ///     Initialises the object.
-            /// </summary>
-            [ItemNotNull, Obsolete("Bitte benutze die Methoden der jeweiligen Eigenschaften, um sie zu initalisieren!")]
-            public async Task<ProxerResult> Init()
-            {
-                return await this.InitAllInitalisableProperties();
-            }
-
-            [ItemNotNull]
-            private async Task<ProxerResult> InitInfo()
-            {
-                HtmlDocument lDocument = new HtmlDocument();
-                ProxerResult<string> lResult =
-                    await
-                        HttpUtility.GetResponseErrorHandling(
-                            new Uri("https://proxer.me/watch/" + this.ParentObject.Id + "/" + this.ContentIndex + "/" +
-                                    this.Language.ToString().ToLower()),
-                            this._senpai, new Func<string, ProxerResult>[0], useMobileCookies: true);
-
-                if (!lResult.Success)
-                    return new ProxerResult(lResult.Exceptions);
-
-                string lResponse = lResult.Result;
-
-                try
-                {
-                    lDocument.LoadHtml(lResponse);
-
-                    HtmlNode[] lAllHtmlNodes = lDocument.DocumentNode.DescendantsAndSelf().ToArray();
-
-                    if (
-                        lAllHtmlNodes.Any(
-                            x =>
-                                x.Name.Equals("img") && x.HasAttributes &&
-                                x.GetAttributeValue("src", "").Equals("/images/misc/stopyui.jpg")))
-                        return new ProxerResult(new Exception[] {new CaptchaException()});
-
-                    if (
-                        lAllHtmlNodes.Any(
-                            x =>
-                                x.Name.Equals("img") && x.HasAttributes &&
-                                x.GetAttributeValue("src", "").Equals("/images/misc/404.png")))
-                        return new ProxerResult(new Exception[] {new WrongResponseException {Response = lResponse}});
-
-                    List<KeyValuePair<Stream.StreamPartner, Stream>> lStreams =
-                        new List<KeyValuePair<Stream.StreamPartner, Stream>>();
-
-                    foreach (
-                        HtmlNode childNode in
-                            lDocument.DocumentNode.ChildNodes[1].ChildNodes[2].FirstChild.ChildNodes[1].ChildNodes[1]
-                                .ChildNodes.Where(childNode => !childNode.FirstChild.Name.Equals("#text")))
-                    {
-                        switch (childNode.InnerText)
-                        {
-                            case "Viewster":
-                                lStreams.Add(
-                                    new KeyValuePair<Stream.StreamPartner, Stream>(Stream.StreamPartner.Viewster,
-                                        new Stream(
-                                            new Uri("https:" +
-                                                    childNode.FirstChild.GetAttributeValue("href", "http://proxer.me/")),
-                                            Stream.StreamPartner.Viewster)));
-                                break;
-
-                            case "Crunchyroll (EN)":
-                                lStreams.Add(
-                                    new KeyValuePair<Stream.StreamPartner, Stream>(Stream.StreamPartner.Crunchyroll,
-                                        new Stream(
-                                            new Uri("https:" +
-                                                    childNode.FirstChild.GetAttributeValue("href", "http://proxer.me/")),
-                                            Stream.StreamPartner.Crunchyroll)));
-                                break;
-
-                            case "Dailymotion":
-                                lStreams.Add(
-                                    new KeyValuePair<Stream.StreamPartner, Stream>(Stream.StreamPartner.Dailymotion,
-                                        new Stream(
-                                            new Uri(childNode.FirstChild.GetAttributeValue("href", "http://proxer.me/")),
-                                            Stream.StreamPartner.Dailymotion)));
-                                break;
-                            case "MP4Upload":
-                                lStreams.Add(
-                                    new KeyValuePair<Stream.StreamPartner, Stream>(Stream.StreamPartner.Mp4Upload,
-                                        new Stream(
-                                            new Uri(childNode.FirstChild.GetAttributeValue("href", "http://proxer.me/")),
-                                            Stream.StreamPartner.Mp4Upload)));
-                                break;
-                            case "Streamcloud":
-                                lStreams.Add(
-                                    new KeyValuePair<Stream.StreamPartner, Stream>(Stream.StreamPartner.Streamcloud,
-                                        new Stream(
-                                            new Uri(childNode.FirstChild.GetAttributeValue("href", "http://proxer.me/")),
-                                            Stream.StreamPartner.Streamcloud)));
-                                break;
-                            case "Videobam":
-                                lStreams.Add(
-                                    new KeyValuePair<Stream.StreamPartner, Stream>(Stream.StreamPartner.Videobam,
-                                        new Stream(
-                                            new Uri(childNode.FirstChild.GetAttributeValue("href", "http://proxer.me/")),
-                                            Stream.StreamPartner.Videobam)));
-                                break;
-                            case "YourUpload":
-                                lStreams.Add(
-                                    new KeyValuePair<Stream.StreamPartner, Stream>(Stream.StreamPartner.YourUpload,
-                                        new Stream(
-                                            new Uri(childNode.FirstChild.GetAttributeValue("href", "http://proxer.me/")),
-                                            Stream.StreamPartner.YourUpload)));
-                                break;
-                            case "Proxer-Stream":
-                                lStreams.Add(
-                                    new KeyValuePair<Stream.StreamPartner, Stream>(Stream.StreamPartner.ProxerStream,
-                                        new Stream(
-                                            new Uri(childNode.FirstChild.GetAttributeValue("href", "http://proxer.me/")),
-                                            Stream.StreamPartner.ProxerStream)));
-                                break;
-                        }
-                        this.Streams.SetInitialisedObject(lStreams);
-                        this.IsAvailable.SetInitialisedObject(lStreams.Any());
-                    }
-
-                    return new ProxerResult();
-                }
-                catch
-                {
-                    return new ProxerResult(ErrorHandler.HandleError(this._senpai, lResponse, false).Exceptions);
-                }
-            }
-
-            /// <summary>
             ///     Returns a string that represents the current object.
             /// </summary>
             /// <returns>
@@ -573,75 +432,24 @@ namespace Azuria.AnimeManga
             /// </summary>
             public class Stream
             {
-                /// <summary>
-                ///     Represents a streampartner.
-                /// </summary>
-                public enum StreamPartner
+                internal Stream(StreamPartner streamPartner)
                 {
-                    /// <summary>
-                    ///     Represents the streampartner Crunchyroll.
-                    /// </summary>
-                    Crunchyroll,
-
-                    /// <summary>
-                    ///     Represents the streampartner Viewster.
-                    /// </summary>
-                    Viewster,
-
-                    /// <summary>
-                    ///     Represents the streampartner Streamcloud.
-                    /// </summary>
-                    Streamcloud,
-
-                    /// <summary>
-                    ///     Represents the streampartner MP4Upload.
-                    /// </summary>
-                    Mp4Upload,
-
-                    /// <summary>
-                    ///     Represents the streampartner Dailymotion.
-                    /// </summary>
-                    Dailymotion,
-
-                    /// <summary>
-                    ///     Represents the streampartner Videobam.
-                    /// </summary>
-                    Videobam,
-
-                    /// <summary>
-                    ///     Represents the streampartner YourUpload.
-                    /// </summary>
-                    YourUpload,
-
-                    /// <summary>
-                    ///     Represents the internal streampartner of Proxer.Me.
-                    /// </summary>
-                    ProxerStream,
-
-                    /// <summary>
-                    ///     Represents no streampartner.
-                    /// </summary>
-                    None
-                }
-
-                internal Stream([NotNull] Uri link, StreamPartner streamPartner)
-                {
-                    this.Link = link;
                     this.Partner = streamPartner;
                 }
 
                 #region Properties
 
                 /// <summary>
-                ///     Gets the link of the stream.
+                ///     Gets the link of the stream. Currently not implemented.
+                ///     TODO: Wait for update on official API. Implement getting link of stream.
                 /// </summary>
                 [NotNull]
-                public Uri Link { get; private set; }
+                public Uri Link { get; }
 
                 /// <summary>
                 ///     Gets the streampartner of the stream.
                 /// </summary>
-                public StreamPartner Partner { get; private set; }
+                public StreamPartner Partner { get; }
 
                 #endregion
             }

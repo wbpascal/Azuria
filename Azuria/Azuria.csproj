@@ -73,11 +73,16 @@
     <Compile Include="AnimeManga\GenreType.cs" />
     <Compile Include="AnimeManga\MangaType.cs" />
     <Compile Include="AnimeManga\Season.cs" />
+    <Compile Include="AnimeManga\StreamPartner.cs" />
     <Compile Include="AnimeManga\TagType.cs" />
     <Compile Include="Api\ApiInfo.cs" />
     <Compile Include="Api\v1\ApiRequest.cs" />
     <Compile Include="Api\v1\ApiRequestBuilder.cs" />
     <Compile Include="Api\v1\Converters\Info\LanguageConverter.cs" />
+    <Compile Include="Api\v1\Converters\Info\StreamPartnerConverter.cs" />
+    <Compile Include="Api\v1\DataModels\Info\AnimeMangaContentDataModel.cs" />
+    <Compile Include="Api\v1\DataModels\Info\ListInfoDataModel.cs" />
+    <Compile Include="Api\v1\Converters\Info\LanguageCollectionConverter.cs" />
     <Compile Include="Api\v1\Converters\Info\MediumConverter.cs" />
     <Compile Include="Api\v1\Converters\Info\CategoryConverter.cs" />
     <Compile Include="Api\v1\Converters\Info\FskConverter.cs" />

@@ -16,7 +16,7 @@ namespace Azuria.Api.v1
         {
             return new ApiRequest<EntryDataModel>(senpai)
             {
-                Address = new Uri(ApiAddress + "/info/entry?id=" + entryId)
+                Address = new Uri($"{ApiAddress}/info/entry?id={entryId}")
             };
         }
 
@@ -24,7 +24,7 @@ namespace Azuria.Api.v1
         {
             return new ApiRequest<bool>(senpai)
             {
-                Address = new Uri(ApiAddress + "/info/gate?id=" + entryId)
+                Address = new Uri($"{ApiAddress}/info/gate?id={entryId}")
             };
         }
 
@@ -32,7 +32,7 @@ namespace Azuria.Api.v1
         {
             return new ApiRequest<GroupDataModel[]>(senpai)
             {
-                Address = new Uri(ApiAddress + "/info/groups?id=" + entryId)
+                Address = new Uri($"{ApiAddress}/info/groups?id={entryId}")
             };
         }
 
@@ -40,7 +40,15 @@ namespace Azuria.Api.v1
         {
             return new ApiRequest<AnimeMangaLanguage[]>(senpai)
             {
-                Address = new Uri(ApiAddress + "/info/lang?id=" + entryId)
+                Address = new Uri($"{ApiAddress}/info/lang?id={entryId}")
+            };
+        }
+
+        internal static ApiRequest<ListInfoDataModel> BuildForGetListInfo(int entryId, int limit, Senpai senpai)
+        {
+            return new ApiRequest<ListInfoDataModel>(senpai)
+            {
+                Address = new Uri($"{ApiAddress}/info/listinfo?id={entryId}&limit={limit}")
             };
         }
 
@@ -48,7 +56,7 @@ namespace Azuria.Api.v1
         {
             return new ApiRequest<NameDataModel[]>(senpai)
             {
-                Address = new Uri(ApiAddress + "/info/names?id=" + entryId)
+                Address = new Uri($"{ApiAddress}/info/names?id={entryId}")
             };
         }
 
@@ -56,7 +64,7 @@ namespace Azuria.Api.v1
         {
             return new ApiRequest<PublisherDataModel[]>(senpai)
             {
-                Address = new Uri(ApiAddress + "/info/publisher?id=" + entryId)
+                Address = new Uri($"{ApiAddress}/info/publisher?id={entryId}")
             };
         }
 
@@ -64,7 +72,7 @@ namespace Azuria.Api.v1
         {
             return new ApiRequest<SeasonDataModel[]>(senpai)
             {
-                Address = new Uri(ApiAddress + "/info/season?id=" + entryId)
+                Address = new Uri($"{ApiAddress}/info/season?id={entryId}")
             };
         }
 
@@ -72,7 +80,7 @@ namespace Azuria.Api.v1
         {
             return new ApiRequest<UserInfoDataModel>(senpai)
             {
-                Address = new Uri(ApiAddress + "/user/userinfo?uid=" + userId)
+                Address = new Uri($"{ApiAddress}/user/userinfo?uid={userId}")
             };
         }
 
@@ -80,7 +88,7 @@ namespace Azuria.Api.v1
         {
             return new ApiRequest<LoginDataModel>(senpai)
             {
-                Address = new Uri(ApiAddress + "/user/login"),
+                Address = new Uri($"{ApiAddress}/user/login"),
                 PostArguments = new Dictionary<string, string> {{"username", username}, {"password", password}}
             };
         }
@@ -89,7 +97,7 @@ namespace Azuria.Api.v1
         {
             return new ApiRequest(senpai)
             {
-                Address = new Uri(ApiAddress + "/user/logout"),
+                Address = new Uri($"{ApiAddress}/user/logout"),
                 CheckLogin = true
             };
         }

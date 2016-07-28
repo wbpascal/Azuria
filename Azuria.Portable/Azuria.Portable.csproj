@@ -102,6 +102,9 @@
     <Compile Include="..\Azuria\AnimeManga\Season.cs">
       <Link>AnimeManga\Season.cs</Link>
     </Compile>
+    <Compile Include="..\Azuria\AnimeManga\StreamPartner.cs">
+      <Link>AnimeManga\StreamPartner.cs</Link>
+    </Compile>
     <Compile Include="..\Azuria\AnimeManga\TagType.cs">
       <Link>AnimeManga\TagType.cs</Link>
     </Compile>
@@ -129,6 +132,9 @@
     <Compile Include="..\Azuria\Api\v1\Converters\Info\IsLicensedConverter.cs">
       <Link>Api\v1\Converters\Info\IsLicensedConverter.cs</Link>
     </Compile>
+    <Compile Include="..\Azuria\Api\v1\Converters\Info\LanguageCollectionConverter.cs">
+      <Link>Api\v1\Converters\Info\LanguageCollectionConverter.cs</Link>
+    </Compile>
     <Compile Include="..\Azuria\Api\v1\Converters\Info\LanguageConverter.cs">
       <Link>Api\v1\Converters\Info\LanguageConverter.cs</Link>
     </Compile>
@@ -141,17 +147,26 @@
     <Compile Include="..\Azuria\Api\v1\Converters\Info\PublisherCountryConverter.cs">
       <Link>Api\v1\Converters\Info\PublisherCountryConverter.cs</Link>
     </Compile>
+    <Compile Include="..\Azuria\Api\v1\Converters\Info\StreamPartnerConverter.cs">
+      <Link>Api\v1\Converters\Info\StreamPartnerConverter.cs</Link>
+    </Compile>
     <Compile Include="..\Azuria\Api\v1\Converters\User\UnixToDateTimeConverter.cs">
       <Link>Api\v1\Converters\User\UnixToDateTimeConverter.cs</Link>
     </Compile>
     <Compile Include="..\Azuria\Api\v1\DataModels\IDataModel.cs">
       <Link>Api\v1\DataModels\IDataModel.cs</Link>
     </Compile>
+    <Compile Include="..\Azuria\Api\v1\DataModels\Info\AnimeMangaContentDataModel.cs">
+      <Link>Api\v1\DataModels\Info\AnimeMangaContentDataModel.cs</Link>
+    </Compile>
     <Compile Include="..\Azuria\Api\v1\DataModels\Info\EntryDataModel.cs">
       <Link>Api\v1\DataModels\Info\EntryDataModel.cs</Link>
     </Compile>
     <Compile Include="..\Azuria\Api\v1\DataModels\Info\GroupDataModel.cs">
       <Link>Api\v1\DataModels\Info\GroupDataModel.cs</Link>
+    </Compile>
+    <Compile Include="..\Azuria\Api\v1\DataModels\Info\ListInfoDataModel.cs">
+      <Link>Api\v1\DataModels\Info\ListInfoDataModel.cs</Link>
     </Compile>
     <Compile Include="..\Azuria\Api\v1\DataModels\Info\NameDataModel.cs">
       <Link>Api\v1\DataModels\Info\NameDataModel.cs</Link>

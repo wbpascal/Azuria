@@ -185,15 +185,19 @@ namespace Azuria.Notifications.AnimeManga
                     if (typeof(T) == typeof(Anime) && lContentParentType == typeof(Anime))
                         lAnimeMangaUpdateObjects.AddIf(
                             new AnimeMangaNotification<Anime>(lNotificationId,
-                                new Anime.Episode(new Anime(lName, lAnimeMangaId, this._senpai), lNumber, lAnimeLanguage,
-                                    this._senpai), this._senpai) as AnimeMangaNotification<T>,
-                            notification => notification != null);
+                                (await new Anime(lName, lAnimeMangaId, this._senpai).GetEpisodes(lAnimeLanguage))
+                                    .OnError(new Anime.Episode[0])?
+                                    .FirstOrDefault(episode => episode.ContentIndex == lNumber),
+                                this._senpai) as AnimeMangaNotification<T>,
+                            notification => notification?.ContentObject != null);
                     else if (lContentParentType == typeof(Manga))
                         lAnimeMangaUpdateObjects.AddIf(
                             new AnimeMangaNotification<Manga>(lNotificationId,
-                                new Manga.Chapter(new Manga(lName, lAnimeMangaId, this._senpai),
-                                    lNumber, lLanguage, this._senpai), this._senpai) as AnimeMangaNotification<T>,
-                            notification => notification != null);
+                                (await new Manga(lName, lAnimeMangaId, this._senpai).GetChapters(lLanguage))
+                                    .OnError(new Manga.Chapter[0])?
+                                    .FirstOrDefault(chapter => chapter.ContentIndex == lNumber),
+                                this._senpai) as AnimeMangaNotification<T>,
+                            notification => notification?.ContentObject != null);
 
                     lNotificationsParsed++;
                 }

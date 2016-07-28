@@ -447,9 +447,9 @@ namespace Azuria.User.ControlPanel
                 {
                     lParses++;
                     ProxerResult<AnimeMangaBookmarkObject<Anime>> lAnimeParseResult =
-                        AnimeMangaBookmarkObject<Anime>.ParseNodeFromUcp(lBookmarkNode, this._senpai);
+                        await AnimeMangaBookmarkObject<Anime>.ParseNodeFromUcp(lBookmarkNode, this._senpai);
                     ProxerResult<AnimeMangaBookmarkObject<Manga>> lMangaParseResult =
-                        AnimeMangaBookmarkObject<Manga>.ParseNodeFromUcp(lBookmarkNode, this._senpai);
+                        await AnimeMangaBookmarkObject<Manga>.ParseNodeFromUcp(lBookmarkNode, this._senpai);
 
                     if (lAnimeParseResult.Success && lAnimeParseResult.Result != null)
                         lAnimeBookmarkObjects.Add(lAnimeParseResult.Result);
@@ -506,10 +506,10 @@ namespace Azuria.User.ControlPanel
                 {
                     lParses++;
                     ProxerResult<AnimeMangaChronicObject<Anime>> lAnimeParseResult =
-                        AnimeMangaChronicObject<Anime>.GetChronicObjectFromNode(chronicNode, this._senpai,
+                        await AnimeMangaChronicObject<Anime>.GetChronicObjectFromNode(chronicNode, this._senpai,
                             true);
                     ProxerResult<AnimeMangaChronicObject<Manga>> lMangaParseResult =
-                        AnimeMangaChronicObject<Manga>.GetChronicObjectFromNode(chronicNode, this._senpai,
+                        await AnimeMangaChronicObject<Manga>.GetChronicObjectFromNode(chronicNode, this._senpai,
                             true);
 
                     if (lAnimeParseResult.Success && lAnimeParseResult.Result != null)
