@@ -15,6 +15,7 @@ namespace Azuria.User.Comment
 {
     /// <summary>
     ///     Represents an editable comment for an <see cref="Anime">Anime</see> or <see cref="Manga">Manga</see>.
+    ///     TODO: Switch EditableComment to API
     /// </summary>
     public class EditableComment<T> : Comment<T> where T : IAnimeMangaObject
     {
@@ -49,9 +50,10 @@ namespace Azuria.User.Comment
         /// <summary>
         ///     Gets a object with the help of which the progress can be set or retrieved.
         ///     Calling <see cref="Save()" /> is not necessary after changing the progress.
+        ///     TODO: Remake EditableProgress
         /// </summary>
         [NotNull]
-        public EditableAnimeMangaProgress Progress { get; }
+        public new EditableAnimeMangaProgress Progress { get; }
 
         /// <summary>
         ///     Gets or sets the category the user has categorised his progress in.

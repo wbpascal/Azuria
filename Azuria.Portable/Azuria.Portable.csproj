@@ -150,14 +150,20 @@
     <Compile Include="..\Azuria\Api\v1\Converters\Info\StreamPartnerConverter.cs">
       <Link>Api\v1\Converters\Info\StreamPartnerConverter.cs</Link>
     </Compile>
-    <Compile Include="..\Azuria\Api\v1\Converters\User\UnixToDateTimeConverter.cs">
-      <Link>Api\v1\Converters\User\UnixToDateTimeConverter.cs</Link>
+    <Compile Include="..\Azuria\Api\v1\Converters\Info\SubRatingsConverter.cs">
+      <Link>Api\v1\Converters\Info\SubRatingsConverter.cs</Link>
+    </Compile>
+    <Compile Include="..\Azuria\Api\v1\Converters\UnixToDateTimeConverter.cs">
+      <Link>Api\v1\Converters\UnixToDateTimeConverter.cs</Link>
     </Compile>
     <Compile Include="..\Azuria\Api\v1\DataModels\IDataModel.cs">
       <Link>Api\v1\DataModels\IDataModel.cs</Link>
     </Compile>
     <Compile Include="..\Azuria\Api\v1\DataModels\Info\AnimeMangaContentDataModel.cs">
       <Link>Api\v1\DataModels\Info\AnimeMangaContentDataModel.cs</Link>
+    </Compile>
+    <Compile Include="..\Azuria\Api\v1\DataModels\Info\CommentDataModel.cs">
+      <Link>Api\v1\DataModels\Info\CommentDataModel.cs</Link>
     </Compile>
     <Compile Include="..\Azuria\Api\v1\DataModels\Info\EntryDataModel.cs">
       <Link>Api\v1\DataModels\Info\EntryDataModel.cs</Link>
@@ -442,7 +448,9 @@
     <None Include="app.config" />
     <None Include="project.json" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Api\v1\Converters\User\" />
+  </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

@@ -12,6 +12,15 @@ namespace Azuria.Api.v1
 
         #region
 
+        internal static ApiRequest<CommentDataModel[]> BuildForGetComments(int entryId, int page, int limit, string sort,
+            Senpai senpai)
+        {
+            return new ApiRequest<CommentDataModel[]>(senpai)
+            {
+                Address = new Uri($"{ApiAddress}/info/comments?id={entryId}&p={page}&limit={limit}&sort={sort}")
+            };
+        }
+
         internal static ApiRequest<EntryDataModel> BuildForGetEntry(int entryId, Senpai senpai)
         {
             return new ApiRequest<EntryDataModel>(senpai)

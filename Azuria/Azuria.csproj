@@ -80,7 +80,9 @@
     <Compile Include="Api\v1\ApiRequestBuilder.cs" />
     <Compile Include="Api\v1\Converters\Info\LanguageConverter.cs" />
     <Compile Include="Api\v1\Converters\Info\StreamPartnerConverter.cs" />
+    <Compile Include="Api\v1\Converters\Info\SubRatingsConverter.cs" />
     <Compile Include="Api\v1\DataModels\Info\AnimeMangaContentDataModel.cs" />
+    <Compile Include="Api\v1\DataModels\Info\CommentDataModel.cs" />
     <Compile Include="Api\v1\DataModels\Info\ListInfoDataModel.cs" />
     <Compile Include="Api\v1\Converters\Info\LanguageCollectionConverter.cs" />
     <Compile Include="Api\v1\Converters\Info\MediumConverter.cs" />
@@ -91,7 +93,7 @@
     <Compile Include="Api\v1\Converters\Info\IsLicensedConverter.cs" />
     <Compile Include="Api\v1\Converters\Info\NameTypeConverter.cs" />
     <Compile Include="Api\v1\Converters\Info\PublisherCountryConverter.cs" />
-    <Compile Include="Api\v1\Converters\User\UnixToDateTimeConverter.cs" />
+    <Compile Include="Api\v1\Converters\UnixToDateTimeConverter.cs" />
     <Compile Include="Api\v1\DataModels\Info\EntryDataModel.cs" />
     <Compile Include="Api\v1\DataModels\Info\GroupDataModel.cs" />
     <Compile Include="Api\v1\DataModels\Info\NameDataModel.cs" />
@@ -211,7 +213,9 @@
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Api\v1\Converters\User\" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

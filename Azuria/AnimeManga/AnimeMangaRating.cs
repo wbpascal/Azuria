@@ -4,7 +4,7 @@
     /// </summary>
     public class AnimeMangaRating
     {
-        internal AnimeMangaRating(double rating, int voters)
+        internal AnimeMangaRating(decimal rating, int voters)
         {
             this.Rating = rating;
             this.Voters = voters;
@@ -12,7 +12,7 @@
 
         internal AnimeMangaRating(int totalStars, int voters)
         {
-            this.Rating = voters != 0 ? totalStars/(double) voters : 0d;
+            this.Rating = voters != 0 ? totalStars/(decimal) voters : 0;
             this.Voters = voters;
         }
 
@@ -20,7 +20,7 @@
 
         /// <summary>
         /// </summary>
-        public double Rating { get; set; }
+        public decimal Rating { get; set; }
 
         /// <summary>
         /// </summary>

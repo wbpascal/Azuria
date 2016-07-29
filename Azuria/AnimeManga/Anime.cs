@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
+using Azuria.Api.v1;
 using Azuria.Api.v1.DataModels.Info;
 using Azuria.Api.v1.Enums;
 using Azuria.Exceptions;
@@ -255,9 +256,9 @@ namespace Azuria.AnimeManga
         {
             return
                 await
-                    Comment<Anime>.GetCommentsFromUrl(startIndex, count,
-                        "https://proxer.me/info/" + this.Id + "/comments/",
-                        "latest", this._senpai, this);
+                    Comment<Anime>.GetCommentsFromApi(
+                        ApiRequestBuilder.BuildForGetComments(this.Id, startIndex/count, count, "latest", this._senpai),
+                        this);
         }
 
         /// <summary>
@@ -270,9 +271,9 @@ namespace Azuria.AnimeManga
         {
             return
                 await
-                    Comment<Anime>.GetCommentsFromUrl(startIndex, count,
-                        "https://proxer.me/info/" + this.Id + "/comments/",
-                        "rating", this._senpai, this);
+                    Comment<Anime>.GetCommentsFromApi(
+                        ApiRequestBuilder.BuildForGetComments(this.Id, startIndex/count, count, "rating", this._senpai),
+                        this);
         }
 
         /// <summary>

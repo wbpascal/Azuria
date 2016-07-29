@@ -1,13 +1,26 @@
 ﻿using System;
-using Azuria.Utilities;
+using System.Collections.Generic;
+using System.Linq;
+using Azuria.User.Comment;
 using Newtonsoft.Json;
-using Newtonsoft.Json.Converters;
 
-namespace Azuria.Api.v1.Converters.User
+namespace Azuria.Api.v1.Converters.Info
 {
-    internal class UnixToDateTimeConverter : DateTimeConverterBase
+    internal class SubRatingsConverter : JsonConverter
     {
         #region
+
+        /// <summary>
+        ///     Determines whether this instance can convert the specified object type.
+        /// </summary>
+        /// <param name="objectType">Type of the object.</param>
+        /// <returns>
+        ///     <c>true</c> if this instance can convert the specified object type; otherwise, <c>false</c>.
+        /// </returns>
+        public override bool CanConvert(Type objectType)
+        {
+            return true;
+        }
 
         /// <summary>Reads the JSON representation of the object.</summary>
         /// <param name="reader">The <see cref="T:Newtonsoft.Json.JsonReader" /> to read from.</param>
@@ -18,7 +31,11 @@ namespace Azuria.Api.v1.Converters.User
         public override object ReadJson(JsonReader reader, Type objectType, object existingValue,
             JsonSerializer serializer)
         {
-            return Utility.UnixTimeStampToDateTime(Convert.ToInt64(reader.Value));
+            return
+                JsonConvert.DeserializeObject<Dictionary<string, int>>(reader.Value.ToString())
+                    .ToDictionary(
+                        keyValuePair => (RatingCategory) Enum.Parse(typeof(RatingCategory), keyValuePair.Key, true),
+                        keyValuePair => keyValuePair.Value);
         }
 
         /// <summary>Writes the JSON representation of the object.</summary>
@@ -27,6 +44,7 @@ namespace Azuria.Api.v1.Converters.User
         /// <param name="serializer">The calling serializer.</param>
         public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
         {
+            throw new NotImplementedException();
         }
 
         #endregion

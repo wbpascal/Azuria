@@ -289,11 +289,8 @@ namespace Azuria.User
         [ItemNotNull]
         public async Task<ProxerResult<IEnumerable<Comment<IAnimeMangaObject>>>> GetComments(int startIndex, int count)
         {
-            return
-                await
-                    Comment<IAnimeMangaObject>.GetCommentsFromUrl(startIndex, count,
-                        "https://proxer.me/user/" + this.Id + "/latestcomments/",
-                        "", this._senpai, null, true, this);
+            //TODO: Get comments from User
+            return new ProxerResult<IEnumerable<Comment<IAnimeMangaObject>>>(new[] {new NotImplementedException()});
         }
 
         /// <summary>

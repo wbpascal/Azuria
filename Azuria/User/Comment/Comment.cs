@@ -3,10 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Azuria.AnimeManga;
+using Azuria.Api.v1;
+using Azuria.Api.v1.DataModels.Info;
 using Azuria.Exceptions;
 using Azuria.Utilities.ErrorHandling;
 using Azuria.Utilities.Extensions;
-using Azuria.Utilities.Web;
 using HtmlAgilityPack;
 using JetBrains.Annotations;
 
@@ -35,6 +36,19 @@ namespace Azuria.User.Comment
             this.SubRatings = subRatings;
         }
 
+        private Comment(CommentDataModel dataModel, T animeMangaObject, Senpai senpai)
+        {
+            this.AnimeMangaObject = animeMangaObject;
+            this.Author = new User(dataModel.Username, dataModel.UserId,
+                new Uri("https://cdn.proxer.me/avatar/" + dataModel.Avatar), senpai);
+            this.Content = dataModel.CommentContent;
+            this.Progress = dataModel.ContentIndex;
+            this.ProgressState = dataModel.State;
+            this.Rating = dataModel.OverallRating;
+            this.SubRatings = dataModel.SubRatings;
+            this.Upvotes = dataModel.Upvotes;
+        }
+
         #region Properties
 
         /// <summary>
@@ -49,10 +63,14 @@ namespace Azuria.User.Comment
         public User Author { get; }
 
         /// <summary>
-        ///     Gets the content of this comment. Spoilers are wrapped in tags.
+        ///     Gets the content of this comment.
         /// </summary>
         [NotNull]
         public string Content { get; protected set; }
+
+        /// <summary>
+        /// </summary>
+        public int Progress { get; }
 
         /// <summary>
         ///     Gets the category the author has put his progress of the <see cref="Anime" /> or <see cref="Manga" /> in.
@@ -69,6 +87,10 @@ namespace Azuria.User.Comment
         /// </summary>
         [NotNull]
         public Dictionary<RatingCategory, int> SubRatings { get; protected set; }
+
+        /// <summary>
+        /// </summary>
+        public int Upvotes { get; }
 
         #endregion
 
@@ -122,82 +144,18 @@ namespace Azuria.User.Comment
             return lString.Trim().Replace("<br>", "\n");
         }
 
-        [ItemNotNull]
-        internal static async Task<ProxerResult<IEnumerable<Comment<T>>>> GetCommentsFromUrl(int startIndex, int count,
-            [NotNull] string url, [NotNull] string sort, [NotNull] Senpai senpai, T animeMangaObject,
-            bool isUserPage = false,
-            User author = null)
+        internal static async Task<ProxerResult<IEnumerable<Comment<T>>>> GetCommentsFromApi(
+            ApiRequest<CommentDataModel[]> apiRequest, T animeMangaObject)
         {
-            const int lKommentareProSeite = 25;
+            ProxerResult<ProxerApiResponse<CommentDataModel[]>> lResult = await RequestHandler.ApiRequest(apiRequest);
+            if (!lResult.Success || lResult.Result == null)
+                return new ProxerResult<IEnumerable<Comment<T>>>(lResult.Exceptions);
+            if (lResult.Result.Error)
+                return
+                    new ProxerResult<IEnumerable<Comment<T>>>(new[] {new ProxerApiException(lResult.Result.ErrorCode)});
 
-            List<Comment<T>> lReturn = new List<Comment<T>>();
-            int lStartSeite = Convert.ToInt32(startIndex/lKommentareProSeite + 1);
-            HtmlDocument lDocument = new HtmlDocument();
-            Func<string, ProxerResult> lCheckFunc = s =>
-            {
-                lDocument = new HtmlDocument();
-                lDocument.LoadHtml(s);
-
-                HtmlNode lNode;
-
-                if ((lNode = lDocument.DocumentNode.ChildNodes.FirstOrDefault(node =>
-                    node.Name.Equals("p") && node.Attributes.Contains("align") &&
-                    node.Attributes["align"].Value.Equals("center"))) != default(HtmlNode))
-                {
-                    if (lNode.InnerText.Equals("Es existieren bisher keine Kommentare."))
-                        return new ProxerResult(new[] {new WrongResponseException {Response = s}});
-                }
-
-                if ((lNode = lDocument.DocumentNode.ChildNodes.FirstOrDefault(node =>
-                    node.Name.Equals("div") && node.Attributes.Contains("class") &&
-                    node.Attributes["class"].Value.Equals("inner"))) == default(HtmlNode)) return new ProxerResult();
-
-                return lNode.InnerText.Equals("Dieser Benutzer hat bislang keine Kommentare.")
-                    ? new ProxerResult(new[] {new WrongResponseException {Response = s}})
-                    : new ProxerResult();
-            };
-
-            ProxerResult<string> lResult;
-
-            while (count > 0 &&
-                   (lResult =
-                       await
-                           HttpUtility.GetResponseErrorHandling(
-                               new Uri(url + lStartSeite + "?format=raw&sort=" + sort),
-                               senpai, new[] {lCheckFunc}))
-                       .Success)
-            {
-                try
-                {
-                    int i = 0;
-                    foreach (HtmlNode commentNode in lDocument.DocumentNode.ChildNodes.Where(
-                        node =>
-                            node.Name.Equals("table") && node.Attributes.Contains("class") &&
-                            // ReSharper disable once AccessToModifiedClosure
-                            node.Attributes["class"].Value.Equals("details")).TakeWhile(node => count > 0))
-                    {
-                        if (i >= startIndex%lKommentareProSeite)
-                        {
-                            lReturn.Add(
-                                (await ParseComment(commentNode, senpai, animeMangaObject, isUserPage, author))
-                                    .OnError(new Comment<T>(User.System, animeMangaObject, -1, "ERROR",
-                                        AnimeMangaProgressState.Unknown)));
-                            count--;
-                        }
-
-                        i++;
-                    }
-                    lStartSeite++;
-                }
-                catch
-                {
-                    return
-                        new ProxerResult<IEnumerable<Comment<T>>>(
-                            ErrorHandler.HandleError(senpai, lResult.Result, false).Exceptions);
-                }
-            }
-
-            return new ProxerResult<IEnumerable<Comment<T>>>(lReturn);
+            return new ProxerResult<IEnumerable<Comment<T>>>(from commentDataModel in lResult.Result.Data
+                select new Comment<T>(commentDataModel, animeMangaObject, apiRequest.Senpai));
         }
 
         [NotNull]
