@@ -1,7 +1,7 @@
 ﻿using Azuria.Api.v1.DataModels.Info;
 using JetBrains.Annotations;
 
-namespace Azuria.AnimeManga
+namespace Azuria.AnimeManga.Properties
 {
     /// <summary>
     ///     Represents a class which describes a <see cref="Group" />, who translates <see cref="Anime" /> or

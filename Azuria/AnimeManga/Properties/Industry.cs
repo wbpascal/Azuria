@@ -1,7 +1,7 @@
 ﻿using Azuria.Api.v1.DataModels.Info;
 using JetBrains.Annotations;
 
-namespace Azuria.AnimeManga
+namespace Azuria.AnimeManga.Properties
 {
     /// <summary>
     ///     Represents a class which describes the <see cref="Industry" /> of an <see cref="Anime" /> or <see cref="Manga" />.

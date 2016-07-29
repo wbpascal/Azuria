@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Azuria.AnimeManga.Properties;
 using Azuria.Search;
 using Azuria.User.ControlPanel;
 using Azuria.Utilities.ErrorHandling;
@@ -111,6 +112,11 @@ namespace Azuria.AnimeManga
         ///     Gets the rating of the <see cref="Anime" /> or <see cref="Manga" />.
         /// </summary>
         InitialisableProperty<AnimeMangaRating> Rating { get; }
+
+        /// <summary>
+        ///     Gets the relations of the <see cref="Anime" /> or <see cref="Manga" />.
+        /// </summary>
+        InitialisableProperty<IEnumerable<IAnimeMangaObject>> Relations { get; }
 
         /// <summary>
         ///     Gets the seasons the <see cref="Anime" /> or <see cref="Manga" /> aired in.

@@ -1,4 +1,4 @@
-﻿namespace Azuria.AnimeManga
+﻿namespace Azuria.AnimeManga.Properties
 {
     /// <summary>
     ///     Represents an enumeration which describes the type of an <see cref="Anime" />.

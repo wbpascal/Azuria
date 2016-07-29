@@ -1,4 +1,4 @@
-﻿namespace Azuria.AnimeManga
+﻿namespace Azuria.AnimeManga.Properties
 {
     /// <summary>
     ///     Represents a streampartner.

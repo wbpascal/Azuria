@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Azuria.AnimeManga;
+using Azuria.AnimeManga.Properties;
 using Azuria.Utilities;
 using Azuria.Utilities.ErrorHandling;
 using Azuria.Utilities.Extensions;

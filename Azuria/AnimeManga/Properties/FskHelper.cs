@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using JetBrains.Annotations;
 
-namespace Azuria.AnimeManga
+namespace Azuria.AnimeManga.Properties
 {
     /// <summary>
     ///     Represents a class which aims to help working with the <see cref="FskType">Fsk-enumeration</see>.

@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Linq;
-using Azuria.AnimeManga;
+using Azuria.AnimeManga.Properties;
 using Newtonsoft.Json;
 
 namespace Azuria.Api.v1.Converters.Info

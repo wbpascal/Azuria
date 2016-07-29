@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Threading.Tasks;
 using Azuria.AnimeManga;
+using Azuria.AnimeManga.Properties;
 using Azuria.Api.v1;
 using Azuria.Api.v1.DataModels.Info;
 using Azuria.Api.v1.Enums;
@@ -153,6 +154,23 @@ namespace Azuria.Utilities.Extensions
                         break;
                 }
             }
+
+            return new ProxerResult();
+        }
+
+        internal static async Task<ProxerResult> InitRelationsApi(this IAnimeMangaObject animeMangaObject, Senpai senpai)
+        {
+            ProxerResult<ProxerApiResponse<RelationDataModel[]>> lResult =
+                await RequestHandler.ApiRequest(ApiRequestBuilder.BuildForGetRelations(animeMangaObject.Id, senpai));
+            if (!lResult.Success || lResult.Result == null) return new ProxerResult(lResult.Exceptions);
+            if (lResult.Result.Error || lResult.Result.Data == null)
+                return new ProxerResult(new[] {new ProxerApiException(lResult.Result.ErrorCode)});
+
+            animeMangaObject.Relations.SetInitialisedObject(from dataModel in lResult.Result.Data
+                select
+                    dataModel.EntryType == AnimeMangaEntryType.Anime
+                        ? new Anime(dataModel, senpai)
+                        : (IAnimeMangaObject) new Manga(dataModel, senpai));
 
             return new ProxerResult();
         }

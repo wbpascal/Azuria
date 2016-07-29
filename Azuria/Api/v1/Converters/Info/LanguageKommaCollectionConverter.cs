@@ -1,10 +1,10 @@
 ﻿using System;
-using Azuria.AnimeManga.Properties;
+using System.Linq;
 using Newtonsoft.Json;
 
 namespace Azuria.Api.v1.Converters.Info
 {
-    internal class PublisherCountryConverter : JsonConverter
+    internal class LanguageKommaCollectionConverter : LanguageConverter
     {
         #region
 
@@ -29,16 +29,9 @@ namespace Azuria.Api.v1.Converters.Info
         public override object ReadJson(JsonReader reader, Type objectType, object existingValue,
             JsonSerializer serializer)
         {
-            switch (reader.Value.ToString())
-            {
-                case "de":
-                    return Country.Germany;
-                case "us":
-                    return Country.UnitedStates;
-                case "jp":
-                    return Country.Japan;
-            }
-            return Country.Unkown;
+            return
+                (from language in reader.Value.ToString().Split(',') select this.GetLanguageFromString(language))
+                    .ToArray();
         }
 
         /// <summary>Writes the JSON representation of the object.</summary>
@@ -47,7 +40,6 @@ namespace Azuria.Api.v1.Converters.Info
         /// <param name="serializer">The calling serializer.</param>
         public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
         {
-            throw new NotImplementedException();
         }
 
         #endregion

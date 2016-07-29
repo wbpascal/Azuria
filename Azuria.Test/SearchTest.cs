@@ -1,6 +1,7 @@
 ﻿using System.Linq;
 using System.Threading.Tasks;
 using Azuria.AnimeManga;
+using Azuria.AnimeManga.Properties;
 using Azuria.Search;
 using Azuria.Test.Attributes;
 using Azuria.Utilities.ErrorHandling;

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
+using Azuria.AnimeManga.Properties;
 using Azuria.Api.v1;
 using Azuria.Api.v1.DataModels.Info;
 using Azuria.Api.v1.Enums;
@@ -60,6 +61,8 @@ namespace Azuria.AnimeManga
                 IsInitialisedOnce = false
             };
             this.Rating = new InitialisableProperty<AnimeMangaRating>(() => this.InitMainInfoApi(this._senpai));
+            this.Relations =
+                new InitialisableProperty<IEnumerable<IAnimeMangaObject>>(() => this.InitRelationsApi(this._senpai));
             this.Season = new InitialisableProperty<AnimeMangaSeasonInfo>(() => this.InitSeasonsApi(this._senpai));
             this.Status = new InitialisableProperty<AnimeMangaStatus>(() => this.InitMainInfoApi(this._senpai));
             this.Synonym = new InitialisableProperty<string>(() => this.InitNamesApi(this._senpai), string.Empty)
@@ -103,6 +106,11 @@ namespace Azuria.AnimeManga
             this.Name.SetInitialisedObject(entryDataModel.Name);
             this.Rating.SetInitialisedObject(entryDataModel.Rating);
             this.Status.SetInitialisedObject(entryDataModel.State);
+        }
+
+        internal Anime(RelationDataModel dataModel, Senpai senpai) : this((EntryDataModel) dataModel, senpai)
+        {
+            this.AvailableLanguages.SetInitialisedObject(dataModel.AvailableLanguages.Cast<AnimeLanguage>());
         }
 
         #region Properties
@@ -195,9 +203,14 @@ namespace Azuria.AnimeManga
         public InitialisableProperty<string> Name { get; }
 
         /// <summary>
-        ///     Gets the rating of the <see cref="Anime" /> or <see cref="Manga" />.
+        ///     Gets the rating of the <see cref="Anime" />.
         /// </summary>
         public InitialisableProperty<AnimeMangaRating> Rating { get; }
+
+        /// <summary>
+        ///     Gets the relations of the <see cref="Anime" />.
+        /// </summary>
+        public InitialisableProperty<IEnumerable<IAnimeMangaObject>> Relations { get; }
 
         /// <summary>
         ///     Gets the seasons the <see cref="Anime" /> aired in.
@@ -373,10 +386,10 @@ namespace Azuria.AnimeManga
             public Language GeneralLanguage
                 =>
                     this.Language == AnimeLanguage.GerSub || this.Language == AnimeLanguage.GerDub
-                        ? AnimeManga.Language.German
+                        ? Properties.Language.German
                         : this.Language == AnimeLanguage.EngSub || this.Language == AnimeLanguage.EngDub
-                            ? AnimeManga.Language.English
-                            : AnimeManga.Language.Unkown;
+                            ? Properties.Language.English
+                            : Properties.Language.Unkown;
 
             /// <summary>
             ///     Gets the language of the episode

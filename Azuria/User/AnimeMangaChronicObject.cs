@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Threading.Tasks;
 using Azuria.AnimeManga;
+using Azuria.AnimeManga.Properties;
 using Azuria.Exceptions;
 using Azuria.User.ControlPanel;
 using Azuria.Utilities.ErrorHandling;

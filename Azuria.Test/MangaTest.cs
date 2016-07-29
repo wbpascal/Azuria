@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Azuria.AnimeManga;
+using Azuria.AnimeManga.Properties;
 using Azuria.Test.Attributes;
 using Azuria.Test.Utility;
 using Azuria.User;

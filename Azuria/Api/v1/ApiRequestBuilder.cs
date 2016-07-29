@@ -77,6 +77,14 @@ namespace Azuria.Api.v1
             };
         }
 
+        internal static ApiRequest<RelationDataModel[]> BuildForGetRelations(int entryId, Senpai senpai)
+        {
+            return new ApiRequest<RelationDataModel[]>(senpai)
+            {
+                Address = new Uri($"{ApiAddress}/info/relations?id={entryId}")
+            };
+        }
+
         internal static ApiRequest<SeasonDataModel[]> BuildForGetSeason(int entryId, Senpai senpai)
         {
             return new ApiRequest<SeasonDataModel[]>(senpai)

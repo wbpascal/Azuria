@@ -1,6 +1,6 @@
 ﻿using Azuria.Api.v1.DataModels.Info;
 
-namespace Azuria.AnimeManga
+namespace Azuria.AnimeManga.Properties
 {
     /// <summary>
     /// </summary>

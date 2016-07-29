@@ -42,42 +42,6 @@
     <Compile Include="..\Azuria\AnimeManga\Anime.cs">
       <Link>AnimeManga\Anime.cs</Link>
     </Compile>
-    <Compile Include="..\Azuria\AnimeManga\AnimeLanguage.cs">
-      <Link>AnimeManga\AnimeLanguage.cs</Link>
-    </Compile>
-    <Compile Include="..\Azuria\AnimeManga\AnimeMangaRating.cs">
-      <Link>AnimeManga\AnimeMangaRating.cs</Link>
-    </Compile>
-    <Compile Include="..\Azuria\AnimeManga\AnimeMangaSeason.cs">
-      <Link>AnimeManga\AnimeMangaSeason.cs</Link>
-    </Compile>
-    <Compile Include="..\Azuria\AnimeManga\AnimeMangaSeasonInfo.cs">
-      <Link>AnimeManga\AnimeMangaSeasonInfo.cs</Link>
-    </Compile>
-    <Compile Include="..\Azuria\AnimeManga\AnimeMangaStatus.cs">
-      <Link>AnimeManga\AnimeMangaStatus.cs</Link>
-    </Compile>
-    <Compile Include="..\Azuria\AnimeManga\AnimeType.cs">
-      <Link>AnimeManga\AnimeType.cs</Link>
-    </Compile>
-    <Compile Include="..\Azuria\AnimeManga\Country.cs">
-      <Link>AnimeManga\Country.cs</Link>
-    </Compile>
-    <Compile Include="..\Azuria\AnimeManga\FskHelper.cs">
-      <Link>AnimeManga\FskHelper.cs</Link>
-    </Compile>
-    <Compile Include="..\Azuria\AnimeManga\FskType.cs">
-      <Link>AnimeManga\FskType.cs</Link>
-    </Compile>
-    <Compile Include="..\Azuria\AnimeManga\GenreHelper.cs">
-      <Link>AnimeManga\GenreHelper.cs</Link>
-    </Compile>
-    <Compile Include="..\Azuria\AnimeManga\GenreType.cs">
-      <Link>AnimeManga\GenreType.cs</Link>
-    </Compile>
-    <Compile Include="..\Azuria\AnimeManga\Group.cs">
-      <Link>AnimeManga\Group.cs</Link>
-    </Compile>
     <Compile Include="..\Azuria\AnimeManga\IAnimeMangaContent.cs">
       <Link>AnimeManga\IAnimeMangaContent.cs</Link>
     </Compile>
@@ -87,26 +51,62 @@
     <Compile Include="..\Azuria\AnimeManga\IAnimeMangaObject.cs">
       <Link>AnimeManga\IAnimeMangaObject.cs</Link>
     </Compile>
-    <Compile Include="..\Azuria\AnimeManga\Industry.cs">
-      <Link>AnimeManga\Industry.cs</Link>
-    </Compile>
-    <Compile Include="..\Azuria\AnimeManga\Language.cs">
-      <Link>AnimeManga\Language.cs</Link>
-    </Compile>
     <Compile Include="..\Azuria\AnimeManga\Manga.cs">
       <Link>AnimeManga\Manga.cs</Link>
     </Compile>
-    <Compile Include="..\Azuria\AnimeManga\MangaType.cs">
-      <Link>AnimeManga\MangaType.cs</Link>
+    <Compile Include="..\Azuria\AnimeManga\Properties\AnimeLanguage.cs">
+      <Link>AnimeManga\Properties\AnimeLanguage.cs</Link>
     </Compile>
-    <Compile Include="..\Azuria\AnimeManga\Season.cs">
-      <Link>AnimeManga\Season.cs</Link>
+    <Compile Include="..\Azuria\AnimeManga\Properties\AnimeMangaRating.cs">
+      <Link>AnimeManga\Properties\AnimeMangaRating.cs</Link>
     </Compile>
-    <Compile Include="..\Azuria\AnimeManga\StreamPartner.cs">
-      <Link>AnimeManga\StreamPartner.cs</Link>
+    <Compile Include="..\Azuria\AnimeManga\Properties\AnimeMangaSeason.cs">
+      <Link>AnimeManga\Properties\AnimeMangaSeason.cs</Link>
     </Compile>
-    <Compile Include="..\Azuria\AnimeManga\TagType.cs">
-      <Link>AnimeManga\TagType.cs</Link>
+    <Compile Include="..\Azuria\AnimeManga\Properties\AnimeMangaSeasonInfo.cs">
+      <Link>AnimeManga\Properties\AnimeMangaSeasonInfo.cs</Link>
+    </Compile>
+    <Compile Include="..\Azuria\AnimeManga\Properties\AnimeMangaStatus.cs">
+      <Link>AnimeManga\Properties\AnimeMangaStatus.cs</Link>
+    </Compile>
+    <Compile Include="..\Azuria\AnimeManga\Properties\AnimeType.cs">
+      <Link>AnimeManga\Properties\AnimeType.cs</Link>
+    </Compile>
+    <Compile Include="..\Azuria\AnimeManga\Properties\Country.cs">
+      <Link>AnimeManga\Properties\Country.cs</Link>
+    </Compile>
+    <Compile Include="..\Azuria\AnimeManga\Properties\FskHelper.cs">
+      <Link>AnimeManga\Properties\FskHelper.cs</Link>
+    </Compile>
+    <Compile Include="..\Azuria\AnimeManga\Properties\FskType.cs">
+      <Link>AnimeManga\Properties\FskType.cs</Link>
+    </Compile>
+    <Compile Include="..\Azuria\AnimeManga\Properties\GenreHelper.cs">
+      <Link>AnimeManga\Properties\GenreHelper.cs</Link>
+    </Compile>
+    <Compile Include="..\Azuria\AnimeManga\Properties\GenreType.cs">
+      <Link>AnimeManga\Properties\GenreType.cs</Link>
+    </Compile>
+    <Compile Include="..\Azuria\AnimeManga\Properties\Group.cs">
+      <Link>AnimeManga\Properties\Group.cs</Link>
+    </Compile>
+    <Compile Include="..\Azuria\AnimeManga\Properties\Industry.cs">
+      <Link>AnimeManga\Properties\Industry.cs</Link>
+    </Compile>
+    <Compile Include="..\Azuria\AnimeManga\Properties\Language.cs">
+      <Link>AnimeManga\Properties\Language.cs</Link>
+    </Compile>
+    <Compile Include="..\Azuria\AnimeManga\Properties\MangaType.cs">
+      <Link>AnimeManga\Properties\MangaType.cs</Link>
+    </Compile>
+    <Compile Include="..\Azuria\AnimeManga\Properties\Season.cs">
+      <Link>AnimeManga\Properties\Season.cs</Link>
+    </Compile>
+    <Compile Include="..\Azuria\AnimeManga\Properties\StreamPartner.cs">
+      <Link>AnimeManga\Properties\StreamPartner.cs</Link>
+    </Compile>
+    <Compile Include="..\Azuria\AnimeManga\Properties\TagType.cs">
+      <Link>AnimeManga\Properties\TagType.cs</Link>
     </Compile>
     <Compile Include="..\Azuria\Api\ApiInfo.cs">
       <Link>Api\ApiInfo.cs</Link>
@@ -137,6 +137,9 @@
     </Compile>
     <Compile Include="..\Azuria\Api\v1\Converters\Info\LanguageConverter.cs">
       <Link>Api\v1\Converters\Info\LanguageConverter.cs</Link>
+    </Compile>
+    <Compile Include="..\Azuria\Api\v1\Converters\Info\LanguageKommaCollectionConverter.cs">
+      <Link>Api\v1\Converters\Info\LanguageKommaCollectionConverter.cs</Link>
     </Compile>
     <Compile Include="..\Azuria\Api\v1\Converters\Info\MediumConverter.cs">
       <Link>Api\v1\Converters\Info\MediumConverter.cs</Link>
@@ -179,6 +182,9 @@
     </Compile>
     <Compile Include="..\Azuria\Api\v1\DataModels\Info\PublisherDataModel.cs">
       <Link>Api\v1\DataModels\Info\PublisherDataModel.cs</Link>
+    </Compile>
+    <Compile Include="..\Azuria\Api\v1\DataModels\Info\RelationDataModel.cs">
+      <Link>Api\v1\DataModels\Info\RelationDataModel.cs</Link>
     </Compile>
     <Compile Include="..\Azuria\Api\v1\DataModels\Info\SeasonDataModel.cs">
       <Link>Api\v1\DataModels\Info\SeasonDataModel.cs</Link>
