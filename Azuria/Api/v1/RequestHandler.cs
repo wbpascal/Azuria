@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Net;
 using System.Threading.Tasks;
 using Azuria.Exceptions;
@@ -18,11 +19,11 @@ namespace Azuria.Api.v1
 
         internal static async Task<ProxerResult<T>> ApiCustomRequest<T>(ApiRequest request) where T : ProxerApiResponse
         {
-            request.PostArguments.Add("api_key", _apiKey);
             ProxerResult<string> lResult =
                 await
                     HttpUtility.PostResponseErrorHandling(request.Address, request.PostArguments, request.Senpai,
-                        new Func<string, ProxerResult>[0], checkLogin: request.CheckLogin);
+                        new Func<string, ProxerResult>[0], checkLogin: request.CheckLogin,
+                        header: new Dictionary<string, string> {{"proxer-api-key", _apiKey}});
 
             if (!lResult.Success || lResult.Result == null) return new ProxerResult<T>(lResult.Exceptions);
 
@@ -37,7 +38,9 @@ namespace Azuria.Api.v1
                     case ErrorCode.IpBlocked:
                         return new ProxerResult<T>(new[] {new FirewallException()});
                     case ErrorCode.ApiKeyInsufficientPermissions:
-                        return new ProxerResult<T>(new[] {new ApiKeyInsufficentException()});
+                        return new ProxerResult<T>(new[] {new ApiKeyInsufficientException()});
+                    case ErrorCode.UserInsufficientPermissions:
+                        return new ProxerResult<T>(new[] {new SenpaiInsufficientPermissions(request.Senpai)});
                 }
                 return new ProxerResult<T>(lApiResponse);
             }

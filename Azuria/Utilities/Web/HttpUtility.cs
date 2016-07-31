@@ -179,7 +179,7 @@ namespace Azuria.Utilities.Web
         internal static async Task<ProxerResult<string>> PostResponseErrorHandling(
             [NotNull] Uri url, [NotNull] Dictionary<string, string> postArgs, [NotNull] Senpai senpai,
             [CanBeNull] Func<string, ProxerResult>[] checkFuncs, bool useMobileCookies = false, bool checkLogin = true,
-            int recursion = 0)
+            int recursion = 0, Dictionary<string, string> header = null)
         {
             if (checkLogin && !senpai.IsProbablyLoggedIn)
                 return
@@ -193,7 +193,7 @@ namespace Azuria.Utilities.Web
                 lResponseObject =
                     await
                         PostWebRequestResponse(url, useMobileCookies ? senpai.MobileLoginCookies : senpai.LoginCookies,
-                            postArgs, null);
+                            postArgs, header);
             }
             catch (Exception ex)
             {
@@ -238,7 +238,7 @@ namespace Azuria.Utilities.Web
                 return
                     await
                         PostResponseErrorHandling(url, postArgs, senpai, checkFuncs,
-                            useMobileCookies, checkLogin, recursion + 1);
+                            useMobileCookies, checkLogin, recursion + 1, header);
             }
             else
                 return
@@ -259,12 +259,9 @@ namespace Azuria.Utilities.Web
                     }
                 }
 
-            if (string.IsNullOrEmpty(lResponse))
-                return
-                    new ProxerResult<string>(new Exception[] {new WrongResponseException {Response = lResponse}});
-
-            return
-                new ProxerResult<string>(lResponseString);
+            return string.IsNullOrEmpty(lResponse)
+                ? new ProxerResult<string>(new Exception[] {new WrongResponseException {Response = lResponse}})
+                : new ProxerResult<string>(lResponseString);
         }
 
         [ItemNotNull]

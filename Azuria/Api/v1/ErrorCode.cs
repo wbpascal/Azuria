@@ -6,7 +6,7 @@
     {
         /// <summary>
         /// </summary>
-        NoError,
+        NoError = 0,
 
         /// <summary>
         /// </summary>
@@ -31,6 +31,10 @@
         /// <summary>
         /// </summary>
         LoginTokenInvalid = 1005,
+
+        /// <summary>
+        /// </summary>
+        ApiFunctionBlocked = 1006,
 
         /// <summary>
         /// </summary>
@@ -94,6 +98,38 @@
 
         /// <summary>
         /// </summary>
-        LoginDifferentUserLoggedIn = 3013
+        LoginDifferentUserLoggedIn = 3013,
+
+        /// <summary>
+        /// </summary>
+        UserInsufficientPermissions = 3014,
+
+        /// <summary>
+        /// </summary>
+        ListCategoryNotFound = 3015,
+
+        /// <summary>
+        /// </summary>
+        ListMediumNotFound = 3016,
+
+        /// <summary>
+        /// </summary>
+        MediaStyleNotFound = 3017,
+
+        /// <summary>
+        /// </summary>
+        MediaEntryNotFound = 3018,
+
+        /// <summary>
+        /// </summary>
+        MediaChapterNotFound = 3019,
+
+        /// <summary>
+        /// </summary>
+        MediaNoStreamsAvailable = 3020,
+
+        /// <summary>
+        /// </summary>
+        MediaStreamNotFound = 3021
     }
 }

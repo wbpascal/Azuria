@@ -119,7 +119,7 @@ namespace Azuria.Test
                 await
                     this._senpai.Me.Anime.GetObject(
                         new KeyValuePair<AnimeMangaProgressState, AnimeMangaProgressObject<Anime>>[0]);
-            IEnumerable<Anime> lFavouriteAnime = await this._senpai.Me.AnimeFavourites.GetObject(new Anime[0]);
+            IEnumerable<Anime> lFavouriteAnime = await this._senpai.Me.AnimeTopten.GetObject(new Anime[0]);
 
             Assert.IsNotEmpty(lAnimeList);
             Assert.IsNotEmpty(lFavouriteAnime);

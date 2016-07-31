@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
 using Azuria.AnimeManga;
 using Azuria.Api.v1;
 using Azuria.Api.v1.DataModels.User;
+using Azuria.Api.v1.Enums;
 using Azuria.Exceptions;
 using Azuria.Search;
 using Azuria.User.Comment;
@@ -53,8 +55,10 @@ namespace Azuria.User
                 IsInitialisedOnce = false
             };
             this.AnimeChronic = new InitialisableProperty<IEnumerable<AnimeMangaChronicObject<Anime>>>(this.InitChronic);
-            this.AnimeFavourites = new InitialisableProperty<IEnumerable<Anime>>(this.InitAnime);
-            this.MangaFavourites = new InitialisableProperty<IEnumerable<Manga>>(this.InitManga);
+            this.AnimeTopten =
+                new InitialisableProperty<IEnumerable<Anime>>(() => this.InitTopten(AnimeMangaEntryType.Anime));
+            this.MangaTopten =
+                new InitialisableProperty<IEnumerable<Manga>>(() => this.InitTopten(AnimeMangaEntryType.Manga));
             this.Friends = new InitialisableProperty<IEnumerable<User>>(this.InitFriends);
             this.Info = new InitialisableProperty<string>(this.InitInfos);
             this.InfoHtml = new InitialisableProperty<string>(this.InitInfos);
@@ -72,33 +76,25 @@ namespace Azuria.User
 
         internal User([NotNull] string name, int userId, [NotNull] Senpai senpai) : this(userId, senpai)
         {
-            this.UserName = new InitialisableProperty<string>(this.InitMainInfo, name);
+            this.UserName.SetInitialisedObject(name);
         }
 
         internal User(int userId, [CanBeNull] Uri avatar, [NotNull] Senpai senpai)
             : this(userId, senpai)
         {
-            this.Avatar = new InitialisableProperty<Uri>(this.InitMainInfo,
-                avatar ?? new Uri("https://cdn.proxer.me/avatar/nophoto.png"));
+            this.Avatar.SetInitialisedObject(avatar ?? new Uri("https://cdn.proxer.me/avatar/nophoto.png"));
         }
 
         internal User([NotNull] string name, int userId, [CanBeNull] Uri avatar, [NotNull] Senpai senpai)
             : this(name, userId, senpai)
         {
-            this.Avatar = new InitialisableProperty<Uri>(this.InitMainInfo,
-                avatar ?? new Uri("https://cdn.proxer.me/avatar/nophoto.png"));
-        }
-
-        internal User([NotNull] string name, int userId, [CanBeNull] Uri avatar, int points, [NotNull] Senpai senpai)
-            : this(name, userId, avatar, senpai)
-        {
-            //this.Points = new InitialisableProperty<UserPoints>(this.InitMainInfo, points);
+            this.Avatar.SetInitialisedObject(avatar ?? new Uri("https://cdn.proxer.me/avatar/nophoto.png"));
         }
 
         internal User([NotNull] string name, int userId, [NotNull] Uri avatar, bool online, [NotNull] Senpai senpai)
             : this(name, userId, avatar, senpai)
         {
-            this.IsOnline = new InitialisableProperty<bool>(this.InitMainInfo, online);
+            this.IsOnline.SetInitialisedObject(online);
         }
 
         #region Properties
@@ -121,7 +117,7 @@ namespace Azuria.User
         ///     Gets all favourites of the user that are <see cref="AnimeManga.Anime">Anime</see>.
         /// </summary>
         [NotNull]
-        public InitialisableProperty<IEnumerable<Anime>> AnimeFavourites { get; }
+        public InitialisableProperty<IEnumerable<Anime>> AnimeTopten { get; }
 
         /// <summary>
         ///     Gets the avatar of the user.
@@ -173,10 +169,10 @@ namespace Azuria.User
         public InitialisableProperty<IEnumerable<AnimeMangaChronicObject<Manga>>> MangaChronic { get; }
 
         /// <summary>
-        ///     Gets all favourites of the user that are <see cref="AnimeManga.Manga">Manga</see>.
+        ///     Gets the <see cref="AnimeManga.Manga">Manga</see> top ten of the user.
         /// </summary>
         [NotNull]
-        public InitialisableProperty<IEnumerable<Manga>> MangaFavourites { get; }
+        public InitialisableProperty<IEnumerable<Manga>> MangaTopten { get; }
 
         /// <summary>
         ///     Gets the current number of total points the user has.
@@ -338,7 +334,7 @@ namespace Azuria.User
 
                 lDocument.LoadHtml(lResponse);
 
-                this.AnimeFavourites.SetInitialisedObject(lDocument.DocumentNode.ChildNodes[5].ChildNodes.Where(
+                this.AnimeTopten.SetInitialisedObject(lDocument.DocumentNode.ChildNodes[5].ChildNodes.Where(
                     x =>
                         x.HasAttributes && x.Attributes.Contains("href") &&
                         x.Attributes["href"].Value.StartsWith("/info/"))
@@ -570,7 +566,7 @@ namespace Azuria.User
             {
                 lDocument.LoadHtml(lResponse);
 
-                this.MangaFavourites.SetInitialisedObject(lDocument.DocumentNode.ChildNodes[5].ChildNodes.Where(
+                this.MangaTopten.SetInitialisedObject(lDocument.DocumentNode.ChildNodes[5].ChildNodes.Where(
                     x =>
                         x.HasAttributes && x.Attributes.Contains("href") &&
                         x.Attributes["href"].Value.StartsWith("/info/"))
@@ -593,6 +589,26 @@ namespace Azuria.User
             {
                 return new ProxerResult(ErrorHandler.HandleError(this._senpai, lResponse, false).Exceptions);
             }
+        }
+
+        private async Task<ProxerResult> InitTopten(AnimeMangaEntryType category)
+        {
+            ProxerResult<ProxerApiResponse<ToptenDataModel[]>> lResult =
+                await
+                    RequestHandler.ApiRequest(ApiRequestBuilder.BuildForGetTopten(this.Id,
+                        category.ToString().ToLower(), this._senpai));
+            if (!lResult.Success || lResult.Result == null) return new ProxerResult(lResult.Exceptions);
+            if (lResult.Result.Error || lResult.Result.Data == null)
+                return new ProxerResult(new[] {new ProxerApiException(lResult.Result.ErrorCode)});
+
+            if (category == AnimeMangaEntryType.Anime)
+                this.AnimeTopten.SetInitialisedObject(from toptenDataModel in lResult.Result.Data
+                    select new Anime(toptenDataModel.Name, toptenDataModel.EntryId, this._senpai));
+            if (category == AnimeMangaEntryType.Manga)
+                this.MangaTopten.SetInitialisedObject(from toptenDataModel in lResult.Result.Data
+                    select new Manga(toptenDataModel.Name, toptenDataModel.EntryId, this._senpai));
+
+            return new ProxerResult();
         }
 
         [NotNull]

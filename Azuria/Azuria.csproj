@@ -101,6 +101,7 @@
     <Compile Include="Api\v1\DataModels\Info\PublisherDataModel.cs" />
     <Compile Include="Api\v1\DataModels\Info\RelationDataModel.cs" />
     <Compile Include="Api\v1\DataModels\Info\SeasonDataModel.cs" />
+    <Compile Include="Api\v1\DataModels\User\ToptenDataModel.cs" />
     <Compile Include="Api\v1\DataModels\User\UserInfoDataModel.cs" />
     <Compile Include="Api\v1\Enums\AnimeMangaEntryType.cs" />
     <Compile Include="Api\v1\Enums\AnimeMangaLanguage.cs" />
@@ -112,7 +113,7 @@
     <Compile Include="Community\Conference\MessageCollection.cs" />
     <Compile Include="Community\Conference\MessageEnumerator.cs" />
     <Compile Include="Community\Conference\MessagesModel.cs" />
-    <Compile Include="Exceptions\ApiKeyInsufficentException.cs" />
+    <Compile Include="Exceptions\ApiKeyInsufficientException.cs" />
     <Compile Include="Exceptions\CaptchaException.cs" />
     <Compile Include="Exceptions\CloudflareException.cs" />
     <Compile Include="Exceptions\FirewallException.cs" />
@@ -121,6 +122,7 @@
     <Compile Include="Exceptions\NoAccessException.cs" />
     <Compile Include="Exceptions\NotLoggedInException.cs" />
     <Compile Include="Exceptions\ProxerApiException.cs" />
+    <Compile Include="Exceptions\SenpaiInsufficientPermissions.cs" />
     <Compile Include="Exceptions\UserAlreadyLoggedInException.cs" />
     <Compile Include="Exceptions\WrongResponseException.cs" />
     <Compile Include="AnimeManga\Anime.cs" />

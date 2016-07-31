@@ -192,6 +192,9 @@
     <Compile Include="..\Azuria\Api\v1\DataModels\User\LoginDataModel.cs">
       <Link>Api\v1\DataModels\User\LoginDataModel.cs</Link>
     </Compile>
+    <Compile Include="..\Azuria\Api\v1\DataModels\User\ToptenDataModel.cs">
+      <Link>Api\v1\DataModels\User\ToptenDataModel.cs</Link>
+    </Compile>
     <Compile Include="..\Azuria\Api\v1\DataModels\User\UserInfoDataModel.cs">
       <Link>Api\v1\DataModels\User\UserInfoDataModel.cs</Link>
     </Compile>
@@ -234,8 +237,8 @@
     <Compile Include="..\Azuria\Community\Forum\Forum.cs">
       <Link>Community\Forum\Forum.cs</Link>
     </Compile>
-    <Compile Include="..\Azuria\Exceptions\ApiKeyInsufficentException.cs">
-      <Link>Exceptions\ApiKeyInsufficentException.cs</Link>
+    <Compile Include="..\Azuria\Exceptions\ApiKeyInsufficientException.cs">
+      <Link>Exceptions\ApiKeyInsufficientException.cs</Link>
     </Compile>
     <Compile Include="..\Azuria\Exceptions\CaptchaException.cs">
       <Link>Exceptions\CaptchaException.cs</Link>
@@ -260,6 +263,9 @@
     </Compile>
     <Compile Include="..\Azuria\Exceptions\ProxerApiException.cs">
       <Link>Exceptions\ProxerApiException.cs</Link>
+    </Compile>
+    <Compile Include="..\Azuria\Exceptions\SenpaiInsufficientPermissions.cs">
+      <Link>Exceptions\SenpaiInsufficientPermissions.cs</Link>
     </Compile>
     <Compile Include="..\Azuria\Exceptions\UserAlreadyLoggedInException.cs">
       <Link>Exceptions\UserAlreadyLoggedInException.cs</Link>

@@ -218,7 +218,7 @@ namespace Azuria.Search
                       out lUserId))
                 || !int.TryParse(node.ChildNodes[7].InnerText, out lPunkte)) return null;
 
-            return new User.User(lUsername, lUserId, lAvatar, lPunkte, this._senpai);
+            return new User.User(lUsername, lUserId, lAvatar, this._senpai);
         }
 
         #endregion

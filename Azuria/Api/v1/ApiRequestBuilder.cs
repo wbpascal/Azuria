@@ -93,6 +93,14 @@ namespace Azuria.Api.v1
             };
         }
 
+        internal static ApiRequest<ToptenDataModel[]> BuildForGetTopten(int userId, string category, Senpai senpai)
+        {
+            return new ApiRequest<ToptenDataModel[]>(senpai)
+            {
+                Address = new Uri($"{ApiAddress}/user/topten?uid={userId}&kat={category}")
+            };
+        }
+
         internal static ApiRequest<UserInfoDataModel> BuildForGetUserInfo(int userId, Senpai senpai)
         {
             return new ApiRequest<UserInfoDataModel>(senpai)
