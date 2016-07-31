@@ -122,7 +122,6 @@
     <Compile Include="Exceptions\NoAccessException.cs" />
     <Compile Include="Exceptions\NotLoggedInException.cs" />
     <Compile Include="Exceptions\ProxerApiException.cs" />
-    <Compile Include="Exceptions\SenpaiInsufficientPermissions.cs" />
     <Compile Include="Exceptions\UserAlreadyLoggedInException.cs" />
     <Compile Include="Exceptions\WrongResponseException.cs" />
     <Compile Include="AnimeManga\Anime.cs" />
