@@ -83,12 +83,12 @@
     <Compile Include="Api\v1\Converters\Info\LanguageConverter.cs" />
     <Compile Include="Api\v1\Converters\Info\LanguageKommaCollectionConverter.cs" />
     <Compile Include="Api\v1\Converters\Info\StreamPartnerConverter.cs" />
-    <Compile Include="Api\v1\Converters\Info\SubRatingsConverter.cs" />
+    <Compile Include="Api\v1\Converters\SubRatingsConverter.cs" />
     <Compile Include="Api\v1\DataModels\Info\AnimeMangaContentDataModel.cs" />
     <Compile Include="Api\v1\DataModels\Info\CommentDataModel.cs" />
     <Compile Include="Api\v1\DataModels\Info\ListInfoDataModel.cs" />
     <Compile Include="Api\v1\Converters\Info\LanguageCollectionConverter.cs" />
-    <Compile Include="Api\v1\Converters\Info\MediumConverter.cs" />
+    <Compile Include="Api\v1\Converters\MediumConverter.cs" />
     <Compile Include="Api\v1\Converters\Info\CategoryConverter.cs" />
     <Compile Include="Api\v1\Converters\Info\FskConverter.cs" />
     <Compile Include="Api\v1\Converters\Info\GenreConverter.cs" />
@@ -103,6 +103,7 @@
     <Compile Include="Api\v1\DataModels\Info\PublisherDataModel.cs" />
     <Compile Include="Api\v1\DataModels\Info\RelationDataModel.cs" />
     <Compile Include="Api\v1\DataModels\Info\SeasonDataModel.cs" />
+    <Compile Include="Api\v1\DataModels\User\ListDataModel.cs" />
     <Compile Include="Api\v1\DataModels\User\ToptenDataModel.cs" />
     <Compile Include="Api\v1\DataModels\User\UserInfoDataModel.cs" />
     <Compile Include="Api\v1\Enums\AnimeMangaEntryType.cs" />
@@ -186,7 +187,10 @@
     <Compile Include="ProxerClass.cs" />
     <Compile Include="Senpai.cs" />
     <Compile Include="User\User.cs" />
+    <Compile Include="User\UserEntryEnumerable.cs" />
+    <Compile Include="User\UserEntryEnumerator.cs" />
     <Compile Include="User\UserPoints.cs" />
+    <Compile Include="User\UserProfileEntry.cs" />
     <Compile Include="User\UserStatus.cs" />
     <Compile Include="Utilities\ErrorHandling\ErrorHandler.cs" />
     <Compile Include="Utilities\Extensions\AnimeMangaExtensions.cs" />

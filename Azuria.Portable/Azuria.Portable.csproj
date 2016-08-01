@@ -147,9 +147,6 @@
     <Compile Include="..\Azuria\Api\v1\Converters\Info\LanguageKommaCollectionConverter.cs">
       <Link>Api\v1\Converters\Info\LanguageKommaCollectionConverter.cs</Link>
     </Compile>
-    <Compile Include="..\Azuria\Api\v1\Converters\Info\MediumConverter.cs">
-      <Link>Api\v1\Converters\Info\MediumConverter.cs</Link>
-    </Compile>
     <Compile Include="..\Azuria\Api\v1\Converters\Info\NameTypeConverter.cs">
       <Link>Api\v1\Converters\Info\NameTypeConverter.cs</Link>
     </Compile>
@@ -159,8 +156,11 @@
     <Compile Include="..\Azuria\Api\v1\Converters\Info\StreamPartnerConverter.cs">
       <Link>Api\v1\Converters\Info\StreamPartnerConverter.cs</Link>
     </Compile>
-    <Compile Include="..\Azuria\Api\v1\Converters\Info\SubRatingsConverter.cs">
-      <Link>Api\v1\Converters\Info\SubRatingsConverter.cs</Link>
+    <Compile Include="..\Azuria\Api\v1\Converters\MediumConverter.cs">
+      <Link>Api\v1\Converters\MediumConverter.cs</Link>
+    </Compile>
+    <Compile Include="..\Azuria\Api\v1\Converters\SubRatingsConverter.cs">
+      <Link>Api\v1\Converters\SubRatingsConverter.cs</Link>
     </Compile>
     <Compile Include="..\Azuria\Api\v1\Converters\UnixToDateTimeConverter.cs">
       <Link>Api\v1\Converters\UnixToDateTimeConverter.cs</Link>
@@ -194,6 +194,9 @@
     </Compile>
     <Compile Include="..\Azuria\Api\v1\DataModels\Info\SeasonDataModel.cs">
       <Link>Api\v1\DataModels\Info\SeasonDataModel.cs</Link>
+    </Compile>
+    <Compile Include="..\Azuria\Api\v1\DataModels\User\ListDataModel.cs">
+      <Link>Api\v1\DataModels\User\ListDataModel.cs</Link>
     </Compile>
     <Compile Include="..\Azuria\Api\v1\DataModels\User\LoginDataModel.cs">
       <Link>Api\v1\DataModels\User\LoginDataModel.cs</Link>
@@ -393,8 +396,17 @@
     <Compile Include="..\Azuria\User\User.cs">
       <Link>User\User.cs</Link>
     </Compile>
+    <Compile Include="..\Azuria\User\UserEntryEnumerable.cs">
+      <Link>User\UserEntryEnumerable.cs</Link>
+    </Compile>
+    <Compile Include="..\Azuria\User\UserEntryEnumerator.cs">
+      <Link>User\UserEntryEnumerator.cs</Link>
+    </Compile>
     <Compile Include="..\Azuria\User\UserPoints.cs">
       <Link>User\UserPoints.cs</Link>
+    </Compile>
+    <Compile Include="..\Azuria\User\UserProfileEntry.cs">
+      <Link>User\UserProfileEntry.cs</Link>
     </Compile>
     <Compile Include="..\Azuria\User\UserStatus.cs">
       <Link>User\UserStatus.cs</Link>

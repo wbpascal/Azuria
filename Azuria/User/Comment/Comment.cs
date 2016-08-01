@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Azuria.AnimeManga;
 using Azuria.Api.v1.DataModels.Info;
+using Azuria.Api.v1.DataModels.User;
 using Azuria.Exceptions;
 using Azuria.Utilities.ErrorHandling;
 using Azuria.Utilities.Extensions;
@@ -48,6 +49,17 @@ namespace Azuria.User.Comment
             this.Upvotes = dataModel.Upvotes;
         }
 
+        internal Comment(ListDataModel dataModel, User author, T animeMangaObject)
+        {
+            this.AnimeMangaObject = animeMangaObject;
+            this.Author = author;
+            this.Content = dataModel.CommentContent;
+            this.Progress = dataModel.CommentContentIndex;
+            this.ProgressState = dataModel.AuthorState;
+            this.Rating = dataModel.Rating;
+            this.SubRatings = dataModel.CommentSubRatings;
+        }
+
         #region Properties
 
         /// <summary>
@@ -89,7 +101,7 @@ namespace Azuria.User.Comment
 
         /// <summary>
         /// </summary>
-        public int Upvotes { get; }
+        public int Upvotes { get; } = -1;
 
         #endregion
 

@@ -109,6 +109,15 @@ namespace Azuria.Api.v1
             };
         }
 
+        internal static ApiRequest<ListDataModel[]> BuildForGetUserList(int userId, string kat, int page, int limit,
+            Senpai senpai)
+        {
+            return new ApiRequest<ListDataModel[]>(senpai)
+            {
+                Address = new Uri($"{ApiAddress}/user/list?uid={userId}&kat={kat}&p={page}&limit={limit}")
+            };
+        }
+
         internal static ApiRequest<LoginDataModel> BuildForLogin(string username, string password, Senpai senpai)
         {
             return new ApiRequest<LoginDataModel>(senpai)

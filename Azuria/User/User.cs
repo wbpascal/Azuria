@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;
 using System.Threading.Tasks;
 using Azuria.AnimeManga;
 using Azuria.Api.v1;
@@ -44,10 +43,7 @@ namespace Azuria.User
             this._senpai = senpai;
             this.Id = userId;
 
-            this.Anime =
-                new InitialisableProperty
-                    <IEnumerable<KeyValuePair<AnimeMangaProgressState, AnimeMangaProgressObject<Anime>>>>
-                    (this.InitAnime);
+            this.Anime = new UserEntryEnumerable<Anime>(this, this._senpai);
             this.Avatar = new InitialisableProperty<Uri>(this.InitMainInfo,
                 new Uri("https://cdn.proxer.me/avatar/nophoto.png"))
             {
@@ -62,10 +58,7 @@ namespace Azuria.User
             this.Info = new InitialisableProperty<string>(this.InitInfos);
             this.InfoHtml = new InitialisableProperty<string>(this.InitInfos);
             this.IsOnline = new InitialisableProperty<bool>(this.InitMainInfo);
-            this.Manga =
-                new InitialisableProperty
-                    <IEnumerable<KeyValuePair<AnimeMangaProgressState, AnimeMangaProgressObject<Manga>>>>
-                    (this.InitManga);
+            this.Manga = new UserEntryEnumerable<Manga>(this, this._senpai);
             this.MangaChronic = new InitialisableProperty<IEnumerable<AnimeMangaChronicObject<Manga>>>(this.InitChronic);
             this.Points = new InitialisableProperty<UserPoints>(this.InitMainInfo);
             this.Ranking = new InitialisableProperty<string>(this.InitMainInfo);
@@ -102,9 +95,7 @@ namespace Azuria.User
         ///     Gets all <see cref="AnimeManga.Anime" /> the <see cref="User" /> has in his profile.
         /// </summary>
         [NotNull]
-        public
-            InitialisableProperty<IEnumerable<KeyValuePair<AnimeMangaProgressState, AnimeMangaProgressObject<Anime>>>>
-            Anime { get; }
+        public IEnumerable<UserProfileEntry<Anime>> Anime { get; }
 
         /// <summary>
         ///     Gets the chronic entries of the 50 most recent of the user that are <see cref="AnimeManga.Anime">Anime</see>.
@@ -157,9 +148,7 @@ namespace Azuria.User
         ///     Gets all <see cref="AnimeManga.Manga" /> the <see cref="User" /> has in his profile.
         /// </summary>
         [NotNull]
-        public
-            InitialisableProperty<IEnumerable<KeyValuePair<AnimeMangaProgressState, AnimeMangaProgressObject<Manga>>>>
-            Manga { get; }
+        public IEnumerable<UserProfileEntry<Manga>> Manga { get; }
 
         /// <summary>
         ///     Gets the chronic entries of the 50 most recent of the user that are <see cref="AnimeManga.Manga">Manga</see>.
@@ -296,66 +285,6 @@ namespace Azuria.User
         public async Task<ProxerResult> Init()
         {
             return await this.InitAllInitalisableProperties();
-        }
-
-        [ItemNotNull]
-        private async Task<ProxerResult> InitAnime()
-        {
-            if (this.Id == -1) return new ProxerResult();
-
-            HtmlDocument lDocument = new HtmlDocument();
-
-            Func<string, ProxerResult> lCheckFunc = s =>
-            {
-                if (!string.IsNullOrEmpty(s) &&
-                    s.Equals(
-                        "<div class=\"inner\"><h3>Du hast keine Berechtigung um diese Seite zu betreten.</h3></div>"))
-                    return new ProxerResult(new Exception[] {new NoAccessException(nameof(this.InitAnime))});
-
-                return new ProxerResult();
-            };
-
-            ProxerResult<string> lResult =
-                await
-                    HttpUtility.GetResponseErrorHandling(
-                        new Uri("https://proxer.me/user/" + this.Id + "/anime?format=raw"),
-                        this._senpai, new[] {lCheckFunc});
-
-            if (!lResult.Success)
-                return new ProxerResult(lResult.Exceptions);
-
-            string lResponse = lResult.Result;
-
-            try
-            {
-                this.Anime.SetInitialisedObject(
-                    new List<KeyValuePair<AnimeMangaProgressState, AnimeMangaProgressObject<Anime>>>());
-
-                lDocument.LoadHtml(lResponse);
-
-                this.AnimeTopten.SetInitialisedObject(lDocument.DocumentNode.ChildNodes[5].ChildNodes.Where(
-                    x =>
-                        x.HasAttributes && x.Attributes.Contains("href") &&
-                        x.Attributes["href"].Value.StartsWith("/info/"))
-                    .Select(
-                        favouritenNode =>
-                            new Anime(favouritenNode.Attributes["title"].Value,
-                                Convert.ToInt32(
-                                    favouritenNode.Attributes["href"].Value.GetTagContents("/info/", "#top").First()),
-                                this._senpai))
-                    .ToArray());
-
-                ProxerResult<IEnumerable<KeyValuePair<AnimeMangaProgressState, AnimeMangaProgressObject<Anime>>>>
-                    lProcessResult =
-                        this.ProcessAnimeMangaProgressNodes<Anime>(lDocument);
-                if (!lProcessResult.Success) return new ProxerResult(lProcessResult.Exceptions);
-                this.Anime.SetInitialisedObject(lProcessResult.Result);
-                return new ProxerResult();
-            }
-            catch
-            {
-                return new ProxerResult(ErrorHandler.HandleError(this._senpai, lResponse, false).Exceptions);
-            }
         }
 
         [ItemNotNull]
@@ -533,63 +462,6 @@ namespace Azuria.User
             return new ProxerResult();
         }
 
-        [ItemNotNull]
-        private async Task<ProxerResult> InitManga()
-        {
-            if (this.Id == -1) return new ProxerResult();
-
-            HtmlDocument lDocument = new HtmlDocument();
-
-            Func<string, ProxerResult> lCheckFunc = s =>
-            {
-                if (!string.IsNullOrEmpty(s) &&
-                    s.Equals(
-                        "<div class=\"inner\"><h3>Du hast keine Berechtigung um diese Seite zu betreten.</h3></div>"))
-                    return new ProxerResult(new Exception[] {new NoAccessException(nameof(this.InitManga))});
-
-                return new ProxerResult();
-            };
-
-            ProxerResult<string> lResult =
-                await
-                    HttpUtility.GetResponseErrorHandling(
-                        new Uri("https://proxer.me/user/" + this.Id + "/manga?format=raw"),
-                        this._senpai, new[] {lCheckFunc});
-
-            if (!lResult.Success)
-                return new ProxerResult(lResult.Exceptions);
-
-            string lResponse = lResult.Result;
-
-            try
-            {
-                lDocument.LoadHtml(lResponse);
-
-                this.MangaTopten.SetInitialisedObject(lDocument.DocumentNode.ChildNodes[5].ChildNodes.Where(
-                    x =>
-                        x.HasAttributes && x.Attributes.Contains("href") &&
-                        x.Attributes["href"].Value.StartsWith("/info/"))
-                    .Select(
-                        favouritenNode =>
-                            new Manga(favouritenNode.Attributes["title"].Value,
-                                Convert.ToInt32(
-                                    favouritenNode.Attributes["href"].Value.GetTagContents("/info/", "#top").First()),
-                                this._senpai))
-                    .ToArray());
-
-                ProxerResult<IEnumerable<KeyValuePair<AnimeMangaProgressState, AnimeMangaProgressObject<Manga>>>>
-                    lProcessResult =
-                        this.ProcessAnimeMangaProgressNodes<Manga>(lDocument);
-                if (!lProcessResult.Success) return new ProxerResult(lProcessResult.Exceptions);
-                this.Manga.SetInitialisedObject(lProcessResult.Result);
-                return new ProxerResult();
-            }
-            catch
-            {
-                return new ProxerResult(ErrorHandler.HandleError(this._senpai, lResponse, false).Exceptions);
-            }
-        }
-
         private async Task<ProxerResult> InitTopten(AnimeMangaEntryType category)
         {
             ProxerResult<ProxerApiResponse<ToptenDataModel[]>> lResult =
@@ -608,154 +480,6 @@ namespace Azuria.User
                     select new Manga(toptenDataModel.Name, toptenDataModel.EntryId, this._senpai));
 
             return new ProxerResult();
-        }
-
-        [NotNull]
-        private ProxerResult<IEnumerable<KeyValuePair<AnimeMangaProgressState, AnimeMangaProgressObject<T>>>>
-            ProcessAnimeMangaProgressNodes<T>([NotNull] HtmlDocument htmlDocument)
-            where T : IAnimeMangaObject
-        {
-            try
-            {
-                ConstructorInfo lConstructorToInvoke = null;
-                foreach (
-                    ConstructorInfo lDeclaredConstructor in
-                        from lDeclaredConstructor in typeof(T).GetTypeInfo().DeclaredConstructors
-                        let lParameters = lDeclaredConstructor.GetParameters()
-                        where lParameters.Length == 3 && lParameters[0].ParameterType == typeof(string) &&
-                              lParameters[1].ParameterType == typeof(int) &&
-                              lParameters[2].ParameterType == typeof(Senpai)
-                        select lDeclaredConstructor)
-                {
-                    lConstructorToInvoke = lDeclaredConstructor;
-                }
-
-                if (lConstructorToInvoke == null)
-                    return
-                        new ProxerResult
-                            <IEnumerable<KeyValuePair<AnimeMangaProgressState, AnimeMangaProgressObject<T>>>>(
-                            new Exception[0]);
-
-                #region Process Nodes
-
-                List<KeyValuePair<AnimeMangaProgressState, AnimeMangaProgressObject<T>>> lReturnList =
-                    new List<KeyValuePair<AnimeMangaProgressState, AnimeMangaProgressObject<T>>>();
-                foreach (
-                    HtmlNode animeMangaNode in
-                        htmlDocument.DocumentNode.ChildNodes[7].ChildNodes.Where(
-                            x =>
-                                x.HasAttributes && x.Attributes.Contains("id") &&
-                                x.Attributes["id"].Value.StartsWith("entry")))
-                {
-                    object[] lActivatorParameters =
-                    {
-                        animeMangaNode.ChildNodes[1].InnerText,
-                        Convert.ToInt32(
-                            animeMangaNode.ChildNodes[1].FirstChild.GetAttributeValue("title", "Cover:-1")
-                                .Split(':')[1]),
-                        this._senpai
-                    };
-
-                    T lAnimeManga = (T) lConstructorToInvoke.Invoke(lActivatorParameters);
-
-                    if (lAnimeManga != null)
-                        lReturnList.Add(
-                            new KeyValuePair<AnimeMangaProgressState, AnimeMangaProgressObject<T>>(
-                                AnimeMangaProgressState.Finished,
-                                AnimeMangaProgressObject<T>.ParseFromHtmlNode(animeMangaNode, this, lAnimeManga,
-                                    AnimeMangaProgressState.Finished, this._senpai)));
-                }
-
-                foreach (
-                    HtmlNode animeMangaNode in
-                        htmlDocument.DocumentNode.ChildNodes[10].ChildNodes.Where(
-                            x =>
-                                x.HasAttributes && x.Attributes.Contains("id") &&
-                                x.Attributes["id"].Value.StartsWith("entry")))
-                {
-                    object[] lActivatorParameters =
-                    {
-                        animeMangaNode.ChildNodes[1].InnerText,
-                        Convert.ToInt32(
-                            animeMangaNode.ChildNodes[1].FirstChild.GetAttributeValue("title", "Cover:-1")
-                                .Split(':')[1]),
-                        this._senpai
-                    };
-
-                    T lAnimeManga = (T) lConstructorToInvoke.Invoke(lActivatorParameters);
-
-                    if (lAnimeManga != null)
-                        lReturnList.Add(
-                            new KeyValuePair<AnimeMangaProgressState, AnimeMangaProgressObject<T>>(
-                                AnimeMangaProgressState.InProgress,
-                                AnimeMangaProgressObject<T>.ParseFromHtmlNode(animeMangaNode, this, lAnimeManga,
-                                    AnimeMangaProgressState.InProgress, this._senpai)));
-                }
-
-                foreach (
-                    HtmlNode animeMangaNode in
-                        htmlDocument.DocumentNode.ChildNodes[13].ChildNodes.Where(
-                            x =>
-                                x.HasAttributes && x.Attributes.Contains("id") &&
-                                x.Attributes["id"].Value.StartsWith("entry")))
-                {
-                    object[] lActivatorParameters =
-                    {
-                        animeMangaNode.ChildNodes[1].InnerText,
-                        Convert.ToInt32(
-                            animeMangaNode.ChildNodes[1].FirstChild.GetAttributeValue("title", "Cover:-1")
-                                .Split(':')[1]),
-                        this._senpai
-                    };
-
-                    T lAnimeManga = (T) lConstructorToInvoke.Invoke(lActivatorParameters);
-
-                    if (lAnimeManga != null)
-                        lReturnList.Add(
-                            new KeyValuePair<AnimeMangaProgressState, AnimeMangaProgressObject<T>>(
-                                AnimeMangaProgressState.Planned,
-                                AnimeMangaProgressObject<T>.ParseFromHtmlNode(animeMangaNode, this, lAnimeManga,
-                                    AnimeMangaProgressState.Planned, this._senpai)));
-                }
-
-                foreach (
-                    HtmlNode animeMangaNode in
-                        htmlDocument.DocumentNode.ChildNodes[16].ChildNodes.Where(
-                            x =>
-                                x.HasAttributes && x.Attributes.Contains("id") &&
-                                x.Attributes["id"].Value.StartsWith("entry")))
-                {
-                    object[] lActivatorParameters =
-                    {
-                        animeMangaNode.ChildNodes[1].InnerText,
-                        Convert.ToInt32(
-                            animeMangaNode.ChildNodes[1].FirstChild.GetAttributeValue("title", "Cover:-1")
-                                .Split(':')[1]),
-                        this._senpai
-                    };
-
-                    T lAnimeManga = (T) lConstructorToInvoke.Invoke(lActivatorParameters);
-
-                    if (lAnimeManga != null)
-                        lReturnList.Add(
-                            new KeyValuePair<AnimeMangaProgressState, AnimeMangaProgressObject<T>>(
-                                AnimeMangaProgressState.Aborted,
-                                AnimeMangaProgressObject<T>.ParseFromHtmlNode(animeMangaNode, this, lAnimeManga,
-                                    AnimeMangaProgressState.Aborted, this._senpai)));
-                }
-
-                #endregion
-
-                return
-                    new ProxerResult<IEnumerable<KeyValuePair<AnimeMangaProgressState, AnimeMangaProgressObject<T>>>>(
-                        lReturnList);
-            }
-            catch
-            {
-                return
-                    new ProxerResult<IEnumerable<KeyValuePair<AnimeMangaProgressState, AnimeMangaProgressObject<T>>>>(
-                        new Exception[] {new WrongResponseException()});
-            }
         }
 
         /// <summary>

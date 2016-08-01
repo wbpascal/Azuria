@@ -7,7 +7,6 @@ using Azuria.AnimeManga.Properties;
 using Azuria.Test.Attributes;
 using Azuria.Test.Utility;
 using Azuria.User;
-using Azuria.User.Comment;
 using Azuria.User.ControlPanel;
 using Azuria.Utilities.ErrorHandling;
 using NUnit.Framework;
@@ -198,17 +197,7 @@ namespace Azuria.Test
         public async Task GetMangaTest()
         {
             Assert.IsNotNull(this._senpai.Me);
-
-            IEnumerable<KeyValuePair<AnimeMangaProgressState, AnimeMangaProgressObject<Manga>>> lMangaList =
-                await
-                    this._senpai.Me.Manga.GetObject(
-                        new KeyValuePair<AnimeMangaProgressState, AnimeMangaProgressObject<Manga>>[0]);
-            IEnumerable<Manga> lFavouriteManga = await this._senpai.Me.MangaTopten.GetObject(new Manga[0]);
-
-            Assert.IsNotEmpty(lMangaList);
-            Assert.IsNotEmpty(lFavouriteManga);
-
-            this._manga = lMangaList.First().Value.AnimeMangaObject;
+            this._manga = SenpaiTest.Senpai.Me.Manga.First().AnimeMangaObject;
             await Task.Delay(2000);
         }
 
