@@ -40,7 +40,7 @@ namespace Azuria.Api.v1
                     case ErrorCode.ApiKeyInsufficientPermissions:
                         return new ProxerResult<T>(new[] {new ApiKeyInsufficientException()});
                     case ErrorCode.UserInsufficientPermissions:
-                        return new ProxerResult<T>(new[] {new NoAccessException(request.Senpai) });
+                        return new ProxerResult<T>(new[] {new NoAccessException(request.Senpai)});
                 }
                 return new ProxerResult<T>(lApiResponse);
             }

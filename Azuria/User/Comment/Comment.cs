@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Azuria.AnimeManga;
-using Azuria.Api.v1;
 using Azuria.Api.v1.DataModels.Info;
 using Azuria.Exceptions;
 using Azuria.Utilities.ErrorHandling;
@@ -36,7 +35,7 @@ namespace Azuria.User.Comment
             this.SubRatings = subRatings;
         }
 
-        private Comment(CommentDataModel dataModel, T animeMangaObject, Senpai senpai)
+        internal Comment(CommentDataModel dataModel, T animeMangaObject, Senpai senpai)
         {
             this.AnimeMangaObject = animeMangaObject;
             this.Author = new User(dataModel.Username, dataModel.UserId,
@@ -142,20 +141,6 @@ namespace Azuria.User.Comment
             }
 
             return lString.Trim().Replace("<br>", "\n");
-        }
-
-        internal static async Task<ProxerResult<IEnumerable<Comment<T>>>> GetCommentsFromApi(
-            ApiRequest<CommentDataModel[]> apiRequest, T animeMangaObject)
-        {
-            ProxerResult<ProxerApiResponse<CommentDataModel[]>> lResult = await RequestHandler.ApiRequest(apiRequest);
-            if (!lResult.Success || lResult.Result == null)
-                return new ProxerResult<IEnumerable<Comment<T>>>(lResult.Exceptions);
-            if (lResult.Result.Error)
-                return
-                    new ProxerResult<IEnumerable<Comment<T>>>(new[] {new ProxerApiException(lResult.Result.ErrorCode)});
-
-            return new ProxerResult<IEnumerable<Comment<T>>>(from commentDataModel in lResult.Result.Data
-                select new Comment<T>(commentDataModel, animeMangaObject, apiRequest.Senpai));
         }
 
         [NotNull]

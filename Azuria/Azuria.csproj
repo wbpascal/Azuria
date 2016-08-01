@@ -68,6 +68,8 @@
     <Compile Include="AnimeManga\Properties\AnimeMangaRating.cs" />
     <Compile Include="AnimeManga\Properties\AnimeMangaSeason.cs" />
     <Compile Include="AnimeManga\Properties\AnimeMangaSeasonInfo.cs" />
+    <Compile Include="AnimeManga\Properties\CommentEnumerable.cs" />
+    <Compile Include="AnimeManga\Properties\CommentEnumerator.cs" />
     <Compile Include="AnimeManga\Properties\Country.cs" />
     <Compile Include="AnimeManga\Properties\GenreHelper.cs" />
     <Compile Include="AnimeManga\Properties\GenreType.cs" />

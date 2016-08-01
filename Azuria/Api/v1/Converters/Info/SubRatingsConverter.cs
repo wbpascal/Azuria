@@ -31,11 +31,17 @@ namespace Azuria.Api.v1.Converters.Info
         public override object ReadJson(JsonReader reader, Type objectType, object existingValue,
             JsonSerializer serializer)
         {
-            return
-                JsonConvert.DeserializeObject<Dictionary<string, int>>(reader.Value.ToString())
+            try
+            {
+                return JsonConvert.DeserializeObject<Dictionary<string, int>>(reader.Value.ToString())
                     .ToDictionary(
                         keyValuePair => (RatingCategory) Enum.Parse(typeof(RatingCategory), keyValuePair.Key, true),
                         keyValuePair => keyValuePair.Value);
+            }
+            catch (Exception)
+            {
+                return new Dictionary<RatingCategory, int>();
+            }
         }
 
         /// <summary>Writes the JSON representation of the object.</summary>

@@ -72,6 +72,12 @@
     <Compile Include="..\Azuria\AnimeManga\Properties\AnimeType.cs">
       <Link>AnimeManga\Properties\AnimeType.cs</Link>
     </Compile>
+    <Compile Include="..\Azuria\AnimeManga\Properties\CommentEnumerable.cs">
+      <Link>AnimeManga\Properties\CommentEnumerable.cs</Link>
+    </Compile>
+    <Compile Include="..\Azuria\AnimeManga\Properties\CommentEnumerator.cs">
+      <Link>AnimeManga\Properties\CommentEnumerator.cs</Link>
+    </Compile>
     <Compile Include="..\Azuria\AnimeManga\Properties\Country.cs">
       <Link>AnimeManga\Properties\Country.cs</Link>
     </Compile>

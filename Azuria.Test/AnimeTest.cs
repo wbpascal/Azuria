@@ -160,56 +160,12 @@ namespace Azuria.Test
         }
 
         [Test, Order(2)]
-        public async Task GetLatestCommentsTest()
-        {
-            Assert.IsNotNull(this._anime);
-
-            ProxerResult<IEnumerable<Comment<Anime>>> lLatestComments1 = await this._anime.GetCommentsLatest(0, 2);
-            Assert.IsTrue(lLatestComments1.Success);
-            Assert.IsNotNull(lLatestComments1.Result);
-            Assert.IsNotEmpty(lLatestComments1.Result);
-            Assert.IsTrue(lLatestComments1.Result.First().AnimeMangaObject.Id == this._anime.Id);
-
-            await Task.Delay(2000);
-
-            ProxerResult<IEnumerable<Comment<Anime>>> lLatestComments2 = await this._anime.GetCommentsLatest(1, 2);
-            Assert.IsTrue(lLatestComments2.Success);
-            Assert.IsNotNull(lLatestComments2.Result);
-            Assert.IsNotEmpty(lLatestComments2.Result);
-            Assert.IsTrue(lLatestComments2.Result.First().AnimeMangaObject.Id == this._anime.Id);
-
-            Assert.AreEqual(lLatestComments1.Result.Last().Author.Id, lLatestComments2.Result.First().Author.Id);
-        }
-
-        [Test, Order(2)]
         public async Task GetPopularAnimeTest()
         {
             ProxerResult<IEnumerable<Anime>> lPopularAnime = await Anime.GetPopularAnime(this._senpai);
             Assert.IsTrue(lPopularAnime.Success);
             Assert.IsNotNull(lPopularAnime.Result);
             Assert.IsNotEmpty(lPopularAnime.Result);
-        }
-
-        [Test, Order(2)]
-        public async Task GetRatingCommentsTest()
-        {
-            Assert.IsNotNull(this._anime);
-
-            ProxerResult<IEnumerable<Comment<Anime>>> lRatingComments1 = await this._anime.GetCommentsRating(0, 2);
-            Assert.IsTrue(lRatingComments1.Success);
-            Assert.IsNotNull(lRatingComments1.Result);
-            Assert.IsNotEmpty(lRatingComments1.Result);
-            Assert.IsTrue(lRatingComments1.Result.First().AnimeMangaObject.Id == this._anime.Id);
-
-            await Task.Delay(2000);
-
-            ProxerResult<IEnumerable<Comment<Anime>>> lRatingComments2 = await this._anime.GetCommentsRating(1, 2);
-            Assert.IsTrue(lRatingComments2.Success);
-            Assert.IsNotNull(lRatingComments2.Result);
-            Assert.IsNotEmpty(lRatingComments2.Result);
-            Assert.IsTrue(lRatingComments2.Result.First().AnimeMangaObject.Id == this._anime.Id);
-
-            Assert.AreEqual(lRatingComments1.Result.Last().Author.Id, lRatingComments2.Result.First().Author.Id);
         }
 
         [Test, Order(2)]

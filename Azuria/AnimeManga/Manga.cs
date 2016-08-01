@@ -4,7 +4,6 @@ using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using Azuria.AnimeManga.Properties;
-using Azuria.Api.v1;
 using Azuria.Api.v1.DataModels.Info;
 using Azuria.Api.v1.Enums;
 using Azuria.Exceptions;
@@ -125,6 +124,16 @@ namespace Azuria.AnimeManga
         ///     Gets the total amount of clicks the <see cref="Manga" /> recieved. Is reset every 3 months.
         /// </summary>
         public InitialisableProperty<int> Clicks { get; }
+
+        /// <summary>
+        ///     Gets the comments of the <see cref="Anime" /> in a chronological order.
+        /// </summary>
+        public IEnumerable<Comment<Manga>> CommentsLatest => new CommentEnumerable<Manga>(this, "latest", this._senpai);
+
+        /// <summary>
+        ///     Gets the comments of the <see cref="Anime" /> ordered by rating.
+        /// </summary>
+        public IEnumerable<Comment<Manga>> CommentsRating => new CommentEnumerable<Manga>(this, "rating", this._senpai);
 
         /// <summary>
         ///     Gets the count of the <see cref="Chapter">Chapters</see> the <see cref="Manga" /> contains.
@@ -284,36 +293,6 @@ namespace Azuria.AnimeManga
             return new ProxerResult<IEnumerable<Chapter>>(from contentDataModel in lContentObjectsResult.Result
                 where (Language) contentDataModel.Language == language
                 select new Chapter(this, contentDataModel, this._senpai));
-        }
-
-        /// <summary>
-        ///     Gets the comments of the <see cref="Manga" /> in a chronological order.
-        /// </summary>
-        /// <param name="startIndex">The offset of the comments parsed.</param>
-        /// <param name="count">The count of the returned comments starting at <paramref name="startIndex" />.</param>
-        /// <returns>If the action was successful and if it was, an enumeration of the comments.</returns>
-        public async Task<ProxerResult<IEnumerable<Comment<Manga>>>> GetCommentsLatest(int startIndex, int count)
-        {
-            return
-                await
-                    Comment<Manga>.GetCommentsFromApi(
-                        ApiRequestBuilder.BuildForGetComments(this.Id, startIndex/count, count, "latest", this._senpai),
-                        this);
-        }
-
-        /// <summary>
-        ///     Gets the comments of the <see cref="Anime" /> ordered by rating.
-        /// </summary>
-        /// <param name="startIndex">The offset of the comments parsed.</param>
-        /// <param name="count">The count of the returned comments starting at <paramref name="startIndex" />.</param>
-        /// <returns>If the action was successful and if it was, an enumeration of the comments.</returns>
-        public async Task<ProxerResult<IEnumerable<Comment<Manga>>>> GetCommentsRating(int startIndex, int count)
-        {
-            return
-                await
-                    Comment<Manga>.GetCommentsFromApi(
-                        ApiRequestBuilder.BuildForGetComments(this.Id, startIndex/count, count, "rating", this._senpai),
-                        this);
         }
 
         /// <summary>
