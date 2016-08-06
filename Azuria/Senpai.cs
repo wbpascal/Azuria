@@ -18,7 +18,7 @@ namespace Azuria
     /// <summary>
     ///     Represents a user that makes requests to the proxer servers.
     /// </summary>
-    public class Senpai
+    public class Senpai : IDisposable
     {
         private DateTime _cookiesCreated;
         private DateTime _cookiesLastUsed = DateTime.MinValue;
@@ -190,13 +190,12 @@ namespace Azuria
 
         internal async Task<ProxerResult> LoginWithToken(char[] token = null)
         {
-            token = token ?? this.LoginToken;
-            string lLoginToken = new string(token);
-            if (string.IsNullOrEmpty(lLoginToken.Trim()))
+            token = token ?? this.LoginToken ?? new char[0];
+            if (token.Length == 0)
                 return new ProxerResult(new[] {new ArgumentException(nameof(token))});
 
             ProxerResult<ProxerApiResponse<UserInfoDataModel>> lResult =
-                await RequestHandler.ApiRequest(ApiRequestBuilder.BuildForGetUserInfo(null, this), lLoginToken);
+                await RequestHandler.ApiRequest(ApiRequestBuilder.BuildForGetUserInfo(null, this), token);
             if (!lResult.Success || lResult.Result == null) return new ProxerResult(lResult.Exceptions);
             UserInfoDataModel lDataModel = lResult.Result.Data;
             this.LoginToken = token;
@@ -225,6 +224,19 @@ namespace Azuria
         public void UsedCookies()
         {
             this._cookiesLastUsed = DateTime.Now;
+        }
+
+        #endregion
+
+        #region Implementation of IDisposable
+
+        /// <summary>Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.</summary>
+        public void Dispose()
+        {
+            for (int i = 0; this.LoginToken != null && i < this.LoginToken.Length; i++)
+            {
+                this.LoginToken[i] = (char) 0;
+            }
         }
 
         #endregion

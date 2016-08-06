@@ -18,16 +18,17 @@ namespace Azuria.Api.v1
 
         #region
 
-        internal static async Task<ProxerResult<T>> ApiCustomRequest<T>(ApiRequest request, string loginToken = "",
+        internal static async Task<ProxerResult<T>> ApiCustomRequest<T>(ApiRequest request, char[] loginToken = null,
             int recursion = 0) where T : ProxerApiResponse
         {
+            loginToken = loginToken ?? new char[0];
             ProxerResult<string> lResult =
                 await
                     HttpUtility.PostResponseErrorHandling(request.Address, request.PostArguments, request.Senpai,
                         new Func<string, ProxerResult>[0], checkLogin: request.CheckLogin,
                         header:
                             new Dictionary<string, string> {{"proxer-api-key", _apiKey}}.AddIfAndReturn(
-                                "proxer-api-token", loginToken, (key, value) => !string.IsNullOrEmpty(value.Trim()))
+                                "proxer-api-token", new string(loginToken), (key, value) => !string.IsNullOrEmpty(value.Trim()))
                                 .AddIfAndReturn("proxer-api-token", new string(request.Senpai.LoginToken),
                                     (key, value, source) =>
                                         request.CheckLogin && !request.Senpai.IsProbablyLoggedIn &&
@@ -69,12 +70,12 @@ namespace Azuria.Api.v1
         }
 
         internal static Task<ProxerResult<ProxerApiResponse<T>>> ApiRequest<T>(ApiRequest<T> request,
-            string loginToken = "")
+            char[] loginToken = null)
         {
             return ApiCustomRequest<ProxerApiResponse<T>>(request, loginToken);
         }
 
-        internal static Task<ProxerResult<ProxerApiResponse>> ApiRequest(ApiRequest request, string loginToken = "")
+        internal static Task<ProxerResult<ProxerApiResponse>> ApiRequest(ApiRequest request, char[] loginToken = null)
         {
             return ApiCustomRequest<ProxerApiResponse>(request, loginToken);
         }
