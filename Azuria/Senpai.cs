@@ -20,9 +20,9 @@ namespace Azuria
     /// </summary>
     public class Senpai
     {
-        private readonly string _username;
         private DateTime _cookiesCreated;
         private DateTime _cookiesLastUsed = DateTime.MinValue;
+        private string _username;
 
         /// <summary>
         /// </summary>
@@ -45,6 +45,10 @@ namespace Azuria
             this.Me = senpai.Me;
         }
 
+        internal Senpai()
+        {
+        }
+
         #region Properties
 
         /// <summary>
@@ -65,6 +69,11 @@ namespace Azuria
         /// </summary>
         [NotNull]
         public CookieContainer LoginCookies { get; } = new CookieContainer();
+
+        /// <summary>
+        /// </summary>
+        [CanBeNull]
+        public char[] LoginToken { get; protected set; }
 
         /// <summary>
         ///     Gets the profile of the user.
@@ -94,6 +103,17 @@ namespace Azuria
         #endregion
 
         #region
+
+        /// <summary>
+        /// </summary>
+        /// <param name="token"></param>
+        /// <returns></returns>
+        public static async Task<ProxerResult<Senpai>> FromToken(char[] token)
+        {
+            Senpai lSenpai = new Senpai();
+            ProxerResult lResult = await lSenpai.LoginWithToken(token);
+            return !lResult.Success ? new ProxerResult<Senpai>(lResult.Exceptions) : new ProxerResult<Senpai>(lSenpai);
+        }
 
         /// <summary>
         ///     Fetches all messaging conferences the user is part of.
@@ -155,19 +175,36 @@ namespace Azuria
 
             ProxerResult<ProxerApiResponse<LoginDataModel>> lResult =
                 await RequestHandler.ApiRequest(ApiRequestBuilder.BuildForLogin(this._username, password, this));
-            if (!lResult.Success || lResult.Result == null) return new ProxerResult<bool>(lResult.Exceptions);
-            if (lResult.Result.Error && lResult.Result.ErrorCode != ErrorCode.LoginUserAlreadyLoggedIn)
+            if (!lResult.Success || lResult.Result == null)
             {
-                return lResult.Result.ErrorCode == ErrorCode.LoginCredentialsWrong
-                    ? new ProxerResult<bool>(false)
-                    : new ProxerResult<bool>(new[] {new ProxerApiException(lResult.Result.ErrorCode)});
+                return new ProxerResult<bool>(lResult.Exceptions);
             }
 
             this.Me = new User.User(this._username, lResult.Result.Data.UserId,
                 new Uri("https://cdn.proxer.me/avatar/" + lResult.Result.Data.Avatar), this);
             this._cookiesCreated = DateTime.Now;
+            this.LoginToken = lResult.Result.Data.Token.ToCharArray();
 
             return new ProxerResult<bool>(true);
+        }
+
+        internal async Task<ProxerResult> LoginWithToken(char[] token = null)
+        {
+            token = token ?? this.LoginToken;
+            string lLoginToken = new string(token);
+            if (string.IsNullOrEmpty(lLoginToken.Trim()))
+                return new ProxerResult(new[] {new ArgumentException(nameof(token))});
+
+            ProxerResult<ProxerApiResponse<UserInfoDataModel>> lResult =
+                await RequestHandler.ApiRequest(ApiRequestBuilder.BuildForGetUserInfo(null, this), lLoginToken);
+            if (!lResult.Success || lResult.Result == null) return new ProxerResult(lResult.Exceptions);
+            UserInfoDataModel lDataModel = lResult.Result.Data;
+            this.LoginToken = token;
+            this.Me = new User.User(lDataModel, this);
+            this._username = lDataModel.Username;
+            this._cookiesCreated = DateTime.Now;
+
+            return new ProxerResult();
         }
 
         /// <summary>

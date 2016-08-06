@@ -15,6 +15,11 @@ namespace Azuria.Api.v1.DataModels.User
 
         /// <summary>
         /// </summary>
+        [JsonProperty("token")]
+        public string Token { get; set; }
+
+        /// <summary>
+        /// </summary>
         [JsonProperty("uid")]
         public int UserId { get; set; }
 

@@ -2,7 +2,6 @@
 using Azuria.AnimeManga.Properties;
 using Azuria.User.ControlPanel;
 using Azuria.Utilities.ErrorHandling;
-using JetBrains.Annotations;
 
 namespace Azuria.AnimeManga
 {
@@ -24,7 +23,6 @@ namespace Azuria.AnimeManga
         ///     Gets the <see cref="Anime" /> or <see cref="Manga" /> this <see cref="Anime.Episode" /> or
         ///     <see cref="Manga.Chapter" /> belongs to.
         /// </summary>
-        [NotNull]
         T ParentObject { get; }
 
         #endregion
@@ -38,7 +36,6 @@ namespace Azuria.AnimeManga
         /// </summary>
         /// <param name="userControlPanel">The object which, if specified, this object is added to.</param>
         /// <returns>If the action was successful.</returns>
-        [ItemNotNull]
         Task<ProxerResult<AnimeMangaBookmarkObject<T>>> AddToBookmarks(UserControlPanel userControlPanel = null);
 
         #endregion

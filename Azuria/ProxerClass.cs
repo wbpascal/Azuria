@@ -3,7 +3,6 @@ using Azuria.AnimeManga;
 using Azuria.Api.v1;
 using Azuria.Api.v1.DataModels.Info;
 using Azuria.Api.v1.Enums;
-using Azuria.Exceptions;
 using Azuria.Utilities.ErrorHandling;
 using JetBrains.Annotations;
 
@@ -32,8 +31,6 @@ namespace Azuria
                 await RequestHandler.ApiRequest(ApiRequestBuilder.BuildForGetEntry(id, senpai));
             if (!lResult.Success || lResult.Result == null)
                 return new ProxerResult<IAnimeMangaObject>(lResult.Exceptions);
-            if (lResult.Result.Error || lResult.Result.Data == null)
-                return new ProxerResult<IAnimeMangaObject>(new[] {new ProxerApiException(lResult.Result.ErrorCode)});
             EntryDataModel lDataModel = lResult.Result.Data;
 
             return

@@ -61,6 +61,14 @@ namespace Azuria.Api.v1
             };
         }
 
+        internal static ApiRequest<int> BuildForGetListsum(Senpai senpai, string kat = "anime")
+        {
+            return new ApiRequest<int>(senpai)
+            {
+                Address = new Uri($"{ApiAddress}/ucp/listsum?kat={kat}")
+            };
+        }
+
         internal static ApiRequest<NameDataModel[]> BuildForGetName(int entryId, Senpai senpai)
         {
             return new ApiRequest<NameDataModel[]>(senpai)
@@ -101,11 +109,11 @@ namespace Azuria.Api.v1
             };
         }
 
-        internal static ApiRequest<UserInfoDataModel> BuildForGetUserInfo(int userId, Senpai senpai)
+        internal static ApiRequest<UserInfoDataModel> BuildForGetUserInfo(int? userId, Senpai senpai)
         {
             return new ApiRequest<UserInfoDataModel>(senpai)
             {
-                Address = new Uri($"{ApiAddress}/user/userinfo?uid={userId}")
+                Address = new Uri($"{ApiAddress}/user/userinfo?uid={userId?.ToString() ?? ""}")
             };
         }
 

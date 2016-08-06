@@ -420,6 +420,9 @@
     <Compile Include="..\Azuria\Utilities\Extensions\AnimeMangaExtensions.cs">
       <Link>Utilities\Extensions\AnimeMangaExtensions.cs</Link>
     </Compile>
+    <Compile Include="..\Azuria\Utilities\Extensions\DictionaryExtensions.cs">
+      <Link>Utilities\Extensions\DictionaryExtensions.cs</Link>
+    </Compile>
     <Compile Include="..\Azuria\Utilities\Extensions\HtmlAgilityPackExtensions.cs">
       <Link>Utilities\Extensions\HtmlAgilityPackExtensions.cs</Link>
     </Compile>

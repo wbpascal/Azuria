@@ -89,6 +89,15 @@ namespace Azuria.User
             this.IsOnline.SetInitialisedObject(online);
         }
 
+        internal User(UserInfoDataModel dataModel, Senpai senpai)
+            : this(
+                dataModel.Username, dataModel.UserId, new Uri("http://cdn.proxer.me/avatar/" + dataModel.Avatar), senpai
+                )
+        {
+            this.Points.SetInitialisedObject(dataModel.Points);
+            this.Status.SetInitialisedObject(dataModel.Status);
+        }
+
         #region Properties
 
         /// <summary>
@@ -450,8 +459,6 @@ namespace Azuria.User
             ProxerResult<ProxerApiResponse<UserInfoDataModel>> lResult =
                 await RequestHandler.ApiRequest(ApiRequestBuilder.BuildForGetUserInfo(this.Id, this._senpai));
             if (!lResult.Success || lResult.Result == null) return new ProxerResult(lResult.Exceptions);
-            if (lResult.Result.Error || lResult.Result.Data == null)
-                return new ProxerResult(new[] {new ProxerApiException(lResult.Result.ErrorCode)});
 
             UserInfoDataModel lDataModel = lResult.Result.Data;
             this.Avatar.SetInitialisedObject(new Uri("http://cdn.proxer.me/avatar/" + lDataModel.Avatar));
@@ -469,8 +476,6 @@ namespace Azuria.User
                     RequestHandler.ApiRequest(ApiRequestBuilder.BuildForGetTopten(this.Id,
                         category.ToString().ToLower(), this._senpai));
             if (!lResult.Success || lResult.Result == null) return new ProxerResult(lResult.Exceptions);
-            if (lResult.Result.Error || lResult.Result.Data == null)
-                return new ProxerResult(new[] {new ProxerApiException(lResult.Result.ErrorCode)});
 
             if (category == AnimeMangaEntryType.Anime)
                 this.AnimeTopten.SetInitialisedObject(from toptenDataModel in lResult.Result.Data

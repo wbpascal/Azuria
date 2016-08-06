@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Azuria.Api.v1;
+using Azuria.Exceptions;
 using JetBrains.Annotations;
 
 namespace Azuria.Utilities.ErrorHandling
@@ -131,6 +133,18 @@ namespace Azuria.Utilities.ErrorHandling
             this.Exceptions = lExceptions.ToArray();
 
             this.Success = false;
+        }
+
+        /// <summary>
+        /// </summary>
+        /// <param name="errorCode"></param>
+        /// <returns></returns>
+        public bool ContainsApiError(ErrorCode errorCode)
+        {
+            return
+                this.Exceptions.Any(
+                    exception =>
+                        exception is ProxerApiException && ((ProxerApiException) exception).ErrorCode == errorCode);
         }
 
         #endregion

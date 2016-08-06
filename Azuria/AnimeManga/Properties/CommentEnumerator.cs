@@ -94,9 +94,6 @@ namespace Azuria.AnimeManga.Properties
                         this._nextPage, ResultsPerPage, this._sort, this._senpai));
             if (!lResult.Success || lResult.Result == null)
                 return new ProxerResult(lResult.Exceptions);
-            if (lResult.Result.Error)
-                return
-                    new ProxerResult(new[] {new ProxerApiException(lResult.Result.ErrorCode)});
 
             this._currentPageContent = (from commentDataModel in lResult.Result.Data
                 select new Comment<T>(commentDataModel, this._animeMangaObject, this._senpai)).ToArray();

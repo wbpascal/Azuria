@@ -3,7 +3,7 @@
   "version": 2,
   "targets": {
     ".NETPortable,Version=v4.5,Profile=Profile259": {
-      "HtmlAgilityPack/1.4.9.4": {
+      "HtmlAgilityPack/1.4.9.5": {
         "type": "package",
         "compile": {
           "lib/portable-net45+netcore45+wpa81+wp8+MonoAndroid+MonoTouch/HtmlAgilityPack.dll": {}
@@ -21,7 +21,7 @@
           "lib/portable-net4+sl5+netcore45+wpa81+wp8+MonoAndroid1+MonoTouch1/JetBrains.Annotations.PCL328.dll": {}
         }
       },
-      "Jint/2.8.0": {
+      "Jint/2.9.1": {
         "type": "package",
         "compile": {
           "lib/portable-net40+sl50+win+WindowsPhoneApp81+wp80/Jint.dll": {}
@@ -51,12 +51,13 @@
     }
   },
   "libraries": {
-    "HtmlAgilityPack/1.4.9.4": {
-      "sha512": "e0NyiQpHveUzZbMY7I1GCh2Pkzh8Kf3kg4bIgDpWOeHvzloHSnkSccGpnb53Eq4uWxYE/wrRzS3jV56ZkAF2pg==",
+    "HtmlAgilityPack/1.4.9.5": {
+      "sha512": "iKBDxJHESRCIRbmgLKVkNM86LIX52jf6wsVQdbSsLpPUG9oSnAD1Pz8IHjJT+dQ3TWJEu4WYZvbdlixdmWKMVw==",
       "type": "package",
+      "path": "HtmlAgilityPack/1.4.9.5",
       "files": [
         "HAPIcon.png",
-        "HtmlAgilityPack.1.4.9.4.nupkg.sha512",
+        "HtmlAgilityPack.1.4.9.5.nupkg.sha512",
         "HtmlAgilityPack.nuspec",
         "lib/Net20/HtmlAgilityPack.dll",
         "lib/Net20/HtmlAgilityPack.pdb",
@@ -99,11 +100,12 @@
         "lib/portable-net4+sl5+netcore45+wpa81+wp8+MonoAndroid1+MonoTouch1/JetBrains.Annotations.PCL328.xml"
       ]
     },
-    "Jint/2.8.0": {
-      "sha512": "QKx6thHm8iWHhyxURaRoFzi/rczDn9iMfQNmWCWiwQi3B//J6Ocu0V/BMzUSLLBCu1XvlnVvrwf2gqVbQUiAbg==",
+    "Jint/2.9.1": {
+      "sha512": "Cm9z/ad4sJeU3Rmp+FWA+Yzb83zLYcy4xmMYb8ofK6UNu2UbS0QKZjTOO+pH7aeuXOz6+CwDjlYZ38zksE7czQ==",
       "type": "package",
+      "path": "Jint/2.9.1",
       "files": [
-        "Jint.2.8.0.nupkg.sha512",
+        "Jint.2.9.1.nupkg.sha512",
         "Jint.nuspec",
         "lib/portable-net40+sl50+win+WindowsPhoneApp81+wp80/Jint.dll"
       ]
@@ -153,9 +155,9 @@
   },
   "projectFileDependencyGroups": {
     "": [
-      "HtmlAgilityPack >= 1.4.9.4",
+      "HtmlAgilityPack >= 1.4.9.5",
       "JetBrains.Annotations >= 10.1.5",
-      "Jint >= 2.8.0",
+      "Jint >= 2.9.1",
       "Newtonsoft.Json >= 9.0.1",
       "modernhttpclient >= 2.4.2"
     ],

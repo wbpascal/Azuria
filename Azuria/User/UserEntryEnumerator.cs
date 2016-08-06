@@ -90,9 +90,6 @@ namespace Azuria.User
                         typeof(T).Name.ToLowerInvariant(), this._nextPage, ResultsPerPage, this._senpai));
             if (!lResult.Success || lResult.Result == null)
                 return new ProxerResult(lResult.Exceptions);
-            if (lResult.Result.Error)
-                return
-                    new ProxerResult(new[] {new ProxerApiException(lResult.Result.ErrorCode)});
 
             this._currentPageContent = (from listDataModel in lResult.Result.Data
                 select new UserProfileEntry<T>(listDataModel, this._user, this._senpai)).ToArray();
