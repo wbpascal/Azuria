@@ -18,12 +18,12 @@ namespace Azuria.Utilities.Extensions
             return false;
         }
 
-        internal static bool ImplementsGenericInterface([NotNull] this Type generic, [NotNull] Type toCheck)
+        internal static bool ImplementsGenericInterface([NotNull] this Type generic, [NotNull] Type @interface)
         {
             return generic.GetTypeInfo().IsGenericType &&
                    generic.GetGenericTypeDefinition()
                        .GetTypeInfo()
-                       .ImplementedInterfaces.Any(type => type.Name.Equals(toCheck.Name));
+                       .ImplementedInterfaces.Any(type => type.Name.Equals(@interface.Name));
         }
 
         internal static bool ImplementsInterface([NotNull] this Type type, [NotNull] Type interfaceToCheck)

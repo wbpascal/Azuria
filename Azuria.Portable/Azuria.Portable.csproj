@@ -354,6 +354,9 @@
     <Compile Include="..\Azuria\Search\SearchResultEnumerator.cs">
       <Link>Search\SearchResultEnumerator.cs</Link>
     </Compile>
+    <Compile Include="..\Azuria\Security\ISecureContainer.cs">
+      <Link>Security\ISecureContainer.cs</Link>
+    </Compile>
     <Compile Include="..\Azuria\Senpai.cs">
       <Link>Senpai.cs</Link>
     </Compile>
@@ -466,6 +469,7 @@
       <Link>Utilities\Web\HttpUtility.cs</Link>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Security\SecureStringContainer.cs" />
     <Compile Include="Utilities\Web\JsEval.cs" />
     <Compile Include="Utilities\Timer.cs" />
   </ItemGroup>

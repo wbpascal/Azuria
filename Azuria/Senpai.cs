@@ -7,6 +7,7 @@ using Azuria.Api.v1;
 using Azuria.Api.v1.DataModels.User;
 using Azuria.Community.Conference;
 using Azuria.Exceptions;
+using Azuria.Security;
 using Azuria.Utilities.ErrorHandling;
 using Azuria.Utilities.Extensions;
 using Azuria.Utilities.Web;
@@ -27,7 +28,8 @@ namespace Azuria
         /// <summary>
         /// </summary>
         /// <param name="username"></param>
-        public Senpai([NotNull] string username)
+        /// <param name="secureContainer"></param>
+        public Senpai([NotNull] string username, Type secureContainer = null) : this(secureContainer)
         {
             if (string.IsNullOrEmpty(username.Trim())) throw new ArgumentException(nameof(username));
             this._username = username;
@@ -36,17 +38,23 @@ namespace Azuria
         /// <summary>
         /// </summary>
         /// <param name="senpai"></param>
-        public Senpai([NotNull] Senpai senpai)
+        public Senpai([NotNull] Senpai senpai) : this()
         {
             this._username = senpai._username;
             this._cookiesCreated = senpai._cookiesCreated;
             this._cookiesLastUsed = senpai._cookiesLastUsed;
             this.LoginCookies = senpai.LoginCookies;
+            this.LoginToken = senpai.LoginToken;
             this.Me = senpai.Me;
         }
 
-        internal Senpai()
+        internal Senpai(Type secureContainer = null)
         {
+            secureContainer = secureContainer ?? typeof(SecureStringContainer);
+            ISecureContainer<char[]> lSecureContainer =
+                Activator.CreateInstance(secureContainer) as ISecureContainer<char[]>;
+            if (lSecureContainer == null) throw new ArgumentException(nameof(secureContainer));
+            this.LoginToken = lSecureContainer;
         }
 
         #region Properties
@@ -72,8 +80,8 @@ namespace Azuria
 
         /// <summary>
         /// </summary>
-        [CanBeNull]
-        public char[] LoginToken { get; protected set; }
+        [NotNull]
+        public ISecureContainer<char[]> LoginToken { get; protected set; }
 
         /// <summary>
         ///     Gets the profile of the user.
@@ -102,12 +110,23 @@ namespace Azuria
 
         #endregion
 
+        #region Inherited
+
+        /// <summary>Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.</summary>
+        public void Dispose()
+        {
+            this.LoginToken.Dispose();
+        }
+
+        #endregion
+
         #region
 
         /// <summary>
         /// </summary>
         /// <param name="token"></param>
         /// <returns></returns>
+        [ItemNotNull]
         public static async Task<ProxerResult<Senpai>> FromToken(char[] token)
         {
             Senpai lSenpai = new Senpai();
@@ -183,14 +202,14 @@ namespace Azuria
             this.Me = new User.User(this._username, lResult.Result.Data.UserId,
                 new Uri("https://cdn.proxer.me/avatar/" + lResult.Result.Data.Avatar), this);
             this._cookiesCreated = DateTime.Now;
-            this.LoginToken = lResult.Result.Data.Token.ToCharArray();
+            this.LoginToken.SetValue(lResult.Result.Data.Token.ToCharArray());
 
             return new ProxerResult<bool>(true);
         }
 
         internal async Task<ProxerResult> LoginWithToken(char[] token = null)
         {
-            token = token ?? this.LoginToken ?? new char[0];
+            token = token ?? this.LoginToken.ReadValue();
             if (token.Length == 0)
                 return new ProxerResult(new[] {new ArgumentException(nameof(token))});
 
@@ -198,7 +217,7 @@ namespace Azuria
                 await RequestHandler.ApiRequest(ApiRequestBuilder.BuildForGetUserInfo(null, this), token);
             if (!lResult.Success || lResult.Result == null) return new ProxerResult(lResult.Exceptions);
             UserInfoDataModel lDataModel = lResult.Result.Data;
-            this.LoginToken = token;
+            this.LoginToken.SetValue(token);
             this.Me = new User.User(lDataModel, this);
             this._username = lDataModel.Username;
             this._cookiesCreated = DateTime.Now;
@@ -209,6 +228,7 @@ namespace Azuria
         /// <summary>
         /// </summary>
         /// <returns></returns>
+        [ItemNotNull]
         public async Task<ProxerResult> Logout()
         {
             ProxerResult<ProxerApiResponse> lResult =
@@ -224,19 +244,6 @@ namespace Azuria
         public void UsedCookies()
         {
             this._cookiesLastUsed = DateTime.Now;
-        }
-
-        #endregion
-
-        #region Implementation of IDisposable
-
-        /// <summary>Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.</summary>
-        public void Dispose()
-        {
-            for (int i = 0; this.LoginToken != null && i < this.LoginToken.Length; i++)
-            {
-                this.LoginToken[i] = (char) 0;
-            }
         }
 
         #endregion

@@ -117,6 +117,8 @@
     <Compile Include="Exceptions\ApiKeyInsufficientException.cs" />
     <Compile Include="Exceptions\CaptchaException.cs" />
     <Compile Include="Exceptions\CloudflareException.cs" />
+    <Compile Include="Security\ISecureContainer.cs" />
+    <Compile Include="Security\SecureStringContainer.cs" />
     <Compile Include="Utilities\Extensions\DictionaryExtensions.cs" />
     <Compile Include="Exceptions\FirewallException.cs" />
     <Compile Include="Exceptions\InvalidUserException.cs" />
@@ -196,6 +198,7 @@
     <Compile Include="Utilities\Extensions\HtmlAgilityPackExtensions.cs" />
     <Compile Include="Utilities\Extensions\InitialisationExtensions.cs" />
     <Compile Include="Utilities\Extensions\ListExtensions.cs" />
+    <Compile Include="Utilities\Extensions\SecureStringExtensions.cs" />
     <Compile Include="Utilities\Extensions\StringExtensions.cs" />
     <Compile Include="Utilities\Extensions\TimerExtensions.cs" />
     <Compile Include="Utilities\Extensions\TypeExtensions.cs" />

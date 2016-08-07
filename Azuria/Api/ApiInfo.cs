@@ -1,4 +1,5 @@
-﻿using Azuria.Api.v1;
+﻿using System;
+using Azuria.Api.v1;
 
 namespace Azuria.Api
 {
@@ -10,9 +11,9 @@ namespace Azuria.Api
 
         /// <summary>
         /// </summary>
-        public static void InitV1(string apiKey)
+        public static void InitV1(char[] apiKey, Type secureContainer = null)
         {
-            RequestHandler.Init(apiKey);
+            RequestHandler.Init(apiKey, secureContainer);
         }
 
         #endregion

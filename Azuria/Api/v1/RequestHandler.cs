@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Net;
 using System.Threading.Tasks;
 using Azuria.Exceptions;
+using Azuria.Security;
 using Azuria.Utilities.ErrorHandling;
 using Azuria.Utilities.Extensions;
 using Azuria.Utilities.Web;
@@ -14,7 +15,7 @@ namespace Azuria.Api.v1
     /// </summary>
     public static class RequestHandler
     {
-        private static string _apiKey;
+        private static ISecureContainer<char[]> _apiKey;
 
         #region
 
@@ -27,9 +28,11 @@ namespace Azuria.Api.v1
                     HttpUtility.PostResponseErrorHandling(request.Address, request.PostArguments, request.Senpai,
                         new Func<string, ProxerResult>[0], checkLogin: request.CheckLogin,
                         header:
-                            new Dictionary<string, string> {{"proxer-api-key", _apiKey}}.AddIfAndReturn(
-                                "proxer-api-token", new string(loginToken), (key, value) => !string.IsNullOrEmpty(value.Trim()))
-                                .AddIfAndReturn("proxer-api-token", new string(request.Senpai.LoginToken),
+                            new Dictionary<string, string> {{"proxer-api-key", new string(_apiKey.ReadValue())}}
+                                .AddIfAndReturn(
+                                    "proxer-api-token", new string(loginToken),
+                                    (key, value) => !string.IsNullOrEmpty(value.Trim()))
+                                .AddIfAndReturn("proxer-api-token", new string(request.Senpai.LoginToken.ReadValue()),
                                     (key, value, source) =>
                                         request.CheckLogin && !request.Senpai.IsProbablyLoggedIn &&
                                         !source.ContainsKey(key)));
@@ -56,7 +59,7 @@ namespace Azuria.Api.v1
                         if (recursion >= 5)
                             return new ProxerResult<T>(new[] {new NotLoggedInException(request.Senpai)});
                         if (
-                            (await request.Senpai.LoginWithToken(request.Senpai.LoginToken ?? new char[0]))
+                            (await request.Senpai.LoginWithToken(request.Senpai.LoginToken.ReadValue()))
                                 .Success)
                             return await ApiCustomRequest<T>(request, loginToken, recursion + 1);
                         break;
@@ -80,9 +83,15 @@ namespace Azuria.Api.v1
             return ApiCustomRequest<ProxerApiResponse>(request, loginToken);
         }
 
-        internal static void Init(string apiKey)
+        internal static void Init(char[] apiKey, Type secureContainer = null)
         {
-            _apiKey = apiKey;
+            secureContainer = secureContainer ?? typeof(SecureStringContainer);
+            ISecureContainer<char[]> lSecureContainer =
+                Activator.CreateInstance(secureContainer) as ISecureContainer<char[]>;
+            if (lSecureContainer == null) throw new ArgumentException(nameof(secureContainer));
+
+            _apiKey = lSecureContainer;
+            _apiKey.SetValue(apiKey);
         }
 
         #endregion

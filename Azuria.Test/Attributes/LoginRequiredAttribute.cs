@@ -26,7 +26,7 @@ namespace Azuria.Test.Attributes
         /// <param name="test">The test that is going to be run.</param>
         public void BeforeTest(ITest test)
         {
-            ApiInfo.InitV1(Credentials.ApiKey);
+            ApiInfo.InitV1(Credentials.ApiKey.ToCharArray());
             if (!SenpaiTest.Senpai.IsProbablyLoggedIn)
                 SenpaiTest.Senpai.Login(Credentials.Password).Wait();
         }
