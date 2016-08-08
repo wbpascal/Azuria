@@ -48,6 +48,17 @@ namespace Azuria.Utilities.Extensions
             return new ProxerResult();
         }
 
+        internal static async Task<ProxerResult> InitEntryTagsApi(this IAnimeMangaObject animeMangaObject, Senpai senpai)
+        {
+            ProxerResult<ProxerApiResponse<EntryTagDataModel[]>> lResult =
+                await RequestHandler.ApiRequest(ApiRequestBuilder.BuildForGetEntryTags(animeMangaObject.Id, senpai));
+            if (!lResult.Success || lResult.Result == null) return new ProxerResult(lResult.Exceptions);
+
+            animeMangaObject.Tags.SetInitialisedObject(from entryTagDataModel in lResult.Result.Data
+                select new Tag(entryTagDataModel));
+            return new ProxerResult();
+        }
+
         [ItemNotNull]
         internal static async Task<ProxerResult> InitGroupsApi(this IAnimeMangaObject animeMangaObject, Senpai senpai)
         {

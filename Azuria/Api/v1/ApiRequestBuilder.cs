@@ -29,6 +29,14 @@ namespace Azuria.Api.v1
             };
         }
 
+        internal static ApiRequest<EntryTagDataModel[]> BuildForGetEntryTags(int entryId, Senpai senpai)
+        {
+            return new ApiRequest<EntryTagDataModel[]>(senpai)
+            {
+                Address = new Uri($"{ApiAddress}/info/entrytags?id={entryId}")
+            };
+        }
+
         internal static ApiRequest<bool> BuildForGetGate(int entryId, Senpai senpai)
         {
             return new ApiRequest<bool>(senpai)

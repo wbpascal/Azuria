@@ -111,6 +111,9 @@
     <Compile Include="..\Azuria\AnimeManga\Properties\StreamPartner.cs">
       <Link>AnimeManga\Properties\StreamPartner.cs</Link>
     </Compile>
+    <Compile Include="..\Azuria\AnimeManga\Properties\Tag.cs">
+      <Link>AnimeManga\Properties\Tag.cs</Link>
+    </Compile>
     <Compile Include="..\Azuria\AnimeManga\Properties\TagType.cs">
       <Link>AnimeManga\Properties\TagType.cs</Link>
     </Compile>
@@ -156,6 +159,9 @@
     <Compile Include="..\Azuria\Api\v1\Converters\Info\StreamPartnerConverter.cs">
       <Link>Api\v1\Converters\Info\StreamPartnerConverter.cs</Link>
     </Compile>
+    <Compile Include="..\Azuria\Api\v1\Converters\IntToBoolConverter.cs">
+      <Link>Api\v1\Converters\IntToBoolConverter.cs</Link>
+    </Compile>
     <Compile Include="..\Azuria\Api\v1\Converters\MediumConverter.cs">
       <Link>Api\v1\Converters\MediumConverter.cs</Link>
     </Compile>
@@ -176,6 +182,9 @@
     </Compile>
     <Compile Include="..\Azuria\Api\v1\DataModels\Info\EntryDataModel.cs">
       <Link>Api\v1\DataModels\Info\EntryDataModel.cs</Link>
+    </Compile>
+    <Compile Include="..\Azuria\Api\v1\DataModels\Info\EntryTagDataModel.cs">
+      <Link>Api\v1\DataModels\Info\EntryTagDataModel.cs</Link>
     </Compile>
     <Compile Include="..\Azuria\Api\v1\DataModels\Info\GroupDataModel.cs">
       <Link>Api\v1\DataModels\Info\GroupDataModel.cs</Link>

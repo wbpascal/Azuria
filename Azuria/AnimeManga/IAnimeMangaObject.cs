@@ -135,6 +135,11 @@ namespace Azuria.AnimeManga
         [NotNull]
         InitialisableProperty<string> Synonym { get; }
 
+        /// <summary>
+        ///     Gets the tags the <see cref="Anime" /> or <see cref="Manga" /> was tagged with.
+        /// </summary>
+        InitialisableProperty<IEnumerable<Tag>> Tags { get; }
+
         #endregion
 
         #region

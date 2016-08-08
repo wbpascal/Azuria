@@ -10,7 +10,10 @@ namespace Azuria.Security
     {
         private SecureString _secureString;
 
-        internal SecureStringContainer()
+        /// <summary>
+        ///     Default constructor.
+        /// </summary>
+        public SecureStringContainer()
         {
             this._secureString = new SecureString();
         }

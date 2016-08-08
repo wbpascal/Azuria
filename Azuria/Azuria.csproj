@@ -74,6 +74,7 @@
     <Compile Include="AnimeManga\Properties\MangaType.cs" />
     <Compile Include="AnimeManga\Properties\Season.cs" />
     <Compile Include="AnimeManga\Properties\StreamPartner.cs" />
+    <Compile Include="AnimeManga\Properties\Tag.cs" />
     <Compile Include="AnimeManga\Properties\TagType.cs" />
     <Compile Include="Api\ApiInfo.cs" />
     <Compile Include="Api\v1\ApiRequest.cs" />
@@ -81,6 +82,7 @@
     <Compile Include="Api\v1\Converters\Info\LanguageConverter.cs" />
     <Compile Include="Api\v1\Converters\Info\LanguageKommaCollectionConverter.cs" />
     <Compile Include="Api\v1\Converters\Info\StreamPartnerConverter.cs" />
+    <Compile Include="Api\v1\Converters\IntToBoolConverter.cs" />
     <Compile Include="Api\v1\Converters\SubRatingsConverter.cs" />
     <Compile Include="Api\v1\DataModels\Info\AnimeMangaContentDataModel.cs" />
     <Compile Include="Api\v1\DataModels\Info\CommentDataModel.cs" />
@@ -101,6 +103,7 @@
     <Compile Include="Api\v1\DataModels\Info\PublisherDataModel.cs" />
     <Compile Include="Api\v1\DataModels\Info\RelationDataModel.cs" />
     <Compile Include="Api\v1\DataModels\Info\SeasonDataModel.cs" />
+    <Compile Include="Api\v1\DataModels\Info\EntryTagDataModel.cs" />
     <Compile Include="Api\v1\DataModels\User\ListDataModel.cs" />
     <Compile Include="Api\v1\DataModels\User\ToptenDataModel.cs" />
     <Compile Include="Api\v1\DataModels\User\UserInfoDataModel.cs" />

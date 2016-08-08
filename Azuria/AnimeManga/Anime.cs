@@ -68,6 +68,7 @@ namespace Azuria.AnimeManga
             {
                 IsInitialisedOnce = false
             };
+            this.Tags = new InitialisableProperty<IEnumerable<Tag>>(() => this.InitEntryTagsApi(this._senpai));
         }
 
         internal Anime([NotNull] string name, int id, [NotNull] Senpai senpai) : this()
@@ -235,6 +236,11 @@ namespace Azuria.AnimeManga
         ///     Gets the synonym the <see cref="Anime" /> is also known as.
         /// </summary>
         public InitialisableProperty<string> Synonym { get; }
+
+        /// <summary>
+        ///     Gets the tags the <see cref="Anime" /> was tagged with.
+        /// </summary>
+        public InitialisableProperty<IEnumerable<Tag>> Tags { get; }
 
         #endregion
 
