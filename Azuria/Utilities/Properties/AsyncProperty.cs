@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using Azuria.Utilities.ErrorHandling;
 using JetBrains.Annotations;
@@ -51,6 +53,23 @@ namespace Azuria.Utilities.Properties
 
             this._currentValue = lGetObjectResult.Result;
             return new ProxerResult<T>(this._currentValue);
+        }
+
+        private async Task<T> GetAndThrow()
+        {
+            ProxerResult<T> lResult = await this.Get();
+            if (!lResult.Success || lResult.Result == null)
+                throw lResult.Exceptions.FirstOrDefault() ?? new Exception();
+
+            return lResult.Result;
+        }
+
+        /// <summary>
+        /// </summary>
+        /// <returns></returns>
+        public TaskAwaiter<T> GetAwaiter()
+        {
+            return this.GetAndThrow().GetAwaiter();
         }
 
         /// <summary>

@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using Azuria.Utilities.ErrorHandling;
 using JetBrains.Annotations;
@@ -107,6 +109,23 @@ namespace Azuria.Utilities.Properties
         #endregion
 
         #region
+
+        /// <summary>
+        /// </summary>
+        /// <returns></returns>
+        public TaskAwaiter<T> GetAwaiter()
+        {
+            return this.GetObjectAndThrow().GetAwaiter();
+        }
+
+        private async Task<T> GetObjectAndThrow()
+        {
+            ProxerResult<T> lResult = await this.GetObject();
+            if (!lResult.Success || lResult.Result == null)
+                throw lResult.Exceptions.FirstOrDefault() ?? new Exception();
+
+            return lResult.Result;
+        }
 
         /// <summary>
         ///     Gets the current value of the property if the property was initialised at least once. If it was not the returns the
