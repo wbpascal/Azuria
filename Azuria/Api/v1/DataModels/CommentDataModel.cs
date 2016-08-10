@@ -6,7 +6,7 @@ using Azuria.User;
 using Azuria.User.Comment;
 using Newtonsoft.Json;
 
-namespace Azuria.Api.v1.DataModels.Info
+namespace Azuria.Api.v1.DataModels
 {
     internal class CommentDataModel : IDataModel
     {

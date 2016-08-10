@@ -71,11 +71,14 @@ namespace Azuria.AnimeManga
             this.Tags = new InitialisableProperty<IEnumerable<Tag>>(() => this.InitEntryTagsApi(this._senpai));
         }
 
-        internal Manga([NotNull] string name, int id, [NotNull] Senpai senpai) : this()
+        internal Manga(int id, [NotNull] Senpai senpai) : this()
         {
             this.Id = id;
             this._senpai = senpai;
+        }
 
+        internal Manga([NotNull] string name, int id, [NotNull] Senpai senpai) : this(id, senpai)
+        {
             this.Name.SetInitialisedObject(name);
         }
 
@@ -88,13 +91,10 @@ namespace Azuria.AnimeManga
             this.Status.SetInitialisedObject(status);
         }
 
-        internal Manga(EntryDataModel entryDataModel, Senpai senpai) : this()
+        internal Manga(EntryDataModel entryDataModel, Senpai senpai) : this(entryDataModel.EntryId, senpai)
         {
             if (entryDataModel.EntryType != AnimeMangaEntryType.Manga)
                 throw new ArgumentException(nameof(entryDataModel.EntryType));
-
-            this._senpai = senpai;
-            this.Id = entryDataModel.EntryId;
 
             this.Clicks.SetInitialisedObject(entryDataModel.Clicks);
             this.ContentCount.SetInitialisedObject(entryDataModel.ContentCount);

@@ -125,6 +125,14 @@ namespace Azuria.User
         public InitialisableProperty<Uri> Avatar { get; }
 
         /// <summary>
+        /// </summary>
+        public IEnumerable<Comment<Anime>> CommentsLatestAnime => new CommentEnumerable<Anime>(this, this._senpai);
+
+        /// <summary>
+        /// </summary>
+        public IEnumerable<Comment<Manga>> CommentsLatestManga => new CommentEnumerable<Manga>(this, this._senpai);
+
+        /// <summary>
         ///     Gets an enumeration containing the friends of the user.
         /// </summary>
         [NotNull]
@@ -271,19 +279,6 @@ namespace Azuria.User
             }
 
             return new ProxerResult<HtmlNode[]>(lReturn.ToArray());
-        }
-
-        /// <summary>
-        ///     Gets the comments of the <see cref="User" /> in a chronological order.
-        /// </summary>
-        /// <param name="startIndex">The offset of the comments parsed.</param>
-        /// <param name="count">The count of the returned comments starting at <paramref name="startIndex" />.</param>
-        /// <returns>If the action was successful and if it was, an enumeration of the comments.</returns>
-        [ItemNotNull]
-        public async Task<ProxerResult<IEnumerable<Comment<IAnimeMangaObject>>>> GetComments(int startIndex, int count)
-        {
-            //TODO: Get comments from User
-            return new ProxerResult<IEnumerable<Comment<IAnimeMangaObject>>>(new[] {new NotImplementedException()});
         }
 
         /// <summary>

@@ -63,19 +63,6 @@ namespace Azuria.Test
             Assert.IsNotEmpty(lFriends);
         }
 
-        [Test, Order(3)]
-        public async Task GetCommentsTest()
-        {
-            Assert.IsNotNull(this._senpai.Me);
-            ProxerResult<IEnumerable<Comment<IAnimeMangaObject>>> lCommentsResult =
-                await this._senpai.Me.GetComments(0, 20);
-            Assert.IsTrue(lCommentsResult.Success);
-            Assert.IsNotNull(lCommentsResult.Result);
-            Assert.IsTrue(lCommentsResult.Result.Count() <= 20);
-
-            await Task.Delay(2000);
-        }
-
         [Test, Order(1)]
         public async Task InfoHtmlTest()
         {

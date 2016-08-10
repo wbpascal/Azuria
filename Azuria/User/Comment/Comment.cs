@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Azuria.AnimeManga;
-using Azuria.Api.v1.DataModels.Info;
+using Azuria.Api.v1.DataModels;
 using Azuria.Api.v1.DataModels.User;
 using Azuria.Exceptions;
 using Azuria.Utilities.ErrorHandling;
@@ -30,16 +30,17 @@ namespace Azuria.User.Comment
         }
 
         internal Comment([NotNull] User author, T animeMangaObject, int rating, [NotNull] string comment,
-            Dictionary<RatingCategory, int> subRatings, AnimeMangaProgressState progressState)
+            [NotNull] Dictionary<RatingCategory, int> subRatings, AnimeMangaProgressState progressState)
             : this(author, animeMangaObject, rating, comment, progressState)
         {
             this.SubRatings = subRatings;
         }
 
-        internal Comment(CommentDataModel dataModel, T animeMangaObject, Senpai senpai)
+        internal Comment([NotNull] CommentDataModel dataModel, T animeMangaObject, [NotNull] Senpai senpai,
+            [CanBeNull] User user = null)
         {
             this.AnimeMangaObject = animeMangaObject;
-            this.Author = new User(dataModel.Username, dataModel.UserId,
+            this.Author = user ?? new User(dataModel.Username, dataModel.UserId,
                 new Uri("https://cdn.proxer.me/avatar/" + dataModel.Avatar), senpai);
             this.Content = dataModel.CommentContent;
             this.Progress = dataModel.ContentIndex;
@@ -49,7 +50,7 @@ namespace Azuria.User.Comment
             this.Upvotes = dataModel.Upvotes;
         }
 
-        internal Comment(ListDataModel dataModel, User author, T animeMangaObject)
+        internal Comment([NotNull] ListDataModel dataModel, [NotNull] User author, [NotNull] T animeMangaObject)
         {
             this.AnimeMangaObject = animeMangaObject;
             this.Author = author;

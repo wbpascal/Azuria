@@ -1,8 +1,8 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
-using Azuria.User.Comment;
+using Azuria.AnimeManga;
 
-namespace Azuria.AnimeManga.Properties
+namespace Azuria.User.Comment
 {
     /// <summary>
     /// </summary>
@@ -11,11 +11,18 @@ namespace Azuria.AnimeManga.Properties
         private readonly T _animeMangaObject;
         private readonly Senpai _senpai;
         private readonly string _sort;
+        private readonly User _user;
 
         internal CommentEnumerable(T animeMangaObject, string sort, Senpai senpai)
         {
             this._animeMangaObject = animeMangaObject;
             this._sort = sort;
+            this._senpai = senpai;
+        }
+
+        internal CommentEnumerable(User user, Senpai senpai)
+        {
+            this._user = user;
             this._senpai = senpai;
         }
 
@@ -32,7 +39,9 @@ namespace Azuria.AnimeManga.Properties
         /// <returns>An enumerator that can be used to iterate through the collection.</returns>
         public IEnumerator<Comment<T>> GetEnumerator()
         {
-            return new CommentEnumerator<T>(this._animeMangaObject, this._sort, this._senpai);
+            return this._user == null
+                ? new CommentEnumerator<T>(this._animeMangaObject, this._sort, this._senpai)
+                : new CommentEnumerator<T>(this._user, this._senpai);
         }
 
         #endregion

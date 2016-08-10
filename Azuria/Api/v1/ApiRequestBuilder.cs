@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Azuria.Api.v1.DataModels;
 using Azuria.Api.v1.DataModels.Info;
 using Azuria.Api.v1.DataModels.User;
 using Azuria.Api.v1.Enums;
@@ -58,6 +59,17 @@ namespace Azuria.Api.v1
             return new ApiRequest<AnimeMangaLanguage[]>(senpai)
             {
                 Address = new Uri($"{ApiAddress}/info/lang?id={entryId}")
+            };
+        }
+
+        internal static ApiRequest<CommentDataModel[]> BuildForGetLatestCommentsUser(int userId, int page, int limit,
+            string kat,
+            int length, Senpai senpai)
+        {
+            return new ApiRequest<CommentDataModel[]>(senpai)
+            {
+                Address =
+                    new Uri($"{ApiAddress}/user/comments?uid={userId}&p={page}&limit={limit}&kat={kat}&length={length}")
             };
         }
 

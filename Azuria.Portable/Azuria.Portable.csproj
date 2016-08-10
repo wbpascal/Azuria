@@ -72,12 +72,6 @@
     <Compile Include="..\Azuria\AnimeManga\Properties\AnimeType.cs">
       <Link>AnimeManga\Properties\AnimeType.cs</Link>
     </Compile>
-    <Compile Include="..\Azuria\AnimeManga\Properties\CommentEnumerable.cs">
-      <Link>AnimeManga\Properties\CommentEnumerable.cs</Link>
-    </Compile>
-    <Compile Include="..\Azuria\AnimeManga\Properties\CommentEnumerator.cs">
-      <Link>AnimeManga\Properties\CommentEnumerator.cs</Link>
-    </Compile>
     <Compile Include="..\Azuria\AnimeManga\Properties\Country.cs">
       <Link>AnimeManga\Properties\Country.cs</Link>
     </Compile>
@@ -171,14 +165,14 @@
     <Compile Include="..\Azuria\Api\v1\Converters\UnixToDateTimeConverter.cs">
       <Link>Api\v1\Converters\UnixToDateTimeConverter.cs</Link>
     </Compile>
+    <Compile Include="..\Azuria\Api\v1\DataModels\CommentDataModel.cs">
+      <Link>Api\v1\DataModels\CommentDataModel.cs</Link>
+    </Compile>
     <Compile Include="..\Azuria\Api\v1\DataModels\IDataModel.cs">
       <Link>Api\v1\DataModels\IDataModel.cs</Link>
     </Compile>
     <Compile Include="..\Azuria\Api\v1\DataModels\Info\AnimeMangaContentDataModel.cs">
       <Link>Api\v1\DataModels\Info\AnimeMangaContentDataModel.cs</Link>
-    </Compile>
-    <Compile Include="..\Azuria\Api\v1\DataModels\Info\CommentDataModel.cs">
-      <Link>Api\v1\DataModels\Info\CommentDataModel.cs</Link>
     </Compile>
     <Compile Include="..\Azuria\Api\v1\DataModels\Info\EntryDataModel.cs">
       <Link>Api\v1\DataModels\Info\EntryDataModel.cs</Link>
@@ -383,6 +377,12 @@
     </Compile>
     <Compile Include="..\Azuria\User\Comment\Comment.cs">
       <Link>User\Comment\Comment.cs</Link>
+    </Compile>
+    <Compile Include="..\Azuria\User\Comment\CommentEnumerable.cs">
+      <Link>User\Comment\CommentEnumerable.cs</Link>
+    </Compile>
+    <Compile Include="..\Azuria\User\Comment\CommentEnumerator.cs">
+      <Link>User\Comment\CommentEnumerator.cs</Link>
     </Compile>
     <Compile Include="..\Azuria\User\Comment\EditableComment.cs">
       <Link>User\Comment\EditableComment.cs</Link>

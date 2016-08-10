@@ -66,8 +66,8 @@
     <Compile Include="AnimeManga\Properties\AnimeMangaRating.cs" />
     <Compile Include="AnimeManga\Properties\AnimeMangaSeason.cs" />
     <Compile Include="AnimeManga\Properties\AnimeMangaSeasonInfo.cs" />
-    <Compile Include="AnimeManga\Properties\CommentEnumerable.cs" />
-    <Compile Include="AnimeManga\Properties\CommentEnumerator.cs" />
+    <Compile Include="User\Comment\CommentEnumerable.cs" />
+    <Compile Include="User\Comment\CommentEnumerator.cs" />
     <Compile Include="AnimeManga\Properties\Country.cs" />
     <Compile Include="AnimeManga\Properties\GenreHelper.cs" />
     <Compile Include="AnimeManga\Properties\GenreType.cs" />
@@ -85,7 +85,7 @@
     <Compile Include="Api\v1\Converters\IntToBoolConverter.cs" />
     <Compile Include="Api\v1\Converters\SubRatingsConverter.cs" />
     <Compile Include="Api\v1\DataModels\Info\AnimeMangaContentDataModel.cs" />
-    <Compile Include="Api\v1\DataModels\Info\CommentDataModel.cs" />
+    <Compile Include="Api\v1\DataModels\CommentDataModel.cs" />
     <Compile Include="Api\v1\DataModels\Info\ListInfoDataModel.cs" />
     <Compile Include="Api\v1\Converters\Info\LanguageCollectionConverter.cs" />
     <Compile Include="Api\v1\Converters\MediumConverter.cs" />
