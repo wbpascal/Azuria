@@ -18,10 +18,10 @@ namespace Azuria.User.Comment
     public sealed class CommentEnumerator<T> : IEnumerator<Comment<T>> where T : IAnimeMangaObject
     {
         private const int ResultsPerPage = 100;
+        private readonly T _animeMangaObject;
         private readonly Senpai _senpai;
         private readonly string _sort;
         private readonly User _user;
-        private readonly T _animeMangaObject;
         private Comment<T>[] _currentPageContent = new Comment<T>[0];
         private int _currentPageContentIndex = -1;
         private int _nextPage;

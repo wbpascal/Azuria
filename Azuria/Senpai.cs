@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
+using Azuria.Api;
 using Azuria.Api.v1;
 using Azuria.Api.v1.DataModels.User;
 using Azuria.Community.Conference;
@@ -28,8 +29,7 @@ namespace Azuria
         /// <summary>
         /// </summary>
         /// <param name="username"></param>
-        /// <param name="secureContainer"></param>
-        public Senpai([NotNull] string username, Type secureContainer = null) : this(secureContainer)
+        public Senpai([NotNull] string username) : this()
         {
             if (string.IsNullOrEmpty(username.Trim())) throw new ArgumentException(nameof(username));
             this._username = username;
@@ -48,13 +48,9 @@ namespace Azuria
             this.Me = senpai.Me;
         }
 
-        internal Senpai(Type secureContainer = null)
+        private Senpai()
         {
-            secureContainer = secureContainer ?? typeof(SecureStringContainer);
-            ISecureContainer<char[]> lSecureContainer =
-                Activator.CreateInstance(secureContainer) as ISecureContainer<char[]>;
-            if (lSecureContainer == null) throw new ArgumentException(nameof(secureContainer));
-            this.LoginToken = lSecureContainer;
+            this.LoginToken = ApiInfo.SecureContainerFactory.Invoke();
         }
 
         #region Properties
@@ -76,7 +72,7 @@ namespace Azuria
         ///     Gets the cookies that are used to make requests to the server with this user.
         /// </summary>
         [NotNull]
-        public CookieContainer LoginCookies { get; } = new CookieContainer();
+        public CookieContainer LoginCookies { get; private set; } = new CookieContainer();
 
         /// <summary>
         /// </summary>
@@ -178,6 +174,13 @@ namespace Azuria
                     new ProxerResult<IEnumerable<Conference>>(
                         ErrorHandler.HandleError(this, lResponse, false).Exceptions);
             }
+        }
+
+        internal void InvalidateCookies()
+        {
+            this._cookiesCreated = DateTime.MinValue;
+            this._cookiesLastUsed = DateTime.MinValue;
+            this.LoginCookies = new CookieContainer();
         }
 
         /// <summary>

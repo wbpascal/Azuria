@@ -56,8 +56,11 @@ namespace Azuria.Api.v1
                     case ErrorCode.NotificationsUserNotLoggedIn:
                     case ErrorCode.UcpUserNotLoggedIn:
                     case ErrorCode.InfoSetUserInfoUserNotLoggedIn:
-                        if (recursion >= 5)
+                        if (recursion >= 2)
+                        {
+                            request.Senpai.InvalidateCookies();
                             return new ProxerResult<T>(new[] {new NotLoggedInException(request.Senpai)});
+                        }
                         if (
                             (await request.Senpai.LoginWithToken(request.Senpai.LoginToken.ReadValue()))
                                 .Success)
@@ -83,14 +86,9 @@ namespace Azuria.Api.v1
             return ApiCustomRequest<ProxerApiResponse>(request, loginToken);
         }
 
-        internal static void Init(char[] apiKey, Type secureContainer = null)
+        internal static void Init(char[] apiKey)
         {
-            secureContainer = secureContainer ?? typeof(SecureStringContainer);
-            ISecureContainer<char[]> lSecureContainer =
-                Activator.CreateInstance(secureContainer) as ISecureContainer<char[]>;
-            if (lSecureContainer == null) throw new ArgumentException(nameof(secureContainer));
-
-            _apiKey = lSecureContainer;
+            _apiKey = ApiInfo.SecureContainerFactory.Invoke();
             _apiKey.SetValue(apiKey);
         }
 

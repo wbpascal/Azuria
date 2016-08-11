@@ -1,4 +1,4 @@
-﻿using System.Reflection;
+using System.Reflection;
 using System.Resources;
 
 // General Information about an assembly is controlled through the following 
@@ -24,7 +24,8 @@ using System.Resources;
 //
 // You can specify all the values or you can default the Build and Revision Numbers 
 // by using the '*' as shown below:
-// [assembly: AssemblyVersion("1.0.*")]
+// [assembly: AssemblyVersion("0.6.1.0")]
 
-[assembly: AssemblyVersion("0.6.5.*")]
-[assembly: AssemblyFileVersion("0.6.5")]
+[assembly: AssemblyVersion("0.6.1.0")]
+[assembly: AssemblyFileVersion("0.6.1.0")]
+[assembly: AssemblyInformationalVersion("0.6.1+60.Branch.master.Sha.30db203e40a514b8443fd49e3c889f1615bcb8c2")]

@@ -1,4 +1,4 @@
-﻿using System.Reflection;
+using System.Reflection;
 using System.Runtime.InteropServices;
 
 // Allgemeine Informationen über eine Assembly werden über folgende 
@@ -33,7 +33,8 @@ using System.Runtime.InteropServices;
 //
 // Sie können alle Werte angeben oder die standardmäßigen Build- und Revisionsnummern 
 // übernehmen, indem Sie "*" eingeben:
-// [Assembly: AssemblyVersion("1.0.*")]
+// [Assembly: AssemblyVersion("0.6.1.0")]
 
-[assembly: AssemblyVersion("1.0.0.0")]
-[assembly: AssemblyFileVersion("1.0.0.0")]
+[assembly: AssemblyVersion("0.6.1.0")]
+[assembly: AssemblyFileVersion("0.6.1.0")]
+[assembly: AssemblyInformationalVersion("0.6.1+60.Branch.master.Sha.30db203e40a514b8443fd49e3c889f1615bcb8c2")]
