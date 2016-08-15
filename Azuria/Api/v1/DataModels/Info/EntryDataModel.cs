@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using Azuria.AnimeManga.Properties;
+using Azuria.Api.v1.Converters;
 using Azuria.Api.v1.Converters.Info;
 using Azuria.Api.v1.Enums;
 using Newtonsoft.Json;
@@ -43,7 +44,7 @@ namespace Azuria.Api.v1.DataModels.Info
         internal AnimeMangaRating Rating => new AnimeMangaRating(this.TotalStars, this.Voters);
 
         [JsonProperty("state")]
-        internal AnimeMangaStatus State { get; set; }
+        internal AnimeMangaStatus Status { get; set; }
 
         [JsonProperty("rate_sum")]
         internal int TotalStars { get; set; }

@@ -2,7 +2,7 @@
 using Azuria.Api.v1.Enums;
 using Newtonsoft.Json;
 
-namespace Azuria.Api.v1.Converters.Info
+namespace Azuria.Api.v1.Converters
 {
     internal class LanguageConverter : JsonConverter
     {

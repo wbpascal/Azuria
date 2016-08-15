@@ -66,6 +66,7 @@
     <Compile Include="AnimeManga\Properties\AnimeMangaRating.cs" />
     <Compile Include="AnimeManga\Properties\AnimeMangaSeason.cs" />
     <Compile Include="AnimeManga\Properties\AnimeMangaSeasonInfo.cs" />
+    <Compile Include="Api\v1\DataModels\Ucp\BookmarkDataModel.cs" />
     <Compile Include="User\Comment\CommentEnumerable.cs" />
     <Compile Include="User\Comment\CommentEnumerator.cs" />
     <Compile Include="AnimeManga\Properties\Country.cs" />
@@ -79,7 +80,7 @@
     <Compile Include="Api\ApiInfo.cs" />
     <Compile Include="Api\v1\ApiRequest.cs" />
     <Compile Include="Api\v1\ApiRequestBuilder.cs" />
-    <Compile Include="Api\v1\Converters\Info\LanguageConverter.cs" />
+    <Compile Include="Api\v1\Converters\LanguageConverter.cs" />
     <Compile Include="Api\v1\Converters\Info\LanguageKommaCollectionConverter.cs" />
     <Compile Include="Api\v1\Converters\Info\StreamPartnerConverter.cs" />
     <Compile Include="Api\v1\Converters\IntToBoolConverter.cs" />
@@ -89,7 +90,7 @@
     <Compile Include="Api\v1\DataModels\Info\ListInfoDataModel.cs" />
     <Compile Include="Api\v1\Converters\Info\LanguageCollectionConverter.cs" />
     <Compile Include="Api\v1\Converters\MediumConverter.cs" />
-    <Compile Include="Api\v1\Converters\Info\CategoryConverter.cs" />
+    <Compile Include="Api\v1\Converters\CategoryConverter.cs" />
     <Compile Include="Api\v1\Converters\Info\FskConverter.cs" />
     <Compile Include="Api\v1\Converters\Info\GenreConverter.cs" />
     <Compile Include="Api\v1\Converters\Info\GroupLanguageConverter.cs" />
@@ -122,6 +123,8 @@
     <Compile Include="Exceptions\CloudflareException.cs" />
     <Compile Include="Security\ISecureContainer.cs" />
     <Compile Include="Security\SecureStringContainer.cs" />
+    <Compile Include="User\ControlPanel\BookmarkEnumerable.cs" />
+    <Compile Include="User\ControlPanel\BookmarkEnumerator.cs" />
     <Compile Include="Utilities\Extensions\DictionaryExtensions.cs" />
     <Compile Include="Exceptions\FirewallException.cs" />
     <Compile Include="Exceptions\InvalidUserException.cs" />
@@ -141,7 +144,6 @@
     <Compile Include="AnimeManga\Properties\AnimeType.cs" />
     <Compile Include="Community\Forum\Forum.cs" />
     <Compile Include="Search\SearchResultEnumerator.cs" />
-    <Compile Include="User\AnimeMangaProgress.cs" />
     <Compile Include="User\Comment\Comment.cs" />
     <Compile Include="AnimeManga\Properties\FskType.cs" />
     <Compile Include="AnimeManga\Properties\FskHelper.cs" />
@@ -151,15 +153,9 @@
     <Compile Include="Search\ISearchableObject.cs" />
     <Compile Include="Search\SearchHelper.cs" />
     <Compile Include="Search\SearchResult.cs" />
-    <Compile Include="User\AnimeMangaChronicObject.cs" />
     <Compile Include="User\AnimeMangaProgressState.cs" />
-    <Compile Include="User\AnimeMangaProgressObject.cs" />
     <Compile Include="User\Comment\RatingCategory.cs" />
     <Compile Include="User\ControlPanel\AnimeMangaBookmarkObject.cs" />
-    <Compile Include="User\ControlPanel\AnimeMangaFavouriteObject.cs" />
-    <Compile Include="User\ControlPanel\AnimeMangaUcpObject.cs" />
-    <Compile Include="User\Comment\EditableComment.cs" />
-    <Compile Include="User\ControlPanel\EditableAnimeMangaProgress.cs" />
     <Compile Include="User\ControlPanel\UserControlPanel.cs" />
     <Compile Include="Notifications\AnimeManga\AnimeMangaNotificationCollection.cs" />
     <Compile Include="Notifications\AnimeManga\AnimeMangaNotificationEnumerator.cs" />
@@ -227,9 +223,7 @@
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Api\v1\Converters\User\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

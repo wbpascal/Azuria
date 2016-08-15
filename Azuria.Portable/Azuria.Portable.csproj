@@ -120,8 +120,8 @@
     <Compile Include="..\Azuria\Api\v1\ApiRequestBuilder.cs">
       <Link>Api\v1\ApiRequestBuilder.cs</Link>
     </Compile>
-    <Compile Include="..\Azuria\Api\v1\Converters\Info\CategoryConverter.cs">
-      <Link>Api\v1\Converters\Info\CategoryConverter.cs</Link>
+    <Compile Include="..\Azuria\Api\v1\Converters\CategoryConverter.cs">
+      <Link>Api\v1\Converters\CategoryConverter.cs</Link>
     </Compile>
     <Compile Include="..\Azuria\Api\v1\Converters\Info\FskConverter.cs">
       <Link>Api\v1\Converters\Info\FskConverter.cs</Link>
@@ -138,9 +138,6 @@
     <Compile Include="..\Azuria\Api\v1\Converters\Info\LanguageCollectionConverter.cs">
       <Link>Api\v1\Converters\Info\LanguageCollectionConverter.cs</Link>
     </Compile>
-    <Compile Include="..\Azuria\Api\v1\Converters\Info\LanguageConverter.cs">
-      <Link>Api\v1\Converters\Info\LanguageConverter.cs</Link>
-    </Compile>
     <Compile Include="..\Azuria\Api\v1\Converters\Info\LanguageKommaCollectionConverter.cs">
       <Link>Api\v1\Converters\Info\LanguageKommaCollectionConverter.cs</Link>
     </Compile>
@@ -155,6 +152,9 @@
     </Compile>
     <Compile Include="..\Azuria\Api\v1\Converters\IntToBoolConverter.cs">
       <Link>Api\v1\Converters\IntToBoolConverter.cs</Link>
+    </Compile>
+    <Compile Include="..\Azuria\Api\v1\Converters\LanguageConverter.cs">
+      <Link>Api\v1\Converters\LanguageConverter.cs</Link>
     </Compile>
     <Compile Include="..\Azuria\Api\v1\Converters\MediumConverter.cs">
       <Link>Api\v1\Converters\MediumConverter.cs</Link>
@@ -197,6 +197,9 @@
     </Compile>
     <Compile Include="..\Azuria\Api\v1\DataModels\Info\SeasonDataModel.cs">
       <Link>Api\v1\DataModels\Info\SeasonDataModel.cs</Link>
+    </Compile>
+    <Compile Include="..\Azuria\Api\v1\DataModels\Ucp\BookmarkDataModel.cs">
+      <Link>Api\v1\DataModels\Ucp\BookmarkDataModel.cs</Link>
     </Compile>
     <Compile Include="..\Azuria\Api\v1\DataModels\User\ListDataModel.cs">
       <Link>Api\v1\DataModels\User\ListDataModel.cs</Link>
@@ -363,15 +366,6 @@
     <Compile Include="..\Azuria\Senpai.cs">
       <Link>Senpai.cs</Link>
     </Compile>
-    <Compile Include="..\Azuria\User\AnimeMangaChronicObject.cs">
-      <Link>User\AnimeMangaChronicObject.cs</Link>
-    </Compile>
-    <Compile Include="..\Azuria\User\AnimeMangaProgress.cs">
-      <Link>User\AnimeMangaProgress.cs</Link>
-    </Compile>
-    <Compile Include="..\Azuria\User\AnimeMangaProgressObject.cs">
-      <Link>User\AnimeMangaProgressObject.cs</Link>
-    </Compile>
     <Compile Include="..\Azuria\User\AnimeMangaProgressState.cs">
       <Link>User\AnimeMangaProgressState.cs</Link>
     </Compile>
@@ -384,23 +378,17 @@
     <Compile Include="..\Azuria\User\Comment\CommentEnumerator.cs">
       <Link>User\Comment\CommentEnumerator.cs</Link>
     </Compile>
-    <Compile Include="..\Azuria\User\Comment\EditableComment.cs">
-      <Link>User\Comment\EditableComment.cs</Link>
-    </Compile>
     <Compile Include="..\Azuria\User\Comment\RatingCategory.cs">
       <Link>User\Comment\RatingCategory.cs</Link>
     </Compile>
     <Compile Include="..\Azuria\User\ControlPanel\AnimeMangaBookmarkObject.cs">
       <Link>User\ControlPanel\AnimeMangaBookmarkObject.cs</Link>
     </Compile>
-    <Compile Include="..\Azuria\User\ControlPanel\AnimeMangaFavouriteObject.cs">
-      <Link>User\ControlPanel\AnimeMangaFavouriteObject.cs</Link>
+    <Compile Include="..\Azuria\User\ControlPanel\BookmarkEnumerable.cs">
+      <Link>User\ControlPanel\BookmarkEnumerable.cs</Link>
     </Compile>
-    <Compile Include="..\Azuria\User\ControlPanel\AnimeMangaUcpObject.cs">
-      <Link>User\ControlPanel\AnimeMangaUcpObject.cs</Link>
-    </Compile>
-    <Compile Include="..\Azuria\User\ControlPanel\EditableAnimeMangaProgress.cs">
-      <Link>User\ControlPanel\EditableAnimeMangaProgress.cs</Link>
+    <Compile Include="..\Azuria\User\ControlPanel\BookmarkEnumerator.cs">
+      <Link>User\ControlPanel\BookmarkEnumerator.cs</Link>
     </Compile>
     <Compile Include="..\Azuria\User\ControlPanel\UserControlPanel.cs">
       <Link>User\ControlPanel\UserControlPanel.cs</Link>

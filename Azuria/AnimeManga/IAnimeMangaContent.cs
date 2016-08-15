@@ -9,7 +9,7 @@ namespace Azuria.AnimeManga
     ///     Represents an <see cref="Anime.Episode" /> or <see cref="Manga.Chapter" />.
     /// </summary>
     /// <typeparam name="T">The type of the parent object. Either an <see cref="Anime" /> or <see cref="Manga" />.</typeparam>
-    public interface IAnimeMangaContent<T> : IAnimeMangaContentBase where T : IAnimeMangaObject
+    public interface IAnimeMangaContent<T> : IAnimeMangaContentBase where T : class, IAnimeMangaObject
     {
         #region Properties
 

@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using Azuria.AnimeManga.Properties;
 using Azuria.Api.v1.Converters;
-using Azuria.Api.v1.Converters.Info;
 using Azuria.Api.v1.Enums;
 using Azuria.User;
 using Azuria.User.Comment;
@@ -42,7 +41,7 @@ namespace Azuria.Api.v1.DataModels.User
         internal string EntryName { get; set; }
 
         [JsonProperty("estate")]
-        internal AnimeMangaStatus EntryState { get; set; }
+        internal AnimeMangaStatus EntryStatus { get; set; }
 
         [JsonProperty("medium"), JsonConverter(typeof(MediumConverter))]
         internal AnimeMangaMedium Medium { get; set; }

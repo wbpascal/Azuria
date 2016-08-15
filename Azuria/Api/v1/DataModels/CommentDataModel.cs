@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using Azuria.Api.v1.Converters;
-using Azuria.Api.v1.Converters.Info;
 using Azuria.User;
 using Azuria.User.Comment;
 using Newtonsoft.Json;
@@ -18,8 +17,6 @@ namespace Azuria.Api.v1.DataModels
         [JsonProperty("comment")]
         internal string CommentContent { get; set; }
 
-        //TODO: GetComments/Data
-
         [JsonProperty("id")]
         internal int CommentId { get; set; }
 
@@ -35,7 +32,7 @@ namespace Azuria.Api.v1.DataModels
         [JsonProperty("rating")]
         internal int OverallRating { get; set; }
 
-        [JsonProperty("state")]
+        [JsonProperty("status")]
         internal AnimeMangaProgressState State { get; set; }
 
         [JsonProperty("data"), JsonConverter(typeof(SubRatingsConverter))]

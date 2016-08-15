@@ -1,18 +1,12 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
 using Azuria.Api;
 using Azuria.Api.v1;
 using Azuria.Api.v1.DataModels.User;
-using Azuria.Community.Conference;
 using Azuria.Exceptions;
 using Azuria.Security;
 using Azuria.Utilities.ErrorHandling;
-using Azuria.Utilities.Extensions;
-using Azuria.Utilities.Web;
-using HtmlAgilityPack;
 using JetBrains.Annotations;
 
 namespace Azuria
@@ -130,52 +124,6 @@ namespace Azuria
             return !lResult.Success ? new ProxerResult<Senpai>(lResult.Exceptions) : new ProxerResult<Senpai>(lSenpai);
         }
 
-        /// <summary>
-        ///     Fetches all messaging conferences the user is part of.
-        /// </summary>
-        /// <returns>If the action was successful and if it was, an enumeration of the conferences.</returns>
-        [ItemNotNull]
-        public async Task<ProxerResult<IEnumerable<Conference>>> GetAllConferences()
-        {
-            ProxerResult<string> lResult =
-                await
-                    HttpUtility.GetResponseErrorHandling(new Uri("http://proxer.me/messages"), this);
-
-            if (!lResult.Success)
-                return new ProxerResult<IEnumerable<Conference>>(lResult.Exceptions);
-
-            string lResponse = lResult.Result;
-
-            try
-            {
-                HtmlDocument lDocument = new HtmlDocument();
-                lDocument.LoadHtml(lResponse);
-                List<Conference> lReturn = new List<Conference>();
-
-                IEnumerable<HtmlNode> lNodes = lDocument.DocumentNode.DescendantsAndSelf()
-                    .Where(
-                        x =>
-                            x.Attributes.Contains("class") &&
-                            x.Attributes["class"].Value == "conferenceGrid ");
-
-                lReturn.AddRange(from curNode in lNodes
-                    let lId =
-                        Convert.ToInt32(
-                            curNode.Attributes["href"].Value.GetTagContents("/messages?id=",
-                                "#top")[0])
-                    let lTitle = curNode.FirstChild.InnerText
-                    select new Conference(lTitle, lId, this));
-
-                return new ProxerResult<IEnumerable<Conference>>(lReturn);
-            }
-            catch
-            {
-                return
-                    new ProxerResult<IEnumerable<Conference>>(
-                        ErrorHandler.HandleError(this, lResponse, false).Exceptions);
-            }
-        }
-
         internal void InvalidateCookies()
         {
             this._cookiesCreated = DateTime.MinValue;
@@ -238,7 +186,7 @@ namespace Azuria
                 await RequestHandler.ApiRequest(ApiRequestBuilder.BuildForLogout(this));
             if (!lResult.Success || lResult.Result == null || lResult.Result.Error)
                 return new ProxerResult(lResult.Exceptions);
-            this._cookiesCreated = DateTime.MinValue;
+            this.InvalidateCookies();
             return new ProxerResult();
         }
 

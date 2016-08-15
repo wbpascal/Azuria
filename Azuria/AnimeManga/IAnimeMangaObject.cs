@@ -145,9 +145,7 @@ namespace Azuria.AnimeManga
         #region
 
         /// <summary>
-        ///     Adds the <see cref="Anime" /> or <see cref="Manga" /> to the planned list. If <paramref name="userControlPanel" />
-        ///     is specified the object is also added to the corresponding <see cref="UserControlPanel.Anime" />- or
-        ///     <see cref="UserControlPanel.Manga" />-enumeration.
+        ///     Adds the <see cref="Anime" /> or <see cref="Manga" /> to the planned list.
         /// </summary>
         /// <param name="userControlPanel">The object which, if specified, the object is added to.</param>
         /// <returns>If the action was successful.</returns>

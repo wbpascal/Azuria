@@ -116,7 +116,7 @@ namespace Azuria.Utilities.Extensions
             (animeMangaObject as Manga)?.MangaType.SetInitialisedObject((MangaType) lDataModel.Medium);
             animeMangaObject.Name.SetInitialisedObject(lDataModel.Name);
             animeMangaObject.Rating.SetInitialisedObject(lDataModel.Rating);
-            animeMangaObject.Status.SetInitialisedObject(lDataModel.State);
+            animeMangaObject.Status.SetInitialisedObject(lDataModel.Status);
 
             return new ProxerResult();
         }

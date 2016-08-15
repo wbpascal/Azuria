@@ -54,7 +54,7 @@ namespace Azuria.User
             else throw new ArgumentException(nameof(T));
 
             lReturnObject?.ContentCount.SetInitialisedObject(dataModel.ContentCount);
-            lReturnObject?.Status.SetInitialisedObject(dataModel.EntryState);
+            lReturnObject?.Status.SetInitialisedObject(dataModel.EntryStatus);
 
             return lReturnObject;
         }

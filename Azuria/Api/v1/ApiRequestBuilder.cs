@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using Azuria.Api.v1.DataModels;
 using Azuria.Api.v1.DataModels.Info;
+using Azuria.Api.v1.DataModels.Ucp;
 using Azuria.Api.v1.DataModels.User;
 using Azuria.Api.v1.Enums;
 
@@ -110,6 +111,15 @@ namespace Azuria.Api.v1
             return new ApiRequest<RelationDataModel[]>(senpai)
             {
                 Address = new Uri($"{ApiAddress}/info/relations?id={entryId}")
+            };
+        }
+
+        internal static ApiRequest<BookmarkDataModel[]> BuildForGetReminder(string kat, int page, int limit,
+            Senpai senpai)
+        {
+            return new ApiRequest<BookmarkDataModel[]>(senpai)
+            {
+                Address = new Uri($"{ApiAddress}/ucp/reminder?kat={kat}&p={page}&limit={limit}")
             };
         }
 

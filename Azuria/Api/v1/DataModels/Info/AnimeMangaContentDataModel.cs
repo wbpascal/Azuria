@@ -1,4 +1,5 @@
 ﻿using Azuria.AnimeManga.Properties;
+using Azuria.Api.v1.Converters;
 using Azuria.Api.v1.Converters.Info;
 using Azuria.Api.v1.Enums;
 using Newtonsoft.Json;
