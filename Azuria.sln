@@ -7,11 +7,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Azuria", "Azuria\Azuria.csp
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Azuria.Portable", "Azuria.Portable\Azuria.Portable.csproj", "{5E392DE1-F823-4225-AE34-21FD6430D4DA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Azuria.Test", "Azuria.Test\Azuria.Test.csproj", "{2A122EA2-C3E1-488E-B1FA-0A1CC113DD6F}"
-	ProjectSection(ProjectDependencies) = postProject
-		{841DC1A7-9140-47E5-B13B-E4C57CFE6496} = {841DC1A7-9140-47E5-B13B-E4C57CFE6496}
-	EndProjectSection
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Examples", "Examples", "{EF25BADF-2D69-48A9-ACCE-40A620BBDF12}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Azuria.Example.Android", "Azuria.Example.Android\Azuria.Example.Android.csproj", "{3DD48288-C5E6-4AF3-8E97-9ED69D5DDCD3}"
@@ -30,10 +25,6 @@ Global
 		{5E392DE1-F823-4225-AE34-21FD6430D4DA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5E392DE1-F823-4225-AE34-21FD6430D4DA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5E392DE1-F823-4225-AE34-21FD6430D4DA}.Release|Any CPU.Build.0 = Release|Any CPU
-		{2A122EA2-C3E1-488E-B1FA-0A1CC113DD6F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{2A122EA2-C3E1-488E-B1FA-0A1CC113DD6F}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{2A122EA2-C3E1-488E-B1FA-0A1CC113DD6F}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{2A122EA2-C3E1-488E-B1FA-0A1CC113DD6F}.Release|Any CPU.Build.0 = Release|Any CPU
 		{3DD48288-C5E6-4AF3-8E97-9ED69D5DDCD3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{3DD48288-C5E6-4AF3-8E97-9ED69D5DDCD3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3DD48288-C5E6-4AF3-8E97-9ED69D5DDCD3}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
