@@ -71,7 +71,7 @@ namespace Azuria.Example.Android
         /// <since version="Added in API level 1" />
         public void WriteToParcel(Parcel dest, ParcelableWriteFlags flags)
         {
-            dest.WriteInt(this.Senpai.IsLoggedIn ? 1 : 0);
+            dest.WriteInt(this.Senpai.IsProbablyLoggedIn ? 1 : 0);
             List<string> lCookies = new List<string>();
             foreach (Cookie cookie in this.Senpai.LoginCookies.GetCookies(new Uri("https://proxer.me")))
             {
@@ -184,7 +184,6 @@ namespace Azuria.Example.Android
     {
         public SenpaiForParcelable(bool isLoggedIn, CookieContainer lCookies, int meId)
         {
-            this.IsLoggedIn = isLoggedIn;
             this.LoginCookies = lCookies;
             this.Me = new User.User(meId, this);
         }

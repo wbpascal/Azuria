@@ -7,4 +7,9 @@
         android:id="@+id/UserIdView"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content" />
+    <Button
+        android:id="@+id/StartAMNotificationsButton"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/StartAMNotifications" />
 </LinearLayout>

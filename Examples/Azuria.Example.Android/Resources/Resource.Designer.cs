@@ -26,6 +26,7 @@ namespace Azuria.Example.Android
 		
 		public static void UpdateIdValues()
 		{
+			global::ModernHttpClient.Resource.String.library_name = global::Azuria.Example.Android.Resource.String.library_name;
 		}
 		
 		public partial class Attribute
@@ -66,6 +67,9 @@ namespace Azuria.Example.Android
 			// aapt resource value: 0x7f050001
 			public const int PasswordBox = 2131034113;
 			
+			// aapt resource value: 0x7f050004
+			public const int StartAMNotificationsButton = 2131034116;
+			
 			// aapt resource value: 0x7f050003
 			public const int UserIdView = 2131034115;
 			
@@ -91,6 +95,9 @@ namespace Azuria.Example.Android
 			// aapt resource value: 0x7f030001
 			public const int Main = 2130903041;
 			
+			// aapt resource value: 0x7f030002
+			public const int Notification = 2130903042;
+			
 			static Layout()
 			{
 				global::Android.Runtime.ResourceIdManager.UpdateIdValues();
@@ -104,20 +111,32 @@ namespace Azuria.Example.Android
 		public partial class String
 		{
 			
-			// aapt resource value: 0x7f040004
-			public const int ApplicationName = 2130968580;
-			
-			// aapt resource value: 0x7f040000
-			public const int Hello = 2130968576;
+			// aapt resource value: 0x7f040005
+			public const int ApplicationName = 2130968581;
 			
 			// aapt resource value: 0x7f040001
-			public const int Login = 2130968577;
-			
-			// aapt resource value: 0x7f040003
-			public const int Password = 2130968579;
+			public const int Hello = 2130968577;
 			
 			// aapt resource value: 0x7f040002
-			public const int Username = 2130968578;
+			public const int Login = 2130968578;
+			
+			// aapt resource value: 0x7f040008
+			public const int Lorem30 = 2130968584;
+			
+			// aapt resource value: 0x7f040006
+			public const int Notifications = 2130968582;
+			
+			// aapt resource value: 0x7f040004
+			public const int Password = 2130968580;
+			
+			// aapt resource value: 0x7f040007
+			public const int StartAMNotifications = 2130968583;
+			
+			// aapt resource value: 0x7f040003
+			public const int Username = 2130968579;
+			
+			// aapt resource value: 0x7f040000
+			public const int library_name = 2130968576;
 			
 			static String()
 			{
