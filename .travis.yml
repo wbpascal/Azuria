@@ -1,3 +1,4 @@
 language: csharp
 solution: Azuria.sln
-scritp: xbuild /p:Configuration=TravisCI Azuria.sln
+script: 
+  - xbuild /p:Configuration=TravisCI Azuria.sln
