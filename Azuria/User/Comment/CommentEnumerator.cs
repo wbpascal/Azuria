@@ -100,9 +100,9 @@ namespace Azuria.User.Comment
             ProxerResult<ProxerApiResponse<CommentDataModel[]>> lResult =
                 await
                     RequestHandler.ApiRequest(this._user == null
-                        ? ApiRequestBuilder.BuildForGetComments(this._animeMangaObject.Id,
+                        ? ApiRequestBuilder.InfoGetComments(this._animeMangaObject.Id,
                             this._nextPage, ResultsPerPage, this._sort, this._senpai)
-                        : ApiRequestBuilder.BuildForGetLatestCommentsUser(this._user.Id, this._nextPage, ResultsPerPage,
+                        : ApiRequestBuilder.UserGetLatestComments(this._user.Id, this._nextPage, ResultsPerPage,
                             typeof(T).GetTypeInfo().Name.ToLower(), 0, this._senpai));
             if (!lResult.Success || lResult.Result == null)
                 return new ProxerResult(lResult.Exceptions);

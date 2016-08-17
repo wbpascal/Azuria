@@ -20,7 +20,7 @@ namespace Azuria.Utilities.Extensions
         {
             ProxerResult<ProxerApiResponse<ListInfoDataModel>> lResult =
                 await
-                    RequestHandler.ApiRequest(ApiRequestBuilder.BuildForGetListInfo(animeMangaObject.Id,
+                    RequestHandler.ApiRequest(ApiRequestBuilder.InfoGetListInfo(animeMangaObject.Id,
                         await animeMangaObject.ContentCount.GetObject(-1), senpai));
             if (!lResult.Success || lResult.Result == null)
                 return new ProxerResult<AnimeMangaContentDataModel[]>(lResult.Exceptions);
@@ -38,7 +38,7 @@ namespace Azuria.Utilities.Extensions
             ProxerResult<ProxerInfoLanguageResponse> lResult =
                 await
                     RequestHandler.ApiCustomRequest<ProxerInfoLanguageResponse>(
-                        ApiRequestBuilder.BuildForGetLanguage(animeMangaObject.Id, senpai));
+                        ApiRequestBuilder.InfoGetLanguage(animeMangaObject.Id, senpai));
             if (!lResult.Success || lResult.Result == null) return new ProxerResult(lResult.Exceptions);
 
             (animeMangaObject as Anime)?.AvailableLanguages.SetInitialisedObject(
@@ -51,7 +51,7 @@ namespace Azuria.Utilities.Extensions
         internal static async Task<ProxerResult> InitEntryTagsApi(this IAnimeMangaObject animeMangaObject, Senpai senpai)
         {
             ProxerResult<ProxerApiResponse<EntryTagDataModel[]>> lResult =
-                await RequestHandler.ApiRequest(ApiRequestBuilder.BuildForGetEntryTags(animeMangaObject.Id, senpai));
+                await RequestHandler.ApiRequest(ApiRequestBuilder.InfoGetEntryTags(animeMangaObject.Id, senpai));
             if (!lResult.Success || lResult.Result == null) return new ProxerResult(lResult.Exceptions);
 
             animeMangaObject.Tags.SetInitialisedObject(from entryTagDataModel in lResult.Result.Data
@@ -63,7 +63,7 @@ namespace Azuria.Utilities.Extensions
         internal static async Task<ProxerResult> InitGroupsApi(this IAnimeMangaObject animeMangaObject, Senpai senpai)
         {
             ProxerResult<ProxerApiResponse<GroupDataModel[]>> lResult =
-                await RequestHandler.ApiRequest(ApiRequestBuilder.BuildForGetGroups(animeMangaObject.Id, senpai));
+                await RequestHandler.ApiRequest(ApiRequestBuilder.InfoGetGroups(animeMangaObject.Id, senpai));
             if (!lResult.Success || lResult.Result == null) return new ProxerResult(lResult.Exceptions);
 
             animeMangaObject.Groups.SetInitialisedObject(from groupDataModel in lResult.Result.Data
@@ -76,7 +76,7 @@ namespace Azuria.Utilities.Extensions
         internal static async Task<ProxerResult> InitIndustryApi(this IAnimeMangaObject animeMangaObject, Senpai senpai)
         {
             ProxerResult<ProxerApiResponse<PublisherDataModel[]>> lResult =
-                await RequestHandler.ApiRequest(ApiRequestBuilder.BuildForGetPublisher(animeMangaObject.Id, senpai));
+                await RequestHandler.ApiRequest(ApiRequestBuilder.InfoGetPublisher(animeMangaObject.Id, senpai));
             if (!lResult.Success || lResult.Result == null) return new ProxerResult(lResult.Exceptions);
 
             animeMangaObject.Industry.SetInitialisedObject(from publisherDataModel in lResult.Result.Data
@@ -90,7 +90,7 @@ namespace Azuria.Utilities.Extensions
             Senpai senpai)
         {
             ProxerResult<ProxerApiResponse<bool>> lResult =
-                await RequestHandler.ApiRequest(ApiRequestBuilder.BuildForGetGate(animeMangaObject.Id, senpai));
+                await RequestHandler.ApiRequest(ApiRequestBuilder.InfoGetGate(animeMangaObject.Id, senpai));
             if (!lResult.Success || lResult.Result == null) return new ProxerResult(lResult.Exceptions);
 
             animeMangaObject.IsHContent.SetInitialisedObject(lResult.Result.Data);
@@ -102,18 +102,18 @@ namespace Azuria.Utilities.Extensions
         internal static async Task<ProxerResult> InitMainInfoApi(this IAnimeMangaObject animeMangaObject, Senpai senpai)
         {
             ProxerResult<ProxerApiResponse<EntryDataModel>> lResult =
-                await RequestHandler.ApiRequest(ApiRequestBuilder.BuildForGetEntry(animeMangaObject.Id, senpai));
+                await RequestHandler.ApiRequest(ApiRequestBuilder.InfoGetEntry(animeMangaObject.Id, senpai));
             if (!lResult.Success || lResult.Result == null) return new ProxerResult(lResult.Exceptions);
             EntryDataModel lDataModel = lResult.Result.Data;
 
-            (animeMangaObject as Anime)?.AnimeTyp.SetInitialisedObject((AnimeType) lDataModel.Medium);
+            (animeMangaObject as Anime)?.AnimeMedium.SetInitialisedObject((AnimeMedium) lDataModel.Medium);
             animeMangaObject.Clicks.SetInitialisedObject(lDataModel.Clicks);
             animeMangaObject.ContentCount.SetInitialisedObject(lDataModel.ContentCount);
             animeMangaObject.Description.SetInitialisedObject(lDataModel.Description);
             animeMangaObject.Fsk.SetInitialisedObject(lDataModel.Fsk);
             animeMangaObject.Genre.SetInitialisedObject(lDataModel.Genre);
             animeMangaObject.IsLicensed.SetInitialisedObject(lDataModel.IsLicensed);
-            (animeMangaObject as Manga)?.MangaType.SetInitialisedObject((MangaType) lDataModel.Medium);
+            (animeMangaObject as Manga)?.MangaMedium.SetInitialisedObject((MangaMedium) lDataModel.Medium);
             animeMangaObject.Name.SetInitialisedObject(lDataModel.Name);
             animeMangaObject.Rating.SetInitialisedObject(lDataModel.Rating);
             animeMangaObject.Status.SetInitialisedObject(lDataModel.Status);
@@ -125,7 +125,7 @@ namespace Azuria.Utilities.Extensions
         internal static async Task<ProxerResult> InitNamesApi(this IAnimeMangaObject animeMangaObject, Senpai senpai)
         {
             ProxerResult<ProxerApiResponse<NameDataModel[]>> lResult =
-                await RequestHandler.ApiRequest(ApiRequestBuilder.BuildForGetName(animeMangaObject.Id, senpai));
+                await RequestHandler.ApiRequest(ApiRequestBuilder.InfoGetName(animeMangaObject.Id, senpai));
             if (!lResult.Success || lResult.Result == null) return new ProxerResult(lResult.Exceptions);
             foreach (NameDataModel nameDataModel in lResult.Result.Data)
             {
@@ -155,7 +155,7 @@ namespace Azuria.Utilities.Extensions
         internal static async Task<ProxerResult> InitRelationsApi(this IAnimeMangaObject animeMangaObject, Senpai senpai)
         {
             ProxerResult<ProxerApiResponse<RelationDataModel[]>> lResult =
-                await RequestHandler.ApiRequest(ApiRequestBuilder.BuildForGetRelations(animeMangaObject.Id, senpai));
+                await RequestHandler.ApiRequest(ApiRequestBuilder.InfoGetRelations(animeMangaObject.Id, senpai));
             if (!lResult.Success || lResult.Result == null) return new ProxerResult(lResult.Exceptions);
 
             animeMangaObject.Relations.SetInitialisedObject(from dataModel in lResult.Result.Data
@@ -170,7 +170,7 @@ namespace Azuria.Utilities.Extensions
         internal static async Task<ProxerResult> InitSeasonsApi(this IAnimeMangaObject animeMangaObject, Senpai senpai)
         {
             ProxerResult<ProxerApiResponse<SeasonDataModel[]>> lResult =
-                await RequestHandler.ApiRequest(ApiRequestBuilder.BuildForGetSeason(animeMangaObject.Id, senpai));
+                await RequestHandler.ApiRequest(ApiRequestBuilder.InfoGetSeason(animeMangaObject.Id, senpai));
             if (!lResult.Success || lResult.Result == null) return new ProxerResult(lResult.Exceptions);
             SeasonDataModel[] lData = lResult.Result.Data;
 

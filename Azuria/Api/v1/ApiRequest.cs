@@ -5,16 +5,17 @@ namespace Azuria.Api.v1
 {
     internal class ApiRequest<T> : ApiRequest
     {
-        internal ApiRequest(Senpai senpai) : base(senpai)
+        internal ApiRequest(Senpai senpai, Uri address) : base(senpai, address)
         {
         }
     }
 
     internal class ApiRequest
     {
-        internal ApiRequest(Senpai senpai)
+        internal ApiRequest(Senpai senpai, Uri address)
         {
             this.Senpai = senpai;
+            this.Address = address;
         }
 
         #region Properties

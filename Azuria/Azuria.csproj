@@ -66,13 +66,15 @@
     <Compile Include="AnimeManga\Properties\AnimeMangaRating.cs" />
     <Compile Include="AnimeManga\Properties\AnimeMangaSeason.cs" />
     <Compile Include="AnimeManga\Properties\AnimeMangaSeasonInfo.cs" />
+    <Compile Include="Api\v1\Converters\Ucp\CustomDateTimeConverter.cs" />
     <Compile Include="Api\v1\DataModels\Ucp\BookmarkDataModel.cs" />
+    <Compile Include="Api\v1\DataModels\Ucp\HistoryDataModel.cs" />
     <Compile Include="User\Comment\CommentEnumerable.cs" />
     <Compile Include="User\Comment\CommentEnumerator.cs" />
     <Compile Include="AnimeManga\Properties\Country.cs" />
     <Compile Include="AnimeManga\Properties\GenreHelper.cs" />
     <Compile Include="AnimeManga\Properties\GenreType.cs" />
-    <Compile Include="AnimeManga\Properties\MangaType.cs" />
+    <Compile Include="AnimeManga\Properties\MangaMedium.cs" />
     <Compile Include="AnimeManga\Properties\Season.cs" />
     <Compile Include="AnimeManga\Properties\StreamPartner.cs" />
     <Compile Include="AnimeManga\Properties\Tag.cs" />
@@ -123,8 +125,11 @@
     <Compile Include="Exceptions\CloudflareException.cs" />
     <Compile Include="Security\ISecureContainer.cs" />
     <Compile Include="Security\SecureStringContainer.cs" />
+    <Compile Include="User\ControlPanel\AnimeMangaHistoryObject.cs" />
     <Compile Include="User\ControlPanel\BookmarkEnumerable.cs" />
     <Compile Include="User\ControlPanel\BookmarkEnumerator.cs" />
+    <Compile Include="User\ControlPanel\HistoryEnumerable.cs" />
+    <Compile Include="User\ControlPanel\HistoryEnumerator.cs" />
     <Compile Include="Utilities\Extensions\DictionaryExtensions.cs" />
     <Compile Include="Exceptions\FirewallException.cs" />
     <Compile Include="Exceptions\InvalidUserException.cs" />
@@ -141,7 +146,7 @@
     <Compile Include="AnimeManga\IAnimeMangaObject.cs" />
     <Compile Include="AnimeManga\Manga.cs" />
     <Compile Include="AnimeManga\Properties\AnimeLanguage.cs" />
-    <Compile Include="AnimeManga\Properties\AnimeType.cs" />
+    <Compile Include="AnimeManga\Properties\AnimeMedium.cs" />
     <Compile Include="Community\Forum\Forum.cs" />
     <Compile Include="Search\SearchResultEnumerator.cs" />
     <Compile Include="User\Comment\Comment.cs" />

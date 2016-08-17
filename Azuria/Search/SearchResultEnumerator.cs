@@ -169,36 +169,36 @@ namespace Azuria.Search
                 }
             }
             Type lType = typeof(object);
-            AnimeType lAnimeType = AnimeType.Unknown;
-            MangaType lMangaType = MangaType.Unknown;
+            AnimeMedium lAnimeMedium = AnimeMedium.Unknown;
+            MangaMedium lMangaMedium = MangaMedium.Unknown;
             switch (node.ChildNodes[3].InnerText)
             {
                 case "Animeserie":
                     lType = typeof(Anime);
-                    lAnimeType = AnimeType.Series;
+                    lAnimeMedium = AnimeMedium.Series;
                     break;
                 case "OVA":
                     lType = typeof(Anime);
-                    lAnimeType = AnimeType.Ova;
+                    lAnimeMedium = AnimeMedium.Ova;
                     break;
                 case "Movie":
                     lType = typeof(Anime);
-                    lAnimeType = AnimeType.Movie;
+                    lAnimeMedium = AnimeMedium.Movie;
                     break;
                 case "Mangaserie":
                     lType = typeof(Manga);
-                    lMangaType = MangaType.Series;
+                    lMangaMedium = MangaMedium.Series;
                     break;
                 case "One-Shot":
                     lType = typeof(Manga);
-                    lMangaType = MangaType.OneShot;
+                    lMangaMedium = MangaMedium.OneShot;
                     break;
             }
 
             if ((typeof(T) == typeof(Anime) || typeof(T) == typeof(IAnimeMangaObject)) && lType == typeof(Anime))
-                return new Anime(lName, lId, this._senpai, lGenreList, lStatus, lAnimeType);
+                return new Anime(lName, lId, this._senpai, lGenreList, lStatus, lAnimeMedium);
             if ((typeof(T) == typeof(Manga) || typeof(T) == typeof(IAnimeMangaObject)) && lType == typeof(Manga))
-                return new Manga(lName, lId, this._senpai, lGenreList, lStatus, lMangaType);
+                return new Manga(lName, lId, this._senpai, lGenreList, lStatus, lMangaMedium);
             return null;
         }
 

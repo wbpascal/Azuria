@@ -144,7 +144,7 @@ namespace Azuria
             if (this.IsProbablyLoggedIn) return new ProxerResult<bool>(new[] {new UserAlreadyLoggedInException()});
 
             ProxerResult<ProxerApiResponse<LoginDataModel>> lResult =
-                await RequestHandler.ApiRequest(ApiRequestBuilder.BuildForLogin(this._username, password, this));
+                await RequestHandler.ApiRequest(ApiRequestBuilder.UserLogin(this._username, password, this));
             if (!lResult.Success || lResult.Result == null)
             {
                 return new ProxerResult<bool>(lResult.Exceptions);
@@ -165,7 +165,7 @@ namespace Azuria
                 return new ProxerResult(new[] {new ArgumentException(nameof(token))});
 
             ProxerResult<ProxerApiResponse<UserInfoDataModel>> lResult =
-                await RequestHandler.ApiRequest(ApiRequestBuilder.BuildForGetUserInfo(null, this), token);
+                await RequestHandler.ApiRequest(ApiRequestBuilder.UserGetInfo(null, this), token);
             if (!lResult.Success || lResult.Result == null) return new ProxerResult(lResult.Exceptions);
             UserInfoDataModel lDataModel = lResult.Result.Data;
             this.LoginToken.SetValue(token);
@@ -183,7 +183,7 @@ namespace Azuria
         public async Task<ProxerResult> Logout()
         {
             ProxerResult<ProxerApiResponse> lResult =
-                await RequestHandler.ApiRequest(ApiRequestBuilder.BuildForLogout(this));
+                await RequestHandler.ApiRequest(ApiRequestBuilder.UserLogout(this));
             if (!lResult.Success || lResult.Result == null || lResult.Result.Error)
                 return new ProxerResult(lResult.Exceptions);
             this.InvalidateCookies();

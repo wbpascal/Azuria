@@ -69,8 +69,8 @@
     <Compile Include="..\Azuria\AnimeManga\Properties\AnimeMangaStatus.cs">
       <Link>AnimeManga\Properties\AnimeMangaStatus.cs</Link>
     </Compile>
-    <Compile Include="..\Azuria\AnimeManga\Properties\AnimeType.cs">
-      <Link>AnimeManga\Properties\AnimeType.cs</Link>
+    <Compile Include="..\Azuria\AnimeManga\Properties\AnimeMedium.cs">
+      <Link>AnimeManga\Properties\AnimeMedium.cs</Link>
     </Compile>
     <Compile Include="..\Azuria\AnimeManga\Properties\Country.cs">
       <Link>AnimeManga\Properties\Country.cs</Link>
@@ -96,8 +96,8 @@
     <Compile Include="..\Azuria\AnimeManga\Properties\Language.cs">
       <Link>AnimeManga\Properties\Language.cs</Link>
     </Compile>
-    <Compile Include="..\Azuria\AnimeManga\Properties\MangaType.cs">
-      <Link>AnimeManga\Properties\MangaType.cs</Link>
+    <Compile Include="..\Azuria\AnimeManga\Properties\MangaMedium.cs">
+      <Link>AnimeManga\Properties\MangaMedium.cs</Link>
     </Compile>
     <Compile Include="..\Azuria\AnimeManga\Properties\Season.cs">
       <Link>AnimeManga\Properties\Season.cs</Link>
@@ -162,6 +162,9 @@
     <Compile Include="..\Azuria\Api\v1\Converters\SubRatingsConverter.cs">
       <Link>Api\v1\Converters\SubRatingsConverter.cs</Link>
     </Compile>
+    <Compile Include="..\Azuria\Api\v1\Converters\Ucp\CustomDateTimeConverter.cs">
+      <Link>Api\v1\Converters\Ucp\CustomDateTimeConverter.cs</Link>
+    </Compile>
     <Compile Include="..\Azuria\Api\v1\Converters\UnixToDateTimeConverter.cs">
       <Link>Api\v1\Converters\UnixToDateTimeConverter.cs</Link>
     </Compile>
@@ -200,6 +203,9 @@
     </Compile>
     <Compile Include="..\Azuria\Api\v1\DataModels\Ucp\BookmarkDataModel.cs">
       <Link>Api\v1\DataModels\Ucp\BookmarkDataModel.cs</Link>
+    </Compile>
+    <Compile Include="..\Azuria\Api\v1\DataModels\Ucp\HistoryDataModel.cs">
+      <Link>Api\v1\DataModels\Ucp\HistoryDataModel.cs</Link>
     </Compile>
     <Compile Include="..\Azuria\Api\v1\DataModels\User\ListDataModel.cs">
       <Link>Api\v1\DataModels\User\ListDataModel.cs</Link>
@@ -384,11 +390,20 @@
     <Compile Include="..\Azuria\User\ControlPanel\AnimeMangaBookmarkObject.cs">
       <Link>User\ControlPanel\AnimeMangaBookmarkObject.cs</Link>
     </Compile>
+    <Compile Include="..\Azuria\User\ControlPanel\AnimeMangaHistoryObject.cs">
+      <Link>User\ControlPanel\AnimeMangaHistoryObject.cs</Link>
+    </Compile>
     <Compile Include="..\Azuria\User\ControlPanel\BookmarkEnumerable.cs">
       <Link>User\ControlPanel\BookmarkEnumerable.cs</Link>
     </Compile>
     <Compile Include="..\Azuria\User\ControlPanel\BookmarkEnumerator.cs">
       <Link>User\ControlPanel\BookmarkEnumerator.cs</Link>
+    </Compile>
+    <Compile Include="..\Azuria\User\ControlPanel\HistoryEnumerable.cs">
+      <Link>User\ControlPanel\HistoryEnumerable.cs</Link>
+    </Compile>
+    <Compile Include="..\Azuria\User\ControlPanel\HistoryEnumerator.cs">
+      <Link>User\ControlPanel\HistoryEnumerator.cs</Link>
     </Compile>
     <Compile Include="..\Azuria\User\ControlPanel\UserControlPanel.cs">
       <Link>User\ControlPanel\UserControlPanel.cs</Link>
@@ -479,9 +494,7 @@
     <None Include="app.config" />
     <None Include="project.json" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Api\v1\Converters\User\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

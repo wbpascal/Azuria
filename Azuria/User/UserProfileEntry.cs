@@ -42,13 +42,13 @@ namespace Azuria.User
             if (typeof(T) == typeof(Anime))
             {
                 Anime lAnime = new Anime(dataModel.EntryName, dataModel.EntryId, senpai);
-                lAnime.AnimeTyp.SetInitialisedObject((AnimeType) dataModel.Medium);
+                lAnime.AnimeMedium.SetInitialisedObject((AnimeMedium) dataModel.Medium);
                 lReturnObject = lAnime as T;
             }
             else if (typeof(T) == typeof(Manga))
             {
                 Manga lManga = new Manga(dataModel.EntryName, dataModel.EntryId, senpai);
-                lManga.MangaType.SetInitialisedObject((MangaType) dataModel.Medium);
+                lManga.MangaMedium.SetInitialisedObject((MangaMedium) dataModel.Medium);
                 lReturnObject = lManga as T;
             }
             else throw new ArgumentException(nameof(T));

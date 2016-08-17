@@ -189,7 +189,7 @@ namespace Azuria.User
             if (this.Id == -1) return new ProxerResult();
 
             ProxerResult<ProxerApiResponse<UserInfoDataModel>> lResult =
-                await RequestHandler.ApiRequest(ApiRequestBuilder.BuildForGetUserInfo(this.Id, this.Senpai));
+                await RequestHandler.ApiRequest(ApiRequestBuilder.UserGetInfo(this.Id, this.Senpai));
             if (!lResult.Success || lResult.Result == null) return new ProxerResult(lResult.Exceptions);
 
             UserInfoDataModel lDataModel = lResult.Result.Data;
@@ -205,7 +205,7 @@ namespace Azuria.User
         {
             ProxerResult<ProxerApiResponse<ToptenDataModel[]>> lResult =
                 await
-                    RequestHandler.ApiRequest(ApiRequestBuilder.BuildForGetTopten(this.Id,
+                    RequestHandler.ApiRequest(ApiRequestBuilder.UserGetTopten(this.Id,
                         category.ToString().ToLower(), this.Senpai));
             if (!lResult.Success || lResult.Result == null) return new ProxerResult(lResult.Exceptions);
 

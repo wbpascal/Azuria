@@ -7,6 +7,7 @@ namespace Azuria.User.ControlPanel
 {
     /// <summary>
     ///     Represents the User-Control-Panel of a specified user.
+    ///     TODO: Implement Listsum
     /// </summary>
     public class UserControlPanel
     {
@@ -31,6 +32,11 @@ namespace Azuria.User.ControlPanel
         [NotNull]
         public IEnumerable<AnimeMangaBookmarkObject<Anime>> AnimeBookmarks
             => new BookmarkEnumerable<Anime>(this._senpai, this);
+
+        /// <summary>
+        /// </summary>
+        public IEnumerable<AnimeMangaHistoryObject<IAnimeMangaObject>> History
+            => new HistoryEnumerable<IAnimeMangaObject>(this._senpai, this);
 
         /// <summary>
         ///     Gets all bookmarks of the user that are <see cref="Manga">Manga</see>.

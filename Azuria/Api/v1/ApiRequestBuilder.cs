@@ -14,162 +14,129 @@ namespace Azuria.Api.v1
 
         #region
 
-        internal static ApiRequest<CommentDataModel[]> BuildForGetComments(int entryId, int page, int limit, string sort,
+        internal static ApiRequest<CommentDataModel[]> InfoGetComments(int entryId, int page, int limit, string sort,
             Senpai senpai)
         {
-            return new ApiRequest<CommentDataModel[]>(senpai)
-            {
-                Address = new Uri($"{ApiAddress}/info/comments?id={entryId}&p={page}&limit={limit}&sort={sort}")
-            };
+            return new ApiRequest<CommentDataModel[]>(senpai,
+                new Uri($"{ApiAddress}/info/comments?id={entryId}&p={page}&limit={limit}&sort={sort}"));
         }
 
-        internal static ApiRequest<EntryDataModel> BuildForGetEntry(int entryId, Senpai senpai)
+        internal static ApiRequest<EntryDataModel> InfoGetEntry(int entryId, Senpai senpai)
         {
-            return new ApiRequest<EntryDataModel>(senpai)
-            {
-                Address = new Uri($"{ApiAddress}/info/entry?id={entryId}")
-            };
+            return new ApiRequest<EntryDataModel>(senpai, new Uri($"{ApiAddress}/info/entry?id={entryId}"));
         }
 
-        internal static ApiRequest<EntryTagDataModel[]> BuildForGetEntryTags(int entryId, Senpai senpai)
+        internal static ApiRequest<EntryTagDataModel[]> InfoGetEntryTags(int entryId, Senpai senpai)
         {
-            return new ApiRequest<EntryTagDataModel[]>(senpai)
-            {
-                Address = new Uri($"{ApiAddress}/info/entrytags?id={entryId}")
-            };
+            return new ApiRequest<EntryTagDataModel[]>(senpai, new Uri($"{ApiAddress}/info/entrytags?id={entryId}"));
         }
 
-        internal static ApiRequest<bool> BuildForGetGate(int entryId, Senpai senpai)
+        internal static ApiRequest<bool> InfoGetGate(int entryId, Senpai senpai)
         {
-            return new ApiRequest<bool>(senpai)
-            {
-                Address = new Uri($"{ApiAddress}/info/gate?id={entryId}")
-            };
+            return new ApiRequest<bool>(senpai, new Uri($"{ApiAddress}/info/gate?id={entryId}"));
         }
 
-        internal static ApiRequest<GroupDataModel[]> BuildForGetGroups(int entryId, Senpai senpai)
+        internal static ApiRequest<GroupDataModel[]> InfoGetGroups(int entryId, Senpai senpai)
         {
-            return new ApiRequest<GroupDataModel[]>(senpai)
-            {
-                Address = new Uri($"{ApiAddress}/info/groups?id={entryId}")
-            };
+            return new ApiRequest<GroupDataModel[]>(senpai, new Uri($"{ApiAddress}/info/groups?id={entryId}"));
         }
 
-        internal static ApiRequest<AnimeMangaLanguage[]> BuildForGetLanguage(int entryId, Senpai senpai)
+        internal static ApiRequest<AnimeMangaLanguage[]> InfoGetLanguage(int entryId, Senpai senpai)
         {
-            return new ApiRequest<AnimeMangaLanguage[]>(senpai)
-            {
-                Address = new Uri($"{ApiAddress}/info/lang?id={entryId}")
-            };
+            return new ApiRequest<AnimeMangaLanguage[]>(senpai, new Uri($"{ApiAddress}/info/lang?id={entryId}"));
         }
 
-        internal static ApiRequest<CommentDataModel[]> BuildForGetLatestCommentsUser(int userId, int page, int limit,
-            string kat,
-            int length, Senpai senpai)
+        internal static ApiRequest<ListInfoDataModel> InfoGetListInfo(int entryId, int limit, Senpai senpai)
         {
-            return new ApiRequest<CommentDataModel[]>(senpai)
-            {
-                Address =
-                    new Uri($"{ApiAddress}/user/comments?uid={userId}&p={page}&limit={limit}&kat={kat}&length={length}")
-            };
+            return new ApiRequest<ListInfoDataModel>(senpai,
+                new Uri($"{ApiAddress}/info/listinfo?id={entryId}&limit={limit}"));
         }
 
-        internal static ApiRequest<ListInfoDataModel> BuildForGetListInfo(int entryId, int limit, Senpai senpai)
+        internal static ApiRequest<NameDataModel[]> InfoGetName(int entryId, Senpai senpai)
         {
-            return new ApiRequest<ListInfoDataModel>(senpai)
-            {
-                Address = new Uri($"{ApiAddress}/info/listinfo?id={entryId}&limit={limit}")
-            };
+            return new ApiRequest<NameDataModel[]>(senpai, new Uri($"{ApiAddress}/info/names?id={entryId}"));
         }
 
-        internal static ApiRequest<int> BuildForGetListsum(Senpai senpai, string kat = "anime")
+        internal static ApiRequest<PublisherDataModel[]> InfoGetPublisher(int entryId, Senpai senpai)
         {
-            return new ApiRequest<int>(senpai)
-            {
-                Address = new Uri($"{ApiAddress}/ucp/listsum?kat={kat}")
-            };
+            return new ApiRequest<PublisherDataModel[]>(senpai, new Uri($"{ApiAddress}/info/publisher?id={entryId}"));
         }
 
-        internal static ApiRequest<NameDataModel[]> BuildForGetName(int entryId, Senpai senpai)
+        internal static ApiRequest<RelationDataModel[]> InfoGetRelations(int entryId, Senpai senpai)
         {
-            return new ApiRequest<NameDataModel[]>(senpai)
-            {
-                Address = new Uri($"{ApiAddress}/info/names?id={entryId}")
-            };
+            return new ApiRequest<RelationDataModel[]>(senpai, new Uri($"{ApiAddress}/info/relations?id={entryId}"));
         }
 
-        internal static ApiRequest<PublisherDataModel[]> BuildForGetPublisher(int entryId, Senpai senpai)
+        internal static ApiRequest<SeasonDataModel[]> InfoGetSeason(int entryId, Senpai senpai)
         {
-            return new ApiRequest<PublisherDataModel[]>(senpai)
-            {
-                Address = new Uri($"{ApiAddress}/info/publisher?id={entryId}")
-            };
+            return new ApiRequest<SeasonDataModel[]>(senpai, new Uri($"{ApiAddress}/info/season?id={entryId}"));
         }
 
-        internal static ApiRequest<RelationDataModel[]> BuildForGetRelations(int entryId, Senpai senpai)
+        internal static ApiRequest<HistoryDataModel[]> UcpGetHistory(int page, int limit, Senpai senpai)
         {
-            return new ApiRequest<RelationDataModel[]>(senpai)
+            return new ApiRequest<HistoryDataModel[]>(senpai,
+                new Uri($"{ApiAddress}/ucp/history?p={page}&limit={limit}"))
             {
-                Address = new Uri($"{ApiAddress}/info/relations?id={entryId}")
+                CheckLogin = true
             };
         }
 
-        internal static ApiRequest<BookmarkDataModel[]> BuildForGetReminder(string kat, int page, int limit,
+        internal static ApiRequest<int> UcpGetListsum(Senpai senpai, string kat = "anime")
+        {
+            return new ApiRequest<int>(senpai, new Uri($"{ApiAddress}/ucp/listsum?kat={kat}"))
+            {
+                CheckLogin = true
+            };
+        }
+
+        internal static ApiRequest<BookmarkDataModel[]> UcpGetReminder(string kat, int page, int limit,
             Senpai senpai)
         {
-            return new ApiRequest<BookmarkDataModel[]>(senpai)
+            return new ApiRequest<BookmarkDataModel[]>(senpai,
+                new Uri($"{ApiAddress}/ucp/reminder?kat={kat}&p={page}&limit={limit}"))
             {
-                Address = new Uri($"{ApiAddress}/ucp/reminder?kat={kat}&p={page}&limit={limit}")
+                CheckLogin = true
             };
         }
 
-        internal static ApiRequest<SeasonDataModel[]> BuildForGetSeason(int entryId, Senpai senpai)
+        internal static ApiRequest<UserInfoDataModel> UserGetInfo(int? userId, Senpai senpai)
         {
-            return new ApiRequest<SeasonDataModel[]>(senpai)
-            {
-                Address = new Uri($"{ApiAddress}/info/season?id={entryId}")
-            };
+            return new ApiRequest<UserInfoDataModel>(senpai,
+                new Uri($"{ApiAddress}/user/userinfo?uid={userId?.ToString() ?? ""}"));
         }
 
-        internal static ApiRequest<ToptenDataModel[]> BuildForGetTopten(int userId, string category, Senpai senpai)
+        internal static ApiRequest<CommentDataModel[]> UserGetLatestComments(int userId, int page, int limit,
+            string kat, int length, Senpai senpai)
         {
-            return new ApiRequest<ToptenDataModel[]>(senpai)
-            {
-                Address = new Uri($"{ApiAddress}/user/topten?uid={userId}&kat={category}")
-            };
+            return new ApiRequest<CommentDataModel[]>(senpai,
+                new Uri($"{ApiAddress}/user/comments?uid={userId}&p={page}&limit={limit}&kat={kat}&length={length}"));
         }
 
-        internal static ApiRequest<UserInfoDataModel> BuildForGetUserInfo(int? userId, Senpai senpai)
-        {
-            return new ApiRequest<UserInfoDataModel>(senpai)
-            {
-                Address = new Uri($"{ApiAddress}/user/userinfo?uid={userId?.ToString() ?? ""}")
-            };
-        }
-
-        internal static ApiRequest<ListDataModel[]> BuildForGetUserList(int userId, string kat, int page, int limit,
+        internal static ApiRequest<ListDataModel[]> UserGetList(int userId, string kat, int page, int limit,
             Senpai senpai)
         {
-            return new ApiRequest<ListDataModel[]>(senpai)
-            {
-                Address = new Uri($"{ApiAddress}/user/list?uid={userId}&kat={kat}&p={page}&limit={limit}")
-            };
+            return new ApiRequest<ListDataModel[]>(senpai,
+                new Uri($"{ApiAddress}/user/list?uid={userId}&kat={kat}&p={page}&limit={limit}"));
         }
 
-        internal static ApiRequest<LoginDataModel> BuildForLogin(string username, string password, Senpai senpai)
+        internal static ApiRequest<ToptenDataModel[]> UserGetTopten(int userId, string category, Senpai senpai)
         {
-            return new ApiRequest<LoginDataModel>(senpai)
+            return new ApiRequest<ToptenDataModel[]>(senpai,
+                new Uri($"{ApiAddress}/user/topten?uid={userId}&kat={category}"));
+        }
+
+        internal static ApiRequest<LoginDataModel> UserLogin(string username, string password, Senpai senpai)
+        {
+            return new ApiRequest<LoginDataModel>(senpai, new Uri($"{ApiAddress}/user/login"))
             {
-                Address = new Uri($"{ApiAddress}/user/login"),
                 PostArguments = new Dictionary<string, string> {{"username", username}, {"password", password}}
             };
         }
 
-        internal static ApiRequest BuildForLogout(Senpai senpai)
+        internal static ApiRequest UserLogout(Senpai senpai)
         {
-            return new ApiRequest(senpai)
+            return new ApiRequest(senpai, new Uri($"{ApiAddress}/user/logout"))
             {
-                Address = new Uri($"{ApiAddress}/user/logout"),
                 CheckLogin = true
             };
         }

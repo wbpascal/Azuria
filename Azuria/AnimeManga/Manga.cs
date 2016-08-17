@@ -51,7 +51,7 @@ namespace Azuria.AnimeManga
             {
                 IsInitialisedOnce = false
             };
-            this.MangaType = new InitialisableProperty<MangaType>(() => this.InitMainInfoApi(this.Senpai));
+            this.MangaMedium = new InitialisableProperty<MangaMedium>(() => this.InitMainInfoApi(this.Senpai));
             this.Name = new InitialisableProperty<string>(() => this.InitMainInfoApi(this.Senpai), string.Empty)
             {
                 IsInitialisedOnce = false
@@ -83,17 +83,17 @@ namespace Azuria.AnimeManga
         {
             this.Senpai = senpai;
             this.Id = dataModel.EntryId;
-            this.MangaType.SetInitialisedObject((MangaType) dataModel.Medium);
+            this.MangaMedium.SetInitialisedObject((MangaMedium) dataModel.Medium);
             this.Name.SetInitialisedObject(dataModel.Name);
             this.Status.SetInitialisedObject(dataModel.Status);
         }
 
         internal Manga([NotNull] string name, int id, [NotNull] Senpai senpai,
             [NotNull] IEnumerable<GenreType> genreList, AnimeMangaStatus status,
-            MangaType type) : this(name, id, senpai)
+            MangaMedium medium) : this(name, id, senpai)
         {
             this.Genre.SetInitialisedObject(genreList);
-            this.MangaType.SetInitialisedObject(type);
+            this.MangaMedium.SetInitialisedObject(medium);
             this.Status.SetInitialisedObject(status);
         }
 
@@ -108,7 +108,7 @@ namespace Azuria.AnimeManga
             this.Fsk.SetInitialisedObject(entryDataModel.Fsk);
             this.Genre.SetInitialisedObject(entryDataModel.Genre);
             this.IsLicensed.SetInitialisedObject(entryDataModel.IsLicensed);
-            this.MangaType.SetInitialisedObject((MangaType) entryDataModel.Medium);
+            this.MangaMedium.SetInitialisedObject((MangaMedium) entryDataModel.Medium);
             this.Name.SetInitialisedObject(entryDataModel.Name);
             this.Rating.SetInitialisedObject(entryDataModel.Rating);
             this.Status.SetInitialisedObject(entryDataModel.Status);
@@ -117,6 +117,14 @@ namespace Azuria.AnimeManga
         internal Manga(RelationDataModel dataModel, Senpai senpai) : this((EntryDataModel) dataModel, senpai)
         {
             this.AvailableLanguages.SetInitialisedObject(dataModel.AvailableLanguages.Cast<Language>());
+        }
+
+        internal Manga(HistoryDataModel dataModel, Senpai senpai) : this()
+        {
+            this.Senpai = senpai;
+            this.Id = dataModel.EntryId;
+            this.MangaMedium.SetInitialisedObject((MangaMedium) dataModel.Medium);
+            this.Name.SetInitialisedObject(dataModel.Name);
         }
 
         #region Properties
@@ -208,10 +216,10 @@ namespace Azuria.AnimeManga
         public InitialisableProperty<string> JapaneseTitle { get; }
 
         /// <summary>
-        ///     Gets the type of the <see cref="Manga" />.
+        ///     Gets the medium of the <see cref="Manga" />.
         /// </summary>
         [NotNull]
-        public InitialisableProperty<MangaType> MangaType { get; }
+        public InitialisableProperty<MangaMedium> MangaMedium { get; }
 
         /// <summary>
         ///     Gets the original title of the <see cref="Manga" />.
@@ -278,7 +286,7 @@ namespace Azuria.AnimeManga
         /// </summary>
         /// <param name="userControlPanel">The object which, if specified, the object is added to.</param>
         /// <returns>If the action was successful and if was, the new entry.</returns>
-        public async Task<ProxerResult> AddToPlanned(UserControlPanel userControlPanel = null)
+        public Task<ProxerResult> AddToPlanned(UserControlPanel userControlPanel = null)
         {
             //TODO: Implement Manga.AddToPlanned
             throw new NotImplementedException();
@@ -315,7 +323,7 @@ namespace Azuria.AnimeManga
         /// <summary>
         ///     Represents a chapter of a <see cref="Manga" />.
         /// </summary>
-        public class Chapter : IAnimeMangaContent<Manga>
+        public class Chapter : IAnimeMangaContent<Manga>, IAnimeMangaContent<IAnimeMangaObject>
         {
             internal Chapter(Manga manga, AnimeMangaContentDataModel dataModel, Senpai senpai)
             {
@@ -332,7 +340,16 @@ namespace Azuria.AnimeManga
                 this.ContentIndex = dataModel.ContentIndex;
                 this.Language = (Language) dataModel.Language;
                 this.ParentObject = new Manga(dataModel, senpai);
-                //TODO: Chapter: Find a way to get the title if the chapter was fetched from the bookmarks
+                //TODO: Chapter: Find a way to get the title if the chapter was fetched from the bookmarks/chronic
+                this.Title = string.Empty;
+            }
+
+            internal Chapter(HistoryDataModel dataModel, Senpai senpai)
+            {
+                this.Senpai = senpai;
+                this.ContentIndex = dataModel.ContentIndex;
+                this.Language = (Language) dataModel.Language;
+                this.ParentObject = new Manga(dataModel, senpai);
                 this.Title = string.Empty;
             }
 
@@ -354,6 +371,12 @@ namespace Azuria.AnimeManga
             public Language Language { get; }
 
             /// <summary>
+            ///     Gets the <see cref="Anime" /> or <see cref="Manga" /> this <see cref="Anime.Episode" /> or
+            ///     <see cref="Manga.Chapter" /> belongs to.
+            /// </summary>
+            IAnimeMangaObject IAnimeMangaContent<IAnimeMangaObject>.ParentObject => this.ParentObject;
+
+            /// <summary>
             ///     Gets the <see cref="Manga" /> this <see cref="Chapter" /> belongs to.
             /// </summary>
             public Manga ParentObject { get; }
@@ -373,12 +396,25 @@ namespace Azuria.AnimeManga
             #region Inherited
 
             /// <summary>
+            ///     Adds the <see cref="Anime.Episode" /> or <see cref="Manga.Chapter" /> to the bookmarks. If
+            ///     <paramref name="userControlPanel" /> is specified the object is also added to the corresponding
+            ///     <see cref="UserControlPanel.AnimeBookmarks" />- or <see cref="UserControlPanel.MangaBookmarks" />-enumeration.
+            /// </summary>
+            /// <param name="userControlPanel">The object which, if specified, this object is added to.</param>
+            /// <returns>If the action was successful.</returns>
+            Task<ProxerResult<AnimeMangaBookmarkObject<IAnimeMangaObject>>> IAnimeMangaContent<IAnimeMangaObject>.
+                AddToBookmarks(UserControlPanel userControlPanel)
+            {
+                throw new NotImplementedException();
+            }
+
+            /// <summary>
             ///     Adds the <see cref="Chapter" /> to the bookmarks. If <paramref name="userControlPanel" /> is specified
             ///     the object is also added to the corresponding <see cref="UserControlPanel.MangaBookmarks" />-enumeration.
             /// </summary>
             /// <param name="userControlPanel">The object which, if specified, this object is added to.</param>
             /// <returns>If the action was successful.</returns>
-            public async Task<ProxerResult<AnimeMangaBookmarkObject<Manga>>> AddToBookmarks(
+            public Task<ProxerResult<AnimeMangaBookmarkObject<Manga>>> AddToBookmarks(
                 UserControlPanel userControlPanel = null)
             {
                 //TODO: Implement Episode.AddToBookmarks

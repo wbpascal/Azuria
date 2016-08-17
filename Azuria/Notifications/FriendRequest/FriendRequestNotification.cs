@@ -15,26 +15,26 @@ namespace Azuria.Notifications.FriendRequest
         private readonly Senpai _senpai;
         private bool _handled;
 
-        internal FriendRequestNotification([NotNull] User.User user, DateTime requestDate,
+        internal FriendRequestNotification([NotNull] User.User user, DateTime requestTimeStamp,
             [NotNull] Senpai senpai)
         {
-            this.Date = requestDate;
+            this.TimeStamp = requestTimeStamp;
             this.User = user;
             this._senpai = senpai;
-            this.NotificationId = user.Id.ToString() + requestDate.Subtract(new DateTime(1970, 1, 1)).TotalSeconds;
+            this.NotificationId = user.Id.ToString() + requestTimeStamp.Subtract(new DateTime(1970, 1, 1)).TotalSeconds;
         }
 
         #region Properties
 
         /// <summary>
-        ///     Gets the date of the friend request.
-        /// </summary>
-        public DateTime Date { get; }
-
-        /// <summary>
         ///     Gets the id of the notification.
         /// </summary>
         public string NotificationId { get; }
+
+        /// <summary>
+        ///     Gets the date of the friend request.
+        /// </summary>
+        public DateTime TimeStamp { get; }
 
         /// <summary>
         ///     Gets the type of the notification.

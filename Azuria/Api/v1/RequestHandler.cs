@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
 using Azuria.Exceptions;
@@ -37,7 +38,27 @@ namespace Azuria.Api.v1
                                         request.CheckLogin && !request.Senpai.IsProbablyLoggedIn &&
                                         !source.ContainsKey(key)));
 
-            if (!lResult.Success || lResult.Result == null) return new ProxerResult<T>(lResult.Exceptions);
+            if (!lResult.Success || lResult.Result == null)
+            {
+                if (lResult.Exceptions.All(exception => typeof(Exception) != typeof(NotLoggedInException)))
+                    return new ProxerResult<T>(lResult.Exceptions);
+
+                #region try again
+
+                if (recursion >= 2)
+                {
+                    request.Senpai.InvalidateCookies();
+                    return new ProxerResult<T>(new[] {new NotLoggedInException(request.Senpai)});
+                }
+                if (
+                    (await request.Senpai.LoginWithToken(request.Senpai.LoginToken.ReadValue()))
+                        .Success)
+                    return await ApiCustomRequest<T>(request, loginToken, recursion + 1);
+
+                #endregion
+
+                return new ProxerResult<T>(lResult.Exceptions);
+            }
 
             try
             {
@@ -48,7 +69,7 @@ namespace Azuria.Api.v1
                 switch (lApiResponse.ErrorCode)
                 {
                     case ErrorCode.IpBlocked:
-                        return new ProxerResult<T>(new[] {new FirewallException()});
+                        return new ProxerResult<T>(new[] {new CaptchaException("http://proxer.me/misc/captcha")});
                     case ErrorCode.ApiKeyInsufficientPermissions:
                         return new ProxerResult<T>(new[] {new ApiKeyInsufficientException()});
                     case ErrorCode.UserInsufficientPermissions:
@@ -56,6 +77,9 @@ namespace Azuria.Api.v1
                     case ErrorCode.NotificationsUserNotLoggedIn:
                     case ErrorCode.UcpUserNotLoggedIn:
                     case ErrorCode.InfoSetUserInfoUserNotLoggedIn:
+
+                        #region try again
+
                         if (recursion >= 2)
                         {
                             request.Senpai.InvalidateCookies();
@@ -65,6 +89,9 @@ namespace Azuria.Api.v1
                             (await request.Senpai.LoginWithToken(request.Senpai.LoginToken.ReadValue()))
                                 .Success)
                             return await ApiCustomRequest<T>(request, loginToken, recursion + 1);
+
+                        #endregion
+
                         break;
                 }
                 return new ProxerResult<T>(new[] {new ProxerApiException(lApiResponse.ErrorCode)});

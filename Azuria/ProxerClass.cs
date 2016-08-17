@@ -28,7 +28,7 @@ namespace Azuria
         public static async Task<ProxerResult<IAnimeMangaObject>> GetAnimeMangaById(int id, [NotNull] Senpai senpai)
         {
             ProxerResult<ProxerApiResponse<EntryDataModel>> lResult =
-                await RequestHandler.ApiRequest(ApiRequestBuilder.BuildForGetEntry(id, senpai));
+                await RequestHandler.ApiRequest(ApiRequestBuilder.InfoGetEntry(id, senpai));
             if (!lResult.Success || lResult.Result == null)
                 return new ProxerResult<IAnimeMangaObject>(lResult.Exceptions);
             EntryDataModel lDataModel = lResult.Result.Data;

@@ -1,11 +1,11 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;
 using System.Threading.Tasks;
 using Azuria.AnimeManga;
 using Azuria.Api.v1;
 using Azuria.Api.v1.DataModels.Ucp;
+using Azuria.Api.v1.Enums;
 using Azuria.Exceptions;
 using Azuria.Utilities.ErrorHandling;
 using JetBrains.Annotations;
@@ -15,16 +15,16 @@ namespace Azuria.User.ControlPanel
     /// <summary>
     /// </summary>
     /// <typeparam name="T"></typeparam>
-    public class BookmarkEnumerator<T> : IEnumerator<AnimeMangaBookmarkObject<T>> where T : class, IAnimeMangaObject
+    public class HistoryEnumerator<T> : IEnumerator<AnimeMangaHistoryObject<T>> where T : IAnimeMangaObject
     {
-        private const int ResultsPerPage = 100;
+        private const int ResultsPerPage = 50;
         private readonly UserControlPanel _controlPanel;
         private readonly Senpai _senpai;
-        private AnimeMangaBookmarkObject<T>[] _currentPageContent = new AnimeMangaBookmarkObject<T>[0];
+        private AnimeMangaHistoryObject<T>[] _currentPageContent = new AnimeMangaHistoryObject<T>[0];
         private int _currentPageContentIndex = -1;
         private int _nextPage;
 
-        internal BookmarkEnumerator(Senpai senpai, UserControlPanel controlPanel)
+        internal HistoryEnumerator(Senpai senpai, UserControlPanel controlPanel)
         {
             this._senpai = senpai;
             this._controlPanel = controlPanel;
@@ -35,7 +35,7 @@ namespace Azuria.User.ControlPanel
         /// <summary>Gets the element in the collection at the current position of the enumerator.</summary>
         /// <returns>The element in the collection at the current position of the enumerator.</returns>
         [NotNull]
-        public AnimeMangaBookmarkObject<T> Current => this._currentPageContent[this._currentPageContentIndex];
+        public AnimeMangaHistoryObject<T> Current => this._currentPageContent[this._currentPageContentIndex];
 
         /// <summary>Gets the current element in the collection.</summary>
         /// <returns>The current element in the collection.</returns>
@@ -48,7 +48,7 @@ namespace Azuria.User.ControlPanel
         /// <summary>Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.</summary>
         public void Dispose()
         {
-            this._currentPageContent = new AnimeMangaBookmarkObject<T>[0];
+            this._currentPageContent = new AnimeMangaHistoryObject<T>[0];
         }
 
         /// <summary>Advances the enumerator to the next element of the collection.</summary>
@@ -76,7 +76,7 @@ namespace Azuria.User.ControlPanel
         /// <exception cref="T:System.InvalidOperationException">The collection was modified after the enumerator was created. </exception>
         public void Reset()
         {
-            this._currentPageContent = new AnimeMangaBookmarkObject<T>[0];
+            this._currentPageContent = new AnimeMangaHistoryObject<T>[0];
             this._currentPageContentIndex = ResultsPerPage - 1;
             this._nextPage = 0;
         }
@@ -85,24 +85,33 @@ namespace Azuria.User.ControlPanel
 
         #region
 
+        private IAnimeMangaContent<T> GetAnimeMangaContent(HistoryDataModel dataModel)
+        {
+            if (typeof(T) == typeof(Anime) ||
+                (typeof(T) == typeof(IAnimeMangaObject) && dataModel.EntryType == AnimeMangaEntryType.Anime))
+                return (IAnimeMangaContent<T>) new Anime.Episode(dataModel, this._senpai);
+            if (typeof(T) == typeof(Manga) ||
+                (typeof(T) == typeof(IAnimeMangaObject) && dataModel.EntryType == AnimeMangaEntryType.Manga))
+                return (IAnimeMangaContent<T>) new Manga.Chapter(dataModel, this._senpai);
+
+            return null;
+        }
+
         [ItemNotNull]
         private async Task<ProxerResult> GetNextPage()
         {
-            ProxerResult<ProxerApiResponse<BookmarkDataModel[]>> lResult =
+            ProxerResult<ProxerApiResponse<HistoryDataModel[]>> lResult =
                 await
-                    RequestHandler.ApiRequest(
-                        ApiRequestBuilder.UcpGetReminder(typeof(T).GetTypeInfo().Name.ToLowerInvariant(),
-                            this._nextPage, ResultsPerPage, this._senpai));
+                    RequestHandler.ApiRequest(ApiRequestBuilder.UcpGetHistory(this._nextPage, ResultsPerPage,
+                        this._senpai));
             if (!lResult.Success || lResult.Result == null)
                 return new ProxerResult(lResult.Exceptions);
-            BookmarkDataModel[] lData = lResult.Result.Data;
+            HistoryDataModel[] lData = lResult.Result.Data;
 
-            this._currentPageContent = (from bookmarkDataModel in lData
-                select new AnimeMangaBookmarkObject<T>(
-                    typeof(T) == typeof(Anime)
-                        ? (IAnimeMangaContent<T>) new Anime.Episode(bookmarkDataModel, this._senpai)
-                        : (IAnimeMangaContent<T>) new Manga.Chapter(bookmarkDataModel, this._senpai),
-                    bookmarkDataModel.BookmarkId, this._controlPanel)).ToArray();
+            this._currentPageContent = (from historyDataModel in lData
+                select
+                    new AnimeMangaHistoryObject<T>(this.GetAnimeMangaContent(historyDataModel),
+                        historyDataModel.TimeStamp, this._controlPanel)).ToArray();
 
             return new ProxerResult();
         }
