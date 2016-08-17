@@ -1,8 +1,8 @@
 # Azuria - A Proxer.Me API in .NET (inofficial)
 
-Master | NuGet
+Master | Master (Mono) | NuGet
 ----- | ----- | -----
-[![Build status](https://ci.appveyor.com/api/projects/status/easqihn43rhx1sbx/branch/master?svg=true)](https://ci.appveyor.com/project/InfiniteSoul/azuria/branch/master) | [![NuGet](https://img.shields.io/nuget/v/Azuria.svg)](https://www.nuget.org/packages/Azuria)
+[![AppVeyor](https://img.shields.io/appveyor/ci/infinitesoul/azuria.svg?maxAge=2592000)](https://ci.appveyor.com/project/InfiniteSoul/azuria) | [![Travis](https://img.shields.io/travis/InfiniteSoul/Azuria.svg?maxAge=2592000)](https://travis-ci.org/InfiniteSoul/Azuria) |  [![NuGet](https://img.shields.io/nuget/v/Azuria.svg)](https://www.nuget.org/packages/Azuria)
 
 ##Warning!
 Because this Class Library implements not only the official API of Proxer.Me it is dependent on the Layout of the Website too. This implies that every change that is being made to the website, even little ones, can break parts or the entirety of this Class Library. If under any circumstances problems arise in result of the aforementioned problem, I ask you to report it to the  [issue Page](https://github.com/InfiniteSoul/Azuria/issues).
