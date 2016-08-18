@@ -19,24 +19,21 @@ namespace Azuria.User.Comment
     {
         private const int ResultsPerPage = 100;
         private readonly T _animeMangaObject;
-        private readonly Senpai _senpai;
         private readonly string _sort;
         private readonly User _user;
         private Comment<T>[] _currentPageContent = new Comment<T>[0];
         private int _currentPageContentIndex = -1;
         private int _nextPage;
 
-        internal CommentEnumerator(T animeMangaObject, string sort, Senpai senpai)
+        internal CommentEnumerator(T animeMangaObject, string sort)
         {
             this._animeMangaObject = animeMangaObject;
             this._sort = sort;
-            this._senpai = senpai;
         }
 
-        internal CommentEnumerator(User user, Senpai senpai)
+        internal CommentEnumerator(User user)
         {
             this._user = user;
-            this._senpai = senpai;
         }
 
         #region Properties
@@ -101,9 +98,9 @@ namespace Azuria.User.Comment
                 await
                     RequestHandler.ApiRequest(this._user == null
                         ? ApiRequestBuilder.InfoGetComments(this._animeMangaObject.Id,
-                            this._nextPage, ResultsPerPage, this._sort, this._senpai)
+                            this._nextPage, ResultsPerPage, this._sort)
                         : ApiRequestBuilder.UserGetLatestComments(this._user.Id, this._nextPage, ResultsPerPage,
-                            typeof(T).GetTypeInfo().Name.ToLower(), 0, this._senpai));
+                            typeof(T).GetTypeInfo().Name.ToLower(), 0));
             if (!lResult.Success || lResult.Result == null)
                 return new ProxerResult(lResult.Exceptions);
             CommentDataModel[] lData = lResult.Result.Data;
@@ -133,12 +130,12 @@ namespace Azuria.User.Comment
                 {
                     if (typeof(T) == typeof(Anime))
                         lAnimeMangaObject =
-                            (T) Convert.ChangeType(new Anime(commentDataModel.EntryId, this._senpai), typeof(T));
+                            (T) Convert.ChangeType(new Anime(commentDataModel.EntryId), typeof(T));
                     if (typeof(T) == typeof(Manga))
                         lAnimeMangaObject =
-                            (T) Convert.ChangeType(new Manga(commentDataModel.EntryId, this._senpai), typeof(T));
+                            (T) Convert.ChangeType(new Manga(commentDataModel.EntryId), typeof(T));
                 }
-                lCommentList.Add(new Comment<T>(commentDataModel, lAnimeMangaObject, this._senpai, this._user));
+                lCommentList.Add(new Comment<T>(commentDataModel, lAnimeMangaObject, this._user));
             }
             return lCommentList;
         }

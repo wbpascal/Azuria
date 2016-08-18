@@ -151,7 +151,7 @@ namespace Azuria
             }
 
             this.Me = new User.User(this._username, lResult.Result.Data.UserId,
-                new Uri("https://cdn.proxer.me/avatar/" + lResult.Result.Data.Avatar), this);
+                new Uri("https://cdn.proxer.me/avatar/" + lResult.Result.Data.Avatar));
             this._cookiesCreated = DateTime.Now;
             this.LoginToken.SetValue(lResult.Result.Data.Token.ToCharArray());
 
@@ -169,7 +169,7 @@ namespace Azuria
             if (!lResult.Success || lResult.Result == null) return new ProxerResult(lResult.Exceptions);
             UserInfoDataModel lDataModel = lResult.Result.Data;
             this.LoginToken.SetValue(token);
-            this.Me = new User.User(lDataModel, this);
+            this.Me = new User.User(lDataModel);
             this._username = lDataModel.Username;
             this._cookiesCreated = DateTime.Now;
 

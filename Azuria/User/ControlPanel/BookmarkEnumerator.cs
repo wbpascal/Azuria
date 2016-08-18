@@ -100,8 +100,8 @@ namespace Azuria.User.ControlPanel
             this._currentPageContent = (from bookmarkDataModel in lData
                 select new AnimeMangaBookmarkObject<T>(
                     typeof(T) == typeof(Anime)
-                        ? (IAnimeMangaContent<T>) new Anime.Episode(bookmarkDataModel, this._senpai)
-                        : (IAnimeMangaContent<T>) new Manga.Chapter(bookmarkDataModel, this._senpai),
+                        ? (IAnimeMangaContent<T>) new Anime.Episode(bookmarkDataModel)
+                        : (IAnimeMangaContent<T>) new Manga.Chapter(bookmarkDataModel),
                     bookmarkDataModel.BookmarkId, this._controlPanel)).ToArray();
 
             return new ProxerResult();

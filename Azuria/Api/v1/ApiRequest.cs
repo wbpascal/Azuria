@@ -1,20 +1,20 @@
 ﻿using System;
 using System.Collections.Generic;
+using JetBrains.Annotations;
 
 namespace Azuria.Api.v1
 {
     internal class ApiRequest<T> : ApiRequest
     {
-        internal ApiRequest(Senpai senpai, Uri address) : base(senpai, address)
+        internal ApiRequest(Uri address) : base(address)
         {
         }
     }
 
     internal class ApiRequest
     {
-        internal ApiRequest(Senpai senpai, Uri address)
+        internal ApiRequest(Uri address)
         {
-            this.Senpai = senpai;
             this.Address = address;
         }
 
@@ -26,7 +26,8 @@ namespace Azuria.Api.v1
 
         internal Dictionary<string, string> PostArguments { get; set; } = new Dictionary<string, string>();
 
-        internal Senpai Senpai { get; }
+        [CanBeNull]
+        internal Senpai Senpai { get; set; }
 
         #endregion
     }

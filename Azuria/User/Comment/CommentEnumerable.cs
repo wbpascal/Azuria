@@ -9,21 +9,18 @@ namespace Azuria.User.Comment
     public class CommentEnumerable<T> : IEnumerable<Comment<T>> where T : IAnimeMangaObject
     {
         private readonly T _animeMangaObject;
-        private readonly Senpai _senpai;
         private readonly string _sort;
         private readonly User _user;
 
-        internal CommentEnumerable(T animeMangaObject, string sort, Senpai senpai)
+        internal CommentEnumerable(T animeMangaObject, string sort)
         {
             this._animeMangaObject = animeMangaObject;
             this._sort = sort;
-            this._senpai = senpai;
         }
 
-        internal CommentEnumerable(User user, Senpai senpai)
+        internal CommentEnumerable(User user)
         {
             this._user = user;
-            this._senpai = senpai;
         }
 
         #region Inherited
@@ -40,8 +37,8 @@ namespace Azuria.User.Comment
         public IEnumerator<Comment<T>> GetEnumerator()
         {
             return this._user == null
-                ? new CommentEnumerator<T>(this._animeMangaObject, this._sort, this._senpai)
-                : new CommentEnumerator<T>(this._user, this._senpai);
+                ? new CommentEnumerator<T>(this._animeMangaObject, this._sort)
+                : new CommentEnumerator<T>(this._user);
         }
 
         #endregion

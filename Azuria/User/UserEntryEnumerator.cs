@@ -14,16 +14,14 @@ namespace Azuria.User
     internal class UserEntryEnumerator<T> : IEnumerator<UserProfileEntry<T>> where T : class, IAnimeMangaObject
     {
         private const int ResultsPerPage = 100;
-        private readonly Senpai _senpai;
         private readonly User _user;
         private UserProfileEntry<T>[] _currentPageContent = new UserProfileEntry<T>[0];
         private int _currentPageContentIndex = -1;
         private int _nextPage;
 
-        internal UserEntryEnumerator(User user, Senpai senpai)
+        internal UserEntryEnumerator(User user)
         {
             this._user = user;
-            this._senpai = senpai;
         }
 
         #region Properties
@@ -87,12 +85,12 @@ namespace Azuria.User
             ProxerResult<ProxerApiResponse<ListDataModel[]>> lResult =
                 await
                     RequestHandler.ApiRequest(ApiRequestBuilder.UserGetList(this._user.Id,
-                        typeof(T).Name.ToLowerInvariant(), this._nextPage, ResultsPerPage, this._senpai));
+                        typeof(T).Name.ToLowerInvariant(), this._nextPage, ResultsPerPage));
             if (!lResult.Success || lResult.Result == null)
                 return new ProxerResult(lResult.Exceptions);
 
             this._currentPageContent = (from listDataModel in lResult.Result.Data
-                select new UserProfileEntry<T>(listDataModel, this._user, this._senpai)).ToArray();
+                select new UserProfileEntry<T>(listDataModel, this._user)).ToArray();
 
             return new ProxerResult();
         }

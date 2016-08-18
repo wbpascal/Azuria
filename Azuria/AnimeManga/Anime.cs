@@ -89,15 +89,13 @@ namespace Azuria.AnimeManga
             this.AnimeMedium.SetInitialisedObject(medium);
         }
 
-        internal Anime(BookmarkDataModel dataModel) : this()
+        internal Anime(BookmarkDataModel dataModel) : this(dataModel.Name, dataModel.EntryId)
         {
-            this.Id = dataModel.EntryId;
             this.AnimeMedium.SetInitialisedObject((AnimeMedium) dataModel.Medium);
-            this.Name.SetInitialisedObject(dataModel.Name);
             this.Status.SetInitialisedObject(dataModel.Status);
         }
 
-        internal Anime(EntryDataModel entryDataModel) : this(entryDataModel.EntryId)
+        internal Anime(EntryDataModel entryDataModel) : this(entryDataModel.Name, entryDataModel.EntryId)
         {
             if (entryDataModel.EntryType != AnimeMangaEntryType.Anime)
                 throw new ArgumentException(nameof(entryDataModel.EntryType));
@@ -109,7 +107,6 @@ namespace Azuria.AnimeManga
             this.Fsk.SetInitialisedObject(entryDataModel.Fsk);
             this.Genre.SetInitialisedObject(entryDataModel.Genre);
             this.IsLicensed.SetInitialisedObject(entryDataModel.IsLicensed);
-            this.Name.SetInitialisedObject(entryDataModel.Name);
             this.Rating.SetInitialisedObject(entryDataModel.Rating);
             this.Status.SetInitialisedObject(entryDataModel.Status);
         }
@@ -119,11 +116,9 @@ namespace Azuria.AnimeManga
             this.AvailableLanguages.SetInitialisedObject(dataModel.AvailableLanguages.Cast<AnimeLanguage>());
         }
 
-        internal Anime(HistoryDataModel dataModel) : this()
+        internal Anime(HistoryDataModel dataModel) : this(dataModel.Name, dataModel.EntryId)
         {
-            this.Id = dataModel.EntryId;
             this.AnimeMedium.SetInitialisedObject((AnimeMedium) dataModel.Medium);
-            this.Name.SetInitialisedObject(dataModel.Name);
         }
 
         #region Properties

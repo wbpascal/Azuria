@@ -92,7 +92,7 @@ namespace Azuria.Search
                 await
                     HttpUtility.GetResponseErrorHandling(
                         new Uri("https://proxer.me/" + this._link + "&format=raw&p=" + this._nextPage),
-                        this._senpai, new Func<string, ProxerResult>[0], checkLogin: typeof(T) != typeof(User.User));
+                        new Func<string, ProxerResult>[0], this._senpai, checkLogin: typeof(T) != typeof(User.User));
 
             if (!lResult.Success || lResult.Result == null)
                 return new ProxerResult(lResult.Exceptions);
@@ -133,7 +133,7 @@ namespace Azuria.Search
             }
             catch
             {
-                return new ProxerResult(ErrorHandler.HandleError(this._senpai, lResponse).Exceptions);
+                return new ProxerResult(ErrorHandler.HandleError(lResponse).Exceptions);
             }
         }
 
@@ -196,9 +196,9 @@ namespace Azuria.Search
             }
 
             if ((typeof(T) == typeof(Anime) || typeof(T) == typeof(IAnimeMangaObject)) && lType == typeof(Anime))
-                return new Anime(lName, lId, this._senpai, lGenreList, lStatus, lAnimeMedium);
+                return new Anime(lName, lId, lGenreList, lStatus, lAnimeMedium);
             if ((typeof(T) == typeof(Manga) || typeof(T) == typeof(IAnimeMangaObject)) && lType == typeof(Manga))
-                return new Manga(lName, lId, this._senpai, lGenreList, lStatus, lMangaMedium);
+                return new Manga(lName, lId, lGenreList, lStatus, lMangaMedium);
             return null;
         }
 
@@ -218,7 +218,7 @@ namespace Azuria.Search
                       out lUserId))
                 || !int.TryParse(node.ChildNodes[7].InnerText, out lPunkte)) return null;
 
-            return new User.User(lUsername, lUserId, lAvatar, this._senpai);
+            return new User.User(lUsername, lUserId, lAvatar);
         }
 
         #endregion

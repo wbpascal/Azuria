@@ -26,21 +26,19 @@ namespace Azuria.User
         /// <summary>
         ///     Represents the system as a user.
         /// </summary>
-        [NotNull] public static User System = new User("System", -1, new Senpai("System"));
+        [NotNull] public static User System = new User("System", -1);
 
         /// <summary>
         ///     Initialises a new instance of the class.
         /// </summary>
         /// <param name="userId">The id of the user.</param>
         /// <param name="senpai">The user that makes the requests.</param>
-        public User(int userId, [NotNull] Senpai senpai)
+        public User(int userId)
         {
             //TODO: Wait for update on official API. IsOnline, Ranking
-
-            this.Senpai = senpai;
             this.Id = userId;
 
-            this.Anime = new UserEntryEnumerable<Anime>(this, this.Senpai);
+            this.Anime = new UserEntryEnumerable<Anime>(this);
             this.Avatar = new InitialisableProperty<Uri>(this.InitMainInfo,
                 new Uri("https://cdn.proxer.me/avatar/nophoto.png"))
             {
@@ -51,40 +49,38 @@ namespace Azuria.User
             this.MangaTopten =
                 new InitialisableProperty<IEnumerable<Manga>>(() => this.InitTopten(AnimeMangaEntryType.Manga));
             this.IsOnline = new InitialisableProperty<bool>(this.InitMainInfo);
-            this.Manga = new UserEntryEnumerable<Manga>(this, this.Senpai);
+            this.Manga = new UserEntryEnumerable<Manga>(this);
             this.Points = new InitialisableProperty<UserPoints>(this.InitMainInfo);
             this.Ranking = new InitialisableProperty<string>(this.InitMainInfo);
             this.Status = new InitialisableProperty<UserStatus>(this.InitMainInfo);
             this.UserName = new InitialisableProperty<string>(this.InitMainInfo);
         }
 
-        internal User([NotNull] string name, int userId, [NotNull] Senpai senpai) : this(userId, senpai)
+        internal User([NotNull] string name, int userId) : this(userId)
         {
             this.UserName.SetInitialisedObject(name);
         }
 
-        internal User(int userId, [CanBeNull] Uri avatar, [NotNull] Senpai senpai)
-            : this(userId, senpai)
+        internal User(int userId, [CanBeNull] Uri avatar)
+            : this(userId)
         {
             this.Avatar.SetInitialisedObject(avatar ?? new Uri("https://cdn.proxer.me/avatar/nophoto.png"));
         }
 
-        internal User([NotNull] string name, int userId, [CanBeNull] Uri avatar, [NotNull] Senpai senpai)
-            : this(name, userId, senpai)
+        internal User([NotNull] string name, int userId, [CanBeNull] Uri avatar)
+            : this(name, userId)
         {
             this.Avatar.SetInitialisedObject(avatar ?? new Uri("https://cdn.proxer.me/avatar/nophoto.png"));
         }
 
         internal User([NotNull] string name, int userId, [NotNull] Uri avatar, bool online, [NotNull] Senpai senpai)
-            : this(name, userId, avatar, senpai)
+            : this(name, userId, avatar)
         {
             this.IsOnline.SetInitialisedObject(online);
         }
 
-        internal User(UserInfoDataModel dataModel, Senpai senpai)
-            : this(
-                dataModel.Username, dataModel.UserId, new Uri("http://cdn.proxer.me/avatar/" + dataModel.Avatar), senpai
-                )
+        internal User(UserInfoDataModel dataModel)
+            : this(dataModel.Username, dataModel.UserId, new Uri("http://cdn.proxer.me/avatar/" + dataModel.Avatar))
         {
             this.Points.SetInitialisedObject(dataModel.Points);
             this.Status.SetInitialisedObject(dataModel.Status);
@@ -112,11 +108,11 @@ namespace Azuria.User
 
         /// <summary>
         /// </summary>
-        public IEnumerable<Comment<Anime>> CommentsLatestAnime => new CommentEnumerable<Anime>(this, this.Senpai);
+        public IEnumerable<Comment<Anime>> CommentsLatestAnime => new CommentEnumerable<Anime>(this);
 
         /// <summary>
         /// </summary>
-        public IEnumerable<Comment<Manga>> CommentsLatestManga => new CommentEnumerable<Manga>(this, this.Senpai);
+        public IEnumerable<Comment<Manga>> CommentsLatestManga => new CommentEnumerable<Manga>(this);
 
         /// <summary>
         ///     Gets the id of the user.
@@ -154,10 +150,6 @@ namespace Azuria.User
         public InitialisableProperty<string> Ranking { get; }
 
         /// <summary>
-        /// </summary>
-        public Senpai Senpai { get; }
-
-        /// <summary>
         ///     Gets the current status of the user.
         /// </summary>
         [NotNull]
@@ -189,7 +181,7 @@ namespace Azuria.User
             if (this.Id == -1) return new ProxerResult();
 
             ProxerResult<ProxerApiResponse<UserInfoDataModel>> lResult =
-                await RequestHandler.ApiRequest(ApiRequestBuilder.UserGetInfo(this.Id, this.Senpai));
+                await RequestHandler.ApiRequest(ApiRequestBuilder.UserGetInfo(this.Id));
             if (!lResult.Success || lResult.Result == null) return new ProxerResult(lResult.Exceptions);
 
             UserInfoDataModel lDataModel = lResult.Result.Data;
@@ -206,15 +198,15 @@ namespace Azuria.User
             ProxerResult<ProxerApiResponse<ToptenDataModel[]>> lResult =
                 await
                     RequestHandler.ApiRequest(ApiRequestBuilder.UserGetTopten(this.Id,
-                        category.ToString().ToLower(), this.Senpai));
+                        category.ToString().ToLower()));
             if (!lResult.Success || lResult.Result == null) return new ProxerResult(lResult.Exceptions);
 
             if (category == AnimeMangaEntryType.Anime)
                 this.AnimeTopten.SetInitialisedObject(from toptenDataModel in lResult.Result.Data
-                    select new Anime(toptenDataModel.Name, toptenDataModel.EntryId, this.Senpai));
+                    select new Anime(toptenDataModel.Name, toptenDataModel.EntryId));
             if (category == AnimeMangaEntryType.Manga)
                 this.MangaTopten.SetInitialisedObject(from toptenDataModel in lResult.Result.Data
-                    select new Manga(toptenDataModel.Name, toptenDataModel.EntryId, this.Senpai));
+                    select new Manga(toptenDataModel.Name, toptenDataModel.EntryId));
 
             return new ProxerResult();
         }
@@ -255,7 +247,7 @@ namespace Azuria.User
             catch
             {
                 return
-                    new ProxerResult(ErrorHandler.HandleError(this.Senpai, lResult.Result, false).Exceptions);
+                    new ProxerResult(ErrorHandler.HandleError(lResult.Result, false).Exceptions);
             }
         }
 

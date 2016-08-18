@@ -89,10 +89,10 @@ namespace Azuria.User.ControlPanel
         {
             if (typeof(T) == typeof(Anime) ||
                 (typeof(T) == typeof(IAnimeMangaObject) && dataModel.EntryType == AnimeMangaEntryType.Anime))
-                return (IAnimeMangaContent<T>) new Anime.Episode(dataModel, this._senpai);
+                return (IAnimeMangaContent<T>) new Anime.Episode(dataModel);
             if (typeof(T) == typeof(Manga) ||
                 (typeof(T) == typeof(IAnimeMangaObject) && dataModel.EntryType == AnimeMangaEntryType.Manga))
-                return (IAnimeMangaContent<T>) new Manga.Chapter(dataModel, this._senpai);
+                return (IAnimeMangaContent<T>) new Manga.Chapter(dataModel);
 
             return null;
         }

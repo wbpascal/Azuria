@@ -11,7 +11,7 @@
             this.Info = info;
             this.Uploads = uploads;
             this.Forum = forum;
-            this.Misc = misc;
+            this.Miscellaneous = misc;
         }
 
         #region Properties
@@ -34,7 +34,7 @@
 
         /// <summary>
         /// </summary>
-        public int Misc { get; set; }
+        public int Miscellaneous { get; set; }
 
         /// <summary>
         /// </summary>
