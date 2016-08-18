@@ -28,76 +28,76 @@ namespace Azuria.AnimeManga
         [UsedImplicitly]
         internal Anime()
         {
-            this.AnimeMedium = new InitialisableProperty<AnimeMedium>(() => this.InitMainInfoApi(this.Senpai));
+            this.AnimeMedium = new InitialisableProperty<AnimeMedium>(this.InitMainInfoApi);
             this.AvailableLanguages =
-                new InitialisableProperty<IEnumerable<AnimeLanguage>>(() => this.InitAvailableLangApi(this.Senpai));
-            this.Clicks = new InitialisableProperty<int>(() => this.InitMainInfoApi(this.Senpai));
-            this.ContentCount = new InitialisableProperty<int>(() => this.InitMainInfoApi(this.Senpai));
-            this.Description = new InitialisableProperty<string>(() => this.InitMainInfoApi(this.Senpai));
-            this.EnglishTitle = new InitialisableProperty<string>(() => this.InitNamesApi(this.Senpai), string.Empty)
+                new InitialisableProperty<IEnumerable<AnimeLanguage>>(this.InitAvailableLangApi);
+            this.Clicks = new InitialisableProperty<int>(this.InitMainInfoApi);
+            this.CommentsLatest = new CommentEnumerable<Anime>(this, "latest");
+            this.CommentsRating = new CommentEnumerable<Anime>(this, "rating");
+            this.ContentCount = new InitialisableProperty<int>(this.InitMainInfoApi);
+            this.Description = new InitialisableProperty<string>(this.InitMainInfoApi);
+            this.EnglishTitle = new InitialisableProperty<string>(this.InitNamesApi, string.Empty)
             {
                 IsInitialisedOnce = false
             };
-            this.Fsk = new InitialisableProperty<IEnumerable<FskType>>(() => this.InitMainInfoApi(this.Senpai));
-            this.Genre = new InitialisableProperty<IEnumerable<GenreType>>(() => this.InitMainInfoApi(this.Senpai));
-            this.GermanTitle = new InitialisableProperty<string>(() => this.InitNamesApi(this.Senpai), string.Empty)
+            this.Fsk = new InitialisableProperty<IEnumerable<FskType>>(this.InitMainInfoApi);
+            this.Genre = new InitialisableProperty<IEnumerable<GenreType>>(this.InitMainInfoApi);
+            this.GermanTitle = new InitialisableProperty<string>(this.InitNamesApi, string.Empty)
             {
                 IsInitialisedOnce = false
             };
-            this.Groups = new InitialisableProperty<IEnumerable<Group>>(() => this.InitGroupsApi(this.Senpai));
-            this.Industry = new InitialisableProperty<IEnumerable<Industry>>(() => this.InitIndustryApi(this.Senpai));
-            this.IsLicensed = new InitialisableProperty<bool>(() => this.InitMainInfoApi(this.Senpai));
-            this.IsHContent = new InitialisableProperty<bool>(() => this.InitIsHContentApi(this.Senpai));
-            this.JapaneseTitle = new InitialisableProperty<string>(() => this.InitNamesApi(this.Senpai), string.Empty)
+            this.Groups = new InitialisableProperty<IEnumerable<Group>>(this.InitGroupsApi);
+            this.Industry = new InitialisableProperty<IEnumerable<Industry>>(this.InitIndustryApi);
+            this.IsLicensed = new InitialisableProperty<bool>(this.InitMainInfoApi);
+            this.IsHContent = new InitialisableProperty<bool>(this.InitIsHContentApi);
+            this.JapaneseTitle = new InitialisableProperty<string>(this.InitNamesApi, string.Empty)
             {
                 IsInitialisedOnce = false
             };
-            this.Name = new InitialisableProperty<string>(() => this.InitMainInfoApi(this.Senpai), string.Empty)
+            this.Name = new InitialisableProperty<string>(this.InitMainInfoApi, string.Empty)
             {
                 IsInitialisedOnce = false
             };
-            this.Rating = new InitialisableProperty<AnimeMangaRating>(() => this.InitMainInfoApi(this.Senpai));
+            this.Rating = new InitialisableProperty<AnimeMangaRating>(this.InitMainInfoApi);
             this.Relations =
-                new InitialisableProperty<IEnumerable<IAnimeMangaObject>>(() => this.InitRelationsApi(this.Senpai));
-            this.Season = new InitialisableProperty<AnimeMangaSeasonInfo>(() => this.InitSeasonsApi(this.Senpai));
-            this.Status = new InitialisableProperty<AnimeMangaStatus>(() => this.InitMainInfoApi(this.Senpai));
-            this.Synonym = new InitialisableProperty<string>(() => this.InitNamesApi(this.Senpai), string.Empty)
+                new InitialisableProperty<IEnumerable<IAnimeMangaObject>>(this.InitRelationsApi);
+            this.Season = new InitialisableProperty<AnimeMangaSeasonInfo>(this.InitSeasonsApi);
+            this.Status = new InitialisableProperty<AnimeMangaStatus>(this.InitMainInfoApi);
+            this.Synonym = new InitialisableProperty<string>(this.InitNamesApi, string.Empty)
             {
                 IsInitialisedOnce = false
             };
-            this.Tags = new InitialisableProperty<IEnumerable<Tag>>(() => this.InitEntryTagsApi(this.Senpai));
+            this.Tags = new InitialisableProperty<IEnumerable<Tag>>(this.InitEntryTagsApi);
         }
 
-        internal Anime(int id, [NotNull] Senpai senpai) : this()
+        internal Anime(int id) : this()
         {
             this.Id = id;
-            this.Senpai = senpai;
         }
 
-        internal Anime([NotNull] string name, int id, [NotNull] Senpai senpai) : this(id, senpai)
+        internal Anime([NotNull] string name, int id) : this(id)
         {
             this.Name.SetInitialisedObject(name);
         }
 
-        internal Anime([NotNull] string name, int id, [NotNull] Senpai senpai,
+        internal Anime([NotNull] string name, int id,
             [NotNull] IEnumerable<GenreType> genreList, AnimeMangaStatus status,
-            AnimeMedium medium) : this(name, id, senpai)
+            AnimeMedium medium) : this(name, id)
         {
             this.Genre.SetInitialisedObject(genreList);
             this.Status.SetInitialisedObject(status);
             this.AnimeMedium.SetInitialisedObject(medium);
         }
 
-        internal Anime(BookmarkDataModel dataModel, Senpai senpai) : this()
+        internal Anime(BookmarkDataModel dataModel) : this()
         {
-            this.Senpai = senpai;
             this.Id = dataModel.EntryId;
             this.AnimeMedium.SetInitialisedObject((AnimeMedium) dataModel.Medium);
             this.Name.SetInitialisedObject(dataModel.Name);
             this.Status.SetInitialisedObject(dataModel.Status);
         }
 
-        internal Anime(EntryDataModel entryDataModel, Senpai senpai) : this(entryDataModel.EntryId, senpai)
+        internal Anime(EntryDataModel entryDataModel) : this(entryDataModel.EntryId)
         {
             if (entryDataModel.EntryType != AnimeMangaEntryType.Anime)
                 throw new ArgumentException(nameof(entryDataModel.EntryType));
@@ -114,14 +114,13 @@ namespace Azuria.AnimeManga
             this.Status.SetInitialisedObject(entryDataModel.Status);
         }
 
-        internal Anime(RelationDataModel dataModel, Senpai senpai) : this((EntryDataModel) dataModel, senpai)
+        internal Anime(RelationDataModel dataModel) : this((EntryDataModel) dataModel)
         {
             this.AvailableLanguages.SetInitialisedObject(dataModel.AvailableLanguages.Cast<AnimeLanguage>());
         }
 
-        internal Anime(HistoryDataModel dataModel, Senpai senpai) : this()
+        internal Anime(HistoryDataModel dataModel) : this()
         {
-            this.Senpai = senpai;
             this.Id = dataModel.EntryId;
             this.AnimeMedium.SetInitialisedObject((AnimeMedium) dataModel.Medium);
             this.Name.SetInitialisedObject(dataModel.Name);
@@ -149,12 +148,12 @@ namespace Azuria.AnimeManga
         /// <summary>
         ///     Gets the comments of the <see cref="Anime" /> in a chronological order.
         /// </summary>
-        public IEnumerable<Comment<Anime>> CommentsLatest => new CommentEnumerable<Anime>(this, "latest", this.Senpai);
+        public IEnumerable<Comment<Anime>> CommentsLatest { get; }
 
         /// <summary>
         ///     Gets the comments of the <see cref="Anime" /> ordered by rating.
         /// </summary>
-        public IEnumerable<Comment<Anime>> CommentsRating => new CommentEnumerable<Anime>(this, "rating", this.Senpai);
+        public IEnumerable<Comment<Anime>> CommentsRating { get; }
 
         /// <summary>
         ///     Gets the count of the <see cref="Episode">Episodes</see> the <see cref="Anime" /> contains.
@@ -242,10 +241,6 @@ namespace Azuria.AnimeManga
         public InitialisableProperty<AnimeMangaSeasonInfo> Season { get; }
 
         /// <summary>
-        /// </summary>
-        public Senpai Senpai { get; set; }
-
-        /// <summary>
         ///     Gets the status of the <see cref="Anime" />.
         /// </summary>
         public InitialisableProperty<AnimeMangaStatus> Status { get; }
@@ -306,13 +301,13 @@ namespace Azuria.AnimeManga
                 return new ProxerResult<IEnumerable<Episode>>(new Exception[] {new LanguageNotAvailableException()});
 
             ProxerResult<AnimeMangaContentDataModel[]> lContentObjectsResult =
-                await this.GetContentObjects(this.Senpai);
+                await this.GetContentObjects();
             if (!lContentObjectsResult.Success || lContentObjectsResult.Result == null)
                 return new ProxerResult<IEnumerable<Episode>>(lContentObjectsResult.Exceptions);
 
             return new ProxerResult<IEnumerable<Episode>>(from contentDataModel in lContentObjectsResult.Result
                 where (AnimeLanguage) contentDataModel.Language == language
-                select new Episode(this, contentDataModel, this.Senpai));
+                select new Episode(this, contentDataModel));
         }
 
         #endregion
@@ -322,28 +317,25 @@ namespace Azuria.AnimeManga
         /// </summary>
         public class Episode : IAnimeMangaContent<Anime>, IAnimeMangaContent<IAnimeMangaObject>
         {
-            internal Episode([NotNull] Anime anime, AnimeMangaContentDataModel dataModel, Senpai senpai)
+            internal Episode([NotNull] Anime anime, AnimeMangaContentDataModel dataModel)
             {
-                this.Senpai = senpai;
                 this.ContentIndex = dataModel.ContentIndex;
                 this.Language = (AnimeLanguage) dataModel.Language;
                 this.ParentObject = anime;
             }
 
-            internal Episode([NotNull] BookmarkDataModel dataModel, Senpai senpai)
+            internal Episode([NotNull] BookmarkDataModel dataModel)
             {
-                this.Senpai = senpai;
                 this.ContentIndex = dataModel.ContentIndex;
                 this.Language = (AnimeLanguage) dataModel.Language;
-                this.ParentObject = new Anime(dataModel, senpai);
+                this.ParentObject = new Anime(dataModel);
             }
 
-            internal Episode([NotNull] HistoryDataModel dataModel, Senpai senpai)
+            internal Episode([NotNull] HistoryDataModel dataModel)
             {
-                this.Senpai = senpai;
                 this.ContentIndex = dataModel.ContentIndex;
                 this.Language = (AnimeLanguage) dataModel.Language;
-                this.ParentObject = new Anime(dataModel, senpai);
+                this.ParentObject = new Anime(dataModel);
             }
 
             #region Properties
@@ -379,10 +371,6 @@ namespace Azuria.AnimeManga
             ///     Gets the <see cref="Anime" /> this <see cref="Episode" /> belongs to.
             /// </summary>
             public Anime ParentObject { get; }
-
-            /// <summary>
-            /// </summary>
-            public Senpai Senpai { get; set; }
 
             /// <summary>
             ///     Gets the available streams of the episode.

@@ -138,7 +138,7 @@ namespace Azuria.Notifications.AnimeManga
             }
             catch
             {
-                return new ProxerResult<int>(ErrorHandler.HandleError(senpai, lResponse, false).Exceptions);
+                return new ProxerResult<int>(ErrorHandler.HandleError(lResponse, false).Exceptions);
             }
         }
 

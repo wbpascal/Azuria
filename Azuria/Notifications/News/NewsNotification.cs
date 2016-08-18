@@ -17,7 +17,7 @@ namespace Azuria.Notifications.News
 
         /// <summary>
         /// </summary>
-        public User.User Author => new User.User(this.AuthorName, this.AuthorId, this.Senpai);
+        public User.User Author => new User.User(this.AuthorName, this.AuthorId);
 
         [JsonProperty("uid")]
         internal int AuthorId { get; set; }
@@ -89,8 +89,6 @@ namespace Azuria.Notifications.News
         /// </summary>
         [JsonProperty("posts")]
         public int Posts { get; set; }
-
-        internal Senpai Senpai { get; set; }
 
         /// <summary>
         ///     Gets the headline of the news.

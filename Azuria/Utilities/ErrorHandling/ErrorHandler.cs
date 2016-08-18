@@ -8,14 +8,13 @@ namespace Azuria.Utilities.ErrorHandling
     {
         #region
 
-        [ItemNotNull]
-        internal static ProxerResult HandleError(Senpai senpai, string wrongHtml, bool checkedLogin)
+        internal static ProxerResult HandleError(string wrongHtml, bool checkedLogin)
         {
             return new ProxerResult(new Exception[] {new WrongResponseException {Response = wrongHtml}});
         }
 
         [NotNull]
-        internal static ProxerResult HandleError(Senpai senpai, string wrongHtml)
+        internal static ProxerResult HandleError(string wrongHtml)
         {
             return new ProxerResult(new Exception[] {new WrongResponseException {Response = wrongHtml}});
         }

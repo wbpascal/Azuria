@@ -114,7 +114,7 @@ namespace Azuria.Notifications.PrivateMessage
             }
             catch
             {
-                return new ProxerResult(ErrorHandler.HandleError(this._senpai, lResponse, false).Exceptions);
+                return new ProxerResult(ErrorHandler.HandleError(lResponse, false).Exceptions);
             }
         }
 

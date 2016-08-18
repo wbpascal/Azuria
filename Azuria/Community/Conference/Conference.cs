@@ -165,7 +165,7 @@ namespace Azuria.Community.Conference
             catch
             {
                 return
-                    new ProxerResult(ErrorHandler.HandleError(this._senpai, lResponse, false).Exceptions);
+                    new ProxerResult(ErrorHandler.HandleError(lResponse, false).Exceptions);
             }
         }
 
@@ -226,7 +226,7 @@ namespace Azuria.Community.Conference
             }
             catch
             {
-                return new ProxerResult(ErrorHandler.HandleError(this._senpai, lResponse, false).Exceptions);
+                return new ProxerResult(ErrorHandler.HandleError(lResponse, false).Exceptions);
             }
         }
 
@@ -277,7 +277,7 @@ namespace Azuria.Community.Conference
             }
             catch
             {
-                return new ProxerResult(ErrorHandler.HandleError(this._senpai, lResponse, false).Exceptions);
+                return new ProxerResult(ErrorHandler.HandleError(lResponse, false).Exceptions);
             }
         }
 
@@ -308,7 +308,7 @@ namespace Azuria.Community.Conference
                         Convert.ToInt32(
                             curTeilnehmer.ChildNodes[1].FirstChild.Attributes["href"].Value.GetTagContents("/user/",
                                 "#top")[0])
-                    select new User.User(lUserName, lUserId, this._senpai));
+                    select new User.User(lUserName, lUserId));
 
                 this.Participants.SetInitialisedObject(lTeilnehmer);
 
@@ -316,7 +316,7 @@ namespace Azuria.Community.Conference
             }
             catch
             {
-                return new ProxerResult(ErrorHandler.HandleError(this._senpai, lResponse, false).Exceptions);
+                return new ProxerResult(ErrorHandler.HandleError(lResponse, false).Exceptions);
             }
         }
 
@@ -352,7 +352,7 @@ namespace Azuria.Community.Conference
                 }
                 catch
                 {
-                    return new ProxerResult(ErrorHandler.HandleError(this._senpai, lResponse, false).Exceptions);
+                    return new ProxerResult(ErrorHandler.HandleError(lResponse, false).Exceptions);
                 }
             }
 
@@ -424,7 +424,7 @@ namespace Azuria.Community.Conference
             }
             catch
             {
-                return new ProxerResult<bool>(ErrorHandler.HandleError(senpai, lResponse, false).Exceptions);
+                return new ProxerResult<bool>(ErrorHandler.HandleError(lResponse, false).Exceptions);
             }
         }
 
@@ -478,7 +478,7 @@ namespace Azuria.Community.Conference
             {
                 this._checkMessagesTimer.Start();
                 return
-                    new ProxerResult(ErrorHandler.HandleError(this._senpai, lResponse, false).Exceptions);
+                    new ProxerResult(ErrorHandler.HandleError(lResponse, false).Exceptions);
             }
         }
 

@@ -68,7 +68,7 @@ namespace Azuria.Notifications.FriendRequest
             ProxerResult<string> lResult = await
                 HttpUtility.PostResponseErrorHandling(
                     new Uri("https://proxer.me/user/my?format=json&cid=" + this.User.Id),
-                    lPostArgs, this._senpai, new[] {lCheckFunc});
+                    lPostArgs, new[] {lCheckFunc}, this._senpai);
 
             if (!lResult.Success) return new ProxerResult(lResult.Exceptions);
 
@@ -93,7 +93,7 @@ namespace Azuria.Notifications.FriendRequest
             ProxerResult<string> lResult = await
                 HttpUtility.PostResponseErrorHandling(
                     new Uri("https://proxer.me/user/my?format=json&cid=" + this.User.Id),
-                    lPostArgs, this._senpai, new[] {lCheckFunc});
+                    lPostArgs, new[] {lCheckFunc}, this._senpai);
 
             if (!lResult.Success) return new ProxerResult(lResult.Exceptions);
 

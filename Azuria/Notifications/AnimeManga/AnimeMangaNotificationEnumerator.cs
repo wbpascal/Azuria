@@ -186,7 +186,7 @@ namespace Azuria.Notifications.AnimeManga
                     if (typeof(T) == typeof(Anime) && lContentParentType == typeof(Anime))
                         lAnimeMangaUpdateObjects.AddIf(
                             new AnimeMangaNotification<Anime>(lNotificationId,
-                                (await new Anime(lName, lAnimeMangaId, this._senpai).GetEpisodes(lAnimeLanguage))
+                                (await new Anime(lName, lAnimeMangaId).GetEpisodes(lAnimeLanguage))
                                     .OnError(new Anime.Episode[0])?
                                     .FirstOrDefault(episode => episode.ContentIndex == lNumber),
                                 this._senpai) as AnimeMangaNotification<T>,
@@ -194,7 +194,7 @@ namespace Azuria.Notifications.AnimeManga
                     else if (lContentParentType == typeof(Manga))
                         lAnimeMangaUpdateObjects.AddIf(
                             new AnimeMangaNotification<Manga>(lNotificationId,
-                                (await new Manga(lName, lAnimeMangaId, this._senpai).GetChapters(lLanguage))
+                                (await new Manga(lName, lAnimeMangaId).GetChapters(lLanguage))
                                     .OnError(new Manga.Chapter[0])?
                                     .FirstOrDefault(chapter => chapter.ContentIndex == lNumber),
                                 this._senpai) as AnimeMangaNotification<T>,
@@ -209,7 +209,7 @@ namespace Azuria.Notifications.AnimeManga
             }
             catch
             {
-                return new ProxerResult(ErrorHandler.HandleError(this._senpai, lResponse, false).Exceptions);
+                return new ProxerResult(ErrorHandler.HandleError(lResponse, false).Exceptions);
             }
         }
 

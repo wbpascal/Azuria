@@ -13,12 +13,7 @@ namespace Azuria.Utilities.Properties
     {
         [NotNull] private readonly Func<T, Task<ProxerResult>> _setMethod;
 
-        /// <summary>
-        ///     Initialises a new instance with a specified initialisation method and a set method.
-        /// </summary>
-        /// <param name="initMethod">The initialisation method.</param>
-        /// <param name="setMethod">The set method.</param>
-        public SetableInitialisableProperty([NotNull] Func<Task<ProxerResult>> initMethod,
+        internal SetableInitialisableProperty([NotNull] Func<Task<ProxerResult>> initMethod,
             [NotNull] Func<T, Task<ProxerResult>> setMethod) : base(initMethod)
         {
             this._setMethod = setMethod;

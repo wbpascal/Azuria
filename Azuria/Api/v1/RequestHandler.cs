@@ -23,19 +23,22 @@ namespace Azuria.Api.v1
         internal static async Task<ProxerResult<T>> ApiCustomRequest<T>(ApiRequest request, char[] loginToken = null,
             int recursion = 0) where T : ProxerApiResponse
         {
+            if (request.CheckLogin && request.Senpai == null)
+                return new ProxerResult<T>(new[] {new NotLoggedInException()});
+
             loginToken = loginToken ?? new char[0];
             ProxerResult<string> lResult =
                 await
-                    HttpUtility.PostResponseErrorHandling(request.Address, request.PostArguments, request.Senpai,
-                        new Func<string, ProxerResult>[0], checkLogin: request.CheckLogin,
+                    HttpUtility.PostResponseErrorHandling(request.Address, request.PostArguments,
+                        new Func<string, ProxerResult>[0], checkLogin: request.CheckLogin, senpai: request.Senpai,
                         header:
                             new Dictionary<string, string> {{"proxer-api-key", new string(_apiKey.ReadValue())}}
                                 .AddIfAndReturn(
                                     "proxer-api-token", new string(loginToken),
                                     (key, value) => !string.IsNullOrEmpty(value.Trim()))
-                                .AddIfAndReturn("proxer-api-token", new string(request.Senpai.LoginToken.ReadValue()),
+                                .AddIfAndReturn("proxer-api-token", new string(request.Senpai?.LoginToken.ReadValue()),
                                     (key, value, source) =>
-                                        request.CheckLogin && !request.Senpai.IsProbablyLoggedIn &&
+                                        request.CheckLogin && (!request.Senpai?.IsProbablyLoggedIn ?? false) &&
                                         !source.ContainsKey(key)));
 
             if (!lResult.Success || lResult.Result == null)

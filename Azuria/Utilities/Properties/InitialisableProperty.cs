@@ -16,11 +16,7 @@ namespace Azuria.Utilities.Properties
         [NotNull] private readonly Func<Task<ProxerResult>> _initMethod;
         [CanBeNull] private T _initialisedObject;
 
-        /// <summary>
-        ///     Initialises a new instance with a specified initialisation method.
-        /// </summary>
-        /// <param name="initMethod">The initialisation method.</param>
-        public InitialisableProperty([NotNull] Func<Task<ProxerResult>> initMethod)
+        internal InitialisableProperty([NotNull] Func<Task<ProxerResult>> initMethod)
         {
             this._initMethod = initMethod;
             this.IsInitialisedOnce = false;

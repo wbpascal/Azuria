@@ -10,10 +10,10 @@ namespace Azuria.User
     /// </summary>
     public class UserProfileEntry<T> where T : class, IAnimeMangaObject
     {
-        internal UserProfileEntry(ListDataModel dataModel, User user, Senpai senpai)
+        internal UserProfileEntry(ListDataModel dataModel, User user)
         {
             this.User = user;
-            this.AnimeMangaObject = this.InitAnimeMangaObject(dataModel, senpai);
+            this.AnimeMangaObject = this.InitAnimeMangaObject(dataModel);
             this.Comment = new Comment<T>(dataModel, user, this.AnimeMangaObject);
         }
 
@@ -35,19 +35,19 @@ namespace Azuria.User
 
         #region
 
-        private T InitAnimeMangaObject(ListDataModel dataModel, Senpai senpai)
+        private T InitAnimeMangaObject(ListDataModel dataModel)
         {
-            T lReturnObject = null;
+            T lReturnObject;
 
             if (typeof(T) == typeof(Anime))
             {
-                Anime lAnime = new Anime(dataModel.EntryName, dataModel.EntryId, senpai);
+                Anime lAnime = new Anime(dataModel.EntryName, dataModel.EntryId);
                 lAnime.AnimeMedium.SetInitialisedObject((AnimeMedium) dataModel.Medium);
                 lReturnObject = lAnime as T;
             }
             else if (typeof(T) == typeof(Manga))
             {
-                Manga lManga = new Manga(dataModel.EntryName, dataModel.EntryId, senpai);
+                Manga lManga = new Manga(dataModel.EntryName, dataModel.EntryId);
                 lManga.MangaMedium.SetInitialisedObject((MangaMedium) dataModel.Medium);
                 lReturnObject = lManga as T;
             }

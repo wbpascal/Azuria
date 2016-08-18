@@ -8,13 +8,11 @@ namespace Azuria.User
     /// </summary>
     public class UserEntryEnumerable<T> : IEnumerable<UserProfileEntry<T>> where T : class, IAnimeMangaObject
     {
-        private readonly Senpai _senpai;
         private readonly User _user;
 
-        internal UserEntryEnumerable(User user, Senpai senpai)
+        internal UserEntryEnumerable(User user)
         {
             this._user = user;
-            this._senpai = senpai;
         }
 
         #region Inherited
@@ -30,7 +28,7 @@ namespace Azuria.User
         /// <returns>An enumerator that can be used to iterate through the collection.</returns>
         public IEnumerator<UserProfileEntry<T>> GetEnumerator()
         {
-            return new UserEntryEnumerator<T>(this._user, this._senpai);
+            return new UserEntryEnumerator<T>(this._user);
         }
 
         #endregion

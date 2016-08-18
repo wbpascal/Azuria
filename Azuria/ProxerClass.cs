@@ -19,24 +19,23 @@ namespace Azuria
         ///     Gets an <see cref="Anime" /> or <see cref="Manga" /> of a specified id.
         /// </summary>
         /// <param name="id">The id of the <see cref="Anime" /> or <see cref="Manga" />.</param>
-        /// <param name="senpai">The user that makes the request.</param>
         /// <returns>
         ///     If the action was successful and if it was, an object representing either an <see cref="Anime" /> or
         ///     <see cref="Manga" />.
         /// </returns>
         [ItemNotNull]
-        public static async Task<ProxerResult<IAnimeMangaObject>> GetAnimeMangaById(int id, [NotNull] Senpai senpai)
+        public static async Task<ProxerResult<IAnimeMangaObject>> GetAnimeMangaById(int id)
         {
             ProxerResult<ProxerApiResponse<EntryDataModel>> lResult =
-                await RequestHandler.ApiRequest(ApiRequestBuilder.InfoGetEntry(id, senpai));
+                await RequestHandler.ApiRequest(ApiRequestBuilder.InfoGetEntry(id));
             if (!lResult.Success || lResult.Result == null)
                 return new ProxerResult<IAnimeMangaObject>(lResult.Exceptions);
             EntryDataModel lDataModel = lResult.Result.Data;
 
             return
                 new ProxerResult<IAnimeMangaObject>(lDataModel.EntryType == AnimeMangaEntryType.Anime
-                    ? new Anime(lDataModel, senpai)
-                    : (IAnimeMangaObject) new Manga(lDataModel, senpai));
+                    ? new Anime(lDataModel)
+                    : (IAnimeMangaObject) new Manga(lDataModel));
         }
 
         #endregion

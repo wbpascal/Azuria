@@ -108,14 +108,14 @@ namespace Azuria.Notifications.FriendRequest
                     let lDatum =
                         DateTime.ParseExact(curNode.ChildNodes[4].InnerText, "yyyy-MM-dd", CultureInfo.InvariantCulture)
                     select
-                        new FriendRequestNotification(new User.User(lUserName, lUserId, this._senpai), lDatum,
+                        new FriendRequestNotification(new User.User(lUserName, lUserId), lDatum,
                             this._senpai)).ToArray();
 
                 return new ProxerResult();
             }
             catch
             {
-                return new ProxerResult(ErrorHandler.HandleError(this._senpai, lResponse, false).Exceptions);
+                return new ProxerResult(ErrorHandler.HandleError(lResponse, false).Exceptions);
             }
         }
 

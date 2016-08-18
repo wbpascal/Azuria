@@ -105,17 +105,13 @@ namespace Azuria.Notifications.News
                                                                                                   "{\"error\":0,".Length));
 
                 this._currentPageContent = lDeserialized["notifications"].ToArray();
-                foreach (NewsNotification newsNotification in this._currentPageContent)
-                {
-                    newsNotification.Senpai = this._senpai;
-                }
 
                 this._nextPageToLoad++;
                 return new ProxerResult();
             }
             catch
             {
-                return new ProxerResult(ErrorHandler.HandleError(this._senpai, lResponse, false).Exceptions);
+                return new ProxerResult(ErrorHandler.HandleError(lResponse, false).Exceptions);
             }
         }
 

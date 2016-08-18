@@ -110,7 +110,7 @@ namespace Azuria.Community.Conference
             }
             catch
             {
-                return new ProxerResult(ErrorHandler.HandleError(this._senpai, lResponse, false).Exceptions);
+                return new ProxerResult(ErrorHandler.HandleError(lResponse, false).Exceptions);
             }
 
             this._nextPage++;
@@ -162,15 +162,14 @@ namespace Azuria.Community.Conference
                     else
                         lReturn.Add(
                             new Message(
-                                new User.User(curMessage.Username, curMessage.Fromid,
-                                    this._senpai), curMessage.Id, curMessage.Message,
+                                new User.User(curMessage.Username, curMessage.Fromid), curMessage.Id, curMessage.Message,
                                 Convert.ToInt32(curMessage.Timestamp), lMessageAction));
                 }
             }
             catch
             {
                 return
-                    new ProxerResult<Message[]>(ErrorHandler.HandleError(this._senpai, messages, false).Exceptions);
+                    new ProxerResult<Message[]>(ErrorHandler.HandleError(messages, false).Exceptions);
             }
 
             return new ProxerResult<Message[]>(lReturn.ToArray());

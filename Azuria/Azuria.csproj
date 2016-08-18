@@ -160,7 +160,6 @@
     <Compile Include="AnimeManga\Manga.cs" />
     <Compile Include="AnimeManga\Properties\AnimeLanguage.cs" />
     <Compile Include="AnimeManga\Properties\AnimeMedium.cs" />
-    <Compile Include="Community\Forum\Forum.cs" />
     <Compile Include="Search\SearchResultEnumerator.cs" />
     <Compile Include="User\Comment\Comment.cs" />
     <Compile Include="AnimeManga\Properties\FskType.cs" />
