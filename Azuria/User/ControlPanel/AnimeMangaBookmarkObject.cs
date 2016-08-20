@@ -1,5 +1,4 @@
-﻿using System;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using Azuria.AnimeManga;
 using Azuria.Utilities.ErrorHandling;
 using JetBrains.Annotations;
@@ -48,7 +47,7 @@ namespace Azuria.User.ControlPanel
         [ItemNotNull]
         public Task<ProxerResult> DeleteEntry()
         {
-            throw new NotImplementedException();
+            return this.UserControlPanel.DeleteBookmark(this);
         }
 
         #endregion

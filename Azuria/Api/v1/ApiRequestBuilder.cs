@@ -71,6 +71,16 @@ namespace Azuria.Api.v1
             return new ApiRequest<SeasonDataModel[]>(new Uri($"{ApiAddress}/info/season?id={entryId}"));
         }
 
+        internal static ApiRequest<BookmarkDataModel[]> UcpDeleteReminder(int bookmarkId, Senpai senpai)
+        {
+            return new ApiRequest<BookmarkDataModel[]>(new Uri($"{ApiAddress}/ucp/deletereminder"))
+            {
+                CheckLogin = true,
+                PostArguments = new Dictionary<string, string> {{"id", bookmarkId.ToString()}},
+                Senpai = senpai
+            };
+        }
+
         internal static ApiRequest<HistoryDataModel[]> UcpGetHistory(int page, int limit, Senpai senpai)
         {
             return new ApiRequest<HistoryDataModel[]>(new Uri($"{ApiAddress}/ucp/history?p={page}&limit={limit}"))

@@ -1,6 +1,11 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 using Azuria.AnimeManga;
+using Azuria.Api.v1;
+using Azuria.Api.v1.DataModels.Ucp;
 using Azuria.Exceptions;
+using Azuria.Utilities.ErrorHandling;
 using JetBrains.Annotations;
 
 namespace Azuria.User.ControlPanel
@@ -44,6 +49,26 @@ namespace Azuria.User.ControlPanel
         [NotNull]
         public IEnumerable<AnimeMangaBookmarkObject<Manga>> MangaBookmarks
             => new BookmarkEnumerable<Manga>(this._senpai, this);
+
+        #endregion
+
+        #region
+
+        /// <summary>
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="bookmark"></param>
+        /// <returns></returns>
+        public async Task<ProxerResult> DeleteBookmark<T>(AnimeMangaBookmarkObject<T> bookmark)
+            where T : IAnimeMangaObject
+        {
+            if ((bookmark.UserControlPanel._senpai.Me?.Id ?? -1) != (this._senpai.Me?.Id ?? -1))
+                return new ProxerResult(new[] {new ArgumentException(nameof(bookmark))});
+
+            ProxerResult<ProxerApiResponse<BookmarkDataModel[]>> lResult =
+                await RequestHandler.ApiRequest(ApiRequestBuilder.UcpDeleteReminder(bookmark.BookmarkId, this._senpai));
+            return lResult.Success ? new ProxerResult() : new ProxerResult(new Exception[0]);
+        }
 
         #endregion
     }
