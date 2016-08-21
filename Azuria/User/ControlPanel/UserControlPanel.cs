@@ -89,6 +89,22 @@ namespace Azuria.User.ControlPanel
             return lResult.Success ? new ProxerResult() : new ProxerResult(new Exception[0]);
         }
 
+        /// <summary>
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="topten"></param>
+        /// <returns></returns>
+        public async Task<ProxerResult> DeleteTopten<T>(ToptenObject<T> topten)
+            where T : IAnimeMangaObject
+        {
+            if ((topten.UserControlPanel._senpai.Me?.Id ?? -1) != (this._senpai.Me?.Id ?? -1))
+                return new ProxerResult(new[] {new ArgumentException(nameof(topten))});
+
+            ProxerResult<ProxerApiResponse<BookmarkDataModel[]>> lResult =
+                await RequestHandler.ApiRequest(ApiRequestBuilder.UcpDeleteFavourite(topten.ToptenId, this._senpai));
+            return lResult.Success ? new ProxerResult() : new ProxerResult(new Exception[0]);
+        }
+
         private async Task<ProxerResult> InitTopten()
         {
             ProxerResult<ProxerApiResponse<ToptenDataModel[]>> lResult =

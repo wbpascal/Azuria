@@ -1,4 +1,6 @@
-﻿using Azuria.AnimeManga;
+﻿using System.Threading.Tasks;
+using Azuria.AnimeManga;
+using Azuria.Utilities.ErrorHandling;
 
 namespace Azuria.User.ControlPanel
 {
@@ -27,6 +29,18 @@ namespace Azuria.User.ControlPanel
         /// <summary>
         /// </summary>
         public UserControlPanel UserControlPanel { get; }
+
+        #endregion
+
+        #region
+
+        /// <summary>
+        /// </summary>
+        /// <returns></returns>
+        public Task<ProxerResult> DeleteEntry()
+        {
+            return this.UserControlPanel.DeleteTopten(this);
+        }
 
         #endregion
     }
