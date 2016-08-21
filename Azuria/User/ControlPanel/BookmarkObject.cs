@@ -9,9 +9,9 @@ namespace Azuria.User.ControlPanel
     ///     Represents an <see cref="Anime" /> or <see cref="Manga" /> the user has bookmarked.
     /// </summary>
     /// <typeparam name="T">Specifies if the bookmark is an <see cref="Anime" /> or <see cref="Manga" />.</typeparam>
-    public class AnimeMangaBookmarkObject<T> where T : IAnimeMangaObject
+    public class BookmarkObject<T> where T : IAnimeMangaObject
     {
-        internal AnimeMangaBookmarkObject(IAnimeMangaContent<T> animeMangaContentObject, int bookmarkId,
+        internal BookmarkObject(IAnimeMangaContent<T> animeMangaContentObject, int bookmarkId,
             UserControlPanel controlPanel)
         {
             this.AnimeMangaContentObject = animeMangaContentObject;

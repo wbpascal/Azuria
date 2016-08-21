@@ -3,21 +3,21 @@ using Newtonsoft.Json;
 
 namespace Azuria.Api.v1.DataModels.User
 {
-    internal class ToptenDataModel : IDataModel
+    internal class ToptenDataModel : IEntryInfoDataModel
     {
         #region Properties
 
         [JsonProperty("eid")]
-        internal int EntryId { get; set; }
-
-        [JsonProperty("kat")]
-        internal AnimeMangaEntryType EntryType { get; set; }
+        public int EntryId { get; set; }
 
         [JsonProperty("medium")]
-        internal AnimeMangaMedium Medium { get; set; }
+        public AnimeMangaMedium EntryMedium { get; set; }
 
         [JsonProperty("name")]
-        internal string Name { get; set; }
+        public string EntryName { get; set; }
+
+        [JsonProperty("kat")]
+        public AnimeMangaEntryType EntryType { get; set; }
 
         #endregion
     }

@@ -79,8 +79,11 @@
     <Compile Include="AnimeManga\Properties\AnimeMangaSeason.cs" />
     <Compile Include="AnimeManga\Properties\AnimeMangaSeasonInfo.cs" />
     <Compile Include="Api\v1\Converters\Ucp\CustomDateTimeConverter.cs" />
+    <Compile Include="Api\v1\DataModels\IEntryInfoDataModel.cs" />
     <Compile Include="Api\v1\DataModels\Ucp\BookmarkDataModel.cs" />
     <Compile Include="Api\v1\DataModels\Ucp\HistoryDataModel.cs" />
+    <Compile Include="Api\v1\DataModels\Ucp\ToptenDataModel.cs" />
+    <Compile Include="User\ControlPanel\ToptenObject.cs" />
     <Compile Include="Utilities\Web\JsEval.cs" />
     <Compile Include="User\Comment\CommentEnumerable.cs" />
     <Compile Include="User\Comment\CommentEnumerator.cs" />
@@ -138,7 +141,7 @@
     <Compile Include="Exceptions\CloudflareException.cs" />
     <Compile Include="Security\ISecureContainer.cs" />
     <Compile Include="Security\SecureStringContainer.cs" />
-    <Compile Include="User\ControlPanel\AnimeMangaHistoryObject.cs" />
+    <Compile Include="User\ControlPanel\HistoryObject.cs" />
     <Compile Include="User\ControlPanel\BookmarkEnumerable.cs" />
     <Compile Include="User\ControlPanel\BookmarkEnumerator.cs" />
     <Compile Include="User\ControlPanel\HistoryEnumerable.cs" />
@@ -172,7 +175,7 @@
     <Compile Include="Search\SearchResult.cs" />
     <Compile Include="User\AnimeMangaProgressState.cs" />
     <Compile Include="User\Comment\RatingCategory.cs" />
-    <Compile Include="User\ControlPanel\AnimeMangaBookmarkObject.cs" />
+    <Compile Include="User\ControlPanel\BookmarkObject.cs" />
     <Compile Include="User\ControlPanel\UserControlPanel.cs" />
     <Compile Include="Notifications\AnimeManga\AnimeMangaNotificationCollection.cs" />
     <Compile Include="Notifications\AnimeManga\AnimeMangaNotificationEnumerator.cs" />

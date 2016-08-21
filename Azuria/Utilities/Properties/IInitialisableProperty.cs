@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Runtime.CompilerServices;
+using System.Threading.Tasks;
 using Azuria.Utilities.ErrorHandling;
 using JetBrains.Annotations;
 
@@ -26,6 +27,11 @@ namespace Azuria.Utilities.Properties
         /// <returns>If the action was successful.</returns>
         [ItemNotNull]
         Task<ProxerResult> FetchObject();
+
+        /// <summary>
+        /// </summary>
+        /// <returns></returns>
+        TaskAwaiter<T> GetAwaiter();
 
         /// <summary>
         ///     Gets a new value for the property independent of it being already initialised.

@@ -51,6 +51,14 @@ namespace Azuria.Utilities.Properties
         }
 
         /// <summary>
+        /// </summary>
+        /// <returns></returns>
+        public TaskAwaiter<T> GetAwaiter()
+        {
+            return this.GetObjectAndThrow().GetAwaiter();
+        }
+
+        /// <summary>
         ///     Gets a new value for the property independent of it being already initialised.
         /// </summary>
         /// <returns>If the action was successful and if it was, the value of this property.</returns>
@@ -105,14 +113,6 @@ namespace Azuria.Utilities.Properties
         #endregion
 
         #region
-
-        /// <summary>
-        /// </summary>
-        /// <returns></returns>
-        public TaskAwaiter<T> GetAwaiter()
-        {
-            return this.GetObjectAndThrow().GetAwaiter();
-        }
 
         private async Task<T> GetObjectAndThrow()
         {

@@ -5,9 +5,9 @@ namespace Azuria.User.ControlPanel
 {
     /// <summary>
     /// </summary>
-    public class AnimeMangaHistoryObject<T> where T : IAnimeMangaObject
+    public class HistoryObject<T> where T : IAnimeMangaObject
     {
-        internal AnimeMangaHistoryObject(IAnimeMangaContent<T> contentObject, DateTime timeStamp,
+        internal HistoryObject(IAnimeMangaContent<T> contentObject, DateTime timeStamp,
             UserControlPanel userControlPanel)
         {
             this.ContentObject = contentObject;

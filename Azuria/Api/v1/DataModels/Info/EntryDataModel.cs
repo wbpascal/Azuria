@@ -7,7 +7,7 @@ using Newtonsoft.Json;
 
 namespace Azuria.Api.v1.DataModels.Info
 {
-    internal class EntryDataModel : IDataModel
+    internal class EntryDataModel : IEntryInfoDataModel
     {
         #region Properties
 
@@ -21,10 +21,16 @@ namespace Azuria.Api.v1.DataModels.Info
         internal string Description { get; set; }
 
         [JsonProperty("id")]
-        internal int EntryId { get; set; }
+        public int EntryId { get; set; }
+
+        [JsonProperty("medium")]
+        public AnimeMangaMedium EntryMedium { get; set; }
+
+        [JsonProperty("name")]
+        public string EntryName { get; set; }
 
         [JsonProperty("kat"), JsonConverter(typeof(CategoryConverter))]
-        internal AnimeMangaEntryType EntryType { get; set; }
+        public AnimeMangaEntryType EntryType { get; set; }
 
         [JsonProperty("fsk"), JsonConverter(typeof(FskConverter))]
         internal IEnumerable<FskType> Fsk { get; set; }
@@ -34,12 +40,6 @@ namespace Azuria.Api.v1.DataModels.Info
 
         [JsonProperty("license"), JsonConverter(typeof(IsLicensedConverter))]
         internal bool IsLicensed { get; set; }
-
-        [JsonProperty("medium"), JsonConverter(typeof(MediumConverter))]
-        internal AnimeMangaMedium Medium { get; set; }
-
-        [JsonProperty("name")]
-        internal string Name { get; set; }
 
         internal AnimeMangaRating Rating => new AnimeMangaRating(this.TotalStars, this.Voters);
 

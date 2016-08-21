@@ -104,15 +104,15 @@ namespace Azuria.Utilities.Extensions
             if (!lResult.Success || lResult.Result == null) return new ProxerResult(lResult.Exceptions);
             EntryDataModel lDataModel = lResult.Result.Data;
 
-            (animeMangaObject as Anime)?.AnimeMedium.SetInitialisedObject((AnimeMedium) lDataModel.Medium);
+            (animeMangaObject as Anime)?.AnimeMedium.SetInitialisedObject((AnimeMedium) lDataModel.EntryMedium);
             animeMangaObject.Clicks.SetInitialisedObject(lDataModel.Clicks);
             animeMangaObject.ContentCount.SetInitialisedObject(lDataModel.ContentCount);
             animeMangaObject.Description.SetInitialisedObject(lDataModel.Description);
             animeMangaObject.Fsk.SetInitialisedObject(lDataModel.Fsk);
             animeMangaObject.Genre.SetInitialisedObject(lDataModel.Genre);
             animeMangaObject.IsLicensed.SetInitialisedObject(lDataModel.IsLicensed);
-            (animeMangaObject as Manga)?.MangaMedium.SetInitialisedObject((MangaMedium) lDataModel.Medium);
-            animeMangaObject.Name.SetInitialisedObject(lDataModel.Name);
+            (animeMangaObject as Manga)?.MangaMedium.SetInitialisedObject((MangaMedium) lDataModel.EntryMedium);
+            animeMangaObject.Name.SetInitialisedObject(lDataModel.EntryName);
             animeMangaObject.Rating.SetInitialisedObject(lDataModel.Rating);
             animeMangaObject.Status.SetInitialisedObject(lDataModel.Status);
 

@@ -5,7 +5,7 @@ using Newtonsoft.Json;
 
 namespace Azuria.Api.v1.DataModels.Ucp
 {
-    internal class BookmarkDataModel : IDataModel
+    internal class BookmarkDataModel : IEntryInfoDataModel
     {
         #region Properties
 
@@ -16,19 +16,19 @@ namespace Azuria.Api.v1.DataModels.Ucp
         internal int ContentIndex { get; set; }
 
         [JsonProperty("eid")]
-        internal int EntryId { get; set; }
+        public int EntryId { get; set; }
 
-        [JsonProperty("kat"), JsonConverter(typeof(CategoryConverter))]
-        internal AnimeMangaEntryType EntryType { get; set; }
+        [JsonProperty("medium")]
+        public AnimeMangaMedium EntryMedium { get; set; }
+
+        [JsonProperty("name")]
+        public string EntryName { get; set; }
+
+        [JsonProperty("kat")]
+        public AnimeMangaEntryType EntryType { get; set; }
 
         [JsonProperty("language"), JsonConverter(typeof(LanguageConverter))]
         internal AnimeMangaLanguage Language { get; set; }
-
-        [JsonProperty("medium"), JsonConverter(typeof(MediumConverter))]
-        internal AnimeMangaMedium Medium { get; set; }
-
-        [JsonProperty("name")]
-        internal string Name { get; set; }
 
         [JsonProperty("state")]
         internal AnimeMangaStatus Status { get; set; }

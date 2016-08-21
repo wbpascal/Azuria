@@ -5,6 +5,7 @@ using Azuria.Api.v1.DataModels.Info;
 using Azuria.Api.v1.DataModels.Ucp;
 using Azuria.Api.v1.DataModels.User;
 using Azuria.Api.v1.Enums;
+using ToptenDataModel = Azuria.Api.v1.DataModels.Ucp.ToptenDataModel;
 
 namespace Azuria.Api.v1
 {
@@ -111,6 +112,15 @@ namespace Azuria.Api.v1
                 };
         }
 
+        internal static ApiRequest<ToptenDataModel[]> UcpGetTopten(Senpai senpai)
+        {
+            return new ApiRequest<ToptenDataModel[]>(new Uri($"{ApiAddress}/ucp/topten"))
+            {
+                CheckLogin = true,
+                Senpai = senpai
+            };
+        }
+
         internal static ApiRequest<UserInfoDataModel> UserGetInfo(int? userId, Senpai senpai = null)
         {
             return
@@ -135,9 +145,11 @@ namespace Azuria.Api.v1
                     new Uri($"{ApiAddress}/user/list?uid={userId}&kat={kat}&p={page}&limit={limit}"));
         }
 
-        internal static ApiRequest<ToptenDataModel[]> UserGetTopten(int userId, string category)
+        internal static ApiRequest<DataModels.User.ToptenDataModel[]> UserGetTopten(int userId, string category)
         {
-            return new ApiRequest<ToptenDataModel[]>(new Uri($"{ApiAddress}/user/topten?uid={userId}&kat={category}"));
+            return
+                new ApiRequest<DataModels.User.ToptenDataModel[]>(
+                    new Uri($"{ApiAddress}/user/topten?uid={userId}&kat={category}"));
         }
 
         internal static ApiRequest<LoginDataModel> UserLogin(string username, string password, Senpai senpai)

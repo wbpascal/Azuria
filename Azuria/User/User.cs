@@ -203,10 +203,10 @@ namespace Azuria.User
 
             if (category == AnimeMangaEntryType.Anime)
                 this.AnimeTopten.SetInitialisedObject(from toptenDataModel in lResult.Result.Data
-                    select new Anime(toptenDataModel.Name, toptenDataModel.EntryId));
+                    select new Anime(toptenDataModel.EntryName, toptenDataModel.EntryId));
             if (category == AnimeMangaEntryType.Manga)
                 this.MangaTopten.SetInitialisedObject(from toptenDataModel in lResult.Result.Data
-                    select new Manga(toptenDataModel.Name, toptenDataModel.EntryId));
+                    select new Manga(toptenDataModel.EntryName, toptenDataModel.EntryId));
 
             return new ProxerResult();
         }

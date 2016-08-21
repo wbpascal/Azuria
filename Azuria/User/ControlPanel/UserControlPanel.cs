@@ -1,11 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Azuria.AnimeManga;
 using Azuria.Api.v1;
 using Azuria.Api.v1.DataModels.Ucp;
+using Azuria.Api.v1.Enums;
 using Azuria.Exceptions;
 using Azuria.Utilities.ErrorHandling;
+using Azuria.Utilities.Properties;
 using JetBrains.Annotations;
 
 namespace Azuria.User.ControlPanel
@@ -17,6 +20,8 @@ namespace Azuria.User.ControlPanel
     public class UserControlPanel
     {
         private readonly Senpai _senpai;
+        private readonly InitialisableProperty<IEnumerable<ToptenObject<Anime>>> _toptenAnime;
+        private readonly InitialisableProperty<IEnumerable<ToptenObject<Manga>>> _toptenManga;
 
         /// <summary>
         ///     Inititalises a new instance of the <see cref="UserControlPanel" /> class with a specified user.
@@ -27,6 +32,9 @@ namespace Azuria.User.ControlPanel
         {
             this._senpai = senpai;
             if (!this._senpai.IsProbablyLoggedIn) throw new NotLoggedInException(this._senpai);
+
+            this._toptenAnime = new InitialisableProperty<IEnumerable<ToptenObject<Anime>>>(this.InitTopten);
+            this._toptenManga = new InitialisableProperty<IEnumerable<ToptenObject<Manga>>>(this.InitTopten);
         }
 
         #region Properties
@@ -35,20 +43,31 @@ namespace Azuria.User.ControlPanel
         ///     Gets all bookmarks of the user that are <see cref="Anime">Anime</see>.
         /// </summary>
         [NotNull]
-        public IEnumerable<AnimeMangaBookmarkObject<Anime>> AnimeBookmarks
+        public IEnumerable<BookmarkObject<Anime>> BookmarksAnime
             => new BookmarkEnumerable<Anime>(this._senpai, this);
-
-        /// <summary>
-        /// </summary>
-        public IEnumerable<AnimeMangaHistoryObject<IAnimeMangaObject>> History
-            => new HistoryEnumerable<IAnimeMangaObject>(this._senpai, this);
 
         /// <summary>
         ///     Gets all bookmarks of the user that are <see cref="Manga">Manga</see>.
         /// </summary>
         [NotNull]
-        public IEnumerable<AnimeMangaBookmarkObject<Manga>> MangaBookmarks
+        public IEnumerable<BookmarkObject<Manga>> BookmarksManga
             => new BookmarkEnumerable<Manga>(this._senpai, this);
+
+        /// <summary>
+        /// </summary>
+        [NotNull]
+        public IEnumerable<HistoryObject<IAnimeMangaObject>> History
+            => new HistoryEnumerable<IAnimeMangaObject>(this._senpai, this);
+
+        /// <summary>
+        /// </summary>
+        [NotNull]
+        public IInitialisableProperty<IEnumerable<ToptenObject<Anime>>> ToptenAnime => this._toptenAnime;
+
+        /// <summary>
+        /// </summary>
+        [NotNull]
+        public IInitialisableProperty<IEnumerable<ToptenObject<Manga>>> ToptenManga => this._toptenManga;
 
         #endregion
 
@@ -59,7 +78,7 @@ namespace Azuria.User.ControlPanel
         /// <typeparam name="T"></typeparam>
         /// <param name="bookmark"></param>
         /// <returns></returns>
-        public async Task<ProxerResult> DeleteBookmark<T>(AnimeMangaBookmarkObject<T> bookmark)
+        public async Task<ProxerResult> DeleteBookmark<T>(BookmarkObject<T> bookmark)
             where T : IAnimeMangaObject
         {
             if ((bookmark.UserControlPanel._senpai.Me?.Id ?? -1) != (this._senpai.Me?.Id ?? -1))
@@ -68,6 +87,23 @@ namespace Azuria.User.ControlPanel
             ProxerResult<ProxerApiResponse<BookmarkDataModel[]>> lResult =
                 await RequestHandler.ApiRequest(ApiRequestBuilder.UcpDeleteReminder(bookmark.BookmarkId, this._senpai));
             return lResult.Success ? new ProxerResult() : new ProxerResult(new Exception[0]);
+        }
+
+        private async Task<ProxerResult> InitTopten()
+        {
+            ProxerResult<ProxerApiResponse<ToptenDataModel[]>> lResult =
+                await RequestHandler.ApiRequest(ApiRequestBuilder.UcpGetTopten(this._senpai));
+            if (!lResult.Success || lResult.Result == null) return new ProxerResult(lResult.Exceptions);
+
+            ToptenDataModel[] lData = lResult.Result.Data;
+            this._toptenAnime.SetInitialisedObject(from toptenDataModel in lData
+                where toptenDataModel.EntryType == AnimeMangaEntryType.Anime
+                select new ToptenObject<Anime>(toptenDataModel.ToptenId, new Anime(toptenDataModel), this));
+            this._toptenManga.SetInitialisedObject(from toptenDataModel in lData
+                where toptenDataModel.EntryType == AnimeMangaEntryType.Manga
+                select new ToptenObject<Manga>(toptenDataModel.ToptenId, new Manga(toptenDataModel), this));
+
+            return new ProxerResult();
         }
 
         #endregion

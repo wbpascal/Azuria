@@ -9,7 +9,7 @@ using Newtonsoft.Json;
 
 namespace Azuria.Api.v1.DataModels.User
 {
-    internal class ListDataModel : IDataModel
+    internal class ListDataModel : IEntryInfoDataModel
     {
         #region Properties
 
@@ -35,16 +35,19 @@ namespace Azuria.Api.v1.DataModels.User
         internal int ContentCount { get; set; }
 
         [JsonProperty("id")]
-        internal int EntryId { get; set; }
+        public int EntryId { get; set; }
+
+        [JsonProperty("medium")]
+        public AnimeMangaMedium EntryMedium { get; set; }
 
         [JsonProperty("name")]
-        internal string EntryName { get; set; }
+        public string EntryName { get; set; }
 
         [JsonProperty("estate")]
         internal AnimeMangaStatus EntryStatus { get; set; }
 
-        [JsonProperty("medium"), JsonConverter(typeof(MediumConverter))]
-        internal AnimeMangaMedium Medium { get; set; }
+        public AnimeMangaEntryType EntryType
+            => (int) this.EntryMedium < 4 ? AnimeMangaEntryType.Anime : AnimeMangaEntryType.Manga;
 
         [JsonProperty("rating")]
         internal int Rating { get; set; }

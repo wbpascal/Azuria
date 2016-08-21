@@ -32,11 +32,11 @@ namespace Azuria.AnimeManga
         /// <summary>
         ///     Adds the <see cref="Anime.Episode" /> or <see cref="Manga.Chapter" /> to the bookmarks. If
         ///     <paramref name="userControlPanel" /> is specified the object is also added to the corresponding
-        ///     <see cref="UserControlPanel.AnimeBookmarks" />- or <see cref="UserControlPanel.MangaBookmarks" />-enumeration.
+        ///     <see cref="UserControlPanel.BookmarksAnime" />- or <see cref="UserControlPanel.BookmarksManga" />-enumeration.
         /// </summary>
         /// <param name="userControlPanel">The object which, if specified, this object is added to.</param>
         /// <returns>If the action was successful.</returns>
-        Task<ProxerResult<AnimeMangaBookmarkObject<T>>> AddToBookmarks(UserControlPanel userControlPanel = null);
+        Task<ProxerResult<BookmarkObject<T>>> AddToBookmarks(UserControlPanel userControlPanel = null);
 
         #endregion
     }

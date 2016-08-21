@@ -7,7 +7,7 @@ namespace Azuria.User.ControlPanel
     /// <summary>
     /// </summary>
     /// <typeparam name="T"></typeparam>
-    public class HistoryEnumerable<T> : IEnumerable<AnimeMangaHistoryObject<T>> where T : IAnimeMangaObject
+    public class HistoryEnumerable<T> : IEnumerable<HistoryObject<T>> where T : IAnimeMangaObject
     {
         private readonly Senpai _senpai;
         private readonly UserControlPanel _userControlPanel;
@@ -29,7 +29,7 @@ namespace Azuria.User.ControlPanel
 
         /// <summary>Returns an enumerator that iterates through the collection.</summary>
         /// <returns>An enumerator that can be used to iterate through the collection.</returns>
-        public IEnumerator<AnimeMangaHistoryObject<T>> GetEnumerator()
+        public IEnumerator<HistoryObject<T>> GetEnumerator()
         {
             return new HistoryEnumerator<T>(this._senpai, this._userControlPanel);
         }

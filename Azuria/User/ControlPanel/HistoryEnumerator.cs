@@ -15,12 +15,12 @@ namespace Azuria.User.ControlPanel
     /// <summary>
     /// </summary>
     /// <typeparam name="T"></typeparam>
-    public class HistoryEnumerator<T> : IEnumerator<AnimeMangaHistoryObject<T>> where T : IAnimeMangaObject
+    public class HistoryEnumerator<T> : IEnumerator<HistoryObject<T>> where T : IAnimeMangaObject
     {
         private const int ResultsPerPage = 50;
         private readonly UserControlPanel _controlPanel;
         private readonly Senpai _senpai;
-        private AnimeMangaHistoryObject<T>[] _currentPageContent = new AnimeMangaHistoryObject<T>[0];
+        private HistoryObject<T>[] _currentPageContent = new HistoryObject<T>[0];
         private int _currentPageContentIndex = -1;
         private int _nextPage;
 
@@ -35,7 +35,7 @@ namespace Azuria.User.ControlPanel
         /// <summary>Gets the element in the collection at the current position of the enumerator.</summary>
         /// <returns>The element in the collection at the current position of the enumerator.</returns>
         [NotNull]
-        public AnimeMangaHistoryObject<T> Current => this._currentPageContent[this._currentPageContentIndex];
+        public HistoryObject<T> Current => this._currentPageContent[this._currentPageContentIndex];
 
         /// <summary>Gets the current element in the collection.</summary>
         /// <returns>The current element in the collection.</returns>
@@ -48,7 +48,7 @@ namespace Azuria.User.ControlPanel
         /// <summary>Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.</summary>
         public void Dispose()
         {
-            this._currentPageContent = new AnimeMangaHistoryObject<T>[0];
+            this._currentPageContent = new HistoryObject<T>[0];
         }
 
         /// <summary>Advances the enumerator to the next element of the collection.</summary>
@@ -76,7 +76,7 @@ namespace Azuria.User.ControlPanel
         /// <exception cref="T:System.InvalidOperationException">The collection was modified after the enumerator was created. </exception>
         public void Reset()
         {
-            this._currentPageContent = new AnimeMangaHistoryObject<T>[0];
+            this._currentPageContent = new HistoryObject<T>[0];
             this._currentPageContentIndex = ResultsPerPage - 1;
             this._nextPage = 0;
         }
@@ -110,7 +110,7 @@ namespace Azuria.User.ControlPanel
 
             this._currentPageContent = (from historyDataModel in lData
                 select
-                    new AnimeMangaHistoryObject<T>(this.GetAnimeMangaContent(historyDataModel),
+                    new HistoryObject<T>(this.GetAnimeMangaContent(historyDataModel),
                         historyDataModel.TimeStamp, this._controlPanel)).ToArray();
 
             return new ProxerResult();

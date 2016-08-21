@@ -15,12 +15,12 @@ namespace Azuria.User.ControlPanel
     /// <summary>
     /// </summary>
     /// <typeparam name="T"></typeparam>
-    public class BookmarkEnumerator<T> : IEnumerator<AnimeMangaBookmarkObject<T>> where T : class, IAnimeMangaObject
+    public class BookmarkEnumerator<T> : IEnumerator<BookmarkObject<T>> where T : class, IAnimeMangaObject
     {
         private const int ResultsPerPage = 100;
         private readonly UserControlPanel _controlPanel;
         private readonly Senpai _senpai;
-        private AnimeMangaBookmarkObject<T>[] _currentPageContent = new AnimeMangaBookmarkObject<T>[0];
+        private BookmarkObject<T>[] _currentPageContent = new BookmarkObject<T>[0];
         private int _currentPageContentIndex = -1;
         private int _nextPage;
 
@@ -35,7 +35,7 @@ namespace Azuria.User.ControlPanel
         /// <summary>Gets the element in the collection at the current position of the enumerator.</summary>
         /// <returns>The element in the collection at the current position of the enumerator.</returns>
         [NotNull]
-        public AnimeMangaBookmarkObject<T> Current => this._currentPageContent[this._currentPageContentIndex];
+        public BookmarkObject<T> Current => this._currentPageContent[this._currentPageContentIndex];
 
         /// <summary>Gets the current element in the collection.</summary>
         /// <returns>The current element in the collection.</returns>
@@ -48,7 +48,7 @@ namespace Azuria.User.ControlPanel
         /// <summary>Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.</summary>
         public void Dispose()
         {
-            this._currentPageContent = new AnimeMangaBookmarkObject<T>[0];
+            this._currentPageContent = new BookmarkObject<T>[0];
         }
 
         /// <summary>Advances the enumerator to the next element of the collection.</summary>
@@ -76,7 +76,7 @@ namespace Azuria.User.ControlPanel
         /// <exception cref="T:System.InvalidOperationException">The collection was modified after the enumerator was created. </exception>
         public void Reset()
         {
-            this._currentPageContent = new AnimeMangaBookmarkObject<T>[0];
+            this._currentPageContent = new BookmarkObject<T>[0];
             this._currentPageContentIndex = ResultsPerPage - 1;
             this._nextPage = 0;
         }
@@ -98,7 +98,7 @@ namespace Azuria.User.ControlPanel
             BookmarkDataModel[] lData = lResult.Result.Data;
 
             this._currentPageContent = (from bookmarkDataModel in lData
-                select new AnimeMangaBookmarkObject<T>(
+                select new BookmarkObject<T>(
                     typeof(T) == typeof(Anime)
                         ? (IAnimeMangaContent<T>) new Anime.Episode(bookmarkDataModel)
                         : (IAnimeMangaContent<T>) new Manga.Chapter(bookmarkDataModel),

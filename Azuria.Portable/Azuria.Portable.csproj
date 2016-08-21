@@ -184,6 +184,9 @@
     <Compile Include="..\Azuria\Api\v1\DataModels\IDataModel.cs">
       <Link>Api\v1\DataModels\IDataModel.cs</Link>
     </Compile>
+    <Compile Include="..\Azuria\Api\v1\DataModels\IEntryInfoDataModel.cs">
+      <Link>Api\v1\DataModels\IEntryInfoDataModel.cs</Link>
+    </Compile>
     <Compile Include="..\Azuria\Api\v1\DataModels\Info\AnimeMangaContentDataModel.cs">
       <Link>Api\v1\DataModels\Info\AnimeMangaContentDataModel.cs</Link>
     </Compile>
@@ -216,6 +219,9 @@
     </Compile>
     <Compile Include="..\Azuria\Api\v1\DataModels\Ucp\HistoryDataModel.cs">
       <Link>Api\v1\DataModels\Ucp\HistoryDataModel.cs</Link>
+    </Compile>
+    <Compile Include="..\Azuria\Api\v1\DataModels\Ucp\ToptenDataModel.cs">
+      <Link>Api\v1\DataModels\Ucp\ToptenDataModel.cs</Link>
     </Compile>
     <Compile Include="..\Azuria\Api\v1\DataModels\User\ListDataModel.cs">
       <Link>Api\v1\DataModels\User\ListDataModel.cs</Link>
@@ -397,23 +403,26 @@
     <Compile Include="..\Azuria\User\Comment\RatingCategory.cs">
       <Link>User\Comment\RatingCategory.cs</Link>
     </Compile>
-    <Compile Include="..\Azuria\User\ControlPanel\AnimeMangaBookmarkObject.cs">
-      <Link>User\ControlPanel\AnimeMangaBookmarkObject.cs</Link>
-    </Compile>
-    <Compile Include="..\Azuria\User\ControlPanel\AnimeMangaHistoryObject.cs">
-      <Link>User\ControlPanel\AnimeMangaHistoryObject.cs</Link>
-    </Compile>
     <Compile Include="..\Azuria\User\ControlPanel\BookmarkEnumerable.cs">
       <Link>User\ControlPanel\BookmarkEnumerable.cs</Link>
     </Compile>
     <Compile Include="..\Azuria\User\ControlPanel\BookmarkEnumerator.cs">
       <Link>User\ControlPanel\BookmarkEnumerator.cs</Link>
     </Compile>
+    <Compile Include="..\Azuria\User\ControlPanel\BookmarkObject.cs">
+      <Link>User\ControlPanel\BookmarkObject.cs</Link>
+    </Compile>
     <Compile Include="..\Azuria\User\ControlPanel\HistoryEnumerable.cs">
       <Link>User\ControlPanel\HistoryEnumerable.cs</Link>
     </Compile>
     <Compile Include="..\Azuria\User\ControlPanel\HistoryEnumerator.cs">
       <Link>User\ControlPanel\HistoryEnumerator.cs</Link>
+    </Compile>
+    <Compile Include="..\Azuria\User\ControlPanel\HistoryObject.cs">
+      <Link>User\ControlPanel\HistoryObject.cs</Link>
+    </Compile>
+    <Compile Include="..\Azuria\User\ControlPanel\ToptenObject.cs">
+      <Link>User\ControlPanel\ToptenObject.cs</Link>
     </Compile>
     <Compile Include="..\Azuria\User\ControlPanel\UserControlPanel.cs">
       <Link>User\ControlPanel\UserControlPanel.cs</Link>
