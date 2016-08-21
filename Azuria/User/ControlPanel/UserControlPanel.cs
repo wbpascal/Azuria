@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Threading.Tasks;
 using Azuria.AnimeManga;
+using Azuria.AnimeManga.Properties;
 using Azuria.Api.v1;
 using Azuria.Api.v1.DataModels.Ucp;
 using Azuria.Api.v1.Enums;
@@ -120,6 +122,25 @@ namespace Azuria.User.ControlPanel
                 select new ToptenObject<Manga>(toptenDataModel.ToptenId, new Manga(toptenDataModel), this));
 
             return new ProxerResult();
+        }
+
+        /// <summary>
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="contentObject"></param>
+        /// <returns></returns>
+        public async Task<ProxerResult> SetBookmark<T>(IAnimeMangaContent<T> contentObject)
+            where T : class, IAnimeMangaObject
+        {
+            ProxerResult<ProxerApiResponse> lResult =
+                await
+                    RequestHandler.ApiRequest(ApiRequestBuilder.UcpSetReminder(contentObject.ParentObject.Id,
+                        contentObject.ContentIndex,
+                        (contentObject as Anime.Episode)?.Language.ToString().ToLowerInvariant() ??
+                        (contentObject.GeneralLanguage == Language.German ? "de" : "en"),
+                        typeof(T).GetTypeInfo().Name.ToLowerInvariant(), this._senpai));
+
+            return lResult.Success ? new ProxerResult() : new ProxerResult(lResult.Exceptions);
         }
 
         #endregion

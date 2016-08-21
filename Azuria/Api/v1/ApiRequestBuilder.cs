@@ -131,6 +131,19 @@ namespace Azuria.Api.v1
             };
         }
 
+        internal static ApiRequest UcpSetReminder(int entryId, int contentIndex, string language, string kat,
+            Senpai senpai)
+        {
+            return
+                new ApiRequest(
+                    new Uri(
+                        $"{ApiAddress}/ucp/setreminder?id={entryId}&episode={contentIndex}&language={language}&kat={kat}"))
+                {
+                    CheckLogin = true,
+                    Senpai = senpai
+                };
+        }
+
         internal static ApiRequest<UserInfoDataModel> UserGetInfo(int? userId, Senpai senpai = null)
         {
             return

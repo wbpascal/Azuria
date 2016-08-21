@@ -378,29 +378,14 @@ namespace Azuria.AnimeManga
             #region Inherited
 
             /// <summary>
-            ///     Adds the <see cref="Anime.Episode" /> or <see cref="Manga.Chapter" /> to the bookmarks. If
-            ///     <paramref name="userControlPanel" /> is specified the object is also added to the corresponding
-            ///     <see cref="UserControlPanel.BookmarksAnime" />- or <see cref="UserControlPanel.BookmarksManga" />-enumeration.
-            /// </summary>
-            /// <param name="userControlPanel">The object which, if specified, this object is added to.</param>
-            /// <returns>If the action was successful.</returns>
-            Task<ProxerResult<BookmarkObject<IAnimeMangaObject>>> IAnimeMangaContent<IAnimeMangaObject>.
-                AddToBookmarks(UserControlPanel userControlPanel)
-            {
-                throw new NotImplementedException();
-            }
-
-            /// <summary>
             ///     Adds the <see cref="Chapter" /> to the bookmarks. If <paramref name="userControlPanel" /> is specified
             ///     the object is also added to the corresponding <see cref="UserControlPanel.BookmarksManga" />-enumeration.
             /// </summary>
             /// <param name="userControlPanel">The object which, if specified, this object is added to.</param>
             /// <returns>If the action was successful.</returns>
-            public Task<ProxerResult<BookmarkObject<Manga>>> AddToBookmarks(
-                UserControlPanel userControlPanel = null)
+            public Task<ProxerResult> AddToBookmarks(UserControlPanel userControlPanel)
             {
-                //TODO: Implement Episode.AddToBookmarks
-                throw new NotImplementedException();
+                return userControlPanel.SetBookmark((IAnimeMangaContent<Manga>) this);
             }
 
             #endregion
