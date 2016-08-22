@@ -131,7 +131,7 @@ namespace Azuria.Api.v1
             };
         }
 
-        internal static ApiRequest UcpSetReminder(int entryId, int contentIndex, string language, string kat,
+        internal static ApiRequest UcpSetBookmark(int entryId, int contentIndex, string language, string kat,
             Senpai senpai)
         {
             return
@@ -142,6 +142,17 @@ namespace Azuria.Api.v1
                     CheckLogin = true,
                     Senpai = senpai
                 };
+        }
+
+        internal static ApiRequest UcpSetProgress(int commentId, int progress, Senpai senpai)
+        {
+            return new ApiRequest(new Uri($"{ApiAddress}/ucp/setcommentstate"))
+            {
+                CheckLogin = true,
+                PostArguments =
+                    new Dictionary<string, string> {{"id", commentId.ToString()}, {"value", progress.ToString()}},
+                Senpai = senpai
+            };
         }
 
         internal static ApiRequest<UserInfoDataModel> UserGetInfo(int? userId, Senpai senpai = null)

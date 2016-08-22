@@ -83,6 +83,7 @@
     <Compile Include="Api\v1\DataModels\Ucp\BookmarkDataModel.cs" />
     <Compile Include="Api\v1\DataModels\Ucp\HistoryDataModel.cs" />
     <Compile Include="Api\v1\DataModels\Ucp\ToptenDataModel.cs" />
+    <Compile Include="Api\v1\DataModels\User\ListDataModel.cs" />
     <Compile Include="User\ControlPanel\ToptenObject.cs" />
     <Compile Include="Utilities\Web\JsEval.cs" />
     <Compile Include="User\Comment\CommentEnumerable.cs" />
@@ -123,7 +124,6 @@
     <Compile Include="Api\v1\DataModels\Info\RelationDataModel.cs" />
     <Compile Include="Api\v1\DataModels\Info\SeasonDataModel.cs" />
     <Compile Include="Api\v1\DataModels\Info\EntryTagDataModel.cs" />
-    <Compile Include="Api\v1\DataModels\User\ListDataModel.cs" />
     <Compile Include="Api\v1\DataModels\User\ToptenDataModel.cs" />
     <Compile Include="Api\v1\DataModels\User\UserInfoDataModel.cs" />
     <Compile Include="Api\v1\Enums\AnimeMangaEntryType.cs" />

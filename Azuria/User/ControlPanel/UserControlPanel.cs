@@ -134,7 +134,7 @@ namespace Azuria.User.ControlPanel
         {
             ProxerResult<ProxerApiResponse> lResult =
                 await
-                    RequestHandler.ApiRequest(ApiRequestBuilder.UcpSetReminder(contentObject.ParentObject.Id,
+                    RequestHandler.ApiRequest(ApiRequestBuilder.UcpSetBookmark(contentObject.ParentObject.Id,
                         contentObject.ContentIndex,
                         (contentObject as Anime.Episode)?.Language.ToString().ToLowerInvariant() ??
                         (contentObject.GeneralLanguage == Language.German ? "de" : "en"),

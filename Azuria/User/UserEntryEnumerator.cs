@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Azuria.AnimeManga;
 using Azuria.Api.v1;
+using Azuria.Api.v1.DataModels;
 using Azuria.Api.v1.DataModels.User;
 using Azuria.Exceptions;
 using Azuria.Utilities.ErrorHandling;
