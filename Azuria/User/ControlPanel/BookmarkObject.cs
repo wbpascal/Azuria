@@ -47,7 +47,7 @@ namespace Azuria.User.ControlPanel
         [ItemNotNull]
         public Task<ProxerResult> DeleteEntry()
         {
-            return this.UserControlPanel.DeleteBookmark(this);
+            return this.UserControlPanel.DeleteBookmark(this.BookmarkId);
         }
 
         #endregion

@@ -39,7 +39,7 @@ namespace Azuria.User.ControlPanel
         /// <returns></returns>
         public Task<ProxerResult> DeleteEntry()
         {
-            return this.UserControlPanel.DeleteTopten(this);
+            return this.UserControlPanel.DeleteTopten(this.ToptenId);
         }
 
         #endregion

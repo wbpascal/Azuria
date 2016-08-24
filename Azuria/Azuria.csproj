@@ -85,7 +85,7 @@
     <Compile Include="Api\v1\DataModels\Ucp\ToptenDataModel.cs" />
     <Compile Include="Api\v1\DataModels\Ucp\VoteDataModel.cs" />
     <Compile Include="Api\v1\DataModels\User\ListDataModel.cs" />
-    <Compile Include="User\Comment\CommentVote.cs" />
+    <Compile Include="User\ControlPanel\CommentVote.cs" />
     <Compile Include="User\ControlPanel\ToptenObject.cs" />
     <Compile Include="Utilities\PageEnumerator.cs" />
     <Compile Include="Utilities\Web\JsEval.cs" />

@@ -1,7 +1,8 @@
-﻿using Azuria.Api.v1.DataModels.Ucp;
-using Azuria.User.ControlPanel;
+﻿using System.Threading.Tasks;
+using Azuria.Api.v1.DataModels.Ucp;
+using Azuria.Utilities.ErrorHandling;
 
-namespace Azuria.User.Comment
+namespace Azuria.User.ControlPanel
 {
     /// <summary>
     /// </summary>
@@ -47,6 +48,18 @@ namespace Azuria.User.Comment
         /// <summary>
         /// </summary>
         public int VoteId { get; }
+
+        #endregion
+
+        #region
+
+        /// <summary>
+        /// </summary>
+        /// <returns></returns>
+        public Task<ProxerResult> DeleteEntry()
+        {
+            return this.UserControlPanel.DeleteCommentVote(this.VoteId);
+        }
 
         #endregion
     }

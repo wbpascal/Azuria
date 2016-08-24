@@ -92,6 +92,16 @@ namespace Azuria.Api.v1
             };
         }
 
+        internal static ApiRequest<BookmarkDataModel[]> UcpDeleteVote(int voteId, Senpai senpai)
+        {
+            return new ApiRequest<BookmarkDataModel[]>(new Uri($"{ApiAddress}/ucp/deletevote"))
+            {
+                CheckLogin = true,
+                PostArguments = new Dictionary<string, string> {{"id", voteId.ToString()}},
+                Senpai = senpai
+            };
+        }
+
         internal static ApiRequest<HistoryDataModel[]> UcpGetHistory(int page, int limit, Senpai senpai)
         {
             return new ApiRequest<HistoryDataModel[]>(new Uri($"{ApiAddress}/ucp/history?p={page}&limit={limit}"))

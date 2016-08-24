@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
@@ -9,7 +8,6 @@ using Azuria.Api.v1;
 using Azuria.Api.v1.DataModels.Ucp;
 using Azuria.Api.v1.Enums;
 using Azuria.Exceptions;
-using Azuria.User.Comment;
 using Azuria.Utilities.ErrorHandling;
 using Azuria.Utilities.Properties;
 using JetBrains.Annotations;
@@ -103,34 +101,35 @@ namespace Azuria.User.ControlPanel
 
         /// <summary>
         /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="bookmark"></param>
+        /// <param name="bookmarkId"></param>
         /// <returns></returns>
-        public async Task<ProxerResult> DeleteBookmark<T>(BookmarkObject<T> bookmark)
-            where T : IAnimeMangaObject
+        public async Task<ProxerResult> DeleteBookmark(int bookmarkId)
         {
-            if ((bookmark.UserControlPanel._senpai.Me?.Id ?? -1) != (this._senpai.Me?.Id ?? -1))
-                return new ProxerResult(new[] {new ArgumentException(nameof(bookmark))});
-
             ProxerResult<ProxerApiResponse<BookmarkDataModel[]>> lResult =
-                await RequestHandler.ApiRequest(ApiRequestBuilder.UcpDeleteReminder(bookmark.BookmarkId, this._senpai));
-            return lResult.Success ? new ProxerResult() : new ProxerResult(new Exception[0]);
+                await RequestHandler.ApiRequest(ApiRequestBuilder.UcpDeleteReminder(bookmarkId, this._senpai));
+            return lResult.Success ? new ProxerResult() : new ProxerResult(lResult.Exceptions);
         }
 
         /// <summary>
         /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="topten"></param>
+        /// <param name="voteId"></param>
         /// <returns></returns>
-        public async Task<ProxerResult> DeleteTopten<T>(ToptenObject<T> topten)
-            where T : IAnimeMangaObject
+        public async Task<ProxerResult> DeleteCommentVote(int voteId)
         {
-            if ((topten.UserControlPanel._senpai.Me?.Id ?? -1) != (this._senpai.Me?.Id ?? -1))
-                return new ProxerResult(new[] {new ArgumentException(nameof(topten))});
-
             ProxerResult<ProxerApiResponse<BookmarkDataModel[]>> lResult =
-                await RequestHandler.ApiRequest(ApiRequestBuilder.UcpDeleteFavourite(topten.ToptenId, this._senpai));
-            return lResult.Success ? new ProxerResult() : new ProxerResult(new Exception[0]);
+                await RequestHandler.ApiRequest(ApiRequestBuilder.UcpDeleteVote(voteId, this._senpai));
+            return lResult.Success ? new ProxerResult() : new ProxerResult(lResult.Exceptions);
+        }
+
+        /// <summary>
+        /// </summary>
+        /// <param name="toptenId"></param>
+        /// <returns></returns>
+        public async Task<ProxerResult> DeleteTopten(int toptenId)
+        {
+            ProxerResult<ProxerApiResponse<BookmarkDataModel[]>> lResult =
+                await RequestHandler.ApiRequest(ApiRequestBuilder.UcpDeleteFavourite(toptenId, this._senpai));
+            return lResult.Success ? new ProxerResult() : new ProxerResult(lResult.Exceptions);
         }
 
         private async Task<ProxerResult> InitTopten()
