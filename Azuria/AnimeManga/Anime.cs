@@ -380,11 +380,11 @@ namespace Azuria.AnimeManga
             /// <summary>
             ///     Adds the <see cref="Episode" /> to the bookmarks.
             /// </summary>
-            /// <param name="userControlPanel">The object which, if specified, this object is added to.</param>
+            /// <param name="senpai"></param>
             /// <returns>If the action was successful.</returns>
-            public Task<ProxerResult> AddToBookmarks(UserControlPanel userControlPanel)
+            public Task<ProxerResult> AddToBookmarks(Senpai senpai)
             {
-                return userControlPanel.SetBookmark((IAnimeMangaContent<Anime>) this);
+                return new UserControlPanel(senpai).AddToBookmarks((IAnimeMangaContent<Anime>) this);
             }
 
             #endregion

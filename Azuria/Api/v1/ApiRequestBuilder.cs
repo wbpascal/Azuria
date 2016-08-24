@@ -131,6 +131,15 @@ namespace Azuria.Api.v1
             };
         }
 
+        internal static ApiRequest<VoteDataModel[]> UcpGetVotes(Senpai senpai)
+        {
+            return new ApiRequest<VoteDataModel[]>(new Uri($"{ApiAddress}/ucp/votes"))
+            {
+                CheckLogin = true,
+                Senpai = senpai
+            };
+        }
+
         internal static ApiRequest UcpSetBookmark(int entryId, int contentIndex, string language, string kat,
             Senpai senpai)
         {

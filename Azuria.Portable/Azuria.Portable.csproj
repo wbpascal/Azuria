@@ -223,6 +223,9 @@
     <Compile Include="..\Azuria\Api\v1\DataModels\Ucp\ToptenDataModel.cs">
       <Link>Api\v1\DataModels\Ucp\ToptenDataModel.cs</Link>
     </Compile>
+    <Compile Include="..\Azuria\Api\v1\DataModels\Ucp\VoteDataModel.cs">
+      <Link>Api\v1\DataModels\Ucp\VoteDataModel.cs</Link>
+    </Compile>
     <Compile Include="..\Azuria\Api\v1\DataModels\User\ListDataModel.cs">
       <Link>Api\v1\DataModels\User\ListDataModel.cs</Link>
     </Compile>
@@ -400,6 +403,9 @@
     <Compile Include="..\Azuria\User\Comment\CommentEnumerator.cs">
       <Link>User\Comment\CommentEnumerator.cs</Link>
     </Compile>
+    <Compile Include="..\Azuria\User\Comment\CommentVote.cs">
+      <Link>User\Comment\CommentVote.cs</Link>
+    </Compile>
     <Compile Include="..\Azuria\User\Comment\RatingCategory.cs">
       <Link>User\Comment\RatingCategory.cs</Link>
     </Compile>
@@ -474,6 +480,9 @@
     </Compile>
     <Compile Include="..\Azuria\Utilities\Extensions\TypeExtensions.cs">
       <Link>Utilities\Extensions\TypeExtensions.cs</Link>
+    </Compile>
+    <Compile Include="..\Azuria\Utilities\PageEnumerator.cs">
+      <Link>Utilities\PageEnumerator.cs</Link>
     </Compile>
     <Compile Include="..\Azuria\Utilities\Properties\AsyncProperty.cs">
       <Link>Utilities\Properties\AsyncProperty.cs</Link>

@@ -9,6 +9,7 @@ using Azuria.Api.v1;
 using Azuria.Api.v1.DataModels.Ucp;
 using Azuria.Api.v1.Enums;
 using Azuria.Exceptions;
+using Azuria.User.Comment;
 using Azuria.Utilities.ErrorHandling;
 using Azuria.Utilities.Properties;
 using JetBrains.Annotations;
@@ -21,6 +22,7 @@ namespace Azuria.User.ControlPanel
     /// </summary>
     public class UserControlPanel
     {
+        private readonly InitialisableProperty<IEnumerable<CommentVote>> _commentVotes;
         private readonly Senpai _senpai;
         private readonly InitialisableProperty<IEnumerable<ToptenObject<Anime>>> _toptenAnime;
         private readonly InitialisableProperty<IEnumerable<ToptenObject<Manga>>> _toptenManga;
@@ -35,6 +37,7 @@ namespace Azuria.User.ControlPanel
             this._senpai = senpai;
             if (!this._senpai.IsProbablyLoggedIn) throw new NotLoggedInException(this._senpai);
 
+            this._commentVotes = new InitialisableProperty<IEnumerable<CommentVote>>(this.InitVotes);
             this._toptenAnime = new InitialisableProperty<IEnumerable<ToptenObject<Anime>>>(this.InitTopten);
             this._toptenManga = new InitialisableProperty<IEnumerable<ToptenObject<Manga>>>(this.InitTopten);
         }
@@ -57,6 +60,10 @@ namespace Azuria.User.ControlPanel
 
         /// <summary>
         /// </summary>
+        public IInitialisableProperty<IEnumerable<CommentVote>> CommentVotes => this._commentVotes;
+
+        /// <summary>
+        /// </summary>
         [NotNull]
         public IEnumerable<HistoryObject<IAnimeMangaObject>> History
             => new HistoryEnumerable<IAnimeMangaObject>(this._senpai, this);
@@ -74,6 +81,25 @@ namespace Azuria.User.ControlPanel
         #endregion
 
         #region
+
+        /// <summary>
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="contentObject"></param>
+        /// <returns></returns>
+        public async Task<ProxerResult> AddToBookmarks<T>(IAnimeMangaContent<T> contentObject)
+            where T : class, IAnimeMangaObject
+        {
+            ProxerResult<ProxerApiResponse> lResult =
+                await
+                    RequestHandler.ApiRequest(ApiRequestBuilder.UcpSetBookmark(contentObject.ParentObject.Id,
+                        contentObject.ContentIndex,
+                        (contentObject as Anime.Episode)?.Language.ToString().ToLowerInvariant() ??
+                        (contentObject.GeneralLanguage == Language.German ? "de" : "en"),
+                        typeof(T).GetTypeInfo().Name.ToLowerInvariant(), this._senpai));
+
+            return lResult.Success ? new ProxerResult() : new ProxerResult(lResult.Exceptions);
+        }
 
         /// <summary>
         /// </summary>
@@ -124,23 +150,15 @@ namespace Azuria.User.ControlPanel
             return new ProxerResult();
         }
 
-        /// <summary>
-        /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="contentObject"></param>
-        /// <returns></returns>
-        public async Task<ProxerResult> SetBookmark<T>(IAnimeMangaContent<T> contentObject)
-            where T : class, IAnimeMangaObject
+        private async Task<ProxerResult> InitVotes()
         {
-            ProxerResult<ProxerApiResponse> lResult =
-                await
-                    RequestHandler.ApiRequest(ApiRequestBuilder.UcpSetBookmark(contentObject.ParentObject.Id,
-                        contentObject.ContentIndex,
-                        (contentObject as Anime.Episode)?.Language.ToString().ToLowerInvariant() ??
-                        (contentObject.GeneralLanguage == Language.German ? "de" : "en"),
-                        typeof(T).GetTypeInfo().Name.ToLowerInvariant(), this._senpai));
+            ProxerResult<ProxerApiResponse<VoteDataModel[]>> lResult =
+                await RequestHandler.ApiRequest(ApiRequestBuilder.UcpGetVotes(this._senpai));
+            if (!lResult.Success || lResult.Result == null) return new ProxerResult(lResult.Exceptions);
 
-            return lResult.Success ? new ProxerResult() : new ProxerResult(lResult.Exceptions);
+            this._commentVotes.SetInitialisedObject(from voteDataModel in lResult.Result.Data
+                select new CommentVote(voteDataModel, this));
+            return new ProxerResult();
         }
 
         #endregion

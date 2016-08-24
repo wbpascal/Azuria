@@ -356,10 +356,6 @@ namespace Azuria.AnimeManga
             /// </summary>
             public Language Language { get; }
 
-            /// <summary>
-            ///     Gets the <see cref="Anime" /> or <see cref="Manga" /> this <see cref="Anime.Episode" /> or
-            ///     <see cref="Manga.Chapter" /> belongs to.
-            /// </summary>
             IAnimeMangaObject IAnimeMangaContent<IAnimeMangaObject>.ParentObject => this.ParentObject;
 
             /// <summary>
@@ -378,14 +374,13 @@ namespace Azuria.AnimeManga
             #region Inherited
 
             /// <summary>
-            ///     Adds the <see cref="Chapter" /> to the bookmarks. If <paramref name="userControlPanel" /> is specified
-            ///     the object is also added to the corresponding <see cref="UserControlPanel.BookmarksManga" />-enumeration.
+            ///     Adds the <see cref="Chapter" /> to the bookmarks.
             /// </summary>
-            /// <param name="userControlPanel">The object which, if specified, this object is added to.</param>
+            /// <param name="senpai"></param>
             /// <returns>If the action was successful.</returns>
-            public Task<ProxerResult> AddToBookmarks(UserControlPanel userControlPanel)
+            public Task<ProxerResult> AddToBookmarks(Senpai senpai)
             {
-                return userControlPanel.SetBookmark((IAnimeMangaContent<Manga>) this);
+                return new UserControlPanel(senpai).AddToBookmarks((IAnimeMangaContent<Manga>) this);
             }
 
             #endregion

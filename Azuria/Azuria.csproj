@@ -83,8 +83,11 @@
     <Compile Include="Api\v1\DataModels\Ucp\BookmarkDataModel.cs" />
     <Compile Include="Api\v1\DataModels\Ucp\HistoryDataModel.cs" />
     <Compile Include="Api\v1\DataModels\Ucp\ToptenDataModel.cs" />
+    <Compile Include="Api\v1\DataModels\Ucp\VoteDataModel.cs" />
     <Compile Include="Api\v1\DataModels\User\ListDataModel.cs" />
+    <Compile Include="User\Comment\CommentVote.cs" />
     <Compile Include="User\ControlPanel\ToptenObject.cs" />
+    <Compile Include="Utilities\PageEnumerator.cs" />
     <Compile Include="Utilities\Web\JsEval.cs" />
     <Compile Include="User\Comment\CommentEnumerable.cs" />
     <Compile Include="User\Comment\CommentEnumerator.cs" />
