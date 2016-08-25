@@ -2,9 +2,9 @@
 using System.Linq;
 using Newtonsoft.Json;
 
-namespace Azuria.Api.v1.Converters.Info
+namespace Azuria.Api.v1.Converters
 {
-    internal class LanguageKommaCollectionConverter : LanguageConverter
+    internal class LanguageCommaCollectionConverter : LanguageConverter
     {
         #region
 

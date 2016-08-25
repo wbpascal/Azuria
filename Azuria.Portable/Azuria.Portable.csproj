@@ -133,11 +133,11 @@
     <Compile Include="..\Azuria\Api\v1\Converters\CategoryConverter.cs">
       <Link>Api\v1\Converters\CategoryConverter.cs</Link>
     </Compile>
+    <Compile Include="..\Azuria\Api\v1\Converters\GenreConverter.cs">
+      <Link>Api\v1\Converters\GenreConverter.cs</Link>
+    </Compile>
     <Compile Include="..\Azuria\Api\v1\Converters\Info\FskConverter.cs">
       <Link>Api\v1\Converters\Info\FskConverter.cs</Link>
-    </Compile>
-    <Compile Include="..\Azuria\Api\v1\Converters\Info\GenreConverter.cs">
-      <Link>Api\v1\Converters\Info\GenreConverter.cs</Link>
     </Compile>
     <Compile Include="..\Azuria\Api\v1\Converters\Info\GroupLanguageConverter.cs">
       <Link>Api\v1\Converters\Info\GroupLanguageConverter.cs</Link>
@@ -147,9 +147,6 @@
     </Compile>
     <Compile Include="..\Azuria\Api\v1\Converters\Info\LanguageCollectionConverter.cs">
       <Link>Api\v1\Converters\Info\LanguageCollectionConverter.cs</Link>
-    </Compile>
-    <Compile Include="..\Azuria\Api\v1\Converters\Info\LanguageKommaCollectionConverter.cs">
-      <Link>Api\v1\Converters\Info\LanguageKommaCollectionConverter.cs</Link>
     </Compile>
     <Compile Include="..\Azuria\Api\v1\Converters\Info\NameTypeConverter.cs">
       <Link>Api\v1\Converters\Info\NameTypeConverter.cs</Link>
@@ -162,6 +159,9 @@
     </Compile>
     <Compile Include="..\Azuria\Api\v1\Converters\IntToBoolConverter.cs">
       <Link>Api\v1\Converters\IntToBoolConverter.cs</Link>
+    </Compile>
+    <Compile Include="..\Azuria\Api\v1\Converters\LanguageCommaCollectionConverter.cs">
+      <Link>Api\v1\Converters\LanguageCommaCollectionConverter.cs</Link>
     </Compile>
     <Compile Include="..\Azuria\Api\v1\Converters\LanguageConverter.cs">
       <Link>Api\v1\Converters\LanguageConverter.cs</Link>
@@ -213,6 +213,9 @@
     </Compile>
     <Compile Include="..\Azuria\Api\v1\DataModels\Info\SeasonDataModel.cs">
       <Link>Api\v1\DataModels\Info\SeasonDataModel.cs</Link>
+    </Compile>
+    <Compile Include="..\Azuria\Api\v1\DataModels\Search\SearchDataModel.cs">
+      <Link>Api\v1\DataModels\Search\SearchDataModel.cs</Link>
     </Compile>
     <Compile Include="..\Azuria\Api\v1\DataModels\Ucp\BookmarkDataModel.cs">
       <Link>Api\v1\DataModels\Ucp\BookmarkDataModel.cs</Link>
@@ -373,14 +376,26 @@
     <Compile Include="..\Azuria\ProxerClass.cs">
       <Link>ProxerClass.cs</Link>
     </Compile>
-    <Compile Include="..\Azuria\Search\ISearchableObject.cs">
-      <Link>Search\ISearchableObject.cs</Link>
+    <Compile Include="..\Azuria\Search\Input\AnimeMangaSearchType.cs">
+      <Link>Search\Input\AnimeMangaSearchType.cs</Link>
     </Compile>
-    <Compile Include="..\Azuria\Search\SearchHelper.cs">
-      <Link>Search\SearchHelper.cs</Link>
+    <Compile Include="..\Azuria\Search\Input\LengthLimit.cs">
+      <Link>Search\Input\LengthLimit.cs</Link>
     </Compile>
-    <Compile Include="..\Azuria\Search\SearchResult.cs">
-      <Link>Search\SearchResult.cs</Link>
+    <Compile Include="..\Azuria\Search\Input\SearchInput.cs">
+      <Link>Search\Input\SearchInput.cs</Link>
+    </Compile>
+    <Compile Include="..\Azuria\Search\Input\SearchLanguage.cs">
+      <Link>Search\Input\SearchLanguage.cs</Link>
+    </Compile>
+    <Compile Include="..\Azuria\Search\Input\SearchResultSort.cs">
+      <Link>Search\Input\SearchResultSort.cs</Link>
+    </Compile>
+    <Compile Include="..\Azuria\Search\Search.cs">
+      <Link>Search\Search.cs</Link>
+    </Compile>
+    <Compile Include="..\Azuria\Search\SearchQueryBuilder.cs">
+      <Link>Search\SearchQueryBuilder.cs</Link>
     </Compile>
     <Compile Include="..\Azuria\Search\SearchResultEnumerator.cs">
       <Link>Search\SearchResultEnumerator.cs</Link>
@@ -403,9 +418,6 @@
     <Compile Include="..\Azuria\User\Comment\CommentEnumerator.cs">
       <Link>User\Comment\CommentEnumerator.cs</Link>
     </Compile>
-    <Compile Include="..\Azuria\User\Comment\CommentVote.cs">
-      <Link>User\Comment\CommentVote.cs</Link>
-    </Compile>
     <Compile Include="..\Azuria\User\Comment\RatingCategory.cs">
       <Link>User\Comment\RatingCategory.cs</Link>
     </Compile>
@@ -417,6 +429,9 @@
     </Compile>
     <Compile Include="..\Azuria\User\ControlPanel\BookmarkObject.cs">
       <Link>User\ControlPanel\BookmarkObject.cs</Link>
+    </Compile>
+    <Compile Include="..\Azuria\User\ControlPanel\CommentVote.cs">
+      <Link>User\ControlPanel\CommentVote.cs</Link>
     </Compile>
     <Compile Include="..\Azuria\User\ControlPanel\HistoryEnumerable.cs">
       <Link>User\ControlPanel\HistoryEnumerable.cs</Link>
@@ -495,9 +510,6 @@
     </Compile>
     <Compile Include="..\Azuria\Utilities\Properties\SetableInitialisableProperty.cs">
       <Link>Utilities\Properties\SetableInitialisableProperty.cs</Link>
-    </Compile>
-    <Compile Include="..\Azuria\Utilities\SearchUtility.cs">
-      <Link>Utilities\SearchUtility.cs</Link>
     </Compile>
     <Compile Include="..\Azuria\Utilities\Utility.cs">
       <Link>Utilities\Utility.cs</Link>

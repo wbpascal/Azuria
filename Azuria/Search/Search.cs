@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
-using JetBrains.Annotations;
+using Azuria.AnimeManga;
+using Azuria.Search.Input;
 
 namespace Azuria.Search
 {
@@ -8,15 +9,16 @@ namespace Azuria.Search
     ///     Represents a class that helps to fetch following search results after the inital search.
     /// </summary>
     /// <typeparam name="T">The type of the search results.</typeparam>
-    public class SearchResult<T> : IEnumerable<T> where T : ISearchableObject
+    public class Search<T> : IEnumerable<T> where T : IAnimeMangaObject
     {
-        private readonly string _link;
-        private readonly Senpai _senpai;
+        private readonly SearchInput _input;
 
-        internal SearchResult(string link, [NotNull] Senpai senpai)
+        /// <summary>
+        /// </summary>
+        /// <param name="input"></param>
+        public Search(SearchInput input)
         {
-            this._link = link;
-            this._senpai = senpai;
+            this._input = input;
         }
 
         #region Inherited
@@ -32,7 +34,7 @@ namespace Azuria.Search
         /// <returns>An enumerator that can be used to iterate through the collection.</returns>
         public IEnumerator<T> GetEnumerator()
         {
-            return new SearchResultEnumerator<T>(this._link, this._senpai);
+            return new SearchResultEnumerator<T>(this._input);
         }
 
         #endregion

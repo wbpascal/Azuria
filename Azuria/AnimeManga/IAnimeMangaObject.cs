@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Azuria.AnimeManga.Properties;
-using Azuria.Search;
 using Azuria.User.ControlPanel;
 using Azuria.Utilities.ErrorHandling;
 using Azuria.Utilities.Properties;
@@ -13,7 +12,7 @@ namespace Azuria.AnimeManga
     /// <summary>
     ///     Represents an <see cref="Anime" /> or <see cref="Manga" />.
     /// </summary>
-    public interface IAnimeMangaObject : ISearchableObject
+    public interface IAnimeMangaObject
     {
         #region Properties
 

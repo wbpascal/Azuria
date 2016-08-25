@@ -3,7 +3,7 @@ using System.Linq;
 using Azuria.AnimeManga.Properties;
 using Newtonsoft.Json;
 
-namespace Azuria.Api.v1.Converters.Info
+namespace Azuria.Api.v1.Converters
 {
     internal class GenreConverter : JsonConverter
     {
@@ -18,7 +18,7 @@ namespace Azuria.Api.v1.Converters.Info
             JsonSerializer serializer)
         {
             string lValue = reader.Value.ToString();
-            if (string.IsNullOrEmpty(lValue?.Trim())) return new GenreType[0];
+            if (string.IsNullOrEmpty(lValue.Trim())) return new GenreType[0];
             return (from genreString in lValue.Split(' ')
                 where GenreHelper.StringToGenreDictionary.ContainsKey(genreString)
                 select GenreHelper.StringToGenreDictionary[genreString]).ToList();

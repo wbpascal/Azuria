@@ -2,9 +2,12 @@
 using System.Collections.Generic;
 using Azuria.Api.v1.DataModels;
 using Azuria.Api.v1.DataModels.Info;
+using Azuria.Api.v1.DataModels.Search;
 using Azuria.Api.v1.DataModels.Ucp;
 using Azuria.Api.v1.DataModels.User;
 using Azuria.Api.v1.Enums;
+using Azuria.Search;
+using Azuria.Search.Input;
 using ToptenDataModel = Azuria.Api.v1.DataModels.Ucp.ToptenDataModel;
 
 namespace Azuria.Api.v1
@@ -70,6 +73,14 @@ namespace Azuria.Api.v1
         internal static ApiRequest<SeasonDataModel[]> InfoGetSeason(int entryId)
         {
             return new ApiRequest<SeasonDataModel[]>(new Uri($"{ApiAddress}/info/season?id={entryId}"));
+        }
+
+        internal static ApiRequest<SearchDataModel[]> SearchEntrySearch(SearchInput input, int limit, int page)
+        {
+            return new ApiRequest<SearchDataModel[]>(new Uri($"{ApiAddress}/list/entrysearch?limit={limit}&p={page}"))
+            {
+                PostArguments = SearchQueryBuilder.Build(input)
+            };
         }
 
         internal static ApiRequest<BookmarkDataModel[]> UcpDeleteFavourite(int favouriteId, Senpai senpai)

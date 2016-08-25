@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Azuria.AnimeManga.Properties;
 using Azuria.Api.v1.DataModels;
 using Azuria.Api.v1.DataModels.Info;
+using Azuria.Api.v1.DataModels.Search;
 using Azuria.Api.v1.DataModels.Ucp;
 using Azuria.Api.v1.Enums;
 using Azuria.Exceptions;
@@ -81,13 +82,11 @@ namespace Azuria.AnimeManga
             this.Name.SetInitialisedObject(name);
         }
 
-        internal Manga([NotNull] string name, int id,
-            [NotNull] IEnumerable<GenreType> genreList, AnimeMangaStatus status,
-            MangaMedium medium) : this(name, id)
+        internal Manga(IEntryInfoDataModel dataModel) : this(dataModel.EntryName, dataModel.EntryId)
         {
-            this.Genre.SetInitialisedObject(genreList);
-            this.MangaMedium.SetInitialisedObject(medium);
-            this.Status.SetInitialisedObject(status);
+            if (dataModel.EntryType != AnimeMangaEntryType.Manga)
+                throw new ArgumentException(nameof(dataModel.EntryType));
+            this.MangaMedium.SetInitialisedObject((MangaMedium) dataModel.EntryMedium);
         }
 
         internal Manga(BookmarkDataModel dataModel) : this((IEntryInfoDataModel) dataModel)
@@ -113,11 +112,13 @@ namespace Azuria.AnimeManga
             this.AvailableLanguages.SetInitialisedObject(dataModel.AvailableLanguages.Cast<Language>());
         }
 
-        internal Manga(IEntryInfoDataModel dataModel) : this(dataModel.EntryName, dataModel.EntryId)
+        internal Manga(SearchDataModel dataModel) : this((IEntryInfoDataModel) dataModel)
         {
-            if (dataModel.EntryType != AnimeMangaEntryType.Manga)
-                throw new ArgumentException(nameof(dataModel.EntryType));
-            this.MangaMedium.SetInitialisedObject((MangaMedium) dataModel.EntryMedium);
+            this.AvailableLanguages.SetInitialisedObject(dataModel.AvailableLanguages.Cast<Language>());
+            this.ContentCount.SetInitialisedObject(dataModel.ContentCount);
+            this.Genre.SetInitialisedObject(dataModel.Genre);
+            this.Rating.SetInitialisedObject(dataModel.Rating);
+            this.Status.SetInitialisedObject(dataModel.Status);
         }
 
         #region Properties

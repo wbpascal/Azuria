@@ -7,7 +7,6 @@ using Azuria.Api.v1;
 using Azuria.Api.v1.DataModels.User;
 using Azuria.Api.v1.Enums;
 using Azuria.Exceptions;
-using Azuria.Search;
 using Azuria.User.Comment;
 using Azuria.Utilities.ErrorHandling;
 using Azuria.Utilities.Extensions;
@@ -21,7 +20,7 @@ namespace Azuria.User
     /// <summary>
     ///     Represents a user of proxer.
     /// </summary>
-    public class User : ISearchableObject
+    public class User
     {
         /// <summary>
         ///     Represents the system as a user.

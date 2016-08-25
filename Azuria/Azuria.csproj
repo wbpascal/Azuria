@@ -80,11 +80,18 @@
     <Compile Include="AnimeManga\Properties\AnimeMangaSeasonInfo.cs" />
     <Compile Include="Api\v1\Converters\Ucp\CustomDateTimeConverter.cs" />
     <Compile Include="Api\v1\DataModels\IEntryInfoDataModel.cs" />
+    <Compile Include="Api\v1\DataModels\Search\SearchDataModel.cs" />
     <Compile Include="Api\v1\DataModels\Ucp\BookmarkDataModel.cs" />
     <Compile Include="Api\v1\DataModels\Ucp\HistoryDataModel.cs" />
     <Compile Include="Api\v1\DataModels\Ucp\ToptenDataModel.cs" />
     <Compile Include="Api\v1\DataModels\Ucp\VoteDataModel.cs" />
     <Compile Include="Api\v1\DataModels\User\ListDataModel.cs" />
+    <Compile Include="Search\Input\AnimeMangaSearchType.cs" />
+    <Compile Include="Search\Input\LengthLimit.cs" />
+    <Compile Include="Search\Input\SearchInput.cs" />
+    <Compile Include="Search\Input\SearchLanguage.cs" />
+    <Compile Include="Search\Input\SearchResultSort.cs" />
+    <Compile Include="Search\SearchQueryBuilder.cs" />
     <Compile Include="User\ControlPanel\CommentVote.cs" />
     <Compile Include="User\ControlPanel\ToptenObject.cs" />
     <Compile Include="Utilities\PageEnumerator.cs" />
@@ -103,7 +110,7 @@
     <Compile Include="Api\v1\ApiRequest.cs" />
     <Compile Include="Api\v1\ApiRequestBuilder.cs" />
     <Compile Include="Api\v1\Converters\LanguageConverter.cs" />
-    <Compile Include="Api\v1\Converters\Info\LanguageKommaCollectionConverter.cs" />
+    <Compile Include="Api\v1\Converters\LanguageCommaCollectionConverter.cs" />
     <Compile Include="Api\v1\Converters\Info\StreamPartnerConverter.cs" />
     <Compile Include="Api\v1\Converters\IntToBoolConverter.cs" />
     <Compile Include="Api\v1\Converters\SubRatingsConverter.cs" />
@@ -114,7 +121,7 @@
     <Compile Include="Api\v1\Converters\MediumConverter.cs" />
     <Compile Include="Api\v1\Converters\CategoryConverter.cs" />
     <Compile Include="Api\v1\Converters\Info\FskConverter.cs" />
-    <Compile Include="Api\v1\Converters\Info\GenreConverter.cs" />
+    <Compile Include="Api\v1\Converters\GenreConverter.cs" />
     <Compile Include="Api\v1\Converters\Info\GroupLanguageConverter.cs" />
     <Compile Include="Api\v1\Converters\Info\IsLicensedConverter.cs" />
     <Compile Include="Api\v1\Converters\Info\NameTypeConverter.cs" />
@@ -173,9 +180,7 @@
     <Compile Include="AnimeManga\Properties\Group.cs" />
     <Compile Include="AnimeManga\Properties\Industry.cs" />
     <Compile Include="AnimeManga\Properties\Language.cs" />
-    <Compile Include="Search\ISearchableObject.cs" />
-    <Compile Include="Search\SearchHelper.cs" />
-    <Compile Include="Search\SearchResult.cs" />
+    <Compile Include="Search\Search.cs" />
     <Compile Include="User\AnimeMangaProgressState.cs" />
     <Compile Include="User\Comment\RatingCategory.cs" />
     <Compile Include="User\ControlPanel\BookmarkObject.cs" />
@@ -235,7 +240,6 @@
     <Compile Include="Utilities\Web\HttpUtility.cs" />
     <Compile Include="Utilities\ErrorHandling\ProxerResult.cs" />
     <Compile Include="Utilities\Properties\AsyncProperty.cs" />
-    <Compile Include="Utilities\SearchUtility.cs" />
     <Compile Include="Utilities\Utility.cs" />
   </ItemGroup>
   <ItemGroup>
