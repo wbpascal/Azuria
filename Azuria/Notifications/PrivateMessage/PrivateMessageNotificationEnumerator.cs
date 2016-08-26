@@ -3,11 +3,11 @@ using System.Collections;
 using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
+using Azuria.Api;
 using Azuria.Community.Conference;
 using Azuria.Exceptions;
 using Azuria.Utilities.ErrorHandling;
 using Azuria.Utilities.Extensions;
-using Azuria.Utilities.Web;
 using HtmlAgilityPack;
 using JetBrains.Annotations;
 
@@ -81,7 +81,7 @@ namespace Azuria.Notifications.PrivateMessage
             HtmlDocument lDocument = new HtmlDocument();
             ProxerResult<string> lResult =
                 await
-                    HttpUtility.GetResponseErrorHandling(
+                    ApiInfo.HttpClient.GetRequest(
                         new Uri("https://proxer.me/messages?format=raw&s=notification"),
                         this._senpai);
 

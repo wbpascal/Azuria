@@ -3,9 +3,9 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Azuria.Api;
 using Azuria.Exceptions;
 using Azuria.Utilities.ErrorHandling;
-using Azuria.Utilities.Web;
 using JetBrains.Annotations;
 using Newtonsoft.Json;
 
@@ -84,7 +84,7 @@ namespace Azuria.Community.Conference
         {
             ProxerResult<string> lResult =
                 await
-                    HttpUtility.GetResponseErrorHandling(
+                    ApiInfo.HttpClient.GetRequest(
                         new Uri(
                             $"http://proxer.me/messages?format=json&json=messages&id={this._conference.Id}&p={this._nextPage}"),
                         this._senpai);

@@ -3,12 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Timers;
+using Azuria.Api;
 using Azuria.Exceptions;
 using Azuria.User;
 using Azuria.Utilities.ErrorHandling;
 using Azuria.Utilities.Extensions;
 using Azuria.Utilities.Properties;
-using Azuria.Utilities.Web;
 using HtmlAgilityPack;
 using JetBrains.Annotations;
 using Newtonsoft.Json;
@@ -144,7 +144,7 @@ namespace Azuria.Community.Conference
             };
             ProxerResult<string> lResult =
                 await
-                    HttpUtility.PostResponseErrorHandling(
+                    ApiInfo.HttpClient.PostRequest(
                         new Uri("https://proxer.me/messages?id=" + this.Id + "&format=json&json=answer"),
                         lPostArgs,
                         this._senpai);
@@ -200,7 +200,7 @@ namespace Azuria.Community.Conference
         {
             ProxerResult<string> lResult =
                 await
-                    HttpUtility.GetResponseErrorHandling(
+                    ApiInfo.HttpClient.GetRequest(
                         new Uri("http://proxer.me/messages?format=json&json=messages&id=" + this.Id),
                         this._senpai);
 
@@ -245,7 +245,7 @@ namespace Azuria.Community.Conference
             };
             ProxerResult<string> lResult =
                 await
-                    HttpUtility.PostResponseErrorHandling(
+                    ApiInfo.HttpClient.PostRequest(
                         new Uri("https://proxer.me/messages?id=" + this.Id + "&format=json&json=answer"),
                         lPostArgs,
                         this._senpai);
@@ -287,7 +287,7 @@ namespace Azuria.Community.Conference
             HtmlDocument lDocument = new HtmlDocument();
             ProxerResult<string> lResult =
                 await
-                    HttpUtility.GetResponseErrorHandling(
+                    ApiInfo.HttpClient.GetRequest(
                         new Uri("https://proxer.me/messages?id=" + this.Id + "&format=raw"),
                         this._senpai);
 
@@ -332,7 +332,7 @@ namespace Azuria.Community.Conference
 
                 ProxerResult<string> lResult =
                     await
-                        HttpUtility.PostResponseErrorHandling(
+                        ApiInfo.HttpClient.PostRequest(
                             new Uri("https://proxer.me/messages?id=" + this.Id + "&format=json&json=answer"),
                             lPostArgs,
                             this._senpai);
@@ -406,7 +406,7 @@ namespace Azuria.Community.Conference
             };
             ProxerResult<string> lResult =
                 await
-                    HttpUtility.PostResponseErrorHandling(
+                    ApiInfo.HttpClient.PostRequest(
                         new Uri("https://proxer.me/messages?id=" + id + "&format=json&json=answer"),
                         lPostArgs,
                         senpai);
@@ -449,7 +449,7 @@ namespace Azuria.Community.Conference
             };
             ProxerResult<string> lResult =
                 await
-                    HttpUtility.PostResponseErrorHandling(
+                    ApiInfo.HttpClient.PostRequest(
                         new Uri("https://proxer.me/messages?id=" + this.Id + "&format=json&json=answer"),
                         lPostArgs,
                         this._senpai);
@@ -487,7 +487,7 @@ namespace Azuria.Community.Conference
             string lAction = isBlocked ? "block" : "unblock";
             ProxerResult<string> lResult =
                 await
-                    HttpUtility.GetResponseErrorHandling(
+                    ApiInfo.HttpClient.GetRequest(
                         new Uri($"http://proxer.me/messages?format=json&json={lAction}&id={this.Id}"),
                         this._senpai);
 
@@ -506,7 +506,7 @@ namespace Azuria.Community.Conference
             string lAction = isFavourite ? "favour" : "unfavour";
             ProxerResult<string> lResult =
                 await
-                    HttpUtility.GetResponseErrorHandling(
+                    ApiInfo.HttpClient.GetRequest(
                         new Uri($"http://proxer.me/messages?format=json&json={lAction}&id={this.Id}"),
                         this._senpai);
 
@@ -529,7 +529,7 @@ namespace Azuria.Community.Conference
         {
             ProxerResult<string> lResult =
                 await
-                    HttpUtility.GetResponseErrorHandling(
+                    ApiInfo.HttpClient.GetRequest(
                         new Uri("http://proxer.me/messages?format=json&json=setUnread&id=" + this.Id),
                         this._senpai);
 

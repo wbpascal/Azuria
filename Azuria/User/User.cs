@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Azuria.AnimeManga;
+using Azuria.Api;
 using Azuria.Api.v1;
 using Azuria.Api.v1.DataModels.User;
 using Azuria.Api.v1.Enums;
@@ -11,7 +12,6 @@ using Azuria.User.Comment;
 using Azuria.Utilities.ErrorHandling;
 using Azuria.Utilities.Extensions;
 using Azuria.Utilities.Properties;
-using Azuria.Utilities.Web;
 using JetBrains.Annotations;
 using Newtonsoft.Json;
 
@@ -206,9 +206,8 @@ namespace Azuria.User
             };
             ProxerResult<string> lResult =
                 await
-                    HttpUtility.PostResponseErrorHandling(new Uri("https://proxer.me/user/" + this.Id + "?format=json"),
-                        lPostArgs,
-                        senpai);
+                    ApiInfo.HttpClient.PostRequest(new Uri("https://proxer.me/user/" + this.Id + "?format=json"),
+                        lPostArgs, senpai);
 
             if (!lResult.Success)
                 return new ProxerResult(lResult.Exceptions);

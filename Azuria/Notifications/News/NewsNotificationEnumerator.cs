@@ -3,9 +3,9 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Azuria.Api;
 using Azuria.Exceptions;
 using Azuria.Utilities.ErrorHandling;
-using Azuria.Utilities.Web;
 using JetBrains.Annotations;
 using Newtonsoft.Json;
 
@@ -82,7 +82,7 @@ namespace Azuria.Notifications.News
         {
             ProxerResult<string> lResult =
                 await
-                    HttpUtility.GetResponseErrorHandling(
+                    ApiInfo.HttpClient.GetRequest(
                         new Uri("https://proxer.me/notifications?format=json&s=news&p=" + this._nextPageToLoad),
                         this._senpai);
 

@@ -7,7 +7,6 @@ using Azuria.Exceptions;
 using Azuria.Security;
 using Azuria.Utilities.ErrorHandling;
 using Azuria.Utilities.Extensions;
-using Azuria.Utilities.Web;
 using Newtonsoft.Json;
 
 namespace Azuria.Api.v1
@@ -29,7 +28,7 @@ namespace Azuria.Api.v1
             loginToken = loginToken ?? new char[0];
             ProxerResult<string> lResult =
                 await
-                    HttpUtility.PostResponseErrorHandling(request.Address, request.PostArguments,
+                    ApiInfo.HttpClient.PostRequest(request.Address, request.PostArguments,
                         new Func<string, ProxerResult>[0], checkLogin: request.CheckLogin, senpai: request.Senpai,
                         header:
                             new Dictionary<string, string> {{"proxer-api-key", new string(_apiKey.ReadValue())}}
@@ -50,7 +49,7 @@ namespace Azuria.Api.v1
 
                 if (recursion >= 2)
                 {
-                    request.Senpai.InvalidateCookies();
+                    request.Senpai?.InvalidateCookies();
                     return new ProxerResult<T>(new[] {new NotLoggedInException(request.Senpai)});
                 }
                 if (

@@ -283,6 +283,9 @@
     <Compile Include="..\Azuria\Exceptions\ApiKeyInsufficientException.cs">
       <Link>Exceptions\ApiKeyInsufficientException.cs</Link>
     </Compile>
+    <Compile Include="..\Azuria\Exceptions\ApiNotInitialisedException.cs">
+      <Link>Exceptions\ApiNotInitialisedException.cs</Link>
+    </Compile>
     <Compile Include="..\Azuria\Exceptions\CaptchaException.cs">
       <Link>Exceptions\CaptchaException.cs</Link>
     </Compile>
@@ -514,15 +517,14 @@
     <Compile Include="..\Azuria\Utilities\Utility.cs">
       <Link>Utilities\Utility.cs</Link>
     </Compile>
-    <Compile Include="..\Azuria\Utilities\Web\CloudflareSolver.cs">
-      <Link>Utilities\Web\CloudflareSolver.cs</Link>
+    <Compile Include="..\Azuria\Web\HttpClient.cs">
+      <Link>Web\HttpClient.cs</Link>
     </Compile>
-    <Compile Include="..\Azuria\Utilities\Web\HttpUtility.cs">
-      <Link>Utilities\Web\HttpUtility.cs</Link>
+    <Compile Include="..\Azuria\Web\IHttpClient.cs">
+      <Link>Web\IHttpClient.cs</Link>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Security\SecureStringContainer.cs" />
-    <Compile Include="Utilities\Web\JsEval.cs" />
     <Compile Include="Utilities\Timer.cs" />
   </ItemGroup>
   <ItemGroup>
