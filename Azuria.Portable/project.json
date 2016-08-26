@@ -1,9 +1,9 @@
 ﻿{
   "supports": {},
   "dependencies": {
-    "HtmlAgilityPack": "1.4.9.5",
-    "JetBrains.Annotations": "10.1.5",
-    "Newtonsoft.Json": "9.0.1"
+    "HtmlAgilityPack": "1.4.9.4",
+    "JetBrains.Annotations": "10.1.4",
+    "Newtonsoft.Json": "8.0.3"
   },
   "frameworks": {
     ".NETPortable,Version=v4.5,Profile=Profile259": {}
