@@ -21,24 +21,6 @@
           "lib/portable-net4+sl5+netcore45+wpa81+wp8+MonoAndroid1+MonoTouch1/JetBrains.Annotations.PCL328.dll": {}
         }
       },
-      "Jint/2.9.1": {
-        "type": "package",
-        "compile": {
-          "lib/portable-net40+sl50+win+WindowsPhoneApp81+wp80/Jint.dll": {}
-        },
-        "runtime": {
-          "lib/portable-net40+sl50+win+WindowsPhoneApp81+wp80/Jint.dll": {}
-        }
-      },
-      "modernhttpclient/2.4.2": {
-        "type": "package",
-        "compile": {
-          "lib/Portable-Net45+WinRT45+WP8+WPA81/ModernHttpClient.dll": {}
-        },
-        "runtime": {
-          "lib/Portable-Net45+WinRT45+WP8+WPA81/ModernHttpClient.dll": {}
-        }
-      },
       "Newtonsoft.Json/9.0.1": {
         "type": "package",
         "compile": {
@@ -100,35 +82,6 @@
         "lib/portable-net4+sl5+netcore45+wpa81+wp8+MonoAndroid1+MonoTouch1/JetBrains.Annotations.PCL328.xml"
       ]
     },
-    "Jint/2.9.1": {
-      "sha512": "Cm9z/ad4sJeU3Rmp+FWA+Yzb83zLYcy4xmMYb8ofK6UNu2UbS0QKZjTOO+pH7aeuXOz6+CwDjlYZ38zksE7czQ==",
-      "type": "package",
-      "path": "Jint/2.9.1",
-      "files": [
-        "Jint.2.9.1.nupkg.sha512",
-        "Jint.nuspec",
-        "lib/portable-net40+sl50+win+WindowsPhoneApp81+wp80/Jint.dll"
-      ]
-    },
-    "modernhttpclient/2.4.2": {
-      "sha512": "Srkrjz2wBCh7af+AGqpPkJ3FSSFSruzg9mHVwwXiklf9gx2L1Ss2M+p2Mf4Fw17AOe6yPuJwdu4AAoslc6zP+w==",
-      "type": "package",
-      "files": [
-        "lib/ModernHttpClient-2.4.1.zip",
-        "lib/MonoAndroid/ModernHttpClient.dll",
-        "lib/MonoAndroid/ModernHttpClient.dll.mdb",
-        "lib/MonoAndroid/OkHttp.dll",
-        "lib/MonoTouch/ModernHttpClient.dll",
-        "lib/MonoTouch/ModernHttpClient.dll.mdb",
-        "lib/Portable-Net45+WinRT45+WP8+WPA81/ModernHttpClient.dll",
-        "lib/Portable-Net45+WinRT45+WP8+WPA81/ModernHttpClient.dll.mdb",
-        "lib/Xamarin.iOS10/ModernHttpClient.dll",
-        "lib/Xamarin.iOS10/ModernHttpClient.dll.mdb",
-        "lib/modernhttpclient.2.4.1.nupkg",
-        "modernhttpclient.2.4.2.nupkg.sha512",
-        "modernhttpclient.nuspec"
-      ]
-    },
     "Newtonsoft.Json/9.0.1": {
       "sha512": "U82mHQSKaIk+lpSVCbWYKNavmNH1i5xrExDEquU1i6I5pV6UMOqRnJRSlKO3cMPfcpp0RgDY+8jUXHdQ4IfXvw==",
       "type": "package",
@@ -157,9 +110,7 @@
     "": [
       "HtmlAgilityPack >= 1.4.9.5",
       "JetBrains.Annotations >= 10.1.5",
-      "Jint >= 2.9.1",
-      "Newtonsoft.Json >= 9.0.1",
-      "modernhttpclient >= 2.4.2"
+      "Newtonsoft.Json >= 9.0.1"
     ],
     ".NETPortable,Version=v4.5,Profile=Profile259": []
   },

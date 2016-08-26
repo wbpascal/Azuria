@@ -5,10 +5,10 @@ using System.Linq;
 using System.Threading.Tasks;
 using Azuria.AnimeManga;
 using Azuria.AnimeManga.Properties;
+using Azuria.Api;
 using Azuria.Exceptions;
 using Azuria.Utilities.ErrorHandling;
 using Azuria.Utilities.Extensions;
-using Azuria.Utilities.Web;
 using HtmlAgilityPack;
 using JetBrains.Annotations;
 
@@ -87,7 +87,7 @@ namespace Azuria.Notifications.AnimeManga
             HtmlDocument lDocument = new HtmlDocument();
             ProxerResult<string> lResult =
                 await
-                    HttpUtility.GetResponseErrorHandling(
+                    ApiInfo.HttpClient.GetRequest(
                         new Uri("https://proxer.me/components/com_proxer/misc/notifications_misc.php"),
                         this._senpai);
 

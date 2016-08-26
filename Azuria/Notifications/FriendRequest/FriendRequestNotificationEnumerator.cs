@@ -4,9 +4,9 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
+using Azuria.Api;
 using Azuria.Exceptions;
 using Azuria.Utilities.ErrorHandling;
-using Azuria.Utilities.Web;
 using HtmlAgilityPack;
 using JetBrains.Annotations;
 
@@ -80,7 +80,7 @@ namespace Azuria.Notifications.FriendRequest
             HtmlDocument lDocument = new HtmlDocument();
             ProxerResult<string> lResult =
                 await
-                    HttpUtility.GetResponseErrorHandling(
+                    ApiInfo.HttpClient.GetRequest(
                         new Uri("https://proxer.me/user/my/connections?format=raw"),
                         this._senpai);
 

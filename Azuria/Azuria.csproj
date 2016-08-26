@@ -52,17 +52,16 @@
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="JetBrains.Annotations, Version=10.1.4.0, Culture=neutral, PublicKeyToken=1010a0d8d6380325, processorArchitecture=MSIL">
-      <HintPath>..\packages\JetBrains.Annotations.10.1.4\lib\net20\JetBrains.Annotations.dll</HintPath>
+    <Reference Include="HtmlAgilityPack, Version=1.4.9.5, Culture=neutral, PublicKeyToken=bd319b19eaf3b43a, processorArchitecture=MSIL">
+      <HintPath>..\..\Azuria.TestConsole\packages\HtmlAgilityPack.1.4.9.5\lib\Net45\HtmlAgilityPack.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Jint, Version=2.9.1.0, Culture=neutral, PublicKeyToken=2e92ba9c8d81157f, processorArchitecture=MSIL">
-      <HintPath>..\packages\Jint.2.9.1\lib\portable-net40+sl50+win+WindowsPhoneApp81+wp80\Jint.dll</HintPath>
+    <Reference Include="JetBrains.Annotations, Version=10.1.5.0, Culture=neutral, PublicKeyToken=1010a0d8d6380325, processorArchitecture=MSIL">
+      <HintPath>..\..\Azuria.TestConsole\packages\JetBrains.Annotations.10.1.5\lib\net\JetBrains.Annotations.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Microsoft.JScript" />
-    <Reference Include="Newtonsoft.Json, Version=8.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\packages\Newtonsoft.Json.8.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
+    <Reference Include="Newtonsoft.Json, Version=9.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\..\Azuria.TestConsole\packages\Newtonsoft.Json.9.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="System" />
@@ -70,9 +69,6 @@
     <Reference Include="System.Net.Http" />
     <Reference Include="System.Xml" />
     <Reference Include="WindowsBase" />
-    <Reference Include="HtmlAgilityPack, Version=1.4.9.0, Culture=neutral, PublicKeyToken=bd319b19eaf3b43a">
-      <HintPath>..\packages\HtmlAgilityPack.1.4.9\lib\Net45\HtmlAgilityPack.dll</HintPath>
-    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AnimeManga\Properties\AnimeMangaRating.cs" />
@@ -86,6 +82,7 @@
     <Compile Include="Api\v1\DataModels\Ucp\ToptenDataModel.cs" />
     <Compile Include="Api\v1\DataModels\Ucp\VoteDataModel.cs" />
     <Compile Include="Api\v1\DataModels\User\ListDataModel.cs" />
+    <Compile Include="Exceptions\ApiNotInitialisedException.cs" />
     <Compile Include="Search\Input\AnimeMangaSearchType.cs" />
     <Compile Include="Search\Input\LengthLimit.cs" />
     <Compile Include="Search\Input\SearchInput.cs" />
@@ -95,7 +92,7 @@
     <Compile Include="User\ControlPanel\CommentVote.cs" />
     <Compile Include="User\ControlPanel\ToptenObject.cs" />
     <Compile Include="Utilities\PageEnumerator.cs" />
-    <Compile Include="Utilities\Web\JsEval.cs" />
+    <Compile Include="Web\IHttpClient.cs" />
     <Compile Include="User\Comment\CommentEnumerable.cs" />
     <Compile Include="User\Comment\CommentEnumerator.cs" />
     <Compile Include="AnimeManga\Properties\Country.cs" />
@@ -236,8 +233,7 @@
     <Compile Include="Api\v1\ErrorCode.cs" />
     <Compile Include="Api\v1\DataModels\IDataModel.cs" />
     <Compile Include="Api\v1\ProxerApiResponse.cs" />
-    <Compile Include="Utilities\Web\CloudflareSolver.cs" />
-    <Compile Include="Utilities\Web\HttpUtility.cs" />
+    <Compile Include="Web\HttpClient.cs" />
     <Compile Include="Utilities\ErrorHandling\ProxerResult.cs" />
     <Compile Include="Utilities\Properties\AsyncProperty.cs" />
     <Compile Include="Utilities\Utility.cs" />

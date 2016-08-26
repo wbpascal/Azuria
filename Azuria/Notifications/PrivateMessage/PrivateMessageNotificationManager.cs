@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Timers;
+using Azuria.Api;
 using Azuria.Exceptions;
 using Azuria.Utilities.ErrorHandling;
-using Azuria.Utilities.Web;
 
 namespace Azuria.Notifications.PrivateMessage
 {
@@ -64,7 +64,7 @@ namespace Azuria.Notifications.PrivateMessage
         {
             ProxerResult<string> lResult =
                 await
-                    HttpUtility.GetResponseErrorHandling(new Uri("https://proxer.me/notifications?format=raw&s=count"),
+                    ApiInfo.HttpClient.GetRequest(new Uri("https://proxer.me/notifications?format=raw&s=count"),
                         senpai);
 
             if (!lResult.Success || lResult.Result == null)

@@ -4,9 +4,9 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Timers;
 using Azuria.AnimeManga;
+using Azuria.Api;
 using Azuria.Exceptions;
 using Azuria.Utilities.ErrorHandling;
-using Azuria.Utilities.Web;
 
 namespace Azuria.Notifications.AnimeManga
 {
@@ -96,7 +96,7 @@ namespace Azuria.Notifications.AnimeManga
 
             ProxerResult<string> lResult =
                 await
-                    HttpUtility.PostResponseErrorHandling(
+                    ApiInfo.HttpClient.PostRequest(
                         new Uri("https://proxer.me/notifications?format=json&s=deleteNotification"), lPostArgs, senpai);
 
             if (!lResult.Success || lResult.Result == null)
@@ -120,7 +120,7 @@ namespace Azuria.Notifications.AnimeManga
         {
             ProxerResult<string> lResult =
                 await
-                    HttpUtility.GetResponseErrorHandling(new Uri("https://proxer.me/notifications?format=raw&s=count"),
+                    ApiInfo.HttpClient.GetRequest(new Uri("https://proxer.me/notifications?format=raw&s=count"),
                         senpai);
 
             if (!lResult.Success || lResult.Result == null)

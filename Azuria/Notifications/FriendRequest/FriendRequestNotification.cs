@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Azuria.Api;
 using Azuria.Utilities.ErrorHandling;
-using Azuria.Utilities.Web;
 using JetBrains.Annotations;
 
 namespace Azuria.Notifications.FriendRequest
@@ -66,7 +66,7 @@ namespace Azuria.Notifications.FriendRequest
                 s => !s.StartsWith("{\"error\":0") ? new ProxerResult(new Exception[0]) : new ProxerResult();
 
             ProxerResult<string> lResult = await
-                HttpUtility.PostResponseErrorHandling(
+                ApiInfo.HttpClient.PostRequest(
                     new Uri("https://proxer.me/user/my?format=json&cid=" + this.User.Id),
                     lPostArgs, new[] {lCheckFunc}, this._senpai);
 
@@ -91,7 +91,7 @@ namespace Azuria.Notifications.FriendRequest
                 s => !s.StartsWith("{\"error\":0") ? new ProxerResult(new Exception[0]) : new ProxerResult();
 
             ProxerResult<string> lResult = await
-                HttpUtility.PostResponseErrorHandling(
+                ApiInfo.HttpClient.PostRequest(
                     new Uri("https://proxer.me/user/my?format=json&cid=" + this.User.Id),
                     lPostArgs, new[] {lCheckFunc}, this._senpai);
 
