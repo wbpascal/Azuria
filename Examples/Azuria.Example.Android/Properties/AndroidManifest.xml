@@ -1,6 +1,0 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android" package="Azuria.Example.Android.Azuria.Example.Android" android:versionCode="1" android:versionName="1.0" android:installLocation="auto">
-	<uses-sdk android:minSdkVersion="16" />
-	<uses-permission android:name="android.permission.INTERNET" />
-	<application android:label="Azuria.Example.Android" android:icon="@drawable/Icon"></application>
-</manifest>
