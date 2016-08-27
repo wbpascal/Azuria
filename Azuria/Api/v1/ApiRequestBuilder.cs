@@ -194,6 +194,11 @@ namespace Azuria.Api.v1
                 };
         }
 
+        internal static ApiRequest<UserInfoDataModel> UserGetInfo(string username)
+        {
+            return new ApiRequest<UserInfoDataModel>(new Uri($"{ApiAddress}/user/userinfo?username={username}"));
+        }
+
         internal static ApiRequest<CommentDataModel[]> UserGetLatestComments(int userId, int page, int limit, string kat,
             int length)
         {

@@ -145,6 +145,18 @@ namespace Azuria.User
         #region
 
         /// <summary>
+        /// </summary>
+        /// <param name="username"></param>
+        /// <returns></returns>
+        public static async Task<ProxerResult<User>> FromUsername(string username)
+        {
+            ProxerResult<ProxerApiResponse<UserInfoDataModel>> lResult =
+                await RequestHandler.ApiRequest(ApiRequestBuilder.UserGetInfo(username));
+            if (!lResult.Success || lResult.Result == null) return new ProxerResult<User>(lResult.Exceptions);
+            return new ProxerResult<User>(new User(lResult.Result.Data));
+        }
+
+        /// <summary>
         ///     Initialises the object.
         /// </summary>
         [ItemNotNull]
