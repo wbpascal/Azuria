@@ -1,9 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using System.Timers;
 using Azuria.Api;
+using Azuria.Api.v1;
+using Azuria.Api.v1.DataModels.Messenger;
 using Azuria.Exceptions;
 using Azuria.User;
 using Azuria.Utilities.ErrorHandling;
@@ -13,7 +16,7 @@ using HtmlAgilityPack;
 using JetBrains.Annotations;
 using Newtonsoft.Json;
 
-namespace Azuria.Community.Conference
+namespace Azuria.Community
 {
     /// <summary>
     ///     Represents a messaging Conference.
@@ -364,17 +367,6 @@ namespace Azuria.Community.Conference
             return new ProxerResult();
         }
 
-
-        /// <summary>
-        ///     Initialises every property of the current class.
-        /// </summary>
-        [ItemNotNull]
-        [Obsolete("Bitte benutze die Methoden der jeweiligen Eigenschaften, um sie zu initalisieren!")]
-        public async Task<ProxerResult> Init()
-        {
-            return await this.InitAllInitalisableProperties();
-        }
-
         /// <summary>
         ///     Occurs when new messages were recieved or once everytime Active is set to true.
         /// </summary>
@@ -541,6 +533,41 @@ namespace Azuria.Community.Conference
             return lResponse?.StartsWith("{\"error\":0") ?? false
                 ? new ProxerResult()
                 : new ProxerResult {Success = false};
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <seealso cref="Init"/>
+        public static int MaxCharactersPerMessage { get; private set; }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <seealso cref="Init"/>
+        public static int MaxCharactersTopic { get; private set; }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <seealso cref="Init"/>
+        public static int MaxUserPerConference { get; private set; }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        public static async Task<ProxerResult> Init()
+        {
+            ProxerResult<ProxerApiResponse<ConstantsDataModel>> lResult =
+                await RequestHandler.ApiRequest(ApiRequestBuilder.MessengerGetConstants());
+            if (!lResult.Success || lResult.Result == null) return new ProxerResult(lResult.Exceptions);
+            ConstantsDataModel lData = lResult.Result.Data;
+
+            MaxCharactersPerMessage = lData.MaxCharactersPerMessage;
+            MaxUserPerConference = lData.MaxUsersPerConference;
+            MaxCharactersTopic = lData.MaxCharactersTopic;
+            return new ProxerResult();
         }
 
         #endregion

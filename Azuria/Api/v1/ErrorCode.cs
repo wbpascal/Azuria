@@ -122,14 +122,50 @@
 
         /// <summary>
         /// </summary>
-        MediaChapterNotFound = 3019,
+        MangaChapterNotFound = 3019,
 
         /// <summary>
         /// </summary>
-        MediaNoStreamsAvailable = 3020,
+        AnimeNoStreamsAvailable = 3020,
 
         /// <summary>
         /// </summary>
-        MediaStreamNotFound = 3021
+        AnimeStreamNotFound = 3021,
+
+        /// <summary>
+        /// </summary>
+        UcpEpisodeNotFound = 3022,
+
+        /// <summary>
+        /// </summary>
+        MessengerUserNotLoggedIn = 3023,
+
+        /// <summary>
+        /// </summary>
+        MessengerInvalidConference = 3024,
+
+        /// <summary>
+        /// </summary>
+        MessengerReportInvalid = 3025,
+
+        /// <summary>
+        /// </summary>
+        MessengerMessageInvalid = 3026,
+
+        /// <summary>
+        /// </summary>
+        MessengerUserInvalid = 3027,
+
+        /// <summary>
+        /// </summary>
+        MessengerUserLimitReached = 3028,
+
+        /// <summary>
+        /// </summary>
+        MessengerTopicInvalid = 3029,
+
+        /// <summary>
+        /// </summary>
+        MessengerNotEnoughUsers = 3030
     }
 }

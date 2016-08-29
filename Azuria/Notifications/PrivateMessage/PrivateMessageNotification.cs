@@ -1,5 +1,5 @@
 ﻿using System;
-using Azuria.Community.Conference;
+using Azuria.Community;
 using JetBrains.Annotations;
 
 namespace Azuria.Notifications.PrivateMessage

@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 
-namespace Azuria.Community.Conference
+namespace Azuria.Community
 {
     /// <summary>
     /// </summary>

@@ -9,7 +9,7 @@ using Azuria.Utilities.ErrorHandling;
 using JetBrains.Annotations;
 using Newtonsoft.Json;
 
-namespace Azuria.Community.Conference
+namespace Azuria.Community
 {
     /// <summary>
     /// </summary>

@@ -1,6 +1,6 @@
 ﻿using Newtonsoft.Json;
 
-namespace Azuria.Community.Conference
+namespace Azuria.Community
 {
     internal class MessageModel
     {

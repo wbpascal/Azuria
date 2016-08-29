@@ -2,10 +2,12 @@
 using System.Collections.Generic;
 using Azuria.Api.v1.DataModels;
 using Azuria.Api.v1.DataModels.Info;
+using Azuria.Api.v1.DataModels.Messenger;
 using Azuria.Api.v1.DataModels.Search;
 using Azuria.Api.v1.DataModels.Ucp;
 using Azuria.Api.v1.DataModels.User;
 using Azuria.Api.v1.Enums;
+using Azuria.Community;
 using Azuria.Search;
 using Azuria.Search.Input;
 using ToptenDataModel = Azuria.Api.v1.DataModels.Ucp.ToptenDataModel;
@@ -73,6 +75,22 @@ namespace Azuria.Api.v1
         internal static ApiRequest<SeasonDataModel[]> InfoGetSeason(int entryId)
         {
             return new ApiRequest<SeasonDataModel[]>(new Uri($"{ApiAddress}/info/season?id={entryId}"));
+        }
+
+        internal static ApiRequest<ConstantsDataModel> MessengerGetConstants()
+        {
+            return new ApiRequest<ConstantsDataModel>(new Uri($"{ApiAddress}/messenger/constants"));
+        }
+
+        internal static ApiRequest<ConferenceDataModel[]> MessengerGetConferences(ConferenceListType type, int page, Senpai senpai)
+        {
+            return
+                new ApiRequest<ConferenceDataModel[]>(
+                    new Uri($"{ApiAddress}/messenger/conferences?type={type.ToString().ToLowerInvariant()}&p={page}"))
+                {
+                    CheckLogin = true,
+                    Senpai = senpai
+                };
         }
 
         internal static ApiRequest<SearchDataModel[]> SearchEntrySearch(SearchInput input, int limit, int page)

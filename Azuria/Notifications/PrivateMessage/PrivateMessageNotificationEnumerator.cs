@@ -4,7 +4,7 @@ using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
 using Azuria.Api;
-using Azuria.Community.Conference;
+using Azuria.Community;
 using Azuria.Exceptions;
 using Azuria.Utilities.ErrorHandling;
 using Azuria.Utilities.Extensions;

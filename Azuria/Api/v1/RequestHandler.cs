@@ -42,7 +42,7 @@ namespace Azuria.Api.v1
 
             if (!lResult.Success || lResult.Result == null)
             {
-                if (lResult.Exceptions.All(exception => typeof(Exception) != typeof(NotLoggedInException)))
+                if (lResult.Exceptions.Any(exception => typeof(Exception) == typeof(NotLoggedInException)))
                     return new ProxerResult<T>(lResult.Exceptions);
 
                 #region try again
@@ -79,6 +79,7 @@ namespace Azuria.Api.v1
                     case ErrorCode.NotificationsUserNotLoggedIn:
                     case ErrorCode.UcpUserNotLoggedIn:
                     case ErrorCode.InfoSetUserInfoUserNotLoggedIn:
+                    case ErrorCode.MessengerUserNotLoggedIn:
 
                         #region try again
 

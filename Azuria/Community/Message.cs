@@ -2,7 +2,7 @@
 using Azuria.Utilities;
 using JetBrains.Annotations;
 
-namespace Azuria.Community.Conference
+namespace Azuria.Community
 {
     /// <summary>
     ///     Represents a single message of a <see cref="Conference" />

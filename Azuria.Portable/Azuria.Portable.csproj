@@ -169,6 +169,9 @@
     <Compile Include="..\Azuria\Api\v1\Converters\MediumConverter.cs">
       <Link>Api\v1\Converters\MediumConverter.cs</Link>
     </Compile>
+    <Compile Include="..\Azuria\Api\v1\Converters\Messenger\ImageConverter.cs">
+      <Link>Api\v1\Converters\Messenger\ImageConverter.cs</Link>
+    </Compile>
     <Compile Include="..\Azuria\Api\v1\Converters\SubRatingsConverter.cs">
       <Link>Api\v1\Converters\SubRatingsConverter.cs</Link>
     </Compile>
@@ -213,6 +216,12 @@
     </Compile>
     <Compile Include="..\Azuria\Api\v1\DataModels\Info\SeasonDataModel.cs">
       <Link>Api\v1\DataModels\Info\SeasonDataModel.cs</Link>
+    </Compile>
+    <Compile Include="..\Azuria\Api\v1\DataModels\Messenger\ConferenceDataModel.cs">
+      <Link>Api\v1\DataModels\Messenger\ConferenceDataModel.cs</Link>
+    </Compile>
+    <Compile Include="..\Azuria\Api\v1\DataModels\Messenger\ConstantsDataModel.cs">
+      <Link>Api\v1\DataModels\Messenger\ConstantsDataModel.cs</Link>
     </Compile>
     <Compile Include="..\Azuria\Api\v1\DataModels\Search\SearchDataModel.cs">
       <Link>Api\v1\DataModels\Search\SearchDataModel.cs</Link>
@@ -262,23 +271,23 @@
     <Compile Include="..\Azuria\Api\v1\RequestHandler.cs">
       <Link>Api\v1\RequestHandler.cs</Link>
     </Compile>
-    <Compile Include="..\Azuria\Community\Conference\Conference.cs">
-      <Link>Community\Conference\Conference.cs</Link>
+    <Compile Include="..\Azuria\Community\Conference.cs">
+      <Link>Community\Conference.cs</Link>
     </Compile>
-    <Compile Include="..\Azuria\Community\Conference\Message.cs">
-      <Link>Community\Conference\Message.cs</Link>
+    <Compile Include="..\Azuria\Community\ConferenceListType.cs">
+      <Link>Community\ConferenceListType.cs</Link>
     </Compile>
-    <Compile Include="..\Azuria\Community\Conference\MessageCollection.cs">
-      <Link>Community\Conference\MessageCollection.cs</Link>
+    <Compile Include="..\Azuria\Community\Message.cs">
+      <Link>Community\Message.cs</Link>
     </Compile>
-    <Compile Include="..\Azuria\Community\Conference\MessageEnumerator.cs">
-      <Link>Community\Conference\MessageEnumerator.cs</Link>
+    <Compile Include="..\Azuria\Community\MessageCollection.cs">
+      <Link>Community\MessageCollection.cs</Link>
     </Compile>
-    <Compile Include="..\Azuria\Community\Conference\MessagesModel.cs">
-      <Link>Community\Conference\MessagesModel.cs</Link>
+    <Compile Include="..\Azuria\Community\MessageEnumerator.cs">
+      <Link>Community\MessageEnumerator.cs</Link>
     </Compile>
-    <Compile Include="..\Azuria\Community\Forum\Forum.cs">
-      <Link>Community\Forum\Forum.cs</Link>
+    <Compile Include="..\Azuria\Community\MessagesModel.cs">
+      <Link>Community\MessagesModel.cs</Link>
     </Compile>
     <Compile Include="..\Azuria\Exceptions\ApiKeyInsufficientException.cs">
       <Link>Exceptions\ApiKeyInsufficientException.cs</Link>

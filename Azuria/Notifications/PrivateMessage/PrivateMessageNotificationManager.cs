@@ -10,6 +10,7 @@ using Azuria.Utilities.ErrorHandling;
 namespace Azuria.Notifications.PrivateMessage
 {
     /// <summary>
+    /// TODO: Remove Notification Callback
     /// </summary>
     public static class PrivateMessageNotificationManager
     {
