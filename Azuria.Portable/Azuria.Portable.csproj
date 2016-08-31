@@ -313,6 +313,9 @@
     <Compile Include="..\Azuria\Exceptions\NoAccessException.cs">
       <Link>Exceptions\NoAccessException.cs</Link>
     </Compile>
+    <Compile Include="..\Azuria\Exceptions\NotInitialisedException.cs">
+      <Link>Exceptions\NotInitialisedException.cs</Link>
+    </Compile>
     <Compile Include="..\Azuria\Exceptions\NotLoggedInException.cs">
       <Link>Exceptions\NotLoggedInException.cs</Link>
     </Compile>

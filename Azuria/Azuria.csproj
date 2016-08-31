@@ -86,6 +86,7 @@
     <Compile Include="Api\v1\DataModels\User\ListDataModel.cs" />
     <Compile Include="Community\ConferenceListType.cs" />
     <Compile Include="Exceptions\ApiNotInitialisedException.cs" />
+    <Compile Include="Exceptions\NotInitialisedException.cs" />
     <Compile Include="Search\Input\AnimeMangaSearchType.cs" />
     <Compile Include="Search\Input\LengthLimit.cs" />
     <Compile Include="Search\Input\SearchInput.cs" />

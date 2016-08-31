@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
-using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using System.Timers;
 using Azuria.Api;
@@ -21,6 +21,7 @@ namespace Azuria.Community
     /// <summary>
     ///     Represents a messaging Conference.
     /// </summary>
+    [DebuggerDisplay("Conference: {Title} [{Id}]")]
     public class Conference
     {
         /// <summary>
@@ -39,16 +40,13 @@ namespace Azuria.Community
         /// </param>
         public delegate void NewPmEventHandler(Conference sender, IEnumerable<Message> e);
 
+        private static int _conferencesPerPage;
+
         private readonly Timer _checkMessagesTimer;
         private readonly Senpai _senpai;
         private Message _autoLastMessageRecieved;
 
-        /// <summary>
-        ///     Initialises a new instance of the Conference class.
-        /// </summary>
-        /// <param name="id">The if of the conference.</param>
-        /// <param name="senpai">The user which is logged in and part of the conference.</param>
-        public Conference(int id, [NotNull] Senpai senpai)
+        internal Conference(string title, int id, Senpai senpai)
         {
             this.Id = id;
             this._senpai = senpai;
@@ -57,16 +55,16 @@ namespace Azuria.Community
             this.IsFavourite = new SetableInitialisableProperty<bool>(this.GetConferenceOptions, this.SetFavourite);
             this.Leader = new InitialisableProperty<User.User>(this.GetLeader);
             this.Participants = new InitialisableProperty<IEnumerable<User.User>>(this.GetMainInfo);
-            this.Title = new InitialisableProperty<string>(this.GetTitle);
+            this.Title = title;
             this.CanPerformCommands = new InitialisableProperty<bool>(this.CheckCanPerformCommands);
 
             this._checkMessagesTimer = new Timer {Interval = new TimeSpan(0, 0, 15).TotalMilliseconds};
             this._checkMessagesTimer.Elapsed += this.OnCheckMessagesTimerElapsed;
         }
 
-        internal Conference(string title, int id, Senpai senpai) : this(id, senpai)
+        internal Conference(ConferenceDataModel dataModel, Senpai senpai)
+            : this(dataModel.ConferenceTitle, dataModel.ConferenceId, senpai)
         {
-            this.Title = new InitialisableProperty<string>(this.GetTitle, title);
         }
 
         #region Properties
@@ -117,6 +115,21 @@ namespace Azuria.Community
         public InitialisableProperty<User.User> Leader { get; }
 
         /// <summary>
+        /// </summary>
+        /// <seealso cref="Init" />
+        public static int MaxCharactersPerMessage { get; private set; }
+
+        /// <summary>
+        /// </summary>
+        /// <seealso cref="Init" />
+        public static int MaxCharactersTopic { get; private set; }
+
+        /// <summary>
+        /// </summary>
+        /// <seealso cref="Init" />
+        public static int MaxUsersPerConference { get; private set; }
+
+        /// <summary>
         ///     Gets all messages of the current conference ordered by newest first.
         /// </summary>
         [NotNull]
@@ -132,7 +145,7 @@ namespace Azuria.Community
         ///     Gets the current title of the current conference.
         /// </summary>
         [NotNull]
-        public InitialisableProperty<string> Title { get; }
+        public string Title { get; }
 
         #endregion
 
@@ -174,29 +187,14 @@ namespace Azuria.Community
 
         private void CheckForNewMessages()
         {
-            if (this._autoLastMessageRecieved == null && this.Messages.Any())
-                this.NeuePmRaised?.Invoke(this, this.Messages.ToArray());
-            else
-            {
-                Message[] lNewMessages =
-                    this.Messages.TakeWhile(message => message.MessageId != this._autoLastMessageRecieved.MessageId)
-                        .ToArray();
-                if (!lNewMessages.Any()) return;
+            if (this._autoLastMessageRecieved == null) return;
 
-#pragma warning disable CS4014
-                if (
-                    lNewMessages.Any(
-                        x =>
-                            x.MessageAction == Message.Action.AddUser ||
-                            x.MessageAction == Message.Action.RemoveUser) && this.Participants.IsInitialisedOnce)
-                    this.GetMainInfo();
-                if (lNewMessages.Any(x => x.MessageAction == Message.Action.SetLeader) &&
-                    this.Leader.IsInitialisedOnce) this.GetLeader();
-                if (lNewMessages.Any(x => x.MessageAction == Message.Action.SetTopic) &&
-                    this.Title.IsInitialisedOnce) this.GetTitle();
-#pragma warning restore CS4014
-                this.NeuePmRaised?.Invoke(this, lNewMessages);
-            }
+            Message[] lNewMessages =
+                this.Messages.TakeWhile(message => message.MessageId != this._autoLastMessageRecieved.MessageId)
+                    .ToArray();
+            if (lNewMessages.Length == 0) return;
+
+            //TODO: Invoke event/Check for actions
         }
 
         private async Task<ProxerResult> GetConferenceOptions()
@@ -212,8 +210,9 @@ namespace Azuria.Community
 
             string lResponse = lResult.Result;
 
-            if (lResponse == null || this._senpai.Me == null || lResponse.Equals("{\"uid\":\"" + this._senpai.Me.Id +
-                                                                                 "\",\"error\":1,\"msg\":\"Ein Fehler ist passiert.\"}"))
+            if ((lResponse == null) || (this._senpai.Me == null) ||
+                lResponse.Equals("{\"uid\":\"" + this._senpai.Me.Id +
+                                 "\",\"error\":1,\"msg\":\"Ein Fehler ist passiert.\"}"))
                 return new ProxerResult
                 {
                     Success = false
@@ -231,6 +230,32 @@ namespace Azuria.Community
             {
                 return new ProxerResult(ErrorHandler.HandleError(lResponse, false).Exceptions);
             }
+        }
+
+        /// <summary>
+        /// </summary>
+        /// <param name="senpai"></param>
+        /// <param name="type"></param>
+        /// <returns></returns>
+        public static async Task<ProxerResult<IEnumerable<Conference>>> GetConferences(Senpai senpai,
+            ConferenceListType type = ConferenceListType.Default)
+        {
+            if (_conferencesPerPage == default(int))
+                return
+                    new ProxerResult<IEnumerable<Conference>>(new[]
+                        {new NotInitialisedException("Please call " + nameof(Init))});
+
+            List<Conference> lConferences = new List<Conference>();
+            for (int page = 0; (page == 0) || (lConferences.Count%_conferencesPerPage == 0); page++)
+            {
+                ProxerResult<ProxerApiResponse<ConferenceDataModel[]>> lResult =
+                    await RequestHandler.ApiRequest(ApiRequestBuilder.MessengerGetConferences(type, page, senpai));
+                if (!lResult.Success || (lResult.Result == null))
+                    return new ProxerResult<IEnumerable<Conference>>(lResult.Exceptions);
+                lConferences.AddRange(from conferenceDataModel in lResult.Result.Data
+                    select new Conference(conferenceDataModel, senpai));
+            }
+            return new ProxerResult<IEnumerable<Conference>>(lConferences);
         }
 
         [ItemNotNull]
@@ -269,12 +294,12 @@ namespace Azuria.Community
                     };
 
                 this.Leader.SetInitialisedObject
-                    ((await this.Participants.GetObject())
-                        .OnError(new User.User[0])?
-                        .FirstOrDefault(
-                            x =>
-                                x.UserName.GetObjectIfInitialised("")
-                                    .Equals(lDict["message"].Remove(0, "Konferenzleiter: ".Length))) ?? User.User.System);
+                ((await this.Participants.GetObject())
+                     .OnError(new User.User[0])?
+                     .FirstOrDefault(
+                         x =>
+                             x.UserName.GetObjectIfInitialised("")
+                                 .Equals(lDict["message"].Remove(0, "Konferenzleiter: ".Length))) ?? User.User.System);
 
                 return new ProxerResult();
             }
@@ -308,9 +333,9 @@ namespace Azuria.Community
                     from curTeilnehmer in lDocument.GetElementbyId("conferenceUsers").ChildNodes[1].ChildNodes
                     let lUserName = curTeilnehmer.ChildNodes[1].FirstChild.InnerText
                     let lUserId =
-                        Convert.ToInt32(
-                            curTeilnehmer.ChildNodes[1].FirstChild.Attributes["href"].Value.GetTagContents("/user/",
-                                "#top")[0])
+                    Convert.ToInt32(
+                        curTeilnehmer.ChildNodes[1].FirstChild.Attributes["href"].Value.GetTagContents("/user/",
+                            "#top")[0])
                     select new User.User(lUserName, lUserId));
 
                 this.Participants.SetInitialisedObject(lTeilnehmer);
@@ -323,54 +348,27 @@ namespace Azuria.Community
             }
         }
 
-        [ItemNotNull]
-        private async Task<ProxerResult> GetTitle()
+        /// <summary>
+        /// </summary>
+        /// <returns></returns>
+        public static async Task<ProxerResult> Init()
         {
-            if ((await this.CanPerformCommands.GetObject()).OnError(false))
-            {
-                Dictionary<string, string> lPostArgs = new Dictionary<string, string>
-                {
-                    {"message", "/topic"}
-                };
+            ProxerResult<ProxerApiResponse<ConstantsDataModel>> lResult =
+                await RequestHandler.ApiRequest(ApiRequestBuilder.MessengerGetConstants());
+            if (!lResult.Success || (lResult.Result == null)) return new ProxerResult(lResult.Exceptions);
+            ConstantsDataModel lData = lResult.Result.Data;
 
-                ProxerResult<string> lResult =
-                    await
-                        ApiInfo.HttpClient.PostRequest(
-                            new Uri("https://proxer.me/messages?id=" + this.Id + "&format=json&json=answer"),
-                            lPostArgs,
-                            this._senpai);
-
-                if (!lResult.Success)
-                    return new ProxerResult(lResult.Exceptions);
-
-                string lResponse = lResult.Result;
-
-                try
-                {
-                    Dictionary<string, string> lDict =
-                        JsonConvert.DeserializeObject<Dictionary<string, string>>(lResponse);
-                    if (lDict["msg"].Equals("Erfolgreich!")) this.Title.SetInitialisedObject(lDict["message"]);
-
-                    return new ProxerResult();
-                }
-                catch
-                {
-                    return new ProxerResult(ErrorHandler.HandleError(lResponse, false).Exceptions);
-                }
-            }
-
-            if ((await this.Participants.GetObject()).OnError(new User.User[0])?.Count() > 1 && this._senpai.Me != null)
-                this.Title.SetInitialisedObject(await (await this.Participants.GetObject()).OnError(new User.User[0])?
-                    .Where(x => x.Id != this._senpai.Me.Id)
-                    .ToArray()[0].UserName.GetObject("ERROR"));
-
+            MaxCharactersPerMessage = lData.MaxCharactersPerMessage;
+            MaxUsersPerConference = lData.MaxUsersPerConference;
+            MaxCharactersTopic = lData.MaxCharactersTopic;
+            _conferencesPerPage = lData.ConferencesPerPage;
             return new ProxerResult();
         }
 
         /// <summary>
         ///     Occurs when new messages were recieved or once everytime Active is set to true.
         /// </summary>
-        public event NewPmEventHandler NeuePmRaised;
+        public event NewPmEventHandler NewMessageRecieved;
 
         private void OnCheckMessagesTimerElapsed(object s, EventArgs eArgs)
         {
@@ -378,46 +376,6 @@ namespace Azuria.Community
             timer?.Stop();
             this.CheckForNewMessages();
             timer?.Start();
-        }
-
-        /// <summary>
-        ///     Returns if the <paramref name="senpai">User</paramref> is part of the conference.
-        /// </summary>
-        /// <param name="id">The Id of the <see cref="Conference" /></param>
-        /// <param name="senpai">The user which is tested.</param>
-        /// <returns>Whether the <paramref name="senpai">User</paramref> is part of the conference.</returns>
-        [ItemNotNull]
-        public static async Task<ProxerResult<bool>> Participates(int id, [NotNull] Senpai senpai)
-        {
-            if (!senpai.IsProbablyLoggedIn)
-                return new ProxerResult<bool>(new Exception[] {new NotLoggedInException(senpai)});
-
-            Dictionary<string, string> lPostArgs = new Dictionary<string, string>
-            {
-                {"message", "/ping"}
-            };
-            ProxerResult<string> lResult =
-                await
-                    ApiInfo.HttpClient.PostRequest(
-                        new Uri("https://proxer.me/messages?id=" + id + "&format=json&json=answer"),
-                        lPostArgs,
-                        senpai);
-
-            if (!lResult.Success)
-                return new ProxerResult<bool>(lResult.Exceptions);
-
-            string lResponse = lResult.Result;
-
-            try
-            {
-                Dictionary<string, string> lDict =
-                    JsonConvert.DeserializeObject<Dictionary<string, string>>(lResponse);
-                return new ProxerResult<bool>(!lDict["msg"].Equals("Ein Fehler ist passiert."));
-            }
-            catch
-            {
-                return new ProxerResult<bool>(ErrorHandler.HandleError(lResponse, false).Exceptions);
-            }
         }
 
         /// <summary>
@@ -431,7 +389,7 @@ namespace Azuria.Community
             if (string.IsNullOrEmpty(message))
                 return
                     new ProxerResult(new[]
-                    {new ArgumentException("Argument is null or empty", nameof(message))});
+                        {new ArgumentException("Argument is null or empty", nameof(message))});
 
             this._checkMessagesTimer.Stop();
 
@@ -458,9 +416,7 @@ namespace Azuria.Community
 
                 if (this.AutoCheck) this.CheckForNewMessages();
                 if (lResponseJson.Keys.Contains("message"))
-                {
                     return new ProxerResult();
-                }
                 if (!lResponseJson.Keys.Contains("msg")) return new ProxerResult {Success = false};
 
                 this._checkMessagesTimer.Start();
@@ -533,41 +489,6 @@ namespace Azuria.Community
             return lResponse?.StartsWith("{\"error\":0") ?? false
                 ? new ProxerResult()
                 : new ProxerResult {Success = false};
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <seealso cref="Init"/>
-        public static int MaxCharactersPerMessage { get; private set; }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <seealso cref="Init"/>
-        public static int MaxCharactersTopic { get; private set; }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <seealso cref="Init"/>
-        public static int MaxUserPerConference { get; private set; }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <returns></returns>
-        public static async Task<ProxerResult> Init()
-        {
-            ProxerResult<ProxerApiResponse<ConstantsDataModel>> lResult =
-                await RequestHandler.ApiRequest(ApiRequestBuilder.MessengerGetConstants());
-            if (!lResult.Success || lResult.Result == null) return new ProxerResult(lResult.Exceptions);
-            ConstantsDataModel lData = lResult.Result.Data;
-
-            MaxCharactersPerMessage = lData.MaxCharactersPerMessage;
-            MaxUserPerConference = lData.MaxUsersPerConference;
-            MaxCharactersTopic = lData.MaxCharactersTopic;
-            return new ProxerResult();
         }
 
         #endregion
