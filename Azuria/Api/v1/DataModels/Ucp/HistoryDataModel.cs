@@ -25,10 +25,12 @@ namespace Azuria.Api.v1.DataModels.Ucp
         [JsonProperty("kat")]
         public AnimeMangaEntryType EntryType { get; set; }
 
-        [JsonProperty("language"), JsonConverter(typeof(LanguageConverter))]
+        [JsonProperty("language")]
+        [JsonConverter(typeof(LanguageConverter))]
         internal AnimeMangaLanguage Language { get; set; }
 
-        [JsonProperty("timestamp"), JsonConverter(typeof(CustomDateTimeConverter))]
+        [JsonProperty("timestamp")]
+        [JsonConverter(typeof(CustomDateTimeConverter))]
         internal DateTime TimeStamp { get; set; }
 
         #endregion

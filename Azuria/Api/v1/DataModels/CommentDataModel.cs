@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using Azuria.Api.v1.Converters;
-using Azuria.User;
-using Azuria.User.Comment;
+using Azuria.UserInfo;
+using Azuria.UserInfo.Comment;
 using Newtonsoft.Json;
 
 namespace Azuria.Api.v1.DataModels
@@ -23,7 +23,8 @@ namespace Azuria.Api.v1.DataModels
         [JsonProperty("episode")]
         internal int ContentIndex { get; set; }
 
-        [JsonProperty("timestamp"), JsonConverter(typeof(UnixToDateTimeConverter))]
+        [JsonProperty("timestamp")]
+        [JsonConverter(typeof(UnixToDateTimeConverter))]
         internal DateTime Date { get; set; }
 
         [JsonProperty("tid")]
@@ -35,7 +36,8 @@ namespace Azuria.Api.v1.DataModels
         [JsonProperty("status")]
         internal AnimeMangaProgressState State { get; set; }
 
-        [JsonProperty("data"), JsonConverter(typeof(SubRatingsConverter))]
+        [JsonProperty("data")]
+        [JsonConverter(typeof(SubRatingsConverter))]
         internal Dictionary<RatingCategory, int> SubRatings { get; set; }
 
         [JsonProperty("positive")]

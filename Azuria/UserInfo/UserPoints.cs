@@ -1,4 +1,4 @@
-﻿namespace Azuria.User
+﻿namespace Azuria.UserInfo
 {
     /// <summary>
     /// </summary>

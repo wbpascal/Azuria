@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using JetBrains.Annotations;
 
 namespace Azuria.Community
 {
@@ -7,12 +8,12 @@ namespace Azuria.Community
     /// </summary>
     public class MessageCollection : IEnumerable<Message>
     {
-        private readonly Conference _conference;
-        private readonly Senpai _senpai;
+        private readonly int _conferenceId;
+        [NotNull] private readonly Senpai _senpai;
 
-        internal MessageCollection(Conference conference, Senpai senpai)
+        internal MessageCollection(int conferenceId, [NotNull] Senpai senpai)
         {
-            this._conference = conference;
+            this._conferenceId = conferenceId;
             this._senpai = senpai;
         }
 
@@ -29,7 +30,7 @@ namespace Azuria.Community
         /// <returns>An enumerator that can be used to iterate through the collection.</returns>
         public IEnumerator<Message> GetEnumerator()
         {
-            return new MessageEnumerator(this._conference, this._senpai);
+            return new MessageEnumerator(this._conferenceId, this._senpai);
         }
 
         #endregion

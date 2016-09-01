@@ -7,14 +7,14 @@ using Azuria.Api.v1.DataModels.User;
 using Azuria.Utilities;
 using Azuria.Utilities.ErrorHandling;
 
-namespace Azuria.User
+namespace Azuria.UserInfo
 {
     internal class UserEntryEnumerator<T> : PageEnumerator<UserProfileEntry<T>> where T : class, IAnimeMangaObject
     {
         private const int ResultsPerPage = 100;
         private readonly User _user;
 
-        internal UserEntryEnumerator(User user)
+        internal UserEntryEnumerator(User user) : base(ResultsPerPage)
         {
             this._user = user;
         }
@@ -27,7 +27,7 @@ namespace Azuria.User
                 await
                     RequestHandler.ApiRequest(ApiRequestBuilder.UserGetList(this._user.Id,
                         typeof(T).Name.ToLowerInvariant(), nextPage, ResultsPerPage));
-            if (!lResult.Success || lResult.Result == null)
+            if (!lResult.Success || (lResult.Result == null))
                 return new ProxerResult<IEnumerable<UserProfileEntry<T>>>(lResult.Exceptions);
 
             return new ProxerResult<IEnumerable<UserProfileEntry<T>>>(from listDataModel in lResult.Result.Data

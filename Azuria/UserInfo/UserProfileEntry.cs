@@ -2,9 +2,9 @@
 using Azuria.AnimeManga;
 using Azuria.AnimeManga.Properties;
 using Azuria.Api.v1.DataModels.User;
-using Azuria.User.Comment;
+using Azuria.UserInfo.Comment;
 
-namespace Azuria.User
+namespace Azuria.UserInfo
 {
     /// <summary>
     /// </summary>

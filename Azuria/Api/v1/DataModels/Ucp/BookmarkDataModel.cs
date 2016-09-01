@@ -27,7 +27,8 @@ namespace Azuria.Api.v1.DataModels.Ucp
         [JsonProperty("kat")]
         public AnimeMangaEntryType EntryType { get; set; }
 
-        [JsonProperty("language"), JsonConverter(typeof(LanguageConverter))]
+        [JsonProperty("language")]
+        [JsonConverter(typeof(LanguageConverter))]
         internal AnimeMangaLanguage Language { get; set; }
 
         [JsonProperty("state")]

@@ -10,7 +10,8 @@ namespace Azuria.Api.v1.DataModels.Search
     {
         #region Properties
 
-        [JsonProperty("language"), JsonConverter(typeof(LanguageCommaCollectionConverter))]
+        [JsonProperty("language")]
+        [JsonConverter(typeof(LanguageCommaCollectionConverter))]
         internal AnimeMangaLanguage[] AvailableLanguages { get; set; }
 
         [JsonProperty("count")]
@@ -28,7 +29,8 @@ namespace Azuria.Api.v1.DataModels.Search
         public AnimeMangaEntryType EntryType
             => (int) this.EntryMedium < 4 ? AnimeMangaEntryType.Anime : AnimeMangaEntryType.Manga;
 
-        [JsonProperty("genre"), JsonConverter(typeof(GenreConverter))]
+        [JsonProperty("genre")]
+        [JsonConverter(typeof(GenreConverter))]
         internal IEnumerable<GenreType> Genre { get; set; }
 
         [JsonProperty("rate_count")]

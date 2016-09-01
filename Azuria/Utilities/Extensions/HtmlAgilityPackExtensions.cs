@@ -22,7 +22,7 @@ namespace Azuria.Utilities.Extensions
         {
             return
                 node.DescendantsAndSelf()
-                    .Where(x => x.Attributes.Contains(attribute) && x.Attributes[attribute].Value == value);
+                    .Where(x => x.Attributes.Contains(attribute) && (x.Attributes[attribute].Value == value));
         }
 
         #endregion

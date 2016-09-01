@@ -6,6 +6,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Azuria.Api;
 using Azuria.Exceptions;
+using Azuria.UserInfo;
 using Azuria.Utilities.ErrorHandling;
 using HtmlAgilityPack;
 using JetBrains.Annotations;
@@ -97,19 +98,19 @@ namespace Azuria.Notifications.FriendRequest
 
                 this._notifications = (from curNode in lNodes
                     where
-                        curNode.Id.StartsWith("entry") &&
-                        curNode.FirstChild.FirstChild.Attributes["class"].Value
-                            .Equals
-                            ("accept")
+                    curNode.Id.StartsWith("entry") &&
+                    curNode.FirstChild.FirstChild.Attributes["class"].Value
+                        .Equals
+                        ("accept")
                     let lUserId =
-                        Convert.ToInt32(curNode.Id.Replace("entry", ""))
+                    Convert.ToInt32(curNode.Id.Replace("entry", ""))
                     let lUserName =
-                        curNode.InnerText.Split("  ".ToCharArray())[0]
+                    curNode.InnerText.Split("  ".ToCharArray())[0]
                     let lDatum =
-                        DateTime.ParseExact(curNode.ChildNodes[4].InnerText, "yyyy-MM-dd", CultureInfo.InvariantCulture)
+                    DateTime.ParseExact(curNode.ChildNodes[4].InnerText, "yyyy-MM-dd", CultureInfo.InvariantCulture)
                     select
-                        new FriendRequestNotification(new User.User(lUserName, lUserId), lDatum,
-                            this._senpai)).ToArray();
+                    new FriendRequestNotification(new User(lUserName, lUserId), lDatum,
+                        this._senpai)).ToArray();
 
                 return new ProxerResult();
             }

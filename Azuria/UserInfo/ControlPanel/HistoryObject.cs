@@ -1,7 +1,7 @@
 ﻿using System;
 using Azuria.AnimeManga;
 
-namespace Azuria.User.ControlPanel
+namespace Azuria.UserInfo.ControlPanel
 {
     /// <summary>
     /// </summary>

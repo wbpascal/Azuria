@@ -28,7 +28,7 @@ namespace Azuria
         {
             ProxerResult<ProxerApiResponse<EntryDataModel>> lResult =
                 await RequestHandler.ApiRequest(ApiRequestBuilder.InfoGetEntry(id));
-            if (!lResult.Success || lResult.Result == null)
+            if (!lResult.Success || (lResult.Result == null))
                 return new ProxerResult<IAnimeMangaObject>(lResult.Exceptions);
             EntryDataModel lDataModel = lResult.Result.Data;
 

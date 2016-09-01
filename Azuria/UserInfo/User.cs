@@ -5,17 +5,18 @@ using System.Threading.Tasks;
 using Azuria.AnimeManga;
 using Azuria.Api;
 using Azuria.Api.v1;
+using Azuria.Api.v1.DataModels.Messenger;
 using Azuria.Api.v1.DataModels.User;
 using Azuria.Api.v1.Enums;
 using Azuria.Exceptions;
-using Azuria.User.Comment;
+using Azuria.UserInfo.Comment;
 using Azuria.Utilities.ErrorHandling;
 using Azuria.Utilities.Extensions;
 using Azuria.Utilities.Properties;
 using JetBrains.Annotations;
 using Newtonsoft.Json;
 
-namespace Azuria.User
+namespace Azuria.UserInfo
 {
     /// <summary>
     ///     Represents a user of proxer.
@@ -71,10 +72,16 @@ namespace Azuria.User
         }
 
         internal User(UserInfoDataModel dataModel)
-            : this(dataModel.Username, dataModel.UserId, new Uri("http://cdn.proxer.me/avatar/" + dataModel.Avatar))
+            : this(dataModel.Username, dataModel.UserId, new Uri("http://cdn.proxer.me/avatar/" + dataModel.AvatarId))
         {
             this.Points.SetInitialisedObject(dataModel.Points);
             this.Status.SetInitialisedObject(dataModel.Status);
+        }
+
+        internal User(ConferenceInfoParticipantDataModel dataModel)
+            : this(dataModel.Username, dataModel.UserId, new Uri("http://cdn.proxer.me/avatar/" + dataModel.AvatarId))
+        {
+            this.Status.SetInitialisedObject(new UserStatus(dataModel.UserStatus, DateTime.MinValue));
         }
 
         #region Properties
@@ -152,7 +159,7 @@ namespace Azuria.User
         {
             ProxerResult<ProxerApiResponse<UserInfoDataModel>> lResult =
                 await RequestHandler.ApiRequest(ApiRequestBuilder.UserGetInfo(username));
-            if (!lResult.Success || lResult.Result == null) return new ProxerResult<User>(lResult.Exceptions);
+            if (!lResult.Success || (lResult.Result == null)) return new ProxerResult<User>(lResult.Exceptions);
             return new ProxerResult<User>(new User(lResult.Result.Data));
         }
 
@@ -173,10 +180,10 @@ namespace Azuria.User
 
             ProxerResult<ProxerApiResponse<UserInfoDataModel>> lResult =
                 await RequestHandler.ApiRequest(ApiRequestBuilder.UserGetInfo(this.Id));
-            if (!lResult.Success || lResult.Result == null) return new ProxerResult(lResult.Exceptions);
+            if (!lResult.Success || (lResult.Result == null)) return new ProxerResult(lResult.Exceptions);
 
             UserInfoDataModel lDataModel = lResult.Result.Data;
-            this.Avatar.SetInitialisedObject(new Uri("http://cdn.proxer.me/avatar/" + lDataModel.Avatar));
+            this.Avatar.SetInitialisedObject(new Uri("http://cdn.proxer.me/avatar/" + lDataModel.AvatarId));
             this.Points.SetInitialisedObject(lDataModel.Points);
             this.Status.SetInitialisedObject(lDataModel.Status);
             this.UserName.SetInitialisedObject(lDataModel.Username);
@@ -190,7 +197,7 @@ namespace Azuria.User
                 await
                     RequestHandler.ApiRequest(ApiRequestBuilder.UserGetTopten(this.Id,
                         category.ToString().ToLower()));
-            if (!lResult.Success || lResult.Result == null) return new ProxerResult(lResult.Exceptions);
+            if (!lResult.Success || (lResult.Result == null)) return new ProxerResult(lResult.Exceptions);
 
             if (category == AnimeMangaEntryType.Anime)
                 this.ToptenAnime.SetInitialisedObject(from toptenDataModel in lResult.Result.Data

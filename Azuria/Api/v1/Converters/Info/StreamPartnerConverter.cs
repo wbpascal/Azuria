@@ -32,7 +32,6 @@ namespace Azuria.Api.v1.Converters.Info
         {
             List<StreamPartner> lStreamPartners = new List<StreamPartner>();
             foreach (string streamPartner in reader.Value.ToString().Split(','))
-            {
                 switch (streamPartner)
                 {
                     case "mp4upload":
@@ -58,7 +57,6 @@ namespace Azuria.Api.v1.Converters.Info
                         lStreamPartners.Add(StreamPartner.YourUpload);
                         break;
                 }
-            }
             return lStreamPartners.ToArray();
         }
 

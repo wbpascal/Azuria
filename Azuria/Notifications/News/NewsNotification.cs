@@ -1,4 +1,5 @@
 ﻿using System;
+using Azuria.UserInfo;
 using Azuria.Utilities;
 using Newtonsoft.Json;
 
@@ -17,7 +18,7 @@ namespace Azuria.Notifications.News
 
         /// <summary>
         /// </summary>
-        public User.User Author => new User.User(this.AuthorName, this.AuthorId);
+        public User Author => new User(this.AuthorName, this.AuthorId);
 
         [JsonProperty("uid")]
         internal int AuthorId { get; set; }
@@ -67,7 +68,8 @@ namespace Azuria.Notifications.News
         [JsonProperty("image_style")]
         public string ImageStyle { get; set; }
 
-        [JsonProperty("mid"), Obsolete("Use " + nameof(ThreadId))]
+        [JsonProperty("mid")]
+        [Obsolete("Use " + nameof(ThreadId))]
         internal int Mid { get; set; }
 
         /// <summary>
@@ -81,7 +83,8 @@ namespace Azuria.Notifications.News
         /// </summary>
         public string NotificationId => this.AuthorId.ToString() + this.CategoryId + this.ThreadId + this.Time;
 
-        [JsonProperty("pid"), Obsolete]
+        [JsonProperty("pid")]
+        [Obsolete]
         internal int Pid { get; set; }
 
         /// <summary>

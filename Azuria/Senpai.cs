@@ -6,6 +6,7 @@ using Azuria.Api.v1;
 using Azuria.Api.v1.DataModels.User;
 using Azuria.Exceptions;
 using Azuria.Security;
+using Azuria.UserInfo;
 using Azuria.Utilities.ErrorHandling;
 using JetBrains.Annotations;
 
@@ -77,7 +78,7 @@ namespace Azuria
         ///     Gets the profile of the user.
         /// </summary>
         [CanBeNull]
-        public User.User Me { get; protected set; }
+        public User Me { get; protected set; }
 
         /// <summary>
         ///     Gets the cookies that are used to make requests to the server with this user. Unlike <see cref="LoginCookies" />
@@ -90,9 +91,7 @@ namespace Azuria
             {
                 CookieContainer lMobileCookies = new CookieContainer();
                 foreach (Cookie loginCookie in this.LoginCookies.GetCookies(new Uri("https://proxer.me/")))
-                {
                     lMobileCookies.Add(new Uri("https://proxer.me/"), loginCookie);
-                }
                 lMobileCookies.Add(new Uri("https://proxer.me/"), new Cookie("device", "mobile", "/", "proxer.me"));
                 return lMobileCookies;
             }
@@ -145,12 +144,10 @@ namespace Azuria
 
             ProxerResult<ProxerApiResponse<LoginDataModel>> lResult =
                 await RequestHandler.ApiRequest(ApiRequestBuilder.UserLogin(this._username, password, this));
-            if (!lResult.Success || lResult.Result == null)
-            {
+            if (!lResult.Success || (lResult.Result == null))
                 return new ProxerResult<bool>(lResult.Exceptions);
-            }
 
-            this.Me = new User.User(this._username, lResult.Result.Data.UserId,
+            this.Me = new User(this._username, lResult.Result.Data.UserId,
                 new Uri("https://cdn.proxer.me/avatar/" + lResult.Result.Data.Avatar));
             this._cookiesCreated = DateTime.Now;
             this.LoginToken.SetValue(lResult.Result.Data.Token.ToCharArray());
@@ -166,10 +163,10 @@ namespace Azuria
 
             ProxerResult<ProxerApiResponse<UserInfoDataModel>> lResult =
                 await RequestHandler.ApiRequest(ApiRequestBuilder.UserGetInfo(null, this), token);
-            if (!lResult.Success || lResult.Result == null) return new ProxerResult(lResult.Exceptions);
+            if (!lResult.Success || (lResult.Result == null)) return new ProxerResult(lResult.Exceptions);
             UserInfoDataModel lDataModel = lResult.Result.Data;
             this.LoginToken.SetValue(token);
-            this.Me = new User.User(lDataModel);
+            this.Me = new User(lDataModel);
             this._username = lDataModel.Username;
             this._cookiesCreated = DateTime.Now;
 
@@ -184,7 +181,7 @@ namespace Azuria
         {
             ProxerResult<ProxerApiResponse> lResult =
                 await RequestHandler.ApiRequest(ApiRequestBuilder.UserLogout(this));
-            if (!lResult.Success || lResult.Result == null || lResult.Result.Error)
+            if (!lResult.Success || (lResult.Result == null) || lResult.Result.Error)
                 return new ProxerResult(lResult.Exceptions);
             this.InvalidateCookies();
             return new ProxerResult();

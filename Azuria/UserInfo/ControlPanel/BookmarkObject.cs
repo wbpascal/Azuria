@@ -3,7 +3,7 @@ using Azuria.AnimeManga;
 using Azuria.Utilities.ErrorHandling;
 using JetBrains.Annotations;
 
-namespace Azuria.User.ControlPanel
+namespace Azuria.UserInfo.ControlPanel
 {
     /// <summary>
     ///     Represents an <see cref="Anime" /> or <see cref="Manga" /> the user has bookmarked.

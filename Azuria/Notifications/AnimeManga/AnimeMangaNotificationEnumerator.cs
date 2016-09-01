@@ -111,8 +111,8 @@ namespace Azuria.Notifications.AnimeManga
                 int lNotificationsParsed = lNotAnimeManga.Count();
                 foreach (HtmlNode curNode in lNodes.Where(curNode => curNode.InnerText.StartsWith("Lesezeichen:")))
                 {
-                    if (this._maxNotificationsCountToParse != -1 &&
-                        lNotificationsParsed >= this._maxNotificationsCountToParse) break;
+                    if ((this._maxNotificationsCountToParse != -1) &&
+                        (lNotificationsParsed >= this._maxNotificationsCountToParse)) break;
 
                     string lName;
                     int lNumber;
@@ -131,7 +131,6 @@ namespace Azuria.Notifications.AnimeManga
                     AnimeLanguage lAnimeLanguage = AnimeLanguage.Unknown;
                     Language lLanguage = Language.Unkown;
                     if (lContentParentType == typeof(Anime))
-                    {
                         switch (
                             curNode.GetAttributeValue("href", "/watch/-1/error#top")
                                 .Split('/')
@@ -152,9 +151,7 @@ namespace Azuria.Notifications.AnimeManga
                                 lAnimeLanguage = AnimeLanguage.GerDub;
                                 break;
                         }
-                    }
                     else if (lContentParentType == typeof(Manga))
-                    {
                         switch (curNode.GetAttributeValue("href", "/watch/-1/error#top")
                             .Split('/')
                             .Last()
@@ -168,7 +165,6 @@ namespace Azuria.Notifications.AnimeManga
                                 lLanguage = Language.German;
                                 break;
                         }
-                    }
 
                     #endregion
 
@@ -183,7 +179,7 @@ namespace Azuria.Notifications.AnimeManga
                         lNumber = -1;
                     }
 
-                    if (typeof(T) == typeof(Anime) && lContentParentType == typeof(Anime))
+                    if ((typeof(T) == typeof(Anime)) && (lContentParentType == typeof(Anime)))
                         lAnimeMangaUpdateObjects.AddIf(
                             new AnimeMangaNotification<Anime>(lNotificationId,
                                 (await new Anime(lName, lAnimeMangaId).GetEpisodes(lAnimeLanguage))

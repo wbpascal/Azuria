@@ -82,9 +82,9 @@ namespace Azuria.Web
             senpai?.UsedCookies();
             string lResponseString = await lResponseObject.Content.ReadAsStringAsync();
 
-            if (lResponseObject.StatusCode == HttpStatusCode.OK && !string.IsNullOrEmpty(lResponseString))
+            if ((lResponseObject.StatusCode == HttpStatusCode.OK) && !string.IsNullOrEmpty(lResponseString))
                 lResponse = WebUtility.HtmlDecode(lResponseString).Replace("\n", "");
-            else if (lResponseObject.StatusCode == HttpStatusCode.ServiceUnavailable &&
+            else if ((lResponseObject.StatusCode == HttpStatusCode.ServiceUnavailable) &&
                      !string.IsNullOrEmpty(lResponseString))
                 return new ProxerResult<string>(new[] {new CloudflareException()});
             else
@@ -93,7 +93,6 @@ namespace Azuria.Web
 
             if (checkFuncs != null)
                 foreach (Func<string, ProxerResult> checkFunc in checkFuncs)
-                {
                     try
                     {
                         ProxerResult lResult = checkFunc?.Invoke(lResponse) ?? new ProxerResult {Success = false};
@@ -104,7 +103,6 @@ namespace Azuria.Web
                     {
                         return new ProxerResult<string>(new Exception[0]) {Success = false};
                     }
-                }
 
             return string.IsNullOrEmpty(lResponse)
                 ? new ProxerResult<string>(new Exception[] {new WrongResponseException()})
@@ -129,9 +127,7 @@ namespace Azuria.Web
                     $"{UserAgent} {this._userAgentExtra}".TrimEnd());
                 if (headers == null) return await lClient.GetAsync(url);
                 foreach (KeyValuePair<string, string> header in headers)
-                {
                     lClient.DefaultRequestHeaders.TryAddWithoutValidation(header.Key, header.Value);
-                }
 
                 return await lClient.GetAsync(url);
             }
@@ -185,9 +181,9 @@ namespace Azuria.Web
             senpai?.UsedCookies();
             string lResponseString = await lResponseObject.Content.ReadAsStringAsync();
 
-            if (lResponseObject.StatusCode == HttpStatusCode.OK && !string.IsNullOrEmpty(lResponseString))
+            if ((lResponseObject.StatusCode == HttpStatusCode.OK) && !string.IsNullOrEmpty(lResponseString))
                 lResponse = WebUtility.HtmlDecode(lResponseString).Replace("\n", "");
-            else if (lResponseObject.StatusCode == HttpStatusCode.ServiceUnavailable &&
+            else if ((lResponseObject.StatusCode == HttpStatusCode.ServiceUnavailable) &&
                      !string.IsNullOrEmpty(lResponseString))
                 return new ProxerResult<string>(new[] {new CloudflareException()});
             else
@@ -196,7 +192,6 @@ namespace Azuria.Web
 
             if (checkFuncs != null)
                 foreach (Func<string, ProxerResult> checkFunc in checkFuncs)
-                {
                     try
                     {
                         ProxerResult lResult = checkFunc?.Invoke(lResponse) ?? new ProxerResult {Success = false};
@@ -207,7 +202,6 @@ namespace Azuria.Web
                     {
                         return new ProxerResult<string>(new Exception[0]);
                     }
-                }
 
             return string.IsNullOrEmpty(lResponse)
                 ? new ProxerResult<string>(new Exception[] {new WrongResponseException {Response = lResponse}})
@@ -233,9 +227,7 @@ namespace Azuria.Web
                     $"{UserAgent} {this._userAgentExtra}".TrimEnd());
                 if (headers == null) return await lClient.PostAsync(url, new FormUrlEncodedContent(postArgs));
                 foreach (KeyValuePair<string, string> header in headers)
-                {
                     lClient.DefaultRequestHeaders.Add(header.Key, header.Value);
-                }
 
                 return await lClient.PostAsync(url, new FormUrlEncodedContent(postArgs));
             }

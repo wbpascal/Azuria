@@ -46,7 +46,7 @@ namespace Azuria.Notifications.News
             foreach (Senpai senpai in CallbackDictionary.Keys)
             {
                 ProxerResult<int> lNotificationCountResult = await GetAvailableNotificationsCount(senpai);
-                if (!lNotificationCountResult.Success || lNotificationCountResult.Result == 0) continue;
+                if (!lNotificationCountResult.Success || (lNotificationCountResult.Result == 0)) continue;
                 NewsNotification[] lNotifications =
                     new NewsNotificationCollection(senpai).Take(Math.Min(lNotificationCountResult.Result, 50)).ToArray();
                 if (!lNotifications.Any()) continue;
@@ -55,7 +55,7 @@ namespace Azuria.Notifications.News
                     new Dictionary<NewsNotificationEventHandler, string>();
                 foreach (
                     KeyValuePair<NewsNotificationEventHandler, string> notificationCallback in
-                        CallbackDictionary[senpai])
+                    CallbackDictionary[senpai])
                 {
                     if (notificationCallback.Key == null) continue;
                     notificationCallback.Key?.Invoke(senpai,
@@ -64,10 +64,8 @@ namespace Azuria.Notifications.News
                     lChangeDictionary.Add(notificationCallback.Key, lNotifications.First().NotificationId);
                 }
                 foreach (KeyValuePair<NewsNotificationEventHandler, string> change in lChangeDictionary)
-                {
                     if (CallbackDictionary[senpai].ContainsKey(change.Key))
                         CallbackDictionary[senpai][change.Key] = change.Value;
-                }
             }
             Timer.Start();
         }
@@ -82,7 +80,7 @@ namespace Azuria.Notifications.News
                     ApiInfo.HttpClient.GetRequest(new Uri("https://proxer.me/notifications?format=raw&s=count"),
                         senpai);
 
-            if (!lResult.Success || lResult.Result == null)
+            if (!lResult.Success || (lResult.Result == null))
                 return new ProxerResult<int>(lResult.Exceptions);
 
             string lResponse = lResult.Result;

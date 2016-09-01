@@ -8,7 +8,7 @@ using Azuria.Api.v1.DataModels.User;
 using Azuria.Utilities.ErrorHandling;
 using JetBrains.Annotations;
 
-namespace Azuria.User.Comment
+namespace Azuria.UserInfo.Comment
 {
     /// <summary>
     ///     Represents a comment for an <see cref="Anime">Anime</see> or <see cref="Manga">Manga</see>.
@@ -19,7 +19,7 @@ namespace Azuria.User.Comment
         {
             this.AnimeMangaObject = animeMangaObject;
             this.Author = user ?? new User(dataModel.Username, dataModel.UserId,
-                new Uri("https://cdn.proxer.me/avatar/" + dataModel.Avatar));
+                              new Uri("https://cdn.proxer.me/avatar/" + dataModel.Avatar));
             this.Content = dataModel.CommentContent;
             this.Id = dataModel.CommentId;
             this.Progress = dataModel.ContentIndex;
@@ -103,7 +103,7 @@ namespace Azuria.User.Comment
             if (senpai.Me.Id != this.Author.Id)
                 return
                     new ProxerResult(new[]
-                    {new ArgumentException($"{nameof(senpai)} is not the author of this comment!")});
+                        {new ArgumentException($"{nameof(senpai)} is not the author of this comment!")});
             if (progress < 0) return new ProxerResult(new[] {new ArgumentException(nameof(progress))});
 
             ProxerResult<ProxerApiResponse> lResult =

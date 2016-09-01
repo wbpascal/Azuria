@@ -10,8 +10,8 @@ using Azuria.Api.v1.DataModels.Search;
 using Azuria.Api.v1.DataModels.Ucp;
 using Azuria.Api.v1.Enums;
 using Azuria.Exceptions;
-using Azuria.User.Comment;
-using Azuria.User.ControlPanel;
+using Azuria.UserInfo.Comment;
+using Azuria.UserInfo.ControlPanel;
 using Azuria.Utilities.ErrorHandling;
 using Azuria.Utilities.Extensions;
 using Azuria.Utilities.Properties;
@@ -300,7 +300,7 @@ namespace Azuria.AnimeManga
 
             ProxerResult<AnimeMangaContentDataModel[]> lContentObjectsResult =
                 await this.GetContentObjects();
-            if (!lContentObjectsResult.Success || lContentObjectsResult.Result == null)
+            if (!lContentObjectsResult.Success || (lContentObjectsResult.Result == null))
                 return new ProxerResult<IEnumerable<Chapter>>(lContentObjectsResult.Exceptions);
 
             return new ProxerResult<IEnumerable<Chapter>>(from contentDataModel in lContentObjectsResult.Result

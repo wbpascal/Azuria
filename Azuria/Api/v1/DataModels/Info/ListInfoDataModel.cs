@@ -8,7 +8,8 @@ namespace Azuria.Api.v1.DataModels.Info
     {
         #region Properties
 
-        [JsonProperty("kat"), JsonConverter(typeof(CategoryConverter))]
+        [JsonProperty("kat")]
+        [JsonConverter(typeof(CategoryConverter))]
         internal AnimeMangaEntryType Category { get; set; }
 
         [JsonProperty("episodes")]

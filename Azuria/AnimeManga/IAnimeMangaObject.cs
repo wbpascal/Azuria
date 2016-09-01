@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Azuria.AnimeManga.Properties;
-using Azuria.User.ControlPanel;
+using Azuria.UserInfo.ControlPanel;
 using Azuria.Utilities.ErrorHandling;
 using Azuria.Utilities.Properties;
 using JetBrains.Annotations;

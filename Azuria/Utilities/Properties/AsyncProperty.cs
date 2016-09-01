@@ -48,7 +48,7 @@ namespace Azuria.Utilities.Properties
             if (this._getFunc == null) return new ProxerResult<T>(this._currentValue);
 
             ProxerResult<T> lGetObjectResult = await this._getFunc.Invoke();
-            if (!lGetObjectResult.Success || lGetObjectResult.Result == null)
+            if (!lGetObjectResult.Success || (lGetObjectResult.Result == null))
                 return new ProxerResult<T>(lGetObjectResult.Exceptions);
 
             this._currentValue = lGetObjectResult.Result;
@@ -58,7 +58,7 @@ namespace Azuria.Utilities.Properties
         private async Task<T> GetAndThrow()
         {
             ProxerResult<T> lResult = await this.Get();
-            if (!lResult.Success || lResult.Result == null)
+            if (!lResult.Success || (lResult.Result == null))
                 throw lResult.Exceptions.FirstOrDefault() ?? new Exception();
 
             return lResult.Result;

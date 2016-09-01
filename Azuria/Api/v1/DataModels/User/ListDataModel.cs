@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using Azuria.AnimeManga.Properties;
 using Azuria.Api.v1.Converters;
 using Azuria.Api.v1.Enums;
-using Azuria.User;
-using Azuria.User.Comment;
+using Azuria.UserInfo;
+using Azuria.UserInfo.Comment;
 using Newtonsoft.Json;
 
 namespace Azuria.Api.v1.DataModels.User
@@ -25,10 +25,12 @@ namespace Azuria.Api.v1.DataModels.User
         [JsonProperty("cid")]
         internal int CommentId { get; set; }
 
-        [JsonProperty("timestamp"), JsonConverter(typeof(UnixToDateTimeConverter))]
+        [JsonProperty("timestamp")]
+        [JsonConverter(typeof(UnixToDateTimeConverter))]
         internal DateTime CommentLastChanged { get; set; }
 
-        [JsonProperty("data"), JsonConverter(typeof(SubRatingsConverter))]
+        [JsonProperty("data")]
+        [JsonConverter(typeof(SubRatingsConverter))]
         internal Dictionary<RatingCategory, int> CommentSubRatings { get; set; }
 
         [JsonProperty("count")]

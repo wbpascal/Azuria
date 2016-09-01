@@ -9,18 +9,16 @@ using Azuria.Api.v1.DataModels;
 using Azuria.Utilities;
 using Azuria.Utilities.ErrorHandling;
 
-namespace Azuria.User.Comment
+namespace Azuria.UserInfo.Comment
 {
-    /// <summary>
-    /// </summary>
-    public sealed class CommentEnumerator<T> : PageEnumerator<Comment<T>> where T : IAnimeMangaObject
+    internal class CommentEnumerator<T> : PageEnumerator<Comment<T>> where T : IAnimeMangaObject
     {
         private const int ResultsPerPage = 100;
         private readonly T _animeMangaObject;
         private readonly string _sort;
         private readonly User _user;
 
-        internal CommentEnumerator(T animeMangaObject, string sort)
+        internal CommentEnumerator(T animeMangaObject, string sort) : base(ResultsPerPage)
         {
             this._animeMangaObject = animeMangaObject;
             this._sort = sort;
@@ -42,11 +40,11 @@ namespace Azuria.User.Comment
                             nextPage, ResultsPerPage, this._sort)
                         : ApiRequestBuilder.UserGetLatestComments(this._user.Id, nextPage, ResultsPerPage,
                             typeof(T).GetTypeInfo().Name.ToLower(), 0));
-            if (!lResult.Success || lResult.Result == null)
+            if (!lResult.Success || (lResult.Result == null))
                 return new ProxerResult<IEnumerable<Comment<T>>>(lResult.Exceptions);
             CommentDataModel[] lData = lResult.Result.Data;
 
-            if (this._user != null && lData.Any()) this.InitialiseUserValues(lData.First());
+            if ((this._user != null) && lData.Any()) this.InitialiseUserValues(lData.First());
             return new ProxerResult<IEnumerable<Comment<T>>>(this.ToCommentList(lData).ToArray());
         }
 

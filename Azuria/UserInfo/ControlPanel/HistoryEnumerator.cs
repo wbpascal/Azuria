@@ -8,12 +8,9 @@ using Azuria.Api.v1.Enums;
 using Azuria.Utilities;
 using Azuria.Utilities.ErrorHandling;
 
-namespace Azuria.User.ControlPanel
+namespace Azuria.UserInfo.ControlPanel
 {
-    /// <summary>
-    /// </summary>
-    /// <typeparam name="T"></typeparam>
-    public class HistoryEnumerator<T> : PageEnumerator<HistoryObject<T>> where T : IAnimeMangaObject
+    internal class HistoryEnumerator<T> : PageEnumerator<HistoryObject<T>> where T : IAnimeMangaObject
     {
         private const int ResultsPerPage = 50;
         private readonly UserControlPanel _controlPanel;
@@ -29,11 +26,11 @@ namespace Azuria.User.ControlPanel
 
         private static IAnimeMangaContent<T> GetAnimeMangaContent(HistoryDataModel dataModel)
         {
-            if (typeof(T) == typeof(Anime) ||
-                (typeof(T) == typeof(IAnimeMangaObject) && dataModel.EntryType == AnimeMangaEntryType.Anime))
+            if ((typeof(T) == typeof(Anime)) ||
+                ((typeof(T) == typeof(IAnimeMangaObject)) && (dataModel.EntryType == AnimeMangaEntryType.Anime)))
                 return (IAnimeMangaContent<T>) new Anime.Episode(dataModel);
-            if (typeof(T) == typeof(Manga) ||
-                (typeof(T) == typeof(IAnimeMangaObject) && dataModel.EntryType == AnimeMangaEntryType.Manga))
+            if ((typeof(T) == typeof(Manga)) ||
+                ((typeof(T) == typeof(IAnimeMangaObject)) && (dataModel.EntryType == AnimeMangaEntryType.Manga)))
                 return (IAnimeMangaContent<T>) new Manga.Chapter(dataModel);
 
             return null;
@@ -45,14 +42,14 @@ namespace Azuria.User.ControlPanel
                 await
                     RequestHandler.ApiRequest(ApiRequestBuilder.UcpGetHistory(nextPage, ResultsPerPage,
                         this._senpai));
-            if (!lResult.Success || lResult.Result == null)
+            if (!lResult.Success || (lResult.Result == null))
                 return new ProxerResult<IEnumerable<HistoryObject<T>>>(lResult.Exceptions);
             HistoryDataModel[] lData = lResult.Result.Data;
 
             return new ProxerResult<IEnumerable<HistoryObject<T>>>(from historyDataModel in lData
                 select
-                    new HistoryObject<T>(GetAnimeMangaContent(historyDataModel), historyDataModel.TimeStamp,
-                        this._controlPanel));
+                new HistoryObject<T>(GetAnimeMangaContent(historyDataModel), historyDataModel.TimeStamp,
+                    this._controlPanel));
         }
 
         #endregion

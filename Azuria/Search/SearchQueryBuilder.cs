@@ -37,10 +37,8 @@ namespace Azuria.Search
 
             string lReturn = string.Empty;
             foreach (FskType fskType in fskTypes)
-            {
                 if (FskHelper.FskToStringDictionary.ContainsKey(fskType))
                     lReturn += FskHelper.FskToStringDictionary[fskType] + " ";
-            }
             return lReturn.TrimEnd();
         }
 
@@ -51,9 +49,7 @@ namespace Azuria.Search
             string lReturn = string.Empty;
             Dictionary<GenreType, string> lLookupDictionary = GenreHelper.StringToGenreDictionary.ReverseDictionary();
             foreach (GenreType genreType in genre)
-            {
                 if (lLookupDictionary.ContainsKey(genreType)) lReturn += lLookupDictionary[genreType] + " ";
-            }
             return lReturn.TrimEnd();
         }
 
@@ -76,9 +72,7 @@ namespace Azuria.Search
 
             string lReturn = string.Empty;
             foreach (TagType tag in tags)
-            {
                 lReturn += (int) tag + " ";
-            }
             return lReturn.TrimEnd();
         }
 

@@ -1,5 +1,6 @@
 ﻿using System;
-using Azuria.Utilities;
+using Azuria.Api.v1.DataModels.Messenger;
+using Azuria.UserInfo;
 using JetBrains.Annotations;
 
 namespace Azuria.Community
@@ -9,69 +10,38 @@ namespace Azuria.Community
     /// </summary>
     public class Message
     {
-        /// <summary>
-        ///     The action of the message.
-        /// </summary>
-        public enum Action
+        internal Message([NotNull] MessageDataModel dataModel, int conferenceId)
         {
-            /// <summary>
-            ///     Normal message, only text content.
-            /// </summary>
-            NoAction,
-
-            /// <summary>
-            ///     A user was added to the conference.
-            /// </summary>
-            AddUser,
-
-            /// <summary>
-            ///     A user was removed from the conference.
-            /// </summary>
-            RemoveUser,
-
-            /// <summary>
-            ///     The leader of the conference was changed.
-            /// </summary>
-            SetLeader,
-
-            /// <summary>
-            ///     The topic of the conference was changed.
-            /// </summary>
-            SetTopic,
-
-            /// <summary>
-            ///     A message was returned directly by the system. Happens most of the times if the user issued a command.
-            /// </summary>
-            GetAction
-        }
-
-        internal Message([NotNull] User.User sender, int mid, [NotNull] string nachricht, int unix, Action action)
-            : this(sender, mid, nachricht, Utility.UnixTimeStampToDateTime(unix), action)
-        {
-        }
-
-        internal Message([NotNull] User.User sender, int mid, [NotNull] string nachricht, DateTime date,
-            Action action)
-        {
-            this.Sender = sender;
-            this.MessageId = mid;
-            this.Content = nachricht;
-            this.TimeStamp = date;
-            this.MessageAction = action;
+            this.ConferenceId = conferenceId;
+            this.Content = dataModel.MessageContent;
+            this.Device = dataModel.SenderDevice;
+            this.Action = dataModel.MessageAction;
+            this.MessageId = dataModel.MessageId;
+            this.Sender = new User(dataModel.SenderUsername, dataModel.SenderUserId);
+            this.TimeStamp = dataModel.MessageTimeStamp;
         }
 
         #region Properties
 
         /// <summary>
+        ///     Gets the action of the message.
+        /// </summary>
+        public MessageAction Action { get; }
+
+        /// <summary>
+        /// </summary>
+        public int ConferenceId { get; }
+
+        /// <summary>
         ///     Gets the message content.
         /// </summary>
         [NotNull]
-        public string Content { get; private set; }
+        public string Content { get; }
 
         /// <summary>
-        ///     Gets the action of the message.
         /// </summary>
-        public Action MessageAction { get; }
+        [NotNull]
+        public string Device { get; }
 
         /// <summary>
         ///     Gets the Id of the current message.
@@ -82,12 +52,12 @@ namespace Azuria.Community
         ///     Gets the sender of the current message.
         /// </summary>
         [NotNull]
-        public User.User Sender { get; private set; }
+        public User Sender { get; }
 
         /// <summary>
         ///     Gets the timestamp of the current message.
         /// </summary>
-        public DateTime TimeStamp { get; private set; }
+        public DateTime TimeStamp { get; }
 
         #endregion
     }

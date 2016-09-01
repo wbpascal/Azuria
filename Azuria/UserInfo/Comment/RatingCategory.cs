@@ -1,4 +1,4 @@
-﻿namespace Azuria.User.Comment
+﻿namespace Azuria.UserInfo.Comment
 {
     /// <summary>
     ///     Represents a category in which the user gave a rating in his <see cref="Comment" />.

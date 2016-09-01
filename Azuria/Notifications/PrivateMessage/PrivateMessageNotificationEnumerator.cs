@@ -1,10 +1,8 @@
 ﻿using System;
 using System.Collections;
-using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
 using Azuria.Api;
-using Azuria.Community;
 using Azuria.Exceptions;
 using Azuria.Utilities.ErrorHandling;
 using Azuria.Utilities.Extensions;
@@ -97,18 +95,18 @@ namespace Azuria.Notifications.PrivateMessage
                 HtmlNode[] lNodes =
                     lDocument.DocumentNode.SelectNodesUtility("class", "conferenceList").ToArray();
 
-                this._notifications = (from curNode in lNodes
-                    let lTitle =
-                        curNode.ChildNodes[curNode.FirstChild.Name.Equals("img") ? 1 : 0].InnerText
-                    let lTimeStamp =
-                        DateTime.ParseExact(
-                            curNode.ChildNodes[curNode.FirstChild.Name.Equals("img") ? 2 : 1].InnerText, "dd.MM.yyyy",
-                            CultureInfo.InvariantCulture)
-                    let lId =
-                        Convert.ToInt32(
-                            curNode.Attributes["href"].Value.GetTagContents("?id=", "#top").FirstOrDefault() ?? "-1")
-                    select new PrivateMessageNotification(new Conference(lTitle, lId, this._senpai), lTimeStamp))
-                    .ToArray();
+                //this._notifications = (from curNode in lNodes
+                //    let lTitle =
+                //        curNode.ChildNodes[curNode.FirstChild.Name.Equals("img") ? 1 : 0].InnerText
+                //    let lTimeStamp =
+                //        DateTime.ParseExact(
+                //            curNode.ChildNodes[curNode.FirstChild.Name.Equals("img") ? 2 : 1].InnerText, "dd.MM.yyyy",
+                //            CultureInfo.InvariantCulture)
+                //    let lId =
+                //        Convert.ToInt32(
+                //            curNode.Attributes["href"].Value.GetTagContents("?id=", "#top").FirstOrDefault() ?? "-1")
+                //    select new PrivateMessageNotification(new Conference(lTitle, lId, this._senpai), lTimeStamp))
+                //    .ToArray();
 
                 return new ProxerResult();
             }

@@ -9,7 +9,8 @@ namespace Azuria.Api.v1.DataModels.Info
     {
         #region Properties
 
-        [JsonProperty("country"), JsonConverter(typeof(PublisherCountryConverter))]
+        [JsonProperty("country")]
+        [JsonConverter(typeof(PublisherCountryConverter))]
         internal Country Country { get; set; }
 
         [JsonProperty("id")]
@@ -18,7 +19,8 @@ namespace Azuria.Api.v1.DataModels.Info
         [JsonProperty("name")]
         internal string Name { get; set; }
 
-        [JsonProperty("type"), JsonConverter(typeof(StringEnumConverter))]
+        [JsonProperty("type")]
+        [JsonConverter(typeof(StringEnumConverter))]
         internal Industry.IndustryType Type { get; set; }
 
         #endregion

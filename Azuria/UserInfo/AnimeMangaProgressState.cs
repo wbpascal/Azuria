@@ -1,6 +1,6 @@
 ﻿using Azuria.AnimeManga;
 
-namespace Azuria.User
+namespace Azuria.UserInfo
 {
     /// <summary>
     ///     Represents the category a user has categorised his progress of an <see cref="Anime" /> or <see cref="Manga" /> in.

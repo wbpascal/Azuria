@@ -49,7 +49,6 @@ namespace Azuria.Utilities.Extensions
         {
             int lInitialisedProperties = 0, lInitialiseFunctions = 0;
             foreach (PropertyInfo propertyInfo in objectToTest.GetType().GetRuntimeProperties())
-            {
                 if (propertyInfo.PropertyType.ImplementsGenericInterface(typeof(IInitialisableProperty<>)))
                 {
                     lInitialiseFunctions++;
@@ -69,7 +68,6 @@ namespace Azuria.Utilities.Extensions
                         return false;
                     }
                 }
-            }
 
             return lInitialisedProperties == lInitialiseFunctions;
         }

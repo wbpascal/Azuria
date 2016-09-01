@@ -10,8 +10,8 @@ using Azuria.Api.v1.DataModels.Search;
 using Azuria.Api.v1.DataModels.Ucp;
 using Azuria.Api.v1.Enums;
 using Azuria.Exceptions;
-using Azuria.User.Comment;
-using Azuria.User.ControlPanel;
+using Azuria.UserInfo.Comment;
+using Azuria.UserInfo.ControlPanel;
 using Azuria.Utilities.ErrorHandling;
 using Azuria.Utilities.Extensions;
 using Azuria.Utilities.Properties;
@@ -295,7 +295,7 @@ namespace Azuria.AnimeManga
 
             ProxerResult<AnimeMangaContentDataModel[]> lContentObjectsResult =
                 await this.GetContentObjects();
-            if (!lContentObjectsResult.Success || lContentObjectsResult.Result == null)
+            if (!lContentObjectsResult.Success || (lContentObjectsResult.Result == null))
                 return new ProxerResult<IEnumerable<Episode>>(lContentObjectsResult.Exceptions);
 
             return new ProxerResult<IEnumerable<Episode>>(from contentDataModel in lContentObjectsResult.Result
@@ -343,11 +343,11 @@ namespace Azuria.AnimeManga
             /// </summary>
             public Language GeneralLanguage
                 =>
-                    this.Language == AnimeLanguage.GerSub || this.Language == AnimeLanguage.GerDub
-                        ? Properties.Language.German
-                        : this.Language == AnimeLanguage.EngSub || this.Language == AnimeLanguage.EngDub
-                            ? Properties.Language.English
-                            : Properties.Language.Unkown;
+                (this.Language == AnimeLanguage.GerSub) || (this.Language == AnimeLanguage.GerDub)
+                    ? Properties.Language.German
+                    : (this.Language == AnimeLanguage.EngSub) || (this.Language == AnimeLanguage.EngDub)
+                        ? Properties.Language.English
+                        : Properties.Language.Unkown;
 
             /// <summary>
             ///     Gets the language of the episode

@@ -31,10 +31,8 @@ namespace Azuria.Utilities.Extensions
         {
             Dictionary<TValue, TKey> dictionary = new Dictionary<TValue, TKey>();
             foreach (KeyValuePair<TKey, TValue> entry in source)
-            {
                 if (!dictionary.ContainsKey(entry.Value))
                     dictionary.Add(entry.Value, entry.Key);
-            }
             return dictionary;
         }
 

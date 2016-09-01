@@ -91,7 +91,7 @@ namespace Azuria.Notifications.News
 
             string lResponse = lResult.Result;
 
-            if (lResponse == null || !lResponse.StartsWith("{\"error\":0"))
+            if ((lResponse == null) || !lResponse.StartsWith("{\"error\":0"))
                 return new ProxerResult
                 {
                     Success = false

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Azuria.User.Comment;
+using Azuria.UserInfo.Comment;
 using Newtonsoft.Json;
 
 namespace Azuria.Api.v1.Converters

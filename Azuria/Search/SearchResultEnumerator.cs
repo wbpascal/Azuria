@@ -11,14 +11,12 @@ using Azuria.Utilities.ErrorHandling;
 
 namespace Azuria.Search
 {
-    /// <summary>
-    /// </summary>
-    public sealed class SearchResultEnumerator<T> : PageEnumerator<T> where T : IAnimeMangaObject
+    internal class SearchResultEnumerator<T> : PageEnumerator<T> where T : IAnimeMangaObject
     {
         private const int ResultsPerPage = 100;
         private readonly SearchInput _input;
 
-        internal SearchResultEnumerator(SearchInput input)
+        internal SearchResultEnumerator(SearchInput input) : base(ResultsPerPage)
         {
             this._input = input;
         }
@@ -36,9 +34,9 @@ namespace Azuria.Search
         {
             return (from searchDataModel in dataModels
                 select
-                    searchDataModel.EntryType == AnimeMangaEntryType.Anime
-                        ? new Anime(searchDataModel)
-                        : (IAnimeMangaObject) new Manga(searchDataModel)).Cast<T>();
+                searchDataModel.EntryType == AnimeMangaEntryType.Anime
+                    ? new Anime(searchDataModel)
+                    : (IAnimeMangaObject) new Manga(searchDataModel)).Cast<T>();
         }
 
         private static IEnumerable<T> GetMangaList(IEnumerable<SearchDataModel> dataModels)
@@ -53,7 +51,8 @@ namespace Azuria.Search
             ProxerResult<ProxerApiResponse<SearchDataModel[]>> lResult =
                 await
                     RequestHandler.ApiRequest(ApiRequestBuilder.SearchEntrySearch(this._input, ResultsPerPage, nextPage));
-            if (!lResult.Success || lResult.Result == null) return new ProxerResult<IEnumerable<T>>(lResult.Exceptions);
+            if (!lResult.Success || (lResult.Result == null))
+                return new ProxerResult<IEnumerable<T>>(lResult.Exceptions);
             SearchDataModel[] lData = lResult.Result.Data;
 
             if (typeof(T) == typeof(Anime)) return new ProxerResult<IEnumerable<T>>(GetAnimeList(lData));

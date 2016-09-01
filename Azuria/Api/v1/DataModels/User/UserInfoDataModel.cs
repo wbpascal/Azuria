@@ -1,6 +1,6 @@
 ﻿using System;
 using Azuria.Api.v1.Converters;
-using Azuria.User;
+using Azuria.UserInfo;
 using Newtonsoft.Json;
 
 namespace Azuria.Api.v1.DataModels.User
@@ -10,12 +10,12 @@ namespace Azuria.Api.v1.DataModels.User
         #region Properties
 
         [JsonProperty("avatar")]
-        internal string Avatar { get; set; }
+        internal string AvatarId { get; set; }
 
         internal UserPoints Points
             =>
-                new UserPoints(this.PointsAnime, this.PointsManga, this.PointsInfo, this.PointsUploads, this.PointsForum,
-                    this.PointsMisc);
+            new UserPoints(this.PointsAnime, this.PointsManga, this.PointsInfo, this.PointsUploads, this.PointsForum,
+                this.PointsMisc);
 
         [JsonProperty("points_anime")]
         internal int PointsAnime { get; set; }
@@ -37,7 +37,8 @@ namespace Azuria.Api.v1.DataModels.User
 
         internal UserStatus Status => new UserStatus(this.StatusText, this.StatusLastChanged);
 
-        [JsonProperty("status_time"), JsonConverter(typeof(UnixToDateTimeConverter))]
+        [JsonProperty("status_time")]
+        [JsonConverter(typeof(UnixToDateTimeConverter))]
         internal DateTime StatusLastChanged { get; set; }
 
         [JsonProperty("state")]

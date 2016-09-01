@@ -12,7 +12,7 @@ using Azuria.Utilities.ErrorHandling;
 using Azuria.Utilities.Properties;
 using JetBrains.Annotations;
 
-namespace Azuria.User.ControlPanel
+namespace Azuria.UserInfo.ControlPanel
 {
     /// <summary>
     ///     Represents the User-Control-Panel of a specified user.
@@ -136,7 +136,7 @@ namespace Azuria.User.ControlPanel
         {
             ProxerResult<ProxerApiResponse<ToptenDataModel[]>> lResult =
                 await RequestHandler.ApiRequest(ApiRequestBuilder.UcpGetTopten(this._senpai));
-            if (!lResult.Success || lResult.Result == null) return new ProxerResult(lResult.Exceptions);
+            if (!lResult.Success || (lResult.Result == null)) return new ProxerResult(lResult.Exceptions);
 
             ToptenDataModel[] lData = lResult.Result.Data;
             this._toptenAnime.SetInitialisedObject(from toptenDataModel in lData
@@ -153,7 +153,7 @@ namespace Azuria.User.ControlPanel
         {
             ProxerResult<ProxerApiResponse<VoteDataModel[]>> lResult =
                 await RequestHandler.ApiRequest(ApiRequestBuilder.UcpGetVotes(this._senpai));
-            if (!lResult.Success || lResult.Result == null) return new ProxerResult(lResult.Exceptions);
+            if (!lResult.Success || (lResult.Result == null)) return new ProxerResult(lResult.Exceptions);
 
             this._commentVotes.SetInitialisedObject(from voteDataModel in lResult.Result.Data
                 select new CommentVote(voteDataModel, this));

@@ -46,13 +46,11 @@ namespace Azuria.Notifications.FriendRequest
             foreach (Senpai senpai in CallbackDictionary.Keys)
             {
                 ProxerResult<int> lNotificationCountResult = await GetAvailableNotificationsCount(senpai);
-                if (!lNotificationCountResult.Success || lNotificationCountResult.Result == 0) continue;
+                if (!lNotificationCountResult.Success || (lNotificationCountResult.Result == 0)) continue;
                 FriendRequestNotification[] lNotifications =
                     new FriendRequestNotificationCollection(senpai).Take(lNotificationCountResult.Result).ToArray();
                 foreach (FriendRequestNotificationEventHandler notificationCallback in CallbackDictionary[senpai])
-                {
                     notificationCallback?.Invoke(senpai, lNotifications);
-                }
             }
             Timer.Start();
         }
@@ -67,7 +65,7 @@ namespace Azuria.Notifications.FriendRequest
                     ApiInfo.HttpClient.GetRequest(new Uri("https://proxer.me/notifications?format=raw&s=count"),
                         senpai);
 
-            if (!lResult.Success || lResult.Result == null)
+            if (!lResult.Success || (lResult.Result == null))
                 return new ProxerResult<int>(lResult.Exceptions);
 
             string lResponse = lResult.Result;

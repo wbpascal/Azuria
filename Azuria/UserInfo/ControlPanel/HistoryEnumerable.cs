@@ -2,20 +2,20 @@
 using System.Collections.Generic;
 using Azuria.AnimeManga;
 
-namespace Azuria.User.ControlPanel
+namespace Azuria.UserInfo.ControlPanel
 {
     /// <summary>
     /// </summary>
     /// <typeparam name="T"></typeparam>
-    public class BookmarkEnumerable<T> : IEnumerable<BookmarkObject<T>> where T : class, IAnimeMangaObject
+    public class HistoryEnumerable<T> : IEnumerable<HistoryObject<T>> where T : IAnimeMangaObject
     {
-        private readonly UserControlPanel _controlPanel;
         private readonly Senpai _senpai;
+        private readonly UserControlPanel _userControlPanel;
 
-        internal BookmarkEnumerable(Senpai senpai, UserControlPanel controlPanel)
+        internal HistoryEnumerable(Senpai senpai, UserControlPanel userControlPanel)
         {
             this._senpai = senpai;
-            this._controlPanel = controlPanel;
+            this._userControlPanel = userControlPanel;
         }
 
         #region Inherited
@@ -29,9 +29,9 @@ namespace Azuria.User.ControlPanel
 
         /// <summary>Returns an enumerator that iterates through the collection.</summary>
         /// <returns>An enumerator that can be used to iterate through the collection.</returns>
-        public IEnumerator<BookmarkObject<T>> GetEnumerator()
+        public IEnumerator<HistoryObject<T>> GetEnumerator()
         {
-            return new BookmarkEnumerator<T>(this._senpai, this._controlPanel);
+            return new HistoryEnumerator<T>(this._senpai, this._userControlPanel);
         }
 
         #endregion

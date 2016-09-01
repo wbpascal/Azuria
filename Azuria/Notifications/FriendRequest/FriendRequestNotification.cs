@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Azuria.Api;
+using Azuria.UserInfo;
 using Azuria.Utilities.ErrorHandling;
 using JetBrains.Annotations;
 
@@ -15,7 +16,7 @@ namespace Azuria.Notifications.FriendRequest
         private readonly Senpai _senpai;
         private bool _handled;
 
-        internal FriendRequestNotification([NotNull] User.User user, DateTime requestTimeStamp,
+        internal FriendRequestNotification([NotNull] User user, DateTime requestTimeStamp,
             [NotNull] Senpai senpai)
         {
             this.TimeStamp = requestTimeStamp;
@@ -45,7 +46,7 @@ namespace Azuria.Notifications.FriendRequest
         ///     Gets the user that send the friend request.
         /// </summary>
         [NotNull]
-        public User.User User { get; }
+        public User User { get; }
 
         #endregion
 

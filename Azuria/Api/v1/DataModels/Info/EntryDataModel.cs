@@ -29,16 +29,20 @@ namespace Azuria.Api.v1.DataModels.Info
         [JsonProperty("name")]
         public string EntryName { get; set; }
 
-        [JsonProperty("kat"), JsonConverter(typeof(CategoryConverter))]
+        [JsonProperty("kat")]
+        [JsonConverter(typeof(CategoryConverter))]
         public AnimeMangaEntryType EntryType { get; set; }
 
-        [JsonProperty("fsk"), JsonConverter(typeof(FskConverter))]
+        [JsonProperty("fsk")]
+        [JsonConverter(typeof(FskConverter))]
         internal IEnumerable<FskType> Fsk { get; set; }
 
-        [JsonProperty("genre"), JsonConverter(typeof(GenreConverter))]
+        [JsonProperty("genre")]
+        [JsonConverter(typeof(GenreConverter))]
         internal IEnumerable<GenreType> Genre { get; set; }
 
-        [JsonProperty("license"), JsonConverter(typeof(IsLicensedConverter))]
+        [JsonProperty("license")]
+        [JsonConverter(typeof(IsLicensedConverter))]
         internal bool IsLicensed { get; set; }
 
         internal AnimeMangaRating Rating => new AnimeMangaRating(this.TotalStars, this.Voters);

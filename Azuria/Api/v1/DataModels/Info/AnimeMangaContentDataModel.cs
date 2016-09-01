@@ -13,10 +13,12 @@ namespace Azuria.Api.v1.DataModels.Info
         [JsonProperty("no", Required = Required.Always)]
         internal int ContentIndex { get; set; }
 
-        [JsonProperty("typ", Required = Required.Always), JsonConverter(typeof(LanguageConverter))]
+        [JsonProperty("typ", Required = Required.Always)]
+        [JsonConverter(typeof(LanguageConverter))]
         internal AnimeMangaLanguage Language { get; set; }
 
-        [JsonProperty("types"), JsonConverter(typeof(StreamPartnerConverter))]
+        [JsonProperty("types")]
+        [JsonConverter(typeof(StreamPartnerConverter))]
         internal StreamPartner[] StreamPartners { get; set; }
 
         /// <summary>

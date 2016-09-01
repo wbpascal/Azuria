@@ -10,7 +10,7 @@ using Azuria.Utilities.ErrorHandling;
 namespace Azuria.Notifications.PrivateMessage
 {
     /// <summary>
-    /// TODO: Remove Notification Callback
+    ///     TODO: Remove Notification Callback
     /// </summary>
     public static class PrivateMessageNotificationManager
     {
@@ -47,13 +47,11 @@ namespace Azuria.Notifications.PrivateMessage
             foreach (Senpai senpai in CallbackDictionary.Keys)
             {
                 ProxerResult<int> lNotificationCountResult = await GetAvailableNotificationsCount(senpai);
-                if (!lNotificationCountResult.Success || lNotificationCountResult.Result == 0) continue;
+                if (!lNotificationCountResult.Success || (lNotificationCountResult.Result == 0)) continue;
                 PrivateMessageNotification[] lNotifications =
                     new PrivateMessageNotificationCollection(senpai).Take(lNotificationCountResult.Result).ToArray();
                 foreach (PrivateMessageNotificationEventHandler notificationCallback in CallbackDictionary[senpai])
-                {
                     notificationCallback?.Invoke(senpai, lNotifications);
-                }
             }
             Timer.Start();
         }
@@ -68,7 +66,7 @@ namespace Azuria.Notifications.PrivateMessage
                     ApiInfo.HttpClient.GetRequest(new Uri("https://proxer.me/notifications?format=raw&s=count"),
                         senpai);
 
-            if (!lResult.Success || lResult.Result == null)
+            if (!lResult.Success || (lResult.Result == null))
                 return new ProxerResult<int>(lResult.Exceptions);
 
             string lResponse = lResult.Result;

@@ -61,7 +61,7 @@ namespace Azuria.Utilities.ErrorHandling
         [CanBeNull]
         public T OnError([CanBeNull] T returnObject)
         {
-            return this.Success && this.Result != null ? this.Result : returnObject;
+            return this.Success && (this.Result != null) ? this.Result : returnObject;
         }
 
         #endregion
@@ -144,7 +144,7 @@ namespace Azuria.Utilities.ErrorHandling
             return
                 this.Exceptions.Any(
                     exception =>
-                        exception is ProxerApiException && ((ProxerApiException) exception).ErrorCode == errorCode);
+                            exception is ProxerApiException && (((ProxerApiException) exception).ErrorCode == errorCode));
         }
 
         #endregion

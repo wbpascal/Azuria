@@ -65,7 +65,7 @@ namespace Azuria.Utilities.Properties
         public async Task<ProxerResult<T>> GetNewObject()
         {
             ProxerResult lInitialiseResult = await this._initMethod.Invoke();
-            if (!lInitialiseResult.Success || this._initialisedObject == null)
+            if (!lInitialiseResult.Success || (this._initialisedObject == null))
                 return new ProxerResult<T>(lInitialiseResult.Exceptions);
 
             return new ProxerResult<T>(this._initialisedObject);
@@ -91,7 +91,7 @@ namespace Azuria.Utilities.Properties
         /// <returns>If the action was successful and if it was, the value of this property.</returns>
         public async Task<ProxerResult<T>> GetObject()
         {
-            if (this.IsInitialisedOnce && this._initialisedObject != null)
+            if (this.IsInitialisedOnce && (this._initialisedObject != null))
                 return new ProxerResult<T>(this._initialisedObject);
 
             return await this.GetNewObject();
@@ -117,7 +117,7 @@ namespace Azuria.Utilities.Properties
         private async Task<T> GetObjectAndThrow()
         {
             ProxerResult<T> lResult = await this.GetObject();
-            if (!lResult.Success || lResult.Result == null)
+            if (!lResult.Success || (lResult.Result == null))
                 throw lResult.Exceptions.FirstOrDefault() ?? new Exception();
 
             return lResult.Result;
@@ -132,7 +132,7 @@ namespace Azuria.Utilities.Properties
         [NotNull]
         public T GetObjectIfInitialised(T ifNot)
         {
-            return this.IsInitialisedOnce && this._initialisedObject != null ? this._initialisedObject : ifNot;
+            return this.IsInitialisedOnce && (this._initialisedObject != null) ? this._initialisedObject : ifNot;
         }
 
         internal void SetInitialisedObject(T initialisedObject)

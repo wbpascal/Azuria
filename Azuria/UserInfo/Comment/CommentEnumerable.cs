@@ -2,15 +2,23 @@
 using System.Collections.Generic;
 using Azuria.AnimeManga;
 
-namespace Azuria.User
+namespace Azuria.UserInfo.Comment
 {
     /// <summary>
     /// </summary>
-    public class UserEntryEnumerable<T> : IEnumerable<UserProfileEntry<T>> where T : class, IAnimeMangaObject
+    public class CommentEnumerable<T> : IEnumerable<Comment<T>> where T : IAnimeMangaObject
     {
+        private readonly T _animeMangaObject;
+        private readonly string _sort;
         private readonly User _user;
 
-        internal UserEntryEnumerable(User user)
+        internal CommentEnumerable(T animeMangaObject, string sort)
+        {
+            this._animeMangaObject = animeMangaObject;
+            this._sort = sort;
+        }
+
+        internal CommentEnumerable(User user)
         {
             this._user = user;
         }
@@ -26,9 +34,11 @@ namespace Azuria.User
 
         /// <summary>Returns an enumerator that iterates through the collection.</summary>
         /// <returns>An enumerator that can be used to iterate through the collection.</returns>
-        public IEnumerator<UserProfileEntry<T>> GetEnumerator()
+        public IEnumerator<Comment<T>> GetEnumerator()
         {
-            return new UserEntryEnumerator<T>(this._user);
+            return this._user == null
+                ? new CommentEnumerator<T>(this._animeMangaObject, this._sort)
+                : new CommentEnumerator<T>(this._user);
         }
 
         #endregion

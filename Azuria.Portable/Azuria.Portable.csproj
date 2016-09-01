@@ -172,6 +172,9 @@
     <Compile Include="..\Azuria\Api\v1\Converters\Messenger\ImageConverter.cs">
       <Link>Api\v1\Converters\Messenger\ImageConverter.cs</Link>
     </Compile>
+    <Compile Include="..\Azuria\Api\v1\Converters\Messenger\MessageActionConverter.cs">
+      <Link>Api\v1\Converters\Messenger\MessageActionConverter.cs</Link>
+    </Compile>
     <Compile Include="..\Azuria\Api\v1\Converters\SubRatingsConverter.cs">
       <Link>Api\v1\Converters\SubRatingsConverter.cs</Link>
     </Compile>
@@ -220,8 +223,20 @@
     <Compile Include="..\Azuria\Api\v1\DataModels\Messenger\ConferenceDataModel.cs">
       <Link>Api\v1\DataModels\Messenger\ConferenceDataModel.cs</Link>
     </Compile>
+    <Compile Include="..\Azuria\Api\v1\DataModels\Messenger\ConferenceInfoDataModel.cs">
+      <Link>Api\v1\DataModels\Messenger\ConferenceInfoDataModel.cs</Link>
+    </Compile>
+    <Compile Include="..\Azuria\Api\v1\DataModels\Messenger\ConferenceInfoMainDataModel.cs">
+      <Link>Api\v1\DataModels\Messenger\ConferenceInfoMainDataModel.cs</Link>
+    </Compile>
+    <Compile Include="..\Azuria\Api\v1\DataModels\Messenger\ConferenceInfoParticipantDataModel.cs">
+      <Link>Api\v1\DataModels\Messenger\ConferenceInfoParticipantDataModel.cs</Link>
+    </Compile>
     <Compile Include="..\Azuria\Api\v1\DataModels\Messenger\ConstantsDataModel.cs">
       <Link>Api\v1\DataModels\Messenger\ConstantsDataModel.cs</Link>
+    </Compile>
+    <Compile Include="..\Azuria\Api\v1\DataModels\Messenger\MessageDataModel.cs">
+      <Link>Api\v1\DataModels\Messenger\MessageDataModel.cs</Link>
     </Compile>
     <Compile Include="..\Azuria\Api\v1\DataModels\Search\SearchDataModel.cs">
       <Link>Api\v1\DataModels\Search\SearchDataModel.cs</Link>
@@ -274,11 +289,17 @@
     <Compile Include="..\Azuria\Community\Conference.cs">
       <Link>Community\Conference.cs</Link>
     </Compile>
+    <Compile Include="..\Azuria\Community\ConferenceInfo.cs">
+      <Link>Community\ConferenceInfo.cs</Link>
+    </Compile>
     <Compile Include="..\Azuria\Community\ConferenceListType.cs">
       <Link>Community\ConferenceListType.cs</Link>
     </Compile>
     <Compile Include="..\Azuria\Community\Message.cs">
       <Link>Community\Message.cs</Link>
+    </Compile>
+    <Compile Include="..\Azuria\Community\MessageAction.cs">
+      <Link>Community\MessageAction.cs</Link>
     </Compile>
     <Compile Include="..\Azuria\Community\MessageCollection.cs">
       <Link>Community\MessageCollection.cs</Link>
@@ -421,65 +442,65 @@
     <Compile Include="..\Azuria\Senpai.cs">
       <Link>Senpai.cs</Link>
     </Compile>
-    <Compile Include="..\Azuria\User\AnimeMangaProgressState.cs">
-      <Link>User\AnimeMangaProgressState.cs</Link>
+    <Compile Include="..\Azuria\UserInfo\AnimeMangaProgressState.cs">
+      <Link>UserInfo\AnimeMangaProgressState.cs</Link>
     </Compile>
-    <Compile Include="..\Azuria\User\Comment\Comment.cs">
-      <Link>User\Comment\Comment.cs</Link>
+    <Compile Include="..\Azuria\UserInfo\Comment\Comment.cs">
+      <Link>UserInfo\Comment\Comment.cs</Link>
     </Compile>
-    <Compile Include="..\Azuria\User\Comment\CommentEnumerable.cs">
-      <Link>User\Comment\CommentEnumerable.cs</Link>
+    <Compile Include="..\Azuria\UserInfo\Comment\CommentEnumerable.cs">
+      <Link>UserInfo\Comment\CommentEnumerable.cs</Link>
     </Compile>
-    <Compile Include="..\Azuria\User\Comment\CommentEnumerator.cs">
-      <Link>User\Comment\CommentEnumerator.cs</Link>
+    <Compile Include="..\Azuria\UserInfo\Comment\CommentEnumerator.cs">
+      <Link>UserInfo\Comment\CommentEnumerator.cs</Link>
     </Compile>
-    <Compile Include="..\Azuria\User\Comment\RatingCategory.cs">
-      <Link>User\Comment\RatingCategory.cs</Link>
+    <Compile Include="..\Azuria\UserInfo\Comment\RatingCategory.cs">
+      <Link>UserInfo\Comment\RatingCategory.cs</Link>
     </Compile>
-    <Compile Include="..\Azuria\User\ControlPanel\BookmarkEnumerable.cs">
-      <Link>User\ControlPanel\BookmarkEnumerable.cs</Link>
+    <Compile Include="..\Azuria\UserInfo\ControlPanel\BookmarkEnumerable.cs">
+      <Link>UserInfo\ControlPanel\BookmarkEnumerable.cs</Link>
     </Compile>
-    <Compile Include="..\Azuria\User\ControlPanel\BookmarkEnumerator.cs">
-      <Link>User\ControlPanel\BookmarkEnumerator.cs</Link>
+    <Compile Include="..\Azuria\UserInfo\ControlPanel\BookmarkEnumerator.cs">
+      <Link>UserInfo\ControlPanel\BookmarkEnumerator.cs</Link>
     </Compile>
-    <Compile Include="..\Azuria\User\ControlPanel\BookmarkObject.cs">
-      <Link>User\ControlPanel\BookmarkObject.cs</Link>
+    <Compile Include="..\Azuria\UserInfo\ControlPanel\BookmarkObject.cs">
+      <Link>UserInfo\ControlPanel\BookmarkObject.cs</Link>
     </Compile>
-    <Compile Include="..\Azuria\User\ControlPanel\CommentVote.cs">
-      <Link>User\ControlPanel\CommentVote.cs</Link>
+    <Compile Include="..\Azuria\UserInfo\ControlPanel\CommentVote.cs">
+      <Link>UserInfo\ControlPanel\CommentVote.cs</Link>
     </Compile>
-    <Compile Include="..\Azuria\User\ControlPanel\HistoryEnumerable.cs">
-      <Link>User\ControlPanel\HistoryEnumerable.cs</Link>
+    <Compile Include="..\Azuria\UserInfo\ControlPanel\HistoryEnumerable.cs">
+      <Link>UserInfo\ControlPanel\HistoryEnumerable.cs</Link>
     </Compile>
-    <Compile Include="..\Azuria\User\ControlPanel\HistoryEnumerator.cs">
-      <Link>User\ControlPanel\HistoryEnumerator.cs</Link>
+    <Compile Include="..\Azuria\UserInfo\ControlPanel\HistoryEnumerator.cs">
+      <Link>UserInfo\ControlPanel\HistoryEnumerator.cs</Link>
     </Compile>
-    <Compile Include="..\Azuria\User\ControlPanel\HistoryObject.cs">
-      <Link>User\ControlPanel\HistoryObject.cs</Link>
+    <Compile Include="..\Azuria\UserInfo\ControlPanel\HistoryObject.cs">
+      <Link>UserInfo\ControlPanel\HistoryObject.cs</Link>
     </Compile>
-    <Compile Include="..\Azuria\User\ControlPanel\ToptenObject.cs">
-      <Link>User\ControlPanel\ToptenObject.cs</Link>
+    <Compile Include="..\Azuria\UserInfo\ControlPanel\ToptenObject.cs">
+      <Link>UserInfo\ControlPanel\ToptenObject.cs</Link>
     </Compile>
-    <Compile Include="..\Azuria\User\ControlPanel\UserControlPanel.cs">
-      <Link>User\ControlPanel\UserControlPanel.cs</Link>
+    <Compile Include="..\Azuria\UserInfo\ControlPanel\UserControlPanel.cs">
+      <Link>UserInfo\ControlPanel\UserControlPanel.cs</Link>
     </Compile>
-    <Compile Include="..\Azuria\User\User.cs">
-      <Link>User\User.cs</Link>
+    <Compile Include="..\Azuria\UserInfo\User.cs">
+      <Link>UserInfo\User.cs</Link>
     </Compile>
-    <Compile Include="..\Azuria\User\UserEntryEnumerable.cs">
-      <Link>User\UserEntryEnumerable.cs</Link>
+    <Compile Include="..\Azuria\UserInfo\UserEntryEnumerable.cs">
+      <Link>UserInfo\UserEntryEnumerable.cs</Link>
     </Compile>
-    <Compile Include="..\Azuria\User\UserEntryEnumerator.cs">
-      <Link>User\UserEntryEnumerator.cs</Link>
+    <Compile Include="..\Azuria\UserInfo\UserEntryEnumerator.cs">
+      <Link>UserInfo\UserEntryEnumerator.cs</Link>
     </Compile>
-    <Compile Include="..\Azuria\User\UserPoints.cs">
-      <Link>User\UserPoints.cs</Link>
+    <Compile Include="..\Azuria\UserInfo\UserPoints.cs">
+      <Link>UserInfo\UserPoints.cs</Link>
     </Compile>
-    <Compile Include="..\Azuria\User\UserProfileEntry.cs">
-      <Link>User\UserProfileEntry.cs</Link>
+    <Compile Include="..\Azuria\UserInfo\UserProfileEntry.cs">
+      <Link>UserInfo\UserProfileEntry.cs</Link>
     </Compile>
-    <Compile Include="..\Azuria\User\UserStatus.cs">
-      <Link>User\UserStatus.cs</Link>
+    <Compile Include="..\Azuria\UserInfo\UserStatus.cs">
+      <Link>UserInfo\UserStatus.cs</Link>
     </Compile>
     <Compile Include="..\Azuria\Utilities\ErrorHandling\ErrorHandler.cs">
       <Link>Utilities\ErrorHandling\ErrorHandler.cs</Link>

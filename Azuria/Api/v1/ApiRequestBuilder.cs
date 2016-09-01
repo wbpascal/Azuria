@@ -77,16 +77,40 @@ namespace Azuria.Api.v1
             return new ApiRequest<SeasonDataModel[]>(new Uri($"{ApiAddress}/info/season?id={entryId}"));
         }
 
+        internal static ApiRequest<ConferenceInfoDataModel> MessengerGetConferenceInfo(int conferenceId, Senpai senpai)
+        {
+            return
+                new ApiRequest<ConferenceInfoDataModel>(
+                    new Uri($"{ApiAddress}/messenger/conferenceinfo?conference_id={conferenceId}"))
+                {
+                    CheckLogin = true,
+                    Senpai = senpai
+                };
+        }
+
+        internal static ApiRequest<ConferenceDataModel[]> MessengerGetConferences(ConferenceListType type, int page,
+            Senpai senpai)
+        {
+            return
+                new ApiRequest<ConferenceDataModel[]>(
+                    new Uri($"{ApiAddress}/messenger/conferences?type={type.ToString().ToLowerInvariant()}&p={page}"))
+                {
+                    CheckLogin = true,
+                    Senpai = senpai
+                };
+        }
+
         internal static ApiRequest<ConstantsDataModel> MessengerGetConstants()
         {
             return new ApiRequest<ConstantsDataModel>(new Uri($"{ApiAddress}/messenger/constants"));
         }
 
-        internal static ApiRequest<ConferenceDataModel[]> MessengerGetConferences(ConferenceListType type, int page, Senpai senpai)
+        internal static ApiRequest<MessageDataModel[]> MessengerGetMessages(Senpai senpai, int conferenceId = 0,
+            int messageId = 0)
         {
             return
-                new ApiRequest<ConferenceDataModel[]>(
-                    new Uri($"{ApiAddress}/messenger/conferences?type={type.ToString().ToLowerInvariant()}&p={page}"))
+                new ApiRequest<MessageDataModel[]>(
+                    new Uri($"{ApiAddress}/messenger/messages?conference_id={conferenceId}&message_id={messageId}"))
                 {
                     CheckLogin = true,
                     Senpai = senpai

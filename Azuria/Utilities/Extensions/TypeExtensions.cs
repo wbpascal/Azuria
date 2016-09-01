@@ -12,9 +12,7 @@ namespace Azuria.Utilities.Extensions
         internal static bool HasParameterlessConstructor([NotNull] this Type type)
         {
             foreach (ConstructorInfo ctor in type.GetTypeInfo().DeclaredConstructors)
-            {
-                if (!ctor.IsPrivate && ctor.GetParameters().Length == 0) return true;
-            }
+                if (!ctor.IsPrivate && (ctor.GetParameters().Length == 0)) return true;
             return false;
         }
 

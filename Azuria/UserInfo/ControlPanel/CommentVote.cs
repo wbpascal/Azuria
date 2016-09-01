@@ -2,7 +2,7 @@
 using Azuria.Api.v1.DataModels.Ucp;
 using Azuria.Utilities.ErrorHandling;
 
-namespace Azuria.User.ControlPanel
+namespace Azuria.UserInfo.ControlPanel
 {
     /// <summary>
     /// </summary>

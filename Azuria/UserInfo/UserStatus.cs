@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Azuria.User
+namespace Azuria.UserInfo
 {
     /// <summary>
     /// </summary>

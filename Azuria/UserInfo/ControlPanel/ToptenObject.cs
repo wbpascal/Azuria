@@ -2,7 +2,7 @@
 using Azuria.AnimeManga;
 using Azuria.Utilities.ErrorHandling;
 
-namespace Azuria.User.ControlPanel
+namespace Azuria.UserInfo.ControlPanel
 {
     /// <summary>
     /// </summary>

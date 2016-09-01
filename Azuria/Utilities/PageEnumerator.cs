@@ -12,10 +12,18 @@ namespace Azuria.Utilities
     /// </summary>
     public abstract class PageEnumerator<T> : IEnumerator<T>
     {
-        private const int ResultsPerPage = 50;
+        private readonly int _resultsPerPage;
         private T[] _currentPageContent = new T[0];
         private int _currentPageContentIndex = -1;
         private int _nextPage;
+
+        /// <summary>
+        /// </summary>
+        /// <param name="resultsPerPage"></param>
+        protected PageEnumerator(int resultsPerPage = 50)
+        {
+            this._resultsPerPage = resultsPerPage;
+        }
 
         #region Properties
 
@@ -48,9 +56,9 @@ namespace Azuria.Utilities
         {
             if (this._currentPageContentIndex >= this._currentPageContent.Length - 1)
             {
-                if (this._currentPageContent.Length%ResultsPerPage != 0) return false;
+                if (this._currentPageContent.Length%this._resultsPerPage != 0) return false;
                 ProxerResult<IEnumerable<T>> lGetSearchResult = Task.Run(() => this.GetNextPage(this._nextPage)).Result;
-                if (!lGetSearchResult.Success || lGetSearchResult.Result == null)
+                if (!lGetSearchResult.Success || (lGetSearchResult.Result == null))
                     throw lGetSearchResult.Exceptions.FirstOrDefault() ?? new WrongResponseException();
                 this._currentPageContent = lGetSearchResult.Result.ToArray();
                 this._nextPage++;
@@ -65,13 +73,21 @@ namespace Azuria.Utilities
         public void Reset()
         {
             this._currentPageContent = new T[0];
-            this._currentPageContentIndex = ResultsPerPage - 1;
+            this._currentPageContentIndex = this._resultsPerPage - 1;
             this._nextPage = 0;
         }
 
         #endregion
 
         #region
+
+        /// <summary>
+        /// </summary>
+        /// <returns></returns>
+        protected T[] GetCurrentPage()
+        {
+            return this._currentPageContent;
+        }
 
         [ItemNotNull]
         internal abstract Task<ProxerResult<IEnumerable<T>>> GetNextPage(int nextPage);
