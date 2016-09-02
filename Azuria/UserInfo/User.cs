@@ -3,18 +3,15 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Azuria.AnimeManga;
-using Azuria.Api;
 using Azuria.Api.v1;
 using Azuria.Api.v1.DataModels.Messenger;
 using Azuria.Api.v1.DataModels.User;
 using Azuria.Api.v1.Enums;
-using Azuria.Exceptions;
 using Azuria.UserInfo.Comment;
 using Azuria.Utilities.ErrorHandling;
 using Azuria.Utilities.Extensions;
 using Azuria.Utilities.Properties;
 using JetBrains.Annotations;
-using Newtonsoft.Json;
 
 namespace Azuria.UserInfo
 {
