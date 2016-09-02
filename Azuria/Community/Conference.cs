@@ -150,6 +150,7 @@ namespace Azuria.Community
             }
             if (lNewMessages.Length == 0) return;
             if (lNewMessages.Any(message => message.Action != MessageAction.NoAction)) await this.InitInfo();
+            this._autoLastMessageRecieved = lNewMessages[0];
             this.NewMessageRecieved?.Invoke(this, lNewMessages);
         }
 

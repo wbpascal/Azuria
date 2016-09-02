@@ -29,13 +29,13 @@ namespace Azuria.Api.v1
     {
         #region Properties
 
-        [JsonProperty("error")]
+        [JsonProperty("error", Required = Required.Always)]
         internal bool Error { get; set; }
 
         [JsonProperty("code")]
         internal ErrorCode ErrorCode { get; set; } = ErrorCode.NoError;
 
-        [JsonProperty("message")]
+        [JsonProperty("message", Required = Required.Always)]
         internal string Message { get; set; }
 
         #endregion

@@ -210,45 +210,6 @@ namespace Azuria.UserInfo
         }
 
         /// <summary>
-        ///     Sends the user a friend request.
-        /// </summary>
-        /// <param name="senpai">The user that sends the friend request.</param>
-        /// <returns>If the action was successful.</returns>
-        [ItemNotNull]
-        public async Task<ProxerResult> SendFriendRequest([NotNull] Senpai senpai)
-        {
-            if (this.Id == -1) return new ProxerResult(new[] {new InvalidUserException()});
-
-            Dictionary<string, string> lPostArgs = new Dictionary<string, string>
-            {
-                {"type", "addFriend"}
-            };
-            ProxerResult<string> lResult =
-                await
-                    ApiInfo.HttpClient.PostRequest(new Uri("https://proxer.me/user/" + this.Id + "?format=json"),
-                        lPostArgs, senpai);
-
-            if (!lResult.Success)
-                return new ProxerResult(lResult.Exceptions);
-
-            try
-            {
-                Dictionary<string, string> lResultDictionary =
-                    JsonConvert.DeserializeObject<Dictionary<string, string>>(lResult.Result);
-
-                return new ProxerResult
-                {
-                    Success = lResultDictionary.ContainsKey("error") && lResultDictionary["error"].Equals("0")
-                };
-            }
-            catch
-            {
-                return
-                    new ProxerResult(ErrorHandler.HandleError(lResult.Result, false).Exceptions);
-            }
-        }
-
-        /// <summary>
         ///     Returns a string that represents the current object.
         /// </summary>
         /// <returns>
