@@ -139,7 +139,8 @@ namespace Azuria.Web
         /// <param name="postArgs"></param>
         /// <param name="senpai"></param>
         /// <returns></returns>
-        public Task<ProxerResult<string>> PostRequest(Uri url, Dictionary<string, string> postArgs, Senpai senpai)
+        public Task<ProxerResult<string>> PostRequest(Uri url, IEnumerable<KeyValuePair<string, string>> postArgs,
+            Senpai senpai)
         {
             return this.PostRequest(url, postArgs, new Func<string, ProxerResult>[0], senpai);
         }
@@ -155,7 +156,7 @@ namespace Azuria.Web
         /// <param name="recursion"></param>
         /// <param name="header"></param>
         /// <returns></returns>
-        public async Task<ProxerResult<string>> PostRequest(Uri url, Dictionary<string, string> postArgs,
+        public async Task<ProxerResult<string>> PostRequest(Uri url, IEnumerable<KeyValuePair<string, string>> postArgs,
             Func<string, ProxerResult>[] checkFuncs, Senpai senpai = null, bool useMobileCookies = false,
             bool checkLogin = true, int recursion = 0, Dictionary<string, string> header = null)
         {
@@ -210,7 +211,7 @@ namespace Azuria.Web
 
         [ItemNotNull]
         private async Task<HttpResponseMessage> PostWebRequest([NotNull] Uri url,
-            [CanBeNull] CookieContainer cookies, [NotNull] Dictionary<string, string> postArgs,
+            [CanBeNull] CookieContainer cookies, [NotNull] IEnumerable<KeyValuePair<string, string>> postArgs,
             [CanBeNull] Dictionary<string, string> headers)
         {
             using (

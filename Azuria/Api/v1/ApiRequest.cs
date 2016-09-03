@@ -24,7 +24,8 @@ namespace Azuria.Api.v1
 
         internal bool CheckLogin { get; set; }
 
-        internal Dictionary<string, string> PostArguments { get; set; } = new Dictionary<string, string>();
+        internal IEnumerable<KeyValuePair<string, string>> PostArguments { get; set; } =
+            new Dictionary<string, string>();
 
         [CanBeNull]
         internal Senpai Senpai { get; set; }

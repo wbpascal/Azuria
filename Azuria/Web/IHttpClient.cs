@@ -41,7 +41,8 @@ namespace Azuria.Web
         /// <param name="senpai"></param>
         /// <returns></returns>
         [ItemNotNull]
-        Task<ProxerResult<string>> PostRequest([NotNull] Uri url, [NotNull] Dictionary<string, string> postArgs,
+        Task<ProxerResult<string>> PostRequest([NotNull] Uri url,
+            [NotNull] IEnumerable<KeyValuePair<string, string>> postArgs,
             [NotNull] Senpai senpai);
 
         /// <summary>
@@ -57,7 +58,8 @@ namespace Azuria.Web
         /// <returns></returns>
         [ItemNotNull]
         Task<ProxerResult<string>> PostRequest([NotNull] Uri url,
-            [NotNull] Dictionary<string, string> postArgs, [CanBeNull] Func<string, ProxerResult>[] checkFuncs,
+            [NotNull] IEnumerable<KeyValuePair<string, string>> postArgs,
+            [CanBeNull] Func<string, ProxerResult>[] checkFuncs,
             [CanBeNull] Senpai senpai = null, bool useMobileCookies = false, bool checkLogin = true, int recursion = 0,
             Dictionary<string, string> header = null);
 

@@ -19,7 +19,7 @@ namespace Azuria.Community
     /// <summary>
     ///     Represents a messaging Conference.
     /// </summary>
-    [DebuggerDisplay("Conference: {Title} [{Id}]")]
+    [DebuggerDisplay("Conference: {Topic} [{Id}]")]
     public class Conference
     {
         /// <summary>
@@ -55,7 +55,7 @@ namespace Azuria.Community
             this.IsGroupConference = dataModel.IsConferenceGroup;
             this.Leader = new InitialisableProperty<User>(this.InitInfo);
             this.Participants = new InitialisableProperty<IEnumerable<User>>(this.InitInfo);
-            this.Title = dataModel.ConferenceTitle;
+            this.Topic = new InitialisableProperty<string>(this.InitInfo, dataModel.ConferenceTitle);
         }
 
         #region Properties
@@ -126,7 +126,7 @@ namespace Azuria.Community
         ///     Gets the current title of the current conference.
         /// </summary>
         [NotNull]
-        public string Title { get; private set; }
+        public InitialisableProperty<string> Topic { get; }
 
         #endregion
 
@@ -151,6 +151,49 @@ namespace Azuria.Community
             if (lNewMessages.Any(message => message.Action != MessageAction.NoAction)) await this.InitInfo();
             this._autoLastMessageRecieved = lNewMessages[0];
             this.NewMessageRecieved?.Invoke(this, lNewMessages);
+        }
+
+        /// <summary>
+        /// </summary>
+        /// <param name="participants"></param>
+        /// <param name="topic"></param>
+        /// <param name="senpai"></param>
+        /// <param name="text"></param>
+        /// <returns></returns>
+        public static async Task<ProxerResult<int>> CreateNewConferenceGroup(IEnumerable<User> participants,
+            string topic, Senpai senpai, string text = null)
+        {
+            IEnumerable<User> lParticipants = participants as User[] ?? participants.ToArray();
+            if (!lParticipants.Any() || lParticipants.Any(user => user == User.System))
+                return new ProxerResult<int>(new[] {new ArgumentException(nameof(participants))});
+
+            List<string> lParticipantNames = new List<string>();
+            foreach (User participant in lParticipants)
+                lParticipantNames.Add(await participant.UserName.GetObject("ERROR"));
+            return await CreateNewConferenceGroup(lParticipantNames, topic, senpai, text);
+        }
+
+        /// <summary>
+        /// </summary>
+        /// <param name="participants"></param>
+        /// <param name="topic"></param>
+        /// <param name="senpai"></param>
+        /// <param name="text"></param>
+        /// <returns></returns>
+        public static async Task<ProxerResult<int>> CreateNewConferenceGroup(IEnumerable<string> participants,
+            string topic, Senpai senpai, string text = null)
+        {
+            IEnumerable<string> lParticipantNames = participants as string[] ?? participants.ToArray();
+            if (!lParticipantNames.Any() || lParticipantNames.Any(username => username.Equals("ERROR")))
+                return new ProxerResult<int>(new[] {new ArgumentException(nameof(participants))});
+
+            ProxerResult<ProxerApiResponse<int>> lResult =
+                await
+                    RequestHandler.ApiRequest(ApiRequestBuilder.MessengerNewConferenceGroup(lParticipantNames, topic,
+                        senpai, text));
+            return !lResult.Success || (lResult.Result == null)
+                ? new ProxerResult<int>(lResult.Exceptions)
+                : new ProxerResult<int>(lResult.Result.Data);
         }
 
         /// <summary>
@@ -211,7 +254,7 @@ namespace Azuria.Community
             this.Leader.SetInitialisedObject(new User(lData.MainInfo.LeaderUserId));
             this.Participants.SetInitialisedObject(from conferenceInfoParticipantDataModel in lData.ParticipantsInfo
                 select new User(conferenceInfoParticipantDataModel));
-            this.Title = lData.MainInfo.Title;
+            this.Topic.SetInitialisedObject(lData.MainInfo.Title);
 
             return new ProxerResult();
         }

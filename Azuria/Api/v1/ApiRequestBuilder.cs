@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using Azuria.Api.v1.DataModels;
 using Azuria.Api.v1.DataModels.Info;
 using Azuria.Api.v1.DataModels.Messenger;
@@ -10,6 +11,7 @@ using Azuria.Api.v1.Enums;
 using Azuria.Community;
 using Azuria.Search;
 using Azuria.Search.Input;
+using Azuria.Utilities.Extensions;
 using ToptenDataModel = Azuria.Api.v1.DataModels.Ucp.ToptenDataModel;
 
 namespace Azuria.Api.v1
@@ -115,6 +117,25 @@ namespace Azuria.Api.v1
                     CheckLogin = true,
                     Senpai = senpai
                 };
+        }
+
+        internal static ApiRequest<int> MessengerNewConferenceGroup(IEnumerable<string> participantNames, string topic,
+            Senpai senpai, string text = null)
+        {
+            List<KeyValuePair<string, string>> lPostArgs = new List<KeyValuePair<string, string>>
+            {
+                new KeyValuePair<string, string>("topic", topic)
+            };
+            lPostArgs.AddIf(new KeyValuePair<string, string>("text", text), pair => !string.IsNullOrEmpty(pair.Value));
+            lPostArgs.AddRange(from participantName in participantNames
+                select new KeyValuePair<string, string>("users[]", participantName));
+
+            return new ApiRequest<int>(new Uri($"{ApiAddress}/messenger/newconferencegroup"))
+            {
+                CheckLogin = true,
+                PostArguments = lPostArgs,
+                Senpai = senpai
+            };
         }
 
         internal static ApiRequest<string> MessengerSetMessage(int conferenceId, string message, Senpai senpai)
