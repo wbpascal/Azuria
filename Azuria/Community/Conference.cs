@@ -13,7 +13,6 @@ using Azuria.Utilities.ErrorHandling;
 using Azuria.Utilities.Extensions;
 using Azuria.Utilities.Properties;
 using JetBrains.Annotations;
-using Newtonsoft.Json;
 
 namespace Azuria.Community
 {
@@ -236,50 +235,14 @@ namespace Azuria.Community
         /// <param name="message">The content of the message that is being send.</param>
         /// <returns>Whether the action was successfull.</returns>
         [ItemNotNull]
-        public async Task<ProxerResult> SendMessage([NotNull] string message)
+        public async Task<ProxerResult<string>> SendMessage([NotNull] string message)
         {
-            if (string.IsNullOrEmpty(message))
-                return
-                    new ProxerResult(new[]
-                        {new ArgumentException("Argument is null or empty", nameof(message))});
+            if (string.IsNullOrEmpty(message)) throw new ArgumentException(nameof(message));
 
-            this._checkMessagesTimer.Stop();
-
-            Dictionary<string, string> lPostArgs = new Dictionary<string, string>
-            {
-                {"message", message}
-            };
-            ProxerResult<string> lResult =
-                await
-                    ApiInfo.HttpClient.PostRequest(
-                        new Uri("https://proxer.me/messages?id=" + this.Id + "&format=json&json=answer"),
-                        lPostArgs,
-                        this._senpai);
-
-            if (!lResult.Success)
-                return new ProxerResult(lResult.Exceptions);
-
-            string lResponse = lResult.Result;
-
-            try
-            {
-                Dictionary<string, string> lResponseJson =
-                    JsonConvert.DeserializeObject<Dictionary<string, string>>(lResponse);
-
-                if (this.AutoCheck) this.CheckForNewMessages();
-                if (lResponseJson.Keys.Contains("message"))
-                    return new ProxerResult();
-                if (!lResponseJson.Keys.Contains("msg")) return new ProxerResult {Success = false};
-
-                this._checkMessagesTimer.Start();
-                return new ProxerResult();
-            }
-            catch
-            {
-                this._checkMessagesTimer.Start();
-                return
-                    new ProxerResult(ErrorHandler.HandleError(lResponse, false).Exceptions);
-            }
+            ProxerResult<ProxerApiResponse<string>> lResult =
+                await RequestHandler.ApiRequest(ApiRequestBuilder.MessengerSetMessage(this.Id, message, this._senpai));
+            if (!lResult.Success || (lResult.Result == null)) return new ProxerResult<string>(lResult.Exceptions);
+            return new ProxerResult<string>(lResult.Result.Data);
         }
 
         private async Task<ProxerResult> SetBlock(bool isBlocked)

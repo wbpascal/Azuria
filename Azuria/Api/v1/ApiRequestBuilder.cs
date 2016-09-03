@@ -117,6 +117,18 @@ namespace Azuria.Api.v1
                 };
         }
 
+        internal static ApiRequest<string> MessengerSetMessage(int conferenceId, string message, Senpai senpai)
+        {
+            return
+                new ApiRequest<string>(
+                    new Uri($"{ApiAddress}/messenger/setmessage?conference_id={conferenceId}"))
+                {
+                    CheckLogin = true,
+                    PostArguments = new Dictionary<string, string> {{"text", message}},
+                    Senpai = senpai
+                };
+        }
+
         internal static ApiRequest<SearchDataModel[]> SearchEntrySearch(SearchInput input, int limit, int page)
         {
             return new ApiRequest<SearchDataModel[]>(new Uri($"{ApiAddress}/list/entrysearch?limit={limit}&p={page}"))
