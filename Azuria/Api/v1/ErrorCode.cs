@@ -58,7 +58,7 @@
 
         /// <summary>
         /// </summary>
-        UserinfoUserIdNotFound = 3003,
+        UserinfoUserNotFound = 3003,
 
         /// <summary>
         /// </summary>

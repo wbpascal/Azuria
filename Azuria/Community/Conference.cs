@@ -44,18 +44,24 @@ namespace Azuria.Community
         private readonly Senpai _senpai;
         private Message _autoLastMessageRecieved;
 
-        internal Conference([NotNull] ConferenceDataModel dataModel, [NotNull] Senpai senpai)
+        internal Conference(int conferenceId, bool isGroup, [NotNull] Senpai senpai)
         {
-            this.Id = dataModel.ConferenceId;
+            this.Id = conferenceId;
             this._senpai = senpai;
 
             this._checkMessagesTimer = new Timer {Interval = new TimeSpan(0, 0, 15).TotalMilliseconds};
             this._checkMessagesTimer.Elapsed += this.OnCheckMessagesTimerElapsed;
 
-            this.IsGroupConference = dataModel.IsConferenceGroup;
+            this.IsGroupConference = isGroup;
             this.Leader = new InitialisableProperty<User>(this.InitInfo);
             this.Participants = new InitialisableProperty<IEnumerable<User>>(this.InitInfo);
-            this.Topic = new InitialisableProperty<string>(this.InitInfo, dataModel.ConferenceTitle);
+            this.Topic = new InitialisableProperty<string>(this.InitInfo);
+        }
+
+        internal Conference([NotNull] ConferenceDataModel dataModel, [NotNull] Senpai senpai)
+            : this(dataModel.ConferenceId, dataModel.IsConferenceGroup, senpai)
+        {
+            this.Topic.SetInitialisedObject(dataModel.ConferenceTitle);
         }
 
         #region Properties
@@ -155,22 +161,36 @@ namespace Azuria.Community
 
         /// <summary>
         /// </summary>
-        /// <param name="participants"></param>
-        /// <param name="topic"></param>
+        /// <param name="user"></param>
+        /// <param name="message"></param>
         /// <param name="senpai"></param>
-        /// <param name="text"></param>
         /// <returns></returns>
-        public static async Task<ProxerResult<int>> CreateNewConferenceGroup(IEnumerable<User> participants,
-            string topic, Senpai senpai, string text = null)
+        public static async Task<ProxerResult<Conference>> Create([NotNull] User user, string message, Senpai senpai)
         {
-            IEnumerable<User> lParticipants = participants as User[] ?? participants.ToArray();
-            if (!lParticipants.Any() || lParticipants.Any(user => user == User.System))
-                return new ProxerResult<int>(new[] {new ArgumentException(nameof(participants))});
+            ProxerResult<string> lUsernameResult = await user.UserName.GetObject();
+            if (!lUsernameResult.Success || string.IsNullOrEmpty(lUsernameResult.Result))
+                return new ProxerResult<Conference>(lUsernameResult.Exceptions);
 
-            List<string> lParticipantNames = new List<string>();
-            foreach (User participant in lParticipants)
-                lParticipantNames.Add(await participant.UserName.GetObject("ERROR"));
-            return await CreateNewConferenceGroup(lParticipantNames, topic, senpai, text);
+            return await Create(lUsernameResult.Result, message, senpai);
+            ;
+        }
+
+        /// <summary>
+        /// </summary>
+        /// <param name="username"></param>
+        /// <param name="message"></param>
+        /// <param name="senpai"></param>
+        /// <returns></returns>
+        public static async Task<ProxerResult<Conference>> Create(string username, string message, Senpai senpai)
+        {
+            if (string.IsNullOrEmpty(username) || username.Equals("ERROR"))
+                return new ProxerResult<Conference>(new[] {new ArgumentException(nameof(username))});
+
+            ProxerResult<ProxerApiResponse<int>> lResult =
+                await RequestHandler.ApiRequest(ApiRequestBuilder.MessengerNewConference(username, message, senpai));
+            return !lResult.Success || (lResult.Result == null)
+                ? new ProxerResult<Conference>(lResult.Exceptions)
+                : new ProxerResult<Conference>(new Conference(lResult.Result.Data, false, senpai));
         }
 
         /// <summary>
@@ -178,22 +198,43 @@ namespace Azuria.Community
         /// <param name="participants"></param>
         /// <param name="topic"></param>
         /// <param name="senpai"></param>
-        /// <param name="text"></param>
+        /// <param name="message"></param>
         /// <returns></returns>
-        public static async Task<ProxerResult<int>> CreateNewConferenceGroup(IEnumerable<string> participants,
-            string topic, Senpai senpai, string text = null)
+        public static async Task<ProxerResult<Conference>> CreateGroup(IEnumerable<User> participants,
+            string topic, Senpai senpai, string message = null)
+        {
+            IEnumerable<User> lParticipants = participants as User[] ?? participants.ToArray();
+            if (!lParticipants.Any() || lParticipants.Any(user => (user == null) || (user == User.System)))
+                return new ProxerResult<Conference>(new[] {new ArgumentException(nameof(participants))});
+
+            List<string> lParticipantNames = new List<string>();
+            foreach (User participant in lParticipants)
+                lParticipantNames.Add(await participant.UserName.GetObject("ERROR"));
+            return await CreateGroup(lParticipantNames, topic, senpai, message);
+        }
+
+        /// <summary>
+        /// </summary>
+        /// <param name="participants"></param>
+        /// <param name="topic"></param>
+        /// <param name="senpai"></param>
+        /// <param name="message"></param>
+        /// <returns></returns>
+        public static async Task<ProxerResult<Conference>> CreateGroup(IEnumerable<string> participants,
+            string topic, Senpai senpai, string message = null)
         {
             IEnumerable<string> lParticipantNames = participants as string[] ?? participants.ToArray();
-            if (!lParticipantNames.Any() || lParticipantNames.Any(username => username.Equals("ERROR")))
-                return new ProxerResult<int>(new[] {new ArgumentException(nameof(participants))});
+            if (!lParticipantNames.Any() ||
+                lParticipantNames.Any(username => username.Equals("ERROR") || string.IsNullOrEmpty(username.Trim())))
+                return new ProxerResult<Conference>(new[] {new ArgumentException(nameof(participants))});
 
             ProxerResult<ProxerApiResponse<int>> lResult =
                 await
                     RequestHandler.ApiRequest(ApiRequestBuilder.MessengerNewConferenceGroup(lParticipantNames, topic,
-                        senpai, text));
+                        senpai, message));
             return !lResult.Success || (lResult.Result == null)
-                ? new ProxerResult<int>(lResult.Exceptions)
-                : new ProxerResult<int>(lResult.Result.Data);
+                ? new ProxerResult<Conference>(lResult.Exceptions)
+                : new ProxerResult<Conference>(new Conference(lResult.Result.Data, true, senpai));
         }
 
         /// <summary>

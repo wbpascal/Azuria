@@ -119,6 +119,16 @@ namespace Azuria.Api.v1
                 };
         }
 
+        internal static ApiRequest<int> MessengerNewConference(string username, string text, Senpai senpai)
+        {
+            return new ApiRequest<int>(new Uri($"{ApiAddress}/messenger/newconference"))
+            {
+                CheckLogin = true,
+                PostArguments = new Dictionary<string, string> {{"username", username}, {"text", text}},
+                Senpai = senpai
+            };
+        }
+
         internal static ApiRequest<int> MessengerNewConferenceGroup(IEnumerable<string> participantNames, string topic,
             Senpai senpai, string text = null)
         {
