@@ -31,7 +31,7 @@ namespace Azuria.Utilities.Properties
         /// <summary>
         /// </summary>
         /// <returns></returns>
-        TaskAwaiter<T> GetAwaiter();
+        TaskAwaiter<ProxerResult<T>> GetAwaiter();
 
         /// <summary>
         ///     Gets a new value for the property independent of it being already initialised.
@@ -68,6 +68,11 @@ namespace Azuria.Utilities.Properties
         /// </returns>
         [ItemNotNull]
         Task<T> GetObject(T onError);
+
+        /// <summary>
+        /// </summary>
+        /// <returns></returns>
+        Task<T> ThrowFirstOnNonSuccess();
 
         #endregion
     }
