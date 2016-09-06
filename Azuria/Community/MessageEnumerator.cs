@@ -5,7 +5,6 @@ using Azuria.Api.v1;
 using Azuria.Api.v1.DataModels.Messenger;
 using Azuria.Utilities;
 using Azuria.Utilities.ErrorHandling;
-using JetBrains.Annotations;
 
 namespace Azuria.Community
 {
@@ -14,16 +13,16 @@ namespace Azuria.Community
     public sealed class MessageEnumerator : PageEnumerator<Message>
     {
         private readonly int _conferenceId;
-        [NotNull] private readonly Senpai _senpai;
+        private readonly Senpai _senpai;
 
-        internal MessageEnumerator(int conferenceId, [NotNull] Senpai senpai)
+        internal MessageEnumerator(int conferenceId, Senpai senpai)
             : base(Conference.MessagesPerPage)
         {
             this._conferenceId = conferenceId;
             this._senpai = senpai;
         }
 
-        #region
+        #region Methods
 
         internal override async Task<ProxerResult<IEnumerable<Message>>> GetNextPage(int nextPage)
         {

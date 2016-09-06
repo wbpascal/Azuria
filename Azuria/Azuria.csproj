@@ -52,25 +52,19 @@
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="HtmlAgilityPack, Version=1.4.9.4, Culture=neutral, PublicKeyToken=bd319b19eaf3b43a, processorArchitecture=MSIL">
-      <HintPath>..\packages\HtmlAgilityPack.1.4.9.4\lib\Net45\HtmlAgilityPack.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="JetBrains.Annotations, Version=10.1.4.0, Culture=neutral, PublicKeyToken=1010a0d8d6380325, processorArchitecture=MSIL">
-      <HintPath>..\packages\JetBrains.Annotations.10.1.4\lib\net20\JetBrains.Annotations.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="Newtonsoft.Json, Version=8.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\packages\Newtonsoft.Json.8.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
+    <Reference Include="Newtonsoft.Json, Version=9.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.9.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.ComponentModel.Composition" />
     <Reference Include="System.Core" />
     <Reference Include="System.Net.Http" />
     <Reference Include="System.Xml" />
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AnimeManga\AnimeMangaObject.cs" />
     <Compile Include="AnimeManga\Properties\AnimeMangaRating.cs" />
     <Compile Include="AnimeManga\Properties\AnimeMangaSeason.cs" />
     <Compile Include="AnimeManga\Properties\AnimeMangaSeasonInfo.cs" />
@@ -225,8 +219,6 @@
     <Compile Include="UserInfo\UserProfileEntry.cs" />
     <Compile Include="UserInfo\UserStatus.cs" />
     <Compile Include="Utilities\ErrorHandling\ErrorHandler.cs" />
-    <Compile Include="Utilities\Extensions\AnimeMangaExtensions.cs" />
-    <Compile Include="Utilities\Extensions\HtmlAgilityPackExtensions.cs" />
     <Compile Include="Utilities\Extensions\InitialisationExtensions.cs" />
     <Compile Include="Utilities\Extensions\ListExtensions.cs" />
     <Compile Include="Utilities\Extensions\SecureStringExtensions.cs" />

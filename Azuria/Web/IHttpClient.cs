@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Azuria.Utilities.ErrorHandling;
-using JetBrains.Annotations;
 
 namespace Azuria.Web
 {
@@ -10,15 +9,14 @@ namespace Azuria.Web
     /// </summary>
     public interface IHttpClient
     {
-        #region
+        #region Methods
 
         /// <summary>
         /// </summary>
         /// <param name="url"></param>
         /// <param name="senpai"></param>
         /// <returns></returns>
-        [ItemNotNull]
-        Task<ProxerResult<string>> GetRequest(Uri url, [CanBeNull] Senpai senpai = null);
+        Task<ProxerResult<string>> GetRequest(Uri url, Senpai senpai = null);
 
         /// <summary>
         /// </summary>
@@ -29,9 +27,7 @@ namespace Azuria.Web
         /// <param name="checkLogin"></param>
         /// <param name="recursion"></param>
         /// <returns></returns>
-        [ItemNotNull]
-        Task<ProxerResult<string>> GetRequest([NotNull] Uri url,
-            [CanBeNull] Func<string, ProxerResult>[] checkFuncs, [CanBeNull] Senpai senpai = null,
+        Task<ProxerResult<string>> GetRequest(Uri url, Func<string, ProxerResult>[] checkFuncs, Senpai senpai = null,
             bool useMobileCookies = false, bool checkLogin = true, int recursion = 0);
 
         /// <summary>
@@ -40,10 +36,8 @@ namespace Azuria.Web
         /// <param name="postArgs"></param>
         /// <param name="senpai"></param>
         /// <returns></returns>
-        [ItemNotNull]
-        Task<ProxerResult<string>> PostRequest([NotNull] Uri url,
-            [NotNull] IEnumerable<KeyValuePair<string, string>> postArgs,
-            [NotNull] Senpai senpai);
+        Task<ProxerResult<string>> PostRequest(Uri url, IEnumerable<KeyValuePair<string, string>> postArgs,
+            Senpai senpai);
 
         /// <summary>
         /// </summary>
@@ -56,11 +50,9 @@ namespace Azuria.Web
         /// <param name="recursion"></param>
         /// <param name="header"></param>
         /// <returns></returns>
-        [ItemNotNull]
-        Task<ProxerResult<string>> PostRequest([NotNull] Uri url,
-            [NotNull] IEnumerable<KeyValuePair<string, string>> postArgs,
-            [CanBeNull] Func<string, ProxerResult>[] checkFuncs,
-            [CanBeNull] Senpai senpai = null, bool useMobileCookies = false, bool checkLogin = true, int recursion = 0,
+        Task<ProxerResult<string>> PostRequest(Uri url, IEnumerable<KeyValuePair<string, string>> postArgs,
+            Func<string, ProxerResult>[] checkFuncs, Senpai senpai = null, bool useMobileCookies = false,
+            bool checkLogin = true, int recursion = 0,
             Dictionary<string, string> header = null);
 
         #endregion

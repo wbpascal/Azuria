@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using JetBrains.Annotations;
 
 namespace Azuria.AnimeManga.Properties
 {
@@ -10,7 +9,6 @@ namespace Azuria.AnimeManga.Properties
     {
         #region Properties
 
-        [NotNull]
         internal static Dictionary<string, GenreType> StringToGenreDictionary => new Dictionary<string, GenreType>
         {
             {"Abenteuer", GenreType.Adventure},

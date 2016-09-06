@@ -1,7 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using Azuria.AnimeManga;
-using JetBrains.Annotations;
 
 namespace Azuria.Notifications.AnimeManga
 {
@@ -14,7 +13,7 @@ namespace Azuria.Notifications.AnimeManga
         private readonly int _maxNotificationsToParse;
         private readonly Senpai _senpai;
 
-        internal AnimeMangaNotificationCollection([NotNull] Senpai senpai, int maxNotificationsToParse = -1)
+        internal AnimeMangaNotificationCollection(Senpai senpai, int maxNotificationsToParse = -1)
         {
             this._senpai = senpai;
             this._maxNotificationsToParse = maxNotificationsToParse;
@@ -28,7 +27,7 @@ namespace Azuria.Notifications.AnimeManga
 
         #endregion
 
-        #region Inherited
+        #region Methods
 
         /// <summary>Returns an enumerator that iterates through a collection.</summary>
         /// <returns>An <see cref="T:System.Collections.IEnumerator" /> object that can be used to iterate through the collection.</returns>

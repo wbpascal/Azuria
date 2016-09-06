@@ -4,7 +4,6 @@ using Azuria.Api.v1;
 using Azuria.Api.v1.DataModels.Info;
 using Azuria.Api.v1.Enums;
 using Azuria.Utilities.ErrorHandling;
-using JetBrains.Annotations;
 
 namespace Azuria
 {
@@ -13,7 +12,7 @@ namespace Azuria
     /// </summary>
     public static class ProxerClass
     {
-        #region
+        #region Methods
 
         /// <summary>
         ///     Gets an <see cref="Anime" /> or <see cref="Manga" /> of a specified id.
@@ -23,7 +22,6 @@ namespace Azuria
         ///     If the action was successful and if it was, an object representing either an <see cref="Anime" /> or
         ///     <see cref="Manga" />.
         /// </returns>
-        [ItemNotNull]
         public static async Task<ProxerResult<IAnimeMangaObject>> GetAnimeMangaById(int id)
         {
             ProxerResult<ProxerApiResponse<EntryDataModel>> lResult =

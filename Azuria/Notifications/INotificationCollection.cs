@@ -16,7 +16,7 @@ namespace Azuria.Notifications
 
         #endregion
 
-        #region
+        #region Methods
 
         /// <summary>
         /// </summary>

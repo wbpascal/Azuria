@@ -9,7 +9,7 @@ namespace Azuria.Utilities.Extensions
     /// </summary>
     public static class ProxerResultExtensions
     {
-        #region
+        #region Methods
 
         /// <summary>
         /// </summary>

@@ -6,7 +6,7 @@ namespace Azuria.Api.v1.Converters.Messenger
 {
     internal class MessageActionConverter : JsonConverter
     {
-        #region
+        #region Methods
 
         public override bool CanConvert(Type objectType)
         {

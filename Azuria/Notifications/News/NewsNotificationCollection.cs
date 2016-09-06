@@ -1,6 +1,5 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
-using JetBrains.Annotations;
 
 namespace Azuria.Notifications.News
 {
@@ -11,7 +10,7 @@ namespace Azuria.Notifications.News
     {
         private readonly Senpai _senpai;
 
-        internal NewsNotificationCollection([NotNull] Senpai senpai)
+        internal NewsNotificationCollection(Senpai senpai)
         {
             this._senpai = senpai;
             this.Type = NotificationType.News;
@@ -26,7 +25,7 @@ namespace Azuria.Notifications.News
 
         #endregion
 
-        #region Inherited
+        #region Methods
 
         /// <summary>Returns an enumerator that iterates through a collection.</summary>
         /// <returns>An <see cref="T:System.Collections.IEnumerator" /> object that can be used to iterate through the collection.</returns>

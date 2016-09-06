@@ -19,7 +19,7 @@ namespace Azuria.Api.v1.DataModels.Info
 
         #endregion
 
-        #region
+        #region Methods
 
         /// <summary>Determines whether the specified object is equal to the current object.</summary>
         /// <returns>true if the specified object  is equal to the current object; otherwise, false.</returns>

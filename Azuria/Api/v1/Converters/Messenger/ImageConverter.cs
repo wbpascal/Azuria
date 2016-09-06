@@ -7,7 +7,7 @@ namespace Azuria.Api.v1.Converters.Messenger
     {
         private const string ImageCdn = "http://cdn.proxer.me/avatar/tn/";
 
-        #region
+        #region Methods
 
         /// <summary>
         ///     Determines whether this instance can convert the specified object type.

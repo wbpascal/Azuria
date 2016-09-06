@@ -20,7 +20,7 @@ namespace Azuria.Api.v1
     {
         private const string ApiAddress = "https://proxer.me/api/v1";
 
-        #region
+        #region Methods
 
         internal static ApiRequest<CommentDataModel[]> InfoGetComments(int entryId, int page, int limit, string sort)
         {

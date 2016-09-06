@@ -3,6 +3,7 @@ using Azuria.AnimeManga;
 using Azuria.AnimeManga.Properties;
 using Azuria.Api.v1.DataModels.User;
 using Azuria.UserInfo.Comment;
+using Azuria.Utilities.Properties;
 
 namespace Azuria.UserInfo
 {
@@ -33,7 +34,7 @@ namespace Azuria.UserInfo
 
         #endregion
 
-        #region
+        #region Methods
 
         private T InitAnimeMangaObject(ListDataModel dataModel)
         {
@@ -42,19 +43,22 @@ namespace Azuria.UserInfo
             if (typeof(T) == typeof(Anime))
             {
                 Anime lAnime = new Anime(dataModel.EntryName, dataModel.EntryId);
-                lAnime.AnimeMedium.SetInitialisedObject((AnimeMedium) dataModel.EntryMedium);
+                (lAnime.AnimeMedium as InitialisableProperty<AnimeMedium>)?.SetInitialisedObject(
+                    (AnimeMedium) dataModel.EntryMedium);
                 lReturnObject = lAnime as T;
             }
             else if (typeof(T) == typeof(Manga))
             {
                 Manga lManga = new Manga(dataModel.EntryName, dataModel.EntryId);
-                lManga.MangaMedium.SetInitialisedObject((MangaMedium) dataModel.EntryMedium);
+                (lManga.MangaMedium as InitialisableProperty<MangaMedium>)?.SetInitialisedObject(
+                    (MangaMedium) dataModel.EntryMedium);
                 lReturnObject = lManga as T;
             }
             else throw new ArgumentException(nameof(T));
 
-            lReturnObject?.ContentCount.SetInitialisedObject(dataModel.ContentCount);
-            lReturnObject?.Status.SetInitialisedObject(dataModel.EntryStatus);
+            (lReturnObject?.ContentCount as InitialisableProperty<int>)?.SetInitialisedObject(dataModel.ContentCount);
+            (lReturnObject?.Status as InitialisableProperty<AnimeMangaStatus>)?.SetInitialisedObject(
+                dataModel.EntryStatus);
 
             return lReturnObject;
         }

@@ -7,7 +7,7 @@ namespace Azuria.Search
 {
     internal static class SearchQueryBuilder
     {
-        #region
+        #region Methods
 
         internal static Dictionary<string, string> Build(SearchInput input)
         {

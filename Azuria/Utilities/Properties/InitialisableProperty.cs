@@ -3,7 +3,6 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using Azuria.Utilities.ErrorHandling;
-using JetBrains.Annotations;
 
 namespace Azuria.Utilities.Properties
 {
@@ -13,17 +12,23 @@ namespace Azuria.Utilities.Properties
     /// <typeparam name="T">The type of the property.</typeparam>
     public class InitialisableProperty<T> : IInitialisableProperty<T>
     {
-        [NotNull] private readonly Func<Task<ProxerResult>> _initMethod;
-        [CanBeNull] private T _initialisedObject;
+        private readonly Func<Task<ProxerResult>> _initMethod;
+        private T _initialisedObject;
 
-        internal InitialisableProperty([NotNull] Func<Task<ProxerResult>> initMethod)
+        /// <summary>
+        /// </summary>
+        /// <param name="initMethod"></param>
+        public InitialisableProperty(Func<Task<ProxerResult>> initMethod)
         {
             this._initMethod = initMethod;
             this.IsInitialisedOnce = false;
         }
 
-        internal InitialisableProperty([NotNull] Func<Task<ProxerResult>> initMethod,
-            [NotNull] T initialisationResult)
+        /// <summary>
+        /// </summary>
+        /// <param name="initMethod"></param>
+        /// <param name="initialisationResult"></param>
+        public InitialisableProperty(Func<Task<ProxerResult>> initMethod, T initialisationResult)
         {
             this._initMethod = initMethod;
             this._initialisedObject = initialisationResult;
@@ -37,7 +42,7 @@ namespace Azuria.Utilities.Properties
 
         #endregion
 
-        #region Inherited
+        #region Methods
 
         /// <inheritdoc />
         public async Task<ProxerResult> FetchObject()
@@ -62,7 +67,6 @@ namespace Azuria.Utilities.Properties
         }
 
         /// <inheritdoc />
-        [ContractAnnotation("null=>canbenull")]
         public async Task<T> GetNewObject(T onError)
         {
             return (await this.GetNewObject()).OnError(onError);
@@ -78,9 +82,35 @@ namespace Azuria.Utilities.Properties
         }
 
         /// <inheritdoc />
-        public async Task<T> GetObject([NotNull] T onError)
+        public async Task<T> GetObject(T onError)
         {
             return (await this.GetObject()).OnError(onError);
+        }
+
+        /// <inheritdoc />
+        public T GetObjectIfInitialised(T ifNot)
+        {
+            return this.IsInitialisedOnce && (this._initialisedObject != null) ? this._initialisedObject : ifNot;
+        }
+
+        /// <summary>
+        /// </summary>
+        /// <param name="initialisedObject"></param>
+        public void SetInitialisedObject(T initialisedObject)
+        {
+            this._initialisedObject = initialisedObject;
+            this.IsInitialisedOnce = true;
+        }
+
+        /// <summary>
+        /// </summary>
+        /// <param name="initialisedObject"></param>
+        /// <returns></returns>
+        public T SetInitialisedObjectAndReturn(T initialisedObject)
+        {
+            this._initialisedObject = initialisedObject;
+            this.IsInitialisedOnce = true;
+            return initialisedObject;
         }
 
         /// <inheritdoc />
@@ -93,38 +123,7 @@ namespace Azuria.Utilities.Properties
             return lResult.Result;
         }
 
-        #endregion
-
-        #region
-
-        /// <summary>
-        ///     Gets the current value of the property if the property was initialised at least once. If it was not the returns the
-        ///     value specified in <paramref name="ifNot" />.
-        /// </summary>
-        /// <param name="ifNot">The value that is returned if the property was not initialised at least once.</param>
-        /// <returns>The current value or the value of <paramref name="ifNot" />.</returns>
-        [NotNull]
-        public T GetObjectIfInitialised(T ifNot)
-        {
-            return this.IsInitialisedOnce && (this._initialisedObject != null) ? this._initialisedObject : ifNot;
-        }
-
-        internal void SetInitialisedObject(T initialisedObject)
-        {
-            this._initialisedObject = initialisedObject;
-            this.IsInitialisedOnce = true;
-        }
-
-        [ContractAnnotation("null=>null")]
-        internal T SetInitialisedObjectAndReturn(T initialisedObject)
-        {
-            this._initialisedObject = initialisedObject;
-            this.IsInitialisedOnce = true;
-            return initialisedObject;
-        }
-
-        /// <summary>Returns a string that represents the current object.</summary>
-        /// <returns>A string that represents the current object.</returns>
+        /// <inheritdoc />
         public override string ToString()
         {
             return this.GetObjectIfInitialised(default(T)).ToString();

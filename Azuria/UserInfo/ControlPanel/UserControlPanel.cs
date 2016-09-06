@@ -10,7 +10,6 @@ using Azuria.Api.v1.Enums;
 using Azuria.Exceptions;
 using Azuria.Utilities.ErrorHandling;
 using Azuria.Utilities.Properties;
-using JetBrains.Annotations;
 
 namespace Azuria.UserInfo.ControlPanel
 {
@@ -30,7 +29,7 @@ namespace Azuria.UserInfo.ControlPanel
         /// </summary>
         /// <exception cref="NotLoggedInException">Raised when <paramref name="senpai" /> is not logged in.</exception>
         /// <param name="senpai">The user that owns this User-Control-Panel.</param>
-        public UserControlPanel([NotNull] Senpai senpai)
+        public UserControlPanel(Senpai senpai)
         {
             this._senpai = senpai;
             if (!this._senpai.IsProbablyLoggedIn) throw new NotLoggedInException(this._senpai);
@@ -45,14 +44,12 @@ namespace Azuria.UserInfo.ControlPanel
         /// <summary>
         ///     Gets all bookmarks of the user that are <see cref="Anime">Anime</see>.
         /// </summary>
-        [NotNull]
         public IEnumerable<BookmarkObject<Anime>> BookmarksAnime
             => new BookmarkEnumerable<Anime>(this._senpai, this);
 
         /// <summary>
         ///     Gets all bookmarks of the user that are <see cref="Manga">Manga</see>.
         /// </summary>
-        [NotNull]
         public IEnumerable<BookmarkObject<Manga>> BookmarksManga
             => new BookmarkEnumerable<Manga>(this._senpai, this);
 
@@ -62,23 +59,20 @@ namespace Azuria.UserInfo.ControlPanel
 
         /// <summary>
         /// </summary>
-        [NotNull]
         public IEnumerable<HistoryObject<IAnimeMangaObject>> History
             => new HistoryEnumerable<IAnimeMangaObject>(this._senpai, this);
 
         /// <summary>
         /// </summary>
-        [NotNull]
         public IInitialisableProperty<IEnumerable<ToptenObject<Anime>>> ToptenAnime => this._toptenAnime;
 
         /// <summary>
         /// </summary>
-        [NotNull]
         public IInitialisableProperty<IEnumerable<ToptenObject<Manga>>> ToptenManga => this._toptenManga;
 
         #endregion
 
-        #region
+        #region Methods
 
         /// <summary>
         /// </summary>

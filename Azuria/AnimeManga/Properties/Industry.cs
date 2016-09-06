@@ -1,5 +1,4 @@
 ﻿using Azuria.Api.v1.DataModels.Info;
-using JetBrains.Annotations;
 
 namespace Azuria.AnimeManga.Properties
 {
@@ -62,7 +61,6 @@ namespace Azuria.AnimeManga.Properties
         /// <summary>
         ///     Gets the name of the <see cref="Industry" />.
         /// </summary>
-        [NotNull]
         public string Name { get; set; }
 
         /// <summary>

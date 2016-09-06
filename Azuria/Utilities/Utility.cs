@@ -4,7 +4,7 @@ namespace Azuria.Utilities
 {
     internal static class Utility
     {
-        #region
+        #region Methods
 
         internal static DateTime UnixTimeStampToDateTime(long unixTimeStamp)
         {

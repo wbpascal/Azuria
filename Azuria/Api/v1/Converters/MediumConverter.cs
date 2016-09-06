@@ -6,7 +6,7 @@ namespace Azuria.Api.v1.Converters
 {
     internal class MediumConverter : JsonConverter
     {
-        #region
+        #region Methods
 
         public override bool CanConvert(Type objectType)
         {

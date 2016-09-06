@@ -6,7 +6,6 @@ using Azuria.Api.v1;
 using Azuria.Api.v1.DataModels;
 using Azuria.Api.v1.DataModels.User;
 using Azuria.Utilities.ErrorHandling;
-using JetBrains.Annotations;
 
 namespace Azuria.UserInfo.Comment
 {
@@ -15,7 +14,7 @@ namespace Azuria.UserInfo.Comment
     /// </summary>
     public class Comment<T> where T : IAnimeMangaObject
     {
-        internal Comment([NotNull] CommentDataModel dataModel, T animeMangaObject, [CanBeNull] User user = null)
+        internal Comment(CommentDataModel dataModel, T animeMangaObject, User user = null)
         {
             this.AnimeMangaObject = animeMangaObject;
             this.Author = user ?? new User(dataModel.Username, dataModel.UserId,
@@ -29,7 +28,7 @@ namespace Azuria.UserInfo.Comment
             this.Upvotes = dataModel.Upvotes;
         }
 
-        internal Comment([NotNull] ListDataModel dataModel, [NotNull] User author, [NotNull] T animeMangaObject)
+        internal Comment(ListDataModel dataModel, User author, T animeMangaObject)
         {
             this.AnimeMangaObject = animeMangaObject;
             this.Author = author;
@@ -51,13 +50,11 @@ namespace Azuria.UserInfo.Comment
         /// <summary>
         ///     Gets the author of this comment.
         /// </summary>
-        [NotNull]
         public User Author { get; }
 
         /// <summary>
         ///     Gets the content of this comment.
         /// </summary>
-        [NotNull]
         public string Content { get; }
 
         /// <summary>
@@ -81,7 +78,6 @@ namespace Azuria.UserInfo.Comment
         /// <summary>
         ///     Gets the rating of all subcategories.
         /// </summary>
-        [NotNull]
         public Dictionary<RatingCategory, int> SubRatings { get; }
 
         /// <summary>
@@ -90,7 +86,7 @@ namespace Azuria.UserInfo.Comment
 
         #endregion
 
-        #region
+        #region Methods
 
         /// <summary>
         /// </summary>

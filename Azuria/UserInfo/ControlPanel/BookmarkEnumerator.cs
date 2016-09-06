@@ -22,7 +22,7 @@ namespace Azuria.UserInfo.ControlPanel
             this._controlPanel = controlPanel;
         }
 
-        #region
+        #region Methods
 
         internal override async Task<ProxerResult<IEnumerable<BookmarkObject<T>>>> GetNextPage(int nextPage)
         {

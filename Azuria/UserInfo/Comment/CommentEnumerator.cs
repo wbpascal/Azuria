@@ -29,7 +29,7 @@ namespace Azuria.UserInfo.Comment
             this._user = user;
         }
 
-        #region
+        #region Methods
 
         internal override async Task<ProxerResult<IEnumerable<Comment<T>>>> GetNextPage(int nextPage)
         {

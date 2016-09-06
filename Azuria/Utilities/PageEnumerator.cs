@@ -4,7 +4,6 @@ using System.Linq;
 using System.Threading.Tasks;
 using Azuria.Exceptions;
 using Azuria.Utilities.ErrorHandling;
-using JetBrains.Annotations;
 
 namespace Azuria.Utilities
 {
@@ -29,7 +28,6 @@ namespace Azuria.Utilities
 
         /// <summary>Gets the element in the collection at the current position of the enumerator.</summary>
         /// <returns>The element in the collection at the current position of the enumerator.</returns>
-        [NotNull]
         public T Current => this._currentPageContent[this._currentPageContentIndex];
 
         /// <summary>Gets the current element in the collection.</summary>
@@ -38,13 +36,23 @@ namespace Azuria.Utilities
 
         #endregion
 
-        #region Inherited
+        #region Methods
 
         /// <summary>Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.</summary>
         public void Dispose()
         {
             this._currentPageContent = new T[0];
         }
+
+        /// <summary>
+        /// </summary>
+        /// <returns></returns>
+        protected T[] GetCurrentPage()
+        {
+            return this._currentPageContent;
+        }
+
+        internal abstract Task<ProxerResult<IEnumerable<T>>> GetNextPage(int nextPage);
 
         /// <summary>Advances the enumerator to the next element of the collection.</summary>
         /// <returns>
@@ -76,21 +84,6 @@ namespace Azuria.Utilities
             this._currentPageContentIndex = this._resultsPerPage - 1;
             this._nextPage = 0;
         }
-
-        #endregion
-
-        #region
-
-        /// <summary>
-        /// </summary>
-        /// <returns></returns>
-        protected T[] GetCurrentPage()
-        {
-            return this._currentPageContent;
-        }
-
-        [ItemNotNull]
-        internal abstract Task<ProxerResult<IEnumerable<T>>> GetNextPage(int nextPage);
 
         #endregion
     }

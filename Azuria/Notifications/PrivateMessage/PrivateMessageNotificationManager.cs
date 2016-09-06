@@ -14,14 +14,6 @@ namespace Azuria.Notifications.PrivateMessage
     /// </summary>
     public static class PrivateMessageNotificationManager
     {
-        /// <summary>
-        ///     Represents a method that is executed when new private message notifications are available.
-        /// </summary>
-        /// <param name="sender">The user that recieved the notifications.</param>
-        /// <param name="e">The notifications.</param>
-        public delegate void PrivateMessageNotificationEventHandler(
-            Senpai sender, IEnumerable<PrivateMessageNotification> e);
-
         private static readonly Dictionary<Senpai, List<PrivateMessageNotificationEventHandler>> CallbackDictionary =
             new Dictionary<Senpai, List<PrivateMessageNotificationEventHandler>>();
 
@@ -39,7 +31,19 @@ namespace Azuria.Notifications.PrivateMessage
             Timer.Enabled = true;
         }
 
-        #region
+        #region Events
+
+        /// <summary>
+        ///     Represents a method that is executed when new private message notifications are available.
+        /// </summary>
+        /// <param name="sender">The user that recieved the notifications.</param>
+        /// <param name="e">The notifications.</param>
+        public delegate void PrivateMessageNotificationEventHandler(
+            Senpai sender, IEnumerable<PrivateMessageNotification> e);
+
+        #endregion
+
+        #region Methods
 
         private static async void CheckNotifications()
         {

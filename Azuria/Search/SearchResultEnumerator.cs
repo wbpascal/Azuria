@@ -21,7 +21,7 @@ namespace Azuria.Search
             this._input = input;
         }
 
-        #region
+        #region Methods
 
         private static IEnumerable<T> GetAnimeList(IEnumerable<SearchDataModel> dataModels)
         {

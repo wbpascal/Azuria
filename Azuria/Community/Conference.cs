@@ -12,7 +12,6 @@ using Azuria.UserInfo;
 using Azuria.Utilities.ErrorHandling;
 using Azuria.Utilities.Extensions;
 using Azuria.Utilities.Properties;
-using JetBrains.Annotations;
 
 namespace Azuria.Community
 {
@@ -22,29 +21,15 @@ namespace Azuria.Community
     [DebuggerDisplay("Conference: {Topic} [{Id}]")]
     public class Conference
     {
-        /// <summary>
-        ///     Represent a method, which is raised when an exception is thrown during the message fetching.
-        /// </summary>
-        /// <param name="sender">The conference that raised the event.</param>
-        /// <param name="exception">The exception thrown.</param>
-        public delegate void ErrorThrownAutoMessageFetchEventHandler(Conference sender, Exception exception);
-
-        /// <summary>
-        ///     Represents a method, which is raised when new messages were recieved or once everytime Active is set to true.
-        /// </summary>
-        /// <param name="sender">The conference that raised the event.</param>
-        /// <param name="e">
-        ///     Contains the new messages.
-        /// </param>
-        public delegate void NewMessageRecievedEventHandler(Conference sender, IEnumerable<Message> e);
-
         private static int _conferencesPerPage;
-
         private readonly Timer _checkMessagesTimer;
+        private readonly InitialisableProperty<User> _leader;
+        private readonly InitialisableProperty<IEnumerable<User>> _participants;
         private readonly Senpai _senpai;
+        private readonly InitialisableProperty<string> _topic;
         private Message _autoLastMessageRecieved;
 
-        internal Conference(int conferenceId, bool isGroup, [NotNull] Senpai senpai)
+        internal Conference(int conferenceId, bool isGroup, Senpai senpai)
         {
             this.Id = conferenceId;
             this._senpai = senpai;
@@ -53,15 +38,15 @@ namespace Azuria.Community
             this._checkMessagesTimer.Elapsed += this.OnCheckMessagesTimerElapsed;
 
             this.IsGroupConference = isGroup;
-            this.Leader = new InitialisableProperty<User>(this.InitInfo);
-            this.Participants = new InitialisableProperty<IEnumerable<User>>(this.InitInfo);
-            this.Topic = new InitialisableProperty<string>(this.InitInfo);
+            this._leader = new InitialisableProperty<User>(this.InitInfo);
+            this._participants = new InitialisableProperty<IEnumerable<User>>(this.InitInfo);
+            this._topic = new InitialisableProperty<string>(this.InitInfo);
         }
 
-        internal Conference([NotNull] ConferenceDataModel dataModel, [NotNull] Senpai senpai)
+        internal Conference(ConferenceDataModel dataModel, Senpai senpai)
             : this(dataModel.ConferenceId, dataModel.IsConferenceGroup, senpai)
         {
-            this.Topic.SetInitialisedObject(dataModel.ConferenceTitle);
+            this._topic.SetInitialisedObject(dataModel.ConferenceTitle);
         }
 
         #region Properties
@@ -96,8 +81,7 @@ namespace Azuria.Community
         /// <summary>
         ///     Gets a <see cref="User" /> that is the current leader of the conference.
         /// </summary>
-        [NotNull]
-        public InitialisableProperty<User> Leader { get; }
+        public IInitialisableProperty<User> Leader => this._leader;
 
         /// <summary>
         /// </summary>
@@ -117,7 +101,6 @@ namespace Azuria.Community
         /// <summary>
         ///     Gets all messages of the current conference ordered by newest first.
         /// </summary>
-        [NotNull]
         public IEnumerable<Message> Messages => new MessageCollection(this.Id, this._senpai);
 
         internal static int MessagesPerPage { get; private set; }
@@ -125,18 +108,45 @@ namespace Azuria.Community
         /// <summary>
         ///     Gets all participants of the current conference.
         /// </summary>
-        [NotNull]
-        public InitialisableProperty<IEnumerable<User>> Participants { get; }
+        public IInitialisableProperty<IEnumerable<User>> Participants => this._participants;
 
         /// <summary>
         ///     Gets the current title of the current conference.
         /// </summary>
-        [NotNull]
-        public InitialisableProperty<string> Topic { get; }
+        public IInitialisableProperty<string> Topic => this._topic;
 
         #endregion
 
-        #region
+        #region Events
+
+        /// <summary>
+        ///     Represent a method, which is raised when an exception is thrown during the message fetching.
+        /// </summary>
+        /// <param name="sender">The conference that raised the event.</param>
+        /// <param name="exception">The exception thrown.</param>
+        public delegate void ErrorThrownAutoMessageFetchEventHandler(Conference sender, Exception exception);
+
+        /// <summary>
+        ///     Represents a method, which is raised when new messages were recieved or once everytime Active is set to true.
+        /// </summary>
+        /// <param name="sender">The conference that raised the event.</param>
+        /// <param name="e">
+        ///     Contains the new messages.
+        /// </param>
+        public delegate void NewMessageRecievedEventHandler(Conference sender, IEnumerable<Message> e);
+
+        /// <summary>
+        /// </summary>
+        public event ErrorThrownAutoMessageFetchEventHandler ErrorThrownAutoMessageFetch;
+
+        /// <summary>
+        ///     Occurs when new messages were recieved or once everytime Active is set to true.
+        /// </summary>
+        public event NewMessageRecievedEventHandler NewMessageRecieved;
+
+        #endregion
+
+        #region Methods
 
         private async void CheckForNewMessages()
         {
@@ -165,7 +175,7 @@ namespace Azuria.Community
         /// <param name="message"></param>
         /// <param name="senpai"></param>
         /// <returns></returns>
-        public static async Task<ProxerResult<Conference>> Create([NotNull] User user, string message, Senpai senpai)
+        public static async Task<ProxerResult<Conference>> Create(User user, string message, Senpai senpai)
         {
             ProxerResult<string> lUsernameResult = await user.UserName.GetObject();
             if (!lUsernameResult.Success || string.IsNullOrEmpty(lUsernameResult.Result))
@@ -239,10 +249,6 @@ namespace Azuria.Community
 
         /// <summary>
         /// </summary>
-        public event ErrorThrownAutoMessageFetchEventHandler ErrorThrownAutoMessageFetch;
-
-        /// <summary>
-        /// </summary>
         /// <param name="senpai"></param>
         /// <param name="type"></param>
         /// <returns></returns>
@@ -292,18 +298,13 @@ namespace Azuria.Community
             if (!lResult.Success || (lResult.Result == null)) return new ProxerResult(lResult.Exceptions);
             ConferenceInfoDataModel lData = lResult.Result.Data;
 
-            this.Leader.SetInitialisedObject(new User(lData.MainInfo.LeaderUserId));
-            this.Participants.SetInitialisedObject(from conferenceInfoParticipantDataModel in lData.ParticipantsInfo
+            this._leader.SetInitialisedObject(new User(lData.MainInfo.LeaderUserId));
+            this._participants.SetInitialisedObject(from conferenceInfoParticipantDataModel in lData.ParticipantsInfo
                 select new User(conferenceInfoParticipantDataModel));
-            this.Topic.SetInitialisedObject(lData.MainInfo.Title);
+            this._topic.SetInitialisedObject(lData.MainInfo.Title);
 
             return new ProxerResult();
         }
-
-        /// <summary>
-        ///     Occurs when new messages were recieved or once everytime Active is set to true.
-        /// </summary>
-        public event NewMessageRecievedEventHandler NewMessageRecieved;
 
         private void OnCheckMessagesTimerElapsed(object s, EventArgs eArgs)
         {
@@ -318,8 +319,7 @@ namespace Azuria.Community
         /// </summary>
         /// <param name="message">The content of the message that is being send.</param>
         /// <returns>Whether the action was successfull.</returns>
-        [ItemNotNull]
-        public async Task<ProxerResult<string>> SendMessage([NotNull] string message)
+        public async Task<ProxerResult<string>> SendMessage(string message)
         {
             if (string.IsNullOrEmpty(message)) throw new ArgumentException(nameof(message));
 
@@ -371,7 +371,6 @@ namespace Azuria.Community
         ///     Marks the current conference as unread.
         /// </summary>
         /// <returns>Whether the action was successfull.</returns>
-        [ItemNotNull]
         public async Task<ProxerResult> SetUnread()
         {
             ProxerResult<string> lResult =

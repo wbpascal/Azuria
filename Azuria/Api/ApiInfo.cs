@@ -28,7 +28,7 @@ namespace Azuria.Api
 
         #endregion
 
-        #region
+        #region Methods
 
         /// <summary>
         /// </summary>

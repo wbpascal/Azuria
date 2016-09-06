@@ -4,7 +4,6 @@ using System.Threading.Tasks;
 using Azuria.Api;
 using Azuria.UserInfo;
 using Azuria.Utilities.ErrorHandling;
-using JetBrains.Annotations;
 
 namespace Azuria.Notifications.FriendRequest
 {
@@ -16,8 +15,7 @@ namespace Azuria.Notifications.FriendRequest
         private readonly Senpai _senpai;
         private bool _handled;
 
-        internal FriendRequestNotification([NotNull] User user, DateTime requestTimeStamp,
-            [NotNull] Senpai senpai)
+        internal FriendRequestNotification(User user, DateTime requestTimeStamp, Senpai senpai)
         {
             this.TimeStamp = requestTimeStamp;
             this.User = user;
@@ -45,18 +43,16 @@ namespace Azuria.Notifications.FriendRequest
         /// <summary>
         ///     Gets the user that send the friend request.
         /// </summary>
-        [NotNull]
         public User User { get; }
 
         #endregion
 
-        #region
+        #region Methods
 
         /// <summary>
         ///     Accepts the friend request.
         /// </summary>
         /// <returns>If the action was successful.</returns>
-        [ItemNotNull]
         public async Task<ProxerResult> AcceptRequest()
         {
             if (this._handled) return new ProxerResult {Success = false};
@@ -81,7 +77,6 @@ namespace Azuria.Notifications.FriendRequest
         ///     Denies the friend request.
         /// </summary>
         /// <returns>If the action was successful.</returns>
-        [ItemNotNull]
         public async Task<ProxerResult> DenyRequest()
         {
             if (this._handled) return new ProxerResult {Success = false};

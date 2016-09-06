@@ -7,7 +7,7 @@ namespace Azuria.Api.v1.Converters.Info
 {
     internal class StreamPartnerConverter : JsonConverter
     {
-        #region
+        #region Methods
 
         /// <summary>
         ///     Determines whether this instance can convert the specified object type.

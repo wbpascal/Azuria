@@ -5,7 +5,7 @@ namespace Azuria.Utilities.Extensions
 {
     internal static class DictionaryExtensions
     {
-        #region
+        #region Methods
 
         internal static void AddIf<TKey, TValue>(this Dictionary<TKey, TValue> source, TKey key, TValue value,
             Func<TKey, TValue, bool> condition)

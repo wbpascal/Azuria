@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using JetBrains.Annotations;
 
 namespace Azuria.AnimeManga.Properties
 {
@@ -10,7 +9,6 @@ namespace Azuria.AnimeManga.Properties
     {
         #region Properties
 
-        [NotNull]
         internal static Dictionary<FskType, string> FskToStringDictionary => new Dictionary<FskType, string>
         {
             {FskType.Fsk0, "fsk0"},
@@ -25,7 +23,6 @@ namespace Azuria.AnimeManga.Properties
             {FskType.Unknown, "unknown"}
         };
 
-        [NotNull]
         internal static Dictionary<string, FskType> StringToFskDictionary => new Dictionary<string, FskType>
         {
             {"fsk0", FskType.Fsk0},

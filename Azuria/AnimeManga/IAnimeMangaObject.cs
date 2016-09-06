@@ -1,11 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Threading.Tasks;
 using Azuria.AnimeManga.Properties;
-using Azuria.UserInfo.ControlPanel;
-using Azuria.Utilities.ErrorHandling;
 using Azuria.Utilities.Properties;
-using JetBrains.Annotations;
 
 namespace Azuria.AnimeManga
 {
@@ -19,57 +15,48 @@ namespace Azuria.AnimeManga
         /// <summary>
         ///     Gets the total amount of clicks the <see cref="Anime" /> or <see cref="Manga" /> recieved. Is reset every 3 months.
         /// </summary>
-        [NotNull]
-        InitialisableProperty<int> Clicks { get; }
+        IInitialisableProperty<int> Clicks { get; }
 
         /// <summary>
         ///     Gets the count of the <see cref="Anime.Episode">Episodes</see> or <see cref="Manga.Chapter">Chapters</see> the
         ///     <see cref="Anime" /> or <see cref="Manga" /> contains.
         /// </summary>
-        [NotNull]
-        InitialisableProperty<int> ContentCount { get; }
+        IInitialisableProperty<int> ContentCount { get; }
 
         /// <summary>
         ///     Gets the link to the cover of the <see cref="Anime" /> or <see cref="Manga" />.
         /// </summary>
-        [NotNull]
         Uri CoverUri { get; }
 
         /// <summary>
         ///     Gets the description of the <see cref="Anime" /> or <see cref="Manga" />.
         /// </summary>
-        [NotNull]
-        InitialisableProperty<string> Description { get; }
+        IInitialisableProperty<string> Description { get; }
 
         /// <summary>
         ///     Gets the english title of the <see cref="Anime" /> or <see cref="Manga" />.
         /// </summary>
-        [NotNull]
-        InitialisableProperty<string> EnglishTitle { get; }
+        IInitialisableProperty<string> EnglishTitle { get; }
 
         /// <summary>
         ///     Gets an enumeration of the age restrictions of the <see cref="Anime" /> or <see cref="Manga" />.
         /// </summary>
-        [NotNull]
-        InitialisableProperty<IEnumerable<FskType>> Fsk { get; }
+        IInitialisableProperty<IEnumerable<FskType>> Fsk { get; }
 
         /// <summary>
         ///     Gets an enumeration of all the genre of the <see cref="Anime" /> or <see cref="Manga" /> contains.
         /// </summary>
-        [NotNull]
-        InitialisableProperty<IEnumerable<GenreType>> Genre { get; }
+        IInitialisableProperty<IEnumerable<GenreType>> Genre { get; }
 
         /// <summary>
         ///     Gets the german title of the <see cref="Anime" /> or <see cref="Manga" />.
         /// </summary>
-        [NotNull]
-        InitialisableProperty<string> GermanTitle { get; }
+        IInitialisableProperty<string> GermanTitle { get; }
 
         /// <summary>
         ///     Gets an enumeration of all the groups that translated the <see cref="Anime" /> or <see cref="Manga" />.
         /// </summary>
-        [NotNull]
-        InitialisableProperty<IEnumerable<Group>> Groups { get; }
+        IInitialisableProperty<IEnumerable<Group>> Groups { get; }
 
         /// <summary>
         ///     Gets the Id of the <see cref="Anime" /> or <see cref="Manga" />.
@@ -80,75 +67,57 @@ namespace Azuria.AnimeManga
         ///     Gets an enumeration of all the companies that were involved in making the <see cref="Anime" /> or
         ///     <see cref="Manga" />.
         /// </summary>
-        [NotNull]
-        InitialisableProperty<IEnumerable<Industry>> Industry { get; }
+        IInitialisableProperty<IEnumerable<Industry>> Industry { get; }
 
         /// <summary>
         ///     Gets whether the <see cref="Anime" /> or <see cref="Manga" /> contains H-Content (Adult).
         /// </summary>
-        [NotNull]
-        InitialisableProperty<bool> IsHContent { get; }
+        IInitialisableProperty<bool> IsHContent { get; }
 
         /// <summary>
         ///     Gets if the <see cref="Anime" /> or <see cref="Manga" /> is licensed by a german company.
         /// </summary>
-        [NotNull]
-        InitialisableProperty<bool> IsLicensed { get; }
+        IInitialisableProperty<bool> IsLicensed { get; }
 
         /// <summary>
         ///     Gets the japanese title of the <see cref="Anime" /> or <see cref="Manga" />.
         /// </summary>
-        [NotNull]
-        InitialisableProperty<string> JapaneseTitle { get; }
+        IInitialisableProperty<string> JapaneseTitle { get; }
 
         /// <summary>
         ///     Gets the original title of the <see cref="Anime" /> or <see cref="Manga" />.
         /// </summary>
-        [NotNull]
-        InitialisableProperty<string> Name { get; }
+        IInitialisableProperty<string> Name { get; }
 
         /// <summary>
         ///     Gets the rating of the <see cref="Anime" /> or <see cref="Manga" />.
         /// </summary>
-        InitialisableProperty<AnimeMangaRating> Rating { get; }
+        IInitialisableProperty<AnimeMangaRating> Rating { get; }
 
         /// <summary>
         ///     Gets the relations of the <see cref="Anime" /> or <see cref="Manga" />.
         /// </summary>
-        InitialisableProperty<IEnumerable<IAnimeMangaObject>> Relations { get; }
+        IInitialisableProperty<IEnumerable<IAnimeMangaObject>> Relations { get; }
 
         /// <summary>
         ///     Gets the seasons the <see cref="Anime" /> or <see cref="Manga" /> aired in.
         /// </summary>
-        [NotNull]
-        InitialisableProperty<AnimeMangaSeasonInfo> Season { get; }
+        IInitialisableProperty<AnimeMangaSeasonInfo> Season { get; }
 
         /// <summary>
         ///     Gets the status of the <see cref="Anime" /> or <see cref="Manga" />.
         /// </summary>
-        InitialisableProperty<AnimeMangaStatus> Status { get; }
+        IInitialisableProperty<AnimeMangaStatus> Status { get; }
 
         /// <summary>
         ///     Gets the synonym the <see cref="Anime" /> or <see cref="Manga" /> is also known as.
         /// </summary>
-        [NotNull]
-        InitialisableProperty<string> Synonym { get; }
+        IInitialisableProperty<string> Synonym { get; }
 
         /// <summary>
         ///     Gets the tags the <see cref="Anime" /> or <see cref="Manga" /> was tagged with.
         /// </summary>
-        InitialisableProperty<IEnumerable<Tag>> Tags { get; }
-
-        #endregion
-
-        #region
-
-        /// <summary>
-        ///     Adds the <see cref="Anime" /> or <see cref="Manga" /> to the planned list.
-        /// </summary>
-        /// <param name="userControlPanel">The object which, if specified, the object is added to.</param>
-        /// <returns>If the action was successful.</returns>
-        Task<ProxerResult> AddToPlanned(UserControlPanel userControlPanel = null);
+        IInitialisableProperty<IEnumerable<Tag>> Tags { get; }
 
         #endregion
     }

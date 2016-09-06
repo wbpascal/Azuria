@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using Azuria.Api.v1;
 using Azuria.Exceptions;
-using JetBrains.Annotations;
 
 namespace Azuria.Utilities.ErrorHandling
 {
@@ -13,16 +12,11 @@ namespace Azuria.Utilities.ErrorHandling
     /// <typeparam name="T">The type of the result.</typeparam>
     public class ProxerResult<T> : ProxerResult
     {
-        [UsedImplicitly]
-        private ProxerResult()
-        {
-        }
-
         /// <summary>
         ///     Initialises a new instance with a specified result and indicates that the method was successful.
         /// </summary>
         /// <param name="result">The result.</param>
-        public ProxerResult([NotNull] T result)
+        public ProxerResult(T result)
         {
             this.Success = true;
             this.Result = result;
@@ -34,7 +28,7 @@ namespace Azuria.Utilities.ErrorHandling
         ///     method failed to execute.
         /// </summary>
         /// <param name="exceptions">The exception that were thrown during method execution.</param>
-        public ProxerResult([NotNull] IEnumerable<Exception> exceptions) : base(exceptions)
+        public ProxerResult(IEnumerable<Exception> exceptions) : base(exceptions)
         {
         }
 
@@ -43,12 +37,11 @@ namespace Azuria.Utilities.ErrorHandling
         /// <summary>
         ///     Gets the result of the method if the method was successful.
         /// </summary>
-        [CanBeNull]
         public T Result { get; set; }
 
         #endregion
 
-        #region
+        #region Methods
 
         /// <summary>
         ///     Returns the result of the method if the method was successful. Otherwise returns the value of
@@ -58,8 +51,7 @@ namespace Azuria.Utilities.ErrorHandling
         ///     The value that will be returned if the method was not executed successfully.
         /// </param>
         /// <returns>An object of type <typeparamref name="T" />.</returns>
-        [CanBeNull]
-        public T OnError([CanBeNull] T returnObject)
+        public T OnError(T returnObject)
         {
             return this.Success && (this.Result != null) ? this.Result : returnObject;
         }
@@ -86,7 +78,7 @@ namespace Azuria.Utilities.ErrorHandling
         ///     method failed to execute.
         /// </summary>
         /// <param name="exceptions">The exception that were thrown during method execution.</param>
-        public ProxerResult([NotNull] IEnumerable<Exception> exceptions)
+        public ProxerResult(IEnumerable<Exception> exceptions)
         {
             this.Success = false;
             this.Exceptions = exceptions;
@@ -97,7 +89,6 @@ namespace Azuria.Utilities.ErrorHandling
         /// <summary>
         ///     Gets the exceptions that were thrown during method execution.
         /// </summary>
-        [NotNull]
         public IEnumerable<Exception> Exceptions { get; set; }
 
         /// <summary>
@@ -107,13 +98,13 @@ namespace Azuria.Utilities.ErrorHandling
 
         #endregion
 
-        #region
+        #region Methods
 
         /// <summary>
         ///     Adds an exception to the collection that were thrown during method execution.
         /// </summary>
         /// <param name="exception">The exception that is added to the collection.</param>
-        public void AddException([NotNull] Exception exception)
+        public void AddException(Exception exception)
         {
             List<Exception> lExceptions = this.Exceptions.ToList();
             lExceptions.Add(exception);
@@ -126,7 +117,7 @@ namespace Azuria.Utilities.ErrorHandling
         ///     Adds multiple exceptions to the collection that were thrown during method execution.
         /// </summary>
         /// <param name="exception">The exception that are added to the collection.</param>
-        public void AddExceptions([NotNull] IEnumerable<Exception> exception)
+        public void AddExceptions(IEnumerable<Exception> exception)
         {
             List<Exception> lExceptions = this.Exceptions.ToList();
             lExceptions.AddRange(exception);

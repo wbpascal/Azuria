@@ -17,7 +17,7 @@ namespace Azuria.AnimeManga
 
         #endregion
 
-        #region
+        #region Methods
 
         /// <summary>
         ///     Adds the <see cref="Anime.Episode" /> or <see cref="Manga.Chapter" /> to the bookmarks.

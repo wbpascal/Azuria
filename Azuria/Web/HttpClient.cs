@@ -6,7 +6,6 @@ using System.Reflection;
 using System.Threading.Tasks;
 using Azuria.Exceptions;
 using Azuria.Utilities.ErrorHandling;
-using JetBrains.Annotations;
 
 namespace Azuria.Web
 {
@@ -35,8 +34,6 @@ namespace Azuria.Web
             this._timeout = timeout;
             this._userAgentExtra = userAgentExtra;
         }
-
-        #region
 
         /// <summary>
         /// </summary>
@@ -109,9 +106,8 @@ namespace Azuria.Web
                 : new ProxerResult<string>(lResponse);
         }
 
-        [ItemNotNull]
-        private async Task<HttpResponseMessage> GetWebRequest([NotNull] Uri url,
-            [CanBeNull] CookieContainer cookies, [CanBeNull] Dictionary<string, string> headers)
+        private async Task<HttpResponseMessage> GetWebRequest(Uri url, CookieContainer cookies,
+            Dictionary<string, string> headers)
         {
             using (
                 System.Net.Http.HttpClient lClient =
@@ -209,10 +205,8 @@ namespace Azuria.Web
                 : new ProxerResult<string>(lResponseString);
         }
 
-        [ItemNotNull]
-        private async Task<HttpResponseMessage> PostWebRequest([NotNull] Uri url,
-            [CanBeNull] CookieContainer cookies, [NotNull] IEnumerable<KeyValuePair<string, string>> postArgs,
-            [CanBeNull] Dictionary<string, string> headers)
+        private async Task<HttpResponseMessage> PostWebRequest(Uri url, CookieContainer cookies,
+            IEnumerable<KeyValuePair<string, string>> postArgs, Dictionary<string, string> headers)
         {
             using (
                 System.Net.Http.HttpClient lClient =
@@ -233,7 +227,5 @@ namespace Azuria.Web
                 return await lClient.PostAsync(url, new FormUrlEncodedContent(postArgs));
             }
         }
-
-        #endregion
     }
 }

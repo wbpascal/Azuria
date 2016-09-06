@@ -1,6 +1,5 @@
 ﻿using System;
 using Azuria.Community;
-using JetBrains.Annotations;
 
 namespace Azuria.Notifications.PrivateMessage
 {
@@ -9,7 +8,7 @@ namespace Azuria.Notifications.PrivateMessage
     /// </summary>
     public class PrivateMessageNotification : INotification
     {
-        internal PrivateMessageNotification([NotNull] Conference conference, DateTime timeStamp)
+        internal PrivateMessageNotification(Conference conference, DateTime timeStamp)
         {
             this.Conference = conference;
             this.TimeStamp = timeStamp;

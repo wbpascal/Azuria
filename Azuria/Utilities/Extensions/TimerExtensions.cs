@@ -4,7 +4,7 @@ namespace Azuria.Utilities.Extensions
 {
     internal static class TimerExtensions
     {
-        #region
+        #region Methods
 
         internal static void Reset(this Timer timer)
         {

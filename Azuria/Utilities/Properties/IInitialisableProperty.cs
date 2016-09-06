@@ -1,7 +1,6 @@
 ﻿using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using Azuria.Utilities.ErrorHandling;
-using JetBrains.Annotations;
 
 namespace Azuria.Utilities.Properties
 {
@@ -19,13 +18,12 @@ namespace Azuria.Utilities.Properties
 
         #endregion
 
-        #region
+        #region Methods
 
         /// <summary>
         ///     Fetches a new value for the property without returning the new value.
         /// </summary>
         /// <returns>If the action was successful.</returns>
-        [ItemNotNull]
         Task<ProxerResult> FetchObject();
 
         /// <summary>
@@ -37,7 +35,6 @@ namespace Azuria.Utilities.Properties
         ///     Gets a new value for the property independent of it being already initialised.
         /// </summary>
         /// <returns>If the action was successful and if it was, the value of this property.</returns>
-        [ItemNotNull]
         Task<ProxerResult<T>> GetNewObject();
 
         /// <summary>
@@ -48,14 +45,12 @@ namespace Azuria.Utilities.Properties
         ///     If the action was successful and if it was, the value of this property. If it was not then
         ///     <paramref name="onError" /> is returned.
         /// </returns>
-        [ItemNotNull]
         Task<T> GetNewObject(T onError);
 
         /// <summary>
         ///     Initialises the property if it is not already.
         /// </summary>
         /// <returns>If the action was successful and if it was, the value of this property.</returns>
-        [ItemNotNull]
         Task<ProxerResult<T>> GetObject();
 
         /// <summary>
@@ -66,8 +61,13 @@ namespace Azuria.Utilities.Properties
         ///     If the action was successful and if it was, the value of this property. If it was not then
         ///     <paramref name="onError" /> is returned.
         /// </returns>
-        [ItemNotNull]
         Task<T> GetObject(T onError);
+
+        /// <summary>
+        /// </summary>
+        /// <param name="ifNot"></param>
+        /// <returns></returns>
+        T GetObjectIfInitialised(T ifNot);
 
         /// <summary>
         /// </summary>

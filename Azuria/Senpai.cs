@@ -8,7 +8,6 @@ using Azuria.Exceptions;
 using Azuria.Security;
 using Azuria.UserInfo;
 using Azuria.Utilities.ErrorHandling;
-using JetBrains.Annotations;
 
 namespace Azuria
 {
@@ -24,7 +23,7 @@ namespace Azuria
         /// <summary>
         /// </summary>
         /// <param name="username"></param>
-        public Senpai([NotNull] string username) : this()
+        public Senpai(string username) : this()
         {
             if (string.IsNullOrEmpty(username.Trim())) throw new ArgumentException(nameof(username));
             this._username = username;
@@ -33,7 +32,7 @@ namespace Azuria
         /// <summary>
         /// </summary>
         /// <param name="senpai"></param>
-        public Senpai([NotNull] Senpai senpai) : this()
+        public Senpai(Senpai senpai) : this()
         {
             this._username = senpai._username;
             this._cookiesCreated = senpai._cookiesCreated;
@@ -66,25 +65,21 @@ namespace Azuria
         /// <summary>
         ///     Gets the cookies that are used to make requests to the server with this user.
         /// </summary>
-        [NotNull]
         public CookieContainer LoginCookies { get; private set; } = new CookieContainer();
 
         /// <summary>
         /// </summary>
-        [NotNull]
         public ISecureContainer<char[]> LoginToken { get; protected set; }
 
         /// <summary>
         ///     Gets the profile of the user.
         /// </summary>
-        [CanBeNull]
         public User Me { get; protected set; }
 
         /// <summary>
         ///     Gets the cookies that are used to make requests to the server with this user. Unlike <see cref="LoginCookies" />
         ///     contains this cookie container some additional cookies to request a response that is intended for mobile usage.
         /// </summary>
-        [NotNull]
         public CookieContainer MobileLoginCookies
         {
             get
@@ -99,7 +94,7 @@ namespace Azuria
 
         #endregion
 
-        #region Inherited
+        #region Methods
 
         /// <summary>Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.</summary>
         public void Dispose()
@@ -107,15 +102,10 @@ namespace Azuria
             this.LoginToken.Dispose();
         }
 
-        #endregion
-
-        #region
-
         /// <summary>
         /// </summary>
         /// <param name="token"></param>
         /// <returns></returns>
-        [ItemNotNull]
         public static async Task<ProxerResult<Senpai>> FromToken(char[] token)
         {
             Senpai lSenpai = new Senpai();
@@ -135,8 +125,7 @@ namespace Azuria
         /// </summary>
         /// <param name="password">The password of the user.</param>
         /// <returns>If the action was successful and if it was, whether the user was successfully logged in.</returns>
-        [ItemNotNull]
-        public async Task<ProxerResult<bool>> Login([NotNull] string password)
+        public async Task<ProxerResult<bool>> Login(string password)
         {
             if (string.IsNullOrEmpty(password.Trim()))
                 return new ProxerResult<bool>(new[] {new ArgumentException(nameof(password))});
@@ -163,7 +152,8 @@ namespace Azuria
 
             ProxerResult<ProxerApiResponse<UserInfoDataModel>> lResult =
                 await RequestHandler.ApiRequest(ApiRequestBuilder.UserGetInfo(null, this), token);
-            if (!lResult.Success || (lResult.Result == null)) return new ProxerResult(lResult.Exceptions);
+            if (!lResult.Success || (lResult.Result == null))
+                return new ProxerResult(lResult.Exceptions);
             UserInfoDataModel lDataModel = lResult.Result.Data;
             this.LoginToken.SetValue(token);
             this.Me = new User(lDataModel);
@@ -176,7 +166,6 @@ namespace Azuria
         /// <summary>
         /// </summary>
         /// <returns></returns>
-        [ItemNotNull]
         public async Task<ProxerResult> Logout()
         {
             ProxerResult<ProxerApiResponse> lResult =

@@ -2,15 +2,13 @@
 using System.Threading.Tasks;
 using Azuria.Utilities.ErrorHandling;
 using Azuria.Utilities.Properties;
-using JetBrains.Annotations;
 
 namespace Azuria.Utilities.Extensions
 {
     internal static class InitialisationExtensions
     {
-        #region
+        #region Methods
 
-        [ItemNotNull]
         internal static async Task<ProxerResult> InitAllInitalisableProperties(this object source)
         {
             int lFailedInits = 0, lInitialiseFunctions = 0;
@@ -45,7 +43,7 @@ namespace Azuria.Utilities.Extensions
             return lReturn;
         }
 
-        internal static bool IsFullyInitialised([NotNull] this object objectToTest)
+        internal static bool IsFullyInitialised(this object objectToTest)
         {
             int lInitialisedProperties = 0, lInitialiseFunctions = 0;
             foreach (PropertyInfo propertyInfo in objectToTest.GetType().GetRuntimeProperties())

@@ -1,15 +1,9 @@
 ﻿using System;
 using System.Collections;
-using System.Collections.Generic;
-using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
-using Azuria.Api;
 using Azuria.Exceptions;
-using Azuria.UserInfo;
 using Azuria.Utilities.ErrorHandling;
-using HtmlAgilityPack;
-using JetBrains.Annotations;
 
 namespace Azuria.Notifications.FriendRequest
 {
@@ -38,12 +32,17 @@ namespace Azuria.Notifications.FriendRequest
 
         #endregion
 
-        #region Inherited
+        #region Methods
 
         /// <summary>Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.</summary>
         public void Dispose()
         {
             this._notifications = new FriendRequestNotification[0];
+        }
+
+        private Task<ProxerResult> GetNotifications()
+        {
+            throw new NotImplementedException();
         }
 
         /// <summary>Advances the enumerator to the next element of the collection.</summary>
@@ -69,55 +68,6 @@ namespace Azuria.Notifications.FriendRequest
         {
             this._itemIndex = -1;
             this._notifications = new FriendRequestNotification[0];
-        }
-
-        #endregion
-
-        #region
-
-        [ItemNotNull]
-        private async Task<ProxerResult> GetNotifications()
-        {
-            HtmlDocument lDocument = new HtmlDocument();
-            ProxerResult<string> lResult =
-                await
-                    ApiInfo.HttpClient.GetRequest(
-                        new Uri("https://proxer.me/user/my/connections?format=raw"),
-                        this._senpai);
-
-            if (!lResult.Success)
-                return new ProxerResult(lResult.Exceptions);
-
-            string lResponse = lResult.Result;
-
-            try
-            {
-                lDocument.LoadHtml(lResponse);
-
-                IEnumerable<HtmlNode> lNodes = lDocument.DocumentNode.DescendantsAndSelf().Where(x => x.Name == "tr");
-
-                this._notifications = (from curNode in lNodes
-                    where
-                    curNode.Id.StartsWith("entry") &&
-                    curNode.FirstChild.FirstChild.Attributes["class"].Value
-                        .Equals
-                        ("accept")
-                    let lUserId =
-                    Convert.ToInt32(curNode.Id.Replace("entry", ""))
-                    let lUserName =
-                    curNode.InnerText.Split("  ".ToCharArray())[0]
-                    let lDatum =
-                    DateTime.ParseExact(curNode.ChildNodes[4].InnerText, "yyyy-MM-dd", CultureInfo.InvariantCulture)
-                    select
-                    new FriendRequestNotification(new User(lUserName, lUserId), lDatum,
-                        this._senpai)).ToArray();
-
-                return new ProxerResult();
-            }
-            catch
-            {
-                return new ProxerResult(ErrorHandler.HandleError(lResponse, false).Exceptions);
-            }
         }
 
         #endregion

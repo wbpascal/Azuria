@@ -1,5 +1,4 @@
 ﻿using Azuria.Api.v1.DataModels.Info;
-using JetBrains.Annotations;
 
 namespace Azuria.AnimeManga.Properties
 {
@@ -31,12 +30,11 @@ namespace Azuria.AnimeManga.Properties
         /// <summary>
         ///     Gets the Language of the <see cref="Group" />.
         /// </summary>
-        public Language Language { get; internal set; } = Language.Unkown;
+        public Language Language { get; internal set; }
 
         /// <summary>
         ///     Gets the name of the <see cref="Group" />.
         /// </summary>
-        [NotNull]
         public string Name { get; }
 
         #endregion

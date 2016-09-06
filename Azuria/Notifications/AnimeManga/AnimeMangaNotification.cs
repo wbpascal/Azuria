@@ -37,7 +37,7 @@ namespace Azuria.Notifications.AnimeManga
 
         #endregion
 
-        #region
+        #region Methods
 
         /// <summary>
         /// </summary>

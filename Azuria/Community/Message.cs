@@ -1,7 +1,6 @@
 ﻿using System;
 using Azuria.Api.v1.DataModels.Messenger;
 using Azuria.UserInfo;
-using JetBrains.Annotations;
 
 namespace Azuria.Community
 {
@@ -10,7 +9,7 @@ namespace Azuria.Community
     /// </summary>
     public class Message
     {
-        internal Message([NotNull] MessageDataModel dataModel, int conferenceId)
+        internal Message(MessageDataModel dataModel, int conferenceId)
         {
             this.ConferenceId = conferenceId;
             this.Content = dataModel.MessageContent;
@@ -35,12 +34,10 @@ namespace Azuria.Community
         /// <summary>
         ///     Gets the message content.
         /// </summary>
-        [NotNull]
         public string Content { get; }
 
         /// <summary>
         /// </summary>
-        [NotNull]
         public string Device { get; }
 
         /// <summary>
@@ -51,7 +48,6 @@ namespace Azuria.Community
         /// <summary>
         ///     Gets the sender of the current message.
         /// </summary>
-        [NotNull]
         public User Sender { get; }
 
         /// <summary>

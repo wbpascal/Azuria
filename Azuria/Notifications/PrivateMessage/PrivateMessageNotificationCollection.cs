@@ -1,6 +1,5 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
-using JetBrains.Annotations;
 
 namespace Azuria.Notifications.PrivateMessage
 {
@@ -11,7 +10,7 @@ namespace Azuria.Notifications.PrivateMessage
     {
         private readonly Senpai _senpai;
 
-        internal PrivateMessageNotificationCollection([NotNull] Senpai senpai)
+        internal PrivateMessageNotificationCollection(Senpai senpai)
         {
             this._senpai = senpai;
             this.Type = NotificationType.PrivateMessage;
@@ -26,7 +25,7 @@ namespace Azuria.Notifications.PrivateMessage
 
         #endregion
 
-        #region Inherited
+        #region Methods
 
         /// <summary>Returns an enumerator that iterates through a collection.</summary>
         /// <returns>An <see cref="T:System.Collections.IEnumerator" /> object that can be used to iterate through the collection.</returns>

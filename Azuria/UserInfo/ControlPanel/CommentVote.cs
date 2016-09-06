@@ -51,7 +51,7 @@ namespace Azuria.UserInfo.ControlPanel
 
         #endregion
 
-        #region
+        #region Methods
 
         /// <summary>
         /// </summary>

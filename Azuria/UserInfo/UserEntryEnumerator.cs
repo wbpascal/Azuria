@@ -19,7 +19,7 @@ namespace Azuria.UserInfo
             this._user = user;
         }
 
-        #region
+        #region Methods
 
         internal override async Task<ProxerResult<IEnumerable<UserProfileEntry<T>>>> GetNextPage(int nextPage)
         {

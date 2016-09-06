@@ -1,17 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
-using JetBrains.Annotations;
 
 namespace Azuria.Utilities.Extensions
 {
     internal static class StringExtensions
     {
-        #region
+        #region Methods
 
-        [NotNull]
-        internal static List<string> GetTagContents([NotNull] this string source, [NotNull] string startTag,
-            [NotNull] string endTag)
+        internal static List<string> GetTagContents(this string source, string startTag, string endTag)
         {
             List<string> stringsFound = new List<string>();
             int index = source.IndexOf(startTag, StringComparison.Ordinal) + startTag.Length;
@@ -32,7 +29,7 @@ namespace Azuria.Utilities.Extensions
             return stringsFound;
         }
 
-        internal static DateTime ToDateTime([NotNull] this string stringToFormat, [NotNull] string format = "dd.MM.yyyy")
+        internal static DateTime ToDateTime(this string stringToFormat, string format = "dd.MM.yyyy")
         {
             return DateTime.ParseExact(
                 stringToFormat,

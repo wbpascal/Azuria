@@ -6,7 +6,7 @@ namespace Azuria.Utilities.Extensions
 {
     internal static class SecureStringExtensions
     {
-        #region
+        #region Methods
 
         internal static char[] ToCharArray(this SecureString secureString)
         {

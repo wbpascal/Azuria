@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using Azuria.AnimeManga.Properties;
-using JetBrains.Annotations;
 
 namespace Azuria.Search.Input
 {
@@ -36,7 +35,6 @@ namespace Azuria.Search.Input
 
         /// <summary>
         /// </summary>
-        [CanBeNull]
         public int? Length { get; set; }
 
         /// <summary>

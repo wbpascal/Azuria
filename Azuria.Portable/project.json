@@ -1,11 +1,11 @@
 ﻿{
   "supports": {},
   "dependencies": {
-    "HtmlAgilityPack": "1.4.9.4",
-    "JetBrains.Annotations": "10.1.4",
-    "Newtonsoft.Json": "8.0.3"
+    "Microsoft.NETCore.Portable.Compatibility": "1.0.1",
+    "NETStandard.Library": "1.6.0",
+    "Newtonsoft.Json": "9.0.1"
   },
   "frameworks": {
-    ".NETPortable,Version=v4.5,Profile=Profile259": {}
+    "netstandard1.0": {}
   }
 }

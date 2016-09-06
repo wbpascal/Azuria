@@ -6,7 +6,6 @@ using System.Threading.Tasks;
 using Azuria.Api;
 using Azuria.Exceptions;
 using Azuria.Utilities.ErrorHandling;
-using JetBrains.Annotations;
 using Newtonsoft.Json;
 
 namespace Azuria.Notifications.News
@@ -38,7 +37,7 @@ namespace Azuria.Notifications.News
 
         #endregion
 
-        #region Inherited
+        #region Methods
 
         /// <summary>Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.</summary>
         public void Dispose()
@@ -46,38 +45,6 @@ namespace Azuria.Notifications.News
             this._currentPageContent = new NewsNotification[0];
         }
 
-        /// <summary>Advances the enumerator to the next element of the collection.</summary>
-        /// <returns>
-        ///     true if the enumerator was successfully advanced to the next element; false if the enumerator has passed the
-        ///     end of the collection.
-        /// </returns>
-        /// <exception cref="T:System.InvalidOperationException">The collection was modified after the enumerator was created. </exception>
-        public bool MoveNext()
-        {
-            this._currentPageItemIndex++;
-            if (this._currentPageItemIndex < NewsPerPage) return true;
-
-            this._currentPageItemIndex = 0;
-            ProxerResult lGetNotificationsResult = Task.Run(this.GetNextPage).Result;
-            if (!lGetNotificationsResult.Success)
-                throw lGetNotificationsResult.Exceptions.FirstOrDefault() ?? new WrongResponseException();
-            return lGetNotificationsResult.Success && this._currentPageContent.Any();
-        }
-
-        /// <summary>Sets the enumerator to its initial position, which is before the first element in the collection.</summary>
-        /// <exception cref="T:System.InvalidOperationException">The collection was modified after the enumerator was created. </exception>
-        public void Reset()
-        {
-            this._nextPageToLoad = 1;
-            this._currentPageItemIndex = 14;
-            this._currentPageContent = new NewsNotification[0];
-        }
-
-        #endregion
-
-        #region
-
-        [ItemNotNull]
         private async Task<ProxerResult> GetNextPage()
         {
             ProxerResult<string> lResult =
@@ -113,6 +80,33 @@ namespace Azuria.Notifications.News
             {
                 return new ProxerResult(ErrorHandler.HandleError(lResponse, false).Exceptions);
             }
+        }
+
+        /// <summary>Advances the enumerator to the next element of the collection.</summary>
+        /// <returns>
+        ///     true if the enumerator was successfully advanced to the next element; false if the enumerator has passed the
+        ///     end of the collection.
+        /// </returns>
+        /// <exception cref="T:System.InvalidOperationException">The collection was modified after the enumerator was created. </exception>
+        public bool MoveNext()
+        {
+            this._currentPageItemIndex++;
+            if (this._currentPageItemIndex < NewsPerPage) return true;
+
+            this._currentPageItemIndex = 0;
+            ProxerResult lGetNotificationsResult = Task.Run(this.GetNextPage).Result;
+            if (!lGetNotificationsResult.Success)
+                throw lGetNotificationsResult.Exceptions.FirstOrDefault() ?? new WrongResponseException();
+            return lGetNotificationsResult.Success && this._currentPageContent.Any();
+        }
+
+        /// <summary>Sets the enumerator to its initial position, which is before the first element in the collection.</summary>
+        /// <exception cref="T:System.InvalidOperationException">The collection was modified after the enumerator was created. </exception>
+        public void Reset()
+        {
+            this._nextPageToLoad = 1;
+            this._currentPageItemIndex = 14;
+            this._currentPageContent = new NewsNotification[0];
         }
 
         #endregion

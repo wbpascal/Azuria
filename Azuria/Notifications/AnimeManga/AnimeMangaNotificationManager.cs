@@ -14,20 +14,6 @@ namespace Azuria.Notifications.AnimeManga
     /// </summary>
     public static class AnimeMangaNotificationManager
     {
-        /// <summary>
-        /// </summary>
-        /// <param name="sender">The user that recieved the notifications.</param>
-        /// <param name="e">The notifications.</param>
-        public delegate void AnimeNotificationEventHandler(
-            Senpai sender, IEnumerable<AnimeMangaNotification<Anime>> e);
-
-        /// <summary>
-        /// </summary>
-        /// <param name="sender">The user that recieved the notifications.</param>
-        /// <param name="e">The notifications.</param>
-        public delegate void MangaNotificationEventHandler(
-            Senpai sender, IEnumerable<AnimeMangaNotification<Manga>> e);
-
         private static readonly Dictionary<Senpai, List<AnimeNotificationEventHandler>> AnimeCallbackDictionary =
             new Dictionary<Senpai, List<AnimeNotificationEventHandler>>();
 
@@ -48,7 +34,25 @@ namespace Azuria.Notifications.AnimeManga
             Timer.Enabled = true;
         }
 
-        #region
+        #region Events
+
+        /// <summary>
+        /// </summary>
+        /// <param name="sender">The user that recieved the notifications.</param>
+        /// <param name="e">The notifications.</param>
+        public delegate void AnimeNotificationEventHandler(
+            Senpai sender, IEnumerable<AnimeMangaNotification<Anime>> e);
+
+        /// <summary>
+        /// </summary>
+        /// <param name="sender">The user that recieved the notifications.</param>
+        /// <param name="e">The notifications.</param>
+        public delegate void MangaNotificationEventHandler(
+            Senpai sender, IEnumerable<AnimeMangaNotification<Manga>> e);
+
+        #endregion
+
+        #region Methods
 
         private static async void CheckNotifications()
         {

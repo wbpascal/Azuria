@@ -17,7 +17,7 @@ namespace Azuria.Api.v1
     {
         private static ISecureContainer<char[]> _apiKey;
 
-        #region
+        #region Methods
 
         internal static async Task<ProxerResult<T>> ApiCustomRequest<T>(ApiRequest request, char[] loginToken = null,
             int recursion = 0) where T : ProxerApiResponse
@@ -45,8 +45,6 @@ namespace Azuria.Api.v1
                 if (lResult.Exceptions.Any(exception => typeof(Exception) == typeof(NotLoggedInException)))
                     return new ProxerResult<T>(lResult.Exceptions);
 
-                #region try again
-
                 if (recursion >= 2)
                 {
                     request.Senpai?.InvalidateCookies();
@@ -56,8 +54,6 @@ namespace Azuria.Api.v1
                     (await request.Senpai.LoginWithToken(request.Senpai.LoginToken.ReadValue()))
                         .Success)
                     return await ApiCustomRequest<T>(request, loginToken, recursion + 1);
-
-                #endregion
 
                 return new ProxerResult<T>(lResult.Exceptions);
             }
@@ -76,12 +72,12 @@ namespace Azuria.Api.v1
                         return new ProxerResult<T>(new[] {new ApiKeyInsufficientException()});
                     case ErrorCode.UserInsufficientPermissions:
                         return new ProxerResult<T>(new[] {new NoAccessException(request.Senpai)});
+                    case ErrorCode.LoginTokenInvalid:
+                        return new ProxerResult<T>(new[] {new NotLoggedInException(request.Senpai)});
                     case ErrorCode.NotificationsUserNotLoggedIn:
                     case ErrorCode.UcpUserNotLoggedIn:
                     case ErrorCode.InfoSetUserInfoUserNotLoggedIn:
                     case ErrorCode.MessengerUserNotLoggedIn:
-
-                        #region try again
 
                         if (recursion >= 2)
                         {
@@ -92,8 +88,6 @@ namespace Azuria.Api.v1
                             (await request.Senpai.LoginWithToken(request.Senpai.LoginToken.ReadValue()))
                                 .Success)
                             return await ApiCustomRequest<T>(request, loginToken, recursion + 1);
-
-                        #endregion
 
                         break;
                 }

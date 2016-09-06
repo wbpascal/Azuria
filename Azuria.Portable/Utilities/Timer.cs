@@ -47,20 +47,13 @@ namespace System.Timers
 
         #endregion
 
-        #region Inherited
+        #region Events
 
-        /// <summary>
-        ///     Führt anwendungsspezifische Aufgaben aus, die mit dem Freigeben, Zurückgeben oder Zurücksetzen von nicht
-        ///     verwalteten Ressourcen zusammenhängen.
-        /// </summary>
-        public void Dispose()
-        {
-            this._ct.Dispose();
-        }
+        internal event ElapsedEventHandler Elapsed;
 
         #endregion
 
-        #region
+        #region Methods
 
         private async void Action()
         {
@@ -96,7 +89,14 @@ namespace System.Timers
             this._task = new Task(this.Action, this._ct.Token);
         }
 
-        internal event ElapsedEventHandler Elapsed;
+        /// <summary>
+        ///     Führt anwendungsspezifische Aufgaben aus, die mit dem Freigeben, Zurückgeben oder Zurücksetzen von nicht
+        ///     verwalteten Ressourcen zusammenhängen.
+        /// </summary>
+        public void Dispose()
+        {
+            this._ct.Dispose();
+        }
 
         internal void Start()
         {

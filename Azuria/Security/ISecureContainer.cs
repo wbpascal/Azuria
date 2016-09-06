@@ -6,7 +6,7 @@ namespace Azuria.Security
     /// </summary>
     public interface ISecureContainer<T> : IDisposable
     {
-        #region
+        #region Methods
 
         /// <summary>
         /// </summary>

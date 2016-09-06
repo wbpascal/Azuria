@@ -13,14 +13,6 @@ namespace Azuria.Notifications.FriendRequest
     /// </summary>
     public static class FriendRequestNotificationManager
     {
-        /// <summary>
-        ///     Represents a method that is executed when new friend request notifications are available.
-        /// </summary>
-        /// <param name="sender">The user that recieved the notifications.</param>
-        /// <param name="e">The notifications.</param>
-        public delegate void FriendRequestNotificationEventHandler(
-            Senpai sender, IEnumerable<FriendRequestNotification> e);
-
         private static readonly Dictionary<Senpai, List<FriendRequestNotificationEventHandler>> CallbackDictionary =
             new Dictionary<Senpai, List<FriendRequestNotificationEventHandler>>();
 
@@ -38,7 +30,19 @@ namespace Azuria.Notifications.FriendRequest
             Timer.Enabled = true;
         }
 
-        #region
+        #region Events
+
+        /// <summary>
+        ///     Represents a method that is executed when new friend request notifications are available.
+        /// </summary>
+        /// <param name="sender">The user that recieved the notifications.</param>
+        /// <param name="e">The notifications.</param>
+        public delegate void FriendRequestNotificationEventHandler(
+            Senpai sender, IEnumerable<FriendRequestNotification> e);
+
+        #endregion
+
+        #region Methods
 
         private static async void CheckNotifications()
         {

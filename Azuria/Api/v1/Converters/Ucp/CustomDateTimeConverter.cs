@@ -6,7 +6,7 @@ namespace Azuria.Api.v1.Converters.Ucp
 {
     internal class CustomDateTimeConverter : DateTimeConverterBase
     {
-        #region
+        #region Methods
 
         /// <summary>Reads the JSON representation of the object.</summary>
         /// <param name="reader">The <see cref="T:Newtonsoft.Json.JsonReader" /> to read from.</param>

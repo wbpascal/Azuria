@@ -22,7 +22,7 @@ namespace Azuria.UserInfo.ControlPanel
             this._controlPanel = controlPanel;
         }
 
-        #region
+        #region Methods
 
         private static IAnimeMangaContent<T> GetAnimeMangaContent(HistoryDataModel dataModel)
         {

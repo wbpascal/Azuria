@@ -3,7 +3,6 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using Azuria.Utilities.ErrorHandling;
-using JetBrains.Annotations;
 
 namespace Azuria.Utilities.Properties
 {
@@ -12,8 +11,8 @@ namespace Azuria.Utilities.Properties
     /// </summary>
     public class AsyncProperty<T>
     {
-        [CanBeNull] private readonly Func<Task<ProxerResult<T>>> _getFunc;
-        [CanBeNull] private readonly Func<T, Task<ProxerResult>> _setFunc;
+        private readonly Func<Task<ProxerResult<T>>> _getFunc;
+        private readonly Func<T, Task<ProxerResult>> _setFunc;
         private T _currentValue;
 
         /// <summary>
@@ -36,7 +35,7 @@ namespace Azuria.Utilities.Properties
             this._setFunc = setFunc;
         }
 
-        #region
+        #region Methods
 
         /// <summary>
         ///     Executes, if specified, the get-function that was specified in the constructor and then returns the current value.

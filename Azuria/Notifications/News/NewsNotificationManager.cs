@@ -13,13 +13,6 @@ namespace Azuria.Notifications.News
     /// </summary>
     public static class NewsNotificationManager
     {
-        /// <summary>
-        ///     Represents a method that is executed when new news notifications are available.
-        /// </summary>
-        /// <param name="sender">The user that recieved the notifications.</param>
-        /// <param name="e">The notifications. Maximum length of 50 elements.</param>
-        public delegate void NewsNotificationEventHandler(Senpai sender, IEnumerable<NewsNotification> e);
-
         private static readonly Dictionary<Senpai, Dictionary<NewsNotificationEventHandler, string>> CallbackDictionary
             =
             new Dictionary<Senpai, Dictionary<NewsNotificationEventHandler, string>>();
@@ -38,7 +31,18 @@ namespace Azuria.Notifications.News
             Timer.Enabled = true;
         }
 
-        #region
+        #region Events
+
+        /// <summary>
+        ///     Represents a method that is executed when new news notifications are available.
+        /// </summary>
+        /// <param name="sender">The user that recieved the notifications.</param>
+        /// <param name="e">The notifications. Maximum length of 50 elements.</param>
+        public delegate void NewsNotificationEventHandler(Senpai sender, IEnumerable<NewsNotification> e);
+
+        #endregion
+
+        #region Methods
 
         private static async void CheckNotifications()
         {

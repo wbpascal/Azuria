@@ -1,7 +1,6 @@
 ﻿using System.Threading.Tasks;
 using Azuria.AnimeManga;
 using Azuria.Utilities.ErrorHandling;
-using JetBrains.Annotations;
 
 namespace Azuria.UserInfo.ControlPanel
 {
@@ -24,7 +23,6 @@ namespace Azuria.UserInfo.ControlPanel
         /// <summary>
         ///     Gets the <see cref="Anime.Episode" /> or <see cref="Manga.Chapter" /> the user has bookmarked.
         /// </summary>
-        [NotNull]
         public IAnimeMangaContent<T> AnimeMangaContentObject { get; }
 
         /// <summary>
@@ -38,13 +36,12 @@ namespace Azuria.UserInfo.ControlPanel
 
         #endregion
 
-        #region
+        #region Methods
 
         /// <summary>
         ///     Deletes the entry from the User-Control-Panel.
         /// </summary>
         /// <returns>If the action was successfull.</returns>
-        [ItemNotNull]
         public Task<ProxerResult> DeleteEntry()
         {
             return this.UserControlPanel.DeleteBookmark(this.BookmarkId);

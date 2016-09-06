@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using JetBrains.Annotations;
 
 namespace Azuria.Api.v1
 {
@@ -27,7 +26,6 @@ namespace Azuria.Api.v1
         internal IEnumerable<KeyValuePair<string, string>> PostArguments { get; set; } =
             new Dictionary<string, string>();
 
-        [CanBeNull]
         internal Senpai Senpai { get; set; }
 
         #endregion
