@@ -8,6 +8,7 @@ using Azuria.Api.v1;
 using Azuria.Api.v1.DataModels;
 using Azuria.Utilities;
 using Azuria.Utilities.ErrorHandling;
+using Azuria.Utilities.Properties;
 
 namespace Azuria.UserInfo.Comment
 {
@@ -51,9 +52,9 @@ namespace Azuria.UserInfo.Comment
         private void InitialiseUserValues(CommentDataModel dataModel)
         {
             if (!this._user.UserName.IsInitialisedOnce)
-                this._user.UserName.SetInitialisedObject(dataModel.Username);
+                (this._user.UserName as InitialisableProperty<string>)?.SetInitialisedObject(dataModel.Username);
             if (!this._user.Avatar.IsInitialisedOnce)
-                this._user.Avatar.SetInitialisedObject(
+                (this._user.Avatar as InitialisableProperty<Uri>)?.SetInitialisedObject(
                     new Uri("http://cdn.proxer.me/avatar/" + dataModel.Avatar));
         }
 
