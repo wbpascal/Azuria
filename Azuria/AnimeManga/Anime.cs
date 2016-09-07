@@ -51,7 +51,7 @@ namespace Azuria.AnimeManga
             this._animeMedium.SetInitialisedObject((AnimeMedium) dataModel.EntryMedium);
         }
 
-        internal Anime(BookmarkDataModel dataModel) : this((IEntryInfoDataModel) dataModel)
+        private Anime(BookmarkDataModel dataModel) : this((IEntryInfoDataModel) dataModel)
         {
             this._animeMedium.SetInitialisedObject((AnimeMedium) dataModel.EntryMedium);
             this._status.SetInitialisedObject(dataModel.Status);

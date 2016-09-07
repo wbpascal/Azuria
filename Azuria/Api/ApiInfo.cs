@@ -32,12 +32,21 @@ namespace Azuria.Api
 
         /// <summary>
         /// </summary>
-        public static void InitV1(char[] apiKey, Func<ISecureContainer<char[]>> secureContainerFactory = null,
-            IHttpClient httpClient = null)
+        public static void Init(Action<ApiInfoInput> inputFactory)
         {
-            SecureContainerFactory = secureContainerFactory ?? (() => new SecureStringContainer());
-            HttpClient = httpClient ?? new HttpClient();
-            RequestHandler.Init(apiKey);
+            ApiInfoInput lInput = new ApiInfoInput();
+            inputFactory.Invoke(lInput);
+            Init(lInput);
+        }
+
+        /// <summary>
+        /// </summary>
+        /// <param name="input"></param>
+        public static void Init(ApiInfoInput input)
+        {
+            SecureContainerFactory = input.SecureContainerFactory;
+            HttpClient = input.CustomHttpClient;
+            RequestHandler.Init(input.ApiKeyV1);
         }
 
         #endregion

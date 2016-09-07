@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using Azuria.AnimeManga;
 using Azuria.Search.Input;
@@ -19,6 +20,15 @@ namespace Azuria.Search
         public Search(SearchInput input)
         {
             this._input = input;
+        }
+
+        /// <summary>
+        /// </summary>
+        /// <param name="input"></param>
+        public Search(Action<SearchInput> input)
+        {
+            this._input = new SearchInput();
+            input.Invoke(this._input);
         }
 
         #region Methods

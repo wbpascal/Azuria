@@ -50,9 +50,8 @@ namespace Azuria.Api.v1
                     request.Senpai?.InvalidateCookies();
                     return new ProxerResult<T>(new[] {new NotLoggedInException(request.Senpai)});
                 }
-                if (
-                    (await request.Senpai.LoginWithToken(request.Senpai.LoginToken.ReadValue()))
-                        .Success)
+                if ((request.Senpai != null) &&
+                    (await request.Senpai.LoginWithToken(request.Senpai.LoginToken.ReadValue())).Success)
                     return await ApiCustomRequest<T>(request, loginToken, recursion + 1);
 
                 return new ProxerResult<T>(lResult.Exceptions);
