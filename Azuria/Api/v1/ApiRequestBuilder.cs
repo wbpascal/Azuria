@@ -148,6 +148,24 @@ namespace Azuria.Api.v1
             };
         }
 
+        internal static ApiRequest<int> MessengerSetBlock(int conferenceId, Senpai senpai)
+        {
+            return new ApiRequest<int>(new Uri($"{ApiAddress}/messenger/setblock?conference_id={conferenceId}"))
+            {
+                CheckLogin = true,
+                Senpai = senpai
+            };
+        }
+
+        internal static ApiRequest<int> MessengerSetFavour(int conferenceId, Senpai senpai)
+        {
+            return new ApiRequest<int>(new Uri($"{ApiAddress}/messenger/setfavour?conference_id={conferenceId}"))
+            {
+                CheckLogin = true,
+                Senpai = senpai
+            };
+        }
+
         internal static ApiRequest<string> MessengerSetMessage(int conferenceId, string message, Senpai senpai)
         {
             return
@@ -158,6 +176,43 @@ namespace Azuria.Api.v1
                     PostArguments = new Dictionary<string, string> {{"text", message}},
                     Senpai = senpai
                 };
+        }
+
+        internal static ApiRequest<int> MessengerSetReport(int conferenceId, string reason, Senpai senpai)
+        {
+            return new ApiRequest<int>(new Uri($"{ApiAddress}/messenger/report?conference_id={conferenceId}"))
+            {
+                CheckLogin = true,
+                PostArguments = new Dictionary<string, string> {{"text", reason}},
+                Senpai = senpai
+            };
+        }
+
+        internal static ApiRequest<int> MessengerSetUnblock(int conferenceId, Senpai senpai)
+        {
+            return new ApiRequest<int>(new Uri($"{ApiAddress}/messenger/setunblock?conference_id={conferenceId}"))
+            {
+                CheckLogin = true,
+                Senpai = senpai
+            };
+        }
+
+        internal static ApiRequest<int> MessengerSetUnfavour(int conferenceId, Senpai senpai)
+        {
+            return new ApiRequest<int>(new Uri($"{ApiAddress}/messenger/setunfavour?conference_id={conferenceId}"))
+            {
+                CheckLogin = true,
+                Senpai = senpai
+            };
+        }
+
+        internal static ApiRequest<int> MessengerSetUnread(int conferenceId, Senpai senpai)
+        {
+            return new ApiRequest<int>(new Uri($"{ApiAddress}/messenger/setunread?conference_id={conferenceId}"))
+            {
+                CheckLogin = true,
+                Senpai = senpai
+            };
         }
 
         internal static ApiRequest<SearchDataModel[]> SearchEntrySearch(SearchInput input, int limit, int page)

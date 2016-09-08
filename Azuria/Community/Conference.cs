@@ -4,7 +4,6 @@ using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Timers;
-using Azuria.Api;
 using Azuria.Api.v1;
 using Azuria.Api.v1.DataModels.Messenger;
 using Azuria.ErrorHandling;
@@ -182,7 +181,6 @@ namespace Azuria.Community
                 return new ProxerResult<Conference>(lUsernameResult.Exceptions);
 
             return await Create(lUsernameResult.Result, message, senpai);
-            ;
         }
 
         /// <summary>
@@ -329,42 +327,49 @@ namespace Azuria.Community
             return new ProxerResult<string>(lResult.Result.Data);
         }
 
-        private async Task<ProxerResult> SetBlock(bool isBlocked)
+        /// <summary>
+        /// </summary>
+        /// <param name="reason"></param>
+        /// <returns></returns>
+        public async Task<ProxerResult> SendReport(string reason)
         {
-            string lAction = isBlocked ? "block" : "unblock";
-            ProxerResult<string> lResult =
-                await
-                    ApiInfo.HttpClient.GetRequest(
-                        new Uri($"http://proxer.me/messages?format=json&json={lAction}&id={this.Id}"),
-                        this._senpai);
-
-            if (!lResult.Success)
-                return new ProxerResult(lResult.Exceptions);
-
-            string lResponse = lResult.Result;
-
-            return lResponse?.StartsWith("{\"error\":0") ?? false
-                ? new ProxerResult()
-                : new ProxerResult {Success = false};
+            ProxerResult<ProxerApiResponse<int>> lResult =
+                await RequestHandler.ApiRequest(ApiRequestBuilder.MessengerSetReport(this.Id, reason, this._senpai));
+            return !lResult.Success || (lResult.Result == null)
+                ? new ProxerResult(lResult.Exceptions)
+                : new ProxerResult();
         }
 
-        private async Task<ProxerResult> SetFavourite(bool isFavourite)
+        /// <summary>
+        /// </summary>
+        /// <param name="isBlocked"></param>
+        /// <returns></returns>
+        public async Task<ProxerResult> SetBlock(bool isBlocked)
         {
-            string lAction = isFavourite ? "favour" : "unfavour";
-            ProxerResult<string> lResult =
+            ProxerResult<ProxerApiResponse<int>> lResult =
                 await
-                    ApiInfo.HttpClient.GetRequest(
-                        new Uri($"http://proxer.me/messages?format=json&json={lAction}&id={this.Id}"),
-                        this._senpai);
+                    RequestHandler.ApiRequest(isBlocked
+                        ? ApiRequestBuilder.MessengerSetBlock(this.Id, this._senpai)
+                        : ApiRequestBuilder.MessengerSetUnblock(this.Id, this._senpai));
+            return !lResult.Success || (lResult.Result == null)
+                ? new ProxerResult(lResult.Exceptions)
+                : new ProxerResult();
+        }
 
-            if (!lResult.Success)
-                return new ProxerResult(lResult.Exceptions);
-
-            string lResponse = lResult.Result;
-
-            return lResponse?.StartsWith("{\"error\":0") ?? false
-                ? new ProxerResult()
-                : new ProxerResult {Success = false};
+        /// <summary>
+        /// </summary>
+        /// <param name="isFavourite"></param>
+        /// <returns></returns>
+        public async Task<ProxerResult> SetFavourite(bool isFavourite)
+        {
+            ProxerResult<ProxerApiResponse<int>> lResult =
+                await
+                    RequestHandler.ApiRequest(isFavourite
+                        ? ApiRequestBuilder.MessengerSetFavour(this.Id, this._senpai)
+                        : ApiRequestBuilder.MessengerSetUnfavour(this.Id, this._senpai));
+            return !lResult.Success || (lResult.Result == null)
+                ? new ProxerResult(lResult.Exceptions)
+                : new ProxerResult();
         }
 
         /// <summary>
@@ -373,20 +378,11 @@ namespace Azuria.Community
         /// <returns>Whether the action was successfull.</returns>
         public async Task<ProxerResult> SetUnread()
         {
-            ProxerResult<string> lResult =
-                await
-                    ApiInfo.HttpClient.GetRequest(
-                        new Uri("http://proxer.me/messages?format=json&json=setUnread&id=" + this.Id),
-                        this._senpai);
-
-            if (!lResult.Success)
-                return new ProxerResult(lResult.Exceptions);
-
-            string lResponse = lResult.Result;
-
-            return lResponse?.StartsWith("{\"error\":0") ?? false
-                ? new ProxerResult()
-                : new ProxerResult {Success = false};
+            ProxerResult<ProxerApiResponse<int>> lResult =
+                await RequestHandler.ApiRequest(ApiRequestBuilder.MessengerSetUnread(this.Id, this._senpai));
+            return !lResult.Success || (lResult.Result == null)
+                ? new ProxerResult(lResult.Exceptions)
+                : new ProxerResult();
         }
 
         #endregion

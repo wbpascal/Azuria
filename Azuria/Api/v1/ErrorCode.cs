@@ -146,7 +146,7 @@
 
         /// <summary>
         /// </summary>
-        MessengerReportInvalid = 3025,
+        MessengerReportTooShort = 3025,
 
         /// <summary>
         /// </summary>

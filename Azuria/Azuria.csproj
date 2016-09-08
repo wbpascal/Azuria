@@ -60,7 +60,6 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="System" />
-    <Reference Include="System.ComponentModel.Composition" />
     <Reference Include="System.Core" />
     <Reference Include="System.Net.Http" />
     <Reference Include="System.Xml" />
@@ -87,9 +86,11 @@
     <Compile Include="Api\v1\DataModels\Ucp\ToptenDataModel.cs" />
     <Compile Include="Api\v1\DataModels\Ucp\VoteDataModel.cs" />
     <Compile Include="Api\v1\DataModels\User\ListDataModel.cs" />
+    <Compile Include="Api\v1\ProxerInfoLanguageResponse.cs" />
     <Compile Include="Community\ConferenceInfo.cs" />
     <Compile Include="Community\ConferenceListType.cs" />
     <Compile Include="Community\MessageAction.cs" />
+    <Compile Include="Community\MessageModel.cs" />
     <Compile Include="Exceptions\ApiNotInitialisedException.cs" />
     <Compile Include="Exceptions\NotInitialisedException.cs" />
     <Compile Include="Search\Input\AnimeMangaSearchType.cs" />
