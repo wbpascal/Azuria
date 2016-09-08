@@ -4,8 +4,8 @@ using System.Net;
 using System.Net.Http;
 using System.Reflection;
 using System.Threading.Tasks;
+using Azuria.ErrorHandling;
 using Azuria.Exceptions;
-using Azuria.Utilities.ErrorHandling;
 
 namespace Azuria.Web
 {
@@ -150,11 +150,11 @@ namespace Azuria.Web
         /// <param name="useMobileCookies"></param>
         /// <param name="checkLogin"></param>
         /// <param name="recursion"></param>
-        /// <param name="header"></param>
+        /// <param name="headers"></param>
         /// <returns></returns>
         public async Task<ProxerResult<string>> PostRequest(Uri url, IEnumerable<KeyValuePair<string, string>> postArgs,
             Func<string, ProxerResult>[] checkFuncs, Senpai senpai = null, bool useMobileCookies = false,
-            bool checkLogin = true, int recursion = 0, Dictionary<string, string> header = null)
+            bool checkLogin = true, int recursion = 0, Dictionary<string, string> headers = null)
         {
             if (checkLogin && (!senpai?.IsProbablyLoggedIn ?? true))
                 return
@@ -169,7 +169,7 @@ namespace Azuria.Web
                     await
                         this.PostWebRequest(url,
                             useMobileCookies ? senpai?.MobileLoginCookies : senpai?.LoginCookies,
-                            postArgs, header);
+                            postArgs, headers);
             }
             catch (Exception ex)
             {

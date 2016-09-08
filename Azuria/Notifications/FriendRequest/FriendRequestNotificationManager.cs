@@ -4,8 +4,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Timers;
 using Azuria.Api;
+using Azuria.ErrorHandling;
 using Azuria.Exceptions;
-using Azuria.Utilities.ErrorHandling;
 
 namespace Azuria.Notifications.FriendRequest
 {

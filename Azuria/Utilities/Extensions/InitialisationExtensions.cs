@@ -1,6 +1,6 @@
 ﻿using System.Reflection;
 using System.Threading.Tasks;
-using Azuria.Utilities.ErrorHandling;
+using Azuria.ErrorHandling;
 using Azuria.Utilities.Properties;
 
 namespace Azuria.Utilities.Extensions

@@ -6,7 +6,7 @@ using Azuria.AnimeManga.Properties;
 using Azuria.Api.v1;
 using Azuria.Api.v1.DataModels.Info;
 using Azuria.Api.v1.Enums;
-using Azuria.Utilities.ErrorHandling;
+using Azuria.ErrorHandling;
 using Azuria.Utilities.Properties;
 
 #pragma warning disable 1591

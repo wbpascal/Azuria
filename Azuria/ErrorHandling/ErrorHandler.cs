@@ -1,7 +1,7 @@
 ﻿using System;
 using Azuria.Exceptions;
 
-namespace Azuria.Utilities.ErrorHandling
+namespace Azuria.ErrorHandling
 {
     internal class ErrorHandler
     {

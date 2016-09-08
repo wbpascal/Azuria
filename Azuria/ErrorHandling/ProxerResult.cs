@@ -4,7 +4,7 @@ using System.Linq;
 using Azuria.Api.v1;
 using Azuria.Exceptions;
 
-namespace Azuria.Utilities.ErrorHandling
+namespace Azuria.ErrorHandling
 {
     /// <summary>
     ///     Represents a result of a method.
@@ -29,6 +29,13 @@ namespace Azuria.Utilities.ErrorHandling
         /// </summary>
         /// <param name="exceptions">The exception that were thrown during method execution.</param>
         public ProxerResult(IEnumerable<Exception> exceptions) : base(exceptions)
+        {
+        }
+
+        /// <summary>
+        /// </summary>
+        /// <param name="exception"></param>
+        public ProxerResult(Exception exception) : base(exception)
         {
         }
 
@@ -82,6 +89,13 @@ namespace Azuria.Utilities.ErrorHandling
         {
             this.Success = false;
             this.Exceptions = exceptions;
+        }
+
+        /// <summary>
+        /// </summary>
+        /// <param name="exception"></param>
+        public ProxerResult(Exception exception) : this(new[] {exception})
+        {
         }
 
         #region Properties

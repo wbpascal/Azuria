@@ -1,6 +1,6 @@
 ﻿using System.Threading.Tasks;
 using Azuria.Api.v1.DataModels.Ucp;
-using Azuria.Utilities.ErrorHandling;
+using Azuria.ErrorHandling;
 
 namespace Azuria.UserInfo.ControlPanel
 {

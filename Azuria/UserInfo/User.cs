@@ -7,8 +7,8 @@ using Azuria.Api.v1;
 using Azuria.Api.v1.DataModels.Messenger;
 using Azuria.Api.v1.DataModels.User;
 using Azuria.Api.v1.Enums;
+using Azuria.ErrorHandling;
 using Azuria.UserInfo.Comment;
-using Azuria.Utilities.ErrorHandling;
 using Azuria.Utilities.Properties;
 
 namespace Azuria.UserInfo

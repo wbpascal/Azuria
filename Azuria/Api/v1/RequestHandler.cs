@@ -1,12 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
+using Azuria.ErrorHandling;
 using Azuria.Exceptions;
 using Azuria.Security;
-using Azuria.Utilities.ErrorHandling;
-using Azuria.Utilities.Extensions;
 using Newtonsoft.Json;
 
 namespace Azuria.Api.v1
@@ -19,78 +17,27 @@ namespace Azuria.Api.v1
 
         #region Methods
 
-        internal static async Task<ProxerResult<T>> ApiCustomRequest<T>(ApiRequest request, char[] loginToken = null,
-            int recursion = 0) where T : ProxerApiResponse
+        internal static async Task<ProxerResult<T>> ApiCustomRequest<T>(ApiRequest request, bool forceTokenLogin = false)
+            where T : ProxerApiResponse
         {
             if (request.CheckLogin && (request.Senpai == null))
                 return new ProxerResult<T>(new[] {new NotLoggedInException()});
 
-            loginToken = loginToken ?? new char[0];
             ProxerResult<string> lResult =
                 await
                     ApiInfo.HttpClient.PostRequest(request.Address, request.PostArguments,
                         new Func<string, ProxerResult>[0], checkLogin: request.CheckLogin, senpai: request.Senpai,
-                        header:
-                        new Dictionary<string, string> {{"proxer-api-key", new string(_apiKey.ReadValue())}}
-                            .AddIfAndReturn(
-                                "proxer-api-token", new string(loginToken),
-                                (key, value) => !string.IsNullOrEmpty(value.Trim()))
-                            .AddIfAndReturn("proxer-api-token", new string(request.Senpai?.LoginToken.ReadValue()),
-                                (key, value, source) =>
-                                    request.CheckLogin && (!request.Senpai?.IsProbablyLoggedIn ?? false) &&
-                                    !source.ContainsKey(key)));
-
-            if (!lResult.Success || (lResult.Result == null))
-            {
-                if (lResult.Exceptions.Any(exception => typeof(Exception) == typeof(NotLoggedInException)))
-                    return new ProxerResult<T>(lResult.Exceptions);
-
-                if (recursion >= 2)
-                {
-                    request.Senpai?.InvalidateCookies();
-                    return new ProxerResult<T>(new[] {new NotLoggedInException(request.Senpai)});
-                }
-                if ((request.Senpai != null) &&
-                    (await request.Senpai.LoginWithToken(request.Senpai.LoginToken.ReadValue())).Success)
-                    return await ApiCustomRequest<T>(request, loginToken, recursion + 1);
-
-                return new ProxerResult<T>(lResult.Exceptions);
-            }
+                        headers: GetHeaders(request, forceTokenLogin));
+            if (!lResult.Success || (lResult.Result == null)) return new ProxerResult<T>(lResult.Exceptions);
 
             try
             {
                 T lApiResponse = await
                     Task<T>.Factory.StartNew(
                         () => JsonConvert.DeserializeObject<T>(WebUtility.HtmlDecode(lResult.Result)));
-                if (!lApiResponse.Error) return new ProxerResult<T>(lApiResponse);
-                switch (lApiResponse.ErrorCode)
-                {
-                    case ErrorCode.IpBlocked:
-                        return new ProxerResult<T>(new[] {new CaptchaException("http://proxer.me/misc/captcha")});
-                    case ErrorCode.ApiKeyInsufficientPermissions:
-                        return new ProxerResult<T>(new[] {new ApiKeyInsufficientException()});
-                    case ErrorCode.UserInsufficientPermissions:
-                        return new ProxerResult<T>(new[] {new NoAccessException(request.Senpai)});
-                    case ErrorCode.LoginTokenInvalid:
-                        return new ProxerResult<T>(new[] {new NotLoggedInException(request.Senpai)});
-                    case ErrorCode.NotificationsUserNotLoggedIn:
-                    case ErrorCode.UcpUserNotLoggedIn:
-                    case ErrorCode.InfoSetUserInfoUserNotLoggedIn:
-                    case ErrorCode.MessengerUserNotLoggedIn:
-
-                        if (recursion >= 2)
-                        {
-                            request.Senpai.InvalidateCookies();
-                            return new ProxerResult<T>(new[] {new NotLoggedInException(request.Senpai)});
-                        }
-                        if (
-                            (await request.Senpai.LoginWithToken(request.Senpai.LoginToken.ReadValue()))
-                                .Success)
-                            return await ApiCustomRequest<T>(request, loginToken, recursion + 1);
-
-                        break;
-                }
-                return new ProxerResult<T>(new[] {new ProxerApiException(lApiResponse.ErrorCode)});
+                return !lApiResponse.Error
+                    ? new ProxerResult<T>(lApiResponse)
+                    : await HandleErrorCode<T>(lApiResponse.ErrorCode, request);
             }
             catch (Exception ex)
             {
@@ -101,12 +48,48 @@ namespace Azuria.Api.v1
         internal static Task<ProxerResult<ProxerApiResponse<T>>> ApiRequest<T>(ApiRequest<T> request,
             char[] loginToken = null)
         {
-            return ApiCustomRequest<ProxerApiResponse<T>>(request, loginToken);
+            return ApiCustomRequest<ProxerApiResponse<T>>(request);
         }
 
-        internal static Task<ProxerResult<ProxerApiResponse>> ApiRequest(ApiRequest request, char[] loginToken = null)
+        internal static Task<ProxerResult<ProxerApiResponse>> ApiRequest(ApiRequest request)
         {
-            return ApiCustomRequest<ProxerApiResponse>(request, loginToken);
+            return ApiCustomRequest<ProxerApiResponse>(request);
+        }
+
+        private static Dictionary<string, string> GetHeaders(ApiRequest request, bool forceTokenLogin)
+        {
+            Dictionary<string, string> lHeaders = new Dictionary<string, string>
+            {
+                {"proxer-api-key", new string(_apiKey.ReadValue())}
+            };
+            if (request.Senpai == null) return lHeaders;
+            if (forceTokenLogin || (request.CheckLogin && !request.Senpai.IsProbablyLoggedIn))
+                lHeaders.Add("proxer-api-token", new string(request.Senpai.LoginToken.ReadValue()));
+
+            return lHeaders;
+        }
+
+        private static async Task<ProxerResult<T>> HandleErrorCode<T>(ErrorCode code, ApiRequest request)
+            where T : ProxerApiResponse
+        {
+            switch (code)
+            {
+                case ErrorCode.IpBlocked:
+                    return new ProxerResult<T>(new CaptchaException("http://proxer.me/misc/captcha"));
+                case ErrorCode.ApiKeyInsufficientPermissions:
+                    return new ProxerResult<T>(new ApiKeyInsufficientException());
+                case ErrorCode.UserInsufficientPermissions:
+                    return new ProxerResult<T>(new NoAccessException(request.Senpai));
+                case ErrorCode.LoginTokenInvalid:
+                    return new ProxerResult<T>(new NotLoggedInException(request.Senpai));
+                case ErrorCode.NotificationsUserNotLoggedIn:
+                case ErrorCode.UcpUserNotLoggedIn:
+                case ErrorCode.InfoSetUserInfoUserNotLoggedIn:
+                case ErrorCode.MessengerUserNotLoggedIn:
+                    return await ApiCustomRequest<T>(request, true);
+            }
+
+            return new ProxerResult<T>(new ProxerApiException(code));
         }
 
         internal static void Init(char[] apiKey)

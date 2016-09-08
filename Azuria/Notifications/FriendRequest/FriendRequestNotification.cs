@@ -2,8 +2,8 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Azuria.Api;
+using Azuria.ErrorHandling;
 using Azuria.UserInfo;
-using Azuria.Utilities.ErrorHandling;
 
 namespace Azuria.Notifications.FriendRequest
 {

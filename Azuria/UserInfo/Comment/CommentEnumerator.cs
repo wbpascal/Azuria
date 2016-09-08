@@ -6,8 +6,8 @@ using System.Threading.Tasks;
 using Azuria.AnimeManga;
 using Azuria.Api.v1;
 using Azuria.Api.v1.DataModels;
+using Azuria.ErrorHandling;
 using Azuria.Utilities;
-using Azuria.Utilities.ErrorHandling;
 using Azuria.Utilities.Properties;
 
 namespace Azuria.UserInfo.Comment

@@ -222,7 +222,7 @@
     <Compile Include="UserInfo\UserPoints.cs" />
     <Compile Include="UserInfo\UserProfileEntry.cs" />
     <Compile Include="UserInfo\UserStatus.cs" />
-    <Compile Include="Utilities\ErrorHandling\ErrorHandler.cs" />
+    <Compile Include="ErrorHandling\ErrorHandler.cs" />
     <Compile Include="Utilities\Extensions\InitialisationExtensions.cs" />
     <Compile Include="Utilities\Extensions\ListExtensions.cs" />
     <Compile Include="Utilities\Extensions\SecureStringExtensions.cs" />
@@ -237,7 +237,7 @@
     <Compile Include="Api\v1\DataModels\IDataModel.cs" />
     <Compile Include="Api\v1\ProxerApiResponse.cs" />
     <Compile Include="Web\HttpClient.cs" />
-    <Compile Include="Utilities\ErrorHandling\ProxerResult.cs" />
+    <Compile Include="ErrorHandling\ProxerResult.cs" />
     <Compile Include="Utilities\Properties\AsyncProperty.cs" />
     <Compile Include="Utilities\Utility.cs" />
   </ItemGroup>

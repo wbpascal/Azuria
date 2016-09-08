@@ -4,10 +4,10 @@ using System.Threading.Tasks;
 using Azuria.Api;
 using Azuria.Api.v1;
 using Azuria.Api.v1.DataModels.User;
+using Azuria.ErrorHandling;
 using Azuria.Exceptions;
 using Azuria.Security;
 using Azuria.UserInfo;
-using Azuria.Utilities.ErrorHandling;
 
 namespace Azuria
 {

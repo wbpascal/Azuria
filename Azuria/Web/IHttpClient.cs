@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using Azuria.Utilities.ErrorHandling;
+using Azuria.ErrorHandling;
 
 namespace Azuria.Web
 {
@@ -48,12 +48,12 @@ namespace Azuria.Web
         /// <param name="useMobileCookies"></param>
         /// <param name="checkLogin"></param>
         /// <param name="recursion"></param>
-        /// <param name="header"></param>
+        /// <param name="headers"></param>
         /// <returns></returns>
         Task<ProxerResult<string>> PostRequest(Uri url, IEnumerable<KeyValuePair<string, string>> postArgs,
             Func<string, ProxerResult>[] checkFuncs, Senpai senpai = null, bool useMobileCookies = false,
             bool checkLogin = true, int recursion = 0,
-            Dictionary<string, string> header = null);
+            Dictionary<string, string> headers = null);
 
         #endregion
     }

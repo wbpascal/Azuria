@@ -10,10 +10,10 @@ using Azuria.Api.v1.DataModels.Info;
 using Azuria.Api.v1.DataModels.Search;
 using Azuria.Api.v1.DataModels.Ucp;
 using Azuria.Api.v1.Enums;
+using Azuria.ErrorHandling;
 using Azuria.Exceptions;
 using Azuria.UserInfo.Comment;
 using Azuria.UserInfo.ControlPanel;
-using Azuria.Utilities.ErrorHandling;
 using Azuria.Utilities.Properties;
 
 // ReSharper disable LoopCanBeConvertedToQuery

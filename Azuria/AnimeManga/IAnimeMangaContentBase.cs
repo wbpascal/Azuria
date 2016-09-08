@@ -1,5 +1,5 @@
 ﻿using System.Threading.Tasks;
-using Azuria.Utilities.ErrorHandling;
+using Azuria.ErrorHandling;
 
 namespace Azuria.AnimeManga
 {

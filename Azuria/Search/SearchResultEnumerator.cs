@@ -5,9 +5,9 @@ using Azuria.AnimeManga;
 using Azuria.Api.v1;
 using Azuria.Api.v1.DataModels.Search;
 using Azuria.Api.v1.Enums;
+using Azuria.ErrorHandling;
 using Azuria.Search.Input;
 using Azuria.Utilities;
-using Azuria.Utilities.ErrorHandling;
 
 namespace Azuria.Search
 {

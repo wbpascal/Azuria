@@ -7,8 +7,8 @@ using Azuria.AnimeManga.Properties;
 using Azuria.Api.v1;
 using Azuria.Api.v1.DataModels.Ucp;
 using Azuria.Api.v1.Enums;
+using Azuria.ErrorHandling;
 using Azuria.Exceptions;
-using Azuria.Utilities.ErrorHandling;
 using Azuria.Utilities.Properties;
 
 namespace Azuria.UserInfo.ControlPanel

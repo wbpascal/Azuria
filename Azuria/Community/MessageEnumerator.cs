@@ -3,8 +3,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using Azuria.Api.v1;
 using Azuria.Api.v1.DataModels.Messenger;
+using Azuria.ErrorHandling;
 using Azuria.Utilities;
-using Azuria.Utilities.ErrorHandling;
 
 namespace Azuria.Community
 {

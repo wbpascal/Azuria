@@ -7,9 +7,9 @@ using System.Timers;
 using Azuria.Api;
 using Azuria.Api.v1;
 using Azuria.Api.v1.DataModels.Messenger;
+using Azuria.ErrorHandling;
 using Azuria.Exceptions;
 using Azuria.UserInfo;
-using Azuria.Utilities.ErrorHandling;
 using Azuria.Utilities.Extensions;
 using Azuria.Utilities.Properties;
 

@@ -2,7 +2,7 @@
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
-using Azuria.Utilities.ErrorHandling;
+using Azuria.ErrorHandling;
 
 namespace Azuria.Utilities.Properties
 {
