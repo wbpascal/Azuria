@@ -12,11 +12,6 @@
         /// </summary>
         string NotificationId { get; }
 
-        /// <summary>
-        ///     Gets the type of the notification.
-        /// </summary>
-        NotificationType Type { get; }
-
         #endregion
     }
 }

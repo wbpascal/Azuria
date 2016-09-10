@@ -17,7 +17,7 @@ namespace Azuria.Search
                 {"type", TypeToString(input.Type)},
                 {"sort", input.Sort.ToString().ToLowerInvariant()},
                 {"length-limit", input.LengthLimit.ToString().ToLowerInvariant()},
-                {"tagratefilter", input.IsFilteringUnratedTags ? "rate_1" : "rate-10"},
+                {"tagratefilter", input.IsFilteringUnratedTags ? "rate_1" : "rate_10"},
                 {"tagspoilerfilter", input.IsFilteringSpoilerTags ? "spoiler_0" : "spoiler_10"}
             };
             lReturn.AddIf("language", LanguageToString(input.Language), (key, value) => string.IsNullOrEmpty(value));

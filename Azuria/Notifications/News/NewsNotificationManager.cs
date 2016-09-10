@@ -1,35 +1,25 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
-using System.Timers;
-using Azuria.Api;
-using Azuria.ErrorHandling;
-using Azuria.Exceptions;
+using Azuria.Api.v1.DataModels.Notifications;
 
 namespace Azuria.Notifications.News
 {
     /// <summary>
     /// </summary>
-    public static class NewsNotificationManager
+    public class NewsNotificationManager : INotificationManager
     {
-        private static readonly Dictionary<Senpai, Dictionary<NewsNotificationEventHandler, string>> CallbackDictionary
-            =
-            new Dictionary<Senpai, Dictionary<NewsNotificationEventHandler, string>>();
+        private readonly Senpai _senpai;
 
-        private static readonly double TimerDelay = TimeSpan.FromMinutes(15).TotalMilliseconds;
-
-        private static readonly Timer Timer = new Timer(TimerDelay)
+        private NewsNotificationManager(Senpai senpai)
         {
-            AutoReset = true
-        };
-
-
-        static NewsNotificationManager()
-        {
-            Timer.Elapsed += (sender, args) => CheckNotifications();
-            Timer.Enabled = true;
+            this._senpai = senpai;
         }
+
+        #region Properties
+
+        Senpai INotificationManager.Senpai => this._senpai;
+
+        #endregion
 
         #region Events
 
@@ -40,89 +30,37 @@ namespace Azuria.Notifications.News
         /// <param name="e">The notifications. Maximum length of 50 elements.</param>
         public delegate void NewsNotificationEventHandler(Senpai sender, IEnumerable<NewsNotification> e);
 
+        /// <summary>
+        /// </summary>
+        public event NewsNotificationEventHandler NotificationRecieved;
+
         #endregion
 
         #region Methods
 
-        private static async void CheckNotifications()
-        {
-            Timer.Stop();
-            foreach (Senpai senpai in CallbackDictionary.Keys)
-            {
-                ProxerResult<int> lNotificationCountResult = await GetAvailableNotificationsCount(senpai);
-                if (!lNotificationCountResult.Success || (lNotificationCountResult.Result == 0)) continue;
-                NewsNotification[] lNotifications =
-                    new NewsNotificationCollection(senpai).Take(Math.Min(lNotificationCountResult.Result, 50)).ToArray();
-                if (!lNotifications.Any()) continue;
-
-                Dictionary<NewsNotificationEventHandler, string> lChangeDictionary =
-                    new Dictionary<NewsNotificationEventHandler, string>();
-                foreach (
-                    KeyValuePair<NewsNotificationEventHandler, string> notificationCallback in
-                    CallbackDictionary[senpai])
-                {
-                    if (notificationCallback.Key == null) continue;
-                    notificationCallback.Key?.Invoke(senpai,
-                        lNotifications.TakeWhile(
-                            notification => notification.NotificationId != notificationCallback.Value));
-                    lChangeDictionary.Add(notificationCallback.Key, lNotifications.First().NotificationId);
-                }
-                foreach (KeyValuePair<NewsNotificationEventHandler, string> change in lChangeDictionary)
-                    if (CallbackDictionary[senpai].ContainsKey(change.Key))
-                        CallbackDictionary[senpai][change.Key] = change.Value;
-            }
-            Timer.Start();
-        }
-
-        /// <summary>
-        /// </summary>
-        /// <returns></returns>
-        public static async Task<ProxerResult<int>> GetAvailableNotificationsCount(Senpai senpai)
-        {
-            ProxerResult<string> lResult =
-                await
-                    ApiInfo.HttpClient.GetRequest(new Uri("https://proxer.me/notifications?format=raw&s=count"),
-                        senpai);
-
-            if (!lResult.Success || (lResult.Result == null))
-                return new ProxerResult<int>(lResult.Exceptions);
-
-            string lResponse = lResult.Result;
-
-            if (lResponse.StartsWith("1")) return new ProxerResult<int>(new Exception[0]);
-            try
-            {
-                string[] lResponseSplit = lResponse.Split('#');
-                return lResponseSplit.Length < 6
-                    ? new ProxerResult<int>(new Exception[] {new WrongResponseException {Response = lResponse}})
-                    : new ProxerResult<int>(Convert.ToInt32(lResponseSplit[5]));
-            }
-            catch
-            {
-                return new ProxerResult<int>(ErrorHandler.HandleError(lResponse, false).Exceptions);
-            }
-        }
-
-        /// <summary>
-        /// </summary>
-        /// <returns></returns>
-        public static INotificationCollection<NewsNotification> GetNotifications(Senpai senpai)
-        {
-            return new NewsNotificationCollection(senpai);
-        }
-
         /// <summary>
         /// </summary>
         /// <param name="senpai"></param>
-        /// <param name="eventHandler"></param>
-        public static void RegisterNotificationCallback(Senpai senpai, NewsNotificationEventHandler eventHandler)
+        /// <returns></returns>
+        public static NewsNotificationManager Create(Senpai senpai)
         {
-            if (CallbackDictionary.ContainsKey(senpai) && !CallbackDictionary[senpai].ContainsKey(eventHandler))
-                CallbackDictionary[senpai].Add(eventHandler, "-1");
-            else
-                CallbackDictionary.Add(senpai,
-                    new Dictionary<NewsNotificationEventHandler, string> {{eventHandler, "-1"}});
-            CheckNotifications();
+            return NotificationCountManager.GetOrAddManager(senpai, new NewsNotificationManager(senpai));
+        }
+
+        void INotificationManager.OnNewNotificationsAvailable(NotificationCountDataModel notificationsCounts)
+        {
+            NewsNotification[] lNewsNotifications =
+                new NewsNotificationCollection(this._senpai).Take(notificationsCounts.News).ToArray();
+            if (lNewsNotifications.Length > 0) this.OnNotificationRecieved(this._senpai, lNewsNotifications);
+        }
+
+        /// <summary>
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        protected virtual void OnNotificationRecieved(Senpai sender, IEnumerable<NewsNotification> e)
+        {
+            this.NotificationRecieved?.Invoke(sender, e);
         }
 
         #endregion

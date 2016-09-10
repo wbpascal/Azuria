@@ -33,11 +33,6 @@ namespace Azuria.Notifications.PrivateMessage
         /// </summary>
         public DateTime TimeStamp { get; }
 
-        /// <summary>
-        ///     Gets the type of the notification.
-        /// </summary>
-        public NotificationType Type => NotificationType.PrivateMessage;
-
         #endregion
     }
 }

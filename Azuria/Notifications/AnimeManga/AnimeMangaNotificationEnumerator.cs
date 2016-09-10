@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Azuria.AnimeManga;
@@ -10,20 +11,18 @@ namespace Azuria.Notifications.AnimeManga
 {
     /// <summary>
     /// </summary>
-    public sealed class AnimeMangaNotificationEnumerator<T> : INotificationEnumerator<AnimeMangaNotification<T>>
-        where T : class, IAnimeMangaObject
+    public sealed class AnimeMangaNotificationEnumerator<T> : IEnumerator<AnimeMangaNotification<T>>
+        where T : IAnimeMangaObject
     {
-        private readonly int _maxNotificationsCountToParse;
         private readonly Senpai _senpai;
         private int _itemIndex = -1;
 
         private AnimeMangaNotification<T>[] _notifications =
             new AnimeMangaNotification<T>[0];
 
-        internal AnimeMangaNotificationEnumerator(Senpai senpai, int maxNotificationsCountToParse = -1)
+        internal AnimeMangaNotificationEnumerator(Senpai senpai)
         {
             this._senpai = senpai;
-            this._maxNotificationsCountToParse = maxNotificationsCountToParse;
         }
 
         #region Properties
@@ -60,7 +59,7 @@ namespace Azuria.Notifications.AnimeManga
         public bool MoveNext()
         {
             this._itemIndex++;
-            if (this._notifications.Any()) return this._itemIndex < this._notifications.Length;
+            if (this._notifications.Length > 0) return this._itemIndex < this._notifications.Length;
 
             ProxerResult lGetNotificationsResult = Task.Run(this.GetNotifications).Result;
             if (!lGetNotificationsResult.Success)

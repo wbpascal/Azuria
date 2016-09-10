@@ -1,13 +1,11 @@
-﻿using System.Threading.Tasks;
-using Azuria.AnimeManga;
-using Azuria.ErrorHandling;
+﻿using Azuria.AnimeManga;
 
 namespace Azuria.Notifications.AnimeManga
 {
     /// <summary>
     ///     Represents an <see cref="Anime" />- or <see cref="Manga" />-notification.
     /// </summary>
-    public class AnimeMangaNotification<T> : INotification where T : class, IAnimeMangaObject
+    public class AnimeMangaNotification<T> : INotification where T : IAnimeMangaObject
     {
         private readonly Senpai _senpai;
 
@@ -24,28 +22,15 @@ namespace Azuria.Notifications.AnimeManga
         /// </summary>
         public IAnimeMangaContent<T> ContentObject { get; }
 
-        string INotification.NotificationId => this.NotificationId.ToString();
-
         /// <summary>
         /// </summary>
         public int NotificationId { get; }
 
-        /// <summary>
-        ///     Gets the type of the notification.
-        /// </summary>
-        public NotificationType Type => typeof(T) == typeof(Anime) ? NotificationType.Anime : NotificationType.Manga;
+        #region Implementation of INotification
+
+        string INotification.NotificationId => this.NotificationId.ToString();
 
         #endregion
-
-        #region Methods
-
-        /// <summary>
-        /// </summary>
-        /// <returns></returns>
-        public async Task<ProxerResult> Delete()
-        {
-            return await this.DeleteNotification(this._senpai);
-        }
 
         #endregion
     }

@@ -112,11 +112,6 @@ namespace Azuria.Notifications.News
         /// </summary>
         public DateTime TimeStamp => Utility.UnixTimeStampToDateTime(this.Time);
 
-        /// <summary>
-        ///     Gets the type of the notification.
-        /// </summary>
-        public NotificationType Type => NotificationType.News;
-
         #endregion
     }
 }

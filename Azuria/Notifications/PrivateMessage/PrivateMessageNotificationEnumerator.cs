@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Azuria.ErrorHandling;
@@ -9,7 +10,7 @@ namespace Azuria.Notifications.PrivateMessage
 {
     /// <summary>
     /// </summary>
-    public sealed class PrivateMessageNotificationEnumerator : INotificationEnumerator<PrivateMessageNotification>
+    public sealed class PrivateMessageNotificationEnumerator : IEnumerator<PrivateMessageNotification>
     {
         private readonly Senpai _senpai;
         private int _itemIndex = -1;
@@ -54,7 +55,7 @@ namespace Azuria.Notifications.PrivateMessage
         public bool MoveNext()
         {
             this._itemIndex++;
-            if (this._notifications.Any()) return this._itemIndex < this._notifications.Length;
+            if (this._notifications.Length > 0) return this._itemIndex < this._notifications.Length;
 
             ProxerResult lGetNotificationsResult = Task.Run(this.GetNotifications).Result;
             if (!lGetNotificationsResult.Success)

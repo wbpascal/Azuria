@@ -7,25 +7,15 @@ namespace Azuria.Notifications.AnimeManga
     /// <summary>
     ///     Represents a collection of <see cref="Anime" />- and <see cref="Manga" />-notifications.
     /// </summary>
-    public class AnimeMangaNotificationCollection<T> : INotificationCollection<AnimeMangaNotification<T>>
-        where T : class, IAnimeMangaObject
+    public class AnimeMangaNotificationCollection<T> : IEnumerable<AnimeMangaNotification<T>>
+        where T : IAnimeMangaObject
     {
-        private readonly int _maxNotificationsToParse;
         private readonly Senpai _senpai;
 
-        internal AnimeMangaNotificationCollection(Senpai senpai, int maxNotificationsToParse = -1)
+        internal AnimeMangaNotificationCollection(Senpai senpai)
         {
             this._senpai = senpai;
-            this._maxNotificationsToParse = maxNotificationsToParse;
         }
-
-        #region Properties
-
-        /// <summary>
-        /// </summary>
-        public NotificationType Type => typeof(T) == typeof(Anime) ? NotificationType.Anime : NotificationType.Manga;
-
-        #endregion
 
         #region Methods
 
@@ -36,20 +26,12 @@ namespace Azuria.Notifications.AnimeManga
             return this.GetEnumerator();
         }
 
-        /// <summary>Returns an enumerator that iterates through the collection.</summary>
-        /// <returns>An enumerator that can be used to iterate through the collection.</returns>
-        IEnumerator<AnimeMangaNotification<T>> IEnumerable<AnimeMangaNotification<T>>.
-            GetEnumerator()
-        {
-            return this.GetEnumerator();
-        }
-
         /// <summary>
         /// </summary>
         /// <returns></returns>
-        public INotificationEnumerator<AnimeMangaNotification<T>> GetEnumerator()
+        public IEnumerator<AnimeMangaNotification<T>> GetEnumerator()
         {
-            return new AnimeMangaNotificationEnumerator<T>(this._senpai, this._maxNotificationsToParse);
+            return new AnimeMangaNotificationEnumerator<T>(this._senpai);
         }
 
         #endregion

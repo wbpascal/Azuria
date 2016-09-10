@@ -4,6 +4,7 @@ using System.Linq;
 using Azuria.Api.v1.DataModels;
 using Azuria.Api.v1.DataModels.Info;
 using Azuria.Api.v1.DataModels.Messenger;
+using Azuria.Api.v1.DataModels.Notifications;
 using Azuria.Api.v1.DataModels.Search;
 using Azuria.Api.v1.DataModels.Ucp;
 using Azuria.Api.v1.DataModels.User;
@@ -209,6 +210,15 @@ namespace Azuria.Api.v1
         internal static ApiRequest<int> MessengerSetUnread(int conferenceId, Senpai senpai)
         {
             return new ApiRequest<int>(new Uri($"{ApiAddress}/messenger/setunread?conference_id={conferenceId}"))
+            {
+                CheckLogin = true,
+                Senpai = senpai
+            };
+        }
+
+        internal static ApiRequest<NotificationCountDataModel> NotificationGetCount(Senpai senpai)
+        {
+            return new ApiRequest<NotificationCountDataModel>(new Uri($"{ApiAddress}/notifications/count"))
             {
                 CheckLogin = true,
                 Senpai = senpai
