@@ -1,7 +1,6 @@
 ﻿using System;
+using Azuria.Api.v1.DataModels.Notifications;
 using Azuria.UserInfo;
-using Azuria.Utilities;
-using Newtonsoft.Json;
 
 namespace Azuria.Notifications.News
 {
@@ -10,107 +9,85 @@ namespace Azuria.Notifications.News
     /// </summary>
     public class NewsNotification : INotification
     {
-        internal NewsNotification()
+        private const string ProxerCdn = "https://cdn.proxer.me";
+        private readonly NewsNotificationDataModel _dataModel;
+
+        internal NewsNotification(NewsNotificationDataModel dataModel)
         {
+            this._dataModel = dataModel;
         }
 
         #region Properties
 
         /// <summary>
         /// </summary>
-        public User Author => new User(this.AuthorName, this.AuthorId);
-
-        [JsonProperty("uid")]
-        internal int AuthorId { get; set; }
-
-        [JsonProperty("uname")]
-        internal string AuthorName { get; set; }
+        public User Author => new User(this._dataModel.AuthorName, this._dataModel.AuthorId);
 
         /// <summary>
         ///     Gets the category id of the news.
         /// </summary>
-        [JsonProperty("catid")]
-        public int CategoryId { get; set; }
+        public int CategoryId => this._dataModel.CategoryId;
 
         /// <summary>
         ///     Gets the category name of the news.
         /// </summary>
-        [JsonProperty("catname")]
-        public string CategoryName { get; set; }
+        public string CategoryName => this._dataModel.CategoryName;
 
         /// <summary>
         ///     Gets the description of the news.
         /// </summary>
-        [JsonProperty("description")]
-        public string Description { get; set; }
+        public string Description => this._dataModel.Description;
 
         /// <summary>
         ///     Gets the hits of the news.
         /// </summary>
-        [JsonProperty("hits")]
-        public int Hits { get; set; }
+        public int Hits => this._dataModel.Hits;
 
         /// <summary>
         ///     Gets the title image of the news.
         /// </summary>
-        public Uri Image => new Uri($"http://cdn.proxer.me/news/{this.NewsId}_{this.ImageId}.png");
-
-        /// <summary>
-        ///     Gets the image id with the help of which the image can be retrieved.
-        /// </summary>
-        [JsonProperty("image_id")]
-        public string ImageId { get; set; }
+        public Uri Image => new Uri($"{ProxerCdn}/news/{this._dataModel.NewsId}_{this._dataModel.ImageId}.png");
 
         /// <summary>
         ///     Gets infos about the css style of the image.
         /// </summary>
-        /// <seealso cref="ImageId" />
-        [JsonProperty("image_style")]
-        public string ImageStyle { get; set; }
+        public string ImageStyle => this._dataModel.ImageStyle;
 
-        [JsonProperty("mid")]
-        [Obsolete("Use " + nameof(ThreadId))]
-        internal int Mid { get; set; }
+        /// <summary>
+        ///     Gets the title image of the news.
+        /// </summary>
+        public Uri ImageThumbnail
+            => new Uri($"{ProxerCdn}/th/{this._dataModel.NewsId}_{this._dataModel.ImageId}.png");
 
         /// <summary>
         ///     Gets the news id.
         /// </summary>
-        [JsonProperty("nid")]
-        public int NewsId { get; set; }
+        public int NewsId => this._dataModel.NewsId;
 
         /// <summary>
         ///     Gets the id of the notification.
         /// </summary>
-        public string NotificationId => this.AuthorId.ToString() + this.CategoryId + this.ThreadId + this.Time;
-
-        [JsonProperty("pid")]
-        [Obsolete]
-        internal int Pid { get; set; }
+        public string NotificationId
+            => $"{this.Author.Id}_{this.CategoryId}_{this.ThreadId}_{this.TimeStamp.ToFileTime()}";
 
         /// <summary>
         ///     Gets the post count of the news.
         /// </summary>
-        [JsonProperty("posts")]
-        public int Posts { get; set; }
+        public int Posts => this._dataModel.Posts;
 
         /// <summary>
         ///     Gets the headline of the news.
         /// </summary>
-        [JsonProperty("subject")]
-        public string Subject { get; set; }
+        public string Subject => this._dataModel.Subject;
 
         /// <summary>
         ///     Gets the thread id.
         /// </summary>
-        [JsonProperty("thread")]
-        public int ThreadId { get; set; }
-
-        [JsonProperty("time")]
-        internal long Time { get; set; }
+        public int ThreadId => this._dataModel.ThreadId;
 
         /// <summary>
         /// </summary>
-        public DateTime TimeStamp => Utility.UnixTimeStampToDateTime(this.Time);
+        public DateTime TimeStamp => this._dataModel.TimeStamp;
 
         #endregion
     }

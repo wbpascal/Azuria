@@ -16,7 +16,7 @@ namespace Azuria.UserInfo.ControlPanel
         private readonly UserControlPanel _controlPanel;
         private readonly Senpai _senpai;
 
-        internal HistoryEnumerator(Senpai senpai, UserControlPanel controlPanel)
+        internal HistoryEnumerator(Senpai senpai, UserControlPanel controlPanel) : base(ResultsPerPage)
         {
             this._senpai = senpai;
             this._controlPanel = controlPanel;

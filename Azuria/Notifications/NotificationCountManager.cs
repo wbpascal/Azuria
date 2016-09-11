@@ -10,6 +10,8 @@ namespace Azuria.Notifications
 {
     internal static class NotificationCountManager
     {
+        private static DateTime _lastTimeNotificationChecked = DateTime.MinValue;
+
         private static readonly Dictionary<Senpai, List<INotificationManager>> NotificationManagers =
             new Dictionary<Senpai, List<INotificationManager>>();
 
@@ -31,6 +33,7 @@ namespace Azuria.Notifications
 
         private static async Task CheckNotifications()
         {
+            _lastTimeNotificationChecked = DateTime.Now;
             foreach (KeyValuePair<Senpai, List<INotificationManager>> notificationManager in NotificationManagers)
             {
                 ProxerResult<ProxerNotificationCountResponse> lResult =
@@ -41,6 +44,12 @@ namespace Azuria.Notifications
                 foreach (INotificationManager manager in notificationManager.Value)
                     manager.OnNewNotificationsAvailable(lResult.Result.Data);
             }
+        }
+
+        internal static async Task CheckNotificationsForNewEvent()
+        {
+            if (DateTime.Now.Subtract(_lastTimeNotificationChecked) < TimeSpan.FromMinutes(1)) return;
+            await CheckNotifications();
         }
 
         internal static T GetOrAddManager<T>(Senpai senpai, T newInstance) where T : class, INotificationManager

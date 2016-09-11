@@ -81,6 +81,7 @@
     <Compile Include="Api\v1\DataModels\Messenger\ConferenceInfoMainDataModel.cs" />
     <Compile Include="Api\v1\DataModels\Messenger\ConferenceInfoParticipantDataModel.cs" />
     <Compile Include="Api\v1\DataModels\Messenger\MessageDataModel.cs" />
+    <Compile Include="Api\v1\DataModels\Notifications\NewsNotificationDataModel.cs" />
     <Compile Include="Api\v1\DataModels\Notifications\NotificationCountDataModel.cs" />
     <Compile Include="Api\v1\DataModels\Search\SearchDataModel.cs" />
     <Compile Include="Api\v1\DataModels\Ucp\BookmarkDataModel.cs" />

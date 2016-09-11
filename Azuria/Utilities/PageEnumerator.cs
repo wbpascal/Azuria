@@ -1,9 +1,9 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Azuria.ErrorHandling;
-using Azuria.Exceptions;
 
 namespace Azuria.Utilities
 {
@@ -67,7 +67,7 @@ namespace Azuria.Utilities
                 if (this._currentPageContent.Length%this._resultsPerPage != 0) return false;
                 ProxerResult<IEnumerable<T>> lGetSearchResult = Task.Run(() => this.GetNextPage(this._nextPage)).Result;
                 if (!lGetSearchResult.Success || (lGetSearchResult.Result == null))
-                    throw lGetSearchResult.Exceptions.FirstOrDefault() ?? new WrongResponseException();
+                    throw lGetSearchResult.Exceptions.FirstOrDefault() ?? new Exception("Unkown error");
                 this._currentPageContent = lGetSearchResult.Result.ToArray();
                 this._nextPage++;
                 this._currentPageContentIndex = -1;

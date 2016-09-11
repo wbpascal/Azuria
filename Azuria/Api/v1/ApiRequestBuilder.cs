@@ -225,6 +225,17 @@ namespace Azuria.Api.v1
             };
         }
 
+        internal static ApiRequest<NewsNotificationDataModel[]> NotificationGetNews(int page, int limit, Senpai senpai)
+        {
+            return
+                new ApiRequest<NewsNotificationDataModel[]>(
+                    new Uri($"{ApiAddress}/notifications/news?p={page}&limit={limit}"))
+                {
+                    CheckLogin = true,
+                    Senpai = senpai
+                };
+        }
+
         internal static ApiRequest<SearchDataModel[]> SearchEntrySearch(SearchInput input, int limit, int page)
         {
             return new ApiRequest<SearchDataModel[]>(new Uri($"{ApiAddress}/list/entrysearch?limit={limit}&p={page}"))

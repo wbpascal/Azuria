@@ -8,14 +8,22 @@ namespace Azuria.Notifications.News
     /// </summary>
     public class NewsNotificationManager : INotificationManager
     {
+        private readonly List<NewsNotificationEventHandler> _newsNotificationEventHandlers =
+            new List<NewsNotificationEventHandler>();
+
         private readonly Senpai _senpai;
 
         private NewsNotificationManager(Senpai senpai)
         {
             this._senpai = senpai;
+            this.Notifications = new NewsNotificationCollection(senpai);
         }
 
         #region Properties
+
+        /// <summary>
+        /// </summary>
+        public IEnumerable<NewsNotification> Notifications { get; }
 
         Senpai INotificationManager.Senpai => this._senpai;
 
@@ -32,7 +40,16 @@ namespace Azuria.Notifications.News
 
         /// <summary>
         /// </summary>
-        public event NewsNotificationEventHandler NotificationRecieved;
+        public event NewsNotificationEventHandler NotificationRecieved
+        {
+            add
+            {
+                if (this._newsNotificationEventHandlers.Contains(value)) return;
+                this._newsNotificationEventHandlers.Add(value);
+                NotificationCountManager.CheckNotificationsForNewEvent().ConfigureAwait(false);
+            }
+            remove { this._newsNotificationEventHandlers.Remove(value); }
+        }
 
         #endregion
 
@@ -60,7 +77,9 @@ namespace Azuria.Notifications.News
         /// <param name="e"></param>
         protected virtual void OnNotificationRecieved(Senpai sender, IEnumerable<NewsNotification> e)
         {
-            this.NotificationRecieved?.Invoke(sender, e);
+            IEnumerable<NewsNotification> newsNotifications = e as NewsNotification[] ?? e.ToArray();
+            foreach (NewsNotificationEventHandler newsNotificationEventHandler in this._newsNotificationEventHandlers)
+                newsNotificationEventHandler?.Invoke(sender, newsNotifications);
         }
 
         #endregion
