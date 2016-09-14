@@ -8,11 +8,13 @@ namespace Azuria.Notifications.News
     /// </summary>
     public class NewsNotificationCollection : IEnumerable<NewsNotification>
     {
+        private readonly int _newsPerPage;
         private readonly Senpai _senpai;
 
-        internal NewsNotificationCollection(Senpai senpai)
+        internal NewsNotificationCollection(Senpai senpai, int newsPerPage = 15)
         {
             this._senpai = senpai;
+            this._newsPerPage = newsPerPage;
         }
 
         #region Methods
@@ -28,7 +30,7 @@ namespace Azuria.Notifications.News
         /// <returns>An enumerator that can be used to iterate through the collection.</returns>
         public IEnumerator<NewsNotification> GetEnumerator()
         {
-            return new NewsNotificationEnumerator(this._senpai);
+            return new NewsNotificationEnumerator(this._senpai, this._newsPerPage);
         }
 
         #endregion

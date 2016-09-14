@@ -1,5 +1,11 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using Azuria.Api.v1.DataModels.Messenger;
 using Azuria.Community;
+using Azuria.ErrorHandling;
+using Azuria.Utilities.Properties;
 
 namespace Azuria.Notifications.PrivateMessage
 {
@@ -8,12 +14,15 @@ namespace Azuria.Notifications.PrivateMessage
     /// </summary>
     public class PrivateMessageNotification : INotification
     {
-        internal PrivateMessageNotification(Conference conference, DateTime timeStamp)
+        private readonly int _conferenceId;
+        private readonly InitialisableProperty<ConferenceInfo> _conferenceInfo;
+
+        internal PrivateMessageNotification(MessageDataModel dataModel, Senpai senpai)
         {
-            this.Conference = conference;
-            this.TimeStamp = timeStamp;
-            this.NotificationId = this.Conference.Id.ToString() +
-                                  this.TimeStamp.Subtract(new DateTime(1970, 1, 1)).TotalSeconds;
+            this._conferenceInfo = new InitialisableProperty<ConferenceInfo>(() => this.InitConference(senpai));
+            this._conferenceId = dataModel.ConferenceId;
+            this.NotificationId = $"{dataModel.ConferenceId}_{dataModel.MessageId}";
+            this.TimeStamp = dataModel.MessageTimeStamp;
         }
 
         #region Properties
@@ -21,7 +30,7 @@ namespace Azuria.Notifications.PrivateMessage
         /// <summary>
         ///     Gets the conference the private message was recieved from.
         /// </summary>
-        public Conference Conference { get; }
+        public IInitialisableProperty<ConferenceInfo> ConferenceInfo => this._conferenceInfo;
 
         /// <summary>
         ///     Gets the id of the notification.
@@ -32,6 +41,22 @@ namespace Azuria.Notifications.PrivateMessage
         ///     Gets the date of the private message.
         /// </summary>
         public DateTime TimeStamp { get; }
+
+        #endregion
+
+        #region Methods
+
+        private async Task<ProxerResult> InitConference(Senpai senpai)
+        {
+            ProxerResult<IEnumerable<ConferenceInfo>> lConferencesResult =
+                await Conference.GetConferences(senpai);
+            if (!lConferencesResult.Success || (lConferencesResult.Result == null))
+                return new ProxerResult(lConferencesResult.Exceptions);
+
+            this._conferenceInfo.SetInitialisedObject(
+                lConferencesResult.Result.FirstOrDefault(info => info.Conference.Id == this._conferenceId));
+            return new ProxerResult();
+        }
 
         #endregion
     }

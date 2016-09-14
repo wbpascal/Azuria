@@ -9,7 +9,6 @@ using Azuria.Api.v1.DataModels.Messenger;
 using Azuria.ErrorHandling;
 using Azuria.Exceptions;
 using Azuria.UserInfo;
-using Azuria.Utilities.Extensions;
 using Azuria.Utilities.Properties;
 
 namespace Azuria.Community
@@ -71,11 +70,6 @@ namespace Azuria.Community
         /// <summary>
         /// </summary>
         public bool IsGroupConference { get; }
-
-        /// <summary>
-        ///     Gets a value indicating whether the current object is fully initialised.
-        /// </summary>
-        public bool IsInitialized => this.IsFullyInitialised();
 
         /// <summary>
         ///     Gets a <see cref="User" /> that is the current leader of the conference.

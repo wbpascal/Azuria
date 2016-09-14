@@ -8,7 +8,7 @@ namespace Azuria.Notifications.News
     /// </summary>
     public class NewsNotificationManager : INotificationManager
     {
-        private readonly List<NewsNotificationEventHandler> _newsNotificationEventHandlers =
+        private readonly List<NewsNotificationEventHandler> _notificationEventHandlers =
             new List<NewsNotificationEventHandler>();
 
         private readonly Senpai _senpai;
@@ -44,11 +44,11 @@ namespace Azuria.Notifications.News
         {
             add
             {
-                if (this._newsNotificationEventHandlers.Contains(value)) return;
-                this._newsNotificationEventHandlers.Add(value);
+                if (this._notificationEventHandlers.Contains(value)) return;
+                this._notificationEventHandlers.Add(value);
                 NotificationCountManager.CheckNotificationsForNewEvent().ConfigureAwait(false);
             }
-            remove { this._newsNotificationEventHandlers.Remove(value); }
+            remove { this._notificationEventHandlers.Remove(value); }
         }
 
         #endregion
@@ -66,8 +66,11 @@ namespace Azuria.Notifications.News
 
         void INotificationManager.OnNewNotificationsAvailable(NotificationCountDataModel notificationsCounts)
         {
+            if (notificationsCounts.News == 0) return;
+
             NewsNotification[] lNewsNotifications =
-                new NewsNotificationCollection(this._senpai).Take(notificationsCounts.News).ToArray();
+                new NewsNotificationCollection(this._senpai, notificationsCounts.News).Take(notificationsCounts.News)
+                    .ToArray();
             if (lNewsNotifications.Length > 0) this.OnNotificationRecieved(this._senpai, lNewsNotifications);
         }
 
@@ -78,7 +81,7 @@ namespace Azuria.Notifications.News
         protected virtual void OnNotificationRecieved(Senpai sender, IEnumerable<NewsNotification> e)
         {
             IEnumerable<NewsNotification> newsNotifications = e as NewsNotification[] ?? e.ToArray();
-            foreach (NewsNotificationEventHandler newsNotificationEventHandler in this._newsNotificationEventHandlers)
+            foreach (NewsNotificationEventHandler newsNotificationEventHandler in this._notificationEventHandlers)
                 newsNotificationEventHandler?.Invoke(sender, newsNotifications);
         }
 

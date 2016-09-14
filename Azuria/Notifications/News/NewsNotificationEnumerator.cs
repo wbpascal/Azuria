@@ -12,23 +12,23 @@ namespace Azuria.Notifications.News
     /// </summary>
     public sealed class NewsNotificationEnumerator : PageEnumerator<NewsNotification>
     {
-        private const int NewsPerPage = 15;
+        private readonly int _newsPerPage;
         private readonly Senpai _senpai;
 
-        internal NewsNotificationEnumerator(Senpai senpai) : base(NewsPerPage)
+        internal NewsNotificationEnumerator(Senpai senpai, int newsPerPage = 15) : base(newsPerPage)
         {
+            this._newsPerPage = newsPerPage;
             this._senpai = senpai;
         }
 
         #region Methods
 
-        #region Overrides of PageEnumerator<NewsNotification>
-
         internal override async Task<ProxerResult<IEnumerable<NewsNotification>>> GetNextPage(int nextPage)
         {
             ProxerResult<ProxerApiResponse<NewsNotificationDataModel[]>> lResult =
                 await
-                    RequestHandler.ApiRequest(ApiRequestBuilder.NotificationGetNews(nextPage, NewsPerPage, this._senpai));
+                    RequestHandler.ApiRequest(ApiRequestBuilder.NotificationGetNews(nextPage, this._newsPerPage,
+                        this._senpai));
             if (!lResult.Success || (lResult.Result == null))
                 return new ProxerResult<IEnumerable<NewsNotification>>(lResult.Exceptions);
 
@@ -36,8 +36,6 @@ namespace Azuria.Notifications.News
                 new ProxerResult<IEnumerable<NewsNotification>>(from newsNotificationDataModel in lResult.Result.Data
                     select new NewsNotification(newsNotificationDataModel));
         }
-
-        #endregion
 
         #endregion
     }

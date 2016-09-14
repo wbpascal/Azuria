@@ -8,6 +8,9 @@ namespace Azuria.Notifications.PrivateMessage
     /// </summary>
     public class PrivateMessageNotificationManager : INotificationManager
     {
+        private readonly List<PrivateMessageNotificationEventHandler> _notificationEventHandlers =
+            new List<PrivateMessageNotificationEventHandler>();
+
         private readonly Senpai _senpai;
 
         private PrivateMessageNotificationManager(Senpai senpai)
@@ -33,7 +36,16 @@ namespace Azuria.Notifications.PrivateMessage
 
         /// <summary>
         /// </summary>
-        public event PrivateMessageNotificationEventHandler NotificationRecieved;
+        public event PrivateMessageNotificationEventHandler NotificationRecieved
+        {
+            add
+            {
+                if (this._notificationEventHandlers.Contains(value)) return;
+                this._notificationEventHandlers.Add(value);
+                NotificationCountManager.CheckNotificationsForNewEvent().ConfigureAwait(false);
+            }
+            remove { this._notificationEventHandlers.Remove(value); }
+        }
 
         #endregion
 
@@ -63,7 +75,10 @@ namespace Azuria.Notifications.PrivateMessage
         /// <param name="e"></param>
         protected virtual void OnNotificationRecieved(Senpai sender, IEnumerable<PrivateMessageNotification> e)
         {
-            this.NotificationRecieved?.Invoke(sender, e);
+            IEnumerable<PrivateMessageNotification> newsNotifications = e as PrivateMessageNotification[] ?? e.ToArray();
+            foreach (
+                PrivateMessageNotificationEventHandler newsNotificationEventHandler in this._notificationEventHandlers)
+                newsNotificationEventHandler?.Invoke(sender, newsNotifications);
         }
 
         #endregion

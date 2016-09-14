@@ -68,7 +68,7 @@ namespace Azuria.Utilities
                 ProxerResult<IEnumerable<T>> lGetSearchResult = Task.Run(() => this.GetNextPage(this._nextPage)).Result;
                 if (!lGetSearchResult.Success || (lGetSearchResult.Result == null))
                     throw lGetSearchResult.Exceptions.FirstOrDefault() ?? new Exception("Unkown error");
-                this._currentPageContent = lGetSearchResult.Result.ToArray();
+                this._currentPageContent = lGetSearchResult.Result as T[] ?? lGetSearchResult.Result.ToArray();
                 this._nextPage++;
                 this._currentPageContentIndex = -1;
             }

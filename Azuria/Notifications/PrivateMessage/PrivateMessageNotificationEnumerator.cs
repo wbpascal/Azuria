@@ -3,8 +3,9 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Azuria.Api.v1;
+using Azuria.Api.v1.DataModels.Messenger;
 using Azuria.ErrorHandling;
-using Azuria.Exceptions;
 
 namespace Azuria.Notifications.PrivateMessage
 {
@@ -13,8 +14,8 @@ namespace Azuria.Notifications.PrivateMessage
     public sealed class PrivateMessageNotificationEnumerator : IEnumerator<PrivateMessageNotification>
     {
         private readonly Senpai _senpai;
-        private int _itemIndex = -1;
-        private PrivateMessageNotification[] _notifications = new PrivateMessageNotification[0];
+        private PrivateMessageNotification[] _content;
+        private int _currentContentIndex = -1;
 
         internal PrivateMessageNotificationEnumerator(Senpai senpai)
         {
@@ -23,52 +24,59 @@ namespace Azuria.Notifications.PrivateMessage
 
         #region Properties
 
-        /// <summary>Gets the element in the collection at the current position of the enumerator.</summary>
-        /// <returns>The element in the collection at the current position of the enumerator.</returns>
-        public PrivateMessageNotification Current => this._notifications[this._itemIndex];
+        /// <inheritdoc />
+        public PrivateMessageNotification Current => this._content[this._currentContentIndex];
 
-        /// <summary>Gets the current element in the collection.</summary>
-        /// <returns>The current element in the collection.</returns>
+        /// <inheritdoc />
         object IEnumerator.Current => this.Current;
 
         #endregion
 
         #region Methods
 
-        /// <summary>Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.</summary>
+        /// <inheritdoc />
         public void Dispose()
         {
-            this._notifications = new PrivateMessageNotification[0];
+            this._content = new PrivateMessageNotification[0];
         }
 
-        private Task<ProxerResult> GetNotifications()
+
+        /// <inheritdoc />
+        internal async Task<ProxerResult<IEnumerable<PrivateMessageNotification>>> GetNextPage()
         {
-            throw new NotImplementedException();
+            ProxerResult<ProxerApiResponse<MessageDataModel[]>> lResult =
+                await
+                    RequestHandler.ApiRequest(ApiRequestBuilder.MessengerGetMessages(this._senpai));
+            if (!lResult.Success || (lResult.Result == null))
+                return new ProxerResult<IEnumerable<PrivateMessageNotification>>(lResult.Exceptions);
+
+            return
+                new ProxerResult<IEnumerable<PrivateMessageNotification>>(
+                (from notificationDataModel in lResult.Result.Data
+                    select new PrivateMessageNotification(notificationDataModel, this._senpai)).Reverse());
         }
 
-        /// <summary>Advances the enumerator to the next element of the collection.</summary>
-        /// <returns>
-        ///     true if the enumerator was successfully advanced to the next element; false if the enumerator has passed the
-        ///     end of the collection.
-        /// </returns>
-        /// <exception cref="T:System.InvalidOperationException">The collection was modified after the enumerator was created. </exception>
+        /// <inheritdoc />
         public bool MoveNext()
         {
-            this._itemIndex++;
-            if (this._notifications.Length > 0) return this._itemIndex < this._notifications.Length;
-
-            ProxerResult lGetNotificationsResult = Task.Run(this.GetNotifications).Result;
-            if (!lGetNotificationsResult.Success)
-                throw lGetNotificationsResult.Exceptions.FirstOrDefault() ?? new WrongResponseException();
-            return lGetNotificationsResult.Success && this._notifications.Any();
+            if (this._content == null)
+            {
+                ProxerResult<IEnumerable<PrivateMessageNotification>> lGetSearchResult =
+                    Task.Run(this.GetNextPage).Result;
+                if (!lGetSearchResult.Success || (lGetSearchResult.Result == null))
+                    throw lGetSearchResult.Exceptions.FirstOrDefault() ?? new Exception("Unkown error");
+                this._content = lGetSearchResult.Result as PrivateMessageNotification[] ??
+                                lGetSearchResult.Result.ToArray();
+            }
+            this._currentContentIndex++;
+            return this._content.Length > this._currentContentIndex;
         }
 
-        /// <summary>Sets the enumerator to its initial position, which is before the first element in the collection.</summary>
-        /// <exception cref="T:System.InvalidOperationException">The collection was modified after the enumerator was created. </exception>
+        /// <inheritdoc />
         public void Reset()
         {
-            this._itemIndex = -1;
-            this._notifications = new PrivateMessageNotification[0];
+            this._content = new PrivateMessageNotification[0];
+            this._currentContentIndex = -1;
         }
 
         #endregion
