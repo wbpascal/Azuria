@@ -54,7 +54,7 @@ namespace Azuria.Web
         /// <param name="checkLogin"></param>
         /// <param name="recursion"></param>
         /// <returns></returns>
-        public async Task<ProxerResult<string>> GetRequest(Uri url, Func<string, ProxerResult>[] checkFuncs,
+        public async Task<ProxerResult<string>> GetRequest(Uri url, Func<string, ProxerResult>[] checkFuncs = null,
             Senpai senpai = null, bool useMobileCookies = false, bool checkLogin = true, int recursion = 0)
         {
             if (checkLogin && (!senpai?.IsProbablyLoggedIn ?? true))
@@ -153,7 +153,7 @@ namespace Azuria.Web
         /// <param name="headers"></param>
         /// <returns></returns>
         public async Task<ProxerResult<string>> PostRequest(Uri url, IEnumerable<KeyValuePair<string, string>> postArgs,
-            Func<string, ProxerResult>[] checkFuncs, Senpai senpai = null, bool useMobileCookies = false,
+            Func<string, ProxerResult>[] checkFuncs = null, Senpai senpai = null, bool useMobileCookies = false,
             bool checkLogin = true, int recursion = 0, Dictionary<string, string> headers = null)
         {
             if (checkLogin && (!senpai?.IsProbablyLoggedIn ?? true))

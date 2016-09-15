@@ -41,7 +41,7 @@ namespace Azuria.Utilities
         /// <summary>Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.</summary>
         public void Dispose()
         {
-            this._currentPageContent = new T[0];
+            this._currentPageContent = null;
         }
 
         /// <summary>

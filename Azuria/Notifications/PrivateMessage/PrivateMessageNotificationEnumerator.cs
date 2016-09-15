@@ -37,7 +37,7 @@ namespace Azuria.Notifications.PrivateMessage
         /// <inheritdoc />
         public void Dispose()
         {
-            this._content = new PrivateMessageNotification[0];
+            this._content = null;
         }
 
 

@@ -1,11 +1,16 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Azuria.AnimeManga;
+using Azuria.AnimeManga.Properties;
+using Azuria.Api;
+using Azuria.Api.v1.Converters;
 using Azuria.ErrorHandling;
-using Azuria.Exceptions;
+using Azuria.Utilities.Extensions;
 
 namespace Azuria.Notifications.AnimeManga
 {
@@ -14,65 +19,105 @@ namespace Azuria.Notifications.AnimeManga
     public sealed class AnimeMangaNotificationEnumerator<T> : IEnumerator<AnimeMangaNotification<T>>
         where T : IAnimeMangaObject
     {
+        private readonly int _nodesToParse;
         private readonly Senpai _senpai;
-        private int _itemIndex = -1;
+        private AnimeMangaNotification<T>[] _content;
+        private int _currentContentIndex = -1;
 
-        private AnimeMangaNotification<T>[] _notifications =
-            new AnimeMangaNotification<T>[0];
-
-        internal AnimeMangaNotificationEnumerator(Senpai senpai)
+        internal AnimeMangaNotificationEnumerator(Senpai senpai, int nodesToParse = 0)
         {
             this._senpai = senpai;
+            this._nodesToParse = nodesToParse;
         }
 
         #region Properties
 
-        /// <summary>Gets the element in the collection at the current position of the enumerator.</summary>
-        /// <returns>The element in the collection at the current position of the enumerator.</returns>
-        public AnimeMangaNotification<T> Current => this._notifications[this._itemIndex];
+        /// <inheritdoc />
+        public AnimeMangaNotification<T> Current => this._content[this._currentContentIndex];
 
-        /// <summary>Gets the current element in the collection.</summary>
-        /// <returns>The current element in the collection.</returns>
+        /// <inheritdoc />
         object IEnumerator.Current => this.Current;
 
         #endregion
 
         #region Methods
 
-        /// <summary>Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.</summary>
+        /// <inheritdoc />
         public void Dispose()
         {
-            this._notifications = new AnimeMangaNotification<T>[0];
+            this._content = null;
         }
 
-        private Task<ProxerResult> GetNotifications()
+        /// <inheritdoc />
+        private async Task<ProxerResult<IEnumerable<AnimeMangaNotification<T>>>> GetNextPage()
         {
-            throw new NotImplementedException();
+            ProxerResult<string> lResponse =
+                await
+                    ApiInfo.HttpClient.GetRequest(
+                        new Uri("https://proxer.me/components/com_proxer/misc/notifications_misc.php"), this._senpai);
+            if (!lResponse.Success || string.IsNullOrEmpty(lResponse.Result))
+                return new ProxerResult<IEnumerable<AnimeMangaNotification<T>>>(lResponse.Exceptions);
+
+            List<AnimeMangaNotification<T>> lNotifications = new List<AnimeMangaNotification<T>>();
+            MatchCollection lMatches = new Regex(
+                    "<a class=\"notificationList\"[\\s\\S]+?notification(?<nid>[0-9]+)\"[\\s\\S]+?href=\"(?<link>(\\/watch|\\/chapter)[\\s\\S]+?)\\#top\">[\\s\\S]+?\"nDate\">(?<ndate>[\\s\\S]+?)<\\/div>",
+                    RegexOptions.ExplicitCapture)
+                .Matches(lResponse.Result);
+
+            foreach (
+                Match lNotification in
+                lMatches.OfType<Match>().Take(this._nodesToParse == 0 ? lMatches.Count : this._nodesToParse))
+            {
+                if (lNotification.Groups.Count < 4) continue;
+                lNotifications.AddIf(this.ParseNode(lNotification), notification => notification != null);
+            }
+
+            return new ProxerResult<IEnumerable<AnimeMangaNotification<T>>>(lNotifications);
         }
 
-        /// <summary>Advances the enumerator to the next element of the collection.</summary>
-        /// <returns>
-        ///     true if the enumerator was successfully advanced to the next element; false if the enumerator has passed the
-        ///     end of the collection.
-        /// </returns>
-        /// <exception cref="T:System.InvalidOperationException">The collection was modified after the enumerator was created. </exception>
+        /// <inheritdoc />
         public bool MoveNext()
         {
-            this._itemIndex++;
-            if (this._notifications.Length > 0) return this._itemIndex < this._notifications.Length;
-
-            ProxerResult lGetNotificationsResult = Task.Run(this.GetNotifications).Result;
-            if (!lGetNotificationsResult.Success)
-                throw lGetNotificationsResult.Exceptions.FirstOrDefault() ?? new WrongResponseException();
-            return this._notifications.Any();
+            if (this._content == null)
+            {
+                ProxerResult<IEnumerable<AnimeMangaNotification<T>>> lGetSearchResult =
+                    Task.Run(this.GetNextPage).Result;
+                if (!lGetSearchResult.Success || (lGetSearchResult.Result == null))
+                    throw lGetSearchResult.Exceptions.FirstOrDefault() ?? new Exception("Unkown error");
+                this._content = lGetSearchResult.Result as AnimeMangaNotification<T>[] ??
+                                lGetSearchResult.Result.ToArray();
+            }
+            this._currentContentIndex++;
+            return this._content.Length > this._currentContentIndex;
         }
 
-        /// <summary>Sets the enumerator to its initial position, which is before the first element in the collection.</summary>
-        /// <exception cref="T:System.InvalidOperationException">The collection was modified after the enumerator was created. </exception>
+        private AnimeMangaNotification<T> ParseNode(Match lNode)
+        {
+            int lNotificationId = Convert.ToInt32(lNode.Groups["nid"].Value);
+            DateTime lDate = DateTime.ParseExact(lNode.Groups["ndate"].Value, "dd.MM.yyyy", CultureInfo.InvariantCulture);
+
+            string[] lLinkInfo =
+                lNode.Groups["link"].Value.Remove(0,
+                    lNode.Groups["link"].Value.IndexOf("/", 1, StringComparison.InvariantCulture) + 1).Split('/');
+            int lAnimeMangaId = Convert.ToInt32(lLinkInfo[0]);
+            int lContentIndex = Convert.ToInt32(lLinkInfo[1]);
+            AnimeMangaLanguage lLanguage = LanguageConverter.GetLanguageFromString(lLinkInfo[2]);
+
+            IAnimeMangaObject lAnimeMangaObject = lNode.Groups["link"].Value.StartsWith("/watch")
+                ? new Anime(lAnimeMangaId)
+                : (IAnimeMangaObject) new Manga(lAnimeMangaId);
+
+            return lAnimeMangaObject is T
+                ? new AnimeMangaNotification<T>(lNotificationId, (T) lAnimeMangaObject, lContentIndex, lLanguage, lDate,
+                    this._senpai)
+                : null;
+        }
+
+        /// <inheritdoc />
         public void Reset()
         {
-            this._itemIndex = -1;
-            this._notifications = new AnimeMangaNotification<T>[0];
+            this._content = new AnimeMangaNotification<T>[0];
+            this._currentContentIndex = -1;
         }
 
         #endregion

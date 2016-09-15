@@ -10,11 +10,13 @@ namespace Azuria.Notifications.AnimeManga
     public class AnimeMangaNotificationCollection<T> : IEnumerable<AnimeMangaNotification<T>>
         where T : IAnimeMangaObject
     {
+        private readonly int _nodesToParse;
         private readonly Senpai _senpai;
 
-        internal AnimeMangaNotificationCollection(Senpai senpai)
+        public AnimeMangaNotificationCollection(Senpai senpai, int nodesToParse = 0)
         {
             this._senpai = senpai;
+            this._nodesToParse = nodesToParse;
         }
 
         #region Methods
@@ -31,7 +33,7 @@ namespace Azuria.Notifications.AnimeManga
         /// <returns></returns>
         public IEnumerator<AnimeMangaNotification<T>> GetEnumerator()
         {
-            return new AnimeMangaNotificationEnumerator<T>(this._senpai);
+            return new AnimeMangaNotificationEnumerator<T>(this._senpai, this._nodesToParse);
         }
 
         #endregion

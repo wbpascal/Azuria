@@ -1,6 +1,9 @@
-﻿namespace Azuria.Api.v1.Enums
+﻿
+#pragma warning disable 1591
+
+namespace Azuria.AnimeManga.Properties
 {
-    internal enum AnimeMangaLanguage
+    public enum AnimeMangaLanguage
     {
         German = 0,
         English = 1,

@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using Azuria.AnimeManga;
 using Azuria.Api.v1.DataModels.Notifications;
@@ -10,6 +9,15 @@ namespace Azuria.Notifications.AnimeManga
     /// </summary>
     public class AnimeMangaNotificationManager : INotificationManager
     {
+        private readonly List<AnimeMangaNotificationEventHandler> _animeMangaNotificationEventHandlers =
+            new List<AnimeMangaNotificationEventHandler>();
+
+        private readonly List<AnimeNotificationEventHandler> _animeNotificationEventHandlers =
+            new List<AnimeNotificationEventHandler>();
+
+        private readonly List<MangaNotificationEventHandler> _mangaNotificationEventHandlers =
+            new List<MangaNotificationEventHandler>();
+
         private readonly Senpai _senpai;
 
         private AnimeMangaNotificationManager(Senpai senpai)
@@ -46,15 +54,42 @@ namespace Azuria.Notifications.AnimeManga
 
         /// <summary>
         /// </summary>
-        public event AnimeNotificationEventHandler AnimeNotificationRecieved;
+        public event AnimeNotificationEventHandler AnimeNotificationRecieved
+        {
+            add
+            {
+                if (this._animeNotificationEventHandlers.Contains(value)) return;
+                this._animeNotificationEventHandlers.Add(value);
+                NotificationCountManager.CheckNotificationsForNewEvent().ConfigureAwait(false);
+            }
+            remove { this._animeNotificationEventHandlers.Remove(value); }
+        }
 
         /// <summary>
         /// </summary>
-        public event MangaNotificationEventHandler MangaNotificationRecieved;
+        public event MangaNotificationEventHandler MangaNotificationRecieved
+        {
+            add
+            {
+                if (this._mangaNotificationEventHandlers.Contains(value)) return;
+                this._mangaNotificationEventHandlers.Add(value);
+                NotificationCountManager.CheckNotificationsForNewEvent().ConfigureAwait(false);
+            }
+            remove { this._mangaNotificationEventHandlers.Remove(value); }
+        }
 
         /// <summary>
         /// </summary>
-        public event AnimeMangaNotificationEventHandler AnimeMangaNotificationRecieved;
+        public event AnimeMangaNotificationEventHandler AnimeMangaNotificationRecieved
+        {
+            add
+            {
+                if (this._animeMangaNotificationEventHandlers.Contains(value)) return;
+                this._animeMangaNotificationEventHandlers.Add(value);
+                NotificationCountManager.CheckNotificationsForNewEvent().ConfigureAwait(false);
+            }
+            remove { this._animeMangaNotificationEventHandlers.Remove(value); }
+        }
 
         #endregion
 
@@ -76,7 +111,13 @@ namespace Azuria.Notifications.AnimeManga
         protected virtual void OnAnimeMangaNotificationRecieved(Senpai sender,
             IEnumerable<AnimeMangaNotification<IAnimeMangaObject>> e)
         {
-            this.AnimeMangaNotificationRecieved?.Invoke(sender, e);
+            IEnumerable<AnimeMangaNotification<IAnimeMangaObject>> lNotifications =
+                e as AnimeMangaNotification<IAnimeMangaObject>[] ?? e.ToArray();
+
+            foreach (
+                AnimeMangaNotificationEventHandler newsNotificationEventHandler in
+                this._animeMangaNotificationEventHandlers)
+                newsNotificationEventHandler?.Invoke(sender, lNotifications);
         }
 
         /// <summary>
@@ -85,7 +126,11 @@ namespace Azuria.Notifications.AnimeManga
         /// <param name="e"></param>
         protected virtual void OnAnimeNotificationRecieved(Senpai sender, IEnumerable<AnimeMangaNotification<Anime>> e)
         {
-            this.AnimeNotificationRecieved?.Invoke(sender, e);
+            IEnumerable<AnimeMangaNotification<Anime>> lNotifications =
+                e as AnimeMangaNotification<Anime>[] ?? e.ToArray();
+
+            foreach (AnimeNotificationEventHandler newsNotificationEventHandler in this._animeNotificationEventHandlers)
+                newsNotificationEventHandler?.Invoke(sender, lNotifications);
         }
 
         /// <summary>
@@ -94,32 +139,31 @@ namespace Azuria.Notifications.AnimeManga
         /// <param name="e"></param>
         protected virtual void OnMangaNotificationRecieved(Senpai sender, IEnumerable<AnimeMangaNotification<Manga>> e)
         {
-            this.MangaNotificationRecieved?.Invoke(sender, e);
+            IEnumerable<AnimeMangaNotification<Manga>> lNotifications =
+                e as AnimeMangaNotification<Manga>[] ?? e.ToArray();
+
+            foreach (MangaNotificationEventHandler newsNotificationEventHandler in this._mangaNotificationEventHandlers)
+                newsNotificationEventHandler?.Invoke(sender, lNotifications);
         }
 
-        [SuppressMessage("ReSharper", "SuspiciousTypeConversion.Global")]
         void INotificationManager.OnNewNotificationsAvailable(NotificationCountDataModel notificationsCounts)
         {
             AnimeMangaNotification<IAnimeMangaObject>[] lAnimeMangaNotifications =
-                new AnimeMangaNotificationCollection<IAnimeMangaObject>(this._senpai).Take(
+                new AnimeMangaNotificationCollection<IAnimeMangaObject>(this._senpai,
+                    notificationsCounts.OtherAnimeManga).Take(
                     notificationsCounts.OtherAnimeManga).ToArray();
+
+            AnimeMangaNotification<Anime>[] lAnimeNotifications =
+                new AnimeMangaNotificationCollection<Anime>(this._senpai, notificationsCounts.OtherAnimeManga).ToArray();
+            AnimeMangaNotification<Manga>[] lMangaNotifications =
+                new AnimeMangaNotificationCollection<Manga>(this._senpai, notificationsCounts.OtherAnimeManga).ToArray();
 
             if (lAnimeMangaNotifications.Length > 0)
                 this.OnAnimeMangaNotificationRecieved(this._senpai, lAnimeMangaNotifications);
-            if (
-                lAnimeMangaNotifications.Any(
-                    notification => notification.GetType() == typeof(AnimeMangaNotification<Anime>)))
-                this.OnAnimeNotificationRecieved(this._senpai,
-                    lAnimeMangaNotifications.Where(
-                            notification => notification.GetType() == typeof(AnimeMangaNotification<Anime>))
-                        .Cast<AnimeMangaNotification<Anime>>());
-            if (
-                lAnimeMangaNotifications.Any(
-                    notification => notification.GetType() == typeof(AnimeMangaNotification<Manga>)))
-                this.OnMangaNotificationRecieved(this._senpai,
-                    lAnimeMangaNotifications.Where(
-                            notification => notification.GetType() == typeof(AnimeMangaNotification<Manga>))
-                        .Cast<AnimeMangaNotification<Manga>>());
+            if (lAnimeNotifications.Length > 0)
+                this.OnAnimeNotificationRecieved(this._senpai, lAnimeNotifications);
+            if (lMangaNotifications.Length > 0)
+                this.OnMangaNotificationRecieved(this._senpai, lMangaNotifications);
         }
 
         #endregion

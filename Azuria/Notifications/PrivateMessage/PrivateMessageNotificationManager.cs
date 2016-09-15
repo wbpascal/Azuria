@@ -75,10 +75,10 @@ namespace Azuria.Notifications.PrivateMessage
         /// <param name="e"></param>
         protected virtual void OnNotificationRecieved(Senpai sender, IEnumerable<PrivateMessageNotification> e)
         {
-            IEnumerable<PrivateMessageNotification> newsNotifications = e as PrivateMessageNotification[] ?? e.ToArray();
+            IEnumerable<PrivateMessageNotification> lNotifications = e as PrivateMessageNotification[] ?? e.ToArray();
             foreach (
                 PrivateMessageNotificationEventHandler newsNotificationEventHandler in this._notificationEventHandlers)
-                newsNotificationEventHandler?.Invoke(sender, newsNotifications);
+                newsNotificationEventHandler?.Invoke(sender, lNotifications);
         }
 
         #endregion

@@ -1,5 +1,5 @@
 ﻿using System;
-using Azuria.Api.v1.Enums;
+using Azuria.AnimeManga.Properties;
 using Newtonsoft.Json;
 
 namespace Azuria.Api.v1.Converters
@@ -20,7 +20,7 @@ namespace Azuria.Api.v1.Converters
             return objectType == typeof(string);
         }
 
-        protected AnimeMangaLanguage GetLanguageFromString(string input)
+        internal static AnimeMangaLanguage GetLanguageFromString(string input)
         {
             switch (input)
             {
@@ -49,7 +49,7 @@ namespace Azuria.Api.v1.Converters
         public override object ReadJson(JsonReader reader, Type objectType, object existingValue,
             JsonSerializer serializer)
         {
-            return this.GetLanguageFromString(reader.Value.ToString());
+            return GetLanguageFromString(reader.Value.ToString());
         }
 
         /// <summary>Writes the JSON representation of the object.</summary>

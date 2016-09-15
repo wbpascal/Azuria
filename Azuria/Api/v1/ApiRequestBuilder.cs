@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Azuria.AnimeManga.Properties;
 using Azuria.Api.v1.DataModels;
 using Azuria.Api.v1.DataModels.Info;
 using Azuria.Api.v1.DataModels.Messenger;
@@ -8,7 +9,6 @@ using Azuria.Api.v1.DataModels.Notifications;
 using Azuria.Api.v1.DataModels.Search;
 using Azuria.Api.v1.DataModels.Ucp;
 using Azuria.Api.v1.DataModels.User;
-using Azuria.Api.v1.Enums;
 using Azuria.Community;
 using Azuria.Search;
 using Azuria.Search.Input;

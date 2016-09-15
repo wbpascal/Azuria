@@ -30,7 +30,7 @@ namespace Azuria.Api.v1.Converters
             JsonSerializer serializer)
         {
             return
-                (from language in reader.Value.ToString().Split(',') select this.GetLanguageFromString(language))
+                (from language in reader.Value.ToString().Split(',') select GetLanguageFromString(language))
                     .ToArray();
         }
 

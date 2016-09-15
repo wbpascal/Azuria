@@ -80,9 +80,9 @@ namespace Azuria.Notifications.News
         /// <param name="e"></param>
         protected virtual void OnNotificationRecieved(Senpai sender, IEnumerable<NewsNotification> e)
         {
-            IEnumerable<NewsNotification> newsNotifications = e as NewsNotification[] ?? e.ToArray();
+            IEnumerable<NewsNotification> lNotifications = e as NewsNotification[] ?? e.ToArray();
             foreach (NewsNotificationEventHandler newsNotificationEventHandler in this._notificationEventHandlers)
-                newsNotificationEventHandler?.Invoke(sender, newsNotifications);
+                newsNotificationEventHandler?.Invoke(sender, lNotifications);
         }
 
         #endregion

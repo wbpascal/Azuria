@@ -1,4 +1,6 @@
-﻿using Azuria.AnimeManga;
+﻿using System;
+using Azuria.AnimeManga;
+using Azuria.AnimeManga.Properties;
 
 namespace Azuria.Notifications.AnimeManga
 {
@@ -9,18 +11,30 @@ namespace Azuria.Notifications.AnimeManga
     {
         private readonly Senpai _senpai;
 
-        internal AnimeMangaNotification(int notificationId, IAnimeMangaContent<T> contentObject, Senpai senpai)
+        internal AnimeMangaNotification(int notificationId, T animeMangaObject, int contentIndex,
+            AnimeMangaLanguage language, DateTime timeStamp, Senpai senpai)
         {
             this._senpai = senpai;
-            this.ContentObject = contentObject;
+            this.AnimeMangaObject = animeMangaObject;
+            this.ContentIndex = contentIndex;
+            this.Language = language;
             this.NotificationId = notificationId;
+            this.TimeStamp = timeStamp;
         }
 
         #region Properties
 
         /// <summary>
         /// </summary>
-        public IAnimeMangaContent<T> ContentObject { get; }
+        public T AnimeMangaObject { get; set; }
+
+        /// <summary>
+        /// </summary>
+        public int ContentIndex { get; set; }
+
+        /// <summary>
+        /// </summary>
+        public AnimeMangaLanguage Language { get; set; }
 
         /// <summary>
         /// </summary>
@@ -31,6 +45,25 @@ namespace Azuria.Notifications.AnimeManga
         string INotification.NotificationId => this.NotificationId.ToString();
 
         #endregion
+
+        /// <summary>
+        /// </summary>
+        public DateTime TimeStamp { get; set; }
+
+        #endregion
+
+        #region Methods
+
+        /// <summary>
+        /// </summary>
+        /// <param name="notification"></param>
+        /// <returns></returns>
+        public static implicit operator AnimeMangaNotification<T>(AnimeMangaNotification<IAnimeMangaObject> notification
+        )
+        {
+            return new AnimeMangaNotification<T>(notification.NotificationId, (T) notification.AnimeMangaObject,
+                notification.ContentIndex, notification.Language, notification.TimeStamp, notification._senpai);
+        }
 
         #endregion
     }

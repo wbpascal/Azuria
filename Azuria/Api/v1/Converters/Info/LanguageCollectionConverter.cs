@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Azuria.Api.v1.Enums;
+using Azuria.AnimeManga.Properties;
 using Newtonsoft.Json;
 
 namespace Azuria.Api.v1.Converters.Info
@@ -35,7 +35,7 @@ namespace Azuria.Api.v1.Converters.Info
             while (reader.Read())
             {
                 if (reader.TokenType == JsonToken.EndArray) break;
-                lLanguages.AddRange(reader.Value.ToString().Split(',').Select(this.GetLanguageFromString));
+                lLanguages.AddRange(reader.Value.ToString().Split(',').Select(GetLanguageFromString));
             }
             return lLanguages.ToArray();
         }
