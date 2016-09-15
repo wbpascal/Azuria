@@ -98,7 +98,7 @@ namespace Azuria.Notifications.AnimeManga
 
             string[] lLinkInfo =
                 lNode.Groups["link"].Value.Remove(0,
-                    lNode.Groups["link"].Value.IndexOf("/", 1, StringComparison.InvariantCulture) + 1).Split('/');
+                    lNode.Groups["link"].Value.IndexOf("/", 1, StringComparison.Ordinal) + 1).Split('/');
             int lAnimeMangaId = Convert.ToInt32(lLinkInfo[0]);
             int lContentIndex = Convert.ToInt32(lLinkInfo[1]);
             AnimeMangaLanguage lLanguage = LanguageConverter.GetLanguageFromString(lLinkInfo[2]);
