@@ -154,9 +154,11 @@ namespace Azuria.Notifications.AnimeManga
                     notificationsCounts.OtherAnimeManga).ToArray();
 
             AnimeMangaNotification<Anime>[] lAnimeNotifications =
-                new AnimeMangaNotificationCollection<Anime>(this._senpai, notificationsCounts.OtherAnimeManga).ToArray();
+                new AnimeMangaNotificationCollection<Anime>(this._senpai, notificationsCounts.OtherAnimeManga).Take(
+                    notificationsCounts.OtherAnimeManga).ToArray();
             AnimeMangaNotification<Manga>[] lMangaNotifications =
-                new AnimeMangaNotificationCollection<Manga>(this._senpai, notificationsCounts.OtherAnimeManga).ToArray();
+                new AnimeMangaNotificationCollection<Manga>(this._senpai, notificationsCounts.OtherAnimeManga).Take(
+                    notificationsCounts.OtherAnimeManga).ToArray();
 
             if (lAnimeMangaNotifications.Length > 0)
                 this.OnAnimeMangaNotificationRecieved(this._senpai, lAnimeMangaNotifications);

@@ -12,6 +12,8 @@ using Azuria.Api.v1.Converters;
 using Azuria.ErrorHandling;
 using Azuria.Utilities.Extensions;
 
+// ReSharper disable StaticMemberInGenericType
+
 namespace Azuria.Notifications.AnimeManga
 {
     /// <summary>
@@ -19,6 +21,13 @@ namespace Azuria.Notifications.AnimeManga
     public sealed class AnimeMangaNotificationEnumerator<T> : IEnumerator<AnimeMangaNotification<T>>
         where T : IAnimeMangaObject
     {
+        private static readonly Regex NotificationElementRegex = new Regex("<a class=\"notificationList\".*?<\\/a>");
+
+        private static readonly Regex NotificationInfoRegex =
+            new Regex(
+                "<a class=\"notificationList\".*?notification(?<nid>[0-9]+)\".*?href=\"(?<link>(\\/watch|\\/chapter).*?)\\#top\">.*?\"nDate\">(?<ndate>.*?)<\\/div>",
+                RegexOptions.ExplicitCapture);
+
         private readonly int _nodesToParse;
         private readonly Senpai _senpai;
         private AnimeMangaNotification<T>[] _content;
@@ -59,17 +68,15 @@ namespace Azuria.Notifications.AnimeManga
                 return new ProxerResult<IEnumerable<AnimeMangaNotification<T>>>(lResponse.Exceptions);
 
             List<AnimeMangaNotification<T>> lNotifications = new List<AnimeMangaNotification<T>>();
-            MatchCollection lMatches = new Regex(
-                    "<a class=\"notificationList\"[\\s\\S]+?notification(?<nid>[0-9]+)\"[\\s\\S]+?href=\"(?<link>(\\/watch|\\/chapter)[\\s\\S]+?)\\#top\">[\\s\\S]+?\"nDate\">(?<ndate>[\\s\\S]+?)<\\/div>",
-                    RegexOptions.ExplicitCapture)
-                .Matches(lResponse.Result);
+            MatchCollection lMatches = NotificationElementRegex.Matches(lResponse.Result);
 
             foreach (
                 Match lNotification in
                 lMatches.OfType<Match>().Take(this._nodesToParse == 0 ? lMatches.Count : this._nodesToParse))
             {
-                if (lNotification.Groups.Count < 4) continue;
-                lNotifications.AddIf(this.ParseNode(lNotification), notification => notification != null);
+                Match lInfo = NotificationInfoRegex.Match(lNotification.Value);
+                if (!lInfo.Success) continue;
+                lNotifications.AddIf(this.ParseNode(lInfo), notification => notification != null);
             }
 
             return new ProxerResult<IEnumerable<AnimeMangaNotification<T>>>(lNotifications);

@@ -13,7 +13,7 @@ namespace Azuria.Notifications.AnimeManga
         private readonly int _nodesToParse;
         private readonly Senpai _senpai;
 
-        public AnimeMangaNotificationCollection(Senpai senpai, int nodesToParse = 0)
+        internal AnimeMangaNotificationCollection(Senpai senpai, int nodesToParse = 0)
         {
             this._senpai = senpai;
             this._nodesToParse = nodesToParse;
