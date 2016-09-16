@@ -1,4 +1,5 @@
 ﻿using System;
+using Azuria.Api;
 using Azuria.Api.v1.DataModels.Notifications;
 using Azuria.UserInfo;
 
@@ -9,7 +10,6 @@ namespace Azuria.Notifications.News
     /// </summary>
     public class NewsNotification : INotification
     {
-        private const string ProxerCdn = "https://cdn.proxer.me";
         private readonly NewsNotificationDataModel _dataModel;
 
         internal NewsNotification(NewsNotificationDataModel dataModel, Senpai senpai)
@@ -47,7 +47,8 @@ namespace Azuria.Notifications.News
         /// <summary>
         ///     Gets the title image of the news.
         /// </summary>
-        public Uri Image => new Uri($"{ProxerCdn}/news/{this._dataModel.NewsId}_{this._dataModel.ImageId}.png");
+        public Uri Image
+            => new Uri($"{ApiConstants.ProxerCdnUrl}/news/{this._dataModel.NewsId}_{this._dataModel.ImageId}.png");
 
         /// <summary>
         ///     Gets infos about the css style of the image.
@@ -58,7 +59,7 @@ namespace Azuria.Notifications.News
         ///     Gets the title image of the news.
         /// </summary>
         public Uri ImageThumbnail
-            => new Uri($"{ProxerCdn}/th/{this._dataModel.NewsId}_{this._dataModel.ImageId}.png");
+            => new Uri($"{ApiConstants.ProxerCdnUrl}/th/{this._dataModel.NewsId}_{this._dataModel.ImageId}.png");
 
         /// <summary>
         ///     Gets the news id.

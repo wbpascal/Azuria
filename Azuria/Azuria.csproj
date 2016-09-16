@@ -70,6 +70,7 @@
     <Compile Include="AnimeManga\Properties\AnimeMangaRating.cs" />
     <Compile Include="AnimeManga\Properties\AnimeMangaSeason.cs" />
     <Compile Include="AnimeManga\Properties\AnimeMangaSeasonInfo.cs" />
+    <Compile Include="Api\ApiConstants.cs" />
     <Compile Include="Api\ApiInfoInput.cs" />
     <Compile Include="Api\v1\Converters\Messenger\MessageActionConverter.cs" />
     <Compile Include="Api\v1\Converters\Messenger\ImageConverter.cs" />

@@ -5,8 +5,6 @@ namespace Azuria.Api.v1.Converters.Messenger
 {
     internal class ImageConverter : JsonConverter
     {
-        private const string ImageCdn = "http://cdn.proxer.me/avatar/tn/";
-
         #region Methods
 
         /// <summary>
@@ -31,7 +29,7 @@ namespace Azuria.Api.v1.Converters.Messenger
             JsonSerializer serializer)
         {
             string lValue = reader.Value.ToString();
-            return lValue.Contains(":") ? new Uri(ImageCdn + lValue.Split(':')[1]) : null;
+            return lValue.Contains(":") ? new Uri($"{ApiConstants.ProxerAvatarCdnUrl}/{lValue.Split(':')[1]}") : null;
         }
 
         /// <summary>Writes the JSON representation of the object.</summary>

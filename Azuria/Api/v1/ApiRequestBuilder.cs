@@ -19,72 +19,72 @@ namespace Azuria.Api.v1
 {
     internal static class ApiRequestBuilder
     {
-        private const string ApiAddress = "https://proxer.me/api/v1";
-
         #region Methods
 
         internal static ApiRequest<CommentDataModel[]> InfoGetComments(int entryId, int page, int limit, string sort)
         {
             return
                 new ApiRequest<CommentDataModel[]>(
-                    new Uri($"{ApiAddress}/info/comments?id={entryId}&p={page}&limit={limit}&sort={sort}"));
+                    new Uri($"{ApiConstants.ApiUrlV1}/info/comments?id={entryId}&p={page}&limit={limit}&sort={sort}"));
         }
 
         internal static ApiRequest<EntryDataModel> InfoGetEntry(int entryId)
         {
-            return new ApiRequest<EntryDataModel>(new Uri($"{ApiAddress}/info/entry?id={entryId}"));
+            return new ApiRequest<EntryDataModel>(new Uri($"{ApiConstants.ApiUrlV1}/info/entry?id={entryId}"));
         }
 
         internal static ApiRequest<EntryTagDataModel[]> InfoGetEntryTags(int entryId)
         {
-            return new ApiRequest<EntryTagDataModel[]>(new Uri($"{ApiAddress}/info/entrytags?id={entryId}"));
+            return new ApiRequest<EntryTagDataModel[]>(new Uri($"{ApiConstants.ApiUrlV1}/info/entrytags?id={entryId}"));
         }
 
         internal static ApiRequest<bool> InfoGetGate(int entryId)
         {
-            return new ApiRequest<bool>(new Uri($"{ApiAddress}/info/gate?id={entryId}"));
+            return new ApiRequest<bool>(new Uri($"{ApiConstants.ApiUrlV1}/info/gate?id={entryId}"));
         }
 
         internal static ApiRequest<GroupDataModel[]> InfoGetGroups(int entryId)
         {
-            return new ApiRequest<GroupDataModel[]>(new Uri($"{ApiAddress}/info/groups?id={entryId}"));
+            return new ApiRequest<GroupDataModel[]>(new Uri($"{ApiConstants.ApiUrlV1}/info/groups?id={entryId}"));
         }
 
         internal static ApiRequest<AnimeMangaLanguage[]> InfoGetLanguage(int entryId)
         {
-            return new ApiRequest<AnimeMangaLanguage[]>(new Uri($"{ApiAddress}/info/lang?id={entryId}"));
+            return new ApiRequest<AnimeMangaLanguage[]>(new Uri($"{ApiConstants.ApiUrlV1}/info/lang?id={entryId}"));
         }
 
         internal static ApiRequest<ListInfoDataModel> InfoGetListInfo(int entryId, int limit)
         {
-            return new ApiRequest<ListInfoDataModel>(new Uri($"{ApiAddress}/info/listinfo?id={entryId}&limit={limit}"));
+            return
+                new ApiRequest<ListInfoDataModel>(
+                    new Uri($"{ApiConstants.ApiUrlV1}/info/listinfo?id={entryId}&limit={limit}"));
         }
 
         internal static ApiRequest<NameDataModel[]> InfoGetName(int entryId)
         {
-            return new ApiRequest<NameDataModel[]>(new Uri($"{ApiAddress}/info/names?id={entryId}"));
+            return new ApiRequest<NameDataModel[]>(new Uri($"{ApiConstants.ApiUrlV1}/info/names?id={entryId}"));
         }
 
         internal static ApiRequest<PublisherDataModel[]> InfoGetPublisher(int entryId)
         {
-            return new ApiRequest<PublisherDataModel[]>(new Uri($"{ApiAddress}/info/publisher?id={entryId}"));
+            return new ApiRequest<PublisherDataModel[]>(new Uri($"{ApiConstants.ApiUrlV1}/info/publisher?id={entryId}"));
         }
 
         internal static ApiRequest<RelationDataModel[]> InfoGetRelations(int entryId)
         {
-            return new ApiRequest<RelationDataModel[]>(new Uri($"{ApiAddress}/info/relations?id={entryId}"));
+            return new ApiRequest<RelationDataModel[]>(new Uri($"{ApiConstants.ApiUrlV1}/info/relations?id={entryId}"));
         }
 
         internal static ApiRequest<SeasonDataModel[]> InfoGetSeason(int entryId)
         {
-            return new ApiRequest<SeasonDataModel[]>(new Uri($"{ApiAddress}/info/season?id={entryId}"));
+            return new ApiRequest<SeasonDataModel[]>(new Uri($"{ApiConstants.ApiUrlV1}/info/season?id={entryId}"));
         }
 
         internal static ApiRequest<ConferenceInfoDataModel> MessengerGetConferenceInfo(int conferenceId, Senpai senpai)
         {
             return
                 new ApiRequest<ConferenceInfoDataModel>(
-                    new Uri($"{ApiAddress}/messenger/conferenceinfo?conference_id={conferenceId}"))
+                    new Uri($"{ApiConstants.ApiUrlV1}/messenger/conferenceinfo?conference_id={conferenceId}"))
                 {
                     CheckLogin = true,
                     Senpai = senpai
@@ -96,7 +96,8 @@ namespace Azuria.Api.v1
         {
             return
                 new ApiRequest<ConferenceDataModel[]>(
-                    new Uri($"{ApiAddress}/messenger/conferences?type={type.ToString().ToLowerInvariant()}&p={page}"))
+                    new Uri(
+                        $"{ApiConstants.ApiUrlV1}/messenger/conferences?type={type.ToString().ToLowerInvariant()}&p={page}"))
                 {
                     CheckLogin = true,
                     Senpai = senpai
@@ -105,7 +106,7 @@ namespace Azuria.Api.v1
 
         internal static ApiRequest<ConstantsDataModel> MessengerGetConstants()
         {
-            return new ApiRequest<ConstantsDataModel>(new Uri($"{ApiAddress}/messenger/constants"));
+            return new ApiRequest<ConstantsDataModel>(new Uri($"{ApiConstants.ApiUrlV1}/messenger/constants"));
         }
 
         internal static ApiRequest<MessageDataModel[]> MessengerGetMessages(Senpai senpai, int conferenceId = 0,
@@ -113,7 +114,8 @@ namespace Azuria.Api.v1
         {
             return
                 new ApiRequest<MessageDataModel[]>(
-                    new Uri($"{ApiAddress}/messenger/messages?conference_id={conferenceId}&message_id={messageId}"))
+                    new Uri(
+                        $"{ApiConstants.ApiUrlV1}/messenger/messages?conference_id={conferenceId}&message_id={messageId}"))
                 {
                     CheckLogin = true,
                     Senpai = senpai
@@ -122,7 +124,7 @@ namespace Azuria.Api.v1
 
         internal static ApiRequest<int> MessengerNewConference(string username, string text, Senpai senpai)
         {
-            return new ApiRequest<int>(new Uri($"{ApiAddress}/messenger/newconference"))
+            return new ApiRequest<int>(new Uri($"{ApiConstants.ApiUrlV1}/messenger/newconference"))
             {
                 CheckLogin = true,
                 PostArguments = new Dictionary<string, string> {{"username", username}, {"text", text}},
@@ -141,7 +143,7 @@ namespace Azuria.Api.v1
             lPostArgs.AddRange(from participantName in participantNames
                 select new KeyValuePair<string, string>("users[]", participantName));
 
-            return new ApiRequest<int>(new Uri($"{ApiAddress}/messenger/newconferencegroup"))
+            return new ApiRequest<int>(new Uri($"{ApiConstants.ApiUrlV1}/messenger/newconferencegroup"))
             {
                 CheckLogin = true,
                 PostArguments = lPostArgs,
@@ -151,27 +153,29 @@ namespace Azuria.Api.v1
 
         internal static ApiRequest<int> MessengerSetBlock(int conferenceId, Senpai senpai)
         {
-            return new ApiRequest<int>(new Uri($"{ApiAddress}/messenger/setblock?conference_id={conferenceId}"))
-            {
-                CheckLogin = true,
-                Senpai = senpai
-            };
+            return
+                new ApiRequest<int>(new Uri($"{ApiConstants.ApiUrlV1}/messenger/setblock?conference_id={conferenceId}"))
+                {
+                    CheckLogin = true,
+                    Senpai = senpai
+                };
         }
 
         internal static ApiRequest<int> MessengerSetFavour(int conferenceId, Senpai senpai)
         {
-            return new ApiRequest<int>(new Uri($"{ApiAddress}/messenger/setfavour?conference_id={conferenceId}"))
-            {
-                CheckLogin = true,
-                Senpai = senpai
-            };
+            return
+                new ApiRequest<int>(new Uri($"{ApiConstants.ApiUrlV1}/messenger/setfavour?conference_id={conferenceId}"))
+                {
+                    CheckLogin = true,
+                    Senpai = senpai
+                };
         }
 
         internal static ApiRequest<string> MessengerSetMessage(int conferenceId, string message, Senpai senpai)
         {
             return
                 new ApiRequest<string>(
-                    new Uri($"{ApiAddress}/messenger/setmessage?conference_id={conferenceId}"))
+                    new Uri($"{ApiConstants.ApiUrlV1}/messenger/setmessage?conference_id={conferenceId}"))
                 {
                     CheckLogin = true,
                     PostArguments = new Dictionary<string, string> {{"text", message}},
@@ -181,7 +185,7 @@ namespace Azuria.Api.v1
 
         internal static ApiRequest<int> MessengerSetReport(int conferenceId, string reason, Senpai senpai)
         {
-            return new ApiRequest<int>(new Uri($"{ApiAddress}/messenger/report?conference_id={conferenceId}"))
+            return new ApiRequest<int>(new Uri($"{ApiConstants.ApiUrlV1}/messenger/report?conference_id={conferenceId}"))
             {
                 CheckLogin = true,
                 PostArguments = new Dictionary<string, string> {{"text", reason}},
@@ -191,34 +195,38 @@ namespace Azuria.Api.v1
 
         internal static ApiRequest<int> MessengerSetUnblock(int conferenceId, Senpai senpai)
         {
-            return new ApiRequest<int>(new Uri($"{ApiAddress}/messenger/setunblock?conference_id={conferenceId}"))
-            {
-                CheckLogin = true,
-                Senpai = senpai
-            };
+            return
+                new ApiRequest<int>(new Uri($"{ApiConstants.ApiUrlV1}/messenger/setunblock?conference_id={conferenceId}"))
+                {
+                    CheckLogin = true,
+                    Senpai = senpai
+                };
         }
 
         internal static ApiRequest<int> MessengerSetUnfavour(int conferenceId, Senpai senpai)
         {
-            return new ApiRequest<int>(new Uri($"{ApiAddress}/messenger/setunfavour?conference_id={conferenceId}"))
-            {
-                CheckLogin = true,
-                Senpai = senpai
-            };
+            return
+                new ApiRequest<int>(
+                    new Uri($"{ApiConstants.ApiUrlV1}/messenger/setunfavour?conference_id={conferenceId}"))
+                {
+                    CheckLogin = true,
+                    Senpai = senpai
+                };
         }
 
         internal static ApiRequest<int> MessengerSetUnread(int conferenceId, Senpai senpai)
         {
-            return new ApiRequest<int>(new Uri($"{ApiAddress}/messenger/setunread?conference_id={conferenceId}"))
-            {
-                CheckLogin = true,
-                Senpai = senpai
-            };
+            return
+                new ApiRequest<int>(new Uri($"{ApiConstants.ApiUrlV1}/messenger/setunread?conference_id={conferenceId}"))
+                {
+                    CheckLogin = true,
+                    Senpai = senpai
+                };
         }
 
         internal static ApiRequest<NotificationCountDataModel> NotificationGetCount(Senpai senpai)
         {
-            return new ApiRequest<NotificationCountDataModel>(new Uri($"{ApiAddress}/notifications/count"))
+            return new ApiRequest<NotificationCountDataModel>(new Uri($"{ApiConstants.ApiUrlV1}/notifications/count"))
             {
                 CheckLogin = true,
                 Senpai = senpai
@@ -229,7 +237,7 @@ namespace Azuria.Api.v1
         {
             return
                 new ApiRequest<NewsNotificationDataModel[]>(
-                    new Uri($"{ApiAddress}/notifications/news?p={page}&limit={limit}"))
+                    new Uri($"{ApiConstants.ApiUrlV1}/notifications/news?p={page}&limit={limit}"))
                 {
                     CheckLogin = true,
                     Senpai = senpai
@@ -238,15 +246,17 @@ namespace Azuria.Api.v1
 
         internal static ApiRequest<SearchDataModel[]> SearchEntrySearch(SearchInput input, int limit, int page)
         {
-            return new ApiRequest<SearchDataModel[]>(new Uri($"{ApiAddress}/list/entrysearch?limit={limit}&p={page}"))
-            {
-                PostArguments = SearchQueryBuilder.Build(input)
-            };
+            return
+                new ApiRequest<SearchDataModel[]>(
+                    new Uri($"{ApiConstants.ApiUrlV1}/list/entrysearch?limit={limit}&p={page}"))
+                {
+                    PostArguments = SearchQueryBuilder.Build(input)
+                };
         }
 
         internal static ApiRequest<BookmarkDataModel[]> UcpDeleteFavourite(int favouriteId, Senpai senpai)
         {
-            return new ApiRequest<BookmarkDataModel[]>(new Uri($"{ApiAddress}/ucp/deletefavorite"))
+            return new ApiRequest<BookmarkDataModel[]>(new Uri($"{ApiConstants.ApiUrlV1}/ucp/deletefavorite"))
             {
                 CheckLogin = true,
                 PostArguments = new Dictionary<string, string> {{"id", favouriteId.ToString()}},
@@ -256,7 +266,7 @@ namespace Azuria.Api.v1
 
         internal static ApiRequest<BookmarkDataModel[]> UcpDeleteReminder(int bookmarkId, Senpai senpai)
         {
-            return new ApiRequest<BookmarkDataModel[]>(new Uri($"{ApiAddress}/ucp/deletereminder"))
+            return new ApiRequest<BookmarkDataModel[]>(new Uri($"{ApiConstants.ApiUrlV1}/ucp/deletereminder"))
             {
                 CheckLogin = true,
                 PostArguments = new Dictionary<string, string> {{"id", bookmarkId.ToString()}},
@@ -266,7 +276,7 @@ namespace Azuria.Api.v1
 
         internal static ApiRequest<BookmarkDataModel[]> UcpDeleteVote(int voteId, Senpai senpai)
         {
-            return new ApiRequest<BookmarkDataModel[]>(new Uri($"{ApiAddress}/ucp/deletevote"))
+            return new ApiRequest<BookmarkDataModel[]>(new Uri($"{ApiConstants.ApiUrlV1}/ucp/deletevote"))
             {
                 CheckLogin = true,
                 PostArguments = new Dictionary<string, string> {{"id", voteId.ToString()}},
@@ -276,16 +286,17 @@ namespace Azuria.Api.v1
 
         internal static ApiRequest<HistoryDataModel[]> UcpGetHistory(int page, int limit, Senpai senpai)
         {
-            return new ApiRequest<HistoryDataModel[]>(new Uri($"{ApiAddress}/ucp/history?p={page}&limit={limit}"))
-            {
-                CheckLogin = true,
-                Senpai = senpai
-            };
+            return
+                new ApiRequest<HistoryDataModel[]>(new Uri($"{ApiConstants.ApiUrlV1}/ucp/history?p={page}&limit={limit}"))
+                {
+                    CheckLogin = true,
+                    Senpai = senpai
+                };
         }
 
         internal static ApiRequest<int> UcpGetListsum(Senpai senpai, string kat = "anime")
         {
-            return new ApiRequest<int>(new Uri($"{ApiAddress}/ucp/listsum?kat={kat}"))
+            return new ApiRequest<int>(new Uri($"{ApiConstants.ApiUrlV1}/ucp/listsum?kat={kat}"))
             {
                 CheckLogin = true,
                 Senpai = senpai
@@ -297,7 +308,7 @@ namespace Azuria.Api.v1
         {
             return
                 new ApiRequest<BookmarkDataModel[]>(
-                    new Uri($"{ApiAddress}/ucp/reminder?kat={kat}&p={page}&limit={limit}"))
+                    new Uri($"{ApiConstants.ApiUrlV1}/ucp/reminder?kat={kat}&p={page}&limit={limit}"))
                 {
                     CheckLogin = true,
                     Senpai = senpai
@@ -306,7 +317,7 @@ namespace Azuria.Api.v1
 
         internal static ApiRequest<ToptenDataModel[]> UcpGetTopten(Senpai senpai)
         {
-            return new ApiRequest<ToptenDataModel[]>(new Uri($"{ApiAddress}/ucp/topten"))
+            return new ApiRequest<ToptenDataModel[]>(new Uri($"{ApiConstants.ApiUrlV1}/ucp/topten"))
             {
                 CheckLogin = true,
                 Senpai = senpai
@@ -315,7 +326,7 @@ namespace Azuria.Api.v1
 
         internal static ApiRequest<VoteDataModel[]> UcpGetVotes(Senpai senpai)
         {
-            return new ApiRequest<VoteDataModel[]>(new Uri($"{ApiAddress}/ucp/votes"))
+            return new ApiRequest<VoteDataModel[]>(new Uri($"{ApiConstants.ApiUrlV1}/ucp/votes"))
             {
                 CheckLogin = true,
                 Senpai = senpai
@@ -328,7 +339,7 @@ namespace Azuria.Api.v1
             return
                 new ApiRequest(
                     new Uri(
-                        $"{ApiAddress}/ucp/setreminder?id={entryId}&episode={contentIndex}&language={language}&kat={kat}"))
+                        $"{ApiConstants.ApiUrlV1}/ucp/setreminder?id={entryId}&episode={contentIndex}&language={language}&kat={kat}"))
                 {
                     CheckLogin = true,
                     Senpai = senpai
@@ -337,7 +348,7 @@ namespace Azuria.Api.v1
 
         internal static ApiRequest UcpSetProgress(int commentId, int progress, Senpai senpai)
         {
-            return new ApiRequest(new Uri($"{ApiAddress}/ucp/setcommentstate"))
+            return new ApiRequest(new Uri($"{ApiConstants.ApiUrlV1}/ucp/setcommentstate"))
             {
                 CheckLogin = true,
                 PostArguments =
@@ -349,7 +360,8 @@ namespace Azuria.Api.v1
         internal static ApiRequest<UserInfoDataModel> UserGetInfo(int? userId, Senpai senpai = null)
         {
             return
-                new ApiRequest<UserInfoDataModel>(new Uri($"{ApiAddress}/user/userinfo?uid={userId?.ToString() ?? ""}"))
+                new ApiRequest<UserInfoDataModel>(
+                    new Uri($"{ApiConstants.ApiUrlV1}/user/userinfo?uid={userId?.ToString() ?? ""}"))
                 {
                     Senpai = senpai
                 };
@@ -357,7 +369,8 @@ namespace Azuria.Api.v1
 
         internal static ApiRequest<UserInfoDataModel> UserGetInfo(string username)
         {
-            return new ApiRequest<UserInfoDataModel>(new Uri($"{ApiAddress}/user/userinfo?username={username}"));
+            return
+                new ApiRequest<UserInfoDataModel>(new Uri($"{ApiConstants.ApiUrlV1}/user/userinfo?username={username}"));
         }
 
         internal static ApiRequest<CommentDataModel[]> UserGetLatestComments(int userId, int page, int limit, string kat,
@@ -365,26 +378,27 @@ namespace Azuria.Api.v1
         {
             return
                 new ApiRequest<CommentDataModel[]>(
-                    new Uri($"{ApiAddress}/user/comments?uid={userId}&p={page}&limit={limit}&kat={kat}&length={length}"));
+                    new Uri(
+                        $"{ApiConstants.ApiUrlV1}/user/comments?uid={userId}&p={page}&limit={limit}&kat={kat}&length={length}"));
         }
 
         internal static ApiRequest<ListDataModel[]> UserGetList(int userId, string kat, int page, int limit)
         {
             return
                 new ApiRequest<ListDataModel[]>(
-                    new Uri($"{ApiAddress}/user/list?uid={userId}&kat={kat}&p={page}&limit={limit}"));
+                    new Uri($"{ApiConstants.ApiUrlV1}/user/list?uid={userId}&kat={kat}&p={page}&limit={limit}"));
         }
 
         internal static ApiRequest<DataModels.User.ToptenDataModel[]> UserGetTopten(int userId, string category)
         {
             return
                 new ApiRequest<DataModels.User.ToptenDataModel[]>(
-                    new Uri($"{ApiAddress}/user/topten?uid={userId}&kat={category}"));
+                    new Uri($"{ApiConstants.ApiUrlV1}/user/topten?uid={userId}&kat={category}"));
         }
 
         internal static ApiRequest<LoginDataModel> UserLogin(string username, string password, Senpai senpai)
         {
-            return new ApiRequest<LoginDataModel>(new Uri($"{ApiAddress}/user/login"))
+            return new ApiRequest<LoginDataModel>(new Uri($"{ApiConstants.ApiUrlV1}/user/login"))
             {
                 PostArguments = new Dictionary<string, string> {{"username", username}, {"password", password}},
                 Senpai = senpai
@@ -393,7 +407,7 @@ namespace Azuria.Api.v1
 
         internal static ApiRequest UserLogout(Senpai senpai)
         {
-            return new ApiRequest(new Uri($"{ApiAddress}/user/logout"))
+            return new ApiRequest(new Uri($"{ApiConstants.ApiUrlV1}/user/logout"))
             {
                 CheckLogin = true,
                 Senpai = senpai
