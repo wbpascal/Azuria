@@ -34,7 +34,7 @@ namespace Azuria.Notifications.News
 
             return
                 new ProxerResult<IEnumerable<NewsNotification>>(from newsNotificationDataModel in lResult.Result.Data
-                    select new NewsNotification(newsNotificationDataModel));
+                    select new NewsNotification(newsNotificationDataModel, this._senpai));
         }
 
         #endregion

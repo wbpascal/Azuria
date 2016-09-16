@@ -12,6 +12,10 @@
         /// </summary>
         string NotificationId { get; }
 
+        /// <summary>
+        /// </summary>
+        Senpai Senpai { get; }
+
         #endregion
     }
 }

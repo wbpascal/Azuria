@@ -9,16 +9,14 @@ namespace Azuria.Notifications.AnimeManga
     /// </summary>
     public class AnimeMangaNotification<T> : INotification where T : IAnimeMangaObject
     {
-        private readonly Senpai _senpai;
-
         internal AnimeMangaNotification(int notificationId, T animeMangaObject, int contentIndex,
             AnimeMangaLanguage language, DateTime timeStamp, Senpai senpai)
         {
-            this._senpai = senpai;
             this.AnimeMangaObject = animeMangaObject;
             this.ContentIndex = contentIndex;
             this.Language = language;
             this.NotificationId = notificationId;
+            this.Senpai = senpai;
             this.TimeStamp = timeStamp;
         }
 
@@ -46,24 +44,12 @@ namespace Azuria.Notifications.AnimeManga
 
         #endregion
 
+        /// <inheritdoc />
+        public Senpai Senpai { get; }
+
         /// <summary>
         /// </summary>
         public DateTime TimeStamp { get; set; }
-
-        #endregion
-
-        #region Methods
-
-        /// <summary>
-        /// </summary>
-        /// <param name="notification"></param>
-        /// <returns></returns>
-        public static implicit operator AnimeMangaNotification<T>(AnimeMangaNotification<IAnimeMangaObject> notification
-        )
-        {
-            return new AnimeMangaNotification<T>(notification.NotificationId, (T) notification.AnimeMangaObject,
-                notification.ContentIndex, notification.Language, notification.TimeStamp, notification._senpai);
-        }
 
         #endregion
     }

@@ -19,9 +19,10 @@ namespace Azuria.Notifications.PrivateMessage
 
         internal PrivateMessageNotification(MessageDataModel dataModel, Senpai senpai)
         {
-            this._conferenceInfo = new InitialisableProperty<ConferenceInfo>(() => this.InitConference(senpai));
+            this._conferenceInfo = new InitialisableProperty<ConferenceInfo>(this.InitConference);
             this._conferenceId = dataModel.ConferenceId;
             this.NotificationId = $"{dataModel.ConferenceId}_{dataModel.MessageId}";
+            this.Senpai = senpai;
             this.TimeStamp = dataModel.MessageTimeStamp;
         }
 
@@ -37,6 +38,9 @@ namespace Azuria.Notifications.PrivateMessage
         /// </summary>
         public string NotificationId { get; }
 
+        /// <inheritdoc />
+        public Senpai Senpai { get; }
+
         /// <summary>
         ///     Gets the date of the private message.
         /// </summary>
@@ -46,10 +50,10 @@ namespace Azuria.Notifications.PrivateMessage
 
         #region Methods
 
-        private async Task<ProxerResult> InitConference(Senpai senpai)
+        private async Task<ProxerResult> InitConference()
         {
             ProxerResult<IEnumerable<ConferenceInfo>> lConferencesResult =
-                await Conference.GetConferences(senpai);
+                await Conference.GetConferences(this.Senpai);
             if (!lConferencesResult.Success || (lConferencesResult.Result == null))
                 return new ProxerResult(lConferencesResult.Exceptions);
 

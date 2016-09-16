@@ -12,9 +12,10 @@ namespace Azuria.Notifications.News
         private const string ProxerCdn = "https://cdn.proxer.me";
         private readonly NewsNotificationDataModel _dataModel;
 
-        internal NewsNotification(NewsNotificationDataModel dataModel)
+        internal NewsNotification(NewsNotificationDataModel dataModel, Senpai senpai)
         {
             this._dataModel = dataModel;
+            this.Senpai = senpai;
         }
 
         #region Properties
@@ -74,6 +75,9 @@ namespace Azuria.Notifications.News
         ///     Gets the post count of the news.
         /// </summary>
         public int Posts => this._dataModel.Posts;
+
+        /// <inheritdoc />
+        public Senpai Senpai { get; }
 
         /// <summary>
         ///     Gets the headline of the news.
