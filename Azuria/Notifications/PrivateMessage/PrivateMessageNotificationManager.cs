@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Azuria.Api.v1.DataModels.Notifications;
 
@@ -27,6 +28,13 @@ namespace Azuria.Notifications.PrivateMessage
         #region Events
 
         /// <summary>
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        public delegate void ExceptionThrownNotificationFetchEventHandler(
+            PrivateMessageNotificationManager sender, Exception e);
+
+        /// <summary>
         ///     Represents a method that is executed when new private message notifications are available.
         /// </summary>
         /// <param name="sender">The user that recieved the notifications.</param>
@@ -47,6 +55,10 @@ namespace Azuria.Notifications.PrivateMessage
             remove { this._notificationEventHandlers.Remove(value); }
         }
 
+        /// <summary>
+        /// </summary>
+        public event ExceptionThrownNotificationFetchEventHandler ExceptionThrownNotificationFetch;
+
         #endregion
 
         #region Methods
@@ -60,13 +72,30 @@ namespace Azuria.Notifications.PrivateMessage
             return NotificationCountManager.GetOrAddManager(senpai, new PrivateMessageNotificationManager(senpai));
         }
 
+        /// <summary>
+        /// </summary>
+        /// <param name="e"></param>
+        protected virtual void OnExceptionThrownNotificationFetch(Exception e)
+        {
+            this.ExceptionThrownNotificationFetch?.Invoke(this, e);
+        }
+
         void INotificationManager.OnNewNotificationsAvailable(NotificationCountDataModel notificationsCounts)
         {
-            PrivateMessageNotification[] lPrivateMessageNotifications =
-                new PrivateMessageNotificationCollection(this._senpai).Take(notificationsCounts.PrivateMessages)
-                    .ToArray();
-            if (lPrivateMessageNotifications.Length > 0)
-                this.OnNotificationRecieved(this._senpai, lPrivateMessageNotifications);
+            if (notificationsCounts.PrivateMessages == 0) return;
+
+            try
+            {
+                PrivateMessageNotification[] lPrivateMessageNotifications =
+                    new PrivateMessageNotificationCollection(this._senpai).Take(notificationsCounts.PrivateMessages)
+                        .ToArray();
+                if (lPrivateMessageNotifications.Length > 0)
+                    this.OnNotificationRecieved(this._senpai, lPrivateMessageNotifications);
+            }
+            catch (Exception ex)
+            {
+                this.OnExceptionThrownNotificationFetch(ex);
+            }
         }
 
         /// <summary>

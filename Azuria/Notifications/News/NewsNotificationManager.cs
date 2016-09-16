@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Azuria.Api.v1.DataModels.Notifications;
 
@@ -32,6 +33,12 @@ namespace Azuria.Notifications.News
         #region Events
 
         /// <summary>
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        public delegate void ExceptionThrownNotificationFetchEventHandler(NewsNotificationManager sender, Exception e);
+
+        /// <summary>
         ///     Represents a method that is executed when new news notifications are available.
         /// </summary>
         /// <param name="sender">The user that recieved the notifications.</param>
@@ -51,6 +58,10 @@ namespace Azuria.Notifications.News
             remove { this._notificationEventHandlers.Remove(value); }
         }
 
+        /// <summary>
+        /// </summary>
+        public event ExceptionThrownNotificationFetchEventHandler ExceptionThrownNotificationFetch;
+
         #endregion
 
         #region Methods
@@ -64,14 +75,29 @@ namespace Azuria.Notifications.News
             return NotificationCountManager.GetOrAddManager(senpai, new NewsNotificationManager(senpai));
         }
 
+        /// <summary>
+        /// </summary>
+        /// <param name="e"></param>
+        protected virtual void OnExceptionThrownNotificationFetch(Exception e)
+        {
+            this.ExceptionThrownNotificationFetch?.Invoke(this, e);
+        }
+
         void INotificationManager.OnNewNotificationsAvailable(NotificationCountDataModel notificationsCounts)
         {
             if (notificationsCounts.News == 0) return;
 
-            NewsNotification[] lNewsNotifications =
-                new NewsNotificationCollection(this._senpai, notificationsCounts.News).Take(notificationsCounts.News)
-                    .ToArray();
-            if (lNewsNotifications.Length > 0) this.OnNotificationRecieved(this._senpai, lNewsNotifications);
+            try
+            {
+                NewsNotification[] lNewsNotifications =
+                    new NewsNotificationCollection(this._senpai, notificationsCounts.News).Take(notificationsCounts.News)
+                        .ToArray();
+                if (lNewsNotifications.Length > 0) this.OnNotificationRecieved(this._senpai, lNewsNotifications);
+            }
+            catch (Exception ex)
+            {
+                this.OnExceptionThrownNotificationFetch(ex);
+            }
         }
 
         /// <summary>

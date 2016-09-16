@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Azuria.AnimeManga;
 using Azuria.Api.v1.DataModels.Notifications;
@@ -48,9 +49,20 @@ namespace Azuria.Notifications.AnimeManga
 
         /// <summary>
         /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        public delegate void ExceptionThrownNotificationFetchEventHandler(
+            AnimeMangaNotificationManager sender, Exception e);
+
+        /// <summary>
+        /// </summary>
         /// <param name="sender">The user that recieved the notifications.</param>
         /// <param name="e">The notifications.</param>
         public delegate void MangaNotificationEventHandler(Senpai sender, IEnumerable<AnimeMangaNotification<Manga>> e);
+
+        /// <summary>
+        /// </summary>
+        public event ExceptionThrownNotificationFetchEventHandler ExceptionThrownNotificationFetch;
 
         /// <summary>
         /// </summary>
@@ -135,6 +147,14 @@ namespace Azuria.Notifications.AnimeManga
 
         /// <summary>
         /// </summary>
+        /// <param name="e"></param>
+        protected virtual void OnExceptionThrownNotificationFetch(Exception e)
+        {
+            this.ExceptionThrownNotificationFetch?.Invoke(this, e);
+        }
+
+        /// <summary>
+        /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         protected virtual void OnMangaNotificationRecieved(Senpai sender, IEnumerable<AnimeMangaNotification<Manga>> e)
@@ -148,24 +168,33 @@ namespace Azuria.Notifications.AnimeManga
 
         void INotificationManager.OnNewNotificationsAvailable(NotificationCountDataModel notificationsCounts)
         {
-            AnimeMangaNotification<IAnimeMangaObject>[] lAnimeMangaNotifications =
-                new AnimeMangaNotificationCollection<IAnimeMangaObject>(this._senpai,
-                    notificationsCounts.OtherAnimeManga).Take(
-                    notificationsCounts.OtherAnimeManga).ToArray();
+            if (notificationsCounts.OtherAnimeManga == 0) return;
 
-            AnimeMangaNotification<Anime>[] lAnimeNotifications =
-                new AnimeMangaNotificationCollection<Anime>(this._senpai, notificationsCounts.OtherAnimeManga).Take(
-                    notificationsCounts.OtherAnimeManga).ToArray();
-            AnimeMangaNotification<Manga>[] lMangaNotifications =
-                new AnimeMangaNotificationCollection<Manga>(this._senpai, notificationsCounts.OtherAnimeManga).Take(
-                    notificationsCounts.OtherAnimeManga).ToArray();
+            try
+            {
+                AnimeMangaNotification<IAnimeMangaObject>[] lAnimeMangaNotifications =
+                    new AnimeMangaNotificationCollection<IAnimeMangaObject>(this._senpai,
+                        notificationsCounts.OtherAnimeManga).Take(
+                        notificationsCounts.OtherAnimeManga).ToArray();
 
-            if (lAnimeMangaNotifications.Length > 0)
-                this.OnAnimeMangaNotificationRecieved(this._senpai, lAnimeMangaNotifications);
-            if (lAnimeNotifications.Length > 0)
-                this.OnAnimeNotificationRecieved(this._senpai, lAnimeNotifications);
-            if (lMangaNotifications.Length > 0)
-                this.OnMangaNotificationRecieved(this._senpai, lMangaNotifications);
+                AnimeMangaNotification<Anime>[] lAnimeNotifications =
+                    new AnimeMangaNotificationCollection<Anime>(this._senpai, notificationsCounts.OtherAnimeManga).Take(
+                        notificationsCounts.OtherAnimeManga).ToArray();
+                AnimeMangaNotification<Manga>[] lMangaNotifications =
+                    new AnimeMangaNotificationCollection<Manga>(this._senpai, notificationsCounts.OtherAnimeManga).Take(
+                        notificationsCounts.OtherAnimeManga).ToArray();
+
+                if (lAnimeMangaNotifications.Length > 0)
+                    this.OnAnimeMangaNotificationRecieved(this._senpai, lAnimeMangaNotifications);
+                if (lAnimeNotifications.Length > 0)
+                    this.OnAnimeNotificationRecieved(this._senpai, lAnimeNotifications);
+                if (lMangaNotifications.Length > 0)
+                    this.OnMangaNotificationRecieved(this._senpai, lMangaNotifications);
+            }
+            catch (Exception ex)
+            {
+                this.OnExceptionThrownNotificationFetch(ex);
+            }
         }
 
         #endregion
