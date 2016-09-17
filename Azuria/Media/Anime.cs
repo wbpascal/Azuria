@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
-using Azuria.AnimeManga.Properties;
 using Azuria.Api.v1;
 using Azuria.Api.v1.DataModels;
 using Azuria.Api.v1.DataModels.Info;
@@ -12,13 +11,14 @@ using Azuria.Api.v1.DataModels.Ucp;
 using Azuria.Api.v1.Enums;
 using Azuria.ErrorHandling;
 using Azuria.Exceptions;
+using Azuria.Media.Properties;
 using Azuria.UserInfo.Comment;
 using Azuria.UserInfo.ControlPanel;
 using Azuria.Utilities.Properties;
 
 // ReSharper disable LoopCanBeConvertedToQuery
 
-namespace Azuria.AnimeManga
+namespace Azuria.Media
 {
     /// <summary>
     ///     Represents an anime.

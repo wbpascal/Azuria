@@ -1,6 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
-using Azuria.AnimeManga;
+using Azuria.Media;
 
 namespace Azuria.UserInfo.Comment
 {

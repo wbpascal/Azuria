@@ -2,18 +2,18 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Azuria.AnimeManga.Properties;
 using Azuria.Api.v1;
 using Azuria.Api.v1.DataModels.Info;
 using Azuria.Api.v1.Enums;
 using Azuria.ErrorHandling;
+using Azuria.Media.Properties;
 using Azuria.UserInfo;
 using Azuria.UserInfo.ControlPanel;
 using Azuria.Utilities.Properties;
 
 #pragma warning disable 1591
 
-namespace Azuria.AnimeManga
+namespace Azuria.Media
 {
     /// <summary>
     /// </summary>

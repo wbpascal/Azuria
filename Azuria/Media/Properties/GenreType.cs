@@ -1,4 +1,4 @@
-﻿namespace Azuria.AnimeManga.Properties
+﻿namespace Azuria.Media.Properties
 {
     /// <summary>
     ///     Represents an enumeration which contains every possible genre for an <see cref="Anime">Anime</see> or

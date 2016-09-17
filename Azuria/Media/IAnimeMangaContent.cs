@@ -1,6 +1,6 @@
-﻿using Azuria.AnimeManga.Properties;
+﻿using Azuria.Media.Properties;
 
-namespace Azuria.AnimeManga
+namespace Azuria.Media
 {
     /// <summary>
     ///     Represents an <see cref="Anime.Episode" /> or <see cref="Manga.Chapter" />.

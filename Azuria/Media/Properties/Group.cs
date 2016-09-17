@@ -1,6 +1,6 @@
 ﻿using Azuria.Api.v1.DataModels.Info;
 
-namespace Azuria.AnimeManga.Properties
+namespace Azuria.Media.Properties
 {
     /// <summary>
     ///     Represents a class which describes a <see cref="Group" />, who translates <see cref="Anime" /> or

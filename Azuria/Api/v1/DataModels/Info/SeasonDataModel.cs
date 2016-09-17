@@ -1,5 +1,5 @@
 ﻿using System;
-using Azuria.AnimeManga.Properties;
+using Azuria.Media.Properties;
 using Newtonsoft.Json;
 
 namespace Azuria.Api.v1.DataModels.Info

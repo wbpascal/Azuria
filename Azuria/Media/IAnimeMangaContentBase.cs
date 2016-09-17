@@ -1,7 +1,7 @@
 ﻿using System.Threading.Tasks;
 using Azuria.ErrorHandling;
 
-namespace Azuria.AnimeManga
+namespace Azuria.Media
 {
     /// <summary>
     ///     Represents an <see cref="Anime.Episode" /> or <see cref="Manga.Chapter" />.

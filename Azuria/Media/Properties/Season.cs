@@ -1,23 +1,23 @@
-﻿namespace Azuria.AnimeManga.Properties
+﻿namespace Azuria.Media.Properties
 {
     /// <summary>
     /// </summary>
-    public enum Country
+    public enum Season
     {
         /// <summary>
         /// </summary>
-        Germany,
+        Winter = 1,
 
         /// <summary>
         /// </summary>
-        UnitedStates,
+        Spring = 2,
 
         /// <summary>
         /// </summary>
-        Japan,
+        Summer = 3,
 
         /// <summary>
         /// </summary>
-        Unkown
+        Autumn = 4
     }
 }

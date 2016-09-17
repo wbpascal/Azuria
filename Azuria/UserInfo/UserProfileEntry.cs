@@ -1,7 +1,7 @@
 ﻿using System;
-using Azuria.AnimeManga;
-using Azuria.AnimeManga.Properties;
 using Azuria.Api.v1.DataModels.User;
+using Azuria.Media;
+using Azuria.Media.Properties;
 using Azuria.UserInfo.Comment;
 using Azuria.Utilities.Properties;
 

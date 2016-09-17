@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
-using Azuria.AnimeManga;
 using Azuria.Api.v1;
 using Azuria.Api.v1.DataModels;
 using Azuria.ErrorHandling;
+using Azuria.Media;
 using Azuria.Utilities;
 using Azuria.Utilities.Properties;
 

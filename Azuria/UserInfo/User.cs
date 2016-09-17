@@ -2,12 +2,12 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Azuria.AnimeManga;
 using Azuria.Api.v1;
 using Azuria.Api.v1.DataModels.Messenger;
 using Azuria.Api.v1.DataModels.User;
 using Azuria.Api.v1.Enums;
 using Azuria.ErrorHandling;
+using Azuria.Media;
 using Azuria.UserInfo.Comment;
 using Azuria.Utilities.Properties;
 
@@ -94,7 +94,7 @@ namespace Azuria.UserInfo
         #region Properties
 
         /// <summary>
-        ///     Gets all <see cref="AnimeManga.Anime" /> the <see cref="User" /> has in his profile.
+        ///     Gets all <see cref="Media.Anime" /> the <see cref="User" /> has in his profile.
         /// </summary>
         public IEnumerable<UserProfileEntry<Anime>> Anime { get; }
 
@@ -117,7 +117,7 @@ namespace Azuria.UserInfo
         public int Id { get; }
 
         /// <summary>
-        ///     Gets all <see cref="AnimeManga.Manga" /> the <see cref="User" /> has in his profile.
+        ///     Gets all <see cref="Media.Manga" /> the <see cref="User" /> has in his profile.
         /// </summary>
         public IEnumerable<UserProfileEntry<Manga>> Manga { get; }
 
@@ -132,12 +132,12 @@ namespace Azuria.UserInfo
         public IInitialisableProperty<UserStatus> Status => this._status;
 
         /// <summary>
-        ///     Gets all favourites of the user that are <see cref="AnimeManga.Anime">Anime</see>.
+        ///     Gets all favourites of the user that are <see cref="Media.Anime">Anime</see>.
         /// </summary>
         public IInitialisableProperty<IEnumerable<Anime>> ToptenAnime => this._toptenAnime;
 
         /// <summary>
-        ///     Gets the <see cref="AnimeManga.Manga">Manga</see> top ten of the user.
+        ///     Gets the <see cref="Media.Manga">Manga</see> top ten of the user.
         /// </summary>
         public IInitialisableProperty<IEnumerable<Manga>> ToptenManga => this._toptenManga;
 

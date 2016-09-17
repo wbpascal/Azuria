@@ -1,7 +1,7 @@
 ﻿
 #pragma warning disable 1591
 
-namespace Azuria.AnimeManga.Properties
+namespace Azuria.Media.Properties
 {
     public enum AnimeMangaLanguage
     {

@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using Azuria.AnimeManga;
 using Azuria.Api.v1;
 using Azuria.Api.v1.DataModels;
 using Azuria.Api.v1.DataModels.User;
 using Azuria.ErrorHandling;
+using Azuria.Media;
 
 namespace Azuria.UserInfo.Comment
 {

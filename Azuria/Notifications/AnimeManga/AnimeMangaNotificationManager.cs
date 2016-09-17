@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Azuria.AnimeManga;
 using Azuria.Api.v1.DataModels.Notifications;
+using Azuria.Media;
 
 namespace Azuria.Notifications.AnimeManga
 {

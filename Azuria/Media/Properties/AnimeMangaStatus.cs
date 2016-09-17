@@ -1,4 +1,4 @@
-﻿namespace Azuria.AnimeManga.Properties
+﻿namespace Azuria.Media.Properties
 {
     /// <summary>
     ///     Represents the airing status of an <see cref="Anime" /> or <see cref="Manga" />.

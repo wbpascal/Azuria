@@ -1,11 +1,11 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Azuria.AnimeManga;
 using Azuria.Api.v1;
 using Azuria.Api.v1.DataModels.Search;
 using Azuria.Api.v1.Enums;
 using Azuria.ErrorHandling;
+using Azuria.Media;
 using Azuria.Search.Input;
 using Azuria.Utilities;
 

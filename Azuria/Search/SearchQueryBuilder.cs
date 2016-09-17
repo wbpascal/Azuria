@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using Azuria.AnimeManga.Properties;
+using Azuria.Media.Properties;
 using Azuria.Search.Input;
 using Azuria.Utilities.Extensions;
 

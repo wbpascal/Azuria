@@ -1,10 +1,10 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Azuria.AnimeManga;
 using Azuria.Api.v1;
 using Azuria.Api.v1.DataModels.User;
 using Azuria.ErrorHandling;
+using Azuria.Media;
 using Azuria.Utilities;
 
 namespace Azuria.UserInfo

@@ -1,9 +1,9 @@
 ﻿using System.Threading.Tasks;
-using Azuria.AnimeManga;
 using Azuria.Api.v1;
 using Azuria.Api.v1.DataModels.Info;
 using Azuria.Api.v1.Enums;
 using Azuria.ErrorHandling;
+using Azuria.Media;
 
 namespace Azuria
 {

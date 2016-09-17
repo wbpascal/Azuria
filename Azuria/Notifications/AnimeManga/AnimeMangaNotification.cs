@@ -1,6 +1,6 @@
 ﻿using System;
-using Azuria.AnimeManga;
-using Azuria.AnimeManga.Properties;
+using Azuria.Media;
+using Azuria.Media.Properties;
 
 namespace Azuria.Notifications.AnimeManga
 {

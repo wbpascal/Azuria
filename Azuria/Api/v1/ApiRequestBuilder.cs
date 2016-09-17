@@ -1,15 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Azuria.AnimeManga.Properties;
 using Azuria.Api.v1.DataModels;
 using Azuria.Api.v1.DataModels.Info;
+using Azuria.Api.v1.DataModels.Media;
 using Azuria.Api.v1.DataModels.Messenger;
 using Azuria.Api.v1.DataModels.Notifications;
 using Azuria.Api.v1.DataModels.Search;
 using Azuria.Api.v1.DataModels.Ucp;
 using Azuria.Api.v1.DataModels.User;
 using Azuria.Community;
+using Azuria.Media.Properties;
 using Azuria.Search;
 using Azuria.Search.Input;
 using Azuria.Utilities.Extensions;
@@ -92,6 +93,12 @@ namespace Azuria.Api.v1
                 },
                 Senpai = senpai
             };
+        }
+
+        internal static ApiRequest<HeaderDataModel> MediaGetRandomHeader(string style = "gray")
+        {
+            return
+                new ApiRequest<HeaderDataModel>(new Uri($"{ApiConstants.ApiUrlV1}/media/randomheader?style={style}"));
         }
 
         internal static ApiRequest<ConferenceInfoDataModel> MessengerGetConferenceInfo(int conferenceId, Senpai senpai)

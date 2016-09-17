@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using Azuria.AnimeManga.Properties;
+using Azuria.Media.Properties;
 using Azuria.Utilities.Properties;
 
-namespace Azuria.AnimeManga
+namespace Azuria.Media
 {
     /// <summary>
     ///     Represents an <see cref="Anime" /> or <see cref="Manga" />.

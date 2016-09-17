@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using Azuria.AnimeManga.Properties;
+using Azuria.Media.Properties;
 
 namespace Azuria.Search.Input
 {

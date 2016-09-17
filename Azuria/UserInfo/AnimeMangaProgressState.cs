@@ -1,4 +1,4 @@
-﻿using Azuria.AnimeManga;
+﻿using Azuria.Media;
 
 namespace Azuria.UserInfo
 {

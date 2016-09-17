@@ -1,6 +1,6 @@
 ﻿using System.Threading.Tasks;
-using Azuria.AnimeManga;
 using Azuria.ErrorHandling;
+using Azuria.Media;
 
 namespace Azuria.UserInfo.ControlPanel
 {

@@ -5,11 +5,11 @@ using System.Globalization;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
-using Azuria.AnimeManga;
-using Azuria.AnimeManga.Properties;
 using Azuria.Api;
 using Azuria.Api.v1.Converters;
 using Azuria.ErrorHandling;
+using Azuria.Media;
+using Azuria.Media.Properties;
 using Azuria.Utilities.Extensions;
 
 // ReSharper disable StaticMemberInGenericType

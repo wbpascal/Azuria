@@ -1,5 +1,5 @@
 ﻿using System;
-using Azuria.AnimeManga;
+using Azuria.Media;
 
 namespace Azuria.UserInfo.ControlPanel
 {

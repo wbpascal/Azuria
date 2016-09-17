@@ -1,6 +1,6 @@
 ﻿using Azuria.Api.v1.DataModels.Info;
 
-namespace Azuria.AnimeManga.Properties
+namespace Azuria.Media.Properties
 {
     /// <summary>
     ///     Represents a class which describes the <see cref="Industry" /> of an <see cref="Anime" /> or <see cref="Manga" />.

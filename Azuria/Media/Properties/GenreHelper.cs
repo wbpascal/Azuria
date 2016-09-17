@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace Azuria.AnimeManga.Properties
+namespace Azuria.Media.Properties
 {
     /// <summary>
     ///     Represents a class which aims to help working with the <see cref="FskType">Fsk-enumeration</see>.
