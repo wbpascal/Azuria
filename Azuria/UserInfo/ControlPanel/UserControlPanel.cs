@@ -95,6 +95,20 @@ namespace Azuria.UserInfo.ControlPanel
 
         /// <summary>
         /// </summary>
+        /// <param name="animeMangaObject"></param>
+        /// <param name="list"></param>
+        /// <returns></returns>
+        public async Task<ProxerResult> AddToProfileList(IAnimeMangaObject animeMangaObject, AnimeMangaProfileList list)
+        {
+            ProxerResult<ProxerApiResponse> lResult =
+                await
+                    RequestHandler.ApiRequest(ApiRequestBuilder.InfoSetUserInfo(animeMangaObject.Id,
+                        ProfileListToString(list), this._senpai));
+            return lResult.Success ? new ProxerResult() : new ProxerResult(lResult.Exceptions);
+        }
+
+        /// <summary>
+        /// </summary>
         /// <param name="bookmarkId"></param>
         /// <returns></returns>
         public async Task<ProxerResult> DeleteBookmark(int bookmarkId)
@@ -152,6 +166,21 @@ namespace Azuria.UserInfo.ControlPanel
             this._commentVotes.SetInitialisedObject(from voteDataModel in lResult.Result.Data
                 select new CommentVote(voteDataModel, this));
             return new ProxerResult();
+        }
+
+        private static string ProfileListToString(AnimeMangaProfileList list)
+        {
+            switch (list)
+            {
+                case AnimeMangaProfileList.Favourites:
+                    return "favor";
+                case AnimeMangaProfileList.Finished:
+                    return "finish";
+                case AnimeMangaProfileList.Noted:
+                    return "note";
+                default:
+                    return string.Empty;
+            }
         }
 
         #endregion

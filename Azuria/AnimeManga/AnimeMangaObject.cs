@@ -7,6 +7,8 @@ using Azuria.Api.v1;
 using Azuria.Api.v1.DataModels.Info;
 using Azuria.Api.v1.Enums;
 using Azuria.ErrorHandling;
+using Azuria.UserInfo;
+using Azuria.UserInfo.ControlPanel;
 using Azuria.Utilities.Properties;
 
 #pragma warning disable 1591
@@ -145,6 +147,16 @@ namespace Azuria.AnimeManga
         #endregion
 
         #region Methods
+
+        /// <summary>
+        /// </summary>
+        /// <param name="senpai"></param>
+        /// <param name="list"></param>
+        /// <returns></returns>
+        public Task<ProxerResult> AddToProfileList(Senpai senpai, AnimeMangaProfileList list)
+        {
+            return new UserControlPanel(senpai).AddToProfileList(this, list);
+        }
 
         internal async Task<ProxerResult<AnimeMangaContentDataModel[]>> GetContentObjects()
         {

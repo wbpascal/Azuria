@@ -80,6 +80,20 @@ namespace Azuria.Api.v1
             return new ApiRequest<SeasonDataModel[]>(new Uri($"{ApiConstants.ApiUrlV1}/info/season?id={entryId}"));
         }
 
+        internal static ApiRequest InfoSetUserInfo(int entryId, string type, Senpai senpai)
+        {
+            return new ApiRequest(new Uri($"{ApiConstants.ApiUrlV1}/info/setuserinfo"))
+            {
+                CheckLogin = true,
+                PostArguments = new Dictionary<string, string>
+                {
+                    {"id", entryId.ToString()},
+                    {"type", type}
+                },
+                Senpai = senpai
+            };
+        }
+
         internal static ApiRequest<ConferenceInfoDataModel> MessengerGetConferenceInfo(int conferenceId, Senpai senpai)
         {
             return
