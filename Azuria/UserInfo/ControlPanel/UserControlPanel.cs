@@ -15,11 +15,12 @@ namespace Azuria.UserInfo.ControlPanel
 {
     /// <summary>
     ///     Represents the User-Control-Panel of a specified user.
-    ///     TODO: Implement Listsum
     /// </summary>
     public class UserControlPanel
     {
         private readonly InitialisableProperty<IEnumerable<CommentVote>> _commentVotes;
+        private readonly InitialisableProperty<int> _pointsAnime;
+        private readonly InitialisableProperty<int> _pointsManga;
         private readonly Senpai _senpai;
         private readonly InitialisableProperty<IEnumerable<ToptenObject<Anime>>> _toptenAnime;
         private readonly InitialisableProperty<IEnumerable<ToptenObject<Manga>>> _toptenManga;
@@ -35,6 +36,8 @@ namespace Azuria.UserInfo.ControlPanel
             if (!this._senpai.IsProbablyLoggedIn) throw new NotLoggedInException(this._senpai);
 
             this._commentVotes = new InitialisableProperty<IEnumerable<CommentVote>>(this.InitVotes);
+            this._pointsAnime = new InitialisableProperty<int>(() => this.InitPoints("anime"));
+            this._pointsManga = new InitialisableProperty<int>(() => this.InitPoints("manga"));
             this._toptenAnime = new InitialisableProperty<IEnumerable<ToptenObject<Anime>>>(this.InitTopten);
             this._toptenManga = new InitialisableProperty<IEnumerable<ToptenObject<Manga>>>(this.InitTopten);
         }
@@ -61,6 +64,14 @@ namespace Azuria.UserInfo.ControlPanel
         /// </summary>
         public IEnumerable<HistoryObject<IAnimeMangaObject>> History
             => new HistoryEnumerable<IAnimeMangaObject>(this._senpai, this);
+
+        /// <summary>
+        /// </summary>
+        public IInitialisableProperty<int> PointsAnime => this._pointsAnime;
+
+        /// <summary>
+        /// </summary>
+        public IInitialisableProperty<int> PointsManga => this._pointsManga;
 
         /// <summary>
         /// </summary>
@@ -138,6 +149,25 @@ namespace Azuria.UserInfo.ControlPanel
             ProxerResult<ProxerApiResponse<BookmarkDataModel[]>> lResult =
                 await RequestHandler.ApiRequest(ApiRequestBuilder.UcpDeleteFavourite(toptenId, this._senpai));
             return lResult.Success ? new ProxerResult() : new ProxerResult(lResult.Exceptions);
+        }
+
+        private async Task<ProxerResult> InitPoints(string category)
+        {
+            ProxerResult<ProxerApiResponse<int>> lResult =
+                await RequestHandler.ApiRequest(ApiRequestBuilder.UcpGetListsum(this._senpai, category));
+            if (!lResult.Success || (lResult.Result == null)) return new ProxerResult(lResult.Exceptions);
+
+            switch (category)
+            {
+                case "anime":
+                    this._pointsAnime.SetInitialisedObject(lResult.Result.Data);
+                    break;
+                case "manga":
+                    this._pointsManga.SetInitialisedObject(lResult.Result.Data);
+                    break;
+            }
+
+            return new ProxerResult();
         }
 
         private async Task<ProxerResult> InitTopten()
