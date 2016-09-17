@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Azuria.Api.v1;
 using Azuria.Api.v1.DataModels.Media;
@@ -10,6 +12,21 @@ namespace Azuria.Media.Headers
     public static class HeaderHelper
     {
         #region Methods
+
+        /// <summary>
+        /// </summary>
+        /// <returns></returns>
+        public static async Task<ProxerResult<IEnumerable<HeaderInfo>>> GetHeaderList()
+        {
+            ProxerResult<ProxerApiResponse<HeaderDataModel[]>> lResult =
+                await RequestHandler.ApiRequest(ApiRequestBuilder.MediaGetHeaderList());
+            if (!lResult.Success || (lResult.Result == null))
+                return new ProxerResult<IEnumerable<HeaderInfo>>(lResult.Exceptions);
+
+            return
+                new ProxerResult<IEnumerable<HeaderInfo>>(from headerDataModel in lResult.Result.Data
+                    select new HeaderInfo(headerDataModel));
+        }
 
         /// <summary>
         /// </summary>

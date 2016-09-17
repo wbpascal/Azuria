@@ -95,6 +95,12 @@ namespace Azuria.Api.v1
             };
         }
 
+        internal static ApiRequest<HeaderDataModel[]> MediaGetHeaderList()
+        {
+            return
+                new ApiRequest<HeaderDataModel[]>(new Uri($"{ApiConstants.ApiUrlV1}/media/headerlist"));
+        }
+
         internal static ApiRequest<HeaderDataModel> MediaGetRandomHeader(string style = "gray")
         {
             return
