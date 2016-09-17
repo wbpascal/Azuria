@@ -72,16 +72,21 @@ namespace Azuria.Api.v1
         private static async Task<ProxerResult<T>> HandleErrorCode<T>(ErrorCode code, ApiRequest request)
             where T : ProxerApiResponse
         {
+            List<Exception> lExceptions = new List<Exception>(new[] {new ProxerApiException(code)});
             switch (code)
             {
                 case ErrorCode.IpBlocked:
-                    return new ProxerResult<T>(new CaptchaException("http://proxer.me/misc/captcha"));
+                    lExceptions.Add(new CaptchaException("http://proxer.me/misc/captcha"));
+                    break;
                 case ErrorCode.ApiKeyInsufficientPermissions:
-                    return new ProxerResult<T>(new ApiKeyInsufficientException());
+                    lExceptions.Add(new ApiKeyInsufficientException());
+                    break;
                 case ErrorCode.UserInsufficientPermissions:
-                    return new ProxerResult<T>(new NoAccessException(request.Senpai));
+                    lExceptions.Add(new NoAccessException(request.Senpai));
+                    break;
                 case ErrorCode.LoginTokenInvalid:
-                    return new ProxerResult<T>(new NotLoggedInException(request.Senpai));
+                    lExceptions.Add(new NotLoggedInException(request.Senpai));
+                    break;
                 case ErrorCode.NotificationsUserNotLoggedIn:
                 case ErrorCode.UcpUserNotLoggedIn:
                 case ErrorCode.InfoSetUserInfoUserNotLoggedIn:
@@ -89,7 +94,7 @@ namespace Azuria.Api.v1
                     return await ApiCustomRequest<T>(request, true);
             }
 
-            return new ProxerResult<T>(new ProxerApiException(code));
+            return new ProxerResult<T>(lExceptions);
         }
 
         internal static void Init(char[] apiKey)
