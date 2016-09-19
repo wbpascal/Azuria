@@ -104,11 +104,15 @@
     <Compile Include="Exceptions\NotInitialisedException.cs" />
     <Compile Include="Notifications\INotificationManager.cs" />
     <Compile Include="Notifications\NotificationCountManager.cs" />
+    <Compile Include="Search\EntryListCollection.cs" />
+    <Compile Include="Search\EntryListEnumerator.cs" />
+    <Compile Include="Search\Input\EntryListInput.cs" />
     <Compile Include="Search\Input\AnimeMangaSearchType.cs" />
     <Compile Include="Search\Input\LengthLimit.cs" />
     <Compile Include="Search\Input\SearchInput.cs" />
     <Compile Include="Search\Input\SearchLanguage.cs" />
     <Compile Include="Search\Input\SearchResultSort.cs" />
+    <Compile Include="Search\SearchHelper.cs" />
     <Compile Include="Search\SearchQueryBuilder.cs" />
     <Compile Include="UserInfo\AnimeMangaProfileList.cs" />
     <Compile Include="UserInfo\ControlPanel\CommentVote.cs" />
@@ -159,7 +163,7 @@
     <Compile Include="Api\v1\DataModels\User\UserInfoDataModel.cs" />
     <Compile Include="Api\v1\Enums\AnimeMangaEntryType.cs" />
     <Compile Include="Media\Properties\AnimeMangaLanguage.cs" />
-    <Compile Include="Api\v1\Enums\AnimeMangaMedium.cs" />
+    <Compile Include="Search\Input\AnimeMangaMedium.cs" />
     <Compile Include="Api\v1\Enums\AnimeMangaNameType.cs" />
     <Compile Include="Api\v1\RequestHandler.cs" />
     <Compile Include="Community\Conference.cs" />
@@ -201,7 +205,7 @@
     <Compile Include="Media\Properties\Group.cs" />
     <Compile Include="Media\Properties\Industry.cs" />
     <Compile Include="Media\Properties\Language.cs" />
-    <Compile Include="Search\Search.cs" />
+    <Compile Include="Search\SearchResultCollection.cs" />
     <Compile Include="UserInfo\AnimeMangaProgressState.cs" />
     <Compile Include="UserInfo\Comment\RatingCategory.cs" />
     <Compile Include="UserInfo\ControlPanel\BookmarkObject.cs" />

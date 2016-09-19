@@ -2,6 +2,7 @@
 using Azuria.Api.v1.Converters;
 using Azuria.Api.v1.Enums;
 using Azuria.Media.Properties;
+using Azuria.Search.Input;
 using Newtonsoft.Json;
 
 namespace Azuria.Api.v1.DataModels.Search

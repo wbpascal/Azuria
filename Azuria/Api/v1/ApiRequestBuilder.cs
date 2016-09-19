@@ -95,6 +95,27 @@ namespace Azuria.Api.v1
             };
         }
 
+        internal static ApiRequest<SearchDataModel[]> ListEntryList(EntryListInput input, string kat, int limit,
+            int page)
+        {
+            return
+                new ApiRequest<SearchDataModel[]>(
+                    new Uri($"{ApiConstants.ApiUrlV1}/list/entrylist?limit={limit}&p={page}&kat={kat}"))
+                {
+                    PostArguments = SearchQueryBuilder.Build(input)
+                };
+        }
+
+        internal static ApiRequest<SearchDataModel[]> ListEntrySearch(SearchInput input, int limit, int page)
+        {
+            return
+                new ApiRequest<SearchDataModel[]>(
+                    new Uri($"{ApiConstants.ApiUrlV1}/list/entrysearch?limit={limit}&p={page}"))
+                {
+                    PostArguments = SearchQueryBuilder.Build(input)
+                };
+        }
+
         internal static ApiRequest<HeaderDataModel[]> MediaGetHeaderList()
         {
             return
@@ -268,16 +289,6 @@ namespace Azuria.Api.v1
                 {
                     CheckLogin = true,
                     Senpai = senpai
-                };
-        }
-
-        internal static ApiRequest<SearchDataModel[]> SearchEntrySearch(SearchInput input, int limit, int page)
-        {
-            return
-                new ApiRequest<SearchDataModel[]>(
-                    new Uri($"{ApiConstants.ApiUrlV1}/list/entrysearch?limit={limit}&p={page}"))
-                {
-                    PostArguments = SearchQueryBuilder.Build(input)
                 };
         }
 

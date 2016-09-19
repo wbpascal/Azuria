@@ -1,5 +1,5 @@
 ﻿using System;
-using Azuria.Api.v1.Enums;
+using Azuria.Search.Input;
 using Newtonsoft.Json;
 
 namespace Azuria.Api.v1.Converters
@@ -35,7 +35,7 @@ namespace Azuria.Api.v1.Converters
                 case "hmanga":
                     return AnimeMangaMedium.HManga;
             }
-            return AnimeMangaMedium.Unkown;
+            return AnimeMangaMedium.None;
         }
 
         public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)

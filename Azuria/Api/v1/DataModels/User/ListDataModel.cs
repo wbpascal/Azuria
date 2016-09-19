@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Azuria.Api.v1.Converters;
 using Azuria.Api.v1.Enums;
 using Azuria.Media.Properties;
+using Azuria.Search.Input;
 using Azuria.UserInfo;
 using Azuria.UserInfo.Comment;
 using Newtonsoft.Json;

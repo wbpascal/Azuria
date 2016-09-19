@@ -1,6 +1,11 @@
-﻿namespace Azuria.Api.v1.Enums
+﻿
+#pragma warning disable 1591
+
+namespace Azuria.Search.Input
 {
-    internal enum AnimeMangaMedium
+    /// <summary>
+    /// </summary>
+    public enum AnimeMangaMedium
     {
         Animeseries = 0,
         Movie = 1,
@@ -10,6 +15,6 @@
         OneShot = 5,
         Doujin = 6,
         HManga = 7,
-        Unkown = 8
+        None = 8
     }
 }

@@ -31,6 +31,19 @@ namespace Azuria.Search
             return lReturn;
         }
 
+        internal static Dictionary<string, string> Build(EntryListInput input)
+        {
+            Dictionary<string, string> lReturn = new Dictionary<string, string>
+            {
+                {"isH", input.ShowHContent.ToString()},
+                {"start", input.ShowOnlyNonAlphabeticalBeginnings ? "nonAlpha" : input.StartWith}
+            };
+            if (input.Medium != AnimeMangaMedium.None)
+                lReturn.Add("medium", input.Medium.ToString().ToLowerInvariant());
+
+            return lReturn;
+        }
+
         private static string FskToString(IEnumerable<FskType> fskTypes)
         {
             if (fskTypes == null) return string.Empty;
