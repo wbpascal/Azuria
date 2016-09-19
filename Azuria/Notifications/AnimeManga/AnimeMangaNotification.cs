@@ -1,4 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using Azuria.ErrorHandling;
 using Azuria.Media;
 using Azuria.Media.Properties;
 
@@ -38,11 +42,7 @@ namespace Azuria.Notifications.AnimeManga
         /// </summary>
         public int NotificationId { get; }
 
-        #region Implementation of INotification
-
         string INotification.NotificationId => this.NotificationId.ToString();
-
-        #endregion
 
         /// <inheritdoc />
         public Senpai Senpai { get; }
@@ -50,6 +50,43 @@ namespace Azuria.Notifications.AnimeManga
         /// <summary>
         /// </summary>
         public DateTime TimeStamp { get; set; }
+
+        #endregion
+
+        #region Methods
+
+        /// <summary>
+        /// </summary>
+        /// <returns></returns>
+        public async Task<ProxerResult<IAnimeMangaContent<T>>> GetContentObject()
+        {
+            if (this.AnimeMangaObject is Anime)
+            {
+                ProxerResult<IEnumerable<Anime.Episode>> lEpisodesResult =
+                    await (this.AnimeMangaObject as Anime).GetEpisodes((AnimeLanguage) this.Language);
+                if (!lEpisodesResult.Success || (lEpisodesResult.Result == null))
+                    return new ProxerResult<IAnimeMangaContent<T>>(lEpisodesResult.Exceptions);
+
+                return
+                    new ProxerResult<IAnimeMangaContent<T>>(
+                        lEpisodesResult.Result.FirstOrDefault(episode => episode.ContentIndex == this.ContentIndex) as
+                            IAnimeMangaContent<T>);
+            }
+            if (this.AnimeMangaObject is Manga)
+            {
+                ProxerResult<IEnumerable<Manga.Chapter>> lChaptersResult =
+                    await (this.AnimeMangaObject as Manga).GetChapters((Language) this.Language);
+                if (!lChaptersResult.Success || (lChaptersResult.Result == null))
+                    return new ProxerResult<IAnimeMangaContent<T>>(lChaptersResult.Exceptions);
+
+                return
+                    new ProxerResult<IAnimeMangaContent<T>>(
+                        lChaptersResult.Result.FirstOrDefault(chapter => chapter.ContentIndex == this.ContentIndex) as
+                            IAnimeMangaContent<T>);
+            }
+
+            return new ProxerResult<IAnimeMangaContent<T>>(new Exception[0]);
+        }
 
         #endregion
     }
