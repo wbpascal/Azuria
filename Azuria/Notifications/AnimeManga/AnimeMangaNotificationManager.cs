@@ -24,9 +24,24 @@ namespace Azuria.Notifications.AnimeManga
         private AnimeMangaNotificationManager(Senpai senpai)
         {
             this._senpai = senpai;
+            this.Notifications = new AnimeMangaNotificationCollection<IAnimeMangaObject>(senpai);
+            this.NotificationsAnime = new AnimeMangaNotificationCollection<Anime>(senpai);
+            this.NotificationsManga = new AnimeMangaNotificationCollection<Manga>(senpai);
         }
 
         #region Properties
+
+        /// <summary>
+        /// </summary>
+        public AnimeMangaNotificationCollection<IAnimeMangaObject> Notifications { get; }
+
+        /// <summary>
+        /// </summary>
+        public AnimeMangaNotificationCollection<Anime> NotificationsAnime { get; }
+
+        /// <summary>
+        /// </summary>
+        public AnimeMangaNotificationCollection<Manga> NotificationsManga { get; }
 
         Senpai INotificationManager.Senpai => this._senpai;
 
