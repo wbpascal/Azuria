@@ -151,7 +151,7 @@ namespace Azuria
                 return new ProxerResult(new[] {new ArgumentException(nameof(token))});
 
             ProxerResult<ProxerApiResponse<UserInfoDataModel>> lResult =
-                await RequestHandler.ApiRequest(ApiRequestBuilder.UserGetInfo(null, this), token);
+                await RequestHandler.ApiRequest(ApiRequestBuilder.UserGetInfo(this), token);
             if (!lResult.Success || (lResult.Result == null))
                 return new ProxerResult(lResult.Exceptions);
             UserInfoDataModel lDataModel = lResult.Result.Data;

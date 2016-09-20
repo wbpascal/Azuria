@@ -405,14 +405,17 @@ namespace Azuria.Api.v1
             };
         }
 
-        internal static ApiRequest<UserInfoDataModel> UserGetInfo(int? userId, Senpai senpai = null)
+        internal static ApiRequest<UserInfoDataModel> UserGetInfo(Senpai senpai)
         {
-            return
-                new ApiRequest<UserInfoDataModel>(
-                    new Uri($"{ApiConstants.ApiUrlV1}/user/userinfo?uid={userId?.ToString() ?? ""}"))
-                {
-                    Senpai = senpai
-                };
+            return new ApiRequest<UserInfoDataModel>(new Uri($"{ApiConstants.ApiUrlV1}/user/userinfo"))
+            {
+                Senpai = senpai
+            };
+        }
+
+        internal static ApiRequest<UserInfoDataModel> UserGetInfo(int userId)
+        {
+            return new ApiRequest<UserInfoDataModel>(new Uri($"{ApiConstants.ApiUrlV1}/user/userinfo?uid={userId}"));
         }
 
         internal static ApiRequest<UserInfoDataModel> UserGetInfo(string username)

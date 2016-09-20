@@ -224,7 +224,6 @@
     <Compile Include="Notifications\PrivateMessage\PrivateMessageNotificationEnumerator.cs" />
     <Compile Include="Notifications\PrivateMessage\PrivateMessageNotificationManager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="ProxerClass.cs" />
     <Compile Include="Senpai.cs" />
     <Compile Include="UserInfo\User.cs" />
     <Compile Include="UserInfo\UserEntryEnumerable.cs" />

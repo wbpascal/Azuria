@@ -158,6 +158,28 @@ namespace Azuria.Media
             return new UserControlPanel(senpai).AddToProfileList(this, list);
         }
 
+        /// <summary>
+        ///     Gets an <see cref="Anime" /> or <see cref="Manga" /> of a specified id.
+        /// </summary>
+        /// <param name="id">The id of the <see cref="Anime" /> or <see cref="Manga" />.</param>
+        /// <returns>
+        ///     If the action was successful and if it was, an object representing either an <see cref="Anime" /> or
+        ///     <see cref="Manga" />.
+        /// </returns>
+        public static async Task<ProxerResult<IAnimeMangaObject>> CreateFromId(int id)
+        {
+            ProxerResult<ProxerApiResponse<EntryDataModel>> lResult =
+                await RequestHandler.ApiRequest(ApiRequestBuilder.InfoGetEntry(id));
+            if (!lResult.Success || (lResult.Result == null))
+                return new ProxerResult<IAnimeMangaObject>(lResult.Exceptions);
+            EntryDataModel lDataModel = lResult.Result.Data;
+
+            return
+                new ProxerResult<IAnimeMangaObject>(lDataModel.EntryType == AnimeMangaEntryType.Anime
+                    ? new Anime(lDataModel)
+                    : (IAnimeMangaObject) new Manga(lDataModel));
+        }
+
         internal async Task<ProxerResult<AnimeMangaContentDataModel[]>> GetContentObjects()
         {
             ProxerResult<ProxerApiResponse<ListInfoDataModel>> lResult =

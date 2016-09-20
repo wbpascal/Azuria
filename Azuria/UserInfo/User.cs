@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Azuria.Api;
 using Azuria.Api.v1;
 using Azuria.Api.v1.DataModels.Messenger;
 using Azuria.Api.v1.DataModels.User;
@@ -45,7 +46,7 @@ namespace Azuria.UserInfo
 
             this.Anime = new UserEntryEnumerable<Anime>(this);
             this._avatar = new InitialisableProperty<Uri>(this.InitMainInfo,
-                new Uri("https://cdn.proxer.me/avatar/nophoto.png"))
+                new Uri(ApiConstants.ProxerNoAvatarCdnUrl))
             {
                 IsInitialisedOnce = false
             };
@@ -69,24 +70,28 @@ namespace Azuria.UserInfo
         internal User(int userId, Uri avatar)
             : this(userId)
         {
-            this._avatar.SetInitialisedObject(avatar ?? new Uri("https://cdn.proxer.me/avatar/nophoto.png"));
+            this._avatar.SetInitialisedObject(avatar ?? new Uri(ApiConstants.ProxerNoAvatarCdnUrl));
         }
 
         internal User(string name, int userId, Uri avatar)
             : this(name, userId)
         {
-            this._avatar.SetInitialisedObject(avatar ?? new Uri("https://cdn.proxer.me/avatar/nophoto.png"));
+            this._avatar.SetInitialisedObject(avatar ?? new Uri(ApiConstants.ProxerNoAvatarCdnUrl));
         }
 
         internal User(UserInfoDataModel dataModel)
-            : this(dataModel.Username, dataModel.UserId, new Uri("http://cdn.proxer.me/avatar/" + dataModel.AvatarId))
+            : this(
+                dataModel.Username, dataModel.UserId, new Uri(ApiConstants.ProxerAvatarShortCdnUrl + dataModel.AvatarId)
+            )
         {
             this._points.SetInitialisedObject(dataModel.Points);
             this._status.SetInitialisedObject(dataModel.Status);
         }
 
         internal User(ConferenceInfoParticipantDataModel dataModel)
-            : this(dataModel.Username, dataModel.UserId, new Uri("http://cdn.proxer.me/avatar/" + dataModel.AvatarId))
+            : this(
+                dataModel.Username, dataModel.UserId, new Uri(ApiConstants.ProxerAvatarShortCdnUrl + dataModel.AvatarId)
+            )
         {
             this._status.SetInitialisedObject(new UserStatus(dataModel.UserStatus, DateTime.MinValue));
         }
@@ -171,7 +176,7 @@ namespace Azuria.UserInfo
             if (!lResult.Success || (lResult.Result == null)) return new ProxerResult(lResult.Exceptions);
 
             UserInfoDataModel lDataModel = lResult.Result.Data;
-            this._avatar.SetInitialisedObject(new Uri("http://cdn.proxer.me/avatar/" + lDataModel.AvatarId));
+            this._avatar.SetInitialisedObject(new Uri(ApiConstants.ProxerAvatarShortCdnUrl + lDataModel.AvatarId));
             this._points.SetInitialisedObject(lDataModel.Points);
             this._status.SetInitialisedObject(lDataModel.Status);
             this._userName.SetInitialisedObject(lDataModel.Username);
