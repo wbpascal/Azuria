@@ -3,17 +3,17 @@
 namespace Azuria.Media.Properties
 {
     /// <summary>
-    ///     Represents a class which describes a <see cref="Group" />, who translates <see cref="Anime" /> or
+    ///     Represents a class which describes a <see cref="Translator" />, who translates <see cref="Anime" /> or
     ///     <see cref="Manga" />.
     /// </summary>
-    public class Group
+    public class Translator
     {
         /// <summary>
         ///     Represents an error.
         /// </summary>
-        public static Group Error = new Group(new GroupDataModel {Id = -1, Name = "ERROR"});
+        public static Translator Error = new Translator(new TranslatorDataModel {Id = -1, Name = "ERROR"});
 
-        internal Group(GroupDataModel dataModel)
+        internal Translator(TranslatorDataModel dataModel)
         {
             this.Id = dataModel.Id;
             this.Name = dataModel.Name;
@@ -23,17 +23,17 @@ namespace Azuria.Media.Properties
         #region Properties
 
         /// <summary>
-        ///     Gets the id of the <see cref="Group" />.
+        ///     Gets the id of the <see cref="Translator" />.
         /// </summary>
         public int Id { get; }
 
         /// <summary>
-        ///     Gets the Language of the <see cref="Group" />.
+        ///     Gets the Language of the <see cref="Translator" />.
         /// </summary>
         public Language Language { get; internal set; }
 
         /// <summary>
-        ///     Gets the name of the <see cref="Group" />.
+        ///     Gets the name of the <see cref="Translator" />.
         /// </summary>
         public string Name { get; }
 

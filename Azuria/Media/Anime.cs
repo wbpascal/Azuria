@@ -155,21 +155,27 @@ namespace Azuria.Media
         /// </summary>
         public class Episode : IAnimeMangaContent<Anime>, IAnimeMangaContent<IAnimeMangaObject>
         {
-            internal Episode(Anime anime, AnimeMangaContentDataModel dataModel)
+            private readonly InitialisableProperty<IEnumerable<Stream>> _streams;
+
+            private Episode()
+            {
+            }
+
+            internal Episode(Anime anime, AnimeMangaContentDataModel dataModel) : this()
             {
                 this.ContentIndex = dataModel.ContentIndex;
                 this.Language = (AnimeLanguage) dataModel.Language;
                 this.ParentObject = anime;
             }
 
-            internal Episode(BookmarkDataModel dataModel)
+            internal Episode(BookmarkDataModel dataModel) : this()
             {
                 this.ContentIndex = dataModel.ContentIndex;
                 this.Language = (AnimeLanguage) dataModel.Language;
                 this.ParentObject = new Anime(dataModel);
             }
 
-            internal Episode(HistoryDataModel dataModel)
+            internal Episode(HistoryDataModel dataModel) : this()
             {
                 this.ContentIndex = dataModel.ContentIndex;
                 this.Language = (AnimeLanguage) dataModel.Language;
@@ -211,9 +217,8 @@ namespace Azuria.Media
 
             /// <summary>
             ///     Gets the available streams of the episode.
-            ///     TODO: Implement Streams
             /// </summary>
-            public IEnumerable<Stream> Streams { get; }
+            public IInitialisableProperty<IEnumerable<Stream>> Streams => this._streams;
 
             #endregion
 
@@ -227,6 +232,11 @@ namespace Azuria.Media
             public Task<ProxerResult> AddToBookmarks(Senpai senpai)
             {
                 return new UserControlPanel(senpai).AddToBookmarks((IAnimeMangaContent<Anime>) this);
+            }
+
+            private async Task<ProxerResult> InitStreams()
+            {
+                return new ProxerResult();
             }
 
             /// <summary>

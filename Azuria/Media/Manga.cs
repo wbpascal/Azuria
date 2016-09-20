@@ -6,12 +6,14 @@ using System.Threading.Tasks;
 using Azuria.Api.v1;
 using Azuria.Api.v1.DataModels;
 using Azuria.Api.v1.DataModels.Info;
+using Azuria.Api.v1.DataModels.Manga;
 using Azuria.Api.v1.DataModels.Search;
 using Azuria.Api.v1.DataModels.Ucp;
 using Azuria.Api.v1.Enums;
 using Azuria.ErrorHandling;
 using Azuria.Exceptions;
 using Azuria.Media.Properties;
+using Azuria.UserInfo;
 using Azuria.UserInfo.Comment;
 using Azuria.UserInfo.ControlPanel;
 using Azuria.Utilities.Properties;
@@ -156,32 +158,51 @@ namespace Azuria.Media
         /// </summary>
         public class Chapter : IAnimeMangaContent<Manga>, IAnimeMangaContent<IAnimeMangaObject>
         {
-            internal Chapter(Manga manga, AnimeMangaContentDataModel dataModel)
+            private readonly InitialisableProperty<int> _chapterId;
+            private readonly InitialisableProperty<IEnumerable<Page>> _pages;
+            private readonly InitialisableProperty<string> _title;
+            private readonly InitialisableProperty<Translator> _translator;
+            private readonly InitialisableProperty<DateTime> _uploadDate;
+            private readonly InitialisableProperty<User> _uploader;
+
+            private Chapter()
+            {
+                this._chapterId = new InitialisableProperty<int>(this.InitInfo);
+                this._pages = new InitialisableProperty<IEnumerable<Page>>(this.InitInfo);
+                this._uploadDate = new InitialisableProperty<DateTime>(this.InitInfo);
+                this._uploader = new InitialisableProperty<User>(this.InitInfo);
+                this._title = new InitialisableProperty<string>(this.InitInfo);
+                this._translator = new InitialisableProperty<Translator>(this.InitInfo);
+            }
+
+            internal Chapter(Manga manga, AnimeMangaContentDataModel dataModel) : this()
             {
                 this.ContentIndex = dataModel.ContentIndex;
                 this.Language = (Language) dataModel.Language;
                 this.ParentObject = manga;
-                this.Title = dataModel.Title;
+
+                this._title.SetInitialisedObject(dataModel.Title);
             }
 
-            internal Chapter(BookmarkDataModel dataModel)
+            internal Chapter(BookmarkDataModel dataModel) : this()
             {
                 this.ContentIndex = dataModel.ContentIndex;
                 this.Language = (Language) dataModel.Language;
                 this.ParentObject = new Manga(dataModel);
-                //TODO: Chapter: Find a way to get the title if the chapter was fetched from the bookmarks/chronic
-                this.Title = string.Empty;
             }
 
-            internal Chapter(HistoryDataModel dataModel)
+            internal Chapter(HistoryDataModel dataModel) : this()
             {
                 this.ContentIndex = dataModel.ContentIndex;
                 this.Language = (Language) dataModel.Language;
                 this.ParentObject = new Manga(dataModel);
-                this.Title = string.Empty;
             }
 
             #region Properties
+
+            /// <summary>
+            /// </summary>
+            public IInitialisableProperty<int> ChapterId => this._chapterId;
 
             /// <summary>
             ///     Gets the <see cref="Chapter" />-number.
@@ -198,6 +219,10 @@ namespace Azuria.Media
             /// </summary>
             public Language Language { get; }
 
+            /// <summary>
+            /// </summary>
+            public IInitialisableProperty<IEnumerable<Page>> Pages => this._pages;
+
             IAnimeMangaObject IAnimeMangaContent<IAnimeMangaObject>.ParentObject => this.ParentObject;
 
             /// <summary>
@@ -208,7 +233,19 @@ namespace Azuria.Media
             /// <summary>
             ///     Gets the title of the <see cref="Chapter" />.
             /// </summary>
-            public string Title { get; }
+            public IInitialisableProperty<string> Title => this._title;
+
+            /// <summary>
+            /// </summary>
+            public IInitialisableProperty<Translator> Translator => this._translator;
+
+            /// <summary>
+            /// </summary>
+            public IInitialisableProperty<DateTime> UploadDate => this._uploadDate;
+
+            /// <summary>
+            /// </summary>
+            public IInitialisableProperty<User> Uploader => this._uploader;
 
             #endregion
 
@@ -224,6 +261,33 @@ namespace Azuria.Media
                 return new UserControlPanel(senpai).AddToBookmarks((IAnimeMangaContent<Manga>) this);
             }
 
+            private async Task<ProxerResult> InitInfo()
+            {
+                ProxerResult<ProxerApiResponse<ChapterDataModel>> lResult =
+                    await
+                        RequestHandler.ApiRequest(ApiRequestBuilder.MangaGetChapter(this.ParentObject.Id,
+                            this.ContentIndex, this.Language == Language.German ? "de" : "en"));
+                if (!lResult.Success || (lResult.Result == null)) return new ProxerResult(lResult.Exceptions);
+                ChapterDataModel lData = lResult.Result.Data;
+
+                this._chapterId.SetInitialisedObject(lData.ChapterId);
+                this._pages.SetInitialisedObject(from pageDataModel in lData.Pages
+                    select new Page(pageDataModel, lData.ServerId, lData.EntryId, lData.ChapterId));
+                this._uploadDate.SetInitialisedObject(lData.UploadTimestamp);
+                this._uploader.SetInitialisedObject(new User(lData.UploaderName, lData.UploaderId));
+                this._title.SetInitialisedObject(lData.ChapterTitle);
+                this._translator.SetInitialisedObject(lData.TranslatorId == null
+                    ? null
+                    : new Translator(new TranslatorDataModel
+                    {
+                        Id = lData.TranslatorId.Value,
+                        Language = this.GeneralLanguage,
+                        Name = lData.TranslatorName
+                    }));
+
+                return new ProxerResult();
+            }
+
             /// <summary>
             ///     Returns a string that represents the current object.
             /// </summary>
@@ -236,6 +300,35 @@ namespace Azuria.Media
             }
 
             #endregion
+
+            /// <summary>
+            /// </summary>
+            public class Page
+            {
+                internal Page(PageDataModel dataModel, int serverId, int entryId, int chapterId)
+                {
+                    this.Height = dataModel.PageHeight;
+                    this.Width = dataModel.PageWidth;
+                    this.Image =
+                        new Uri($"https://manga{serverId}.proxer.me/f/{entryId}/{chapterId}/{dataModel.ServerFileName}");
+                }
+
+                #region Properties
+
+                /// <summary>
+                /// </summary>
+                public int Height { get; }
+
+                /// <summary>
+                /// </summary>
+                public Uri Image { get; }
+
+                /// <summary>
+                /// </summary>
+                public int Width { get; }
+
+                #endregion
+            }
         }
     }
 }

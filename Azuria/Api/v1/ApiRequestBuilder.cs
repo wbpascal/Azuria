@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Azuria.Api.v1.DataModels;
 using Azuria.Api.v1.DataModels.Info;
+using Azuria.Api.v1.DataModels.Manga;
 using Azuria.Api.v1.DataModels.Media;
 using Azuria.Api.v1.DataModels.Messenger;
 using Azuria.Api.v1.DataModels.Notifications;
@@ -44,9 +45,9 @@ namespace Azuria.Api.v1
             return new ApiRequest<bool>(new Uri($"{ApiConstants.ApiUrlV1}/info/gate?id={entryId}"));
         }
 
-        internal static ApiRequest<GroupDataModel[]> InfoGetGroups(int entryId)
+        internal static ApiRequest<TranslatorDataModel[]> InfoGetGroups(int entryId)
         {
-            return new ApiRequest<GroupDataModel[]>(new Uri($"{ApiConstants.ApiUrlV1}/info/groups?id={entryId}"));
+            return new ApiRequest<TranslatorDataModel[]>(new Uri($"{ApiConstants.ApiUrlV1}/info/groups?id={entryId}"));
         }
 
         internal static ApiRequest<AnimeMangaLanguage[]> InfoGetLanguage(int entryId)
@@ -113,6 +114,17 @@ namespace Azuria.Api.v1
                     new Uri($"{ApiConstants.ApiUrlV1}/list/entrysearch?limit={limit}&p={page}"))
                 {
                     PostArguments = SearchQueryBuilder.Build(input)
+                };
+        }
+
+        internal static ApiRequest<ChapterDataModel> MangaGetChapter(int id, int episode, string language,
+            Senpai senpai = null)
+        {
+            return
+                new ApiRequest<ChapterDataModel>(
+                    new Uri($"{ApiConstants.ApiUrlV1}/manga/chapter?id={id}&episode={episode}&language={language}"))
+                {
+                    Senpai = senpai
                 };
         }
 

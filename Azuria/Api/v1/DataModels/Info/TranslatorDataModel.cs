@@ -4,7 +4,7 @@ using Newtonsoft.Json;
 
 namespace Azuria.Api.v1.DataModels.Info
 {
-    internal class GroupDataModel : IDataModel
+    internal class TranslatorDataModel : IDataModel
     {
         #region Properties
 

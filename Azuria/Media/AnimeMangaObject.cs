@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Azuria.Api;
 using Azuria.Api.v1;
 using Azuria.Api.v1.DataModels.Info;
 using Azuria.Api.v1.Enums;
@@ -26,7 +27,7 @@ namespace Azuria.Media
         protected readonly InitialisableProperty<IEnumerable<FskType>> _fsk;
         protected readonly InitialisableProperty<IEnumerable<GenreType>> _genre;
         protected readonly InitialisableProperty<string> _germanTitle;
-        protected readonly InitialisableProperty<IEnumerable<Group>> _groups;
+        protected readonly InitialisableProperty<IEnumerable<Translator>> _groups;
         protected readonly InitialisableProperty<IEnumerable<Industry>> _industry;
         protected readonly InitialisableProperty<bool> _isHContent;
         protected readonly InitialisableProperty<bool> _isLicensed;
@@ -55,7 +56,7 @@ namespace Azuria.Media
             {
                 IsInitialisedOnce = false
             };
-            this._groups = new InitialisableProperty<IEnumerable<Group>>(this.InitGroups);
+            this._groups = new InitialisableProperty<IEnumerable<Translator>>(this.InitGroups);
             this._industry = new InitialisableProperty<IEnumerable<Industry>>(this.InitIndustry);
             this._isLicensed = new InitialisableProperty<bool>(this.InitMainInfo);
             this._isHContent = new InitialisableProperty<bool>(this.InitIsHContent);
@@ -88,7 +89,7 @@ namespace Azuria.Media
         public IInitialisableProperty<int> ContentCount => this._contentCount;
 
         /// <inheritdoc />
-        public Uri CoverUri => new Uri($"https://cdn.proxer.me/cover/{this.Id}.jpg");
+        public Uri CoverUri => new Uri($"{ApiConstants.ProxerCoverCdnUrl}{this.Id}.jpg");
 
         /// <inheritdoc />
         public IInitialisableProperty<string> Description => this._description;
@@ -106,7 +107,7 @@ namespace Azuria.Media
         public IInitialisableProperty<string> GermanTitle => this._germanTitle;
 
         /// <inheritdoc />
-        public IInitialisableProperty<IEnumerable<Group>> Groups => this._groups;
+        public IInitialisableProperty<IEnumerable<Translator>> Groups => this._groups;
 
         /// <inheritdoc />
         public int Id { get; }
@@ -208,12 +209,12 @@ namespace Azuria.Media
 
         protected async Task<ProxerResult> InitGroups()
         {
-            ProxerResult<ProxerApiResponse<GroupDataModel[]>> lResult =
+            ProxerResult<ProxerApiResponse<TranslatorDataModel[]>> lResult =
                 await RequestHandler.ApiRequest(ApiRequestBuilder.InfoGetGroups(this.Id));
             if (!lResult.Success || (lResult.Result == null)) return new ProxerResult(lResult.Exceptions);
 
             this._groups.SetInitialisedObject(from groupDataModel in lResult.Result.Data
-                select new Group(groupDataModel));
+                select new Translator(groupDataModel));
 
             return new ProxerResult();
         }
