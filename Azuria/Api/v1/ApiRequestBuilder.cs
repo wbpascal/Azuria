@@ -272,6 +272,16 @@ namespace Azuria.Api.v1
                 };
         }
 
+        internal static ApiRequest NotificationDelete(Senpai senpai, int nid = 0)
+        {
+            return new ApiRequest(new Uri($"{ApiConstants.ApiUrlV1}/notifications/delete"))
+            {
+                CheckLogin = true,
+                PostArguments = new Dictionary<string, string> {{"nid", nid.ToString()}},
+                Senpai = senpai
+            };
+        }
+
         internal static ApiRequest<NotificationCountDataModel> NotificationGetCount(Senpai senpai)
         {
             return new ApiRequest<NotificationCountDataModel>(new Uri($"{ApiConstants.ApiUrlV1}/notifications/count"))

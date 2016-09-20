@@ -1,7 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
+using Azuria.Api.v1;
 using Azuria.Api.v1.DataModels.Notifications;
+using Azuria.ErrorHandling;
 using Azuria.Media;
 
 namespace Azuria.Notifications.AnimeManga
@@ -129,6 +132,27 @@ namespace Azuria.Notifications.AnimeManga
         public static AnimeMangaNotificationManager Create(Senpai senpai)
         {
             return NotificationCountManager.GetOrAddManager(senpai, new AnimeMangaNotificationManager(senpai));
+        }
+
+        /// <summary>
+        /// </summary>
+        /// <returns></returns>
+        public async Task<ProxerResult> DeleteAllReadNotification()
+        {
+            ProxerResult<ProxerApiResponse> lResult =
+                await RequestHandler.ApiRequest(ApiRequestBuilder.NotificationDelete(this._senpai));
+            return lResult.Success ? new ProxerResult() : new ProxerResult(lResult.Exceptions);
+        }
+
+        /// <summary>
+        /// </summary>
+        /// <param name="notificationId"></param>
+        /// <returns></returns>
+        public async Task<ProxerResult> DeleteNotification(int notificationId)
+        {
+            ProxerResult<ProxerApiResponse> lResult =
+                await RequestHandler.ApiRequest(ApiRequestBuilder.NotificationDelete(this._senpai, notificationId));
+            return lResult.Success ? new ProxerResult() : new ProxerResult(lResult.Exceptions);
         }
 
         /// <summary>

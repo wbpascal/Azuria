@@ -58,6 +58,14 @@ namespace Azuria.Notifications.AnimeManga
         /// <summary>
         /// </summary>
         /// <returns></returns>
+        public Task<ProxerResult> Delete()
+        {
+            return AnimeMangaNotificationManager.Create(this.Senpai).DeleteNotification(this.NotificationId);
+        }
+
+        /// <summary>
+        /// </summary>
+        /// <returns></returns>
         public async Task<ProxerResult<IAnimeMangaContent<T>>> GetContentObject()
         {
             if (this.AnimeMangaObject is Anime)
