@@ -1,0 +1,8 @@
+- name: Getting Started
+  href: getting_started.md
+- name: Basic Classes
+  items:
+    - name: ProxerResult
+      href: basic_classes_proxerresult.md
+    - name: InitialisableProperty
+      href: basic_classes_initialisableproperty.md
