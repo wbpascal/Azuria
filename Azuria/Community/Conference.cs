@@ -14,7 +14,7 @@ using Azuria.Utilities.Properties;
 namespace Azuria.Community
 {
     /// <summary>
-    ///     Represents a messaging Conference.
+    /// Represents a messaging Conference.
     /// </summary>
     [DebuggerDisplay("Conference: {Topic} [{Id}]")]
     public class Conference
@@ -50,7 +50,7 @@ namespace Azuria.Community
         #region Properties
 
         /// <summary>
-        ///     Gets or sets a value indicating whether the conference is currently fetching new messages.
+        /// Gets or sets a value indicating whether the conference is currently fetching new messages.
         /// </summary>
         public bool AutoCheck
         {
@@ -63,7 +63,7 @@ namespace Azuria.Community
         }
 
         /// <summary>
-        ///     Gets the Id of the conference.
+        /// Gets the Id of the conference.
         /// </summary>
         public int Id { get; }
 
@@ -72,7 +72,7 @@ namespace Azuria.Community
         public bool IsGroupConference { get; }
 
         /// <summary>
-        ///     Gets a <see cref="User" /> that is the current leader of the conference.
+        /// Gets a <see cref="User" /> that is the current leader of the conference.
         /// </summary>
         public IInitialisableProperty<User> Leader => this._leader;
 
@@ -92,19 +92,19 @@ namespace Azuria.Community
         public static int MaxUsersPerConference { get; private set; }
 
         /// <summary>
-        ///     Gets all messages of the current conference ordered by newest first.
+        /// Gets all messages of the current conference ordered by newest first.
         /// </summary>
         public IEnumerable<Message> Messages => new MessageCollection(this.Id, this._senpai);
 
         internal static int MessagesPerPage { get; private set; }
 
         /// <summary>
-        ///     Gets all participants of the current conference.
+        /// Gets all participants of the current conference.
         /// </summary>
         public IInitialisableProperty<IEnumerable<User>> Participants => this._participants;
 
         /// <summary>
-        ///     Gets the current title of the current conference.
+        /// Gets the current title of the current conference.
         /// </summary>
         public IInitialisableProperty<string> Topic => this._topic;
 
@@ -113,18 +113,18 @@ namespace Azuria.Community
         #region Events
 
         /// <summary>
-        ///     Represent a method, which is raised when an exception is thrown during the message fetching.
+        /// Represent a method, which is raised when an exception is thrown during the message fetching.
         /// </summary>
         /// <param name="sender">The conference that raised the event.</param>
         /// <param name="exception">The exception thrown.</param>
         public delegate void ErrorThrownAutoMessageFetchEventHandler(Conference sender, Exception exception);
 
         /// <summary>
-        ///     Represents a method, which is raised when new messages were recieved or once everytime Active is set to true.
+        /// Represents a method, which is raised when new messages were recieved or once everytime Active is set to true.
         /// </summary>
         /// <param name="sender">The conference that raised the event.</param>
         /// <param name="e">
-        ///     Contains the new messages.
+        /// Contains the new messages.
         /// </param>
         public delegate void NewMessageRecievedEventHandler(Conference sender, IEnumerable<Message> e);
 
@@ -133,7 +133,7 @@ namespace Azuria.Community
         public event ErrorThrownAutoMessageFetchEventHandler ErrorThrownAutoMessageFetch;
 
         /// <summary>
-        ///     Occurs when new messages were recieved or once everytime Active is set to true.
+        /// Occurs when new messages were recieved or once everytime Active is set to true.
         /// </summary>
         public event NewMessageRecievedEventHandler NewMessageRecieved;
 
@@ -307,7 +307,7 @@ namespace Azuria.Community
         }
 
         /// <summary>
-        ///     Sends a message to the current conference.
+        /// Sends a message to the current conference.
         /// </summary>
         /// <param name="message">The content of the message that is being send.</param>
         /// <returns>Whether the action was successfull.</returns>
@@ -367,7 +367,7 @@ namespace Azuria.Community
         }
 
         /// <summary>
-        ///     Marks the current conference as unread.
+        /// Marks the current conference as unread.
         /// </summary>
         /// <returns>Whether the action was successfull.</returns>
         public async Task<ProxerResult> SetUnread()

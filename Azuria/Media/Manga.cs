@@ -23,7 +23,7 @@ using Azuria.Utilities.Properties;
 namespace Azuria.Media
 {
     /// <summary>
-    ///     Represents a manga.
+    /// Represents a manga.
     /// </summary>
     [DebuggerDisplay("Manga: {Name} [{Id}]")]
     public class Manga : AnimeMangaObject
@@ -88,22 +88,22 @@ namespace Azuria.Media
         #region Properties
 
         /// <summary>
-        ///     Gets the languages the <see cref="Manga" /> is available in.
+        /// Gets the languages the <see cref="Manga" /> is available in.
         /// </summary>
         public IInitialisableProperty<IEnumerable<Language>> AvailableLanguages => this._availableLanguages;
 
         /// <summary>
-        ///     Gets the comments of the <see cref="Anime" /> in a chronological order.
+        /// Gets the comments of the <see cref="Anime" /> in a chronological order.
         /// </summary>
         public IEnumerable<Comment<Manga>> CommentsLatest { get; }
 
         /// <summary>
-        ///     Gets the comments of the <see cref="Anime" /> ordered by rating.
+        /// Gets the comments of the <see cref="Anime" /> ordered by rating.
         /// </summary>
         public IEnumerable<Comment<Manga>> CommentsRating { get; }
 
         /// <summary>
-        ///     Gets the medium of the <see cref="Manga" />.
+        /// Gets the medium of the <see cref="Manga" />.
         /// </summary>
         public IInitialisableProperty<MangaMedium> MangaMedium => this._mangaMedium;
 
@@ -112,13 +112,13 @@ namespace Azuria.Media
         #region Methods
 
         /// <summary>
-        ///     Returns all <see cref="Chapter">epsiodes</see> of the <see cref="Manga" /> in a specified language.
+        /// Returns all <see cref="Chapter">epsiodes</see> of the <see cref="Manga" /> in a specified language.
         /// </summary>
         /// <param name="language">The language of the episodes.</param>
         /// <seealso cref="Chapter" />
         /// <returns>
-        ///     An enumeration of all available <see cref="Chapter">chapters</see> in the specified
-        ///     <paramref name="language">language</paramref> with a max count of <see cref="AnimeMangaObject.ContentCount" />.
+        /// An enumeration of all available <see cref="Chapter">chapters</see> in the specified
+        /// <paramref name="language">language</paramref> with a max count of <see cref="AnimeMangaObject.ContentCount" />.
         /// </returns>
         public async Task<ProxerResult<IEnumerable<Chapter>>> GetChapters(Language language)
         {
@@ -154,7 +154,7 @@ namespace Azuria.Media
         #endregion
 
         /// <summary>
-        ///     Represents a chapter of a <see cref="Manga" />.
+        /// Represents a chapter of a <see cref="Manga" />.
         /// </summary>
         public class Chapter : IAnimeMangaContent<Manga>, IAnimeMangaContent<IAnimeMangaObject>
         {
@@ -205,17 +205,17 @@ namespace Azuria.Media
             public IInitialisableProperty<int> ChapterId => this._chapterId;
 
             /// <summary>
-            ///     Gets the <see cref="Chapter" />-number.
+            /// Gets the <see cref="Chapter" />-number.
             /// </summary>
             public int ContentIndex { get; }
 
             /// <summary>
-            ///     Gets the general language (english/german) of the <see cref="Chapter" />.
+            /// Gets the general language (english/german) of the <see cref="Chapter" />.
             /// </summary>
             public Language GeneralLanguage => this.Language;
 
             /// <summary>
-            ///     Gets the language of the <see cref="Chapter" />.
+            /// Gets the language of the <see cref="Chapter" />.
             /// </summary>
             public Language Language { get; }
 
@@ -226,12 +226,12 @@ namespace Azuria.Media
             IAnimeMangaObject IAnimeMangaContent<IAnimeMangaObject>.ParentObject => this.ParentObject;
 
             /// <summary>
-            ///     Gets the <see cref="Manga" /> this <see cref="Chapter" /> belongs to.
+            /// Gets the <see cref="Manga" /> this <see cref="Chapter" /> belongs to.
             /// </summary>
             public Manga ParentObject { get; }
 
             /// <summary>
-            ///     Gets the title of the <see cref="Chapter" />.
+            /// Gets the title of the <see cref="Chapter" />.
             /// </summary>
             public IInitialisableProperty<string> Title => this._title;
 
@@ -252,7 +252,7 @@ namespace Azuria.Media
             #region Methods
 
             /// <summary>
-            ///     Adds the <see cref="Chapter" /> to the bookmarks.
+            /// Adds the <see cref="Chapter" /> to the bookmarks.
             /// </summary>
             /// <param name="senpai"></param>
             /// <returns>If the action was successful.</returns>
@@ -284,10 +284,10 @@ namespace Azuria.Media
             }
 
             /// <summary>
-            ///     Returns a string that represents the current object.
+            /// Returns a string that represents the current object.
             /// </summary>
             /// <returns>
-            ///     A string that represents the current object.
+            /// A string that represents the current object.
             /// </returns>
             public override string ToString()
             {

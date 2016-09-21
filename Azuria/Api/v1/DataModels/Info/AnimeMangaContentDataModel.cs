@@ -21,7 +21,7 @@ namespace Azuria.Api.v1.DataModels.Info
         internal StreamHoster[] StreamHosters { get; set; }
 
         /// <summary>
-        ///     Only available for chapters
+        /// Only available for chapters
         /// </summary>
         [JsonProperty("title")]
         internal string Title { get; set; }

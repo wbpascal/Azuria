@@ -14,7 +14,7 @@ using Azuria.Utilities.Properties;
 namespace Azuria.UserInfo.ControlPanel
 {
     /// <summary>
-    ///     Represents the User-Control-Panel of a specified user.
+    /// Represents the User-Control-Panel of a specified user.
     /// </summary>
     public class UserControlPanel
     {
@@ -26,7 +26,7 @@ namespace Azuria.UserInfo.ControlPanel
         private readonly InitialisableProperty<IEnumerable<ToptenObject<Manga>>> _toptenManga;
 
         /// <summary>
-        ///     Inititalises a new instance of the <see cref="UserControlPanel" /> class with a specified user.
+        /// Inititalises a new instance of the <see cref="UserControlPanel" /> class with a specified user.
         /// </summary>
         /// <exception cref="NotLoggedInException">Raised when <paramref name="senpai" /> is not logged in.</exception>
         /// <param name="senpai">The user that owns this User-Control-Panel.</param>
@@ -45,13 +45,13 @@ namespace Azuria.UserInfo.ControlPanel
         #region Properties
 
         /// <summary>
-        ///     Gets all bookmarks of the user that are <see cref="Anime">Anime</see>.
+        /// Gets all bookmarks of the user that are <see cref="Anime">Anime</see>.
         /// </summary>
         public IEnumerable<BookmarkObject<Anime>> BookmarksAnime
             => new BookmarkEnumerable<Anime>(this._senpai, this);
 
         /// <summary>
-        ///     Gets all bookmarks of the user that are <see cref="Manga">Manga</see>.
+        /// Gets all bookmarks of the user that are <see cref="Manga">Manga</see>.
         /// </summary>
         public IEnumerable<BookmarkObject<Manga>> BookmarksManga
             => new BookmarkEnumerable<Manga>(this._senpai, this);

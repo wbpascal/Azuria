@@ -72,8 +72,8 @@
               <a href="https://github.com/InfiniteSoul/Azuria/blob/new-docs/Azuria/Utilities/Properties/AsyncProperty.cs/#L12" class="btn btn-primary pull-right mobile-hide">View Source</a>
               <h1 id="Azuria_Utilities_Properties_AsyncProperty_1" data-uid="Azuria.Utilities.Properties.AsyncProperty`1">Class AsyncProperty&lt;T&gt;
               </h1>
-              <div class="markdown level0 summary"><pre><code>Represents a property where the get- and set-method is asynchronous.
-</code></pre></div>
+              <div class="markdown level0 summary"><p>Represents a property where the get- and set-method is asynchronous.</p>
+</div>
               <div class="markdown level0 conceptual"></div>
               <div class="inheritance">
                 <h5>Inheritance</h5>
@@ -135,8 +135,8 @@
                 <a href="https://github.com/InfiniteSoul/Azuria/blob/new-docs/Azuria/Utilities/Properties/AsyncProperty.cs/#L30">View Source</a>
               </span>
               <h4 id="Azuria_Utilities_Properties_AsyncProperty_1__ctor__0_System_Func_System_Threading_Tasks_Task_Azuria_ErrorHandling_ProxerResult__0____System_Func__0_System_Threading_Tasks_Task_Azuria_ErrorHandling_ProxerResult___" data-uid="Azuria.Utilities.Properties.AsyncProperty`1.#ctor(`0,System.Func{System.Threading.Tasks.Task{Azuria.ErrorHandling.ProxerResult{`0}}},System.Func{`0,System.Threading.Tasks.Task{Azuria.ErrorHandling.ProxerResult}})">AsyncProperty(T, Func&lt;Task&lt;ProxerResult&lt;T&gt;&gt;&gt;, Func&lt;T, Task&lt;ProxerResult&gt;&gt;)</h4>
-              <div class="markdown level1 summary"><pre><code>Initialises a new instance with an initial value and optional get- and set-methods.
-</code></pre></div>
+              <div class="markdown level1 summary"><p>Initialises a new instance with an initial value and optional get- and set-methods.</p>
+</div>
               <div class="markdown level1 conceptual"></div>
               <h5 class="decalaration">Declaration</h5>
               <div class="codewrapper">
@@ -161,16 +161,16 @@
                   <tr>
                     <td><span class="xref">System.Func</span>&lt;<span class="xref">System.Threading.Tasks.Task</span>&lt;<a class="xref" href="Azuria.ErrorHandling.ProxerResult-1.html#Azuria_ErrorHandling_ProxerResult_1">ProxerResult</a>&lt;T&gt;&gt;&gt;</td>
                     <td><em>getFunc</em></td>
-                    <td><pre><code>An optional get-method. If not set the &lt;xref href=&quot;Azuria.Utilities.Properties.AsyncProperty%601.Get&quot; data-throw-if-not-resolved=&quot;false&quot;&gt;&lt;/xref&gt;-method always just returns the current
-value.
-</code></pre></td>
+                    <td><p>An optional get-method. If not set the <a class="xref" href="Azuria.Utilities.Properties.AsyncProperty-1.html#Azuria_Utilities_Properties_AsyncProperty_1_Get">Get()</a>-method always just returns the current
+value.</p>
+</td>
                   </tr>
                   <tr>
                     <td><span class="xref">System.Func</span>&lt;T, <span class="xref">System.Threading.Tasks.Task</span>&lt;<a class="xref" href="Azuria.ErrorHandling.ProxerResult.html#Azuria_ErrorHandling_ProxerResult">ProxerResult</a>&gt;&gt;</td>
                     <td><em>setFunc</em></td>
-                    <td><pre><code>An optional set-method. If not set the &lt;xref href=&quot;Azuria.Utilities.Properties.AsyncProperty%601.Set(%600)&quot; data-throw-if-not-resolved=&quot;false&quot;&gt;&lt;/xref&gt;-method always just sets the value to
-the passed one.
-</code></pre></td>
+                    <td><p>An optional set-method. If not set the <a class="xref" href="Azuria.Utilities.Properties.AsyncProperty-1.html#Azuria_Utilities_Properties_AsyncProperty_1_Set__0_">Set(T)</a>-method always just sets the value to
+the passed one.</p>
+</td>
                   </tr>
                 </tbody>
               </table>
@@ -184,9 +184,9 @@ the passed one.
                 <a href="https://github.com/InfiniteSoul/Azuria/blob/new-docs/Azuria/Utilities/Properties/AsyncProperty.cs/#L45">View Source</a>
               </span>
               <h4 id="Azuria_Utilities_Properties_AsyncProperty_1_Get" data-uid="Azuria.Utilities.Properties.AsyncProperty`1.Get">Get()</h4>
-              <div class="markdown level1 summary"><pre><code>Executes, if specified, the get-function that was specified in the constructor and then returns the current value.
-If the function was not set just the current value will be returned.
-</code></pre></div>
+              <div class="markdown level1 summary"><p>Executes, if specified, the get-function that was specified in the constructor and then returns the current value.
+If the function was not set just the current value will be returned.</p>
+</div>
               <div class="markdown level1 conceptual"></div>
               <h5 class="decalaration">Declaration</h5>
               <div class="codewrapper">
@@ -245,10 +245,10 @@ If the function was not set just the current value will be returned.
                 <a href="https://github.com/InfiniteSoul/Azuria/blob/new-docs/Azuria/Utilities/Properties/AsyncProperty.cs/#L81">View Source</a>
               </span>
               <h4 id="Azuria_Utilities_Properties_AsyncProperty_1_Set__0_" data-uid="Azuria.Utilities.Properties.AsyncProperty`1.Set(`0)">Set(T)</h4>
-              <div class="markdown level1 summary"><pre><code>Executes, if specified, the set-funtion that was specified in the cunstructor and then sets the current value to
-the value of &lt;em&gt;newValue&lt;/em&gt;. If the function was not set the current value will only be set to the
-value of &lt;em&gt;newValue&lt;/em&gt;.
-</code></pre></div>
+              <div class="markdown level1 summary"><p>Executes, if specified, the set-funtion that was specified in the cunstructor and then sets the current value to
+the value of <em>newValue</em>. If the function was not set the current value will only be set to the
+value of <em>newValue</em>.</p>
+</div>
               <div class="markdown level1 conceptual"></div>
               <h5 class="decalaration">Declaration</h5>
               <div class="codewrapper">

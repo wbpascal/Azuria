@@ -5,7 +5,7 @@ using Azuria.ErrorHandling;
 namespace Azuria.Utilities.Properties
 {
     /// <summary>
-    ///     Represents a property that can be initialised and set.
+    /// Represents a property that can be initialised and set.
     /// </summary>
     /// <typeparam name="T">The type of the property.</typeparam>
     public class SetableInitialisableProperty<T> : InitialisableProperty<T>
@@ -29,7 +29,7 @@ namespace Azuria.Utilities.Properties
         #region Methods
 
         /// <summary>
-        ///     Sets the value of the property to the value of <paramref name="newValue" />.
+        /// Sets the value of the property to the value of <paramref name="newValue" />.
         /// </summary>
         /// <param name="newValue">The new value of the property.</param>
         /// <returns>If the action was successful and if it was, the current value of the property.</returns>

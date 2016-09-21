@@ -5,22 +5,22 @@
     public enum TagType
     {
         /// <summary>
-        ///     Pagination in four equally big panels.
+        /// Pagination in four equally big panels.
         /// </summary>
         FourKoma = 262,
 
         /// <summary>
-        ///     The standing of people plays an importand role.
+        /// The standing of people plays an importand role.
         /// </summary>
         Nobility = 67,
 
         /// <summary>
-        ///     Extraterrestrial life plays a role.
+        /// Extraterrestrial life plays a role.
         /// </summary>
         Alien = 60,
 
         /// <summary>
-        ///     Alcohol is consumed shortly before or during the plot. Most of the time resulting is drunkenness.
+        /// Alcohol is consumed shortly before or during the plot. Most of the time resulting is drunkenness.
         /// </summary>
         Alcohol = 157,
 

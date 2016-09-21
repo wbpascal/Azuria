@@ -7,13 +7,13 @@ using Azuria.Exceptions;
 namespace Azuria.ErrorHandling
 {
     /// <summary>
-    ///     Represents a result of a method.
+    /// Represents a result of a method.
     /// </summary>
     /// <typeparam name="T">The type of the result.</typeparam>
     public class ProxerResult<T> : ProxerResult
     {
         /// <summary>
-        ///     Initialises a new instance with a specified result and indicates that the method was successful.
+        /// Initialises a new instance with a specified result and indicates that the method was successful.
         /// </summary>
         /// <param name="result">The result.</param>
         public ProxerResult(T result)
@@ -24,8 +24,8 @@ namespace Azuria.ErrorHandling
         }
 
         /// <summary>
-        ///     Initialises a new instance with the exceptions that were thrown during method execution and indicates that the
-        ///     method failed to execute.
+        /// Initialises a new instance with the exceptions that were thrown during method execution and indicates that the
+        /// method failed to execute.
         /// </summary>
         /// <param name="exceptions">The exception that were thrown during method execution.</param>
         public ProxerResult(IEnumerable<Exception> exceptions) : base(exceptions)
@@ -42,7 +42,7 @@ namespace Azuria.ErrorHandling
         #region Properties
 
         /// <summary>
-        ///     Gets the result of the method if the method was successful.
+        /// Gets the result of the method if the method was successful.
         /// </summary>
         public T Result { get; set; }
 
@@ -51,11 +51,11 @@ namespace Azuria.ErrorHandling
         #region Methods
 
         /// <summary>
-        ///     Returns the result of the method if the method was successful. Otherwise returns the value of
-        ///     <paramref name="returnObject" />.
+        /// Returns the result of the method if the method was successful. Otherwise returns the value of
+        /// <paramref name="returnObject" />.
         /// </summary>
         /// <param name="returnObject">
-        ///     The value that will be returned if the method was not executed successfully.
+        /// The value that will be returned if the method was not executed successfully.
         /// </param>
         /// <returns>An object of type <typeparamref name="T" />.</returns>
         public T OnError(T returnObject)
@@ -67,12 +67,12 @@ namespace Azuria.ErrorHandling
     }
 
     /// <summary>
-    ///     Represents a result of a method.
+    /// Represents a result of a method.
     /// </summary>
     public class ProxerResult
     {
         /// <summary>
-        ///     Initialises a new instance and indicates that the method executed successfully.
+        /// Initialises a new instance and indicates that the method executed successfully.
         /// </summary>
         public ProxerResult()
         {
@@ -81,8 +81,8 @@ namespace Azuria.ErrorHandling
         }
 
         /// <summary>
-        ///     Initialises a new instance with the exceptions that were thrown during method execution and indicates that the
-        ///     method failed to execute.
+        /// Initialises a new instance with the exceptions that were thrown during method execution and indicates that the
+        /// method failed to execute.
         /// </summary>
         /// <param name="exceptions">The exception that were thrown during method execution.</param>
         public ProxerResult(IEnumerable<Exception> exceptions)
@@ -101,12 +101,12 @@ namespace Azuria.ErrorHandling
         #region Properties
 
         /// <summary>
-        ///     Gets the exceptions that were thrown during method execution.
+        /// Gets the exceptions that were thrown during method execution.
         /// </summary>
         public IEnumerable<Exception> Exceptions { get; set; }
 
         /// <summary>
-        ///     Gets a value that indicates whether the method executed successfully.
+        /// Gets a value that indicates whether the method executed successfully.
         /// </summary>
         public bool Success { get; set; }
 
@@ -115,7 +115,7 @@ namespace Azuria.ErrorHandling
         #region Methods
 
         /// <summary>
-        ///     Adds an exception to the collection that were thrown during method execution.
+        /// Adds an exception to the collection that were thrown during method execution.
         /// </summary>
         /// <param name="exception">The exception that is added to the collection.</param>
         public void AddException(Exception exception)
@@ -128,7 +128,7 @@ namespace Azuria.ErrorHandling
         }
 
         /// <summary>
-        ///     Adds multiple exceptions to the collection that were thrown during method execution.
+        /// Adds multiple exceptions to the collection that were thrown during method execution.
         /// </summary>
         /// <param name="exception">The exception that are added to the collection.</param>
         public void AddExceptions(IEnumerable<Exception> exception)

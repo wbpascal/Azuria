@@ -10,7 +10,7 @@ using Azuria.Utilities.Properties;
 namespace Azuria.Notifications.PrivateMessage
 {
     /// <summary>
-    ///     Represents a private message notification.
+    /// Represents a private message notification.
     /// </summary>
     public class PrivateMessageNotification : INotification
     {
@@ -29,12 +29,12 @@ namespace Azuria.Notifications.PrivateMessage
         #region Properties
 
         /// <summary>
-        ///     Gets the conference the private message was recieved from.
+        /// Gets the conference the private message was recieved from.
         /// </summary>
         public IInitialisableProperty<ConferenceInfo> ConferenceInfo => this._conferenceInfo;
 
         /// <summary>
-        ///     Gets the id of the notification.
+        /// Gets the id of the notification.
         /// </summary>
         public string NotificationId { get; }
 
@@ -42,7 +42,7 @@ namespace Azuria.Notifications.PrivateMessage
         public Senpai Senpai { get; }
 
         /// <summary>
-        ///     Gets the date of the private message.
+        /// Gets the date of the private message.
         /// </summary>
         public DateTime TimeStamp { get; }
 

@@ -4,7 +4,7 @@ using System.Collections.Generic;
 namespace Azuria.Notifications.PrivateMessage
 {
     /// <summary>
-    ///     Represents a collection of private message notifications.
+    /// Represents a collection of private message notifications.
     /// </summary>
     public class PrivateMessageNotificationCollection : IEnumerable<PrivateMessageNotification>
     {

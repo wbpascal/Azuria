@@ -7,7 +7,7 @@ using Azuria.ErrorHandling;
 namespace Azuria.Utilities.Properties
 {
     /// <summary>
-    ///     Represents a property that can be initialised.
+    /// Represents a property that can be initialised.
     /// </summary>
     /// <typeparam name="T">The type of the property.</typeparam>
     public class InitialisableProperty<T> : IInitialisableProperty<T>

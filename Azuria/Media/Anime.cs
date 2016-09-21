@@ -24,7 +24,7 @@ using Azuria.Utilities.Properties;
 namespace Azuria.Media
 {
     /// <summary>
-    ///     Represents an anime.
+    /// Represents an anime.
     /// </summary>
     [DebuggerDisplay("Anime: {Name} [{Id}]")]
     public class Anime : AnimeMangaObject
@@ -89,22 +89,22 @@ namespace Azuria.Media
         #region Properties
 
         /// <summary>
-        ///     Gets the medium of the Anime.
+        /// Gets the medium of the Anime.
         /// </summary>
         public IInitialisableProperty<AnimeMedium> AnimeMedium => this._animeMedium;
 
         /// <summary>
-        ///     Gets the languages the Anime is available in.
+        /// Gets the languages the Anime is available in.
         /// </summary>
         public IInitialisableProperty<IEnumerable<AnimeLanguage>> AvailableLanguages => this._availableLanguages;
 
         /// <summary>
-        ///     Gets the comments of the anime in a chronological order.
+        /// Gets the comments of the anime in a chronological order.
         /// </summary>
         public IEnumerable<Comment<Anime>> CommentsLatest { get; }
 
         /// <summary>
-        ///     Gets the comments of the anime ordered by rating.
+        /// Gets the comments of the anime ordered by rating.
         /// </summary>
         public IEnumerable<Comment<Anime>> CommentsRating { get; }
 
@@ -113,12 +113,12 @@ namespace Azuria.Media
         #region Methods
 
         /// <summary>
-        ///     Returns all epsiode of the anime in a specified language.
+        /// Returns all epsiode of the anime in a specified language.
         /// </summary>
         /// <param name="language">The language of the episodes.</param>
         /// <returns>
-        ///     An enumeration of all available episodes in the specified
-        ///     <paramref name="language">language</paramref> with a max count of <see cref="AnimeMangaObject.ContentCount" />.
+        /// An enumeration of all available episodes in the specified
+        /// <paramref name="language">language</paramref> with a max count of <see cref="AnimeMangaObject.ContentCount" />.
         /// </returns>
         public async Task<ProxerResult<IEnumerable<Episode>>> GetEpisodes(AnimeLanguage language)
         {
@@ -154,7 +154,7 @@ namespace Azuria.Media
         #endregion
 
         /// <summary>
-        ///     Represents an episode of an anime.
+        /// Represents an episode of an anime.
         /// </summary>
         public class Episode : IAnimeMangaContent<Anime>, IAnimeMangaContent<IAnimeMangaObject>
         {
@@ -189,12 +189,12 @@ namespace Azuria.Media
             #region Properties
 
             /// <summary>
-            ///     Gets the episode number.
+            /// Gets the episode number.
             /// </summary>
             public int ContentIndex { get; }
 
             /// <summary>
-            ///     Gets the general language (english/german) of the episode.
+            /// Gets the general language (english/german) of the episode.
             /// </summary>
             public Language GeneralLanguage
                 =>
@@ -205,22 +205,22 @@ namespace Azuria.Media
                         : Properties.Language.Unkown;
 
             /// <summary>
-            ///     Gets the language of the episode
+            /// Gets the language of the episode
             /// </summary>
             public AnimeLanguage Language { get; }
 
             /// <summary>
-            ///     Gets the anime or manga this object belongs to.
+            /// Gets the anime or manga this object belongs to.
             /// </summary>
             IAnimeMangaObject IAnimeMangaContent<IAnimeMangaObject>.ParentObject => this.ParentObject;
 
             /// <summary>
-            ///     Gets the anime this episode> belongs to.
+            /// Gets the anime this episode> belongs to.
             /// </summary>
             public Anime ParentObject { get; }
 
             /// <summary>
-            ///     Gets the available streams of the episode.
+            /// Gets the available streams of the episode.
             /// </summary>
             public IInitialisableProperty<IEnumerable<Stream>> Streams => this._streams;
 
@@ -229,7 +229,7 @@ namespace Azuria.Media
             #region Methods
 
             /// <summary>
-            ///     Adds the episode to the bookmarks.
+            /// Adds the episode to the bookmarks.
             /// </summary>
             /// <param name="senpai"></param>
             /// <returns>If the action was successful.</returns>
@@ -253,10 +253,10 @@ namespace Azuria.Media
             }
 
             /// <summary>
-            ///     Returns a string that represents the current object.
+            /// Returns a string that represents the current object.
             /// </summary>
             /// <returns>
-            ///     A string that represents the current object.
+            /// A string that represents the current object.
             /// </returns>
             public override string ToString()
             {
@@ -266,7 +266,7 @@ namespace Azuria.Media
             #endregion
 
             /// <summary>
-            ///     Represents a stream of an episode.
+            /// Represents a stream of an episode.
             /// </summary>
             public class Stream
             {
@@ -297,7 +297,7 @@ namespace Azuria.Media
                 public Episode Episode { get; }
 
                 /// <summary>
-                ///     Gets the streampartner of the stream.
+                /// Gets the streampartner of the stream.
                 /// </summary>
                 public StreamHoster Hoster { get; }
 
@@ -318,7 +318,7 @@ namespace Azuria.Media
                 public int Id { get; }
 
                 /// <summary>
-                ///     Gets the link of the stream.
+                /// Gets the link of the stream.
                 /// </summary>
                 public IInitialisableProperty<Uri> Link => this._link;
 

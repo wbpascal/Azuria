@@ -4,7 +4,7 @@ using System.Collections.Generic;
 namespace Azuria.Notifications.News
 {
     /// <summary>
-    ///     Represents a collection of news notifications.
+    /// Represents a collection of news notifications.
     /// </summary>
     public class NewsNotificationCollection : IEnumerable<NewsNotification>
     {

@@ -7,7 +7,7 @@ Installing Azuria is easy. Just download a compatible precompiled binary from th
 
     PM> Install-Package Azuria -Pre
 
-As of 9/21/2016 10:01:35 PM only the most recent pre-release package is compatible with this tutorial so be sure to append `-Pre` to the command as seen in the code above.
+As of 9/21/2016 only the most recent pre-release package is compatible with this tutorial so be sure to append `-Pre` to the command as seen in the code above.
 
 ## Step 2. Initialisation ##
 After installing you need to initialise the library to tell it some things that are needed to use the API. For now we will only look at the most importand argument, called the API key. Optional arguments will be explained in detail later on.
@@ -21,7 +21,7 @@ Azuria.Api.ApiInfo.Init(input =>
 	input.ApiKeyV1 = "apiKey".ToCharArray();
 });
 ```
-Be sure to call this before any other methods of the library so that everything can be properly initialised.
+Be sure to call this before any other methods of the library so that everything can be properly initialised. Why must the API key be converted to a char array, you ask? This too will be explained at a later point in time, specifically in the *Security* chapter.
 
 ## Thats it! ##
 Now you can go ahead and use the entire library to your hearts content. But be sure to check out the other tutorials too because there a still some things you have to watch out for and some particularities of this library that you may or may not understand at the first glance. In particular the tutorials of the [ProxerResult](basic_classes_proxerresult.md) and the [InitialisableProperty](basic_classes_initialisableproperty.md) classes are worth a read.

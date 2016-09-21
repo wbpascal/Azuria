@@ -11,7 +11,7 @@ namespace Azuria.Security
         private SecureString _secureString;
 
         /// <summary>
-        ///     Default constructor.
+        /// Default constructor.
         /// </summary>
         public SecureStringContainer()
         {

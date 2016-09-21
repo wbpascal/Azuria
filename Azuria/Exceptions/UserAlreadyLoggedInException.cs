@@ -7,14 +7,14 @@ namespace Azuria.Exceptions
     public class UserAlreadyLoggedInException : Exception
     {
         /// <summary>
-        ///     Initialises a new instance of the <see cref="UserAlreadyLoggedInException" /> class.
+        /// Initialises a new instance of the <see cref="UserAlreadyLoggedInException" /> class.
         /// </summary>
         public UserAlreadyLoggedInException()
         {
         }
 
         /// <summary>
-        ///     Initializes a new instance of the <see cref="UserAlreadyLoggedInException" /> class with a specified error message.
+        /// Initializes a new instance of the <see cref="UserAlreadyLoggedInException" /> class with a specified error message.
         /// </summary>
         /// <param name="message">The error message string.</param>
         public UserAlreadyLoggedInException(string message) : base(message)
@@ -22,9 +22,9 @@ namespace Azuria.Exceptions
         }
 
         /// <summary>
-        ///     Initializes a new instance of the <see cref="UserAlreadyLoggedInException" /> class with a specified error message
-        ///     and a
-        ///     reference to the inner exception that is the cause of this exception.
+        /// Initializes a new instance of the <see cref="UserAlreadyLoggedInException" /> class with a specified error message
+        /// and a
+        /// reference to the inner exception that is the cause of this exception.
         /// </summary>
         /// <param name="message">The error message string.</param>
         /// <param name="inner">The inner exception reference.</param>

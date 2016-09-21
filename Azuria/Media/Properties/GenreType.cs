@@ -1,188 +1,188 @@
 ﻿namespace Azuria.Media.Properties
 {
     /// <summary>
-    ///     Represents an enumeration which contains every possible genre for an <see cref="Anime">Anime</see> or
-    ///     <see cref="Manga">Manga</see>.
+    /// Represents an enumeration which contains every possible genre for an <see cref="Anime">Anime</see> or
+    /// <see cref="Manga">Manga</see>.
     /// </summary>
     public enum GenreType
     {
         /// <summary>
-        ///     Represents the Adventure genre.
+        /// Represents the Adventure genre.
         /// </summary>
         Adventure,
 
         /// <summary>
-        ///     Represents the Action genre.
+        /// Represents the Action genre.
         /// </summary>
         Action,
 
         /// <summary>
-        ///     Represents the Adult genre.
+        /// Represents the Adult genre.
         /// </summary>
         Adult,
 
         /// <summary>
-        ///     Represents the Comedy genre.
+        /// Represents the Comedy genre.
         /// </summary>
         Comedy,
 
         /// <summary>
-        ///     Represents the Cyberpunk genre.
+        /// Represents the Cyberpunk genre.
         /// </summary>
         Cyberpunk,
 
         /// <summary>
-        ///     Represents the Drama genre.
+        /// Represents the Drama genre.
         /// </summary>
         Drama,
 
         /// <summary>
-        ///     Represents the Ecchi genre.
+        /// Represents the Ecchi genre.
         /// </summary>
         Ecchi,
 
         /// <summary>
-        ///     Represents the Fantasy genre.
+        /// Represents the Fantasy genre.
         /// </summary>
         Fantasy,
 
         /// <summary>
-        ///     Represents the Harem genre.
+        /// Represents the Harem genre.
         /// </summary>
         Harem,
 
         /// <summary>
-        ///     Represents the Historical genre.
+        /// Represents the Historical genre.
         /// </summary>
         Historical,
 
         /// <summary>
-        ///     Represents the Horror genre.
+        /// Represents the Horror genre.
         /// </summary>
         Horror,
 
         /// <summary>
-        ///     Represents the Josei genre.
+        /// Represents the Josei genre.
         /// </summary>
         Josei,
 
         /// <summary>
-        ///     Represents the Magic genre.
+        /// Represents the Magic genre.
         /// </summary>
         Magic,
 
         /// <summary>
-        ///     Represents the MartialArt genre.
+        /// Represents the MartialArt genre.
         /// </summary>
         MartialArt,
 
         /// <summary>
-        ///     Represents the MartialArt genre.
+        /// Represents the MartialArt genre.
         /// </summary>
         Mecha,
 
         /// <summary>
-        ///     Represents the Military genre.
+        /// Represents the Military genre.
         /// </summary>
         Military,
 
         /// <summary>
-        ///     Represents the Music genre.
+        /// Represents the Music genre.
         /// </summary>
         Music,
 
         /// <summary>
-        ///     Represents the Mystery genre.
+        /// Represents the Mystery genre.
         /// </summary>
         Mystery,
 
         /// <summary>
-        ///     Represents no genre.
+        /// Represents no genre.
         /// </summary>
         None,
 
         /// <summary>
-        ///     Represents the Psychological genre.
+        /// Represents the Psychological genre.
         /// </summary>
         Psychological,
 
         /// <summary>
-        ///     Represents the Romance genre.
+        /// Represents the Romance genre.
         /// </summary>
         Romance,
 
         /// <summary>
-        ///     Represents the School genre.
+        /// Represents the School genre.
         /// </summary>
         School,
 
         /// <summary>
-        ///     Represents the SciFi genre.
+        /// Represents the SciFi genre.
         /// </summary>
         SciFi,
 
         /// <summary>
-        ///     Represents the Seinen genre.
+        /// Represents the Seinen genre.
         /// </summary>
         Seinen,
 
         /// <summary>
-        ///     Represents the Shoujou genre.
+        /// Represents the Shoujou genre.
         /// </summary>
         Shoujou,
 
         /// <summary>
-        ///     Represents the ShoujouAi genre.
+        /// Represents the ShoujouAi genre.
         /// </summary>
         ShoujouAi,
 
         /// <summary>
-        ///     Represents the Shounen genre.
+        /// Represents the Shounen genre.
         /// </summary>
         Shounen,
 
         /// <summary>
-        ///     Represents the ShounenAi genre.
+        /// Represents the ShounenAi genre.
         /// </summary>
         ShounenAi,
 
         /// <summary>
-        ///     Represents the SliceOfLife genre.
+        /// Represents the SliceOfLife genre.
         /// </summary>
         SliceOfLife,
 
         /// <summary>
-        ///     Represents the Splatter genre.
+        /// Represents the Splatter genre.
         /// </summary>
         Splatter,
 
         /// <summary>
-        ///     Represents the Sport genre.
+        /// Represents the Sport genre.
         /// </summary>
         Sport,
 
         /// <summary>
-        ///     Represents the Superpower genre.
+        /// Represents the Superpower genre.
         /// </summary>
         Superpower,
 
         /// <summary>
-        ///     Represents the Vampire genre.
+        /// Represents the Vampire genre.
         /// </summary>
         Vampire,
 
         /// <summary>
-        ///     Represents the Violence genre.
+        /// Represents the Violence genre.
         /// </summary>
         Violence,
 
         /// <summary>
-        ///     Represents the Yaoi genre.
+        /// Represents the Yaoi genre.
         /// </summary>
         Yaoi,
 
         /// <summary>
-        ///     Represents the Yuri genre.
+        /// Represents the Yuri genre.
         /// </summary>
         Yuri
     }

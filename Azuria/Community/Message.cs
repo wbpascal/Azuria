@@ -5,7 +5,7 @@ using Azuria.UserInfo;
 namespace Azuria.Community
 {
     /// <summary>
-    ///     Represents a single message of a <see cref="Conference" />
+    /// Represents a single message of a <see cref="Conference" />
     /// </summary>
     public class Message
     {
@@ -23,7 +23,7 @@ namespace Azuria.Community
         #region Properties
 
         /// <summary>
-        ///     Gets the action of the message.
+        /// Gets the action of the message.
         /// </summary>
         public MessageAction Action { get; }
 
@@ -32,7 +32,7 @@ namespace Azuria.Community
         public int ConferenceId { get; }
 
         /// <summary>
-        ///     Gets the message content.
+        /// Gets the message content.
         /// </summary>
         public string Content { get; }
 
@@ -41,17 +41,17 @@ namespace Azuria.Community
         public string Device { get; }
 
         /// <summary>
-        ///     Gets the Id of the current message.
+        /// Gets the Id of the current message.
         /// </summary>
         public int MessageId { get; }
 
         /// <summary>
-        ///     Gets the sender of the current message.
+        /// Gets the sender of the current message.
         /// </summary>
         public User Sender { get; }
 
         /// <summary>
-        ///     Gets the timestamp of the current message.
+        /// Gets the timestamp of the current message.
         /// </summary>
         public DateTime TimeStamp { get; }
 

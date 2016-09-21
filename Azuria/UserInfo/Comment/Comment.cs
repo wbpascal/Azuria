@@ -10,7 +10,7 @@ using Azuria.Media;
 namespace Azuria.UserInfo.Comment
 {
     /// <summary>
-    ///     Represents a comment for an <see cref="Anime">Anime</see> or <see cref="Manga">Manga</see>.
+    /// Represents a comment for an <see cref="Anime">Anime</see> or <see cref="Manga">Manga</see>.
     /// </summary>
     public class Comment<T> where T : IAnimeMangaObject
     {
@@ -43,17 +43,17 @@ namespace Azuria.UserInfo.Comment
         #region Properties
 
         /// <summary>
-        ///     Gets the <see cref="Anime">Anime</see> or <see cref="Manga">Manga</see> this comment is for.
+        /// Gets the <see cref="Anime">Anime</see> or <see cref="Manga">Manga</see> this comment is for.
         /// </summary>
         public T AnimeMangaObject { get; }
 
         /// <summary>
-        ///     Gets the author of this comment.
+        /// Gets the author of this comment.
         /// </summary>
         public User Author { get; }
 
         /// <summary>
-        ///     Gets the content of this comment.
+        /// Gets the content of this comment.
         /// </summary>
         public string Content { get; }
 
@@ -66,17 +66,17 @@ namespace Azuria.UserInfo.Comment
         public int Progress { get; private set; }
 
         /// <summary>
-        ///     Gets the category the author has put his progress of the <see cref="Anime" /> or <see cref="Manga" /> in.
+        /// Gets the category the author has put his progress of the <see cref="Anime" /> or <see cref="Manga" /> in.
         /// </summary>
         public AnimeMangaProgressState ProgressState { get; private set; }
 
         /// <summary>
-        ///     Gets the overall rating the <see cref="Author" /> gave. Returns -1 if no rating was found.
+        /// Gets the overall rating the <see cref="Author" /> gave. Returns -1 if no rating was found.
         /// </summary>
         public int Rating { get; }
 
         /// <summary>
-        ///     Gets the rating of all subcategories.
+        /// Gets the rating of all subcategories.
         /// </summary>
         public Dictionary<RatingCategory, int> SubRatings { get; }
 
