@@ -213,8 +213,8 @@ namespace Azuria.Media
                 await RequestHandler.ApiRequest(ApiRequestBuilder.InfoGetGroups(this.Id));
             if (!lResult.Success || (lResult.Result == null)) return new ProxerResult(lResult.Exceptions);
 
-            this._groups.SetInitialisedObject(from groupDataModel in lResult.Result.Data
-                select new Translator(groupDataModel));
+            this._groups.SetInitialisedObject(from translatorDataModel in lResult.Result.Data
+                select new Translator(translatorDataModel));
 
             return new ProxerResult();
         }

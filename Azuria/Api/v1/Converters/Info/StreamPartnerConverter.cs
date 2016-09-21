@@ -30,31 +30,31 @@ namespace Azuria.Api.v1.Converters.Info
         public override object ReadJson(JsonReader reader, Type objectType, object existingValue,
             JsonSerializer serializer)
         {
-            List<StreamPartner> lStreamPartners = new List<StreamPartner>();
+            List<StreamHoster> lStreamPartners = new List<StreamHoster>();
             foreach (string streamPartner in reader.Value.ToString().Split(','))
                 switch (streamPartner)
                 {
                     case "mp4upload":
-                        lStreamPartners.Add(StreamPartner.Mp4Upload);
+                        lStreamPartners.Add(StreamHoster.Mp4Upload);
                         break;
                     case "crunchyroll_de":
                     case "crunchyroll_en":
-                        lStreamPartners.Add(StreamPartner.Crunchyroll);
+                        lStreamPartners.Add(StreamHoster.Crunchyroll);
                         break;
                     case "dailymotion":
-                        lStreamPartners.Add(StreamPartner.Dailymotion);
+                        lStreamPartners.Add(StreamHoster.Dailymotion);
                         break;
                     case "proxer-stream":
-                        lStreamPartners.Add(StreamPartner.ProxerStream);
+                        lStreamPartners.Add(StreamHoster.ProxerStream);
                         break;
                     case "streamcloud2":
-                        lStreamPartners.Add(StreamPartner.Streamcloud);
+                        lStreamPartners.Add(StreamHoster.Streamcloud);
                         break;
                     case "viewster":
-                        lStreamPartners.Add(StreamPartner.Viewster);
+                        lStreamPartners.Add(StreamHoster.Viewster);
                         break;
                     case "yourupload":
-                        lStreamPartners.Add(StreamPartner.YourUpload);
+                        lStreamPartners.Add(StreamHoster.YourUpload);
                         break;
                 }
             return lStreamPartners.ToArray();

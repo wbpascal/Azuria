@@ -8,16 +8,15 @@ namespace Azuria.Media.Properties
     /// </summary>
     public class Translator
     {
-        /// <summary>
-        ///     Represents an error.
-        /// </summary>
-        public static Translator Error = new Translator(new TranslatorDataModel {Id = -1, Name = "ERROR"});
-
-        internal Translator(TranslatorDataModel dataModel)
+        internal Translator(int id, string name, Language language)
         {
-            this.Id = dataModel.Id;
-            this.Name = dataModel.Name;
-            this.Language = dataModel.Language;
+            this.Id = id;
+            this.Name = name;
+            this.Language = language;
+        }
+
+        internal Translator(TranslatorDataModel dataModel) : this(dataModel.Id, dataModel.Name, dataModel.Language)
+        {
         }
 
         #region Properties

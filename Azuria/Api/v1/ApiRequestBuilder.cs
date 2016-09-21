@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using Azuria.Api.v1.DataModels;
+using Azuria.Api.v1.DataModels.Anime;
 using Azuria.Api.v1.DataModels.Info;
 using Azuria.Api.v1.DataModels.Manga;
 using Azuria.Api.v1.DataModels.Media;
@@ -22,6 +23,22 @@ namespace Azuria.Api.v1
     internal static class ApiRequestBuilder
     {
         #region Methods
+
+        internal static ApiRequest<string> AnimeGetLink(int id)
+        {
+            return new ApiRequest<string>(new Uri($"{ApiConstants.ApiUrlV1}/anime/link?id={id}"));
+        }
+
+        internal static ApiRequest<StreamDataModel[]> AnimeGetStreams(int id, int episode, string language,
+            Senpai senpai = null)
+        {
+            return
+                new ApiRequest<StreamDataModel[]>(
+                    new Uri($"{ApiConstants.ApiUrlV1}/anime/streams?id={id}&episode={episode}&language={language}"))
+                {
+                    Senpai = senpai
+                };
+        }
 
         internal static ApiRequest<CommentDataModel[]> InfoGetComments(int entryId, int page, int limit, string sort)
         {

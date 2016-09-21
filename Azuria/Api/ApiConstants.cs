@@ -8,6 +8,7 @@
         public const string ProxerCdnUrl = "https://cdn.proxer.me";
         public const string ProxerCoverCdnUrl = ProxerCdnUrl + "/cover/";
         public const string ProxerHeaderCdnUrl = ProxerCdnUrl + "/gallery/originals";
+        public const string ProxerHosterImageUrl = "https://proxer.me/images/hoster/";
         public const string ProxerNoAvatarCdnUrl = ProxerCdnUrl + "/avatar/nophoto.png";
     }
 }

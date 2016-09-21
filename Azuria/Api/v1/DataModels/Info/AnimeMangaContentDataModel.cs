@@ -18,7 +18,7 @@ namespace Azuria.Api.v1.DataModels.Info
 
         [JsonProperty("types")]
         [JsonConverter(typeof(StreamPartnerConverter))]
-        internal StreamPartner[] StreamPartners { get; set; }
+        internal StreamHoster[] StreamHosters { get; set; }
 
         /// <summary>
         ///     Only available for chapters

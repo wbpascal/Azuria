@@ -278,12 +278,7 @@ namespace Azuria.Media
                 this._title.SetInitialisedObject(lData.ChapterTitle);
                 this._translator.SetInitialisedObject(lData.TranslatorId == null
                     ? null
-                    : new Translator(new TranslatorDataModel
-                    {
-                        Id = lData.TranslatorId.Value,
-                        Language = this.GeneralLanguage,
-                        Name = lData.TranslatorName
-                    }));
+                    : new Translator(lData.TranslatorId.Value, lData.TranslatorName, this.GeneralLanguage));
 
                 return new ProxerResult();
             }
