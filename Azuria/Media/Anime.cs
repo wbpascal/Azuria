@@ -220,6 +220,10 @@ namespace Azuria.Media
             public Anime ParentObject { get; }
 
             /// <summary>
+            /// </summary>
+            public Senpai Senpai { get; set; }
+
+            /// <summary>
             /// Gets the available streams of the episode.
             /// </summary>
             public IInitialisableProperty<IEnumerable<Stream>> Streams => this._streams;
@@ -243,7 +247,7 @@ namespace Azuria.Media
                 ProxerResult<ProxerApiResponse<StreamDataModel[]>> lResult =
                     await
                         RequestHandler.ApiRequest(ApiRequestBuilder.AnimeGetStreams(this.ParentObject.Id,
-                            this.ContentIndex, this.Language.ToString().ToLowerInvariant()));
+                            this.ContentIndex, this.Language.ToString().ToLowerInvariant(), this.Senpai));
                 if (!lResult.Success || (lResult.Result == null)) return new ProxerResult(lResult.Exceptions);
 
                 this._streams.SetInitialisedObject(from streamDataModel in lResult.Result.Data

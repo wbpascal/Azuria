@@ -10,11 +10,13 @@ namespace Azuria.Api
     /// </summary>
     public static class ApiInfo
     {
-        private static IHttpClient _httpClient;
+        private static Func<Senpai, IHttpClient> _httpClient;
 
         #region Properties
 
-        internal static IHttpClient HttpClient
+        internal static IHttpClient HttpClient { get; private set; }
+
+        internal static Func<Senpai, IHttpClient> HttpClientFactory
         {
             get
             {
@@ -45,8 +47,14 @@ namespace Azuria.Api
         public static void Init(ApiInfoInput input)
         {
             SecureContainerFactory = input.SecureContainerFactory;
-            HttpClient = input.CustomHttpClient;
+            HttpClientFactory = input.CustomHttpClient;
             RequestHandler.Init(input.ApiKeyV1);
+            Init();
+        }
+
+        private static void Init()
+        {
+            HttpClient = HttpClientFactory.Invoke(null);
         }
 
         #endregion

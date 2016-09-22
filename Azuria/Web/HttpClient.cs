@@ -22,45 +22,34 @@ namespace Azuria.Web
                                                    typeof(HttpClient).GetTypeInfo().Assembly.GetName().Version;
 #endif
 
-        private readonly int _timeout;
-        private readonly string _userAgentExtra;
+        private readonly Senpai _senpai;
+        private readonly System.Net.Http.HttpClient _client;
 
         /// <summary>
         /// </summary>
+        /// <param name="senpai"></param>
         /// <param name="timeout"></param>
         /// <param name="userAgentExtra"></param>
-        public HttpClient(int timeout = 5000, string userAgentExtra = "")
+        public HttpClient(Senpai senpai, int timeout = 5000, string userAgentExtra = "")
         {
-            this._timeout = timeout;
-            this._userAgentExtra = userAgentExtra;
+            this._senpai = senpai;
+            this._client = new System.Net.Http.HttpClient(new HttpClientHandler
+            {
+                AllowAutoRedirect = true,
+                CookieContainer = senpai?.LoginCookies ?? new CookieContainer(),
+                UseCookies = true
+            }) {Timeout = TimeSpan.FromMilliseconds(timeout)};
+            this._client.DefaultRequestHeaders.TryAddWithoutValidation("User-Agent",
+                $"{UserAgent} {userAgentExtra}".TrimEnd());
         }
 
         /// <summary>
         /// </summary>
         /// <param name="url"></param>
-        /// <param name="senpai"></param>
+        /// <param name="headers"></param>
         /// <returns></returns>
-        public Task<ProxerResult<string>> GetRequest(Uri url, Senpai senpai = null)
+        public async Task<ProxerResult<string>> GetRequest(Uri url, Dictionary<string, string> headers = null)
         {
-            return this.GetRequest(url, new Func<string, ProxerResult>[0], senpai);
-        }
-
-        /// <summary>
-        /// </summary>
-        /// <param name="url"></param>
-        /// <param name="checkFuncs"></param>
-        /// <param name="senpai"></param>
-        /// <param name="useMobileCookies"></param>
-        /// <param name="checkLogin"></param>
-        /// <param name="recursion"></param>
-        /// <returns></returns>
-        public async Task<ProxerResult<string>> GetRequest(Uri url, Func<string, ProxerResult>[] checkFuncs = null,
-            Senpai senpai = null, bool useMobileCookies = false, bool checkLogin = true, int recursion = 0)
-        {
-            if (checkLogin && (!senpai?.IsProbablyLoggedIn ?? true))
-                return
-                    new ProxerResult<string>(new Exception[] {new NotLoggedInException()});
-
             string lResponse;
 
             HttpResponseMessage lResponseObject;
@@ -68,15 +57,12 @@ namespace Azuria.Web
             {
                 lResponseObject =
                     await
-                        this.GetWebRequest(url,
-                            useMobileCookies ? senpai?.MobileLoginCookies : senpai?.LoginCookies,
-                            null);
+                        this.GetWebRequest(url, headers);
             }
             catch (Exception ex)
             {
                 return new ProxerResult<string>(new[] {ex});
             }
-            senpai?.UsedCookies();
             string lResponseString = await lResponseObject.Content.ReadAsStringAsync();
 
             if ((lResponseObject.StatusCode == HttpStatusCode.OK) && !string.IsNullOrEmpty(lResponseString))
@@ -87,95 +73,44 @@ namespace Azuria.Web
             else
                 return
                     new ProxerResult<string>(new[] {new WrongResponseException()});
-
-            if (checkFuncs != null)
-                foreach (Func<string, ProxerResult> checkFunc in checkFuncs)
-                    try
-                    {
-                        ProxerResult lResult = checkFunc?.Invoke(lResponse) ?? new ProxerResult {Success = false};
-                        if (!lResult.Success)
-                            return new ProxerResult<string>(lResult.Exceptions);
-                    }
-                    catch
-                    {
-                        return new ProxerResult<string>(new Exception[0]) {Success = false};
-                    }
 
             return string.IsNullOrEmpty(lResponse)
                 ? new ProxerResult<string>(new Exception[] {new WrongResponseException()})
                 : new ProxerResult<string>(lResponse);
         }
 
-        private async Task<HttpResponseMessage> GetWebRequest(Uri url, CookieContainer cookies,
-            Dictionary<string, string> headers)
+        private async Task<HttpResponseMessage> GetWebRequest(Uri url, Dictionary<string, string> headers)
         {
-            using (
-                System.Net.Http.HttpClient lClient =
-                    new System.Net.Http.HttpClient(new HttpClientHandler
-                    {
-                        AllowAutoRedirect = true,
-                        CookieContainer = cookies ?? new CookieContainer(),
-                        UseCookies = true
-                    }))
-            {
-                lClient.Timeout = TimeSpan.FromSeconds(this._timeout);
-                lClient.DefaultRequestHeaders.TryAddWithoutValidation("User-Agent",
-                    $"{UserAgent} {this._userAgentExtra}".TrimEnd());
-                if (headers == null) return await lClient.GetAsync(url);
-                foreach (KeyValuePair<string, string> header in headers)
-                    lClient.DefaultRequestHeaders.TryAddWithoutValidation(header.Key, header.Value);
+            this._senpai?.UsedCookies();
+            this._client.DefaultRequestHeaders.Clear();
 
-                return await lClient.GetAsync(url);
-            }
+            if (headers == null) return await this._client.GetAsync(url);
+            foreach (KeyValuePair<string, string> header in headers)
+                this._client.DefaultRequestHeaders.Add(header.Key, header.Value);
+
+            return await this._client.GetAsync(url);
         }
 
         /// <summary>
         /// </summary>
         /// <param name="url"></param>
         /// <param name="postArgs"></param>
-        /// <param name="senpai"></param>
-        /// <returns></returns>
-        public Task<ProxerResult<string>> PostRequest(Uri url, IEnumerable<KeyValuePair<string, string>> postArgs,
-            Senpai senpai)
-        {
-            return this.PostRequest(url, postArgs, new Func<string, ProxerResult>[0], senpai);
-        }
-
-        /// <summary>
-        /// </summary>
-        /// <param name="url"></param>
-        /// <param name="postArgs"></param>
-        /// <param name="checkFuncs"></param>
-        /// <param name="senpai"></param>
-        /// <param name="useMobileCookies"></param>
-        /// <param name="checkLogin"></param>
-        /// <param name="recursion"></param>
         /// <param name="headers"></param>
         /// <returns></returns>
         public async Task<ProxerResult<string>> PostRequest(Uri url, IEnumerable<KeyValuePair<string, string>> postArgs,
-            Func<string, ProxerResult>[] checkFuncs = null, Senpai senpai = null, bool useMobileCookies = false,
-            bool checkLogin = true, int recursion = 0, Dictionary<string, string> headers = null)
+            Dictionary<string, string> headers = null)
         {
-            if (checkLogin && (!senpai?.IsProbablyLoggedIn ?? true))
-                return
-                    new ProxerResult<string>(new Exception[] {new NotLoggedInException()});
-
             string lResponse;
 
             HttpResponseMessage lResponseObject;
             try
             {
-                lResponseObject =
-                    await
-                        this.PostWebRequest(url,
-                            useMobileCookies ? senpai?.MobileLoginCookies : senpai?.LoginCookies,
-                            postArgs, headers);
+                lResponseObject = await this.PostWebRequest(url, postArgs, headers);
             }
             catch (Exception ex)
             {
                 return new ProxerResult<string>(new[] {ex});
             }
-            senpai?.UsedCookies();
             string lResponseString = await lResponseObject.Content.ReadAsStringAsync();
 
             if ((lResponseObject.StatusCode == HttpStatusCode.OK) && !string.IsNullOrEmpty(lResponseString))
@@ -187,45 +122,22 @@ namespace Azuria.Web
                 return
                     new ProxerResult<string>(new[] {new WrongResponseException()});
 
-            if (checkFuncs != null)
-                foreach (Func<string, ProxerResult> checkFunc in checkFuncs)
-                    try
-                    {
-                        ProxerResult lResult = checkFunc?.Invoke(lResponse) ?? new ProxerResult {Success = false};
-                        if (!lResult.Success)
-                            return new ProxerResult<string>(lResult.Exceptions);
-                    }
-                    catch
-                    {
-                        return new ProxerResult<string>(new Exception[0]);
-                    }
-
             return string.IsNullOrEmpty(lResponse)
                 ? new ProxerResult<string>(new Exception[] {new WrongResponseException {Response = lResponse}})
                 : new ProxerResult<string>(lResponseString);
         }
 
-        private async Task<HttpResponseMessage> PostWebRequest(Uri url, CookieContainer cookies,
+        private async Task<HttpResponseMessage> PostWebRequest(Uri url,
             IEnumerable<KeyValuePair<string, string>> postArgs, Dictionary<string, string> headers)
         {
-            using (
-                System.Net.Http.HttpClient lClient =
-                    new System.Net.Http.HttpClient(new HttpClientHandler
-                    {
-                        AllowAutoRedirect = true,
-                        CookieContainer = cookies ?? new CookieContainer(),
-                        UseCookies = true
-                    }))
-            {
-                lClient.Timeout = TimeSpan.FromSeconds(this._timeout);
-                lClient.DefaultRequestHeaders.TryAddWithoutValidation("User-Agent",
-                    $"{UserAgent} {this._userAgentExtra}".TrimEnd());
-                if (headers == null) return await lClient.PostAsync(url, new FormUrlEncodedContent(postArgs));
-                foreach (KeyValuePair<string, string> header in headers)
-                    lClient.DefaultRequestHeaders.Add(header.Key, header.Value);
+            this._senpai?.UsedCookies();
+            this._client.DefaultRequestHeaders.Clear();
 
-                return await lClient.PostAsync(url, new FormUrlEncodedContent(postArgs));
-            }
+            if (headers == null) return await this._client.PostAsync(url, new FormUrlEncodedContent(postArgs));
+            foreach (KeyValuePair<string, string> header in headers)
+                this._client.DefaultRequestHeaders.Add(header.Key, header.Value);
+
+            return await this._client.PostAsync(url, new FormUrlEncodedContent(postArgs));
         }
     }
 }

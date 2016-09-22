@@ -8,6 +8,7 @@ using Azuria.ErrorHandling;
 using Azuria.Exceptions;
 using Azuria.Security;
 using Azuria.UserInfo;
+using Azuria.Web;
 
 namespace Azuria
 {
@@ -44,10 +45,13 @@ namespace Azuria
 
         private Senpai()
         {
+            this.HttpClient = ApiInfo.HttpClientFactory.Invoke(this);
             this.LoginToken = ApiInfo.SecureContainerFactory.Invoke();
         }
 
         #region Properties
+
+        internal IHttpClient HttpClient { get; }
 
         /// <summary>
         /// Gets if the user is probably currently logged in.

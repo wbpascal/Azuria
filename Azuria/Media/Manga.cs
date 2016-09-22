@@ -231,6 +231,10 @@ namespace Azuria.Media
             public Manga ParentObject { get; }
 
             /// <summary>
+            /// </summary>
+            public Senpai Senpai { get; set; }
+
+            /// <summary>
             /// Gets the title of the <see cref="Chapter" />.
             /// </summary>
             public IInitialisableProperty<string> Title => this._title;
@@ -266,7 +270,7 @@ namespace Azuria.Media
                 ProxerResult<ProxerApiResponse<ChapterDataModel>> lResult =
                     await
                         RequestHandler.ApiRequest(ApiRequestBuilder.MangaGetChapter(this.ParentObject.Id,
-                            this.ContentIndex, this.Language == Language.German ? "de" : "en"));
+                            this.ContentIndex, this.Language == Language.German ? "de" : "en", this.Senpai));
                 if (!lResult.Success || (lResult.Result == null)) return new ProxerResult(lResult.Exceptions);
                 ChapterDataModel lData = lResult.Result.Data;
 
