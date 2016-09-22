@@ -14,46 +14,17 @@ namespace Azuria.Web
         /// <summary>
         /// </summary>
         /// <param name="url"></param>
-        /// <param name="senpai"></param>
+        /// <param name="headers"></param>
         /// <returns></returns>
-        Task<ProxerResult<string>> GetRequest(Uri url, Senpai senpai = null);
-
-        /// <summary>
-        /// </summary>
-        /// <param name="url"></param>
-        /// <param name="checkFuncs"></param>
-        /// <param name="senpai"></param>
-        /// <param name="useMobileCookies"></param>
-        /// <param name="checkLogin"></param>
-        /// <param name="recursion"></param>
-        /// <returns></returns>
-        Task<ProxerResult<string>> GetRequest(Uri url, Func<string, ProxerResult>[] checkFuncs = null,
-            Senpai senpai = null,
-            bool useMobileCookies = false, bool checkLogin = true, int recursion = 0);
+        Task<ProxerResult<string>> GetRequest(Uri url, Dictionary<string, string> headers = null);
 
         /// <summary>
         /// </summary>
         /// <param name="url"></param>
         /// <param name="postArgs"></param>
-        /// <param name="senpai"></param>
-        /// <returns></returns>
-        Task<ProxerResult<string>> PostRequest(Uri url, IEnumerable<KeyValuePair<string, string>> postArgs,
-            Senpai senpai);
-
-        /// <summary>
-        /// </summary>
-        /// <param name="url"></param>
-        /// <param name="postArgs"></param>
-        /// <param name="checkFuncs"></param>
-        /// <param name="senpai"></param>
-        /// <param name="useMobileCookies"></param>
-        /// <param name="checkLogin"></param>
-        /// <param name="recursion"></param>
         /// <param name="headers"></param>
         /// <returns></returns>
         Task<ProxerResult<string>> PostRequest(Uri url, IEnumerable<KeyValuePair<string, string>> postArgs,
-            Func<string, ProxerResult>[] checkFuncs = null, Senpai senpai = null, bool useMobileCookies = false,
-            bool checkLogin = true, int recursion = 0,
             Dictionary<string, string> headers = null);
 
         #endregion

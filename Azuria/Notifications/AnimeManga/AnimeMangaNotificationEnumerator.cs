@@ -5,9 +5,9 @@ using System.Globalization;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
-using Azuria.Api;
 using Azuria.Api.v1.Converters;
 using Azuria.ErrorHandling;
+using Azuria.Exceptions;
 using Azuria.Media;
 using Azuria.Media.Properties;
 using Azuria.Utilities.Extensions;
@@ -60,10 +60,13 @@ namespace Azuria.Notifications.AnimeManga
         /// <inheritdoc />
         private async Task<ProxerResult<IEnumerable<AnimeMangaNotification<T>>>> GetNextPage()
         {
+            if (!this._senpai.IsProbablyLoggedIn)
+                return new ProxerResult<IEnumerable<AnimeMangaNotification<T>>>(new NotLoggedInException(this._senpai));
+
             ProxerResult<string> lResponse =
                 await
-                    ApiInfo.HttpClient.GetRequest(
-                        new Uri("https://proxer.me/components/com_proxer/misc/notifications_misc.php"), this._senpai);
+                    this._senpai.HttpClient.GetRequest(
+                        new Uri("https://proxer.me/components/com_proxer/misc/notifications_misc.php"));
             if (!lResponse.Success || string.IsNullOrEmpty(lResponse.Result))
                 return new ProxerResult<IEnumerable<AnimeMangaNotification<T>>>(lResponse.Exceptions);
 

@@ -16,7 +16,7 @@ namespace Azuria.Api
 
         /// <summary>
         /// </summary>
-        public IHttpClient CustomHttpClient { get; set; } = new HttpClient();
+        public Func<Senpai, IHttpClient> CustomHttpClient { get; set; } = senpai => new HttpClient(senpai);
 
         /// <summary>
         /// </summary>

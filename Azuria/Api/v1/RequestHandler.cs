@@ -20,14 +20,13 @@ namespace Azuria.Api.v1
         internal static async Task<ProxerResult<T>> ApiCustomRequest<T>(ApiRequest request, bool forceTokenLogin = false)
             where T : ProxerApiResponse
         {
-            if (request.CheckLogin && (request.Senpai == null))
-                return new ProxerResult<T>(new[] {new NotLoggedInException()});
+            if (request.CheckLogin && ((request.Senpai == null) || !request.Senpai.IsProbablyLoggedIn))
+                return new ProxerResult<T>(new[] {new NotLoggedInException(request.Senpai)});
 
             ProxerResult<string> lResult =
                 await
-                    ApiInfo.HttpClient.PostRequest(request.Address, request.PostArguments,
-                        new Func<string, ProxerResult>[0], checkLogin: request.CheckLogin, senpai: request.Senpai,
-                        headers: GetHeaders(request, forceTokenLogin));
+                    (request.Senpai?.HttpClient ?? ApiInfo.HttpClient).PostRequest(request.Address,
+                        request.PostArguments, GetHeaders(request, forceTokenLogin));
             if (!lResult.Success || (lResult.Result == null)) return new ProxerResult<T>(lResult.Exceptions);
 
             try
