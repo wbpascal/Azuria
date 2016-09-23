@@ -6,3 +6,27 @@
       href: basic_classes_proxerresult.md
     - name: InitialisableProperty
       href: basic_classes_initialisableproperty.md
+- name: Basic Tutorials
+  items:
+    - name: Working with Anime and Manga
+      items:
+        - name: Anime
+        - name: Episodes
+        - name: Manga
+        - name: Chapters
+        - name: Search and EntryList
+    - name: Writing and reading messages
+    - name: Using notifications
+      items:
+        - name: Anime und Manga
+        - name: Messages
+        - name: News
+    - name: User-Control-Panel
+    - name: Other users
+- name: Advanced Tutorials
+  items:
+    - name: Implementing a custom http client
+- name: Security
+  items:
+    - name: SecureContainer
+    - name: Securing your critical information

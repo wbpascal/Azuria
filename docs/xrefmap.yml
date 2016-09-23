@@ -2951,6 +2951,11 @@ references:
   href: api/Azuria.Media.Anime.Episode.html#Azuria_Media_Anime_Episode_ParentObject
   commentId: P:Azuria.Media.Anime.Episode.ParentObject
   fullName: Azuria.Media.Anime.Episode.ParentObject
+- uid: Azuria.Media.Anime.Episode.Senpai
+  name: Senpai
+  href: api/Azuria.Media.Anime.Episode.html#Azuria_Media_Anime_Episode_Senpai
+  commentId: P:Azuria.Media.Anime.Episode.Senpai
+  fullName: Azuria.Media.Anime.Episode.Senpai
 - uid: Azuria.Media.Anime.Episode.Stream
   name: Anime.Episode.Stream
   href: api/Azuria.Media.Anime.Episode.Stream.html#Azuria_Media_Anime_Episode_Stream
@@ -3561,6 +3566,11 @@ references:
   href: api/Azuria.Media.Manga.Chapter.html#Azuria_Media_Manga_Chapter_ParentObject
   commentId: P:Azuria.Media.Manga.Chapter.ParentObject
   fullName: Azuria.Media.Manga.Chapter.ParentObject
+- uid: Azuria.Media.Manga.Chapter.Senpai
+  name: Senpai
+  href: api/Azuria.Media.Manga.Chapter.html#Azuria_Media_Manga_Chapter_Senpai
+  commentId: P:Azuria.Media.Manga.Chapter.Senpai
+  fullName: Azuria.Media.Manga.Chapter.Senpai
 - uid: Azuria.Media.Manga.Chapter.Title
   name: Title
   href: api/Azuria.Media.Manga.Chapter.html#Azuria_Media_Manga_Chapter_Title
@@ -7759,65 +7769,41 @@ references:
   href: api/Azuria.Web.HttpClient.html#Azuria_Web_HttpClient
   commentId: T:Azuria.Web.HttpClient
   fullName: Azuria.Web.HttpClient
-- uid: Azuria.Web.HttpClient.#ctor(System.Int32,System.String)
-  name: HttpClient(Int32, String)
-  href: api/Azuria.Web.HttpClient.html#Azuria_Web_HttpClient__ctor_System_Int32_System_String_
-  commentId: M:Azuria.Web.HttpClient.#ctor(System.Int32,System.String)
-  fullName: Azuria.Web.HttpClient.HttpClient(System.Int32, System.String)
-- uid: Azuria.Web.HttpClient.GetRequest(System.Uri,Azuria.Senpai)
-  name: GetRequest(Uri, Senpai)
-  href: api/Azuria.Web.HttpClient.html#Azuria_Web_HttpClient_GetRequest_System_Uri_Azuria_Senpai_
-  commentId: M:Azuria.Web.HttpClient.GetRequest(System.Uri,Azuria.Senpai)
-  fullName: Azuria.Web.HttpClient.GetRequest(System.Uri, Azuria.Senpai)
-- uid: Azuria.Web.HttpClient.GetRequest(System.Uri,System.Func{System.String,Azuria.ErrorHandling.ProxerResult}[],Azuria.Senpai,System.Boolean,System.Boolean,System.Int32)
-  name: GetRequest(Uri, Func<String, ProxerResult>[], Senpai, Boolean, Boolean, Int32)
-  href: api/Azuria.Web.HttpClient.html#Azuria_Web_HttpClient_GetRequest_System_Uri_System_Func_System_String_Azuria_ErrorHandling_ProxerResult____Azuria_Senpai_System_Boolean_System_Boolean_System_Int32_
-  commentId: M:Azuria.Web.HttpClient.GetRequest(System.Uri,System.Func{System.String,Azuria.ErrorHandling.ProxerResult}[],Azuria.Senpai,System.Boolean,System.Boolean,System.Int32)
-  name.vb: GetRequest(Uri, Func(Of String, ProxerResult)(), Senpai, Boolean, Boolean, Int32)
-  fullName: Azuria.Web.HttpClient.GetRequest(System.Uri, System.Func<System.String, Azuria.ErrorHandling.ProxerResult>[], Azuria.Senpai, System.Boolean, System.Boolean, System.Int32)
-  fullName.vb: Azuria.Web.HttpClient.GetRequest(System.Uri, System.Func(Of System.String, Azuria.ErrorHandling.ProxerResult)(), Azuria.Senpai, System.Boolean, System.Boolean, System.Int32)
-- uid: Azuria.Web.HttpClient.PostRequest(System.Uri,System.Collections.Generic.IEnumerable{System.Collections.Generic.KeyValuePair{System.String,System.String}},Azuria.Senpai)
-  name: PostRequest(Uri, IEnumerable<KeyValuePair<String, String>>, Senpai)
-  href: api/Azuria.Web.HttpClient.html#Azuria_Web_HttpClient_PostRequest_System_Uri_System_Collections_Generic_IEnumerable_System_Collections_Generic_KeyValuePair_System_String_System_String___Azuria_Senpai_
-  commentId: M:Azuria.Web.HttpClient.PostRequest(System.Uri,System.Collections.Generic.IEnumerable{System.Collections.Generic.KeyValuePair{System.String,System.String}},Azuria.Senpai)
-  name.vb: PostRequest(Uri, IEnumerable(Of KeyValuePair(Of String, String)), Senpai)
-  fullName: Azuria.Web.HttpClient.PostRequest(System.Uri, System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<System.String, System.String>>, Azuria.Senpai)
-  fullName.vb: Azuria.Web.HttpClient.PostRequest(System.Uri, System.Collections.Generic.IEnumerable(Of System.Collections.Generic.KeyValuePair(Of System.String, System.String)), Azuria.Senpai)
-- uid: Azuria.Web.HttpClient.PostRequest(System.Uri,System.Collections.Generic.IEnumerable{System.Collections.Generic.KeyValuePair{System.String,System.String}},System.Func{System.String,Azuria.ErrorHandling.ProxerResult}[],Azuria.Senpai,System.Boolean,System.Boolean,System.Int32,System.Collections.Generic.Dictionary{System.String,System.String})
-  name: PostRequest(Uri, IEnumerable<KeyValuePair<String, String>>, Func<String, ProxerResult>[], Senpai, Boolean, Boolean, Int32, Dictionary<String, String>)
-  href: api/Azuria.Web.HttpClient.html#Azuria_Web_HttpClient_PostRequest_System_Uri_System_Collections_Generic_IEnumerable_System_Collections_Generic_KeyValuePair_System_String_System_String___System_Func_System_String_Azuria_ErrorHandling_ProxerResult____Azuria_Senpai_System_Boolean_System_Boolean_System_Int32_System_Collections_Generic_Dictionary_System_String_System_String__
-  commentId: M:Azuria.Web.HttpClient.PostRequest(System.Uri,System.Collections.Generic.IEnumerable{System.Collections.Generic.KeyValuePair{System.String,System.String}},System.Func{System.String,Azuria.ErrorHandling.ProxerResult}[],Azuria.Senpai,System.Boolean,System.Boolean,System.Int32,System.Collections.Generic.Dictionary{System.String,System.String})
-  name.vb: PostRequest(Uri, IEnumerable(Of KeyValuePair(Of String, String)), Func(Of String, ProxerResult)(), Senpai, Boolean, Boolean, Int32, Dictionary(Of String, String))
-  fullName: Azuria.Web.HttpClient.PostRequest(System.Uri, System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<System.String, System.String>>, System.Func<System.String, Azuria.ErrorHandling.ProxerResult>[], Azuria.Senpai, System.Boolean, System.Boolean, System.Int32, System.Collections.Generic.Dictionary<System.String, System.String>)
-  fullName.vb: Azuria.Web.HttpClient.PostRequest(System.Uri, System.Collections.Generic.IEnumerable(Of System.Collections.Generic.KeyValuePair(Of System.String, System.String)), System.Func(Of System.String, Azuria.ErrorHandling.ProxerResult)(), Azuria.Senpai, System.Boolean, System.Boolean, System.Int32, System.Collections.Generic.Dictionary(Of System.String, System.String))
+- uid: Azuria.Web.HttpClient.#ctor(Azuria.Senpai,System.Int32,System.String)
+  name: HttpClient(Senpai, Int32, String)
+  href: api/Azuria.Web.HttpClient.html#Azuria_Web_HttpClient__ctor_Azuria_Senpai_System_Int32_System_String_
+  commentId: M:Azuria.Web.HttpClient.#ctor(Azuria.Senpai,System.Int32,System.String)
+  fullName: Azuria.Web.HttpClient.HttpClient(Azuria.Senpai, System.Int32, System.String)
+- uid: Azuria.Web.HttpClient.GetRequest(System.Uri,System.Collections.Generic.Dictionary{System.String,System.String})
+  name: GetRequest(Uri, Dictionary<String, String>)
+  href: api/Azuria.Web.HttpClient.html#Azuria_Web_HttpClient_GetRequest_System_Uri_System_Collections_Generic_Dictionary_System_String_System_String__
+  commentId: M:Azuria.Web.HttpClient.GetRequest(System.Uri,System.Collections.Generic.Dictionary{System.String,System.String})
+  name.vb: GetRequest(Uri, Dictionary(Of String, String))
+  fullName: Azuria.Web.HttpClient.GetRequest(System.Uri, System.Collections.Generic.Dictionary<System.String, System.String>)
+  fullName.vb: Azuria.Web.HttpClient.GetRequest(System.Uri, System.Collections.Generic.Dictionary(Of System.String, System.String))
+- uid: Azuria.Web.HttpClient.PostRequest(System.Uri,System.Collections.Generic.IEnumerable{System.Collections.Generic.KeyValuePair{System.String,System.String}},System.Collections.Generic.Dictionary{System.String,System.String})
+  name: PostRequest(Uri, IEnumerable<KeyValuePair<String, String>>, Dictionary<String, String>)
+  href: api/Azuria.Web.HttpClient.html#Azuria_Web_HttpClient_PostRequest_System_Uri_System_Collections_Generic_IEnumerable_System_Collections_Generic_KeyValuePair_System_String_System_String___System_Collections_Generic_Dictionary_System_String_System_String__
+  commentId: M:Azuria.Web.HttpClient.PostRequest(System.Uri,System.Collections.Generic.IEnumerable{System.Collections.Generic.KeyValuePair{System.String,System.String}},System.Collections.Generic.Dictionary{System.String,System.String})
+  name.vb: PostRequest(Uri, IEnumerable(Of KeyValuePair(Of String, String)), Dictionary(Of String, String))
+  fullName: Azuria.Web.HttpClient.PostRequest(System.Uri, System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<System.String, System.String>>, System.Collections.Generic.Dictionary<System.String, System.String>)
+  fullName.vb: Azuria.Web.HttpClient.PostRequest(System.Uri, System.Collections.Generic.IEnumerable(Of System.Collections.Generic.KeyValuePair(Of System.String, System.String)), System.Collections.Generic.Dictionary(Of System.String, System.String))
 - uid: Azuria.Web.IHttpClient
   name: IHttpClient
   href: api/Azuria.Web.IHttpClient.html#Azuria_Web_IHttpClient
   commentId: T:Azuria.Web.IHttpClient
   fullName: Azuria.Web.IHttpClient
-- uid: Azuria.Web.IHttpClient.GetRequest(System.Uri,Azuria.Senpai)
-  name: GetRequest(Uri, Senpai)
-  href: api/Azuria.Web.IHttpClient.html#Azuria_Web_IHttpClient_GetRequest_System_Uri_Azuria_Senpai_
-  commentId: M:Azuria.Web.IHttpClient.GetRequest(System.Uri,Azuria.Senpai)
-  fullName: Azuria.Web.IHttpClient.GetRequest(System.Uri, Azuria.Senpai)
-- uid: Azuria.Web.IHttpClient.GetRequest(System.Uri,System.Func{System.String,Azuria.ErrorHandling.ProxerResult}[],Azuria.Senpai,System.Boolean,System.Boolean,System.Int32)
-  name: GetRequest(Uri, Func<String, ProxerResult>[], Senpai, Boolean, Boolean, Int32)
-  href: api/Azuria.Web.IHttpClient.html#Azuria_Web_IHttpClient_GetRequest_System_Uri_System_Func_System_String_Azuria_ErrorHandling_ProxerResult____Azuria_Senpai_System_Boolean_System_Boolean_System_Int32_
-  commentId: M:Azuria.Web.IHttpClient.GetRequest(System.Uri,System.Func{System.String,Azuria.ErrorHandling.ProxerResult}[],Azuria.Senpai,System.Boolean,System.Boolean,System.Int32)
-  name.vb: GetRequest(Uri, Func(Of String, ProxerResult)(), Senpai, Boolean, Boolean, Int32)
-  fullName: Azuria.Web.IHttpClient.GetRequest(System.Uri, System.Func<System.String, Azuria.ErrorHandling.ProxerResult>[], Azuria.Senpai, System.Boolean, System.Boolean, System.Int32)
-  fullName.vb: Azuria.Web.IHttpClient.GetRequest(System.Uri, System.Func(Of System.String, Azuria.ErrorHandling.ProxerResult)(), Azuria.Senpai, System.Boolean, System.Boolean, System.Int32)
-- uid: Azuria.Web.IHttpClient.PostRequest(System.Uri,System.Collections.Generic.IEnumerable{System.Collections.Generic.KeyValuePair{System.String,System.String}},Azuria.Senpai)
-  name: PostRequest(Uri, IEnumerable<KeyValuePair<String, String>>, Senpai)
-  href: api/Azuria.Web.IHttpClient.html#Azuria_Web_IHttpClient_PostRequest_System_Uri_System_Collections_Generic_IEnumerable_System_Collections_Generic_KeyValuePair_System_String_System_String___Azuria_Senpai_
-  commentId: M:Azuria.Web.IHttpClient.PostRequest(System.Uri,System.Collections.Generic.IEnumerable{System.Collections.Generic.KeyValuePair{System.String,System.String}},Azuria.Senpai)
-  name.vb: PostRequest(Uri, IEnumerable(Of KeyValuePair(Of String, String)), Senpai)
-  fullName: Azuria.Web.IHttpClient.PostRequest(System.Uri, System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<System.String, System.String>>, Azuria.Senpai)
-  fullName.vb: Azuria.Web.IHttpClient.PostRequest(System.Uri, System.Collections.Generic.IEnumerable(Of System.Collections.Generic.KeyValuePair(Of System.String, System.String)), Azuria.Senpai)
-- uid: Azuria.Web.IHttpClient.PostRequest(System.Uri,System.Collections.Generic.IEnumerable{System.Collections.Generic.KeyValuePair{System.String,System.String}},System.Func{System.String,Azuria.ErrorHandling.ProxerResult}[],Azuria.Senpai,System.Boolean,System.Boolean,System.Int32,System.Collections.Generic.Dictionary{System.String,System.String})
-  name: PostRequest(Uri, IEnumerable<KeyValuePair<String, String>>, Func<String, ProxerResult>[], Senpai, Boolean, Boolean, Int32, Dictionary<String, String>)
-  href: api/Azuria.Web.IHttpClient.html#Azuria_Web_IHttpClient_PostRequest_System_Uri_System_Collections_Generic_IEnumerable_System_Collections_Generic_KeyValuePair_System_String_System_String___System_Func_System_String_Azuria_ErrorHandling_ProxerResult____Azuria_Senpai_System_Boolean_System_Boolean_System_Int32_System_Collections_Generic_Dictionary_System_String_System_String__
-  commentId: M:Azuria.Web.IHttpClient.PostRequest(System.Uri,System.Collections.Generic.IEnumerable{System.Collections.Generic.KeyValuePair{System.String,System.String}},System.Func{System.String,Azuria.ErrorHandling.ProxerResult}[],Azuria.Senpai,System.Boolean,System.Boolean,System.Int32,System.Collections.Generic.Dictionary{System.String,System.String})
-  name.vb: PostRequest(Uri, IEnumerable(Of KeyValuePair(Of String, String)), Func(Of String, ProxerResult)(), Senpai, Boolean, Boolean, Int32, Dictionary(Of String, String))
-  fullName: Azuria.Web.IHttpClient.PostRequest(System.Uri, System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<System.String, System.String>>, System.Func<System.String, Azuria.ErrorHandling.ProxerResult>[], Azuria.Senpai, System.Boolean, System.Boolean, System.Int32, System.Collections.Generic.Dictionary<System.String, System.String>)
-  fullName.vb: Azuria.Web.IHttpClient.PostRequest(System.Uri, System.Collections.Generic.IEnumerable(Of System.Collections.Generic.KeyValuePair(Of System.String, System.String)), System.Func(Of System.String, Azuria.ErrorHandling.ProxerResult)(), Azuria.Senpai, System.Boolean, System.Boolean, System.Int32, System.Collections.Generic.Dictionary(Of System.String, System.String))
+- uid: Azuria.Web.IHttpClient.GetRequest(System.Uri,System.Collections.Generic.Dictionary{System.String,System.String})
+  name: GetRequest(Uri, Dictionary<String, String>)
+  href: api/Azuria.Web.IHttpClient.html#Azuria_Web_IHttpClient_GetRequest_System_Uri_System_Collections_Generic_Dictionary_System_String_System_String__
+  commentId: M:Azuria.Web.IHttpClient.GetRequest(System.Uri,System.Collections.Generic.Dictionary{System.String,System.String})
+  name.vb: GetRequest(Uri, Dictionary(Of String, String))
+  fullName: Azuria.Web.IHttpClient.GetRequest(System.Uri, System.Collections.Generic.Dictionary<System.String, System.String>)
+  fullName.vb: Azuria.Web.IHttpClient.GetRequest(System.Uri, System.Collections.Generic.Dictionary(Of System.String, System.String))
+- uid: Azuria.Web.IHttpClient.PostRequest(System.Uri,System.Collections.Generic.IEnumerable{System.Collections.Generic.KeyValuePair{System.String,System.String}},System.Collections.Generic.Dictionary{System.String,System.String})
+  name: PostRequest(Uri, IEnumerable<KeyValuePair<String, String>>, Dictionary<String, String>)
+  href: api/Azuria.Web.IHttpClient.html#Azuria_Web_IHttpClient_PostRequest_System_Uri_System_Collections_Generic_IEnumerable_System_Collections_Generic_KeyValuePair_System_String_System_String___System_Collections_Generic_Dictionary_System_String_System_String__
+  commentId: M:Azuria.Web.IHttpClient.PostRequest(System.Uri,System.Collections.Generic.IEnumerable{System.Collections.Generic.KeyValuePair{System.String,System.String}},System.Collections.Generic.Dictionary{System.String,System.String})
+  name.vb: PostRequest(Uri, IEnumerable(Of KeyValuePair(Of String, String)), Dictionary(Of String, String))
+  fullName: Azuria.Web.IHttpClient.PostRequest(System.Uri, System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<System.String, System.String>>, System.Collections.Generic.Dictionary<System.String, System.String>)
+  fullName.vb: Azuria.Web.IHttpClient.PostRequest(System.Uri, System.Collections.Generic.IEnumerable(Of System.Collections.Generic.KeyValuePair(Of System.String, System.String)), System.Collections.Generic.Dictionary(Of System.String, System.String))
