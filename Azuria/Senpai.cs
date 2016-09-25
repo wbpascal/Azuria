@@ -19,7 +19,6 @@ namespace Azuria
     {
         private DateTime _cookiesCreated;
         private DateTime _cookiesLastUsed = DateTime.MinValue;
-        private string _username;
 
         /// <summary>
         /// </summary>
@@ -27,7 +26,7 @@ namespace Azuria
         public Senpai(string username) : this()
         {
             if (string.IsNullOrEmpty(username.Trim())) throw new ArgumentException(nameof(username));
-            this._username = username;
+            this.Username = username;
         }
 
         private Senpai()
@@ -83,6 +82,11 @@ namespace Azuria
             }
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        public string Username { get; private set; }
+
         #endregion
 
         #region Methods
@@ -123,11 +127,11 @@ namespace Azuria
             if (this.IsProbablyLoggedIn) return new ProxerResult<bool>(new[] {new UserAlreadyLoggedInException()});
 
             ProxerResult<ProxerApiResponse<LoginDataModel>> lResult =
-                await RequestHandler.ApiRequest(ApiRequestBuilder.UserLogin(this._username, password, this));
+                await RequestHandler.ApiRequest(ApiRequestBuilder.UserLogin(this.Username, password, this));
             if (!lResult.Success || (lResult.Result == null))
                 return new ProxerResult<bool>(lResult.Exceptions);
 
-            this.Me = new User(this._username, lResult.Result.Data.UserId,
+            this.Me = new User(this.Username, lResult.Result.Data.UserId,
                 new Uri("https://cdn.proxer.me/avatar/" + lResult.Result.Data.Avatar));
             this._cookiesCreated = DateTime.Now;
             this.LoginToken.SetValue(lResult.Result.Data.Token.ToCharArray());
@@ -148,7 +152,7 @@ namespace Azuria
             UserInfoDataModel lDataModel = lResult.Result.Data;
             this.LoginToken.SetValue(token);
             this.Me = new User(lDataModel);
-            this._username = lDataModel.Username;
+            this.Username = lDataModel.Username;
             this._cookiesCreated = DateTime.Now;
 
             return new ProxerResult();
