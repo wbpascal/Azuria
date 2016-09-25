@@ -30,19 +30,6 @@ namespace Azuria
             this._username = username;
         }
 
-        /// <summary>
-        /// </summary>
-        /// <param name="senpai"></param>
-        public Senpai(Senpai senpai) : this()
-        {
-            this._username = senpai._username;
-            this._cookiesCreated = senpai._cookiesCreated;
-            this._cookiesLastUsed = senpai._cookiesLastUsed;
-            this.LoginCookies = senpai.LoginCookies;
-            this.LoginToken = senpai.LoginToken;
-            this.Me = senpai.Me;
-        }
-
         private Senpai()
         {
             this.HttpClient = ApiInfo.HttpClientFactory.Invoke(this);
