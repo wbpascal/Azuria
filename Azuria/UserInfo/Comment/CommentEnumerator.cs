@@ -14,7 +14,7 @@ namespace Azuria.UserInfo.Comment
 {
     internal class CommentEnumerator<T> : PageEnumerator<Comment<T>> where T : IAnimeMangaObject
     {
-        private const int ResultsPerPage = 100;
+        private const int ResultsPerPage = 25;
         private readonly T _animeMangaObject;
         private readonly string _sort;
         private readonly User _user;
