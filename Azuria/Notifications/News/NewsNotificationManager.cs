@@ -39,7 +39,7 @@ namespace Azuria.Notifications.News
         public delegate void ExceptionThrownNotificationFetchEventHandler(NewsNotificationManager sender, Exception e);
 
         /// <summary>
-        ///     Represents a method that is executed when new news notifications are available.
+        /// Represents a method that is executed when new news notifications are available.
         /// </summary>
         /// <param name="sender">The user that recieved the notifications.</param>
         /// <param name="e">The notifications. Maximum length of 50 elements.</param>

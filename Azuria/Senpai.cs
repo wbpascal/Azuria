@@ -13,7 +13,7 @@ using Azuria.Web;
 namespace Azuria
 {
     /// <summary>
-    ///     Represents a user that makes requests to the proxer servers.
+    /// Represents a user that makes requests to the proxer servers.
     /// </summary>
     public class Senpai : IDisposable
     {
@@ -40,7 +40,7 @@ namespace Azuria
         internal IHttpClient HttpClient { get; }
 
         /// <summary>
-        ///     Gets if the user is probably currently logged in.
+        /// Gets if the user is probably currently logged in.
         /// </summary>
         public bool IsProbablyLoggedIn
         {
@@ -53,7 +53,7 @@ namespace Azuria
         }
 
         /// <summary>
-        ///     Gets the cookies that are used to make requests to the server with this user.
+        /// Gets the cookies that are used to make requests to the server with this user.
         /// </summary>
         public CookieContainer LoginCookies { get; private set; } = new CookieContainer();
 
@@ -62,13 +62,13 @@ namespace Azuria
         public ISecureContainer<char[]> LoginToken { get; protected set; }
 
         /// <summary>
-        ///     Gets the profile of the user.
+        /// Gets the profile of the user.
         /// </summary>
         public User Me { get; protected set; }
 
         /// <summary>
-        ///     Gets the cookies that are used to make requests to the server with this user. Unlike <see cref="LoginCookies" />
-        ///     contains this cookie container some additional cookies to request a response that is intended for mobile usage.
+        /// Gets the cookies that are used to make requests to the server with this user. Unlike <see cref="LoginCookies" />
+        /// contains this cookie container some additional cookies to request a response that is intended for mobile usage.
         /// </summary>
         public CookieContainer MobileLoginCookies
         {
@@ -83,7 +83,6 @@ namespace Azuria
         }
 
         /// <summary>
-        /// 
         /// </summary>
         public string Username { get; private set; }
 
@@ -116,7 +115,7 @@ namespace Azuria
         }
 
         /// <summary>
-        ///     Logs the user in.
+        /// Logs the user in.
         /// </summary>
         /// <param name="password">The password of the user.</param>
         /// <returns>If the action was successful and if it was, whether the user was successfully logged in.</returns>

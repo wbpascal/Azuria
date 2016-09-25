@@ -6,7 +6,7 @@ using Azuria.Search.Input;
 namespace Azuria.Search
 {
     /// <summary>
-    ///     Represents a class that helps to fetch following search results after the inital search.
+    /// Represents a class that helps to fetch following search results after the inital search.
     /// </summary>
     /// <typeparam name="T">The type of the search results.</typeparam>
     internal class SearchResultCollection<T> : IEnumerable<T> where T : IAnimeMangaObject

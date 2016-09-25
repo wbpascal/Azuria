@@ -1,37 +1,37 @@
 ﻿namespace Azuria.Community
 {
     /// <summary>
-    ///     The action of the message.
+    /// The action of the message.
     /// </summary>
     public enum MessageAction
     {
         /// <summary>
-        ///     Normal message, only text content.
+        /// Normal message, only text content.
         /// </summary>
         NoAction,
 
         /// <summary>
-        ///     A user was added to the conference.
+        /// A user was added to the conference.
         /// </summary>
         AddUser,
 
         /// <summary>
-        ///     A user was removed from the conference.
+        /// A user was removed from the conference.
         /// </summary>
         RemoveUser,
 
         /// <summary>
-        ///     The leader of the conference was changed.
+        /// The leader of the conference was changed.
         /// </summary>
         SetLeader,
 
         /// <summary>
-        ///     The topic of the conference was changed.
+        /// The topic of the conference was changed.
         /// </summary>
         SetTopic,
 
         /// <summary>
-        ///     A message was returned directly by the system. Happens most of the times if the user issued a command.
+        /// A message was returned directly by the system. Happens most of the times if the user issued a command.
         /// </summary>
         GetAction
     }

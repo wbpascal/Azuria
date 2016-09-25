@@ -3,7 +3,7 @@
 namespace Azuria.Media.Properties
 {
     /// <summary>
-    ///     Represents a class which aims to help working with the <see cref="FskType">Fsk-enumeration</see>.
+    /// Represents a class which aims to help working with the <see cref="FskType">Fsk-enumeration</see>.
     /// </summary>
     public static class FskHelper
     {

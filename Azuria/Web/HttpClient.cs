@@ -10,7 +10,7 @@ using Azuria.Exceptions;
 namespace Azuria.Web
 {
     /// <summary>
-    ///     Represents a class that communicates with the proxer servers.
+    /// Represents a class that communicates with the proxer servers.
     /// </summary>
     public class HttpClient : IHttpClient
     {

@@ -160,12 +160,12 @@ namespace Azuria.Media
         }
 
         /// <summary>
-        ///     Gets an <see cref="Anime" /> or <see cref="Manga" /> of a specified id.
+        /// Gets an <see cref="Anime" /> or <see cref="Manga" /> of a specified id.
         /// </summary>
         /// <param name="id">The id of the <see cref="Anime" /> or <see cref="Manga" />.</param>
         /// <returns>
-        ///     If the action was successful and if it was, an object representing either an <see cref="Anime" /> or
-        ///     <see cref="Manga" />.
+        /// If the action was successful and if it was, an object representing either an <see cref="Anime" /> or
+        /// <see cref="Manga" />.
         /// </returns>
         public static async Task<ProxerResult<IAnimeMangaObject>> CreateFromId(int id)
         {

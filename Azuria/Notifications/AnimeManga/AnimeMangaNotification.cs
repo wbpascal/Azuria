@@ -9,7 +9,7 @@ using Azuria.Media.Properties;
 namespace Azuria.Notifications.AnimeManga
 {
     /// <summary>
-    ///     Represents an <see cref="Anime" />- or <see cref="Manga" />-notification.
+    /// Represents an <see cref="Anime" />- or <see cref="Manga" />-notification.
     /// </summary>
     public class AnimeMangaNotification<T> : INotification where T : IAnimeMangaObject
     {

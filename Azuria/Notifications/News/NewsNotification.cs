@@ -6,7 +6,7 @@ using Azuria.UserInfo;
 namespace Azuria.Notifications.News
 {
     /// <summary>
-    ///     Represents a news notification.
+    /// Represents a news notification.
     /// </summary>
     public class NewsNotification : INotification
     {
@@ -25,55 +25,55 @@ namespace Azuria.Notifications.News
         public User Author => new User(this._dataModel.AuthorName, this._dataModel.AuthorId);
 
         /// <summary>
-        ///     Gets the category id of the news.
+        /// Gets the category id of the news.
         /// </summary>
         public int CategoryId => this._dataModel.CategoryId;
 
         /// <summary>
-        ///     Gets the category name of the news.
+        /// Gets the category name of the news.
         /// </summary>
         public string CategoryName => this._dataModel.CategoryName;
 
         /// <summary>
-        ///     Gets the description of the news.
+        /// Gets the description of the news.
         /// </summary>
         public string Description => this._dataModel.Description;
 
         /// <summary>
-        ///     Gets the hits of the news.
+        /// Gets the hits of the news.
         /// </summary>
         public int Hits => this._dataModel.Hits;
 
         /// <summary>
-        ///     Gets the title image of the news.
+        /// Gets the title image of the news.
         /// </summary>
         public Uri Image
             => new Uri($"{ApiConstants.ProxerCdnUrl}/news/{this._dataModel.NewsId}_{this._dataModel.ImageId}.png");
 
         /// <summary>
-        ///     Gets infos about the css style of the image.
+        /// Gets infos about the css style of the image.
         /// </summary>
         public string ImageStyle => this._dataModel.ImageStyle;
 
         /// <summary>
-        ///     Gets the title image of the news.
+        /// Gets the title image of the news.
         /// </summary>
         public Uri ImageThumbnail
             => new Uri($"{ApiConstants.ProxerCdnUrl}/th/{this._dataModel.NewsId}_{this._dataModel.ImageId}.png");
 
         /// <summary>
-        ///     Gets the news id.
+        /// Gets the news id.
         /// </summary>
         public int NewsId => this._dataModel.NewsId;
 
         /// <summary>
-        ///     Gets the id of the notification.
+        /// Gets the id of the notification.
         /// </summary>
         public string NotificationId
             => $"{this.Author.Id}_{this.CategoryId}_{this.ThreadId}_{this.TimeStamp.ToFileTime()}";
 
         /// <summary>
-        ///     Gets the post count of the news.
+        /// Gets the post count of the news.
         /// </summary>
         public int Posts => this._dataModel.Posts;
 
@@ -81,12 +81,12 @@ namespace Azuria.Notifications.News
         public Senpai Senpai { get; }
 
         /// <summary>
-        ///     Gets the headline of the news.
+        /// Gets the headline of the news.
         /// </summary>
         public string Subject => this._dataModel.Subject;
 
         /// <summary>
-        ///     Gets the thread id.
+        /// Gets the thread id.
         /// </summary>
         public int ThreadId => this._dataModel.ThreadId;
 

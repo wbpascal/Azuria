@@ -35,7 +35,7 @@ namespace Azuria.Notifications.PrivateMessage
             PrivateMessageNotificationManager sender, Exception e);
 
         /// <summary>
-        ///     Represents a method that is executed when new private message notifications are available.
+        /// Represents a method that is executed when new private message notifications are available.
         /// </summary>
         /// <param name="sender">The user that recieved the notifications.</param>
         /// <param name="e">The notifications.</param>

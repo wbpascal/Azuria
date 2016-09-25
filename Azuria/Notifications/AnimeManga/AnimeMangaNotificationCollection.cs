@@ -5,7 +5,7 @@ using Azuria.Media;
 namespace Azuria.Notifications.AnimeManga
 {
     /// <summary>
-    ///     Represents a collection of <see cref="Anime" />- and <see cref="Manga" />-notifications.
+    /// Represents a collection of <see cref="Anime" />- and <see cref="Manga" />-notifications.
     /// </summary>
     public class AnimeMangaNotificationCollection<T> : IEnumerable<AnimeMangaNotification<T>>
         where T : IAnimeMangaObject

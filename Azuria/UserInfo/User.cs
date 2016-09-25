@@ -15,12 +15,12 @@ using Azuria.Utilities.Properties;
 namespace Azuria.UserInfo
 {
     /// <summary>
-    ///     Represents a user of proxer.
+    /// Represents a user of proxer.
     /// </summary>
     public class User
     {
         /// <summary>
-        ///     Represents the system as a user.
+        /// Represents the system as a user.
         /// </summary>
         public static User System = new User("System", -1);
 
@@ -37,7 +37,7 @@ namespace Azuria.UserInfo
         private readonly InitialisableProperty<string> _userName;
 
         /// <summary>
-        ///     Initialises a new instance of the class.
+        /// Initialises a new instance of the class.
         /// </summary>
         /// <param name="userId">The id of the user.</param>
         public User(int userId)
@@ -99,12 +99,12 @@ namespace Azuria.UserInfo
         #region Properties
 
         /// <summary>
-        ///     Gets all <see cref="Media.Anime" /> the <see cref="User" /> has in his profile.
+        /// Gets all <see cref="Media.Anime" /> the <see cref="User" /> has in his profile.
         /// </summary>
         public IEnumerable<UserProfileEntry<Anime>> Anime { get; }
 
         /// <summary>
-        ///     Gets the avatar of the user.
+        /// Gets the avatar of the user.
         /// </summary>
         public IInitialisableProperty<Uri> Avatar => this._avatar;
 
@@ -117,37 +117,37 @@ namespace Azuria.UserInfo
         public IEnumerable<Comment<Manga>> CommentsLatestManga { get; }
 
         /// <summary>
-        ///     Gets the id of the user.
+        /// Gets the id of the user.
         /// </summary>
         public int Id { get; }
 
         /// <summary>
-        ///     Gets all <see cref="Media.Manga" /> the <see cref="User" /> has in his profile.
+        /// Gets all <see cref="Media.Manga" /> the <see cref="User" /> has in his profile.
         /// </summary>
         public IEnumerable<UserProfileEntry<Manga>> Manga { get; }
 
         /// <summary>
-        ///     Gets the current number of total points the user has.
+        /// Gets the current number of total points the user has.
         /// </summary>
         public IInitialisableProperty<UserPoints> Points => this._points;
 
         /// <summary>
-        ///     Gets the current status of the user.
+        /// Gets the current status of the user.
         /// </summary>
         public IInitialisableProperty<UserStatus> Status => this._status;
 
         /// <summary>
-        ///     Gets all favourites of the user that are <see cref="Media.Anime">Anime</see>.
+        /// Gets all favourites of the user that are <see cref="Media.Anime">Anime</see>.
         /// </summary>
         public IInitialisableProperty<IEnumerable<Anime>> ToptenAnime => this._toptenAnime;
 
         /// <summary>
-        ///     Gets the <see cref="Media.Manga">Manga</see> top ten of the user.
+        /// Gets the <see cref="Media.Manga">Manga</see> top ten of the user.
         /// </summary>
         public IInitialisableProperty<IEnumerable<Manga>> ToptenManga => this._toptenManga;
 
         /// <summary>
-        ///     Gets the username of the user.
+        /// Gets the username of the user.
         /// </summary>
         public IInitialisableProperty<string> UserName => this._userName;
 
@@ -203,10 +203,10 @@ namespace Azuria.UserInfo
         }
 
         /// <summary>
-        ///     Returns a string that represents the current object.
+        /// Returns a string that represents the current object.
         /// </summary>
         /// <returns>
-        ///     A string that represents the current object.
+        /// A string that represents the current object.
         /// </returns>
         public override string ToString()
         {

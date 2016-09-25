@@ -8,14 +8,14 @@ namespace Azuria.Exceptions
     public class ProxerApiException : Exception
     {
         /// <summary>
-        ///     Initialises a new instance of the <see cref="ProxerApiException" /> class.
+        /// Initialises a new instance of the <see cref="ProxerApiException" /> class.
         /// </summary>
         public ProxerApiException()
         {
         }
 
         /// <summary>
-        ///     Initialises a new instance of the <see cref="ProxerApiException" /> class.
+        /// Initialises a new instance of the <see cref="ProxerApiException" /> class.
         /// </summary>
         /// <param name="errorCode"></param>
         public ProxerApiException(ErrorCode errorCode)
@@ -24,7 +24,7 @@ namespace Azuria.Exceptions
         }
 
         /// <summary>
-        ///     Initializes a new instance of the <see cref="ProxerApiException" /> class with a specified error message.
+        /// Initializes a new instance of the <see cref="ProxerApiException" /> class with a specified error message.
         /// </summary>
         /// <param name="message">The error message string.</param>
         public ProxerApiException(string message) : base(message)
@@ -32,8 +32,8 @@ namespace Azuria.Exceptions
         }
 
         /// <summary>
-        ///     Initializes a new instance of the <see cref="ProxerApiException" /> class with a specified error message and a
-        ///     reference to the inner exception that is the cause of this exception.
+        /// Initializes a new instance of the <see cref="ProxerApiException" /> class with a specified error message and a
+        /// reference to the inner exception that is the cause of this exception.
         /// </summary>
         /// <param name="message">The error message string.</param>
         /// <param name="inner">The inner exception reference.</param>
