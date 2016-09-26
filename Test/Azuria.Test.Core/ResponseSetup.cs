@@ -13,7 +13,9 @@ namespace Azuria.Test.Core
         {
             Dictionary<string, string> lReturn = new Dictionary<string, string>();
             foreach (
-                string filePath in Directory.GetFiles(AppDomain.CurrentDomain.BaseDirectory + "\\Response", "*.json"))
+                string filePath in
+                Directory.GetFiles((AppDomain.CurrentDomain.BaseDirectory + @"\Response").Replace(@"/\", "/"), "*.json")
+            )
                 using (StreamReader lReader = new StreamReader(filePath))
                 {
                     lReturn.Add(filePath.Split('\\').Last(), lReader.ReadToEnd());
