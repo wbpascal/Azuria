@@ -194,7 +194,7 @@
     <Compile Include="Exceptions\NoAccessException.cs" />
     <Compile Include="Exceptions\NotLoggedInException.cs" />
     <Compile Include="Exceptions\ProxerApiException.cs" />
-    <Compile Include="Exceptions\UserAlreadyLoggedInException.cs" />
+    <Compile Include="Exceptions\AlreadyLoggedInException.cs" />
     <Compile Include="Exceptions\WrongResponseException.cs" />
     <Compile Include="Media\Anime.cs" />
     <Compile Include="Media\Properties\AnimeMangaStatus.cs" />
