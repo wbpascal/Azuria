@@ -61,16 +61,18 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
-    <Compile Include="ApiSetup.cs" />
+    <Compile Include="GeneralSetup.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="SenpaiSetup.cs" />
     <Compile Include="SenpaiTests.cs" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="config.json" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Azuria.Test.Core\Azuria.Test.Core.csproj">
+      <Project>{fb2b7478-3b5d-4746-befa-20aebeaa6ff1}</Project>
+      <Name>Azuria.Test.Core</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\Azuria\Azuria.csproj">
       <Project>{841dc1a7-9140-47e5-b13b-e4c57cfe6496}</Project>
       <Name>Azuria</Name>
