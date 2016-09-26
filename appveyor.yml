@@ -10,5 +10,3 @@ configuration: Release
 build:
   project: Azuria.sln
   verbosity: minimal
-
-test: off
