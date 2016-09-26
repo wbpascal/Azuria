@@ -18,7 +18,7 @@ namespace Azuria.Test.Core
             )
                 using (StreamReader lReader = new StreamReader(filePath))
                 {
-                    lReturn.Add(filePath.Split('\\').Last(), lReader.ReadToEnd());
+                    lReturn.Add(filePath.Split('\\').Last().Split('/').Last(), lReader.ReadToEnd());
                 }
             return lReturn;
         }
