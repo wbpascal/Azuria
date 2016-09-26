@@ -44,10 +44,9 @@ namespace Azuria.Api.v1
             }
         }
 
-        internal static Task<ProxerResult<ProxerApiResponse<T>>> ApiRequest<T>(ApiRequest<T> request,
-            char[] loginToken = null)
+        internal static Task<ProxerResult<ProxerApiResponse<T>>> ApiRequest<T>(ApiRequest<T> request, bool forceTokenLogin = false)
         {
-            return ApiCustomRequest<ProxerApiResponse<T>>(request);
+            return ApiCustomRequest<ProxerApiResponse<T>>(request, forceTokenLogin);
         }
 
         internal static Task<ProxerResult<ProxerApiResponse>> ApiRequest(ApiRequest request)
@@ -82,9 +81,6 @@ namespace Azuria.Api.v1
                     break;
                 case ErrorCode.UserInsufficientPermissions:
                     lExceptions.Add(new NoAccessException(request.Senpai));
-                    break;
-                case ErrorCode.LoginTokenInvalid:
-                    lExceptions.Add(new NotLoggedInException(request.Senpai));
                     break;
                 case ErrorCode.NotificationsUserNotLoggedIn:
                 case ErrorCode.UcpUserNotLoggedIn:
