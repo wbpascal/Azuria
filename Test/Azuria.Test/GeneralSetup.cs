@@ -1,5 +1,6 @@
 ﻿using System.Threading.Tasks;
 using Azuria.Api;
+using Azuria.Test.Core;
 using Azuria.Utilities.Extensions;
 using NUnit.Framework;
 
