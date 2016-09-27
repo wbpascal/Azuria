@@ -50,7 +50,11 @@ namespace Azuria.Test.Core
                     .Where(request => !request.ContainsSenpai || (this._senpai != null))
                     .Where(request => postArgsArray.All(request.PostArguments.Contains) &&
                                       request.PostArguments.All(postArgsArray.Contains))
-                    .Where(request => (headers == null) || request.Headers.All(headers.Contains));
+                    .Where(request => (headers == null) || request.Headers.All(headers.Contains))
+                    .Where(
+                        request =>
+                            (request.IsLoggedIn == null) ||
+                            (this._senpai.IsProbablyLoggedIn == request.IsLoggedIn.Value));
                 if (lMatchingRequests.Any())
                     return new ProxerResult<string>(response.Response);
             }

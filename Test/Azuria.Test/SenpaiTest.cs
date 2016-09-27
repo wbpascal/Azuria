@@ -9,7 +9,7 @@ using NUnit.Framework;
 namespace Azuria.Test
 {
     [TestFixture]
-    public class SenpaiTests
+    public class SenpaiTest
     {
         [SetUp]
         public void Setup()

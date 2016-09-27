@@ -170,6 +170,12 @@ namespace Azuria.Community
         /// <returns></returns>
         public static async Task<ProxerResult<Conference>> Create(User user, string message, Senpai senpai)
         {
+            if (user == null) return new ProxerResult<Conference>(new ArgumentException(nameof(user)));
+            if (string.IsNullOrEmpty(message) || (message.Length > MaxCharactersPerMessage))
+                return new ProxerResult<Conference>(new ArgumentException(message));
+            if (senpai == null) return new ProxerResult<Conference>(new ArgumentException(nameof(senpai)));
+            if (!senpai.IsProbablyLoggedIn) return new ProxerResult<Conference>(new NotLoggedInException(senpai));
+
             ProxerResult<string> lUsernameResult = await user.UserName.GetObject();
             if (!lUsernameResult.Success || string.IsNullOrEmpty(lUsernameResult.Result))
                 return new ProxerResult<Conference>(lUsernameResult.Exceptions);
@@ -185,8 +191,12 @@ namespace Azuria.Community
         /// <returns></returns>
         public static async Task<ProxerResult<Conference>> Create(string username, string message, Senpai senpai)
         {
-            if (string.IsNullOrEmpty(username) || username.Equals("ERROR"))
+            if (string.IsNullOrEmpty(username))
                 return new ProxerResult<Conference>(new[] {new ArgumentException(nameof(username))});
+            if (string.IsNullOrEmpty(message) || (message.Length > MaxCharactersPerMessage))
+                return new ProxerResult<Conference>(new ArgumentException(message));
+            if (senpai == null) return new ProxerResult<Conference>(new ArgumentException(nameof(senpai)));
+            if (!senpai.IsProbablyLoggedIn) return new ProxerResult<Conference>(new NotLoggedInException(senpai));
 
             ProxerResult<ProxerApiResponse<int>> lResult =
                 await RequestHandler.ApiRequest(ApiRequestBuilder.MessengerNewConference(username, message, senpai));
@@ -251,6 +261,10 @@ namespace Azuria.Community
                 return
                     new ProxerResult<IEnumerable<ConferenceInfo>>(new[]
                         {new NotInitialisedException("Please call " + nameof(Init))});
+            if (senpai == null)
+                return new ProxerResult<IEnumerable<ConferenceInfo>>(new ArgumentException(nameof(senpai)));
+            if (!senpai.IsProbablyLoggedIn)
+                return new ProxerResult<IEnumerable<ConferenceInfo>>(new NotLoggedInException(senpai));
 
             List<ConferenceInfo> lConferences = new List<ConferenceInfo>();
             for (int page = 0; (page == 0) || (lConferences.Count%_conferencesPerPage == 0); page++)

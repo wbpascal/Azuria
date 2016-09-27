@@ -61,9 +61,11 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
+    <Compile Include="Conference\ConferenceSetup.cs" />
+    <Compile Include="Conference\ConferenceTest.cs" />
     <Compile Include="GeneralSetup.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="SenpaiTests.cs" />
+    <Compile Include="SenpaiTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

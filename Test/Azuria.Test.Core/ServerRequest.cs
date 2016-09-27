@@ -15,6 +15,8 @@ namespace Azuria.Test.Core
 
         public IDictionary<string, string> Headers { get; set; } = new Dictionary<string, string>();
 
+        public bool? IsLoggedIn { get; set; }
+
         public IDictionary<string, string> PostArguments { get; set; } = new Dictionary<string, string>();
 
         public IDictionary<string, string> QueryParams { get; set; } = new Dictionary<string, string>();
@@ -41,6 +43,13 @@ namespace Azuria.Test.Core
             return this;
         }
 
+        public ServerRequest WithLoggedInSenpai(bool isLoggedIn)
+        {
+            this.ContainsSenpai = true;
+            this.IsLoggedIn = isLoggedIn;
+            return this;
+        }
+
         public ServerRequest WithPostArgument(string key, string value)
         {
             this.PostArguments.Add(key, value);
@@ -53,9 +62,9 @@ namespace Azuria.Test.Core
             return this;
         }
 
-        public ServerRequest WithSenpai(bool withSenpai)
+        public ServerRequest WithSenpai()
         {
-            this.ContainsSenpai = withSenpai;
+            this.ContainsSenpai = true;
             return this;
         }
 
