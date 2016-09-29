@@ -44,7 +44,8 @@ namespace Azuria.Api.v1
             }
         }
 
-        internal static Task<ProxerResult<ProxerApiResponse<T>>> ApiRequest<T>(ApiRequest<T> request, bool forceTokenLogin = false)
+        internal static Task<ProxerResult<ProxerApiResponse<T>>> ApiRequest<T>(ApiRequest<T> request,
+            bool forceTokenLogin = false)
         {
             return ApiCustomRequest<ProxerApiResponse<T>>(request, forceTokenLogin);
         }

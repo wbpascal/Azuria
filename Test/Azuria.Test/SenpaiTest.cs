@@ -61,7 +61,7 @@ namespace Azuria.Test
             Assert.CatchAsync<AlreadyLoggedInException>(
                 async () => await this._senpai.Login("password").ThrowFirstForNonSuccess());
 
-            Senpai lNewSenpai = new Senpai("username");
+            Senpai lNewSenpai = new Senpai("InfiniteSoul");
             ProxerResult lLoginResult = await lNewSenpai.Login("wrong");
             Assert.IsFalse(lLoginResult.Success);
 
@@ -89,7 +89,7 @@ namespace Azuria.Test
             Assert.CatchAsync<NotLoggedInException>(
                 async () => await new Senpai("ad").Logout().ThrowFirstForNonSuccess());
 
-            Senpai lNewSenpai = new Senpai("username");
+            Senpai lNewSenpai = new Senpai("InfiniteSoul");
             ProxerResult lLoginResult = await lNewSenpai.Login("correct");
             Assert.IsTrue(lLoginResult.Success);
 
@@ -110,7 +110,7 @@ namespace Azuria.Test
         public void UsernameTest()
         {
             Assert.IsNotEmpty(this._senpai.Username);
-            Assert.AreEqual(this._senpai.Username, "username");
+            Assert.AreEqual(this._senpai.Username, "InfiniteSoul");
         }
     }
 }

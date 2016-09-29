@@ -86,7 +86,7 @@ namespace Azuria
         /// <returns></returns>
         public static async Task<ProxerResult<Senpai>> FromToken(char[] token)
         {
-            if (token == null || token.Length != 255)
+            if ((token == null) || (token.Length != 255))
                 return new ProxerResult<Senpai>(new ArgumentException(nameof(token)));
 
             Senpai lSenpai = new Senpai();
@@ -127,7 +127,7 @@ namespace Azuria
 
         internal async Task<ProxerResult> LoginWithToken(char[] token = null)
         {
-            if (token == null || token.Length != 255)
+            if ((token == null) || (token.Length != 255))
                 return new ProxerResult(new[] {new ArgumentException(nameof(token))});
             this.LoginToken.SetValue(token);
 

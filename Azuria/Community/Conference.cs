@@ -72,6 +72,10 @@ namespace Azuria.Community
         public bool IsGroupConference { get; }
 
         /// <summary>
+        /// </summary>
+        public static bool IsInitialised { get; private set; }
+
+        /// <summary>
         /// Gets a <see cref="User" /> that is the current leader of the conference.
         /// </summary>
         public IInitialisableProperty<User> Leader => this._leader;
@@ -170,6 +174,8 @@ namespace Azuria.Community
         /// <returns></returns>
         public static async Task<ProxerResult<Conference>> Create(User user, string message, Senpai senpai)
         {
+            if (!IsInitialised)
+                return new ProxerResult<Conference>(new NotInitialisedException("Please call " + nameof(Init)));
             if (user == null) return new ProxerResult<Conference>(new ArgumentException(nameof(user)));
             if (string.IsNullOrEmpty(message) || (message.Length > MaxCharactersPerMessage))
                 return new ProxerResult<Conference>(new ArgumentException(message));
@@ -191,6 +197,8 @@ namespace Azuria.Community
         /// <returns></returns>
         public static async Task<ProxerResult<Conference>> Create(string username, string message, Senpai senpai)
         {
+            if (!IsInitialised)
+                return new ProxerResult<Conference>(new NotInitialisedException("Please call " + nameof(Init)));
             if (string.IsNullOrEmpty(username))
                 return new ProxerResult<Conference>(new[] {new ArgumentException(nameof(username))});
             if (string.IsNullOrEmpty(message) || (message.Length > MaxCharactersPerMessage))
@@ -215,13 +223,26 @@ namespace Azuria.Community
         public static async Task<ProxerResult<Conference>> CreateGroup(IEnumerable<User> participants,
             string topic, Senpai senpai, string message = null)
         {
+            if (!IsInitialised)
+                return new ProxerResult<Conference>(new NotInitialisedException("Please call " + nameof(Init)));
+            if (senpai == null) return new ProxerResult<Conference>(new ArgumentException(nameof(senpai)));
+            if (!senpai.IsProbablyLoggedIn) return new ProxerResult<Conference>(new NotLoggedInException(senpai));
+            if (string.IsNullOrEmpty(topic) || (topic.Length > MaxCharactersTopic))
+                return new ProxerResult<Conference>(new ArgumentException(nameof(topic)));
+
             IEnumerable<User> lParticipants = participants as User[] ?? participants.ToArray();
             if (!lParticipants.Any() || lParticipants.Any(user => (user == null) || (user == User.System)))
                 return new ProxerResult<Conference>(new[] {new ArgumentException(nameof(participants))});
 
             List<string> lParticipantNames = new List<string>();
             foreach (User participant in lParticipants)
-                lParticipantNames.Add(await participant.UserName.GetObject("ERROR"));
+            {
+                ProxerResult<string> lUsernameResult = await participant.UserName;
+                if (!lUsernameResult.Success || string.IsNullOrEmpty(lUsernameResult.Result))
+                    return new ProxerResult<Conference>(lUsernameResult.Exceptions);
+
+                lParticipantNames.Add(lUsernameResult.Result);
+            }
             return await CreateGroup(lParticipantNames, topic, senpai, message);
         }
 
@@ -235,9 +256,15 @@ namespace Azuria.Community
         public static async Task<ProxerResult<Conference>> CreateGroup(IEnumerable<string> participants,
             string topic, Senpai senpai, string message = null)
         {
+            if (!IsInitialised)
+                return new ProxerResult<Conference>(new NotInitialisedException("Please call " + nameof(Init)));
+            if (senpai == null) return new ProxerResult<Conference>(new ArgumentException(nameof(senpai)));
+            if (!senpai.IsProbablyLoggedIn) return new ProxerResult<Conference>(new NotLoggedInException(senpai));
+            if (string.IsNullOrEmpty(topic) || (topic.Length > MaxCharactersTopic))
+                return new ProxerResult<Conference>(new ArgumentException(nameof(topic)));
+
             IEnumerable<string> lParticipantNames = participants as string[] ?? participants.ToArray();
-            if (!lParticipantNames.Any() ||
-                lParticipantNames.Any(username => username.Equals("ERROR") || string.IsNullOrEmpty(username.Trim())))
+            if (!lParticipantNames.Any() || lParticipantNames.Any(username => string.IsNullOrEmpty(username.Trim())))
                 return new ProxerResult<Conference>(new[] {new ArgumentException(nameof(participants))});
 
             ProxerResult<ProxerApiResponse<int>> lResult =
@@ -257,7 +284,7 @@ namespace Azuria.Community
         public static async Task<ProxerResult<IEnumerable<ConferenceInfo>>> GetConferences(Senpai senpai,
             ConferenceListType type = ConferenceListType.Default)
         {
-            if (_conferencesPerPage == default(int))
+            if (!IsInitialised)
                 return
                     new ProxerResult<IEnumerable<ConferenceInfo>>(new[]
                         {new NotInitialisedException("Please call " + nameof(Init))});
@@ -294,6 +321,7 @@ namespace Azuria.Community
             MaxCharactersTopic = lData.MaxCharactersTopic;
             MessagesPerPage = lData.MessagesPerPage;
             _conferencesPerPage = lData.ConferencesPerPage;
+            IsInitialised = true;
             return new ProxerResult();
         }
 

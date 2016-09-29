@@ -32,14 +32,14 @@ namespace Azuria.Test.Core
             ServerResponse.Create("https://proxer.me/api/v1", response =>
             {
                 response.Post("/user/login")
-                    .WithPostArgument("username", "username")
+                    .WithPostArgument("username", "InfiniteSoul")
                     .WithPostArgument("password", "correct")
                     .WithLoggedInSenpai(false);
             }).Respond(lJson["user_login.json"]);
             ServerResponse.Create("https://proxer.me/api/v1", response =>
             {
                 response.Post("/user/login")
-                    .WithPostArgument("username", "username")
+                    .WithPostArgument("username", "InfiniteSoul")
                     .WithPostArgument("password", "wrong")
                     .WithLoggedInSenpai(false);
             }).Respond(lJson["user_login_3001.json"]);
@@ -48,13 +48,24 @@ namespace Azuria.Test.Core
                 .Respond(lJson["user_logout.json"]);
             ServerResponse.Create("https://proxer.me/api/v1",
                     response =>
+                    {
                         response.Post("/user/userinfo")
                             .WithHeader("proxer-api-token",
                                 "bknnY3QLb0X7CHdfHzimhOLo1Tz4cpumHSJGTzp3Gx9i2lvJSO4aCOwBH4ERr0d92UMStcU5w3kylUfdHilg7SXL" +
                                 "VuCfDQtCIfsapmiXmGsFyHSeZcv45kOXOoipcL2VYt6oNni02KOApFOmRhpvCbOox7OKPPDOhIa58sc5aYCxDrRs" +
                                 "Ggjgp9FWetE3gfOxXYAYoK2wID4k3UKH95XvcCgo43qkhePdanby6a5OO67OXQv4Uty74Yt6YTpf7cs")
-                            .WithLoggedInSenpai(false))
+                            .WithLoggedInSenpai(false);
+                        response.Post("/user/userinfo").WithQueryParameter("uid", "177103");
+                        response.Post("/user/userinfo").WithQueryParameter("username", "InfiniteSoul");
+                    })
                 .Respond(lJson["user_userinfo177103.json"]);
+            ServerResponse.Create("https://proxer.me/api/v1",
+                    response =>
+                    {
+                        response.Post("/user/userinfo").WithQueryParameter("uid", "163825");
+                        response.Post("/user/userinfo").WithQueryParameter("username", "KutoSan");
+                    })
+                .Respond(lJson["user_userinfo163825.json"]);
 
             #endregion
 
@@ -78,18 +89,38 @@ namespace Azuria.Test.Core
                 .Respond(lJson["messenger_getconferences.json"]);
             ServerResponse.Create("https://proxer.me/api/v1",
                     response =>
+                    {
                         response.Post("/messenger/newconference")
                             .WithPostArgument("text", "hello")
-                            .WithPostArgument("username", "iS0u")
-                            .WithLoggedInSenpai(true))
+                            .WithPostArgument("username", "KutoSa")
+                            .WithLoggedInSenpai(true);
+                        response.Post("/messenger/newconference")
+                            .WithPostArgument("text", "hello")
+                            .WithPostArgument("username", "InfiniteSoul")
+                            .WithLoggedInSenpai(true);
+                    })
                 .Respond(lJson["messenger_newconference_3027.json"]);
             ServerResponse.Create("https://proxer.me/api/v1",
                     response =>
                         response.Post("/messenger/newconference")
                             .WithPostArgument("text", "hello")
-                            .WithPostArgument("username", "iS0ul")
+                            .WithPostArgument("username", "KutoSan")
                             .WithLoggedInSenpai(true))
                 .Respond(lJson["messenger_newconference.json"]);
+            ServerResponse.Create("https://proxer.me/api/v1",
+                    response =>
+                        response.Post("/messenger/newconferencegroup")
+                            .WithPostArgument("topic", "hello")
+                            .WithPostArgument("users[]", "KutoSan")
+                            .WithLoggedInSenpai(true))
+                .Respond(lJson["messenger_newconferencegroup.json"]);
+            ServerResponse.Create("https://proxer.me/api/v1",
+                    response =>
+                        response.Post("/messenger/newconferencegroup")
+                            .WithPostArgument("topic", "hello")
+                            .WithPostArgument("users[]", "InfiniteSoul")
+                            .WithLoggedInSenpai(true))
+                .Respond(lJson["messenger_newconferencegroup_3030.json"]);
 
             #endregion
         }

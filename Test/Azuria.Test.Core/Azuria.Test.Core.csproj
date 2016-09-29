@@ -64,7 +64,15 @@
     <None Include="Response\messenger_getconstants.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <None Include="Response\messenger_getmessages1.json" />
+    <None Include="Response\messenger_getmessages2.json" />
     <None Include="Response\messenger_newconference.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Response\messenger_newconferencegroup.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Response\messenger_newconferencegroup_3030.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="Response\messenger_newconference_3027.json">
@@ -79,7 +87,13 @@
     <None Include="Response\user_logout.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <None Include="Response\user_userinfo163825.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Include="Response\user_userinfo177103.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Response\user_userinfo_3003.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>

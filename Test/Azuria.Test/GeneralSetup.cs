@@ -28,7 +28,7 @@ public class GeneralSetup
 
     public async Task InitSenpaiInstance()
     {
-        SenpaiInstance = new Senpai("username");
+        SenpaiInstance = new Senpai("InfiniteSoul");
         await SenpaiInstance.Login("correct").ThrowFirstForNonSuccess();
         Assert.IsTrue(SenpaiInstance.IsProbablyLoggedIn);
     }
