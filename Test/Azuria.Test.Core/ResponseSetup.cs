@@ -121,6 +121,19 @@ namespace Azuria.Test.Core
                             .WithPostArgument("users[]", "InfiniteSoul")
                             .WithLoggedInSenpai(true))
                 .Respond(lJson["messenger_newconferencegroup_3030.json"]);
+            ServerResponse.Create("https://proxer.me/api/v1",
+                    response =>
+                    {
+                        response.Post("/messenger/messages")
+                            .WithQueryParameter("conference_id", "124536")
+                            .WithQueryParameter("message_id", "0")
+                            .WithLoggedInSenpai(true);
+                        response.Post("/messenger/messages")
+                            .WithQueryParameter("conference_id", "124536")
+                            .WithQueryParameter("message_id", "5018808")
+                            .WithLoggedInSenpai(true);
+                    })
+                .Respond(lJson["messenger_getmessages1.json"]);
 
             #endregion
         }

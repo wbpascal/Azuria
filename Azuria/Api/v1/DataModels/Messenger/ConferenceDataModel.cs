@@ -23,7 +23,7 @@ namespace Azuria.Api.v1.DataModels.Messenger
         internal string ConferenceUserTitle { get; set; }
 
         [JsonProperty("read")]
-        internal bool HasUnreadMessages { get; set; }
+        internal bool IsLastMessageRead { get; set; }
 
         [JsonProperty("group")]
         internal bool IsConferenceGroup { get; set; }

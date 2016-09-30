@@ -3,27 +3,27 @@
   "message": "Abfrage erfolgreich.",
   "data": [
     {
+      "id": "124536",
+      "topic": "Proxer API - Diskussion",
+      "topic_custom": "",
+      "count": "10",
+      "group": true,
+      "timestamp_end": "1474469535",
+      "read": false,
+      "read_count": "3",
+      "read_mid": "5018808",
+      "image": ""
+    },
+    {
       "id": "87114",
       "topic": "Proxer API Test",
       "topic_custom": "",
       "count": "3",
       "group": true,
       "timestamp_end": "1474745705",
-      "read": false,
-      "read_count": "0",
-      "read_mid": "4972528",
-      "image": ""
-    },
-    {
-      "id": "124536",
-      "topic": "Proxer API - Diskussion",
-      "topic_custom": "",
-      "count": "10",
-      "group": true,
-      "timestamp_end": "1474479454",
       "read": true,
       "read_count": "0",
-      "read_mid": "4988726",
+      "read_mid": "4972528",
       "image": ""
     },
     {
