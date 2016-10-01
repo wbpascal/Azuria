@@ -32,7 +32,7 @@ namespace Azuria.Community
             this.Id = conferenceId;
             this._senpai = senpai;
 
-            this._checkMessagesTimer = new Timer {Interval = new TimeSpan(0, 0, 15).TotalMilliseconds};
+            this._checkMessagesTimer = new Timer {Interval = AutoCheckInterval.TotalMilliseconds};
             this._checkMessagesTimer.Elapsed += this.OnCheckMessagesTimerElapsed;
 
             this.IsGroupConference = isGroup;
@@ -61,6 +61,10 @@ namespace Azuria.Community
                 this._checkMessagesTimer.Enabled = value;
             }
         }
+
+        /// <summary>
+        /// </summary>
+        public static TimeSpan AutoCheckInterval { get; set; } = TimeSpan.FromSeconds(15);
 
         /// <summary>
         /// Gets the Id of the conference.
