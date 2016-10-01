@@ -1,5 +1,1 @@
-{
-  "error": 1,
-  "message": "Dieser User existiert nicht",
-  "code": 3003
-}
+{ "error": 1, "message": "Dieser User existiert nicht", "code": 3003 }

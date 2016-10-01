@@ -40,7 +40,9 @@ namespace Azuria.Test.Core
 
             foreach (
                 ServerResponse response in
-                ServerResponse.ServerResponses.Where(response => url.AbsoluteUri.StartsWith(response.BaseUrl)))
+                ServerResponse.ServerResponses.ToArray()
+                    .Reverse()
+                    .Where(response => url.AbsoluteUri.StartsWith(response.BaseUrl)))
             {
                 IEnumerable<ServerRequest> lMatchingRequests = response.PostRequests.Where(
                         request =>

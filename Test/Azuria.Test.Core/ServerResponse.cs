@@ -14,10 +14,11 @@ namespace Azuria.Test.Core
 
         public string BaseUrl { get; }
 
-        public HashSet<ServerRequest> PostRequests { get; set; } = new HashSet<ServerRequest>();
+        public List<ServerRequest> PostRequests { get; set; } = new List<ServerRequest>();
+
         public string Response { get; private set; }
 
-        public static HashSet<ServerResponse> ServerResponses { get; set; } = new HashSet<ServerResponse>();
+        public static List<ServerResponse> ServerResponses { get; set; } = new List<ServerResponse>();
 
         #endregion
 
