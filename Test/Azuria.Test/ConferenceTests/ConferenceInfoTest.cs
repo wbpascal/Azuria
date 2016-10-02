@@ -4,7 +4,7 @@ using Azuria.Community;
 using Azuria.Utilities.Extensions;
 using NUnit.Framework;
 
-namespace Azuria.Test.Conference
+namespace Azuria.Test.ConferenceTests
 {
     public class ConferenceInfoTest
     {
@@ -31,7 +31,7 @@ namespace Azuria.Test.Conference
         public async Task Setup()
         {
             this._conferenceInfo =
-                (await Community.Conference.GetConferences(GeneralSetup.SenpaiInstance).ThrowFirstForNonSuccess()).First
+                (await Conference.GetConferences(GeneralSetup.SenpaiInstance).ThrowFirstForNonSuccess()).First
                     ();
             Assert.IsNotNull(this._conferenceInfo);
         }

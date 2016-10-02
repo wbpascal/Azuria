@@ -167,6 +167,64 @@ namespace Azuria.Test.Core
                             .WithQueryParameter("conference_id", "124536")
                             .WithLoggedInSenpai(true))
                 .Respond(JsonResponses["messenger_getconferenceinfo.json"]);
+            ServerResponse.Create("https://proxer.me/api/v1",
+                    response =>
+                        response.Post("/messenger/report")
+                            .WithQueryParameter("conference_id", "124536")
+                            .WithPostArgument("text", "a")
+                            .WithLoggedInSenpai(true))
+                .Respond(JsonResponses["messenger_setreport_3025.json"]);
+            ServerResponse.Create("https://proxer.me/api/v1",
+                    response =>
+                        response.Post("/messenger/report")
+                            .WithQueryParameter("conference_id", "124536")
+                            .WithPostArgument("text", "Report Reason")
+                            .WithLoggedInSenpai(true))
+                .Respond(JsonResponses["messenger_setreport.json"]);
+            ServerResponse.Create("https://proxer.me/api/v1",
+                    response =>
+                        response.Post("/messenger/setmessage")
+                            .WithQueryParameter("conference_id", "124536")
+                            .WithPostArgument("text", "message")
+                            .WithLoggedInSenpai(true))
+                .Respond(JsonResponses["messenger_setmessage.json"]);
+            ServerResponse.Create("https://proxer.me/api/v1",
+                    response =>
+                        response.Post("/messenger/setmessage")
+                            .WithQueryParameter("conference_id", "124536")
+                            .WithPostArgument("text", "/help")
+                            .WithLoggedInSenpai(true))
+                .Respond(JsonResponses["messenger_setmessageHelp.json"]);
+            ServerResponse.Create("https://proxer.me/api/v1",
+                    response =>
+                        response.Post("/messenger/setblock")
+                            .WithQueryParameter("conference_id", "124536")
+                            .WithLoggedInSenpai(true))
+                .Respond(JsonResponses["messenger_setblock.json"]);
+            ServerResponse.Create("https://proxer.me/api/v1",
+                    response =>
+                        response.Post("/messenger/setunblock")
+                            .WithQueryParameter("conference_id", "124536")
+                            .WithLoggedInSenpai(true))
+                .Respond(JsonResponses["messenger_setunblock.json"]);
+            ServerResponse.Create("https://proxer.me/api/v1",
+                    response =>
+                        response.Post("/messenger/setunread")
+                            .WithQueryParameter("conference_id", "124536")
+                            .WithLoggedInSenpai(true))
+                .Respond(JsonResponses["messenger_setunread.json"]);
+            ServerResponse.Create("https://proxer.me/api/v1",
+                    response =>
+                        response.Post("/messenger/setfavour")
+                            .WithQueryParameter("conference_id", "124536")
+                            .WithLoggedInSenpai(true))
+                .Respond(JsonResponses["messenger_setfavour.json"]);
+            ServerResponse.Create("https://proxer.me/api/v1",
+                    response =>
+                        response.Post("/messenger/setunfavour")
+                            .WithQueryParameter("conference_id", "124536")
+                            .WithLoggedInSenpai(true))
+                .Respond(JsonResponses["messenger_setunfavour.json"]);
 
             #endregion
         }

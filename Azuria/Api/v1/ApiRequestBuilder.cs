@@ -291,10 +291,10 @@ namespace Azuria.Api.v1
                 };
         }
 
-        internal static ApiRequest<int> MessengerSetUnread(int conferenceId, Senpai senpai)
+        internal static ApiRequest MessengerSetUnread(int conferenceId, Senpai senpai)
         {
             return
-                new ApiRequest<int>(new Uri($"{ApiConstants.ApiUrlV1}/messenger/setunread?conference_id={conferenceId}"))
+                new ApiRequest(new Uri($"{ApiConstants.ApiUrlV1}/messenger/setunread?conference_id={conferenceId}"))
                 {
                     CheckLogin = true,
                     Senpai = senpai

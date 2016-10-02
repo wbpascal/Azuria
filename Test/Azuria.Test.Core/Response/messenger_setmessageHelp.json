@@ -1,0 +1,6 @@
+{
+  "error": 0,
+  "message": "Abfrage erfolgreich.",
+  "data":
+    "Unbekannter Befehl. Vorhandene Befehle:\n\t\t\taddUser [Benutzername]: User zur Konferenz hinzufügen.\n\t\t\tremoveUser [Benutzername]: User von der Konferenz entfernen.\n\t\t\texit: Aus der Konferenz aussteigen.\n\t\t\tleader: Gibt den aktuellen Konferenzleiter aus.\n\t\t\tsetLeader [Benutzername]: Ändert den aktuellen Konferenzleiter.\n\t\t\ttopic: Gibt das aktuelle Thema aus.\n\t\t\tsetTopic [Text]: Ändert das aktuelle Thema.\n\t\t\tping: Gibt \"pong\" aus."
+}

@@ -183,8 +183,6 @@ namespace Azuria.Community
             if (user == null) return new ProxerResult<Conference>(new ArgumentException(nameof(user)));
             if (string.IsNullOrEmpty(message) || (message.Length > MaxCharactersPerMessage))
                 return new ProxerResult<Conference>(new ArgumentException(message));
-            if (senpai == null) return new ProxerResult<Conference>(new ArgumentException(nameof(senpai)));
-            if (!senpai.IsProbablyLoggedIn) return new ProxerResult<Conference>(new NotLoggedInException(senpai));
 
             ProxerResult<string> lUsernameResult = await user.UserName.GetObject();
             if (!lUsernameResult.Success || string.IsNullOrEmpty(lUsernameResult.Result))
@@ -207,8 +205,6 @@ namespace Azuria.Community
                 return new ProxerResult<Conference>(new[] {new ArgumentException(nameof(username))});
             if (string.IsNullOrEmpty(message) || (message.Length > MaxCharactersPerMessage))
                 return new ProxerResult<Conference>(new ArgumentException(message));
-            if (senpai == null) return new ProxerResult<Conference>(new ArgumentException(nameof(senpai)));
-            if (!senpai.IsProbablyLoggedIn) return new ProxerResult<Conference>(new NotLoggedInException(senpai));
 
             ProxerResult<ProxerApiResponse<int>> lResult =
                 await RequestHandler.ApiRequest(ApiRequestBuilder.MessengerNewConference(username, message, senpai));
@@ -229,8 +225,6 @@ namespace Azuria.Community
         {
             if (!IsInitialised)
                 return new ProxerResult<Conference>(new NotInitialisedException("Please call " + nameof(Init)));
-            if (senpai == null) return new ProxerResult<Conference>(new ArgumentException(nameof(senpai)));
-            if (!senpai.IsProbablyLoggedIn) return new ProxerResult<Conference>(new NotLoggedInException(senpai));
             if (string.IsNullOrEmpty(topic) || (topic.Length > MaxCharactersTopic))
                 return new ProxerResult<Conference>(new ArgumentException(nameof(topic)));
 
@@ -262,8 +256,6 @@ namespace Azuria.Community
         {
             if (!IsInitialised)
                 return new ProxerResult<Conference>(new NotInitialisedException("Please call " + nameof(Init)));
-            if (senpai == null) return new ProxerResult<Conference>(new ArgumentException(nameof(senpai)));
-            if (!senpai.IsProbablyLoggedIn) return new ProxerResult<Conference>(new NotLoggedInException(senpai));
             if (string.IsNullOrEmpty(topic) || (topic.Length > MaxCharactersTopic))
                 return new ProxerResult<Conference>(new ArgumentException(nameof(topic)));
 
@@ -292,10 +284,6 @@ namespace Azuria.Community
                 return
                     new ProxerResult<IEnumerable<ConferenceInfo>>(new[]
                         {new NotInitialisedException("Please call " + nameof(Init))});
-            if (senpai == null)
-                return new ProxerResult<IEnumerable<ConferenceInfo>>(new ArgumentException(nameof(senpai)));
-            if (!senpai.IsProbablyLoggedIn)
-                return new ProxerResult<IEnumerable<ConferenceInfo>>(new NotLoggedInException(senpai));
 
             List<ConferenceInfo> lConferences = new List<ConferenceInfo>();
             for (int page = 0; (page == 0) || (lConferences.Count%_conferencesPerPage == 0); page++)
@@ -364,7 +352,7 @@ namespace Azuria.Community
             ProxerResult<ProxerApiResponse<string>> lResult =
                 await RequestHandler.ApiRequest(ApiRequestBuilder.MessengerSetMessage(this.Id, message, this._senpai));
             if (!lResult.Success || (lResult.Result == null)) return new ProxerResult<string>(lResult.Exceptions);
-            return new ProxerResult<string>(lResult.Result.Data);
+            return new ProxerResult<string>(lResult.Result.Data ?? string.Empty);
         }
 
         /// <summary>
@@ -373,6 +361,8 @@ namespace Azuria.Community
         /// <returns></returns>
         public async Task<ProxerResult> SendReport(string reason)
         {
+            if (string.IsNullOrEmpty(reason)) return new ProxerResult(new ArgumentException(nameof(reason)));
+
             ProxerResult<ProxerApiResponse<int>> lResult =
                 await RequestHandler.ApiRequest(ApiRequestBuilder.MessengerSetReport(this.Id, reason, this._senpai));
             return !lResult.Success || (lResult.Result == null)
@@ -418,7 +408,7 @@ namespace Azuria.Community
         /// <returns>Whether the action was successfull.</returns>
         public async Task<ProxerResult> SetUnread()
         {
-            ProxerResult<ProxerApiResponse<int>> lResult =
+            ProxerResult<ProxerApiResponse> lResult =
                 await RequestHandler.ApiRequest(ApiRequestBuilder.MessengerSetUnread(this.Id, this._senpai));
             return !lResult.Success || (lResult.Result == null)
                 ? new ProxerResult(lResult.Exceptions)

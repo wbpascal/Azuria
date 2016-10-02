@@ -1,9 +1,10 @@
 ﻿using System;
 using System.Threading.Tasks;
+using Azuria.Community;
 using Azuria.Utilities.Extensions;
 using NUnit.Framework;
 
-namespace Azuria.Test.Conference
+namespace Azuria.Test.ConferenceTests
 {
     [SetUpFixture]
     public class ConferenceSetup
@@ -13,8 +14,8 @@ namespace Azuria.Test.Conference
         [OneTimeSetUp]
         public async Task Setup()
         {
-            await Community.Conference.Init().ThrowFirstForNonSuccess();
-            Community.Conference.AutoCheckInterval = TimeSpan.FromMilliseconds(50);
+            await Conference.Init().ThrowFirstForNonSuccess();
+            Conference.AutoCheckInterval = TimeSpan.FromMilliseconds(50);
         }
 
         #endregion
