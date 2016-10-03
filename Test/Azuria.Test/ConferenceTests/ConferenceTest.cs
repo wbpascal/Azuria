@@ -227,6 +227,15 @@ namespace Azuria.Test.ConferenceTests
             Message[] lMessages = this._conference.Messages.ToArray();
             Assert.IsNotEmpty(lMessages);
             Assert.AreEqual(lMessages.Length, 56);
+            Assert.IsTrue(lMessages.Any(message => message.Action == MessageAction.AddUser));
+            Assert.IsTrue(lMessages.Any(message => message.Action == MessageAction.RemoveUser));
+            Assert.IsTrue(lMessages.Any(message => message.Action == MessageAction.SetTopic));
+            Assert.IsTrue(lMessages.Any(message => message.Action == MessageAction.SetLeader));
+            Assert.IsTrue(lMessages.Any(message => message.Action == MessageAction.NoAction));
+            Assert.IsTrue(lMessages.All(message => message.ConferenceId == this._conference.Id));
+            Assert.IsTrue(lMessages.All(message => !string.IsNullOrEmpty(message.Content)));
+            Assert.IsTrue(lMessages.All(message => message.Sender != null));
+            Assert.IsTrue(lMessages.All(message => message.TimeStamp != default(DateTime)));
         }
 
         [Test]

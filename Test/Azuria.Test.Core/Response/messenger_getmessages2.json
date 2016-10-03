@@ -18,7 +18,7 @@
       "user_id": "406647",
       "username": "Marco-",
       "message": "Oder habe ich wieder irgendwas released was nicht funktioniert xD?",
-      "action": "",
+      "action": "setTopic",
       "timestamp": "1473097474",
       "device": "default"
     },
@@ -69,7 +69,7 @@
       "user_id": "254543",
       "username": "Masterside",
       "message": "Win10 Pro x64",
-      "action": "",
+      "action": "setLeader",
       "timestamp": "1473098424",
       "device": "default"
     },

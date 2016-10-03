@@ -28,11 +28,6 @@
         /// <summary>
         /// The topic of the conference was changed.
         /// </summary>
-        SetTopic,
-
-        /// <summary>
-        /// A message was returned directly by the system. Happens most of the times if the user issued a command.
-        /// </summary>
-        GetAction
+        SetTopic
     }
 }

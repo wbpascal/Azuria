@@ -179,7 +179,7 @@
       "username": "Nihongasuki",
       "message":
         "Eh, isH ist auch gegenseitig ausschließend.\n\nEntweder H oder normal, eine gemischte Liste ist nicht vorgesehen, und auch irgendwie unnötig (denn ehrlich, wer bitte sucht gleichzeitig nach H UND nicht H? Entweder man will was normales sehen, oder man will andere Dinge tun, aber normalerweise sollte man wissen, was von beidem man tun will)\n\nDass es all18 gibt ist auch eigentlich nicht Sinn der Sache, und wurde nur wegen viel Genörgel eingebaut (und dient mehr dazu, nach allen Arten von H zu suchen als nach einer gemischten Liste)\n\nEine Sortierungsmöglichkeit lässt sich sicher einbauen, aber ein \"alle Animes inklusive H\" ist nicht sinnvoll.",
-      "action": "",
+      "action": "removeUser",
       "timestamp": "1473795951",
       "device": "default"
     },
@@ -300,7 +300,7 @@
       "user_id": "121658",
       "username": "RubyDerBoss",
       "message": "Ah das is ja nice. Danke für den Tip!",
-      "action": "",
+      "action": "addUser",
       "timestamp": "1474479454",
       "device": "default"
     },
