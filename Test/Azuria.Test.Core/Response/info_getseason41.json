@@ -1,0 +1,18 @@
+{
+  "error": 0,
+  "message": "Abfrage erfolgreich.",
+  "data": [
+    {
+      "id": "2823",
+      "eid": "41",
+      "year": "2008",
+      "season": "2"
+    },
+    {
+      "id": "10553",
+      "eid": "41",
+      "year": "2008",
+      "season": "3"
+    }
+  ]
+}

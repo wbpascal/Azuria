@@ -8,6 +8,9 @@ namespace Azuria.Api.v1.DataModels.Info
     {
         #region Properties
 
+        [JsonProperty("description")]
+        internal string Description { get; set; }
+
         [JsonProperty("id")]
         internal int Id { get; set; }
 

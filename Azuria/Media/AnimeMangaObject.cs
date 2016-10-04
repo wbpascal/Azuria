@@ -169,6 +169,8 @@ namespace Azuria.Media
         /// </returns>
         public static async Task<ProxerResult<IAnimeMangaObject>> CreateFromId(int id)
         {
+            if (id <= 0) return new ProxerResult<IAnimeMangaObject>(new ArgumentException(nameof(id)));
+
             ProxerResult<ProxerApiResponse<EntryDataModel>> lResult =
                 await RequestHandler.ApiRequest(ApiRequestBuilder.InfoGetEntry(id));
             if (!lResult.Success || (lResult.Result == null))

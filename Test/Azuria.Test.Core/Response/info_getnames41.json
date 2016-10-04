@@ -1,0 +1,30 @@
+{
+  "error": 0,
+  "message": "Abfrage erfolgreich.",
+  "data": [
+    {
+      "id": "100",
+      "eid": "41",
+      "type": "name",
+      "name": "Code Geass: Hangyaku no Lelouch R2"
+    },
+    {
+      "id": "101",
+      "eid": "41",
+      "type": "nameeng",
+      "name": "English title"
+    },
+    {
+      "id": "101",
+      "eid": "41",
+      "type": "nameger",
+      "name": "Deutscher Titel ü"
+    },
+    {
+      "id": "102",
+      "eid": "41",
+      "type": "namejap",
+      "name": "コ japanese title"
+    }
+  ]
+}

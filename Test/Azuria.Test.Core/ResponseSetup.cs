@@ -40,52 +40,58 @@ namespace Azuria.Test.Core
 
         public static void InitRequests()
         {
-            #region User
+            #region Info
 
-            ServerResponse.Create("https://proxer.me/api/v1", response =>
-            {
-                response.Post("/user/login")
-                    .WithPostArgument("username", "InfiniteSoul")
-                    .WithPostArgument("password", "correct")
-                    .WithLoggedInSenpai(false);
-            }).Respond(JsonResponses["user_login.json"]);
-            ServerResponse.Create("https://proxer.me/api/v1", response =>
-            {
-                response.Post("/user/login")
-                    .WithPostArgument("username", "InfiniteSoul")
-                    .WithPostArgument("password", "wrong")
-                    .WithLoggedInSenpai(false);
-            }).Respond(JsonResponses["user_login_3001.json"]);
-            ServerResponse.Create("https://proxer.me/api/v1",
-                    response => response.Post("/user/logout").WithLoggedInSenpai(true))
-                .Respond(JsonResponses["user_logout.json"]);
             ServerResponse.Create("https://proxer.me/api/v1",
                     response =>
-                    {
-                        response.Post("/user/userinfo")
-                            .WithHeader("proxer-api-token",
-                                "bknnY3QLb0X7CHdfHzimhOLo1Tz4cpumHSJGTzp3Gx9i2lvJSO4aCOwBH4ERr0d92UMStcU5w3kylUfdHilg7SXL" +
-                                "VuCfDQtCIfsapmiXmGsFyHSeZcv45kOXOoipcL2VYt6oNni02KOApFOmRhpvCbOox7OKPPDOhIa58sc5aYCxDrRs" +
-                                "Ggjgp9FWetE3gfOxXYAYoK2wID4k3UKH95XvcCgo43qkhePdanby6a5OO67OXQv4Uty74Yt6YTpf7cs")
-                            .WithLoggedInSenpai(false);
-                        response.Post("/user/userinfo").WithQueryParameter("uid", "177103");
-                        response.Post("/user/userinfo").WithQueryParameter("username", "InfiniteSoul");
-                    })
-                .Respond(JsonResponses["user_userinfo177103.json"]);
+                        response.Post("/info/entry")
+                            .WithQueryParameter("id", "41"))
+                .Respond(JsonResponses["info_getentry41.json"]);
             ServerResponse.Create("https://proxer.me/api/v1",
                     response =>
-                    {
-                        response.Post("/user/userinfo").WithQueryParameter("uid", "163825");
-                        response.Post("/user/userinfo").WithQueryParameter("username", "KutoSan");
-                    })
-                .Respond(JsonResponses["user_userinfo163825.json"]);
+                        response.Post("/info/entry")
+                            .WithQueryParameter("id", "666"))
+                .Respond(JsonResponses["info_getentry_3007.json"]);
             ServerResponse.Create("https://proxer.me/api/v1",
                     response =>
-                    {
-                        response.Post("/user/userinfo").WithQueryParameter("uid", int.MaxValue.ToString());
-                        response.Post("/user/userinfo").WithQueryParameter("username", "asd");
-                    })
-                .Respond(JsonResponses["user_userinfo_3003.json"]);
+                        response.Post("/info/lang")
+                            .WithQueryParameter("id", "41"))
+                .Respond(JsonResponses["info_getlang41.json"]);
+            ServerResponse.Create("https://proxer.me/api/v1",
+                    response =>
+                        response.Post("/info/season")
+                            .WithQueryParameter("id", "41"))
+                .Respond(JsonResponses["info_getseason41.json"]);
+            ServerResponse.Create("https://proxer.me/api/v1",
+                    response =>
+                        response.Post("/info/groups")
+                            .WithQueryParameter("id", "41"))
+                .Respond(JsonResponses["info_getgroups41.json"]);
+            ServerResponse.Create("https://proxer.me/api/v1",
+                    response =>
+                        response.Post("/info/publisher")
+                            .WithQueryParameter("id", "41"))
+                .Respond(JsonResponses["info_getpublisher41.json"]);
+            ServerResponse.Create("https://proxer.me/api/v1",
+                    response =>
+                        response.Post("/info/names")
+                            .WithQueryParameter("id", "41"))
+                .Respond(JsonResponses["info_getnames41.json"]);
+            ServerResponse.Create("https://proxer.me/api/v1",
+                    response =>
+                        response.Post("/info/gate")
+                            .WithQueryParameter("id", "41"))
+                .Respond(JsonResponses["info_getgate41.json"]);
+            ServerResponse.Create("https://proxer.me/api/v1",
+                    response =>
+                        response.Post("/info/relations")
+                            .WithQueryParameter("id", "41"))
+                .Respond(JsonResponses["info_getrelations41.json"]);
+            ServerResponse.Create("https://proxer.me/api/v1",
+                    response =>
+                        response.Post("/info/entrytags")
+                            .WithQueryParameter("id", "41"))
+                .Respond(JsonResponses["info_getentrytags41.json"]);
 
             #endregion
 
@@ -225,6 +231,55 @@ namespace Azuria.Test.Core
                             .WithQueryParameter("conference_id", "124536")
                             .WithLoggedInSenpai(true))
                 .Respond(JsonResponses["messenger_setunfavour.json"]);
+
+            #endregion
+
+            #region User
+
+            ServerResponse.Create("https://proxer.me/api/v1", response =>
+            {
+                response.Post("/user/login")
+                    .WithPostArgument("username", "InfiniteSoul")
+                    .WithPostArgument("password", "correct")
+                    .WithLoggedInSenpai(false);
+            }).Respond(JsonResponses["user_login.json"]);
+            ServerResponse.Create("https://proxer.me/api/v1", response =>
+            {
+                response.Post("/user/login")
+                    .WithPostArgument("username", "InfiniteSoul")
+                    .WithPostArgument("password", "wrong")
+                    .WithLoggedInSenpai(false);
+            }).Respond(JsonResponses["user_login_3001.json"]);
+            ServerResponse.Create("https://proxer.me/api/v1",
+                    response => response.Post("/user/logout").WithLoggedInSenpai(true))
+                .Respond(JsonResponses["user_logout.json"]);
+            ServerResponse.Create("https://proxer.me/api/v1",
+                    response =>
+                    {
+                        response.Post("/user/userinfo")
+                            .WithHeader("proxer-api-token",
+                                "bknnY3QLb0X7CHdfHzimhOLo1Tz4cpumHSJGTzp3Gx9i2lvJSO4aCOwBH4ERr0d92UMStcU5w3kylUfdHilg7SXL" +
+                                "VuCfDQtCIfsapmiXmGsFyHSeZcv45kOXOoipcL2VYt6oNni02KOApFOmRhpvCbOox7OKPPDOhIa58sc5aYCxDrRs" +
+                                "Ggjgp9FWetE3gfOxXYAYoK2wID4k3UKH95XvcCgo43qkhePdanby6a5OO67OXQv4Uty74Yt6YTpf7cs")
+                            .WithLoggedInSenpai(false);
+                        response.Post("/user/userinfo").WithQueryParameter("uid", "177103");
+                        response.Post("/user/userinfo").WithQueryParameter("username", "InfiniteSoul");
+                    })
+                .Respond(JsonResponses["user_userinfo177103.json"]);
+            ServerResponse.Create("https://proxer.me/api/v1",
+                    response =>
+                    {
+                        response.Post("/user/userinfo").WithQueryParameter("uid", "163825");
+                        response.Post("/user/userinfo").WithQueryParameter("username", "KutoSan");
+                    })
+                .Respond(JsonResponses["user_userinfo163825.json"]);
+            ServerResponse.Create("https://proxer.me/api/v1",
+                    response =>
+                    {
+                        response.Post("/user/userinfo").WithQueryParameter("uid", int.MaxValue.ToString());
+                        response.Post("/user/userinfo").WithQueryParameter("username", "asd");
+                    })
+                .Respond(JsonResponses["user_userinfo_3003.json"]);
 
             #endregion
         }
