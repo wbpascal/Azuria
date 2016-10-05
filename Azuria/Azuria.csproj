@@ -67,6 +67,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Api\v1\Converters\Anime\StreamPartnerConverter.cs" />
+    <Compile Include="Api\v1\Converters\Info\PublisherTypeConverter.cs" />
     <Compile Include="Api\v1\Converters\Manga\PagesConverter.cs" />
     <Compile Include="Api\v1\DataModels\Anime\StreamDataModel.cs" />
     <Compile Include="Api\v1\DataModels\Manga\ChapterDataModel.cs" />

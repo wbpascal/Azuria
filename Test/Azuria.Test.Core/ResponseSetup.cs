@@ -45,8 +45,8 @@ namespace Azuria.Test.Core
             ServerResponse.Create("https://proxer.me/api/v1",
                     response =>
                         response.Post("/info/entry")
-                            .WithQueryParameter("id", "41"))
-                .Respond(JsonResponses["info_getentry41.json"]);
+                            .WithQueryParameter("id", "9200"))
+                .Respond(JsonResponses["info_getentry.json"]);
             ServerResponse.Create("https://proxer.me/api/v1",
                     response =>
                         response.Post("/info/entry")
@@ -55,43 +55,67 @@ namespace Azuria.Test.Core
             ServerResponse.Create("https://proxer.me/api/v1",
                     response =>
                         response.Post("/info/lang")
-                            .WithQueryParameter("id", "41"))
-                .Respond(JsonResponses["info_getlang41.json"]);
+                            .WithQueryParameter("id", "9200"))
+                .Respond(JsonResponses["info_getlang.json"]);
             ServerResponse.Create("https://proxer.me/api/v1",
                     response =>
                         response.Post("/info/season")
-                            .WithQueryParameter("id", "41"))
-                .Respond(JsonResponses["info_getseason41.json"]);
+                            .WithQueryParameter("id", "9200"))
+                .Respond(JsonResponses["info_getseason.json"]);
             ServerResponse.Create("https://proxer.me/api/v1",
                     response =>
                         response.Post("/info/groups")
-                            .WithQueryParameter("id", "41"))
-                .Respond(JsonResponses["info_getgroups41.json"]);
+                            .WithQueryParameter("id", "9200"))
+                .Respond(JsonResponses["info_getgroups.json"]);
             ServerResponse.Create("https://proxer.me/api/v1",
                     response =>
                         response.Post("/info/publisher")
-                            .WithQueryParameter("id", "41"))
-                .Respond(JsonResponses["info_getpublisher41.json"]);
+                            .WithQueryParameter("id", "9200"))
+                .Respond(JsonResponses["info_getpublisher.json"]);
             ServerResponse.Create("https://proxer.me/api/v1",
                     response =>
                         response.Post("/info/names")
-                            .WithQueryParameter("id", "41"))
-                .Respond(JsonResponses["info_getnames41.json"]);
+                            .WithQueryParameter("id", "9200"))
+                .Respond(JsonResponses["info_getnames.json"]);
             ServerResponse.Create("https://proxer.me/api/v1",
                     response =>
                         response.Post("/info/gate")
-                            .WithQueryParameter("id", "41"))
-                .Respond(JsonResponses["info_getgate41.json"]);
+                            .WithQueryParameter("id", "9200"))
+                .Respond(JsonResponses["info_getgate.json"]);
             ServerResponse.Create("https://proxer.me/api/v1",
                     response =>
                         response.Post("/info/relations")
-                            .WithQueryParameter("id", "41"))
-                .Respond(JsonResponses["info_getrelations41.json"]);
+                            .WithQueryParameter("id", "9200"))
+                .Respond(JsonResponses["info_getrelations.json"]);
             ServerResponse.Create("https://proxer.me/api/v1",
                     response =>
                         response.Post("/info/entrytags")
-                            .WithQueryParameter("id", "41"))
-                .Respond(JsonResponses["info_getentrytags41.json"]);
+                            .WithQueryParameter("id", "9200"))
+                .Respond(JsonResponses["info_getentrytags.json"]);
+            ServerResponse.Create("https://proxer.me/api/v1",
+                    response =>
+                        response.Post("/info/comments")
+                            .WithQueryParameter("id", "9200")
+                            .WithQueryParameter("p", "0")
+                            .WithQueryParameter("limit", "25")
+                            .WithQueryParameter("sort", "latest"))
+                .Respond(JsonResponses["info_getcommentslatest.json"]);
+            ServerResponse.Create("https://proxer.me/api/v1",
+                    response =>
+                        response.Post("/info/comments")
+                            .WithQueryParameter("id", "9200")
+                            .WithQueryParameter("p", "0")
+                            .WithQueryParameter("limit", "25")
+                            .WithQueryParameter("sort", "rating"))
+                .Respond(JsonResponses["info_getcommentsrating1.json"]);
+            ServerResponse.Create("https://proxer.me/api/v1",
+                    response =>
+                        response.Post("/info/comments")
+                            .WithQueryParameter("id", "9200")
+                            .WithQueryParameter("p", "1")
+                            .WithQueryParameter("limit", "25")
+                            .WithQueryParameter("sort", "rating"))
+                .Respond(JsonResponses["info_getcommentsrating2.json"]);
 
             #endregion
 

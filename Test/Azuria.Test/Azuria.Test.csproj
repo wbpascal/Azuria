@@ -66,6 +66,7 @@
     <Compile Include="ConferenceTests\ConferenceTest.cs" />
     <Compile Include="GeneralSetup.cs" />
     <Compile Include="MediaTests\AnimeMangaObjectTest.cs" />
+    <Compile Include="MediaTests\AnimeTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SenpaiTest.cs" />
   </ItemGroup>

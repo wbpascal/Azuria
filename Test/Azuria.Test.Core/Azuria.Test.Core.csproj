@@ -55,34 +55,55 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Response\info_getentry41.json">
+    <None Include="Response\info_getcommentslatest.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Response\info_getentrytags41.json">
+    <None Include="Response\info_getcommentsrating1.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Response\info_getcommentsrating2.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Response\info_getentry.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Response\info_getentrytags.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="Response\info_getentry_3007.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Response\info_getgate41.json">
+    <None Include="Response\info_getgate.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Response\info_getgroups41.json">
+    <None Include="Response\info_getgroups.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Response\info_getlang41.json">
+    <None Include="Response\info_getlang.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Response\info_getnames41.json">
+    <None Include="Response\info_getlistinfo.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Response\info_getpublisher41.json">
+    <None Include="Response\info_getnames.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Response\info_getrelations41.json">
+    <None Include="Response\info_getpublisher.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Response\info_getseason41.json">
+    <None Include="Response\info_getrelations.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Response\info_getseason.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Response\info_setuserinfofinish.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Response\info_setuserinfo_3010.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Response\info_setuserinfo_3011.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="Response\messenger_getconferenceinfo.json">
