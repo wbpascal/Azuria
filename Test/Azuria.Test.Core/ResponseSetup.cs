@@ -50,6 +50,12 @@ namespace Azuria.Test.Core
                             .WithQueryParameter("language", "engsub"))
                 .Respond(JsonResponses["anime_getstreams.json"]);
 
+            ServerResponse.Create("https://proxer.me/api/v1",
+                    response =>
+                        response.Post("/anime/link")
+                            .WithQueryParameter("id", "401217"))
+                .Respond(JsonResponses["anime_getlink.json"]);
+
             #endregion
 
             #region Info

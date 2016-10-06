@@ -20,7 +20,7 @@ namespace Azuria.Test.MediaTests
         {
             Anime lAnime = await AnimeMangaObject.CreateFromId(9200).ThrowFirstForNonSuccess() as Anime;
             Assert.IsNotNull(lAnime);
-            this._episode = (await lAnime.GetEpisodes(AnimeLanguage.EngSub).ThrowFirstForNonSuccess()).First();
+            this._episode = (await lAnime.GetEpisodes(AnimeLanguage.EngSub).ThrowFirstForNonSuccess()).FirstOrDefault();
             Assert.IsNotNull(this._episode);
         }
 
