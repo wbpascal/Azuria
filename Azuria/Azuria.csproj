@@ -108,7 +108,6 @@
     <Compile Include="Community\MessageModel.cs" />
     <Compile Include="Exceptions\ApiNotInitialisedException.cs" />
     <Compile Include="Exceptions\NotInitialisedException.cs" />
-    <Compile Include="Media\Properties\StreamHostingType.cs" />
     <Compile Include="Notifications\INotificationManager.cs" />
     <Compile Include="Notifications\NotificationCountManager.cs" />
     <Compile Include="Search\EntryListCollection.cs" />

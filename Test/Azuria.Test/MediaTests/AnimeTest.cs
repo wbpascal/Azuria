@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Threading.Tasks;
 using Azuria.ErrorHandling;
+using Azuria.Exceptions;
 using Azuria.Media;
 using Azuria.Media.Properties;
 using Azuria.UserInfo.Comment;
@@ -56,6 +57,21 @@ namespace Azuria.Test.MediaTests
             Comment<Anime>[] lCommentsRating = this._anime.CommentsRating.ToArray();
             Assert.IsNotEmpty(lCommentsRating);
             Assert.AreEqual(lCommentsRating.Length, 28);
+        }
+
+
+        [Test]
+        public async Task GetEpisodesTest()
+        {
+            Assert.CatchAsync<LanguageNotAvailableException>(
+                () => this._anime.GetEpisodes(AnimeLanguage.EngDub).ThrowFirstForNonSuccess());
+
+            ProxerResult<IEnumerable<Anime.Episode>> lResult = await this._anime.GetEpisodes(AnimeLanguage.EngSub);
+            Assert.IsTrue(lResult.Success, JsonConvert.SerializeObject(lResult.Exceptions));
+            Assert.IsNotNull(lResult.Result);
+            Assert.AreEqual(lResult.Result.Count(), 22);
+            Assert.IsTrue(lResult.Result.All(episode => episode.Language == AnimeLanguage.EngSub));
+            Assert.IsTrue(lResult.Result.All(episode => episode.ParentObject == this._anime));
         }
     }
 }

@@ -3,7 +3,6 @@ using Azuria.Api.v1.Converters;
 using Azuria.Api.v1.Converters.Anime;
 using Azuria.Media.Properties;
 using Newtonsoft.Json;
-using Newtonsoft.Json.Converters;
 
 namespace Azuria.Api.v1.DataModels.Anime
 {
@@ -18,8 +17,7 @@ namespace Azuria.Api.v1.DataModels.Anime
         internal string HosterImageFileName { get; set; }
 
         [JsonProperty("htype")]
-        [JsonConverter(typeof(StringEnumConverter))]
-        internal StreamHostingType HostingType { get; set; }
+        internal string HostingType { get; set; }
 
         [JsonProperty("replace")]
         internal string PlaceholderLink { get; set; }

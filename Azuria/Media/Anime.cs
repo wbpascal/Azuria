@@ -123,7 +123,7 @@ namespace Azuria.Media
         public async Task<ProxerResult<IEnumerable<Episode>>> GetEpisodes(AnimeLanguage language)
         {
             if (!(await this.AvailableLanguages.GetObject(new AnimeLanguage[0])).Contains(language))
-                return new ProxerResult<IEnumerable<Episode>>(new Exception[] {new LanguageNotAvailableException()});
+                return new ProxerResult<IEnumerable<Episode>>(new LanguageNotAvailableException());
 
             ProxerResult<AnimeMangaContentDataModel[]> lContentObjectsResult =
                 await this.GetContentObjects();
@@ -315,7 +315,7 @@ namespace Azuria.Media
 
                 /// <summary>
                 /// </summary>
-                public StreamHostingType HostingType { get; }
+                public string HostingType { get; }
 
                 /// <summary>
                 /// </summary>

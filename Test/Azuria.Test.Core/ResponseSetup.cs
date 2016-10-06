@@ -40,6 +40,18 @@ namespace Azuria.Test.Core
 
         public static void InitRequests()
         {
+            #region Anime
+
+            ServerResponse.Create("https://proxer.me/api/v1",
+                    response =>
+                        response.Post("/anime/streams")
+                            .WithQueryParameter("id", "9200")
+                            .WithQueryParameter("episode", "1")
+                            .WithQueryParameter("language", "engsub"))
+                .Respond(JsonResponses["anime_getstreams.json"]);
+
+            #endregion
+
             #region Info
 
             ServerResponse.Create("https://proxer.me/api/v1",
@@ -116,6 +128,13 @@ namespace Azuria.Test.Core
                             .WithQueryParameter("limit", "25")
                             .WithQueryParameter("sort", "rating"))
                 .Respond(JsonResponses["info_getcommentsrating2.json"]);
+            ServerResponse.Create("https://proxer.me/api/v1",
+                    response =>
+                        response.Post("/info/listinfo")
+                            .WithQueryParameter("id", "9200")
+                            .WithQueryParameter("p", "0")
+                            .WithQueryParameter("limit", "22"))
+                .Respond(JsonResponses["info_getlistinfo9200.json"]);
 
             #endregion
 

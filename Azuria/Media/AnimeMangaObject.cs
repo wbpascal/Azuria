@@ -185,17 +185,18 @@ namespace Azuria.Media
 
         internal async Task<ProxerResult<AnimeMangaContentDataModel[]>> GetContentObjects()
         {
+            ProxerResult<int> lContentCountResult = await this.ContentCount;
+            if (!lContentCountResult.Success || (lContentCountResult.Result == default(int)))
+                return new ProxerResult<AnimeMangaContentDataModel[]>(lContentCountResult.Exceptions);
+
             ProxerResult<ProxerApiResponse<ListInfoDataModel>> lResult =
                 await
-                    RequestHandler.ApiRequest(ApiRequestBuilder.InfoGetListInfo(this.Id,
-                        await this.ContentCount.GetObject(-1)));
+                    RequestHandler.ApiRequest(ApiRequestBuilder.InfoGetListInfo(this.Id, 0, lContentCountResult.Result));
             if (!lResult.Success || (lResult.Result == null))
                 return new ProxerResult<AnimeMangaContentDataModel[]>(lResult.Exceptions);
             ListInfoDataModel lData = lResult.Result.Data;
 
-            return lData.EndIndex == -1
-                ? new ProxerResult<AnimeMangaContentDataModel[]>(new Exception[0])
-                : new ProxerResult<AnimeMangaContentDataModel[]>(lData.ContentObjects);
+            return new ProxerResult<AnimeMangaContentDataModel[]>(lData.ContentObjects);
         }
 
         protected async Task<ProxerResult> InitEntryTags()

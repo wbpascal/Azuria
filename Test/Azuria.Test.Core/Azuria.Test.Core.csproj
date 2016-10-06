@@ -55,6 +55,12 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <None Include="Response\anime_getlink.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Response\anime_getstreams.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Include="Response\info_getcommentslatest.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
@@ -82,7 +88,7 @@
     <None Include="Response\info_getlang.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Response\info_getlistinfo.json">
+    <None Include="Response\info_getlistinfo9200.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="Response\info_getnames.json">

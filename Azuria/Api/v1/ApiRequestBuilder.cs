@@ -72,11 +72,11 @@ namespace Azuria.Api.v1
             return new ApiRequest<AnimeMangaLanguage[]>(new Uri($"{ApiConstants.ApiUrlV1}/info/lang?id={entryId}"));
         }
 
-        internal static ApiRequest<ListInfoDataModel> InfoGetListInfo(int entryId, int limit)
+        internal static ApiRequest<ListInfoDataModel> InfoGetListInfo(int entryId, int page, int limit)
         {
             return
                 new ApiRequest<ListInfoDataModel>(
-                    new Uri($"{ApiConstants.ApiUrlV1}/info/listinfo?id={entryId}&limit={limit}"));
+                    new Uri($"{ApiConstants.ApiUrlV1}/info/listinfo?id={entryId}&p={page}&limit={limit}"));
         }
 
         internal static ApiRequest<NameDataModel[]> InfoGetName(int entryId)
