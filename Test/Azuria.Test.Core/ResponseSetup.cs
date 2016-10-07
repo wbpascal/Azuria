@@ -161,6 +161,18 @@ namespace Azuria.Test.Core
 
             #endregion
 
+            #region Manga
+
+            ServerResponse.Create("https://proxer.me/api/v1",
+                    response =>
+                        response.Post("/manga/chapter")
+                            .WithQueryParameter("id", "7834")
+                            .WithQueryParameter("episode", "162")
+                            .WithQueryParameter("language", "en"))
+                .Respond(JsonResponses["manga_getchapter.json"]);
+
+            #endregion
+
             #region Messenger
 
             ServerResponse.Create("https://proxer.me/api/v1", response => response.Post("/messenger/constants"))

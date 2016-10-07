@@ -67,6 +67,7 @@
     <Compile Include="GeneralSetup.cs" />
     <Compile Include="MediaTests\AnimeMangaObjectTest.cs" />
     <Compile Include="MediaTests\AnimeTest.cs" />
+    <Compile Include="MediaTests\ChapterTest.cs" />
     <Compile Include="MediaTests\EpisodeTest.cs" />
     <Compile Include="MediaTests\MangaTest.cs" />
     <Compile Include="MediaTests\StreamTest.cs" />
