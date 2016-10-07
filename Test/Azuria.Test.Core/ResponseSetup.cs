@@ -68,6 +68,11 @@ namespace Azuria.Test.Core
             ServerResponse.Create("https://proxer.me/api/v1",
                     response =>
                         response.Post("/info/entry")
+                            .WithQueryParameter("id", "7834"))
+                .Respond(JsonResponses["info_getentry7834.json"]);
+            ServerResponse.Create("https://proxer.me/api/v1",
+                    response =>
+                        response.Post("/info/entry")
                             .WithQueryParameter("id", "666"))
                 .Respond(JsonResponses["info_getentry_3007.json"]);
             ServerResponse.Create("https://proxer.me/api/v1",
@@ -75,6 +80,11 @@ namespace Azuria.Test.Core
                         response.Post("/info/lang")
                             .WithQueryParameter("id", "9200"))
                 .Respond(JsonResponses["info_getlang.json"]);
+            ServerResponse.Create("https://proxer.me/api/v1",
+                    response =>
+                        response.Post("/info/lang")
+                            .WithQueryParameter("id", "7834"))
+                .Respond(JsonResponses["info_getlang7834.json"]);
             ServerResponse.Create("https://proxer.me/api/v1",
                     response =>
                         response.Post("/info/season")
@@ -141,6 +151,13 @@ namespace Azuria.Test.Core
                             .WithQueryParameter("p", "0")
                             .WithQueryParameter("limit", "22"))
                 .Respond(JsonResponses["info_getlistinfo9200.json"]);
+            ServerResponse.Create("https://proxer.me/api/v1",
+                    response =>
+                        response.Post("/info/listinfo")
+                            .WithQueryParameter("id", "7834")
+                            .WithQueryParameter("p", "0")
+                            .WithQueryParameter("limit", "200"))
+                .Respond(JsonResponses["info_getlistinfo7834.json"]);
 
             #endregion
 
