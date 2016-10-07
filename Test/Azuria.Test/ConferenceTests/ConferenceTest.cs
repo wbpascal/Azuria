@@ -16,7 +16,7 @@ namespace Azuria.Test.ConferenceTests
     [TestFixture]
     public class ConferenceTest
     {
-        [SetUp]
+        [OneTimeSetUp]
         public async Task Setup()
         {
             this._conference =

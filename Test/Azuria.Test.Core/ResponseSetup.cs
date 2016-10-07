@@ -173,6 +173,33 @@ namespace Azuria.Test.Core
 
             #endregion
 
+            #region Media
+
+            ServerResponse.Create("https://proxer.me/api/v1",
+                    response =>
+                        response.Post("/media/randomheader")
+                            .WithQueryParameter("style", "gray"))
+                .Respond(JsonResponses["media_getrandomheadergray.json"]);
+            ServerResponse.Create("https://proxer.me/api/v1",
+                    response =>
+                        response.Post("/media/randomheader")
+                            .WithQueryParameter("style", "black"))
+                .Respond(JsonResponses["media_getrandomheaderblack.json"]);
+            ServerResponse.Create("https://proxer.me/api/v1",
+                    response =>
+                        response.Post("/media/randomheader")
+                            .WithQueryParameter("style", "pantsu"))
+                .Respond(JsonResponses["media_getrandomheaderpantsu.json"]);
+            ServerResponse.Create("https://proxer.me/api/v1",
+                    response =>
+                        response.Post("/media/randomheader")
+                            .WithQueryParameter("style", "old_blue"))
+                .Respond(JsonResponses["media_getrandomheaderoldblue.json"]);
+            ServerResponse.Create("https://proxer.me/api/v1", response => response.Post("/media/headerlist"))
+                .Respond(JsonResponses["media_getheaderlist.json"]);
+
+            #endregion
+
             #region Messenger
 
             ServerResponse.Create("https://proxer.me/api/v1", response => response.Post("/messenger/constants"))

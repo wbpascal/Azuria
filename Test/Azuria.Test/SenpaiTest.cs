@@ -11,7 +11,7 @@ namespace Azuria.Test
     [TestFixture]
     public class SenpaiTest
     {
-        [SetUp]
+        [OneTimeSetUp]
         public void Setup()
         {
             this._senpai = GeneralSetup.SenpaiInstance;

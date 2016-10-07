@@ -27,7 +27,7 @@ namespace Azuria.Test.ConferenceTests
             Assert.AreEqual(lUnreadMessages.Length, 3);
         }
 
-        [SetUp]
+        [OneTimeSetUp]
         public async Task Setup()
         {
             this._conferenceInfo =
