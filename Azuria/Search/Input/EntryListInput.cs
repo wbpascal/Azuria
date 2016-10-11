@@ -16,11 +16,11 @@
 
         /// <summary>
         /// </summary>
-        public bool ShowOnlyNonAlphabeticalBeginnings { get; set; }
+        public string StartWith { get; set; }
 
         /// <summary>
         /// </summary>
-        public string StartWith { get; set; }
+        public bool StartWithNonAlphabeticalChar { get; set; }
 
         #endregion
     }

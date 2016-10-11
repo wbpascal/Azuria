@@ -73,6 +73,7 @@
     <Compile Include="MediaTests\MangaTest.cs" />
     <Compile Include="MediaTests\StreamTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SearchTest.cs" />
     <Compile Include="SenpaiTest.cs" />
   </ItemGroup>
   <ItemGroup>

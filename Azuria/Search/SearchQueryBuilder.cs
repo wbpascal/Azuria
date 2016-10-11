@@ -36,7 +36,7 @@ namespace Azuria.Search
             Dictionary<string, string> lReturn = new Dictionary<string, string>
             {
                 {"isH", input.ShowHContent.ToString()},
-                {"start", input.ShowOnlyNonAlphabeticalBeginnings ? "nonAlpha" : input.StartWith}
+                {"start", input.StartWithNonAlphabeticalChar ? "nonAlpha" : input.StartWith}
             };
             if (input.Medium != AnimeMangaMedium.None)
                 lReturn.Add("medium", input.Medium.ToString().ToLowerInvariant());

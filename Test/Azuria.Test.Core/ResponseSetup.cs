@@ -161,6 +161,21 @@ namespace Azuria.Test.Core
 
             #endregion
 
+            #region List
+
+            ServerResponse.Create("https://proxer.me/api/v1",
+                    response =>
+                        response.Post("/list/entrylist")
+                            .WithQueryParameter("limit", "100")
+                            .WithQueryParameter("p", "0")
+                            .WithQueryParameter("kat", "anime")
+                            .WithPostArgument("isH", "False")
+                            .WithPostArgument("start", "nonAlpha")
+                            .WithPostArgument("medium", "animeseries"))
+                .Respond(JsonResponses["list_getentrylist.json"]);
+
+            #endregion
+
             #region Manga
 
             ServerResponse.Create("https://proxer.me/api/v1",
