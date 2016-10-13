@@ -19,7 +19,6 @@ namespace Azuria.Search
         public static IEnumerable<T> EntryList<T>(EntryListInput input) where T : class, IAnimeMangaObject
         {
             if (input == null) throw new ArgumentException(nameof(input));
-            if ((typeof(T) != typeof(Anime)) && (typeof(T) != typeof(Manga))) throw new ArgumentException(nameof(T));
             return new EntryListCollection<T>(input);
         }
 
