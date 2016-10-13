@@ -168,11 +168,30 @@ namespace Azuria.Test.Core
                         response.Post("/list/entrylist")
                             .WithQueryParameter("limit", "100")
                             .WithQueryParameter("p", "0")
-                            .WithQueryParameter("kat", "anime")
+                            .WithQueryParameter("kat", "manga")
                             .WithPostArgument("isH", "False")
                             .WithPostArgument("start", "nonAlpha")
-                            .WithPostArgument("medium", "animeseries"))
+                            .WithPostArgument("medium", "mangaseries"))
                 .Respond(JsonResponses["list_getentrylist.json"]);
+            ServerResponse.Create("https://proxer.me/api/v1",
+                    response =>
+                        response.Post("/list/entrysearch")
+                            .WithQueryParameter("limit", "100")
+                            .WithQueryParameter("p", "0")
+                            .WithPostArgument("type", "all")
+                            .WithPostArgument("sort", "name")
+                            .WithPostArgument("length-limit", "down")
+                            .WithPostArgument("tagratefilter", "rate_1")
+                            .WithPostArgument("tagspoilerfilter", "spoiler_0")
+                            .WithPostArgument("language", "en")
+                            .WithPostArgument("genre", "Action")
+                            .WithPostArgument("nogenre", "Ecchi")
+                            .WithPostArgument("fsk", "fsk12")
+                            .WithPostArgument("length", "50")
+                            .WithPostArgument("tags", "243")
+                            .WithPostArgument("notags", "157")
+                            .WithPostArgument("name", "a"))
+                .Respond(JsonResponses["list_getentrysearch.json"]);
 
             #endregion
 

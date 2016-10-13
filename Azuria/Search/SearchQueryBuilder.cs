@@ -20,13 +20,13 @@ namespace Azuria.Search
                 {"tagratefilter", input.IsFilteringUnratedTags ? "rate_1" : "rate_10"},
                 {"tagspoilerfilter", input.IsFilteringSpoilerTags ? "spoiler_0" : "spoiler_10"}
             };
-            lReturn.AddIf("language", LanguageToString(input.Language), (key, value) => string.IsNullOrEmpty(value));
-            lReturn.AddIf("genre", GenresToString(input.GenreInclude), (key, value) => string.IsNullOrEmpty(value));
-            lReturn.AddIf("nogenre", GenresToString(input.GenreExclude), (key, value) => string.IsNullOrEmpty(value));
-            lReturn.AddIf("fsk", FskToString(input.Fsk), (key, value) => string.IsNullOrEmpty(value));
+            lReturn.AddIf("language", LanguageToString(input.Language), (key, value) => !string.IsNullOrEmpty(value));
+            lReturn.AddIf("genre", GenresToString(input.GenreInclude), (key, value) => !string.IsNullOrEmpty(value));
+            lReturn.AddIf("nogenre", GenresToString(input.GenreExclude), (key, value) => !string.IsNullOrEmpty(value));
+            lReturn.AddIf("fsk", FskToString(input.Fsk), (key, value) => !string.IsNullOrEmpty(value));
             lReturn.AddIf("length", input.Length.ToString(), (key, value) => input.Length != null);
-            lReturn.AddIf("tags", TagsToString(input.TagsInclude), (key, value) => string.IsNullOrEmpty(value));
-            lReturn.AddIf("notags", TagsToString(input.TagsExclude), (key, value) => string.IsNullOrEmpty(value));
+            lReturn.AddIf("tags", TagsToString(input.TagsInclude), (key, value) => !string.IsNullOrEmpty(value));
+            lReturn.AddIf("notags", TagsToString(input.TagsExclude), (key, value) => !string.IsNullOrEmpty(value));
 
             return lReturn;
         }

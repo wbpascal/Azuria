@@ -14,9 +14,9 @@ namespace Azuria.Test
         [Test]
         public void EntryListTest()
         {
-            Anime[] lResult = SearchHelper.EntryList<Anime>(input =>
+            Manga[] lResult = SearchHelper.EntryList<Manga>(input =>
             {
-                input.Medium = AnimeMangaMedium.Animeseries;
+                input.Medium = AnimeMangaMedium.Mangaseries;
                 input.StartWithNonAlphabeticalChar = true;
                 input.StartWith = "a";
             }).ToArray();
@@ -25,7 +25,34 @@ namespace Azuria.Test
             Assert.IsTrue(
                 lResult.All(anime => new Regex(@"^[^a-zA-Z].*").IsMatch(anime.Name.GetObjectIfInitialised("ERROR"))));
             Assert.IsTrue(
-                lResult.All(anime => anime.AnimeMedium.GetObjectIfInitialised(AnimeMedium.Unknown) == AnimeMedium.Series));
+                lResult.All(anime => anime.MangaMedium.GetObjectIfInitialised(MangaMedium.Unknown) == MangaMedium.Series));
+        }
+
+        [Test]
+        public void EntrySearchTest()
+        {
+            IAnimeMangaObject[] lResult = SearchHelper.Search<IAnimeMangaObject>(input =>
+            {
+                input.Length = 50;
+                input.Fsk = new[] {FskType.Fsk12};
+                input.GenreExclude = new[] {GenreType.Ecchi};
+                input.GenreInclude = new[] {GenreType.Action};
+                input.IsFilteringSpoilerTags = true;
+                input.IsFilteringUnratedTags = true;
+                input.Language = SearchLanguage.English;
+                input.LengthLimit = LengthLimit.Down;
+                input.SearchTerm = "a";
+                input.Sort = SearchResultSort.Name;
+                input.TagsExclude = new[] {TagType.Alcohol};
+                input.TagsInclude = new[] {TagType.FemaleProtagonist};
+                input.Type = AnimeMangaSearchType.All;
+            }).ToArray();
+            Assert.IsNotNull(lResult);
+            Assert.IsNotEmpty(lResult);
+            Assert.AreEqual(lResult.Length, 3);
+            Assert.IsTrue(lResult.All(o => o.ContentCount.GetObjectIfInitialised(int.MaxValue) <= 50));
+            Assert.IsTrue(lResult.All(o => o.Name.GetObjectIfInitialised("ERROR").Contains("a")));
+            Assert.IsTrue(lResult.All(o => o.Genre.GetObjectIfInitialised(new GenreType[0]).Contains(GenreType.Action)));
         }
     }
 }
