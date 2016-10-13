@@ -73,7 +73,7 @@ namespace Azuria.Utilities
                 this._currentPageContentIndex = -1;
             }
             this._currentPageContentIndex++;
-            return true;
+            return this._currentPageContentIndex < this._currentPageContent.Length;
         }
 
         /// <summary>Sets the enumerator to its initial position, which is before the first element in the collection.</summary>
