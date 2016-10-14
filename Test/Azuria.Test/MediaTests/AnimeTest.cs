@@ -29,7 +29,7 @@ namespace Azuria.Test.MediaTests
         {
             ProxerResult<AnimeMedium> lResult = await this._anime.AnimeMedium;
             Assert.IsTrue(lResult.Success, JsonConvert.SerializeObject(lResult.Exceptions));
-            Assert.AreEqual(lResult.Result, AnimeMedium.Series);
+            Assert.AreEqual(AnimeMedium.Series, lResult.Result);
         }
 
         [Test]
@@ -48,7 +48,7 @@ namespace Azuria.Test.MediaTests
         {
             Comment<Anime>[] lCommentsLatest = this._anime.CommentsLatest.ToArray();
             Assert.IsNotEmpty(lCommentsLatest);
-            Assert.AreEqual(lCommentsLatest.Length, 24);
+            Assert.AreEqual(24, lCommentsLatest.Length);
         }
 
         [Test]
@@ -56,7 +56,7 @@ namespace Azuria.Test.MediaTests
         {
             Comment<Anime>[] lCommentsRating = this._anime.CommentsRating.ToArray();
             Assert.IsNotEmpty(lCommentsRating);
-            Assert.AreEqual(lCommentsRating.Length, 28);
+            Assert.AreEqual(28, lCommentsRating.Length);
         }
 
 
@@ -69,7 +69,7 @@ namespace Azuria.Test.MediaTests
             ProxerResult<IEnumerable<Anime.Episode>> lResult = await this._anime.GetEpisodes(AnimeLanguage.EngSub);
             Assert.IsTrue(lResult.Success, JsonConvert.SerializeObject(lResult.Exceptions));
             Assert.IsNotNull(lResult.Result);
-            Assert.AreEqual(lResult.Result.Count(), 22);
+            Assert.AreEqual(22, lResult.Result.Count());
             Assert.IsTrue(lResult.Result.All(episode => episode.Language == AnimeLanguage.EngSub));
             Assert.IsTrue(lResult.Result.All(episode => episode.ParentObject == this._anime));
         }

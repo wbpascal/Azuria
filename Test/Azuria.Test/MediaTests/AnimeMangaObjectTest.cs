@@ -31,7 +31,7 @@ namespace Azuria.Test.MediaTests
         {
             ProxerResult<int> lResult = await this._animeMangaObject.Clicks;
             Assert.IsTrue(lResult.Success, JsonConvert.SerializeObject(lResult.Exceptions));
-            Assert.AreEqual(lResult.Result, 23604);
+            Assert.AreEqual(23604, lResult.Result);
         }
 
         [Test]
@@ -39,7 +39,7 @@ namespace Azuria.Test.MediaTests
         {
             ProxerResult<int> lResult = await this._animeMangaObject.ContentCount;
             Assert.IsTrue(lResult.Success, JsonConvert.SerializeObject(lResult.Exceptions));
-            Assert.AreEqual(lResult.Result, 22);
+            Assert.AreEqual(22, lResult.Result);
         }
 
         [Test]
@@ -57,11 +57,11 @@ namespace Azuria.Test.MediaTests
 
             IAnimeMangaObject lValidObject = await AnimeMangaObject.CreateFromId(9200).ThrowFirstForNonSuccess();
             Assert.IsNotNull(lValidObject);
-            Assert.AreEqual(lValidObject.Id, 9200);
+            Assert.AreEqual(9200, lValidObject.Id);
 
-            Assert.AreEqual(
+            Assert.AreEqual(ErrorCode.InfoInvalidId,
                 Assert.CatchAsync<ProxerApiException>(() => AnimeMangaObject.CreateFromId(666).ThrowFirstForNonSuccess())
-                    .ErrorCode, ErrorCode.InfoInvalidId);
+                    .ErrorCode);
         }
 
         [Test]
@@ -70,7 +70,7 @@ namespace Azuria.Test.MediaTests
             ProxerResult<string> lResult = await this._animeMangaObject.Description;
             Assert.IsTrue(lResult.Success, JsonConvert.SerializeObject(lResult.Exceptions));
             Assert.IsNotNull(lResult.Result);
-            Assert.AreEqual(lResult.Result, "Description Text");
+            Assert.AreEqual("Description Text", lResult.Result);
         }
 
         [Test]
@@ -88,7 +88,7 @@ namespace Azuria.Test.MediaTests
             ProxerResult<IEnumerable<FskType>> lResult = await this._animeMangaObject.Fsk;
             Assert.IsTrue(lResult.Success, JsonConvert.SerializeObject(lResult.Exceptions));
             Assert.IsNotNull(lResult.Result);
-            Assert.AreEqual(lResult.Result.Count(), 1);
+            Assert.AreEqual(1, lResult.Result.Count());
             Assert.IsTrue(lResult.Result.Contains(FskType.Fsk12));
         }
 
@@ -122,7 +122,7 @@ namespace Azuria.Test.MediaTests
             ProxerResult<IEnumerable<Industry>> lResult = await this._animeMangaObject.Industry;
             Assert.IsTrue(lResult.Success, JsonConvert.SerializeObject(lResult.Exceptions));
             Assert.IsNotNull(lResult.Result);
-            Assert.AreEqual(lResult.Result.Count(), 10);
+            Assert.AreEqual(10, lResult.Result.Count());
             Assert.IsTrue(lResult.Result.Any(industry => industry.Type == Industry.IndustryType.Producer));
             Assert.IsTrue(lResult.Result.Any(industry => industry.Type == Industry.IndustryType.StreamPartner));
             Assert.IsTrue(lResult.Result.Any(industry => industry.Type == Industry.IndustryType.Publisher));
@@ -139,7 +139,7 @@ namespace Azuria.Test.MediaTests
         {
             ProxerResult<bool> lResult = await this._animeMangaObject.IsHContent;
             Assert.IsTrue(lResult.Success, JsonConvert.SerializeObject(lResult.Exceptions));
-            Assert.AreEqual(lResult.Result, false);
+            Assert.IsFalse(lResult.Result);
         }
 
         [Test]
@@ -147,7 +147,7 @@ namespace Azuria.Test.MediaTests
         {
             ProxerResult<bool> lResult = await this._animeMangaObject.IsLicensed.GetNewObject();
             Assert.IsTrue(lResult.Success, JsonConvert.SerializeObject(lResult.Exceptions));
-            Assert.AreEqual(lResult.Result, true);
+            Assert.IsTrue(lResult.Result);
         }
 
         [Test]
@@ -174,8 +174,8 @@ namespace Azuria.Test.MediaTests
             ProxerResult<AnimeMangaRating> lResult = await this._animeMangaObject.Rating;
             Assert.IsTrue(lResult.Success, JsonConvert.SerializeObject(lResult.Exceptions));
             Assert.IsNotNull(lResult.Result);
-            Assert.AreEqual(lResult.Result.Voters, 4371);
-            Assert.AreEqual(lResult.Result.Rating, 40527/(decimal) 4371);
+            Assert.AreEqual(4371, lResult.Result.Voters);
+            Assert.AreEqual(40527/(decimal) 4371, lResult.Result.Rating);
         }
 
         [Test]
@@ -184,7 +184,7 @@ namespace Azuria.Test.MediaTests
             ProxerResult<IEnumerable<IAnimeMangaObject>> lResult = await this._animeMangaObject.Relations;
             Assert.IsTrue(lResult.Success, JsonConvert.SerializeObject(lResult.Exceptions));
             Assert.IsNotNull(lResult.Result);
-            Assert.AreEqual(lResult.Result.Count(), 4);
+            Assert.AreEqual(4, lResult.Result.Count());
             Assert.IsTrue(lResult.Result.Any(o => o is Anime));
             Assert.IsTrue(lResult.Result.Any(o => o is Manga));
             Assert.IsTrue(lResult.Result.All(o => o.Id != default(int)));
@@ -197,11 +197,11 @@ namespace Azuria.Test.MediaTests
             Assert.IsTrue(lResult.Success, JsonConvert.SerializeObject(lResult.Exceptions));
             Assert.IsNotNull(lResult.Result);
             Assert.IsNotNull(lResult.Result.StartSeason);
-            Assert.AreEqual(lResult.Result.StartSeason.Season, Season.Autumn);
-            Assert.AreEqual(lResult.Result.StartSeason.Year, 2014);
+            Assert.AreEqual(Season.Autumn, lResult.Result.StartSeason.Season);
+            Assert.AreEqual(2014, lResult.Result.StartSeason.Year);
             Assert.IsNotNull(lResult.Result.EndSeason);
-            Assert.AreEqual(lResult.Result.EndSeason.Season, Season.Winter);
-            Assert.AreEqual(lResult.Result.EndSeason.Year, 2015);
+            Assert.AreEqual(Season.Winter, lResult.Result.EndSeason.Season);
+            Assert.AreEqual(2015, lResult.Result.EndSeason.Year);
         }
 
         [Test]
@@ -209,7 +209,7 @@ namespace Azuria.Test.MediaTests
         {
             ProxerResult<AnimeMangaStatus> lResult = await this._animeMangaObject.Status;
             Assert.IsTrue(lResult.Success, JsonConvert.SerializeObject(lResult.Exceptions));
-            Assert.AreEqual(lResult.Result, AnimeMangaStatus.Completed);
+            Assert.AreEqual(AnimeMangaStatus.Completed, lResult.Result);
         }
 
         [Test]
@@ -218,7 +218,7 @@ namespace Azuria.Test.MediaTests
             ProxerResult<string> lResult = await this._animeMangaObject.Synonym;
             Assert.IsTrue(lResult.Success, JsonConvert.SerializeObject(lResult.Exceptions));
             Assert.IsNotNull(lResult.Result);
-            Assert.AreEqual(lResult.Result, string.Empty);
+            Assert.IsEmpty(lResult.Result);
         }
 
         [Test]
@@ -227,7 +227,7 @@ namespace Azuria.Test.MediaTests
             ProxerResult<IEnumerable<Tag>> lResult = await this._animeMangaObject.Tags;
             Assert.IsTrue(lResult.Success, JsonConvert.SerializeObject(lResult.Exceptions));
             Assert.IsNotNull(lResult.Result);
-            Assert.AreEqual(lResult.Result.Count(), 9);
+            Assert.AreEqual(9, lResult.Result.Count());
             Assert.IsTrue(lResult.Result.Any(tag => tag.IsRated));
             Assert.IsTrue(lResult.Result.Any(tag => !tag.IsRated));
             Assert.IsTrue(lResult.Result.Any(tag => tag.IsSpoiler));
@@ -241,7 +241,7 @@ namespace Azuria.Test.MediaTests
             ProxerResult<IEnumerable<Translator>> lResult = await this._animeMangaObject.Groups;
             Assert.IsTrue(lResult.Success, JsonConvert.SerializeObject(lResult.Exceptions));
             Assert.IsNotNull(lResult.Result);
-            Assert.AreEqual(lResult.Result.Count(), 4);
+            Assert.AreEqual(4, lResult.Result.Count());
             Assert.IsTrue(
                 lResult.Result.Any(
                     translator =>

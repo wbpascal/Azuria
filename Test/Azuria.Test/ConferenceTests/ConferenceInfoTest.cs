@@ -16,7 +16,7 @@ namespace Azuria.Test.ConferenceTests
         public void ConferenceTest()
         {
             Assert.IsNotNull(this._conferenceInfo.Conference);
-            Assert.AreEqual(this._conferenceInfo.Conference.Id, 124536);
+            Assert.AreEqual(124536, this._conferenceInfo.Conference.Id);
         }
 
         [Test]
@@ -24,7 +24,7 @@ namespace Azuria.Test.ConferenceTests
         {
             Message[] lUnreadMessages = this._conferenceInfo.UnreadMessages.ToArray();
             Assert.IsNotEmpty(lUnreadMessages);
-            Assert.AreEqual(lUnreadMessages.Length, 3);
+            Assert.AreEqual(3, lUnreadMessages.Length);
         }
 
         [OneTimeSetUp]

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
@@ -33,6 +34,7 @@ namespace Azuria.UserInfo.ControlPanel
         public UserControlPanel(Senpai senpai)
         {
             this._senpai = senpai;
+            if(this._senpai == null) throw new ArgumentException(nameof(senpai));
             if (!this._senpai.IsProbablyLoggedIn) throw new NotLoggedInException(this._senpai);
 
             this._commentVotes = new InitialisableProperty<IEnumerable<CommentVote>>(this.InitVotes);

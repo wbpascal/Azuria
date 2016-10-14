@@ -205,6 +205,18 @@
     <None Include="Response\messenger_setunread.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <None Include="Response\ucp_deletevote.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Response\ucp_getlistsumanime.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Response\ucp_getlistsummanga.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Response\ucp_getvotes.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Include="Response\user_login.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>

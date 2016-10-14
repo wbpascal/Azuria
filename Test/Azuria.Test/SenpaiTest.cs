@@ -37,7 +37,7 @@ namespace Azuria.Test
                          "Ggjgp9FWetE3gfOxXYAYoK2wID4k3UKH95XvcCgo43qkhePdanby6a5OO67OXQv4Uty74Yt6YTpf7cs").ToCharArray())
                         .ThrowFirstForNonSuccess();
             Assert.IsTrue(lNewSenpai.IsProbablyLoggedIn);
-            Assert.AreEqual(lNewSenpai.Username, this._senpai.Username, "Token differs from username!");
+            Assert.AreEqual(this._senpai.Username, lNewSenpai.Username);
 
             Assert.CatchAsync<ArgumentException>(async () => await Senpai.FromToken(null).ThrowFirstForNonSuccess());
             Assert.CatchAsync<ArgumentException>(
@@ -102,7 +102,7 @@ namespace Azuria.Test
         {
             User lMe = this._senpai.Me;
             Assert.NotNull(lMe);
-            Assert.AreEqual(await lMe.UserName.ThrowFirstOnNonSuccess(), this._senpai.Username);
+            Assert.AreEqual(this._senpai.Username, await lMe.UserName.ThrowFirstOnNonSuccess());
             Assert.IsNull(new Senpai("ad").Me);
         }
 
@@ -110,7 +110,7 @@ namespace Azuria.Test
         public void UsernameTest()
         {
             Assert.IsNotEmpty(this._senpai.Username);
-            Assert.AreEqual(this._senpai.Username, "InfiniteSoul");
+            Assert.AreEqual("InfiniteSoul", this._senpai.Username);
         }
     }
 }

@@ -40,7 +40,7 @@ namespace Azuria.Test.MediaTests
             ProxerResult<IEnumerable<Manga.Chapter>> lResult = await this._manga.GetChapters(Language.English);
             Assert.IsTrue(lResult.Success, JsonConvert.SerializeObject(lResult.Exceptions));
             Assert.IsNotNull(lResult.Result);
-            Assert.AreEqual(lResult.Result.Count(), 162);
+            Assert.AreEqual(162, lResult.Result.Count());
             Assert.IsTrue(lResult.Result.All(chapter => chapter.Language == Language.English));
         }
 
@@ -49,7 +49,7 @@ namespace Azuria.Test.MediaTests
         {
             ProxerResult<MangaMedium> lResult = await this._manga.MangaMedium.GetNewObject();
             Assert.IsTrue(lResult.Success, JsonConvert.SerializeObject(lResult.Exceptions));
-            Assert.AreEqual(lResult.Result, MangaMedium.Series);
+            Assert.AreEqual(MangaMedium.Series, lResult.Result);
         }
     }
 }

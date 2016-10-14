@@ -373,6 +373,22 @@ namespace Azuria.Test.Core
 
             #endregion
 
+            #region Ucp
+
+            ServerResponse.Create("https://proxer.me/api/v1",
+                    response => response.Post("/ucp/listsum").WithQueryParameter("kat", "anime"))
+                .Respond(JsonResponses["ucp_getlistsumanime.json"]);
+            ServerResponse.Create("https://proxer.me/api/v1",
+                    response => response.Post("/ucp/listsum").WithQueryParameter("kat", "manga"))
+                .Respond(JsonResponses["ucp_getlistsummanga.json"]);
+            ServerResponse.Create("https://proxer.me/api/v1", response => response.Post("/ucp/votes"))
+                .Respond(JsonResponses["ucp_getvotes.json"]);
+            ServerResponse.Create("https://proxer.me/api/v1",
+                    response => response.Post("/ucp/deletevote").WithPostArgument("id", "1"))
+                .Respond(JsonResponses["ucp_deletevote.json"]);
+
+            #endregion
+
             #region User
 
             ServerResponse.Create("https://proxer.me/api/v1", response =>

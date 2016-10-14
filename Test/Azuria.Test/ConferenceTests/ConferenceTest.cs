@@ -22,7 +22,7 @@ namespace Azuria.Test.ConferenceTests
             this._conference =
                 (await Conference.GetConferences(GeneralSetup.SenpaiInstance).ThrowFirstForNonSuccess()).First
                     ().Conference;
-            Assert.AreEqual(this._conference.Id, 124536);
+            Assert.AreEqual(124536, this._conference.Id);
         }
 
         private Conference _conference;
@@ -42,7 +42,7 @@ namespace Azuria.Test.ConferenceTests
                 Assert.IsNotNull(messages);
                 Message[] lMessages = messages.ToArray();
                 Assert.IsNotEmpty(lMessages);
-                Assert.AreEqual(lMessages.Length, 1);
+                Assert.AreEqual(1, lMessages.Length);
                 lSemaphoreSlim.Release();
             };
             await lSemaphoreSlim.WaitAsync(3000);
@@ -55,9 +55,9 @@ namespace Azuria.Test.ConferenceTests
         public void ConstantsTest()
         {
             Assert.IsTrue(Conference.IsInitialised);
-            Assert.AreEqual(Conference.MaxCharactersPerMessage, 65000);
-            Assert.AreEqual(Conference.MaxCharactersTopic, 32);
-            Assert.AreEqual(Conference.MaxUsersPerConference, 100);
+            Assert.AreEqual(65000, Conference.MaxCharactersPerMessage);
+            Assert.AreEqual(32, Conference.MaxCharactersTopic);
+            Assert.AreEqual(100, Conference.MaxUsersPerConference);
         }
 
         [Test]
@@ -89,11 +89,10 @@ namespace Azuria.Test.ConferenceTests
             Assert.AreNotEqual(lConference.Id, default(int));
             Assert.IsTrue(lConference.IsGroupConference);
 
-            Assert.AreEqual(
+            Assert.AreEqual(ErrorCode.MessengerNotEnoughUsers,
                 Assert.CatchAsync<ProxerApiException>(
                     () => Conference.CreateGroup(new[] {GeneralSetup.SenpaiInstance.Username}, "hello",
-                        GeneralSetup.SenpaiInstance).ThrowFirstForNonSuccess()).ErrorCode,
-                ErrorCode.MessengerNotEnoughUsers);
+                        GeneralSetup.SenpaiInstance).ThrowFirstForNonSuccess()).ErrorCode);
         }
 
         [Test]
@@ -126,17 +125,15 @@ namespace Azuria.Test.ConferenceTests
             Assert.AreNotEqual(lConference.Id, default(int));
             Assert.IsTrue(lConference.IsGroupConference);
 
-            Assert.AreEqual(
+            Assert.AreEqual(ErrorCode.UserinfoUserNotFound,
                 Assert.CatchAsync<ProxerApiException>(
                     () => Conference.CreateGroup(new[] {new User(int.MaxValue)}, "hello",
-                        GeneralSetup.SenpaiInstance).ThrowFirstForNonSuccess()).ErrorCode,
-                ErrorCode.UserinfoUserNotFound);
-            Assert.AreEqual(
+                        GeneralSetup.SenpaiInstance).ThrowFirstForNonSuccess()).ErrorCode);
+            Assert.AreEqual(ErrorCode.MessengerNotEnoughUsers,
                 Assert.CatchAsync<ProxerApiException>(
                     () => Conference.CreateGroup(new[] {new User(GeneralSetup.SenpaiInstance.Me.Id)},
                         "hello",
-                        GeneralSetup.SenpaiInstance).ThrowFirstForNonSuccess()).ErrorCode,
-                ErrorCode.MessengerNotEnoughUsers);
+                        GeneralSetup.SenpaiInstance).ThrowFirstForNonSuccess()).ErrorCode);
         }
 
         [Test]
@@ -159,10 +156,10 @@ namespace Azuria.Test.ConferenceTests
             Assert.AreNotEqual(lConference.Id, default(int));
             Assert.IsFalse(lConference.IsGroupConference);
 
-            Assert.AreEqual(
+            Assert.AreEqual(ErrorCode.MessengerUserInvalid,
                 Assert.CatchAsync<ProxerApiException>(
                     () => Conference.Create("KutoSa", "hello", GeneralSetup.SenpaiInstance)
-                        .ThrowFirstForNonSuccess()).ErrorCode, ErrorCode.MessengerUserInvalid);
+                        .ThrowFirstForNonSuccess()).ErrorCode);
         }
 
         [Test]
@@ -187,14 +184,14 @@ namespace Azuria.Test.ConferenceTests
             Assert.AreNotEqual(lConference.Id, default(int));
             Assert.IsFalse(lConference.IsGroupConference);
 
-            Assert.AreEqual(
+            Assert.AreEqual(ErrorCode.UserinfoUserNotFound,
                 Assert.CatchAsync<ProxerApiException>(
                     () => Conference.Create(new User(int.MaxValue), "hello", GeneralSetup.SenpaiInstance)
-                        .ThrowFirstForNonSuccess()).ErrorCode, ErrorCode.UserinfoUserNotFound);
-            Assert.AreEqual(
+                        .ThrowFirstForNonSuccess()).ErrorCode);
+            Assert.AreEqual(ErrorCode.MessengerUserInvalid,
                 Assert.CatchAsync<ProxerApiException>(
                     () => Conference.Create(new User(177103), "hello", GeneralSetup.SenpaiInstance)
-                        .ThrowFirstForNonSuccess()).ErrorCode, ErrorCode.MessengerUserInvalid);
+                        .ThrowFirstForNonSuccess()).ErrorCode);
         }
 
         [Test]
@@ -208,7 +205,7 @@ namespace Azuria.Test.ConferenceTests
                 (await Conference.GetConferences(GeneralSetup.SenpaiInstance).ThrowFirstForNonSuccess())
                     .ToArray();
             Assert.IsNotNull(lConferences);
-            Assert.AreEqual(lConferences.Length, 3);
+            Assert.AreEqual(3, lConferences.Length);
             Assert.True(lConferences.Skip(1).All(info => !info.UnreadMessages.Any()));
         }
 
@@ -218,7 +215,7 @@ namespace Azuria.Test.ConferenceTests
             User lLeader = await this._conference.Leader.ThrowFirstOnNonSuccess();
             Assert.IsNotNull(lLeader);
             Assert.AreNotEqual(lLeader, User.System);
-            Assert.AreEqual(lLeader.Id, 121658);
+            Assert.AreEqual(121658, lLeader.Id);
         }
 
         [Test]
@@ -226,7 +223,7 @@ namespace Azuria.Test.ConferenceTests
         {
             Message[] lMessages = this._conference.Messages.ToArray();
             Assert.IsNotEmpty(lMessages);
-            Assert.AreEqual(lMessages.Length, 56);
+            Assert.AreEqual(56, lMessages.Length);
             Assert.IsTrue(lMessages.Any(message => message.Action == MessageAction.AddUser));
             Assert.IsTrue(lMessages.Any(message => message.Action == MessageAction.RemoveUser));
             Assert.IsTrue(lMessages.Any(message => message.Action == MessageAction.SetTopic));
@@ -244,7 +241,7 @@ namespace Azuria.Test.ConferenceTests
             User[] lParticipants = (await this._conference.Participants.ThrowFirstOnNonSuccess()).ToArray();
             Assert.IsNotNull(lParticipants);
             Assert.IsNotEmpty(lParticipants);
-            Assert.AreEqual(lParticipants.Length, 10);
+            Assert.AreEqual(10, lParticipants.Length);
             Assert.IsTrue(lParticipants.All(user => (user != null) && (user != User.System)));
         }
 
@@ -255,10 +252,10 @@ namespace Azuria.Test.ConferenceTests
             Assert.CatchAsync<ArgumentException>(() => this._conference.SendMessage("").ThrowFirstForNonSuccess());
 
             string lValidMessage = await this._conference.SendMessage("message").ThrowFirstForNonSuccess();
-            Assert.AreEqual(lValidMessage, string.Empty);
+            Assert.IsEmpty(lValidMessage);
 
             string lValidCommand = await this._conference.SendMessage("/help").ThrowFirstForNonSuccess();
-            Assert.IsFalse(string.IsNullOrEmpty(lValidCommand));
+            Assert.IsNotEmpty(lValidCommand);
         }
 
         [Test]
@@ -271,9 +268,9 @@ namespace Azuria.Test.ConferenceTests
             Assert.IsTrue(lResult.Success,
                 $"{lResult.Exceptions.FirstOrDefault()?.GetType().FullName}: {lResult.Exceptions.FirstOrDefault()?.Message}");
 
-            Assert.AreEqual(
+            Assert.AreEqual(ErrorCode.MessengerReportTooShort,
                 Assert.CatchAsync<ProxerApiException>(() => this._conference.SendReport("a").ThrowFirstForNonSuccess())
-                    .ErrorCode, ErrorCode.MessengerReportTooShort);
+                    .ErrorCode);
         }
 
         [Test]
@@ -314,7 +311,7 @@ namespace Azuria.Test.ConferenceTests
             string lTopic = await this._conference.Topic.ThrowFirstOnNonSuccess();
             Assert.IsNotNull(lTopic);
             Assert.IsNotEmpty(lTopic);
-            Assert.AreEqual(lTopic, "Proxer API - Diskussion");
+            Assert.AreEqual("Proxer API - Diskussion", lTopic);
         }
     }
 }

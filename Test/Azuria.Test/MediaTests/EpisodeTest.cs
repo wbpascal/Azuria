@@ -27,21 +27,21 @@ namespace Azuria.Test.MediaTests
         [Test]
         public void ContentIndexTest()
         {
-            Assert.AreEqual(this._episode.ContentIndex, 1);
+            Assert.AreEqual(1, this._episode.ContentIndex);
         }
 
         [Test]
         public void LanguageTest()
         {
-            Assert.AreEqual(this._episode.Language, AnimeLanguage.EngSub);
-            Assert.AreEqual(this._episode.GeneralLanguage, Language.English);
+            Assert.AreEqual(AnimeLanguage.EngSub, this._episode.Language);
+            Assert.AreEqual(Language.English, this._episode.GeneralLanguage);
         }
 
         [Test]
         public void ParentObjectTest()
         {
             Assert.IsNotNull(this._episode.ParentObject);
-            Assert.AreEqual(this._episode.ParentObject.Id, 9200);
+            Assert.AreEqual(9200, this._episode.ParentObject.Id);
         }
 
         [Test]
@@ -50,7 +50,7 @@ namespace Azuria.Test.MediaTests
             ProxerResult<IEnumerable<Anime.Episode.Stream>> lResult = await this._episode.Streams;
             Assert.IsTrue(lResult.Success, JsonConvert.SerializeObject(lResult.Exceptions));
             Assert.IsNotNull(lResult.Result);
-            Assert.AreEqual(lResult.Result.Count(), 4);
+            Assert.AreEqual(4, lResult.Result.Count());
         }
     }
 }

@@ -56,7 +56,7 @@ namespace Azuria.UserInfo.ControlPanel
         /// <summary>
         /// </summary>
         /// <returns></returns>
-        public Task<ProxerResult> DeleteEntry()
+        public Task<ProxerResult> DeleteVote()
         {
             return this.UserControlPanel.DeleteCommentVote(this.VoteId);
         }

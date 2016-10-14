@@ -31,15 +31,15 @@ namespace Azuria.Test.MediaTests
         public void EpisodeTest()
         {
             Assert.IsNotNull(this._stream.Episode);
-            Assert.AreEqual(this._stream.Episode.ContentIndex, 1);
+            Assert.AreEqual(1, this._stream.Episode.ContentIndex);
             Assert.IsNotNull(this._stream.Episode.ParentObject);
-            Assert.AreEqual(this._stream.Episode.ParentObject.Id, 9200);
+            Assert.AreEqual(9200, this._stream.Episode.ParentObject.Id);
         }
 
         [Test]
         public void HosterTest()
         {
-            Assert.AreEqual(this._stream.Hoster, StreamHoster.Mp4Upload);
+            Assert.AreEqual(StreamHoster.Mp4Upload, this._stream.Hoster);
             Assert.IsNotNull(this._stream.HosterFullName);
             Assert.IsNotEmpty(this._stream.HosterFullName);
             Assert.IsNotNull(this._stream.HosterImage);
@@ -67,9 +67,9 @@ namespace Azuria.Test.MediaTests
         public void TranslatorTest()
         {
             Assert.IsNotNull(this._stream.Translator);
-            Assert.AreEqual(this._stream.Translator.Id, 1158);
-            Assert.AreEqual(this._stream.Translator.Name, "THORAnime");
-            Assert.AreEqual(this._stream.Translator.Language, Language.English);
+            Assert.AreEqual(1158, this._stream.Translator.Id);
+            Assert.AreEqual("THORAnime", this._stream.Translator.Name);
+            Assert.AreEqual(Language.English, this._stream.Translator.Language);
         }
 
         [Test]
@@ -83,8 +83,8 @@ namespace Azuria.Test.MediaTests
         public async Task UploaderTest()
         {
             Assert.IsNotNull(this._stream.Uploader);
-            Assert.AreEqual(this._stream.Uploader.Id, 205400);
-            Assert.AreEqual(await this._stream.Uploader.UserName.ThrowFirstOnNonSuccess(), "Tadakuni");
+            Assert.AreEqual(205400, this._stream.Uploader.Id);
+            Assert.AreEqual("Tadakuni", await this._stream.Uploader.UserName.ThrowFirstOnNonSuccess());
         }
     }
 }

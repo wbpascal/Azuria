@@ -25,7 +25,7 @@ namespace Azuria.Test
                 input.StartWith = "a";
             }).ToArray();
             Assert.IsNotNull(lResult);
-            Assert.AreEqual(lResult.Length, 5);
+            Assert.AreEqual(5, lResult.Length);
             Assert.IsTrue(
                 lResult.All(anime => new Regex(@"^[^a-zA-Z].*").IsMatch(anime.Name.GetObjectIfInitialised("ERROR"))));
             Assert.IsTrue(
@@ -35,7 +35,7 @@ namespace Azuria.Test
         [Test]
         public void EntrySearchTest()
         {
-            Assert.Catch<ArgumentException>(() => SearchHelper.Search<IAnimeMangaObject>((SearchInput)null));
+            Assert.Catch<ArgumentException>(() => SearchHelper.Search<IAnimeMangaObject>((SearchInput) null));
 
             IAnimeMangaObject[] lResult = SearchHelper.Search<IAnimeMangaObject>(input =>
             {
@@ -54,7 +54,7 @@ namespace Azuria.Test
                 input.Type = AnimeMangaSearchType.All;
             }).ToArray();
             Assert.IsNotNull(lResult);
-            Assert.AreEqual(lResult.Length, 3);
+            Assert.AreEqual(3, lResult.Length);
             Assert.IsTrue(lResult.All(o => o.ContentCount.GetObjectIfInitialised(int.MaxValue) <= 50));
             Assert.IsTrue(lResult.All(o => o.Name.GetObjectIfInitialised("ERROR").Contains("a")));
             Assert.IsTrue(lResult.All(o => o.Genre.GetObjectIfInitialised(new GenreType[0]).Contains(GenreType.Action)));
@@ -62,36 +62,36 @@ namespace Azuria.Test
             Anime[] lAnimeResult = SearchHelper.Search<Anime>(input =>
             {
                 input.Length = 50;
-                input.Fsk = new[] { FskType.Fsk12 };
-                input.GenreExclude = new[] { GenreType.Ecchi };
-                input.GenreInclude = new[] { GenreType.Action };
+                input.Fsk = new[] {FskType.Fsk12};
+                input.GenreExclude = new[] {GenreType.Ecchi};
+                input.GenreInclude = new[] {GenreType.Action};
                 input.IsFilteringSpoilerTags = true;
                 input.IsFilteringUnratedTags = true;
                 input.Language = SearchLanguage.English;
                 input.LengthLimit = LengthLimit.Down;
                 input.SearchTerm = "a";
                 input.Sort = SearchResultSort.Name;
-                input.TagsExclude = new[] { TagType.Alcohol };
-                input.TagsInclude = new[] { TagType.FemaleProtagonist };
+                input.TagsExclude = new[] {TagType.Alcohol};
+                input.TagsInclude = new[] {TagType.FemaleProtagonist};
                 input.Type = AnimeMangaSearchType.All;
             }).ToArray();
             Assert.IsNotNull(lAnimeResult);
-            Assert.AreEqual(lAnimeResult.Length, 3);
+            Assert.AreEqual(3, lAnimeResult.Length);
 
             Manga[] lMangaResult = SearchHelper.Search<Manga>(input =>
             {
                 input.Length = 50;
-                input.Fsk = new[] { FskType.Fsk12 };
-                input.GenreExclude = new[] { GenreType.Ecchi };
-                input.GenreInclude = new[] { GenreType.Action };
+                input.Fsk = new[] {FskType.Fsk12};
+                input.GenreExclude = new[] {GenreType.Ecchi};
+                input.GenreInclude = new[] {GenreType.Action};
                 input.IsFilteringSpoilerTags = true;
                 input.IsFilteringUnratedTags = true;
                 input.Language = SearchLanguage.English;
                 input.LengthLimit = LengthLimit.Down;
                 input.SearchTerm = "a";
                 input.Sort = SearchResultSort.Name;
-                input.TagsExclude = new[] { TagType.Alcohol };
-                input.TagsInclude = new[] { TagType.FemaleProtagonist };
+                input.TagsExclude = new[] {TagType.Alcohol};
+                input.TagsInclude = new[] {TagType.FemaleProtagonist};
                 input.Type = AnimeMangaSearchType.All;
             }).ToArray();
             Assert.IsNotNull(lMangaResult);

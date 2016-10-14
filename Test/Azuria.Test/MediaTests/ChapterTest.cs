@@ -32,20 +32,19 @@ namespace Azuria.Test.MediaTests
         {
             ProxerResult<int> lResult = await this._chapter.ChapterId;
             Assert.IsTrue(lResult.Success, JsonConvert.SerializeObject(lResult.Exceptions));
-            Assert.AreEqual(lResult.Result, 241036);
+            Assert.AreEqual(241036, lResult.Result);
         }
 
         [Test]
         public void ContentIndexTest()
         {
-            Assert.AreEqual(this._chapter.ContentIndex, 162);
+            Assert.AreEqual(162, this._chapter.ContentIndex);
         }
 
         [Test]
         public void LanguageTest()
         {
-            Assert.AreEqual(this._chapter.Language, Language.English);
-            Assert.AreEqual(this._chapter.Language, Language.English);
+            Assert.AreEqual(Language.English, this._chapter.Language);
         }
 
         [Test]
@@ -67,7 +66,7 @@ namespace Azuria.Test.MediaTests
         public void ParentObjectTest()
         {
             Assert.IsNotNull(this._chapter.ParentObject);
-            Assert.AreEqual(this._chapter.ParentObject.Id, 7834);
+            Assert.AreEqual(7834, this._chapter.ParentObject.Id);
         }
 
         [Test]
@@ -77,7 +76,7 @@ namespace Azuria.Test.MediaTests
             Assert.IsTrue(lResult.Success, JsonConvert.SerializeObject(lResult.Exceptions));
             Assert.IsNotNull(lResult.Result);
             Assert.IsNotEmpty(lResult.Result);
-            Assert.AreEqual(lResult.Result, "Chapter 159");
+            Assert.AreEqual("Chapter 159", lResult.Result);
         }
 
         [Test]
@@ -86,9 +85,9 @@ namespace Azuria.Test.MediaTests
             ProxerResult<Translator> lResult = await this._chapter.Translator;
             Assert.IsTrue(lResult.Success, JsonConvert.SerializeObject(lResult.Exceptions));
             Assert.IsNotNull(lResult.Result);
-            Assert.AreEqual(lResult.Result.Id, 795);
-            Assert.AreEqual(lResult.Result.Name, "Dicescans");
-            Assert.AreEqual(lResult.Result.Language, Language.English);
+            Assert.AreEqual(795, lResult.Result.Id);
+            Assert.AreEqual("Dicescans", lResult.Result.Name);
+            Assert.AreEqual(Language.English, lResult.Result.Language);
         }
 
         [Test]
@@ -106,8 +105,8 @@ namespace Azuria.Test.MediaTests
             ProxerResult<User> lResult = await this._chapter.Uploader;
             Assert.IsTrue(lResult.Success, JsonConvert.SerializeObject(lResult.Exceptions));
             Assert.IsNotNull(lResult.Result);
-            Assert.AreEqual(lResult.Result.Id, 177103);
-            Assert.AreEqual(lResult.Result.UserName.GetObjectIfInitialised(string.Empty), "InfiniteSoul");
+            Assert.AreEqual(177103, lResult.Result.Id);
+            Assert.AreEqual("InfiniteSoul", lResult.Result.UserName.GetObjectIfInitialised(string.Empty));
         }
     }
 }
