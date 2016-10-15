@@ -376,16 +376,28 @@ namespace Azuria.Test.Core
             #region Ucp
 
             ServerResponse.Create("https://proxer.me/api/v1",
-                    response => response.Post("/ucp/listsum").WithQueryParameter("kat", "anime"))
+                    response =>
+                            response.Post("/ucp/listsum").WithQueryParameter("kat", "anime").WithLoggedInSenpai(true))
                 .Respond(JsonResponses["ucp_getlistsumanime.json"]);
             ServerResponse.Create("https://proxer.me/api/v1",
-                    response => response.Post("/ucp/listsum").WithQueryParameter("kat", "manga"))
+                    response =>
+                            response.Post("/ucp/listsum").WithQueryParameter("kat", "manga").WithLoggedInSenpai(true))
                 .Respond(JsonResponses["ucp_getlistsummanga.json"]);
-            ServerResponse.Create("https://proxer.me/api/v1", response => response.Post("/ucp/votes"))
+            ServerResponse.Create("https://proxer.me/api/v1",
+                    response => response.Post("/ucp/votes").WithLoggedInSenpai(true))
                 .Respond(JsonResponses["ucp_getvotes.json"]);
             ServerResponse.Create("https://proxer.me/api/v1",
-                    response => response.Post("/ucp/deletevote").WithPostArgument("id", "1"))
+                    response => response.Post("/ucp/topten").WithLoggedInSenpai(true))
+                .Respond(JsonResponses["ucp_gettopten.json"]);
+            ServerResponse.Create("https://proxer.me/api/v1",
+                    response => response.Post("/ucp/deletevote").WithPostArgument("id", "1").WithLoggedInSenpai(true))
                 .Respond(JsonResponses["ucp_deletevote.json"]);
+            ServerResponse.Create("https://proxer.me/api/v1",
+                    response =>
+                        response.Post("/ucp/deletefavorite")
+                            .WithPostArgument("id", "1127035")
+                            .WithLoggedInSenpai(true))
+                .Respond(JsonResponses["ucp_deletefavourite.json"]);
 
             #endregion
 

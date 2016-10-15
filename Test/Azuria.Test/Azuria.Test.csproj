@@ -76,6 +76,8 @@
     <Compile Include="SearchTest.cs" />
     <Compile Include="SenpaiTest.cs" />
     <Compile Include="UserInfoTests\UcpTests\CommentVoteTest.cs" />
+    <Compile Include="UserInfoTests\UcpTests\ToptenTest.cs" />
+    <Compile Include="UserInfoTests\UcpTests\UcpSetup.cs" />
     <Compile Include="UserInfoTests\UcpTests\UcpTest.cs" />
   </ItemGroup>
   <ItemGroup>

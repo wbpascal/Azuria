@@ -11,14 +11,11 @@ namespace Azuria.Test.UserInfoTests.UcpTests
     public class CommentVoteTest
     {
         private CommentVote _vote;
-        private UserControlPanel _controlPanel;
 
         [OneTimeSetUp]
         public async Task Setup()
         {
-            this._controlPanel = new UserControlPanel(GeneralSetup.SenpaiInstance);
-            this._vote = (await this._controlPanel.CommentVotes.ThrowFirstOnNonSuccess()).FirstOrDefault();
-            Assert.IsNotNull(this._vote);
+            this._vote = (await UcpSetup.ControlPanel.CommentVotes.ThrowFirstOnNonSuccess()).First();
         }
 
         [Test]
@@ -62,7 +59,7 @@ namespace Azuria.Test.UserInfoTests.UcpTests
         [Test]
         public void UserControlPanelTest()
         {
-            Assert.AreSame(this._controlPanel, this._vote.UserControlPanel);
+            Assert.AreSame(UcpSetup.ControlPanel, this._vote.UserControlPanel);
         }
 
         [Test]

@@ -37,7 +37,7 @@ namespace Azuria.UserInfo.ControlPanel
         /// <summary>
         /// </summary>
         /// <returns></returns>
-        public Task<ProxerResult> DeleteEntry()
+        public Task<ProxerResult> DeleteTopten()
         {
             return this.UserControlPanel.DeleteTopten(this.ToptenId);
         }
