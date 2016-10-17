@@ -5,7 +5,7 @@ using Azuria.UserInfo.ControlPanel;
 using Newtonsoft.Json;
 using NUnit.Framework;
 
-namespace Azuria.Test.UserInfoTests.UcpTests
+namespace Azuria.Test.UcpTests
 {
     [TestFixture]
     public class CommentVoteTest

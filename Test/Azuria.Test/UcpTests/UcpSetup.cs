@@ -1,7 +1,7 @@
 ﻿using Azuria.UserInfo.ControlPanel;
 using NUnit.Framework;
 
-namespace Azuria.Test.UserInfoTests.UcpTests
+namespace Azuria.Test.UcpTests
 {
     [SetUpFixture]
     public class UcpSetup

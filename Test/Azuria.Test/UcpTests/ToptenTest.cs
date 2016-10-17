@@ -7,7 +7,7 @@ using Azuria.UserInfo.ControlPanel;
 using Newtonsoft.Json;
 using NUnit.Framework;
 
-namespace Azuria.Test.UserInfoTests.UcpTests
+namespace Azuria.Test.UcpTests
 {
     [TestFixture]
     public class ToptenTest
@@ -47,7 +47,7 @@ namespace Azuria.Test.UserInfoTests.UcpTests
         [Test]
         public void ToptenIdTest()
         {
-            Assert.AreEqual(1127035, this._toptenAnimeObject.ToptenId);
+            Assert.AreEqual(1, this._toptenAnimeObject.ToptenId);
             Assert.AreEqual(1076532, this._toptenMangaObject.ToptenId);
         }
 

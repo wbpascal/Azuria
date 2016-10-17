@@ -60,7 +60,7 @@ namespace Azuria.ErrorHandling
         /// <returns>An object of type <typeparamref name="T" />.</returns>
         public T OnError(T returnObject)
         {
-            return this.Success && (this.Result != null) ? this.Result : returnObject;
+            return this.Success ? this.Result : returnObject;
         }
 
         #endregion

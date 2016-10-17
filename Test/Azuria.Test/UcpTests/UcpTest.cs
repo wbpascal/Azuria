@@ -10,7 +10,7 @@ using Azuria.UserInfo.ControlPanel;
 using Newtonsoft.Json;
 using NUnit.Framework;
 
-namespace Azuria.Test.UserInfoTests.UcpTests
+namespace Azuria.Test.UcpTests
 {
     [TestFixture]
     public class UcpTest
@@ -21,6 +21,50 @@ namespace Azuria.Test.UserInfoTests.UcpTests
         public void Setup()
         {
             this._controlPanel = UcpSetup.ControlPanel;
+        }
+
+        [Test]
+        public void BookmarkAnimeTest()
+        {
+            BookmarkObject<Anime>[] lBookmarks = this._controlPanel.BookmarksAnime.ToArray();
+            Assert.AreEqual(17, lBookmarks.Length);
+            Assert.IsTrue(lBookmarks.All(o => o.AnimeMangaContentObject != null));
+            Assert.IsTrue(lBookmarks.All(o => o.AnimeMangaContentObject.ContentIndex != default(int)));
+            Assert.IsTrue(lBookmarks.All(o => o.AnimeMangaContentObject.ParentObject.Id != default(int)));
+            Assert.IsTrue(
+                lBookmarks.All(
+                    o =>
+                        !string.IsNullOrEmpty(
+                            o.AnimeMangaContentObject.ParentObject.Name.GetObjectIfInitialised(string.Empty))));
+            Assert.IsTrue(
+                lBookmarks.All(
+                    o =>
+                        o.AnimeMangaContentObject.ParentObject.AnimeMedium.GetObjectIfInitialised(
+                            AnimeMedium.Unknown) != AnimeMedium.Unknown));
+            Assert.IsTrue(lBookmarks.All(o => o.BookmarkId != default(int)));
+            Assert.IsTrue(lBookmarks.All(o => o.UserControlPanel == this._controlPanel));
+        }
+
+        [Test]
+        public void BookmarkMangaTest()
+        {
+            BookmarkObject<Manga>[] lBookmarks = this._controlPanel.BookmarksManga.ToArray();
+            Assert.AreEqual(4, lBookmarks.Length);
+            Assert.IsTrue(lBookmarks.All(o => o.AnimeMangaContentObject != null));
+            Assert.IsTrue(lBookmarks.All(o => o.AnimeMangaContentObject.ContentIndex != default(int)));
+            Assert.IsTrue(lBookmarks.All(o => o.AnimeMangaContentObject.ParentObject.Id != default(int)));
+            Assert.IsTrue(
+                lBookmarks.All(
+                    o =>
+                        !string.IsNullOrEmpty(
+                            o.AnimeMangaContentObject.ParentObject.Name.GetObjectIfInitialised(string.Empty))));
+            Assert.IsTrue(
+                lBookmarks.All(
+                    o =>
+                        o.AnimeMangaContentObject.ParentObject.MangaMedium.GetObjectIfInitialised(
+                            MangaMedium.Unknown) != MangaMedium.Unknown));
+            Assert.IsTrue(lBookmarks.All(o => o.BookmarkId != default(int)));
+            Assert.IsTrue(lBookmarks.All(o => o.UserControlPanel == this._controlPanel));
         }
 
         [Test]
@@ -68,6 +112,7 @@ namespace Azuria.Test.UserInfoTests.UcpTests
             Assert.IsNotNull(lResult.Result);
             Assert.AreEqual(1, lResult.Result.Count());
             Assert.IsTrue(lResult.Result.All(o => o.ToptenId != default(int)));
+            Assert.IsTrue(lResult.Result.All(o => o.AnimeMangaObject != null));
             Assert.IsTrue(lResult.Result.All(o => o.AnimeMangaObject.Id != default(int)));
             Assert.IsTrue(
                 lResult.Result.All(
@@ -88,6 +133,7 @@ namespace Azuria.Test.UserInfoTests.UcpTests
             Assert.IsNotNull(lResult.Result);
             Assert.AreEqual(1, lResult.Result.Count());
             Assert.IsTrue(lResult.Result.All(o => o.ToptenId != default(int)));
+            Assert.IsTrue(lResult.Result.All(o => o.AnimeMangaObject != null));
             Assert.IsTrue(lResult.Result.All(o => o.AnimeMangaObject.Id != default(int)));
             Assert.IsTrue(
                 lResult.Result.All(

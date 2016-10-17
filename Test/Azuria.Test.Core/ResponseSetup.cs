@@ -384,6 +384,22 @@ namespace Azuria.Test.Core
                             response.Post("/ucp/listsum").WithQueryParameter("kat", "manga").WithLoggedInSenpai(true))
                 .Respond(JsonResponses["ucp_getlistsummanga.json"]);
             ServerResponse.Create("https://proxer.me/api/v1",
+                    response =>
+                        response.Post("/ucp/reminder")
+                            .WithQueryParameter("kat", "anime")
+                            .WithQueryParameter("p", "0")
+                            .WithQueryParameter("limit", "100")
+                            .WithLoggedInSenpai(true))
+                .Respond(JsonResponses["ucp_getreminderanime.json"]);
+            ServerResponse.Create("https://proxer.me/api/v1",
+                    response =>
+                        response.Post("/ucp/reminder")
+                            .WithQueryParameter("kat", "manga")
+                            .WithQueryParameter("p", "0")
+                            .WithQueryParameter("limit", "100")
+                            .WithLoggedInSenpai(true))
+                .Respond(JsonResponses["ucp_getremindermanga.json"]);
+            ServerResponse.Create("https://proxer.me/api/v1",
                     response => response.Post("/ucp/votes").WithLoggedInSenpai(true))
                 .Respond(JsonResponses["ucp_getvotes.json"]);
             ServerResponse.Create("https://proxer.me/api/v1",
@@ -395,9 +411,15 @@ namespace Azuria.Test.Core
             ServerResponse.Create("https://proxer.me/api/v1",
                     response =>
                         response.Post("/ucp/deletefavorite")
-                            .WithPostArgument("id", "1127035")
+                            .WithPostArgument("id", "1")
                             .WithLoggedInSenpai(true))
                 .Respond(JsonResponses["ucp_deletefavourite.json"]);
+            ServerResponse.Create("https://proxer.me/api/v1",
+                    response =>
+                        response.Post("/ucp/deletereminder")
+                            .WithPostArgument("id", "1")
+                            .WithLoggedInSenpai(true))
+                .Respond(JsonResponses["ucp_deletereminder.json"]);
 
             #endregion
 

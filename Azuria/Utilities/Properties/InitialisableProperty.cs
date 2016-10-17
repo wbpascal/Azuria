@@ -3,6 +3,7 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using Azuria.ErrorHandling;
+using Azuria.Exceptions;
 
 namespace Azuria.Utilities.Properties
 {
@@ -60,10 +61,9 @@ namespace Azuria.Utilities.Properties
         public async Task<ProxerResult<T>> GetNewObject()
         {
             ProxerResult lInitialiseResult = await this._initMethod.Invoke();
-            if (!lInitialiseResult.Success || (this._initialisedObject == null))
-                return new ProxerResult<T>(lInitialiseResult.Exceptions);
-
-            return new ProxerResult<T>(this._initialisedObject);
+            return !lInitialiseResult.Success
+                ? new ProxerResult<T>(lInitialiseResult.Exceptions)
+                : new ProxerResult<T>(this._initialisedObject);
         }
 
         /// <inheritdoc />
@@ -75,7 +75,7 @@ namespace Azuria.Utilities.Properties
         /// <inheritdoc />
         public async Task<ProxerResult<T>> GetObject()
         {
-            if (this.IsInitialisedOnce && (this._initialisedObject != null))
+            if (this.IsInitialisedOnce)
                 return new ProxerResult<T>(this._initialisedObject);
 
             return await this.GetNewObject();
@@ -88,9 +88,16 @@ namespace Azuria.Utilities.Properties
         }
 
         /// <inheritdoc />
+        public T GetObjectIfInitialised()
+        {
+            if(!this.IsInitialisedOnce) throw new NotInitialisedException();
+            return this._initialisedObject;
+        }
+
+        /// <inheritdoc />
         public T GetObjectIfInitialised(T ifNot)
         {
-            return this.IsInitialisedOnce && (this._initialisedObject != null) ? this._initialisedObject : ifNot;
+            return this.IsInitialisedOnce ? this._initialisedObject : ifNot;
         }
 
         /// <summary>
@@ -117,7 +124,7 @@ namespace Azuria.Utilities.Properties
         public async Task<T> ThrowFirstOnNonSuccess()
         {
             ProxerResult<T> lResult = await this.GetObject();
-            if (!lResult.Success || (lResult.Result == null))
+            if (!lResult.Success)
                 throw lResult.Exceptions.FirstOrDefault() ?? new Exception();
 
             return lResult.Result;
@@ -126,7 +133,7 @@ namespace Azuria.Utilities.Properties
         /// <inheritdoc />
         public override string ToString()
         {
-            return this.GetObjectIfInitialised(default(T)).ToString();
+            return this.GetObjectIfInitialised().ToString();
         }
 
         #endregion
