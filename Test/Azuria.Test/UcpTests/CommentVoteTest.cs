@@ -19,12 +19,6 @@ namespace Azuria.Test.UcpTests
         }
 
         [Test]
-        public void AnimeMangaNameTest()
-        {
-            Assert.AreEqual("Anime Name", this._vote.AnimeMangaName);
-        }
-
-        [Test]
         public void AuthorTest()
         {
             Assert.AreEqual(163825, this._vote.Author.Id);
@@ -48,6 +42,12 @@ namespace Azuria.Test.UcpTests
         {
             ProxerResult lResult = await this._vote.DeleteVote();
             Assert.IsTrue(lResult.Success, JsonConvert.SerializeObject(lResult.Exceptions));
+        }
+
+        [Test]
+        public void MediaNameTest()
+        {
+            Assert.AreEqual("Anime Name", this._vote.MediaName);
         }
 
         [Test]

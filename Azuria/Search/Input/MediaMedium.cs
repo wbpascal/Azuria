@@ -5,7 +5,7 @@ namespace Azuria.Search.Input
 {
     /// <summary>
     /// </summary>
-    public enum AnimeMangaMedium
+    public enum MediaMedium
     {
         Animeseries = 0,
         Movie = 1,

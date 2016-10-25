@@ -8,7 +8,7 @@
 
         /// <summary>
         /// </summary>
-        public AnimeMangaMedium Medium { get; set; } = AnimeMangaMedium.None;
+        public MediaMedium Medium { get; set; } = MediaMedium.None;
 
         /// <summary>
         /// </summary>

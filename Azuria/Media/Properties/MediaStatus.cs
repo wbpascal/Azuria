@@ -3,7 +3,7 @@
     /// <summary>
     /// Represents the airing status of an <see cref="Anime" /> or <see cref="Manga" />.
     /// </summary>
-    public enum AnimeMangaStatus
+    public enum MediaStatus
     {
         /// <summary>
         /// The anime or manga is currently not published.

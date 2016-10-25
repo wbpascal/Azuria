@@ -15,7 +15,7 @@ namespace Azuria.Api.v1.DataModels.User
         #region Properties
 
         [JsonProperty("state")]
-        internal AnimeMangaProgressState AuthorState { get; set; }
+        internal MediaProgressState AuthorState { get; set; }
 
         [JsonProperty("comment")]
         internal string CommentContent { get; set; }
@@ -41,16 +41,16 @@ namespace Azuria.Api.v1.DataModels.User
         public int EntryId { get; set; }
 
         [JsonProperty("medium")]
-        public AnimeMangaMedium EntryMedium { get; set; }
+        public MediaMedium EntryMedium { get; set; }
 
         [JsonProperty("name")]
         public string EntryName { get; set; }
 
         [JsonProperty("estate")]
-        internal AnimeMangaStatus EntryStatus { get; set; }
+        internal MediaStatus EntryStatus { get; set; }
 
-        public AnimeMangaEntryType EntryType
-            => (int) this.EntryMedium < 4 ? AnimeMangaEntryType.Anime : AnimeMangaEntryType.Manga;
+        public MediaEntryType EntryType
+            => (int) this.EntryMedium < 4 ? MediaEntryType.Anime : MediaEntryType.Manga;
 
         [JsonProperty("rating")]
         internal int Rating { get; set; }

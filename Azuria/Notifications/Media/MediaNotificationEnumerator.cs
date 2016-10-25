@@ -14,12 +14,12 @@ using Azuria.Utilities.Extensions;
 
 // ReSharper disable StaticMemberInGenericType
 
-namespace Azuria.Notifications.AnimeManga
+namespace Azuria.Notifications.Media
 {
     /// <summary>
     /// </summary>
-    public sealed class AnimeMangaNotificationEnumerator<T> : IEnumerator<AnimeMangaNotification<T>>
-        where T : IAnimeMangaObject
+    public sealed class MediaNotificationEnumerator<T> : IEnumerator<MediaNotification<T>>
+        where T : IMediaObject
     {
         private static readonly Regex NotificationElementRegex = new Regex("<a class=\"notificationList\".*?<\\/a>");
 
@@ -30,10 +30,10 @@ namespace Azuria.Notifications.AnimeManga
 
         private readonly int _nodesToParse;
         private readonly Senpai _senpai;
-        private AnimeMangaNotification<T>[] _content;
+        private MediaNotification<T>[] _content;
         private int _currentContentIndex = -1;
 
-        internal AnimeMangaNotificationEnumerator(Senpai senpai, int nodesToParse = 0)
+        internal MediaNotificationEnumerator(Senpai senpai, int nodesToParse = 0)
         {
             this._senpai = senpai;
             this._nodesToParse = nodesToParse;
@@ -42,7 +42,7 @@ namespace Azuria.Notifications.AnimeManga
         #region Properties
 
         /// <inheritdoc />
-        public AnimeMangaNotification<T> Current => this._content[this._currentContentIndex];
+        public MediaNotification<T> Current => this._content[this._currentContentIndex];
 
         /// <inheritdoc />
         object IEnumerator.Current => this.Current;
@@ -58,19 +58,19 @@ namespace Azuria.Notifications.AnimeManga
         }
 
         /// <inheritdoc />
-        private async Task<ProxerResult<IEnumerable<AnimeMangaNotification<T>>>> GetNextPage()
+        private async Task<ProxerResult<IEnumerable<MediaNotification<T>>>> GetNextPage()
         {
             if (!this._senpai.IsProbablyLoggedIn)
-                return new ProxerResult<IEnumerable<AnimeMangaNotification<T>>>(new NotLoggedInException(this._senpai));
+                return new ProxerResult<IEnumerable<MediaNotification<T>>>(new NotLoggedInException(this._senpai));
 
             ProxerResult<string> lResponse =
                 await
                     this._senpai.HttpClient.GetRequest(
                         new Uri("https://proxer.me/components/com_proxer/misc/notifications_misc.php"));
             if (!lResponse.Success || string.IsNullOrEmpty(lResponse.Result))
-                return new ProxerResult<IEnumerable<AnimeMangaNotification<T>>>(lResponse.Exceptions);
+                return new ProxerResult<IEnumerable<MediaNotification<T>>>(lResponse.Exceptions);
 
-            List<AnimeMangaNotification<T>> lNotifications = new List<AnimeMangaNotification<T>>();
+            List<MediaNotification<T>> lNotifications = new List<MediaNotification<T>>();
             MatchCollection lMatches = NotificationElementRegex.Matches(lResponse.Result);
 
             foreach (
@@ -82,7 +82,7 @@ namespace Azuria.Notifications.AnimeManga
                 lNotifications.AddIf(this.ParseNode(lInfo), notification => notification != null);
             }
 
-            return new ProxerResult<IEnumerable<AnimeMangaNotification<T>>>(lNotifications);
+            return new ProxerResult<IEnumerable<MediaNotification<T>>>(lNotifications);
         }
 
         /// <inheritdoc />
@@ -90,18 +90,18 @@ namespace Azuria.Notifications.AnimeManga
         {
             if (this._content == null)
             {
-                ProxerResult<IEnumerable<AnimeMangaNotification<T>>> lGetSearchResult =
+                ProxerResult<IEnumerable<MediaNotification<T>>> lGetSearchResult =
                     Task.Run(this.GetNextPage).Result;
                 if (!lGetSearchResult.Success || (lGetSearchResult.Result == null))
                     throw lGetSearchResult.Exceptions.FirstOrDefault() ?? new Exception("Unkown error");
-                this._content = lGetSearchResult.Result as AnimeMangaNotification<T>[] ??
+                this._content = lGetSearchResult.Result as MediaNotification<T>[] ??
                                 lGetSearchResult.Result.ToArray();
             }
             this._currentContentIndex++;
             return this._content.Length > this._currentContentIndex;
         }
 
-        private AnimeMangaNotification<T> ParseNode(Match lNode)
+        private MediaNotification<T> ParseNode(Match lNode)
         {
             int lNotificationId = Convert.ToInt32(lNode.Groups["nid"].Value);
             DateTime lDate = DateTime.ParseExact(lNode.Groups["ndate"].Value, "dd.MM.yyyy", CultureInfo.InvariantCulture);
@@ -109,16 +109,16 @@ namespace Azuria.Notifications.AnimeManga
             string[] lLinkInfo =
                 lNode.Groups["link"].Value.Remove(0,
                     lNode.Groups["link"].Value.IndexOf("/", 1, StringComparison.Ordinal) + 1).Split('/');
-            int lAnimeMangaId = Convert.ToInt32(lLinkInfo[0]);
+            int lMediaId = Convert.ToInt32(lLinkInfo[0]);
             int lContentIndex = Convert.ToInt32(lLinkInfo[1]);
-            AnimeMangaLanguage lLanguage = LanguageConverter.GetLanguageFromString(lLinkInfo[2]);
+            MediaLanguage lLanguage = LanguageConverter.GetLanguageFromString(lLinkInfo[2]);
 
-            IAnimeMangaObject lAnimeMangaObject = lNode.Groups["link"].Value.StartsWith("/watch")
-                ? new Anime(lAnimeMangaId)
-                : (IAnimeMangaObject) new Manga(lAnimeMangaId);
+            IMediaObject lMediaObject = lNode.Groups["link"].Value.StartsWith("/watch")
+                ? new Anime(lMediaId)
+                : (IMediaObject) new Manga(lMediaId);
 
-            return lAnimeMangaObject is T
-                ? new AnimeMangaNotification<T>(lNotificationId, (T) lAnimeMangaObject, lContentIndex, lLanguage, lDate,
+            return lMediaObject is T
+                ? new MediaNotification<T>(lNotificationId, (T) lMediaObject, lContentIndex, lLanguage, lDate,
                     this._senpai)
                 : null;
         }
@@ -126,7 +126,7 @@ namespace Azuria.Notifications.AnimeManga
         /// <inheritdoc />
         public void Reset()
         {
-            this._content = new AnimeMangaNotification<T>[0];
+            this._content = new MediaNotification<T>[0];
             this._currentContentIndex = -1;
         }
 

@@ -3,7 +3,7 @@
 
 namespace Azuria.Media.Properties
 {
-    public enum AnimeMangaLanguage
+    public enum MediaLanguage
     {
         German = 0,
         English = 1,

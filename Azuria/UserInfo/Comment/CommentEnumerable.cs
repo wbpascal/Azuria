@@ -6,15 +6,15 @@ namespace Azuria.UserInfo.Comment
 {
     /// <summary>
     /// </summary>
-    public class CommentEnumerable<T> : IEnumerable<Comment<T>> where T : IAnimeMangaObject
+    public class CommentEnumerable<T> : IEnumerable<Comment<T>> where T : IMediaObject
     {
-        private readonly T _animeMangaObject;
+        private readonly T _mediaObject;
         private readonly string _sort;
         private readonly User _user;
 
-        internal CommentEnumerable(T animeMangaObject, string sort)
+        internal CommentEnumerable(T mediaObject, string sort)
         {
-            this._animeMangaObject = animeMangaObject;
+            this._mediaObject = mediaObject;
             this._sort = sort;
         }
 
@@ -37,7 +37,7 @@ namespace Azuria.UserInfo.Comment
         public IEnumerator<Comment<T>> GetEnumerator()
         {
             return this._user == null
-                ? new CommentEnumerator<T>(this._animeMangaObject, this._sort)
+                ? new CommentEnumerator<T>(this._mediaObject, this._sort)
                 : new CommentEnumerator<T>(this._user);
         }
 

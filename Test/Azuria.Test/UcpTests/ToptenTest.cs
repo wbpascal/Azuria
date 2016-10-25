@@ -23,25 +23,25 @@ namespace Azuria.Test.UcpTests
         }
 
         [Test]
-        public void AnimeMangaObjectTest()
-        {
-            Assert.AreEqual(41, this._toptenAnimeObject.AnimeMangaObject.Id);
-            Assert.AreEqual(4385, this._toptenMangaObject.AnimeMangaObject.Id);
-            Assert.AreEqual("Code Geass: Hangyaku no Lelouch R2",
-                this._toptenAnimeObject.AnimeMangaObject.Name.GetObjectIfInitialised(string.Empty));
-            Assert.AreEqual("Ao Haru Ride",
-                this._toptenMangaObject.AnimeMangaObject.Name.GetObjectIfInitialised(string.Empty));
-            Assert.AreEqual(AnimeMedium.Series,
-                this._toptenAnimeObject.AnimeMangaObject.AnimeMedium.GetObjectIfInitialised(AnimeMedium.Unknown));
-            Assert.AreEqual(MangaMedium.Series,
-                this._toptenMangaObject.AnimeMangaObject.MangaMedium.GetObjectIfInitialised(MangaMedium.Unknown));
-        }
-
-        [Test]
         public async Task DeleteToptenTest()
         {
             ProxerResult lResult = await this._toptenAnimeObject.DeleteTopten();
             Assert.IsTrue(lResult.Success, JsonConvert.SerializeObject(lResult.Exceptions));
+        }
+
+        [Test]
+        public void MediaObjectTest()
+        {
+            Assert.AreEqual(41, this._toptenAnimeObject.MediaObject.Id);
+            Assert.AreEqual(4385, this._toptenMangaObject.MediaObject.Id);
+            Assert.AreEqual("Code Geass: Hangyaku no Lelouch R2",
+                this._toptenAnimeObject.MediaObject.Name.GetObjectIfInitialised(string.Empty));
+            Assert.AreEqual("Ao Haru Ride",
+                this._toptenMangaObject.MediaObject.Name.GetObjectIfInitialised(string.Empty));
+            Assert.AreEqual(AnimeMedium.Series,
+                this._toptenAnimeObject.MediaObject.AnimeMedium.GetObjectIfInitialised(AnimeMedium.Unknown));
+            Assert.AreEqual(MangaMedium.Series,
+                this._toptenMangaObject.MediaObject.MangaMedium.GetObjectIfInitialised(MangaMedium.Unknown));
         }
 
         [Test]

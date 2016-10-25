@@ -51,11 +51,11 @@ namespace Azuria.UserInfo
                 IsInitialisedOnce = false
             };
             this._toptenAnime =
-                new InitialisableProperty<IEnumerable<Anime>>(() => this.InitTopten(AnimeMangaEntryType.Anime));
+                new InitialisableProperty<IEnumerable<Anime>>(() => this.InitTopten(MediaEntryType.Anime));
             this.CommentsLatestAnime = new CommentEnumerable<Anime>(this);
             this.CommentsLatestManga = new CommentEnumerable<Manga>(this);
             this._toptenManga =
-                new InitialisableProperty<IEnumerable<Manga>>(() => this.InitTopten(AnimeMangaEntryType.Manga));
+                new InitialisableProperty<IEnumerable<Manga>>(() => this.InitTopten(MediaEntryType.Manga));
             this.Manga = new UserEntryEnumerable<Manga>(this);
             this._points = new InitialisableProperty<UserPoints>(this.InitMainInfo);
             this._status = new InitialisableProperty<UserStatus>(this.InitMainInfo);
@@ -184,7 +184,7 @@ namespace Azuria.UserInfo
             return new ProxerResult();
         }
 
-        private async Task<ProxerResult> InitTopten(AnimeMangaEntryType category)
+        private async Task<ProxerResult> InitTopten(MediaEntryType category)
         {
             ProxerResult<ProxerApiResponse<ToptenDataModel[]>> lResult =
                 await
@@ -192,10 +192,10 @@ namespace Azuria.UserInfo
                         category.ToString().ToLower()));
             if (!lResult.Success || (lResult.Result == null)) return new ProxerResult(lResult.Exceptions);
 
-            if (category == AnimeMangaEntryType.Anime)
+            if (category == MediaEntryType.Anime)
                 this._toptenAnime.SetInitialisedObject(from toptenDataModel in lResult.Result.Data
                     select new Anime(toptenDataModel.EntryName, toptenDataModel.EntryId));
-            if (category == AnimeMangaEntryType.Manga)
+            if (category == MediaEntryType.Manga)
                 this._toptenManga.SetInitialisedObject(from toptenDataModel in lResult.Result.Data
                     select new Manga(toptenDataModel.EntryName, toptenDataModel.EntryId));
 

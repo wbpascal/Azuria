@@ -12,13 +12,13 @@ namespace Azuria.Api.v1.DataModels.User
         public int EntryId { get; set; }
 
         [JsonProperty("medium")]
-        public AnimeMangaMedium EntryMedium { get; set; }
+        public MediaMedium EntryMedium { get; set; }
 
         [JsonProperty("name")]
         public string EntryName { get; set; }
 
         [JsonProperty("kat")]
-        public AnimeMangaEntryType EntryType { get; set; }
+        public MediaEntryType EntryType { get; set; }
 
         #endregion
     }

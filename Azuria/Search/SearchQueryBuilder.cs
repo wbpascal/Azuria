@@ -38,7 +38,7 @@ namespace Azuria.Search
                 {"isH", input.ShowHContent.ToString()},
                 {"start", input.StartWithNonAlphabeticalChar ? "nonAlpha" : input.StartWith}
             };
-            if (input.Medium != AnimeMangaMedium.None)
+            if (input.Medium != MediaMedium.None)
                 lReturn.Add("medium", input.Medium.ToString().ToLowerInvariant());
 
             return lReturn;
@@ -89,13 +89,13 @@ namespace Azuria.Search
             return lReturn.TrimEnd();
         }
 
-        private static string TypeToString(AnimeMangaSearchType type)
+        private static string TypeToString(MediaSearchType type)
         {
             switch (type)
             {
-                case AnimeMangaSearchType.AllAnime:
+                case MediaSearchType.AllAnime:
                     return "all-anime";
-                case AnimeMangaSearchType.AllManga:
+                case MediaSearchType.AllManga:
                     return "all-manga";
                 default:
                     return type.ToString().ToLowerInvariant();

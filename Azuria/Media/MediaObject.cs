@@ -18,7 +18,7 @@ namespace Azuria.Media
 {
     /// <summary>
     /// </summary>
-    public abstract class AnimeMangaObject : IAnimeMangaObject
+    public abstract class MediaObject : IMediaObject
     {
         protected readonly InitialisableProperty<int> _clicks;
         protected readonly InitialisableProperty<int> _contentCount;
@@ -33,14 +33,14 @@ namespace Azuria.Media
         protected readonly InitialisableProperty<bool> _isLicensed;
         protected readonly InitialisableProperty<string> _japaneseTitle;
         protected readonly InitialisableProperty<string> _name;
-        protected readonly InitialisableProperty<AnimeMangaRating> _rating;
-        protected readonly InitialisableProperty<IEnumerable<IAnimeMangaObject>> _relations;
-        protected readonly InitialisableProperty<AnimeMangaSeasonInfo> _season;
-        protected readonly InitialisableProperty<AnimeMangaStatus> _status;
+        protected readonly InitialisableProperty<MediaRating> _rating;
+        protected readonly InitialisableProperty<IEnumerable<IMediaObject>> _relations;
+        protected readonly InitialisableProperty<MediaSeasonInfo> _season;
+        protected readonly InitialisableProperty<MediaStatus> _status;
         protected readonly InitialisableProperty<string> _synonym;
         protected readonly InitialisableProperty<IEnumerable<Tag>> _tags;
 
-        internal AnimeMangaObject(int id)
+        internal MediaObject(int id)
         {
             this.Id = id;
             this._clicks = new InitialisableProperty<int>(this.InitMainInfo);
@@ -68,11 +68,11 @@ namespace Azuria.Media
             {
                 IsInitialisedOnce = false
             };
-            this._rating = new InitialisableProperty<AnimeMangaRating>(this.InitMainInfo);
+            this._rating = new InitialisableProperty<MediaRating>(this.InitMainInfo);
             this._relations =
-                new InitialisableProperty<IEnumerable<IAnimeMangaObject>>(this.InitRelations);
-            this._season = new InitialisableProperty<AnimeMangaSeasonInfo>(this.InitSeasons);
-            this._status = new InitialisableProperty<AnimeMangaStatus>(this.InitMainInfo);
+                new InitialisableProperty<IEnumerable<IMediaObject>>(this.InitRelations);
+            this._season = new InitialisableProperty<MediaSeasonInfo>(this.InitSeasons);
+            this._status = new InitialisableProperty<MediaStatus>(this.InitMainInfo);
             this._synonym = new InitialisableProperty<string>(this.InitNames, string.Empty)
             {
                 IsInitialisedOnce = false
@@ -128,16 +128,16 @@ namespace Azuria.Media
         public IInitialisableProperty<string> Name => this._name;
 
         /// <inheritdoc />
-        public IInitialisableProperty<AnimeMangaRating> Rating => this._rating;
+        public IInitialisableProperty<MediaRating> Rating => this._rating;
 
         /// <inheritdoc />
-        public IInitialisableProperty<IEnumerable<IAnimeMangaObject>> Relations => this._relations;
+        public IInitialisableProperty<IEnumerable<IMediaObject>> Relations => this._relations;
 
         /// <inheritdoc />
-        public IInitialisableProperty<AnimeMangaSeasonInfo> Season => this._season;
+        public IInitialisableProperty<MediaSeasonInfo> Season => this._season;
 
         /// <inheritdoc />
-        public IInitialisableProperty<AnimeMangaStatus> Status => this._status;
+        public IInitialisableProperty<MediaStatus> Status => this._status;
 
         /// <inheritdoc />
         public IInitialisableProperty<string> Synonym => this._synonym;
@@ -154,7 +154,7 @@ namespace Azuria.Media
         /// <param name="senpai"></param>
         /// <param name="list"></param>
         /// <returns></returns>
-        public Task<ProxerResult> AddToProfileList(Senpai senpai, AnimeMangaProfileList list)
+        public Task<ProxerResult> AddToProfileList(Senpai senpai, MediaProfileList list)
         {
             return new UserControlPanel(senpai).AddToProfileList(this, list);
         }
@@ -167,36 +167,36 @@ namespace Azuria.Media
         /// If the action was successful and if it was, an object representing either an <see cref="Anime" /> or
         /// <see cref="Manga" />.
         /// </returns>
-        public static async Task<ProxerResult<IAnimeMangaObject>> CreateFromId(int id)
+        public static async Task<ProxerResult<IMediaObject>> CreateFromId(int id)
         {
-            if (id <= 0) return new ProxerResult<IAnimeMangaObject>(new ArgumentException(nameof(id)));
+            if (id <= 0) return new ProxerResult<IMediaObject>(new ArgumentException(nameof(id)));
 
             ProxerResult<ProxerApiResponse<EntryDataModel>> lResult =
                 await RequestHandler.ApiRequest(ApiRequestBuilder.InfoGetEntry(id));
             if (!lResult.Success || (lResult.Result == null))
-                return new ProxerResult<IAnimeMangaObject>(lResult.Exceptions);
+                return new ProxerResult<IMediaObject>(lResult.Exceptions);
             EntryDataModel lDataModel = lResult.Result.Data;
 
             return
-                new ProxerResult<IAnimeMangaObject>(lDataModel.EntryType == AnimeMangaEntryType.Anime
+                new ProxerResult<IMediaObject>(lDataModel.EntryType == MediaEntryType.Anime
                     ? new Anime(lDataModel)
-                    : (IAnimeMangaObject) new Manga(lDataModel));
+                    : (IMediaObject) new Manga(lDataModel));
         }
 
-        internal async Task<ProxerResult<AnimeMangaContentDataModel[]>> GetContentObjects()
+        internal async Task<ProxerResult<MediaContentDataModel[]>> GetContentObjects()
         {
             ProxerResult<int> lContentCountResult = await this.ContentCount;
             if (!lContentCountResult.Success || (lContentCountResult.Result == default(int)))
-                return new ProxerResult<AnimeMangaContentDataModel[]>(lContentCountResult.Exceptions);
+                return new ProxerResult<MediaContentDataModel[]>(lContentCountResult.Exceptions);
 
             ProxerResult<ProxerApiResponse<ListInfoDataModel>> lResult =
                 await
                     RequestHandler.ApiRequest(ApiRequestBuilder.InfoGetListInfo(this.Id, 0, lContentCountResult.Result));
             if (!lResult.Success || (lResult.Result == null))
-                return new ProxerResult<AnimeMangaContentDataModel[]>(lResult.Exceptions);
+                return new ProxerResult<MediaContentDataModel[]>(lResult.Exceptions);
             ListInfoDataModel lData = lResult.Result.Data;
 
-            return new ProxerResult<AnimeMangaContentDataModel[]>(lData.ContentObjects);
+            return new ProxerResult<MediaContentDataModel[]>(lData.ContentObjects);
         }
 
         protected async Task<ProxerResult> InitEntryTags()
@@ -275,19 +275,19 @@ namespace Azuria.Media
             foreach (NameDataModel nameDataModel in lResult.Result.Data)
                 switch (nameDataModel.Type)
                 {
-                    case AnimeMangaNameType.Original:
+                    case MediaNameType.Original:
                         this._name.SetInitialisedObject(nameDataModel.Name);
                         break;
-                    case AnimeMangaNameType.English:
+                    case MediaNameType.English:
                         this._englishTitle.SetInitialisedObject(nameDataModel.Name);
                         break;
-                    case AnimeMangaNameType.German:
+                    case MediaNameType.German:
                         this._germanTitle.SetInitialisedObject(nameDataModel.Name);
                         break;
-                    case AnimeMangaNameType.Japanese:
+                    case MediaNameType.Japanese:
                         this._japaneseTitle.SetInitialisedObject(nameDataModel.Name);
                         break;
-                    case AnimeMangaNameType.Synonym:
+                    case MediaNameType.Synonym:
                         this._synonym.SetInitialisedObject(nameDataModel.Name);
                         break;
                 }
@@ -302,9 +302,9 @@ namespace Azuria.Media
             if (!lResult.Success || (lResult.Result == null)) return new ProxerResult(lResult.Exceptions);
 
             this._relations.SetInitialisedObject(from dataModel in lResult.Result.Data
-                select dataModel.EntryType == AnimeMangaEntryType.Anime
+                select dataModel.EntryType == MediaEntryType.Anime
                     ? new Anime(dataModel)
-                    : (IAnimeMangaObject) new Manga(dataModel));
+                    : (IMediaObject) new Manga(dataModel));
 
             return new ProxerResult();
         }
@@ -317,8 +317,8 @@ namespace Azuria.Media
             SeasonDataModel[] lData = lResult.Result.Data;
 
             if ((lData.Length > 1) && !lData[0].Equals(lData[1]))
-                this._season.SetInitialisedObject(new AnimeMangaSeasonInfo(lData[0], lData[1]));
-            else if (lData.Length > 0) this._season.SetInitialisedObject(new AnimeMangaSeasonInfo(lData[0]));
+                this._season.SetInitialisedObject(new MediaSeasonInfo(lData[0], lData[1]));
+            else if (lData.Length > 0) this._season.SetInitialisedObject(new MediaSeasonInfo(lData[0]));
 
             return new ProxerResult();
         }

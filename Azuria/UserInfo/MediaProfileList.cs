@@ -2,7 +2,7 @@
 {
     /// <summary>
     /// </summary>
-    public enum AnimeMangaProfileList
+    public enum MediaProfileList
     {
         /// <summary>
         /// </summary>

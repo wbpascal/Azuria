@@ -16,11 +16,11 @@ namespace Azuria.Test
         public void EntryListTest()
         {
             Assert.Catch<ArgumentException>(() => SearchHelper.EntryList<Anime>((EntryListInput) null));
-            Assert.Catch<ArgumentException>(() => SearchHelper.EntryList<IAnimeMangaObject>(new EntryListInput()));
+            Assert.Catch<ArgumentException>(() => SearchHelper.EntryList<IMediaObject>(new EntryListInput()));
 
             Manga[] lResult = SearchHelper.EntryList<Manga>(input =>
             {
-                input.Medium = AnimeMangaMedium.Mangaseries;
+                input.Medium = MediaMedium.Mangaseries;
                 input.StartWithNonAlphabeticalChar = true;
                 input.StartWith = "a";
             }).ToArray();
@@ -35,9 +35,9 @@ namespace Azuria.Test
         [Test]
         public void EntrySearchTest()
         {
-            Assert.Catch<ArgumentException>(() => SearchHelper.Search<IAnimeMangaObject>((SearchInput) null));
+            Assert.Catch<ArgumentException>(() => SearchHelper.Search<IMediaObject>((SearchInput) null));
 
-            IAnimeMangaObject[] lResult = SearchHelper.Search<IAnimeMangaObject>(input =>
+            IMediaObject[] lResult = SearchHelper.Search<IMediaObject>(input =>
             {
                 input.Length = 50;
                 input.Fsk = new[] {FskType.Fsk12};
@@ -51,7 +51,7 @@ namespace Azuria.Test
                 input.Sort = SearchResultSort.Name;
                 input.TagsExclude = new[] {TagType.Alcohol};
                 input.TagsInclude = new[] {TagType.FemaleProtagonist};
-                input.Type = AnimeMangaSearchType.All;
+                input.Type = MediaSearchType.All;
             }).ToArray();
             Assert.IsNotNull(lResult);
             Assert.AreEqual(3, lResult.Length);
@@ -73,7 +73,7 @@ namespace Azuria.Test
                 input.Sort = SearchResultSort.Name;
                 input.TagsExclude = new[] {TagType.Alcohol};
                 input.TagsInclude = new[] {TagType.FemaleProtagonist};
-                input.Type = AnimeMangaSearchType.All;
+                input.Type = MediaSearchType.All;
             }).ToArray();
             Assert.IsNotNull(lAnimeResult);
             Assert.AreEqual(3, lAnimeResult.Length);
@@ -92,7 +92,7 @@ namespace Azuria.Test
                 input.Sort = SearchResultSort.Name;
                 input.TagsExclude = new[] {TagType.Alcohol};
                 input.TagsInclude = new[] {TagType.FemaleProtagonist};
-                input.Type = AnimeMangaSearchType.All;
+                input.Type = MediaSearchType.All;
             }).ToArray();
             Assert.IsNotNull(lMangaResult);
             Assert.IsEmpty(lMangaResult);

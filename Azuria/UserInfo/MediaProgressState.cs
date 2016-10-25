@@ -5,7 +5,7 @@ namespace Azuria.UserInfo
     /// <summary>
     /// Represents the category a user has categorised his progress of an <see cref="Anime" /> or <see cref="Manga" /> in.
     /// </summary>
-    public enum AnimeMangaProgressState
+    public enum MediaProgressState
     {
         /// <summary>
         /// The user finished the <see cref="Anime" /> or <see cref="Manga" />.

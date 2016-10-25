@@ -21,7 +21,7 @@ namespace Azuria.Test.MediaTests
         [OneTimeSetUp]
         public async Task Setup()
         {
-            Manga lManga = await AnimeMangaObject.CreateFromId(7834).ThrowFirstForNonSuccess() as Manga;
+            Manga lManga = await MediaObject.CreateFromId(7834).ThrowFirstForNonSuccess() as Manga;
             Assert.IsNotNull(lManga);
             this._chapter = (await lManga.GetChapters(Language.English).ThrowFirstForNonSuccess()).LastOrDefault();
             Assert.IsNotNull(this._chapter);

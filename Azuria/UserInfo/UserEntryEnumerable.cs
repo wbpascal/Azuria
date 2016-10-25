@@ -6,7 +6,7 @@ namespace Azuria.UserInfo
 {
     /// <summary>
     /// </summary>
-    public class UserEntryEnumerable<T> : IEnumerable<UserProfileEntry<T>> where T : class, IAnimeMangaObject
+    public class UserEntryEnumerable<T> : IEnumerable<UserProfileEntry<T>> where T : class, IMediaObject
     {
         private readonly User _user;
 

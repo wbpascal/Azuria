@@ -33,7 +33,7 @@ namespace Azuria.Api.v1.Converters.Notifications
                         lDataModel.News = lValue.Value;
                         break;
                     case 5:
-                        lDataModel.OtherAnimeManga = lValue.Value;
+                        lDataModel.OtherMedia = lValue.Value;
                         break;
                 }
             }

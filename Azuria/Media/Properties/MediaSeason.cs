@@ -4,9 +4,9 @@ namespace Azuria.Media.Properties
 {
     /// <summary>
     /// </summary>
-    public class AnimeMangaSeason
+    public class MediaSeason
     {
-        internal AnimeMangaSeason(SeasonDataModel dataModel)
+        internal MediaSeason(SeasonDataModel dataModel)
         {
             this.Season = dataModel.Season;
             this.Year = dataModel.Year;

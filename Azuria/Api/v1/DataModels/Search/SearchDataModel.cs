@@ -13,7 +13,7 @@ namespace Azuria.Api.v1.DataModels.Search
 
         [JsonProperty("language")]
         [JsonConverter(typeof(LanguageCommaCollectionConverter))]
-        internal AnimeMangaLanguage[] AvailableLanguages { get; set; }
+        internal MediaLanguage[] AvailableLanguages { get; set; }
 
         [JsonProperty("count")]
         internal int ContentCount { get; set; }
@@ -22,13 +22,13 @@ namespace Azuria.Api.v1.DataModels.Search
         public int EntryId { get; set; }
 
         [JsonProperty("medium")]
-        public AnimeMangaMedium EntryMedium { get; set; }
+        public MediaMedium EntryMedium { get; set; }
 
         [JsonProperty("name")]
         public string EntryName { get; set; }
 
-        public AnimeMangaEntryType EntryType
-            => (int) this.EntryMedium < 4 ? AnimeMangaEntryType.Anime : AnimeMangaEntryType.Manga;
+        public MediaEntryType EntryType
+            => (int) this.EntryMedium < 4 ? MediaEntryType.Anime : MediaEntryType.Manga;
 
         [JsonProperty("genre")]
         [JsonConverter(typeof(GenreConverter))]
@@ -40,10 +40,10 @@ namespace Azuria.Api.v1.DataModels.Search
         [JsonProperty("rate_sum")]
         internal int RateSum { get; set; }
 
-        internal AnimeMangaRating Rating => new AnimeMangaRating(this.RateSum, this.RateCount);
+        internal MediaRating Rating => new MediaRating(this.RateSum, this.RateCount);
 
         [JsonProperty("state")]
-        internal AnimeMangaStatus Status { get; set; }
+        internal MediaStatus Status { get; set; }
 
         #endregion
     }

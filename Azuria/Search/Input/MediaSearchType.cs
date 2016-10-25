@@ -4,7 +4,7 @@
     /// An enumeration which describes the type of the anime or manga that
     /// is being searched for.
     /// </summary>
-    public enum AnimeMangaSearchType
+    public enum MediaSearchType
     {
         /// <summary>
         /// Search for everything. Excluding H-Content.

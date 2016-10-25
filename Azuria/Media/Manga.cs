@@ -26,7 +26,7 @@ namespace Azuria.Media
     /// Represents a manga.
     /// </summary>
     [DebuggerDisplay("Manga: {Name} [{Id}]")]
-    public class Manga : AnimeMangaObject
+    public class Manga : MediaObject
     {
         private readonly InitialisableProperty<IEnumerable<Language>> _availableLanguages;
 
@@ -48,7 +48,7 @@ namespace Azuria.Media
 
         internal Manga(IEntryInfoDataModel dataModel) : this(dataModel.EntryName, dataModel.EntryId)
         {
-            if (dataModel.EntryType != AnimeMangaEntryType.Manga)
+            if (dataModel.EntryType != MediaEntryType.Manga)
                 throw new ArgumentException(nameof(dataModel.EntryType));
             this._mangaMedium.SetInitialisedObject((MangaMedium) dataModel.EntryMedium);
         }
@@ -118,14 +118,14 @@ namespace Azuria.Media
         /// <seealso cref="Chapter" />
         /// <returns>
         /// An enumeration of all available <see cref="Chapter">chapters</see> in the specified
-        /// <paramref name="language">language</paramref> with a max count of <see cref="AnimeMangaObject.ContentCount" />.
+        /// <paramref name="language">language</paramref> with a max count of <see cref="MediaObject.ContentCount" />.
         /// </returns>
         public async Task<ProxerResult<IEnumerable<Chapter>>> GetChapters(Language language)
         {
             if (!(await this.AvailableLanguages.GetObject(new Language[0])).Contains(language))
                 return new ProxerResult<IEnumerable<Chapter>>(new Exception[] {new LanguageNotAvailableException()});
 
-            ProxerResult<AnimeMangaContentDataModel[]> lContentObjectsResult =
+            ProxerResult<MediaContentDataModel[]> lContentObjectsResult =
                 await this.GetContentObjects();
             if (!lContentObjectsResult.Success || (lContentObjectsResult.Result == null))
                 return new ProxerResult<IEnumerable<Chapter>>(lContentObjectsResult.Exceptions);
@@ -156,7 +156,7 @@ namespace Azuria.Media
         /// <summary>
         /// Represents a chapter of a <see cref="Manga" />.
         /// </summary>
-        public class Chapter : IAnimeMangaContent<Manga>, IAnimeMangaContent<IAnimeMangaObject>
+        public class Chapter : IMediaContent<Manga>, IMediaContent<IMediaObject>
         {
             private readonly InitialisableProperty<int> _chapterId;
             private readonly InitialisableProperty<IEnumerable<Page>> _pages;
@@ -175,7 +175,7 @@ namespace Azuria.Media
                 this._translator = new InitialisableProperty<Translator>(this.InitInfo);
             }
 
-            internal Chapter(Manga manga, AnimeMangaContentDataModel dataModel) : this()
+            internal Chapter(Manga manga, MediaContentDataModel dataModel) : this()
             {
                 this.ContentIndex = dataModel.ContentIndex;
                 this.Language = (Language) dataModel.Language;
@@ -223,7 +223,11 @@ namespace Azuria.Media
             /// </summary>
             public IInitialisableProperty<IEnumerable<Page>> Pages => this._pages;
 
-            IAnimeMangaObject IAnimeMangaContent<IAnimeMangaObject>.ParentObject => this.ParentObject;
+            /// <inheritdoc />
+            IMediaObject IMediaContent<IMediaObject>.ParentObject => this.ParentObject;
+
+            /// <inheritdoc />
+            IMediaObject IMediaContent.ParentObject => this.ParentObject;
 
             /// <summary>
             /// Gets the <see cref="Manga" /> this <see cref="Chapter" /> belongs to.
@@ -262,7 +266,7 @@ namespace Azuria.Media
             /// <returns>If the action was successful.</returns>
             public Task<ProxerResult> AddToBookmarks(Senpai senpai)
             {
-                return new UserControlPanel(senpai).AddToBookmarks((IAnimeMangaContent<Manga>) this);
+                return new UserControlPanel(senpai).AddToBookmarks(this);
             }
 
             private async Task<ProxerResult> InitInfo()

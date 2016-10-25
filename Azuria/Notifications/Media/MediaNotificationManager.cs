@@ -7,44 +7,44 @@ using Azuria.Api.v1.DataModels.Notifications;
 using Azuria.ErrorHandling;
 using Azuria.Media;
 
-namespace Azuria.Notifications.AnimeManga
+namespace Azuria.Notifications.Media
 {
     /// <summary>
     /// </summary>
-    public class AnimeMangaNotificationManager : INotificationManager
+    public class MediaNotificationManager : INotificationManager
     {
-        private readonly List<AnimeMangaNotificationEventHandler> _animeMangaNotificationEventHandlers =
-            new List<AnimeMangaNotificationEventHandler>();
-
         private readonly List<AnimeNotificationEventHandler> _animeNotificationEventHandlers =
             new List<AnimeNotificationEventHandler>();
 
         private readonly List<MangaNotificationEventHandler> _mangaNotificationEventHandlers =
             new List<MangaNotificationEventHandler>();
 
+        private readonly List<MediaNotificationEventHandler> _mediaNotificationEventHandlers =
+            new List<MediaNotificationEventHandler>();
+
         private readonly Senpai _senpai;
 
-        private AnimeMangaNotificationManager(Senpai senpai)
+        private MediaNotificationManager(Senpai senpai)
         {
             this._senpai = senpai;
-            this.Notifications = new AnimeMangaNotificationCollection<IAnimeMangaObject>(senpai);
-            this.NotificationsAnime = new AnimeMangaNotificationCollection<Anime>(senpai);
-            this.NotificationsManga = new AnimeMangaNotificationCollection<Manga>(senpai);
+            this.Notifications = new MediaNotificationCollection<IMediaObject>(senpai);
+            this.NotificationsAnime = new MediaNotificationCollection<Anime>(senpai);
+            this.NotificationsManga = new MediaNotificationCollection<Manga>(senpai);
         }
 
         #region Properties
 
         /// <summary>
         /// </summary>
-        public AnimeMangaNotificationCollection<IAnimeMangaObject> Notifications { get; }
+        public MediaNotificationCollection<IMediaObject> Notifications { get; }
 
         /// <summary>
         /// </summary>
-        public AnimeMangaNotificationCollection<Anime> NotificationsAnime { get; }
+        public MediaNotificationCollection<Anime> NotificationsAnime { get; }
 
         /// <summary>
         /// </summary>
-        public AnimeMangaNotificationCollection<Manga> NotificationsManga { get; }
+        public MediaNotificationCollection<Manga> NotificationsManga { get; }
 
         Senpai INotificationManager.Senpai => this._senpai;
 
@@ -56,27 +56,27 @@ namespace Azuria.Notifications.AnimeManga
         /// </summary>
         /// <param name="sender">The user that recieved the notifications.</param>
         /// <param name="e">The notifications.</param>
-        public delegate void AnimeMangaNotificationEventHandler(
-            Senpai sender, IEnumerable<AnimeMangaNotification<IAnimeMangaObject>> e);
-
-        /// <summary>
-        /// </summary>
-        /// <param name="sender">The user that recieved the notifications.</param>
-        /// <param name="e">The notifications.</param>
-        public delegate void AnimeNotificationEventHandler(Senpai sender, IEnumerable<AnimeMangaNotification<Anime>> e);
+        public delegate void AnimeNotificationEventHandler(Senpai sender, IEnumerable<MediaNotification<Anime>> e);
 
         /// <summary>
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         public delegate void ExceptionThrownNotificationFetchEventHandler(
-            AnimeMangaNotificationManager sender, Exception e);
+            MediaNotificationManager sender, Exception e);
 
         /// <summary>
         /// </summary>
         /// <param name="sender">The user that recieved the notifications.</param>
         /// <param name="e">The notifications.</param>
-        public delegate void MangaNotificationEventHandler(Senpai sender, IEnumerable<AnimeMangaNotification<Manga>> e);
+        public delegate void MangaNotificationEventHandler(Senpai sender, IEnumerable<MediaNotification<Manga>> e);
+
+        /// <summary>
+        /// </summary>
+        /// <param name="sender">The user that recieved the notifications.</param>
+        /// <param name="e">The notifications.</param>
+        public delegate void MediaNotificationEventHandler(
+            Senpai sender, IEnumerable<MediaNotification<IMediaObject>> e);
 
         /// <summary>
         /// </summary>
@@ -110,15 +110,15 @@ namespace Azuria.Notifications.AnimeManga
 
         /// <summary>
         /// </summary>
-        public event AnimeMangaNotificationEventHandler AnimeMangaNotificationRecieved
+        public event MediaNotificationEventHandler MediaNotificationRecieved
         {
             add
             {
-                if (this._animeMangaNotificationEventHandlers.Contains(value)) return;
-                this._animeMangaNotificationEventHandlers.Add(value);
+                if (this._mediaNotificationEventHandlers.Contains(value)) return;
+                this._mediaNotificationEventHandlers.Add(value);
                 NotificationCountManager.CheckNotificationsForNewEvent().ConfigureAwait(false);
             }
-            remove { this._animeMangaNotificationEventHandlers.Remove(value); }
+            remove { this._mediaNotificationEventHandlers.Remove(value); }
         }
 
         #endregion
@@ -129,9 +129,9 @@ namespace Azuria.Notifications.AnimeManga
         /// </summary>
         /// <param name="senpai"></param>
         /// <returns></returns>
-        public static AnimeMangaNotificationManager Create(Senpai senpai)
+        public static MediaNotificationManager Create(Senpai senpai)
         {
-            return NotificationCountManager.GetOrAddManager(senpai, new AnimeMangaNotificationManager(senpai));
+            return NotificationCountManager.GetOrAddManager(senpai, new MediaNotificationManager(senpai));
         }
 
         /// <summary>
@@ -159,26 +159,10 @@ namespace Azuria.Notifications.AnimeManga
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        protected virtual void OnAnimeMangaNotificationRecieved(Senpai sender,
-            IEnumerable<AnimeMangaNotification<IAnimeMangaObject>> e)
+        protected virtual void OnAnimeNotificationRecieved(Senpai sender, IEnumerable<MediaNotification<Anime>> e)
         {
-            IEnumerable<AnimeMangaNotification<IAnimeMangaObject>> lNotifications =
-                e as AnimeMangaNotification<IAnimeMangaObject>[] ?? e.ToArray();
-
-            foreach (
-                AnimeMangaNotificationEventHandler newsNotificationEventHandler in
-                this._animeMangaNotificationEventHandlers)
-                newsNotificationEventHandler?.Invoke(sender, lNotifications);
-        }
-
-        /// <summary>
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        protected virtual void OnAnimeNotificationRecieved(Senpai sender, IEnumerable<AnimeMangaNotification<Anime>> e)
-        {
-            IEnumerable<AnimeMangaNotification<Anime>> lNotifications =
-                e as AnimeMangaNotification<Anime>[] ?? e.ToArray();
+            IEnumerable<MediaNotification<Anime>> lNotifications =
+                e as MediaNotification<Anime>[] ?? e.ToArray();
 
             foreach (AnimeNotificationEventHandler newsNotificationEventHandler in this._animeNotificationEventHandlers)
                 newsNotificationEventHandler?.Invoke(sender, lNotifications);
@@ -196,35 +180,51 @@ namespace Azuria.Notifications.AnimeManga
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        protected virtual void OnMangaNotificationRecieved(Senpai sender, IEnumerable<AnimeMangaNotification<Manga>> e)
+        protected virtual void OnMangaNotificationRecieved(Senpai sender, IEnumerable<MediaNotification<Manga>> e)
         {
-            IEnumerable<AnimeMangaNotification<Manga>> lNotifications =
-                e as AnimeMangaNotification<Manga>[] ?? e.ToArray();
+            IEnumerable<MediaNotification<Manga>> lNotifications =
+                e as MediaNotification<Manga>[] ?? e.ToArray();
 
             foreach (MangaNotificationEventHandler newsNotificationEventHandler in this._mangaNotificationEventHandlers)
                 newsNotificationEventHandler?.Invoke(sender, lNotifications);
         }
 
+        /// <summary>
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        protected virtual void OnMediaNotificationRecieved(Senpai sender,
+            IEnumerable<MediaNotification<IMediaObject>> e)
+        {
+            IEnumerable<MediaNotification<IMediaObject>> lNotifications =
+                e as MediaNotification<IMediaObject>[] ?? e.ToArray();
+
+            foreach (
+                MediaNotificationEventHandler newsNotificationEventHandler in
+                this._mediaNotificationEventHandlers)
+                newsNotificationEventHandler?.Invoke(sender, lNotifications);
+        }
+
         void INotificationManager.OnNewNotificationsAvailable(NotificationCountDataModel notificationsCounts)
         {
-            if (notificationsCounts.OtherAnimeManga == 0) return;
+            if (notificationsCounts.OtherMedia == 0) return;
 
             try
             {
-                AnimeMangaNotification<IAnimeMangaObject>[] lAnimeMangaNotifications =
-                    new AnimeMangaNotificationCollection<IAnimeMangaObject>(this._senpai,
-                        notificationsCounts.OtherAnimeManga).Take(
-                        notificationsCounts.OtherAnimeManga).ToArray();
+                MediaNotification<IMediaObject>[] lMediaNotifications =
+                    new MediaNotificationCollection<IMediaObject>(this._senpai,
+                        notificationsCounts.OtherMedia).Take(
+                        notificationsCounts.OtherMedia).ToArray();
 
-                AnimeMangaNotification<Anime>[] lAnimeNotifications =
-                    new AnimeMangaNotificationCollection<Anime>(this._senpai, notificationsCounts.OtherAnimeManga).Take(
-                        notificationsCounts.OtherAnimeManga).ToArray();
-                AnimeMangaNotification<Manga>[] lMangaNotifications =
-                    new AnimeMangaNotificationCollection<Manga>(this._senpai, notificationsCounts.OtherAnimeManga).Take(
-                        notificationsCounts.OtherAnimeManga).ToArray();
+                MediaNotification<Anime>[] lAnimeNotifications =
+                    new MediaNotificationCollection<Anime>(this._senpai, notificationsCounts.OtherMedia).Take(
+                        notificationsCounts.OtherMedia).ToArray();
+                MediaNotification<Manga>[] lMangaNotifications =
+                    new MediaNotificationCollection<Manga>(this._senpai, notificationsCounts.OtherMedia).Take(
+                        notificationsCounts.OtherMedia).ToArray();
 
-                if (lAnimeMangaNotifications.Length > 0)
-                    this.OnAnimeMangaNotificationRecieved(this._senpai, lAnimeMangaNotifications);
+                if (lMediaNotifications.Length > 0)
+                    this.OnMediaNotificationRecieved(this._senpai, lMediaNotifications);
                 if (lAnimeNotifications.Length > 0)
                     this.OnAnimeNotificationRecieved(this._senpai, lAnimeNotifications);
                 if (lMangaNotifications.Length > 0)

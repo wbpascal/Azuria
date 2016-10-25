@@ -6,17 +6,17 @@ using Azuria.ErrorHandling;
 using Azuria.Media;
 using Azuria.Media.Properties;
 
-namespace Azuria.Notifications.AnimeManga
+namespace Azuria.Notifications.Media
 {
     /// <summary>
     /// Represents an <see cref="Anime" />- or <see cref="Manga" />-notification.
     /// </summary>
-    public class AnimeMangaNotification<T> : INotification where T : IAnimeMangaObject
+    public class MediaNotification<T> : INotification where T : IMediaObject
     {
-        internal AnimeMangaNotification(int notificationId, T animeMangaObject, int contentIndex,
-            AnimeMangaLanguage language, DateTime timeStamp, Senpai senpai)
+        internal MediaNotification(int notificationId, T mediaObject, int contentIndex,
+            MediaLanguage language, DateTime timeStamp, Senpai senpai)
         {
-            this.AnimeMangaObject = animeMangaObject;
+            this.MediaObject = mediaObject;
             this.ContentIndex = contentIndex;
             this.Language = language;
             this.NotificationId = notificationId;
@@ -28,15 +28,15 @@ namespace Azuria.Notifications.AnimeManga
 
         /// <summary>
         /// </summary>
-        public T AnimeMangaObject { get; set; }
-
-        /// <summary>
-        /// </summary>
         public int ContentIndex { get; set; }
 
         /// <summary>
         /// </summary>
-        public AnimeMangaLanguage Language { get; set; }
+        public MediaLanguage Language { get; set; }
+
+        /// <summary>
+        /// </summary>
+        public T MediaObject { get; set; }
 
         /// <summary>
         /// </summary>
@@ -60,40 +60,40 @@ namespace Azuria.Notifications.AnimeManga
         /// <returns></returns>
         public Task<ProxerResult> Delete()
         {
-            return AnimeMangaNotificationManager.Create(this.Senpai).DeleteNotification(this.NotificationId);
+            return MediaNotificationManager.Create(this.Senpai).DeleteNotification(this.NotificationId);
         }
 
         /// <summary>
         /// </summary>
         /// <returns></returns>
-        public async Task<ProxerResult<IAnimeMangaContent<T>>> GetContentObject()
+        public async Task<ProxerResult<IMediaContent<T>>> GetContentObject()
         {
-            if (this.AnimeMangaObject is Anime)
+            if (this.MediaObject is Anime)
             {
                 ProxerResult<IEnumerable<Anime.Episode>> lEpisodesResult =
-                    await (this.AnimeMangaObject as Anime).GetEpisodes((AnimeLanguage) this.Language);
+                    await (this.MediaObject as Anime).GetEpisodes((AnimeLanguage) this.Language);
                 if (!lEpisodesResult.Success || (lEpisodesResult.Result == null))
-                    return new ProxerResult<IAnimeMangaContent<T>>(lEpisodesResult.Exceptions);
+                    return new ProxerResult<IMediaContent<T>>(lEpisodesResult.Exceptions);
 
                 return
-                    new ProxerResult<IAnimeMangaContent<T>>(
+                    new ProxerResult<IMediaContent<T>>(
                         lEpisodesResult.Result.FirstOrDefault(episode => episode.ContentIndex == this.ContentIndex) as
-                            IAnimeMangaContent<T>);
+                            IMediaContent<T>);
             }
-            if (this.AnimeMangaObject is Manga)
+            if (this.MediaObject is Manga)
             {
                 ProxerResult<IEnumerable<Manga.Chapter>> lChaptersResult =
-                    await (this.AnimeMangaObject as Manga).GetChapters((Language) this.Language);
+                    await (this.MediaObject as Manga).GetChapters((Language) this.Language);
                 if (!lChaptersResult.Success || (lChaptersResult.Result == null))
-                    return new ProxerResult<IAnimeMangaContent<T>>(lChaptersResult.Exceptions);
+                    return new ProxerResult<IMediaContent<T>>(lChaptersResult.Exceptions);
 
                 return
-                    new ProxerResult<IAnimeMangaContent<T>>(
+                    new ProxerResult<IMediaContent<T>>(
                         lChaptersResult.Result.FirstOrDefault(chapter => chapter.ContentIndex == this.ContentIndex) as
-                            IAnimeMangaContent<T>);
+                            IMediaContent<T>);
             }
 
-            return new ProxerResult<IAnimeMangaContent<T>>(new Exception[0]);
+            return new ProxerResult<IMediaContent<T>>(new Exception[0]);
         }
 
         #endregion

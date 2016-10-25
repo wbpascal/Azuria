@@ -400,6 +400,13 @@ namespace Azuria.Test.Core
                             .WithLoggedInSenpai(true))
                 .Respond(JsonResponses["ucp_getremindermanga.json"]);
             ServerResponse.Create("https://proxer.me/api/v1",
+                    response =>
+                        response.Post("/ucp/history")
+                            .WithQueryParameter("p", "0")
+                            .WithQueryParameter("limit", "50")
+                            .WithLoggedInSenpai(true))
+                .Respond(JsonResponses["ucp_gethistory.json"]);
+            ServerResponse.Create("https://proxer.me/api/v1",
                     response => response.Post("/ucp/votes").WithLoggedInSenpai(true))
                 .Respond(JsonResponses["ucp_getvotes.json"]);
             ServerResponse.Create("https://proxer.me/api/v1",
@@ -420,6 +427,15 @@ namespace Azuria.Test.Core
                             .WithPostArgument("id", "1")
                             .WithLoggedInSenpai(true))
                 .Respond(JsonResponses["ucp_deletereminder.json"]);
+            ServerResponse.Create("https://proxer.me/api/v1",
+                    response =>
+                        response.Post("/ucp/setreminder")
+                            .WithQueryParameter("id", "9200")
+                            .WithQueryParameter("episode", "1")
+                            .WithQueryParameter("language", "engsub")
+                            .WithQueryParameter("kat", "anime")
+                            .WithLoggedInSenpai(true))
+                .Respond(JsonResponses["ucp_setreminder9200.json"]);
 
             #endregion
 

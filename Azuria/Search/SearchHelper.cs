@@ -16,7 +16,7 @@ namespace Azuria.Search
         /// <param name="input"></param>
         /// <typeparam name="T"></typeparam>
         /// <returns></returns>
-        public static IEnumerable<T> EntryList<T>(EntryListInput input) where T : class, IAnimeMangaObject
+        public static IEnumerable<T> EntryList<T>(EntryListInput input) where T : class, IMediaObject
         {
             if (input == null) throw new ArgumentException(nameof(input));
             return new EntryListCollection<T>(input);
@@ -28,7 +28,7 @@ namespace Azuria.Search
         /// <typeparam name="T"></typeparam>
         /// <returns></returns>
         public static IEnumerable<T> EntryList<T>(Action<EntryListInput> inputFactory)
-            where T : class, IAnimeMangaObject
+            where T : class, IMediaObject
         {
             EntryListInput lInput = new EntryListInput();
             inputFactory.Invoke(lInput);
@@ -40,7 +40,7 @@ namespace Azuria.Search
         /// <param name="input"></param>
         /// <typeparam name="T"></typeparam>
         /// <returns></returns>
-        public static IEnumerable<T> Search<T>(SearchInput input) where T : IAnimeMangaObject
+        public static IEnumerable<T> Search<T>(SearchInput input) where T : IMediaObject
         {
             if (input == null) throw new ArgumentException(nameof(input));
             return new SearchResultCollection<T>(input);
@@ -51,7 +51,7 @@ namespace Azuria.Search
         /// <param name="inputFactory"></param>
         /// <typeparam name="T"></typeparam>
         /// <returns></returns>
-        public static IEnumerable<T> Search<T>(Action<SearchInput> inputFactory) where T : IAnimeMangaObject
+        public static IEnumerable<T> Search<T>(Action<SearchInput> inputFactory) where T : IMediaObject
         {
             SearchInput lInput = new SearchInput();
             inputFactory.Invoke(lInput);

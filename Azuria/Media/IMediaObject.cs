@@ -8,7 +8,7 @@ namespace Azuria.Media
     /// <summary>
     /// Represents an <see cref="Anime" /> or <see cref="Manga" />.
     /// </summary>
-    public interface IAnimeMangaObject
+    public interface IMediaObject
     {
         #region Properties
 
@@ -92,22 +92,22 @@ namespace Azuria.Media
         /// <summary>
         /// Gets the rating of the <see cref="Anime" /> or <see cref="Manga" />.
         /// </summary>
-        IInitialisableProperty<AnimeMangaRating> Rating { get; }
+        IInitialisableProperty<MediaRating> Rating { get; }
 
         /// <summary>
         /// Gets the relations of the <see cref="Anime" /> or <see cref="Manga" />.
         /// </summary>
-        IInitialisableProperty<IEnumerable<IAnimeMangaObject>> Relations { get; }
+        IInitialisableProperty<IEnumerable<IMediaObject>> Relations { get; }
 
         /// <summary>
         /// Gets the seasons the <see cref="Anime" /> or <see cref="Manga" /> aired in.
         /// </summary>
-        IInitialisableProperty<AnimeMangaSeasonInfo> Season { get; }
+        IInitialisableProperty<MediaSeasonInfo> Season { get; }
 
         /// <summary>
         /// Gets the status of the <see cref="Anime" /> or <see cref="Manga" />.
         /// </summary>
-        IInitialisableProperty<AnimeMangaStatus> Status { get; }
+        IInitialisableProperty<MediaStatus> Status { get; }
 
         /// <summary>
         /// Gets the synonym the <see cref="Anime" /> or <see cref="Manga" /> is also known as.

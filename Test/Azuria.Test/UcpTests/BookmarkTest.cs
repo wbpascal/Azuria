@@ -23,10 +23,24 @@ namespace Azuria.Test.UcpTests
         }
 
         [Test]
-        public void AnimeMangaContentObjectTest()
+        public void BookmarkIdTest()
         {
-            Anime.Episode lEpisode = this._animeBookmark.AnimeMangaContentObject as Anime.Episode;
-            Manga.Chapter lChapter = this._mangaBookmark.AnimeMangaContentObject as Manga.Chapter;
+            Assert.AreEqual(1, this._animeBookmark.BookmarkId);
+            Assert.AreEqual(3, this._mangaBookmark.BookmarkId);
+        }
+
+        [Test]
+        public async Task DeleteReminderTest()
+        {
+            ProxerResult lResult = await this._animeBookmark.DeleteReminder();
+            Assert.IsTrue(lResult.Success, JsonConvert.SerializeObject(lResult.Exceptions));
+        }
+
+        [Test]
+        public void MediaContentObjectTest()
+        {
+            Anime.Episode lEpisode = this._animeBookmark.MediaContentObject as Anime.Episode;
+            Manga.Chapter lChapter = this._mangaBookmark.MediaContentObject as Manga.Chapter;
             Assert.IsNotNull(lEpisode);
             Assert.IsNotNull(lChapter);
             Assert.AreEqual(Language.German, lEpisode.GeneralLanguage);
@@ -42,22 +56,8 @@ namespace Azuria.Test.UcpTests
             Assert.AreEqual("The Gamer", lChapter.ParentObject.Name.GetObjectIfInitialised());
             Assert.AreEqual(AnimeMedium.Series, lEpisode.ParentObject.AnimeMedium.GetObjectIfInitialised());
             Assert.AreEqual(MangaMedium.Series, lChapter.ParentObject.MangaMedium.GetObjectIfInitialised());
-            Assert.AreEqual(AnimeMangaStatus.Completed, lEpisode.ParentObject.Status.GetObjectIfInitialised());
-            Assert.AreEqual(AnimeMangaStatus.Airing, lChapter.ParentObject.Status.GetObjectIfInitialised());
-        }
-
-        [Test]
-        public void BookmarkIdTest()
-        {
-            Assert.AreEqual(1, this._animeBookmark.BookmarkId);
-            Assert.AreEqual(3, this._mangaBookmark.BookmarkId);
-        }
-
-        [Test]
-        public async Task DeleteReminderTest()
-        {
-            ProxerResult lResult = await this._animeBookmark.DeleteReminder();
-            Assert.IsTrue(lResult.Success, JsonConvert.SerializeObject(lResult.Exceptions));
+            Assert.AreEqual(MediaStatus.Completed, lEpisode.ParentObject.Status.GetObjectIfInitialised());
+            Assert.AreEqual(MediaStatus.Airing, lChapter.ParentObject.Status.GetObjectIfInitialised());
         }
 
         [Test]

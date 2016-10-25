@@ -10,7 +10,7 @@ namespace Azuria.Api.v1
 
         [JsonProperty("data")]
         [JsonConverter(typeof(LanguageCollectionConverter))]
-        internal AnimeMangaLanguage[] Data { get; set; }
+        internal MediaLanguage[] Data { get; set; }
 
         #endregion
     }

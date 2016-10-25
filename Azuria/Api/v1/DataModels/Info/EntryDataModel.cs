@@ -25,14 +25,14 @@ namespace Azuria.Api.v1.DataModels.Info
         public int EntryId { get; set; }
 
         [JsonProperty("medium")]
-        public AnimeMangaMedium EntryMedium { get; set; }
+        public MediaMedium EntryMedium { get; set; }
 
         [JsonProperty("name")]
         public string EntryName { get; set; }
 
         [JsonProperty("kat")]
         [JsonConverter(typeof(CategoryConverter))]
-        public AnimeMangaEntryType EntryType { get; set; }
+        public MediaEntryType EntryType { get; set; }
 
         [JsonProperty("fsk")]
         [JsonConverter(typeof(FskConverter))]
@@ -46,10 +46,10 @@ namespace Azuria.Api.v1.DataModels.Info
         [JsonConverter(typeof(IsLicensedConverter))]
         internal bool IsLicensed { get; set; }
 
-        internal AnimeMangaRating Rating => new AnimeMangaRating(this.TotalStars, this.Voters);
+        internal MediaRating Rating => new MediaRating(this.TotalStars, this.Voters);
 
         [JsonProperty("state")]
-        internal AnimeMangaStatus Status { get; set; }
+        internal MediaStatus Status { get; set; }
 
         [JsonProperty("rate_sum")]
         internal int TotalStars { get; set; }

@@ -13,7 +13,7 @@ using Azuria.Utilities;
 
 namespace Azuria.Search
 {
-    internal class EntryListEnumerator<T> : PageEnumerator<T> where T : class, IAnimeMangaObject
+    internal class EntryListEnumerator<T> : PageEnumerator<T> where T : class, IMediaObject
     {
         private const int ResultsPerPage = 100;
         private readonly EntryListInput _input;
@@ -29,14 +29,14 @@ namespace Azuria.Search
         private static IEnumerable<T> GetAnimeList(IEnumerable<SearchDataModel> dataModels)
         {
             return (from searchDataModel in dataModels
-                where searchDataModel.EntryType == AnimeMangaEntryType.Anime
+                where searchDataModel.EntryType == MediaEntryType.Anime
                 select new Anime(searchDataModel)).Cast<T>();
         }
 
         private static IEnumerable<T> GetMangaList(IEnumerable<SearchDataModel> dataModels)
         {
             return (from searchDataModel in dataModels
-                where searchDataModel.EntryType == AnimeMangaEntryType.Manga
+                where searchDataModel.EntryType == MediaEntryType.Manga
                 select new Manga(searchDataModel)).Cast<T>();
         }
 

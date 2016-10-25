@@ -10,7 +10,7 @@ namespace Azuria.Api.v1.DataModels.Info
 
         [JsonProperty("language")]
         [JsonConverter(typeof(LanguageCommaCollectionConverter))]
-        internal AnimeMangaLanguage[] AvailableLanguages { get; set; }
+        internal MediaLanguage[] AvailableLanguages { get; set; }
 
         #endregion
     }

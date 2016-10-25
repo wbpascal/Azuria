@@ -1,6 +1,6 @@
 ﻿namespace Azuria.Api.v1.Enums
 {
-    internal enum AnimeMangaNameType
+    internal enum MediaNameType
     {
         Original,
         English,

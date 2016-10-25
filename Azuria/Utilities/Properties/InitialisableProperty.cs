@@ -90,7 +90,7 @@ namespace Azuria.Utilities.Properties
         /// <inheritdoc />
         public T GetObjectIfInitialised()
         {
-            if(!this.IsInitialisedOnce) throw new NotInitialisedException();
+            if (!this.IsInitialisedOnce) throw new NotInitialisedException();
             return this._initialisedObject;
         }
 

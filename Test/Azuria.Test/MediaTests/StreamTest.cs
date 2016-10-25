@@ -18,7 +18,7 @@ namespace Azuria.Test.MediaTests
         [OneTimeSetUp]
         public async Task Setup()
         {
-            Anime lAnime = await AnimeMangaObject.CreateFromId(9200).ThrowFirstForNonSuccess() as Anime;
+            Anime lAnime = await MediaObject.CreateFromId(9200).ThrowFirstForNonSuccess() as Anime;
             Assert.IsNotNull(lAnime);
             Anime.Episode lEpisode =
                 (await lAnime.GetEpisodes(AnimeLanguage.EngSub).ThrowFirstForNonSuccess()).FirstOrDefault();

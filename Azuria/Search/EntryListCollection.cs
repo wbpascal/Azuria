@@ -6,7 +6,7 @@ using Azuria.Search.Input;
 
 namespace Azuria.Search
 {
-    internal class EntryListCollection<T> : IEnumerable<T> where T : class, IAnimeMangaObject
+    internal class EntryListCollection<T> : IEnumerable<T> where T : class, IMediaObject
     {
         private readonly EntryListInput _input;
 

@@ -9,7 +9,7 @@ using Azuria.Utilities;
 
 namespace Azuria.UserInfo
 {
-    internal class UserEntryEnumerator<T> : PageEnumerator<UserProfileEntry<T>> where T : class, IAnimeMangaObject
+    internal class UserEntryEnumerator<T> : PageEnumerator<UserProfileEntry<T>> where T : class, IMediaObject
     {
         private const int ResultsPerPage = 100;
         private readonly User _user;

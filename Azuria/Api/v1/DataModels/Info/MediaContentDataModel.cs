@@ -5,7 +5,7 @@ using Newtonsoft.Json;
 
 namespace Azuria.Api.v1.DataModels.Info
 {
-    internal class AnimeMangaContentDataModel : IDataModel
+    internal class MediaContentDataModel : IDataModel
     {
         #region Properties
 
@@ -14,7 +14,7 @@ namespace Azuria.Api.v1.DataModels.Info
 
         [JsonProperty("typ", Required = Required.Always)]
         [JsonConverter(typeof(LanguageConverter))]
-        internal AnimeMangaLanguage Language { get; set; }
+        internal MediaLanguage Language { get; set; }
 
         [JsonProperty("types")]
         [JsonConverter(typeof(StreamPartnerConverter))]

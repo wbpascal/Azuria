@@ -34,7 +34,7 @@ namespace Azuria.UserInfo.ControlPanel
         public UserControlPanel(Senpai senpai)
         {
             this._senpai = senpai;
-            if(this._senpai == null) throw new ArgumentException(nameof(senpai));
+            if (this._senpai == null) throw new ArgumentException(nameof(senpai));
             if (!this._senpai.IsProbablyLoggedIn) throw new NotLoggedInException(this._senpai);
 
             this._commentVotes = new InitialisableProperty<IEnumerable<CommentVote>>(this.InitVotes);
@@ -64,8 +64,8 @@ namespace Azuria.UserInfo.ControlPanel
 
         /// <summary>
         /// </summary>
-        public IEnumerable<HistoryObject<IAnimeMangaObject>> History
-            => new HistoryEnumerable<IAnimeMangaObject>(this._senpai, this);
+        public IEnumerable<HistoryObject<IMediaObject>> History
+            => new HistoryEnumerable<IMediaObject>(this._senpai, this);
 
         /// <summary>
         /// </summary>
@@ -89,33 +89,33 @@ namespace Azuria.UserInfo.ControlPanel
 
         /// <summary>
         /// </summary>
-        /// <typeparam name="T"></typeparam>
         /// <param name="contentObject"></param>
         /// <returns></returns>
-        public async Task<ProxerResult> AddToBookmarks<T>(IAnimeMangaContent<T> contentObject)
-            where T : class, IAnimeMangaObject
+        public async Task<ProxerResult> AddToBookmarks(IMediaContent contentObject)
         {
+            if (contentObject == null) return new ProxerResult(new ArgumentNullException(nameof(contentObject)));
+
             ProxerResult<ProxerApiResponse> lResult =
                 await
                     RequestHandler.ApiRequest(ApiRequestBuilder.UcpSetBookmark(contentObject.ParentObject.Id,
                         contentObject.ContentIndex,
                         (contentObject as Anime.Episode)?.Language.ToString().ToLowerInvariant() ??
                         (contentObject.GeneralLanguage == Language.German ? "de" : "en"),
-                        typeof(T).GetTypeInfo().Name.ToLowerInvariant(), this._senpai));
+                        contentObject.ParentObject.GetType().GetTypeInfo().Name.ToLowerInvariant(), this._senpai));
 
             return lResult.Success ? new ProxerResult() : new ProxerResult(lResult.Exceptions);
         }
 
         /// <summary>
         /// </summary>
-        /// <param name="animeMangaObject"></param>
+        /// <param name="mediaObject"></param>
         /// <param name="list"></param>
         /// <returns></returns>
-        public async Task<ProxerResult> AddToProfileList(IAnimeMangaObject animeMangaObject, AnimeMangaProfileList list)
+        public async Task<ProxerResult> AddToProfileList(IMediaObject mediaObject, MediaProfileList list)
         {
             ProxerResult<ProxerApiResponse> lResult =
                 await
-                    RequestHandler.ApiRequest(ApiRequestBuilder.InfoSetUserInfo(animeMangaObject.Id,
+                    RequestHandler.ApiRequest(ApiRequestBuilder.InfoSetUserInfo(mediaObject.Id,
                         ProfileListToString(list), this._senpai));
             return lResult.Success ? new ProxerResult() : new ProxerResult(lResult.Exceptions);
         }
@@ -180,10 +180,10 @@ namespace Azuria.UserInfo.ControlPanel
 
             ToptenDataModel[] lData = lResult.Result.Data;
             this._toptenAnime.SetInitialisedObject(from toptenDataModel in lData
-                where toptenDataModel.EntryType == AnimeMangaEntryType.Anime
+                where toptenDataModel.EntryType == MediaEntryType.Anime
                 select new ToptenObject<Anime>(toptenDataModel.ToptenId, new Anime(toptenDataModel), this));
             this._toptenManga.SetInitialisedObject(from toptenDataModel in lData
-                where toptenDataModel.EntryType == AnimeMangaEntryType.Manga
+                where toptenDataModel.EntryType == MediaEntryType.Manga
                 select new ToptenObject<Manga>(toptenDataModel.ToptenId, new Manga(toptenDataModel), this));
 
             return new ProxerResult();
@@ -200,15 +200,15 @@ namespace Azuria.UserInfo.ControlPanel
             return new ProxerResult();
         }
 
-        private static string ProfileListToString(AnimeMangaProfileList list)
+        private static string ProfileListToString(MediaProfileList list)
         {
             switch (list)
             {
-                case AnimeMangaProfileList.Favourites:
+                case MediaProfileList.Favourites:
                     return "favor";
-                case AnimeMangaProfileList.Finished:
+                case MediaProfileList.Finished:
                     return "finish";
-                case AnimeMangaProfileList.Noted:
+                case MediaProfileList.Noted:
                     return "note";
                 default:
                     return string.Empty;
