@@ -108,15 +108,15 @@ namespace Azuria.UserInfo.ControlPanel
 
         /// <summary>
         /// </summary>
-        /// <param name="mediaObject"></param>
+        /// <param name="entryId"></param>
         /// <param name="list"></param>
         /// <returns></returns>
-        public async Task<ProxerResult> AddToProfileList(IMediaObject mediaObject, MediaProfileList list)
+        public async Task<ProxerResult> AddToProfileList(int entryId, MediaProfileList list)
         {
             ProxerResult<ProxerApiResponse> lResult =
                 await
-                    RequestHandler.ApiRequest(ApiRequestBuilder.InfoSetUserInfo(mediaObject.Id,
-                        ProfileListToString(list), this._senpai));
+                    RequestHandler.ApiRequest(ApiRequestBuilder.InfoSetUserInfo(entryId, ProfileListToString(list),
+                        this._senpai));
             return lResult.Success ? new ProxerResult() : new ProxerResult(lResult.Exceptions);
         }
 

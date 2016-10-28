@@ -6,7 +6,11 @@ namespace Azuria.Test.UcpTests
     [SetUpFixture]
     public class UcpSetup
     {
-        public static UserControlPanel ControlPanel;
+        #region Properties
+
+        public static UserControlPanel ControlPanel { get; private set; }
+
+        #endregion
 
         #region Methods
 

@@ -158,6 +158,27 @@ namespace Azuria.Test.Core
                             .WithQueryParameter("p", "0")
                             .WithQueryParameter("limit", "200"))
                 .Respond(JsonResponses["info_getlistinfo7834.json"]);
+            ServerResponse.Create("https://proxer.me/api/v1",
+                    response =>
+                        response.Post("/info/setuserinfo")
+                            .WithPostArgument("id", "1")
+                            .WithPostArgument("type", "favor")
+                            .WithLoggedInSenpai(true))
+                .Respond(JsonResponses["info_setuserinfofavor.json"]);
+            ServerResponse.Create("https://proxer.me/api/v1",
+                    response =>
+                        response.Post("/info/setuserinfo")
+                            .WithPostArgument("id", "1")
+                            .WithPostArgument("type", "finish")
+                            .WithLoggedInSenpai(true))
+                .Respond(JsonResponses["info_setuserinfofinish.json"]);
+            ServerResponse.Create("https://proxer.me/api/v1",
+                    response =>
+                        response.Post("/info/setuserinfo")
+                            .WithPostArgument("id", "1")
+                            .WithPostArgument("type", "note")
+                            .WithLoggedInSenpai(true))
+                .Respond(JsonResponses["info_setuserinfonote.json"]);
 
             #endregion
 

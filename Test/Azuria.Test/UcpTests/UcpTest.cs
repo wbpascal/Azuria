@@ -6,6 +6,7 @@ using Azuria.ErrorHandling;
 using Azuria.Exceptions;
 using Azuria.Media;
 using Azuria.Media.Properties;
+using Azuria.UserInfo;
 using Azuria.UserInfo.ControlPanel;
 using Azuria.Utilities.Extensions;
 using Newtonsoft.Json;
@@ -35,6 +36,16 @@ namespace Azuria.Test.UcpTests
                     AnimeLanguage.EngSub).ThrowFirstForNonSuccess())?.FirstOrDefault();
             ProxerResult lResult = await this._controlPanel.AddToBookmarks(lEpisode);
             Assert.IsTrue(lResult.Success);
+        }
+
+        [Test]
+        [TestCase(MediaProfileList.Favourites)]
+        [TestCase(MediaProfileList.Finished)]
+        [TestCase(MediaProfileList.Noted)]
+        public async Task AddToProfileListTest(MediaProfileList profileList)
+        {
+            ProxerResult lResult = await this._controlPanel.AddToProfileList(1, profileList);
+            Assert.IsTrue(lResult.Success, JsonConvert.SerializeObject(lResult.Exceptions));
         }
 
         [Test]
@@ -104,6 +115,27 @@ namespace Azuria.Test.UcpTests
         {
             Assert.Catch<ArgumentException>(() => new UserControlPanel(null));
             Assert.Catch<NotLoggedInException>(() => new UserControlPanel(new Senpai("test")));
+        }
+
+        [Test]
+        public async Task DeleteBookmarkTest()
+        {
+            ProxerResult lResult = await this._controlPanel.DeleteBookmark(1);
+            Assert.IsTrue(lResult.Success, JsonConvert.SerializeObject(lResult.Exceptions));
+        }
+
+        [Test]
+        public async Task DeleteCommentVoteTest()
+        {
+            ProxerResult lResult = await this._controlPanel.DeleteCommentVote(1);
+            Assert.IsTrue(lResult.Success, JsonConvert.SerializeObject(lResult.Exceptions));
+        }
+
+        [Test]
+        public async Task DeleteToptenTest()
+        {
+            ProxerResult lResult = await this._controlPanel.DeleteTopten(1);
+            Assert.IsTrue(lResult.Success, JsonConvert.SerializeObject(lResult.Exceptions));
         }
 
         [Test]

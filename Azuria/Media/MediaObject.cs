@@ -156,7 +156,7 @@ namespace Azuria.Media
         /// <returns></returns>
         public Task<ProxerResult> AddToProfileList(Senpai senpai, MediaProfileList list)
         {
-            return new UserControlPanel(senpai).AddToProfileList(this, list);
+            return new UserControlPanel(senpai).AddToProfileList(this.Id, list);
         }
 
         /// <summary>
