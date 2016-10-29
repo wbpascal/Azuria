@@ -18,7 +18,6 @@ namespace Azuria.Test.UcpTests
         public void Setup()
         {
             ControlPanel = new UserControlPanel(GeneralSetup.SenpaiInstance);
-            Assert.IsNotNull(ControlPanel);
         }
 
         #endregion

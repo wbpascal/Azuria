@@ -44,6 +44,9 @@ namespace Azuria.Test.UcpTests
         [TestCase(MediaProfileList.Noted)]
         public async Task AddToProfileListTest(MediaProfileList profileList)
         {
+            Assert.CatchAsync<ArgumentOutOfRangeException>(
+                () => this._controlPanel.AddToProfileList(-1, profileList).ThrowFirstForNonSuccess());
+
             ProxerResult lResult = await this._controlPanel.AddToProfileList(1, profileList);
             Assert.IsTrue(lResult.Success, JsonConvert.SerializeObject(lResult.Exceptions));
         }
@@ -120,6 +123,9 @@ namespace Azuria.Test.UcpTests
         [Test]
         public async Task DeleteBookmarkTest()
         {
+            Assert.CatchAsync<ArgumentOutOfRangeException>(
+                () => this._controlPanel.DeleteBookmark(-1).ThrowFirstForNonSuccess());
+
             ProxerResult lResult = await this._controlPanel.DeleteBookmark(1);
             Assert.IsTrue(lResult.Success, JsonConvert.SerializeObject(lResult.Exceptions));
         }
@@ -127,6 +133,9 @@ namespace Azuria.Test.UcpTests
         [Test]
         public async Task DeleteCommentVoteTest()
         {
+            Assert.CatchAsync<ArgumentOutOfRangeException>(
+                () => this._controlPanel.DeleteCommentVote(-1).ThrowFirstForNonSuccess());
+
             ProxerResult lResult = await this._controlPanel.DeleteCommentVote(1);
             Assert.IsTrue(lResult.Success, JsonConvert.SerializeObject(lResult.Exceptions));
         }
@@ -134,6 +143,9 @@ namespace Azuria.Test.UcpTests
         [Test]
         public async Task DeleteToptenTest()
         {
+            Assert.CatchAsync<ArgumentOutOfRangeException>(
+                () => this._controlPanel.DeleteTopten(-1).ThrowFirstForNonSuccess());
+
             ProxerResult lResult = await this._controlPanel.DeleteTopten(1);
             Assert.IsTrue(lResult.Success, JsonConvert.SerializeObject(lResult.Exceptions));
         }

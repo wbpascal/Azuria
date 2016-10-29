@@ -113,6 +113,8 @@ namespace Azuria.UserInfo.ControlPanel
         /// <returns></returns>
         public async Task<ProxerResult> AddToProfileList(int entryId, MediaProfileList list)
         {
+            if (entryId < 0) return new ProxerResult(new ArgumentOutOfRangeException(nameof(entryId)));
+
             ProxerResult<ProxerApiResponse> lResult =
                 await
                     RequestHandler.ApiRequest(ApiRequestBuilder.InfoSetUserInfo(entryId, ProfileListToString(list),
@@ -126,6 +128,8 @@ namespace Azuria.UserInfo.ControlPanel
         /// <returns></returns>
         public async Task<ProxerResult> DeleteBookmark(int bookmarkId)
         {
+            if (bookmarkId < 0) return new ProxerResult(new ArgumentOutOfRangeException(nameof(bookmarkId)));
+
             ProxerResult<ProxerApiResponse<BookmarkDataModel[]>> lResult =
                 await RequestHandler.ApiRequest(ApiRequestBuilder.UcpDeleteReminder(bookmarkId, this._senpai));
             return lResult.Success ? new ProxerResult() : new ProxerResult(lResult.Exceptions);
@@ -137,6 +141,8 @@ namespace Azuria.UserInfo.ControlPanel
         /// <returns></returns>
         public async Task<ProxerResult> DeleteCommentVote(int voteId)
         {
+            if (voteId < 0) return new ProxerResult(new ArgumentOutOfRangeException(nameof(voteId)));
+
             ProxerResult<ProxerApiResponse<BookmarkDataModel[]>> lResult =
                 await RequestHandler.ApiRequest(ApiRequestBuilder.UcpDeleteVote(voteId, this._senpai));
             return lResult.Success ? new ProxerResult() : new ProxerResult(lResult.Exceptions);
@@ -148,6 +154,8 @@ namespace Azuria.UserInfo.ControlPanel
         /// <returns></returns>
         public async Task<ProxerResult> DeleteTopten(int toptenId)
         {
+            if (toptenId < 0) return new ProxerResult(new ArgumentOutOfRangeException(nameof(toptenId)));
+
             ProxerResult<ProxerApiResponse<BookmarkDataModel[]>> lResult =
                 await RequestHandler.ApiRequest(ApiRequestBuilder.UcpDeleteFavourite(toptenId, this._senpai));
             return lResult.Success ? new ProxerResult() : new ProxerResult(lResult.Exceptions);
