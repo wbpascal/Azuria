@@ -491,21 +491,80 @@ namespace Azuria.Test.Core
                         response.Post("/user/userinfo").WithQueryParameter("uid", "177103");
                         response.Post("/user/userinfo").WithQueryParameter("username", "InfiniteSoul");
                     })
-                .Respond(JsonResponses["user_userinfo177103.json"]);
+                .Respond(JsonResponses["user_getuserinfo177103.json"]);
             ServerResponse.Create("https://proxer.me/api/v1",
                     response =>
                     {
                         response.Post("/user/userinfo").WithQueryParameter("uid", "163825");
                         response.Post("/user/userinfo").WithQueryParameter("username", "KutoSan");
                     })
-                .Respond(JsonResponses["user_userinfo163825.json"]);
+                .Respond(JsonResponses["user_getuserinfo163825.json"]);
+            ServerResponse.Create("https://proxer.me/api/v1",
+                    response =>
+                    {
+                        response.Post("/user/userinfo").WithQueryParameter("uid", "1");
+                        response.Post("/user/userinfo").WithQueryParameter("username", "Username");
+                    })
+                .Respond(JsonResponses["user_getuserinfo.json"]);
             ServerResponse.Create("https://proxer.me/api/v1",
                     response =>
                     {
                         response.Post("/user/userinfo").WithQueryParameter("uid", int.MaxValue.ToString());
                         response.Post("/user/userinfo").WithQueryParameter("username", "asd");
                     })
-                .Respond(JsonResponses["user_userinfo_3003.json"]);
+                .Respond(JsonResponses["user_getuserinfo_3003.json"]);
+            ServerResponse.Create("https://proxer.me/api/v1",
+                    response =>
+                    {
+                        response.Post("/user/topten").WithQueryParameter("uid", "1").WithQueryParameter("kat", "anime");
+                        response.Post("/user/topten")
+                            .WithQueryParameter("username", "Username")
+                            .WithQueryParameter("kat", "anime");
+                    })
+                .Respond(JsonResponses["user_gettoptenanime.json"]);
+            ServerResponse.Create("https://proxer.me/api/v1",
+                    response =>
+                    {
+                        response.Post("/user/topten").WithQueryParameter("uid", "1").WithQueryParameter("kat", "manga");
+                        response.Post("/user/topten")
+                            .WithQueryParameter("username", "Username")
+                            .WithQueryParameter("kat", "manga");
+                    })
+                .Respond(JsonResponses["user_gettoptenmanga.json"]);
+            ServerResponse.Create("https://proxer.me/api/v1",
+                    response =>
+                    {
+                        response.Post("/user/comments")
+                            .WithQueryParameter("uid", "1")
+                            .WithQueryParameter("kat", "anime")
+                            .WithQueryParameter("p", "0")
+                            .WithQueryParameter("limit", "25")
+                            .WithQueryParameter("length", "0");
+                        response.Post("/user/comments")
+                            .WithQueryParameter("username", "Username")
+                            .WithQueryParameter("kat", "anime")
+                            .WithQueryParameter("p", "0")
+                            .WithQueryParameter("limit", "25")
+                            .WithQueryParameter("length", "0");
+                    })
+                .Respond(JsonResponses["user_getlatestcommentsanime.json"]);
+            ServerResponse.Create("https://proxer.me/api/v1",
+                    response =>
+                    {
+                        response.Post("/user/comments")
+                            .WithQueryParameter("uid", "1")
+                            .WithQueryParameter("kat", "manga")
+                            .WithQueryParameter("p", "0")
+                            .WithQueryParameter("limit", "25")
+                            .WithQueryParameter("length", "0");
+                        response.Post("/user/comments")
+                            .WithQueryParameter("username", "Username")
+                            .WithQueryParameter("kat", "manga")
+                            .WithQueryParameter("p", "0")
+                            .WithQueryParameter("limit", "25")
+                            .WithQueryParameter("length", "0");
+                    })
+                .Respond(JsonResponses["user_getlatestcommentsmanga.json"]);
 
             #endregion
         }

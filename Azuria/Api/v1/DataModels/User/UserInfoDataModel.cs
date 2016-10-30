@@ -41,7 +41,7 @@ namespace Azuria.Api.v1.DataModels.User
         [JsonConverter(typeof(UnixToDateTimeConverter))]
         internal DateTime StatusLastChanged { get; set; }
 
-        [JsonProperty("state")]
+        [JsonProperty("status")]
         internal string StatusText { get; set; }
 
         [JsonProperty("uid")]

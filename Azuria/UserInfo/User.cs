@@ -8,6 +8,7 @@ using Azuria.Api.v1.DataModels.Messenger;
 using Azuria.Api.v1.DataModels.User;
 using Azuria.Api.v1.Enums;
 using Azuria.ErrorHandling;
+using Azuria.Exceptions;
 using Azuria.Media;
 using Azuria.UserInfo.Comment;
 using Azuria.Utilities.Properties;
@@ -22,18 +23,13 @@ namespace Azuria.UserInfo
         /// <summary>
         /// Represents the system as a user.
         /// </summary>
-        public static User System = new User("System", -1);
+        public static User System = new User("System", default(int));
 
         private readonly InitialisableProperty<Uri> _avatar;
-
         private readonly InitialisableProperty<UserPoints> _points;
-
         private readonly InitialisableProperty<UserStatus> _status;
-
         private readonly InitialisableProperty<IEnumerable<Anime>> _toptenAnime;
-
         private readonly InitialisableProperty<IEnumerable<Manga>> _toptenManga;
-
         private readonly InitialisableProperty<string> _userName;
 
         /// <summary>
@@ -42,6 +38,8 @@ namespace Azuria.UserInfo
         /// <param name="userId">The id of the user.</param>
         public User(int userId)
         {
+            if (userId < 0) throw new ArgumentOutOfRangeException(nameof(userId));
+
             this.Id = userId;
 
             this.Anime = new UserEntryEnumerable<Anime>(this);
@@ -52,8 +50,8 @@ namespace Azuria.UserInfo
             };
             this._toptenAnime =
                 new InitialisableProperty<IEnumerable<Anime>>(() => this.InitTopten(MediaEntryType.Anime));
-            this.CommentsLatestAnime = new CommentEnumerable<Anime>(this);
-            this.CommentsLatestManga = new CommentEnumerable<Manga>(this);
+            this.CommentsAnime = new CommentEnumerable<Anime>(this);
+            this.CommentsManga = new CommentEnumerable<Manga>(this);
             this._toptenManga =
                 new InitialisableProperty<IEnumerable<Manga>>(() => this.InitTopten(MediaEntryType.Manga));
             this.Manga = new UserEntryEnumerable<Manga>(this);
@@ -110,11 +108,11 @@ namespace Azuria.UserInfo
 
         /// <summary>
         /// </summary>
-        public IEnumerable<Comment<Anime>> CommentsLatestAnime { get; }
+        public IEnumerable<Comment<Anime>> CommentsAnime { get; }
 
         /// <summary>
         /// </summary>
-        public IEnumerable<Comment<Manga>> CommentsLatestManga { get; }
+        public IEnumerable<Comment<Manga>> CommentsManga { get; }
 
         /// <summary>
         /// Gets the id of the user.
@@ -169,7 +167,7 @@ namespace Azuria.UserInfo
 
         private async Task<ProxerResult> InitMainInfo()
         {
-            if (this.Id == -1) return new ProxerResult();
+            if (this == System) return new ProxerResult(new InvalidUserException());
 
             ProxerResult<ProxerApiResponse<UserInfoDataModel>> lResult =
                 await RequestHandler.ApiRequest(ApiRequestBuilder.UserGetInfo(this.Id));
@@ -186,6 +184,8 @@ namespace Azuria.UserInfo
 
         private async Task<ProxerResult> InitTopten(MediaEntryType category)
         {
+            if (this == System) return new ProxerResult(new InvalidUserException());
+
             ProxerResult<ProxerApiResponse<ToptenDataModel[]>> lResult =
                 await
                     RequestHandler.ApiRequest(ApiRequestBuilder.UserGetTopten(this.Id,

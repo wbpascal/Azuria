@@ -1,8 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.Specialized;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Web;
 using Azuria.ErrorHandling;
+using Azuria.Test.Core.Utility;
 using Azuria.Web;
 
 namespace Azuria.Test.Core
@@ -38,25 +41,26 @@ namespace Azuria.Test.Core
                                                                       postArgs.ToArray();
             if (!ServerResponse.ServerResponses.Any()) ResponseSetup.InitRequests();
 
+            NameValueCollection lQueryParams = HttpUtility.ParseQueryString(url.Query);
             foreach (
                 ServerResponse response in
                 ServerResponse.ServerResponses.ToArray()
                     .Reverse()
                     .Where(response => url.AbsoluteUri.StartsWith(response.BaseUrl)))
             {
-                IEnumerable<ServerRequest> lMatchingRequests = response.PostRequests.Where(
-                        request =>
-                            (response.BaseUrl + request.Url).Equals(
-                                $"{url.Scheme}://{url.Host}{url.AbsolutePath}"))
-                    .Where(request => request.GetQuery().Equals(url.Query))
+                IEnumerable<ServerRequest> lMatchingRequests = response.PostRequests.Where(request =>
+                            (response.BaseUrl + request.Url).Equals($"{url.Scheme}://{url.Host}{url.AbsolutePath}"))
+                    .Where(request => request.QueryParams.Count == lQueryParams.Count)
+                    .Where(request => lQueryParams.All((key, value) =>
+                        request.QueryParams.ContainsKey(key) &&
+                        request.QueryParams[key].Equals(value)))
                     .Where(request => !request.ContainsSenpai || (this._senpai != null))
                     .Where(request => postArgsArray.All(request.PostArguments.Contains) &&
                                       request.PostArguments.All(postArgsArray.Contains))
                     .Where(request => (headers == null) || request.Headers.All(headers.Contains))
-                    .Where(
-                        request =>
-                            (request.IsLoggedIn == null) ||
-                            (this._senpai.IsProbablyLoggedIn == request.IsLoggedIn.Value));
+                    .Where(request => (request.IsLoggedIn == null) ||
+                                      (this._senpai.IsProbablyLoggedIn == request.IsLoggedIn.Value));
+
                 if (lMatchingRequests.Any())
                     return new ProxerResult<string>(response.Response);
             }

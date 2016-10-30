@@ -74,6 +74,8 @@
     <Compile Include="UcpTests\ToptenTest.cs" />
     <Compile Include="UcpTests\UcpSetup.cs" />
     <Compile Include="UcpTests\UcpTest.cs" />
+    <Compile Include="UserTests\UserSetup.cs" />
+    <Compile Include="UserTests\UserTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

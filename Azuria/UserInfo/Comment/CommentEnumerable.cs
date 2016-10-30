@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using Azuria.Exceptions;
 using Azuria.Media;
 
 namespace Azuria.UserInfo.Comment
@@ -20,6 +21,8 @@ namespace Azuria.UserInfo.Comment
 
         internal CommentEnumerable(User user)
         {
+            if (user == User.System) throw new InvalidUserException();
+
             this._user = user;
         }
 
