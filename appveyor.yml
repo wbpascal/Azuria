@@ -5,8 +5,18 @@ before_build:
   - nuget restore
   - ps: gitversion /l console /output buildserver /updateAssemblyInfo
 
+after_build:
+  - nuget_pack.bat /pre
+
+on_success:
+  - appveyor PushArtifact Azuria.%VERSION%.nupkg
+
 configuration: Release
 
 build:
   project: Azuria.sln
   verbosity: minimal
+
+artifacts:
+  - path: *.nupkg
+    name: Nuget Package
