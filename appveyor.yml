@@ -18,5 +18,5 @@ build:
   verbosity: minimal
 
 artifacts:
-  - path: *.nupkg
+  - path: '*.nupkg'
     name: Nuget Package
