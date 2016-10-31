@@ -565,6 +565,36 @@ namespace Azuria.Test.Core
                             .WithQueryParameter("length", "0");
                     })
                 .Respond(JsonResponses["user_getlatestcommentsmanga.json"]);
+            ServerResponse.Create("https://proxer.me/api/v1",
+                    response =>
+                    {
+                        response.Post("/user/list")
+                            .WithQueryParameter("uid", "1")
+                            .WithQueryParameter("kat", "anime")
+                            .WithQueryParameter("p", "0")
+                            .WithQueryParameter("limit", "100");
+                        response.Post("/user/list")
+                            .WithQueryParameter("username", "Username")
+                            .WithQueryParameter("kat", "anime")
+                            .WithQueryParameter("p", "0")
+                            .WithQueryParameter("limit", "100");
+                    })
+                .Respond(JsonResponses["user_getlistanime.json"]);
+            ServerResponse.Create("https://proxer.me/api/v1",
+                    response =>
+                    {
+                        response.Post("/user/list")
+                            .WithQueryParameter("uid", "1")
+                            .WithQueryParameter("kat", "manga")
+                            .WithQueryParameter("p", "0")
+                            .WithQueryParameter("limit", "100");
+                        response.Post("/user/list")
+                            .WithQueryParameter("username", "Username")
+                            .WithQueryParameter("kat", "manga")
+                            .WithQueryParameter("p", "0")
+                            .WithQueryParameter("limit", "100");
+                    })
+                .Respond(JsonResponses["user_getlistmanga.json"]);
 
             #endregion
         }

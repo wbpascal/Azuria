@@ -19,6 +19,28 @@ namespace Azuria.Test.UserTests
         #region Methods
 
         [Test]
+        public void AnimeTest()
+        {
+            UserProfileEntry<Anime>[] lAnime = this._user.Anime.ToArray();
+            Assert.AreEqual(6, lAnime.Length);
+            Assert.IsTrue(lAnime.All(entry => entry != null));
+            Assert.IsTrue(lAnime.All(entry => entry.Comment != null));
+            Assert.IsTrue(lAnime.All(entry => entry.Comment.Author == this._user));
+            Assert.AreEqual(1, lAnime.Count(entry => !string.IsNullOrEmpty(entry.Comment.Content)));
+            Assert.IsTrue(lAnime.All(entry => entry.Comment.Id != default(int)));
+            Assert.IsTrue(lAnime.All(entry => entry.Comment.MediaObject == entry.MediaObject));
+            Assert.IsTrue(lAnime.All(entry => entry.Comment.Progress > 0));
+            Assert.IsTrue(lAnime.All(entry => entry.Comment.ProgressState == MediaProgressState.Finished));
+            Assert.AreEqual(1, lAnime.Count(entry =>
+                    (entry.Comment.Rating != default(int)) && entry.Comment.SubRatings.Any()));
+            Assert.IsTrue(lAnime.All(entry => entry.MediaObject != null));
+            Assert.IsTrue(lAnime.All(entry => entry.MediaObject.Id != default(int)));
+            Assert.IsTrue(lAnime.All(entry =>
+                    !string.IsNullOrEmpty(entry.MediaObject.Name.GetObjectIfInitialised(string.Empty))));
+            Assert.IsTrue(lAnime.All(entry => entry.User == this._user));
+        }
+
+        [Test]
         public async Task AvatarTest()
         {
             Assert.CatchAsync<InvalidUserException>(() => User.System.Points.ThrowFirstOnNonSuccess());
@@ -66,9 +88,37 @@ namespace Azuria.Test.UserTests
         }
 
         [Test]
+        public async Task FromUsernameTest()
+        {
+            ProxerResult<User> lResult = await User.FromUsername("Username");
+            Assert.IsTrue(lResult.Success, JsonConvert.SerializeObject(lResult.Exceptions));
+            Assert.AreEqual(1, lResult.Result.Id);
+            Assert.AreEqual("Username", lResult.Result.UserName.GetObjectIfInitialised(string.Empty));
+        }
+
+        [Test]
         public void IdTest()
         {
             Assert.AreEqual(1, this._user.Id);
+        }
+
+        [Test]
+        public void MangaTest()
+        {
+            UserProfileEntry<Manga>[] lManga = this._user.Manga.ToArray();
+            Assert.AreEqual(4, lManga.Length);
+            Assert.IsFalse(lManga.Any(entry => entry == null));
+            Assert.IsTrue(lManga.All(entry => entry.Comment != null));
+            Assert.IsTrue(lManga.All(entry => entry.Comment.Author == this._user));
+            Assert.IsTrue(lManga.All(entry => entry.Comment.Id != default(int)));
+            Assert.IsTrue(lManga.All(entry => entry.Comment.MediaObject == entry.MediaObject));
+            Assert.AreEqual(1, lManga.Count(entry => entry.Comment.Progress == 0));
+            Assert.AreEqual(2, lManga.Count(entry => entry.Comment.ProgressState == MediaProgressState.InProgress));
+            Assert.IsTrue(lManga.All(entry => entry.MediaObject != null));
+            Assert.IsTrue(lManga.All(entry => entry.MediaObject.Id != default(int)));
+            Assert.IsTrue(lManga.All(entry =>
+                    !string.IsNullOrEmpty(entry.MediaObject.Name.GetObjectIfInitialised(string.Empty))));
+            Assert.IsTrue(lManga.All(entry => entry.User == this._user));
         }
 
         [Test]
