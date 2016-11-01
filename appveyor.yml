@@ -1,3 +1,7 @@
+environment:
+  myget_key:
+    secure: /ZVEy+qqj8rmVkcPvuEuEsJCvEAG1chXaYhZCcLDEnhLIK+TkEIfGG/JDdMn7Qrf
+
 install:
   - choco install gitversion.portable -pre -y
 
@@ -9,7 +13,7 @@ after_build:
   - appveyor_pack.bat
 
 on_success:
-  - if exist Azuria.%VERSION%.nupkg (appveyor PushArtifact Azuria.%VERSION%.nupkg)
+  - appveyor_push.bat
 
 configuration: Release
 
