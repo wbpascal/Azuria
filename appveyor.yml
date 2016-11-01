@@ -6,10 +6,10 @@ before_build:
   - ps: gitversion /l console /output buildserver /updateAssemblyInfo
 
 after_build:
-  - nuget_pack.bat /pre
+  - appveyor_pack.bat
 
 on_success:
-  - appveyor PushArtifact Azuria.%VERSION%.nupkg
+  - if exist Azuria.%VERSION%.nupkg (appveyor PushArtifact Azuria.%VERSION%.nupkg)
 
 configuration: Release
 
