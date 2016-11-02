@@ -32,7 +32,7 @@ namespace Azuria.Community
             this.Id = conferenceId;
             this._senpai = senpai;
 
-            this._checkMessagesTimer = new Timer {Interval = new TimeSpan(0, 0, 15).TotalMilliseconds};
+            this._checkMessagesTimer = new Timer {Interval = AutoCheckInterval.TotalMilliseconds};
             this._checkMessagesTimer.Elapsed += this.OnCheckMessagesTimerElapsed;
 
             this.IsGroupConference = isGroup;
@@ -63,6 +63,10 @@ namespace Azuria.Community
         }
 
         /// <summary>
+        /// </summary>
+        public static TimeSpan AutoCheckInterval { get; set; } = TimeSpan.FromSeconds(15);
+
+        /// <summary>
         /// Gets the Id of the conference.
         /// </summary>
         public int Id { get; }
@@ -70,6 +74,10 @@ namespace Azuria.Community
         /// <summary>
         /// </summary>
         public bool IsGroupConference { get; }
+
+        /// <summary>
+        /// </summary>
+        public static bool IsInitialised { get; private set; }
 
         /// <summary>
         /// Gets a <see cref="User" /> that is the current leader of the conference.
@@ -170,6 +178,12 @@ namespace Azuria.Community
         /// <returns></returns>
         public static async Task<ProxerResult<Conference>> Create(User user, string message, Senpai senpai)
         {
+            if (!IsInitialised)
+                return new ProxerResult<Conference>(new NotInitialisedException("Please call " + nameof(Init)));
+            if (user == null) return new ProxerResult<Conference>(new ArgumentException(nameof(user)));
+            if (string.IsNullOrEmpty(message) || (message.Length > MaxCharactersPerMessage))
+                return new ProxerResult<Conference>(new ArgumentException(message));
+
             ProxerResult<string> lUsernameResult = await user.UserName.GetObject();
             if (!lUsernameResult.Success || string.IsNullOrEmpty(lUsernameResult.Result))
                 return new ProxerResult<Conference>(lUsernameResult.Exceptions);
@@ -185,8 +199,12 @@ namespace Azuria.Community
         /// <returns></returns>
         public static async Task<ProxerResult<Conference>> Create(string username, string message, Senpai senpai)
         {
-            if (string.IsNullOrEmpty(username) || username.Equals("ERROR"))
+            if (!IsInitialised)
+                return new ProxerResult<Conference>(new NotInitialisedException("Please call " + nameof(Init)));
+            if (string.IsNullOrEmpty(username))
                 return new ProxerResult<Conference>(new[] {new ArgumentException(nameof(username))});
+            if (string.IsNullOrEmpty(message) || (message.Length > MaxCharactersPerMessage))
+                return new ProxerResult<Conference>(new ArgumentException(message));
 
             ProxerResult<ProxerApiResponse<int>> lResult =
                 await RequestHandler.ApiRequest(ApiRequestBuilder.MessengerNewConference(username, message, senpai));
@@ -205,13 +223,24 @@ namespace Azuria.Community
         public static async Task<ProxerResult<Conference>> CreateGroup(IEnumerable<User> participants,
             string topic, Senpai senpai, string message = null)
         {
+            if (!IsInitialised)
+                return new ProxerResult<Conference>(new NotInitialisedException("Please call " + nameof(Init)));
+            if (string.IsNullOrEmpty(topic) || (topic.Length > MaxCharactersTopic))
+                return new ProxerResult<Conference>(new ArgumentException(nameof(topic)));
+
             IEnumerable<User> lParticipants = participants as User[] ?? participants.ToArray();
             if (!lParticipants.Any() || lParticipants.Any(user => (user == null) || (user == User.System)))
                 return new ProxerResult<Conference>(new[] {new ArgumentException(nameof(participants))});
 
             List<string> lParticipantNames = new List<string>();
             foreach (User participant in lParticipants)
-                lParticipantNames.Add(await participant.UserName.GetObject("ERROR"));
+            {
+                ProxerResult<string> lUsernameResult = await participant.UserName;
+                if (!lUsernameResult.Success || string.IsNullOrEmpty(lUsernameResult.Result))
+                    return new ProxerResult<Conference>(lUsernameResult.Exceptions);
+
+                lParticipantNames.Add(lUsernameResult.Result);
+            }
             return await CreateGroup(lParticipantNames, topic, senpai, message);
         }
 
@@ -225,9 +254,13 @@ namespace Azuria.Community
         public static async Task<ProxerResult<Conference>> CreateGroup(IEnumerable<string> participants,
             string topic, Senpai senpai, string message = null)
         {
+            if (!IsInitialised)
+                return new ProxerResult<Conference>(new NotInitialisedException("Please call " + nameof(Init)));
+            if (string.IsNullOrEmpty(topic) || (topic.Length > MaxCharactersTopic))
+                return new ProxerResult<Conference>(new ArgumentException(nameof(topic)));
+
             IEnumerable<string> lParticipantNames = participants as string[] ?? participants.ToArray();
-            if (!lParticipantNames.Any() ||
-                lParticipantNames.Any(username => username.Equals("ERROR") || string.IsNullOrEmpty(username.Trim())))
+            if (!lParticipantNames.Any() || lParticipantNames.Any(username => string.IsNullOrEmpty(username.Trim())))
                 return new ProxerResult<Conference>(new[] {new ArgumentException(nameof(participants))});
 
             ProxerResult<ProxerApiResponse<int>> lResult =
@@ -247,7 +280,7 @@ namespace Azuria.Community
         public static async Task<ProxerResult<IEnumerable<ConferenceInfo>>> GetConferences(Senpai senpai,
             ConferenceListType type = ConferenceListType.Default)
         {
-            if (_conferencesPerPage == default(int))
+            if (!IsInitialised)
                 return
                     new ProxerResult<IEnumerable<ConferenceInfo>>(new[]
                         {new NotInitialisedException("Please call " + nameof(Init))});
@@ -280,6 +313,7 @@ namespace Azuria.Community
             MaxCharactersTopic = lData.MaxCharactersTopic;
             MessagesPerPage = lData.MessagesPerPage;
             _conferencesPerPage = lData.ConferencesPerPage;
+            IsInitialised = true;
             return new ProxerResult();
         }
 
@@ -318,7 +352,7 @@ namespace Azuria.Community
             ProxerResult<ProxerApiResponse<string>> lResult =
                 await RequestHandler.ApiRequest(ApiRequestBuilder.MessengerSetMessage(this.Id, message, this._senpai));
             if (!lResult.Success || (lResult.Result == null)) return new ProxerResult<string>(lResult.Exceptions);
-            return new ProxerResult<string>(lResult.Result.Data);
+            return new ProxerResult<string>(lResult.Result.Data ?? string.Empty);
         }
 
         /// <summary>
@@ -327,6 +361,8 @@ namespace Azuria.Community
         /// <returns></returns>
         public async Task<ProxerResult> SendReport(string reason)
         {
+            if (string.IsNullOrEmpty(reason)) return new ProxerResult(new ArgumentException(nameof(reason)));
+
             ProxerResult<ProxerApiResponse<int>> lResult =
                 await RequestHandler.ApiRequest(ApiRequestBuilder.MessengerSetReport(this.Id, reason, this._senpai));
             return !lResult.Success || (lResult.Result == null)
@@ -372,7 +408,7 @@ namespace Azuria.Community
         /// <returns>Whether the action was successfull.</returns>
         public async Task<ProxerResult> SetUnread()
         {
-            ProxerResult<ProxerApiResponse<int>> lResult =
+            ProxerResult<ProxerApiResponse> lResult =
                 await RequestHandler.ApiRequest(ApiRequestBuilder.MessengerSetUnread(this.Id, this._senpai));
             return !lResult.Success || (lResult.Result == null)
                 ? new ProxerResult(lResult.Exceptions)

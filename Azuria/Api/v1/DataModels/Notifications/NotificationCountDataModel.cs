@@ -8,7 +8,7 @@
 
         internal int News { get; set; }
 
-        internal int OtherAnimeManga { get; set; }
+        internal int OtherMedia { get; set; }
         internal int PrivateMessages { get; set; }
 
         #endregion

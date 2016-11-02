@@ -1,25 +1,28 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using Azuria.Exceptions;
 using Azuria.Media;
 
 namespace Azuria.UserInfo.Comment
 {
     /// <summary>
     /// </summary>
-    public class CommentEnumerable<T> : IEnumerable<Comment<T>> where T : IAnimeMangaObject
+    public class CommentEnumerable<T> : IEnumerable<Comment<T>> where T : IMediaObject
     {
-        private readonly T _animeMangaObject;
+        private readonly T _mediaObject;
         private readonly string _sort;
         private readonly User _user;
 
-        internal CommentEnumerable(T animeMangaObject, string sort)
+        internal CommentEnumerable(T mediaObject, string sort)
         {
-            this._animeMangaObject = animeMangaObject;
+            this._mediaObject = mediaObject;
             this._sort = sort;
         }
 
         internal CommentEnumerable(User user)
         {
+            if (user == User.System) throw new InvalidUserException();
+
             this._user = user;
         }
 
@@ -37,7 +40,7 @@ namespace Azuria.UserInfo.Comment
         public IEnumerator<Comment<T>> GetEnumerator()
         {
             return this._user == null
-                ? new CommentEnumerator<T>(this._animeMangaObject, this._sort)
+                ? new CommentEnumerator<T>(this._mediaObject, this._sort)
                 : new CommentEnumerator<T>(this._user);
         }
 

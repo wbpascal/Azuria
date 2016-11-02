@@ -32,15 +32,15 @@ namespace Azuria.Api.v1.Converters.Info
             switch (reader.Value.ToString())
             {
                 case "name":
-                    return AnimeMangaNameType.Original;
+                    return MediaNameType.Original;
                 case "nameeng":
-                    return AnimeMangaNameType.English;
+                    return MediaNameType.English;
                 case "nameger":
-                    return AnimeMangaNameType.German;
+                    return MediaNameType.German;
                 case "namejap":
-                    return AnimeMangaNameType.Japanese;
+                    return MediaNameType.Japanese;
                 case "syn":
-                    return AnimeMangaNameType.Synonym;
+                    return MediaNameType.Synonym;
             }
             return null;
         }

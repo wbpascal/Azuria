@@ -10,28 +10,16 @@ namespace Azuria.Media.Properties
         /// <summary>
         /// Represents an enumeration which describes the type of the <see cref="Industry" />.
         /// </summary>
+#pragma warning disable 1591
         public enum IndustryType
         {
-            /// <summary>
-            /// Represents a publisher.
-            /// </summary>
             Publisher,
-
-            /// <summary>
-            /// Represents a studio.
-            /// </summary>
             Studio,
-
-            /// <summary>
-            /// Represents a producer.
-            /// </summary>
             Producer,
-
-            /// <summary>
-            /// Represents an unkown type.
-            /// </summary>
+            StreamPartner,
             Unknown
         }
+#pragma warning restore 1591
 
         /// <summary>
         /// Represents an error.

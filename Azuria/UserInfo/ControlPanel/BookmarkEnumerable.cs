@@ -7,7 +7,7 @@ namespace Azuria.UserInfo.ControlPanel
     /// <summary>
     /// </summary>
     /// <typeparam name="T"></typeparam>
-    public class BookmarkEnumerable<T> : IEnumerable<BookmarkObject<T>> where T : class, IAnimeMangaObject
+    public class BookmarkEnumerable<T> : IEnumerable<BookmarkObject<T>> where T : class, IMediaObject
     {
         private readonly UserControlPanel _controlPanel;
         private readonly Senpai _senpai;

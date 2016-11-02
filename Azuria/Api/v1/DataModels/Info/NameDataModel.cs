@@ -13,7 +13,7 @@ namespace Azuria.Api.v1.DataModels.Info
 
         [JsonProperty("type")]
         [JsonConverter(typeof(NameTypeConverter))]
-        internal AnimeMangaNameType Type { get; set; }
+        internal MediaNameType Type { get; set; }
 
         #endregion
     }

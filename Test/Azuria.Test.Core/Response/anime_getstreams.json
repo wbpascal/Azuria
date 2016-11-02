@@ -1,0 +1,58 @@
+{
+  "error": 0,
+  "message": "Abfrage erfolgreich",
+  "data": [
+    {
+      "id": "401217",
+      "type": "mp4upload",
+      "htype": "iframe",
+      "name": "MP4Upload",
+      "img": "mp4upload.png",
+      "replace": "http://www.mp4upload.com/embed-#.html",
+      "uploader": "205400",
+      "username": "Tadakuni",
+      "timestamp": "1412882290",
+      "tid": 1158,
+      "tname": "THORAnime"
+    },
+    {
+      "id": "515544",
+      "type": "streamcloud2",
+      "htype": "link",
+      "name": "Streamcloud",
+      "img": "streamcloud.png",
+      "replace": "http://streamcloud.eu/#",
+      "uploader": "66",
+      "username": "ProxerBot",
+      "timestamp": "1444543912",
+      "tid": null,
+      "tname": null
+    },
+    {
+      "id": "425108",
+      "type": "viewster",
+      "htype": "iframe2",
+      "name": "Viewster",
+      "img": "viewster.png",
+      "replace": "//www.viewster.com/serie/#/",
+      "uploader": "188096",
+      "username": "SoranoOtosho",
+      "timestamp": "1420306875",
+      "tid": null,
+      "tname": null
+    },
+    {
+      "id": "401218",
+      "type": "yourupload",
+      "htype": "iframe",
+      "name": "YourUpload",
+      "img": "yourupload.png",
+      "replace": "http://embed.yourupload.com/#?width=728&height=504",
+      "uploader": "205400",
+      "username": "Tadakuni",
+      "timestamp": "1412882301",
+      "tid": null,
+      "tname": null
+    }
+  ]
+}

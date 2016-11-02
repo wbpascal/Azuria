@@ -22,11 +22,11 @@ namespace Azuria.Api.v1.DataModels.Messenger
         [JsonProperty("topic_custom")]
         internal string ConferenceUserTitle { get; set; }
 
-        [JsonProperty("read")]
-        internal bool HasUnreadMessages { get; set; }
-
         [JsonProperty("group")]
         internal bool IsConferenceGroup { get; set; }
+
+        [JsonProperty("read")]
+        internal bool IsLastMessageRead { get; set; }
 
         [JsonProperty("timestamp_end")]
         [JsonConverter(typeof(UnixToDateTimeConverter))]

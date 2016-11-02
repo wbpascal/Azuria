@@ -27,7 +27,7 @@ namespace Azuria.Media
     /// Represents an anime.
     /// </summary>
     [DebuggerDisplay("Anime: {Name} [{Id}]")]
-    public class Anime : AnimeMangaObject
+    public class Anime : MediaObject
     {
         private readonly InitialisableProperty<AnimeMedium> _animeMedium;
 
@@ -49,7 +49,7 @@ namespace Azuria.Media
 
         internal Anime(IEntryInfoDataModel dataModel) : this(dataModel.EntryName, dataModel.EntryId)
         {
-            if (dataModel.EntryType != AnimeMangaEntryType.Anime)
+            if (dataModel.EntryType != MediaEntryType.Anime)
                 throw new ArgumentException(nameof(dataModel.EntryType));
             this._animeMedium.SetInitialisedObject((AnimeMedium) dataModel.EntryMedium);
         }
@@ -118,14 +118,14 @@ namespace Azuria.Media
         /// <param name="language">The language of the episodes.</param>
         /// <returns>
         /// An enumeration of all available episodes in the specified
-        /// <paramref name="language">language</paramref> with a max count of <see cref="AnimeMangaObject.ContentCount" />.
+        /// <paramref name="language">language</paramref> with a max count of <see cref="MediaObject.ContentCount" />.
         /// </returns>
         public async Task<ProxerResult<IEnumerable<Episode>>> GetEpisodes(AnimeLanguage language)
         {
             if (!(await this.AvailableLanguages.GetObject(new AnimeLanguage[0])).Contains(language))
-                return new ProxerResult<IEnumerable<Episode>>(new Exception[] {new LanguageNotAvailableException()});
+                return new ProxerResult<IEnumerable<Episode>>(new LanguageNotAvailableException());
 
-            ProxerResult<AnimeMangaContentDataModel[]> lContentObjectsResult =
+            ProxerResult<MediaContentDataModel[]> lContentObjectsResult =
                 await this.GetContentObjects();
             if (!lContentObjectsResult.Success || (lContentObjectsResult.Result == null))
                 return new ProxerResult<IEnumerable<Episode>>(lContentObjectsResult.Exceptions);
@@ -156,7 +156,7 @@ namespace Azuria.Media
         /// <summary>
         /// Represents an episode of an anime.
         /// </summary>
-        public class Episode : IAnimeMangaContent<Anime>, IAnimeMangaContent<IAnimeMangaObject>
+        public class Episode : IMediaContent<Anime>, IMediaContent<IMediaObject>
         {
             private readonly InitialisableProperty<IEnumerable<Stream>> _streams;
 
@@ -165,7 +165,7 @@ namespace Azuria.Media
                 this._streams = new InitialisableProperty<IEnumerable<Stream>>(this.InitStreams);
             }
 
-            internal Episode(Anime anime, AnimeMangaContentDataModel dataModel) : this()
+            internal Episode(Anime anime, MediaContentDataModel dataModel) : this()
             {
                 this.ContentIndex = dataModel.ContentIndex;
                 this.Language = (AnimeLanguage) dataModel.Language;
@@ -209,10 +209,11 @@ namespace Azuria.Media
             /// </summary>
             public AnimeLanguage Language { get; }
 
-            /// <summary>
-            /// Gets the anime or manga this object belongs to.
-            /// </summary>
-            IAnimeMangaObject IAnimeMangaContent<IAnimeMangaObject>.ParentObject => this.ParentObject;
+            /// <inheritdoc />
+            IMediaObject IMediaContent<IMediaObject>.ParentObject => this.ParentObject;
+
+            /// <inheritdoc />
+            IMediaObject IMediaContent.ParentObject => this.ParentObject;
 
             /// <summary>
             /// Gets the anime this episode> belongs to.
@@ -239,7 +240,7 @@ namespace Azuria.Media
             /// <returns>If the action was successful.</returns>
             public Task<ProxerResult> AddToBookmarks(Senpai senpai)
             {
-                return new UserControlPanel(senpai).AddToBookmarks((IAnimeMangaContent<Anime>) this);
+                return new UserControlPanel(senpai).AddToBookmarks(this);
             }
 
             private async Task<ProxerResult> InitStreams()
@@ -254,17 +255,6 @@ namespace Azuria.Media
                     select new Stream(streamDataModel, this));
 
                 return new ProxerResult();
-            }
-
-            /// <summary>
-            /// Returns a string that represents the current object.
-            /// </summary>
-            /// <returns>
-            /// A string that represents the current object.
-            /// </returns>
-            public override string ToString()
-            {
-                return "Episode " + this.ContentIndex;
             }
 
             #endregion
@@ -315,7 +305,7 @@ namespace Azuria.Media
 
                 /// <summary>
                 /// </summary>
-                public StreamHostingType HostingType { get; }
+                public string HostingType { get; }
 
                 /// <summary>
                 /// </summary>

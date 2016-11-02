@@ -10,10 +10,10 @@ namespace Azuria.Api.v1.DataModels.Info
 
         [JsonProperty("kat")]
         [JsonConverter(typeof(CategoryConverter))]
-        internal AnimeMangaEntryType Category { get; set; }
+        internal MediaEntryType Category { get; set; }
 
         [JsonProperty("episodes")]
-        internal AnimeMangaContentDataModel[] ContentObjects { get; set; }
+        internal MediaContentDataModel[] ContentObjects { get; set; }
 
         [JsonProperty("end")]
         internal int EndIndex { get; set; }

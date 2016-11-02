@@ -9,24 +9,24 @@ namespace Azuria.UserInfo
 {
     /// <summary>
     /// </summary>
-    public class UserProfileEntry<T> where T : class, IAnimeMangaObject
+    public class UserProfileEntry<T> where T : class, IMediaObject
     {
         internal UserProfileEntry(ListDataModel dataModel, User user)
         {
             this.User = user;
-            this.AnimeMangaObject = this.InitAnimeMangaObject(dataModel);
-            this.Comment = new Comment<T>(dataModel, user, this.AnimeMangaObject);
+            this.MediaObject = this.InitMediaObject(dataModel);
+            this.Comment = new Comment<T>(dataModel, user, this.MediaObject);
         }
 
         #region Properties
 
         /// <summary>
         /// </summary>
-        public T AnimeMangaObject { get; }
+        public Comment<T> Comment { get; }
 
         /// <summary>
         /// </summary>
-        public Comment<T> Comment { get; }
+        public T MediaObject { get; }
 
         /// <summary>
         /// </summary>
@@ -36,7 +36,7 @@ namespace Azuria.UserInfo
 
         #region Methods
 
-        private T InitAnimeMangaObject(ListDataModel dataModel)
+        private T InitMediaObject(ListDataModel dataModel)
         {
             T lReturnObject;
 
@@ -57,7 +57,7 @@ namespace Azuria.UserInfo
             else throw new ArgumentException(nameof(T));
 
             (lReturnObject?.ContentCount as InitialisableProperty<int>)?.SetInitialisedObject(dataModel.ContentCount);
-            (lReturnObject?.Status as InitialisableProperty<AnimeMangaStatus>)?.SetInitialisedObject(
+            (lReturnObject?.Status as InitialisableProperty<MediaStatus>)?.SetInitialisedObject(
                 dataModel.EntryStatus);
 
             return lReturnObject;

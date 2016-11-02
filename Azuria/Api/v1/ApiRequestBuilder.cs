@@ -67,16 +67,16 @@ namespace Azuria.Api.v1
             return new ApiRequest<TranslatorDataModel[]>(new Uri($"{ApiConstants.ApiUrlV1}/info/groups?id={entryId}"));
         }
 
-        internal static ApiRequest<AnimeMangaLanguage[]> InfoGetLanguage(int entryId)
+        internal static ApiRequest<MediaLanguage[]> InfoGetLanguage(int entryId)
         {
-            return new ApiRequest<AnimeMangaLanguage[]>(new Uri($"{ApiConstants.ApiUrlV1}/info/lang?id={entryId}"));
+            return new ApiRequest<MediaLanguage[]>(new Uri($"{ApiConstants.ApiUrlV1}/info/lang?id={entryId}"));
         }
 
-        internal static ApiRequest<ListInfoDataModel> InfoGetListInfo(int entryId, int limit)
+        internal static ApiRequest<ListInfoDataModel> InfoGetListInfo(int entryId, int page, int limit)
         {
             return
                 new ApiRequest<ListInfoDataModel>(
-                    new Uri($"{ApiConstants.ApiUrlV1}/info/listinfo?id={entryId}&limit={limit}"));
+                    new Uri($"{ApiConstants.ApiUrlV1}/info/listinfo?id={entryId}&p={page}&limit={limit}"));
         }
 
         internal static ApiRequest<NameDataModel[]> InfoGetName(int entryId)
@@ -291,10 +291,10 @@ namespace Azuria.Api.v1
                 };
         }
 
-        internal static ApiRequest<int> MessengerSetUnread(int conferenceId, Senpai senpai)
+        internal static ApiRequest MessengerSetUnread(int conferenceId, Senpai senpai)
         {
             return
-                new ApiRequest<int>(new Uri($"{ApiConstants.ApiUrlV1}/messenger/setunread?conference_id={conferenceId}"))
+                new ApiRequest(new Uri($"{ApiConstants.ApiUrlV1}/messenger/setunread?conference_id={conferenceId}"))
                 {
                     CheckLogin = true,
                     Senpai = senpai

@@ -16,11 +16,11 @@ namespace Azuria.UserInfo
 
         /// <summary>
         /// </summary>
-        public DateTime LastChanged { get; set; }
+        public DateTime LastChanged { get; }
 
         /// <summary>
         /// </summary>
-        public string Status { get; set; }
+        public string Status { get; }
 
         #endregion
     }

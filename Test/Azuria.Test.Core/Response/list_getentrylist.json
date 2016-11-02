@@ -1,0 +1,61 @@
+{
+  "error": 0,
+  "message": "Abfrage erfolgreich",
+  "data": [
+    {
+      "name": "\"Aoi\" Hikaru ga Chikyuu ni Ita koro......",
+      "id": "5899",
+      "genre": "Comedy Drama Mystery Romance School Shounen Superpower",
+      "medium": "mangaseries",
+      "count": "15",
+      "state": "1",
+      "rate_sum": "401",
+      "rate_count": "58",
+      "language": "en"
+    },
+    {
+      "name": "#000000 - Ultra Black",
+      "id": "4717",
+      "genre": "Action Comedy Josei Mystery Superpower",
+      "medium": "mangaseries",
+      "count": "46",
+      "state": "4",
+      "rate_sum": "140",
+      "rate_count": "24",
+      "language": "en"
+    },
+    {
+      "name": "&",
+      "id": "4807",
+      "genre": "Drama Josei Romance Slice_of_Life",
+      "medium": "mangaseries",
+      "count": "45",
+      "state": "4",
+      "rate_sum": "42",
+      "rate_count": "8",
+      "language": "en"
+    },
+    {
+      "name": "(G) Edition",
+      "id": "9674",
+      "genre": "Comedy Ecchi SciFi Shounen",
+      "medium": "mangaseries",
+      "count": "16",
+      "state": "1",
+      "rate_sum": "35",
+      "rate_count": "6",
+      "language": "en"
+    },
+    {
+      "name": "+ Tic Neesan",
+      "id": "4798",
+      "genre": "Comedy School Seinen Slice_of_Life",
+      "medium": "mangaseries",
+      "count": "152",
+      "state": "2",
+      "rate_sum": "30",
+      "rate_count": "5",
+      "language": "en"
+    }
+  ]
+}

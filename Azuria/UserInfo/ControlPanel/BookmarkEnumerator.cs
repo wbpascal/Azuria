@@ -10,7 +10,7 @@ using Azuria.Utilities;
 
 namespace Azuria.UserInfo.ControlPanel
 {
-    internal class BookmarkEnumerator<T> : PageEnumerator<BookmarkObject<T>> where T : class, IAnimeMangaObject
+    internal class BookmarkEnumerator<T> : PageEnumerator<BookmarkObject<T>> where T : class, IMediaObject
     {
         private const int ResultsPerPage = 100;
         private readonly UserControlPanel _controlPanel;
@@ -38,8 +38,8 @@ namespace Azuria.UserInfo.ControlPanel
             return new ProxerResult<IEnumerable<BookmarkObject<T>>>(from bookmarkDataModel in lData
                 select new BookmarkObject<T>(
                     typeof(T) == typeof(Anime)
-                        ? (IAnimeMangaContent<T>) new Anime.Episode(bookmarkDataModel)
-                        : (IAnimeMangaContent<T>) new Manga.Chapter(bookmarkDataModel),
+                        ? (IMediaContent<T>) new Anime.Episode(bookmarkDataModel)
+                        : (IMediaContent<T>) new Manga.Chapter(bookmarkDataModel),
                     bookmarkDataModel.BookmarkId, this._controlPanel));
         }
 

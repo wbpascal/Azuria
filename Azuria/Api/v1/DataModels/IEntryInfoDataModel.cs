@@ -12,12 +12,12 @@ namespace Azuria.Api.v1.DataModels
         int EntryId { get; }
 
         [JsonConverter(typeof(MediumConverter))]
-        AnimeMangaMedium EntryMedium { get; }
+        MediaMedium EntryMedium { get; }
 
         string EntryName { get; }
 
         [JsonConverter(typeof(CategoryConverter))]
-        AnimeMangaEntryType EntryType { get; }
+        MediaEntryType EntryType { get; }
 
         #endregion
     }

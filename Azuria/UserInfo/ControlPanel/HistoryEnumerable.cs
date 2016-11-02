@@ -7,7 +7,7 @@ namespace Azuria.UserInfo.ControlPanel
     /// <summary>
     /// </summary>
     /// <typeparam name="T"></typeparam>
-    public class HistoryEnumerable<T> : IEnumerable<HistoryObject<T>> where T : IAnimeMangaObject
+    public class HistoryEnumerable<T> : IEnumerable<HistoryObject<T>> where T : IMediaObject
     {
         private readonly Senpai _senpai;
         private readonly UserControlPanel _userControlPanel;

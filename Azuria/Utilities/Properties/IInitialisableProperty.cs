@@ -65,6 +65,11 @@ namespace Azuria.Utilities.Properties
 
         /// <summary>
         /// </summary>
+        /// <returns></returns>
+        T GetObjectIfInitialised();
+
+        /// <summary>
+        /// </summary>
         /// <param name="ifNot"></param>
         /// <returns></returns>
         T GetObjectIfInitialised(T ifNot);

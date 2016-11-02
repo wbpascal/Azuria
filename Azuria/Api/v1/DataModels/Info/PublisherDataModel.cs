@@ -1,7 +1,6 @@
 ﻿using Azuria.Api.v1.Converters.Info;
 using Azuria.Media.Properties;
 using Newtonsoft.Json;
-using Newtonsoft.Json.Converters;
 
 namespace Azuria.Api.v1.DataModels.Info
 {
@@ -20,7 +19,7 @@ namespace Azuria.Api.v1.DataModels.Info
         internal string Name { get; set; }
 
         [JsonProperty("type")]
-        [JsonConverter(typeof(StringEnumConverter))]
+        [JsonConverter(typeof(PublisherTypeConverter))]
         internal Industry.IndustryType Type { get; set; }
 
         #endregion

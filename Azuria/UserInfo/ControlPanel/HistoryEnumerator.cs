@@ -10,7 +10,7 @@ using Azuria.Utilities;
 
 namespace Azuria.UserInfo.ControlPanel
 {
-    internal class HistoryEnumerator<T> : PageEnumerator<HistoryObject<T>> where T : IAnimeMangaObject
+    internal class HistoryEnumerator<T> : PageEnumerator<HistoryObject<T>> where T : IMediaObject
     {
         private const int ResultsPerPage = 50;
         private readonly UserControlPanel _controlPanel;
@@ -24,14 +24,14 @@ namespace Azuria.UserInfo.ControlPanel
 
         #region Methods
 
-        private static IAnimeMangaContent<T> GetAnimeMangaContent(HistoryDataModel dataModel)
+        private static IMediaContent GetMediaContent(HistoryDataModel dataModel)
         {
             if ((typeof(T) == typeof(Anime)) ||
-                ((typeof(T) == typeof(IAnimeMangaObject)) && (dataModel.EntryType == AnimeMangaEntryType.Anime)))
-                return (IAnimeMangaContent<T>) new Anime.Episode(dataModel);
+                ((typeof(T) == typeof(IMediaObject)) && (dataModel.EntryType == MediaEntryType.Anime)))
+                return new Anime.Episode(dataModel);
             if ((typeof(T) == typeof(Manga)) ||
-                ((typeof(T) == typeof(IAnimeMangaObject)) && (dataModel.EntryType == AnimeMangaEntryType.Manga)))
-                return (IAnimeMangaContent<T>) new Manga.Chapter(dataModel);
+                ((typeof(T) == typeof(IMediaObject)) && (dataModel.EntryType == MediaEntryType.Manga)))
+                return new Manga.Chapter(dataModel);
 
             return null;
         }
@@ -48,8 +48,8 @@ namespace Azuria.UserInfo.ControlPanel
 
             return new ProxerResult<IEnumerable<HistoryObject<T>>>(from historyDataModel in lData
                 select
-                new HistoryObject<T>(GetAnimeMangaContent(historyDataModel), historyDataModel.TimeStamp,
-                    this._controlPanel));
+                new HistoryObject<T>(GetMediaContent(historyDataModel) as IMediaContent<T>,
+                    historyDataModel.TimeStamp, this._controlPanel));
         }
 
         #endregion

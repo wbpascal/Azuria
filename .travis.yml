@@ -1,4 +1,8 @@
 language: csharp
 solution: Azuria.sln
+install:
+  - nuget restore Azuria.sln
+  - nuget install NUnit.Runners -Version 3.4.1 -OutputDirectory testrunner
 script: 
   - xbuild /p:Configuration=TravisCI Azuria.sln
+  - mono ./testrunner/NUnit.ConsoleRunner.3.4.1/tools/nunit3-console.exe ./Test/Azuria.Test/bin/Release/Azuria.Test.dll

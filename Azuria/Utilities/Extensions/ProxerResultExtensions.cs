@@ -19,8 +19,7 @@ namespace Azuria.Utilities.Extensions
         public static async Task<T> ThrowFirstForNonSuccess<T>(this Task<ProxerResult<T>> task)
         {
             ProxerResult<T> lResult = await task;
-            if (!lResult.Success || (lResult.Result == null))
-                throw lResult.Exceptions.Any() ? lResult.Exceptions.First() : new Exception();
+            if (!lResult.Success) throw lResult.Exceptions.Any() ? lResult.Exceptions.First() : new Exception();
 
             return lResult.Result;
         }

@@ -5,15 +5,15 @@ using Azuria.Media;
 namespace Azuria.UserInfo.ControlPanel
 {
     /// <summary>
-    /// Represents an <see cref="Anime" /> or <see cref="Manga" /> the user has bookmarked.
+    /// Represents an <see cref="Anime.Episode" /> or <see cref="Manga.Chapter" /> the user has bookmarked.
     /// </summary>
     /// <typeparam name="T">Specifies if the bookmark is an <see cref="Anime" /> or <see cref="Manga" />.</typeparam>
-    public class BookmarkObject<T> where T : IAnimeMangaObject
+    public class BookmarkObject<T> where T : IMediaObject
     {
-        internal BookmarkObject(IAnimeMangaContent<T> animeMangaContentObject, int bookmarkId,
+        internal BookmarkObject(IMediaContent<T> mediaContentObject, int bookmarkId,
             UserControlPanel controlPanel)
         {
-            this.AnimeMangaContentObject = animeMangaContentObject;
+            this.MediaContentObject = mediaContentObject;
             this.BookmarkId = bookmarkId;
             this.UserControlPanel = controlPanel;
         }
@@ -21,14 +21,14 @@ namespace Azuria.UserInfo.ControlPanel
         #region Properties
 
         /// <summary>
-        /// Gets the <see cref="Anime.Episode" /> or <see cref="Manga.Chapter" /> the user has bookmarked.
-        /// </summary>
-        public IAnimeMangaContent<T> AnimeMangaContentObject { get; }
-
-        /// <summary>
         /// Gets the id of this bookmark.
         /// </summary>
         public int BookmarkId { get; }
+
+        /// <summary>
+        /// Gets the <see cref="Anime.Episode" /> or <see cref="Manga.Chapter" /> the user has bookmarked.
+        /// </summary>
+        public IMediaContent<T> MediaContentObject { get; }
 
         /// <summary>
         /// </summary>
@@ -42,7 +42,7 @@ namespace Azuria.UserInfo.ControlPanel
         /// Deletes the entry from the User-Control-Panel.
         /// </summary>
         /// <returns>If the action was successfull.</returns>
-        public Task<ProxerResult> DeleteEntry()
+        public Task<ProxerResult> DeleteReminder()
         {
             return this.UserControlPanel.DeleteBookmark(this.BookmarkId);
         }

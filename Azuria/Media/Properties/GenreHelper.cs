@@ -38,7 +38,7 @@ namespace Azuria.Media.Properties
             {"Shoujou-Ai", GenreType.ShoujouAi},
             {"Shounen", GenreType.Shounen},
             {"Shounen-Ai", GenreType.ShounenAi},
-            {"Slice_Of_Life", GenreType.SliceOfLife},
+            {"Slice_of_Life", GenreType.SliceOfLife},
             {"Splatter", GenreType.Splatter},
             {"Sport", GenreType.Sport},
             {"Superpower", GenreType.Superpower},

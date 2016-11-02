@@ -34,7 +34,7 @@ namespace Azuria.Api.v1.DataModels
         internal int OverallRating { get; set; }
 
         [JsonProperty("status")]
-        internal AnimeMangaProgressState State { get; set; }
+        internal MediaProgressState State { get; set; }
 
         [JsonProperty("data")]
         [JsonConverter(typeof(SubRatingsConverter))]

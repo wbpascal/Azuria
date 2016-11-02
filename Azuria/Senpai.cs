@@ -17,7 +17,7 @@ namespace Azuria
     /// </summary>
     public class Senpai : IDisposable
     {
-        private DateTime _cookiesCreated;
+        private DateTime _cookiesCreated = DateTime.MinValue;
         private DateTime _cookiesLastUsed = DateTime.MinValue;
 
         /// <summary>
@@ -67,22 +67,6 @@ namespace Azuria
         public User Me { get; protected set; }
 
         /// <summary>
-        /// Gets the cookies that are used to make requests to the server with this user. Unlike <see cref="LoginCookies" />
-        /// contains this cookie container some additional cookies to request a response that is intended for mobile usage.
-        /// </summary>
-        public CookieContainer MobileLoginCookies
-        {
-            get
-            {
-                CookieContainer lMobileCookies = new CookieContainer();
-                foreach (Cookie loginCookie in this.LoginCookies.GetCookies(new Uri("https://proxer.me/")))
-                    lMobileCookies.Add(new Uri("https://proxer.me/"), loginCookie);
-                lMobileCookies.Add(new Uri("https://proxer.me/"), new Cookie("device", "mobile", "/", "proxer.me"));
-                return lMobileCookies;
-            }
-        }
-
-        /// <summary>
         /// </summary>
         public string Username { get; private set; }
 
@@ -102,6 +86,9 @@ namespace Azuria
         /// <returns></returns>
         public static async Task<ProxerResult<Senpai>> FromToken(char[] token)
         {
+            if ((token == null) || (token.Length != 255))
+                return new ProxerResult<Senpai>(new ArgumentException(nameof(token)));
+
             Senpai lSenpai = new Senpai();
             ProxerResult lResult = await lSenpai.LoginWithToken(token);
             return !lResult.Success ? new ProxerResult<Senpai>(lResult.Exceptions) : new ProxerResult<Senpai>(lSenpai);
@@ -119,33 +106,33 @@ namespace Azuria
         /// </summary>
         /// <param name="password">The password of the user.</param>
         /// <returns>If the action was successful and if it was, whether the user was successfully logged in.</returns>
-        public async Task<ProxerResult<bool>> Login(string password)
+        public async Task<ProxerResult> Login(string password)
         {
-            if (string.IsNullOrEmpty(password.Trim()))
-                return new ProxerResult<bool>(new[] {new ArgumentException(nameof(password))});
-            if (this.IsProbablyLoggedIn) return new ProxerResult<bool>(new[] {new UserAlreadyLoggedInException()});
+            if (string.IsNullOrEmpty(password))
+                return new ProxerResult(new[] {new ArgumentException(nameof(password))});
+            if (this.IsProbablyLoggedIn) return new ProxerResult<bool>(new AlreadyLoggedInException());
 
             ProxerResult<ProxerApiResponse<LoginDataModel>> lResult =
                 await RequestHandler.ApiRequest(ApiRequestBuilder.UserLogin(this.Username, password, this));
             if (!lResult.Success || (lResult.Result == null))
-                return new ProxerResult<bool>(lResult.Exceptions);
+                return new ProxerResult(lResult.Exceptions);
 
             this.Me = new User(this.Username, lResult.Result.Data.UserId,
                 new Uri("https://cdn.proxer.me/avatar/" + lResult.Result.Data.Avatar));
             this._cookiesCreated = DateTime.Now;
             this.LoginToken.SetValue(lResult.Result.Data.Token.ToCharArray());
 
-            return new ProxerResult<bool>(true);
+            return new ProxerResult();
         }
 
         internal async Task<ProxerResult> LoginWithToken(char[] token = null)
         {
-            token = token ?? this.LoginToken.ReadValue();
-            if (token.Length == 0)
+            if ((token == null) || (token.Length != 255))
                 return new ProxerResult(new[] {new ArgumentException(nameof(token))});
+            this.LoginToken.SetValue(token);
 
             ProxerResult<ProxerApiResponse<UserInfoDataModel>> lResult =
-                await RequestHandler.ApiRequest(ApiRequestBuilder.UserGetInfo(this), token);
+                await RequestHandler.ApiRequest(ApiRequestBuilder.UserGetInfo(this), true);
             if (!lResult.Success || (lResult.Result == null))
                 return new ProxerResult(lResult.Exceptions);
             UserInfoDataModel lDataModel = lResult.Result.Data;
@@ -162,6 +149,8 @@ namespace Azuria
         /// <returns></returns>
         public async Task<ProxerResult> Logout()
         {
+            if (this._cookiesCreated == DateTime.MinValue) return new ProxerResult(new NotLoggedInException(this));
+
             ProxerResult<ProxerApiResponse> lResult =
                 await RequestHandler.ApiRequest(ApiRequestBuilder.UserLogout(this));
             if (!lResult.Success || (lResult.Result == null) || lResult.Result.Error)

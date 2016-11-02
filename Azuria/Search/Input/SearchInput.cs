@@ -59,7 +59,7 @@ namespace Azuria.Search.Input
 
         /// <summary>
         /// </summary>
-        public AnimeMangaSearchType Type { get; set; } = AnimeMangaSearchType.All;
+        public MediaSearchType Type { get; set; } = MediaSearchType.All;
 
         #endregion
     }
