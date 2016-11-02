@@ -5,12 +5,7 @@ using System.Threading.Tasks;
 
 namespace System.Timers
 {
-    /// <summary>
-    ///     Stellt den EventHandler der Elapsed-Ereignisses des <see cref="Timer" /> dar.
-    /// </summary>
-    /// <param name="sender">Der Auslöser des Ereignisse.s</param>
-    /// <param name="e">Zusätliche Informationen über das ausgelöste Ereigniss.</param>
-    public delegate void ElapsedEventHandler(object sender, EventArgs e);
+    internal delegate void ElapsedEventHandler(object sender, EventArgs e);
 
     internal sealed class Timer : IDisposable
     {
