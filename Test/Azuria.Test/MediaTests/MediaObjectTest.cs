@@ -140,11 +140,11 @@ namespace Azuria.Test.MediaTests
             Assert.IsTrue(lResult.Success, JsonConvert.SerializeObject(lResult.Exceptions));
             Assert.IsNotNull(lResult.Result);
             Assert.AreEqual(10, lResult.Result.Count());
-            Assert.IsTrue(lResult.Result.Any(industry => industry.Type == Industry.IndustryType.Producer));
-            Assert.IsTrue(lResult.Result.Any(industry => industry.Type == Industry.IndustryType.StreamPartner));
-            Assert.IsTrue(lResult.Result.Any(industry => industry.Type == Industry.IndustryType.Publisher));
-            Assert.IsTrue(lResult.Result.Any(industry => industry.Type == Industry.IndustryType.Studio));
-            Assert.IsFalse(lResult.Result.Any(industry => industry.Type == Industry.IndustryType.Unknown));
+            Assert.IsTrue(lResult.Result.Any(industry => industry.Type == IndustryType.Producer));
+            Assert.IsTrue(lResult.Result.Any(industry => industry.Type == IndustryType.StreamPartner));
+            Assert.IsTrue(lResult.Result.Any(industry => industry.Type == IndustryType.Publisher));
+            Assert.IsTrue(lResult.Result.Any(industry => industry.Type == IndustryType.Studio));
+            Assert.IsFalse(lResult.Result.Any(industry => industry.Type == IndustryType.Unknown));
             Assert.IsTrue(lResult.Result.Any(industry => industry.Country == Country.Germany));
             Assert.IsTrue(lResult.Result.Any(industry => industry.Country == Country.Japan));
             Assert.IsTrue(lResult.Result.Any(industry => industry.Country == Country.UnitedStates));

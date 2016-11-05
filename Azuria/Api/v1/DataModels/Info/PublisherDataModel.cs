@@ -20,7 +20,7 @@ namespace Azuria.Api.v1.DataModels.Info
 
         [JsonProperty("type")]
         [JsonConverter(typeof(PublisherTypeConverter))]
-        internal Industry.IndustryType Type { get; set; }
+        internal IndustryType Type { get; set; }
 
         #endregion
     }

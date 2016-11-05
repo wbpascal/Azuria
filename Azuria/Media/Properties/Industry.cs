@@ -8,20 +8,6 @@ namespace Azuria.Media.Properties
     public class Industry
     {
         /// <summary>
-        /// Represents an enumeration which describes the type of the <see cref="Industry" />.
-        /// </summary>
-#pragma warning disable 1591
-        public enum IndustryType
-        {
-            Publisher,
-            Studio,
-            Producer,
-            StreamPartner,
-            Unknown
-        }
-#pragma warning restore 1591
-
-        /// <summary>
         /// Represents an error.
         /// </summary>
         public static Industry Error = new Industry(new PublisherDataModel {Id = -1, Name = "ERROR"});

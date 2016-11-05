@@ -22,9 +22,9 @@ namespace Azuria.Api.v1.Converters.Info
             switch (lValue)
             {
                 case "streaming":
-                    return Industry.IndustryType.StreamPartner;
+                    return IndustryType.StreamPartner;
                 default:
-                    return Enum.Parse(typeof(Industry.IndustryType), lValue, true);
+                    return Enum.Parse(typeof(IndustryType), lValue, true);
             }
         }
 

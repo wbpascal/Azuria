@@ -80,6 +80,7 @@
     <Compile Include="Media\Headers\HeaderHelper.cs" />
     <Compile Include="Media\Headers\HeaderInfo.cs" />
     <Compile Include="Media\Headers\HeaderStyle.cs" />
+    <Compile Include="Media\Properties\IndustryType.cs" />
     <Compile Include="Media\Properties\MediaRating.cs" />
     <Compile Include="Media\Properties\MediaSeason.cs" />
     <Compile Include="Media\Properties\MediaSeasonInfo.cs" />
