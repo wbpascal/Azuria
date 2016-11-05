@@ -13,13 +13,15 @@ namespace Azuria.Community
     public sealed class MessageEnumerator : PageEnumerator<Message>
     {
         private readonly int _conferenceId;
+        private readonly bool _markAsRead;
         private readonly Senpai _senpai;
 
-        internal MessageEnumerator(int conferenceId, Senpai senpai)
+        internal MessageEnumerator(int conferenceId, bool markAsRead, Senpai senpai)
             : base(Conference.MessagesPerPage)
         {
             this._conferenceId = conferenceId;
             this._senpai = senpai;
+            this._markAsRead = markAsRead;
         }
 
         #region Methods
@@ -27,9 +29,9 @@ namespace Azuria.Community
         internal override async Task<IProxerResult<IEnumerable<Message>>> GetNextPage(int nextPage)
         {
             Message lLastMessage = this.GetCurrentPage().LastOrDefault();
-            ProxerApiResponse<MessageDataModel[]> lResult =
-                await RequestHandler.ApiRequest(ApiRequestBuilder.MessengerGetMessages(this._senpai, this._conferenceId,
-                    lLastMessage?.MessageId ?? 0));
+            ProxerApiResponse<MessageDataModel[]> lResult = await RequestHandler.ApiRequest(
+                ApiRequestBuilder.MessengerGetMessages(this._senpai, this._conferenceId, lLastMessage?.MessageId ?? 0,
+                    this._markAsRead));
             if (!lResult.Success || (lResult.Result == null))
                 return new ProxerResult<IEnumerable<Message>>(lResult.Exceptions);
 

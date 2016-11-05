@@ -20,9 +20,10 @@ namespace Azuria.Test.ConferenceTests
         }
 
         [Test]
-        public void GetUnreadMessages()
+        public async Task GetUnreadMessages()
         {
-            Message[] lUnreadMessages = this._conferenceInfo.UnreadMessages.ToArray();
+            Message[] lUnreadMessages =
+                (await this._conferenceInfo.UnreadMessages.GetObject(false, new Message[0])).ToArray();
             Assert.IsNotEmpty(lUnreadMessages);
             Assert.AreEqual(3, lUnreadMessages.Length);
         }

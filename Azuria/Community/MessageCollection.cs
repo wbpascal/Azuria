@@ -8,12 +8,14 @@ namespace Azuria.Community
     public class MessageCollection : IEnumerable<Message>
     {
         private readonly int _conferenceId;
+        private readonly bool _markAsRead;
         private readonly Senpai _senpai;
 
-        internal MessageCollection(int conferenceId, Senpai senpai)
+        internal MessageCollection(int conferenceId, Senpai senpai, bool markAsRead = true)
         {
             this._conferenceId = conferenceId;
             this._senpai = senpai;
+            this._markAsRead = markAsRead;
         }
 
         #region Methods
@@ -29,7 +31,7 @@ namespace Azuria.Community
         /// <returns>An enumerator that can be used to iterate through the collection.</returns>
         public IEnumerator<Message> GetEnumerator()
         {
-            return new MessageEnumerator(this._conferenceId, this._senpai);
+            return new MessageEnumerator(this._conferenceId, this._markAsRead, this._senpai);
         }
 
         #endregion

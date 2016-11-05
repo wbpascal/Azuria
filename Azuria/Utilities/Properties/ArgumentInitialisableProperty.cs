@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using Azuria.ErrorHandling;
 using Azuria.Exceptions;
@@ -8,27 +7,26 @@ using Azuria.Utilities.Extensions;
 namespace Azuria.Utilities.Properties
 {
     /// <summary>
-    /// Represents a property that can be initialised.
     /// </summary>
-    /// <typeparam name="T">The type of the property.</typeparam>
-    public class InitialisableProperty<T> : IInitialisableProperty<T>
+    /// <typeparam name="TIn"></typeparam>
+    /// <typeparam name="TOut"></typeparam>
+    public class ArgumentInitialisableProperty<TIn, TOut> : IArgumentInitialisableProperty<TIn, TOut>
     {
         /// <summary>
         /// </summary>
         /// <param name="initMethod"></param>
-        public InitialisableProperty(Func<Task<IProxerResult>> initMethod)
+        public ArgumentInitialisableProperty(Func<TIn, Task<IProxerResult>> initMethod)
         {
             this.InitMethod = initMethod;
-            this.IsInitialisedOnce = false;
         }
 
         /// <summary>
         /// </summary>
         /// <param name="initMethod"></param>
         /// <param name="initialisationResult"></param>
-        public InitialisableProperty(Func<Task<IProxerResult>> initMethod, T initialisationResult)
+        public ArgumentInitialisableProperty(Func<TIn, Task<IProxerResult>> initMethod, TOut initialisationResult)
+            : this(initMethod)
         {
-            this.InitMethod = initMethod;
             this.InitialisedObject = initialisationResult;
             this.IsInitialisedOnce = true;
         }
@@ -37,11 +35,11 @@ namespace Azuria.Utilities.Properties
 
         /// <summary>
         /// </summary>
-        protected T InitialisedObject { get; set; }
+        protected TOut InitialisedObject { get; set; }
 
         /// <summary>
         /// </summary>
-        protected Func<Task<IProxerResult>> InitMethod { get; }
+        protected Func<TIn, Task<IProxerResult>> InitMethod { get; }
 
         /// <inheritdoc />
         public bool IsInitialisedOnce { get; set; }
@@ -51,55 +49,49 @@ namespace Azuria.Utilities.Properties
         #region Methods
 
         /// <inheritdoc />
-        public async Task<IProxerResult> FetchObject()
+        public async Task<IProxerResult> FetchObject(TIn param)
         {
-            return await this.GetObject();
+            return await this.GetObject(param);
         }
 
         /// <inheritdoc />
-        public TaskAwaiter<IProxerResult<T>> GetAwaiter()
+        public async Task<IProxerResult<TOut>> GetNewObject(TIn param)
         {
-            return this.GetObject().GetAwaiter();
-        }
-
-        /// <inheritdoc />
-        public async Task<IProxerResult<T>> GetNewObject()
-        {
-            IProxerResult lInitialiseResult = await this.InitMethod.Invoke();
+            IProxerResult lInitialiseResult = await this.InitMethod.Invoke(param);
             return !lInitialiseResult.Success
-                ? new ProxerResult<T>(lInitialiseResult.Exceptions)
-                : new ProxerResult<T>(this.InitialisedObject);
+                ? new ProxerResult<TOut>(lInitialiseResult.Exceptions)
+                : new ProxerResult<TOut>(this.InitialisedObject);
         }
 
         /// <inheritdoc />
-        public Task<T> GetNewObject(T onError)
+        public Task<TOut> GetNewObject(TIn param, TOut onError)
         {
-            return this.GetNewObject().OnError(onError);
+            return this.GetNewObject(param).OnError(onError);
         }
 
         /// <inheritdoc />
-        public async Task<IProxerResult<T>> GetObject()
+        public async Task<IProxerResult<TOut>> GetObject(TIn param)
         {
             return this.IsInitialisedOnce
-                ? new ProxerResult<T>(this.InitialisedObject)
-                : await this.GetNewObject();
+                ? new ProxerResult<TOut>(this.InitialisedObject)
+                : await this.GetNewObject(param);
         }
 
         /// <inheritdoc />
-        public Task<T> GetObject(T onError)
+        public Task<TOut> GetObject(TIn param, TOut onError)
         {
-            return this.GetObject().OnError(onError);
+            return this.GetObject(param).OnError(onError);
         }
 
         /// <inheritdoc />
-        public T GetObjectIfInitialised()
+        public TOut GetObjectIfInitialised()
         {
             if (!this.IsInitialisedOnce) throw new NotInitialisedException();
             return this.InitialisedObject;
         }
 
         /// <inheritdoc />
-        public T GetObjectIfInitialised(T ifNot)
+        public TOut GetObjectIfInitialised(TOut ifNot)
         {
             return this.IsInitialisedOnce ? this.InitialisedObject : ifNot;
         }
@@ -107,16 +99,16 @@ namespace Azuria.Utilities.Properties
         /// <summary>
         /// </summary>
         /// <param name="initialisedObject"></param>
-        public void SetInitialisedObject(T initialisedObject)
+        public void SetInitialisedObject(TOut initialisedObject)
         {
             this.InitialisedObject = initialisedObject;
             this.IsInitialisedOnce = true;
         }
 
         /// <inheritdoc />
-        public Task<T> ThrowFirstOnNonSuccess()
+        public Task<TOut> ThrowFirstOnNonSuccess(TIn param)
         {
-            return this.GetObject().ThrowFirstForNonSuccess();
+            return this.GetObject(param).ThrowFirstForNonSuccess();
         }
 
         /// <inheritdoc />

@@ -106,7 +106,6 @@
     <Compile Include="Community\ConferenceInfo.cs" />
     <Compile Include="Community\ConferenceListType.cs" />
     <Compile Include="Community\MessageAction.cs" />
-    <Compile Include="Community\MessageModel.cs" />
     <Compile Include="Exceptions\ApiNotInitialisedException.cs" />
     <Compile Include="Exceptions\NotInitialisedException.cs" />
     <Compile Include="Notifications\INotificationManager.cs" />
@@ -129,6 +128,8 @@
     <Compile Include="Api\v1\DataModels\Messenger\ConstantsDataModel.cs" />
     <Compile Include="Utilities\Extensions\ProxerResultExtensions.cs" />
     <Compile Include="Utilities\PageEnumerator.cs" />
+    <Compile Include="Utilities\Properties\ArgumentInitialisableProperty.cs" />
+    <Compile Include="Utilities\Properties\IArgumentInitialisableProperty.cs" />
     <Compile Include="Web\IHttpClient.cs" />
     <Compile Include="UserInfo\Comment\CommentEnumerable.cs" />
     <Compile Include="UserInfo\Comment\CommentEnumerator.cs" />
@@ -179,7 +180,6 @@
     <Compile Include="Community\Message.cs" />
     <Compile Include="Community\MessageCollection.cs" />
     <Compile Include="Community\MessageEnumerator.cs" />
-    <Compile Include="Community\MessagesModel.cs" />
     <Compile Include="Exceptions\ApiKeyInsufficientException.cs" />
     <Compile Include="Exceptions\CaptchaException.cs" />
     <Compile Include="Exceptions\CloudflareException.cs" />

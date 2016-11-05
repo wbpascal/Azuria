@@ -192,16 +192,15 @@ namespace Azuria.Api.v1
         }
 
         internal static ApiRequest<MessageDataModel[]> MessengerGetMessages(Senpai senpai, int conferenceId = 0,
-            int messageId = 0)
+            int messageId = 0, bool markAsRead = true)
         {
-            return
-                new ApiRequest<MessageDataModel[]>(
-                    new Uri(
-                        $"{ApiConstants.ApiUrlV1}/messenger/messages?conference_id={conferenceId}&message_id={messageId}"))
-                {
-                    CheckLogin = true,
-                    Senpai = senpai
-                };
+            return new ApiRequest<MessageDataModel[]>(new Uri(
+                $"{ApiConstants.ApiUrlV1}/messenger/messages?conference_id={conferenceId}" +
+                $"&message_id={messageId}&read={markAsRead.ToString().ToLowerInvariant()}"))
+            {
+                CheckLogin = true,
+                Senpai = senpai
+            };
         }
 
         internal static ApiRequest<int> MessengerNewConference(string username, string text, Senpai senpai)

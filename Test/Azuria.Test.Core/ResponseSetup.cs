@@ -19,6 +19,7 @@ namespace Azuria.Test.Core
                         response.Post("/messenger/messages")
                             .WithQueryParameter("conference_id", "124536")
                             .WithQueryParameter("message_id", "0")
+                            .WithQueryParameter("read", "true")
                             .WithLoggedInSenpai(true);
                     })
                 .Respond(JsonResponses["messenger_getmessagesCheck.json"]);
@@ -313,10 +314,17 @@ namespace Azuria.Test.Core
                         response.Post("/messenger/messages")
                             .WithQueryParameter("conference_id", "124536")
                             .WithQueryParameter("message_id", "0")
+                            .WithQueryParameter("read", "true")
                             .WithLoggedInSenpai(true);
                         response.Post("/messenger/messages")
                             .WithQueryParameter("conference_id", "124536")
                             .WithQueryParameter("message_id", "5018808")
+                            .WithQueryParameter("read", "true")
+                            .WithLoggedInSenpai(true);
+                        response.Post("/messenger/messages")
+                            .WithQueryParameter("conference_id", "124536")
+                            .WithQueryParameter("message_id", "0")
+                            .WithQueryParameter("read", "false")
                             .WithLoggedInSenpai(true);
                     })
                 .Respond(JsonResponses["messenger_getmessages1.json"]);
@@ -325,6 +333,7 @@ namespace Azuria.Test.Core
                         response.Post("/messenger/messages")
                             .WithQueryParameter("conference_id", "124536")
                             .WithQueryParameter("message_id", "4993930")
+                            .WithQueryParameter("read", "true")
                             .WithLoggedInSenpai(true))
                 .Respond(JsonResponses["messenger_getmessages2.json"]);
             ServerResponse.Create("https://proxer.me/api/v1",

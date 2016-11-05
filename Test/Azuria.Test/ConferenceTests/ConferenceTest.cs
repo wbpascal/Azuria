@@ -33,6 +33,7 @@ namespace Azuria.Test.ConferenceTests
         {
             Assert.IsFalse(this._conference.AutoCheck);
             this._conference.AutoCheck = true;
+            this._conference.AutoCheckInterval = TimeSpan.FromMilliseconds(100);
             ServerResponse lResponse = ResponseSetup.CreateForMessageAutoCheck();
 
             SemaphoreSlim lSemaphoreSlim = new SemaphoreSlim(0, 1);
@@ -206,7 +207,6 @@ namespace Azuria.Test.ConferenceTests
                     .ToArray();
             Assert.IsNotNull(lConferences);
             Assert.AreEqual(3, lConferences.Length);
-            Assert.True(lConferences.Skip(1).All(info => !info.UnreadMessages.Any()));
         }
 
         [Test]
