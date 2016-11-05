@@ -93,24 +93,22 @@ namespace Azuria.UserInfo.Comment
         /// <param name="progress"></param>
         /// <param name="senpai"></param>
         /// <returns></returns>
-        public async Task<ProxerResult> SetProgress(int progress, Senpai senpai)
+        public async Task<IProxerResult> SetProgress(int progress, Senpai senpai)
         {
             if (senpai.Me == null) return new ProxerResult(new[] {new ArgumentNullException(nameof(senpai.Me))});
             if (senpai.Me.Id != this.Author.Id)
-                return
-                    new ProxerResult(new[]
-                        {new ArgumentException($"{nameof(senpai)} is not the author of this comment!")});
+                return new ProxerResult(
+                    new[] {new ArgumentException($"{nameof(senpai)} is not the author of this comment!")});
             if (progress < 0) return new ProxerResult(new[] {new ArgumentException(nameof(progress))});
 
-            ProxerResult<ProxerApiResponse> lResult =
+            ProxerApiResponse lResult =
                 await RequestHandler.ApiRequest(ApiRequestBuilder.UcpSetProgress(this.Id, progress, senpai));
             if (!lResult.Success) return new ProxerResult(lResult.Exceptions);
 
-            if (progress >= await this.MediaObject.ContentCount.GetObject(int.MaxValue))
-            {
-                this.Progress = await this.MediaObject.ContentCount.GetObject(int.MaxValue);
-                this.ProgressState = MediaProgressState.Finished;
-            }
+            if (progress < await this.MediaObject.ContentCount.GetObject(int.MaxValue)) return new ProxerResult();
+
+            this.Progress = await this.MediaObject.ContentCount.GetObject(int.MaxValue);
+            this.ProgressState = MediaProgressState.Finished;
 
             return new ProxerResult();
         }

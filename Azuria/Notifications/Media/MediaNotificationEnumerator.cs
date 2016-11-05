@@ -58,24 +58,21 @@ namespace Azuria.Notifications.Media
         }
 
         /// <inheritdoc />
-        private async Task<ProxerResult<IEnumerable<MediaNotification<T>>>> GetNextPage()
+        private async Task<IProxerResult<IEnumerable<MediaNotification<T>>>> GetNextPage()
         {
             if (!this._senpai.IsProbablyLoggedIn)
                 return new ProxerResult<IEnumerable<MediaNotification<T>>>(new NotLoggedInException(this._senpai));
 
-            ProxerResult<string> lResponse =
-                await
-                    this._senpai.HttpClient.GetRequest(
-                        new Uri("https://proxer.me/components/com_proxer/misc/notifications_misc.php"));
+            IProxerResult<string> lResponse = await this._senpai.HttpClient.GetRequest(
+                new Uri("https://proxer.me/components/com_proxer/misc/notifications_misc.php"));
             if (!lResponse.Success || string.IsNullOrEmpty(lResponse.Result))
                 return new ProxerResult<IEnumerable<MediaNotification<T>>>(lResponse.Exceptions);
 
             List<MediaNotification<T>> lNotifications = new List<MediaNotification<T>>();
             MatchCollection lMatches = NotificationElementRegex.Matches(lResponse.Result);
 
-            foreach (
-                Match lNotification in
-                lMatches.OfType<Match>().Take(this._nodesToParse == 0 ? lMatches.Count : this._nodesToParse))
+            foreach (Match lNotification in lMatches.OfType<Match>().Take(
+                this._nodesToParse == 0 ? lMatches.Count : this._nodesToParse))
             {
                 Match lInfo = NotificationInfoRegex.Match(lNotification.Value);
                 if (!lInfo.Success) continue;
@@ -90,7 +87,7 @@ namespace Azuria.Notifications.Media
         {
             if (this._content == null)
             {
-                ProxerResult<IEnumerable<MediaNotification<T>>> lGetSearchResult =
+                IProxerResult<IEnumerable<MediaNotification<T>>> lGetSearchResult =
                     Task.Run(this.GetNextPage).Result;
                 if (!lGetSearchResult.Success || (lGetSearchResult.Result == null))
                     throw lGetSearchResult.Exceptions.FirstOrDefault() ?? new Exception("Unkown error");

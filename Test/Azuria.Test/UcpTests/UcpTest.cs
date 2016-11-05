@@ -34,7 +34,7 @@ namespace Azuria.Test.UcpTests
             Anime.Episode lEpisode = (await
                 ((Anime) await MediaObject.CreateFromId(9200).ThrowFirstForNonSuccess()).GetEpisodes(
                     AnimeLanguage.EngSub).ThrowFirstForNonSuccess())?.FirstOrDefault();
-            ProxerResult lResult = await this._controlPanel.AddToBookmarks(lEpisode);
+            IProxerResult lResult = await this._controlPanel.AddToBookmarks(lEpisode);
             Assert.IsTrue(lResult.Success);
         }
 
@@ -47,7 +47,7 @@ namespace Azuria.Test.UcpTests
             Assert.CatchAsync<ArgumentOutOfRangeException>(
                 () => this._controlPanel.AddToProfileList(-1, profileList).ThrowFirstForNonSuccess());
 
-            ProxerResult lResult = await this._controlPanel.AddToProfileList(1, profileList);
+            IProxerResult lResult = await this._controlPanel.AddToProfileList(1, profileList);
             Assert.IsTrue(lResult.Success, JsonConvert.SerializeObject(lResult.Exceptions));
         }
 
@@ -98,7 +98,7 @@ namespace Azuria.Test.UcpTests
         [Test]
         public async Task CommentVotesTest()
         {
-            ProxerResult<IEnumerable<CommentVote>> lResult = await this._controlPanel.CommentVotes;
+            IProxerResult<IEnumerable<CommentVote>> lResult = await this._controlPanel.CommentVotes;
             Assert.IsTrue(lResult.Success, JsonConvert.SerializeObject(lResult.Exceptions));
             Assert.IsNotNull(lResult.Result);
             Assert.AreEqual(2, lResult.Result.Count());
@@ -126,7 +126,7 @@ namespace Azuria.Test.UcpTests
             Assert.CatchAsync<ArgumentOutOfRangeException>(
                 () => this._controlPanel.DeleteBookmark(-1).ThrowFirstForNonSuccess());
 
-            ProxerResult lResult = await this._controlPanel.DeleteBookmark(1);
+            IProxerResult lResult = await this._controlPanel.DeleteBookmark(1);
             Assert.IsTrue(lResult.Success, JsonConvert.SerializeObject(lResult.Exceptions));
         }
 
@@ -136,7 +136,7 @@ namespace Azuria.Test.UcpTests
             Assert.CatchAsync<ArgumentOutOfRangeException>(
                 () => this._controlPanel.DeleteCommentVote(-1).ThrowFirstForNonSuccess());
 
-            ProxerResult lResult = await this._controlPanel.DeleteCommentVote(1);
+            IProxerResult lResult = await this._controlPanel.DeleteCommentVote(1);
             Assert.IsTrue(lResult.Success, JsonConvert.SerializeObject(lResult.Exceptions));
         }
 
@@ -146,7 +146,7 @@ namespace Azuria.Test.UcpTests
             Assert.CatchAsync<ArgumentOutOfRangeException>(
                 () => this._controlPanel.DeleteTopten(-1).ThrowFirstForNonSuccess());
 
-            ProxerResult lResult = await this._controlPanel.DeleteTopten(1);
+            IProxerResult lResult = await this._controlPanel.DeleteTopten(1);
             Assert.IsTrue(lResult.Success, JsonConvert.SerializeObject(lResult.Exceptions));
         }
 
@@ -169,11 +169,11 @@ namespace Azuria.Test.UcpTests
         [Test]
         public async Task PointsTest()
         {
-            ProxerResult<int> lAnimeResult = await this._controlPanel.PointsAnime;
+            IProxerResult<int> lAnimeResult = await this._controlPanel.PointsAnime;
             Assert.IsTrue(lAnimeResult.Success, JsonConvert.SerializeObject(lAnimeResult.Exceptions));
             Assert.AreEqual(3330, lAnimeResult.Result);
 
-            ProxerResult<int> lMangaResult = await this._controlPanel.PointsManga;
+            IProxerResult<int> lMangaResult = await this._controlPanel.PointsManga;
             Assert.IsTrue(lMangaResult.Success, JsonConvert.SerializeObject(lMangaResult.Exceptions));
             Assert.AreEqual(1053, lMangaResult.Result);
         }
@@ -181,7 +181,7 @@ namespace Azuria.Test.UcpTests
         [Test]
         public async Task ToptenAnimeTest()
         {
-            ProxerResult<IEnumerable<ToptenObject<Anime>>> lResult = await this._controlPanel.ToptenAnime;
+            IProxerResult<IEnumerable<ToptenObject<Anime>>> lResult = await this._controlPanel.ToptenAnime;
             Assert.IsTrue(lResult.Success, JsonConvert.SerializeObject(lResult.Exceptions));
             Assert.IsNotNull(lResult.Result);
             Assert.AreEqual(1, lResult.Result.Count());
@@ -202,7 +202,7 @@ namespace Azuria.Test.UcpTests
         [Test]
         public async Task ToptenMangaTest()
         {
-            ProxerResult<IEnumerable<ToptenObject<Manga>>> lResult = await this._controlPanel.ToptenManga;
+            IProxerResult<IEnumerable<ToptenObject<Manga>>> lResult = await this._controlPanel.ToptenManga;
             Assert.IsTrue(lResult.Success, JsonConvert.SerializeObject(lResult.Exceptions));
             Assert.IsNotNull(lResult.Result);
             Assert.AreEqual(1, lResult.Result.Count());

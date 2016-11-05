@@ -24,20 +24,19 @@ namespace Azuria.Community
 
         #region Methods
 
-        internal override async Task<ProxerResult<IEnumerable<Message>>> GetNextPage(int nextPage)
+        internal override async Task<IProxerResult<IEnumerable<Message>>> GetNextPage(int nextPage)
         {
             Message lLastMessage = this.GetCurrentPage().LastOrDefault();
-            ProxerResult<ProxerApiResponse<MessageDataModel[]>> lResult =
-                await
-                    RequestHandler.ApiRequest(ApiRequestBuilder.MessengerGetMessages(this._senpai, this._conferenceId,
-                        lLastMessage?.MessageId ?? 0));
+            ProxerApiResponse<MessageDataModel[]> lResult =
+                await RequestHandler.ApiRequest(ApiRequestBuilder.MessengerGetMessages(this._senpai, this._conferenceId,
+                    lLastMessage?.MessageId ?? 0));
             if (!lResult.Success || (lResult.Result == null))
                 return new ProxerResult<IEnumerable<Message>>(lResult.Exceptions);
 
-            return new ProxerResult<IEnumerable<Message>>((from messageDataModel in lResult.Result.Data
-                select
-                new Message(messageDataModel,
-                    this._conferenceId != 0 ? this._conferenceId : messageDataModel.ConferenceId)).Reverse());
+            return new ProxerResult<IEnumerable<Message>>((from messageDataModel in lResult.Result
+                select new Message(messageDataModel, this._conferenceId != 0
+                    ? this._conferenceId
+                    : messageDataModel.ConferenceId)).Reverse());
         }
 
         #endregion

@@ -41,15 +41,14 @@ namespace Azuria.Search
         }
 
         /// <inheritdoc />
-        internal override async Task<ProxerResult<IEnumerable<T>>> GetNextPage(int nextPage)
+        internal override async Task<IProxerResult<IEnumerable<T>>> GetNextPage(int nextPage)
         {
-            ProxerResult<ProxerApiResponse<SearchDataModel[]>> lResult =
-                await
-                    RequestHandler.ApiRequest(ApiRequestBuilder.ListEntryList(this._input,
-                        typeof(T).GetTypeInfo().Name.ToLowerInvariant(), ResultsPerPage, nextPage));
+            ProxerApiResponse<SearchDataModel[]> lResult =
+                await RequestHandler.ApiRequest(ApiRequestBuilder.ListEntryList(
+                    this._input, typeof(T).GetTypeInfo().Name.ToLowerInvariant(), ResultsPerPage, nextPage));
             if (!lResult.Success || (lResult.Result == null))
                 return new ProxerResult<IEnumerable<T>>(lResult.Exceptions);
-            SearchDataModel[] lData = lResult.Result.Data;
+            SearchDataModel[] lData = lResult.Result;
 
             return typeof(T) == typeof(Anime)
                 ? new ProxerResult<IEnumerable<T>>(GetAnimeList(lData))

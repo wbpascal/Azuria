@@ -264,7 +264,7 @@ namespace Azuria.Test.ConferenceTests
             Assert.CatchAsync<ArgumentException>(() => this._conference.SendReport(null).ThrowFirstForNonSuccess());
             Assert.CatchAsync<ArgumentException>(() => this._conference.SendReport("").ThrowFirstForNonSuccess());
 
-            ProxerResult lResult = await this._conference.SendReport("Report Reason");
+            IProxerResult lResult = await this._conference.SendReport("Report Reason");
             Assert.IsTrue(lResult.Success,
                 $"{lResult.Exceptions.FirstOrDefault()?.GetType().FullName}: {lResult.Exceptions.FirstOrDefault()?.Message}");
 
@@ -276,7 +276,7 @@ namespace Azuria.Test.ConferenceTests
         [Test]
         public async Task SetBlock()
         {
-            ProxerResult lResult = await this._conference.SetBlock(true);
+            IProxerResult lResult = await this._conference.SetBlock(true);
             Assert.IsTrue(lResult.Success,
                 $"{lResult.Exceptions.FirstOrDefault()?.GetType().FullName}: {lResult.Exceptions.FirstOrDefault()?.Message}");
 
@@ -288,7 +288,7 @@ namespace Azuria.Test.ConferenceTests
         [Test]
         public async Task SetFavour()
         {
-            ProxerResult lResult = await this._conference.SetFavourite(true);
+            IProxerResult lResult = await this._conference.SetFavourite(true);
             Assert.IsTrue(lResult.Success,
                 $"{lResult.Exceptions.FirstOrDefault()?.GetType().FullName}: {lResult.Exceptions.FirstOrDefault()?.Message}");
 
@@ -300,7 +300,7 @@ namespace Azuria.Test.ConferenceTests
         [Test]
         public async Task SetUnread()
         {
-            ProxerResult lResult = await this._conference.SetUnread();
+            IProxerResult lResult = await this._conference.SetUnread();
             Assert.IsTrue(lResult.Success,
                 $"{lResult.Exceptions.FirstOrDefault()?.GetType().FullName}: {lResult.Exceptions.FirstOrDefault()?.Message}");
         }

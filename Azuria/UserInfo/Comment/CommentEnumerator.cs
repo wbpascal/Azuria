@@ -32,18 +32,17 @@ namespace Azuria.UserInfo.Comment
 
         #region Methods
 
-        internal override async Task<ProxerResult<IEnumerable<Comment<T>>>> GetNextPage(int nextPage)
+        internal override async Task<IProxerResult<IEnumerable<Comment<T>>>> GetNextPage(int nextPage)
         {
-            ProxerResult<ProxerApiResponse<CommentDataModel[]>> lResult =
-                await
-                    RequestHandler.ApiRequest(this._user == null
-                        ? ApiRequestBuilder.InfoGetComments(this._mediaObject.Id,
-                            nextPage, ResultsPerPage, this._sort)
-                        : ApiRequestBuilder.UserGetLatestComments(this._user.Id, nextPage, ResultsPerPage,
-                            typeof(T).GetTypeInfo().Name.ToLower(), 0));
+            ProxerApiResponse<CommentDataModel[]> lResult =
+                await RequestHandler.ApiRequest(this._user == null
+                    ? ApiRequestBuilder.InfoGetComments(this._mediaObject.Id,
+                        nextPage, ResultsPerPage, this._sort)
+                    : ApiRequestBuilder.UserGetLatestComments(this._user.Id, nextPage, ResultsPerPage,
+                        typeof(T).GetTypeInfo().Name.ToLower(), 0));
             if (!lResult.Success || (lResult.Result == null))
                 return new ProxerResult<IEnumerable<Comment<T>>>(lResult.Exceptions);
-            CommentDataModel[] lData = lResult.Result.Data;
+            CommentDataModel[] lData = lResult.Result;
 
             if ((this._user != null) && lData.Any()) this.InitialiseUserValues(lData.First());
             return new ProxerResult<IEnumerable<Comment<T>>>(this.ToCommentList(lData).ToArray());

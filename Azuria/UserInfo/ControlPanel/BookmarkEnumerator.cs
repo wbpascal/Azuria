@@ -24,16 +24,14 @@ namespace Azuria.UserInfo.ControlPanel
 
         #region Methods
 
-        internal override async Task<ProxerResult<IEnumerable<BookmarkObject<T>>>> GetNextPage(int nextPage)
+        internal override async Task<IProxerResult<IEnumerable<BookmarkObject<T>>>> GetNextPage(int nextPage)
         {
-            ProxerResult<ProxerApiResponse<BookmarkDataModel[]>> lResult =
-                await
-                    RequestHandler.ApiRequest(
-                        ApiRequestBuilder.UcpGetReminder(typeof(T).GetTypeInfo().Name.ToLowerInvariant(),
-                            nextPage, ResultsPerPage, this._senpai));
+            ProxerApiResponse<BookmarkDataModel[]> lResult =
+                await RequestHandler.ApiRequest(ApiRequestBuilder.UcpGetReminder(
+                    typeof(T).GetTypeInfo().Name.ToLowerInvariant(), nextPage, ResultsPerPage, this._senpai));
             if (!lResult.Success || (lResult.Result == null))
                 return new ProxerResult<IEnumerable<BookmarkObject<T>>>(lResult.Exceptions);
-            BookmarkDataModel[] lData = lResult.Result.Data;
+            BookmarkDataModel[] lData = lResult.Result;
 
             return new ProxerResult<IEnumerable<BookmarkObject<T>>>(from bookmarkDataModel in lData
                 select new BookmarkObject<T>(

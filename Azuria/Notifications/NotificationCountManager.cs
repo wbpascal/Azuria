@@ -4,7 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Timers;
 using Azuria.Api.v1;
-using Azuria.ErrorHandling;
+using Azuria.Api.v1.DataModels.Notifications;
 
 namespace Azuria.Notifications
 {
@@ -36,13 +36,11 @@ namespace Azuria.Notifications
             _lastTimeNotificationChecked = DateTime.Now;
             foreach (KeyValuePair<Senpai, List<INotificationManager>> notificationManager in NotificationManagers)
             {
-                ProxerResult<ProxerNotificationCountResponse> lResult =
-                    await
-                        RequestHandler.ApiCustomRequest<ProxerNotificationCountResponse>(
-                            ApiRequestBuilder.NotificationGetCount(notificationManager.Key));
+                ProxerApiResponse<NotificationCountDataModel> lResult = await RequestHandler.ApiRequest(
+                    ApiRequestBuilder.NotificationGetCount(notificationManager.Key));
                 if (!lResult.Success || (lResult.Result == null)) continue;
                 foreach (INotificationManager manager in notificationManager.Value)
-                    manager.OnNewNotificationsAvailable(lResult.Result.Data);
+                    manager.OnNewNotificationsAvailable(lResult.Result);
             }
         }
 

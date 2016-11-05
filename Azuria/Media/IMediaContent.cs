@@ -52,7 +52,7 @@ namespace Azuria.Media
         /// </summary>
         /// <param name="senpai"></param>
         /// <returns>If the action was successful.</returns>
-        Task<ProxerResult> AddToBookmarks(Senpai senpai);
+        Task<IProxerResult> AddToBookmarks(Senpai senpai);
 
         #endregion
     }

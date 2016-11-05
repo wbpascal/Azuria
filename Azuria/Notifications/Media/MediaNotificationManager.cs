@@ -137,9 +137,9 @@ namespace Azuria.Notifications.Media
         /// <summary>
         /// </summary>
         /// <returns></returns>
-        public async Task<ProxerResult> DeleteAllReadNotification()
+        public async Task<IProxerResult> DeleteAllReadNotification()
         {
-            ProxerResult<ProxerApiResponse> lResult =
+            ProxerApiResponse lResult =
                 await RequestHandler.ApiRequest(ApiRequestBuilder.NotificationDelete(this._senpai));
             return lResult.Success ? new ProxerResult() : new ProxerResult(lResult.Exceptions);
         }
@@ -148,9 +148,9 @@ namespace Azuria.Notifications.Media
         /// </summary>
         /// <param name="notificationId"></param>
         /// <returns></returns>
-        public async Task<ProxerResult> DeleteNotification(int notificationId)
+        public async Task<IProxerResult> DeleteNotification(int notificationId)
         {
-            ProxerResult<ProxerApiResponse> lResult =
+            ProxerApiResponse lResult =
                 await RequestHandler.ApiRequest(ApiRequestBuilder.NotificationDelete(this._senpai, notificationId));
             return lResult.Success ? new ProxerResult() : new ProxerResult(lResult.Exceptions);
         }

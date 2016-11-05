@@ -48,16 +48,14 @@ namespace Azuria.Web
         /// <param name="url"></param>
         /// <param name="headers"></param>
         /// <returns></returns>
-        public async Task<ProxerResult<string>> GetRequest(Uri url, Dictionary<string, string> headers = null)
+        public async Task<IProxerResult<string>> GetRequest(Uri url, Dictionary<string, string> headers = null)
         {
             string lResponse;
 
             HttpResponseMessage lResponseObject;
             try
             {
-                lResponseObject =
-                    await
-                        this.GetWebRequest(url, headers);
+                lResponseObject = await this.GetWebRequest(url, headers);
             }
             catch (Exception ex)
             {
@@ -97,7 +95,7 @@ namespace Azuria.Web
         /// <param name="postArgs"></param>
         /// <param name="headers"></param>
         /// <returns></returns>
-        public async Task<ProxerResult<string>> PostRequest(Uri url, IEnumerable<KeyValuePair<string, string>> postArgs,
+        public async Task<IProxerResult<string>> PostRequest(Uri url, IEnumerable<KeyValuePair<string, string>> postArgs,
             Dictionary<string, string> headers = null)
         {
             string lResponse;
@@ -115,12 +113,11 @@ namespace Azuria.Web
 
             if ((lResponseObject.StatusCode == HttpStatusCode.OK) && !string.IsNullOrEmpty(lResponseString))
                 lResponse = WebUtility.HtmlDecode(lResponseString).Replace("\n", "");
-            else if ((lResponseObject.StatusCode == HttpStatusCode.ServiceUnavailable) &&
-                     !string.IsNullOrEmpty(lResponseString))
+            else if ((lResponseObject.StatusCode == HttpStatusCode.ServiceUnavailable)
+                     && !string.IsNullOrEmpty(lResponseString))
                 return new ProxerResult<string>(new[] {new CloudflareException()});
             else
-                return
-                    new ProxerResult<string>(new[] {new WrongResponseException()});
+                return new ProxerResult<string>(new[] {new WrongResponseException()});
 
             return string.IsNullOrEmpty(lResponse)
                 ? new ProxerResult<string>(new Exception[] {new WrongResponseException {Response = lResponse}})

@@ -45,7 +45,7 @@ namespace Azuria.Test.UserTests
         {
             Assert.CatchAsync<InvalidUserException>(() => User.System.Points.ThrowFirstOnNonSuccess());
 
-            ProxerResult<Uri> lResult = await this._user.Avatar;
+            IProxerResult<Uri> lResult = await this._user.Avatar;
             Assert.IsTrue(lResult.Success, JsonConvert.SerializeObject(lResult.Exceptions));
             Assert.IsTrue(lResult.Result.AbsoluteUri.StartsWith("https://cdn.proxer.me/avatar/"));
         }
@@ -90,7 +90,7 @@ namespace Azuria.Test.UserTests
         [Test]
         public async Task FromUsernameTest()
         {
-            ProxerResult<User> lResult = await User.FromUsername("Username");
+            IProxerResult<User> lResult = await User.FromUsername("Username");
             Assert.IsTrue(lResult.Success, JsonConvert.SerializeObject(lResult.Exceptions));
             Assert.AreEqual(1, lResult.Result.Id);
             Assert.AreEqual("Username", lResult.Result.UserName.GetObjectIfInitialised(string.Empty));
@@ -126,7 +126,7 @@ namespace Azuria.Test.UserTests
         {
             Assert.CatchAsync<InvalidUserException>(() => User.System.Points.ThrowFirstOnNonSuccess());
 
-            ProxerResult<UserPoints> lResult = await this._user.Points;
+            IProxerResult<UserPoints> lResult = await this._user.Points;
             Assert.IsTrue(lResult.Success, JsonConvert.SerializeObject(lResult.Exceptions));
             Assert.AreEqual(3912, lResult.Result.Anime);
             Assert.AreEqual(4, lResult.Result.Forum);
@@ -147,7 +147,7 @@ namespace Azuria.Test.UserTests
         {
             Assert.CatchAsync<InvalidUserException>(() => User.System.Points.ThrowFirstOnNonSuccess());
 
-            ProxerResult<UserStatus> lResult = await this._user.Status;
+            IProxerResult<UserStatus> lResult = await this._user.Status;
             Assert.IsTrue(lResult.Success, JsonConvert.SerializeObject(lResult.Exceptions));
             Assert.AreNotEqual(default(DateTime), lResult.Result.Status);
             Assert.IsNotNull(lResult.Result.Status);
@@ -159,7 +159,7 @@ namespace Azuria.Test.UserTests
         {
             Assert.CatchAsync<InvalidUserException>(() => User.System.ToptenAnime.ThrowFirstOnNonSuccess());
 
-            ProxerResult<IEnumerable<Anime>> lResult = await this._user.ToptenAnime;
+            IProxerResult<IEnumerable<Anime>> lResult = await this._user.ToptenAnime;
             Assert.IsTrue(lResult.Success, JsonConvert.SerializeObject(lResult.Exceptions));
             Assert.AreEqual(2, lResult.Result.Count());
             Assert.IsTrue(lResult.Result.All(anime => anime.Id != default(int)));
@@ -170,7 +170,7 @@ namespace Azuria.Test.UserTests
         {
             Assert.CatchAsync<InvalidUserException>(() => User.System.ToptenManga.ThrowFirstOnNonSuccess());
 
-            ProxerResult<IEnumerable<Manga>> lResult = await this._user.ToptenManga;
+            IProxerResult<IEnumerable<Manga>> lResult = await this._user.ToptenManga;
             Assert.IsTrue(lResult.Success, JsonConvert.SerializeObject(lResult.Exceptions));
             Assert.AreEqual(4, lResult.Result.Count());
             Assert.IsTrue(lResult.Result.All(manga => manga.Id != default(int)));
@@ -181,7 +181,7 @@ namespace Azuria.Test.UserTests
         {
             Assert.CatchAsync<InvalidUserException>(() => User.System.Points.ThrowFirstOnNonSuccess());
 
-            ProxerResult<string> lResult = await this._user.UserName;
+            IProxerResult<string> lResult = await this._user.UserName;
             Assert.IsTrue(lResult.Success, JsonConvert.SerializeObject(lResult.Exceptions));
             Assert.IsNotNull(lResult.Result);
             Assert.IsNotEmpty(lResult.Result);

@@ -67,12 +67,15 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Api\v1\Converters\Anime\StreamPartnerConverter.cs" />
+    <Compile Include="Api\v1\Converters\DataConverter.cs" />
     <Compile Include="Api\v1\Converters\Info\PublisherTypeConverter.cs" />
+    <Compile Include="Api\v1\Converters\InvertBoolConverter.cs" />
     <Compile Include="Api\v1\Converters\Manga\PagesConverter.cs" />
     <Compile Include="Api\v1\DataModels\Anime\StreamDataModel.cs" />
     <Compile Include="Api\v1\DataModels\Manga\ChapterDataModel.cs" />
     <Compile Include="Api\v1\DataModels\Manga\PageDataModel.cs" />
     <Compile Include="Api\v1\DataModels\Media\HeaderDataModel.cs" />
+    <Compile Include="ErrorHandling\IProxerResult.cs" />
     <Compile Include="Media\MediaObject.cs" />
     <Compile Include="Media\Headers\HeaderHelper.cs" />
     <Compile Include="Media\Headers\HeaderInfo.cs" />
@@ -100,8 +103,6 @@
     <Compile Include="Api\v1\DataModels\Ucp\ToptenDataModel.cs" />
     <Compile Include="Api\v1\DataModels\Ucp\VoteDataModel.cs" />
     <Compile Include="Api\v1\DataModels\User\ListDataModel.cs" />
-    <Compile Include="Api\v1\ProxerInfoLanguageResponse.cs" />
-    <Compile Include="Api\v1\ProxerNotificationCountResponse.cs" />
     <Compile Include="Community\ConferenceInfo.cs" />
     <Compile Include="Community\ConferenceListType.cs" />
     <Compile Include="Community\MessageAction.cs" />
@@ -236,8 +237,6 @@
     <Compile Include="UserInfo\UserPoints.cs" />
     <Compile Include="UserInfo\UserProfileEntry.cs" />
     <Compile Include="UserInfo\UserStatus.cs" />
-    <Compile Include="ErrorHandling\ErrorHandler.cs" />
-    <Compile Include="Utilities\Extensions\InitialisationExtensions.cs" />
     <Compile Include="Utilities\Extensions\ListExtensions.cs" />
     <Compile Include="Utilities\Extensions\SecureStringExtensions.cs" />
     <Compile Include="Utilities\Extensions\StringExtensions.cs" />

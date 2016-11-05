@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Azuria.Api.v1.Converters;
 
 namespace Azuria.Api.v1
 {
@@ -8,6 +9,12 @@ namespace Azuria.Api.v1
         internal ApiRequest(Uri address) : base(address)
         {
         }
+
+        #region Properties
+
+        internal DataConverter<T> CustomDataConverter { get; set; }
+
+        #endregion
     }
 
     internal class ApiRequest

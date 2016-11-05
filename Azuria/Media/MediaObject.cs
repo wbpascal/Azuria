@@ -154,7 +154,7 @@ namespace Azuria.Media
         /// <param name="senpai"></param>
         /// <param name="list"></param>
         /// <returns></returns>
-        public Task<ProxerResult> AddToProfileList(Senpai senpai, MediaProfileList list)
+        public Task<IProxerResult> AddToProfileList(Senpai senpai, MediaProfileList list)
         {
             return new UserControlPanel(senpai).AddToProfileList(this.Id, list);
         }
@@ -167,15 +167,15 @@ namespace Azuria.Media
         /// If the action was successful and if it was, an object representing either an <see cref="Anime" /> or
         /// <see cref="Manga" />.
         /// </returns>
-        public static async Task<ProxerResult<IMediaObject>> CreateFromId(int id)
+        public static async Task<IProxerResult<IMediaObject>> CreateFromId(int id)
         {
             if (id <= 0) return new ProxerResult<IMediaObject>(new ArgumentException(nameof(id)));
 
-            ProxerResult<ProxerApiResponse<EntryDataModel>> lResult =
+            ProxerApiResponse<EntryDataModel> lResult =
                 await RequestHandler.ApiRequest(ApiRequestBuilder.InfoGetEntry(id));
             if (!lResult.Success || (lResult.Result == null))
                 return new ProxerResult<IMediaObject>(lResult.Exceptions);
-            EntryDataModel lDataModel = lResult.Result.Data;
+            EntryDataModel lDataModel = lResult.Result;
 
             return
                 new ProxerResult<IMediaObject>(lDataModel.EntryType == MediaEntryType.Anime
@@ -183,74 +183,74 @@ namespace Azuria.Media
                     : (IMediaObject) new Manga(lDataModel));
         }
 
-        internal async Task<ProxerResult<MediaContentDataModel[]>> GetContentObjects()
+        internal async Task<IProxerResult<MediaContentDataModel[]>> GetContentObjects()
         {
-            ProxerResult<int> lContentCountResult = await this.ContentCount;
+            IProxerResult<int> lContentCountResult = await this.ContentCount;
             if (!lContentCountResult.Success || (lContentCountResult.Result == default(int)))
                 return new ProxerResult<MediaContentDataModel[]>(lContentCountResult.Exceptions);
 
-            ProxerResult<ProxerApiResponse<ListInfoDataModel>> lResult =
+            ProxerApiResponse<ListInfoDataModel> lResult =
                 await
                     RequestHandler.ApiRequest(ApiRequestBuilder.InfoGetListInfo(this.Id, 0, lContentCountResult.Result));
             if (!lResult.Success || (lResult.Result == null))
                 return new ProxerResult<MediaContentDataModel[]>(lResult.Exceptions);
-            ListInfoDataModel lData = lResult.Result.Data;
+            ListInfoDataModel lData = lResult.Result;
 
             return new ProxerResult<MediaContentDataModel[]>(lData.ContentObjects);
         }
 
-        protected async Task<ProxerResult> InitEntryTags()
+        protected async Task<IProxerResult> InitEntryTags()
         {
-            ProxerResult<ProxerApiResponse<EntryTagDataModel[]>> lResult =
+            ProxerApiResponse<EntryTagDataModel[]> lResult =
                 await RequestHandler.ApiRequest(ApiRequestBuilder.InfoGetEntryTags(this.Id));
             if (!lResult.Success || (lResult.Result == null)) return new ProxerResult(lResult.Exceptions);
 
-            this._tags.SetInitialisedObject(from entryTagDataModel in lResult.Result.Data
+            this._tags.SetInitialisedObject(from entryTagDataModel in lResult.Result
                 select new Tag(entryTagDataModel));
             return new ProxerResult();
         }
 
-        protected async Task<ProxerResult> InitGroups()
+        protected async Task<IProxerResult> InitGroups()
         {
-            ProxerResult<ProxerApiResponse<TranslatorDataModel[]>> lResult =
+            ProxerApiResponse<TranslatorDataModel[]> lResult =
                 await RequestHandler.ApiRequest(ApiRequestBuilder.InfoGetGroups(this.Id));
             if (!lResult.Success || (lResult.Result == null)) return new ProxerResult(lResult.Exceptions);
 
-            this._groups.SetInitialisedObject(from translatorDataModel in lResult.Result.Data
+            this._groups.SetInitialisedObject(from translatorDataModel in lResult.Result
                 select new Translator(translatorDataModel));
 
             return new ProxerResult();
         }
 
-        protected async Task<ProxerResult> InitIndustry()
+        protected async Task<IProxerResult> InitIndustry()
         {
-            ProxerResult<ProxerApiResponse<PublisherDataModel[]>> lResult =
+            ProxerApiResponse<PublisherDataModel[]> lResult =
                 await RequestHandler.ApiRequest(ApiRequestBuilder.InfoGetPublisher(this.Id));
             if (!lResult.Success || (lResult.Result == null)) return new ProxerResult(lResult.Exceptions);
 
-            this._industry.SetInitialisedObject(from publisherDataModel in lResult.Result.Data
+            this._industry.SetInitialisedObject(from publisherDataModel in lResult.Result
                 select new Industry(publisherDataModel));
 
             return new ProxerResult();
         }
 
-        protected async Task<ProxerResult> InitIsHContent()
+        protected async Task<IProxerResult> InitIsHContent()
         {
-            ProxerResult<ProxerApiResponse<bool>> lResult =
+            ProxerApiResponse<bool> lResult =
                 await RequestHandler.ApiRequest(ApiRequestBuilder.InfoGetGate(this.Id));
-            if (!lResult.Success || (lResult.Result == null)) return new ProxerResult(lResult.Exceptions);
+            if (!lResult.Success) return new ProxerResult(lResult.Exceptions);
 
-            this._isHContent.SetInitialisedObject(lResult.Result.Data);
+            this._isHContent.SetInitialisedObject(lResult.Result);
 
             return new ProxerResult();
         }
 
-        protected async Task<ProxerResult> InitMainInfo()
+        protected async Task<IProxerResult> InitMainInfo()
         {
-            ProxerResult<ProxerApiResponse<EntryDataModel>> lResult =
+            ProxerApiResponse<EntryDataModel> lResult =
                 await RequestHandler.ApiRequest(ApiRequestBuilder.InfoGetEntry(this.Id));
             if (!lResult.Success || (lResult.Result == null)) return new ProxerResult(lResult.Exceptions);
-            EntryDataModel lDataModel = lResult.Result.Data;
+            EntryDataModel lDataModel = lResult.Result;
 
             (this as Anime)?.InitMainInfoAnime(lDataModel);
             this._clicks.SetInitialisedObject(lDataModel.Clicks);
@@ -267,12 +267,12 @@ namespace Azuria.Media
             return new ProxerResult();
         }
 
-        protected async Task<ProxerResult> InitNames()
+        protected async Task<IProxerResult> InitNames()
         {
-            ProxerResult<ProxerApiResponse<NameDataModel[]>> lResult =
+            ProxerApiResponse<NameDataModel[]> lResult =
                 await RequestHandler.ApiRequest(ApiRequestBuilder.InfoGetName(this.Id));
             if (!lResult.Success || (lResult.Result == null)) return new ProxerResult(lResult.Exceptions);
-            foreach (NameDataModel nameDataModel in lResult.Result.Data)
+            foreach (NameDataModel nameDataModel in lResult.Result)
                 switch (nameDataModel.Type)
                 {
                     case MediaNameType.Original:
@@ -295,13 +295,13 @@ namespace Azuria.Media
             return new ProxerResult();
         }
 
-        protected async Task<ProxerResult> InitRelations()
+        protected async Task<IProxerResult> InitRelations()
         {
-            ProxerResult<ProxerApiResponse<RelationDataModel[]>> lResult =
+            ProxerApiResponse<RelationDataModel[]> lResult =
                 await RequestHandler.ApiRequest(ApiRequestBuilder.InfoGetRelations(this.Id));
             if (!lResult.Success || (lResult.Result == null)) return new ProxerResult(lResult.Exceptions);
 
-            this._relations.SetInitialisedObject(from dataModel in lResult.Result.Data
+            this._relations.SetInitialisedObject(from dataModel in lResult.Result
                 select dataModel.EntryType == MediaEntryType.Anime
                     ? new Anime(dataModel)
                     : (IMediaObject) new Manga(dataModel));
@@ -309,12 +309,12 @@ namespace Azuria.Media
             return new ProxerResult();
         }
 
-        protected async Task<ProxerResult> InitSeasons()
+        protected async Task<IProxerResult> InitSeasons()
         {
-            ProxerResult<ProxerApiResponse<SeasonDataModel[]>> lResult =
+            ProxerApiResponse<SeasonDataModel[]> lResult =
                 await RequestHandler.ApiRequest(ApiRequestBuilder.InfoGetSeason(this.Id));
             if (!lResult.Success || (lResult.Result == null)) return new ProxerResult(lResult.Exceptions);
-            SeasonDataModel[] lData = lResult.Result.Data;
+            SeasonDataModel[] lData = lResult.Result;
 
             if ((lData.Length > 1) && !lData[0].Equals(lData[1]))
                 this._season.SetInitialisedObject(new MediaSeasonInfo(lData[0], lData[1]));

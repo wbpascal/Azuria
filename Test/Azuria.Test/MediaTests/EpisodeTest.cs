@@ -47,7 +47,7 @@ namespace Azuria.Test.MediaTests
         [Test]
         public async Task StreamsTest()
         {
-            ProxerResult<IEnumerable<Anime.Episode.Stream>> lResult = await this._episode.Streams;
+            IProxerResult<IEnumerable<Anime.Episode.Stream>> lResult = await this._episode.Streams;
             Assert.IsTrue(lResult.Success, JsonConvert.SerializeObject(lResult.Exceptions));
             Assert.IsNotNull(lResult.Result);
             Assert.AreEqual(4, lResult.Result.Count());

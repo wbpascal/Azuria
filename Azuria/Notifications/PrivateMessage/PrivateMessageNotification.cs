@@ -50,9 +50,9 @@ namespace Azuria.Notifications.PrivateMessage
 
         #region Methods
 
-        private async Task<ProxerResult> InitConference()
+        private async Task<IProxerResult> InitConference()
         {
-            ProxerResult<IEnumerable<ConferenceInfo>> lConferencesResult =
+            IProxerResult<IEnumerable<ConferenceInfo>> lConferencesResult =
                 await Conference.GetConferences(this.Senpai);
             if (!lConferencesResult.Success || (lConferencesResult.Result == null))
                 return new ProxerResult(lConferencesResult.Exceptions);

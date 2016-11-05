@@ -58,7 +58,7 @@ namespace Azuria.Notifications.Media
         /// <summary>
         /// </summary>
         /// <returns></returns>
-        public Task<ProxerResult> Delete()
+        public Task<IProxerResult> Delete()
         {
             return MediaNotificationManager.Create(this.Senpai).DeleteNotification(this.NotificationId);
         }
@@ -66,34 +66,27 @@ namespace Azuria.Notifications.Media
         /// <summary>
         /// </summary>
         /// <returns></returns>
-        public async Task<ProxerResult<IMediaContent<T>>> GetContentObject()
+        public async Task<IProxerResult<IMediaContent<T>>> GetContentObject()
         {
             if (this.MediaObject is Anime)
             {
-                ProxerResult<IEnumerable<Anime.Episode>> lEpisodesResult =
+                IProxerResult<IEnumerable<Anime.Episode>> lEpisodesResult =
                     await (this.MediaObject as Anime).GetEpisodes((AnimeLanguage) this.Language);
                 if (!lEpisodesResult.Success || (lEpisodesResult.Result == null))
                     return new ProxerResult<IMediaContent<T>>(lEpisodesResult.Exceptions);
 
-                return
-                    new ProxerResult<IMediaContent<T>>(
-                        lEpisodesResult.Result.FirstOrDefault(episode => episode.ContentIndex == this.ContentIndex) as
-                            IMediaContent<T>);
+                return new ProxerResult<IMediaContent<T>>(lEpisodesResult.Result.FirstOrDefault(
+                    episode => episode.ContentIndex == this.ContentIndex) as IMediaContent<T>);
             }
-            if (this.MediaObject is Manga)
-            {
-                ProxerResult<IEnumerable<Manga.Chapter>> lChaptersResult =
-                    await (this.MediaObject as Manga).GetChapters((Language) this.Language);
-                if (!lChaptersResult.Success || (lChaptersResult.Result == null))
-                    return new ProxerResult<IMediaContent<T>>(lChaptersResult.Exceptions);
+            if (!(this.MediaObject is Manga)) return new ProxerResult<IMediaContent<T>>(new Exception[0]);
 
-                return
-                    new ProxerResult<IMediaContent<T>>(
-                        lChaptersResult.Result.FirstOrDefault(chapter => chapter.ContentIndex == this.ContentIndex) as
-                            IMediaContent<T>);
-            }
+            IProxerResult<IEnumerable<Manga.Chapter>> lChaptersResult =
+                await (this.MediaObject as Manga).GetChapters((Language) this.Language);
+            if (!lChaptersResult.Success || (lChaptersResult.Result == null))
+                return new ProxerResult<IMediaContent<T>>(lChaptersResult.Exceptions);
 
-            return new ProxerResult<IMediaContent<T>>(new Exception[0]);
+            return new ProxerResult<IMediaContent<T>>(lChaptersResult.Result.FirstOrDefault(
+                chapter => chapter.ContentIndex == this.ContentIndex) as IMediaContent<T>);
         }
 
         #endregion

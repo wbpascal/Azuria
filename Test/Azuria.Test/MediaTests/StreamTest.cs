@@ -57,7 +57,7 @@ namespace Azuria.Test.MediaTests
         [Test]
         public async Task LinkTest()
         {
-            ProxerResult<Uri> lResult = await this._stream.Link;
+            IProxerResult<Uri> lResult = await this._stream.Link;
             Assert.IsTrue(lResult.Success, JsonConvert.SerializeObject(lResult.Exceptions));
             Assert.IsNotNull(lResult.Result);
             Assert.IsTrue(lResult.Result.AbsoluteUri.Contains("mp4upload.com"));

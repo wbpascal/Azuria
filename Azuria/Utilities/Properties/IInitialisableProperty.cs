@@ -24,18 +24,18 @@ namespace Azuria.Utilities.Properties
         /// Fetches a new value for the property without returning the new value.
         /// </summary>
         /// <returns>If the action was successful.</returns>
-        Task<ProxerResult> FetchObject();
+        Task<IProxerResult> FetchObject();
 
         /// <summary>
         /// </summary>
         /// <returns></returns>
-        TaskAwaiter<ProxerResult<T>> GetAwaiter();
+        TaskAwaiter<IProxerResult<T>> GetAwaiter();
 
         /// <summary>
         /// Gets a new value for the property independent of it being already initialised.
         /// </summary>
         /// <returns>If the action was successful and if it was, the value of this property.</returns>
-        Task<ProxerResult<T>> GetNewObject();
+        Task<IProxerResult<T>> GetNewObject();
 
         /// <summary>
         /// Gets a new value for the property independent of it being already initialised.
@@ -51,7 +51,7 @@ namespace Azuria.Utilities.Properties
         /// Initialises the property if it is not already.
         /// </summary>
         /// <returns>If the action was successful and if it was, the value of this property.</returns>
-        Task<ProxerResult<T>> GetObject();
+        Task<IProxerResult<T>> GetObject();
 
         /// <summary>
         /// Initialises the property if it is not already.

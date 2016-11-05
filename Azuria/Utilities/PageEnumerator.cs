@@ -52,7 +52,7 @@ namespace Azuria.Utilities
             return this._currentPageContent;
         }
 
-        internal abstract Task<ProxerResult<IEnumerable<T>>> GetNextPage(int nextPage);
+        internal abstract Task<IProxerResult<IEnumerable<T>>> GetNextPage(int nextPage);
 
         /// <summary>Advances the enumerator to the next element of the collection.</summary>
         /// <returns>
@@ -65,7 +65,7 @@ namespace Azuria.Utilities
             if (this._currentPageContentIndex >= this._currentPageContent.Length - 1)
             {
                 if (this._currentPageContent.Length%this._resultsPerPage != 0) return false;
-                ProxerResult<IEnumerable<T>> lGetSearchResult = Task.Run(() => this.GetNextPage(this._nextPage)).Result;
+                IProxerResult<IEnumerable<T>> lGetSearchResult = Task.Run(() => this.GetNextPage(this._nextPage)).Result;
                 if (!lGetSearchResult.Success || (lGetSearchResult.Result == null))
                     throw lGetSearchResult.Exceptions.FirstOrDefault() ?? new Exception("Unkown error");
                 this._currentPageContent = lGetSearchResult.Result as T[] ?? lGetSearchResult.Result.ToArray();

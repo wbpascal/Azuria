@@ -15,7 +15,7 @@ namespace Azuria.Test.MediaTests
         [Test]
         public async Task GetHeaderListTest()
         {
-            ProxerResult<IEnumerable<HeaderInfo>> lResult = await HeaderHelper.GetHeaderList();
+            IProxerResult<IEnumerable<HeaderInfo>> lResult = await HeaderHelper.GetHeaderList();
             Assert.IsTrue(lResult.Success, JsonConvert.SerializeObject(lResult.Exceptions));
             Assert.IsNotNull(lResult.Result);
             Assert.AreEqual(34, lResult.Result.Count());
@@ -25,7 +25,7 @@ namespace Azuria.Test.MediaTests
         [Test]
         public async Task GetRandomHeaderTest([Values] HeaderStyle style)
         {
-            ProxerResult<HeaderInfo> lResult = await HeaderHelper.GetRandomHeader(style);
+            IProxerResult<HeaderInfo> lResult = await HeaderHelper.GetRandomHeader(style);
             Assert.IsTrue(lResult.Success, JsonConvert.SerializeObject(lResult.Exceptions));
             if ((style == HeaderStyle.Black) || (style == HeaderStyle.Gray))
             {

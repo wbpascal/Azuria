@@ -22,19 +22,19 @@ namespace Azuria.Test.Core
         #region Methods
 
         /// <inheritdoc />
-        public Task<ProxerResult<string>> GetRequest(Uri url, Dictionary<string, string> headers = null)
+        public async Task<IProxerResult<string>> GetRequest(Uri url, Dictionary<string, string> headers = null)
         {
-            return Task.Factory.StartNew(() => new ProxerResult<string>(new NotImplementedException()));
+            return await Task.Factory.StartNew(() => new ProxerResult<string>(new NotImplementedException()));
         }
 
         /// <inheritdoc />
-        public Task<ProxerResult<string>> PostRequest(Uri url, IEnumerable<KeyValuePair<string, string>> postArgs,
+        public async Task<IProxerResult<string>> PostRequest(Uri url, IEnumerable<KeyValuePair<string, string>> postArgs,
             Dictionary<string, string> headers = null)
         {
-            return Task.Factory.StartNew(() => this.PostRequestSync(url, postArgs, headers));
+            return await Task.Factory.StartNew(() => this.PostRequestSync(url, postArgs, headers));
         }
 
-        private ProxerResult<string> PostRequestSync(Uri url, IEnumerable<KeyValuePair<string, string>> postArgs,
+        private IProxerResult<string> PostRequestSync(Uri url, IEnumerable<KeyValuePair<string, string>> postArgs,
             Dictionary<string, string> headers = null)
         {
             IEnumerable<KeyValuePair<string, string>> postArgsArray = postArgs as KeyValuePair<string, string>[] ??

@@ -42,17 +42,16 @@ namespace Azuria.Notifications.PrivateMessage
 
 
         /// <inheritdoc />
-        internal async Task<ProxerResult<IEnumerable<PrivateMessageNotification>>> GetNextPage()
+        internal async Task<IProxerResult<IEnumerable<PrivateMessageNotification>>> GetNextPage()
         {
-            ProxerResult<ProxerApiResponse<MessageDataModel[]>> lResult =
-                await
-                    RequestHandler.ApiRequest(ApiRequestBuilder.MessengerGetMessages(this._senpai));
+            ProxerApiResponse<MessageDataModel[]> lResult =
+                await RequestHandler.ApiRequest(ApiRequestBuilder.MessengerGetMessages(this._senpai));
             if (!lResult.Success || (lResult.Result == null))
                 return new ProxerResult<IEnumerable<PrivateMessageNotification>>(lResult.Exceptions);
 
             return
                 new ProxerResult<IEnumerable<PrivateMessageNotification>>(
-                (from notificationDataModel in lResult.Result.Data
+                (from notificationDataModel in lResult.Result
                     select new PrivateMessageNotification(notificationDataModel, this._senpai)).Reverse());
         }
 
@@ -61,7 +60,7 @@ namespace Azuria.Notifications.PrivateMessage
         {
             if (this._content == null)
             {
-                ProxerResult<IEnumerable<PrivateMessageNotification>> lGetSearchResult =
+                IProxerResult<IEnumerable<PrivateMessageNotification>> lGetSearchResult =
                     Task.Run(this.GetNextPage).Result;
                 if (!lGetSearchResult.Success || (lGetSearchResult.Result == null))
                     throw lGetSearchResult.Exceptions.FirstOrDefault() ?? new Exception("Unkown error");

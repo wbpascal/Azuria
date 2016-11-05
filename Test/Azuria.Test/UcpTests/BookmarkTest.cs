@@ -32,7 +32,7 @@ namespace Azuria.Test.UcpTests
         [Test]
         public async Task DeleteReminderTest()
         {
-            ProxerResult lResult = await this._animeBookmark.DeleteReminder();
+            IProxerResult lResult = await this._animeBookmark.DeleteReminder();
             Assert.IsTrue(lResult.Success, JsonConvert.SerializeObject(lResult.Exceptions));
         }
 

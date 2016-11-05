@@ -4,6 +4,7 @@ using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using Azuria.ErrorHandling;
 using Azuria.Exceptions;
+using Azuria.Utilities.Extensions;
 
 namespace Azuria.Utilities.Properties
 {
@@ -13,13 +14,13 @@ namespace Azuria.Utilities.Properties
     /// <typeparam name="T">The type of the property.</typeparam>
     public class InitialisableProperty<T> : IInitialisableProperty<T>
     {
-        private readonly Func<Task<ProxerResult>> _initMethod;
+        private readonly Func<Task<IProxerResult>> _initMethod;
         private T _initialisedObject;
 
         /// <summary>
         /// </summary>
         /// <param name="initMethod"></param>
-        public InitialisableProperty(Func<Task<ProxerResult>> initMethod)
+        public InitialisableProperty(Func<Task<IProxerResult>> initMethod)
         {
             this._initMethod = initMethod;
             this.IsInitialisedOnce = false;
@@ -29,7 +30,7 @@ namespace Azuria.Utilities.Properties
         /// </summary>
         /// <param name="initMethod"></param>
         /// <param name="initialisationResult"></param>
-        public InitialisableProperty(Func<Task<ProxerResult>> initMethod, T initialisationResult)
+        public InitialisableProperty(Func<Task<IProxerResult>> initMethod, T initialisationResult)
         {
             this._initMethod = initMethod;
             this._initialisedObject = initialisationResult;
@@ -46,34 +47,34 @@ namespace Azuria.Utilities.Properties
         #region Methods
 
         /// <inheritdoc />
-        public async Task<ProxerResult> FetchObject()
+        public async Task<IProxerResult> FetchObject()
         {
             return await this.GetObject();
         }
 
         /// <inheritdoc />
-        public TaskAwaiter<ProxerResult<T>> GetAwaiter()
+        public TaskAwaiter<IProxerResult<T>> GetAwaiter()
         {
             return this.GetObject().GetAwaiter();
         }
 
         /// <inheritdoc />
-        public async Task<ProxerResult<T>> GetNewObject()
+        public async Task<IProxerResult<T>> GetNewObject()
         {
-            ProxerResult lInitialiseResult = await this._initMethod.Invoke();
+            IProxerResult lInitialiseResult = await this._initMethod.Invoke();
             return !lInitialiseResult.Success
                 ? new ProxerResult<T>(lInitialiseResult.Exceptions)
                 : new ProxerResult<T>(this._initialisedObject);
         }
 
         /// <inheritdoc />
-        public async Task<T> GetNewObject(T onError)
+        public Task<T> GetNewObject(T onError)
         {
-            return (await this.GetNewObject()).OnError(onError);
+            return this.GetNewObject().OnError(onError);
         }
 
         /// <inheritdoc />
-        public async Task<ProxerResult<T>> GetObject()
+        public async Task<IProxerResult<T>> GetObject()
         {
             if (this.IsInitialisedOnce)
                 return new ProxerResult<T>(this._initialisedObject);
@@ -123,7 +124,7 @@ namespace Azuria.Utilities.Properties
         /// <inheritdoc />
         public async Task<T> ThrowFirstOnNonSuccess()
         {
-            ProxerResult<T> lResult = await this.GetObject();
+            IProxerResult<T> lResult = await this.GetObject();
             if (!lResult.Success)
                 throw lResult.Exceptions.FirstOrDefault() ?? new Exception();
 

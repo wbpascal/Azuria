@@ -42,7 +42,7 @@ namespace Azuria.UserInfo.ControlPanel
         /// Deletes the entry from the User-Control-Panel.
         /// </summary>
         /// <returns>If the action was successfull.</returns>
-        public Task<ProxerResult> DeleteReminder()
+        public Task<IProxerResult> DeleteReminder()
         {
             return this.UserControlPanel.DeleteBookmark(this.BookmarkId);
         }

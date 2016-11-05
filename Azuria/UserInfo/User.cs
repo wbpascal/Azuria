@@ -157,23 +157,23 @@ namespace Azuria.UserInfo
         /// </summary>
         /// <param name="username"></param>
         /// <returns></returns>
-        public static async Task<ProxerResult<User>> FromUsername(string username)
+        public static async Task<IProxerResult<User>> FromUsername(string username)
         {
-            ProxerResult<ProxerApiResponse<UserInfoDataModel>> lResult =
+            ProxerApiResponse<UserInfoDataModel> lResult =
                 await RequestHandler.ApiRequest(ApiRequestBuilder.UserGetInfo(username));
             if (!lResult.Success || (lResult.Result == null)) return new ProxerResult<User>(lResult.Exceptions);
-            return new ProxerResult<User>(new User(lResult.Result.Data));
+            return new ProxerResult<User>(new User(lResult.Result));
         }
 
-        private async Task<ProxerResult> InitMainInfo()
+        private async Task<IProxerResult> InitMainInfo()
         {
             if (this == System) return new ProxerResult(new InvalidUserException());
 
-            ProxerResult<ProxerApiResponse<UserInfoDataModel>> lResult =
+            ProxerApiResponse<UserInfoDataModel> lResult =
                 await RequestHandler.ApiRequest(ApiRequestBuilder.UserGetInfo(this.Id));
             if (!lResult.Success || (lResult.Result == null)) return new ProxerResult(lResult.Exceptions);
 
-            UserInfoDataModel lDataModel = lResult.Result.Data;
+            UserInfoDataModel lDataModel = lResult.Result;
             this._avatar.SetInitialisedObject(new Uri(ApiConstants.ProxerAvatarShortCdnUrl + lDataModel.AvatarId));
             this._points.SetInitialisedObject(lDataModel.Points);
             this._status.SetInitialisedObject(lDataModel.Status);
@@ -182,21 +182,21 @@ namespace Azuria.UserInfo
             return new ProxerResult();
         }
 
-        private async Task<ProxerResult> InitTopten(MediaEntryType category)
+        private async Task<IProxerResult> InitTopten(MediaEntryType category)
         {
             if (this == System) return new ProxerResult(new InvalidUserException());
 
-            ProxerResult<ProxerApiResponse<ToptenDataModel[]>> lResult =
+            ProxerApiResponse<ToptenDataModel[]> lResult =
                 await
                     RequestHandler.ApiRequest(ApiRequestBuilder.UserGetTopten(this.Id,
                         category.ToString().ToLower()));
             if (!lResult.Success || (lResult.Result == null)) return new ProxerResult(lResult.Exceptions);
 
             if (category == MediaEntryType.Anime)
-                this._toptenAnime.SetInitialisedObject(from toptenDataModel in lResult.Result.Data
+                this._toptenAnime.SetInitialisedObject(from toptenDataModel in lResult.Result
                     select new Anime(toptenDataModel.EntryName, toptenDataModel.EntryId));
             if (category == MediaEntryType.Manga)
-                this._toptenManga.SetInitialisedObject(from toptenDataModel in lResult.Result.Data
+                this._toptenManga.SetInitialisedObject(from toptenDataModel in lResult.Result
                     select new Manga(toptenDataModel.EntryName, toptenDataModel.EntryId));
 
             return new ProxerResult();

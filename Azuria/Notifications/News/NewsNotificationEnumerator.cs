@@ -23,17 +23,16 @@ namespace Azuria.Notifications.News
 
         #region Methods
 
-        internal override async Task<ProxerResult<IEnumerable<NewsNotification>>> GetNextPage(int nextPage)
+        internal override async Task<IProxerResult<IEnumerable<NewsNotification>>> GetNextPage(int nextPage)
         {
-            ProxerResult<ProxerApiResponse<NewsNotificationDataModel[]>> lResult =
-                await
-                    RequestHandler.ApiRequest(ApiRequestBuilder.NotificationGetNews(nextPage, this._newsPerPage,
-                        this._senpai));
+            ProxerApiResponse<NewsNotificationDataModel[]> lResult =
+                await RequestHandler.ApiRequest(ApiRequestBuilder.NotificationGetNews(
+                    nextPage, this._newsPerPage, this._senpai));
             if (!lResult.Success || (lResult.Result == null))
                 return new ProxerResult<IEnumerable<NewsNotification>>(lResult.Exceptions);
 
             return
-                new ProxerResult<IEnumerable<NewsNotification>>(from newsNotificationDataModel in lResult.Result.Data
+                new ProxerResult<IEnumerable<NewsNotification>>(from newsNotificationDataModel in lResult.Result
                     select new NewsNotification(newsNotificationDataModel, this._senpai));
         }
 

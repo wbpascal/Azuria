@@ -62,7 +62,7 @@ namespace Azuria.Test
                 async () => await this._senpai.Login("password").ThrowFirstForNonSuccess());
 
             Senpai lNewSenpai = new Senpai("InfiniteSoul");
-            ProxerResult lLoginResult = await lNewSenpai.Login("wrong");
+            IProxerResult lLoginResult = await lNewSenpai.Login("wrong");
             Assert.IsFalse(lLoginResult.Success);
 
             lLoginResult = await lNewSenpai.Login("correct");
@@ -90,7 +90,7 @@ namespace Azuria.Test
                 async () => await new Senpai("ad").Logout().ThrowFirstForNonSuccess());
 
             Senpai lNewSenpai = new Senpai("InfiniteSoul");
-            ProxerResult lLoginResult = await lNewSenpai.Login("correct");
+            IProxerResult lLoginResult = await lNewSenpai.Login("correct");
             Assert.IsTrue(lLoginResult.Success);
 
             await lNewSenpai.Logout().ThrowFirstForNonSuccess();

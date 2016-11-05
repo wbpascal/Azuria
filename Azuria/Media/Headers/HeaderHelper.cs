@@ -16,15 +16,15 @@ namespace Azuria.Media.Headers
         /// <summary>
         /// </summary>
         /// <returns></returns>
-        public static async Task<ProxerResult<IEnumerable<HeaderInfo>>> GetHeaderList()
+        public static async Task<IProxerResult<IEnumerable<HeaderInfo>>> GetHeaderList()
         {
-            ProxerResult<ProxerApiResponse<HeaderDataModel[]>> lResult =
+            ProxerApiResponse<HeaderDataModel[]> lResult =
                 await RequestHandler.ApiRequest(ApiRequestBuilder.MediaGetHeaderList());
             if (!lResult.Success || (lResult.Result == null))
                 return new ProxerResult<IEnumerable<HeaderInfo>>(lResult.Exceptions);
 
             return
-                new ProxerResult<IEnumerable<HeaderInfo>>(from headerDataModel in lResult.Result.Data
+                new ProxerResult<IEnumerable<HeaderInfo>>(from headerDataModel in lResult.Result
                     select new HeaderInfo(headerDataModel));
         }
 
@@ -32,16 +32,15 @@ namespace Azuria.Media.Headers
         /// </summary>
         /// <param name="style"></param>
         /// <returns></returns>
-        public static async Task<ProxerResult<HeaderInfo>> GetRandomHeader(HeaderStyle style)
+        public static async Task<IProxerResult<HeaderInfo>> GetRandomHeader(HeaderStyle style)
         {
-            ProxerResult<ProxerApiResponse<HeaderDataModel>> lResult =
-                await RequestHandler.ApiRequest(ApiRequestBuilder.MediaGetRandomHeader(HeaderStyleToString(style)));
-            if (!lResult.Success || (lResult.Result == null)) return new ProxerResult<HeaderInfo>(lResult.Exceptions);
+            ProxerApiResponse<HeaderDataModel> lResult = await RequestHandler.ApiRequest(
+                ApiRequestBuilder.MediaGetRandomHeader(HeaderStyleToString(style)));
+            if (!lResult.Success) return new ProxerResult<HeaderInfo>(lResult.Exceptions);
 
-            return
-                new ProxerResult<HeaderInfo>(lResult.Result.Data == null
-                    ? HeaderInfo.None
-                    : new HeaderInfo(lResult.Result.Data));
+            return new ProxerResult<HeaderInfo>(lResult.Result == null
+                ? HeaderInfo.None
+                : new HeaderInfo(lResult.Result));
         }
 
         private static string HeaderStyleToString(HeaderStyle style)

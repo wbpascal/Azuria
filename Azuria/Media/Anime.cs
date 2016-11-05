@@ -120,12 +120,12 @@ namespace Azuria.Media
         /// An enumeration of all available episodes in the specified
         /// <paramref name="language">language</paramref> with a max count of <see cref="MediaObject.ContentCount" />.
         /// </returns>
-        public async Task<ProxerResult<IEnumerable<Episode>>> GetEpisodes(AnimeLanguage language)
+        public async Task<IProxerResult<IEnumerable<Episode>>> GetEpisodes(AnimeLanguage language)
         {
             if (!(await this.AvailableLanguages.GetObject(new AnimeLanguage[0])).Contains(language))
                 return new ProxerResult<IEnumerable<Episode>>(new LanguageNotAvailableException());
 
-            ProxerResult<MediaContentDataModel[]> lContentObjectsResult =
+            IProxerResult<MediaContentDataModel[]> lContentObjectsResult =
                 await this.GetContentObjects();
             if (!lContentObjectsResult.Success || (lContentObjectsResult.Result == null))
                 return new ProxerResult<IEnumerable<Episode>>(lContentObjectsResult.Exceptions);
@@ -135,14 +135,12 @@ namespace Azuria.Media
                 select new Episode(this, contentDataModel));
         }
 
-        private async Task<ProxerResult> InitAvailableLanguages()
+        private async Task<IProxerResult> InitAvailableLanguages()
         {
-            ProxerResult<ProxerInfoLanguageResponse> lResult =
-                await
-                    RequestHandler.ApiCustomRequest<ProxerInfoLanguageResponse>(
-                        ApiRequestBuilder.InfoGetLanguage(this.Id));
-            if (!lResult.Success || (lResult.Result == null)) return new ProxerResult(lResult.Exceptions);
-            this._availableLanguages.SetInitialisedObject(lResult.Result.Data.Cast<AnimeLanguage>());
+            ProxerApiResponse<MediaLanguage[]> lResult =
+                await RequestHandler.ApiRequest(ApiRequestBuilder.InfoGetLanguage(this.Id));
+            if (!lResult.Success) return new ProxerResult(lResult.Exceptions);
+            this._availableLanguages.SetInitialisedObject(lResult.Result.Cast<AnimeLanguage>());
             return new ProxerResult();
         }
 
@@ -238,20 +236,19 @@ namespace Azuria.Media
             /// </summary>
             /// <param name="senpai"></param>
             /// <returns>If the action was successful.</returns>
-            public Task<ProxerResult> AddToBookmarks(Senpai senpai)
+            public Task<IProxerResult> AddToBookmarks(Senpai senpai)
             {
                 return new UserControlPanel(senpai).AddToBookmarks(this);
             }
 
-            private async Task<ProxerResult> InitStreams()
+            private async Task<IProxerResult> InitStreams()
             {
-                ProxerResult<ProxerApiResponse<StreamDataModel[]>> lResult =
-                    await
-                        RequestHandler.ApiRequest(ApiRequestBuilder.AnimeGetStreams(this.ParentObject.Id,
-                            this.ContentIndex, this.Language.ToString().ToLowerInvariant(), this.Senpai));
+                ProxerApiResponse<StreamDataModel[]> lResult =
+                    await RequestHandler.ApiRequest(ApiRequestBuilder.AnimeGetStreams(this.ParentObject.Id,
+                        this.ContentIndex, this.Language.ToString().ToLowerInvariant(), this.Senpai));
                 if (!lResult.Success || (lResult.Result == null)) return new ProxerResult(lResult.Exceptions);
 
-                this._streams.SetInitialisedObject(from streamDataModel in lResult.Result.Data
+                this._streams.SetInitialisedObject(from streamDataModel in lResult.Result
                     select new Stream(streamDataModel, this));
 
                 return new ProxerResult();
@@ -332,12 +329,12 @@ namespace Azuria.Media
 
                 #region Methods
 
-                private async Task<ProxerResult> InitStreamLink()
+                private async Task<IProxerResult> InitStreamLink()
                 {
-                    ProxerResult<ProxerApiResponse<string>> lResult =
-                        await RequestHandler.ApiRequest(ApiRequestBuilder.AnimeGetLink(this.Id));
+                    ProxerApiResponse<string> lResult = await RequestHandler.ApiRequest(
+                        ApiRequestBuilder.AnimeGetLink(this.Id));
                     if (!lResult.Success || (lResult.Result == null)) return new ProxerResult(lResult.Exceptions);
-                    string lData = lResult.Result.Data;
+                    string lData = lResult.Result;
 
                     this._link.SetInitialisedObject(new Uri(lData.StartsWith("//") ? $"https:{lData}" : lData));
 

@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Azuria.Api.v1.Converters.Info;
+using Azuria.Api.v1.Converters.Notifications;
 using Azuria.Api.v1.DataModels;
 using Azuria.Api.v1.DataModels.Anime;
 using Azuria.Api.v1.DataModels.Info;
@@ -69,7 +71,10 @@ namespace Azuria.Api.v1
 
         internal static ApiRequest<MediaLanguage[]> InfoGetLanguage(int entryId)
         {
-            return new ApiRequest<MediaLanguage[]>(new Uri($"{ApiConstants.ApiUrlV1}/info/lang?id={entryId}"));
+            return new ApiRequest<MediaLanguage[]>(new Uri($"{ApiConstants.ApiUrlV1}/info/lang?id={entryId}"))
+            {
+                CustomDataConverter = new LanguageCollectionConverter()
+            };
         }
 
         internal static ApiRequest<ListInfoDataModel> InfoGetListInfo(int entryId, int page, int limit)
@@ -316,6 +321,7 @@ namespace Azuria.Api.v1
             return new ApiRequest<NotificationCountDataModel>(new Uri($"{ApiConstants.ApiUrlV1}/notifications/count"))
             {
                 CheckLogin = true,
+                CustomDataConverter = new NotificationCountConverter(),
                 Senpai = senpai
             };
         }

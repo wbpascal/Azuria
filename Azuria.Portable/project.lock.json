@@ -2319,5 +2319,8 @@
     ".NETStandard,Version=v1.0": []
   },
   "tools": {},
-  "projectFileToolGroups": {}
+  "projectFileToolGroups": {},
+  "packageFolders": {
+    "C:\\Users\\Pascal\\.nuget\\packages\\": {}
+  }
 }

@@ -11,8 +11,8 @@ namespace Azuria.Utilities.Properties
     /// </summary>
     public class AsyncProperty<T>
     {
-        private readonly Func<Task<ProxerResult<T>>> _getFunc;
-        private readonly Func<T, Task<ProxerResult>> _setFunc;
+        private readonly Func<Task<IProxerResult<T>>> _getFunc;
+        private readonly Func<T, Task<IProxerResult>> _setFunc;
         private T _currentValue;
 
         /// <summary>
@@ -27,8 +27,8 @@ namespace Azuria.Utilities.Properties
         /// An optional set-method. If not set the <see cref="Set" />-method always just sets the value to
         /// the passed one.
         /// </param>
-        public AsyncProperty(T initialValue, Func<Task<ProxerResult<T>>> getFunc = null,
-            Func<T, Task<ProxerResult>> setFunc = null)
+        public AsyncProperty(T initialValue, Func<Task<IProxerResult<T>>> getFunc = null,
+            Func<T, Task<IProxerResult>> setFunc = null)
         {
             this._currentValue = initialValue;
             this._getFunc = getFunc;
@@ -42,11 +42,11 @@ namespace Azuria.Utilities.Properties
         /// If the function was not set just the current value will be returned.
         /// </summary>
         /// <returns>If the action was successful and if it was, the new value.</returns>
-        public async Task<ProxerResult<T>> Get()
+        public async Task<IProxerResult<T>> Get()
         {
             if (this._getFunc == null) return new ProxerResult<T>(this._currentValue);
 
-            ProxerResult<T> lGetObjectResult = await this._getFunc.Invoke();
+            IProxerResult<T> lGetObjectResult = await this._getFunc.Invoke();
             if (!lGetObjectResult.Success || (lGetObjectResult.Result == null))
                 return new ProxerResult<T>(lGetObjectResult.Exceptions);
 
@@ -56,7 +56,7 @@ namespace Azuria.Utilities.Properties
 
         private async Task<T> GetAndThrow()
         {
-            ProxerResult<T> lResult = await this.Get();
+            IProxerResult<T> lResult = await this.Get();
             if (!lResult.Success || (lResult.Result == null))
                 throw lResult.Exceptions.FirstOrDefault() ?? new Exception();
 
@@ -78,12 +78,12 @@ namespace Azuria.Utilities.Properties
         /// </summary>
         /// <param name="newValue">The new value.</param>
         /// <returns>If the action was successful.</returns>
-        public async Task<ProxerResult> Set(T newValue)
+        public async Task<IProxerResult> Set(T newValue)
         {
             if (this._setFunc == null) this._currentValue = newValue;
             else
             {
-                ProxerResult lSetObjectResult = await this._setFunc.Invoke(newValue);
+                IProxerResult lSetObjectResult = await this._setFunc.Invoke(newValue);
                 if (!lSetObjectResult.Success)
                     return new ProxerResult(lSetObjectResult.Exceptions);
 

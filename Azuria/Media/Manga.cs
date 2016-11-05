@@ -120,12 +120,12 @@ namespace Azuria.Media
         /// An enumeration of all available <see cref="Chapter">chapters</see> in the specified
         /// <paramref name="language">language</paramref> with a max count of <see cref="MediaObject.ContentCount" />.
         /// </returns>
-        public async Task<ProxerResult<IEnumerable<Chapter>>> GetChapters(Language language)
+        public async Task<IProxerResult<IEnumerable<Chapter>>> GetChapters(Language language)
         {
             if (!(await this.AvailableLanguages.GetObject(new Language[0])).Contains(language))
                 return new ProxerResult<IEnumerable<Chapter>>(new Exception[] {new LanguageNotAvailableException()});
 
-            ProxerResult<MediaContentDataModel[]> lContentObjectsResult =
+            IProxerResult<MediaContentDataModel[]> lContentObjectsResult =
                 await this.GetContentObjects();
             if (!lContentObjectsResult.Success || (lContentObjectsResult.Result == null))
                 return new ProxerResult<IEnumerable<Chapter>>(lContentObjectsResult.Exceptions);
@@ -135,14 +135,12 @@ namespace Azuria.Media
                 select new Chapter(this, contentDataModel));
         }
 
-        internal async Task<ProxerResult> InitAvailableLanguages()
+        internal async Task<IProxerResult> InitAvailableLanguages()
         {
-            ProxerResult<ProxerInfoLanguageResponse> lResult =
-                await
-                    RequestHandler.ApiCustomRequest<ProxerInfoLanguageResponse>(
-                        ApiRequestBuilder.InfoGetLanguage(this.Id));
+            ProxerApiResponse<MediaLanguage[]> lResult =
+                await RequestHandler.ApiRequest(ApiRequestBuilder.InfoGetLanguage(this.Id));
             if (!lResult.Success || (lResult.Result == null)) return new ProxerResult(lResult.Exceptions);
-            this._availableLanguages.SetInitialisedObject(lResult.Result.Data.Cast<Language>());
+            this._availableLanguages.SetInitialisedObject(lResult.Result.Cast<Language>());
             return new ProxerResult();
         }
 
@@ -264,19 +262,18 @@ namespace Azuria.Media
             /// </summary>
             /// <param name="senpai"></param>
             /// <returns>If the action was successful.</returns>
-            public Task<ProxerResult> AddToBookmarks(Senpai senpai)
+            public Task<IProxerResult> AddToBookmarks(Senpai senpai)
             {
                 return new UserControlPanel(senpai).AddToBookmarks(this);
             }
 
-            private async Task<ProxerResult> InitInfo()
+            private async Task<IProxerResult> InitInfo()
             {
-                ProxerResult<ProxerApiResponse<ChapterDataModel>> lResult =
-                    await
-                        RequestHandler.ApiRequest(ApiRequestBuilder.MangaGetChapter(this.ParentObject.Id,
-                            this.ContentIndex, this.Language == Language.German ? "de" : "en", this.Senpai));
+                ProxerApiResponse<ChapterDataModel> lResult =
+                    await RequestHandler.ApiRequest(ApiRequestBuilder.MangaGetChapter(this.ParentObject.Id,
+                        this.ContentIndex, this.Language == Language.German ? "de" : "en", this.Senpai));
                 if (!lResult.Success || (lResult.Result == null)) return new ProxerResult(lResult.Exceptions);
-                ChapterDataModel lData = lResult.Result.Data;
+                ChapterDataModel lData = lResult.Result;
 
                 this._chapterId.SetInitialisedObject(lData.ChapterId);
                 this._pages.SetInitialisedObject(from pageDataModel in lData.Pages
