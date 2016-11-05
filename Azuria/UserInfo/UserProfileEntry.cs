@@ -9,7 +9,7 @@ namespace Azuria.UserInfo
 {
     /// <summary>
     /// </summary>
-    public class UserProfileEntry<T> where T : class, IMediaObject
+    public class UserProfileEntry<T> : IUserProfileEntry where T : class, IMediaObject
     {
         internal UserProfileEntry(ListDataModel dataModel, User user)
         {
@@ -24,12 +24,15 @@ namespace Azuria.UserInfo
         /// </summary>
         public Comment<T> Comment { get; }
 
+        IComment IUserProfileEntry.Comment => this.Comment;
+
         /// <summary>
         /// </summary>
         public T MediaObject { get; }
 
-        /// <summary>
-        /// </summary>
+        IMediaObject IUserProfileEntry.MediaObject => this.MediaObject;
+
+        /// <inheritdoc />
         public User User { get; set; }
 
         #endregion

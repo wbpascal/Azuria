@@ -9,6 +9,7 @@ using Azuria.Api.v1.Enums;
 using Azuria.ErrorHandling;
 using Azuria.Media.Properties;
 using Azuria.UserInfo;
+using Azuria.UserInfo.Comment;
 using Azuria.UserInfo.ControlPanel;
 using Azuria.Utilities.Properties;
 
@@ -43,6 +44,8 @@ namespace Azuria.Media
         internal MediaObject(int id)
         {
             this.Id = id;
+            this.CommentsLatest = new CommentEnumerable<IMediaObject>(this, "latest");
+            this.CommentsRating = new CommentEnumerable<IMediaObject>(this, "rating");
             this._clicks = new InitialisableProperty<int>(this.InitMainInfo);
             this._contentCount = new InitialisableProperty<int>(this.InitMainInfo);
             this._description = new InitialisableProperty<string>(this.InitMainInfo);
@@ -84,6 +87,12 @@ namespace Azuria.Media
 
         /// <inheritdoc />
         public IInitialisableProperty<int> Clicks => this._clicks;
+
+        /// <inheritdoc />
+        public IEnumerable<Comment<IMediaObject>> CommentsLatest { get; }
+
+        /// <inheritdoc />
+        public IEnumerable<Comment<IMediaObject>> CommentsRating { get; }
 
         /// <inheritdoc />
         public IInitialisableProperty<int> ContentCount => this._contentCount;

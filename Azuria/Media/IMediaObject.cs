@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Azuria.Media.Properties;
+using Azuria.UserInfo.Comment;
 using Azuria.Utilities.Properties;
 
 namespace Azuria.Media
@@ -16,6 +17,16 @@ namespace Azuria.Media
         /// Gets the total amount of clicks the <see cref="Anime" /> or <see cref="Manga" /> recieved. Is reset every 3 months.
         /// </summary>
         IInitialisableProperty<int> Clicks { get; }
+
+        /// <summary>
+        /// Gets the comments of the anime in a chronological order.
+        /// </summary>
+        IEnumerable<Comment<IMediaObject>> CommentsLatest { get; }
+
+        /// <summary>
+        /// Gets the comments of the anime ordered by rating.
+        /// </summary>
+        IEnumerable<Comment<IMediaObject>> CommentsRating { get; }
 
         /// <summary>
         /// Gets the count of the <see cref="Anime.Episode">Episodes</see> or <see cref="Manga.Chapter">Chapters</see> the

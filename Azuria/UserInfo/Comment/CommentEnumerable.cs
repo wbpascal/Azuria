@@ -7,7 +7,7 @@ namespace Azuria.UserInfo.Comment
 {
     /// <summary>
     /// </summary>
-    public class CommentEnumerable<T> : IEnumerable<Comment<T>> where T : IMediaObject
+    public class CommentEnumerable<T> : IEnumerable<Comment<T>> where T : class, IMediaObject
     {
         private readonly T _mediaObject;
         private readonly string _sort;

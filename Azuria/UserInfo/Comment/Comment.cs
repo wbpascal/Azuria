@@ -12,7 +12,7 @@ namespace Azuria.UserInfo.Comment
     /// <summary>
     /// Represents a comment for an <see cref="Anime">Anime</see> or <see cref="Manga">Manga</see>.
     /// </summary>
-    public class Comment<T> where T : IMediaObject
+    public class Comment<T> : IComment where T : IMediaObject
     {
         internal Comment(CommentDataModel dataModel, T mediaObject, User user = null)
         {
@@ -60,6 +60,8 @@ namespace Azuria.UserInfo.Comment
         /// Gets the <see cref="Anime">Anime</see> or <see cref="Manga">Manga</see> this comment is for.
         /// </summary>
         public T MediaObject { get; }
+
+        IMediaObject IComment.MediaObject => this.MediaObject;
 
         /// <summary>
         /// </summary>

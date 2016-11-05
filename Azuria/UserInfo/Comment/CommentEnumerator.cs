@@ -8,11 +8,12 @@ using Azuria.Api.v1.DataModels;
 using Azuria.ErrorHandling;
 using Azuria.Media;
 using Azuria.Utilities;
+using Azuria.Utilities.Extensions;
 using Azuria.Utilities.Properties;
 
 namespace Azuria.UserInfo.Comment
 {
-    internal class CommentEnumerator<T> : PageEnumerator<Comment<T>> where T : IMediaObject
+    internal class CommentEnumerator<T> : PageEnumerator<Comment<T>> where T : class, IMediaObject
     {
         private const int ResultsPerPage = 25;
         private readonly T _mediaObject;
@@ -63,16 +64,13 @@ namespace Azuria.UserInfo.Comment
             foreach (CommentDataModel commentDataModel in dataModels)
             {
                 T lMediaObject = this._mediaObject;
-                if (lMediaObject == null)
-                {
-                    if (typeof(T) == typeof(Anime))
-                        lMediaObject =
-                            (T) Convert.ChangeType(new Anime(commentDataModel.EntryId), typeof(T));
-                    if (typeof(T) == typeof(Manga))
-                        lMediaObject =
-                            (T) Convert.ChangeType(new Manga(commentDataModel.EntryId), typeof(T));
-                }
-                lCommentList.Add(new Comment<T>(commentDataModel, lMediaObject, this._user));
+                if (typeof(T) == typeof(Anime))
+                    lMediaObject = lMediaObject ?? new Anime(commentDataModel.EntryId) as T;
+                if (typeof(T) == typeof(Manga))
+                    lMediaObject = lMediaObject ?? new Manga(commentDataModel.EntryId) as T;
+
+                lCommentList.AddIf(new Comment<T>(commentDataModel, lMediaObject, this._user),
+                    comment => lMediaObject != null);
             }
             return lCommentList;
         }

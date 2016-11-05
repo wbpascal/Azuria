@@ -7,6 +7,7 @@ using Azuria.ErrorHandling;
 using Azuria.Exceptions;
 using Azuria.Media;
 using Azuria.Media.Properties;
+using Azuria.UserInfo.Comment;
 using Azuria.Utilities.Extensions;
 using Newtonsoft.Json;
 using NUnit.Framework;
@@ -32,6 +33,22 @@ namespace Azuria.Test.MediaTests
             IProxerResult<int> lResult = await this._mediaObject.Clicks;
             Assert.IsTrue(lResult.Success, JsonConvert.SerializeObject(lResult.Exceptions));
             Assert.AreEqual(23604, lResult.Result);
+        }
+
+        [Test]
+        public void CommentsLatestTest()
+        {
+            Comment<IMediaObject>[] lCommentsLatest = this._mediaObject.CommentsLatest.ToArray();
+            Assert.IsNotEmpty(lCommentsLatest);
+            Assert.AreEqual(24, lCommentsLatest.Length);
+        }
+
+        [Test]
+        public void CommentsRatingTest()
+        {
+            Comment<IMediaObject>[] lCommentsRating = this._mediaObject.CommentsRating.ToArray();
+            Assert.IsNotEmpty(lCommentsRating);
+            Assert.AreEqual(28, lCommentsRating.Length);
         }
 
         [Test]

@@ -101,12 +101,12 @@ namespace Azuria.Media
         /// <summary>
         /// Gets the comments of the anime in a chronological order.
         /// </summary>
-        public IEnumerable<Comment<Anime>> CommentsLatest { get; }
+        public new IEnumerable<Comment<Anime>> CommentsLatest { get; }
 
         /// <summary>
         /// Gets the comments of the anime ordered by rating.
         /// </summary>
-        public IEnumerable<Comment<Anime>> CommentsRating { get; }
+        public new IEnumerable<Comment<Anime>> CommentsRating { get; }
 
         #endregion
 

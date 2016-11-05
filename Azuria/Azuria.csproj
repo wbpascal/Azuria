@@ -121,6 +121,8 @@
     <Compile Include="Search\Input\SearchResultSort.cs" />
     <Compile Include="Search\SearchHelper.cs" />
     <Compile Include="Search\SearchQueryBuilder.cs" />
+    <Compile Include="UserInfo\Comment\IComment.cs" />
+    <Compile Include="UserInfo\IUserProfileEntry.cs" />
     <Compile Include="UserInfo\MediaProfileList.cs" />
     <Compile Include="UserInfo\ControlPanel\CommentVote.cs" />
     <Compile Include="UserInfo\ControlPanel\ToptenObject.cs" />

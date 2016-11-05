@@ -95,12 +95,12 @@ namespace Azuria.Media
         /// <summary>
         /// Gets the comments of the <see cref="Anime" /> in a chronological order.
         /// </summary>
-        public IEnumerable<Comment<Manga>> CommentsLatest { get; }
+        public new IEnumerable<Comment<Manga>> CommentsLatest { get; }
 
         /// <summary>
         /// Gets the comments of the <see cref="Anime" /> ordered by rating.
         /// </summary>
-        public IEnumerable<Comment<Manga>> CommentsRating { get; }
+        public new IEnumerable<Comment<Manga>> CommentsRating { get; }
 
         /// <summary>
         /// Gets the medium of the <see cref="Manga" />.
