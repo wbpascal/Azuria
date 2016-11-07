@@ -42,7 +42,7 @@ namespace Azuria.Community
             else
             {
                 IEnumerable<Message> lUnreadMessages = await Task.Run(() =>
-                    new MessageCollection(dataModel.ConferenceId, senpai, markAsRead)
+                    new MessageEnumerable(dataModel.ConferenceId, senpai, markAsRead)
                         .Take(dataModel.UnreadMessagesCount));
                 this._unreadMessages.SetInitialisedObject(lUnreadMessages);
             }

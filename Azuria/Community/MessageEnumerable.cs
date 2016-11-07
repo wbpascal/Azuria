@@ -5,13 +5,13 @@ namespace Azuria.Community
 {
     /// <summary>
     /// </summary>
-    public class MessageCollection : IEnumerable<Message>
+    public class MessageEnumerable : IEnumerable<Message>
     {
         private readonly int _conferenceId;
         private readonly bool _markAsRead;
         private readonly Senpai _senpai;
 
-        internal MessageCollection(int conferenceId, Senpai senpai, bool markAsRead = true)
+        internal MessageEnumerable(int conferenceId, Senpai senpai, bool markAsRead = true)
         {
             this._conferenceId = conferenceId;
             this._senpai = senpai;

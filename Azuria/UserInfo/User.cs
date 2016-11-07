@@ -99,7 +99,7 @@ namespace Azuria.UserInfo
         /// <summary>
         /// Gets all <see cref="Media.Anime" /> the <see cref="User" /> has in his profile.
         /// </summary>
-        public IEnumerable<UserProfileEntry<Anime>> Anime { get; }
+        public UserEntryEnumerable<Anime> Anime { get; }
 
         /// <summary>
         /// Gets the avatar of the user.
@@ -108,11 +108,11 @@ namespace Azuria.UserInfo
 
         /// <summary>
         /// </summary>
-        public IEnumerable<Comment<Anime>> CommentsAnime { get; }
+        public CommentEnumerable<Anime> CommentsAnime { get; }
 
         /// <summary>
         /// </summary>
-        public IEnumerable<Comment<Manga>> CommentsManga { get; }
+        public CommentEnumerable<Manga> CommentsManga { get; }
 
         /// <summary>
         /// Gets the id of the user.
@@ -122,7 +122,7 @@ namespace Azuria.UserInfo
         /// <summary>
         /// Gets all <see cref="Media.Manga" /> the <see cref="User" /> has in his profile.
         /// </summary>
-        public IEnumerable<UserProfileEntry<Manga>> Manga { get; }
+        public UserEntryEnumerable<Manga> Manga { get; }
 
         /// <summary>
         /// Gets the current number of total points the user has.

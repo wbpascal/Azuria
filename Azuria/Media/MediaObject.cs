@@ -89,10 +89,10 @@ namespace Azuria.Media
         public IInitialisableProperty<int> Clicks => this._clicks;
 
         /// <inheritdoc />
-        public IEnumerable<Comment<IMediaObject>> CommentsLatest { get; }
+        public CommentEnumerable<IMediaObject> CommentsLatest { get; }
 
         /// <inheritdoc />
-        public IEnumerable<Comment<IMediaObject>> CommentsRating { get; }
+        public CommentEnumerable<IMediaObject> CommentsRating { get; }
 
         /// <inheritdoc />
         public IInitialisableProperty<int> ContentCount => this._contentCount;

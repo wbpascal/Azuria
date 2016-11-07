@@ -87,7 +87,7 @@ namespace Azuria.Notifications.PrivateMessage
             try
             {
                 PrivateMessageNotification[] lPrivateMessageNotifications =
-                    new PrivateMessageNotificationCollection(this._senpai).Take(notificationsCounts.PrivateMessages)
+                    new PrivateMessageNotificationEnumerable(this._senpai).Take(notificationsCounts.PrivateMessages)
                         .ToArray();
                 if (lPrivateMessageNotifications.Length > 0)
                     this.OnNotificationRecieved(this._senpai, lPrivateMessageNotifications);

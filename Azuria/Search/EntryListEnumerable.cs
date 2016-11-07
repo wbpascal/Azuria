@@ -6,11 +6,15 @@ using Azuria.Search.Input;
 
 namespace Azuria.Search
 {
-    internal class EntryListCollection<T> : IEnumerable<T> where T : class, IMediaObject
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    public class EntryListEnumerable<T> : IEnumerable<T> where T : class, IMediaObject
     {
         private readonly EntryListInput _input;
 
-        internal EntryListCollection(EntryListInput input)
+        internal EntryListEnumerable(EntryListInput input)
         {
             if ((typeof(T) != typeof(Anime)) && (typeof(T) != typeof(Manga))) throw new ArgumentException(nameof(T));
             this._input = input;

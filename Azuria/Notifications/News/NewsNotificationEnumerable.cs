@@ -1,24 +1,20 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
-using Azuria.Media;
-using Azuria.Search.Input;
 
-namespace Azuria.Search
+namespace Azuria.Notifications.News
 {
     /// <summary>
-    /// Represents a class that helps to fetch following search results after the inital search.
+    /// Represents a collection of news notifications.
     /// </summary>
-    /// <typeparam name="T">The type of the search results.</typeparam>
-    internal class SearchResultCollection<T> : IEnumerable<T> where T : IMediaObject
+    public class NewsNotificationEnumerable : IEnumerable<NewsNotification>
     {
-        private readonly SearchInput _input;
+        private readonly int _newsPerPage;
+        private readonly Senpai _senpai;
 
-        /// <summary>
-        /// </summary>
-        /// <param name="input"></param>
-        internal SearchResultCollection(SearchInput input)
+        internal NewsNotificationEnumerable(Senpai senpai, int newsPerPage = 15)
         {
-            this._input = input;
+            this._senpai = senpai;
+            this._newsPerPage = newsPerPage;
         }
 
         #region Methods
@@ -32,9 +28,9 @@ namespace Azuria.Search
 
         /// <summary>Returns an enumerator that iterates through the collection.</summary>
         /// <returns>An enumerator that can be used to iterate through the collection.</returns>
-        public IEnumerator<T> GetEnumerator()
+        public IEnumerator<NewsNotification> GetEnumerator()
         {
-            return new SearchResultEnumerator<T>(this._input);
+            return new NewsNotificationEnumerator(this._senpai, this._newsPerPage);
         }
 
         #endregion

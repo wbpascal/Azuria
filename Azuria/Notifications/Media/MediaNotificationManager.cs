@@ -27,24 +27,24 @@ namespace Azuria.Notifications.Media
         private MediaNotificationManager(Senpai senpai)
         {
             this._senpai = senpai;
-            this.Notifications = new MediaNotificationCollection<IMediaObject>(senpai);
-            this.NotificationsAnime = new MediaNotificationCollection<Anime>(senpai);
-            this.NotificationsManga = new MediaNotificationCollection<Manga>(senpai);
+            this.Notifications = new MediaNotificationEnumerable<IMediaObject>(senpai);
+            this.NotificationsAnime = new MediaNotificationEnumerable<Anime>(senpai);
+            this.NotificationsManga = new MediaNotificationEnumerable<Manga>(senpai);
         }
 
         #region Properties
 
         /// <summary>
         /// </summary>
-        public MediaNotificationCollection<IMediaObject> Notifications { get; }
+        public MediaNotificationEnumerable<IMediaObject> Notifications { get; }
 
         /// <summary>
         /// </summary>
-        public MediaNotificationCollection<Anime> NotificationsAnime { get; }
+        public MediaNotificationEnumerable<Anime> NotificationsAnime { get; }
 
         /// <summary>
         /// </summary>
-        public MediaNotificationCollection<Manga> NotificationsManga { get; }
+        public MediaNotificationEnumerable<Manga> NotificationsManga { get; }
 
         Senpai INotificationManager.Senpai => this._senpai;
 
@@ -212,15 +212,15 @@ namespace Azuria.Notifications.Media
             try
             {
                 MediaNotification<IMediaObject>[] lMediaNotifications =
-                    new MediaNotificationCollection<IMediaObject>(this._senpai,
+                    new MediaNotificationEnumerable<IMediaObject>(this._senpai,
                         notificationsCounts.OtherMedia).Take(
                         notificationsCounts.OtherMedia).ToArray();
 
                 MediaNotification<Anime>[] lAnimeNotifications =
-                    new MediaNotificationCollection<Anime>(this._senpai, notificationsCounts.OtherMedia).Take(
+                    new MediaNotificationEnumerable<Anime>(this._senpai, notificationsCounts.OtherMedia).Take(
                         notificationsCounts.OtherMedia).ToArray();
                 MediaNotification<Manga>[] lMangaNotifications =
-                    new MediaNotificationCollection<Manga>(this._senpai, notificationsCounts.OtherMedia).Take(
+                    new MediaNotificationEnumerable<Manga>(this._senpai, notificationsCounts.OtherMedia).Take(
                         notificationsCounts.OtherMedia).ToArray();
 
                 if (lMediaNotifications.Length > 0)

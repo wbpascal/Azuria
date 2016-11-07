@@ -106,7 +106,7 @@ namespace Azuria.Community
         /// <summary>
         /// Gets all messages of the current conference ordered by newest first.
         /// </summary>
-        public IEnumerable<Message> Messages => new MessageCollection(this.Id, this._senpai);
+        public MessageEnumerable Messages => new MessageEnumerable(this.Id, this._senpai);
 
         internal static int MessagesPerPage { get; private set; }
 

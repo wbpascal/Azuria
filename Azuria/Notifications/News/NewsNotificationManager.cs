@@ -17,14 +17,14 @@ namespace Azuria.Notifications.News
         private NewsNotificationManager(Senpai senpai)
         {
             this._senpai = senpai;
-            this.Notifications = new NewsNotificationCollection(senpai);
+            this.Notifications = new NewsNotificationEnumerable(senpai);
         }
 
         #region Properties
 
         /// <summary>
         /// </summary>
-        public IEnumerable<NewsNotification> Notifications { get; }
+        public NewsNotificationEnumerable Notifications { get; }
 
         Senpai INotificationManager.Senpai => this._senpai;
 
@@ -90,7 +90,7 @@ namespace Azuria.Notifications.News
             try
             {
                 NewsNotification[] lNewsNotifications =
-                    new NewsNotificationCollection(this._senpai, notificationsCounts.News).Take(notificationsCounts.News)
+                    new NewsNotificationEnumerable(this._senpai, notificationsCounts.News).Take(notificationsCounts.News)
                         .ToArray();
                 if (lNewsNotifications.Length > 0) this.OnNotificationRecieved(this._senpai, lNewsNotifications);
             }
