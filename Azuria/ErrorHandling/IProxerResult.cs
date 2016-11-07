@@ -5,7 +5,7 @@ namespace Azuria.ErrorHandling
 {
     /// <summary>
     /// </summary>
-    public interface IProxerResult<T> : IProxerResult
+    public interface IProxerResult<out T> : IProxerResult
     {
         #region Properties
 
