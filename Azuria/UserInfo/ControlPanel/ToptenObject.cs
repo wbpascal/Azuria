@@ -7,7 +7,7 @@ namespace Azuria.UserInfo.ControlPanel
     /// <summary>
     /// </summary>
     /// <typeparam name="T"></typeparam>
-    public class ToptenObject<T> where T : IMediaObject
+    public class ToptenObject<T> : IToptenObject where T : IMediaObject
     {
         internal ToptenObject(int toptenId, T mediaObject, UserControlPanel userControlPanel)
         {
@@ -22,22 +22,21 @@ namespace Azuria.UserInfo.ControlPanel
         /// </summary>
         public T MediaObject { get; }
 
-        /// <summary>
-        /// </summary>
+        /// <inheritdoc />
+        IMediaObject IToptenObject.MediaObject => this.MediaObject;
+
+        /// <inheritdoc />
         public int ToptenId { get; }
 
-        /// <summary>
-        /// </summary>
+        /// <inheritdoc />
         public UserControlPanel UserControlPanel { get; }
 
         #endregion
 
         #region Methods
 
-        /// <summary>
-        /// </summary>
-        /// <returns></returns>
-        public Task<IProxerResult> DeleteTopten()
+        /// <inheritdoc />
+        public Task<IProxerResult> Delete()
         {
             return this.UserControlPanel.DeleteTopten(this.ToptenId);
         }

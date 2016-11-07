@@ -10,7 +10,7 @@ using Azuria.Utilities;
 
 namespace Azuria.UserInfo.ControlPanel
 {
-    internal class BookmarkEnumerator<T> : PageEnumerator<BookmarkObject<T>> where T : class, IMediaObject
+    internal class BookmarkEnumerator<T> : PageEnumerator<Bookmark<T>> where T : class, IMediaObject
     {
         private const int ResultsPerPage = 100;
         private readonly UserControlPanel _controlPanel;
@@ -24,17 +24,17 @@ namespace Azuria.UserInfo.ControlPanel
 
         #region Methods
 
-        internal override async Task<IProxerResult<IEnumerable<BookmarkObject<T>>>> GetNextPage(int nextPage)
+        internal override async Task<IProxerResult<IEnumerable<Bookmark<T>>>> GetNextPage(int nextPage)
         {
             ProxerApiResponse<BookmarkDataModel[]> lResult =
                 await RequestHandler.ApiRequest(ApiRequestBuilder.UcpGetReminder(
                     typeof(T).GetTypeInfo().Name.ToLowerInvariant(), nextPage, ResultsPerPage, this._senpai));
             if (!lResult.Success || (lResult.Result == null))
-                return new ProxerResult<IEnumerable<BookmarkObject<T>>>(lResult.Exceptions);
+                return new ProxerResult<IEnumerable<Bookmark<T>>>(lResult.Exceptions);
             BookmarkDataModel[] lData = lResult.Result;
 
-            return new ProxerResult<IEnumerable<BookmarkObject<T>>>(from bookmarkDataModel in lData
-                select new BookmarkObject<T>(
+            return new ProxerResult<IEnumerable<Bookmark<T>>>(from bookmarkDataModel in lData
+                select new Bookmark<T>(
                     typeof(T) == typeof(Anime)
                         ? (IMediaContent<T>) new Anime.Episode(bookmarkDataModel)
                         : (IMediaContent<T>) new Manga.Chapter(bookmarkDataModel),

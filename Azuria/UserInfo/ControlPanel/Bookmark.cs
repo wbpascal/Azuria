@@ -8,9 +8,9 @@ namespace Azuria.UserInfo.ControlPanel
     /// Represents an <see cref="Anime.Episode" /> or <see cref="Manga.Chapter" /> the user has bookmarked.
     /// </summary>
     /// <typeparam name="T">Specifies if the bookmark is an <see cref="Anime" /> or <see cref="Manga" />.</typeparam>
-    public class BookmarkObject<T> where T : IMediaObject
+    public class Bookmark<T> : IBookmark where T : IMediaObject
     {
-        internal BookmarkObject(IMediaContent<T> mediaContentObject, int bookmarkId,
+        internal Bookmark(IMediaContent<T> mediaContentObject, int bookmarkId,
             UserControlPanel controlPanel)
         {
             this.MediaContentObject = mediaContentObject;
@@ -20,9 +20,7 @@ namespace Azuria.UserInfo.ControlPanel
 
         #region Properties
 
-        /// <summary>
-        /// Gets the id of this bookmark.
-        /// </summary>
+        /// <inheritdoc />
         public int BookmarkId { get; }
 
         /// <summary>
@@ -30,19 +28,17 @@ namespace Azuria.UserInfo.ControlPanel
         /// </summary>
         public IMediaContent<T> MediaContentObject { get; }
 
-        /// <summary>
-        /// </summary>
+        IMediaContent IBookmark.MediaContentObject => this.MediaContentObject;
+
+        /// <inheritdoc />
         public UserControlPanel UserControlPanel { get; }
 
         #endregion
 
         #region Methods
 
-        /// <summary>
-        /// Deletes the entry from the User-Control-Panel.
-        /// </summary>
-        /// <returns>If the action was successfull.</returns>
-        public Task<IProxerResult> DeleteReminder()
+        /// <inheritdoc />
+        public Task<IProxerResult> Delete()
         {
             return this.UserControlPanel.DeleteBookmark(this.BookmarkId);
         }

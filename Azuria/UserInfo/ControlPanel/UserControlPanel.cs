@@ -49,13 +49,13 @@ namespace Azuria.UserInfo.ControlPanel
         /// <summary>
         /// Gets all bookmarks of the user that are <see cref="Anime">Anime</see>.
         /// </summary>
-        public IEnumerable<BookmarkObject<Anime>> BookmarksAnime
+        public IEnumerable<Bookmark<Anime>> BookmarksAnime
             => new BookmarkEnumerable<Anime>(this._senpai, this);
 
         /// <summary>
         /// Gets all bookmarks of the user that are <see cref="Manga">Manga</see>.
         /// </summary>
-        public IEnumerable<BookmarkObject<Manga>> BookmarksManga
+        public IEnumerable<Bookmark<Manga>> BookmarksManga
             => new BookmarkEnumerable<Manga>(this._senpai, this);
 
         /// <summary>

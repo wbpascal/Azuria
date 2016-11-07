@@ -5,7 +5,7 @@ namespace Azuria.UserInfo.ControlPanel
 {
     /// <summary>
     /// </summary>
-    public class HistoryObject<T> where T : IMediaObject
+    public class HistoryObject<T> : IHistoryObject where T : IMediaObject
     {
         internal HistoryObject(IMediaContent<T> contentObject, DateTime timeStamp,
             UserControlPanel userControlPanel)
@@ -21,12 +21,13 @@ namespace Azuria.UserInfo.ControlPanel
         /// </summary>
         public IMediaContent<T> ContentObject { get; }
 
-        /// <summary>
-        /// </summary>
+        /// <inheritdoc />
+        IMediaContent IHistoryObject.ContentObject => this.ContentObject;
+
+        /// <inheritdoc />
         public DateTime TimeStamp { get; }
 
-        /// <summary>
-        /// </summary>
+        /// <inheritdoc />
         public UserControlPanel UserControlPanel { get; }
 
         #endregion

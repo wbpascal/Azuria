@@ -25,7 +25,7 @@ namespace Azuria.Test.UcpTests
         [Test]
         public async Task DeleteToptenTest()
         {
-            IProxerResult lResult = await this._toptenAnimeObject.DeleteTopten();
+            IProxerResult lResult = await this._toptenAnimeObject.Delete();
             Assert.IsTrue(lResult.Success, JsonConvert.SerializeObject(lResult.Exceptions));
         }
 

@@ -40,7 +40,7 @@ namespace Azuria.Test.UcpTests
         [Test]
         public async Task DeleteVoteTest()
         {
-            IProxerResult lResult = await this._vote.DeleteVote();
+            IProxerResult lResult = await this._vote.Delete();
             Assert.IsTrue(lResult.Success, JsonConvert.SerializeObject(lResult.Exceptions));
         }
 

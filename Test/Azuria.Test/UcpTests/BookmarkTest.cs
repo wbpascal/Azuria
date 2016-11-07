@@ -12,8 +12,8 @@ namespace Azuria.Test.UcpTests
     [TestFixture]
     public class BookmarkTest
     {
-        private BookmarkObject<Anime> _animeBookmark;
-        private BookmarkObject<Manga> _mangaBookmark;
+        private Bookmark<Anime> _animeBookmark;
+        private Bookmark<Manga> _mangaBookmark;
 
         [OneTimeSetUp]
         public void Setup()
@@ -32,7 +32,7 @@ namespace Azuria.Test.UcpTests
         [Test]
         public async Task DeleteReminderTest()
         {
-            IProxerResult lResult = await this._animeBookmark.DeleteReminder();
+            IProxerResult lResult = await this._animeBookmark.Delete();
             Assert.IsTrue(lResult.Success, JsonConvert.SerializeObject(lResult.Exceptions));
         }
 

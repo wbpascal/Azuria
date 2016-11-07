@@ -7,7 +7,7 @@ namespace Azuria.UserInfo.ControlPanel
     /// <summary>
     /// </summary>
     /// <typeparam name="T"></typeparam>
-    public class BookmarkEnumerable<T> : IEnumerable<BookmarkObject<T>> where T : class, IMediaObject
+    public class BookmarkEnumerable<T> : IEnumerable<Bookmark<T>> where T : class, IMediaObject
     {
         private readonly UserControlPanel _controlPanel;
         private readonly Senpai _senpai;
@@ -29,7 +29,7 @@ namespace Azuria.UserInfo.ControlPanel
 
         /// <summary>Returns an enumerator that iterates through the collection.</summary>
         /// <returns>An enumerator that can be used to iterate through the collection.</returns>
-        public IEnumerator<BookmarkObject<T>> GetEnumerator()
+        public IEnumerator<Bookmark<T>> GetEnumerator()
         {
             return new BookmarkEnumerator<T>(this._senpai, this._controlPanel);
         }

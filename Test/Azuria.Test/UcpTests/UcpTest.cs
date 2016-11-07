@@ -54,7 +54,7 @@ namespace Azuria.Test.UcpTests
         [Test]
         public void BookmarkAnimeTest()
         {
-            BookmarkObject<Anime>[] lBookmarks = this._controlPanel.BookmarksAnime.ToArray();
+            Bookmark<Anime>[] lBookmarks = this._controlPanel.BookmarksAnime.ToArray();
             Assert.AreEqual(17, lBookmarks.Length);
             Assert.IsTrue(lBookmarks.All(o => o.MediaContentObject != null));
             Assert.IsTrue(lBookmarks.All(o => o.MediaContentObject.ContentIndex != default(int)));
@@ -76,7 +76,7 @@ namespace Azuria.Test.UcpTests
         [Test]
         public void BookmarkMangaTest()
         {
-            BookmarkObject<Manga>[] lBookmarks = this._controlPanel.BookmarksManga.ToArray();
+            Bookmark<Manga>[] lBookmarks = this._controlPanel.BookmarksManga.ToArray();
             Assert.AreEqual(4, lBookmarks.Length);
             Assert.IsTrue(lBookmarks.All(o => o.MediaContentObject != null));
             Assert.IsTrue(lBookmarks.All(o => o.MediaContentObject.ContentIndex != default(int)));

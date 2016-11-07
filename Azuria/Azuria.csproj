@@ -122,6 +122,9 @@
     <Compile Include="Search\SearchHelper.cs" />
     <Compile Include="Search\SearchQueryBuilder.cs" />
     <Compile Include="UserInfo\Comment\IComment.cs" />
+    <Compile Include="UserInfo\ControlPanel\IBookmark.cs" />
+    <Compile Include="UserInfo\ControlPanel\IHistoryObject.cs" />
+    <Compile Include="UserInfo\ControlPanel\IToptenObject.cs" />
     <Compile Include="UserInfo\IUserProfileEntry.cs" />
     <Compile Include="UserInfo\MediaProfileList.cs" />
     <Compile Include="UserInfo\ControlPanel\CommentVote.cs" />
@@ -217,7 +220,7 @@
     <Compile Include="Search\SearchResultCollection.cs" />
     <Compile Include="UserInfo\MediaProgressState.cs" />
     <Compile Include="UserInfo\Comment\RatingCategory.cs" />
-    <Compile Include="UserInfo\ControlPanel\BookmarkObject.cs" />
+    <Compile Include="UserInfo\ControlPanel\Bookmark.cs" />
     <Compile Include="UserInfo\ControlPanel\UserControlPanel.cs" />
     <Compile Include="Notifications\Media\MediaNotificationCollection.cs" />
     <Compile Include="Notifications\Media\MediaNotificationEnumerator.cs" />
