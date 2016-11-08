@@ -67,7 +67,7 @@ namespace Azuria.Media
         /// <summary>
         /// Gets an enumeration of all the groups that translated the <see cref="Anime" /> or <see cref="Manga" />.
         /// </summary>
-        IInitialisableProperty<IEnumerable<Translator>> Groups { get; }
+        IInitialisableProperty<IEnumerable<Translator>> Translator { get; }
 
         /// <summary>
         /// Gets the Id of the <see cref="Anime" /> or <see cref="Manga" />.

@@ -116,7 +116,7 @@ namespace Azuria.Media
         public IInitialisableProperty<string> GermanTitle => this._germanTitle;
 
         /// <inheritdoc />
-        public IInitialisableProperty<IEnumerable<Translator>> Groups => this._groups;
+        public IInitialisableProperty<IEnumerable<Translator>> Translator => this._groups;
 
         /// <inheritdoc />
         public int Id { get; }
