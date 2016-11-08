@@ -54,9 +54,15 @@ namespace Azuria.Api.v1
             return new ApiRequest<EntryDataModel>(new Uri($"{ApiConstants.ApiUrlV1}/info/entry?id={entryId}"));
         }
 
-        internal static ApiRequest<EntryTagDataModel[]> InfoGetEntryTags(int entryId)
+        internal static ApiRequest<MediaTagDataModel[]> InfoGetEntryTags(int entryId)
         {
-            return new ApiRequest<EntryTagDataModel[]>(new Uri($"{ApiConstants.ApiUrlV1}/info/entrytags?id={entryId}"));
+            return new ApiRequest<MediaTagDataModel[]>(new Uri($"{ApiConstants.ApiUrlV1}/info/entrytags?id={entryId}"));
+        }
+
+        internal static ApiRequest<FullEntryDataModel> InfoGetFullEntry(int entryId)
+        {
+            return new ApiRequest<FullEntryDataModel>(new Uri(
+                $"{ApiConstants.ApiUrlV1}/info/fullentry?id={entryId}"));
         }
 
         internal static ApiRequest<bool> InfoGetGate(int entryId)
@@ -66,7 +72,8 @@ namespace Azuria.Api.v1
 
         internal static ApiRequest<TranslatorDataModel[]> InfoGetGroups(int entryId)
         {
-            return new ApiRequest<TranslatorDataModel[]>(new Uri($"{ApiConstants.ApiUrlV1}/info/groups?id={entryId}"));
+            return new ApiRequest<TranslatorDataModel[]>(new Uri(
+                $"{ApiConstants.ApiUrlV1}/info/groups?id={entryId}"));
         }
 
         internal static ApiRequest<MediaLanguage[]> InfoGetLanguage(int entryId)

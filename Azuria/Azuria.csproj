@@ -72,6 +72,7 @@
     <Compile Include="Api\v1\Converters\InvertBoolConverter.cs" />
     <Compile Include="Api\v1\Converters\Manga\PagesConverter.cs" />
     <Compile Include="Api\v1\DataModels\Anime\StreamDataModel.cs" />
+    <Compile Include="Api\v1\DataModels\Info\FullEntryDataModel.cs" />
     <Compile Include="Api\v1\DataModels\Manga\ChapterDataModel.cs" />
     <Compile Include="Api\v1\DataModels\Manga\PageDataModel.cs" />
     <Compile Include="Api\v1\DataModels\Media\HeaderDataModel.cs" />
@@ -172,7 +173,7 @@
     <Compile Include="Api\v1\DataModels\Info\PublisherDataModel.cs" />
     <Compile Include="Api\v1\DataModels\Info\RelationDataModel.cs" />
     <Compile Include="Api\v1\DataModels\Info\SeasonDataModel.cs" />
-    <Compile Include="Api\v1\DataModels\Info\EntryTagDataModel.cs" />
+    <Compile Include="Api\v1\DataModels\Info\MediaTagDataModel.cs" />
     <Compile Include="Api\v1\DataModels\User\ToptenDataModel.cs" />
     <Compile Include="Api\v1\DataModels\User\UserInfoDataModel.cs" />
     <Compile Include="Api\v1\Enums\MediaEntryType.cs" />

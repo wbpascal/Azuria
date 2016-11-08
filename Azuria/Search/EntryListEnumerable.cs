@@ -7,7 +7,6 @@ using Azuria.Search.Input;
 namespace Azuria.Search
 {
     /// <summary>
-    /// 
     /// </summary>
     /// <typeparam name="T"></typeparam>
     public class EntryListEnumerable<T> : IEnumerable<T> where T : class, IMediaObject

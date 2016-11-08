@@ -72,6 +72,16 @@ namespace Azuria.Media
             this._status.SetInitialisedObject(dataModel.Status);
         }
 
+        internal Anime(FullEntryDataModel dataModel) : this((EntryDataModel) dataModel)
+        {
+            this.InitGroups(dataModel.Translator);
+            this.InitIndustry(dataModel.Publisher);
+            this.InitNames(dataModel.Names);
+            this.InitSeasons(dataModel.Seasons);
+            this.InitTags(dataModel.Tags);
+            this._availableLanguages.SetInitialisedObject(dataModel.AvailableLanguages.Cast<AnimeLanguage>());
+        }
+
         internal Anime(RelationDataModel dataModel) : this((EntryDataModel) dataModel)
         {
             this._availableLanguages.SetInitialisedObject(dataModel.AvailableLanguages.Cast<AnimeLanguage>());

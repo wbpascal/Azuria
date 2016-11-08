@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using Azuria.Media;
 using Azuria.Search.Input;
 

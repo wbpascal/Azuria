@@ -4,7 +4,9 @@ using Newtonsoft.Json;
 
 namespace Azuria.Api.v1.DataModels.Info
 {
-    internal class EntryTagDataModel : IDataModel
+    /// <summary>
+    /// </summary>
+    public class MediaTagDataModel : IDataModel
     {
         #region Properties
 

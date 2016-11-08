@@ -88,7 +88,7 @@ namespace Azuria.Media
         /// <summary>
         /// Gets if the <see cref="Anime" /> or <see cref="Manga" /> is licensed by a german company.
         /// </summary>
-        IInitialisableProperty<bool> IsLicensed { get; }
+        IInitialisableProperty<bool?> IsLicensed { get; }
 
         /// <summary>
         /// Gets the japanese title of the <see cref="Anime" /> or <see cref="Manga" />.

@@ -44,7 +44,7 @@ namespace Azuria.Api.v1.DataModels.Info
 
         [JsonProperty("license")]
         [JsonConverter(typeof(IsLicensedConverter))]
-        internal bool IsLicensed { get; set; }
+        internal bool? IsLicensed { get; set; }
 
         internal MediaRating Rating => new MediaRating(this.TotalStars, this.Voters);
 

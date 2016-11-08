@@ -31,7 +31,7 @@ namespace Azuria.Media
         protected readonly InitialisableProperty<IEnumerable<Translator>> _groups;
         protected readonly InitialisableProperty<IEnumerable<Industry>> _industry;
         protected readonly InitialisableProperty<bool> _isHContent;
-        protected readonly InitialisableProperty<bool> _isLicensed;
+        protected readonly InitialisableProperty<bool?> _isLicensed;
         protected readonly InitialisableProperty<string> _japaneseTitle;
         protected readonly InitialisableProperty<string> _name;
         protected readonly InitialisableProperty<MediaRating> _rating;
@@ -61,7 +61,7 @@ namespace Azuria.Media
             };
             this._groups = new InitialisableProperty<IEnumerable<Translator>>(this.InitGroups);
             this._industry = new InitialisableProperty<IEnumerable<Industry>>(this.InitIndustry);
-            this._isLicensed = new InitialisableProperty<bool>(this.InitMainInfo);
+            this._isLicensed = new InitialisableProperty<bool?>(this.InitMainInfo);
             this._isHContent = new InitialisableProperty<bool>(this.InitIsHContent);
             this._japaneseTitle = new InitialisableProperty<string>(this.InitNames, string.Empty)
             {
@@ -80,7 +80,7 @@ namespace Azuria.Media
             {
                 IsInitialisedOnce = false
             };
-            this._tags = new InitialisableProperty<IEnumerable<Tag>>(this.InitEntryTags);
+            this._tags = new InitialisableProperty<IEnumerable<Tag>>(this.InitTags);
         }
 
         #region Properties
@@ -128,7 +128,7 @@ namespace Azuria.Media
         public IInitialisableProperty<bool> IsHContent => this._isHContent;
 
         /// <inheritdoc />
-        public IInitialisableProperty<bool> IsLicensed => this._isLicensed;
+        public IInitialisableProperty<bool?> IsLicensed => this._isLicensed;
 
         /// <inheritdoc />
         public IInitialisableProperty<string> JapaneseTitle => this._japaneseTitle;
@@ -192,6 +192,26 @@ namespace Azuria.Media
                     : (IMediaObject) new Manga(lDataModel));
         }
 
+        /// <summary>
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public static async Task<IProxerResult<IMediaObject>> CreateFullEntryFromId(int id)
+        {
+            if (id <= 0) return new ProxerResult<IMediaObject>(new ArgumentException(nameof(id)));
+
+            ProxerApiResponse<FullEntryDataModel> lResult =
+                await RequestHandler.ApiRequest(ApiRequestBuilder.InfoGetFullEntry(id));
+            if (!lResult.Success || (lResult.Result == null))
+                return new ProxerResult<IMediaObject>(lResult.Exceptions);
+            FullEntryDataModel lDataModel = lResult.Result;
+
+            return
+                new ProxerResult<IMediaObject>(lDataModel.EntryType == MediaEntryType.Anime
+                    ? new Anime(lDataModel)
+                    : (IMediaObject) new Manga(lDataModel));
+        }
+
         internal async Task<IProxerResult<MediaContentDataModel[]>> GetContentObjects()
         {
             IProxerResult<int> lContentCountResult = await this.ContentCount;
@@ -208,27 +228,20 @@ namespace Azuria.Media
             return new ProxerResult<MediaContentDataModel[]>(lData.ContentObjects);
         }
 
-        protected async Task<IProxerResult> InitEntryTags()
-        {
-            ProxerApiResponse<EntryTagDataModel[]> lResult =
-                await RequestHandler.ApiRequest(ApiRequestBuilder.InfoGetEntryTags(this.Id));
-            if (!lResult.Success || (lResult.Result == null)) return new ProxerResult(lResult.Exceptions);
-
-            this._tags.SetInitialisedObject(from entryTagDataModel in lResult.Result
-                select new Tag(entryTagDataModel));
-            return new ProxerResult();
-        }
-
         protected async Task<IProxerResult> InitGroups()
         {
             ProxerApiResponse<TranslatorDataModel[]> lResult =
                 await RequestHandler.ApiRequest(ApiRequestBuilder.InfoGetGroups(this.Id));
             if (!lResult.Success || (lResult.Result == null)) return new ProxerResult(lResult.Exceptions);
 
-            this._groups.SetInitialisedObject(from translatorDataModel in lResult.Result
-                select new Translator(translatorDataModel));
-
+            this.InitGroups(lResult.Result);
             return new ProxerResult();
+        }
+
+        protected void InitGroups(TranslatorDataModel[] translator)
+        {
+            this._groups.SetInitialisedObject(from translatorDataModel in translator
+                select new Translator(translatorDataModel));
         }
 
         protected async Task<IProxerResult> InitIndustry()
@@ -237,10 +250,14 @@ namespace Azuria.Media
                 await RequestHandler.ApiRequest(ApiRequestBuilder.InfoGetPublisher(this.Id));
             if (!lResult.Success || (lResult.Result == null)) return new ProxerResult(lResult.Exceptions);
 
-            this._industry.SetInitialisedObject(from publisherDataModel in lResult.Result
-                select new Industry(publisherDataModel));
-
+            this.InitIndustry(lResult.Result);
             return new ProxerResult();
+        }
+
+        protected void InitIndustry(PublisherDataModel[] publisher)
+        {
+            this._industry.SetInitialisedObject(from publisherDataModel in publisher
+                select new Industry(publisherDataModel));
         }
 
         protected async Task<IProxerResult> InitIsHContent()
@@ -281,7 +298,14 @@ namespace Azuria.Media
             ProxerApiResponse<NameDataModel[]> lResult =
                 await RequestHandler.ApiRequest(ApiRequestBuilder.InfoGetName(this.Id));
             if (!lResult.Success || (lResult.Result == null)) return new ProxerResult(lResult.Exceptions);
-            foreach (NameDataModel nameDataModel in lResult.Result)
+
+            this.InitNames(lResult.Result);
+            return new ProxerResult();
+        }
+
+        protected void InitNames(NameDataModel[] names)
+        {
+            foreach (NameDataModel nameDataModel in names)
                 switch (nameDataModel.Type)
                 {
                     case MediaNameType.Original:
@@ -300,8 +324,6 @@ namespace Azuria.Media
                         this._synonym.SetInitialisedObject(nameDataModel.Name);
                         break;
                 }
-
-            return new ProxerResult();
         }
 
         protected async Task<IProxerResult> InitRelations()
@@ -323,13 +345,32 @@ namespace Azuria.Media
             ProxerApiResponse<SeasonDataModel[]> lResult =
                 await RequestHandler.ApiRequest(ApiRequestBuilder.InfoGetSeason(this.Id));
             if (!lResult.Success || (lResult.Result == null)) return new ProxerResult(lResult.Exceptions);
-            SeasonDataModel[] lData = lResult.Result;
 
-            if ((lData.Length > 1) && !lData[0].Equals(lData[1]))
-                this._season.SetInitialisedObject(new MediaSeasonInfo(lData[0], lData[1]));
-            else if (lData.Length > 0) this._season.SetInitialisedObject(new MediaSeasonInfo(lData[0]));
-
+            this.InitSeasons(lResult.Result);
             return new ProxerResult();
+        }
+
+        protected void InitSeasons(SeasonDataModel[] seasons)
+        {
+            if ((seasons.Length > 1) && !seasons[0].Equals(seasons[1]))
+                this._season.SetInitialisedObject(new MediaSeasonInfo(seasons[0], seasons[1]));
+            else if (seasons.Length > 0) this._season.SetInitialisedObject(new MediaSeasonInfo(seasons[0]));
+        }
+
+        protected async Task<IProxerResult> InitTags()
+        {
+            ProxerApiResponse<MediaTagDataModel[]> lResult =
+                await RequestHandler.ApiRequest(ApiRequestBuilder.InfoGetEntryTags(this.Id));
+            if (!lResult.Success || (lResult.Result == null)) return new ProxerResult(lResult.Exceptions);
+
+            this.InitTags(lResult.Result);
+            return new ProxerResult();
+        }
+
+        protected void InitTags(MediaTagDataModel[] tags)
+        {
+            this._tags.SetInitialisedObject(from entryTagDataModel in tags
+                select new Tag(entryTagDataModel));
         }
 
         #endregion

@@ -6,7 +6,7 @@ namespace Azuria.Media.Properties
     /// </summary>
     public class Tag
     {
-        internal Tag(EntryTagDataModel dataModel)
+        internal Tag(MediaTagDataModel dataModel)
         {
             this.Description = dataModel.Description;
             this.IsRated = dataModel.IsRated;
