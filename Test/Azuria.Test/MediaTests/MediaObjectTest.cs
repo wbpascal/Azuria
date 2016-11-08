@@ -82,6 +82,24 @@ namespace Azuria.Test.MediaTests
         }
 
         [Test]
+        public async Task CreateFullEntryFromIdTest()
+        {
+            Assert.CatchAsync<ArgumentException>(() => MediaObject.CreateFullEntryFromId(-1).ThrowFirstForNonSuccess());
+
+            IMediaObject lValidObject = await MediaObject.CreateFullEntryFromId(9200).ThrowFirstForNonSuccess();
+            Assert.IsNotNull(lValidObject);
+            Assert.AreEqual(9200, lValidObject.Id);
+            Assert.IsTrue(lValidObject.Industry.IsInitialisedOnce);
+            Assert.IsTrue(lValidObject.Season.IsInitialisedOnce);
+            Assert.IsTrue(lValidObject.Tags.IsInitialisedOnce);
+            Assert.IsTrue(lValidObject.Translator.IsInitialisedOnce);
+
+            Assert.AreEqual(ErrorCode.InfoInvalidId,
+                Assert.CatchAsync<ProxerApiException>(() => MediaObject.CreateFromId(666).ThrowFirstForNonSuccess())
+                    .ErrorCode);
+        }
+
+        [Test]
         public async Task DescriptionTest()
         {
             IProxerResult<string> lResult = await this._mediaObject.Description;
@@ -162,9 +180,10 @@ namespace Azuria.Test.MediaTests
         [Test]
         public async Task IsLicensedTest()
         {
-            IProxerResult<bool> lResult = await this._mediaObject.IsLicensed.GetNewObject();
+            IProxerResult<bool?> lResult = await this._mediaObject.IsLicensed.GetNewObject();
             Assert.IsTrue(lResult.Success, JsonConvert.SerializeObject(lResult.Exceptions));
-            Assert.IsTrue(lResult.Result);
+            Assert.IsNotNull(lResult.Result);
+            Assert.IsTrue(lResult.Result.Value);
         }
 
         [Test]
@@ -255,7 +274,7 @@ namespace Azuria.Test.MediaTests
         [Test]
         public async Task TranslatorsTest()
         {
-            IProxerResult<IEnumerable<Translator>> lResult = await this._mediaObject.Groups;
+            IProxerResult<IEnumerable<Translator>> lResult = await this._mediaObject.Translator;
             Assert.IsTrue(lResult.Success, JsonConvert.SerializeObject(lResult.Exceptions));
             Assert.IsNotNull(lResult.Result);
             Assert.AreEqual(4, lResult.Result.Count());

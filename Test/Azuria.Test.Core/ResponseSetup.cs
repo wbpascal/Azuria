@@ -68,6 +68,11 @@ namespace Azuria.Test.Core
                 .Respond(JsonResponses["info_getentry.json"]);
             ServerResponse.Create("https://proxer.me/api/v1",
                     response =>
+                        response.Post("/info/fullentry")
+                            .WithQueryParameter("id", "9200"))
+                .Respond(JsonResponses["info_getfullentry.json"]);
+            ServerResponse.Create("https://proxer.me/api/v1",
+                    response =>
                         response.Post("/info/entry")
                             .WithQueryParameter("id", "7834"))
                 .Respond(JsonResponses["info_getentry7834.json"]);
@@ -76,6 +81,11 @@ namespace Azuria.Test.Core
                         response.Post("/info/entry")
                             .WithQueryParameter("id", "666"))
                 .Respond(JsonResponses["info_getentry_3007.json"]);
+            ServerResponse.Create("https://proxer.me/api/v1",
+                    response =>
+                        response.Post("/info/fullentry")
+                            .WithQueryParameter("id", "666"))
+                .Respond(JsonResponses["info_getfullentry_3007.json"]);
             ServerResponse.Create("https://proxer.me/api/v1",
                     response =>
                         response.Post("/info/lang")
