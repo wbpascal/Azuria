@@ -7,7 +7,7 @@ namespace Azuria.Web
 {
     /// <summary>
     /// </summary>
-    public interface IHttpClient
+    public interface IHttpClient : IDisposable
     {
         #region Methods
 

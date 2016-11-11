@@ -78,6 +78,7 @@ namespace Azuria
         public void Dispose()
         {
             this.LoginToken.Dispose();
+            this.HttpClient.Dispose();
         }
 
         /// <summary>

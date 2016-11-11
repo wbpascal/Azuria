@@ -136,5 +136,11 @@ namespace Azuria.Web
 
             return await this._client.PostAsync(url, new FormUrlEncodedContent(postArgs));
         }
+
+        /// <inheritdoc />
+        public void Dispose()
+        {
+            this._client.Dispose();
+        }
     }
 }
