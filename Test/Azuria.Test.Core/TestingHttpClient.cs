@@ -69,5 +69,9 @@ namespace Azuria.Test.Core
         }
 
         #endregion
+
+        /// <inheritdoc />
+        public void Dispose()
+        { }
     }
 }
