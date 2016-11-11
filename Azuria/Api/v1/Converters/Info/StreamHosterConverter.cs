@@ -5,7 +5,7 @@ using Newtonsoft.Json;
 
 namespace Azuria.Api.v1.Converters.Info
 {
-    internal class StreamPartnerConverter : JsonConverter
+    internal class StreamHosterConverter : JsonConverter
     {
         #region Methods
 
@@ -18,7 +18,7 @@ namespace Azuria.Api.v1.Converters.Info
         /// </returns>
         public override bool CanConvert(Type objectType)
         {
-            return objectType == typeof(string);
+            return objectType == typeof(IEnumerable<StreamHoster>);
         }
 
         /// <summary>Reads the JSON representation of the object.</summary>

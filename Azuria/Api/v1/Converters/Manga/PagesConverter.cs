@@ -12,7 +12,7 @@ namespace Azuria.Api.v1.Converters.Manga
         /// <inheritdoc />
         public override bool CanConvert(Type objectType)
         {
-            return true;
+            return objectType == typeof(IEnumerable<PageDataModel>);
         }
 
         /// <inheritdoc />

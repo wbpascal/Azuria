@@ -151,7 +151,7 @@
     <Compile Include="Api\v1\ApiRequestBuilder.cs" />
     <Compile Include="Api\v1\Converters\LanguageConverter.cs" />
     <Compile Include="Api\v1\Converters\LanguageCommaCollectionConverter.cs" />
-    <Compile Include="Api\v1\Converters\Info\StreamPartnerConverter.cs" />
+    <Compile Include="Api\v1\Converters\Info\StreamHosterConverter.cs" />
     <Compile Include="Api\v1\Converters\IntToBoolConverter.cs" />
     <Compile Include="Api\v1\Converters\SubRatingsConverter.cs" />
     <Compile Include="Api\v1\DataModels\Info\MediaContentDataModel.cs" />

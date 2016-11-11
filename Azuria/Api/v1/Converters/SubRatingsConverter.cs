@@ -19,7 +19,7 @@ namespace Azuria.Api.v1.Converters
         /// </returns>
         public override bool CanConvert(Type objectType)
         {
-            return objectType == typeof(string);
+            return objectType == typeof(Dictionary<RatingCategory, int>);
         }
 
         /// <summary>Reads the JSON representation of the object.</summary>

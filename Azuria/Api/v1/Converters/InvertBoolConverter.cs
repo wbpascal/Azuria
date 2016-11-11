@@ -19,8 +19,7 @@ namespace Azuria.Api.v1.Converters
         public override object ReadJson(JsonReader reader, Type objectType, object existingValue,
             JsonSerializer serializer)
         {
-            bool lValue = reader.Value.ToString() == "1";
-            return !lValue;
+            return !Convert.ToBoolean(reader.Value);
         }
 
         /// <inheritdoc />

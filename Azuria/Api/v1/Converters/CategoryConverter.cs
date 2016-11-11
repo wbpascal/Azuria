@@ -10,7 +10,7 @@ namespace Azuria.Api.v1.Converters
 
         public override bool CanConvert(Type objectType)
         {
-            return objectType == typeof(string);
+            return objectType == typeof(MediaEntryType);
         }
 
         public override object ReadJson(JsonReader reader, Type objectType, object existingValue,

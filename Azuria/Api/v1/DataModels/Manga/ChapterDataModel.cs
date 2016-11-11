@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using Azuria.Api.v1.Converters;
 using Azuria.Api.v1.Converters.Manga;
 using Newtonsoft.Json;
@@ -20,7 +21,7 @@ namespace Azuria.Api.v1.DataModels.Manga
 
         [JsonProperty("pages")]
         [JsonConverter(typeof(PagesConverter))]
-        internal PageDataModel[] Pages { get; set; }
+        internal IEnumerable<PageDataModel> Pages { get; set; }
 
         [JsonProperty("server")]
         internal int ServerId { get; set; }

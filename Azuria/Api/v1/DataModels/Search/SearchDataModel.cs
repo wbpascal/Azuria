@@ -13,7 +13,7 @@ namespace Azuria.Api.v1.DataModels.Search
 
         [JsonProperty("language")]
         [JsonConverter(typeof(LanguageCommaCollectionConverter))]
-        internal MediaLanguage[] AvailableLanguages { get; set; }
+        internal IEnumerable<MediaLanguage> AvailableLanguages { get; set; }
 
         [JsonProperty("count")]
         internal int ContentCount { get; set; }
