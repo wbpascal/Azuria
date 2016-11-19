@@ -22,6 +22,11 @@ namespace Azuria.Test.Core
         #region Methods
 
         /// <inheritdoc />
+        public void Dispose()
+        {
+        }
+
+        /// <inheritdoc />
         public async Task<IProxerResult<string>> GetRequest(Uri url, Dictionary<string, string> headers = null)
         {
             return await Task.Factory.StartNew(() => new ProxerResult<string>(new NotImplementedException()));
@@ -69,9 +74,5 @@ namespace Azuria.Test.Core
         }
 
         #endregion
-
-        /// <inheritdoc />
-        public void Dispose()
-        { }
     }
 }

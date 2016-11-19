@@ -15,6 +15,14 @@ namespace Azuria.UserInfo
             this._user = user;
         }
 
+        #region Properties
+
+        /// <summary>
+        /// </summary>
+        public Senpai Senpai { get; set; }
+
+        #endregion
+
         #region Methods
 
         /// <summary>Returns an enumerator that iterates through a collection.</summary>
@@ -28,7 +36,7 @@ namespace Azuria.UserInfo
         /// <returns>An enumerator that can be used to iterate through the collection.</returns>
         public IEnumerator<UserProfileEntry<T>> GetEnumerator()
         {
-            return new UserEntryEnumerator<T>(this._user);
+            return new UserEntryEnumerator<T>(this._user, this.Senpai);
         }
 
         #endregion

@@ -26,6 +26,14 @@ namespace Azuria.UserInfo.Comment
             this._user = user;
         }
 
+        #region Properties
+
+        /// <summary>
+        /// </summary>
+        public Senpai Senpai { get; set; }
+
+        #endregion
+
         #region Methods
 
         /// <summary>Returns an enumerator that iterates through a collection.</summary>
@@ -41,7 +49,7 @@ namespace Azuria.UserInfo.Comment
         {
             return this._user == null
                 ? new CommentEnumerator<T>(this._mediaObject, this._sort)
-                : new CommentEnumerator<T>(this._user);
+                : new CommentEnumerator<T>(this._user, this.Senpai);
         }
 
         #endregion

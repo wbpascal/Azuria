@@ -65,11 +65,6 @@ namespace Azuria.Media
         IInitialisableProperty<string> GermanTitle { get; }
 
         /// <summary>
-        /// Gets an enumeration of all the groups that translated the <see cref="Anime" /> or <see cref="Manga" />.
-        /// </summary>
-        IInitialisableProperty<IEnumerable<Translator>> Translator { get; }
-
-        /// <summary>
         /// Gets the Id of the <see cref="Anime" /> or <see cref="Manga" />.
         /// </summary>
         int Id { get; }
@@ -129,6 +124,11 @@ namespace Azuria.Media
         /// Gets the tags the <see cref="Anime" /> or <see cref="Manga" /> was tagged with.
         /// </summary>
         IInitialisableProperty<IEnumerable<Tag>> Tags { get; }
+
+        /// <summary>
+        /// Gets an enumeration of all the groups that translated the <see cref="Anime" /> or <see cref="Manga" />.
+        /// </summary>
+        IInitialisableProperty<IEnumerable<Translator>> Translator { get; }
 
         #endregion
     }

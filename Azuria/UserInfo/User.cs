@@ -28,8 +28,8 @@ namespace Azuria.UserInfo
         private readonly InitialisableProperty<Uri> _avatar;
         private readonly InitialisableProperty<UserPoints> _points;
         private readonly InitialisableProperty<UserStatus> _status;
-        private readonly InitialisableProperty<IEnumerable<Anime>> _toptenAnime;
-        private readonly InitialisableProperty<IEnumerable<Manga>> _toptenManga;
+        private readonly ArgumentInitialisableProperty<Senpai, IEnumerable<Anime>> _toptenAnime;
+        private readonly ArgumentInitialisableProperty<Senpai, IEnumerable<Manga>> _toptenManga;
         private readonly InitialisableProperty<string> _userName;
 
         /// <summary>
@@ -43,17 +43,17 @@ namespace Azuria.UserInfo
             this.Id = userId;
 
             this.Anime = new UserEntryEnumerable<Anime>(this);
-            this._avatar = new InitialisableProperty<Uri>(this.InitMainInfo,
-                new Uri(ApiConstants.ProxerNoAvatarCdnUrl))
+            this._avatar = new InitialisableProperty<Uri>(
+                this.InitMainInfo, new Uri(ApiConstants.ProxerNoAvatarCdnUrl))
             {
                 IsInitialisedOnce = false
             };
-            this._toptenAnime =
-                new InitialisableProperty<IEnumerable<Anime>>(() => this.InitTopten(MediaEntryType.Anime));
+            this._toptenAnime = new ArgumentInitialisableProperty<Senpai, IEnumerable<Anime>>(
+                senpai => this.InitTopten(MediaEntryType.Anime, senpai));
             this.CommentsAnime = new CommentEnumerable<Anime>(this);
             this.CommentsManga = new CommentEnumerable<Manga>(this);
-            this._toptenManga =
-                new InitialisableProperty<IEnumerable<Manga>>(() => this.InitTopten(MediaEntryType.Manga));
+            this._toptenManga = new ArgumentInitialisableProperty<Senpai, IEnumerable<Manga>>(
+                senpai => this.InitTopten(MediaEntryType.Manga, senpai));
             this.Manga = new UserEntryEnumerable<Manga>(this);
             this._points = new InitialisableProperty<UserPoints>(this.InitMainInfo);
             this._status = new InitialisableProperty<UserStatus>(this.InitMainInfo);
@@ -137,12 +137,12 @@ namespace Azuria.UserInfo
         /// <summary>
         /// Gets all favourites of the user that are <see cref="Media.Anime">Anime</see>.
         /// </summary>
-        public IInitialisableProperty<IEnumerable<Anime>> ToptenAnime => this._toptenAnime;
+        public IArgumentInitialisableProperty<Senpai, IEnumerable<Anime>> ToptenAnime => this._toptenAnime;
 
         /// <summary>
         /// Gets the <see cref="Media.Manga">Manga</see> top ten of the user.
         /// </summary>
-        public IInitialisableProperty<IEnumerable<Manga>> ToptenManga => this._toptenManga;
+        public IArgumentInitialisableProperty<Senpai, IEnumerable<Manga>> ToptenManga => this._toptenManga;
 
         /// <summary>
         /// Gets the username of the user.
@@ -169,8 +169,8 @@ namespace Azuria.UserInfo
         {
             if (this == System) return new ProxerResult(new InvalidUserException());
 
-            ProxerApiResponse<UserInfoDataModel> lResult =
-                await RequestHandler.ApiRequest(ApiRequestBuilder.UserGetInfo(this.Id));
+            ProxerApiResponse<UserInfoDataModel> lResult = await RequestHandler.ApiRequest(
+                ApiRequestBuilder.UserGetInfo(this.Id));
             if (!lResult.Success || (lResult.Result == null)) return new ProxerResult(lResult.Exceptions);
 
             UserInfoDataModel lDataModel = lResult.Result;
@@ -182,14 +182,12 @@ namespace Azuria.UserInfo
             return new ProxerResult();
         }
 
-        private async Task<IProxerResult> InitTopten(MediaEntryType category)
+        private async Task<IProxerResult> InitTopten(MediaEntryType category, Senpai senpai)
         {
             if (this == System) return new ProxerResult(new InvalidUserException());
 
-            ProxerApiResponse<ToptenDataModel[]> lResult =
-                await
-                    RequestHandler.ApiRequest(ApiRequestBuilder.UserGetTopten(this.Id,
-                        category.ToString().ToLower()));
+            ProxerApiResponse<ToptenDataModel[]> lResult = await RequestHandler.ApiRequest(
+                ApiRequestBuilder.UserGetTopten(this.Id, category.ToString().ToLower(), senpai));
             if (!lResult.Success || (lResult.Result == null)) return new ProxerResult(lResult.Exceptions);
 
             if (category == MediaEntryType.Anime)

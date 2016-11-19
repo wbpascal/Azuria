@@ -535,19 +535,27 @@ namespace Azuria.Test.Core
             ServerResponse.Create("https://proxer.me/api/v1",
                     response =>
                     {
-                        response.Post("/user/topten").WithQueryParameter("uid", "1").WithQueryParameter("kat", "anime");
+                        response.Post("/user/topten")
+                            .WithQueryParameter("uid", "1")
+                            .WithQueryParameter("kat", "anime")
+                            .WithLoggedInSenpai(true);
                         response.Post("/user/topten")
                             .WithQueryParameter("username", "Username")
-                            .WithQueryParameter("kat", "anime");
+                            .WithQueryParameter("kat", "anime")
+                            .WithLoggedInSenpai(true);
                     })
                 .Respond(JsonResponses["user_gettoptenanime.json"]);
             ServerResponse.Create("https://proxer.me/api/v1",
                     response =>
                     {
-                        response.Post("/user/topten").WithQueryParameter("uid", "1").WithQueryParameter("kat", "manga");
+                        response.Post("/user/topten")
+                            .WithQueryParameter("uid", "1")
+                            .WithQueryParameter("kat", "manga")
+                            .WithLoggedInSenpai(true);
                         response.Post("/user/topten")
                             .WithQueryParameter("username", "Username")
-                            .WithQueryParameter("kat", "manga");
+                            .WithQueryParameter("kat", "manga")
+                            .WithLoggedInSenpai(true);
                     })
                 .Respond(JsonResponses["user_gettoptenmanga.json"]);
             ServerResponse.Create("https://proxer.me/api/v1",
@@ -558,13 +566,15 @@ namespace Azuria.Test.Core
                             .WithQueryParameter("kat", "anime")
                             .WithQueryParameter("p", "0")
                             .WithQueryParameter("limit", "25")
-                            .WithQueryParameter("length", "0");
+                            .WithQueryParameter("length", "0")
+                            .WithLoggedInSenpai(true);
                         response.Post("/user/comments")
                             .WithQueryParameter("username", "Username")
                             .WithQueryParameter("kat", "anime")
                             .WithQueryParameter("p", "0")
                             .WithQueryParameter("limit", "25")
-                            .WithQueryParameter("length", "0");
+                            .WithQueryParameter("length", "0")
+                            .WithLoggedInSenpai(true);
                     })
                 .Respond(JsonResponses["user_getlatestcommentsanime.json"]);
             ServerResponse.Create("https://proxer.me/api/v1",
@@ -575,13 +585,15 @@ namespace Azuria.Test.Core
                             .WithQueryParameter("kat", "manga")
                             .WithQueryParameter("p", "0")
                             .WithQueryParameter("limit", "25")
-                            .WithQueryParameter("length", "0");
+                            .WithQueryParameter("length", "0")
+                            .WithLoggedInSenpai(true);
                         response.Post("/user/comments")
                             .WithQueryParameter("username", "Username")
                             .WithQueryParameter("kat", "manga")
                             .WithQueryParameter("p", "0")
                             .WithQueryParameter("limit", "25")
-                            .WithQueryParameter("length", "0");
+                            .WithQueryParameter("length", "0")
+                            .WithLoggedInSenpai(true);
                     })
                 .Respond(JsonResponses["user_getlatestcommentsmanga.json"]);
             ServerResponse.Create("https://proxer.me/api/v1",
@@ -591,12 +603,14 @@ namespace Azuria.Test.Core
                             .WithQueryParameter("uid", "1")
                             .WithQueryParameter("kat", "anime")
                             .WithQueryParameter("p", "0")
-                            .WithQueryParameter("limit", "100");
+                            .WithQueryParameter("limit", "100")
+                            .WithLoggedInSenpai(true);
                         response.Post("/user/list")
                             .WithQueryParameter("username", "Username")
                             .WithQueryParameter("kat", "anime")
                             .WithQueryParameter("p", "0")
-                            .WithQueryParameter("limit", "100");
+                            .WithQueryParameter("limit", "100")
+                            .WithLoggedInSenpai(true);
                     })
                 .Respond(JsonResponses["user_getlistanime.json"]);
             ServerResponse.Create("https://proxer.me/api/v1",
@@ -606,12 +620,14 @@ namespace Azuria.Test.Core
                             .WithQueryParameter("uid", "1")
                             .WithQueryParameter("kat", "manga")
                             .WithQueryParameter("p", "0")
-                            .WithQueryParameter("limit", "100");
+                            .WithQueryParameter("limit", "100")
+                            .WithLoggedInSenpai(true);
                         response.Post("/user/list")
                             .WithQueryParameter("username", "Username")
                             .WithQueryParameter("kat", "manga")
                             .WithQueryParameter("p", "0")
-                            .WithQueryParameter("limit", "100");
+                            .WithQueryParameter("limit", "100")
+                            .WithLoggedInSenpai(true);
                     })
                 .Respond(JsonResponses["user_getlistmanga.json"]);
 

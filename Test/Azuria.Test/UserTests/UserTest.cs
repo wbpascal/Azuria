@@ -21,7 +21,9 @@ namespace Azuria.Test.UserTests
         [Test]
         public void AnimeTest()
         {
-            UserProfileEntry<Anime>[] lAnime = this._user.Anime.ToArray();
+            UserEntryEnumerable<Anime> lAnimeEnumerable = this._user.Anime;
+            lAnimeEnumerable.Senpai = GeneralSetup.SenpaiInstance;
+            UserProfileEntry<Anime>[] lAnime = lAnimeEnumerable.ToArray();
             Assert.AreEqual(6, lAnime.Length);
             Assert.IsTrue(lAnime.All(entry => entry != null));
             Assert.IsTrue(lAnime.All(entry => entry.Comment != null));
@@ -45,7 +47,7 @@ namespace Azuria.Test.UserTests
         {
             Assert.CatchAsync<InvalidUserException>(() => User.System.Points.ThrowFirstOnNonSuccess());
 
-            IProxerResult<Uri> lResult = await this._user.Avatar;
+            IProxerResult<Uri> lResult = await this._user.Avatar.GetObject();
             Assert.IsTrue(lResult.Success, JsonConvert.SerializeObject(lResult.Exceptions));
             Assert.IsTrue(lResult.Result.AbsoluteUri.StartsWith("https://cdn.proxer.me/avatar/"));
         }
@@ -53,7 +55,9 @@ namespace Azuria.Test.UserTests
         [Test]
         public void CommentsAnimeTest()
         {
-            Comment<Anime>[] lComments = this._user.CommentsAnime.ToArray();
+            CommentEnumerable<Anime> lCommentEnumerable = this._user.CommentsAnime;
+            lCommentEnumerable.Senpai = GeneralSetup.SenpaiInstance;
+            Comment<Anime>[] lComments = lCommentEnumerable.ToArray();
             Assert.IsNotEmpty(lComments);
             Assert.IsTrue(lComments.All(comment => comment.Author == this._user));
             Assert.IsTrue(lComments.All(comment => !string.IsNullOrEmpty(comment.Content)));
@@ -69,7 +73,9 @@ namespace Azuria.Test.UserTests
         [Test]
         public void CommentsMangaTest()
         {
-            Comment<Manga>[] lComments = this._user.CommentsManga.ToArray();
+            CommentEnumerable<Anime> lCommentEnumerable = this._user.CommentsAnime;
+            lCommentEnumerable.Senpai = GeneralSetup.SenpaiInstance;
+            Comment<Anime>[] lComments = lCommentEnumerable.ToArray();
             Assert.IsNotEmpty(lComments);
             Assert.IsTrue(lComments.All(comment => comment.Author == this._user));
             Assert.IsTrue(lComments.All(comment => !string.IsNullOrEmpty(comment.Content)));
@@ -105,7 +111,9 @@ namespace Azuria.Test.UserTests
         [Test]
         public void MangaTest()
         {
-            UserProfileEntry<Manga>[] lManga = this._user.Manga.ToArray();
+            UserEntryEnumerable<Manga> lMangaEnumerable = this._user.Manga;
+            lMangaEnumerable.Senpai = GeneralSetup.SenpaiInstance;
+            UserProfileEntry<Manga>[] lManga = lMangaEnumerable.ToArray();
             Assert.AreEqual(4, lManga.Length);
             Assert.IsFalse(lManga.Any(entry => entry == null));
             Assert.IsTrue(lManga.All(entry => entry.Comment != null));
@@ -157,9 +165,10 @@ namespace Azuria.Test.UserTests
         [Test]
         public async Task ToptenAnimeTest()
         {
-            Assert.CatchAsync<InvalidUserException>(() => User.System.ToptenAnime.ThrowFirstOnNonSuccess());
+            Assert.CatchAsync<InvalidUserException>(() => User.System.ToptenAnime.ThrowFirstOnNonSuccess(null));
 
-            IProxerResult<IEnumerable<Anime>> lResult = await this._user.ToptenAnime;
+            IProxerResult<IEnumerable<Anime>> lResult =
+                await this._user.ToptenAnime.GetObject(GeneralSetup.SenpaiInstance);
             Assert.IsTrue(lResult.Success, JsonConvert.SerializeObject(lResult.Exceptions));
             Assert.AreEqual(2, lResult.Result.Count());
             Assert.IsTrue(lResult.Result.All(anime => anime.Id != default(int)));
@@ -168,9 +177,10 @@ namespace Azuria.Test.UserTests
         [Test]
         public async Task ToptenMangaTest()
         {
-            Assert.CatchAsync<InvalidUserException>(() => User.System.ToptenManga.ThrowFirstOnNonSuccess());
+            Assert.CatchAsync<InvalidUserException>(() => User.System.ToptenManga.ThrowFirstOnNonSuccess(null));
 
-            IProxerResult<IEnumerable<Manga>> lResult = await this._user.ToptenManga;
+            IProxerResult<IEnumerable<Manga>> lResult =
+                await this._user.ToptenManga.GetObject(GeneralSetup.SenpaiInstance);
             Assert.IsTrue(lResult.Success, JsonConvert.SerializeObject(lResult.Exceptions));
             Assert.AreEqual(4, lResult.Result.Count());
             Assert.IsTrue(lResult.Result.All(manga => manga.Id != default(int)));

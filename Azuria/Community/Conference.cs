@@ -188,7 +188,7 @@ namespace Azuria.Community
             if (string.IsNullOrEmpty(message) || (message.Length > MaxCharactersPerMessage))
                 return new ProxerResult<Conference>(new ArgumentException(message));
 
-            IProxerResult<string> lUsernameResult = await user.UserName.GetObject();
+            IProxerResult<string> lUsernameResult = await user.UserName;
             if (!lUsernameResult.Success || string.IsNullOrEmpty(lUsernameResult.Result))
                 return new ProxerResult<Conference>(lUsernameResult.Exceptions);
 

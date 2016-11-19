@@ -116,9 +116,6 @@ namespace Azuria.Media
         public IInitialisableProperty<string> GermanTitle => this._germanTitle;
 
         /// <inheritdoc />
-        public IInitialisableProperty<IEnumerable<Translator>> Translator => this._groups;
-
-        /// <inheritdoc />
         public int Id { get; }
 
         /// <inheritdoc />
@@ -153,6 +150,9 @@ namespace Azuria.Media
 
         /// <inheritdoc />
         public IInitialisableProperty<IEnumerable<Tag>> Tags => this._tags;
+
+        /// <inheritdoc />
+        public IInitialisableProperty<IEnumerable<Translator>> Translator => this._groups;
 
         #endregion
 

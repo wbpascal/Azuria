@@ -17,6 +17,7 @@ namespace Azuria.UserInfo.Comment
     {
         private const int ResultsPerPage = 25;
         private readonly T _mediaObject;
+        private readonly Senpai _senpai;
         private readonly string _sort;
         private readonly User _user;
 
@@ -26,9 +27,10 @@ namespace Azuria.UserInfo.Comment
             this._sort = sort;
         }
 
-        internal CommentEnumerator(User user)
+        internal CommentEnumerator(User user, Senpai senpai) : base(ResultsPerPage)
         {
             this._user = user;
+            this._senpai = senpai;
         }
 
         #region Methods
@@ -40,7 +42,7 @@ namespace Azuria.UserInfo.Comment
                     ? ApiRequestBuilder.InfoGetComments(this._mediaObject.Id,
                         nextPage, ResultsPerPage, this._sort)
                     : ApiRequestBuilder.UserGetLatestComments(this._user.Id, nextPage, ResultsPerPage,
-                        typeof(T).GetTypeInfo().Name.ToLower(), 0));
+                        typeof(T).GetTypeInfo().Name.ToLower(), 0, this._senpai));
             if (!lResult.Success || (lResult.Result == null))
                 return new ProxerResult<IEnumerable<Comment<T>>>(lResult.Exceptions);
             CommentDataModel[] lData = lResult.Result;

@@ -466,26 +466,33 @@ namespace Azuria.Api.v1
         }
 
         internal static ApiRequest<CommentDataModel[]> UserGetLatestComments(int userId, int page, int limit, string kat,
-            int length)
+            int length, Senpai senpai = null)
         {
-            return
-                new ApiRequest<CommentDataModel[]>(
-                    new Uri(
-                        $"{ApiConstants.ApiUrlV1}/user/comments?uid={userId}&p={page}&limit={limit}&kat={kat}&length={length}"));
+            return new ApiRequest<CommentDataModel[]>(new Uri(
+                $"{ApiConstants.ApiUrlV1}/user/comments?uid={userId}&p={page}&limit={limit}&kat={kat}&length={length}"))
+            {
+                Senpai = senpai
+            };
         }
 
-        internal static ApiRequest<ListDataModel[]> UserGetList(int userId, string kat, int page, int limit)
+        internal static ApiRequest<ListDataModel[]> UserGetList(int userId, string kat, int page, int limit,
+            Senpai senpai = null)
         {
-            return
-                new ApiRequest<ListDataModel[]>(
-                    new Uri($"{ApiConstants.ApiUrlV1}/user/list?uid={userId}&kat={kat}&p={page}&limit={limit}"));
+            return new ApiRequest<ListDataModel[]>(new Uri(
+                $"{ApiConstants.ApiUrlV1}/user/list?uid={userId}&kat={kat}&p={page}&limit={limit}"))
+            {
+                Senpai = senpai
+            };
         }
 
-        internal static ApiRequest<DataModels.User.ToptenDataModel[]> UserGetTopten(int userId, string category)
+        internal static ApiRequest<DataModels.User.ToptenDataModel[]> UserGetTopten(int userId, string category,
+            Senpai senpai = null)
         {
-            return
-                new ApiRequest<DataModels.User.ToptenDataModel[]>(
-                    new Uri($"{ApiConstants.ApiUrlV1}/user/topten?uid={userId}&kat={category}"));
+            return new ApiRequest<DataModels.User.ToptenDataModel[]>(new Uri(
+                $"{ApiConstants.ApiUrlV1}/user/topten?uid={userId}&kat={category}"))
+            {
+                Senpai = senpai
+            };
         }
 
         internal static ApiRequest<LoginDataModel> UserLogin(string username, string password, Senpai senpai)
