@@ -10,7 +10,7 @@ namespace Azuria.Notifications.News
 {
     /// <summary>
     /// </summary>
-    public sealed class NewsNotificationEnumerator : PageEnumerator<NewsNotification>
+    internal sealed class NewsNotificationEnumerator : PageEnumerator<NewsNotification>
     {
         private readonly int _newsPerPage;
         private readonly Senpai _senpai;

@@ -7,17 +7,17 @@ using Azuria.Api.v1;
 using Azuria.Api.v1.DataModels.Messenger;
 using Azuria.ErrorHandling;
 
-namespace Azuria.Notifications.PrivateMessage
+namespace Azuria.Notifications.Message
 {
     /// <summary>
     /// </summary>
-    public sealed class PrivateMessageNotificationEnumerator : IEnumerator<PrivateMessageNotification>
+    internal sealed class MessageNotificationEnumerator : IEnumerator<MessageNotification>
     {
         private readonly Senpai _senpai;
-        private PrivateMessageNotification[] _content;
+        private MessageNotification[] _content;
         private int _currentContentIndex = -1;
 
-        internal PrivateMessageNotificationEnumerator(Senpai senpai)
+        internal MessageNotificationEnumerator(Senpai senpai)
         {
             this._senpai = senpai;
         }
@@ -25,7 +25,7 @@ namespace Azuria.Notifications.PrivateMessage
         #region Properties
 
         /// <inheritdoc />
-        public PrivateMessageNotification Current => this._content[this._currentContentIndex];
+        public MessageNotification Current => this._content[this._currentContentIndex];
 
         /// <inheritdoc />
         object IEnumerator.Current => this.Current;
@@ -42,17 +42,17 @@ namespace Azuria.Notifications.PrivateMessage
 
 
         /// <inheritdoc />
-        internal async Task<IProxerResult<IEnumerable<PrivateMessageNotification>>> GetNextPage()
+        internal async Task<IProxerResult<IEnumerable<MessageNotification>>> GetNextPage()
         {
             ProxerApiResponse<MessageDataModel[]> lResult =
                 await RequestHandler.ApiRequest(ApiRequestBuilder.MessengerGetMessages(this._senpai));
             if (!lResult.Success || (lResult.Result == null))
-                return new ProxerResult<IEnumerable<PrivateMessageNotification>>(lResult.Exceptions);
+                return new ProxerResult<IEnumerable<MessageNotification>>(lResult.Exceptions);
 
             return
-                new ProxerResult<IEnumerable<PrivateMessageNotification>>(
+                new ProxerResult<IEnumerable<MessageNotification>>(
                 (from notificationDataModel in lResult.Result
-                    select new PrivateMessageNotification(notificationDataModel, this._senpai)).Reverse());
+                    select new MessageNotification(notificationDataModel, this._senpai)).Reverse());
         }
 
         /// <inheritdoc />
@@ -60,11 +60,11 @@ namespace Azuria.Notifications.PrivateMessage
         {
             if (this._content == null)
             {
-                IProxerResult<IEnumerable<PrivateMessageNotification>> lGetSearchResult =
+                IProxerResult<IEnumerable<MessageNotification>> lGetSearchResult =
                     Task.Run(this.GetNextPage).Result;
                 if (!lGetSearchResult.Success || (lGetSearchResult.Result == null))
                     throw lGetSearchResult.Exceptions.FirstOrDefault() ?? new Exception("Unkown error");
-                this._content = lGetSearchResult.Result as PrivateMessageNotification[] ??
+                this._content = lGetSearchResult.Result as MessageNotification[] ??
                                 lGetSearchResult.Result.ToArray();
             }
             this._currentContentIndex++;
@@ -74,7 +74,7 @@ namespace Azuria.Notifications.PrivateMessage
         /// <inheritdoc />
         public void Reset()
         {
-            this._content = new PrivateMessageNotification[0];
+            this._content = new MessageNotification[0];
             this._currentContentIndex = -1;
         }
 

@@ -60,7 +60,7 @@ namespace Azuria.Notifications.Media
         /// <returns></returns>
         public Task<IProxerResult> Delete()
         {
-            return MediaNotificationManager.Create(this.Senpai).DeleteNotification(this.NotificationId);
+            return new NotificationManager(this.Senpai).DeleteMediaNotification(this.NotificationId);
         }
 
         /// <summary>

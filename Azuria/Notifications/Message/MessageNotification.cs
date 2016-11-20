@@ -7,17 +7,17 @@ using Azuria.Community;
 using Azuria.ErrorHandling;
 using Azuria.Utilities.Properties;
 
-namespace Azuria.Notifications.PrivateMessage
+namespace Azuria.Notifications.Message
 {
     /// <summary>
     /// Represents a private message notification.
     /// </summary>
-    public class PrivateMessageNotification : INotification
+    public class MessageNotification : INotification
     {
         private readonly int _conferenceId;
         private readonly InitialisableProperty<ConferenceInfo> _conferenceInfo;
 
-        internal PrivateMessageNotification(MessageDataModel dataModel, Senpai senpai)
+        internal MessageNotification(MessageDataModel dataModel, Senpai senpai)
         {
             this._conferenceInfo = new InitialisableProperty<ConferenceInfo>(this.InitConference);
             this._conferenceId = dataModel.ConferenceId;

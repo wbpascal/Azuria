@@ -1,16 +1,16 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 
-namespace Azuria.Notifications.PrivateMessage
+namespace Azuria.Notifications.Message
 {
     /// <summary>
     /// Represents a collection of private message notifications.
     /// </summary>
-    public class PrivateMessageNotificationEnumerable : IEnumerable<PrivateMessageNotification>
+    public class MessageNotificationEnumerable : IEnumerable<MessageNotification>
     {
         private readonly Senpai _senpai;
 
-        internal PrivateMessageNotificationEnumerable(Senpai senpai)
+        internal MessageNotificationEnumerable(Senpai senpai)
         {
             this._senpai = senpai;
         }
@@ -27,9 +27,9 @@ namespace Azuria.Notifications.PrivateMessage
         /// <summary>
         /// </summary>
         /// <returns></returns>
-        public IEnumerator<PrivateMessageNotification> GetEnumerator()
+        public IEnumerator<MessageNotification> GetEnumerator()
         {
-            return new PrivateMessageNotificationEnumerator(this._senpai);
+            return new MessageNotificationEnumerator(this._senpai);
         }
 
         #endregion

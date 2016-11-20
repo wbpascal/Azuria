@@ -18,15 +18,14 @@ namespace Azuria.Notifications.Media
 {
     /// <summary>
     /// </summary>
-    public sealed class MediaNotificationEnumerator<T> : IEnumerator<MediaNotification<T>>
+    internal sealed class MediaNotificationEnumerator<T> : IEnumerator<MediaNotification<T>>
         where T : IMediaObject
     {
         private static readonly Regex NotificationElementRegex = new Regex("<a class=\"notificationList\".*?<\\/a>");
 
-        private static readonly Regex NotificationInfoRegex =
-            new Regex(
-                "<a class=\"notificationList\".*?notification(?<nid>[0-9]+)\".*?href=\"(?<link>(\\/watch|\\/chapter).*?)\\#top\">.*?\"nDate\">(?<ndate>.*?)<\\/div>",
-                RegexOptions.ExplicitCapture);
+        private static readonly Regex NotificationInfoRegex = new Regex(
+            "<a class=\"notificationList\".*?notification(?<nid>[0-9]+)\".*?href=\"(?<link>(\\/watch|\\/chapter).*?)\\#top\">.*?\"nDate\">(?<ndate>.*?)<\\/div>",
+            RegexOptions.ExplicitCapture);
 
         private readonly int _nodesToParse;
         private readonly Senpai _senpai;
