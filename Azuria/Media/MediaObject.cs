@@ -51,13 +51,13 @@ namespace Azuria.Media
             this._description = new InitialisableProperty<string>(this.InitMainInfo);
             this._englishTitle = new InitialisableProperty<string>(this.InitNames, string.Empty)
             {
-                IsInitialisedOnce = false
+                IsInitialised = false
             };
             this._fsk = new InitialisableProperty<IEnumerable<FskType>>(this.InitMainInfo);
             this._genre = new InitialisableProperty<IEnumerable<GenreType>>(this.InitMainInfo);
             this._germanTitle = new InitialisableProperty<string>(this.InitNames, string.Empty)
             {
-                IsInitialisedOnce = false
+                IsInitialised = false
             };
             this._groups = new InitialisableProperty<IEnumerable<Translator>>(this.InitGroups);
             this._industry = new InitialisableProperty<IEnumerable<Industry>>(this.InitIndustry);
@@ -65,11 +65,11 @@ namespace Azuria.Media
             this._isHContent = new InitialisableProperty<bool>(this.InitIsHContent);
             this._japaneseTitle = new InitialisableProperty<string>(this.InitNames, string.Empty)
             {
-                IsInitialisedOnce = false
+                IsInitialised = false
             };
             this._name = new InitialisableProperty<string>(this.InitMainInfo, string.Empty)
             {
-                IsInitialisedOnce = false
+                IsInitialised = false
             };
             this._rating = new InitialisableProperty<MediaRating>(this.InitMainInfo);
             this._relations =
@@ -78,7 +78,7 @@ namespace Azuria.Media
             this._status = new InitialisableProperty<MediaStatus>(this.InitMainInfo);
             this._synonym = new InitialisableProperty<string>(this.InitNames, string.Empty)
             {
-                IsInitialisedOnce = false
+                IsInitialised = false
             };
             this._tags = new InitialisableProperty<IEnumerable<Tag>>(this.InitTags);
         }
@@ -240,7 +240,7 @@ namespace Azuria.Media
 
         protected void InitGroups(TranslatorDataModel[] translator)
         {
-            this._groups.SetInitialisedObject(from translatorDataModel in translator
+            this._groups.Set(from translatorDataModel in translator
                 select new Translator(translatorDataModel));
         }
 
@@ -256,7 +256,7 @@ namespace Azuria.Media
 
         protected void InitIndustry(PublisherDataModel[] publisher)
         {
-            this._industry.SetInitialisedObject(from publisherDataModel in publisher
+            this._industry.Set(from publisherDataModel in publisher
                 select new Industry(publisherDataModel));
         }
 
@@ -266,7 +266,7 @@ namespace Azuria.Media
                 await RequestHandler.ApiRequest(ApiRequestBuilder.InfoGetGate(this.Id));
             if (!lResult.Success) return new ProxerResult(lResult.Exceptions);
 
-            this._isHContent.SetInitialisedObject(lResult.Result);
+            this._isHContent.Set(lResult.Result);
 
             return new ProxerResult();
         }
@@ -279,16 +279,16 @@ namespace Azuria.Media
             EntryDataModel lDataModel = lResult.Result;
 
             (this as Anime)?.InitMainInfoAnime(lDataModel);
-            this._clicks.SetInitialisedObject(lDataModel.Clicks);
-            this._contentCount.SetInitialisedObject(lDataModel.ContentCount);
-            this._description.SetInitialisedObject(lDataModel.Description);
-            this._fsk.SetInitialisedObject(lDataModel.Fsk);
-            this._genre.SetInitialisedObject(lDataModel.Genre);
-            this._isLicensed.SetInitialisedObject(lDataModel.IsLicensed);
+            this._clicks.Set(lDataModel.Clicks);
+            this._contentCount.Set(lDataModel.ContentCount);
+            this._description.Set(lDataModel.Description);
+            this._fsk.Set(lDataModel.Fsk);
+            this._genre.Set(lDataModel.Genre);
+            this._isLicensed.Set(lDataModel.IsLicensed);
             (this as Manga)?.InitMainInfoManga(lDataModel);
-            this._name.SetInitialisedObject(lDataModel.EntryName);
-            this._rating.SetInitialisedObject(lDataModel.Rating);
-            this._status.SetInitialisedObject(lDataModel.Status);
+            this._name.Set(lDataModel.EntryName);
+            this._rating.Set(lDataModel.Rating);
+            this._status.Set(lDataModel.Status);
 
             return new ProxerResult();
         }
@@ -309,21 +309,27 @@ namespace Azuria.Media
                 switch (nameDataModel.Type)
                 {
                     case MediaNameType.Original:
-                        this._name.SetInitialisedObject(nameDataModel.Name);
+                        this._name.Set(nameDataModel.Name);
                         break;
                     case MediaNameType.English:
-                        this._englishTitle.SetInitialisedObject(nameDataModel.Name);
+                        this._englishTitle.Set(nameDataModel.Name);
                         break;
                     case MediaNameType.German:
-                        this._germanTitle.SetInitialisedObject(nameDataModel.Name);
+                        this._germanTitle.Set(nameDataModel.Name);
                         break;
                     case MediaNameType.Japanese:
-                        this._japaneseTitle.SetInitialisedObject(nameDataModel.Name);
+                        this._japaneseTitle.Set(nameDataModel.Name);
                         break;
                     case MediaNameType.Synonym:
-                        this._synonym.SetInitialisedObject(nameDataModel.Name);
+                        this._synonym.Set(nameDataModel.Name);
                         break;
                 }
+
+            this._name.SetIfNotInitialised(null);
+            this._englishTitle.SetIfNotInitialised(null);
+            this._germanTitle.SetIfNotInitialised(null);
+            this._japaneseTitle.SetIfNotInitialised(null);
+            this._synonym.SetIfNotInitialised(null);
         }
 
         protected async Task<IProxerResult> InitRelations()
@@ -332,7 +338,7 @@ namespace Azuria.Media
                 await RequestHandler.ApiRequest(ApiRequestBuilder.InfoGetRelations(this.Id));
             if (!lResult.Success || (lResult.Result == null)) return new ProxerResult(lResult.Exceptions);
 
-            this._relations.SetInitialisedObject(from dataModel in lResult.Result
+            this._relations.Set(from dataModel in lResult.Result
                 select dataModel.EntryType == MediaEntryType.Anime
                     ? new Anime(dataModel)
                     : (IMediaObject) new Manga(dataModel));
@@ -353,8 +359,8 @@ namespace Azuria.Media
         protected void InitSeasons(SeasonDataModel[] seasons)
         {
             if ((seasons.Length > 1) && !seasons[0].Equals(seasons[1]))
-                this._season.SetInitialisedObject(new MediaSeasonInfo(seasons[0], seasons[1]));
-            else if (seasons.Length > 0) this._season.SetInitialisedObject(new MediaSeasonInfo(seasons[0]));
+                this._season.Set(new MediaSeasonInfo(seasons[0], seasons[1]));
+            else if (seasons.Length > 0) this._season.Set(new MediaSeasonInfo(seasons[0]));
         }
 
         protected async Task<IProxerResult> InitTags()
@@ -369,7 +375,7 @@ namespace Azuria.Media
 
         protected void InitTags(MediaTagDataModel[] tags)
         {
-            this._tags.SetInitialisedObject(from entryTagDataModel in tags
+            this._tags.Set(from entryTagDataModel in tags
                 select new Tag(entryTagDataModel));
         }
 

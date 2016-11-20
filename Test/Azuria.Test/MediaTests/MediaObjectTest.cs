@@ -89,10 +89,10 @@ namespace Azuria.Test.MediaTests
             IMediaObject lValidObject = await MediaObject.CreateFullEntryFromId(9200).ThrowFirstForNonSuccess();
             Assert.IsNotNull(lValidObject);
             Assert.AreEqual(9200, lValidObject.Id);
-            Assert.IsTrue(lValidObject.Industry.IsInitialisedOnce);
-            Assert.IsTrue(lValidObject.Season.IsInitialisedOnce);
-            Assert.IsTrue(lValidObject.Tags.IsInitialisedOnce);
-            Assert.IsTrue(lValidObject.Translator.IsInitialisedOnce);
+            Assert.IsTrue(lValidObject.Industry.IsInitialised);
+            Assert.IsTrue(lValidObject.Season.IsInitialised);
+            Assert.IsTrue(lValidObject.Tags.IsInitialised);
+            Assert.IsTrue(lValidObject.Translator.IsInitialised);
 
             Assert.AreEqual(ErrorCode.InfoInvalidId,
                 Assert.CatchAsync<ProxerApiException>(() => MediaObject.CreateFromId(666).ThrowFirstForNonSuccess())
@@ -180,7 +180,7 @@ namespace Azuria.Test.MediaTests
         [Test]
         public async Task IsLicensedTest()
         {
-            IProxerResult<bool?> lResult = await this._mediaObject.IsLicensed.GetNewObject();
+            IProxerResult<bool?> lResult = await this._mediaObject.IsLicensed.GetNew();
             Assert.IsTrue(lResult.Success, JsonConvert.SerializeObject(lResult.Exceptions));
             Assert.IsNotNull(lResult.Result);
             Assert.IsTrue(lResult.Result.Value);
@@ -253,8 +253,7 @@ namespace Azuria.Test.MediaTests
         {
             IProxerResult<string> lResult = await this._mediaObject.Synonym;
             Assert.IsTrue(lResult.Success, JsonConvert.SerializeObject(lResult.Exceptions));
-            Assert.IsNotNull(lResult.Result);
-            Assert.IsEmpty(lResult.Result);
+            Assert.IsNull(lResult.Result);
         }
 
         [Test]
