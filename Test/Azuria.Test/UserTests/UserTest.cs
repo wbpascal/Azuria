@@ -38,7 +38,7 @@ namespace Azuria.Test.UserTests
             Assert.IsTrue(lAnime.All(entry => entry.MediaObject != null));
             Assert.IsTrue(lAnime.All(entry => entry.MediaObject.Id != default(int)));
             Assert.IsTrue(lAnime.All(entry =>
-                    !string.IsNullOrEmpty(entry.MediaObject.Name.GetObjectIfInitialised(string.Empty))));
+                    !string.IsNullOrEmpty(entry.MediaObject.Name.GetIfInitialised(string.Empty))));
             Assert.IsTrue(lAnime.All(entry => entry.User == this._user));
         }
 
@@ -47,7 +47,7 @@ namespace Azuria.Test.UserTests
         {
             Assert.CatchAsync<InvalidUserException>(() => User.System.Points.ThrowFirstOnNonSuccess());
 
-            IProxerResult<Uri> lResult = await this._user.Avatar.GetObject();
+            IProxerResult<Uri> lResult = await this._user.Avatar.Get();
             Assert.IsTrue(lResult.Success, JsonConvert.SerializeObject(lResult.Exceptions));
             Assert.IsTrue(lResult.Result.AbsoluteUri.StartsWith("https://cdn.proxer.me/avatar/"));
         }
@@ -99,7 +99,7 @@ namespace Azuria.Test.UserTests
             IProxerResult<User> lResult = await User.FromUsername("Username");
             Assert.IsTrue(lResult.Success, JsonConvert.SerializeObject(lResult.Exceptions));
             Assert.AreEqual(1, lResult.Result.Id);
-            Assert.AreEqual("Username", lResult.Result.UserName.GetObjectIfInitialised(string.Empty));
+            Assert.AreEqual("Username", lResult.Result.UserName.GetIfInitialised(string.Empty));
         }
 
         [Test]
@@ -125,7 +125,7 @@ namespace Azuria.Test.UserTests
             Assert.IsTrue(lManga.All(entry => entry.MediaObject != null));
             Assert.IsTrue(lManga.All(entry => entry.MediaObject.Id != default(int)));
             Assert.IsTrue(lManga.All(entry =>
-                    !string.IsNullOrEmpty(entry.MediaObject.Name.GetObjectIfInitialised(string.Empty))));
+                    !string.IsNullOrEmpty(entry.MediaObject.Name.GetIfInitialised(string.Empty))));
             Assert.IsTrue(lManga.All(entry => entry.User == this._user));
         }
 

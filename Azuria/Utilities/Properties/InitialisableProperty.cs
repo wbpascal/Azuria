@@ -19,7 +19,7 @@ namespace Azuria.Utilities.Properties
         public InitialisableProperty(Func<Task<IProxerResult>> initMethod)
         {
             this.InitMethod = initMethod;
-            this.IsInitialisedOnce = false;
+            this.IsInitialised = false;
         }
 
         /// <summary>
@@ -30,7 +30,7 @@ namespace Azuria.Utilities.Properties
         {
             this.InitMethod = initMethod;
             this.InitialisedObject = initialisationResult;
-            this.IsInitialisedOnce = true;
+            this.IsInitialised = true;
         }
 
         #region Properties
@@ -44,7 +44,7 @@ namespace Azuria.Utilities.Properties
         protected Func<Task<IProxerResult>> InitMethod { get; }
 
         /// <inheritdoc />
-        public bool IsInitialisedOnce { get; set; }
+        public bool IsInitialised { get; set; }
 
         #endregion
 
@@ -53,17 +53,17 @@ namespace Azuria.Utilities.Properties
         /// <inheritdoc />
         public async Task<IProxerResult> FetchObject()
         {
-            return await this.GetObject();
+            return await this.Get();
         }
 
         /// <inheritdoc />
         public TaskAwaiter<IProxerResult<T>> GetAwaiter()
         {
-            return this.GetObject().GetAwaiter();
+            return this.Get().GetAwaiter();
         }
 
         /// <inheritdoc />
-        public async Task<IProxerResult<T>> GetNewObject()
+        public async Task<IProxerResult<T>> GetNew()
         {
             IProxerResult lInitialiseResult = await this.InitMethod.Invoke();
             return !lInitialiseResult.Success
@@ -72,57 +72,65 @@ namespace Azuria.Utilities.Properties
         }
 
         /// <inheritdoc />
-        public Task<T> GetNewObject(T onError)
+        public Task<T> GetNew(T onError)
         {
-            return this.GetNewObject().OnError(onError);
+            return this.GetNew().OnError(onError);
         }
 
         /// <inheritdoc />
-        public async Task<IProxerResult<T>> GetObject()
+        public async Task<IProxerResult<T>> Get()
         {
-            return this.IsInitialisedOnce
+            return this.IsInitialised
                 ? new ProxerResult<T>(this.InitialisedObject)
-                : await this.GetNewObject();
+                : await this.GetNew();
         }
 
         /// <inheritdoc />
-        public Task<T> GetObject(T onError)
+        public Task<T> Get(T onError)
         {
-            return this.GetObject().OnError(onError);
+            return this.Get().OnError(onError);
         }
 
         /// <inheritdoc />
-        public T GetObjectIfInitialised()
+        public T GetIfInitialised()
         {
-            if (!this.IsInitialisedOnce) throw new NotInitialisedException();
+            if (!this.IsInitialised) throw new NotInitialisedException();
             return this.InitialisedObject;
         }
 
         /// <inheritdoc />
-        public T GetObjectIfInitialised(T ifNot)
+        public T GetIfInitialised(T ifNot)
         {
-            return this.IsInitialisedOnce ? this.InitialisedObject : ifNot;
+            return this.IsInitialised ? this.InitialisedObject : ifNot;
         }
 
         /// <summary>
         /// </summary>
         /// <param name="initialisedObject"></param>
-        public void SetInitialisedObject(T initialisedObject)
+        public void Set(T initialisedObject)
         {
             this.InitialisedObject = initialisedObject;
-            this.IsInitialisedOnce = true;
+            this.IsInitialised = true;
+        }
+
+        /// <summary>
+        /// </summary>
+        /// <param name="initialisedObject"></param>
+        public void SetIfNotInitialised(T initialisedObject)
+        {
+            if(!this.IsInitialised) this.Set(initialisedObject);
         }
 
         /// <inheritdoc />
         public Task<T> ThrowFirstOnNonSuccess()
         {
-            return this.GetObject().ThrowFirstForNonSuccess();
+            return this.Get().ThrowFirstForNonSuccess();
         }
 
         /// <inheritdoc />
         public override string ToString()
         {
-            return this.GetObjectIfInitialised().ToString();
+            return this.GetIfInitialised().ToString();
         }
 
         #endregion

@@ -27,9 +27,9 @@ namespace Azuria.Test
             Assert.IsNotNull(lResult);
             Assert.AreEqual(5, lResult.Length);
             Assert.IsTrue(
-                lResult.All(anime => new Regex(@"^[^a-zA-Z].*").IsMatch(anime.Name.GetObjectIfInitialised("ERROR"))));
+                lResult.All(anime => new Regex(@"^[^a-zA-Z].*").IsMatch(anime.Name.GetIfInitialised("ERROR"))));
             Assert.IsTrue(
-                lResult.All(anime => anime.MangaMedium.GetObjectIfInitialised(MangaMedium.Unknown) == MangaMedium.Series));
+                lResult.All(anime => anime.MangaMedium.GetIfInitialised(MangaMedium.Unknown) == MangaMedium.Series));
         }
 
         [Test]
@@ -55,9 +55,9 @@ namespace Azuria.Test
             }).ToArray();
             Assert.IsNotNull(lResult);
             Assert.AreEqual(3, lResult.Length);
-            Assert.IsTrue(lResult.All(o => o.ContentCount.GetObjectIfInitialised(int.MaxValue) <= 50));
-            Assert.IsTrue(lResult.All(o => o.Name.GetObjectIfInitialised("ERROR").Contains("a")));
-            Assert.IsTrue(lResult.All(o => o.Genre.GetObjectIfInitialised(new GenreType[0]).Contains(GenreType.Action)));
+            Assert.IsTrue(lResult.All(o => o.ContentCount.GetIfInitialised(int.MaxValue) <= 50));
+            Assert.IsTrue(lResult.All(o => o.Name.GetIfInitialised("ERROR").Contains("a")));
+            Assert.IsTrue(lResult.All(o => o.Genre.GetIfInitialised(new GenreType[0]).Contains(GenreType.Action)));
 
             Anime[] lAnimeResult = SearchHelper.Search<Anime>(input =>
             {

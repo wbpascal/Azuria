@@ -52,12 +52,12 @@ namespace Azuria.Test.UcpTests
 
             Assert.AreEqual(355, lEpisode.ParentObject.Id);
             Assert.AreEqual(7578, lChapter.ParentObject.Id);
-            Assert.AreEqual("Initial D First Stage", lEpisode.ParentObject.Name.GetObjectIfInitialised());
-            Assert.AreEqual("The Gamer", lChapter.ParentObject.Name.GetObjectIfInitialised());
-            Assert.AreEqual(AnimeMedium.Series, lEpisode.ParentObject.AnimeMedium.GetObjectIfInitialised());
-            Assert.AreEqual(MangaMedium.Series, lChapter.ParentObject.MangaMedium.GetObjectIfInitialised());
-            Assert.AreEqual(MediaStatus.Completed, lEpisode.ParentObject.Status.GetObjectIfInitialised());
-            Assert.AreEqual(MediaStatus.Airing, lChapter.ParentObject.Status.GetObjectIfInitialised());
+            Assert.AreEqual("Initial D First Stage", lEpisode.ParentObject.Name.GetIfInitialised());
+            Assert.AreEqual("The Gamer", lChapter.ParentObject.Name.GetIfInitialised());
+            Assert.AreEqual(AnimeMedium.Series, lEpisode.ParentObject.AnimeMedium.GetIfInitialised());
+            Assert.AreEqual(MangaMedium.Series, lChapter.ParentObject.MangaMedium.GetIfInitialised());
+            Assert.AreEqual(MediaStatus.Completed, lEpisode.ParentObject.Status.GetIfInitialised());
+            Assert.AreEqual(MediaStatus.Airing, lChapter.ParentObject.Status.GetIfInitialised());
         }
 
         [Test]

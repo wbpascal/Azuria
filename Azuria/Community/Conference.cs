@@ -44,7 +44,7 @@ namespace Azuria.Community
         internal Conference(ConferenceDataModel dataModel, Senpai senpai)
             : this(dataModel.ConferenceId, dataModel.IsConferenceGroup, senpai)
         {
-            this._topic.SetInitialisedObject(dataModel.ConferenceTitle);
+            this._topic.Set(dataModel.ConferenceTitle);
         }
 
         #region Properties
@@ -325,10 +325,10 @@ namespace Azuria.Community
             if (!lResult.Success || (lResult.Result == null)) return new ProxerResult(lResult.Exceptions);
             ConferenceInfoDataModel lData = lResult.Result;
 
-            this._leader.SetInitialisedObject(new User(lData.MainInfo.LeaderUserId));
-            this._participants.SetInitialisedObject(from conferenceInfoParticipantDataModel in lData.ParticipantsInfo
+            this._leader.Set(new User(lData.MainInfo.LeaderUserId));
+            this._participants.Set(from conferenceInfoParticipantDataModel in lData.ParticipantsInfo
                 select new User(conferenceInfoParticipantDataModel));
-            this._topic.SetInitialisedObject(lData.MainInfo.Title);
+            this._topic.Set(lData.MainInfo.Title);
 
             return new ProxerResult();
         }

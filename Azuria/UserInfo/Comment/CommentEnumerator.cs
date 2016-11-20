@@ -53,10 +53,10 @@ namespace Azuria.UserInfo.Comment
 
         private void InitialiseUserValues(CommentDataModel dataModel)
         {
-            if (!this._user.UserName.IsInitialisedOnce)
-                (this._user.UserName as InitialisableProperty<string>)?.SetInitialisedObject(dataModel.Username);
-            if (!this._user.Avatar.IsInitialisedOnce)
-                (this._user.Avatar as InitialisableProperty<Uri>)?.SetInitialisedObject(
+            if (!this._user.UserName.IsInitialised)
+                (this._user.UserName as InitialisableProperty<string>)?.Set(dataModel.Username);
+            if (!this._user.Avatar.IsInitialised)
+                (this._user.Avatar as InitialisableProperty<Uri>)?.Set(
                     new Uri("http://cdn.proxer.me/avatar/" + dataModel.Avatar));
         }
 

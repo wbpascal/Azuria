@@ -44,32 +44,32 @@ namespace Azuria.Media
 
         internal Anime(string name, int id) : this(id)
         {
-            this._name.SetInitialisedObject(name);
+            this._name.Set(name);
         }
 
         internal Anime(IEntryInfoDataModel dataModel) : this(dataModel.EntryName, dataModel.EntryId)
         {
             if (dataModel.EntryType != MediaEntryType.Anime)
                 throw new ArgumentException(nameof(dataModel.EntryType));
-            this._animeMedium.SetInitialisedObject((AnimeMedium) dataModel.EntryMedium);
+            this._animeMedium.Set((AnimeMedium) dataModel.EntryMedium);
         }
 
         private Anime(BookmarkDataModel dataModel) : this((IEntryInfoDataModel) dataModel)
         {
-            this._animeMedium.SetInitialisedObject((AnimeMedium) dataModel.EntryMedium);
-            this._status.SetInitialisedObject(dataModel.Status);
+            this._animeMedium.Set((AnimeMedium) dataModel.EntryMedium);
+            this._status.Set(dataModel.Status);
         }
 
         internal Anime(EntryDataModel dataModel) : this((IEntryInfoDataModel) dataModel)
         {
-            this._clicks.SetInitialisedObject(dataModel.Clicks);
-            this._contentCount.SetInitialisedObject(dataModel.ContentCount);
-            this._description.SetInitialisedObject(dataModel.Description);
-            this._fsk.SetInitialisedObject(dataModel.Fsk);
-            this._genre.SetInitialisedObject(dataModel.Genre);
-            this._isLicensed.SetInitialisedObject(dataModel.IsLicensed);
-            this._rating.SetInitialisedObject(dataModel.Rating);
-            this._status.SetInitialisedObject(dataModel.Status);
+            this._clicks.Set(dataModel.Clicks);
+            this._contentCount.Set(dataModel.ContentCount);
+            this._description.Set(dataModel.Description);
+            this._fsk.Set(dataModel.Fsk);
+            this._genre.Set(dataModel.Genre);
+            this._isLicensed.Set(dataModel.IsLicensed);
+            this._rating.Set(dataModel.Rating);
+            this._status.Set(dataModel.Status);
         }
 
         internal Anime(FullEntryDataModel dataModel) : this((EntryDataModel) dataModel)
@@ -79,21 +79,21 @@ namespace Azuria.Media
             this.InitNames(dataModel.Names);
             this.InitSeasons(dataModel.Seasons);
             this.InitTags(dataModel.Tags);
-            this._availableLanguages.SetInitialisedObject(dataModel.AvailableLanguages.Cast<AnimeLanguage>());
+            this._availableLanguages.Set(dataModel.AvailableLanguages.Cast<AnimeLanguage>());
         }
 
         internal Anime(RelationDataModel dataModel) : this((EntryDataModel) dataModel)
         {
-            this._availableLanguages.SetInitialisedObject(dataModel.AvailableLanguages.Cast<AnimeLanguage>());
+            this._availableLanguages.Set(dataModel.AvailableLanguages.Cast<AnimeLanguage>());
         }
 
         internal Anime(SearchDataModel dataModel) : this((IEntryInfoDataModel) dataModel)
         {
-            this._availableLanguages.SetInitialisedObject(dataModel.AvailableLanguages.Cast<AnimeLanguage>());
-            this._contentCount.SetInitialisedObject(dataModel.ContentCount);
-            this._genre.SetInitialisedObject(dataModel.Genre);
-            this._rating.SetInitialisedObject(dataModel.Rating);
-            this._status.SetInitialisedObject(dataModel.Status);
+            this._availableLanguages.Set(dataModel.AvailableLanguages.Cast<AnimeLanguage>());
+            this._contentCount.Set(dataModel.ContentCount);
+            this._genre.Set(dataModel.Genre);
+            this._rating.Set(dataModel.Rating);
+            this._status.Set(dataModel.Status);
         }
 
         #region Properties
@@ -132,7 +132,7 @@ namespace Azuria.Media
         /// </returns>
         public async Task<IProxerResult<IEnumerable<Episode>>> GetEpisodes(AnimeLanguage language)
         {
-            if (!(await this.AvailableLanguages.GetObject(new AnimeLanguage[0])).Contains(language))
+            if (!(await this.AvailableLanguages.Get(new AnimeLanguage[0])).Contains(language))
                 return new ProxerResult<IEnumerable<Episode>>(new LanguageNotAvailableException());
 
             IProxerResult<MediaContentDataModel[]> lContentObjectsResult =
@@ -150,13 +150,13 @@ namespace Azuria.Media
             ProxerApiResponse<MediaLanguage[]> lResult =
                 await RequestHandler.ApiRequest(ApiRequestBuilder.InfoGetLanguage(this.Id));
             if (!lResult.Success) return new ProxerResult(lResult.Exceptions);
-            this._availableLanguages.SetInitialisedObject(lResult.Result.Cast<AnimeLanguage>());
+            this._availableLanguages.Set(lResult.Result.Cast<AnimeLanguage>());
             return new ProxerResult();
         }
 
         internal void InitMainInfoAnime(EntryDataModel dataModel)
         {
-            this._animeMedium.SetInitialisedObject((AnimeMedium) dataModel.EntryMedium);
+            this._animeMedium.Set((AnimeMedium) dataModel.EntryMedium);
         }
 
         #endregion
@@ -258,7 +258,7 @@ namespace Azuria.Media
                         this.ContentIndex, this.Language.ToString().ToLowerInvariant(), this.Senpai));
                 if (!lResult.Success || (lResult.Result == null)) return new ProxerResult(lResult.Exceptions);
 
-                this._streams.SetInitialisedObject(from streamDataModel in lResult.Result
+                this._streams.Set(from streamDataModel in lResult.Result
                     select new Stream(streamDataModel, this));
 
                 return new ProxerResult();
@@ -346,7 +346,7 @@ namespace Azuria.Media
                     if (!lResult.Success || (lResult.Result == null)) return new ProxerResult(lResult.Exceptions);
                     string lData = lResult.Result;
 
-                    this._link.SetInitialisedObject(new Uri(lData.StartsWith("//") ? $"https:{lData}" : lData));
+                    this._link.Set(new Uri(lData.StartsWith("//") ? $"https:{lData}" : lData));
 
                     return new ProxerResult();
                 }

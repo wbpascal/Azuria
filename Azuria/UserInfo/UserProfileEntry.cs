@@ -46,21 +46,21 @@ namespace Azuria.UserInfo
             if (typeof(T) == typeof(Anime))
             {
                 Anime lAnime = new Anime(dataModel.EntryName, dataModel.EntryId);
-                (lAnime.AnimeMedium as InitialisableProperty<AnimeMedium>)?.SetInitialisedObject(
+                (lAnime.AnimeMedium as InitialisableProperty<AnimeMedium>)?.Set(
                     (AnimeMedium) dataModel.EntryMedium);
                 lReturnObject = lAnime as T;
             }
             else if (typeof(T) == typeof(Manga))
             {
                 Manga lManga = new Manga(dataModel.EntryName, dataModel.EntryId);
-                (lManga.MangaMedium as InitialisableProperty<MangaMedium>)?.SetInitialisedObject(
+                (lManga.MangaMedium as InitialisableProperty<MangaMedium>)?.Set(
                     (MangaMedium) dataModel.EntryMedium);
                 lReturnObject = lManga as T;
             }
             else throw new ArgumentException(nameof(T));
 
-            (lReturnObject?.ContentCount as InitialisableProperty<int>)?.SetInitialisedObject(dataModel.ContentCount);
-            (lReturnObject?.Status as InitialisableProperty<MediaStatus>)?.SetInitialisedObject(
+            (lReturnObject?.ContentCount as InitialisableProperty<int>)?.Set(dataModel.ContentCount);
+            (lReturnObject?.Status as InitialisableProperty<MediaStatus>)?.Set(
                 dataModel.EntryStatus);
 
             return lReturnObject;

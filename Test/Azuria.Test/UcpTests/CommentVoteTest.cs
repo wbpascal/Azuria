@@ -22,7 +22,7 @@ namespace Azuria.Test.UcpTests
         public void AuthorTest()
         {
             Assert.AreEqual(163825, this._vote.Author.Id);
-            Assert.AreEqual("KutoSan", this._vote.Author.UserName.GetObjectIfInitialised(string.Empty));
+            Assert.AreEqual("KutoSan", this._vote.Author.UserName.GetIfInitialised(string.Empty));
         }
 
         [Test]

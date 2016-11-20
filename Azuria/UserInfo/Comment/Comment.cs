@@ -107,9 +107,9 @@ namespace Azuria.UserInfo.Comment
                 await RequestHandler.ApiRequest(ApiRequestBuilder.UcpSetProgress(this.Id, progress, senpai));
             if (!lResult.Success) return new ProxerResult(lResult.Exceptions);
 
-            if (progress < await this.MediaObject.ContentCount.GetObject(int.MaxValue)) return new ProxerResult();
+            if (progress < await this.MediaObject.ContentCount.Get(int.MaxValue)) return new ProxerResult();
 
-            this.Progress = await this.MediaObject.ContentCount.GetObject(int.MaxValue);
+            this.Progress = await this.MediaObject.ContentCount.Get(int.MaxValue);
             this.ProgressState = MediaProgressState.Finished;
 
             return new ProxerResult();

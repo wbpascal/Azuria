@@ -17,7 +17,7 @@ namespace Azuria.Utilities.Properties
             : base(initMethod)
         {
             this._setMethod = setMethod;
-            this.IsInitialisedOnce = false;
+            this.IsInitialised = false;
         }
 
         internal SetableInitialisableProperty(Func<Task<IProxerResult>> initMethod,
@@ -25,7 +25,7 @@ namespace Azuria.Utilities.Properties
             T initialisationResult) : base(initMethod, initialisationResult)
         {
             this._setMethod = setMethod;
-            this.IsInitialisedOnce = true;
+            this.IsInitialised = true;
         }
 
         #region Methods
@@ -39,8 +39,8 @@ namespace Azuria.Utilities.Properties
         {
             IProxerResult lInvokeResult = await this._setMethod.Invoke(newValue);
             if (!lInvokeResult.Success) return new ProxerResult<T>(lInvokeResult.Exceptions);
-            this.SetInitialisedObject(newValue);
-            return await this.GetObject();
+            this.Set(newValue);
+            return await this.Get();
         }
 
         #endregion

@@ -168,10 +168,10 @@ namespace Azuria.UserInfo.ControlPanel
             switch (category)
             {
                 case "anime":
-                    this._pointsAnime.SetInitialisedObject(lResult.Result);
+                    this._pointsAnime.Set(lResult.Result);
                     break;
                 case "manga":
-                    this._pointsManga.SetInitialisedObject(lResult.Result);
+                    this._pointsManga.Set(lResult.Result);
                     break;
             }
 
@@ -185,10 +185,10 @@ namespace Azuria.UserInfo.ControlPanel
             if (!lResult.Success || (lResult.Result == null)) return new ProxerResult(lResult.Exceptions);
 
             ToptenDataModel[] lData = lResult.Result;
-            this._toptenAnime.SetInitialisedObject(from toptenDataModel in lData
+            this._toptenAnime.Set(from toptenDataModel in lData
                 where toptenDataModel.EntryType == MediaEntryType.Anime
                 select new ToptenObject<Anime>(toptenDataModel.ToptenId, new Anime(toptenDataModel), this));
-            this._toptenManga.SetInitialisedObject(from toptenDataModel in lData
+            this._toptenManga.Set(from toptenDataModel in lData
                 where toptenDataModel.EntryType == MediaEntryType.Manga
                 select new ToptenObject<Manga>(toptenDataModel.ToptenId, new Manga(toptenDataModel), this));
 
@@ -201,7 +201,7 @@ namespace Azuria.UserInfo.ControlPanel
                 await RequestHandler.ApiRequest(ApiRequestBuilder.UcpGetVotes(this._senpai));
             if (!lResult.Success || (lResult.Result == null)) return new ProxerResult(lResult.Exceptions);
 
-            this._commentVotes.SetInitialisedObject(from voteDataModel in lResult.Result
+            this._commentVotes.Set(from voteDataModel in lResult.Result
                 select new CommentVote(voteDataModel, this));
             return new ProxerResult();
         }

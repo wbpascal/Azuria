@@ -43,32 +43,32 @@ namespace Azuria.Media
 
         internal Manga(string name, int id) : this(id)
         {
-            this._name.SetInitialisedObject(name);
+            this._name.Set(name);
         }
 
         internal Manga(IEntryInfoDataModel dataModel) : this(dataModel.EntryName, dataModel.EntryId)
         {
             if (dataModel.EntryType != MediaEntryType.Manga)
                 throw new ArgumentException(nameof(dataModel.EntryType));
-            this._mangaMedium.SetInitialisedObject((MangaMedium) dataModel.EntryMedium);
+            this._mangaMedium.Set((MangaMedium) dataModel.EntryMedium);
         }
 
         internal Manga(BookmarkDataModel dataModel) : this((IEntryInfoDataModel) dataModel)
         {
-            this._mangaMedium.SetInitialisedObject((MangaMedium) dataModel.EntryMedium);
-            this._status.SetInitialisedObject(dataModel.Status);
+            this._mangaMedium.Set((MangaMedium) dataModel.EntryMedium);
+            this._status.Set(dataModel.Status);
         }
 
         internal Manga(EntryDataModel dataModel) : this((IEntryInfoDataModel) dataModel)
         {
-            this._clicks.SetInitialisedObject(dataModel.Clicks);
-            this._contentCount.SetInitialisedObject(dataModel.ContentCount);
-            this._description.SetInitialisedObject(dataModel.Description);
-            this._fsk.SetInitialisedObject(dataModel.Fsk);
-            this._genre.SetInitialisedObject(dataModel.Genre);
-            this._isLicensed.SetInitialisedObject(dataModel.IsLicensed);
-            this._rating.SetInitialisedObject(dataModel.Rating);
-            this._status.SetInitialisedObject(dataModel.Status);
+            this._clicks.Set(dataModel.Clicks);
+            this._contentCount.Set(dataModel.ContentCount);
+            this._description.Set(dataModel.Description);
+            this._fsk.Set(dataModel.Fsk);
+            this._genre.Set(dataModel.Genre);
+            this._isLicensed.Set(dataModel.IsLicensed);
+            this._rating.Set(dataModel.Rating);
+            this._status.Set(dataModel.Status);
         }
 
         internal Manga(FullEntryDataModel dataModel) : this((EntryDataModel) dataModel)
@@ -78,21 +78,21 @@ namespace Azuria.Media
             this.InitNames(dataModel.Names);
             this.InitSeasons(dataModel.Seasons);
             this.InitTags(dataModel.Tags);
-            this._availableLanguages.SetInitialisedObject(dataModel.AvailableLanguages.Cast<Language>());
+            this._availableLanguages.Set(dataModel.AvailableLanguages.Cast<Language>());
         }
 
         internal Manga(RelationDataModel dataModel) : this((EntryDataModel) dataModel)
         {
-            this._availableLanguages.SetInitialisedObject(dataModel.AvailableLanguages.Cast<Language>());
+            this._availableLanguages.Set(dataModel.AvailableLanguages.Cast<Language>());
         }
 
         internal Manga(SearchDataModel dataModel) : this((IEntryInfoDataModel) dataModel)
         {
-            this._availableLanguages.SetInitialisedObject(dataModel.AvailableLanguages.Cast<Language>());
-            this._contentCount.SetInitialisedObject(dataModel.ContentCount);
-            this._genre.SetInitialisedObject(dataModel.Genre);
-            this._rating.SetInitialisedObject(dataModel.Rating);
-            this._status.SetInitialisedObject(dataModel.Status);
+            this._availableLanguages.Set(dataModel.AvailableLanguages.Cast<Language>());
+            this._contentCount.Set(dataModel.ContentCount);
+            this._genre.Set(dataModel.Genre);
+            this._rating.Set(dataModel.Rating);
+            this._status.Set(dataModel.Status);
         }
 
         #region Properties
@@ -132,7 +132,7 @@ namespace Azuria.Media
         /// </returns>
         public async Task<IProxerResult<IEnumerable<Chapter>>> GetChapters(Language language)
         {
-            if (!(await this.AvailableLanguages.GetObject(new Language[0])).Contains(language))
+            if (!(await this.AvailableLanguages.Get(new Language[0])).Contains(language))
                 return new ProxerResult<IEnumerable<Chapter>>(new Exception[] {new LanguageNotAvailableException()});
 
             IProxerResult<MediaContentDataModel[]> lContentObjectsResult =
@@ -150,13 +150,13 @@ namespace Azuria.Media
             ProxerApiResponse<MediaLanguage[]> lResult =
                 await RequestHandler.ApiRequest(ApiRequestBuilder.InfoGetLanguage(this.Id));
             if (!lResult.Success || (lResult.Result == null)) return new ProxerResult(lResult.Exceptions);
-            this._availableLanguages.SetInitialisedObject(lResult.Result.Cast<Language>());
+            this._availableLanguages.Set(lResult.Result.Cast<Language>());
             return new ProxerResult();
         }
 
         internal void InitMainInfoManga(EntryDataModel dataModel)
         {
-            this._mangaMedium.SetInitialisedObject((MangaMedium) dataModel.EntryMedium);
+            this._mangaMedium.Set((MangaMedium) dataModel.EntryMedium);
         }
 
         #endregion
@@ -189,7 +189,7 @@ namespace Azuria.Media
                 this.Language = (Language) dataModel.Language;
                 this.ParentObject = manga;
 
-                this._title.SetInitialisedObject(dataModel.Title);
+                this._title.Set(dataModel.Title);
             }
 
             internal Chapter(BookmarkDataModel dataModel) : this()
@@ -285,13 +285,13 @@ namespace Azuria.Media
                 if (!lResult.Success || (lResult.Result == null)) return new ProxerResult(lResult.Exceptions);
                 ChapterDataModel lData = lResult.Result;
 
-                this._chapterId.SetInitialisedObject(lData.ChapterId);
-                this._pages.SetInitialisedObject(from pageDataModel in lData.Pages
+                this._chapterId.Set(lData.ChapterId);
+                this._pages.Set(from pageDataModel in lData.Pages
                     select new Page(pageDataModel, lData.ServerId, lData.EntryId, lData.ChapterId));
-                this._uploadDate.SetInitialisedObject(lData.UploadTimestamp);
-                this._uploader.SetInitialisedObject(new User(lData.UploaderName, lData.UploaderId));
-                this._title.SetInitialisedObject(lData.ChapterTitle);
-                this._translator.SetInitialisedObject(lData.TranslatorId == null
+                this._uploadDate.Set(lData.UploadTimestamp);
+                this._uploader.Set(new User(lData.UploaderName, lData.UploaderId));
+                this._title.Set(lData.ChapterTitle);
+                this._translator.Set(lData.TranslatorId == null
                     ? null
                     : new Translator(lData.TranslatorId.Value, lData.TranslatorName, this.GeneralLanguage));
 

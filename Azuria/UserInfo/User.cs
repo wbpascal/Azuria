@@ -46,7 +46,7 @@ namespace Azuria.UserInfo
             this._avatar = new InitialisableProperty<Uri>(
                 this.InitMainInfo, new Uri(ApiConstants.ProxerNoAvatarCdnUrl))
             {
-                IsInitialisedOnce = false
+                IsInitialised = false
             };
             this._toptenAnime = new ArgumentInitialisableProperty<Senpai, IEnumerable<Anime>>(
                 senpai => this.InitTopten(MediaEntryType.Anime, senpai));
@@ -62,19 +62,19 @@ namespace Azuria.UserInfo
 
         internal User(string name, int userId) : this(userId)
         {
-            this._userName.SetInitialisedObject(name);
+            this._userName.Set(name);
         }
 
         internal User(int userId, Uri avatar)
             : this(userId)
         {
-            this._avatar.SetInitialisedObject(avatar ?? new Uri(ApiConstants.ProxerNoAvatarCdnUrl));
+            this._avatar.Set(avatar ?? new Uri(ApiConstants.ProxerNoAvatarCdnUrl));
         }
 
         internal User(string name, int userId, Uri avatar)
             : this(name, userId)
         {
-            this._avatar.SetInitialisedObject(avatar ?? new Uri(ApiConstants.ProxerNoAvatarCdnUrl));
+            this._avatar.Set(avatar ?? new Uri(ApiConstants.ProxerNoAvatarCdnUrl));
         }
 
         internal User(UserInfoDataModel dataModel)
@@ -82,8 +82,8 @@ namespace Azuria.UserInfo
                 dataModel.Username, dataModel.UserId, new Uri(ApiConstants.ProxerAvatarShortCdnUrl + dataModel.AvatarId)
             )
         {
-            this._points.SetInitialisedObject(dataModel.Points);
-            this._status.SetInitialisedObject(dataModel.Status);
+            this._points.Set(dataModel.Points);
+            this._status.Set(dataModel.Status);
         }
 
         internal User(ConferenceInfoParticipantDataModel dataModel)
@@ -91,7 +91,7 @@ namespace Azuria.UserInfo
                 dataModel.Username, dataModel.UserId, new Uri(ApiConstants.ProxerAvatarShortCdnUrl + dataModel.AvatarId)
             )
         {
-            this._status.SetInitialisedObject(new UserStatus(dataModel.UserStatus, DateTime.MinValue));
+            this._status.Set(new UserStatus(dataModel.UserStatus, DateTime.MinValue));
         }
 
         #region Properties
@@ -174,10 +174,10 @@ namespace Azuria.UserInfo
             if (!lResult.Success || (lResult.Result == null)) return new ProxerResult(lResult.Exceptions);
 
             UserInfoDataModel lDataModel = lResult.Result;
-            this._avatar.SetInitialisedObject(new Uri(ApiConstants.ProxerAvatarShortCdnUrl + lDataModel.AvatarId));
-            this._points.SetInitialisedObject(lDataModel.Points);
-            this._status.SetInitialisedObject(lDataModel.Status);
-            this._userName.SetInitialisedObject(lDataModel.Username);
+            this._avatar.Set(new Uri(ApiConstants.ProxerAvatarShortCdnUrl + lDataModel.AvatarId));
+            this._points.Set(lDataModel.Points);
+            this._status.Set(lDataModel.Status);
+            this._userName.Set(lDataModel.Username);
 
             return new ProxerResult();
         }

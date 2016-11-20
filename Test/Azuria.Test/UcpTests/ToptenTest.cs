@@ -35,13 +35,13 @@ namespace Azuria.Test.UcpTests
             Assert.AreEqual(41, this._toptenAnimeObject.MediaObject.Id);
             Assert.AreEqual(4385, this._toptenMangaObject.MediaObject.Id);
             Assert.AreEqual("Code Geass: Hangyaku no Lelouch R2",
-                this._toptenAnimeObject.MediaObject.Name.GetObjectIfInitialised(string.Empty));
+                this._toptenAnimeObject.MediaObject.Name.GetIfInitialised(string.Empty));
             Assert.AreEqual("Ao Haru Ride",
-                this._toptenMangaObject.MediaObject.Name.GetObjectIfInitialised(string.Empty));
+                this._toptenMangaObject.MediaObject.Name.GetIfInitialised(string.Empty));
             Assert.AreEqual(AnimeMedium.Series,
-                this._toptenAnimeObject.MediaObject.AnimeMedium.GetObjectIfInitialised(AnimeMedium.Unknown));
+                this._toptenAnimeObject.MediaObject.AnimeMedium.GetIfInitialised(AnimeMedium.Unknown));
             Assert.AreEqual(MangaMedium.Series,
-                this._toptenMangaObject.MediaObject.MangaMedium.GetObjectIfInitialised(MangaMedium.Unknown));
+                this._toptenMangaObject.MediaObject.MangaMedium.GetIfInitialised(MangaMedium.Unknown));
         }
 
         [Test]

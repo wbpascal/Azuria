@@ -106,7 +106,7 @@ namespace Azuria.Test.MediaTests
             Assert.IsTrue(lResult.Success, JsonConvert.SerializeObject(lResult.Exceptions));
             Assert.IsNotNull(lResult.Result);
             Assert.AreEqual(177103, lResult.Result.Id);
-            Assert.AreEqual("InfiniteSoul", lResult.Result.UserName.GetObjectIfInitialised(string.Empty));
+            Assert.AreEqual("InfiniteSoul", lResult.Result.UserName.GetIfInitialised(string.Empty));
         }
     }
 }

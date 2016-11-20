@@ -47,7 +47,7 @@ namespace Azuria.Test.MediaTests
         [Test]
         public async Task MangaMediumTest()
         {
-            IProxerResult<MangaMedium> lResult = await this._manga.MangaMedium.GetNewObject();
+            IProxerResult<MangaMedium> lResult = await this._manga.MangaMedium.GetNew();
             Assert.IsTrue(lResult.Success, JsonConvert.SerializeObject(lResult.Exceptions));
             Assert.AreEqual(MangaMedium.Series, lResult.Result);
         }

@@ -57,7 +57,7 @@ namespace Azuria.Notifications.PrivateMessage
             if (!lConferencesResult.Success || (lConferencesResult.Result == null))
                 return new ProxerResult(lConferencesResult.Exceptions);
 
-            this._conferenceInfo.SetInitialisedObject(
+            this._conferenceInfo.Set(
                 lConferencesResult.Result.FirstOrDefault(info => info.Conference.Id == this._conferenceId));
             return new ProxerResult();
         }
