@@ -19,7 +19,7 @@ namespace Azuria.Test.Core
             this._senpai = senpai;
         }
 
-        #region Methods
+         #region Methods
 
         /// <inheritdoc />
         public void Dispose()
@@ -29,17 +29,18 @@ namespace Azuria.Test.Core
         /// <inheritdoc />
         public async Task<IProxerResult<string>> GetRequest(Uri url, Dictionary<string, string> headers = null)
         {
-            return await Task.Factory.StartNew(() => new ProxerResult<string>(new NotImplementedException()));
+            return
+                await Task.Factory.StartNew(() => this.GetResponse(url, RequestMethod.Get, new Dictionary<string, string>(), headers));
         }
 
         /// <inheritdoc />
         public async Task<IProxerResult<string>> PostRequest(Uri url, IEnumerable<KeyValuePair<string, string>> postArgs,
             Dictionary<string, string> headers = null)
         {
-            return await Task.Factory.StartNew(() => this.PostRequestSync(url, postArgs, headers));
+            return await Task.Factory.StartNew(() => this.GetResponse(url, RequestMethod.Post, postArgs, headers));
         }
 
-        private IProxerResult<string> PostRequestSync(Uri url, IEnumerable<KeyValuePair<string, string>> postArgs,
+        private IProxerResult<string> GetResponse(Uri url, RequestMethod method, IEnumerable<KeyValuePair<string, string>> postArgs,
             Dictionary<string, string> headers = null)
         {
             IEnumerable<KeyValuePair<string, string>> postArgsArray = postArgs as KeyValuePair<string, string>[] ??
@@ -53,8 +54,9 @@ namespace Azuria.Test.Core
                     .Reverse()
                     .Where(response => url.AbsoluteUri.StartsWith(response.BaseUrl)))
             {
-                IEnumerable<ServerRequest> lMatchingRequests = response.PostRequests.Where(request =>
+                IEnumerable<ServerRequest> lMatchingRequests = response.Requests.Where(request =>
                             (response.BaseUrl + request.Url).Equals($"{url.Scheme}://{url.Host}{url.AbsolutePath}"))
+                    .Where(request => request.RequestMethod == method)
                     .Where(request => request.QueryParams.Count == lQueryParams.Count)
                     .Where(request => lQueryParams.All((key, value) =>
                         request.QueryParams.ContainsKey(key) &&

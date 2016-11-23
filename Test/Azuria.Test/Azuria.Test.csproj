@@ -66,6 +66,7 @@
     <Compile Include="MediaTests\HeaderHelperTest.cs" />
     <Compile Include="MediaTests\MangaTest.cs" />
     <Compile Include="MediaTests\StreamTest.cs" />
+    <Compile Include="NotificationTests\NotificationManagerTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SearchTest.cs" />
     <Compile Include="SenpaiTest.cs" />

@@ -32,7 +32,7 @@ namespace Azuria.Notifications.OtherMedia
         /// <returns></returns>
         public IEnumerator<OtherMediaNotification> GetEnumerator()
         {
-            return new OtherMediaNotificationEnumerator(this._senpai, this._nodesToParse);
+            return new OtherMediaNotificationEnumerator(this._senpai);
         }
 
         #endregion

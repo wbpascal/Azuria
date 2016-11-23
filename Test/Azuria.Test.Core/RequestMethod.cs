@@ -1,6 +1,6 @@
 ﻿namespace Azuria.Test.Core
 {
-    public enum RequestType
+    public enum RequestMethod
     {
         Post,
         Get

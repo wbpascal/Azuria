@@ -48,7 +48,7 @@ namespace Azuria.Notifications
         /// </summary>
         /// <param name="notificationId"></param>
         /// <returns></returns>
-        public async Task<IProxerResult> DeleteMediaNotification(int notificationId)
+        public async Task<IProxerResult> DeleteOtherMediaNotification(int notificationId)
         {
             ProxerApiResponse lResult = await RequestHandler.ApiRequest(
                 ApiRequestBuilder.NotificationDelete(this._senpai, notificationId));
@@ -58,7 +58,7 @@ namespace Azuria.Notifications
         /// <summary>
         /// </summary>
         /// <returns></returns>
-        public async Task<IProxerResult> DeleteReadMediaNotifications()
+        public async Task<IProxerResult> DeleteAllOtherMediaNotifications()
         {
             ProxerApiResponse lResult = await RequestHandler.ApiRequest(
                 ApiRequestBuilder.NotificationDelete(this._senpai));
@@ -68,7 +68,7 @@ namespace Azuria.Notifications
         /// <summary>
         /// </summary>
         /// <returns></returns>
-        public async Task<IProxerResult<NotificationCount>> GetUnreadCount()
+        public async Task<IProxerResult<NotificationCount>> GetCount()
         {
             ProxerApiResponse<NotificationCountDataModel> lResult =
                 await RequestHandler.ApiRequest(ApiRequestBuilder.NotificationGetCount(this._senpai));

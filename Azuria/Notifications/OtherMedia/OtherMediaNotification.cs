@@ -15,12 +15,12 @@ namespace Azuria.Notifications.OtherMedia
         internal OtherMediaNotification(MediaNotification mediaNotification)
         {
             this.MediaNotification = mediaNotification;
-            this.NotificationId = mediaNotification.NotificationId.ToString();
+            this.NotificationId = mediaNotification.NotificationId;
             this.NotificationType = OtherMediaType.Media;
             this.Senpai = mediaNotification.Senpai;
         }
 
-        internal OtherMediaNotification(string message, string notificationId, Senpai senpai)
+        internal OtherMediaNotification(string message, int notificationId, Senpai senpai)
         {
             this.Message = message;
             this.NotificationId = notificationId;
@@ -38,7 +38,7 @@ namespace Azuria.Notifications.OtherMedia
         public string Message { get; }
 
         /// <inheritdoc />
-        public string NotificationId { get; }
+        public int NotificationId { get; }
 
         /// <inheritdoc />
         public Senpai Senpai { get; }
@@ -47,5 +47,7 @@ namespace Azuria.Notifications.OtherMedia
         /// 
         /// </summary>
         public OtherMediaType NotificationType { get; }
+
+        string INotification.NotificationId => this.NotificationId.ToString();
     }
 }

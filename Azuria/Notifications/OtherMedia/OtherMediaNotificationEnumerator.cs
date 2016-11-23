@@ -24,15 +24,13 @@ namespace Azuria.Notifications.OtherMedia
             "<a class=\"notificationList\".*?notification(?<nid>[0-9]+)\".*?href=\"(?<link>.*?)#top\">(?<message>.*?)<div.*?nDate\">(?<ndate>.*?)<\\/div>",
             RegexOptions.ExplicitCapture);
 
-        private readonly int _nodesToParse;
         private readonly Senpai _senpai;
         private OtherMediaNotification[] _content;
         private int _currentContentIndex = -1;
 
-        internal OtherMediaNotificationEnumerator(Senpai senpai, int nodesToParse = 0)
+        internal OtherMediaNotificationEnumerator(Senpai senpai)
         {
             this._senpai = senpai;
-            this._nodesToParse = nodesToParse;
         }
 
         #region Properties
@@ -65,18 +63,15 @@ namespace Azuria.Notifications.OtherMedia
                 return new ProxerResult<IEnumerable<OtherMediaNotification>>(lResponse.Exceptions);
 
             List<OtherMediaNotification> lNotifications = new List<OtherMediaNotification>();
-            MatchCollection lMatches = NotificationInfoRegex.Matches(lResponse.Result);
+            MatchCollection lMatches = NotificationInfoRegex.Matches(lResponse.Result.Replace("\n", ""));
 
             foreach (Match lNotification in lMatches)
             {
-                if (lNotification.Groups["link"].Value.ContainsOne("watch", "chapter"))
-                {
-                    lNotifications.AddIf(this.ParseMediaNode(lNotification), notification => notification != null);
-                }
-                else
-                {
-                    //TODO: ParseOther   
-                }
+                lNotifications.AddIf(
+                    lNotification.Groups["link"].Value.ContainsOne("watch", "chapter")
+                        ? this.ParseMediaNode(lNotification)
+                        : this.ParseOtherNode(lNotification)
+                    , notification => notification != null);
             }
 
             return new ProxerResult<IEnumerable<OtherMediaNotification>>(lNotifications);
@@ -116,6 +111,12 @@ namespace Azuria.Notifications.OtherMedia
 
             return new OtherMediaNotification(new MediaNotification(
                 lNotificationId, lMediaObject, lContentIndex, lLanguage, lDate, this._senpai));
+        }
+
+        private OtherMediaNotification ParseOtherNode(Match node)
+        {
+            return new OtherMediaNotification(node.Groups["message"].Value, Convert.ToInt32(node.Groups["nid"].Value),
+                this._senpai);
         }
 
         /// <inheritdoc />

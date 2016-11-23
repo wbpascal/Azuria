@@ -21,7 +21,7 @@ namespace Azuria.Test.Core
 
         public IDictionary<string, string> QueryParams { get; set; } = new Dictionary<string, string>();
 
-        public RequestType RequestType { get; set; }
+        public RequestMethod RequestMethod { get; set; }
 
         public string Url { get; set; }
 

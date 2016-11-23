@@ -14,7 +14,7 @@ namespace Azuria.Test.Core
 
         public string BaseUrl { get; }
 
-        public List<ServerRequest> PostRequests { get; set; } = new List<ServerRequest>();
+        public List<ServerRequest> Requests { get; set; } = new List<ServerRequest>();
 
         public string Response { get; private set; }
 
@@ -34,8 +34,15 @@ namespace Azuria.Test.Core
 
         public ServerRequest Post(string url)
         {
-            ServerRequest lRequest = new ServerRequest(url) {RequestType = RequestType.Post};
-            this.PostRequests.Add(lRequest);
+            ServerRequest lRequest = new ServerRequest(url) {RequestMethod = RequestMethod.Post};
+            this.Requests.Add(lRequest);
+            return lRequest;
+        }
+
+        public ServerRequest Get(string url)
+        {
+            ServerRequest lRequest = new ServerRequest(url) { RequestMethod = RequestMethod.Get };
+            this.Requests.Add(lRequest);
             return lRequest;
         }
 
