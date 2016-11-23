@@ -3,9 +3,9 @@ using Azuria.Api.v1;
 using Azuria.Api.v1.DataModels.Notifications;
 using Azuria.ErrorHandling;
 using Azuria.Media;
-using Azuria.Notifications.Media;
 using Azuria.Notifications.Message;
 using Azuria.Notifications.News;
+using Azuria.Notifications.OtherMedia;
 
 namespace Azuria.Notifications
 {
@@ -21,9 +21,7 @@ namespace Azuria.Notifications
         public NotificationManager(Senpai senpai)
         {
             this._senpai = senpai;
-            this.AnimeNotifications = new MediaNotificationEnumerable<Anime>(senpai);
-            this.MangaNotifications = new MediaNotificationEnumerable<Manga>(senpai);
-            this.MediaNotifications = new MediaNotificationEnumerable<IMediaObject>(senpai);
+            this.OtherMediaNotifications = new OtherMediaNotificationEnumerable(senpai);
             this.MessageNotifications = new MessageNotificationEnumerable(senpai);
             this.NewsNotifications = new NewsNotificationEnumerable(senpai);
         }
@@ -32,15 +30,7 @@ namespace Azuria.Notifications
 
         /// <summary>
         /// </summary>
-        public MediaNotificationEnumerable<Anime> AnimeNotifications { get; set; }
-
-        /// <summary>
-        /// </summary>
-        public MediaNotificationEnumerable<Manga> MangaNotifications { get; set; }
-
-        /// <summary>
-        /// </summary>
-        public MediaNotificationEnumerable<IMediaObject> MediaNotifications { get; set; }
+        public OtherMediaNotificationEnumerable OtherMediaNotifications { get; set; }
 
         /// <summary>
         /// </summary>

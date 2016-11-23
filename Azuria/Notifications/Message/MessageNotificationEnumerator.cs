@@ -45,7 +45,7 @@ namespace Azuria.Notifications.Message
         internal async Task<IProxerResult<IEnumerable<MessageNotification>>> GetNextPage()
         {
             ProxerApiResponse<MessageDataModel[]> lResult =
-                await RequestHandler.ApiRequest(ApiRequestBuilder.MessengerGetMessages(this._senpai));
+                await RequestHandler.ApiRequest(ApiRequestBuilder.MessengerGetMessages(this._senpai, markAsRead: false));
             if (!lResult.Success || (lResult.Result == null))
                 return new ProxerResult<IEnumerable<MessageNotification>>(lResult.Exceptions);
 

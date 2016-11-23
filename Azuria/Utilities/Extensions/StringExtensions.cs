@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
+using System.Linq;
 
 namespace Azuria.Utilities.Extensions
 {
@@ -35,6 +36,11 @@ namespace Azuria.Utilities.Extensions
                 stringToFormat,
                 format,
                 CultureInfo.InvariantCulture);
+        }
+
+        internal static bool ContainsOne(this string source, params string[] contains)
+        {
+            return contains.Any(source.Contains);
         }
 
         #endregion

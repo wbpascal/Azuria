@@ -57,9 +57,36 @@ namespace Azuria.Utilities.Properties
         }
 
         /// <inheritdoc />
+        public async Task<IProxerResult<T>> Get()
+        {
+            return this.IsInitialised
+                ? new ProxerResult<T>(this.InitialisedObject)
+                : await this.GetNew();
+        }
+
+        /// <inheritdoc />
+        public Task<T> Get(T onError)
+        {
+            return this.Get().OnError(onError);
+        }
+
+        /// <inheritdoc />
         public TaskAwaiter<IProxerResult<T>> GetAwaiter()
         {
             return this.Get().GetAwaiter();
+        }
+
+        /// <inheritdoc />
+        public T GetIfInitialised()
+        {
+            if (!this.IsInitialised) throw new NotInitialisedException();
+            return this.InitialisedObject;
+        }
+
+        /// <inheritdoc />
+        public T GetIfInitialised(T ifNot)
+        {
+            return this.IsInitialised ? this.InitialisedObject : ifNot;
         }
 
         /// <inheritdoc />
@@ -77,33 +104,6 @@ namespace Azuria.Utilities.Properties
             return this.GetNew().OnError(onError);
         }
 
-        /// <inheritdoc />
-        public async Task<IProxerResult<T>> Get()
-        {
-            return this.IsInitialised
-                ? new ProxerResult<T>(this.InitialisedObject)
-                : await this.GetNew();
-        }
-
-        /// <inheritdoc />
-        public Task<T> Get(T onError)
-        {
-            return this.Get().OnError(onError);
-        }
-
-        /// <inheritdoc />
-        public T GetIfInitialised()
-        {
-            if (!this.IsInitialised) throw new NotInitialisedException();
-            return this.InitialisedObject;
-        }
-
-        /// <inheritdoc />
-        public T GetIfInitialised(T ifNot)
-        {
-            return this.IsInitialised ? this.InitialisedObject : ifNot;
-        }
-
         /// <summary>
         /// </summary>
         /// <param name="initialisedObject"></param>
@@ -118,7 +118,7 @@ namespace Azuria.Utilities.Properties
         /// <param name="initialisedObject"></param>
         public void SetIfNotInitialised(T initialisedObject)
         {
-            if(!this.IsInitialised) this.Set(initialisedObject);
+            if (!this.IsInitialised) this.Set(initialisedObject);
         }
 
         /// <inheritdoc />

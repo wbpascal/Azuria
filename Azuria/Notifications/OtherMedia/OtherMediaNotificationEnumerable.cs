@@ -2,18 +2,17 @@
 using System.Collections.Generic;
 using Azuria.Media;
 
-namespace Azuria.Notifications.Media
+namespace Azuria.Notifications.OtherMedia
 {
     /// <summary>
     /// Represents a collection of <see cref="Anime" />- and <see cref="Manga" />-notifications.
     /// </summary>
-    public class MediaNotificationEnumerable<T> : IEnumerable<MediaNotification<T>>
-        where T : IMediaObject
+    public class OtherMediaNotificationEnumerable : IEnumerable<OtherMediaNotification>
     {
         private readonly int _nodesToParse;
         private readonly Senpai _senpai;
 
-        internal MediaNotificationEnumerable(Senpai senpai, int nodesToParse = 0)
+        internal OtherMediaNotificationEnumerable(Senpai senpai, int nodesToParse = 0)
         {
             this._senpai = senpai;
             this._nodesToParse = nodesToParse;
@@ -31,9 +30,9 @@ namespace Azuria.Notifications.Media
         /// <summary>
         /// </summary>
         /// <returns></returns>
-        public IEnumerator<MediaNotification<T>> GetEnumerator()
+        public IEnumerator<OtherMediaNotification> GetEnumerator()
         {
-            return new MediaNotificationEnumerator<T>(this._senpai, this._nodesToParse);
+            return new OtherMediaNotificationEnumerator(this._senpai, this._nodesToParse);
         }
 
         #endregion

@@ -112,6 +112,8 @@
     <Compile Include="Exceptions\NotInitialisedException.cs" />
     <Compile Include="Notifications\NotificationCount.cs" />
     <Compile Include="Notifications\NotificationManager.cs" />
+    <Compile Include="Notifications\OtherMedia\OtherMediaNotification.cs" />
+    <Compile Include="Notifications\OtherMedia\OtherMediaType.cs" />
     <Compile Include="Search\EntryListEnumerable.cs" />
     <Compile Include="Search\EntryListEnumerator.cs" />
     <Compile Include="Search\Input\EntryListInput.cs" />
@@ -135,6 +137,7 @@
     <Compile Include="Utilities\PageEnumerator.cs" />
     <Compile Include="Utilities\Properties\ArgumentInitialisableProperty.cs" />
     <Compile Include="Utilities\Properties\IArgumentInitialisableProperty.cs" />
+    <Compile Include="Web\BaseHttpClient.cs" />
     <Compile Include="Web\IHttpClient.cs" />
     <Compile Include="UserInfo\Comment\CommentEnumerable.cs" />
     <Compile Include="UserInfo\Comment\CommentEnumerator.cs" />
@@ -223,15 +226,15 @@
     <Compile Include="UserInfo\Comment\RatingCategory.cs" />
     <Compile Include="UserInfo\ControlPanel\Bookmark.cs" />
     <Compile Include="UserInfo\ControlPanel\UserControlPanel.cs" />
-    <Compile Include="Notifications\Media\MediaNotificationEnumerable.cs" />
-    <Compile Include="Notifications\Media\MediaNotificationEnumerator.cs" />
+    <Compile Include="Notifications\OtherMedia\OtherMediaNotificationEnumerable.cs" />
+    <Compile Include="Notifications\OtherMedia\OtherMediaNotificationEnumerator.cs" />
     <Compile Include="Notifications\INotification.cs" />
     <Compile Include="Notifications\News\NewsNotificationEnumerable.cs" />
     <Compile Include="Notifications\News\NewsNotification.cs" />
     <Compile Include="Notifications\News\NewsNotificationEnumerator.cs" />
     <Compile Include="Notifications\Message\MessageNotificationEnumerable.cs" />
     <Compile Include="Notifications\Message\MessageNotification.cs" />
-    <Compile Include="Notifications\Media\MediaNotification.cs" />
+    <Compile Include="Notifications\OtherMedia\MediaNotification.cs" />
     <Compile Include="Notifications\Message\MessageNotificationEnumerator.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Senpai.cs" />

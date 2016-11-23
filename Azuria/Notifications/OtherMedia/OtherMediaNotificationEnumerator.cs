@@ -14,25 +14,22 @@ using Azuria.Utilities.Extensions;
 
 // ReSharper disable StaticMemberInGenericType
 
-namespace Azuria.Notifications.Media
+namespace Azuria.Notifications.OtherMedia
 {
     /// <summary>
     /// </summary>
-    internal sealed class MediaNotificationEnumerator<T> : IEnumerator<MediaNotification<T>>
-        where T : IMediaObject
+    internal sealed class OtherMediaNotificationEnumerator : IEnumerator<OtherMediaNotification>
     {
-        private static readonly Regex NotificationElementRegex = new Regex("<a class=\"notificationList\".*?<\\/a>");
-
         private static readonly Regex NotificationInfoRegex = new Regex(
-            "<a class=\"notificationList\".*?notification(?<nid>[0-9]+)\".*?href=\"(?<link>(\\/watch|\\/chapter).*?)\\#top\">.*?\"nDate\">(?<ndate>.*?)<\\/div>",
+            "<a class=\"notificationList\".*?notification(?<nid>[0-9]+)\".*?href=\"(?<link>.*?)#top\">(?<message>.*?)<div.*?nDate\">(?<ndate>.*?)<\\/div>",
             RegexOptions.ExplicitCapture);
 
         private readonly int _nodesToParse;
         private readonly Senpai _senpai;
-        private MediaNotification<T>[] _content;
+        private OtherMediaNotification[] _content;
         private int _currentContentIndex = -1;
 
-        internal MediaNotificationEnumerator(Senpai senpai, int nodesToParse = 0)
+        internal OtherMediaNotificationEnumerator(Senpai senpai, int nodesToParse = 0)
         {
             this._senpai = senpai;
             this._nodesToParse = nodesToParse;
@@ -41,7 +38,7 @@ namespace Azuria.Notifications.Media
         #region Properties
 
         /// <inheritdoc />
-        public MediaNotification<T> Current => this._content[this._currentContentIndex];
+        public OtherMediaNotification Current => this._content[this._currentContentIndex];
 
         /// <inheritdoc />
         object IEnumerator.Current => this.Current;
@@ -57,28 +54,32 @@ namespace Azuria.Notifications.Media
         }
 
         /// <inheritdoc />
-        private async Task<IProxerResult<IEnumerable<MediaNotification<T>>>> GetNextPage()
+        private async Task<IProxerResult<IEnumerable<OtherMediaNotification>>> GetNextPage()
         {
             if (!this._senpai.IsProbablyLoggedIn)
-                return new ProxerResult<IEnumerable<MediaNotification<T>>>(new NotLoggedInException(this._senpai));
+                return new ProxerResult<IEnumerable<OtherMediaNotification>>(new NotLoggedInException(this._senpai));
 
             IProxerResult<string> lResponse = await this._senpai.HttpClient.GetRequest(
                 new Uri("https://proxer.me/components/com_proxer/misc/notifications_misc.php"));
             if (!lResponse.Success || string.IsNullOrEmpty(lResponse.Result))
-                return new ProxerResult<IEnumerable<MediaNotification<T>>>(lResponse.Exceptions);
+                return new ProxerResult<IEnumerable<OtherMediaNotification>>(lResponse.Exceptions);
 
-            List<MediaNotification<T>> lNotifications = new List<MediaNotification<T>>();
-            MatchCollection lMatches = NotificationElementRegex.Matches(lResponse.Result);
+            List<OtherMediaNotification> lNotifications = new List<OtherMediaNotification>();
+            MatchCollection lMatches = NotificationInfoRegex.Matches(lResponse.Result);
 
-            foreach (Match lNotification in lMatches.OfType<Match>().Take(
-                this._nodesToParse == 0 ? lMatches.Count : this._nodesToParse))
+            foreach (Match lNotification in lMatches)
             {
-                Match lInfo = NotificationInfoRegex.Match(lNotification.Value);
-                if (!lInfo.Success) continue;
-                lNotifications.AddIf(this.ParseNode(lInfo), notification => notification != null);
+                if (lNotification.Groups["link"].Value.ContainsOne("watch", "chapter"))
+                {
+                    lNotifications.AddIf(this.ParseMediaNode(lNotification), notification => notification != null);
+                }
+                else
+                {
+                    //TODO: ParseOther   
+                }
             }
 
-            return new ProxerResult<IEnumerable<MediaNotification<T>>>(lNotifications);
+            return new ProxerResult<IEnumerable<OtherMediaNotification>>(lNotifications);
         }
 
         /// <inheritdoc />
@@ -86,18 +87,18 @@ namespace Azuria.Notifications.Media
         {
             if (this._content == null)
             {
-                IProxerResult<IEnumerable<MediaNotification<T>>> lGetSearchResult =
+                IProxerResult<IEnumerable<OtherMediaNotification>> lGetSearchResult =
                     Task.Run(this.GetNextPage).Result;
                 if (!lGetSearchResult.Success || (lGetSearchResult.Result == null))
                     throw lGetSearchResult.Exceptions.FirstOrDefault() ?? new Exception("Unkown error");
-                this._content = lGetSearchResult.Result as MediaNotification<T>[] ??
+                this._content = lGetSearchResult.Result as OtherMediaNotification[] ??
                                 lGetSearchResult.Result.ToArray();
             }
             this._currentContentIndex++;
             return this._content.Length > this._currentContentIndex;
         }
 
-        private MediaNotification<T> ParseNode(Match lNode)
+        private OtherMediaNotification ParseMediaNode(Match lNode)
         {
             int lNotificationId = Convert.ToInt32(lNode.Groups["nid"].Value);
             DateTime lDate = DateTime.ParseExact(lNode.Groups["ndate"].Value, "dd.MM.yyyy", CultureInfo.InvariantCulture);
@@ -113,16 +114,14 @@ namespace Azuria.Notifications.Media
                 ? new Anime(lMediaId)
                 : (IMediaObject) new Manga(lMediaId);
 
-            return lMediaObject is T
-                ? new MediaNotification<T>(lNotificationId, (T) lMediaObject, lContentIndex, lLanguage, lDate,
-                    this._senpai)
-                : null;
+            return new OtherMediaNotification(new MediaNotification(
+                lNotificationId, lMediaObject, lContentIndex, lLanguage, lDate, this._senpai));
         }
 
         /// <inheritdoc />
         public void Reset()
         {
-            this._content = new MediaNotification<T>[0];
+            this._content = new OtherMediaNotification[0];
             this._currentContentIndex = -1;
         }
 

@@ -219,6 +219,7 @@
     <None Include="Response\messenger_setunread.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <None Include="Response\notifications_getcount.json" />
     <None Include="Response\ucp_deletefavourite.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>

@@ -12,16 +12,8 @@ namespace Azuria.Web
     /// <summary>
     /// Represents a class that communicates with the proxer servers.
     /// </summary>
-    public class HttpClient : IHttpClient
+    public class HttpClient : BaseHttpClient
     {
-#if PORTABLE
-        private static readonly string UserAgent = "Azuria.Portable/" + 
-                                                   typeof(HttpClient).GetTypeInfo().Assembly.GetName().Version;
-#else
-        private static readonly string UserAgent = "Azuria/" +
-                                                   typeof(HttpClient).GetTypeInfo().Assembly.GetName().Version;
-#endif
-
         private readonly Senpai _senpai;
         private readonly System.Net.Http.HttpClient _client;
 
@@ -48,7 +40,7 @@ namespace Azuria.Web
         /// <param name="url"></param>
         /// <param name="headers"></param>
         /// <returns></returns>
-        public async Task<IProxerResult<string>> GetRequest(Uri url, Dictionary<string, string> headers = null)
+        public override async Task<IProxerResult<string>> GetRequest(Uri url, Dictionary<string, string> headers = null)
         {
             string lResponse;
 
@@ -95,7 +87,7 @@ namespace Azuria.Web
         /// <param name="postArgs"></param>
         /// <param name="headers"></param>
         /// <returns></returns>
-        public async Task<IProxerResult<string>> PostRequest(Uri url, IEnumerable<KeyValuePair<string, string>> postArgs,
+        public override async Task<IProxerResult<string>> PostRequest(Uri url, IEnumerable<KeyValuePair<string, string>> postArgs,
             Dictionary<string, string> headers = null)
         {
             string lResponse;
@@ -138,7 +130,7 @@ namespace Azuria.Web
         }
 
         /// <inheritdoc />
-        public void Dispose()
+        public override void Dispose()
         {
             this._client.Dispose();
         }
