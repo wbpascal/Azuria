@@ -1,32 +1,26 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Net;
-using System.Net.Http;
 using System.Reflection;
-using System.Text;
 using System.Threading.Tasks;
 using Azuria.ErrorHandling;
 
 namespace Azuria.Web
 {
     /// <summary>
-    /// 
     /// </summary>
     public abstract class BaseHttpClient : IHttpClient
     {
 #if PORTABLE
-        /// <summary>
-        /// 
-        /// </summary>
+/// <summary>
+/// 
+/// </summary>
         protected static readonly string UserAgent = "Azuria.Portable/" + 
                                                    typeof(HttpClient).GetTypeInfo().Assembly.GetName().Version;
 #else
         /// <summary>
-        /// 
         /// </summary>
         protected static readonly string UserAgent = "Azuria/" +
-                                                   typeof(HttpClient).GetTypeInfo().Assembly.GetName().Version;
+                                                     typeof(HttpClient).GetTypeInfo().Assembly.GetName().Version;
 #endif
 
         /// <inheritdoc />

@@ -2,7 +2,6 @@
 using Azuria.Api.v1;
 using Azuria.Api.v1.DataModels.Notifications;
 using Azuria.ErrorHandling;
-using Azuria.Media;
 using Azuria.Notifications.Message;
 using Azuria.Notifications.News;
 using Azuria.Notifications.OtherMedia;
@@ -30,19 +29,29 @@ namespace Azuria.Notifications
 
         /// <summary>
         /// </summary>
-        public OtherMediaNotificationEnumerable OtherMediaNotifications { get; set; }
-
-        /// <summary>
-        /// </summary>
         public MessageNotificationEnumerable MessageNotifications { get; set; }
 
         /// <summary>
         /// </summary>
         public NewsNotificationEnumerable NewsNotifications { get; set; }
 
+        /// <summary>
+        /// </summary>
+        public OtherMediaNotificationEnumerable OtherMediaNotifications { get; set; }
+
         #endregion
 
         #region Methods
+
+        /// <summary>
+        /// </summary>
+        /// <returns></returns>
+        public async Task<IProxerResult> DeleteAllOtherMediaNotifications()
+        {
+            ProxerApiResponse lResult = await RequestHandler.ApiRequest(
+                ApiRequestBuilder.NotificationDelete(this._senpai));
+            return lResult.Success ? new ProxerResult() : new ProxerResult(lResult.Exceptions);
+        }
 
         /// <summary>
         /// </summary>
@@ -52,16 +61,6 @@ namespace Azuria.Notifications
         {
             ProxerApiResponse lResult = await RequestHandler.ApiRequest(
                 ApiRequestBuilder.NotificationDelete(this._senpai, notificationId));
-            return lResult.Success ? new ProxerResult() : new ProxerResult(lResult.Exceptions);
-        }
-
-        /// <summary>
-        /// </summary>
-        /// <returns></returns>
-        public async Task<IProxerResult> DeleteAllOtherMediaNotifications()
-        {
-            ProxerApiResponse lResult = await RequestHandler.ApiRequest(
-                ApiRequestBuilder.NotificationDelete(this._senpai));
             return lResult.Success ? new ProxerResult() : new ProxerResult(lResult.Exceptions);
         }
 

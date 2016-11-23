@@ -1,11 +1,12 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using Azuria.ErrorHandling;
 using Azuria.Notifications;
+using Azuria.Notifications.Message;
+using Azuria.Notifications.News;
 using Azuria.Notifications.OtherMedia;
+using Azuria.UserInfo;
 using Newtonsoft.Json;
 using NUnit.Framework;
 
@@ -36,19 +37,49 @@ namespace Azuria.Test.NotificationTests
         }
 
         [Test]
-        public void OtherMediaNotificationTest()
+        public void MessageNotificationTest()
         {
-            var lNotifications = this._manager.OtherMediaNotifications.ToArray();
+            MessageNotification[] lNotifications = this._manager.MessageNotifications.ToArray();
             Assert.AreEqual(2, lNotifications.Length);
-            Assert.AreEqual(1, lNotifications.Count(notification =>
-                    notification.NotificationType == OtherMediaType.Other));
-            Assert.AreEqual(1, lNotifications.Count(notification =>
-                    notification.NotificationType == OtherMediaType.Media));
+            Assert.IsTrue(lNotifications.All(notification => notification.Senpai == GeneralSetup.SenpaiInstance));
+            Assert.IsTrue(lNotifications.All(notification => notification.TimeStamp != default(DateTime)));
+            Assert.IsTrue(lNotifications.All(notification => !string.IsNullOrEmpty(notification.NotificationId.Trim())));
         }
 
+        [Test]
         public void NewsNotficationTest()
         {
-            
+            NewsNotification[] lNotifications = this._manager.NewsNotifications.ToArray();
+            Assert.AreEqual(3, lNotifications.Length);
+            Assert.IsTrue(lNotifications.All(notification => notification.Senpai == GeneralSetup.SenpaiInstance));
+            Assert.IsTrue(
+                lNotifications.All(notification => (notification.Author != null) && (notification.Author != User.System)));
+            Assert.IsTrue(lNotifications.All(notification => notification.CategoryId != default(int)));
+            Assert.IsTrue(lNotifications.All(notification => !string.IsNullOrEmpty(notification.CategoryName)));
+            Assert.IsTrue(lNotifications.All(notification => !string.IsNullOrEmpty(notification.Description)));
+            Assert.IsTrue(lNotifications.All(notification => notification.Hits != default(int)));
+            Assert.IsTrue(lNotifications.All(notification => notification.Image != null));
+            Assert.IsTrue(lNotifications.All(notification => notification.ImageThumbnail != null));
+            Assert.IsTrue(lNotifications.All(notification => notification.NewsId != default(int)));
+            Assert.IsTrue(lNotifications.All(notification => notification.Posts != default(int)));
+            Assert.IsTrue(lNotifications.All(notification => !string.IsNullOrEmpty(notification.NotificationId)));
+            Assert.IsTrue(lNotifications.All(notification => !string.IsNullOrEmpty(notification.Subject)));
+            Assert.IsTrue(lNotifications.All(notification => notification.TimeStamp != default(DateTime)));
+        }
+
+        [Test]
+        public void OtherMediaNotificationTest()
+        {
+            OtherMediaNotification[] lNotifications = this._manager.OtherMediaNotifications.ToArray();
+            Assert.AreEqual(2, lNotifications.Length);
+            Assert.AreEqual(1, lNotifications.Count(notification =>
+                (notification.NotificationType == OtherMediaType.Other)
+                && !string.IsNullOrEmpty(notification.Message)));
+            Assert.AreEqual(1, lNotifications.Count(notification =>
+                (notification.NotificationType == OtherMediaType.Media)
+                && (notification.MediaNotification != null)));
+            Assert.IsTrue(lNotifications.All(notification => notification.Senpai == GeneralSetup.SenpaiInstance));
+            Assert.IsTrue(lNotifications.All(notification => notification.NotificationId != default(int)));
         }
     }
 }

@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Net;
 using System.Net.Http;
-using System.Reflection;
 using System.Threading.Tasks;
 using Azuria.ErrorHandling;
 using Azuria.Exceptions;
@@ -14,8 +13,8 @@ namespace Azuria.Web
     /// </summary>
     public class HttpClient : BaseHttpClient
     {
-        private readonly Senpai _senpai;
         private readonly System.Net.Http.HttpClient _client;
+        private readonly Senpai _senpai;
 
         /// <summary>
         /// </summary>
@@ -33,6 +32,14 @@ namespace Azuria.Web
             }) {Timeout = TimeSpan.FromMilliseconds(timeout)};
             this._client.DefaultRequestHeaders.TryAddWithoutValidation("User-Agent",
                 $"{UserAgent} {userAgentExtra}".TrimEnd());
+        }
+
+        #region Methods
+
+        /// <inheritdoc />
+        public override void Dispose()
+        {
+            this._client.Dispose();
         }
 
         /// <summary>
@@ -87,7 +94,8 @@ namespace Azuria.Web
         /// <param name="postArgs"></param>
         /// <param name="headers"></param>
         /// <returns></returns>
-        public override async Task<IProxerResult<string>> PostRequest(Uri url, IEnumerable<KeyValuePair<string, string>> postArgs,
+        public override async Task<IProxerResult<string>> PostRequest(Uri url,
+            IEnumerable<KeyValuePair<string, string>> postArgs,
             Dictionary<string, string> headers = null)
         {
             string lResponse;
@@ -129,10 +137,6 @@ namespace Azuria.Web
             return await this._client.PostAsync(url, new FormUrlEncodedContent(postArgs));
         }
 
-        /// <inheritdoc />
-        public override void Dispose()
-        {
-            this._client.Dispose();
-        }
+        #endregion
     }
 }

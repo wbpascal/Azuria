@@ -30,7 +30,8 @@ namespace Azuria.Test.Core
             Dictionary<string, string> lReturn = new Dictionary<string, string>();
             foreach (
                 string filePath in
-                Directory.GetFiles((AppDomain.CurrentDomain.BaseDirectory + @"\Response").Replace(@"/\", "/"), "*.response")
+                Directory.GetFiles((AppDomain.CurrentDomain.BaseDirectory + @"\Response").Replace(@"/\", "/"),
+                    "*.response")
             )
                 using (StreamReader lReader = new StreamReader(filePath))
                 {
@@ -410,6 +411,13 @@ namespace Azuria.Test.Core
                             .WithQueryParameter("conference_id", "124536")
                             .WithLoggedInSenpai(true))
                 .Respond(FileResponses["messenger_setunfavour.response"]);
+            ServerResponse.Create("https://proxer.me",
+                    response =>
+                        response.Get("/messages")
+                            .WithQueryParameter("format", "raw")
+                            .WithQueryParameter("s", "notification")
+                            .WithLoggedInSenpai(true))
+                .Respond(FileResponses["messages_notifications.html.response"]);
 
             #endregion
 
@@ -418,6 +426,11 @@ namespace Azuria.Test.Core
             ServerResponse.Create("https://proxer.me/api/v1",
                     response => response.Post("/notifications/count").WithLoggedInSenpai(true))
                 .Respond(FileResponses["notifications_getcount.response"]);
+            ServerResponse.Create("https://proxer.me/api/v1", response =>
+                    response.Post("/notifications/news")
+                        .WithQueryParameter("p", "0")
+                        .WithQueryParameter("limit", "15"))
+                .Respond(FileResponses["notifications_getnews.response"]);
             ServerResponse.Create("https://proxer.me/components/com_proxer/misc",
                     response => response.Get("/notifications_misc.php").WithLoggedInSenpai(true))
                 .Respond(FileResponses["notifications_misc.php.response"]);

@@ -1,14 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Azuria.Media;
-
-namespace Azuria.Notifications.OtherMedia
+﻿namespace Azuria.Notifications.OtherMedia
 {
     /// <summary>
-    /// 
     /// </summary>
     public class OtherMediaNotification : INotification
     {
@@ -27,27 +19,28 @@ namespace Azuria.Notifications.OtherMedia
             this.Senpai = senpai;
         }
 
+        #region Properties
+
         /// <summary>
-        /// 
         /// </summary>
         public MediaNotification MediaNotification { get; }
 
         /// <summary>
-        /// 
         /// </summary>
         public string Message { get; }
 
         /// <inheritdoc />
         public int NotificationId { get; }
 
-        /// <inheritdoc />
-        public Senpai Senpai { get; }
+        string INotification.NotificationId => this.NotificationId.ToString();
 
         /// <summary>
-        /// 
         /// </summary>
         public OtherMediaType NotificationType { get; }
 
-        string INotification.NotificationId => this.NotificationId.ToString();
+        /// <inheritdoc />
+        public Senpai Senpai { get; }
+
+        #endregion
     }
 }

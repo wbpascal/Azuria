@@ -2,10 +2,10 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
-using Azuria.Api.v1;
-using Azuria.Api.v1.DataModels.Messenger;
 using Azuria.ErrorHandling;
+using Azuria.Exceptions;
 
 namespace Azuria.Notifications.Message
 {
@@ -13,6 +13,10 @@ namespace Azuria.Notifications.Message
     /// </summary>
     internal sealed class MessageNotificationEnumerator : IEnumerator<MessageNotification>
     {
+        private static readonly Regex NotificationInfoRegex = new Regex(
+            "<a class=\"conferenceList\".*?href=\"\\/messages\\?id=(?<cid>[0-9].*?)#top.*?<\\/div>.*?<div>(?<date>.*?)<\\/div>",
+            RegexOptions.ExplicitCapture);
+
         private readonly Senpai _senpai;
         private MessageNotification[] _content;
         private int _currentContentIndex = -1;
@@ -44,15 +48,22 @@ namespace Azuria.Notifications.Message
         /// <inheritdoc />
         internal async Task<IProxerResult<IEnumerable<MessageNotification>>> GetNextPage()
         {
-            ProxerApiResponse<MessageDataModel[]> lResult =
-                await RequestHandler.ApiRequest(ApiRequestBuilder.MessengerGetMessages(this._senpai, markAsRead: false));
-            if (!lResult.Success || (lResult.Result == null))
-                return new ProxerResult<IEnumerable<MessageNotification>>(lResult.Exceptions);
+            if (!this._senpai.IsProbablyLoggedIn)
+                return new ProxerResult<IEnumerable<MessageNotification>>(new NotLoggedInException(this._senpai));
 
-            return
-                new ProxerResult<IEnumerable<MessageNotification>>(
-                (from notificationDataModel in lResult.Result
-                    select new MessageNotification(notificationDataModel, this._senpai)).Reverse());
+            IProxerResult<string> lResponse = await this._senpai.HttpClient.GetRequest(
+                new Uri("https://proxer.me/messages?format=raw&s=notification"));
+            if (!lResponse.Success || string.IsNullOrEmpty(lResponse.Result))
+                return new ProxerResult<IEnumerable<MessageNotification>>(lResponse.Exceptions);
+
+            List<MessageNotification> lNotifications = new List<MessageNotification>();
+            MatchCollection lMatches = NotificationInfoRegex.Matches(lResponse.Result.Replace("\n", ""));
+
+            foreach (Match lNotification in lMatches)
+                lNotifications.Add(new MessageNotification(Convert.ToInt32(lNotification.Groups["cid"].Value),
+                    DateTime.Parse(lNotification.Groups["date"].Value), this._senpai));
+
+            return new ProxerResult<IEnumerable<MessageNotification>>(lNotifications);
         }
 
         /// <inheritdoc />

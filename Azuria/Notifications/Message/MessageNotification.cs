@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Azuria.Api.v1.DataModels.Messenger;
 using Azuria.Community;
 using Azuria.ErrorHandling;
 using Azuria.Utilities.Properties;
@@ -17,13 +16,13 @@ namespace Azuria.Notifications.Message
         private readonly int _conferenceId;
         private readonly InitialisableProperty<ConferenceInfo> _conferenceInfo;
 
-        internal MessageNotification(MessageDataModel dataModel, Senpai senpai)
+        internal MessageNotification(int conferenceId, DateTime date, Senpai senpai)
         {
             this._conferenceInfo = new InitialisableProperty<ConferenceInfo>(this.InitConference);
-            this._conferenceId = dataModel.ConferenceId;
-            this.NotificationId = $"{dataModel.ConferenceId}_{dataModel.MessageId}";
+            this._conferenceId = conferenceId;
+            this.NotificationId = $"{conferenceId}_{date.ToFileTime().ToString().Replace("00", "")}";
             this.Senpai = senpai;
-            this.TimeStamp = dataModel.MessageTimeStamp;
+            this.TimeStamp = date;
         }
 
         #region Properties

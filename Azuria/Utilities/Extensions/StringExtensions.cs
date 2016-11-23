@@ -9,6 +9,11 @@ namespace Azuria.Utilities.Extensions
     {
         #region Methods
 
+        internal static bool ContainsOne(this string source, params string[] contains)
+        {
+            return contains.Any(source.Contains);
+        }
+
         internal static List<string> GetTagContents(this string source, string startTag, string endTag)
         {
             List<string> stringsFound = new List<string>();
@@ -36,11 +41,6 @@ namespace Azuria.Utilities.Extensions
                 stringToFormat,
                 format,
                 CultureInfo.InvariantCulture);
-        }
-
-        internal static bool ContainsOne(this string source, params string[] contains)
-        {
-            return contains.Any(source.Contains);
         }
 
         #endregion

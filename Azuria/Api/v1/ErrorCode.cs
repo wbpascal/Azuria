@@ -42,7 +42,7 @@
 
         /// <summary>
         /// </summary>
-        NewsRequestError = 2001,
+        ServerError = 2001,
 
         /// <summary>
         /// </summary>

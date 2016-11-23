@@ -19,7 +19,7 @@ namespace Azuria.Test.Core
             this._senpai = senpai;
         }
 
-         #region Methods
+        #region Methods
 
         /// <inheritdoc />
         public void Dispose()
@@ -30,17 +30,13 @@ namespace Azuria.Test.Core
         public async Task<IProxerResult<string>> GetRequest(Uri url, Dictionary<string, string> headers = null)
         {
             return
-                await Task.Factory.StartNew(() => this.GetResponse(url, RequestMethod.Get, new Dictionary<string, string>(), headers));
+                await
+                    Task.Factory.StartNew(
+                        () => this.GetResponse(url, RequestMethod.Get, new Dictionary<string, string>(), headers));
         }
 
-        /// <inheritdoc />
-        public async Task<IProxerResult<string>> PostRequest(Uri url, IEnumerable<KeyValuePair<string, string>> postArgs,
-            Dictionary<string, string> headers = null)
-        {
-            return await Task.Factory.StartNew(() => this.GetResponse(url, RequestMethod.Post, postArgs, headers));
-        }
-
-        private IProxerResult<string> GetResponse(Uri url, RequestMethod method, IEnumerable<KeyValuePair<string, string>> postArgs,
+        private IProxerResult<string> GetResponse(Uri url, RequestMethod method,
+            IEnumerable<KeyValuePair<string, string>> postArgs,
             Dictionary<string, string> headers = null)
         {
             IEnumerable<KeyValuePair<string, string>> postArgsArray = postArgs as KeyValuePair<string, string>[] ??
@@ -73,6 +69,13 @@ namespace Azuria.Test.Core
             }
 
             return new ProxerResult<string>(new Exception("Response not found!"));
+        }
+
+        /// <inheritdoc />
+        public async Task<IProxerResult<string>> PostRequest(Uri url, IEnumerable<KeyValuePair<string, string>> postArgs,
+            Dictionary<string, string> headers = null)
+        {
+            return await Task.Factory.StartNew(() => this.GetResponse(url, RequestMethod.Post, postArgs, headers));
         }
 
         #endregion

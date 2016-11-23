@@ -66,13 +66,11 @@ namespace Azuria.Notifications.OtherMedia
             MatchCollection lMatches = NotificationInfoRegex.Matches(lResponse.Result.Replace("\n", ""));
 
             foreach (Match lNotification in lMatches)
-            {
                 lNotifications.AddIf(
                     lNotification.Groups["link"].Value.ContainsOne("watch", "chapter")
                         ? this.ParseMediaNode(lNotification)
                         : this.ParseOtherNode(lNotification)
                     , notification => notification != null);
-            }
 
             return new ProxerResult<IEnumerable<OtherMediaNotification>>(lNotifications);
         }
