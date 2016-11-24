@@ -1,46 +1,46 @@
 {
-  "error": 0,
-  "message": "Abfrage erfolgreich",
-  "data": [
-    {
-      "eid": "7578",
-      "kat": "manga",
-      "name": "The Gamer",
-      "episode": "145",
-      "language": "en",
-      "medium": "mangaseries",
-      "id": "3",
-      "state": "2"
-    },
-    {
-      "eid": "7834",
-      "kat": "manga",
-      "name": "DICE",
-      "episode": "165",
-      "language": "en",
-      "medium": "mangaseries",
-      "id": "38231841",
-      "state": "2"
-    },
-    {
-      "eid": "4188",
-      "kat": "manga",
-      "name": "Tower of God",
-      "episode": "300",
-      "language": "en",
-      "medium": "mangaseries",
-      "id": "38162987",
-      "state": "2"
-    },
-    {
-      "eid": "5655",
-      "kat": "manga",
-      "name": "Renai Boukun",
-      "episode": "13",
-      "language": "en",
-      "medium": "mangaseries",
-      "id": "37891234",
-      "state": "2"
-    }
-  ]
+"error": 0,
+"message": "Abfrage erfolgreich",
+"data": [
+{
+"eid": "7578",
+"kat": "manga",
+"name": "The Gamer",
+"episode": "145",
+"language": "en",
+"medium": "mangaseries",
+"id": "3",
+"state": "2"
+},
+{
+"eid": "7834",
+"kat": "manga",
+"name": "DICE",
+"episode": "165",
+"language": "en",
+"medium": "mangaseries",
+"id": "38231841",
+"state": "2"
+},
+{
+"eid": "4188",
+"kat": "manga",
+"name": "Tower of God",
+"episode": "300",
+"language": "en",
+"medium": "mangaseries",
+"id": "38162987",
+"state": "2"
+},
+{
+"eid": "5655",
+"kat": "manga",
+"name": "Renai Boukun",
+"episode": "13",
+"language": "en",
+"medium": "mangaseries",
+"id": "37891234",
+"state": "2"
+}
+]
 }

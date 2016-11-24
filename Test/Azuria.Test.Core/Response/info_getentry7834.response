@@ -1,20 +1,20 @@
 ﻿{
-  "error": 0,
-  "message": "Abfrage erfolgreich.",
-  "data": {
-    "id": "7834",
-    "name": "DICE",
-    "genre": "Action Drama Mystery Psychological Romance School Shounen Superpower",
-    "fsk": "fsk16 violence",
-    "description":
-      "Dongtae ist in allem auf Tiefstniveau. Aussehen, Noten, Leben, Alles.\nDoch eines Tages fällt ihm ein merkwürdiger Würfel in die Hände. Und damit eröffnen sich ihm ungeahnte Möglichkeiten...\n\nWenn du dein Leben durch das Spielen eines Spieles ändern könntest, würdest du es tun?",
-    "medium": "mangaseries",
-    "count": "200",
-    "state": "2",
-    "rate_sum": "1712",
-    "rate_count": "201",
-    "clicks": "3322",
-    "kat": "manga",
-    "license": "1"
-  }
+"error": 0,
+"message": "Abfrage erfolgreich.",
+"data": {
+"id": "7834",
+"name": "DICE",
+"genre": "Action Drama Mystery Psychological Romance School Shounen Superpower",
+"fsk": "fsk16 violence",
+"description":
+"Dongtae ist in allem auf Tiefstniveau. Aussehen, Noten, Leben, Alles.\nDoch eines Tages fällt ihm ein merkwürdiger Würfel in die Hände. Und damit eröffnen sich ihm ungeahnte Möglichkeiten...\n\nWenn du dein Leben durch das Spielen eines Spieles ändern könntest, würdest du es tun?",
+"medium": "mangaseries",
+"count": "200",
+"state": "2",
+"rate_sum": "1712",
+"rate_count": "201",
+"clicks": "3322",
+"kat": "manga",
+"license": "1"
+}
 }

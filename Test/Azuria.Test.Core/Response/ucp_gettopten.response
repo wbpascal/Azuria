@@ -1,20 +1,20 @@
 {
-  "error": 0,
-  "message": "Abfrage erfolgreich",
-  "data": [
-    {
-      "eid": "41",
-      "name": "Code Geass: Hangyaku no Lelouch R2",
-      "fid": "1",
-      "kat": "anime",
-      "medium": "animeseries"
-    },
-    {
-      "eid": "4385",
-      "name": "Ao Haru Ride",
-      "fid": "1076532",
-      "kat": "manga",
-      "medium": "mangaseries"
-    }
-  ]
+"error": 0,
+"message": "Abfrage erfolgreich",
+"data": [
+{
+"eid": "41",
+"name": "Code Geass: Hangyaku no Lelouch R2",
+"fid": "1",
+"kat": "anime",
+"medium": "animeseries"
+},
+{
+"eid": "4385",
+"name": "Ao Haru Ride",
+"fid": "1076532",
+"kat": "manga",
+"medium": "mangaseries"
+}
+]
 }

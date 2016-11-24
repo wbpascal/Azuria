@@ -1,26 +1,26 @@
 {
-  "error": 0,
-  "message": "Abfrage erfolgreich.",
-  "data": [
-    {
-      "name": "Lunatic-Studio",
-      "id": "455",
-      "country": "de"
-    },
-    {
-      "name": "KiboYami",
-      "id": "692",
-      "country": "de"
-    },
-    {
-      "name": "Gruppe Kampfkuchen",
-      "id": "11",
-      "country": "de"
-    },
-    {
-      "name": "Dicescans",
-      "id": "795",
-      "country": "en"
-    }
-  ]
+"error": 0,
+"message": "Abfrage erfolgreich.",
+"data": [
+{
+"name": "Lunatic-Studio",
+"id": "455",
+"country": "de"
+},
+{
+"name": "KiboYami",
+"id": "692",
+"country": "de"
+},
+{
+"name": "Gruppe Kampfkuchen",
+"id": "11",
+"country": "de"
+},
+{
+"name": "Dicescans",
+"id": "795",
+"country": "en"
+}
+]
 }
