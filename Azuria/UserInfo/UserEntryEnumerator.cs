@@ -26,8 +26,9 @@ namespace Azuria.UserInfo
         internal override async Task<IProxerResult<IEnumerable<UserProfileEntry<T>>>> GetNextPage(int nextPage)
         {
             ProxerApiResponse<ListDataModel[]> lResult = await RequestHandler.ApiRequest(
-                ApiRequestBuilder.UserGetList(this._user.Id, typeof(T).Name.ToLowerInvariant(),
-                    nextPage, ResultsPerPage, this._senpai));
+                    ApiRequestBuilder.UserGetList(this._user.Id, typeof(T).Name.ToLowerInvariant(),
+                        nextPage, ResultsPerPage, this._senpai))
+                .ConfigureAwait(false);
             if (!lResult.Success || (lResult.Result == null))
                 return new ProxerResult<IEnumerable<UserProfileEntry<T>>>(lResult.Exceptions);
 

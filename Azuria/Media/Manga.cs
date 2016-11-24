@@ -132,11 +132,11 @@ namespace Azuria.Media
         /// </returns>
         public async Task<IProxerResult<IEnumerable<Chapter>>> GetChapters(Language language)
         {
-            if (!(await this.AvailableLanguages.Get(new Language[0])).Contains(language))
+            if (!(await this.AvailableLanguages.Get(new Language[0]).ConfigureAwait(false)).Contains(language))
                 return new ProxerResult<IEnumerable<Chapter>>(new Exception[] {new LanguageNotAvailableException()});
 
             IProxerResult<MediaContentDataModel[]> lContentObjectsResult =
-                await this.GetContentObjects();
+                await this.GetContentObjects().ConfigureAwait(false);
             if (!lContentObjectsResult.Success || (lContentObjectsResult.Result == null))
                 return new ProxerResult<IEnumerable<Chapter>>(lContentObjectsResult.Exceptions);
 
@@ -147,8 +147,8 @@ namespace Azuria.Media
 
         internal async Task<IProxerResult> InitAvailableLanguages()
         {
-            ProxerApiResponse<MediaLanguage[]> lResult =
-                await RequestHandler.ApiRequest(ApiRequestBuilder.InfoGetLanguage(this.Id));
+            ProxerApiResponse<MediaLanguage[]> lResult = await RequestHandler.ApiRequest(
+                ApiRequestBuilder.InfoGetLanguage(this.Id)).ConfigureAwait(false);
             if (!lResult.Success || (lResult.Result == null)) return new ProxerResult(lResult.Exceptions);
             this._availableLanguages.Set(lResult.Result.Cast<Language>());
             return new ProxerResult();
@@ -279,9 +279,10 @@ namespace Azuria.Media
 
             private async Task<IProxerResult> InitInfo()
             {
-                ProxerApiResponse<ChapterDataModel> lResult =
-                    await RequestHandler.ApiRequest(ApiRequestBuilder.MangaGetChapter(this.ParentObject.Id,
-                        this.ContentIndex, this.Language == Language.German ? "de" : "en", this.Senpai));
+                ProxerApiResponse<ChapterDataModel> lResult = await RequestHandler.ApiRequest(
+                        ApiRequestBuilder.MangaGetChapter(this.ParentObject.Id, this.ContentIndex,
+                            this.Language == Language.German ? "de" : "en", this.Senpai))
+                    .ConfigureAwait(false);
                 if (!lResult.Success || (lResult.Result == null)) return new ProxerResult(lResult.Exceptions);
                 ChapterDataModel lData = lResult.Result;
 

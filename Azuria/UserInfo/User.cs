@@ -159,8 +159,8 @@ namespace Azuria.UserInfo
         /// <returns></returns>
         public static async Task<IProxerResult<User>> FromUsername(string username)
         {
-            ProxerApiResponse<UserInfoDataModel> lResult =
-                await RequestHandler.ApiRequest(ApiRequestBuilder.UserGetInfo(username));
+            ProxerApiResponse<UserInfoDataModel> lResult = await RequestHandler.ApiRequest(
+                ApiRequestBuilder.UserGetInfo(username)).ConfigureAwait(false);
             if (!lResult.Success || (lResult.Result == null)) return new ProxerResult<User>(lResult.Exceptions);
             return new ProxerResult<User>(new User(lResult.Result));
         }
@@ -170,7 +170,7 @@ namespace Azuria.UserInfo
             if (this == System) return new ProxerResult(new InvalidUserException());
 
             ProxerApiResponse<UserInfoDataModel> lResult = await RequestHandler.ApiRequest(
-                ApiRequestBuilder.UserGetInfo(this.Id));
+                ApiRequestBuilder.UserGetInfo(this.Id)).ConfigureAwait(false);
             if (!lResult.Success || (lResult.Result == null)) return new ProxerResult(lResult.Exceptions);
 
             UserInfoDataModel lDataModel = lResult.Result;
@@ -187,7 +187,8 @@ namespace Azuria.UserInfo
             if (this == System) return new ProxerResult(new InvalidUserException());
 
             ProxerApiResponse<ToptenDataModel[]> lResult = await RequestHandler.ApiRequest(
-                ApiRequestBuilder.UserGetTopten(this.Id, category.ToString().ToLower(), senpai));
+                    ApiRequestBuilder.UserGetTopten(this.Id, category.ToString().ToLower(), senpai))
+                .ConfigureAwait(false);
             if (!lResult.Success || (lResult.Result == null)) return new ProxerResult(lResult.Exceptions);
 
             if (category == MediaEntryType.Anime)

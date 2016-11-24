@@ -52,7 +52,7 @@ namespace Azuria.Notifications.Message
         private async Task<IProxerResult> InitConference()
         {
             IProxerResult<IEnumerable<ConferenceInfo>> lConferencesResult =
-                await Conference.GetConferences(this.Senpai);
+                await Conference.GetConferences(this.Senpai).ConfigureAwait(false);
             if (!lConferencesResult.Success || (lConferencesResult.Result == null))
                 return new ProxerResult(lConferencesResult.Exceptions);
 

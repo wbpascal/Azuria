@@ -18,8 +18,8 @@ namespace Azuria.Media.Headers
         /// <returns></returns>
         public static async Task<IProxerResult<IEnumerable<HeaderInfo>>> GetHeaderList()
         {
-            ProxerApiResponse<HeaderDataModel[]> lResult =
-                await RequestHandler.ApiRequest(ApiRequestBuilder.MediaGetHeaderList());
+            ProxerApiResponse<HeaderDataModel[]> lResult = await RequestHandler.ApiRequest(
+                ApiRequestBuilder.MediaGetHeaderList()).ConfigureAwait(false);
             if (!lResult.Success || (lResult.Result == null))
                 return new ProxerResult<IEnumerable<HeaderInfo>>(lResult.Exceptions);
 
@@ -35,7 +35,8 @@ namespace Azuria.Media.Headers
         public static async Task<IProxerResult<HeaderInfo>> GetRandomHeader(HeaderStyle style)
         {
             ProxerApiResponse<HeaderDataModel> lResult = await RequestHandler.ApiRequest(
-                ApiRequestBuilder.MediaGetRandomHeader(HeaderStyleToString(style)));
+                    ApiRequestBuilder.MediaGetRandomHeader(HeaderStyleToString(style)))
+                .ConfigureAwait(false);
             if (!lResult.Success) return new ProxerResult<HeaderInfo>(lResult.Exceptions);
 
             return new ProxerResult<HeaderInfo>(lResult.Result == null

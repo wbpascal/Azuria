@@ -132,11 +132,11 @@ namespace Azuria.Media
         /// </returns>
         public async Task<IProxerResult<IEnumerable<Episode>>> GetEpisodes(AnimeLanguage language)
         {
-            if (!(await this.AvailableLanguages.Get(new AnimeLanguage[0])).Contains(language))
+            if (!(await this.AvailableLanguages.Get(new AnimeLanguage[0]).ConfigureAwait(false)).Contains(language))
                 return new ProxerResult<IEnumerable<Episode>>(new LanguageNotAvailableException());
 
             IProxerResult<MediaContentDataModel[]> lContentObjectsResult =
-                await this.GetContentObjects();
+                await this.GetContentObjects().ConfigureAwait(false);
             if (!lContentObjectsResult.Success || (lContentObjectsResult.Result == null))
                 return new ProxerResult<IEnumerable<Episode>>(lContentObjectsResult.Exceptions);
 
@@ -147,8 +147,8 @@ namespace Azuria.Media
 
         private async Task<IProxerResult> InitAvailableLanguages()
         {
-            ProxerApiResponse<MediaLanguage[]> lResult =
-                await RequestHandler.ApiRequest(ApiRequestBuilder.InfoGetLanguage(this.Id));
+            ProxerApiResponse<MediaLanguage[]> lResult = await RequestHandler.ApiRequest(
+                ApiRequestBuilder.InfoGetLanguage(this.Id)).ConfigureAwait(false);
             if (!lResult.Success) return new ProxerResult(lResult.Exceptions);
             this._availableLanguages.Set(lResult.Result.Cast<AnimeLanguage>());
             return new ProxerResult();
@@ -253,9 +253,10 @@ namespace Azuria.Media
 
             private async Task<IProxerResult> InitStreams()
             {
-                ProxerApiResponse<StreamDataModel[]> lResult =
-                    await RequestHandler.ApiRequest(ApiRequestBuilder.AnimeGetStreams(this.ParentObject.Id,
-                        this.ContentIndex, this.Language.ToString().ToLowerInvariant(), this.Senpai));
+                ProxerApiResponse<StreamDataModel[]> lResult = await RequestHandler.ApiRequest(
+                        ApiRequestBuilder.AnimeGetStreams(this.ParentObject.Id, this.ContentIndex,
+                            this.Language.ToString().ToLowerInvariant(), this.Senpai))
+                    .ConfigureAwait(false);
                 if (!lResult.Success || (lResult.Result == null)) return new ProxerResult(lResult.Exceptions);
 
                 this._streams.Set(from streamDataModel in lResult.Result
@@ -342,7 +343,7 @@ namespace Azuria.Media
                 private async Task<IProxerResult> InitStreamLink()
                 {
                     ProxerApiResponse<string> lResult = await RequestHandler.ApiRequest(
-                        ApiRequestBuilder.AnimeGetLink(this.Id));
+                        ApiRequestBuilder.AnimeGetLink(this.Id)).ConfigureAwait(false);
                     if (!lResult.Success || (lResult.Result == null)) return new ProxerResult(lResult.Exceptions);
                     string lData = lResult.Result;
 

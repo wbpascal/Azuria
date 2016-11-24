@@ -39,10 +39,11 @@ namespace Azuria.UserInfo.Comment
         {
             ProxerApiResponse<CommentDataModel[]> lResult =
                 await RequestHandler.ApiRequest(this._user == null
-                    ? ApiRequestBuilder.InfoGetComments(this._mediaObject.Id,
-                        nextPage, ResultsPerPage, this._sort)
-                    : ApiRequestBuilder.UserGetLatestComments(this._user.Id, nextPage, ResultsPerPage,
-                        typeof(T).GetTypeInfo().Name.ToLower(), 0, this._senpai));
+                        ? ApiRequestBuilder.InfoGetComments(this._mediaObject.Id,
+                            nextPage, ResultsPerPage, this._sort)
+                        : ApiRequestBuilder.UserGetLatestComments(this._user.Id, nextPage, ResultsPerPage,
+                            typeof(T).GetTypeInfo().Name.ToLower(), 0, this._senpai))
+                    .ConfigureAwait(false);
             if (!lResult.Success || (lResult.Result == null))
                 return new ProxerResult<IEnumerable<Comment<T>>>(lResult.Exceptions);
             CommentDataModel[] lData = lResult.Result;

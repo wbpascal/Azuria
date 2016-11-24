@@ -169,7 +169,8 @@ namespace Azuria.Community
                 this.ErrorThrownAutoMessageFetch?.Invoke(this, ex);
             }
             if (lNewMessages.Length == 0) return;
-            if (lNewMessages.Any(message => message.Action != MessageAction.NoAction)) await this.InitInfo();
+            if (lNewMessages.Any(message => message.Action != MessageAction.NoAction))
+                await this.InitInfo().ConfigureAwait(false);
             this._autoLastMessageRecieved = lNewMessages[0];
             this.NewMessageRecieved?.Invoke(this, lNewMessages);
         }
@@ -188,11 +189,11 @@ namespace Azuria.Community
             if (string.IsNullOrEmpty(message) || (message.Length > MaxCharactersPerMessage))
                 return new ProxerResult<Conference>(new ArgumentException(message));
 
-            IProxerResult<string> lUsernameResult = await user.UserName;
+            IProxerResult<string> lUsernameResult = await user.UserName.Get().ConfigureAwait(false);
             if (!lUsernameResult.Success || string.IsNullOrEmpty(lUsernameResult.Result))
                 return new ProxerResult<Conference>(lUsernameResult.Exceptions);
 
-            return await Create(lUsernameResult.Result, message, senpai);
+            return await Create(lUsernameResult.Result, message, senpai).ConfigureAwait(false);
         }
 
         /// <summary>
@@ -210,8 +211,8 @@ namespace Azuria.Community
             if (string.IsNullOrEmpty(message) || (message.Length > MaxCharactersPerMessage))
                 return new ProxerResult<Conference>(new ArgumentException(message));
 
-            ProxerApiResponse<int> lResult =
-                await RequestHandler.ApiRequest(ApiRequestBuilder.MessengerNewConference(username, message, senpai));
+            ProxerApiResponse<int> lResult = await RequestHandler.ApiRequest(
+                ApiRequestBuilder.MessengerNewConference(username, message, senpai)).ConfigureAwait(false);
             return !lResult.Success
                 ? new ProxerResult<Conference>(lResult.Exceptions)
                 : new ProxerResult<Conference>(new Conference(lResult.Result, false, senpai));
@@ -239,13 +240,13 @@ namespace Azuria.Community
             List<string> lParticipantNames = new List<string>();
             foreach (User participant in lParticipants)
             {
-                IProxerResult<string> lUsernameResult = await participant.UserName;
+                IProxerResult<string> lUsernameResult = await participant.UserName.Get().ConfigureAwait(false);
                 if (!lUsernameResult.Success || string.IsNullOrEmpty(lUsernameResult.Result))
                     return new ProxerResult<Conference>(lUsernameResult.Exceptions);
 
                 lParticipantNames.Add(lUsernameResult.Result);
             }
-            return await CreateGroup(lParticipantNames, topic, senpai, message);
+            return await CreateGroup(lParticipantNames, topic, senpai, message).ConfigureAwait(false);
         }
 
         /// <summary>
@@ -268,7 +269,8 @@ namespace Azuria.Community
                 return new ProxerResult<Conference>(new[] {new ArgumentException(nameof(participants))});
 
             ProxerApiResponse<int> lResult = await RequestHandler.ApiRequest(
-                ApiRequestBuilder.MessengerNewConferenceGroup(lParticipantNames, topic, senpai, message));
+                    ApiRequestBuilder.MessengerNewConferenceGroup(lParticipantNames, topic, senpai, message))
+                .ConfigureAwait(false);
             return !lResult.Success
                 ? new ProxerResult<Conference>(lResult.Exceptions)
                 : new ProxerResult<Conference>(new Conference(lResult.Result, true, senpai));
@@ -289,8 +291,9 @@ namespace Azuria.Community
             List<ConferenceInfo> lConferences = new List<ConferenceInfo>();
             for (int page = 0; (page == 0) || (lConferences.Count%_conferencesPerPage == 0); page++)
             {
-                ProxerApiResponse<ConferenceDataModel[]> lResult =
-                    await RequestHandler.ApiRequest(ApiRequestBuilder.MessengerGetConferences(type, page, senpai));
+                ProxerApiResponse<ConferenceDataModel[]> lResult = await RequestHandler.ApiRequest(
+                        ApiRequestBuilder.MessengerGetConferences(type, page, senpai))
+                    .ConfigureAwait(false);
                 if (!lResult.Success || (lResult.Result == null))
                     return new ProxerResult<IEnumerable<ConferenceInfo>>(lResult.Exceptions);
                 lConferences.AddRange(from conferenceDataModel in lResult.Result
@@ -304,8 +307,8 @@ namespace Azuria.Community
         /// <returns></returns>
         public static async Task<IProxerResult> Init()
         {
-            ProxerApiResponse<ConstantsDataModel> lResult =
-                await RequestHandler.ApiRequest(ApiRequestBuilder.MessengerGetConstants());
+            ProxerApiResponse<ConstantsDataModel> lResult = await RequestHandler.ApiRequest(
+                ApiRequestBuilder.MessengerGetConstants()).ConfigureAwait(false);
             if (!lResult.Success || (lResult.Result == null)) return new ProxerResult(lResult.Exceptions);
             ConstantsDataModel lData = lResult.Result;
 
@@ -320,8 +323,9 @@ namespace Azuria.Community
 
         private async Task<IProxerResult> InitInfo()
         {
-            ProxerApiResponse<ConferenceInfoDataModel> lResult =
-                await RequestHandler.ApiRequest(ApiRequestBuilder.MessengerGetConferenceInfo(this.Id, this._senpai));
+            ProxerApiResponse<ConferenceInfoDataModel> lResult = await RequestHandler.ApiRequest(
+                    ApiRequestBuilder.MessengerGetConferenceInfo(this.Id, this._senpai))
+                .ConfigureAwait(false);
             if (!lResult.Success || (lResult.Result == null)) return new ProxerResult(lResult.Exceptions);
             ConferenceInfoDataModel lData = lResult.Result;
 
@@ -350,8 +354,9 @@ namespace Azuria.Community
         {
             if (string.IsNullOrEmpty(message)) throw new ArgumentException(nameof(message));
 
-            ProxerApiResponse<string> lResult =
-                await RequestHandler.ApiRequest(ApiRequestBuilder.MessengerSetMessage(this.Id, message, this._senpai));
+            ProxerApiResponse<string> lResult = await RequestHandler.ApiRequest(
+                    ApiRequestBuilder.MessengerSetMessage(this.Id, message, this._senpai))
+                .ConfigureAwait(false);
             return !lResult.Success
                 ? new ProxerResult<string>(lResult.Exceptions)
                 : new ProxerResult<string>(lResult.Result ?? string.Empty);
@@ -365,8 +370,9 @@ namespace Azuria.Community
         {
             if (string.IsNullOrEmpty(reason)) return new ProxerResult(new ArgumentException(nameof(reason)));
 
-            ProxerApiResponse<int> lResult =
-                await RequestHandler.ApiRequest(ApiRequestBuilder.MessengerSetReport(this.Id, reason, this._senpai));
+            ProxerApiResponse<int> lResult = await RequestHandler.ApiRequest(
+                    ApiRequestBuilder.MessengerSetReport(this.Id, reason, this._senpai))
+                .ConfigureAwait(false);
             return !lResult.Success
                 ? new ProxerResult(lResult.Exceptions)
                 : new ProxerResult();
@@ -380,8 +386,9 @@ namespace Azuria.Community
         {
             ProxerApiResponse<int> lResult =
                 await RequestHandler.ApiRequest(isBlocked
-                    ? ApiRequestBuilder.MessengerSetBlock(this.Id, this._senpai)
-                    : ApiRequestBuilder.MessengerSetUnblock(this.Id, this._senpai));
+                        ? ApiRequestBuilder.MessengerSetBlock(this.Id, this._senpai)
+                        : ApiRequestBuilder.MessengerSetUnblock(this.Id, this._senpai))
+                    .ConfigureAwait(false);
             return !lResult.Success
                 ? new ProxerResult(lResult.Exceptions)
                 : new ProxerResult();
@@ -395,8 +402,9 @@ namespace Azuria.Community
         {
             ProxerApiResponse<int> lResult =
                 await RequestHandler.ApiRequest(isFavourite
-                    ? ApiRequestBuilder.MessengerSetFavour(this.Id, this._senpai)
-                    : ApiRequestBuilder.MessengerSetUnfavour(this.Id, this._senpai));
+                        ? ApiRequestBuilder.MessengerSetFavour(this.Id, this._senpai)
+                        : ApiRequestBuilder.MessengerSetUnfavour(this.Id, this._senpai))
+                    .ConfigureAwait(false);
             return !lResult.Success
                 ? new ProxerResult(lResult.Exceptions)
                 : new ProxerResult();
@@ -408,8 +416,9 @@ namespace Azuria.Community
         /// <returns>Whether the action was successfull.</returns>
         public async Task<IProxerResult> SetUnread()
         {
-            ProxerApiResponse lResult =
-                await RequestHandler.ApiRequest(ApiRequestBuilder.MessengerSetUnread(this.Id, this._senpai));
+            ProxerApiResponse lResult = await RequestHandler.ApiRequest(
+                    ApiRequestBuilder.MessengerSetUnread(this.Id, this._senpai))
+                .ConfigureAwait(false);
             return !lResult.Success
                 ? new ProxerResult(lResult.Exceptions)
                 : new ProxerResult();

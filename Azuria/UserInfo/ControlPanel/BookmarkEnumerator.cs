@@ -26,9 +26,10 @@ namespace Azuria.UserInfo.ControlPanel
 
         internal override async Task<IProxerResult<IEnumerable<Bookmark<T>>>> GetNextPage(int nextPage)
         {
-            ProxerApiResponse<BookmarkDataModel[]> lResult =
-                await RequestHandler.ApiRequest(ApiRequestBuilder.UcpGetReminder(
-                    typeof(T).GetTypeInfo().Name.ToLowerInvariant(), nextPage, ResultsPerPage, this._senpai));
+            ProxerApiResponse<BookmarkDataModel[]> lResult = await RequestHandler.ApiRequest(
+                    ApiRequestBuilder.UcpGetReminder(typeof(T).GetTypeInfo().Name.ToLowerInvariant(),
+                        nextPage, ResultsPerPage, this._senpai))
+                .ConfigureAwait(false);
             if (!lResult.Success || (lResult.Result == null))
                 return new ProxerResult<IEnumerable<Bookmark<T>>>(lResult.Exceptions);
             BookmarkDataModel[] lData = lResult.Result;

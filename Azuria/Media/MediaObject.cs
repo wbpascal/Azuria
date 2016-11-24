@@ -180,8 +180,8 @@ namespace Azuria.Media
         {
             if (id <= 0) return new ProxerResult<IMediaObject>(new ArgumentException(nameof(id)));
 
-            ProxerApiResponse<EntryDataModel> lResult =
-                await RequestHandler.ApiRequest(ApiRequestBuilder.InfoGetEntry(id));
+            ProxerApiResponse<EntryDataModel> lResult = await RequestHandler.ApiRequest(
+                ApiRequestBuilder.InfoGetEntry(id)).ConfigureAwait(false);
             if (!lResult.Success || (lResult.Result == null))
                 return new ProxerResult<IMediaObject>(lResult.Exceptions);
             EntryDataModel lDataModel = lResult.Result;
@@ -200,8 +200,8 @@ namespace Azuria.Media
         {
             if (id <= 0) return new ProxerResult<IMediaObject>(new ArgumentException(nameof(id)));
 
-            ProxerApiResponse<FullEntryDataModel> lResult =
-                await RequestHandler.ApiRequest(ApiRequestBuilder.InfoGetFullEntry(id));
+            ProxerApiResponse<FullEntryDataModel> lResult = await RequestHandler.ApiRequest(
+                ApiRequestBuilder.InfoGetFullEntry(id)).ConfigureAwait(false);
             if (!lResult.Success || (lResult.Result == null))
                 return new ProxerResult<IMediaObject>(lResult.Exceptions);
             FullEntryDataModel lDataModel = lResult.Result;
@@ -214,13 +214,13 @@ namespace Azuria.Media
 
         internal async Task<IProxerResult<MediaContentDataModel[]>> GetContentObjects()
         {
-            IProxerResult<int> lContentCountResult = await this.ContentCount;
+            IProxerResult<int> lContentCountResult = await this.ContentCount.Get().ConfigureAwait(false);
             if (!lContentCountResult.Success || (lContentCountResult.Result == default(int)))
                 return new ProxerResult<MediaContentDataModel[]>(lContentCountResult.Exceptions);
 
-            ProxerApiResponse<ListInfoDataModel> lResult =
-                await
-                    RequestHandler.ApiRequest(ApiRequestBuilder.InfoGetListInfo(this.Id, 0, lContentCountResult.Result));
+            ProxerApiResponse<ListInfoDataModel> lResult = await RequestHandler.ApiRequest(
+                    ApiRequestBuilder.InfoGetListInfo(this.Id, 0, lContentCountResult.Result))
+                .ConfigureAwait(false);
             if (!lResult.Success || (lResult.Result == null))
                 return new ProxerResult<MediaContentDataModel[]>(lResult.Exceptions);
             ListInfoDataModel lData = lResult.Result;
@@ -230,8 +230,8 @@ namespace Azuria.Media
 
         protected async Task<IProxerResult> InitGroups()
         {
-            ProxerApiResponse<TranslatorDataModel[]> lResult =
-                await RequestHandler.ApiRequest(ApiRequestBuilder.InfoGetGroups(this.Id));
+            ProxerApiResponse<TranslatorDataModel[]> lResult = await RequestHandler.ApiRequest(
+                ApiRequestBuilder.InfoGetGroups(this.Id)).ConfigureAwait(false);
             if (!lResult.Success || (lResult.Result == null)) return new ProxerResult(lResult.Exceptions);
 
             this.InitGroups(lResult.Result);
@@ -246,8 +246,8 @@ namespace Azuria.Media
 
         protected async Task<IProxerResult> InitIndustry()
         {
-            ProxerApiResponse<PublisherDataModel[]> lResult =
-                await RequestHandler.ApiRequest(ApiRequestBuilder.InfoGetPublisher(this.Id));
+            ProxerApiResponse<PublisherDataModel[]> lResult = await RequestHandler.ApiRequest(
+                ApiRequestBuilder.InfoGetPublisher(this.Id)).ConfigureAwait(false);
             if (!lResult.Success || (lResult.Result == null)) return new ProxerResult(lResult.Exceptions);
 
             this.InitIndustry(lResult.Result);
@@ -262,8 +262,8 @@ namespace Azuria.Media
 
         protected async Task<IProxerResult> InitIsHContent()
         {
-            ProxerApiResponse<bool> lResult =
-                await RequestHandler.ApiRequest(ApiRequestBuilder.InfoGetGate(this.Id));
+            ProxerApiResponse<bool> lResult = await RequestHandler.ApiRequest(
+                ApiRequestBuilder.InfoGetGate(this.Id)).ConfigureAwait(false);
             if (!lResult.Success) return new ProxerResult(lResult.Exceptions);
 
             this._isHContent.Set(lResult.Result);
@@ -273,8 +273,8 @@ namespace Azuria.Media
 
         protected async Task<IProxerResult> InitMainInfo()
         {
-            ProxerApiResponse<EntryDataModel> lResult =
-                await RequestHandler.ApiRequest(ApiRequestBuilder.InfoGetEntry(this.Id));
+            ProxerApiResponse<EntryDataModel> lResult = await RequestHandler.ApiRequest(
+                ApiRequestBuilder.InfoGetEntry(this.Id)).ConfigureAwait(false);
             if (!lResult.Success || (lResult.Result == null)) return new ProxerResult(lResult.Exceptions);
             EntryDataModel lDataModel = lResult.Result;
 
@@ -295,8 +295,8 @@ namespace Azuria.Media
 
         protected async Task<IProxerResult> InitNames()
         {
-            ProxerApiResponse<NameDataModel[]> lResult =
-                await RequestHandler.ApiRequest(ApiRequestBuilder.InfoGetName(this.Id));
+            ProxerApiResponse<NameDataModel[]> lResult = await RequestHandler.ApiRequest(
+                ApiRequestBuilder.InfoGetName(this.Id)).ConfigureAwait(false);
             if (!lResult.Success || (lResult.Result == null)) return new ProxerResult(lResult.Exceptions);
 
             this.InitNames(lResult.Result);
@@ -334,8 +334,8 @@ namespace Azuria.Media
 
         protected async Task<IProxerResult> InitRelations()
         {
-            ProxerApiResponse<RelationDataModel[]> lResult =
-                await RequestHandler.ApiRequest(ApiRequestBuilder.InfoGetRelations(this.Id));
+            ProxerApiResponse<RelationDataModel[]> lResult = await RequestHandler.ApiRequest(
+                ApiRequestBuilder.InfoGetRelations(this.Id)).ConfigureAwait(false);
             if (!lResult.Success || (lResult.Result == null)) return new ProxerResult(lResult.Exceptions);
 
             this._relations.Set(from dataModel in lResult.Result
@@ -348,8 +348,8 @@ namespace Azuria.Media
 
         protected async Task<IProxerResult> InitSeasons()
         {
-            ProxerApiResponse<SeasonDataModel[]> lResult =
-                await RequestHandler.ApiRequest(ApiRequestBuilder.InfoGetSeason(this.Id));
+            ProxerApiResponse<SeasonDataModel[]> lResult = await RequestHandler.ApiRequest(
+                ApiRequestBuilder.InfoGetSeason(this.Id)).ConfigureAwait(false);
             if (!lResult.Success || (lResult.Result == null)) return new ProxerResult(lResult.Exceptions);
 
             this.InitSeasons(lResult.Result);
@@ -365,8 +365,8 @@ namespace Azuria.Media
 
         protected async Task<IProxerResult> InitTags()
         {
-            ProxerApiResponse<MediaTagDataModel[]> lResult =
-                await RequestHandler.ApiRequest(ApiRequestBuilder.InfoGetEntryTags(this.Id));
+            ProxerApiResponse<MediaTagDataModel[]> lResult = await RequestHandler.ApiRequest(
+                ApiRequestBuilder.InfoGetEntryTags(this.Id)).ConfigureAwait(false);
             if (!lResult.Success || (lResult.Result == null)) return new ProxerResult(lResult.Exceptions);
 
             this.InitTags(lResult.Result);

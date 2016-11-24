@@ -25,9 +25,9 @@ namespace Azuria.Notifications.News
 
         internal override async Task<IProxerResult<IEnumerable<NewsNotification>>> GetNextPage(int nextPage)
         {
-            ProxerApiResponse<NewsNotificationDataModel[]> lResult =
-                await RequestHandler.ApiRequest(ApiRequestBuilder.NotificationGetNews(
-                    nextPage, this._newsPerPage, this._senpai));
+            ProxerApiResponse<NewsNotificationDataModel[]> lResult = await RequestHandler.ApiRequest(
+                    ApiRequestBuilder.NotificationGetNews(nextPage, this._newsPerPage, this._senpai))
+                .ConfigureAwait(false);
             if (!lResult.Success || (lResult.Result == null))
                 return new ProxerResult<IEnumerable<NewsNotification>>(lResult.Exceptions);
 

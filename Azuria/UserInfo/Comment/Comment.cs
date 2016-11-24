@@ -103,13 +103,15 @@ namespace Azuria.UserInfo.Comment
                     new[] {new ArgumentException($"{nameof(senpai)} is not the author of this comment!")});
             if (progress < 0) return new ProxerResult(new[] {new ArgumentException(nameof(progress))});
 
-            ProxerApiResponse lResult =
-                await RequestHandler.ApiRequest(ApiRequestBuilder.UcpSetProgress(this.Id, progress, senpai));
+            ProxerApiResponse lResult = await RequestHandler.ApiRequest(
+                    ApiRequestBuilder.UcpSetProgress(this.Id, progress, senpai))
+                .ConfigureAwait(false);
             if (!lResult.Success) return new ProxerResult(lResult.Exceptions);
 
-            if (progress < await this.MediaObject.ContentCount.Get(int.MaxValue)) return new ProxerResult();
+            if (progress < await this.MediaObject.ContentCount.Get(int.MaxValue).ConfigureAwait(false))
+                return new ProxerResult();
 
-            this.Progress = await this.MediaObject.ContentCount.Get(int.MaxValue);
+            this.Progress = await this.MediaObject.ContentCount.Get(int.MaxValue).ConfigureAwait(false);
             this.ProgressState = MediaProgressState.Finished;
 
             return new ProxerResult();

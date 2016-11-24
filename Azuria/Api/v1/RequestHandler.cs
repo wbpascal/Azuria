@@ -26,7 +26,8 @@ namespace Azuria.Api.v1
                 : new[] {request.CustomDataConverter};
 
             IProxerResult lResult = await ApiRequestInternal<ProxerApiResponse<T>>(
-                request, forceTokenLogin, new JsonSerializerSettings {Converters = lDataConverter.ToList()});
+                    request, forceTokenLogin, new JsonSerializerSettings {Converters = lDataConverter.ToList()})
+                .ConfigureAwait(false);
 
             return lResult.Success && lResult is ProxerApiResponse<T>
                 ? lResult as ProxerApiResponse<T>
@@ -35,7 +36,8 @@ namespace Azuria.Api.v1
 
         internal static async Task<ProxerApiResponse> ApiRequest(ApiRequest request, bool forceTokenLogin = false)
         {
-            IProxerResult lResult = await ApiRequestInternal<ProxerApiResponse>(request, forceTokenLogin);
+            IProxerResult lResult =
+                await ApiRequestInternal<ProxerApiResponse>(request, forceTokenLogin).ConfigureAwait(false);
 
             return lResult.Success && lResult is ProxerApiResponse
                 ? lResult as ProxerApiResponse
@@ -50,7 +52,7 @@ namespace Azuria.Api.v1
 
             IProxerResult<string> lResult =
                 await (request.Senpai?.HttpClient ?? ApiInfo.HttpClient).PostRequest(request.Address,
-                    request.PostArguments, GetHeaders(request, forceTokenLogin));
+                    request.PostArguments, GetHeaders(request, forceTokenLogin)).ConfigureAwait(false);
             if (!lResult.Success || string.IsNullOrEmpty(lResult.Result))
                 return new ProxerResult(lResult.Exceptions);
 
@@ -58,14 +60,14 @@ namespace Azuria.Api.v1
             {
                 T lApiResponse = await Task<T>.Factory.StartNew(() =>
                     JsonConvert.DeserializeObject<T>(WebUtility.HtmlDecode(lResult.Result),
-                        settings ?? new JsonSerializerSettings()));
+                        settings ?? new JsonSerializerSettings())).ConfigureAwait(false);
 
                 if (lApiResponse.Success) return lApiResponse;
 
                 Exception lException = HandleErrorCode(lApiResponse.ErrorCode, request);
                 if (lException == null) return new ProxerResult(new ProxerApiException(lApiResponse.ErrorCode));
                 if (lException is NotLoggedInException && (loopCount < 5))
-                    return await ApiRequestInternal<T>(request, true, settings, loopCount + 1);
+                    return await ApiRequestInternal<T>(request, true, settings, loopCount + 1).ConfigureAwait(false);
 
                 return new ProxerResult(lException);
             }

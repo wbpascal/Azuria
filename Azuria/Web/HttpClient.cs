@@ -54,13 +54,13 @@ namespace Azuria.Web
             HttpResponseMessage lResponseObject;
             try
             {
-                lResponseObject = await this.GetWebRequest(url, headers);
+                lResponseObject = await this.GetWebRequest(url, headers).ConfigureAwait(false);
             }
             catch (Exception ex)
             {
                 return new ProxerResult<string>(new[] {ex});
             }
-            string lResponseString = await lResponseObject.Content.ReadAsStringAsync();
+            string lResponseString = await lResponseObject.Content.ReadAsStringAsync().ConfigureAwait(false);
 
             if ((lResponseObject.StatusCode == HttpStatusCode.OK) && !string.IsNullOrEmpty(lResponseString))
                 lResponse = WebUtility.HtmlDecode(lResponseString).Replace("\n", "");
@@ -81,11 +81,11 @@ namespace Azuria.Web
             this._senpai?.UsedCookies();
             this._client.DefaultRequestHeaders.Clear();
 
-            if (headers == null) return await this._client.GetAsync(url);
+            if (headers == null) return await this._client.GetAsync(url).ConfigureAwait(false);
             foreach (KeyValuePair<string, string> header in headers)
                 this._client.DefaultRequestHeaders.Add(header.Key, header.Value);
 
-            return await this._client.GetAsync(url);
+            return await this._client.GetAsync(url).ConfigureAwait(false);
         }
 
         /// <summary>
@@ -103,13 +103,13 @@ namespace Azuria.Web
             HttpResponseMessage lResponseObject;
             try
             {
-                lResponseObject = await this.PostWebRequest(url, postArgs, headers);
+                lResponseObject = await this.PostWebRequest(url, postArgs, headers).ConfigureAwait(false);
             }
             catch (Exception ex)
             {
                 return new ProxerResult<string>(new[] {ex});
             }
-            string lResponseString = await lResponseObject.Content.ReadAsStringAsync();
+            string lResponseString = await lResponseObject.Content.ReadAsStringAsync().ConfigureAwait(false);
 
             if ((lResponseObject.StatusCode == HttpStatusCode.OK) && !string.IsNullOrEmpty(lResponseString))
                 lResponse = WebUtility.HtmlDecode(lResponseString).Replace("\n", "");
@@ -130,11 +130,12 @@ namespace Azuria.Web
             this._senpai?.UsedCookies();
             this._client.DefaultRequestHeaders.Clear();
 
-            if (headers == null) return await this._client.PostAsync(url, new FormUrlEncodedContent(postArgs));
+            if (headers == null)
+                return await this._client.PostAsync(url, new FormUrlEncodedContent(postArgs)).ConfigureAwait(false);
             foreach (KeyValuePair<string, string> header in headers)
                 this._client.DefaultRequestHeaders.Add(header.Key, header.Value);
 
-            return await this._client.PostAsync(url, new FormUrlEncodedContent(postArgs));
+            return await this._client.PostAsync(url, new FormUrlEncodedContent(postArgs)).ConfigureAwait(false);
         }
 
         #endregion

@@ -95,12 +95,13 @@ namespace Azuria.UserInfo.ControlPanel
         {
             if (contentObject == null) return new ProxerResult(new ArgumentNullException(nameof(contentObject)));
 
-            ProxerApiResponse lResult =
-                await RequestHandler.ApiRequest(ApiRequestBuilder.UcpSetBookmark(contentObject.ParentObject.Id,
-                    contentObject.ContentIndex,
-                    (contentObject as Anime.Episode)?.Language.ToString().ToLowerInvariant() ??
-                    (contentObject.GeneralLanguage == Language.German ? "de" : "en"),
-                    contentObject.ParentObject.GetType().GetTypeInfo().Name.ToLowerInvariant(), this._senpai));
+            ProxerApiResponse lResult = await RequestHandler.ApiRequest(
+                    ApiRequestBuilder.UcpSetBookmark(contentObject.ParentObject.Id,
+                        contentObject.ContentIndex,
+                        (contentObject as Anime.Episode)?.Language.ToString().ToLowerInvariant() ??
+                        (contentObject.GeneralLanguage == Language.German ? "de" : "en"),
+                        contentObject.ParentObject.GetType().GetTypeInfo().Name.ToLowerInvariant(), this._senpai))
+                .ConfigureAwait(false);
 
             return lResult.Success ? new ProxerResult() : new ProxerResult(lResult.Exceptions);
         }
@@ -114,9 +115,9 @@ namespace Azuria.UserInfo.ControlPanel
         {
             if (entryId < 0) return new ProxerResult(new ArgumentOutOfRangeException(nameof(entryId)));
 
-            ProxerApiResponse lResult =
-                await RequestHandler.ApiRequest(ApiRequestBuilder.InfoSetUserInfo(
-                    entryId, ProfileListToString(list), this._senpai));
+            ProxerApiResponse lResult = await RequestHandler.ApiRequest(
+                    ApiRequestBuilder.InfoSetUserInfo(entryId, ProfileListToString(list), this._senpai))
+                .ConfigureAwait(false);
             return lResult.Success ? new ProxerResult() : new ProxerResult(lResult.Exceptions);
         }
 
@@ -128,8 +129,9 @@ namespace Azuria.UserInfo.ControlPanel
         {
             if (bookmarkId < 0) return new ProxerResult(new ArgumentOutOfRangeException(nameof(bookmarkId)));
 
-            ProxerApiResponse<BookmarkDataModel[]> lResult =
-                await RequestHandler.ApiRequest(ApiRequestBuilder.UcpDeleteReminder(bookmarkId, this._senpai));
+            ProxerApiResponse<BookmarkDataModel[]> lResult = await RequestHandler.ApiRequest(
+                    ApiRequestBuilder.UcpDeleteReminder(bookmarkId, this._senpai))
+                .ConfigureAwait(false);
             return lResult.Success ? new ProxerResult() : new ProxerResult(lResult.Exceptions);
         }
 
@@ -141,8 +143,9 @@ namespace Azuria.UserInfo.ControlPanel
         {
             if (voteId < 0) return new ProxerResult(new ArgumentOutOfRangeException(nameof(voteId)));
 
-            ProxerApiResponse<BookmarkDataModel[]> lResult =
-                await RequestHandler.ApiRequest(ApiRequestBuilder.UcpDeleteVote(voteId, this._senpai));
+            ProxerApiResponse<BookmarkDataModel[]> lResult = await RequestHandler.ApiRequest(
+                    ApiRequestBuilder.UcpDeleteVote(voteId, this._senpai))
+                .ConfigureAwait(false);
             return lResult.Success ? new ProxerResult() : new ProxerResult(lResult.Exceptions);
         }
 
@@ -154,15 +157,17 @@ namespace Azuria.UserInfo.ControlPanel
         {
             if (toptenId < 0) return new ProxerResult(new ArgumentOutOfRangeException(nameof(toptenId)));
 
-            ProxerApiResponse<BookmarkDataModel[]> lResult =
-                await RequestHandler.ApiRequest(ApiRequestBuilder.UcpDeleteFavourite(toptenId, this._senpai));
+            ProxerApiResponse<BookmarkDataModel[]> lResult = await RequestHandler.ApiRequest(
+                    ApiRequestBuilder.UcpDeleteFavourite(toptenId, this._senpai))
+                .ConfigureAwait(false);
             return lResult.Success ? new ProxerResult() : new ProxerResult(lResult.Exceptions);
         }
 
         private async Task<IProxerResult> InitPoints(string category)
         {
-            ProxerApiResponse<int> lResult =
-                await RequestHandler.ApiRequest(ApiRequestBuilder.UcpGetListsum(this._senpai, category));
+            ProxerApiResponse<int> lResult = await RequestHandler.ApiRequest(
+                    ApiRequestBuilder.UcpGetListsum(this._senpai, category))
+                .ConfigureAwait(false);
             if (!lResult.Success) return new ProxerResult(lResult.Exceptions);
 
             switch (category)
@@ -180,8 +185,8 @@ namespace Azuria.UserInfo.ControlPanel
 
         private async Task<IProxerResult> InitTopten()
         {
-            ProxerApiResponse<ToptenDataModel[]> lResult =
-                await RequestHandler.ApiRequest(ApiRequestBuilder.UcpGetTopten(this._senpai));
+            ProxerApiResponse<ToptenDataModel[]> lResult = await RequestHandler.ApiRequest(
+                ApiRequestBuilder.UcpGetTopten(this._senpai)).ConfigureAwait(false);
             if (!lResult.Success || (lResult.Result == null)) return new ProxerResult(lResult.Exceptions);
 
             ToptenDataModel[] lData = lResult.Result;
@@ -197,8 +202,8 @@ namespace Azuria.UserInfo.ControlPanel
 
         private async Task<IProxerResult> InitVotes()
         {
-            ProxerApiResponse<VoteDataModel[]> lResult =
-                await RequestHandler.ApiRequest(ApiRequestBuilder.UcpGetVotes(this._senpai));
+            ProxerApiResponse<VoteDataModel[]> lResult = await RequestHandler.ApiRequest(
+                ApiRequestBuilder.UcpGetVotes(this._senpai)).ConfigureAwait(false);
             if (!lResult.Success || (lResult.Result == null)) return new ProxerResult(lResult.Exceptions);
 
             this._commentVotes.Set(from voteDataModel in lResult.Result

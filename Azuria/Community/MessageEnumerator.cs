@@ -30,8 +30,9 @@ namespace Azuria.Community
         {
             Message lLastMessage = this.GetCurrentPage().LastOrDefault();
             ProxerApiResponse<MessageDataModel[]> lResult = await RequestHandler.ApiRequest(
-                ApiRequestBuilder.MessengerGetMessages(this._senpai, this._conferenceId, lLastMessage?.MessageId ?? 0,
-                    this._markAsRead));
+                    ApiRequestBuilder.MessengerGetMessages(this._senpai, this._conferenceId,
+                        lLastMessage?.MessageId ?? 0, this._markAsRead))
+                .ConfigureAwait(false);
             if (!lResult.Success || (lResult.Result == null))
                 return new ProxerResult<IEnumerable<Message>>(lResult.Exceptions);
 

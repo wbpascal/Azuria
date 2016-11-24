@@ -91,7 +91,7 @@ namespace Azuria
                 return new ProxerResult<Senpai>(new ArgumentException(nameof(token)));
 
             Senpai lSenpai = new Senpai();
-            IProxerResult lResult = await lSenpai.LoginWithToken(token);
+            IProxerResult lResult = await lSenpai.LoginWithToken(token).ConfigureAwait(false);
             return !lResult.Success ? new ProxerResult<Senpai>(lResult.Exceptions) : new ProxerResult<Senpai>(lSenpai);
         }
 
@@ -114,7 +114,8 @@ namespace Azuria
             if (this.IsProbablyLoggedIn) return new ProxerResult<bool>(new AlreadyLoggedInException());
 
             ProxerApiResponse<LoginDataModel> lResult = await RequestHandler.ApiRequest(
-                ApiRequestBuilder.UserLogin(this.Username, password, this));
+                    ApiRequestBuilder.UserLogin(this.Username, password, this))
+                .ConfigureAwait(false);
             if (!lResult.Success || (lResult.Result == null))
                 return new ProxerResult(lResult.Exceptions);
 
@@ -133,7 +134,7 @@ namespace Azuria
             this.LoginToken.SetValue(token);
 
             ProxerApiResponse<UserInfoDataModel> lResult = await RequestHandler.ApiRequest(
-                ApiRequestBuilder.UserGetInfo(this), true);
+                ApiRequestBuilder.UserGetInfo(this), true).ConfigureAwait(false);
             if (!lResult.Success || (lResult.Result == null))
                 return new ProxerResult(lResult.Exceptions);
             UserInfoDataModel lDataModel = lResult.Result;
@@ -152,7 +153,8 @@ namespace Azuria
         {
             if (this._cookiesCreated == DateTime.MinValue) return new ProxerResult(new NotLoggedInException(this));
 
-            ProxerApiResponse lResult = await RequestHandler.ApiRequest(ApiRequestBuilder.UserLogout(this));
+            ProxerApiResponse lResult = await RequestHandler.ApiRequest(ApiRequestBuilder.UserLogout(this))
+                .ConfigureAwait(false);
             if (!lResult.Success) return new ProxerResult(lResult.Exceptions);
             this.InvalidateCookies();
             return new ProxerResult();

@@ -53,7 +53,8 @@ namespace Azuria.Notifications.Message
                 return new ProxerResult<IEnumerable<MessageNotification>>(new NotLoggedInException(this._senpai));
 
             IProxerResult<string> lResponse = await this._senpai.HttpClient.GetRequest(
-                new Uri("https://proxer.me/messages?format=raw&s=notification"));
+                    new Uri("https://proxer.me/messages?format=raw&s=notification"))
+                .ConfigureAwait(false);
             if (!lResponse.Success || string.IsNullOrEmpty(lResponse.Result))
                 return new ProxerResult<IEnumerable<MessageNotification>>(lResponse.Exceptions);
 

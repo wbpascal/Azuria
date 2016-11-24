@@ -48,9 +48,9 @@ namespace Azuria.Search
 
         internal override async Task<IProxerResult<IEnumerable<T>>> GetNextPage(int nextPage)
         {
-            ProxerApiResponse<SearchDataModel[]> lResult =
-                await
-                    RequestHandler.ApiRequest(ApiRequestBuilder.ListEntrySearch(this._input, ResultsPerPage, nextPage));
+            ProxerApiResponse<SearchDataModel[]> lResult = await RequestHandler.ApiRequest(
+                    ApiRequestBuilder.ListEntrySearch(this._input, ResultsPerPage, nextPage))
+                .ConfigureAwait(false);
             if (!lResult.Success || (lResult.Result == null))
                 return new ProxerResult<IEnumerable<T>>(lResult.Exceptions);
             SearchDataModel[] lData = lResult.Result;

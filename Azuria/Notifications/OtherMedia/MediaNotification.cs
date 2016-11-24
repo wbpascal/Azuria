@@ -70,8 +70,8 @@ namespace Azuria.Notifications.OtherMedia
         {
             if (this.MediaObject is Anime)
             {
-                IProxerResult<IEnumerable<Anime.Episode>> lEpisodesResult =
-                    await ((Anime) this.MediaObject).GetEpisodes((AnimeLanguage) this.Language);
+                IProxerResult<IEnumerable<Anime.Episode>> lEpisodesResult = await ((Anime) this.MediaObject)
+                    .GetEpisodes((AnimeLanguage) this.Language).ConfigureAwait(false);
                 if (!lEpisodesResult.Success || (lEpisodesResult.Result == null))
                     return new ProxerResult<IMediaContent>(lEpisodesResult.Exceptions);
 
@@ -80,8 +80,8 @@ namespace Azuria.Notifications.OtherMedia
             }
             if (!(this.MediaObject is Manga)) return new ProxerResult<IMediaContent>(new Exception[0]);
 
-            IProxerResult<IEnumerable<Manga.Chapter>> lChaptersResult =
-                await ((Manga) this.MediaObject).GetChapters((Language) this.Language);
+            IProxerResult<IEnumerable<Manga.Chapter>> lChaptersResult = await ((Manga) this.MediaObject)
+                .GetChapters((Language) this.Language).ConfigureAwait(false);
             if (!lChaptersResult.Success || (lChaptersResult.Result == null))
                 return new ProxerResult<IMediaContent>(lChaptersResult.Exceptions);
 

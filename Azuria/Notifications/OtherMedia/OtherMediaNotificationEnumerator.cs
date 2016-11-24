@@ -58,7 +58,8 @@ namespace Azuria.Notifications.OtherMedia
                 return new ProxerResult<IEnumerable<OtherMediaNotification>>(new NotLoggedInException(this._senpai));
 
             IProxerResult<string> lResponse = await this._senpai.HttpClient.GetRequest(
-                new Uri("https://proxer.me/components/com_proxer/misc/notifications_misc.php"));
+                    new Uri("https://proxer.me/components/com_proxer/misc/notifications_misc.php"))
+                .ConfigureAwait(false);
             if (!lResponse.Success || string.IsNullOrEmpty(lResponse.Result))
                 return new ProxerResult<IEnumerable<OtherMediaNotification>>(lResponse.Exceptions);
 
