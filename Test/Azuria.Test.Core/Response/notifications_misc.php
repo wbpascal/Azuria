@@ -1,9 +1,9 @@
 <div style="height: 300px;margin: 5px;overflow-y: auto;width: 400px;" class="scrollBar"><a class="notificationList" id=
   "notification7618512" data-ajax="1" href="/user/193019#top"><u>User</u> hat deine Freundschaftsanfrage akzeptiert.
-  <div class="nDate">23.11 .2016</div>
+  <div class="nDate">23.11.2016</div>
   </a><a class="nClose fa fa-times" href="javascript:;"></a><a class="notificationList" id="notification7344972" data-
   ajax="1" href="/watch/42/5/engsub#top">Lesezeichen: <u>Anime # 5</u> ist online!
-  <div class="nDate">02.11 .2016</div>
+  <div class="nDate">02.11.2016</div>
   <div class="nDesc"><img src="/images/hoster/mp4upload.png" alt="MP4Upload"> <img src=
   "/images/hoster/proxer-stream.png" alt="Proxer-Stream"> <img src="/images/hoster/videoweed.png" alt="VideoWeed"> <img
   src="/images/hoster/novamov.png" alt="Auroravid/Novamov"> <img src="/images/hoster/crunchyroll.png" alt=

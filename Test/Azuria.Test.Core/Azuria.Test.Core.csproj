@@ -57,252 +57,254 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Response\anime_getlink.response">
+    <None Include="Response\anime_getlink.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Response\anime_getstreams.response">
+    <None Include="Response\anime_getstreams.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Response\info_getcommentslatest.response">
+    <None Include="Response\info_getcommentslatest.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Response\info_getcommentsrating1.response">
+    <None Include="Response\info_getcommentsrating1.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Response\info_getcommentsrating2.response">
+    <None Include="Response\info_getcommentsrating2.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Response\info_getentry.response">
+    <None Include="Response\info_getentry.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Response\info_getentry7834.response">
+    <None Include="Response\info_getentry7834.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Response\info_getentrytags.response">
+    <None Include="Response\info_getentrytags.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Response\info_getentry_3007.response">
+    <None Include="Response\info_getentry_3007.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Response\info_getfullentry.response">
+    <None Include="Response\info_getfullentry.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Response\info_getfullentry_3007.response">
+    <None Include="Response\info_getfullentry_3007.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Response\info_getgate.response">
+    <None Include="Response\info_getgate.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Response\info_getgroups.response">
+    <None Include="Response\info_getgroups.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Response\info_getlang.response">
+    <None Include="Response\info_getlang.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Response\info_getlang7834.response">
+    <None Include="Response\info_getlang7834.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Response\info_getlistinfo7834.response">
+    <None Include="Response\info_getlistinfo7834.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Response\info_getlistinfo9200.response">
+    <None Include="Response\info_getlistinfo9200.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Response\info_getnames.response">
+    <None Include="Response\info_getnames.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Response\info_getpublisher.response">
+    <None Include="Response\info_getpublisher.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Response\info_getrelations.response">
+    <None Include="Response\info_getrelations.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Response\info_getseason.response">
+    <None Include="Response\info_getseason.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Response\info_setuserinfofavor.response">
+    <None Include="Response\info_setuserinfofavor.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Response\info_setuserinfofinish.response">
+    <None Include="Response\info_setuserinfofinish.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Response\info_setuserinfonote.response">
+    <None Include="Response\info_setuserinfonote.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Response\info_setuserinfo_3010.response">
+    <None Include="Response\info_setuserinfo_3010.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Response\info_setuserinfo_3011.response">
+    <None Include="Response\info_setuserinfo_3011.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Response\list_getentrylist.response">
+    <None Include="Response\list_getentrylist.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Response\list_getentrysearch.response">
+    <None Include="Response\list_getentrysearch.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Response\manga_getchapter.response">
+    <None Include="Response\manga_getchapter.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Response\media_getheaderlist.response">
+    <None Include="Response\media_getheaderlist.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Response\media_getrandomheaderblack.response">
+    <None Include="Response\media_getrandomheaderblack.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Response\media_getrandomheadergray.response">
+    <None Include="Response\media_getrandomheadergray.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Response\media_getrandomheaderoldblue.response">
+    <None Include="Response\media_getrandomheaderoldblue.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Response\media_getrandomheaderpantsu.response">
+    <None Include="Response\media_getrandomheaderpantsu.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Response\messages_notifications.html.response">
+    <None Include="Response\messenger_getconferenceinfo.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Response\messenger_getconferenceinfo.response">
+    <None Include="Response\messenger_getconferences.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Response\messenger_getconferences.response">
+    <None Include="Response\messenger_getconferences_3023.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Response\messenger_getconferences_3023.response">
+    <None Include="Response\messenger_getconstants.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Response\messenger_getconstants.response">
+    <None Include="Response\messenger_getmessages1.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Response\messenger_getmessages1.response">
+    <None Include="Response\messenger_getmessages2.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Response\messenger_getmessages2.response">
+    <None Include="Response\messenger_getmessagesCheck.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Response\messenger_getmessagesCheck.response">
+    <None Include="Response\messenger_newconference.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Response\messenger_newconference.response">
+    <None Include="Response\messenger_newconferencegroup.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Response\messenger_newconferencegroup.response">
+    <None Include="Response\messenger_newconferencegroup_3030.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Response\messenger_newconferencegroup_3030.response">
+    <None Include="Response\messenger_newconference_3027.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Response\messenger_newconference_3027.response">
+    <None Include="Response\messenger_setblock.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Response\messenger_setblock.response">
+    <None Include="Response\messenger_setfavour.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Response\messenger_setfavour.response">
+    <None Include="Response\messenger_setmessage.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Response\messenger_setmessage.response">
+    <None Include="Response\messenger_setmessageHelp.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Response\messenger_setmessageHelp.response">
+    <None Include="Response\messenger_setreport.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Response\messenger_setreport.response">
+    <None Include="Response\messenger_setreport_3025.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Response\messenger_setreport_3025.response">
+    <None Include="Response\messenger_setunblock.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Response\messenger_setunblock.response">
+    <None Include="Response\messenger_setunfavour.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Response\messenger_setunfavour.response">
+    <None Include="Response\messenger_setunread.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Response\messenger_setunread.response">
+    <None Include="Response\notifications_getcount.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Response\notifications_getcount.response">
+    <None Include="Response\notifications_getnews.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Response\notifications_getnews.response">
+    <None Include="Response\notifications_misc.php">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Response\notifications_misc.php.response">
+    <None Include="Response\ucp_deletefavourite.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Response\ucp_deletefavourite.response">
+    <None Include="Response\ucp_deletereminder.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Response\ucp_deletereminder.response">
+    <None Include="Response\ucp_deletevote.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Response\ucp_deletevote.response">
+    <None Include="Response\ucp_gethistory.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Response\ucp_gethistory.response">
+    <None Include="Response\ucp_getlistsumanime.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Response\ucp_getlistsumanime.response">
+    <None Include="Response\ucp_getlistsummanga.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Response\ucp_getlistsummanga.response">
+    <None Include="Response\ucp_getreminderanime.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Response\ucp_getreminderanime.response">
+    <None Include="Response\ucp_getremindermanga.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Response\ucp_getremindermanga.response">
+    <None Include="Response\ucp_gettopten.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Response\ucp_gettopten.response">
+    <None Include="Response\ucp_getvotes.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Response\ucp_getvotes.response">
+    <None Include="Response\ucp_setreminder9200.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Response\ucp_setreminder9200.response">
+    <None Include="Response\user_getlatestcommentsanime.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Response\user_getlatestcommentsanime.response">
+    <None Include="Response\user_getlatestcommentsmanga.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Response\user_getlatestcommentsmanga.response">
+    <None Include="Response\user_getlistanime.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Response\user_getlistanime.response">
+    <None Include="Response\user_getlistmanga.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Response\user_getlistmanga.response">
+    <None Include="Response\user_gettoptenanime.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Response\user_gettoptenanime.response">
+    <None Include="Response\user_gettoptenmanga.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Response\user_gettoptenmanga.response">
+    <None Include="Response\user_getuserinfo.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Response\user_getuserinfo.response">
+    <None Include="Response\user_getuserinfo163825.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Response\user_getuserinfo163825.response">
+    <None Include="Response\user_getuserinfo177103.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Response\user_getuserinfo177103.response">
+    <None Include="Response\user_getuserinfo_3003.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Response\user_getuserinfo_3003.response">
+    <None Include="Response\user_login.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Response\user_login.response">
+    <None Include="Response\user_login_3001.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Response\user_login_3001.response">
+    <None Include="Response\user_logout.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Response\user_logout.response">
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Response\messages_notifications.html">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
+    </Content>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
