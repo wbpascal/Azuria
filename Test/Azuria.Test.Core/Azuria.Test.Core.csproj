@@ -183,9 +183,6 @@
     <None Include="Response\messenger_getmessagesCheck.response">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Response\messenger_getmessages_notifications.response">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
     <None Include="Response\messenger_newconference.response">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>

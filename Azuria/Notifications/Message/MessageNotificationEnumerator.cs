@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
@@ -60,8 +61,12 @@ namespace Azuria.Notifications.Message
             MatchCollection lMatches = NotificationInfoRegex.Matches(lResponse.Result.Replace("\n", ""));
 
             foreach (Match lNotification in lMatches)
-                lNotifications.Add(new MessageNotification(Convert.ToInt32(lNotification.Groups["cid"].Value),
-                    DateTime.Parse(lNotification.Groups["date"].Value), this._senpai));
+            {
+                int lNotificationId = Convert.ToInt32(lNotification.Groups["cid"].Value);
+                DateTime lDate = DateTime.ParseExact(lNotification.Groups["date"].Value, "dd.MM.yyyy",
+                    CultureInfo.InvariantCulture);
+                lNotifications.Add(new MessageNotification(lNotificationId, lDate, this._senpai));
+            }
 
             return new ProxerResult<IEnumerable<MessageNotification>>(lNotifications);
         }
