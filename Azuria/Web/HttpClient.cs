@@ -5,16 +5,31 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using Azuria.ErrorHandling;
 using Azuria.Exceptions;
+using Azuria.Utilities;
 
 namespace Azuria.Web
 {
     /// <summary>
     /// Represents a class that communicates with the proxer servers.
     /// </summary>
-    public class HttpClient : BaseHttpClient
+    public class HttpClient : IHttpClient
     {
+#if PORTABLE
+/// <summary>
+/// 
+/// </summary>
+        protected static readonly string UserAgent = "Azuria.Portable/" + Utility.GetAssemblyVersion(typeof(HttpClient));
+#else
+        /// <summary>
+        /// </summary>
+        protected static readonly string UserAgent = "Azuria/" + Utility.GetAssemblyVersion(typeof(HttpClient));
+#endif
+
         private readonly System.Net.Http.HttpClient _client;
-        private readonly Senpai _senpai;
+
+        /// <summary>
+        /// </summary>
+        protected Senpai Senpai { get; }
 
         /// <summary>
         /// </summary>
@@ -23,7 +38,7 @@ namespace Azuria.Web
         /// <param name="userAgentExtra"></param>
         public HttpClient(Senpai senpai, int timeout = 5000, string userAgentExtra = "")
         {
-            this._senpai = senpai;
+            this.Senpai = senpai;
             this._client = new System.Net.Http.HttpClient(new HttpClientHandler
             {
                 AllowAutoRedirect = true,
@@ -36,8 +51,10 @@ namespace Azuria.Web
 
         #region Methods
 
-        /// <inheritdoc />
-        public override void Dispose()
+        /// <summary>
+        /// DO NOT dispose <see cref="Senpai" /> as this is most likely being called from a Senpai.Dispose() method.
+        /// </summary>
+        public virtual void Dispose()
         {
             this._client.Dispose();
         }
@@ -47,7 +64,7 @@ namespace Azuria.Web
         /// <param name="url"></param>
         /// <param name="headers"></param>
         /// <returns></returns>
-        public override async Task<IProxerResult<string>> GetRequest(Uri url, Dictionary<string, string> headers = null)
+        public virtual async Task<IProxerResult<string>> GetRequest(Uri url, Dictionary<string, string> headers = null)
         {
             string lResponse;
 
@@ -78,7 +95,7 @@ namespace Azuria.Web
 
         private async Task<HttpResponseMessage> GetWebRequest(Uri url, Dictionary<string, string> headers)
         {
-            this._senpai?.UsedCookies();
+            this.Senpai?.UsedCookies();
             this._client.DefaultRequestHeaders.Clear();
 
             if (headers == null) return await this._client.GetAsync(url).ConfigureAwait(false);
@@ -94,7 +111,7 @@ namespace Azuria.Web
         /// <param name="postArgs"></param>
         /// <param name="headers"></param>
         /// <returns></returns>
-        public override async Task<IProxerResult<string>> PostRequest(Uri url,
+        public virtual async Task<IProxerResult<string>> PostRequest(Uri url,
             IEnumerable<KeyValuePair<string, string>> postArgs,
             Dictionary<string, string> headers = null)
         {
@@ -127,7 +144,7 @@ namespace Azuria.Web
         private async Task<HttpResponseMessage> PostWebRequest(Uri url,
             IEnumerable<KeyValuePair<string, string>> postArgs, Dictionary<string, string> headers)
         {
-            this._senpai?.UsedCookies();
+            this.Senpai?.UsedCookies();
             this._client.DefaultRequestHeaders.Clear();
 
             if (headers == null)
