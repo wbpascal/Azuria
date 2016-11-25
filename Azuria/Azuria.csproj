@@ -137,7 +137,6 @@
     <Compile Include="Utilities\PageEnumerator.cs" />
     <Compile Include="Utilities\Properties\ArgumentInitialisableProperty.cs" />
     <Compile Include="Utilities\Properties\IArgumentInitialisableProperty.cs" />
-    <Compile Include="Web\BaseHttpClient.cs" />
     <Compile Include="Web\IHttpClient.cs" />
     <Compile Include="UserInfo\Comment\CommentEnumerable.cs" />
     <Compile Include="UserInfo\Comment\CommentEnumerator.cs" />
@@ -247,18 +246,14 @@
     <Compile Include="Utilities\Extensions\ListExtensions.cs" />
     <Compile Include="Utilities\Extensions\SecureStringExtensions.cs" />
     <Compile Include="Utilities\Extensions\StringExtensions.cs" />
-    <Compile Include="Utilities\Extensions\TimerExtensions.cs" />
-    <Compile Include="Utilities\Extensions\TypeExtensions.cs" />
     <Compile Include="Utilities\Properties\IInitialisableProperty.cs" />
     <Compile Include="Utilities\Properties\InitialisableProperty.cs" />
-    <Compile Include="Utilities\Properties\SetableInitialisableProperty.cs" />
     <Compile Include="Api\v1\DataModels\User\LoginDataModel.cs" />
     <Compile Include="Api\v1\ErrorCode.cs" />
     <Compile Include="Api\v1\DataModels\IDataModel.cs" />
     <Compile Include="Api\v1\ProxerApiResponse.cs" />
     <Compile Include="Web\HttpClient.cs" />
     <Compile Include="ErrorHandling\ProxerResult.cs" />
-    <Compile Include="Utilities\Properties\AsyncProperty.cs" />
     <Compile Include="Utilities\Utility.cs" />
   </ItemGroup>
   <ItemGroup>
