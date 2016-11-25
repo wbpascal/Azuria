@@ -4,13 +4,13 @@ using System.Reflection;
 using System.Threading.Tasks;
 using Azuria.Api.v1;
 using Azuria.Api.v1.DataModels.Ucp;
+using Azuria.Enumerable;
 using Azuria.ErrorHandling;
 using Azuria.Media;
-using Azuria.Utilities;
 
 namespace Azuria.UserInfo.ControlPanel
 {
-    internal class BookmarkEnumerator<T> : PageEnumerator<Bookmark<T>> where T : class, IMediaObject
+    internal class BookmarkEnumerator<T> : PagedEnumerator<Bookmark<T>> where T : class, IMediaObject
     {
         private const int ResultsPerPage = 100;
         private readonly UserControlPanel _controlPanel;

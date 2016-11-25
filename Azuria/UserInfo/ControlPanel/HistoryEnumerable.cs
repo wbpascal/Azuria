@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using Azuria.Enumerable;
 using Azuria.Media;
 
 namespace Azuria.UserInfo.ControlPanel
@@ -7,7 +6,7 @@ namespace Azuria.UserInfo.ControlPanel
     /// <summary>
     /// </summary>
     /// <typeparam name="T"></typeparam>
-    public class HistoryEnumerable<T> : IEnumerable<HistoryObject<T>> where T : IMediaObject
+    public class HistoryEnumerable<T> : PagedEnumerable<HistoryObject<T>> where T : IMediaObject
     {
         private readonly Senpai _senpai;
         private readonly UserControlPanel _userControlPanel;
@@ -20,16 +19,8 @@ namespace Azuria.UserInfo.ControlPanel
 
         #region Methods
 
-        /// <summary>Returns an enumerator that iterates through a collection.</summary>
-        /// <returns>An <see cref="T:System.Collections.IEnumerator" /> object that can be used to iterate through the collection.</returns>
-        IEnumerator IEnumerable.GetEnumerator()
-        {
-            return this.GetEnumerator();
-        }
-
-        /// <summary>Returns an enumerator that iterates through the collection.</summary>
-        /// <returns>An enumerator that can be used to iterate through the collection.</returns>
-        public IEnumerator<HistoryObject<T>> GetEnumerator()
+        /// <inheritdoc />
+        public override PagedEnumerator<HistoryObject<T>> GetEnumerator()
         {
             return new HistoryEnumerator<T>(this._senpai, this._userControlPanel);
         }

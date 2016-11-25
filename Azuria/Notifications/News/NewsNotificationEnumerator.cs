@@ -3,14 +3,14 @@ using System.Linq;
 using System.Threading.Tasks;
 using Azuria.Api.v1;
 using Azuria.Api.v1.DataModels.Notifications;
+using Azuria.Enumerable;
 using Azuria.ErrorHandling;
-using Azuria.Utilities;
 
 namespace Azuria.Notifications.News
 {
     /// <summary>
     /// </summary>
-    internal sealed class NewsNotificationEnumerator : PageEnumerator<NewsNotification>
+    internal sealed class NewsNotificationEnumerator : PagedEnumerator<NewsNotification>
     {
         private readonly int _newsPerPage;
         private readonly Senpai _senpai;

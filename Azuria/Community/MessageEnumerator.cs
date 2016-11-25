@@ -3,14 +3,14 @@ using System.Linq;
 using System.Threading.Tasks;
 using Azuria.Api.v1;
 using Azuria.Api.v1.DataModels.Messenger;
+using Azuria.Enumerable;
 using Azuria.ErrorHandling;
-using Azuria.Utilities;
 
 namespace Azuria.Community
 {
     /// <summary>
     /// </summary>
-    public sealed class MessageEnumerator : PageEnumerator<Message>
+    public sealed class MessageEnumerator : PagedEnumerator<Message>
     {
         private readonly int _conferenceId;
         private readonly bool _markAsRead;

@@ -5,11 +5,11 @@ using System.Linq;
 using System.Threading.Tasks;
 using Azuria.ErrorHandling;
 
-namespace Azuria.Utilities
+namespace Azuria.Enumerable
 {
     /// <summary>
     /// </summary>
-    public abstract class PageEnumerator<T> : IEnumerator<T>
+    public abstract class PagedEnumerator<T> : IEnumerator<T>
     {
         private readonly int _resultsPerPage;
         private T[] _currentPageContent = new T[0];
@@ -19,27 +19,25 @@ namespace Azuria.Utilities
         /// <summary>
         /// </summary>
         /// <param name="resultsPerPage"></param>
-        protected PageEnumerator(int resultsPerPage = 50)
+        protected PagedEnumerator(int resultsPerPage = 50)
         {
             this._resultsPerPage = resultsPerPage;
         }
 
         #region Properties
 
-        /// <summary>Gets the element in the collection at the current position of the enumerator.</summary>
-        /// <returns>The element in the collection at the current position of the enumerator.</returns>
+        /// <inheritdoc />
         public T Current => this._currentPageContent[this._currentPageContentIndex];
 
-        /// <summary>Gets the current element in the collection.</summary>
-        /// <returns>The current element in the collection.</returns>
+        /// <inheritdoc />
         object IEnumerator.Current => this.Current;
 
         #endregion
 
         #region Methods
 
-        /// <summary>Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.</summary>
-        public void Dispose()
+        /// <inheritdoc />
+        public virtual void Dispose()
         {
             this._currentPageContent = null;
         }
@@ -54,12 +52,7 @@ namespace Azuria.Utilities
 
         internal abstract Task<IProxerResult<IEnumerable<T>>> GetNextPage(int nextPage);
 
-        /// <summary>Advances the enumerator to the next element of the collection.</summary>
-        /// <returns>
-        /// true if the enumerator was successfully advanced to the next element; false if the enumerator has passed the
-        /// end of the collection.
-        /// </returns>
-        /// <exception cref="T:System.InvalidOperationException">The collection was modified after the enumerator was created. </exception>
+        /// <inheritdoc />
         public bool MoveNext()
         {
             if (this._currentPageContentIndex >= this._currentPageContent.Length - 1)
@@ -76,9 +69,8 @@ namespace Azuria.Utilities
             return this._currentPageContentIndex < this._currentPageContent.Length;
         }
 
-        /// <summary>Sets the enumerator to its initial position, which is before the first element in the collection.</summary>
-        /// <exception cref="T:System.InvalidOperationException">The collection was modified after the enumerator was created. </exception>
-        public void Reset()
+        /// <inheritdoc />
+        public virtual void Reset()
         {
             this._currentPageContent = new T[0];
             this._currentPageContentIndex = this._resultsPerPage - 1;

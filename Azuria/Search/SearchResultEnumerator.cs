@@ -4,14 +4,14 @@ using System.Threading.Tasks;
 using Azuria.Api.v1;
 using Azuria.Api.v1.DataModels.Search;
 using Azuria.Api.v1.Enums;
+using Azuria.Enumerable;
 using Azuria.ErrorHandling;
 using Azuria.Media;
 using Azuria.Search.Input;
-using Azuria.Utilities;
 
 namespace Azuria.Search
 {
-    internal class SearchResultEnumerator<T> : PageEnumerator<T> where T : IMediaObject
+    internal class SearchResultEnumerator<T> : PagedEnumerator<T> where T : IMediaObject
     {
         private const int ResultsPerPage = 100;
         private readonly SearchInput _input;

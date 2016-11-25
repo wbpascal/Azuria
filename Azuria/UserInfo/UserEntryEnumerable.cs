@@ -1,12 +1,11 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using Azuria.Enumerable;
 using Azuria.Media;
 
 namespace Azuria.UserInfo
 {
     /// <summary>
     /// </summary>
-    public class UserEntryEnumerable<T> : IEnumerable<UserProfileEntry<T>> where T : class, IMediaObject
+    public class UserEntryEnumerable<T> : PagedEnumerable<UserProfileEntry<T>> where T : class, IMediaObject
     {
         private readonly User _user;
 
@@ -25,16 +24,8 @@ namespace Azuria.UserInfo
 
         #region Methods
 
-        /// <summary>Returns an enumerator that iterates through a collection.</summary>
-        /// <returns>An <see cref="T:System.Collections.IEnumerator" /> object that can be used to iterate through the collection.</returns>
-        IEnumerator IEnumerable.GetEnumerator()
-        {
-            return this.GetEnumerator();
-        }
-
-        /// <summary>Returns an enumerator that iterates through the collection.</summary>
-        /// <returns>An enumerator that can be used to iterate through the collection.</returns>
-        public IEnumerator<UserProfileEntry<T>> GetEnumerator()
+        /// <inheritdoc />
+        public override PagedEnumerator<UserProfileEntry<T>> GetEnumerator()
         {
             return new UserEntryEnumerator<T>(this._user, this.Senpai);
         }

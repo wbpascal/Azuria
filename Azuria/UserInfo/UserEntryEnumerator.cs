@@ -3,13 +3,13 @@ using System.Linq;
 using System.Threading.Tasks;
 using Azuria.Api.v1;
 using Azuria.Api.v1.DataModels.User;
+using Azuria.Enumerable;
 using Azuria.ErrorHandling;
 using Azuria.Media;
-using Azuria.Utilities;
 
 namespace Azuria.UserInfo
 {
-    internal class UserEntryEnumerator<T> : PageEnumerator<UserProfileEntry<T>> where T : class, IMediaObject
+    internal class UserEntryEnumerator<T> : PagedEnumerator<UserProfileEntry<T>> where T : class, IMediaObject
     {
         private const int ResultsPerPage = 100;
         private readonly Senpai _senpai;

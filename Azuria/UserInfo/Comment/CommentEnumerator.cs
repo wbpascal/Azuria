@@ -5,15 +5,15 @@ using System.Reflection;
 using System.Threading.Tasks;
 using Azuria.Api.v1;
 using Azuria.Api.v1.DataModels;
+using Azuria.Enumerable;
 using Azuria.ErrorHandling;
 using Azuria.Media;
-using Azuria.Utilities;
 using Azuria.Utilities.Extensions;
 using Azuria.Utilities.Properties;
 
 namespace Azuria.UserInfo.Comment
 {
-    internal class CommentEnumerator<T> : PageEnumerator<Comment<T>> where T : class, IMediaObject
+    internal class CommentEnumerator<T> : PagedEnumerator<Comment<T>> where T : class, IMediaObject
     {
         private const int ResultsPerPage = 25;
         private readonly T _mediaObject;

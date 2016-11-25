@@ -1,11 +1,10 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using Azuria.Enumerable;
 
 namespace Azuria.Community
 {
     /// <summary>
     /// </summary>
-    public class MessageEnumerable : IEnumerable<Message>
+    public class MessageEnumerable : PagedEnumerable<Message>
     {
         private readonly int _conferenceId;
         private readonly Senpai _senpai;
@@ -27,16 +26,9 @@ namespace Azuria.Community
 
         #region Methods
 
-        /// <summary>Returns an enumerator that iterates through a collection.</summary>
-        /// <returns>An <see cref="T:System.Collections.IEnumerator" /> object that can be used to iterate through the collection.</returns>
-        IEnumerator IEnumerable.GetEnumerator()
-        {
-            return this.GetEnumerator();
-        }
-
         /// <summary>Returns an enumerator that iterates through the collection.</summary>
         /// <returns>An enumerator that can be used to iterate through the collection.</returns>
-        public IEnumerator<Message> GetEnumerator()
+        public override PagedEnumerator<Message> GetEnumerator()
         {
             return new MessageEnumerator(this._conferenceId, this.MarkAsRead, this._senpai);
         }

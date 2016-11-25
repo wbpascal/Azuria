@@ -4,13 +4,13 @@ using System.Threading.Tasks;
 using Azuria.Api.v1;
 using Azuria.Api.v1.DataModels.Ucp;
 using Azuria.Api.v1.Enums;
+using Azuria.Enumerable;
 using Azuria.ErrorHandling;
 using Azuria.Media;
-using Azuria.Utilities;
 
 namespace Azuria.UserInfo.ControlPanel
 {
-    internal class HistoryEnumerator<T> : PageEnumerator<HistoryObject<T>> where T : IMediaObject
+    internal class HistoryEnumerator<T> : PagedEnumerator<HistoryObject<T>> where T : IMediaObject
     {
         private const int ResultsPerPage = 50;
         private readonly UserControlPanel _controlPanel;
