@@ -67,7 +67,11 @@ namespace Azuria.Api.v1
                 Exception lException = HandleErrorCode(lApiResponse.ErrorCode, request);
                 if (lException == null) return new ProxerResult(new ProxerApiException(lApiResponse.ErrorCode));
                 if (lException is NotLoggedInException && (loopCount < 5))
+                {
+                    if (request.Senpai == null || !(await request.Senpai.TryRelogin()).Success)
+                        return new ProxerApiResponse(lException);
                     return await ApiRequestInternal<T>(request, true, settings, loopCount + 1).ConfigureAwait(false);
+                }
 
                 return new ProxerResult(lException);
             }

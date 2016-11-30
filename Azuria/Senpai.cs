@@ -147,6 +147,17 @@ namespace Azuria
         }
 
         /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        public async Task<IProxerResult> TryRelogin()
+        {
+            char[] lLoginToken = this.LoginToken.ReadValue();
+            if (lLoginToken.Length != 255) return new ProxerResult {Success = false};
+            return await this.LoginWithToken(lLoginToken);
+        }
+
+        /// <summary>
         /// </summary>
         /// <returns></returns>
         public async Task<IProxerResult> Logout()
