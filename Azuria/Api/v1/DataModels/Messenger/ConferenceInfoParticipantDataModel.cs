@@ -2,21 +2,31 @@
 
 namespace Azuria.Api.v1.DataModels.Messenger
 {
-    internal class ConferenceInfoParticipantDataModel : IDataModel
+    /// <summary>
+    /// </summary>
+    public class ConferenceInfoParticipantDataModel : IDataModel
     {
         #region Properties
 
+        /// <summary>
+        /// </summary>
         [JsonProperty("avatar")]
-        internal string AvatarId { get; set; }
+        public string AvatarId { get; set; }
 
+        /// <summary>
+        /// </summary>
         [JsonProperty("uid")]
-        internal int UserId { get; set; }
+        public int UserId { get; set; }
 
+        /// <summary>
+        /// </summary>
         [JsonProperty("username")]
-        internal string Username { get; set; }
+        public string Username { get; set; }
 
+        /// <summary>
+        /// </summary>
         [JsonProperty("status")]
-        internal string UserStatus { get; set; }
+        public string UserStatus { get; set; }
 
         #endregion
     }

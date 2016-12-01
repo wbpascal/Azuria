@@ -1,6 +1,11 @@
-﻿namespace Azuria.Api.v1.Enums
+﻿
+#pragma warning disable 1591
+
+namespace Azuria.Api.v1.Enums
 {
-    internal enum MediaEntryType
+    /// <summary>
+    /// </summary>
+    public enum MediaEntryType
     {
         Anime,
         Manga

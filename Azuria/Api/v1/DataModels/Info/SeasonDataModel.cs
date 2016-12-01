@@ -10,14 +10,20 @@ namespace Azuria.Api.v1.DataModels.Info
     {
         #region Properties
 
+        /// <summary>
+        /// </summary>
         [JsonProperty("id")]
-        internal int Id { get; set; }
+        public int Id { get; set; }
 
+        /// <summary>
+        /// </summary>
         [JsonProperty("season")]
-        internal Season Season { get; set; }
+        public Season Season { get; set; }
 
+        /// <summary>
+        /// </summary>
         [JsonProperty("year")]
-        internal int Year { get; set; }
+        public int Year { get; set; }
 
         #endregion
 

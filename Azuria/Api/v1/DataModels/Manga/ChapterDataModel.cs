@@ -6,41 +6,63 @@ using Newtonsoft.Json;
 
 namespace Azuria.Api.v1.DataModels.Manga
 {
-    internal class ChapterDataModel
+    /// <summary>
+    /// </summary>
+    public class ChapterDataModel
     {
         #region Properties
 
+        /// <summary>
+        /// </summary>
         [JsonProperty("cid")]
-        internal int ChapterId { get; set; }
+        public int ChapterId { get; set; }
 
+        /// <summary>
+        /// </summary>
         [JsonProperty("title")]
-        internal string ChapterTitle { get; set; }
+        public string ChapterTitle { get; set; }
 
+        /// <summary>
+        /// </summary>
         [JsonProperty("eid")]
-        internal int EntryId { get; set; }
+        public int EntryId { get; set; }
 
+        /// <summary>
+        /// </summary>
         [JsonProperty("pages")]
         [JsonConverter(typeof(PagesConverter))]
-        internal IEnumerable<PageDataModel> Pages { get; set; }
+        public IEnumerable<PageDataModel> Pages { get; set; }
 
+        /// <summary>
+        /// </summary>
         [JsonProperty("server")]
-        internal int ServerId { get; set; }
+        public int ServerId { get; set; }
 
+        /// <summary>
+        /// </summary>
         [JsonProperty("tid")]
-        internal int? TranslatorId { get; set; }
+        public int? TranslatorId { get; set; }
 
+        /// <summary>
+        /// </summary>
         [JsonProperty("tname")]
-        internal string TranslatorName { get; set; }
+        public string TranslatorName { get; set; }
 
+        /// <summary>
+        /// </summary>
         [JsonProperty("uploader")]
-        internal int UploaderId { get; set; }
+        public int UploaderId { get; set; }
 
+        /// <summary>
+        /// </summary>
         [JsonProperty("username")]
-        internal string UploaderName { get; set; }
+        public string UploaderName { get; set; }
 
+        /// <summary>
+        /// </summary>
         [JsonProperty("timestamp")]
         [JsonConverter(typeof(UnixToDateTimeConverter))]
-        internal DateTime UploadTimestamp { get; set; }
+        public DateTime UploadTimestamp { get; set; }
 
         #endregion
     }

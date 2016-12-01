@@ -6,26 +6,34 @@ using Newtonsoft.Json;
 
 namespace Azuria.Api.v1.DataModels.Info
 {
-    internal class MediaContentDataModel : IDataModel
+    /// <summary>
+    /// </summary>
+    public class MediaContentDataModel : IDataModel
     {
         #region Properties
 
+        /// <summary>
+        /// </summary>
         [JsonProperty("no", Required = Required.Always)]
-        internal int ContentIndex { get; set; }
+        public int ContentIndex { get; set; }
 
+        /// <summary>
+        /// </summary>
         [JsonProperty("typ", Required = Required.Always)]
         [JsonConverter(typeof(LanguageConverter))]
-        internal MediaLanguage Language { get; set; }
+        public MediaLanguage Language { get; set; }
 
+        /// <summary>
+        /// </summary>
         [JsonProperty("types")]
         [JsonConverter(typeof(StreamHosterConverter))]
-        internal IEnumerable<StreamHoster> StreamHosters { get; set; }
+        public IEnumerable<StreamHoster> StreamHosters { get; set; }
 
         /// <summary>
         /// Only available for chapters
         /// </summary>
         [JsonProperty("title")]
-        internal string Title { get; set; }
+        public string Title { get; set; }
 
         #endregion
     }

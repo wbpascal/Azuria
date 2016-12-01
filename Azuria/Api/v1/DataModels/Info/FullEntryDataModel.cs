@@ -4,31 +4,47 @@ using Newtonsoft.Json;
 
 namespace Azuria.Api.v1.DataModels.Info
 {
-    internal class FullEntryDataModel : EntryDataModel
+    /// <summary>
+    /// </summary>
+    public class FullEntryDataModel : EntryDataModel
     {
         #region Properties
 
+        /// <summary>
+        /// </summary>
         [JsonProperty("lang")]
         [JsonConverter(typeof(LanguageCollectionConverter))]
-        internal MediaLanguage[] AvailableLanguages { get; set; }
+        public MediaLanguage[] AvailableLanguages { get; set; }
 
+        /// <summary>
+        /// </summary>
         [JsonProperty("gate")]
-        internal bool IsHContent { get; set; }
+        public bool IsHContent { get; set; }
 
+        /// <summary>
+        /// </summary>
         [JsonProperty("names")]
-        internal NameDataModel[] Names { get; set; }
+        public NameDataModel[] Names { get; set; }
 
+        /// <summary>
+        /// </summary>
         [JsonProperty("publisher")]
-        internal PublisherDataModel[] Publisher { get; set; }
+        public PublisherDataModel[] Publisher { get; set; }
 
+        /// <summary>
+        /// </summary>
         [JsonProperty("seasons")]
-        internal SeasonDataModel[] Seasons { get; set; }
+        public SeasonDataModel[] Seasons { get; set; }
 
+        /// <summary>
+        /// </summary>
         [JsonProperty("tags")]
-        internal MediaTagDataModel[] Tags { get; set; }
+        public MediaTagDataModel[] Tags { get; set; }
 
+        /// <summary>
+        /// </summary>
         [JsonProperty("groups")]
-        internal TranslatorDataModel[] Translator { get; set; }
+        public TranslatorDataModel[] Translator { get; set; }
 
         #endregion
     }

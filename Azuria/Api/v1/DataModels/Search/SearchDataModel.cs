@@ -7,43 +7,63 @@ using Newtonsoft.Json;
 
 namespace Azuria.Api.v1.DataModels.Search
 {
-    internal class SearchDataModel : IEntryInfoDataModel
+    /// <summary>
+    /// </summary>
+    public class SearchDataModel : IEntryInfoDataModel
     {
         #region Properties
 
+        /// <summary>
+        /// </summary>
         [JsonProperty("language")]
         [JsonConverter(typeof(LanguageCommaCollectionConverter))]
-        internal IEnumerable<MediaLanguage> AvailableLanguages { get; set; }
+        public IEnumerable<MediaLanguage> AvailableLanguages { get; set; }
 
+        /// <summary>
+        /// </summary>
         [JsonProperty("count")]
-        internal int ContentCount { get; set; }
+        public int ContentCount { get; set; }
 
+        /// <inheritdoc />
         [JsonProperty("id")]
         public int EntryId { get; set; }
 
+        /// <inheritdoc />
         [JsonProperty("medium")]
         public MediaMedium EntryMedium { get; set; }
 
+        /// <inheritdoc />
         [JsonProperty("name")]
         public string EntryName { get; set; }
 
+        /// <inheritdoc />
         public MediaEntryType EntryType
             => (int) this.EntryMedium < 4 ? MediaEntryType.Anime : MediaEntryType.Manga;
 
+        /// <summary>
+        /// </summary>
         [JsonProperty("genre")]
         [JsonConverter(typeof(GenreConverter))]
-        internal IEnumerable<GenreType> Genre { get; set; }
+        public IEnumerable<GenreType> Genre { get; set; }
 
+        /// <summary>
+        /// </summary>
         [JsonProperty("rate_count")]
-        internal int RateCount { get; set; }
+        public int RateCount { get; set; }
 
+        /// <summary>
+        /// </summary>
         [JsonProperty("rate_sum")]
-        internal int RateSum { get; set; }
+        public int RateSum { get; set; }
 
-        internal MediaRating Rating => new MediaRating(this.RateSum, this.RateCount);
+        /// <summary>
+        /// </summary>
+        public MediaRating Rating => new MediaRating(this.RateSum, this.RateCount);
 
+        /// <summary>
+        /// </summary>
         [JsonProperty("state")]
-        internal MediaStatus Status { get; set; }
+        public MediaStatus Status { get; set; }
 
         #endregion
     }

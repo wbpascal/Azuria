@@ -10,19 +10,27 @@ namespace Azuria.Api.v1.DataModels.Info
     {
         #region Properties
 
+        /// <summary>
+        /// </summary>
         [JsonProperty("country")]
         [JsonConverter(typeof(PublisherCountryConverter))]
-        internal Country Country { get; set; }
+        public Country Country { get; set; }
 
+        /// <summary>
+        /// </summary>
         [JsonProperty("id")]
-        internal int Id { get; set; }
+        public int Id { get; set; }
 
+        /// <summary>
+        /// </summary>
         [JsonProperty("name")]
-        internal string Name { get; set; }
+        public string Name { get; set; }
 
+        /// <summary>
+        /// </summary>
         [JsonProperty("type")]
         [JsonConverter(typeof(PublisherTypeConverter))]
-        internal IndustryType Type { get; set; }
+        public IndustryType Type { get; set; }
 
         #endregion
     }

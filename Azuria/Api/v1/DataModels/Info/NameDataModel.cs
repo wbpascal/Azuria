@@ -10,12 +10,16 @@ namespace Azuria.Api.v1.DataModels.Info
     {
         #region Properties
 
+        /// <summary>
+        /// </summary>
         [JsonProperty("name")]
-        internal string Name { get; set; }
+        public string Name { get; set; }
 
+        /// <summary>
+        /// </summary>
         [JsonProperty("type")]
         [JsonConverter(typeof(NameTypeConverter))]
-        internal MediaNameType Type { get; set; }
+        public MediaNameType Type { get; set; }
 
         #endregion
     }

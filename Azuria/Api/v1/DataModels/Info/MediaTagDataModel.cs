@@ -10,22 +10,32 @@ namespace Azuria.Api.v1.DataModels.Info
     {
         #region Properties
 
+        /// <summary>
+        /// </summary>
         [JsonProperty("description")]
-        internal string Description { get; set; }
+        public string Description { get; set; }
 
+        /// <summary>
+        /// </summary>
         [JsonProperty("id")]
-        internal int Id { get; set; }
+        public int Id { get; set; }
 
+        /// <summary>
+        /// </summary>
         [JsonProperty("rate_flag")]
         [JsonConverter(typeof(IntToBoolConverter))]
-        internal bool IsRated { get; set; }
+        public bool IsRated { get; set; }
 
+        /// <summary>
+        /// </summary>
         [JsonProperty("spoiler_flag")]
         [JsonConverter(typeof(IntToBoolConverter))]
-        internal bool IsSpoiler { get; set; }
+        public bool IsSpoiler { get; set; }
 
+        /// <summary>
+        /// </summary>
         [JsonProperty("tid")]
-        internal TagType Tag { get; set; }
+        public TagType Tag { get; set; }
 
         #endregion
     }

@@ -4,36 +4,57 @@ using Azuria.Api.v1.Converters;
 
 namespace Azuria.Api.v1
 {
-    internal class ApiRequest<T> : ApiRequest
+    /// <summary>
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    public class ApiRequest<T> : ApiRequest
     {
-        internal ApiRequest(Uri address) : base(address)
+        /// <summary>
+        /// </summary>
+        /// <param name="address"></param>
+        public ApiRequest(Uri address) : base(address)
         {
         }
 
         #region Properties
 
-        internal DataConverter<T> CustomDataConverter { get; set; }
+        /// <summary>
+        /// </summary>
+        public DataConverter<T> CustomDataConverter { get; set; }
 
         #endregion
     }
 
-    internal class ApiRequest
+    /// <summary>
+    /// </summary>
+    public class ApiRequest
     {
-        internal ApiRequest(Uri address)
+        /// <summary>
+        /// </summary>
+        /// <param name="address"></param>
+        public ApiRequest(Uri address)
         {
             this.Address = address;
         }
 
         #region Properties
 
-        internal Uri Address { get; set; }
+        /// <summary>
+        /// </summary>
+        public Uri Address { get; set; }
 
-        internal bool CheckLogin { get; set; }
+        /// <summary>
+        /// </summary>
+        public bool CheckLogin { get; set; }
 
-        internal IEnumerable<KeyValuePair<string, string>> PostArguments { get; set; } =
+        /// <summary>
+        /// </summary>
+        public IEnumerable<KeyValuePair<string, string>> PostArguments { get; set; } =
             new Dictionary<string, string>();
 
-        internal Senpai Senpai { get; set; }
+        /// <summary>
+        /// </summary>
+        public Senpai Senpai { get; set; }
 
         #endregion
     }

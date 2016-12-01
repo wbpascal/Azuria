@@ -4,22 +4,32 @@ using Newtonsoft.Json;
 
 namespace Azuria.Api.v1.DataModels.Info
 {
-    internal class ListInfoDataModel : IDataModel
+    /// <summary>
+    /// </summary>
+    public class ListInfoDataModel : IDataModel
     {
         #region Properties
 
+        /// <summary>
+        /// </summary>
         [JsonProperty("kat")]
         [JsonConverter(typeof(CategoryConverter))]
-        internal MediaEntryType Category { get; set; }
+        public MediaEntryType Category { get; set; }
 
+        /// <summary>
+        /// </summary>
         [JsonProperty("episodes")]
-        internal MediaContentDataModel[] ContentObjects { get; set; }
+        public MediaContentDataModel[] ContentObjects { get; set; }
 
+        /// <summary>
+        /// </summary>
         [JsonProperty("end")]
-        internal int EndIndex { get; set; }
+        public int EndIndex { get; set; }
 
+        /// <summary>
+        /// </summary>
         [JsonProperty("start")]
-        internal int StartIndex { get; set; }
+        public int StartIndex { get; set; }
 
         #endregion
     }

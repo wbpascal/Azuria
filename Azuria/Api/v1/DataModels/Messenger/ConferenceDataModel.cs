@@ -5,41 +5,63 @@ using Newtonsoft.Json;
 
 namespace Azuria.Api.v1.DataModels.Messenger
 {
-    internal class ConferenceDataModel : IDataModel
+    /// <summary>
+    /// </summary>
+    public class ConferenceDataModel : IDataModel
     {
         #region Properties
 
+        /// <summary>
+        /// </summary>
         [JsonProperty("id")]
-        internal int ConferenceId { get; set; }
+        public int ConferenceId { get; set; }
 
+        /// <summary>
+        /// </summary>
         [JsonProperty("image")]
         [JsonConverter(typeof(ImageConverter))]
-        internal Uri ConferenceImage { get; set; }
+        public Uri ConferenceImage { get; set; }
 
+        /// <summary>
+        /// </summary>
         [JsonProperty("topic")]
-        internal string ConferenceTitle { get; set; }
+        public string ConferenceTitle { get; set; }
 
+        /// <summary>
+        /// </summary>
         [JsonProperty("topic_custom")]
-        internal string ConferenceUserTitle { get; set; }
+        public string ConferenceUserTitle { get; set; }
 
+        /// <summary>
+        /// </summary>
         [JsonProperty("group")]
-        internal bool IsConferenceGroup { get; set; }
+        public bool IsConferenceGroup { get; set; }
 
+        /// <summary>
+        /// </summary>
         [JsonProperty("read")]
-        internal bool IsLastMessageRead { get; set; }
+        public bool IsLastMessageRead { get; set; }
 
+        /// <summary>
+        /// </summary>
         [JsonProperty("timestamp_end")]
         [JsonConverter(typeof(UnixToDateTimeConverter))]
-        internal DateTime LastMessageTimeStamp { get; set; }
+        public DateTime LastMessageTimeStamp { get; set; }
 
+        /// <summary>
+        /// </summary>
         [JsonProperty("read_mid")]
-        internal int LastReadMessageId { get; set; }
+        public int LastReadMessageId { get; set; }
 
+        /// <summary>
+        /// </summary>
         [JsonProperty("count")]
-        internal int ParticipantsCount { get; set; }
+        public int ParticipantsCount { get; set; }
 
+        /// <summary>
+        /// </summary>
         [JsonProperty("read_count")]
-        internal int UnreadMessagesCount { get; set; }
+        public int UnreadMessagesCount { get; set; }
 
         #endregion
     }

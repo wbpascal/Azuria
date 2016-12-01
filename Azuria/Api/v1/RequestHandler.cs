@@ -18,7 +18,13 @@ namespace Azuria.Api.v1
 
         #region Methods
 
-        internal static async Task<ProxerApiResponse<T>> ApiRequest<T>(ApiRequest<T> request,
+        /// <summary>
+        /// </summary>
+        /// <param name="request"></param>
+        /// <param name="forceTokenLogin"></param>
+        /// <typeparam name="T"></typeparam>
+        /// <returns></returns>
+        public static async Task<ProxerApiResponse<T>> ApiRequest<T>(ApiRequest<T> request,
             bool forceTokenLogin = false)
         {
             IEnumerable<JsonConverter> lDataConverter = request.CustomDataConverter == null
@@ -34,7 +40,12 @@ namespace Azuria.Api.v1
                 : new ProxerApiResponse<T>(lResult.Exceptions);
         }
 
-        internal static async Task<ProxerApiResponse> ApiRequest(ApiRequest request, bool forceTokenLogin = false)
+        /// <summary>
+        /// </summary>
+        /// <param name="request"></param>
+        /// <param name="forceTokenLogin"></param>
+        /// <returns></returns>
+        public static async Task<ProxerApiResponse> ApiRequest(ApiRequest request, bool forceTokenLogin = false)
         {
             IProxerResult lResult =
                 await ApiRequestInternal<ProxerApiResponse>(request, forceTokenLogin).ConfigureAwait(false);

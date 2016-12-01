@@ -8,54 +8,80 @@ using Newtonsoft.Json;
 
 namespace Azuria.Api.v1.DataModels.Info
 {
-    internal class EntryDataModel : IEntryInfoDataModel
+    /// <summary>
+    /// </summary>
+    public class EntryDataModel : IEntryInfoDataModel
     {
         #region Properties
 
+        /// <summary>
+        /// </summary>
         [JsonProperty("clicks")]
-        internal int Clicks { get; set; }
+        public int Clicks { get; set; }
 
+        /// <summary>
+        /// </summary>
         [JsonProperty("count")]
-        internal int ContentCount { get; set; }
+        public int ContentCount { get; set; }
 
+        /// <summary>
+        /// </summary>
         [JsonProperty("description")]
-        internal string Description { get; set; }
+        public string Description { get; set; }
 
+        /// <inheritdoc />
         [JsonProperty("id")]
         public int EntryId { get; set; }
 
+        /// <inheritdoc />
         [JsonProperty("medium")]
         public MediaMedium EntryMedium { get; set; }
 
+        /// <inheritdoc />
         [JsonProperty("name")]
         public string EntryName { get; set; }
 
+        /// <inheritdoc />
         [JsonProperty("kat")]
         [JsonConverter(typeof(CategoryConverter))]
         public MediaEntryType EntryType { get; set; }
 
+        /// <summary>
+        /// </summary>
         [JsonProperty("fsk")]
         [JsonConverter(typeof(FskConverter))]
-        internal IEnumerable<FskType> Fsk { get; set; }
+        public IEnumerable<FskType> Fsk { get; set; }
 
+        /// <summary>
+        /// </summary>
         [JsonProperty("genre")]
         [JsonConverter(typeof(GenreConverter))]
-        internal IEnumerable<GenreType> Genre { get; set; }
+        public IEnumerable<GenreType> Genre { get; set; }
 
+        /// <summary>
+        /// </summary>
         [JsonProperty("license")]
         [JsonConverter(typeof(IsLicensedConverter))]
-        internal bool? IsLicensed { get; set; }
+        public bool? IsLicensed { get; set; }
 
-        internal MediaRating Rating => new MediaRating(this.TotalStars, this.Voters);
+        /// <summary>
+        /// </summary>
+        public MediaRating Rating => new MediaRating(this.TotalStars, this.Voters);
 
+        /// <summary>
+        /// </summary>
         [JsonProperty("state")]
-        internal MediaStatus Status { get; set; }
+        public MediaStatus Status { get; set; }
 
+        /// <summary>
+        /// </summary>
         [JsonProperty("rate_sum")]
-        internal int TotalStars { get; set; }
+        public int TotalStars { get; set; }
 
+        /// <summary>
+        /// </summary>
         [JsonProperty("rate_count")]
-        internal int Voters { get; set; }
+        public int Voters { get; set; }
 
         #endregion
     }

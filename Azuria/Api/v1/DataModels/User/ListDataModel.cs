@@ -10,50 +10,74 @@ using Newtonsoft.Json;
 
 namespace Azuria.Api.v1.DataModels.User
 {
-    internal class ListDataModel : IEntryInfoDataModel
+    /// <summary>
+    /// </summary>
+    public class ListDataModel : IEntryInfoDataModel
     {
         #region Properties
 
+        /// <summary>
+        /// </summary>
         [JsonProperty("state")]
-        internal MediaProgressState AuthorState { get; set; }
+        public MediaProgressState AuthorState { get; set; }
 
+        /// <summary>
+        /// </summary>
         [JsonProperty("comment")]
-        internal string CommentContent { get; set; }
+        public string CommentContent { get; set; }
 
+        /// <summary>
+        /// </summary>
         [JsonProperty("episode")]
-        internal int CommentContentIndex { get; set; }
+        public int CommentContentIndex { get; set; }
 
+        /// <summary>
+        /// </summary>
         [JsonProperty("cid")]
-        internal int CommentId { get; set; }
+        public int CommentId { get; set; }
 
+        /// <summary>
+        /// </summary>
         [JsonProperty("timestamp")]
         [JsonConverter(typeof(UnixToDateTimeConverter))]
-        internal DateTime CommentLastChanged { get; set; }
+        public DateTime CommentLastChanged { get; set; }
 
+        /// <summary>
+        /// </summary>
         [JsonProperty("data")]
         [JsonConverter(typeof(SubRatingsConverter))]
-        internal Dictionary<RatingCategory, int> CommentSubRatings { get; set; }
+        public Dictionary<RatingCategory, int> CommentSubRatings { get; set; }
 
+        /// <summary>
+        /// </summary>
         [JsonProperty("count")]
-        internal int ContentCount { get; set; }
+        public int ContentCount { get; set; }
 
+        /// <inheritdoc />
         [JsonProperty("id")]
         public int EntryId { get; set; }
 
+        /// <inheritdoc />
         [JsonProperty("medium")]
         public MediaMedium EntryMedium { get; set; }
 
+        /// <inheritdoc />
         [JsonProperty("name")]
         public string EntryName { get; set; }
 
+        /// <summary>
+        /// </summary>
         [JsonProperty("estate")]
-        internal MediaStatus EntryStatus { get; set; }
+        public MediaStatus EntryStatus { get; set; }
 
+        /// <inheritdoc />
         public MediaEntryType EntryType
             => (int) this.EntryMedium < 4 ? MediaEntryType.Anime : MediaEntryType.Manga;
 
+        /// <summary>
+        /// </summary>
         [JsonProperty("rating")]
-        internal int Rating { get; set; }
+        public int Rating { get; set; }
 
         #endregion
     }
