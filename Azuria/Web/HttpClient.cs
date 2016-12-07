@@ -42,7 +42,6 @@ namespace Azuria.Web
             this._client = new System.Net.Http.HttpClient(new HttpClientHandler
             {
                 AllowAutoRedirect = true,
-                CookieContainer = senpai?.LoginCookies ?? new CookieContainer(),
                 UseCookies = true
             }) {Timeout = TimeSpan.FromMilliseconds(timeout)};
             this._client.DefaultRequestHeaders.TryAddWithoutValidation("User-Agent",

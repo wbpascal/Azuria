@@ -78,9 +78,6 @@ namespace Azuria.Test.ConferenceTests
                 GeneralSetup.SenpaiInstance).ThrowFirstForNonSuccess());
             Assert.CatchAsync<NotLoggedInException>(
                 () => Conference.CreateGroup(new[] {"KutoSan"}, "topic", null).ThrowFirstForNonSuccess());
-            Assert.CatchAsync<NotLoggedInException>(
-                () => Conference.CreateGroup(new[] {"KutoSan"}, "topic", new Senpai("username"))
-                    .ThrowFirstForNonSuccess());
 
             Conference lConference =
                 await Conference.CreateGroup(new[] {"KutoSan"}, "hello", GeneralSetup.SenpaiInstance)
@@ -91,9 +88,9 @@ namespace Azuria.Test.ConferenceTests
             Assert.IsTrue(lConference.IsGroupConference);
 
             Assert.AreEqual(ErrorCode.MessengerNotEnoughUsers,
-                Assert.CatchAsync<ProxerApiException>(
-                    () => Conference.CreateGroup(new[] {GeneralSetup.SenpaiInstance.Username}, "hello",
-                        GeneralSetup.SenpaiInstance).ThrowFirstForNonSuccess()).ErrorCode);
+                Assert.CatchAsync<ProxerApiException>(() =>
+                    Conference.CreateGroup(new[] {GeneralSetup.SenpaiInstance.Me.UserName.GetIfInitialised()},
+                        "hello", GeneralSetup.SenpaiInstance).ThrowFirstForNonSuccess()).ErrorCode);
         }
 
         [Test]
@@ -113,9 +110,6 @@ namespace Azuria.Test.ConferenceTests
                 GeneralSetup.SenpaiInstance).ThrowFirstForNonSuccess());
             Assert.CatchAsync<NotLoggedInException>(
                 () => Conference.CreateGroup(new[] {new User(163825)}, "topic", null)
-                    .ThrowFirstForNonSuccess());
-            Assert.CatchAsync<NotLoggedInException>(
-                () => Conference.CreateGroup(new[] {new User(163825)}, "topic", new Senpai("username"))
                     .ThrowFirstForNonSuccess());
 
             Conference lConference =
@@ -146,8 +140,6 @@ namespace Azuria.Test.ConferenceTests
                 .ThrowFirstForNonSuccess());
             Assert.CatchAsync<NotLoggedInException>(
                 () => Conference.Create("KutoSan", "hello", null).ThrowFirstForNonSuccess());
-            Assert.CatchAsync<NotLoggedInException>(() => Conference.Create("KutoSan", "hello", new Senpai("ad"))
-                .ThrowFirstForNonSuccess());
 
             Conference lConference =
                 await Conference.Create("KutoSan", "hello", GeneralSetup.SenpaiInstance)
@@ -174,8 +166,6 @@ namespace Azuria.Test.ConferenceTests
                     .ThrowFirstForNonSuccess());
             Assert.CatchAsync<NotLoggedInException>(
                 () => Conference.Create(new User(177103), "hello", null).ThrowFirstForNonSuccess());
-            Assert.CatchAsync<NotLoggedInException>(() => Conference.Create(new User(177103), "hello", new Senpai("ad"))
-                .ThrowFirstForNonSuccess());
 
             Conference lConference =
                 await Conference.Create(new User(163825), "hello", GeneralSetup.SenpaiInstance)
@@ -199,8 +189,6 @@ namespace Azuria.Test.ConferenceTests
         public async Task GetConferencesTest()
         {
             Assert.CatchAsync<NotLoggedInException>(() => Conference.GetConferences(null).ThrowFirstForNonSuccess());
-            Assert.CatchAsync<NotLoggedInException>(
-                () => Conference.GetConferences(new Senpai("ad")).ThrowFirstForNonSuccess());
 
             ConferenceInfo[] lConferences =
                 (await Conference.GetConferences(GeneralSetup.SenpaiInstance).ThrowFirstForNonSuccess())

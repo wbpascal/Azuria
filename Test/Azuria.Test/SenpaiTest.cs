@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using Azuria.ErrorHandling;
 using Azuria.Exceptions;
+using Azuria.Security;
 using Azuria.UserInfo;
 using Azuria.Utilities.Extensions;
 using NUnit.Framework;
@@ -20,24 +21,16 @@ namespace Azuria.Test
         private Senpai _senpai;
 
         [Test]
-        public void ConstructorTest()
-        {
-            Assert.Catch(() => new Senpai(""));
-        }
-
-        [Test]
         [Order(1)]
         public async Task FromTokenTest()
         {
-            Senpai lNewSenpai =
-                await
-                    Senpai.FromToken(
-                        ("bknnY3QLb0X7CHdfHzimhOLo1Tz4cpumHSJGTzp3Gx9i2lvJSO4aCOwBH4ERr0d92UMStcU5w3kylUfdHilg7SXL" +
-                         "VuCfDQtCIfsapmiXmGsFyHSeZcv45kOXOoipcL2VYt6oNni02KOApFOmRhpvCbOox7OKPPDOhIa58sc5aYCxDrRs" +
-                         "Ggjgp9FWetE3gfOxXYAYoK2wID4k3UKH95XvcCgo43qkhePdanby6a5OO67OXQv4Uty74Yt6YTpf7cs").ToCharArray())
-                        .ThrowFirstForNonSuccess();
+            Senpai lNewSenpai = await Senpai.FromToken(
+                ("bknnY3QLb0X7CHdfHzimhOLo1Tz4cpumHSJGTzp3Gx9i2lvJSO4aCOwBH4ERr0d92UMStcU5w3kylUfdHilg7SXL" +
+                 "VuCfDQtCIfsapmiXmGsFyHSeZcv45kOXOoipcL2VYt6oNni02KOApFOmRhpvCbOox7OKPPDOhIa58sc5aYCxDrRs" +
+                 "Ggjgp9FWetE3gfOxXYAYoK2wID4k3UKH95XvcCgo43qkhePdanby6a5OO67OXQv4Uty74Yt6YTpf7cs").ToCharArray())
+                .ThrowFirstForNonSuccess();
             Assert.IsTrue(lNewSenpai.IsProbablyLoggedIn);
-            Assert.AreEqual(this._senpai.Username, lNewSenpai.Username);
+            Assert.AreEqual(this._senpai.Me.UserName.GetIfInitialised(), lNewSenpai.Me.UserName.GetIfInitialised());
 
             Assert.CatchAsync<ArgumentException>(async () => await Senpai.FromToken(null).ThrowFirstForNonSuccess());
             Assert.CatchAsync<ArgumentException>(
@@ -48,7 +41,6 @@ namespace Azuria.Test
         public void IsProbablyLoggedInTest()
         {
             Assert.IsTrue(this._senpai.IsProbablyLoggedIn);
-            Assert.IsFalse(new Senpai("ad").IsProbablyLoggedIn);
         }
 
         [Test]
@@ -56,21 +48,21 @@ namespace Azuria.Test
         public async Task LoginTest()
         {
             Assert.CatchAsync<ArgumentException>(
-                async () => await new Senpai("ad").Login(null).ThrowFirstForNonSuccess());
-            Assert.CatchAsync<ArgumentException>(async () => await new Senpai("ad").Login("").ThrowFirstForNonSuccess());
-            Assert.CatchAsync<AlreadyLoggedInException>(
-                async () => await this._senpai.Login("password").ThrowFirstForNonSuccess());
+                async () => await Senpai.FromCredentials(null).ThrowFirstForNonSuccess());
 
-            Senpai lNewSenpai = new Senpai("InfiniteSoul");
-            IProxerResult lLoginResult = await lNewSenpai.Login("wrong");
+            IProxerResult<Senpai> lLoginResult = await Senpai.FromCredentials(
+                new ProxerCredentials("InfiniteSoul", "wrong".ToCharArray()));
             Assert.IsFalse(lLoginResult.Success);
 
-            lLoginResult = await lNewSenpai.Login("correct");
+            lLoginResult = await Senpai.FromCredentials(
+                new ProxerCredentials("InfiniteSoul", "correct".ToCharArray()));
             Assert.IsTrue(lLoginResult.Success);
+            Assert.IsNotNull(lLoginResult.Result);
 
+            Senpai lNewSenpai = lLoginResult.Result;
             Assert.IsTrue(lNewSenpai.IsProbablyLoggedIn);
             Assert.IsNotNull(lNewSenpai.Me);
-            Assert.AreEqual(lNewSenpai.Username, await lNewSenpai.Me.UserName.ThrowFirstOnNonSuccess());
+            Assert.AreEqual("InfiniteSoul", lNewSenpai.Me.UserName.GetIfInitialised());
             Assert.IsNotEmpty(lNewSenpai.LoginToken.ReadValue());
         }
 
@@ -79,38 +71,29 @@ namespace Azuria.Test
         {
             string lLoginToken = new string(this._senpai.LoginToken.ReadValue());
             Assert.IsNotEmpty(lLoginToken);
-            Assert.IsNotNull(new Senpai("ad").LoginToken.ReadValue());
+            Assert.AreEqual(255, lLoginToken.Length);
         }
 
         [Test]
         [Order(2)]
         public async Task LogoutTest()
         {
-            Assert.CatchAsync<NotLoggedInException>(
-                async () => await new Senpai("ad").Logout().ThrowFirstForNonSuccess());
-
-            Senpai lNewSenpai = new Senpai("InfiniteSoul");
-            IProxerResult lLoginResult = await lNewSenpai.Login("correct");
+            IProxerResult<Senpai> lLoginResult = await Senpai.FromCredentials(
+                new ProxerCredentials("InfiniteSoul", "correct".ToCharArray()));
             Assert.IsTrue(lLoginResult.Success);
+            Assert.IsNotNull(lLoginResult.Result);
+            Senpai lSenpai = lLoginResult.Result;
 
-            await lNewSenpai.Logout().ThrowFirstForNonSuccess();
-            Assert.IsFalse(lNewSenpai.IsProbablyLoggedIn);
+            await lSenpai.Logout().ThrowFirstForNonSuccess();
+            Assert.IsFalse(lSenpai.IsProbablyLoggedIn);
         }
 
         [Test]
-        public async Task MeTest()
+        public void MeTest()
         {
             User lMe = this._senpai.Me;
             Assert.NotNull(lMe);
-            Assert.AreEqual(this._senpai.Username, await lMe.UserName.ThrowFirstOnNonSuccess());
-            Assert.IsNull(new Senpai("ad").Me);
-        }
-
-        [Test]
-        public void UsernameTest()
-        {
-            Assert.IsNotEmpty(this._senpai.Username);
-            Assert.AreEqual("InfiniteSoul", this._senpai.Username);
+            Assert.AreEqual("InfiniteSoul", lMe.UserName.GetIfInitialised());
         }
     }
 }

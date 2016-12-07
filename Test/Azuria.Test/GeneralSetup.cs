@@ -1,6 +1,7 @@
 ﻿using System.Threading.Tasks;
 using Azuria;
 using Azuria.Api;
+using Azuria.Security;
 using Azuria.Test.Core;
 using Azuria.Utilities.Extensions;
 using NUnit.Framework;
@@ -28,8 +29,9 @@ public class GeneralSetup
 
     public async Task InitSenpaiInstance()
     {
-        SenpaiInstance = new Senpai("InfiniteSoul");
-        await SenpaiInstance.Login("correct").ThrowFirstForNonSuccess();
+        SenpaiInstance = await Senpai.FromCredentials(
+                new ProxerCredentials("InfiniteSoul", "correct".ToCharArray()))
+            .ThrowFirstForNonSuccess();
         Assert.IsTrue(SenpaiInstance.IsProbablyLoggedIn);
     }
 

@@ -78,6 +78,7 @@
     <Compile Include="Api\v1\DataModels\Media\HeaderDataModel.cs" />
     <Compile Include="Enumerable\PagedEnumerable.cs" />
     <Compile Include="ErrorHandling\IProxerResult.cs" />
+    <Compile Include="Security\IProxerCredentials.cs" />
     <Compile Include="Media\MediaObject.cs" />
     <Compile Include="Media\Headers\HeaderHelper.cs" />
     <Compile Include="Media\Headers\HeaderInfo.cs" />
@@ -125,6 +126,7 @@
     <Compile Include="Search\Input\SearchResultSort.cs" />
     <Compile Include="Search\SearchHelper.cs" />
     <Compile Include="Search\SearchQueryBuilder.cs" />
+    <Compile Include="Security\ProxerCredentials.cs" />
     <Compile Include="UserInfo\Comment\IComment.cs" />
     <Compile Include="UserInfo\ControlPanel\IBookmark.cs" />
     <Compile Include="UserInfo\ControlPanel\IHistoryObject.cs" />

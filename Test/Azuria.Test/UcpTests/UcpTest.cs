@@ -117,7 +117,6 @@ namespace Azuria.Test.UcpTests
         public void ConstructorTest()
         {
             Assert.Catch<ArgumentException>(() => new UserControlPanel(null));
-            Assert.Catch<NotLoggedInException>(() => new UserControlPanel(new Senpai("test")));
         }
 
         [Test]
