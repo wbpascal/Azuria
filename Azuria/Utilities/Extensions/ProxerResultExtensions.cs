@@ -16,8 +16,9 @@ namespace Azuria.Utilities.Extensions
         /// <param name="result"></param>
         /// <param name="onError"></param>
         /// <typeparam name="T"></typeparam>
+        /// <typeparam name="TOut"></typeparam>
         /// <returns></returns>
-        public static T OnError<T>(this IProxerResult<T> result, T onError)
+        public static TOut OnError<T, TOut>(this T result, TOut onError) where T : IProxerResult<TOut>
         {
             return result.Success ? result.Result : onError;
         }
@@ -27,10 +28,11 @@ namespace Azuria.Utilities.Extensions
         /// <param name="task"></param>
         /// <param name="onError"></param>
         /// <typeparam name="T"></typeparam>
+        /// <typeparam name="TOut"></typeparam>
         /// <returns></returns>
-        public static async Task<T> OnError<T>(this Task<IProxerResult<T>> task, T onError)
+        public static async Task<TOut> OnError<T, TOut>(this Task<T> task, TOut onError) where T : IProxerResult<TOut>
         {
-            IProxerResult<T> lResult = await task;
+            T lResult = await task.ConfigureAwait(false);
             return lResult.Success ? lResult.Result : onError;
         }
 
@@ -41,7 +43,7 @@ namespace Azuria.Utilities.Extensions
         /// <returns></returns>
         public static async Task<T> ThrowFirstForNonSuccess<T>(this Task<IProxerResult<T>> task)
         {
-            IProxerResult<T> lResult = await task;
+            IProxerResult<T> lResult = await task.ConfigureAwait(false);
             if (!lResult.Success) throw lResult.Exceptions.Any() ? lResult.Exceptions.First() : new Exception();
 
             return lResult.Result;
@@ -53,9 +55,8 @@ namespace Azuria.Utilities.Extensions
         /// <returns></returns>
         public static async Task ThrowFirstForNonSuccess(this Task<IProxerResult> task)
         {
-            IProxerResult lResult = await task;
-            if (!lResult.Success)
-                throw lResult.Exceptions.Any() ? lResult.Exceptions.First() : new Exception();
+            IProxerResult lResult = await task.ConfigureAwait(false);
+            if (!lResult.Success) throw lResult.Exceptions.Any() ? lResult.Exceptions.First() : new Exception();
         }
 
         #endregion

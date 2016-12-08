@@ -48,7 +48,7 @@ namespace Azuria.Community
             {
                 IEnumerable<Message> lUnreadMessages = await Task.Run(() =>
                     new MessageEnumerable(dataModel.ConferenceId, senpai, markAsRead)
-                        .Take(dataModel.UnreadMessagesCount));
+                        .Take(dataModel.UnreadMessagesCount)).ConfigureAwait(false);
                 this._unreadMessages.SetInitialisedObject(lUnreadMessages);
             }
             return new ProxerResult();

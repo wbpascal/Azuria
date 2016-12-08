@@ -62,7 +62,6 @@
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Net.Http" />
-    <Reference Include="System.Xml" />
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
@@ -77,6 +76,7 @@
     <Compile Include="Api\v1\DataModels\Manga\PageDataModel.cs" />
     <Compile Include="Api\v1\DataModels\Media\HeaderDataModel.cs" />
     <Compile Include="Enumerable\PagedEnumerable.cs" />
+    <Compile Include="Enumerable\RetryableEnumerator.cs" />
     <Compile Include="ErrorHandling\IProxerResult.cs" />
     <Compile Include="Security\IProxerCredentials.cs" />
     <Compile Include="Media\MediaObject.cs" />

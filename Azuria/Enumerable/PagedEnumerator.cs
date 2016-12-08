@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -9,7 +8,7 @@ namespace Azuria.Enumerable
 {
     /// <summary>
     /// </summary>
-    public abstract class PagedEnumerator<T> : IEnumerator<T>
+    public abstract class PagedEnumerator<T> : RetryableEnumerator<T>
     {
         private readonly int _resultsPerPage;
         private T[] _currentPageContent = new T[0];
@@ -19,7 +18,8 @@ namespace Azuria.Enumerable
         /// <summary>
         /// </summary>
         /// <param name="resultsPerPage"></param>
-        protected PagedEnumerator(int resultsPerPage = 50)
+        /// <param name="retryCount"></param>
+        protected PagedEnumerator(int resultsPerPage = 50, int retryCount = 2) : base(retryCount)
         {
             this._resultsPerPage = resultsPerPage;
         }
@@ -27,17 +27,14 @@ namespace Azuria.Enumerable
         #region Properties
 
         /// <inheritdoc />
-        public T Current => this._currentPageContent[this._currentPageContentIndex];
-
-        /// <inheritdoc />
-        object IEnumerator.Current => this.Current;
+        public override T Current => this._currentPageContent[this._currentPageContentIndex];
 
         #endregion
 
         #region Methods
 
         /// <inheritdoc />
-        public virtual void Dispose()
+        public override void Dispose()
         {
             this._currentPageContent = null;
         }
@@ -52,16 +49,25 @@ namespace Azuria.Enumerable
 
         internal abstract Task<IProxerResult<IEnumerable<T>>> GetNextPage(int nextPage);
 
+        private void LoadNextPage(int retry = 0)
+        {
+            IProxerResult<IEnumerable<T>> lGetSearchResult = Task.Run(() => this.GetNextPage(this._nextPage)).Result;
+            if (!lGetSearchResult.Success || (lGetSearchResult.Result == null))
+            {
+                if (retry < this.RetryCount) this.LoadNextPage(retry + 1);
+                else throw lGetSearchResult.Exceptions.FirstOrDefault() ?? new Exception("Unkown error");
+                return;
+            }
+            this._currentPageContent = lGetSearchResult.Result as T[] ?? lGetSearchResult.Result.ToArray();
+        }
+
         /// <inheritdoc />
-        public bool MoveNext()
+        public override bool MoveNext(int retryCount)
         {
             if (this._currentPageContentIndex >= this._currentPageContent.Length - 1)
             {
                 if (this._currentPageContent.Length%this._resultsPerPage != 0) return false;
-                IProxerResult<IEnumerable<T>> lGetSearchResult = Task.Run(() => this.GetNextPage(this._nextPage)).Result;
-                if (!lGetSearchResult.Success || (lGetSearchResult.Result == null))
-                    throw lGetSearchResult.Exceptions.FirstOrDefault() ?? new Exception("Unkown error");
-                this._currentPageContent = lGetSearchResult.Result as T[] ?? lGetSearchResult.Result.ToArray();
+                this.LoadNextPage();
                 this._nextPage++;
                 this._currentPageContentIndex = -1;
             }
@@ -70,7 +76,7 @@ namespace Azuria.Enumerable
         }
 
         /// <inheritdoc />
-        public virtual void Reset()
+        public override void Reset()
         {
             this._currentPageContent = new T[0];
             this._currentPageContentIndex = this._resultsPerPage - 1;

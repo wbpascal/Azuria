@@ -53,7 +53,7 @@ namespace Azuria.Utilities.Properties
         /// <inheritdoc />
         public async Task<IProxerResult> FetchObject()
         {
-            return await this.Get();
+            return await this.Get().ConfigureAwait(false);
         }
 
         /// <inheritdoc />
@@ -61,7 +61,7 @@ namespace Azuria.Utilities.Properties
         {
             return this.IsInitialised
                 ? new ProxerResult<T>(this.InitialisedObject)
-                : await this.GetNew();
+                : await this.GetNew().ConfigureAwait(false);
         }
 
         /// <inheritdoc />
@@ -92,7 +92,7 @@ namespace Azuria.Utilities.Properties
         /// <inheritdoc />
         public async Task<IProxerResult<T>> GetNew()
         {
-            IProxerResult lInitialiseResult = await this.InitMethod.Invoke();
+            IProxerResult lInitialiseResult = await this.InitMethod.Invoke().ConfigureAwait(false);
             return !lInitialiseResult.Success
                 ? new ProxerResult<T>(lInitialiseResult.Exceptions)
                 : new ProxerResult<T>(this.InitialisedObject);

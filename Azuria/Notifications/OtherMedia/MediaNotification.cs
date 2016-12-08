@@ -68,10 +68,11 @@ namespace Azuria.Notifications.OtherMedia
         /// <returns></returns>
         public async Task<IProxerResult<IMediaContent>> GetContentObject()
         {
-            if (this.MediaObject is Anime)
+            Anime lAnime = this.MediaObject as Anime;
+            if (lAnime != null)
             {
-                IProxerResult<IEnumerable<Anime.Episode>> lEpisodesResult = await ((Anime) this.MediaObject)
-                    .GetEpisodes((AnimeLanguage) this.Language).ConfigureAwait(false);
+                IProxerResult<IEnumerable<Anime.Episode>> lEpisodesResult = await lAnime.GetEpisodes
+                    ((AnimeLanguage) this.Language).ConfigureAwait(false);
                 if (!lEpisodesResult.Success || (lEpisodesResult.Result == null))
                     return new ProxerResult<IMediaContent>(lEpisodesResult.Exceptions);
 

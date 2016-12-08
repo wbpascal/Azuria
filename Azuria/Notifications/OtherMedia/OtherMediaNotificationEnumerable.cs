@@ -9,14 +9,20 @@ namespace Azuria.Notifications.OtherMedia
     /// </summary>
     public class OtherMediaNotificationEnumerable : IEnumerable<OtherMediaNotification>
     {
-        private readonly int _nodesToParse;
         private readonly Senpai _senpai;
 
-        internal OtherMediaNotificationEnumerable(Senpai senpai, int nodesToParse = 0)
+        internal OtherMediaNotificationEnumerable(Senpai senpai)
         {
             this._senpai = senpai;
-            this._nodesToParse = nodesToParse;
         }
+
+        #region Properties
+
+        /// <summary>
+        /// </summary>
+        public int RetryCount { get; set; } = 2;
+
+        #endregion
 
         #region Methods
 
@@ -32,7 +38,7 @@ namespace Azuria.Notifications.OtherMedia
         /// <returns></returns>
         public IEnumerator<OtherMediaNotification> GetEnumerator()
         {
-            return new OtherMediaNotificationEnumerator(this._senpai);
+            return new OtherMediaNotificationEnumerator(this._senpai, this.RetryCount);
         }
 
         #endregion

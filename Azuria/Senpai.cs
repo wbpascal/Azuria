@@ -154,7 +154,7 @@ namespace Azuria
         {
             char[] lLoginToken = this.LoginToken.ReadValue();
             if (lLoginToken.Length != 255) return new ProxerResult {Success = false};
-            return await this.LoginWithToken(lLoginToken);
+            return await this.LoginWithToken(lLoginToken).ConfigureAwait(false);
         }
 
         /// <summary>

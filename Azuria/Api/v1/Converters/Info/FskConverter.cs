@@ -19,7 +19,7 @@ namespace Azuria.Api.v1.Converters.Info
             JsonSerializer serializer)
         {
             string lValue = reader.Value.ToString();
-            if (string.IsNullOrEmpty(lValue?.Trim())) return new FskType[0];
+            if (string.IsNullOrEmpty(lValue.Trim())) return new FskType[0];
             return (from fskString in lValue.Split(' ')
                 where FskHelper.StringToFskDictionary.ContainsKey(fskString)
                 select FskHelper.StringToFskDictionary[fskString]).ToList();

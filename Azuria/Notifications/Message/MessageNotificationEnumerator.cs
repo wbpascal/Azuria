@@ -1,10 +1,10 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using Azuria.Enumerable;
 using Azuria.ErrorHandling;
 using Azuria.Exceptions;
 
@@ -12,7 +12,7 @@ namespace Azuria.Notifications.Message
 {
     /// <summary>
     /// </summary>
-    internal sealed class MessageNotificationEnumerator : IEnumerator<MessageNotification>
+    internal sealed class MessageNotificationEnumerator : RetryableEnumerator<MessageNotification>
     {
         private static readonly Regex NotificationInfoRegex = new Regex(
             "<a class=\"conferenceList\".*?href=\"\\/messages\\?id=(?<cid>[0-9].*?)#top.*?<\\/div>.*?<div>(?<date>.*?)<\\/div>",
@@ -22,7 +22,7 @@ namespace Azuria.Notifications.Message
         private MessageNotification[] _content;
         private int _currentContentIndex = -1;
 
-        internal MessageNotificationEnumerator(Senpai senpai)
+        internal MessageNotificationEnumerator(Senpai senpai, int retryCount = 2) : base(retryCount)
         {
             this._senpai = senpai;
         }
@@ -30,17 +30,14 @@ namespace Azuria.Notifications.Message
         #region Properties
 
         /// <inheritdoc />
-        public MessageNotification Current => this._content[this._currentContentIndex];
-
-        /// <inheritdoc />
-        object IEnumerator.Current => this.Current;
+        public override MessageNotification Current => this._content[this._currentContentIndex];
 
         #endregion
 
         #region Methods
 
         /// <inheritdoc />
-        public void Dispose()
+        public override void Dispose()
         {
             this._content = null;
         }
@@ -73,7 +70,7 @@ namespace Azuria.Notifications.Message
         }
 
         /// <inheritdoc />
-        public bool MoveNext()
+        public override bool MoveNext(int retryCount)
         {
             if (this._content == null)
             {
@@ -89,7 +86,7 @@ namespace Azuria.Notifications.Message
         }
 
         /// <inheritdoc />
-        public void Reset()
+        public override void Reset()
         {
             this._content = new MessageNotification[0];
             this._currentContentIndex = -1;

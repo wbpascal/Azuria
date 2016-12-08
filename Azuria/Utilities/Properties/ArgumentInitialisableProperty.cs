@@ -51,13 +51,13 @@ namespace Azuria.Utilities.Properties
         /// <inheritdoc />
         public async Task<IProxerResult> FetchObject(TIn param)
         {
-            return await this.GetObject(param);
+            return await this.GetObject(param).ConfigureAwait(false);
         }
 
         /// <inheritdoc />
         public async Task<IProxerResult<TOut>> GetNewObject(TIn param)
         {
-            IProxerResult lInitialiseResult = await this.InitMethod.Invoke(param);
+            IProxerResult lInitialiseResult = await this.InitMethod.Invoke(param).ConfigureAwait(false);
             return !lInitialiseResult.Success
                 ? new ProxerResult<TOut>(lInitialiseResult.Exceptions)
                 : new ProxerResult<TOut>(this.InitialisedObject);
@@ -74,7 +74,7 @@ namespace Azuria.Utilities.Properties
         {
             return this.IsInitialisedOnce
                 ? new ProxerResult<TOut>(this.InitialisedObject)
-                : await this.GetNewObject(param);
+                : await this.GetNewObject(param).ConfigureAwait(false);
         }
 
         /// <inheritdoc />

@@ -8,6 +8,14 @@ namespace Azuria.Enumerable
     /// <typeparam name="T"></typeparam>
     public abstract class PagedEnumerable<T> : IEnumerable<T>
     {
+        #region Properties
+
+        /// <summary>
+        /// </summary>
+        public int RetryCount { get; set; } = 2;
+
+        #endregion
+
         #region Methods
 
         /// <inheritdoc />

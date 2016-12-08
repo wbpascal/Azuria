@@ -15,6 +15,14 @@ namespace Azuria.Notifications.Message
             this._senpai = senpai;
         }
 
+        #region Properties
+
+        /// <summary>
+        /// </summary>
+        public int RetryCount { get; set; } = 2;
+
+        #endregion
+
         #region Methods
 
         /// <summary>Returns an enumerator that iterates through a collection.</summary>
@@ -29,7 +37,7 @@ namespace Azuria.Notifications.Message
         /// <returns></returns>
         public IEnumerator<MessageNotification> GetEnumerator()
         {
-            return new MessageNotificationEnumerator(this._senpai);
+            return new MessageNotificationEnumerator(this._senpai, this.RetryCount);
         }
 
         #endregion

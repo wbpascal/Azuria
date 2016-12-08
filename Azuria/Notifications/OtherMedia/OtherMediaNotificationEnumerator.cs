@@ -1,11 +1,11 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Azuria.Api.v1.Converters;
+using Azuria.Enumerable;
 using Azuria.ErrorHandling;
 using Azuria.Exceptions;
 using Azuria.Media;
@@ -18,7 +18,7 @@ namespace Azuria.Notifications.OtherMedia
 {
     /// <summary>
     /// </summary>
-    internal sealed class OtherMediaNotificationEnumerator : IEnumerator<OtherMediaNotification>
+    internal sealed class OtherMediaNotificationEnumerator : RetryableEnumerator<OtherMediaNotification>
     {
         private static readonly Regex NotificationInfoRegex = new Regex(
             "<a class=\"notificationList\".*?notification(?<nid>[0-9]+)\".*?href=\"(?<link>.*?)#top\">(?<message>.*?)<div.*?nDate\">(?<ndate>.*?)<\\/div>",
@@ -28,7 +28,7 @@ namespace Azuria.Notifications.OtherMedia
         private OtherMediaNotification[] _content;
         private int _currentContentIndex = -1;
 
-        internal OtherMediaNotificationEnumerator(Senpai senpai)
+        internal OtherMediaNotificationEnumerator(Senpai senpai, int retryCount = 2) : base(retryCount)
         {
             this._senpai = senpai;
         }
@@ -36,17 +36,14 @@ namespace Azuria.Notifications.OtherMedia
         #region Properties
 
         /// <inheritdoc />
-        public OtherMediaNotification Current => this._content[this._currentContentIndex];
-
-        /// <inheritdoc />
-        object IEnumerator.Current => this.Current;
+        public override OtherMediaNotification Current => this._content[this._currentContentIndex];
 
         #endregion
 
         #region Methods
 
         /// <inheritdoc />
-        public void Dispose()
+        public override void Dispose()
         {
             this._content = null;
         }
@@ -77,7 +74,7 @@ namespace Azuria.Notifications.OtherMedia
         }
 
         /// <inheritdoc />
-        public bool MoveNext()
+        public override bool MoveNext(int retryCount)
         {
             if (this._content == null)
             {
@@ -119,7 +116,7 @@ namespace Azuria.Notifications.OtherMedia
         }
 
         /// <inheritdoc />
-        public void Reset()
+        public override void Reset()
         {
             this._content = new OtherMediaNotification[0];
             this._currentContentIndex = -1;
