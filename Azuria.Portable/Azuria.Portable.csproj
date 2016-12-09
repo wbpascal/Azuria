@@ -53,7 +53,7 @@
     <SignAssembly>true</SignAssembly>
   </PropertyGroup>
   <PropertyGroup>
-    <AssemblyOriginatorKeyFile>..\signing_key.pfx</AssemblyOriginatorKeyFile>
+    <AssemblyOriginatorKeyFile>..\signing_key.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="..\Azuria\**\*.cs" Exclude="..\Azuria\obj\**\*.cs;..\Azuria\Security\SecureStringContainer.cs;..\Azuria\Utilities\Extensions\SecureStringExtensions.cs">
