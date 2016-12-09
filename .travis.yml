@@ -1,8 +1,11 @@
 language: csharp
 solution: Azuria.sln
 install:
-  - nuget restore Azuria.sln
-  - nuget install NUnit.Runners -Version 3.4.1 -OutputDirectory testrunner
-script: 
-  - xbuild /p:Configuration=TravisCI Azuria.sln
-  - mono ./testrunner/NUnit.ConsoleRunner.3.4.1/tools/nunit3-console.exe ./Test/Azuria.Test/bin/Release/Azuria.Test.dll
+- nuget restore Azuria.sln
+- nuget install NUnit.Runners -Version 3.4.1 -OutputDirectory testrunner
+script:
+- xbuild /p:Configuration=TravisCI Azuria.sln
+- mono ./testrunner/NUnit.ConsoleRunner.3.4.1/tools/nunit3-console.exe ./Test/Azuria.Test/bin/Release/Azuria.Test.dll
+before_install:
+- openssl aes-256-cbc -K $encrypted_93fbef96433a_key -iv $encrypted_93fbef96433a_iv
+  -in signing_key.snk.travis.enc -out signing_key.snk -d
