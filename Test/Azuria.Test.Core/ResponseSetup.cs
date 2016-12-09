@@ -16,7 +16,7 @@ namespace Azuria.Test.Core
             return ServerResponse.Create("https://proxer.me/api/v1",
                     response =>
                     {
-                        response.Post("/messenger/messages")
+                        response.Get("/messenger/messages")
                             .WithQueryParameter("conference_id", "124536")
                             .WithQueryParameter("message_id", "0")
                             .WithQueryParameter("read", "true")
@@ -43,7 +43,7 @@ namespace Azuria.Test.Core
 
             ServerResponse.Create("https://proxer.me/api/v1",
                     response =>
-                        response.Post("/anime/streams")
+                        response.Get("/anime/streams")
                             .WithQueryParameter("id", "9200")
                             .WithQueryParameter("episode", "1")
                             .WithQueryParameter("language", "engsub"))
@@ -51,7 +51,7 @@ namespace Azuria.Test.Core
 
             ServerResponse.Create("https://proxer.me/api/v1",
                     response =>
-                        response.Post("/anime/link")
+                        response.Get("/anime/link")
                             .WithQueryParameter("id", "401217"))
                 .Respond(FileResponses["anime_getlink.json"]);
 
@@ -61,77 +61,77 @@ namespace Azuria.Test.Core
 
             ServerResponse.Create("https://proxer.me/api/v1",
                     response =>
-                        response.Post("/info/entry")
+                        response.Get("/info/entry")
                             .WithQueryParameter("id", "9200"))
                 .Respond(FileResponses["info_getentry.json"]);
             ServerResponse.Create("https://proxer.me/api/v1",
                     response =>
-                        response.Post("/info/fullentry")
+                        response.Get("/info/fullentry")
                             .WithQueryParameter("id", "9200"))
                 .Respond(FileResponses["info_getfullentry.json"]);
             ServerResponse.Create("https://proxer.me/api/v1",
                     response =>
-                        response.Post("/info/entry")
+                        response.Get("/info/entry")
                             .WithQueryParameter("id", "7834"))
                 .Respond(FileResponses["info_getentry7834.json"]);
             ServerResponse.Create("https://proxer.me/api/v1",
                     response =>
-                        response.Post("/info/entry")
+                        response.Get("/info/entry")
                             .WithQueryParameter("id", "666"))
                 .Respond(FileResponses["info_getentry_3007.json"]);
             ServerResponse.Create("https://proxer.me/api/v1",
                     response =>
-                        response.Post("/info/fullentry")
+                        response.Get("/info/fullentry")
                             .WithQueryParameter("id", "666"))
                 .Respond(FileResponses["info_getfullentry_3007.json"]);
             ServerResponse.Create("https://proxer.me/api/v1",
                     response =>
-                        response.Post("/info/lang")
+                        response.Get("/info/lang")
                             .WithQueryParameter("id", "9200"))
                 .Respond(FileResponses["info_getlang.json"]);
             ServerResponse.Create("https://proxer.me/api/v1",
                     response =>
-                        response.Post("/info/lang")
+                        response.Get("/info/lang")
                             .WithQueryParameter("id", "7834"))
                 .Respond(FileResponses["info_getlang7834.json"]);
             ServerResponse.Create("https://proxer.me/api/v1",
                     response =>
-                        response.Post("/info/season")
+                        response.Get("/info/season")
                             .WithQueryParameter("id", "9200"))
                 .Respond(FileResponses["info_getseason.json"]);
             ServerResponse.Create("https://proxer.me/api/v1",
                     response =>
-                        response.Post("/info/groups")
+                        response.Get("/info/groups")
                             .WithQueryParameter("id", "9200"))
                 .Respond(FileResponses["info_getgroups.json"]);
             ServerResponse.Create("https://proxer.me/api/v1",
                     response =>
-                        response.Post("/info/publisher")
+                        response.Get("/info/publisher")
                             .WithQueryParameter("id", "9200"))
                 .Respond(FileResponses["info_getpublisher.json"]);
             ServerResponse.Create("https://proxer.me/api/v1",
                     response =>
-                        response.Post("/info/names")
+                        response.Get("/info/names")
                             .WithQueryParameter("id", "9200"))
                 .Respond(FileResponses["info_getnames.json"]);
             ServerResponse.Create("https://proxer.me/api/v1",
                     response =>
-                        response.Post("/info/gate")
+                        response.Get("/info/gate")
                             .WithQueryParameter("id", "9200"))
                 .Respond(FileResponses["info_getgate.json"]);
             ServerResponse.Create("https://proxer.me/api/v1",
                     response =>
-                        response.Post("/info/relations")
+                        response.Get("/info/relations")
                             .WithQueryParameter("id", "9200"))
                 .Respond(FileResponses["info_getrelations.json"]);
             ServerResponse.Create("https://proxer.me/api/v1",
                     response =>
-                        response.Post("/info/entrytags")
+                        response.Get("/info/entrytags")
                             .WithQueryParameter("id", "9200"))
                 .Respond(FileResponses["info_getentrytags.json"]);
             ServerResponse.Create("https://proxer.me/api/v1",
                     response =>
-                        response.Post("/info/comments")
+                        response.Get("/info/comments")
                             .WithQueryParameter("id", "9200")
                             .WithQueryParameter("p", "0")
                             .WithQueryParameter("limit", "25")
@@ -139,7 +139,7 @@ namespace Azuria.Test.Core
                 .Respond(FileResponses["info_getcommentslatest.json"]);
             ServerResponse.Create("https://proxer.me/api/v1",
                     response =>
-                        response.Post("/info/comments")
+                        response.Get("/info/comments")
                             .WithQueryParameter("id", "9200")
                             .WithQueryParameter("p", "0")
                             .WithQueryParameter("limit", "25")
@@ -147,7 +147,7 @@ namespace Azuria.Test.Core
                 .Respond(FileResponses["info_getcommentsrating1.json"]);
             ServerResponse.Create("https://proxer.me/api/v1",
                     response =>
-                        response.Post("/info/comments")
+                        response.Get("/info/comments")
                             .WithQueryParameter("id", "9200")
                             .WithQueryParameter("p", "1")
                             .WithQueryParameter("limit", "25")
@@ -155,14 +155,14 @@ namespace Azuria.Test.Core
                 .Respond(FileResponses["info_getcommentsrating2.json"]);
             ServerResponse.Create("https://proxer.me/api/v1",
                     response =>
-                        response.Post("/info/listinfo")
+                        response.Get("/info/listinfo")
                             .WithQueryParameter("id", "9200")
                             .WithQueryParameter("p", "0")
                             .WithQueryParameter("limit", "22"))
                 .Respond(FileResponses["info_getlistinfo9200.json"]);
             ServerResponse.Create("https://proxer.me/api/v1",
                     response =>
-                        response.Post("/info/listinfo")
+                        response.Get("/info/listinfo")
                             .WithQueryParameter("id", "7834")
                             .WithQueryParameter("p", "0")
                             .WithQueryParameter("limit", "200"))
@@ -229,7 +229,7 @@ namespace Azuria.Test.Core
 
             ServerResponse.Create("https://proxer.me/api/v1",
                     response =>
-                        response.Post("/manga/chapter")
+                        response.Get("/manga/chapter")
                             .WithQueryParameter("id", "7834")
                             .WithQueryParameter("episode", "162")
                             .WithQueryParameter("language", "en"))
@@ -241,43 +241,47 @@ namespace Azuria.Test.Core
 
             ServerResponse.Create("https://proxer.me/api/v1",
                     response =>
-                        response.Post("/media/randomheader")
+                        response.Get("/media/randomheader")
                             .WithQueryParameter("style", "gray"))
                 .Respond(FileResponses["media_getrandomheadergray.json"]);
             ServerResponse.Create("https://proxer.me/api/v1",
                     response =>
-                        response.Post("/media/randomheader")
+                        response.Get("/media/randomheader")
                             .WithQueryParameter("style", "black"))
                 .Respond(FileResponses["media_getrandomheaderblack.json"]);
             ServerResponse.Create("https://proxer.me/api/v1",
                     response =>
-                        response.Post("/media/randomheader")
+                        response.Get("/media/randomheader")
                             .WithQueryParameter("style", "pantsu"))
                 .Respond(FileResponses["media_getrandomheaderpantsu.json"]);
             ServerResponse.Create("https://proxer.me/api/v1",
                     response =>
-                        response.Post("/media/randomheader")
+                        response.Get("/media/randomheader")
                             .WithQueryParameter("style", "old_blue"))
                 .Respond(FileResponses["media_getrandomheaderoldblue.json"]);
-            ServerResponse.Create("https://proxer.me/api/v1", response => response.Post("/media/headerlist"))
+            ServerResponse.Create("https://proxer.me/api/v1",
+                    response =>
+                            response.Get("/media/headerlist"))
                 .Respond(FileResponses["media_getheaderlist.json"]);
 
             #endregion
 
             #region Messenger
 
-            ServerResponse.Create("https://proxer.me/api/v1", response => response.Post("/messenger/constants"))
+            ServerResponse.Create("https://proxer.me/api/v1",
+                    response =>
+                            response.Get("/messenger/constants"))
                 .Respond(FileResponses["messenger_getconstants.json"]);
             ServerResponse.Create("https://proxer.me/api/v1",
                     response =>
-                        response.Post("/messenger/conferences")
+                        response.Get("/messenger/conferences")
                             .WithQueryParameter("type", "default")
                             .WithQueryParameter("p", "0")
                             .WithLoggedInSenpai(false))
                 .Respond(FileResponses["messenger_getconferences_3023.json"]);
             ServerResponse.Create("https://proxer.me/api/v1",
                     response =>
-                        response.Post("/messenger/conferences")
+                        response.Get("/messenger/conferences")
                             .WithQueryParameter("type", "default")
                             .WithQueryParameter("p", "0")
                             .WithLoggedInSenpai(true))
@@ -319,17 +323,17 @@ namespace Azuria.Test.Core
             ServerResponse.Create("https://proxer.me/api/v1",
                     response =>
                     {
-                        response.Post("/messenger/messages")
+                        response.Get("/messenger/messages")
                             .WithQueryParameter("conference_id", "124536")
                             .WithQueryParameter("message_id", "0")
                             .WithQueryParameter("read", "true")
                             .WithLoggedInSenpai(true);
-                        response.Post("/messenger/messages")
+                        response.Get("/messenger/messages")
                             .WithQueryParameter("conference_id", "124536")
                             .WithQueryParameter("message_id", "5018808")
                             .WithQueryParameter("read", "true")
                             .WithLoggedInSenpai(true);
-                        response.Post("/messenger/messages")
+                        response.Get("/messenger/messages")
                             .WithQueryParameter("conference_id", "124536")
                             .WithQueryParameter("message_id", "0")
                             .WithQueryParameter("read", "false")
@@ -338,7 +342,7 @@ namespace Azuria.Test.Core
                 .Respond(FileResponses["messenger_getmessages1.json"]);
             ServerResponse.Create("https://proxer.me/api/v1",
                     response =>
-                        response.Post("/messenger/messages")
+                        response.Get("/messenger/messages")
                             .WithQueryParameter("conference_id", "124536")
                             .WithQueryParameter("message_id", "4993930")
                             .WithQueryParameter("read", "true")
@@ -346,7 +350,7 @@ namespace Azuria.Test.Core
                 .Respond(FileResponses["messenger_getmessages2.json"]);
             ServerResponse.Create("https://proxer.me/api/v1",
                     response =>
-                        response.Post("/messenger/conferenceinfo")
+                        response.Get("/messenger/conferenceinfo")
                             .WithQueryParameter("conference_id", "124536")
                             .WithLoggedInSenpai(true))
                 .Respond(FileResponses["messenger_getconferenceinfo.json"]);
@@ -380,31 +384,31 @@ namespace Azuria.Test.Core
                 .Respond(FileResponses["messenger_setmessageHelp.json"]);
             ServerResponse.Create("https://proxer.me/api/v1",
                     response =>
-                        response.Post("/messenger/setblock")
+                        response.Get("/messenger/setblock")
                             .WithQueryParameter("conference_id", "124536")
                             .WithLoggedInSenpai(true))
                 .Respond(FileResponses["messenger_setblock.json"]);
             ServerResponse.Create("https://proxer.me/api/v1",
                     response =>
-                        response.Post("/messenger/setunblock")
+                        response.Get("/messenger/setunblock")
                             .WithQueryParameter("conference_id", "124536")
                             .WithLoggedInSenpai(true))
                 .Respond(FileResponses["messenger_setunblock.json"]);
             ServerResponse.Create("https://proxer.me/api/v1",
                     response =>
-                        response.Post("/messenger/setunread")
+                        response.Get("/messenger/setunread")
                             .WithQueryParameter("conference_id", "124536")
                             .WithLoggedInSenpai(true))
                 .Respond(FileResponses["messenger_setunread.json"]);
             ServerResponse.Create("https://proxer.me/api/v1",
                     response =>
-                        response.Post("/messenger/setfavour")
+                        response.Get("/messenger/setfavour")
                             .WithQueryParameter("conference_id", "124536")
                             .WithLoggedInSenpai(true))
                 .Respond(FileResponses["messenger_setfavour.json"]);
             ServerResponse.Create("https://proxer.me/api/v1",
                     response =>
-                        response.Post("/messenger/setunfavour")
+                        response.Get("/messenger/setunfavour")
                             .WithQueryParameter("conference_id", "124536")
                             .WithLoggedInSenpai(true))
                 .Respond(FileResponses["messenger_setunfavour.json"]);
@@ -421,15 +425,19 @@ namespace Azuria.Test.Core
             #region Notifications
 
             ServerResponse.Create("https://proxer.me/api/v1",
-                    response => response.Post("/notifications/count").WithLoggedInSenpai(true))
+                    response =>
+                        response.Get("/notifications/count")
+                            .WithLoggedInSenpai(true))
                 .Respond(FileResponses["notifications_getcount.json"]);
             ServerResponse.Create("https://proxer.me/api/v1", response =>
-                    response.Post("/notifications/news")
+                    response.Get("/notifications/news")
                         .WithQueryParameter("p", "0")
                         .WithQueryParameter("limit", "15"))
                 .Respond(FileResponses["notifications_getnews.json"]);
             ServerResponse.Create("https://proxer.me/components/com_proxer/misc",
-                    response => response.Get("/notifications_misc.php").WithLoggedInSenpai(true))
+                    response =>
+                        response.Get("/notifications_misc.php")
+                            .WithLoggedInSenpai(true))
                 .Respond(FileResponses["notifications_misc.php"]);
 
             #endregion
@@ -438,15 +446,19 @@ namespace Azuria.Test.Core
 
             ServerResponse.Create("https://proxer.me/api/v1",
                     response =>
-                            response.Post("/ucp/listsum").WithQueryParameter("kat", "anime").WithLoggedInSenpai(true))
+                        response.Get("/ucp/listsum")
+                            .WithQueryParameter("kat", "anime")
+                            .WithLoggedInSenpai(true))
                 .Respond(FileResponses["ucp_getlistsumanime.json"]);
             ServerResponse.Create("https://proxer.me/api/v1",
                     response =>
-                            response.Post("/ucp/listsum").WithQueryParameter("kat", "manga").WithLoggedInSenpai(true))
+                        response.Get("/ucp/listsum")
+                            .WithQueryParameter("kat", "manga")
+                            .WithLoggedInSenpai(true))
                 .Respond(FileResponses["ucp_getlistsummanga.json"]);
             ServerResponse.Create("https://proxer.me/api/v1",
                     response =>
-                        response.Post("/ucp/reminder")
+                        response.Get("/ucp/reminder")
                             .WithQueryParameter("kat", "anime")
                             .WithQueryParameter("p", "0")
                             .WithQueryParameter("limit", "100")
@@ -454,7 +466,7 @@ namespace Azuria.Test.Core
                 .Respond(FileResponses["ucp_getreminderanime.json"]);
             ServerResponse.Create("https://proxer.me/api/v1",
                     response =>
-                        response.Post("/ucp/reminder")
+                        response.Get("/ucp/reminder")
                             .WithQueryParameter("kat", "manga")
                             .WithQueryParameter("p", "0")
                             .WithQueryParameter("limit", "100")
@@ -462,19 +474,23 @@ namespace Azuria.Test.Core
                 .Respond(FileResponses["ucp_getremindermanga.json"]);
             ServerResponse.Create("https://proxer.me/api/v1",
                     response =>
-                        response.Post("/ucp/history")
+                        response.Get("/ucp/history")
                             .WithQueryParameter("p", "0")
                             .WithQueryParameter("limit", "50")
                             .WithLoggedInSenpai(true))
                 .Respond(FileResponses["ucp_gethistory.json"]);
             ServerResponse.Create("https://proxer.me/api/v1",
-                    response => response.Post("/ucp/votes").WithLoggedInSenpai(true))
+                    response => response.Get("/ucp/votes")
+                        .WithLoggedInSenpai(true))
                 .Respond(FileResponses["ucp_getvotes.json"]);
             ServerResponse.Create("https://proxer.me/api/v1",
-                    response => response.Post("/ucp/topten").WithLoggedInSenpai(true))
+                    response => response.Get("/ucp/topten")
+                        .WithLoggedInSenpai(true))
                 .Respond(FileResponses["ucp_gettopten.json"]);
             ServerResponse.Create("https://proxer.me/api/v1",
-                    response => response.Post("/ucp/deletevote").WithPostArgument("id", "1").WithLoggedInSenpai(true))
+                    response => response.Post("/ucp/deletevote")
+                        .WithPostArgument("id", "1")
+                        .WithLoggedInSenpai(true))
                 .Respond(FileResponses["ucp_deletevote.json"]);
             ServerResponse.Create("https://proxer.me/api/v1",
                     response =>
@@ -490,7 +506,7 @@ namespace Azuria.Test.Core
                 .Respond(FileResponses["ucp_deletereminder.json"]);
             ServerResponse.Create("https://proxer.me/api/v1",
                     response =>
-                        response.Post("/ucp/setreminder")
+                        response.Get("/ucp/setreminder")
                             .WithQueryParameter("id", "9200")
                             .WithQueryParameter("episode", "1")
                             .WithQueryParameter("language", "engsub")
@@ -517,50 +533,59 @@ namespace Azuria.Test.Core
                     .WithLoggedInSenpai(false);
             }).Respond(FileResponses["user_login_3001.json"]);
             ServerResponse.Create("https://proxer.me/api/v1",
-                    response => response.Post("/user/logout").WithLoggedInSenpai(true))
+                    response => response.Get("/user/logout")
+                        .WithLoggedInSenpai(true))
                 .Respond(FileResponses["user_logout.json"]);
             ServerResponse.Create("https://proxer.me/api/v1",
                     response =>
                     {
-                        response.Post("/user/userinfo")
+                        response.Get("/user/userinfo")
                             .WithHeader("proxer-api-token",
                                 "bknnY3QLb0X7CHdfHzimhOLo1Tz4cpumHSJGTzp3Gx9i2lvJSO4aCOwBH4ERr0d92UMStcU5w3kylUfdHilg7SXL" +
                                 "VuCfDQtCIfsapmiXmGsFyHSeZcv45kOXOoipcL2VYt6oNni02KOApFOmRhpvCbOox7OKPPDOhIa58sc5aYCxDrRs" +
                                 "Ggjgp9FWetE3gfOxXYAYoK2wID4k3UKH95XvcCgo43qkhePdanby6a5OO67OXQv4Uty74Yt6YTpf7cs")
                             .WithLoggedInSenpai(false);
-                        response.Post("/user/userinfo").WithQueryParameter("uid", "177103");
-                        response.Post("/user/userinfo").WithQueryParameter("username", "InfiniteSoul");
+                        response.Get("/user/userinfo")
+                            .WithQueryParameter("uid", "177103");
+                        response.Get("/user/userinfo")
+                            .WithQueryParameter("username", "InfiniteSoul");
                     })
                 .Respond(FileResponses["user_getuserinfo177103.json"]);
             ServerResponse.Create("https://proxer.me/api/v1",
                     response =>
                     {
-                        response.Post("/user/userinfo").WithQueryParameter("uid", "163825");
-                        response.Post("/user/userinfo").WithQueryParameter("username", "KutoSan");
+                        response.Get("/user/userinfo")
+                            .WithQueryParameter("uid", "163825");
+                        response.Get("/user/userinfo")
+                            .WithQueryParameter("username", "KutoSan");
                     })
                 .Respond(FileResponses["user_getuserinfo163825.json"]);
             ServerResponse.Create("https://proxer.me/api/v1",
                     response =>
                     {
-                        response.Post("/user/userinfo").WithQueryParameter("uid", "1");
-                        response.Post("/user/userinfo").WithQueryParameter("username", "Username");
+                        response.Get("/user/userinfo")
+                            .WithQueryParameter("uid", "1");
+                        response.Get("/user/userinfo")
+                            .WithQueryParameter("username", "Username");
                     })
                 .Respond(FileResponses["user_getuserinfo.json"]);
             ServerResponse.Create("https://proxer.me/api/v1",
                     response =>
                     {
-                        response.Post("/user/userinfo").WithQueryParameter("uid", int.MaxValue.ToString());
-                        response.Post("/user/userinfo").WithQueryParameter("username", "asd");
+                        response.Get("/user/userinfo")
+                            .WithQueryParameter("uid", int.MaxValue.ToString());
+                        response.Get("/user/userinfo")
+                            .WithQueryParameter("username", "asd");
                     })
                 .Respond(FileResponses["user_getuserinfo_3003.json"]);
             ServerResponse.Create("https://proxer.me/api/v1",
                     response =>
                     {
-                        response.Post("/user/topten")
+                        response.Get("/user/topten")
                             .WithQueryParameter("uid", "1")
                             .WithQueryParameter("kat", "anime")
                             .WithLoggedInSenpai(true);
-                        response.Post("/user/topten")
+                        response.Get("/user/topten")
                             .WithQueryParameter("username", "Username")
                             .WithQueryParameter("kat", "anime")
                             .WithLoggedInSenpai(true);
@@ -569,11 +594,11 @@ namespace Azuria.Test.Core
             ServerResponse.Create("https://proxer.me/api/v1",
                     response =>
                     {
-                        response.Post("/user/topten")
+                        response.Get("/user/topten")
                             .WithQueryParameter("uid", "1")
                             .WithQueryParameter("kat", "manga")
                             .WithLoggedInSenpai(true);
-                        response.Post("/user/topten")
+                        response.Get("/user/topten")
                             .WithQueryParameter("username", "Username")
                             .WithQueryParameter("kat", "manga")
                             .WithLoggedInSenpai(true);
@@ -582,14 +607,14 @@ namespace Azuria.Test.Core
             ServerResponse.Create("https://proxer.me/api/v1",
                     response =>
                     {
-                        response.Post("/user/comments")
+                        response.Get("/user/comments")
                             .WithQueryParameter("uid", "1")
                             .WithQueryParameter("kat", "anime")
                             .WithQueryParameter("p", "0")
                             .WithQueryParameter("limit", "25")
                             .WithQueryParameter("length", "0")
                             .WithLoggedInSenpai(true);
-                        response.Post("/user/comments")
+                        response.Get("/user/comments")
                             .WithQueryParameter("username", "Username")
                             .WithQueryParameter("kat", "anime")
                             .WithQueryParameter("p", "0")
@@ -601,14 +626,14 @@ namespace Azuria.Test.Core
             ServerResponse.Create("https://proxer.me/api/v1",
                     response =>
                     {
-                        response.Post("/user/comments")
+                        response.Get("/user/comments")
                             .WithQueryParameter("uid", "1")
                             .WithQueryParameter("kat", "manga")
                             .WithQueryParameter("p", "0")
                             .WithQueryParameter("limit", "25")
                             .WithQueryParameter("length", "0")
                             .WithLoggedInSenpai(true);
-                        response.Post("/user/comments")
+                        response.Get("/user/comments")
                             .WithQueryParameter("username", "Username")
                             .WithQueryParameter("kat", "manga")
                             .WithQueryParameter("p", "0")
@@ -620,13 +645,13 @@ namespace Azuria.Test.Core
             ServerResponse.Create("https://proxer.me/api/v1",
                     response =>
                     {
-                        response.Post("/user/list")
+                        response.Get("/user/list")
                             .WithQueryParameter("uid", "1")
                             .WithQueryParameter("kat", "anime")
                             .WithQueryParameter("p", "0")
                             .WithQueryParameter("limit", "100")
                             .WithLoggedInSenpai(true);
-                        response.Post("/user/list")
+                        response.Get("/user/list")
                             .WithQueryParameter("username", "Username")
                             .WithQueryParameter("kat", "anime")
                             .WithQueryParameter("p", "0")
@@ -637,13 +662,13 @@ namespace Azuria.Test.Core
             ServerResponse.Create("https://proxer.me/api/v1",
                     response =>
                     {
-                        response.Post("/user/list")
+                        response.Get("/user/list")
                             .WithQueryParameter("uid", "1")
                             .WithQueryParameter("kat", "manga")
                             .WithQueryParameter("p", "0")
                             .WithQueryParameter("limit", "100")
                             .WithLoggedInSenpai(true);
-                        response.Post("/user/list")
+                        response.Get("/user/list")
                             .WithQueryParameter("username", "Username")
                             .WithQueryParameter("kat", "manga")
                             .WithQueryParameter("p", "0")

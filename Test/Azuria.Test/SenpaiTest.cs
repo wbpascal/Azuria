@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
 using Azuria.ErrorHandling;
-using Azuria.Exceptions;
 using Azuria.Security;
 using Azuria.UserInfo;
 using Azuria.Utilities.Extensions;

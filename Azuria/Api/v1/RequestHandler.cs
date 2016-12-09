@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Azuria.ErrorHandling;
 using Azuria.Exceptions;
 using Azuria.Security;
+using Azuria.Web;
 using Newtonsoft.Json;
 
 namespace Azuria.Api.v1
@@ -62,7 +63,7 @@ namespace Azuria.Api.v1
                 return new ProxerResult(new[] {new NotLoggedInException(request.Senpai)});
 
             IProxerResult<string> lResult =
-                await (request.Senpai?.HttpClient ?? ApiInfo.HttpClient).PostRequest(request.Address,
+                await (request.Senpai?.HttpClient ?? ApiInfo.HttpClient).ProxerRequest(request.Address,
                     request.PostArguments, GetHeaders(request, forceTokenLogin)).ConfigureAwait(false);
             if (!lResult.Success || string.IsNullOrEmpty(lResult.Result))
                 return new ProxerResult(lResult.Exceptions);
@@ -125,6 +126,15 @@ namespace Azuria.Api.v1
         {
             _apiKey = ApiInfo.SecureContainerFactory.Invoke();
             _apiKey.SetValue(apiKey);
+        }
+
+        private static Task<IProxerResult<string>> ProxerRequest(this IHttpClient httpClient, Uri url,
+            IEnumerable<KeyValuePair<string, string>> postArgs, Dictionary<string, string> headers)
+        {
+            KeyValuePair<string, string>[] lPostArgs = postArgs as KeyValuePair<string, string>[] ?? postArgs.ToArray();
+            return lPostArgs.Any()
+                ? httpClient.PostRequest(url, lPostArgs, headers)
+                : httpClient.GetRequest(url, headers);
         }
 
         #endregion

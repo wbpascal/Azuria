@@ -29,10 +29,9 @@ namespace Azuria.Test.Core
         /// <inheritdoc />
         public async Task<IProxerResult<string>> GetRequest(Uri url, Dictionary<string, string> headers = null)
         {
-            return
-                await
-                    Task.Factory.StartNew(
-                        () => this.GetResponse(url, RequestMethod.Get, new Dictionary<string, string>(), headers));
+            return await Task.Factory.StartNew(() =>
+                        this.GetResponse(url, RequestMethod.Get, new Dictionary<string, string>(), headers))
+                .ConfigureAwait(false);
         }
 
         private IProxerResult<string> GetResponse(Uri url, RequestMethod method,
