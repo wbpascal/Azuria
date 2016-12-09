@@ -7,7 +7,7 @@ environment:
 install:
   - choco install gitversion.portable -pre -y
   - nuget install secure-file -ExcludeVersion
-  - secure-file\tools\secure-file -decrypt signing_key.pfx.enc -secret %enc_secret%
+  - secure-file\tools\secure-file -decrypt signing_key.snk.enc -secret %enc_secret%
 
 before_build:
   - nuget restore
