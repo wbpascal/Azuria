@@ -10,7 +10,7 @@ namespace Azuria.UserInfo.ControlPanel
     {
         internal CommentVote(VoteDataModel dataModel, UserControlPanel userControlPanel)
         {
-            this.AnimeMangaName = dataModel.EntryName;
+            this.MediaName = dataModel.EntryName;
             this.Author = new User(dataModel.Username, dataModel.UserId);
             this.CommentContent = dataModel.CommentContent;
             this.CommentId = dataModel.CommentId;
@@ -23,10 +23,6 @@ namespace Azuria.UserInfo.ControlPanel
 
         /// <summary>
         /// </summary>
-        public string AnimeMangaName { get; }
-
-        /// <summary>
-        /// </summary>
         public User Author { get; }
 
         /// <summary>
@@ -36,6 +32,10 @@ namespace Azuria.UserInfo.ControlPanel
         /// <summary>
         /// </summary>
         public int CommentId { get; }
+
+        /// <summary>
+        /// </summary>
+        public string MediaName { get; }
 
         /// <summary>
         /// </summary>
@@ -56,7 +56,7 @@ namespace Azuria.UserInfo.ControlPanel
         /// <summary>
         /// </summary>
         /// <returns></returns>
-        public Task<ProxerResult> DeleteEntry()
+        public Task<IProxerResult> Delete()
         {
             return this.UserControlPanel.DeleteCommentVote(this.VoteId);
         }

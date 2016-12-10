@@ -4,49 +4,77 @@ using Newtonsoft.Json;
 
 namespace Azuria.Api.v1.DataModels.Notifications
 {
-    internal class NewsNotificationDataModel : IDataModel
+    /// <summary>
+    /// </summary>
+    public class NewsNotificationDataModel : IDataModel
     {
         #region Properties
 
+        /// <summary>
+        /// </summary>
         [JsonProperty("uid")]
-        internal int AuthorId { get; set; }
+        public int AuthorId { get; set; }
 
+        /// <summary>
+        /// </summary>
         [JsonProperty("uname")]
-        internal string AuthorName { get; set; }
+        public string AuthorName { get; set; }
 
+        /// <summary>
+        /// </summary>
         [JsonProperty("catid")]
-        internal int CategoryId { get; set; }
+        public int CategoryId { get; set; }
 
+        /// <summary>
+        /// </summary>
         [JsonProperty("catname")]
-        internal string CategoryName { get; set; }
+        public string CategoryName { get; set; }
 
+        /// <summary>
+        /// </summary>
         [JsonProperty("description")]
-        internal string Description { get; set; }
+        public string Description { get; set; }
 
+        /// <summary>
+        /// </summary>
         [JsonProperty("hits")]
-        internal int Hits { get; set; }
+        public int Hits { get; set; }
 
+        /// <summary>
+        /// </summary>
         [JsonProperty("image_id")]
-        internal string ImageId { get; set; }
+        public string ImageId { get; set; }
 
+        /// <summary>
+        /// </summary>
         [JsonProperty("image_style")]
-        internal string ImageStyle { get; set; }
+        public string ImageStyle { get; set; }
 
+        /// <summary>
+        /// </summary>
         [JsonProperty("nid")]
-        internal int NewsId { get; set; }
+        public int NewsId { get; set; }
 
+        /// <summary>
+        /// </summary>
         [JsonProperty("posts")]
-        internal int Posts { get; set; }
+        public int Posts { get; set; }
 
+        /// <summary>
+        /// </summary>
         [JsonProperty("subject")]
-        internal string Subject { get; set; }
+        public string Subject { get; set; }
 
+        /// <summary>
+        /// </summary>
         [JsonProperty("thread")]
-        internal int ThreadId { get; set; }
+        public int ThreadId { get; set; }
 
+        /// <summary>
+        /// </summary>
         [JsonProperty("time")]
         [JsonConverter(typeof(UnixToDateTimeConverter))]
-        internal DateTime TimeStamp { get; set; }
+        public DateTime TimeStamp { get; set; }
 
         #endregion
     }

@@ -4,14 +4,15 @@ using System.Threading.Tasks;
 using Azuria.Api.v1;
 using Azuria.Api.v1.DataModels.Search;
 using Azuria.Api.v1.Enums;
+using Azuria.Api.v1.RequestBuilder;
+using Azuria.Enumerable;
 using Azuria.ErrorHandling;
 using Azuria.Media;
 using Azuria.Search.Input;
-using Azuria.Utilities;
 
 namespace Azuria.Search
 {
-    internal class SearchResultEnumerator<T> : PageEnumerator<T> where T : IAnimeMangaObject
+    internal class SearchResultEnumerator<T> : PagedEnumerator<T> where T : IMediaObject
     {
         private const int ResultsPerPage = 100;
         private readonly SearchInput _input;
@@ -26,7 +27,7 @@ namespace Azuria.Search
         private static IEnumerable<T> GetAnimeList(IEnumerable<SearchDataModel> dataModels)
         {
             return (from searchDataModel in dataModels
-                where searchDataModel.EntryType == AnimeMangaEntryType.Anime
+                where searchDataModel.EntryType == MediaEntryType.Anime
                 select new Anime(searchDataModel)).Cast<T>();
         }
 
@@ -34,26 +35,26 @@ namespace Azuria.Search
         {
             return (from searchDataModel in dataModels
                 select
-                searchDataModel.EntryType == AnimeMangaEntryType.Anime
+                searchDataModel.EntryType == MediaEntryType.Anime
                     ? new Anime(searchDataModel)
-                    : (IAnimeMangaObject) new Manga(searchDataModel)).Cast<T>();
+                    : (IMediaObject) new Manga(searchDataModel)).Cast<T>();
         }
 
         private static IEnumerable<T> GetMangaList(IEnumerable<SearchDataModel> dataModels)
         {
             return (from searchDataModel in dataModels
-                where searchDataModel.EntryType == AnimeMangaEntryType.Manga
+                where searchDataModel.EntryType == MediaEntryType.Manga
                 select new Manga(searchDataModel)).Cast<T>();
         }
 
-        internal override async Task<ProxerResult<IEnumerable<T>>> GetNextPage(int nextPage)
+        internal override async Task<IProxerResult<IEnumerable<T>>> GetNextPage(int nextPage)
         {
-            ProxerResult<ProxerApiResponse<SearchDataModel[]>> lResult =
-                await
-                    RequestHandler.ApiRequest(ApiRequestBuilder.ListEntrySearch(this._input, ResultsPerPage, nextPage));
+            ProxerApiResponse<SearchDataModel[]> lResult = await RequestHandler.ApiRequest(
+                    ListRequestBuilder.EntrySearch(this._input, ResultsPerPage, nextPage))
+                .ConfigureAwait(false);
             if (!lResult.Success || (lResult.Result == null))
                 return new ProxerResult<IEnumerable<T>>(lResult.Exceptions);
-            SearchDataModel[] lData = lResult.Result.Data;
+            SearchDataModel[] lData = lResult.Result;
 
             if (typeof(T) == typeof(Anime)) return new ProxerResult<IEnumerable<T>>(GetAnimeList(lData));
             return typeof(T) == typeof(Manga)

@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
 using Azuria.ErrorHandling;
 using Azuria.Exceptions;
 using Azuria.Security;
+using Azuria.Web;
 using Newtonsoft.Json;
 
 namespace Azuria.Api.v1
@@ -17,42 +19,74 @@ namespace Azuria.Api.v1
 
         #region Methods
 
-        internal static async Task<ProxerResult<T>> ApiCustomRequest<T>(ApiRequest request, bool forceTokenLogin = false)
-            where T : ProxerApiResponse
+        /// <summary>
+        /// </summary>
+        /// <param name="request"></param>
+        /// <param name="forceTokenLogin"></param>
+        /// <typeparam name="T"></typeparam>
+        /// <returns></returns>
+        public static async Task<ProxerApiResponse<T>> ApiRequest<T>(ApiRequest<T> request,
+            bool forceTokenLogin = false)
+        {
+            IEnumerable<JsonConverter> lDataConverter = request.CustomDataConverter == null
+                ? new JsonConverter[0]
+                : new[] {request.CustomDataConverter};
+
+            IProxerResult lResult = await ApiRequestInternal<ProxerApiResponse<T>>(
+                    request, forceTokenLogin, new JsonSerializerSettings {Converters = lDataConverter.ToList()})
+                .ConfigureAwait(false);
+
+            return lResult.Success && lResult is ProxerApiResponse<T>
+                ? lResult as ProxerApiResponse<T>
+                : new ProxerApiResponse<T>(lResult.Exceptions);
+        }
+
+        /// <summary>
+        /// </summary>
+        /// <param name="request"></param>
+        /// <param name="forceTokenLogin"></param>
+        /// <returns></returns>
+        public static async Task<ProxerApiResponse> ApiRequest(ApiRequest request, bool forceTokenLogin = false)
+        {
+            IProxerResult lResult =
+                await ApiRequestInternal<ProxerApiResponse>(request, forceTokenLogin).ConfigureAwait(false);
+
+            return lResult.Success && lResult is ProxerApiResponse
+                ? lResult as ProxerApiResponse
+                : new ProxerApiResponse(lResult.Exceptions);
+        }
+
+        private static async Task<IProxerResult> ApiRequestInternal<T>(ApiRequest request, bool forceTokenLogin = false,
+            JsonSerializerSettings settings = null, int loopCount = 0) where T : ProxerApiResponse
         {
             if (request.CheckLogin && ((request.Senpai == null) || !request.Senpai.IsProbablyLoggedIn))
-                return new ProxerResult<T>(new[] {new NotLoggedInException(request.Senpai)});
+                return new ProxerResult(new[] {new NotLoggedInException(request.Senpai)});
 
-            ProxerResult<string> lResult =
-                await
-                    (request.Senpai?.HttpClient ?? ApiInfo.HttpClient).PostRequest(request.Address,
-                        request.PostArguments, GetHeaders(request, forceTokenLogin));
-            if (!lResult.Success || (lResult.Result == null)) return new ProxerResult<T>(lResult.Exceptions);
+            IProxerResult<string> lResult =
+                await (request.Senpai?.HttpClient ?? ApiInfo.HttpClient).ProxerRequest(request.Address,
+                    request.PostArguments, GetHeaders(request, forceTokenLogin)).ConfigureAwait(false);
+            if (!lResult.Success || string.IsNullOrEmpty(lResult.Result))
+                return new ProxerResult(lResult.Exceptions);
 
             try
             {
-                T lApiResponse = await
-                    Task<T>.Factory.StartNew(
-                        () => JsonConvert.DeserializeObject<T>(WebUtility.HtmlDecode(lResult.Result)));
-                return !lApiResponse.Error
-                    ? new ProxerResult<T>(lApiResponse)
-                    : await HandleErrorCode<T>(lApiResponse.ErrorCode, request);
+                T lApiResponse = await Task<T>.Factory.StartNew(() =>
+                    JsonConvert.DeserializeObject<T>(WebUtility.HtmlDecode(lResult.Result),
+                        settings ?? new JsonSerializerSettings())).ConfigureAwait(false);
+
+                if (lApiResponse.Success) return lApiResponse;
+
+                Exception lException = HandleErrorCode(lApiResponse.ErrorCode, request);
+                if (lException == null) return new ProxerResult(new ProxerApiException(lApiResponse.ErrorCode));
+                if (lException is NotLoggedInException && (loopCount < 5))
+                    return await ApiRequestInternal<T>(request, true, settings, loopCount + 1).ConfigureAwait(false);
+
+                return new ProxerResult(lException);
             }
             catch (Exception ex)
             {
-                return new ProxerResult<T>(new[] {ex});
+                return new ProxerResult(ex);
             }
-        }
-
-        internal static Task<ProxerResult<ProxerApiResponse<T>>> ApiRequest<T>(ApiRequest<T> request,
-            char[] loginToken = null)
-        {
-            return ApiCustomRequest<ProxerApiResponse<T>>(request);
-        }
-
-        internal static Task<ProxerResult<ProxerApiResponse>> ApiRequest(ApiRequest request)
-        {
-            return ApiCustomRequest<ProxerApiResponse>(request);
         }
 
         private static Dictionary<string, string> GetHeaders(ApiRequest request, bool forceTokenLogin)
@@ -68,38 +102,39 @@ namespace Azuria.Api.v1
             return lHeaders;
         }
 
-        private static async Task<ProxerResult<T>> HandleErrorCode<T>(ErrorCode code, ApiRequest request)
-            where T : ProxerApiResponse
+        private static Exception HandleErrorCode(ErrorCode code, ApiRequest request)
         {
-            List<Exception> lExceptions = new List<Exception>(new[] {new ProxerApiException(code)});
             switch (code)
             {
                 case ErrorCode.IpBlocked:
-                    lExceptions.Add(new CaptchaException("http://proxer.me/misc/captcha"));
-                    break;
+                    return new CaptchaException("http://proxer.me/misc/captcha");
                 case ErrorCode.ApiKeyInsufficientPermissions:
-                    lExceptions.Add(new ApiKeyInsufficientException());
-                    break;
+                    return new ApiKeyInsufficientException();
                 case ErrorCode.UserInsufficientPermissions:
-                    lExceptions.Add(new NoAccessException(request.Senpai));
-                    break;
-                case ErrorCode.LoginTokenInvalid:
-                    lExceptions.Add(new NotLoggedInException(request.Senpai));
-                    break;
+                    return new NoAccessException(request.Senpai);
                 case ErrorCode.NotificationsUserNotLoggedIn:
                 case ErrorCode.UcpUserNotLoggedIn:
                 case ErrorCode.InfoSetUserInfoUserNotLoggedIn:
                 case ErrorCode.MessengerUserNotLoggedIn:
-                    return await ApiCustomRequest<T>(request, true);
+                    return new NotLoggedInException(request.Senpai);
             }
 
-            return new ProxerResult<T>(lExceptions);
+            return null;
         }
 
         internal static void Init(char[] apiKey)
         {
             _apiKey = ApiInfo.SecureContainerFactory.Invoke();
             _apiKey.SetValue(apiKey);
+        }
+
+        private static Task<IProxerResult<string>> ProxerRequest(this IHttpClient httpClient, Uri url,
+            IEnumerable<KeyValuePair<string, string>> postArgs, Dictionary<string, string> headers)
+        {
+            KeyValuePair<string, string>[] lPostArgs = postArgs as KeyValuePair<string, string>[] ?? postArgs.ToArray();
+            return lPostArgs.Any()
+                ? httpClient.PostRequest(url, lPostArgs, headers)
+                : httpClient.GetRequest(url, headers);
         }
 
         #endregion

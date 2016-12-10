@@ -2,18 +2,26 @@
 
 namespace Azuria.Api.v1.DataModels.User
 {
-    internal class LoginDataModel : IDataModel
+    /// <summary>
+    /// </summary>
+    public class LoginDataModel : IDataModel
     {
         #region Properties
 
+        /// <summary>
+        /// </summary>
         [JsonProperty("avatar")]
-        internal string Avatar { get; set; }
+        public string Avatar { get; set; }
 
+        /// <summary>
+        /// </summary>
         [JsonProperty("token")]
-        internal string Token { get; set; }
+        public string Token { get; set; }
 
+        /// <summary>
+        /// </summary>
         [JsonProperty("uid")]
-        internal int UserId { get; set; }
+        public int UserId { get; set; }
 
         #endregion
     }

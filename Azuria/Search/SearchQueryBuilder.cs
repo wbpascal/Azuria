@@ -20,13 +20,13 @@ namespace Azuria.Search
                 {"tagratefilter", input.IsFilteringUnratedTags ? "rate_1" : "rate_10"},
                 {"tagspoilerfilter", input.IsFilteringSpoilerTags ? "spoiler_0" : "spoiler_10"}
             };
-            lReturn.AddIf("language", LanguageToString(input.Language), (key, value) => string.IsNullOrEmpty(value));
-            lReturn.AddIf("genre", GenresToString(input.GenreInclude), (key, value) => string.IsNullOrEmpty(value));
-            lReturn.AddIf("nogenre", GenresToString(input.GenreExclude), (key, value) => string.IsNullOrEmpty(value));
-            lReturn.AddIf("fsk", FskToString(input.Fsk), (key, value) => string.IsNullOrEmpty(value));
+            lReturn.AddIf("language", LanguageToString(input.Language), (key, value) => !string.IsNullOrEmpty(value));
+            lReturn.AddIf("genre", GenresToString(input.GenreInclude), (key, value) => !string.IsNullOrEmpty(value));
+            lReturn.AddIf("nogenre", GenresToString(input.GenreExclude), (key, value) => !string.IsNullOrEmpty(value));
+            lReturn.AddIf("fsk", FskToString(input.Fsk), (key, value) => !string.IsNullOrEmpty(value));
             lReturn.AddIf("length", input.Length.ToString(), (key, value) => input.Length != null);
-            lReturn.AddIf("tags", TagsToString(input.TagsInclude), (key, value) => string.IsNullOrEmpty(value));
-            lReturn.AddIf("notags", TagsToString(input.TagsExclude), (key, value) => string.IsNullOrEmpty(value));
+            lReturn.AddIf("tags", TagsToString(input.TagsInclude), (key, value) => !string.IsNullOrEmpty(value));
+            lReturn.AddIf("notags", TagsToString(input.TagsExclude), (key, value) => !string.IsNullOrEmpty(value));
 
             return lReturn;
         }
@@ -36,9 +36,9 @@ namespace Azuria.Search
             Dictionary<string, string> lReturn = new Dictionary<string, string>
             {
                 {"isH", input.ShowHContent.ToString()},
-                {"start", input.ShowOnlyNonAlphabeticalBeginnings ? "nonAlpha" : input.StartWith}
+                {"start", input.StartWithNonAlphabeticalChar ? "nonAlpha" : input.StartWith}
             };
-            if (input.Medium != AnimeMangaMedium.None)
+            if (input.Medium != MediaMedium.None)
                 lReturn.Add("medium", input.Medium.ToString().ToLowerInvariant());
 
             return lReturn;
@@ -89,13 +89,13 @@ namespace Azuria.Search
             return lReturn.TrimEnd();
         }
 
-        private static string TypeToString(AnimeMangaSearchType type)
+        private static string TypeToString(MediaSearchType type)
         {
             switch (type)
             {
-                case AnimeMangaSearchType.AllAnime:
+                case MediaSearchType.AllAnime:
                     return "all-anime";
-                case AnimeMangaSearchType.AllManga:
+                case MediaSearchType.AllManga:
                     return "all-manga";
                 default:
                     return type.ToString().ToLowerInvariant();

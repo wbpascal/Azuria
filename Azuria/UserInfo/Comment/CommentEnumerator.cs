@@ -5,45 +5,49 @@ using System.Reflection;
 using System.Threading.Tasks;
 using Azuria.Api.v1;
 using Azuria.Api.v1.DataModels;
+using Azuria.Api.v1.RequestBuilder;
+using Azuria.Enumerable;
 using Azuria.ErrorHandling;
 using Azuria.Media;
-using Azuria.Utilities;
+using Azuria.Utilities.Extensions;
 using Azuria.Utilities.Properties;
 
 namespace Azuria.UserInfo.Comment
 {
-    internal class CommentEnumerator<T> : PageEnumerator<Comment<T>> where T : IAnimeMangaObject
+    internal class CommentEnumerator<T> : PagedEnumerator<Comment<T>> where T : class, IMediaObject
     {
-        private const int ResultsPerPage = 100;
-        private readonly T _animeMangaObject;
+        private const int ResultsPerPage = 25;
+        private readonly T _mediaObject;
+        private readonly Senpai _senpai;
         private readonly string _sort;
         private readonly User _user;
 
-        internal CommentEnumerator(T animeMangaObject, string sort) : base(ResultsPerPage)
+        internal CommentEnumerator(T mediaObject, string sort) : base(ResultsPerPage)
         {
-            this._animeMangaObject = animeMangaObject;
+            this._mediaObject = mediaObject;
             this._sort = sort;
         }
 
-        internal CommentEnumerator(User user)
+        internal CommentEnumerator(User user, Senpai senpai) : base(ResultsPerPage)
         {
             this._user = user;
+            this._senpai = senpai;
         }
 
         #region Methods
 
-        internal override async Task<ProxerResult<IEnumerable<Comment<T>>>> GetNextPage(int nextPage)
+        internal override async Task<IProxerResult<IEnumerable<Comment<T>>>> GetNextPage(int nextPage)
         {
-            ProxerResult<ProxerApiResponse<CommentDataModel[]>> lResult =
-                await
-                    RequestHandler.ApiRequest(this._user == null
-                        ? ApiRequestBuilder.InfoGetComments(this._animeMangaObject.Id,
+            ProxerApiResponse<CommentDataModel[]> lResult =
+                await RequestHandler.ApiRequest(this._user == null
+                        ? InfoRequestBuilder.GetComments(this._mediaObject.Id,
                             nextPage, ResultsPerPage, this._sort)
-                        : ApiRequestBuilder.UserGetLatestComments(this._user.Id, nextPage, ResultsPerPage,
-                            typeof(T).GetTypeInfo().Name.ToLower(), 0));
+                        : UserRequestBuilder.GetLatestComments(this._user.Id, nextPage, ResultsPerPage,
+                            typeof(T).GetTypeInfo().Name.ToLower(), 0, this._senpai))
+                    .ConfigureAwait(false);
             if (!lResult.Success || (lResult.Result == null))
                 return new ProxerResult<IEnumerable<Comment<T>>>(lResult.Exceptions);
-            CommentDataModel[] lData = lResult.Result.Data;
+            CommentDataModel[] lData = lResult.Result;
 
             if ((this._user != null) && lData.Any()) this.InitialiseUserValues(lData.First());
             return new ProxerResult<IEnumerable<Comment<T>>>(this.ToCommentList(lData).ToArray());
@@ -51,10 +55,10 @@ namespace Azuria.UserInfo.Comment
 
         private void InitialiseUserValues(CommentDataModel dataModel)
         {
-            if (!this._user.UserName.IsInitialisedOnce)
-                (this._user.UserName as InitialisableProperty<string>)?.SetInitialisedObject(dataModel.Username);
-            if (!this._user.Avatar.IsInitialisedOnce)
-                (this._user.Avatar as InitialisableProperty<Uri>)?.SetInitialisedObject(
+            if (!this._user.UserName.IsInitialised)
+                (this._user.UserName as InitialisableProperty<string>)?.Set(dataModel.Username);
+            if (!this._user.Avatar.IsInitialised)
+                (this._user.Avatar as InitialisableProperty<Uri>)?.Set(
                     new Uri("http://cdn.proxer.me/avatar/" + dataModel.Avatar));
         }
 
@@ -63,17 +67,14 @@ namespace Azuria.UserInfo.Comment
             List<Comment<T>> lCommentList = new List<Comment<T>>();
             foreach (CommentDataModel commentDataModel in dataModels)
             {
-                T lAnimeMangaObject = this._animeMangaObject;
-                if (lAnimeMangaObject == null)
-                {
-                    if (typeof(T) == typeof(Anime))
-                        lAnimeMangaObject =
-                            (T) Convert.ChangeType(new Anime(commentDataModel.EntryId), typeof(T));
-                    if (typeof(T) == typeof(Manga))
-                        lAnimeMangaObject =
-                            (T) Convert.ChangeType(new Manga(commentDataModel.EntryId), typeof(T));
-                }
-                lCommentList.Add(new Comment<T>(commentDataModel, lAnimeMangaObject, this._user));
+                T lMediaObject = this._mediaObject;
+                if (typeof(T) == typeof(Anime))
+                    lMediaObject = lMediaObject ?? new Anime(commentDataModel.EntryId) as T;
+                if (typeof(T) == typeof(Manga))
+                    lMediaObject = lMediaObject ?? new Manga(commentDataModel.EntryId) as T;
+
+                lCommentList.AddIf(new Comment<T>(commentDataModel, lMediaObject, this._user),
+                    comment => lMediaObject != null);
             }
             return lCommentList;
         }

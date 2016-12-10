@@ -2,24 +2,36 @@
 
 namespace Azuria.Api.v1.DataModels.Messenger
 {
-    internal class ConstantsDataModel : IDataModel
+    /// <summary>
+    /// </summary>
+    public class ConstantsDataModel : IDataModel
     {
         #region Properties
 
+        /// <summary>
+        /// </summary>
         [JsonProperty("conferenceLimit")]
-        internal int ConferencesPerPage { get; set; }
+        public int ConferencesPerPage { get; set; }
 
+        /// <summary>
+        /// </summary>
         [JsonProperty("textCount")]
-        internal int MaxCharactersPerMessage { get; set; }
+        public int MaxCharactersPerMessage { get; set; }
 
+        /// <summary>
+        /// </summary>
         [JsonProperty("topicCount")]
-        internal int MaxCharactersTopic { get; set; }
+        public int MaxCharactersTopic { get; set; }
 
+        /// <summary>
+        /// </summary>
         [JsonProperty("userLimit")]
-        internal int MaxUsersPerConference { get; set; }
+        public int MaxUsersPerConference { get; set; }
 
+        /// <summary>
+        /// </summary>
         [JsonProperty("messagesLimit")]
-        internal int MessagesPerPage { get; set; }
+        public int MessagesPerPage { get; set; }
 
         #endregion
     }

@@ -17,27 +17,27 @@ namespace Azuria.Api.v1.Converters
         /// </returns>
         public override bool CanConvert(Type objectType)
         {
-            return objectType == typeof(string);
+            return objectType == typeof(MediaLanguage);
         }
 
-        internal static AnimeMangaLanguage GetLanguageFromString(string input)
+        internal static MediaLanguage GetLanguageFromString(string input)
         {
             switch (input)
             {
                 case "de":
-                    return AnimeMangaLanguage.German;
+                    return MediaLanguage.German;
                 case "en":
-                    return AnimeMangaLanguage.English;
+                    return MediaLanguage.English;
                 case "gersub":
-                    return AnimeMangaLanguage.GerSub;
+                    return MediaLanguage.GerSub;
                 case "gerdub":
-                    return AnimeMangaLanguage.GerDub;
+                    return MediaLanguage.GerDub;
                 case "engsub":
-                    return AnimeMangaLanguage.EngSub;
+                    return MediaLanguage.EngSub;
                 case "engdub":
-                    return AnimeMangaLanguage.EngDub;
+                    return MediaLanguage.EngDub;
             }
-            return AnimeMangaLanguage.Unkown;
+            return MediaLanguage.Unkown;
         }
 
         /// <summary>Reads the JSON representation of the object.</summary>

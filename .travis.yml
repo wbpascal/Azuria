@@ -1,4 +1,13 @@
 language: csharp
 solution: Azuria.sln
-script: 
-  - xbuild /p:Configuration=TravisCI Azuria.sln
+install:
+- nuget restore Azuria.sln
+- nuget install NUnit.Runners -Version 3.4.1 -OutputDirectory testrunner
+script:
+- xbuild /p:Configuration=TravisCI Azuria.sln
+- mono ./testrunner/NUnit.ConsoleRunner.3.4.1/tools/nunit3-console.exe ./Test/Azuria.Test/bin/Release/Azuria.Test.dll
+before_install:
+- echo $enc_secret | gpg --passphrase-fd 0 signing_key.snk.gpg
+env:
+  global:
+    secure: bxq7VrOOVsPpWySOrCdRZYXO+3SDC+YEpZwFntXc4ILP5dj7SFoWnbATetbvx2t//0VNgoQgXrhRMUYcvDSzh7QRz9UarPKXr2VFmu9+xJyWySo9mrxCG3rOnWiywyppCdNGPYfrMW8IgIiwZmFYDhvtRG0HHkKsGySZTOJXgt8hLKVo/sW7wa/C6aXRspdkX/wlYeBqqAz0njkpML6wXeydgfkZuqL5LRVh0lvrAscxN3KY93cuj+VXnmVFgJpwBzxzodiLJmAiaNRjFFXNo7PUGVs4d0nWAH7sTaj5jz6kMvZ8LAwr8O/moZPqEqxl1DJOf/I16VStazkmfPxqEViTuHzsmk/8oI+0fwI69cI+3BhjiJlwAKsKHYqzKc2x73+wT+yqtnbvR1b4gdwGy7h27Se4NaGt6YhVnBeUzhzSVsRM0xMPdbotWTiJXyByY/TbQxYCqfBclE4VOcgNDlsVnX2NFFZURmPW12CDO+QsLYjV2UYEN/ViEs9TBsS1BsXhQyf0I5ZyGfc1crGLw/2kHXk2hbUFoVju8xU3UNno8KdMPk7qNJmtTFaYACM2oQDsUO6SNmJrNRhomIzHrVd5yOJOWEvkzarqof/nXeCjcr0feywYLvLD5wlHV46v5B/5kFUp4EWDJ+0lgHkj9q6/m0R31pstyJ3b6HLPRBQ=

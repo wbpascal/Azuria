@@ -8,7 +8,7 @@
 
         /// <summary>
         /// </summary>
-        public AnimeMangaMedium Medium { get; set; } = AnimeMangaMedium.None;
+        public MediaMedium Medium { get; set; } = MediaMedium.None;
 
         /// <summary>
         /// </summary>
@@ -16,11 +16,11 @@
 
         /// <summary>
         /// </summary>
-        public bool ShowOnlyNonAlphabeticalBeginnings { get; set; }
+        public string StartWith { get; set; }
 
         /// <summary>
         /// </summary>
-        public string StartWith { get; set; }
+        public bool StartWithNonAlphabeticalChar { get; set; }
 
         #endregion
     }

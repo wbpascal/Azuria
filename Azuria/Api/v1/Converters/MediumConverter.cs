@@ -10,7 +10,7 @@ namespace Azuria.Api.v1.Converters
 
         public override bool CanConvert(Type objectType)
         {
-            return objectType == typeof(string);
+            return objectType == typeof(MediaMedium);
         }
 
         public override object ReadJson(JsonReader reader, Type objectType, object existingValue,
@@ -19,23 +19,23 @@ namespace Azuria.Api.v1.Converters
             switch (reader.Value.ToString())
             {
                 case "animeseries":
-                    return AnimeMangaMedium.Animeseries;
+                    return MediaMedium.Animeseries;
                 case "movie":
-                    return AnimeMangaMedium.Movie;
+                    return MediaMedium.Movie;
                 case "ova":
-                    return AnimeMangaMedium.Ova;
+                    return MediaMedium.Ova;
                 case "hentai":
-                    return AnimeMangaMedium.Hentai;
+                    return MediaMedium.Hentai;
                 case "mangaseries":
-                    return AnimeMangaMedium.Mangaseries;
+                    return MediaMedium.Mangaseries;
                 case "oneshot":
-                    return AnimeMangaMedium.OneShot;
+                    return MediaMedium.OneShot;
                 case "doujin":
-                    return AnimeMangaMedium.Doujin;
+                    return MediaMedium.Doujin;
                 case "hmanga":
-                    return AnimeMangaMedium.HManga;
+                    return MediaMedium.HManga;
             }
-            return AnimeMangaMedium.None;
+            return MediaMedium.None;
         }
 
         public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)

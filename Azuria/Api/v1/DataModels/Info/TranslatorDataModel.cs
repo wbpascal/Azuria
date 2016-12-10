@@ -4,19 +4,27 @@ using Newtonsoft.Json;
 
 namespace Azuria.Api.v1.DataModels.Info
 {
-    internal class TranslatorDataModel : IDataModel
+    /// <summary>
+    /// </summary>
+    public class TranslatorDataModel : IDataModel
     {
         #region Properties
 
+        /// <summary>
+        /// </summary>
         [JsonProperty("id")]
-        internal int Id { get; set; }
+        public int Id { get; set; }
 
+        /// <summary>
+        /// </summary>
         [JsonProperty("country")]
         [JsonConverter(typeof(GroupLanguageConverter))]
-        internal Language Language { get; set; }
+        public Language Language { get; set; }
 
+        /// <summary>
+        /// </summary>
         [JsonProperty("name")]
-        internal string Name { get; set; }
+        public string Name { get; set; }
 
         #endregion
     }

@@ -3,20 +3,30 @@ using Newtonsoft.Json;
 
 namespace Azuria.Api.v1.DataModels.Media
 {
-    internal class HeaderDataModel
+    /// <summary>
+    /// </summary>
+    public class HeaderDataModel
     {
         #region Properties
 
+        /// <summary>
+        /// </summary>
         [JsonProperty("imgfilename")]
-        internal string HeaderFileName { get; set; }
+        public string HeaderFileName { get; set; }
 
+        /// <summary>
+        /// </summary>
         [JsonProperty("gid")]
-        internal int HeaderId { get; set; }
+        public int HeaderId { get; set; }
 
+        /// <summary>
+        /// </summary>
         [JsonProperty("catpath")]
-        internal string HeaderPath { get; set; }
+        public string HeaderPath { get; set; }
 
-        internal Uri HeaderUrl => new Uri($"{ApiConstants.ProxerHeaderCdnUrl}/{this.HeaderPath}/{this.HeaderFileName}");
+        /// <summary>
+        /// </summary>
+        public Uri HeaderUrl => new Uri($"{ApiConstants.ProxerHeaderCdnUrl}/{this.HeaderPath}/{this.HeaderFileName}");
 
         #endregion
     }

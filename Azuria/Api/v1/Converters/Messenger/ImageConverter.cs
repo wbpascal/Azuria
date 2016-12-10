@@ -16,7 +16,7 @@ namespace Azuria.Api.v1.Converters.Messenger
         /// </returns>
         public override bool CanConvert(Type objectType)
         {
-            return objectType == typeof(string);
+            return objectType == typeof(Uri);
         }
 
         /// <summary>Reads the JSON representation of the object.</summary>

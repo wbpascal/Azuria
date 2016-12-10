@@ -4,16 +4,12 @@ using Newtonsoft.Json;
 
 namespace Azuria.Api.v1.Converters.Notifications
 {
-    internal class NotificationCountConverter : JsonConverter
+    internal class NotificationCountConverter : DataConverter<NotificationCountDataModel>
     {
-        #region Overrides of JsonConverter
+        #region Methods
 
-        public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
-        {
-            throw new NotImplementedException();
-        }
-
-        public override object ReadJson(JsonReader reader, Type objectType, object existingValue,
+        /// <inheritdoc />
+        public override NotificationCountDataModel ConvertJson(JsonReader reader, Type objectType, object existingValue,
             JsonSerializer serializer)
         {
             NotificationCountDataModel lDataModel = new NotificationCountDataModel();
@@ -33,16 +29,11 @@ namespace Azuria.Api.v1.Converters.Notifications
                         lDataModel.News = lValue.Value;
                         break;
                     case 5:
-                        lDataModel.OtherAnimeManga = lValue.Value;
+                        lDataModel.OtherMedia = lValue.Value;
                         break;
                 }
             }
             return lDataModel;
-        }
-
-        public override bool CanConvert(Type objectType)
-        {
-            return true;
         }
 
         #endregion

@@ -11,6 +11,7 @@ using Azuria.Api.v1.DataModels.Info;
 using Azuria.Api.v1.DataModels.Search;
 using Azuria.Api.v1.DataModels.Ucp;
 using Azuria.Api.v1.Enums;
+using Azuria.Api.v1.RequestBuilder;
 using Azuria.ErrorHandling;
 using Azuria.Exceptions;
 using Azuria.Media.Properties;
@@ -27,7 +28,7 @@ namespace Azuria.Media
     /// Represents an anime.
     /// </summary>
     [DebuggerDisplay("Anime: {Name} [{Id}]")]
-    public class Anime : AnimeMangaObject
+    public class Anime : MediaObject
     {
         private readonly InitialisableProperty<AnimeMedium> _animeMedium;
 
@@ -44,46 +45,56 @@ namespace Azuria.Media
 
         internal Anime(string name, int id) : this(id)
         {
-            this._name.SetInitialisedObject(name);
+            this._name.Set(name);
         }
 
         internal Anime(IEntryInfoDataModel dataModel) : this(dataModel.EntryName, dataModel.EntryId)
         {
-            if (dataModel.EntryType != AnimeMangaEntryType.Anime)
+            if (dataModel.EntryType != MediaEntryType.Anime)
                 throw new ArgumentException(nameof(dataModel.EntryType));
-            this._animeMedium.SetInitialisedObject((AnimeMedium) dataModel.EntryMedium);
+            this._animeMedium.Set((AnimeMedium) dataModel.EntryMedium);
         }
 
         private Anime(BookmarkDataModel dataModel) : this((IEntryInfoDataModel) dataModel)
         {
-            this._animeMedium.SetInitialisedObject((AnimeMedium) dataModel.EntryMedium);
-            this._status.SetInitialisedObject(dataModel.Status);
+            this._animeMedium.Set((AnimeMedium) dataModel.EntryMedium);
+            this._status.Set(dataModel.Status);
         }
 
         internal Anime(EntryDataModel dataModel) : this((IEntryInfoDataModel) dataModel)
         {
-            this._clicks.SetInitialisedObject(dataModel.Clicks);
-            this._contentCount.SetInitialisedObject(dataModel.ContentCount);
-            this._description.SetInitialisedObject(dataModel.Description);
-            this._fsk.SetInitialisedObject(dataModel.Fsk);
-            this._genre.SetInitialisedObject(dataModel.Genre);
-            this._isLicensed.SetInitialisedObject(dataModel.IsLicensed);
-            this._rating.SetInitialisedObject(dataModel.Rating);
-            this._status.SetInitialisedObject(dataModel.Status);
+            this._clicks.Set(dataModel.Clicks);
+            this._contentCount.Set(dataModel.ContentCount);
+            this._description.Set(dataModel.Description);
+            this._fsk.Set(dataModel.Fsk);
+            this._genre.Set(dataModel.Genre);
+            this._isLicensed.Set(dataModel.IsLicensed);
+            this._rating.Set(dataModel.Rating);
+            this._status.Set(dataModel.Status);
+        }
+
+        internal Anime(FullEntryDataModel dataModel) : this((EntryDataModel) dataModel)
+        {
+            this.InitGroups(dataModel.Translator);
+            this.InitIndustry(dataModel.Publisher);
+            this.InitNames(dataModel.Names);
+            this.InitSeasons(dataModel.Seasons);
+            this.InitTags(dataModel.Tags);
+            this._availableLanguages.Set(dataModel.AvailableLanguages.Cast<AnimeLanguage>());
         }
 
         internal Anime(RelationDataModel dataModel) : this((EntryDataModel) dataModel)
         {
-            this._availableLanguages.SetInitialisedObject(dataModel.AvailableLanguages.Cast<AnimeLanguage>());
+            this._availableLanguages.Set(dataModel.AvailableLanguages.Cast<AnimeLanguage>());
         }
 
         internal Anime(SearchDataModel dataModel) : this((IEntryInfoDataModel) dataModel)
         {
-            this._availableLanguages.SetInitialisedObject(dataModel.AvailableLanguages.Cast<AnimeLanguage>());
-            this._contentCount.SetInitialisedObject(dataModel.ContentCount);
-            this._genre.SetInitialisedObject(dataModel.Genre);
-            this._rating.SetInitialisedObject(dataModel.Rating);
-            this._status.SetInitialisedObject(dataModel.Status);
+            this._availableLanguages.Set(dataModel.AvailableLanguages.Cast<AnimeLanguage>());
+            this._contentCount.Set(dataModel.ContentCount);
+            this._genre.Set(dataModel.Genre);
+            this._rating.Set(dataModel.Rating);
+            this._status.Set(dataModel.Status);
         }
 
         #region Properties
@@ -101,12 +112,12 @@ namespace Azuria.Media
         /// <summary>
         /// Gets the comments of the anime in a chronological order.
         /// </summary>
-        public IEnumerable<Comment<Anime>> CommentsLatest { get; }
+        public new CommentEnumerable<Anime> CommentsLatest { get; }
 
         /// <summary>
         /// Gets the comments of the anime ordered by rating.
         /// </summary>
-        public IEnumerable<Comment<Anime>> CommentsRating { get; }
+        public new CommentEnumerable<Anime> CommentsRating { get; }
 
         #endregion
 
@@ -118,15 +129,15 @@ namespace Azuria.Media
         /// <param name="language">The language of the episodes.</param>
         /// <returns>
         /// An enumeration of all available episodes in the specified
-        /// <paramref name="language">language</paramref> with a max count of <see cref="AnimeMangaObject.ContentCount" />.
+        /// <paramref name="language">language</paramref> with a max count of <see cref="MediaObject.ContentCount" />.
         /// </returns>
-        public async Task<ProxerResult<IEnumerable<Episode>>> GetEpisodes(AnimeLanguage language)
+        public async Task<IProxerResult<IEnumerable<Episode>>> GetEpisodes(AnimeLanguage language)
         {
-            if (!(await this.AvailableLanguages.GetObject(new AnimeLanguage[0])).Contains(language))
-                return new ProxerResult<IEnumerable<Episode>>(new Exception[] {new LanguageNotAvailableException()});
+            if (!(await this.AvailableLanguages.Get(new AnimeLanguage[0]).ConfigureAwait(false)).Contains(language))
+                return new ProxerResult<IEnumerable<Episode>>(new LanguageNotAvailableException());
 
-            ProxerResult<AnimeMangaContentDataModel[]> lContentObjectsResult =
-                await this.GetContentObjects();
+            IProxerResult<MediaContentDataModel[]> lContentObjectsResult =
+                await this.GetContentObjects().ConfigureAwait(false);
             if (!lContentObjectsResult.Success || (lContentObjectsResult.Result == null))
                 return new ProxerResult<IEnumerable<Episode>>(lContentObjectsResult.Exceptions);
 
@@ -135,20 +146,18 @@ namespace Azuria.Media
                 select new Episode(this, contentDataModel));
         }
 
-        private async Task<ProxerResult> InitAvailableLanguages()
+        private async Task<IProxerResult> InitAvailableLanguages()
         {
-            ProxerResult<ProxerInfoLanguageResponse> lResult =
-                await
-                    RequestHandler.ApiCustomRequest<ProxerInfoLanguageResponse>(
-                        ApiRequestBuilder.InfoGetLanguage(this.Id));
-            if (!lResult.Success || (lResult.Result == null)) return new ProxerResult(lResult.Exceptions);
-            this._availableLanguages.SetInitialisedObject(lResult.Result.Data.Cast<AnimeLanguage>());
+            ProxerApiResponse<MediaLanguage[]> lResult = await RequestHandler.ApiRequest(
+                InfoRequestBuilder.GetLanguage(this.Id)).ConfigureAwait(false);
+            if (!lResult.Success) return new ProxerResult(lResult.Exceptions);
+            this._availableLanguages.Set(lResult.Result.Cast<AnimeLanguage>());
             return new ProxerResult();
         }
 
         internal void InitMainInfoAnime(EntryDataModel dataModel)
         {
-            this._animeMedium.SetInitialisedObject((AnimeMedium) dataModel.EntryMedium);
+            this._animeMedium.Set((AnimeMedium) dataModel.EntryMedium);
         }
 
         #endregion
@@ -156,7 +165,7 @@ namespace Azuria.Media
         /// <summary>
         /// Represents an episode of an anime.
         /// </summary>
-        public class Episode : IAnimeMangaContent<Anime>, IAnimeMangaContent<IAnimeMangaObject>
+        public class Episode : IMediaContent<Anime>, IMediaContent<IMediaObject>
         {
             private readonly InitialisableProperty<IEnumerable<Stream>> _streams;
 
@@ -165,7 +174,7 @@ namespace Azuria.Media
                 this._streams = new InitialisableProperty<IEnumerable<Stream>>(this.InitStreams);
             }
 
-            internal Episode(Anime anime, AnimeMangaContentDataModel dataModel) : this()
+            internal Episode(Anime anime, MediaContentDataModel dataModel) : this()
             {
                 this.ContentIndex = dataModel.ContentIndex;
                 this.Language = (AnimeLanguage) dataModel.Language;
@@ -209,10 +218,11 @@ namespace Azuria.Media
             /// </summary>
             public AnimeLanguage Language { get; }
 
-            /// <summary>
-            /// Gets the anime or manga this object belongs to.
-            /// </summary>
-            IAnimeMangaObject IAnimeMangaContent<IAnimeMangaObject>.ParentObject => this.ParentObject;
+            /// <inheritdoc />
+            IMediaObject IMediaContent<IMediaObject>.ParentObject => this.ParentObject;
+
+            /// <inheritdoc />
+            IMediaObject IMediaContent.ParentObject => this.ParentObject;
 
             /// <summary>
             /// Gets the anime this episode> belongs to.
@@ -237,34 +247,23 @@ namespace Azuria.Media
             /// </summary>
             /// <param name="senpai"></param>
             /// <returns>If the action was successful.</returns>
-            public Task<ProxerResult> AddToBookmarks(Senpai senpai)
+            public Task<IProxerResult> AddToBookmarks(Senpai senpai)
             {
-                return new UserControlPanel(senpai).AddToBookmarks((IAnimeMangaContent<Anime>) this);
+                return new UserControlPanel(senpai).AddToBookmarks(this);
             }
 
-            private async Task<ProxerResult> InitStreams()
+            private async Task<IProxerResult> InitStreams()
             {
-                ProxerResult<ProxerApiResponse<StreamDataModel[]>> lResult =
-                    await
-                        RequestHandler.ApiRequest(ApiRequestBuilder.AnimeGetStreams(this.ParentObject.Id,
-                            this.ContentIndex, this.Language.ToString().ToLowerInvariant(), this.Senpai));
+                ProxerApiResponse<StreamDataModel[]> lResult = await RequestHandler.ApiRequest(
+                        AnimeRequestBuilder.GetStreams(this.ParentObject.Id, this.ContentIndex,
+                            this.Language.ToString().ToLowerInvariant(), this.Senpai))
+                    .ConfigureAwait(false);
                 if (!lResult.Success || (lResult.Result == null)) return new ProxerResult(lResult.Exceptions);
 
-                this._streams.SetInitialisedObject(from streamDataModel in lResult.Result.Data
+                this._streams.Set(from streamDataModel in lResult.Result
                     select new Stream(streamDataModel, this));
 
                 return new ProxerResult();
-            }
-
-            /// <summary>
-            /// Returns a string that represents the current object.
-            /// </summary>
-            /// <returns>
-            /// A string that represents the current object.
-            /// </returns>
-            public override string ToString()
-            {
-                return "Episode " + this.ContentIndex;
             }
 
             #endregion
@@ -315,7 +314,7 @@ namespace Azuria.Media
 
                 /// <summary>
                 /// </summary>
-                public StreamHostingType HostingType { get; }
+                public string HostingType { get; }
 
                 /// <summary>
                 /// </summary>
@@ -342,14 +341,14 @@ namespace Azuria.Media
 
                 #region Methods
 
-                private async Task<ProxerResult> InitStreamLink()
+                private async Task<IProxerResult> InitStreamLink()
                 {
-                    ProxerResult<ProxerApiResponse<string>> lResult =
-                        await RequestHandler.ApiRequest(ApiRequestBuilder.AnimeGetLink(this.Id));
+                    ProxerApiResponse<string> lResult = await RequestHandler.ApiRequest(
+                        AnimeRequestBuilder.GetLink(this.Id)).ConfigureAwait(false);
                     if (!lResult.Success || (lResult.Result == null)) return new ProxerResult(lResult.Exceptions);
-                    string lData = lResult.Result.Data;
+                    string lData = lResult.Result;
 
-                    this._link.SetInitialisedObject(new Uri(lData.StartsWith("//") ? $"https:{lData}" : lData));
+                    this._link.Set(new Uri(lData.StartsWith("//") ? $"https:{lData}" : lData));
 
                     return new ProxerResult();
                 }

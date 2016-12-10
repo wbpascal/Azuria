@@ -3,14 +3,15 @@ using System.Linq;
 using System.Threading.Tasks;
 using Azuria.Api.v1;
 using Azuria.Api.v1.DataModels.Notifications;
+using Azuria.Api.v1.RequestBuilder;
+using Azuria.Enumerable;
 using Azuria.ErrorHandling;
-using Azuria.Utilities;
 
 namespace Azuria.Notifications.News
 {
     /// <summary>
     /// </summary>
-    public sealed class NewsNotificationEnumerator : PageEnumerator<NewsNotification>
+    internal sealed class NewsNotificationEnumerator : PagedEnumerator<NewsNotification>
     {
         private readonly int _newsPerPage;
         private readonly Senpai _senpai;
@@ -23,17 +24,16 @@ namespace Azuria.Notifications.News
 
         #region Methods
 
-        internal override async Task<ProxerResult<IEnumerable<NewsNotification>>> GetNextPage(int nextPage)
+        internal override async Task<IProxerResult<IEnumerable<NewsNotification>>> GetNextPage(int nextPage)
         {
-            ProxerResult<ProxerApiResponse<NewsNotificationDataModel[]>> lResult =
-                await
-                    RequestHandler.ApiRequest(ApiRequestBuilder.NotificationGetNews(nextPage, this._newsPerPage,
-                        this._senpai));
+            ProxerApiResponse<NewsNotificationDataModel[]> lResult = await RequestHandler.ApiRequest(
+                    NotificationsRequestBuilder.GetNews(nextPage, this._newsPerPage, this._senpai))
+                .ConfigureAwait(false);
             if (!lResult.Success || (lResult.Result == null))
                 return new ProxerResult<IEnumerable<NewsNotification>>(lResult.Exceptions);
 
             return
-                new ProxerResult<IEnumerable<NewsNotification>>(from newsNotificationDataModel in lResult.Result.Data
+                new ProxerResult<IEnumerable<NewsNotification>>(from newsNotificationDataModel in lResult.Result
                     select new NewsNotification(newsNotificationDataModel, this._senpai));
         }
 

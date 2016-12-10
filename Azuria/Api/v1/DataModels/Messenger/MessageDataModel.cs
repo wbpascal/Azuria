@@ -6,35 +6,53 @@ using Newtonsoft.Json;
 
 namespace Azuria.Api.v1.DataModels.Messenger
 {
-    internal class MessageDataModel : IDataModel
+    /// <summary>
+    /// </summary>
+    public class MessageDataModel : IDataModel
     {
         #region Properties
 
+        /// <summary>
+        /// </summary>
         [JsonProperty("conference_id")]
-        internal int ConferenceId { get; set; }
+        public int ConferenceId { get; set; }
 
+        /// <summary>
+        /// </summary>
         [JsonProperty("action")]
         [JsonConverter(typeof(MessageActionConverter))]
-        internal MessageAction MessageAction { get; set; }
+        public MessageAction MessageAction { get; set; }
 
+        /// <summary>
+        /// </summary>
         [JsonProperty("message")]
-        internal string MessageContent { get; set; }
+        public string MessageContent { get; set; }
 
+        /// <summary>
+        /// </summary>
         [JsonProperty("message_id")]
-        internal int MessageId { get; set; }
+        public int MessageId { get; set; }
 
+        /// <summary>
+        /// </summary>
         [JsonProperty("timestamp")]
         [JsonConverter(typeof(UnixToDateTimeConverter))]
-        internal DateTime MessageTimeStamp { get; set; }
+        public DateTime MessageTimeStamp { get; set; }
 
+        /// <summary>
+        /// </summary>
         [JsonProperty("device")]
-        internal string SenderDevice { get; set; }
+        public string SenderDevice { get; set; }
 
+        /// <summary>
+        /// </summary>
         [JsonProperty("user_id")]
-        internal int SenderUserId { get; set; }
+        public int SenderUserId { get; set; }
 
+        /// <summary>
+        /// </summary>
         [JsonProperty("username")]
-        internal string SenderUsername { get; set; }
+        public string SenderUsername { get; set; }
 
         #endregion
     }

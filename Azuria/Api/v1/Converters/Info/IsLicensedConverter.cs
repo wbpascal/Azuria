@@ -16,7 +16,7 @@ namespace Azuria.Api.v1.Converters.Info
         /// </returns>
         public override bool CanConvert(Type objectType)
         {
-            return objectType == typeof(int);
+            return objectType == typeof(bool);
         }
 
         /// <summary>Reads the JSON representation of the object.</summary>
@@ -28,7 +28,15 @@ namespace Azuria.Api.v1.Converters.Info
         public override object ReadJson(JsonReader reader, Type objectType, object existingValue,
             JsonSerializer serializer)
         {
-            return Convert.ToInt32(reader.Value) == 2;
+            switch (Convert.ToInt32(reader.Value))
+            {
+                case 1:
+                    return false;
+                case 2:
+                    return true;
+                default:
+                    return null;
+            }
         }
 
         /// <summary>Writes the JSON representation of the object.</summary>

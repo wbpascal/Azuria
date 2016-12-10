@@ -4,26 +4,38 @@ using Newtonsoft.Json;
 
 namespace Azuria.Api.v1.DataModels.Messenger
 {
-    internal class ConferenceInfoMainDataModel : IDataModel
+    /// <summary>
+    /// </summary>
+    public class ConferenceInfoMainDataModel : IDataModel
     {
         #region Properties
 
+        /// <summary>
+        /// </summary>
         [JsonProperty("timestamp_start")]
         [JsonConverter(typeof(UnixToDateTimeConverter))]
-        internal DateTime FirstMessageTimeStamp { get; set; }
+        public DateTime FirstMessageTimeStamp { get; set; }
 
+        /// <summary>
+        /// </summary>
         [JsonProperty("timestamp_end")]
         [JsonConverter(typeof(UnixToDateTimeConverter))]
-        internal DateTime LastMessageTimeStamp { get; set; }
+        public DateTime LastMessageTimeStamp { get; set; }
 
+        /// <summary>
+        /// </summary>
         [JsonProperty("leader")]
-        internal int LeaderUserId { get; set; }
+        public int LeaderUserId { get; set; }
 
+        /// <summary>
+        /// </summary>
         [JsonProperty("topic")]
-        internal string Title { get; set; }
+        public string Title { get; set; }
 
+        /// <summary>
+        /// </summary>
         [JsonProperty("count")]
-        internal int UserCount { get; set; }
+        public int UserCount { get; set; }
 
         #endregion
     }

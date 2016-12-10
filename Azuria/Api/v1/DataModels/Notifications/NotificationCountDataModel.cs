@@ -1,15 +1,26 @@
 ﻿namespace Azuria.Api.v1.DataModels.Notifications
 {
-    internal class NotificationCountDataModel : IDataModel
+    /// <summary>
+    /// </summary>
+    public class NotificationCountDataModel : IDataModel
     {
         #region Properties
 
-        internal int FriendRequests { get; set; }
+        /// <summary>
+        /// </summary>
+        public int FriendRequests { get; set; }
 
-        internal int News { get; set; }
+        /// <summary>
+        /// </summary>
+        public int News { get; set; }
 
-        internal int OtherAnimeManga { get; set; }
-        internal int PrivateMessages { get; set; }
+        /// <summary>
+        /// </summary>
+        public int OtherMedia { get; set; }
+
+        /// <summary>
+        /// </summary>
+        public int PrivateMessages { get; set; }
 
         #endregion
     }

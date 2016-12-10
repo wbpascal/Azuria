@@ -13,7 +13,7 @@ using System.Resources;
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("InfiniteSoul")]
-[assembly: AssemblyCopyright("Copyright InfiniteSoul ©  2016")]
+[assembly: AssemblyCopyright("Copyright © InfiniteSoul 2016")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 [assembly: NeutralResourcesLanguage("en")]

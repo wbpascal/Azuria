@@ -1,8 +1,9 @@
 ﻿using System;
-using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using Azuria.ErrorHandling;
+using Azuria.Exceptions;
+using Azuria.Utilities.Extensions;
 
 namespace Azuria.Utilities.Properties
 {
@@ -12,121 +13,124 @@ namespace Azuria.Utilities.Properties
     /// <typeparam name="T">The type of the property.</typeparam>
     public class InitialisableProperty<T> : IInitialisableProperty<T>
     {
-        private readonly Func<Task<ProxerResult>> _initMethod;
-        private T _initialisedObject;
-
         /// <summary>
         /// </summary>
         /// <param name="initMethod"></param>
-        public InitialisableProperty(Func<Task<ProxerResult>> initMethod)
+        public InitialisableProperty(Func<Task<IProxerResult>> initMethod)
         {
-            this._initMethod = initMethod;
-            this.IsInitialisedOnce = false;
+            this.InitMethod = initMethod;
+            this.IsInitialised = false;
         }
 
         /// <summary>
         /// </summary>
         /// <param name="initMethod"></param>
         /// <param name="initialisationResult"></param>
-        public InitialisableProperty(Func<Task<ProxerResult>> initMethod, T initialisationResult)
+        public InitialisableProperty(Func<Task<IProxerResult>> initMethod, T initialisationResult)
         {
-            this._initMethod = initMethod;
-            this._initialisedObject = initialisationResult;
-            this.IsInitialisedOnce = true;
+            this.InitMethod = initMethod;
+            this.InitialisedObject = initialisationResult;
+            this.IsInitialised = true;
         }
 
         #region Properties
 
+        /// <summary>
+        /// </summary>
+        protected T InitialisedObject { get; set; }
+
+        /// <summary>
+        /// </summary>
+        protected Func<Task<IProxerResult>> InitMethod { get; }
+
         /// <inheritdoc />
-        public bool IsInitialisedOnce { get; internal set; }
+        public bool IsInitialised { get; set; }
 
         #endregion
 
         #region Methods
 
         /// <inheritdoc />
-        public async Task<ProxerResult> FetchObject()
+        public async Task<IProxerResult> FetchObject()
         {
-            return await this.GetObject();
+            return await this.Get().ConfigureAwait(false);
         }
 
         /// <inheritdoc />
-        public TaskAwaiter<ProxerResult<T>> GetAwaiter()
+        public async Task<IProxerResult<T>> Get()
         {
-            return this.GetObject().GetAwaiter();
+            return this.IsInitialised
+                ? new ProxerResult<T>(this.InitialisedObject)
+                : await this.GetNew().ConfigureAwait(false);
         }
 
         /// <inheritdoc />
-        public async Task<ProxerResult<T>> GetNewObject()
+        public Task<T> Get(T onError)
         {
-            ProxerResult lInitialiseResult = await this._initMethod.Invoke();
-            if (!lInitialiseResult.Success || (this._initialisedObject == null))
-                return new ProxerResult<T>(lInitialiseResult.Exceptions);
-
-            return new ProxerResult<T>(this._initialisedObject);
+            return this.Get().OnError(onError);
         }
 
         /// <inheritdoc />
-        public async Task<T> GetNewObject(T onError)
+        public TaskAwaiter<IProxerResult<T>> GetAwaiter()
         {
-            return (await this.GetNewObject()).OnError(onError);
+            return this.Get().GetAwaiter();
         }
 
         /// <inheritdoc />
-        public async Task<ProxerResult<T>> GetObject()
+        public T GetIfInitialised()
         {
-            if (this.IsInitialisedOnce && (this._initialisedObject != null))
-                return new ProxerResult<T>(this._initialisedObject);
-
-            return await this.GetNewObject();
+            if (!this.IsInitialised) throw new NotInitialisedException();
+            return this.InitialisedObject;
         }
 
         /// <inheritdoc />
-        public async Task<T> GetObject(T onError)
+        public T GetIfInitialised(T ifNot)
         {
-            return (await this.GetObject()).OnError(onError);
+            return this.IsInitialised ? this.InitialisedObject : ifNot;
         }
 
         /// <inheritdoc />
-        public T GetObjectIfInitialised(T ifNot)
+        public async Task<IProxerResult<T>> GetNew()
         {
-            return this.IsInitialisedOnce && (this._initialisedObject != null) ? this._initialisedObject : ifNot;
+            IProxerResult lInitialiseResult = await this.InitMethod.Invoke().ConfigureAwait(false);
+            return !lInitialiseResult.Success
+                ? new ProxerResult<T>(lInitialiseResult.Exceptions)
+                : new ProxerResult<T>(this.InitialisedObject);
+        }
+
+        /// <inheritdoc />
+        public Task<T> GetNew(T onError)
+        {
+            return this.GetNew().OnError(onError);
         }
 
         /// <summary>
         /// </summary>
         /// <param name="initialisedObject"></param>
-        public void SetInitialisedObject(T initialisedObject)
+        public void Set(T initialisedObject)
         {
-            this._initialisedObject = initialisedObject;
-            this.IsInitialisedOnce = true;
+            this.InitialisedObject = initialisedObject;
+            this.IsInitialised = true;
         }
 
         /// <summary>
         /// </summary>
         /// <param name="initialisedObject"></param>
-        /// <returns></returns>
-        public T SetInitialisedObjectAndReturn(T initialisedObject)
+        public void SetIfNotInitialised(T initialisedObject)
         {
-            this._initialisedObject = initialisedObject;
-            this.IsInitialisedOnce = true;
-            return initialisedObject;
+            if (!this.IsInitialised) this.Set(initialisedObject);
         }
 
         /// <inheritdoc />
-        public async Task<T> ThrowFirstOnNonSuccess()
+        public Task<T> ThrowFirstOnNonSuccess()
         {
-            ProxerResult<T> lResult = await this.GetObject();
-            if (!lResult.Success || (lResult.Result == null))
-                throw lResult.Exceptions.FirstOrDefault() ?? new Exception();
-
-            return lResult.Result;
+            return this.Get().ThrowFirstForNonSuccess();
         }
 
         /// <inheritdoc />
         public override string ToString()
         {
-            return this.GetObjectIfInitialised(default(T)).ToString();
+            return this.GetIfInitialised().ToString();
         }
 
         #endregion

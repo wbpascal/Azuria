@@ -5,50 +5,77 @@ using Newtonsoft.Json;
 
 namespace Azuria.Api.v1.DataModels.User
 {
-    internal class UserInfoDataModel : IDataModel
+    /// <summary>
+    /// </summary>
+    public class UserInfoDataModel : IDataModel
     {
         #region Properties
 
+        /// <summary>
+        /// </summary>
         [JsonProperty("avatar")]
-        internal string AvatarId { get; set; }
+        public string AvatarId { get; set; }
 
-        internal UserPoints Points
-            =>
+        /// <summary>
+        /// </summary>
+        public UserPoints Points =>
             new UserPoints(this.PointsAnime, this.PointsManga, this.PointsInfo, this.PointsUploads, this.PointsForum,
                 this.PointsMisc);
 
+        /// <summary>
+        /// </summary>
         [JsonProperty("points_anime")]
-        internal int PointsAnime { get; set; }
+        public int PointsAnime { get; set; }
 
+        /// <summary>
+        /// </summary>
         [JsonProperty("points_forum")]
-        internal int PointsForum { get; set; }
+        public int PointsForum { get; set; }
 
+        /// <summary>
+        /// </summary>
         [JsonProperty("points_info")]
-        internal int PointsInfo { get; set; }
+        public int PointsInfo { get; set; }
 
+        /// <summary>
+        /// </summary>
         [JsonProperty("points_manga")]
-        internal int PointsManga { get; set; }
+        public int PointsManga { get; set; }
 
+        /// <summary>
+        /// </summary>
         [JsonProperty("points_misc")]
-        internal int PointsMisc { get; set; }
+        public int PointsMisc { get; set; }
 
+        /// <summary>
+        /// </summary>
         [JsonProperty("points_uploads")]
-        internal int PointsUploads { get; set; }
+        public int PointsUploads { get; set; }
 
-        internal UserStatus Status => new UserStatus(this.StatusText, this.StatusLastChanged);
+        /// <summary>
+        /// </summary>
+        public UserStatus Status => new UserStatus(this.StatusText, this.StatusLastChanged);
 
+        /// <summary>
+        /// </summary>
         [JsonProperty("status_time")]
         [JsonConverter(typeof(UnixToDateTimeConverter))]
-        internal DateTime StatusLastChanged { get; set; }
+        public DateTime StatusLastChanged { get; set; }
 
-        [JsonProperty("state")]
-        internal string StatusText { get; set; }
+        /// <summary>
+        /// </summary>
+        [JsonProperty("status")]
+        public string StatusText { get; set; }
 
+        /// <summary>
+        /// </summary>
         [JsonProperty("uid")]
-        internal int UserId { get; set; }
+        public int UserId { get; set; }
 
+        /// <summary>
+        /// </summary>
         [JsonProperty("username")]
-        internal string Username { get; set; }
+        public string Username { get; set; }
 
         #endregion
     }

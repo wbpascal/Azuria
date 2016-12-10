@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using Azuria.Media;
 using Azuria.Search.Input;
 
@@ -16,11 +15,10 @@ namespace Azuria.Search
         /// <param name="input"></param>
         /// <typeparam name="T"></typeparam>
         /// <returns></returns>
-        public static IEnumerable<T> EntryList<T>(EntryListInput input) where T : class, IAnimeMangaObject
+        public static EntryListEnumerable<T> EntryList<T>(EntryListInput input) where T : class, IMediaObject
         {
             if (input == null) throw new ArgumentException(nameof(input));
-            if ((typeof(T) != typeof(Anime)) && (typeof(T) != typeof(Manga))) throw new ArgumentException(nameof(T));
-            return new EntryListCollection<T>(input);
+            return new EntryListEnumerable<T>(input);
         }
 
         /// <summary>
@@ -28,13 +26,12 @@ namespace Azuria.Search
         /// <param name="inputFactory"></param>
         /// <typeparam name="T"></typeparam>
         /// <returns></returns>
-        public static IEnumerable<T> EntryList<T>(Action<EntryListInput> inputFactory)
-            where T : class, IAnimeMangaObject
+        public static EntryListEnumerable<T> EntryList<T>(Action<EntryListInput> inputFactory)
+            where T : class, IMediaObject
         {
-            if ((typeof(T) != typeof(Anime)) && (typeof(T) != typeof(Manga))) throw new ArgumentException(nameof(T));
             EntryListInput lInput = new EntryListInput();
             inputFactory.Invoke(lInput);
-            return new EntryListCollection<T>(lInput);
+            return EntryList<T>(lInput);
         }
 
         /// <summary>
@@ -42,10 +39,10 @@ namespace Azuria.Search
         /// <param name="input"></param>
         /// <typeparam name="T"></typeparam>
         /// <returns></returns>
-        public static IEnumerable<T> Search<T>(SearchInput input) where T : IAnimeMangaObject
+        public static SearchResultEnumerable<T> Search<T>(SearchInput input) where T : IMediaObject
         {
             if (input == null) throw new ArgumentException(nameof(input));
-            return new SearchResultCollection<T>(input);
+            return new SearchResultEnumerable<T>(input);
         }
 
         /// <summary>
@@ -53,11 +50,11 @@ namespace Azuria.Search
         /// <param name="inputFactory"></param>
         /// <typeparam name="T"></typeparam>
         /// <returns></returns>
-        public static IEnumerable<T> Search<T>(Action<SearchInput> inputFactory) where T : IAnimeMangaObject
+        public static SearchResultEnumerable<T> Search<T>(Action<SearchInput> inputFactory) where T : IMediaObject
         {
             SearchInput lInput = new SearchInput();
             inputFactory.Invoke(lInput);
-            return new SearchResultCollection<T>(lInput);
+            return new SearchResultEnumerable<T>(lInput);
         }
 
         #endregion

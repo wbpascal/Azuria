@@ -1,9 +1,23 @@
+environment:
+  myget_key:
+    secure: /ZVEy+qqj8rmVkcPvuEuEsJCvEAG1chXaYhZCcLDEnhLIK+TkEIfGG/JDdMn7Qrf
+  enc_secret:
+    secure: RpJa3MpXjYvN8clOld28OQRmiEofer3+x74FzE/pGcw=
+
 install:
   - choco install gitversion.portable -pre -y
+  - nuget install secure-file -ExcludeVersion
+  - secure-file\tools\secure-file -decrypt signing_key.snk.enc -secret %enc_secret%
 
 before_build:
   - nuget restore
   - ps: gitversion /l console /output buildserver /updateAssemblyInfo
+
+after_build:
+  - appveyor_pack.bat
+
+on_success:
+  - appveyor_push.bat
 
 configuration: Release
 
@@ -11,4 +25,6 @@ build:
   project: Azuria.sln
   verbosity: minimal
 
-test: off
+artifacts:
+  - path: '*.nupkg'
+    name: Nuget Package

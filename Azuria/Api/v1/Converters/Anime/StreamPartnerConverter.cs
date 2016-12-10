@@ -11,7 +11,7 @@ namespace Azuria.Api.v1.Converters.Anime
         /// <inheritdoc />
         public override bool CanConvert(Type objectType)
         {
-            return objectType == typeof(string);
+            return objectType == typeof(StreamHoster);
         }
 
         /// <inheritdoc />

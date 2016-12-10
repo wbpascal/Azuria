@@ -4,13 +4,14 @@ using System.Threading.Tasks;
 using Azuria.Api.v1;
 using Azuria.Api.v1.DataModels.Ucp;
 using Azuria.Api.v1.Enums;
+using Azuria.Api.v1.RequestBuilder;
+using Azuria.Enumerable;
 using Azuria.ErrorHandling;
 using Azuria.Media;
-using Azuria.Utilities;
 
 namespace Azuria.UserInfo.ControlPanel
 {
-    internal class HistoryEnumerator<T> : PageEnumerator<HistoryObject<T>> where T : IAnimeMangaObject
+    internal class HistoryEnumerator<T> : PagedEnumerator<HistoryObject<T>> where T : IMediaObject
     {
         private const int ResultsPerPage = 50;
         private readonly UserControlPanel _controlPanel;
@@ -24,32 +25,30 @@ namespace Azuria.UserInfo.ControlPanel
 
         #region Methods
 
-        private static IAnimeMangaContent<T> GetAnimeMangaContent(HistoryDataModel dataModel)
+        private static IMediaContent GetMediaContent(HistoryDataModel dataModel)
         {
             if ((typeof(T) == typeof(Anime)) ||
-                ((typeof(T) == typeof(IAnimeMangaObject)) && (dataModel.EntryType == AnimeMangaEntryType.Anime)))
-                return (IAnimeMangaContent<T>) new Anime.Episode(dataModel);
+                ((typeof(T) == typeof(IMediaObject)) && (dataModel.EntryType == MediaEntryType.Anime)))
+                return new Anime.Episode(dataModel);
             if ((typeof(T) == typeof(Manga)) ||
-                ((typeof(T) == typeof(IAnimeMangaObject)) && (dataModel.EntryType == AnimeMangaEntryType.Manga)))
-                return (IAnimeMangaContent<T>) new Manga.Chapter(dataModel);
+                ((typeof(T) == typeof(IMediaObject)) && (dataModel.EntryType == MediaEntryType.Manga)))
+                return new Manga.Chapter(dataModel);
 
             return null;
         }
 
-        internal override async Task<ProxerResult<IEnumerable<HistoryObject<T>>>> GetNextPage(int nextPage)
+        internal override async Task<IProxerResult<IEnumerable<HistoryObject<T>>>> GetNextPage(int nextPage)
         {
-            ProxerResult<ProxerApiResponse<HistoryDataModel[]>> lResult =
-                await
-                    RequestHandler.ApiRequest(ApiRequestBuilder.UcpGetHistory(nextPage, ResultsPerPage,
-                        this._senpai));
+            ProxerApiResponse<HistoryDataModel[]> lResult = await RequestHandler.ApiRequest(
+                    UcpRequestBuilder.GetHistory(nextPage, ResultsPerPage, this._senpai))
+                .ConfigureAwait(false);
             if (!lResult.Success || (lResult.Result == null))
                 return new ProxerResult<IEnumerable<HistoryObject<T>>>(lResult.Exceptions);
-            HistoryDataModel[] lData = lResult.Result.Data;
+            HistoryDataModel[] lData = lResult.Result;
 
             return new ProxerResult<IEnumerable<HistoryObject<T>>>(from historyDataModel in lData
-                select
-                new HistoryObject<T>(GetAnimeMangaContent(historyDataModel), historyDataModel.TimeStamp,
-                    this._controlPanel));
+                select new HistoryObject<T>(GetMediaContent(historyDataModel) as IMediaContent<T>,
+                    historyDataModel.TimeStamp, this._controlPanel));
         }
 
         #endregion

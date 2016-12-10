@@ -4,13 +4,14 @@ using System.Reflection;
 using System.Threading.Tasks;
 using Azuria.Api.v1;
 using Azuria.Api.v1.DataModels.Ucp;
+using Azuria.Api.v1.RequestBuilder;
+using Azuria.Enumerable;
 using Azuria.ErrorHandling;
 using Azuria.Media;
-using Azuria.Utilities;
 
 namespace Azuria.UserInfo.ControlPanel
 {
-    internal class BookmarkEnumerator<T> : PageEnumerator<BookmarkObject<T>> where T : class, IAnimeMangaObject
+    internal class BookmarkEnumerator<T> : PagedEnumerator<Bookmark<T>> where T : class, IMediaObject
     {
         private const int ResultsPerPage = 100;
         private readonly UserControlPanel _controlPanel;
@@ -24,22 +25,21 @@ namespace Azuria.UserInfo.ControlPanel
 
         #region Methods
 
-        internal override async Task<ProxerResult<IEnumerable<BookmarkObject<T>>>> GetNextPage(int nextPage)
+        internal override async Task<IProxerResult<IEnumerable<Bookmark<T>>>> GetNextPage(int nextPage)
         {
-            ProxerResult<ProxerApiResponse<BookmarkDataModel[]>> lResult =
-                await
-                    RequestHandler.ApiRequest(
-                        ApiRequestBuilder.UcpGetReminder(typeof(T).GetTypeInfo().Name.ToLowerInvariant(),
-                            nextPage, ResultsPerPage, this._senpai));
+            ProxerApiResponse<BookmarkDataModel[]> lResult = await RequestHandler.ApiRequest(
+                    UcpRequestBuilder.GetReminder(typeof(T).GetTypeInfo().Name.ToLowerInvariant(),
+                        nextPage, ResultsPerPage, this._senpai))
+                .ConfigureAwait(false);
             if (!lResult.Success || (lResult.Result == null))
-                return new ProxerResult<IEnumerable<BookmarkObject<T>>>(lResult.Exceptions);
-            BookmarkDataModel[] lData = lResult.Result.Data;
+                return new ProxerResult<IEnumerable<Bookmark<T>>>(lResult.Exceptions);
+            BookmarkDataModel[] lData = lResult.Result;
 
-            return new ProxerResult<IEnumerable<BookmarkObject<T>>>(from bookmarkDataModel in lData
-                select new BookmarkObject<T>(
+            return new ProxerResult<IEnumerable<Bookmark<T>>>(from bookmarkDataModel in lData
+                select new Bookmark<T>(
                     typeof(T) == typeof(Anime)
-                        ? (IAnimeMangaContent<T>) new Anime.Episode(bookmarkDataModel)
-                        : (IAnimeMangaContent<T>) new Manga.Chapter(bookmarkDataModel),
+                        ? (IMediaContent<T>) new Anime.Episode(bookmarkDataModel)
+                        : (IMediaContent<T>) new Manga.Chapter(bookmarkDataModel),
                     bookmarkDataModel.BookmarkId, this._controlPanel));
         }
 

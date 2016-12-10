@@ -10,6 +10,7 @@ using Azuria.Api.v1.DataModels.Manga;
 using Azuria.Api.v1.DataModels.Search;
 using Azuria.Api.v1.DataModels.Ucp;
 using Azuria.Api.v1.Enums;
+using Azuria.Api.v1.RequestBuilder;
 using Azuria.ErrorHandling;
 using Azuria.Exceptions;
 using Azuria.Media.Properties;
@@ -26,7 +27,7 @@ namespace Azuria.Media
     /// Represents a manga.
     /// </summary>
     [DebuggerDisplay("Manga: {Name} [{Id}]")]
-    public class Manga : AnimeMangaObject
+    public class Manga : MediaObject
     {
         private readonly InitialisableProperty<IEnumerable<Language>> _availableLanguages;
 
@@ -43,46 +44,56 @@ namespace Azuria.Media
 
         internal Manga(string name, int id) : this(id)
         {
-            this._name.SetInitialisedObject(name);
+            this._name.Set(name);
         }
 
         internal Manga(IEntryInfoDataModel dataModel) : this(dataModel.EntryName, dataModel.EntryId)
         {
-            if (dataModel.EntryType != AnimeMangaEntryType.Manga)
+            if (dataModel.EntryType != MediaEntryType.Manga)
                 throw new ArgumentException(nameof(dataModel.EntryType));
-            this._mangaMedium.SetInitialisedObject((MangaMedium) dataModel.EntryMedium);
+            this._mangaMedium.Set((MangaMedium) dataModel.EntryMedium);
         }
 
         internal Manga(BookmarkDataModel dataModel) : this((IEntryInfoDataModel) dataModel)
         {
-            this._mangaMedium.SetInitialisedObject((MangaMedium) dataModel.EntryMedium);
-            this._status.SetInitialisedObject(dataModel.Status);
+            this._mangaMedium.Set((MangaMedium) dataModel.EntryMedium);
+            this._status.Set(dataModel.Status);
         }
 
         internal Manga(EntryDataModel dataModel) : this((IEntryInfoDataModel) dataModel)
         {
-            this._clicks.SetInitialisedObject(dataModel.Clicks);
-            this._contentCount.SetInitialisedObject(dataModel.ContentCount);
-            this._description.SetInitialisedObject(dataModel.Description);
-            this._fsk.SetInitialisedObject(dataModel.Fsk);
-            this._genre.SetInitialisedObject(dataModel.Genre);
-            this._isLicensed.SetInitialisedObject(dataModel.IsLicensed);
-            this._rating.SetInitialisedObject(dataModel.Rating);
-            this._status.SetInitialisedObject(dataModel.Status);
+            this._clicks.Set(dataModel.Clicks);
+            this._contentCount.Set(dataModel.ContentCount);
+            this._description.Set(dataModel.Description);
+            this._fsk.Set(dataModel.Fsk);
+            this._genre.Set(dataModel.Genre);
+            this._isLicensed.Set(dataModel.IsLicensed);
+            this._rating.Set(dataModel.Rating);
+            this._status.Set(dataModel.Status);
+        }
+
+        internal Manga(FullEntryDataModel dataModel) : this((EntryDataModel) dataModel)
+        {
+            this.InitGroups(dataModel.Translator);
+            this.InitIndustry(dataModel.Publisher);
+            this.InitNames(dataModel.Names);
+            this.InitSeasons(dataModel.Seasons);
+            this.InitTags(dataModel.Tags);
+            this._availableLanguages.Set(dataModel.AvailableLanguages.Cast<Language>());
         }
 
         internal Manga(RelationDataModel dataModel) : this((EntryDataModel) dataModel)
         {
-            this._availableLanguages.SetInitialisedObject(dataModel.AvailableLanguages.Cast<Language>());
+            this._availableLanguages.Set(dataModel.AvailableLanguages.Cast<Language>());
         }
 
         internal Manga(SearchDataModel dataModel) : this((IEntryInfoDataModel) dataModel)
         {
-            this._availableLanguages.SetInitialisedObject(dataModel.AvailableLanguages.Cast<Language>());
-            this._contentCount.SetInitialisedObject(dataModel.ContentCount);
-            this._genre.SetInitialisedObject(dataModel.Genre);
-            this._rating.SetInitialisedObject(dataModel.Rating);
-            this._status.SetInitialisedObject(dataModel.Status);
+            this._availableLanguages.Set(dataModel.AvailableLanguages.Cast<Language>());
+            this._contentCount.Set(dataModel.ContentCount);
+            this._genre.Set(dataModel.Genre);
+            this._rating.Set(dataModel.Rating);
+            this._status.Set(dataModel.Status);
         }
 
         #region Properties
@@ -95,12 +106,12 @@ namespace Azuria.Media
         /// <summary>
         /// Gets the comments of the <see cref="Anime" /> in a chronological order.
         /// </summary>
-        public IEnumerable<Comment<Manga>> CommentsLatest { get; }
+        public new CommentEnumerable<Manga> CommentsLatest { get; }
 
         /// <summary>
         /// Gets the comments of the <see cref="Anime" /> ordered by rating.
         /// </summary>
-        public IEnumerable<Comment<Manga>> CommentsRating { get; }
+        public new CommentEnumerable<Manga> CommentsRating { get; }
 
         /// <summary>
         /// Gets the medium of the <see cref="Manga" />.
@@ -118,15 +129,15 @@ namespace Azuria.Media
         /// <seealso cref="Chapter" />
         /// <returns>
         /// An enumeration of all available <see cref="Chapter">chapters</see> in the specified
-        /// <paramref name="language">language</paramref> with a max count of <see cref="AnimeMangaObject.ContentCount" />.
+        /// <paramref name="language">language</paramref> with a max count of <see cref="MediaObject.ContentCount" />.
         /// </returns>
-        public async Task<ProxerResult<IEnumerable<Chapter>>> GetChapters(Language language)
+        public async Task<IProxerResult<IEnumerable<Chapter>>> GetChapters(Language language)
         {
-            if (!(await this.AvailableLanguages.GetObject(new Language[0])).Contains(language))
+            if (!(await this.AvailableLanguages.Get(new Language[0]).ConfigureAwait(false)).Contains(language))
                 return new ProxerResult<IEnumerable<Chapter>>(new Exception[] {new LanguageNotAvailableException()});
 
-            ProxerResult<AnimeMangaContentDataModel[]> lContentObjectsResult =
-                await this.GetContentObjects();
+            IProxerResult<MediaContentDataModel[]> lContentObjectsResult =
+                await this.GetContentObjects().ConfigureAwait(false);
             if (!lContentObjectsResult.Success || (lContentObjectsResult.Result == null))
                 return new ProxerResult<IEnumerable<Chapter>>(lContentObjectsResult.Exceptions);
 
@@ -135,20 +146,18 @@ namespace Azuria.Media
                 select new Chapter(this, contentDataModel));
         }
 
-        internal async Task<ProxerResult> InitAvailableLanguages()
+        internal async Task<IProxerResult> InitAvailableLanguages()
         {
-            ProxerResult<ProxerInfoLanguageResponse> lResult =
-                await
-                    RequestHandler.ApiCustomRequest<ProxerInfoLanguageResponse>(
-                        ApiRequestBuilder.InfoGetLanguage(this.Id));
+            ProxerApiResponse<MediaLanguage[]> lResult = await RequestHandler.ApiRequest(
+                InfoRequestBuilder.GetLanguage(this.Id)).ConfigureAwait(false);
             if (!lResult.Success || (lResult.Result == null)) return new ProxerResult(lResult.Exceptions);
-            this._availableLanguages.SetInitialisedObject(lResult.Result.Data.Cast<Language>());
+            this._availableLanguages.Set(lResult.Result.Cast<Language>());
             return new ProxerResult();
         }
 
         internal void InitMainInfoManga(EntryDataModel dataModel)
         {
-            this._mangaMedium.SetInitialisedObject((MangaMedium) dataModel.EntryMedium);
+            this._mangaMedium.Set((MangaMedium) dataModel.EntryMedium);
         }
 
         #endregion
@@ -156,7 +165,7 @@ namespace Azuria.Media
         /// <summary>
         /// Represents a chapter of a <see cref="Manga" />.
         /// </summary>
-        public class Chapter : IAnimeMangaContent<Manga>, IAnimeMangaContent<IAnimeMangaObject>
+        public class Chapter : IMediaContent<Manga>, IMediaContent<IMediaObject>
         {
             private readonly InitialisableProperty<int> _chapterId;
             private readonly InitialisableProperty<IEnumerable<Page>> _pages;
@@ -175,13 +184,13 @@ namespace Azuria.Media
                 this._translator = new InitialisableProperty<Translator>(this.InitInfo);
             }
 
-            internal Chapter(Manga manga, AnimeMangaContentDataModel dataModel) : this()
+            internal Chapter(Manga manga, MediaContentDataModel dataModel) : this()
             {
                 this.ContentIndex = dataModel.ContentIndex;
                 this.Language = (Language) dataModel.Language;
                 this.ParentObject = manga;
 
-                this._title.SetInitialisedObject(dataModel.Title);
+                this._title.Set(dataModel.Title);
             }
 
             internal Chapter(BookmarkDataModel dataModel) : this()
@@ -223,7 +232,11 @@ namespace Azuria.Media
             /// </summary>
             public IInitialisableProperty<IEnumerable<Page>> Pages => this._pages;
 
-            IAnimeMangaObject IAnimeMangaContent<IAnimeMangaObject>.ParentObject => this.ParentObject;
+            /// <inheritdoc />
+            IMediaObject IMediaContent<IMediaObject>.ParentObject => this.ParentObject;
+
+            /// <inheritdoc />
+            IMediaObject IMediaContent.ParentObject => this.ParentObject;
 
             /// <summary>
             /// Gets the <see cref="Manga" /> this <see cref="Chapter" /> belongs to.
@@ -260,42 +273,31 @@ namespace Azuria.Media
             /// </summary>
             /// <param name="senpai"></param>
             /// <returns>If the action was successful.</returns>
-            public Task<ProxerResult> AddToBookmarks(Senpai senpai)
+            public Task<IProxerResult> AddToBookmarks(Senpai senpai)
             {
-                return new UserControlPanel(senpai).AddToBookmarks((IAnimeMangaContent<Manga>) this);
+                return new UserControlPanel(senpai).AddToBookmarks(this);
             }
 
-            private async Task<ProxerResult> InitInfo()
+            private async Task<IProxerResult> InitInfo()
             {
-                ProxerResult<ProxerApiResponse<ChapterDataModel>> lResult =
-                    await
-                        RequestHandler.ApiRequest(ApiRequestBuilder.MangaGetChapter(this.ParentObject.Id,
-                            this.ContentIndex, this.Language == Language.German ? "de" : "en", this.Senpai));
+                ProxerApiResponse<ChapterDataModel> lResult = await RequestHandler.ApiRequest(
+                        MangaRequestBuilder.GetChapter(this.ParentObject.Id, this.ContentIndex,
+                            this.Language == Language.German ? "de" : "en", this.Senpai))
+                    .ConfigureAwait(false);
                 if (!lResult.Success || (lResult.Result == null)) return new ProxerResult(lResult.Exceptions);
-                ChapterDataModel lData = lResult.Result.Data;
+                ChapterDataModel lData = lResult.Result;
 
-                this._chapterId.SetInitialisedObject(lData.ChapterId);
-                this._pages.SetInitialisedObject(from pageDataModel in lData.Pages
+                this._chapterId.Set(lData.ChapterId);
+                this._pages.Set(from pageDataModel in lData.Pages
                     select new Page(pageDataModel, lData.ServerId, lData.EntryId, lData.ChapterId));
-                this._uploadDate.SetInitialisedObject(lData.UploadTimestamp);
-                this._uploader.SetInitialisedObject(new User(lData.UploaderName, lData.UploaderId));
-                this._title.SetInitialisedObject(lData.ChapterTitle);
-                this._translator.SetInitialisedObject(lData.TranslatorId == null
+                this._uploadDate.Set(lData.UploadTimestamp);
+                this._uploader.Set(new User(lData.UploaderName, lData.UploaderId));
+                this._title.Set(lData.ChapterTitle);
+                this._translator.Set(lData.TranslatorId == null
                     ? null
                     : new Translator(lData.TranslatorId.Value, lData.TranslatorName, this.GeneralLanguage));
 
                 return new ProxerResult();
-            }
-
-            /// <summary>
-            /// Returns a string that represents the current object.
-            /// </summary>
-            /// <returns>
-            /// A string that represents the current object.
-            /// </returns>
-            public override string ToString()
-            {
-                return "Chapter " + this.ContentIndex;
             }
 
             #endregion

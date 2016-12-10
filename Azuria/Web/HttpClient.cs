@@ -2,10 +2,10 @@
 using System.Collections.Generic;
 using System.Net;
 using System.Net.Http;
-using System.Reflection;
 using System.Threading.Tasks;
 using Azuria.ErrorHandling;
 using Azuria.Exceptions;
+using Azuria.Utilities;
 
 namespace Azuria.Web
 {
@@ -15,15 +15,21 @@ namespace Azuria.Web
     public class HttpClient : IHttpClient
     {
 #if PORTABLE
-        private static readonly string UserAgent = "Azuria.Portable/" + 
-                                                   typeof(HttpClient).GetTypeInfo().Assembly.GetName().Version;
+/// <summary>
+/// 
+/// </summary>
+        protected static readonly string UserAgent = "Azuria.Portable/" + Utility.GetAssemblyVersion(typeof(HttpClient));
 #else
-        private static readonly string UserAgent = "Azuria/" +
-                                                   typeof(HttpClient).GetTypeInfo().Assembly.GetName().Version;
+        /// <summary>
+        /// </summary>
+        protected static readonly string UserAgent = "Azuria/" + Utility.GetAssemblyVersion(typeof(HttpClient));
 #endif
 
-        private readonly Senpai _senpai;
         private readonly System.Net.Http.HttpClient _client;
+
+        /// <summary>
+        /// </summary>
+        protected Senpai Senpai { get; }
 
         /// <summary>
         /// </summary>
@@ -32,15 +38,24 @@ namespace Azuria.Web
         /// <param name="userAgentExtra"></param>
         public HttpClient(Senpai senpai, int timeout = 5000, string userAgentExtra = "")
         {
-            this._senpai = senpai;
+            this.Senpai = senpai;
             this._client = new System.Net.Http.HttpClient(new HttpClientHandler
             {
                 AllowAutoRedirect = true,
-                CookieContainer = senpai?.LoginCookies ?? new CookieContainer(),
                 UseCookies = true
             }) {Timeout = TimeSpan.FromMilliseconds(timeout)};
             this._client.DefaultRequestHeaders.TryAddWithoutValidation("User-Agent",
                 $"{UserAgent} {userAgentExtra}".TrimEnd());
+        }
+
+        #region Methods
+
+        /// <summary>
+        /// DO NOT dispose <see cref="Senpai" /> as this is most likely being called from a Senpai.Dispose() method.
+        /// </summary>
+        public virtual void Dispose()
+        {
+            this._client.Dispose();
         }
 
         /// <summary>
@@ -48,22 +63,20 @@ namespace Azuria.Web
         /// <param name="url"></param>
         /// <param name="headers"></param>
         /// <returns></returns>
-        public async Task<ProxerResult<string>> GetRequest(Uri url, Dictionary<string, string> headers = null)
+        public virtual async Task<IProxerResult<string>> GetRequest(Uri url, Dictionary<string, string> headers = null)
         {
             string lResponse;
 
             HttpResponseMessage lResponseObject;
             try
             {
-                lResponseObject =
-                    await
-                        this.GetWebRequest(url, headers);
+                lResponseObject = await this.GetWebRequest(url, headers).ConfigureAwait(false);
             }
             catch (Exception ex)
             {
                 return new ProxerResult<string>(new[] {ex});
             }
-            string lResponseString = await lResponseObject.Content.ReadAsStringAsync();
+            string lResponseString = await lResponseObject.Content.ReadAsStringAsync().ConfigureAwait(false);
 
             if ((lResponseObject.StatusCode == HttpStatusCode.OK) && !string.IsNullOrEmpty(lResponseString))
                 lResponse = WebUtility.HtmlDecode(lResponseString).Replace("\n", "");
@@ -81,14 +94,14 @@ namespace Azuria.Web
 
         private async Task<HttpResponseMessage> GetWebRequest(Uri url, Dictionary<string, string> headers)
         {
-            this._senpai?.UsedCookies();
+            this.Senpai?.UsedCookies();
             this._client.DefaultRequestHeaders.Clear();
 
-            if (headers == null) return await this._client.GetAsync(url);
+            if (headers == null) return await this._client.GetAsync(url).ConfigureAwait(false);
             foreach (KeyValuePair<string, string> header in headers)
                 this._client.DefaultRequestHeaders.Add(header.Key, header.Value);
 
-            return await this._client.GetAsync(url);
+            return await this._client.GetAsync(url).ConfigureAwait(false);
         }
 
         /// <summary>
@@ -97,7 +110,8 @@ namespace Azuria.Web
         /// <param name="postArgs"></param>
         /// <param name="headers"></param>
         /// <returns></returns>
-        public async Task<ProxerResult<string>> PostRequest(Uri url, IEnumerable<KeyValuePair<string, string>> postArgs,
+        public virtual async Task<IProxerResult<string>> PostRequest(Uri url,
+            IEnumerable<KeyValuePair<string, string>> postArgs,
             Dictionary<string, string> headers = null)
         {
             string lResponse;
@@ -105,22 +119,21 @@ namespace Azuria.Web
             HttpResponseMessage lResponseObject;
             try
             {
-                lResponseObject = await this.PostWebRequest(url, postArgs, headers);
+                lResponseObject = await this.PostWebRequest(url, postArgs, headers).ConfigureAwait(false);
             }
             catch (Exception ex)
             {
                 return new ProxerResult<string>(new[] {ex});
             }
-            string lResponseString = await lResponseObject.Content.ReadAsStringAsync();
+            string lResponseString = await lResponseObject.Content.ReadAsStringAsync().ConfigureAwait(false);
 
             if ((lResponseObject.StatusCode == HttpStatusCode.OK) && !string.IsNullOrEmpty(lResponseString))
                 lResponse = WebUtility.HtmlDecode(lResponseString).Replace("\n", "");
-            else if ((lResponseObject.StatusCode == HttpStatusCode.ServiceUnavailable) &&
-                     !string.IsNullOrEmpty(lResponseString))
+            else if ((lResponseObject.StatusCode == HttpStatusCode.ServiceUnavailable)
+                     && !string.IsNullOrEmpty(lResponseString))
                 return new ProxerResult<string>(new[] {new CloudflareException()});
             else
-                return
-                    new ProxerResult<string>(new[] {new WrongResponseException()});
+                return new ProxerResult<string>(new[] {new WrongResponseException()});
 
             return string.IsNullOrEmpty(lResponse)
                 ? new ProxerResult<string>(new Exception[] {new WrongResponseException {Response = lResponse}})
@@ -130,14 +143,17 @@ namespace Azuria.Web
         private async Task<HttpResponseMessage> PostWebRequest(Uri url,
             IEnumerable<KeyValuePair<string, string>> postArgs, Dictionary<string, string> headers)
         {
-            this._senpai?.UsedCookies();
+            this.Senpai?.UsedCookies();
             this._client.DefaultRequestHeaders.Clear();
 
-            if (headers == null) return await this._client.PostAsync(url, new FormUrlEncodedContent(postArgs));
+            if (headers == null)
+                return await this._client.PostAsync(url, new FormUrlEncodedContent(postArgs)).ConfigureAwait(false);
             foreach (KeyValuePair<string, string> header in headers)
                 this._client.DefaultRequestHeaders.Add(header.Key, header.Value);
 
-            return await this._client.PostAsync(url, new FormUrlEncodedContent(postArgs));
+            return await this._client.PostAsync(url, new FormUrlEncodedContent(postArgs)).ConfigureAwait(false);
         }
+
+        #endregion
     }
 }

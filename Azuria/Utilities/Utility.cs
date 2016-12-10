@@ -1,10 +1,16 @@
 ﻿using System;
+using System.Reflection;
 
 namespace Azuria.Utilities
 {
     internal static class Utility
     {
         #region Methods
+
+        internal static Version GetAssemblyVersion(Type typeOfAssembly)
+        {
+            return typeOfAssembly.GetTypeInfo().Assembly.GetName().Version;
+        }
 
         internal static DateTime UnixTimeStampToDateTime(long unixTimeStamp)
         {

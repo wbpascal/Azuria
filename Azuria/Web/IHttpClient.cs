@@ -7,7 +7,7 @@ namespace Azuria.Web
 {
     /// <summary>
     /// </summary>
-    public interface IHttpClient
+    public interface IHttpClient : IDisposable
     {
         #region Methods
 
@@ -16,7 +16,7 @@ namespace Azuria.Web
         /// <param name="url"></param>
         /// <param name="headers"></param>
         /// <returns></returns>
-        Task<ProxerResult<string>> GetRequest(Uri url, Dictionary<string, string> headers = null);
+        Task<IProxerResult<string>> GetRequest(Uri url, Dictionary<string, string> headers = null);
 
         /// <summary>
         /// </summary>
@@ -24,7 +24,7 @@ namespace Azuria.Web
         /// <param name="postArgs"></param>
         /// <param name="headers"></param>
         /// <returns></returns>
-        Task<ProxerResult<string>> PostRequest(Uri url, IEnumerable<KeyValuePair<string, string>> postArgs,
+        Task<IProxerResult<string>> PostRequest(Uri url, IEnumerable<KeyValuePair<string, string>> postArgs,
             Dictionary<string, string> headers = null);
 
         #endregion

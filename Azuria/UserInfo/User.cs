@@ -7,7 +7,9 @@ using Azuria.Api.v1;
 using Azuria.Api.v1.DataModels.Messenger;
 using Azuria.Api.v1.DataModels.User;
 using Azuria.Api.v1.Enums;
+using Azuria.Api.v1.RequestBuilder;
 using Azuria.ErrorHandling;
+using Azuria.Exceptions;
 using Azuria.Media;
 using Azuria.UserInfo.Comment;
 using Azuria.Utilities.Properties;
@@ -22,18 +24,13 @@ namespace Azuria.UserInfo
         /// <summary>
         /// Represents the system as a user.
         /// </summary>
-        public static User System = new User("System", -1);
+        public static User System = new User("System", default(int));
 
         private readonly InitialisableProperty<Uri> _avatar;
-
         private readonly InitialisableProperty<UserPoints> _points;
-
         private readonly InitialisableProperty<UserStatus> _status;
-
-        private readonly InitialisableProperty<IEnumerable<Anime>> _toptenAnime;
-
-        private readonly InitialisableProperty<IEnumerable<Manga>> _toptenManga;
-
+        private readonly ArgumentInitialisableProperty<Senpai, IEnumerable<Anime>> _toptenAnime;
+        private readonly ArgumentInitialisableProperty<Senpai, IEnumerable<Manga>> _toptenManga;
         private readonly InitialisableProperty<string> _userName;
 
         /// <summary>
@@ -42,20 +39,22 @@ namespace Azuria.UserInfo
         /// <param name="userId">The id of the user.</param>
         public User(int userId)
         {
+            if (userId < 0) throw new ArgumentOutOfRangeException(nameof(userId));
+
             this.Id = userId;
 
             this.Anime = new UserEntryEnumerable<Anime>(this);
-            this._avatar = new InitialisableProperty<Uri>(this.InitMainInfo,
-                new Uri(ApiConstants.ProxerNoAvatarCdnUrl))
+            this._avatar = new InitialisableProperty<Uri>(
+                this.InitMainInfo, new Uri(ApiConstants.ProxerNoAvatarCdnUrl))
             {
-                IsInitialisedOnce = false
+                IsInitialised = false
             };
-            this._toptenAnime =
-                new InitialisableProperty<IEnumerable<Anime>>(() => this.InitTopten(AnimeMangaEntryType.Anime));
-            this.CommentsLatestAnime = new CommentEnumerable<Anime>(this);
-            this.CommentsLatestManga = new CommentEnumerable<Manga>(this);
-            this._toptenManga =
-                new InitialisableProperty<IEnumerable<Manga>>(() => this.InitTopten(AnimeMangaEntryType.Manga));
+            this._toptenAnime = new ArgumentInitialisableProperty<Senpai, IEnumerable<Anime>>(
+                senpai => this.InitTopten(MediaEntryType.Anime, senpai));
+            this.CommentsAnime = new CommentEnumerable<Anime>(this);
+            this.CommentsManga = new CommentEnumerable<Manga>(this);
+            this._toptenManga = new ArgumentInitialisableProperty<Senpai, IEnumerable<Manga>>(
+                senpai => this.InitTopten(MediaEntryType.Manga, senpai));
             this.Manga = new UserEntryEnumerable<Manga>(this);
             this._points = new InitialisableProperty<UserPoints>(this.InitMainInfo);
             this._status = new InitialisableProperty<UserStatus>(this.InitMainInfo);
@@ -64,19 +63,19 @@ namespace Azuria.UserInfo
 
         internal User(string name, int userId) : this(userId)
         {
-            this._userName.SetInitialisedObject(name);
+            this._userName.Set(name);
         }
 
         internal User(int userId, Uri avatar)
             : this(userId)
         {
-            this._avatar.SetInitialisedObject(avatar ?? new Uri(ApiConstants.ProxerNoAvatarCdnUrl));
+            this._avatar.Set(avatar ?? new Uri(ApiConstants.ProxerNoAvatarCdnUrl));
         }
 
         internal User(string name, int userId, Uri avatar)
             : this(name, userId)
         {
-            this._avatar.SetInitialisedObject(avatar ?? new Uri(ApiConstants.ProxerNoAvatarCdnUrl));
+            this._avatar.Set(avatar ?? new Uri(ApiConstants.ProxerNoAvatarCdnUrl));
         }
 
         internal User(UserInfoDataModel dataModel)
@@ -84,8 +83,8 @@ namespace Azuria.UserInfo
                 dataModel.Username, dataModel.UserId, new Uri(ApiConstants.ProxerAvatarShortCdnUrl + dataModel.AvatarId)
             )
         {
-            this._points.SetInitialisedObject(dataModel.Points);
-            this._status.SetInitialisedObject(dataModel.Status);
+            this._points.Set(dataModel.Points);
+            this._status.Set(dataModel.Status);
         }
 
         internal User(ConferenceInfoParticipantDataModel dataModel)
@@ -93,7 +92,7 @@ namespace Azuria.UserInfo
                 dataModel.Username, dataModel.UserId, new Uri(ApiConstants.ProxerAvatarShortCdnUrl + dataModel.AvatarId)
             )
         {
-            this._status.SetInitialisedObject(new UserStatus(dataModel.UserStatus, DateTime.MinValue));
+            this._status.Set(new UserStatus(dataModel.UserStatus, DateTime.MinValue));
         }
 
         #region Properties
@@ -101,7 +100,7 @@ namespace Azuria.UserInfo
         /// <summary>
         /// Gets all <see cref="Media.Anime" /> the <see cref="User" /> has in his profile.
         /// </summary>
-        public IEnumerable<UserProfileEntry<Anime>> Anime { get; }
+        public UserEntryEnumerable<Anime> Anime { get; }
 
         /// <summary>
         /// Gets the avatar of the user.
@@ -110,11 +109,11 @@ namespace Azuria.UserInfo
 
         /// <summary>
         /// </summary>
-        public IEnumerable<Comment<Anime>> CommentsLatestAnime { get; }
+        public CommentEnumerable<Anime> CommentsAnime { get; }
 
         /// <summary>
         /// </summary>
-        public IEnumerable<Comment<Manga>> CommentsLatestManga { get; }
+        public CommentEnumerable<Manga> CommentsManga { get; }
 
         /// <summary>
         /// Gets the id of the user.
@@ -124,7 +123,7 @@ namespace Azuria.UserInfo
         /// <summary>
         /// Gets all <see cref="Media.Manga" /> the <see cref="User" /> has in his profile.
         /// </summary>
-        public IEnumerable<UserProfileEntry<Manga>> Manga { get; }
+        public UserEntryEnumerable<Manga> Manga { get; }
 
         /// <summary>
         /// Gets the current number of total points the user has.
@@ -139,12 +138,12 @@ namespace Azuria.UserInfo
         /// <summary>
         /// Gets all favourites of the user that are <see cref="Media.Anime">Anime</see>.
         /// </summary>
-        public IInitialisableProperty<IEnumerable<Anime>> ToptenAnime => this._toptenAnime;
+        public IArgumentInitialisableProperty<Senpai, IEnumerable<Anime>> ToptenAnime => this._toptenAnime;
 
         /// <summary>
         /// Gets the <see cref="Media.Manga">Manga</see> top ten of the user.
         /// </summary>
-        public IInitialisableProperty<IEnumerable<Manga>> ToptenManga => this._toptenManga;
+        public IArgumentInitialisableProperty<Senpai, IEnumerable<Manga>> ToptenManga => this._toptenManga;
 
         /// <summary>
         /// Gets the username of the user.
@@ -159,58 +158,48 @@ namespace Azuria.UserInfo
         /// </summary>
         /// <param name="username"></param>
         /// <returns></returns>
-        public static async Task<ProxerResult<User>> FromUsername(string username)
+        public static async Task<IProxerResult<User>> FromUsername(string username)
         {
-            ProxerResult<ProxerApiResponse<UserInfoDataModel>> lResult =
-                await RequestHandler.ApiRequest(ApiRequestBuilder.UserGetInfo(username));
+            ProxerApiResponse<UserInfoDataModel> lResult = await RequestHandler.ApiRequest(
+                UserRequestBuilder.GetInfo(username)).ConfigureAwait(false);
             if (!lResult.Success || (lResult.Result == null)) return new ProxerResult<User>(lResult.Exceptions);
-            return new ProxerResult<User>(new User(lResult.Result.Data));
+            return new ProxerResult<User>(new User(lResult.Result));
         }
 
-        private async Task<ProxerResult> InitMainInfo()
+        private async Task<IProxerResult> InitMainInfo()
         {
-            if (this.Id == -1) return new ProxerResult();
+            if (this == System) return new ProxerResult(new InvalidUserException());
 
-            ProxerResult<ProxerApiResponse<UserInfoDataModel>> lResult =
-                await RequestHandler.ApiRequest(ApiRequestBuilder.UserGetInfo(this.Id));
+            ProxerApiResponse<UserInfoDataModel> lResult = await RequestHandler.ApiRequest(
+                UserRequestBuilder.GetInfo(this.Id)).ConfigureAwait(false);
             if (!lResult.Success || (lResult.Result == null)) return new ProxerResult(lResult.Exceptions);
 
-            UserInfoDataModel lDataModel = lResult.Result.Data;
-            this._avatar.SetInitialisedObject(new Uri(ApiConstants.ProxerAvatarShortCdnUrl + lDataModel.AvatarId));
-            this._points.SetInitialisedObject(lDataModel.Points);
-            this._status.SetInitialisedObject(lDataModel.Status);
-            this._userName.SetInitialisedObject(lDataModel.Username);
+            UserInfoDataModel lDataModel = lResult.Result;
+            this._avatar.Set(new Uri(ApiConstants.ProxerAvatarShortCdnUrl + lDataModel.AvatarId));
+            this._points.Set(lDataModel.Points);
+            this._status.Set(lDataModel.Status);
+            this._userName.Set(lDataModel.Username);
 
             return new ProxerResult();
         }
 
-        private async Task<ProxerResult> InitTopten(AnimeMangaEntryType category)
+        private async Task<IProxerResult> InitTopten(MediaEntryType category, Senpai senpai)
         {
-            ProxerResult<ProxerApiResponse<ToptenDataModel[]>> lResult =
-                await
-                    RequestHandler.ApiRequest(ApiRequestBuilder.UserGetTopten(this.Id,
-                        category.ToString().ToLower()));
+            if (this == System) return new ProxerResult(new InvalidUserException());
+
+            ProxerApiResponse<ToptenDataModel[]> lResult = await RequestHandler.ApiRequest(
+                    UserRequestBuilder.GetTopten(this.Id, category.ToString().ToLower(), senpai))
+                .ConfigureAwait(false);
             if (!lResult.Success || (lResult.Result == null)) return new ProxerResult(lResult.Exceptions);
 
-            if (category == AnimeMangaEntryType.Anime)
-                this._toptenAnime.SetInitialisedObject(from toptenDataModel in lResult.Result.Data
+            if (category == MediaEntryType.Anime)
+                this._toptenAnime.SetInitialisedObject(from toptenDataModel in lResult.Result
                     select new Anime(toptenDataModel.EntryName, toptenDataModel.EntryId));
-            if (category == AnimeMangaEntryType.Manga)
-                this._toptenManga.SetInitialisedObject(from toptenDataModel in lResult.Result.Data
+            if (category == MediaEntryType.Manga)
+                this._toptenManga.SetInitialisedObject(from toptenDataModel in lResult.Result
                     select new Manga(toptenDataModel.EntryName, toptenDataModel.EntryId));
 
             return new ProxerResult();
-        }
-
-        /// <summary>
-        /// Returns a string that represents the current object.
-        /// </summary>
-        /// <returns>
-        /// A string that represents the current object.
-        /// </returns>
-        public override string ToString()
-        {
-            return this.UserName.GetObjectIfInitialised("ERROR") + " [" + this.Id + "]";
         }
 
         #endregion

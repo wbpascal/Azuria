@@ -2,33 +2,51 @@
 
 namespace Azuria.Api.v1.DataModels.Ucp
 {
-    internal class VoteDataModel
+    /// <summary>
+    /// </summary>
+    public class VoteDataModel
     {
         #region Properties
 
+        /// <summary>
+        /// </summary>
         [JsonProperty("comment")]
-        internal string CommentContent { get; set; }
+        public string CommentContent { get; set; }
 
+        /// <summary>
+        /// </summary>
         [JsonProperty("kid")]
-        internal int CommentId { get; set; }
+        public int CommentId { get; set; }
 
+        /// <summary>
+        /// </summary>
         [JsonProperty("name")]
-        internal string EntryName { get; set; }
+        public string EntryName { get; set; }
 
+        /// <summary>
+        /// </summary>
         [JsonProperty("rating")]
-        internal int Rating { get; set; }
+        public int Rating { get; set; }
 
+        /// <summary>
+        /// </summary>
         [JsonProperty("type")]
-        internal string Type { get; set; }
+        public string Type { get; set; }
 
+        /// <summary>
+        /// </summary>
         [JsonProperty("uid")]
-        internal int UserId { get; set; }
+        public int UserId { get; set; }
 
+        /// <summary>
+        /// </summary>
         [JsonProperty("username")]
-        internal string Username { get; set; }
+        public string Username { get; set; }
 
+        /// <summary>
+        /// </summary>
         [JsonProperty("id")]
-        internal int VoteId { get; set; }
+        public int VoteId { get; set; }
 
         #endregion
     }

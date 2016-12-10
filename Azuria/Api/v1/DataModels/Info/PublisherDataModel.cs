@@ -1,27 +1,36 @@
 ﻿using Azuria.Api.v1.Converters.Info;
 using Azuria.Media.Properties;
 using Newtonsoft.Json;
-using Newtonsoft.Json.Converters;
 
 namespace Azuria.Api.v1.DataModels.Info
 {
-    internal class PublisherDataModel : IDataModel
+    /// <summary>
+    /// </summary>
+    public class PublisherDataModel : IDataModel
     {
         #region Properties
 
+        /// <summary>
+        /// </summary>
         [JsonProperty("country")]
         [JsonConverter(typeof(PublisherCountryConverter))]
-        internal Country Country { get; set; }
+        public Country Country { get; set; }
 
+        /// <summary>
+        /// </summary>
         [JsonProperty("id")]
-        internal int Id { get; set; }
+        public int Id { get; set; }
 
+        /// <summary>
+        /// </summary>
         [JsonProperty("name")]
-        internal string Name { get; set; }
+        public string Name { get; set; }
 
+        /// <summary>
+        /// </summary>
         [JsonProperty("type")]
-        [JsonConverter(typeof(StringEnumConverter))]
-        internal Industry.IndustryType Type { get; set; }
+        [JsonConverter(typeof(PublisherTypeConverter))]
+        public IndustryType Type { get; set; }
 
         #endregion
     }

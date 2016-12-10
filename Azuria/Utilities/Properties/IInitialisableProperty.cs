@@ -14,7 +14,7 @@ namespace Azuria.Utilities.Properties
         /// <summary>
         /// Gets a value whether the property was already initialised at least once.
         /// </summary>
-        bool IsInitialisedOnce { get; }
+        bool IsInitialised { get; }
 
         #endregion
 
@@ -24,50 +24,55 @@ namespace Azuria.Utilities.Properties
         /// Fetches a new value for the property without returning the new value.
         /// </summary>
         /// <returns>If the action was successful.</returns>
-        Task<ProxerResult> FetchObject();
+        Task<IProxerResult> FetchObject();
+
+        /// <summary>
+        /// Initialises the property if it is not already.
+        /// </summary>
+        /// <returns>If the action was successful and if it was, the value of this property.</returns>
+        Task<IProxerResult<T>> Get();
+
+        /// <summary>
+        /// Initialises the property if it is not already.
+        /// </summary>
+        /// <param name="onError">A value that is returned if the action was not successful.</param>
+        /// <returns>
+        /// If the action was successful and if it was, the value of this property. If it was not then
+        /// <paramref name="onError" /> is returned.
+        /// </returns>
+        Task<T> Get(T onError);
 
         /// <summary>
         /// </summary>
         /// <returns></returns>
-        TaskAwaiter<ProxerResult<T>> GetAwaiter();
+        TaskAwaiter<IProxerResult<T>> GetAwaiter();
 
         /// <summary>
-        /// Gets a new value for the property independent of it being already initialised.
         /// </summary>
-        /// <returns>If the action was successful and if it was, the value of this property.</returns>
-        Task<ProxerResult<T>> GetNewObject();
-
-        /// <summary>
-        /// Gets a new value for the property independent of it being already initialised.
-        /// </summary>
-        /// <param name="onError">A value that is returned if the action was not successful.</param>
-        /// <returns>
-        /// If the action was successful and if it was, the value of this property. If it was not then
-        /// <paramref name="onError" /> is returned.
-        /// </returns>
-        Task<T> GetNewObject(T onError);
-
-        /// <summary>
-        /// Initialises the property if it is not already.
-        /// </summary>
-        /// <returns>If the action was successful and if it was, the value of this property.</returns>
-        Task<ProxerResult<T>> GetObject();
-
-        /// <summary>
-        /// Initialises the property if it is not already.
-        /// </summary>
-        /// <param name="onError">A value that is returned if the action was not successful.</param>
-        /// <returns>
-        /// If the action was successful and if it was, the value of this property. If it was not then
-        /// <paramref name="onError" /> is returned.
-        /// </returns>
-        Task<T> GetObject(T onError);
+        /// <returns></returns>
+        T GetIfInitialised();
 
         /// <summary>
         /// </summary>
         /// <param name="ifNot"></param>
         /// <returns></returns>
-        T GetObjectIfInitialised(T ifNot);
+        T GetIfInitialised(T ifNot);
+
+        /// <summary>
+        /// Gets a new value for the property independent of it being already initialised.
+        /// </summary>
+        /// <returns>If the action was successful and if it was, the value of this property.</returns>
+        Task<IProxerResult<T>> GetNew();
+
+        /// <summary>
+        /// Gets a new value for the property independent of it being already initialised.
+        /// </summary>
+        /// <param name="onError">A value that is returned if the action was not successful.</param>
+        /// <returns>
+        /// If the action was successful and if it was, the value of this property. If it was not then
+        /// <paramref name="onError" /> is returned.
+        /// </returns>
+        Task<T> GetNew(T onError);
 
         /// <summary>
         /// </summary>

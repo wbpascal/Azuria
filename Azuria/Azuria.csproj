@@ -52,7 +52,10 @@
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <PropertyGroup>
-    <SignAssembly>false</SignAssembly>
+    <SignAssembly>true</SignAssembly>
+  </PropertyGroup>
+  <PropertyGroup>
+    <AssemblyOriginatorKeyFile>..\signing_key.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Newtonsoft.Json, Version=9.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
@@ -62,23 +65,40 @@
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Net.Http" />
-    <Reference Include="System.Xml" />
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Api\v1\Converters\Anime\StreamPartnerConverter.cs" />
+    <Compile Include="Api\v1\Converters\DataConverter.cs" />
+    <Compile Include="Api\v1\Converters\Info\PublisherTypeConverter.cs" />
+    <Compile Include="Api\v1\Converters\InvertBoolConverter.cs" />
     <Compile Include="Api\v1\Converters\Manga\PagesConverter.cs" />
     <Compile Include="Api\v1\DataModels\Anime\StreamDataModel.cs" />
+    <Compile Include="Api\v1\DataModels\Info\FullEntryDataModel.cs" />
     <Compile Include="Api\v1\DataModels\Manga\ChapterDataModel.cs" />
     <Compile Include="Api\v1\DataModels\Manga\PageDataModel.cs" />
     <Compile Include="Api\v1\DataModels\Media\HeaderDataModel.cs" />
-    <Compile Include="Media\AnimeMangaObject.cs" />
+    <Compile Include="Api\v1\RequestBuilder\AnimeRequestBuilder.cs" />
+    <Compile Include="Api\v1\RequestBuilder\InfoRequestBuilder.cs" />
+    <Compile Include="Api\v1\RequestBuilder\ListRequestBuilder.cs" />
+    <Compile Include="Api\v1\RequestBuilder\MangaRequestBuilder.cs" />
+    <Compile Include="Api\v1\RequestBuilder\MediaRequestBuilder.cs" />
+    <Compile Include="Api\v1\RequestBuilder\MessengerRequestBuilder.cs" />
+    <Compile Include="Api\v1\RequestBuilder\NotificationsRequestBuilder.cs" />
+    <Compile Include="Api\v1\RequestBuilder\UcpRequestBuilder.cs" />
+    <Compile Include="Api\v1\RequestBuilder\UserRequestBuilder.cs" />
+    <Compile Include="Enumerable\PagedEnumerable.cs" />
+    <Compile Include="Enumerable\RetryableEnumerator.cs" />
+    <Compile Include="ErrorHandling\IProxerResult.cs" />
+    <Compile Include="Security\IProxerCredentials.cs" />
+    <Compile Include="Media\MediaObject.cs" />
     <Compile Include="Media\Headers\HeaderHelper.cs" />
     <Compile Include="Media\Headers\HeaderInfo.cs" />
     <Compile Include="Media\Headers\HeaderStyle.cs" />
-    <Compile Include="Media\Properties\AnimeMangaRating.cs" />
-    <Compile Include="Media\Properties\AnimeMangaSeason.cs" />
-    <Compile Include="Media\Properties\AnimeMangaSeasonInfo.cs" />
+    <Compile Include="Media\Properties\IndustryType.cs" />
+    <Compile Include="Media\Properties\MediaRating.cs" />
+    <Compile Include="Media\Properties\MediaSeason.cs" />
+    <Compile Include="Media\Properties\MediaSeasonInfo.cs" />
     <Compile Include="Api\ApiConstants.cs" />
     <Compile Include="Api\ApiInfoInput.cs" />
     <Compile Include="Api\v1\Converters\Messenger\MessageActionConverter.cs" />
@@ -99,33 +119,39 @@
     <Compile Include="Api\v1\DataModels\Ucp\ToptenDataModel.cs" />
     <Compile Include="Api\v1\DataModels\Ucp\VoteDataModel.cs" />
     <Compile Include="Api\v1\DataModels\User\ListDataModel.cs" />
-    <Compile Include="Api\v1\ProxerInfoLanguageResponse.cs" />
-    <Compile Include="Api\v1\ProxerNotificationCountResponse.cs" />
     <Compile Include="Community\ConferenceInfo.cs" />
     <Compile Include="Community\ConferenceListType.cs" />
     <Compile Include="Community\MessageAction.cs" />
-    <Compile Include="Community\MessageModel.cs" />
     <Compile Include="Exceptions\ApiNotInitialisedException.cs" />
     <Compile Include="Exceptions\NotInitialisedException.cs" />
-    <Compile Include="Media\Properties\StreamHostingType.cs" />
-    <Compile Include="Notifications\INotificationManager.cs" />
-    <Compile Include="Notifications\NotificationCountManager.cs" />
-    <Compile Include="Search\EntryListCollection.cs" />
+    <Compile Include="Notifications\NotificationCount.cs" />
+    <Compile Include="Notifications\NotificationManager.cs" />
+    <Compile Include="Notifications\OtherMedia\OtherMediaNotification.cs" />
+    <Compile Include="Notifications\OtherMedia\OtherMediaType.cs" />
+    <Compile Include="Search\EntryListEnumerable.cs" />
     <Compile Include="Search\EntryListEnumerator.cs" />
     <Compile Include="Search\Input\EntryListInput.cs" />
-    <Compile Include="Search\Input\AnimeMangaSearchType.cs" />
+    <Compile Include="Search\Input\MediaSearchType.cs" />
     <Compile Include="Search\Input\LengthLimit.cs" />
     <Compile Include="Search\Input\SearchInput.cs" />
     <Compile Include="Search\Input\SearchLanguage.cs" />
     <Compile Include="Search\Input\SearchResultSort.cs" />
     <Compile Include="Search\SearchHelper.cs" />
     <Compile Include="Search\SearchQueryBuilder.cs" />
-    <Compile Include="UserInfo\AnimeMangaProfileList.cs" />
+    <Compile Include="Security\ProxerCredentials.cs" />
+    <Compile Include="UserInfo\Comment\IComment.cs" />
+    <Compile Include="UserInfo\ControlPanel\IBookmark.cs" />
+    <Compile Include="UserInfo\ControlPanel\IHistoryObject.cs" />
+    <Compile Include="UserInfo\ControlPanel\IToptenObject.cs" />
+    <Compile Include="UserInfo\IUserProfileEntry.cs" />
+    <Compile Include="UserInfo\MediaProfileList.cs" />
     <Compile Include="UserInfo\ControlPanel\CommentVote.cs" />
     <Compile Include="UserInfo\ControlPanel\ToptenObject.cs" />
     <Compile Include="Api\v1\DataModels\Messenger\ConstantsDataModel.cs" />
     <Compile Include="Utilities\Extensions\ProxerResultExtensions.cs" />
-    <Compile Include="Utilities\PageEnumerator.cs" />
+    <Compile Include="Enumerable\PagedEnumerator.cs" />
+    <Compile Include="Utilities\Properties\ArgumentInitialisableProperty.cs" />
+    <Compile Include="Utilities\Properties\IArgumentInitialisableProperty.cs" />
     <Compile Include="Web\IHttpClient.cs" />
     <Compile Include="UserInfo\Comment\CommentEnumerable.cs" />
     <Compile Include="UserInfo\Comment\CommentEnumerator.cs" />
@@ -139,13 +165,12 @@
     <Compile Include="Media\Properties\TagType.cs" />
     <Compile Include="Api\ApiInfo.cs" />
     <Compile Include="Api\v1\ApiRequest.cs" />
-    <Compile Include="Api\v1\ApiRequestBuilder.cs" />
     <Compile Include="Api\v1\Converters\LanguageConverter.cs" />
     <Compile Include="Api\v1\Converters\LanguageCommaCollectionConverter.cs" />
-    <Compile Include="Api\v1\Converters\Info\StreamPartnerConverter.cs" />
+    <Compile Include="Api\v1\Converters\Info\StreamHosterConverter.cs" />
     <Compile Include="Api\v1\Converters\IntToBoolConverter.cs" />
     <Compile Include="Api\v1\Converters\SubRatingsConverter.cs" />
-    <Compile Include="Api\v1\DataModels\Info\AnimeMangaContentDataModel.cs" />
+    <Compile Include="Api\v1\DataModels\Info\MediaContentDataModel.cs" />
     <Compile Include="Api\v1\DataModels\CommentDataModel.cs" />
     <Compile Include="Api\v1\DataModels\Info\ListInfoDataModel.cs" />
     <Compile Include="Api\v1\Converters\Info\LanguageCollectionConverter.cs" />
@@ -164,19 +189,18 @@
     <Compile Include="Api\v1\DataModels\Info\PublisherDataModel.cs" />
     <Compile Include="Api\v1\DataModels\Info\RelationDataModel.cs" />
     <Compile Include="Api\v1\DataModels\Info\SeasonDataModel.cs" />
-    <Compile Include="Api\v1\DataModels\Info\EntryTagDataModel.cs" />
+    <Compile Include="Api\v1\DataModels\Info\MediaTagDataModel.cs" />
     <Compile Include="Api\v1\DataModels\User\ToptenDataModel.cs" />
     <Compile Include="Api\v1\DataModels\User\UserInfoDataModel.cs" />
-    <Compile Include="Api\v1\Enums\AnimeMangaEntryType.cs" />
-    <Compile Include="Media\Properties\AnimeMangaLanguage.cs" />
-    <Compile Include="Search\Input\AnimeMangaMedium.cs" />
-    <Compile Include="Api\v1\Enums\AnimeMangaNameType.cs" />
+    <Compile Include="Api\v1\Enums\MediaEntryType.cs" />
+    <Compile Include="Media\Properties\MediaLanguage.cs" />
+    <Compile Include="Search\Input\MediaMedium.cs" />
+    <Compile Include="Api\v1\Enums\MediaNameType.cs" />
     <Compile Include="Api\v1\RequestHandler.cs" />
     <Compile Include="Community\Conference.cs" />
     <Compile Include="Community\Message.cs" />
-    <Compile Include="Community\MessageCollection.cs" />
+    <Compile Include="Community\MessageEnumerable.cs" />
     <Compile Include="Community\MessageEnumerator.cs" />
-    <Compile Include="Community\MessagesModel.cs" />
     <Compile Include="Exceptions\ApiKeyInsufficientException.cs" />
     <Compile Include="Exceptions\CaptchaException.cs" />
     <Compile Include="Exceptions\CloudflareException.cs" />
@@ -194,13 +218,12 @@
     <Compile Include="Exceptions\NoAccessException.cs" />
     <Compile Include="Exceptions\NotLoggedInException.cs" />
     <Compile Include="Exceptions\ProxerApiException.cs" />
-    <Compile Include="Exceptions\UserAlreadyLoggedInException.cs" />
+    <Compile Include="Exceptions\AlreadyLoggedInException.cs" />
     <Compile Include="Exceptions\WrongResponseException.cs" />
     <Compile Include="Media\Anime.cs" />
-    <Compile Include="Media\Properties\AnimeMangaStatus.cs" />
-    <Compile Include="Media\IAnimeMangaContent.cs" />
-    <Compile Include="Media\IAnimeMangaContentBase.cs" />
-    <Compile Include="Media\IAnimeMangaObject.cs" />
+    <Compile Include="Media\Properties\MediaStatus.cs" />
+    <Compile Include="Media\IMediaContent.cs" />
+    <Compile Include="Media\IMediaObject.cs" />
     <Compile Include="Media\Manga.cs" />
     <Compile Include="Media\Properties\AnimeLanguage.cs" />
     <Compile Include="Media\Properties\AnimeMedium.cs" />
@@ -211,24 +234,21 @@
     <Compile Include="Media\Properties\Translator.cs" />
     <Compile Include="Media\Properties\Industry.cs" />
     <Compile Include="Media\Properties\Language.cs" />
-    <Compile Include="Search\SearchResultCollection.cs" />
-    <Compile Include="UserInfo\AnimeMangaProgressState.cs" />
+    <Compile Include="Search\SearchResultEnumerable.cs" />
+    <Compile Include="UserInfo\MediaProgressState.cs" />
     <Compile Include="UserInfo\Comment\RatingCategory.cs" />
-    <Compile Include="UserInfo\ControlPanel\BookmarkObject.cs" />
+    <Compile Include="UserInfo\ControlPanel\Bookmark.cs" />
     <Compile Include="UserInfo\ControlPanel\UserControlPanel.cs" />
-    <Compile Include="Notifications\AnimeManga\AnimeMangaNotificationCollection.cs" />
-    <Compile Include="Notifications\AnimeManga\AnimeMangaNotificationEnumerator.cs" />
-    <Compile Include="Notifications\AnimeManga\AnimeMangaNotificationManager.cs" />
+    <Compile Include="Notifications\OtherMedia\OtherMediaNotificationEnumerable.cs" />
+    <Compile Include="Notifications\OtherMedia\OtherMediaNotificationEnumerator.cs" />
     <Compile Include="Notifications\INotification.cs" />
-    <Compile Include="Notifications\News\NewsNotificationCollection.cs" />
+    <Compile Include="Notifications\News\NewsNotificationEnumerable.cs" />
     <Compile Include="Notifications\News\NewsNotification.cs" />
     <Compile Include="Notifications\News\NewsNotificationEnumerator.cs" />
-    <Compile Include="Notifications\News\NewsNotificationManager.cs" />
-    <Compile Include="Notifications\PrivateMessage\PrivateMessageNotificationCollection.cs" />
-    <Compile Include="Notifications\PrivateMessage\PrivateMessageNotification.cs" />
-    <Compile Include="Notifications\AnimeManga\AnimeMangaNotification.cs" />
-    <Compile Include="Notifications\PrivateMessage\PrivateMessageNotificationEnumerator.cs" />
-    <Compile Include="Notifications\PrivateMessage\PrivateMessageNotificationManager.cs" />
+    <Compile Include="Notifications\Message\MessageNotificationEnumerable.cs" />
+    <Compile Include="Notifications\Message\MessageNotification.cs" />
+    <Compile Include="Notifications\OtherMedia\MediaNotification.cs" />
+    <Compile Include="Notifications\Message\MessageNotificationEnumerator.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Senpai.cs" />
     <Compile Include="UserInfo\User.cs" />
@@ -237,23 +257,17 @@
     <Compile Include="UserInfo\UserPoints.cs" />
     <Compile Include="UserInfo\UserProfileEntry.cs" />
     <Compile Include="UserInfo\UserStatus.cs" />
-    <Compile Include="ErrorHandling\ErrorHandler.cs" />
-    <Compile Include="Utilities\Extensions\InitialisationExtensions.cs" />
     <Compile Include="Utilities\Extensions\ListExtensions.cs" />
     <Compile Include="Utilities\Extensions\SecureStringExtensions.cs" />
     <Compile Include="Utilities\Extensions\StringExtensions.cs" />
-    <Compile Include="Utilities\Extensions\TimerExtensions.cs" />
-    <Compile Include="Utilities\Extensions\TypeExtensions.cs" />
     <Compile Include="Utilities\Properties\IInitialisableProperty.cs" />
     <Compile Include="Utilities\Properties\InitialisableProperty.cs" />
-    <Compile Include="Utilities\Properties\SetableInitialisableProperty.cs" />
     <Compile Include="Api\v1\DataModels\User\LoginDataModel.cs" />
     <Compile Include="Api\v1\ErrorCode.cs" />
     <Compile Include="Api\v1\DataModels\IDataModel.cs" />
     <Compile Include="Api\v1\ProxerApiResponse.cs" />
     <Compile Include="Web\HttpClient.cs" />
     <Compile Include="ErrorHandling\ProxerResult.cs" />
-    <Compile Include="Utilities\Properties\AsyncProperty.cs" />
     <Compile Include="Utilities\Utility.cs" />
   </ItemGroup>
   <ItemGroup>

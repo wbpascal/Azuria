@@ -3,49 +3,71 @@ using Azuria.Api.v1.Converters;
 using Azuria.Api.v1.Converters.Anime;
 using Azuria.Media.Properties;
 using Newtonsoft.Json;
-using Newtonsoft.Json.Converters;
 
 namespace Azuria.Api.v1.DataModels.Anime
 {
-    internal class StreamDataModel
+    /// <summary>
+    /// </summary>
+    public class StreamDataModel
     {
         #region Properties
 
+        /// <summary>
+        /// </summary>
         [JsonProperty("name")]
-        internal string HosterFullName { get; set; }
+        public string HosterFullName { get; set; }
 
+        /// <summary>
+        /// </summary>
         [JsonProperty("img")]
-        internal string HosterImageFileName { get; set; }
+        public string HosterImageFileName { get; set; }
 
+        /// <summary>
+        /// </summary>
         [JsonProperty("htype")]
-        [JsonConverter(typeof(StringEnumConverter))]
-        internal StreamHostingType HostingType { get; set; }
+        public string HostingType { get; set; }
 
+        /// <summary>
+        /// </summary>
         [JsonProperty("replace")]
-        internal string PlaceholderLink { get; set; }
+        public string PlaceholderLink { get; set; }
 
+        /// <summary>
+        /// </summary>
         [JsonProperty("type")]
         [JsonConverter(typeof(StreamPartnerConverter))]
-        internal StreamHoster StreamHoster { get; set; }
+        public StreamHoster StreamHoster { get; set; }
 
+        /// <summary>
+        /// </summary>
         [JsonProperty("id")]
-        internal int StreamId { get; set; }
+        public int StreamId { get; set; }
 
+        /// <summary>
+        /// </summary>
         [JsonProperty("tid")]
-        internal int? TranslatorId { get; set; }
+        public int? TranslatorId { get; set; }
 
+        /// <summary>
+        /// </summary>
         [JsonProperty("tname")]
-        internal string TranslatorName { get; set; }
+        public string TranslatorName { get; set; }
 
+        /// <summary>
+        /// </summary>
         [JsonProperty("uploader")]
-        internal int UploaderId { get; set; }
+        public int UploaderId { get; set; }
 
+        /// <summary>
+        /// </summary>
         [JsonProperty("username")]
-        internal string UploaderName { get; set; }
+        public string UploaderName { get; set; }
 
+        /// <summary>
+        /// </summary>
         [JsonProperty("timestamp")]
         [JsonConverter(typeof(UnixToDateTimeConverter))]
-        internal DateTime UploadTimestamp { get; set; }
+        public DateTime UploadTimestamp { get; set; }
 
         #endregion
     }

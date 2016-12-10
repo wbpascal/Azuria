@@ -1,12 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
+using System.Linq;
 
 namespace Azuria.Utilities.Extensions
 {
     internal static class StringExtensions
     {
         #region Methods
+
+        internal static bool ContainsOne(this string source, params string[] contains)
+        {
+            return contains.Any(source.Contains);
+        }
 
         internal static List<string> GetTagContents(this string source, string startTag, string endTag)
         {

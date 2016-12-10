@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
+using Azuria.Media.Properties;
 using Newtonsoft.Json;
 
 namespace Azuria.Api.v1.Converters
@@ -17,7 +19,7 @@ namespace Azuria.Api.v1.Converters
         /// </returns>
         public override bool CanConvert(Type objectType)
         {
-            return objectType == typeof(string);
+            return objectType == typeof(IEnumerable<MediaLanguage>);
         }
 
         /// <summary>Reads the JSON representation of the object.</summary>
@@ -29,9 +31,8 @@ namespace Azuria.Api.v1.Converters
         public override object ReadJson(JsonReader reader, Type objectType, object existingValue,
             JsonSerializer serializer)
         {
-            return
-                (from language in reader.Value.ToString().Split(',') select GetLanguageFromString(language))
-                    .ToArray();
+            return (from language in reader.Value.ToString().Split(',')
+                select GetLanguageFromString(language)).ToArray();
         }
 
         /// <summary>Writes the JSON representation of the object.</summary>

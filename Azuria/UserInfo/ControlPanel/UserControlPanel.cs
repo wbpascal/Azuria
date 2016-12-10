@@ -1,10 +1,12 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
 using Azuria.Api.v1;
 using Azuria.Api.v1.DataModels.Ucp;
 using Azuria.Api.v1.Enums;
+using Azuria.Api.v1.RequestBuilder;
 using Azuria.ErrorHandling;
 using Azuria.Exceptions;
 using Azuria.Media;
@@ -33,6 +35,7 @@ namespace Azuria.UserInfo.ControlPanel
         public UserControlPanel(Senpai senpai)
         {
             this._senpai = senpai;
+            if (this._senpai == null) throw new ArgumentException(nameof(senpai));
             if (!this._senpai.IsProbablyLoggedIn) throw new NotLoggedInException(this._senpai);
 
             this._commentVotes = new InitialisableProperty<IEnumerable<CommentVote>>(this.InitVotes);
@@ -47,13 +50,13 @@ namespace Azuria.UserInfo.ControlPanel
         /// <summary>
         /// Gets all bookmarks of the user that are <see cref="Anime">Anime</see>.
         /// </summary>
-        public IEnumerable<BookmarkObject<Anime>> BookmarksAnime
+        public BookmarkEnumerable<Anime> BookmarksAnime
             => new BookmarkEnumerable<Anime>(this._senpai, this);
 
         /// <summary>
         /// Gets all bookmarks of the user that are <see cref="Manga">Manga</see>.
         /// </summary>
-        public IEnumerable<BookmarkObject<Manga>> BookmarksManga
+        public BookmarkEnumerable<Manga> BookmarksManga
             => new BookmarkEnumerable<Manga>(this._senpai, this);
 
         /// <summary>
@@ -62,8 +65,8 @@ namespace Azuria.UserInfo.ControlPanel
 
         /// <summary>
         /// </summary>
-        public IEnumerable<HistoryObject<IAnimeMangaObject>> History
-            => new HistoryEnumerable<IAnimeMangaObject>(this._senpai, this);
+        public HistoryEnumerable<IMediaObject> History
+            => new HistoryEnumerable<IMediaObject>(this._senpai, this);
 
         /// <summary>
         /// </summary>
@@ -87,34 +90,35 @@ namespace Azuria.UserInfo.ControlPanel
 
         /// <summary>
         /// </summary>
-        /// <typeparam name="T"></typeparam>
         /// <param name="contentObject"></param>
         /// <returns></returns>
-        public async Task<ProxerResult> AddToBookmarks<T>(IAnimeMangaContent<T> contentObject)
-            where T : class, IAnimeMangaObject
+        public async Task<IProxerResult> AddToBookmarks(IMediaContent contentObject)
         {
-            ProxerResult<ProxerApiResponse> lResult =
-                await
-                    RequestHandler.ApiRequest(ApiRequestBuilder.UcpSetBookmark(contentObject.ParentObject.Id,
+            if (contentObject == null) return new ProxerResult(new ArgumentNullException(nameof(contentObject)));
+
+            ProxerApiResponse lResult = await RequestHandler.ApiRequest(
+                    UcpRequestBuilder.SetBookmark(contentObject.ParentObject.Id,
                         contentObject.ContentIndex,
                         (contentObject as Anime.Episode)?.Language.ToString().ToLowerInvariant() ??
                         (contentObject.GeneralLanguage == Language.German ? "de" : "en"),
-                        typeof(T).GetTypeInfo().Name.ToLowerInvariant(), this._senpai));
+                        contentObject.ParentObject.GetType().GetTypeInfo().Name.ToLowerInvariant(), this._senpai))
+                .ConfigureAwait(false);
 
             return lResult.Success ? new ProxerResult() : new ProxerResult(lResult.Exceptions);
         }
 
         /// <summary>
         /// </summary>
-        /// <param name="animeMangaObject"></param>
+        /// <param name="entryId"></param>
         /// <param name="list"></param>
         /// <returns></returns>
-        public async Task<ProxerResult> AddToProfileList(IAnimeMangaObject animeMangaObject, AnimeMangaProfileList list)
+        public async Task<IProxerResult> AddToProfileList(int entryId, MediaProfileList list)
         {
-            ProxerResult<ProxerApiResponse> lResult =
-                await
-                    RequestHandler.ApiRequest(ApiRequestBuilder.InfoSetUserInfo(animeMangaObject.Id,
-                        ProfileListToString(list), this._senpai));
+            if (entryId < 0) return new ProxerResult(new ArgumentOutOfRangeException(nameof(entryId)));
+
+            ProxerApiResponse lResult = await RequestHandler.ApiRequest(
+                    InfoRequestBuilder.SetUserInfo(entryId, ProfileListToString(list), this._senpai))
+                .ConfigureAwait(false);
             return lResult.Success ? new ProxerResult() : new ProxerResult(lResult.Exceptions);
         }
 
@@ -122,10 +126,13 @@ namespace Azuria.UserInfo.ControlPanel
         /// </summary>
         /// <param name="bookmarkId"></param>
         /// <returns></returns>
-        public async Task<ProxerResult> DeleteBookmark(int bookmarkId)
+        public async Task<IProxerResult> DeleteBookmark(int bookmarkId)
         {
-            ProxerResult<ProxerApiResponse<BookmarkDataModel[]>> lResult =
-                await RequestHandler.ApiRequest(ApiRequestBuilder.UcpDeleteReminder(bookmarkId, this._senpai));
+            if (bookmarkId < 0) return new ProxerResult(new ArgumentOutOfRangeException(nameof(bookmarkId)));
+
+            ProxerApiResponse<BookmarkDataModel[]> lResult = await RequestHandler.ApiRequest(
+                    UcpRequestBuilder.DeleteReminder(bookmarkId, this._senpai))
+                .ConfigureAwait(false);
             return lResult.Success ? new ProxerResult() : new ProxerResult(lResult.Exceptions);
         }
 
@@ -133,10 +140,13 @@ namespace Azuria.UserInfo.ControlPanel
         /// </summary>
         /// <param name="voteId"></param>
         /// <returns></returns>
-        public async Task<ProxerResult> DeleteCommentVote(int voteId)
+        public async Task<IProxerResult> DeleteCommentVote(int voteId)
         {
-            ProxerResult<ProxerApiResponse<BookmarkDataModel[]>> lResult =
-                await RequestHandler.ApiRequest(ApiRequestBuilder.UcpDeleteVote(voteId, this._senpai));
+            if (voteId < 0) return new ProxerResult(new ArgumentOutOfRangeException(nameof(voteId)));
+
+            ProxerApiResponse<BookmarkDataModel[]> lResult = await RequestHandler.ApiRequest(
+                    UcpRequestBuilder.DeleteVote(voteId, this._senpai))
+                .ConfigureAwait(false);
             return lResult.Success ? new ProxerResult() : new ProxerResult(lResult.Exceptions);
         }
 
@@ -144,69 +154,73 @@ namespace Azuria.UserInfo.ControlPanel
         /// </summary>
         /// <param name="toptenId"></param>
         /// <returns></returns>
-        public async Task<ProxerResult> DeleteTopten(int toptenId)
+        public async Task<IProxerResult> DeleteTopten(int toptenId)
         {
-            ProxerResult<ProxerApiResponse<BookmarkDataModel[]>> lResult =
-                await RequestHandler.ApiRequest(ApiRequestBuilder.UcpDeleteFavourite(toptenId, this._senpai));
+            if (toptenId < 0) return new ProxerResult(new ArgumentOutOfRangeException(nameof(toptenId)));
+
+            ProxerApiResponse<BookmarkDataModel[]> lResult = await RequestHandler.ApiRequest(
+                    UcpRequestBuilder.DeleteFavourite(toptenId, this._senpai))
+                .ConfigureAwait(false);
             return lResult.Success ? new ProxerResult() : new ProxerResult(lResult.Exceptions);
         }
 
-        private async Task<ProxerResult> InitPoints(string category)
+        private async Task<IProxerResult> InitPoints(string category)
         {
-            ProxerResult<ProxerApiResponse<int>> lResult =
-                await RequestHandler.ApiRequest(ApiRequestBuilder.UcpGetListsum(this._senpai, category));
-            if (!lResult.Success || (lResult.Result == null)) return new ProxerResult(lResult.Exceptions);
+            ProxerApiResponse<int> lResult = await RequestHandler.ApiRequest(
+                    UcpRequestBuilder.GetListsum(this._senpai, category))
+                .ConfigureAwait(false);
+            if (!lResult.Success) return new ProxerResult(lResult.Exceptions);
 
             switch (category)
             {
                 case "anime":
-                    this._pointsAnime.SetInitialisedObject(lResult.Result.Data);
+                    this._pointsAnime.Set(lResult.Result);
                     break;
                 case "manga":
-                    this._pointsManga.SetInitialisedObject(lResult.Result.Data);
+                    this._pointsManga.Set(lResult.Result);
                     break;
             }
 
             return new ProxerResult();
         }
 
-        private async Task<ProxerResult> InitTopten()
+        private async Task<IProxerResult> InitTopten()
         {
-            ProxerResult<ProxerApiResponse<ToptenDataModel[]>> lResult =
-                await RequestHandler.ApiRequest(ApiRequestBuilder.UcpGetTopten(this._senpai));
+            ProxerApiResponse<ToptenDataModel[]> lResult = await RequestHandler.ApiRequest(
+                UcpRequestBuilder.GetTopten(this._senpai)).ConfigureAwait(false);
             if (!lResult.Success || (lResult.Result == null)) return new ProxerResult(lResult.Exceptions);
 
-            ToptenDataModel[] lData = lResult.Result.Data;
-            this._toptenAnime.SetInitialisedObject(from toptenDataModel in lData
-                where toptenDataModel.EntryType == AnimeMangaEntryType.Anime
+            ToptenDataModel[] lData = lResult.Result;
+            this._toptenAnime.Set(from toptenDataModel in lData
+                where toptenDataModel.EntryType == MediaEntryType.Anime
                 select new ToptenObject<Anime>(toptenDataModel.ToptenId, new Anime(toptenDataModel), this));
-            this._toptenManga.SetInitialisedObject(from toptenDataModel in lData
-                where toptenDataModel.EntryType == AnimeMangaEntryType.Manga
+            this._toptenManga.Set(from toptenDataModel in lData
+                where toptenDataModel.EntryType == MediaEntryType.Manga
                 select new ToptenObject<Manga>(toptenDataModel.ToptenId, new Manga(toptenDataModel), this));
 
             return new ProxerResult();
         }
 
-        private async Task<ProxerResult> InitVotes()
+        private async Task<IProxerResult> InitVotes()
         {
-            ProxerResult<ProxerApiResponse<VoteDataModel[]>> lResult =
-                await RequestHandler.ApiRequest(ApiRequestBuilder.UcpGetVotes(this._senpai));
+            ProxerApiResponse<VoteDataModel[]> lResult = await RequestHandler.ApiRequest(
+                UcpRequestBuilder.GetVotes(this._senpai)).ConfigureAwait(false);
             if (!lResult.Success || (lResult.Result == null)) return new ProxerResult(lResult.Exceptions);
 
-            this._commentVotes.SetInitialisedObject(from voteDataModel in lResult.Result.Data
+            this._commentVotes.Set(from voteDataModel in lResult.Result
                 select new CommentVote(voteDataModel, this));
             return new ProxerResult();
         }
 
-        private static string ProfileListToString(AnimeMangaProfileList list)
+        private static string ProfileListToString(MediaProfileList list)
         {
             switch (list)
             {
-                case AnimeMangaProfileList.Favourites:
+                case MediaProfileList.Favourites:
                     return "favor";
-                case AnimeMangaProfileList.Finished:
+                case MediaProfileList.Finished:
                     return "finish";
-                case AnimeMangaProfileList.Noted:
+                case MediaProfileList.Noted:
                     return "note";
                 default:
                     return string.Empty;

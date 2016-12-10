@@ -7,47 +7,73 @@ using Newtonsoft.Json;
 
 namespace Azuria.Api.v1.DataModels
 {
-    internal class CommentDataModel : IDataModel
+    /// <summary>
+    /// </summary>
+    public class CommentDataModel : IDataModel
     {
         #region Properties
 
+        /// <summary>
+        /// </summary>
         [JsonProperty("avatar")]
-        internal string Avatar { get; set; }
+        public string Avatar { get; set; }
 
+        /// <summary>
+        /// </summary>
         [JsonProperty("comment")]
-        internal string CommentContent { get; set; }
+        public string CommentContent { get; set; }
 
+        /// <summary>
+        /// </summary>
         [JsonProperty("id")]
-        internal int CommentId { get; set; }
+        public int CommentId { get; set; }
 
+        /// <summary>
+        /// </summary>
         [JsonProperty("episode")]
-        internal int ContentIndex { get; set; }
+        public int ContentIndex { get; set; }
 
+        /// <summary>
+        /// </summary>
         [JsonProperty("timestamp")]
         [JsonConverter(typeof(UnixToDateTimeConverter))]
-        internal DateTime Date { get; set; }
+        public DateTime Date { get; set; }
 
+        /// <summary>
+        /// </summary>
         [JsonProperty("tid")]
-        internal int EntryId { get; set; }
+        public int EntryId { get; set; }
 
+        /// <summary>
+        /// </summary>
         [JsonProperty("rating")]
-        internal int OverallRating { get; set; }
+        public int OverallRating { get; set; }
 
+        /// <summary>
+        /// </summary>
         [JsonProperty("status")]
-        internal AnimeMangaProgressState State { get; set; }
+        public MediaProgressState State { get; set; }
 
+        /// <summary>
+        /// </summary>
         [JsonProperty("data")]
         [JsonConverter(typeof(SubRatingsConverter))]
-        internal Dictionary<RatingCategory, int> SubRatings { get; set; }
+        public Dictionary<RatingCategory, int> SubRatings { get; set; }
 
+        /// <summary>
+        /// </summary>
         [JsonProperty("positive")]
-        internal int Upvotes { get; set; }
+        public int Upvotes { get; set; }
 
+        /// <summary>
+        /// </summary>
         [JsonProperty("uid")]
-        internal int UserId { get; set; }
+        public int UserId { get; set; }
 
+        /// <summary>
+        /// </summary>
         [JsonProperty("username")]
-        internal string Username { get; set; }
+        public string Username { get; set; }
 
         #endregion
     }

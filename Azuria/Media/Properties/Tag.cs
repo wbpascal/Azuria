@@ -6,14 +6,20 @@ namespace Azuria.Media.Properties
     /// </summary>
     public class Tag
     {
-        internal Tag(EntryTagDataModel dataModel)
+        internal Tag(MediaTagDataModel dataModel)
         {
-            this.TagType = dataModel.Tag;
+            this.Description = dataModel.Description;
             this.IsRated = dataModel.IsRated;
             this.IsSpoiler = dataModel.IsSpoiler;
+            this.TagType = dataModel.Tag;
         }
 
         #region Properties
+
+        /// <summary>
+        /// Only available in german.
+        /// </summary>
+        public string Description { get; set; }
 
         /// <summary>
         /// </summary>
