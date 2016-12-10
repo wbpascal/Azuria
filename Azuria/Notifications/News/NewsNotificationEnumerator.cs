@@ -3,6 +3,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Azuria.Api.v1;
 using Azuria.Api.v1.DataModels.Notifications;
+using Azuria.Api.v1.RequestBuilder;
 using Azuria.Enumerable;
 using Azuria.ErrorHandling;
 
@@ -26,7 +27,7 @@ namespace Azuria.Notifications.News
         internal override async Task<IProxerResult<IEnumerable<NewsNotification>>> GetNextPage(int nextPage)
         {
             ProxerApiResponse<NewsNotificationDataModel[]> lResult = await RequestHandler.ApiRequest(
-                    ApiRequestBuilder.NotificationGetNews(nextPage, this._newsPerPage, this._senpai))
+                    NotificationsRequestBuilder.GetNews(nextPage, this._newsPerPage, this._senpai))
                 .ConfigureAwait(false);
             if (!lResult.Success || (lResult.Result == null))
                 return new ProxerResult<IEnumerable<NewsNotification>>(lResult.Exceptions);

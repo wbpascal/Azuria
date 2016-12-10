@@ -7,6 +7,7 @@ using Azuria.Api.v1;
 using Azuria.Api.v1.DataModels.Messenger;
 using Azuria.Api.v1.DataModels.User;
 using Azuria.Api.v1.Enums;
+using Azuria.Api.v1.RequestBuilder;
 using Azuria.ErrorHandling;
 using Azuria.Exceptions;
 using Azuria.Media;
@@ -160,7 +161,7 @@ namespace Azuria.UserInfo
         public static async Task<IProxerResult<User>> FromUsername(string username)
         {
             ProxerApiResponse<UserInfoDataModel> lResult = await RequestHandler.ApiRequest(
-                ApiRequestBuilder.UserGetInfo(username)).ConfigureAwait(false);
+                UserRequestBuilder.GetInfo(username)).ConfigureAwait(false);
             if (!lResult.Success || (lResult.Result == null)) return new ProxerResult<User>(lResult.Exceptions);
             return new ProxerResult<User>(new User(lResult.Result));
         }
@@ -170,7 +171,7 @@ namespace Azuria.UserInfo
             if (this == System) return new ProxerResult(new InvalidUserException());
 
             ProxerApiResponse<UserInfoDataModel> lResult = await RequestHandler.ApiRequest(
-                ApiRequestBuilder.UserGetInfo(this.Id)).ConfigureAwait(false);
+                UserRequestBuilder.GetInfo(this.Id)).ConfigureAwait(false);
             if (!lResult.Success || (lResult.Result == null)) return new ProxerResult(lResult.Exceptions);
 
             UserInfoDataModel lDataModel = lResult.Result;
@@ -187,7 +188,7 @@ namespace Azuria.UserInfo
             if (this == System) return new ProxerResult(new InvalidUserException());
 
             ProxerApiResponse<ToptenDataModel[]> lResult = await RequestHandler.ApiRequest(
-                    ApiRequestBuilder.UserGetTopten(this.Id, category.ToString().ToLower(), senpai))
+                    UserRequestBuilder.GetTopten(this.Id, category.ToString().ToLower(), senpai))
                 .ConfigureAwait(false);
             if (!lResult.Success || (lResult.Result == null)) return new ProxerResult(lResult.Exceptions);
 

@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using Azuria.Api.v1;
 using Azuria.Api.v1.DataModels.Ucp;
 using Azuria.Api.v1.Enums;
+using Azuria.Api.v1.RequestBuilder;
 using Azuria.Enumerable;
 using Azuria.ErrorHandling;
 using Azuria.Media;
@@ -39,7 +40,7 @@ namespace Azuria.UserInfo.ControlPanel
         internal override async Task<IProxerResult<IEnumerable<HistoryObject<T>>>> GetNextPage(int nextPage)
         {
             ProxerApiResponse<HistoryDataModel[]> lResult = await RequestHandler.ApiRequest(
-                    ApiRequestBuilder.UcpGetHistory(nextPage, ResultsPerPage, this._senpai))
+                    UcpRequestBuilder.GetHistory(nextPage, ResultsPerPage, this._senpai))
                 .ConfigureAwait(false);
             if (!lResult.Success || (lResult.Result == null))
                 return new ProxerResult<IEnumerable<HistoryObject<T>>>(lResult.Exceptions);

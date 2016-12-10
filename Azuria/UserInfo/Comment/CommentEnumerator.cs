@@ -5,6 +5,7 @@ using System.Reflection;
 using System.Threading.Tasks;
 using Azuria.Api.v1;
 using Azuria.Api.v1.DataModels;
+using Azuria.Api.v1.RequestBuilder;
 using Azuria.Enumerable;
 using Azuria.ErrorHandling;
 using Azuria.Media;
@@ -39,9 +40,9 @@ namespace Azuria.UserInfo.Comment
         {
             ProxerApiResponse<CommentDataModel[]> lResult =
                 await RequestHandler.ApiRequest(this._user == null
-                        ? ApiRequestBuilder.InfoGetComments(this._mediaObject.Id,
+                        ? InfoRequestBuilder.GetComments(this._mediaObject.Id,
                             nextPage, ResultsPerPage, this._sort)
-                        : ApiRequestBuilder.UserGetLatestComments(this._user.Id, nextPage, ResultsPerPage,
+                        : UserRequestBuilder.GetLatestComments(this._user.Id, nextPage, ResultsPerPage,
                             typeof(T).GetTypeInfo().Name.ToLower(), 0, this._senpai))
                     .ConfigureAwait(false);
             if (!lResult.Success || (lResult.Result == null))

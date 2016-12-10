@@ -10,6 +10,7 @@ using Azuria.Api.v1.DataModels.Manga;
 using Azuria.Api.v1.DataModels.Search;
 using Azuria.Api.v1.DataModels.Ucp;
 using Azuria.Api.v1.Enums;
+using Azuria.Api.v1.RequestBuilder;
 using Azuria.ErrorHandling;
 using Azuria.Exceptions;
 using Azuria.Media.Properties;
@@ -148,7 +149,7 @@ namespace Azuria.Media
         internal async Task<IProxerResult> InitAvailableLanguages()
         {
             ProxerApiResponse<MediaLanguage[]> lResult = await RequestHandler.ApiRequest(
-                ApiRequestBuilder.InfoGetLanguage(this.Id)).ConfigureAwait(false);
+                InfoRequestBuilder.GetLanguage(this.Id)).ConfigureAwait(false);
             if (!lResult.Success || (lResult.Result == null)) return new ProxerResult(lResult.Exceptions);
             this._availableLanguages.Set(lResult.Result.Cast<Language>());
             return new ProxerResult();
@@ -280,7 +281,7 @@ namespace Azuria.Media
             private async Task<IProxerResult> InitInfo()
             {
                 ProxerApiResponse<ChapterDataModel> lResult = await RequestHandler.ApiRequest(
-                        ApiRequestBuilder.MangaGetChapter(this.ParentObject.Id, this.ContentIndex,
+                        MangaRequestBuilder.GetChapter(this.ParentObject.Id, this.ContentIndex,
                             this.Language == Language.German ? "de" : "en", this.Senpai))
                     .ConfigureAwait(false);
                 if (!lResult.Success || (lResult.Result == null)) return new ProxerResult(lResult.Exceptions);

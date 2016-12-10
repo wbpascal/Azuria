@@ -1,6 +1,7 @@
 ﻿using System.Threading.Tasks;
 using Azuria.Api.v1;
 using Azuria.Api.v1.DataModels.Notifications;
+using Azuria.Api.v1.RequestBuilder;
 using Azuria.ErrorHandling;
 using Azuria.Notifications.Message;
 using Azuria.Notifications.News;
@@ -49,7 +50,7 @@ namespace Azuria.Notifications
         public async Task<IProxerResult> DeleteAllOtherMediaNotifications()
         {
             ProxerApiResponse lResult = await RequestHandler.ApiRequest(
-                    ApiRequestBuilder.NotificationDelete(this._senpai))
+                    NotificationsRequestBuilder.Delete(this._senpai))
                 .ConfigureAwait(false);
             return lResult.Success ? new ProxerResult() : new ProxerResult(lResult.Exceptions);
         }
@@ -61,7 +62,7 @@ namespace Azuria.Notifications
         public async Task<IProxerResult> DeleteOtherMediaNotification(int notificationId)
         {
             ProxerApiResponse lResult = await RequestHandler.ApiRequest(
-                    ApiRequestBuilder.NotificationDelete(this._senpai, notificationId))
+                    NotificationsRequestBuilder.Delete(this._senpai, notificationId))
                 .ConfigureAwait(false);
             return lResult.Success ? new ProxerResult() : new ProxerResult(lResult.Exceptions);
         }
@@ -72,7 +73,7 @@ namespace Azuria.Notifications
         public async Task<IProxerResult<NotificationCount>> GetCount()
         {
             ProxerApiResponse<NotificationCountDataModel> lResult = await RequestHandler.ApiRequest(
-                ApiRequestBuilder.NotificationGetCount(this._senpai)).ConfigureAwait(false);
+                NotificationsRequestBuilder.GetCount(this._senpai)).ConfigureAwait(false);
             return lResult.Success && (lResult.Result != null)
                 ? new ProxerResult<NotificationCount>(new NotificationCount(lResult.Result))
                 : new ProxerResult<NotificationCount>(lResult.Exceptions);

@@ -11,6 +11,7 @@ using Azuria.Api.v1.DataModels.Info;
 using Azuria.Api.v1.DataModels.Search;
 using Azuria.Api.v1.DataModels.Ucp;
 using Azuria.Api.v1.Enums;
+using Azuria.Api.v1.RequestBuilder;
 using Azuria.ErrorHandling;
 using Azuria.Exceptions;
 using Azuria.Media.Properties;
@@ -148,7 +149,7 @@ namespace Azuria.Media
         private async Task<IProxerResult> InitAvailableLanguages()
         {
             ProxerApiResponse<MediaLanguage[]> lResult = await RequestHandler.ApiRequest(
-                ApiRequestBuilder.InfoGetLanguage(this.Id)).ConfigureAwait(false);
+                InfoRequestBuilder.GetLanguage(this.Id)).ConfigureAwait(false);
             if (!lResult.Success) return new ProxerResult(lResult.Exceptions);
             this._availableLanguages.Set(lResult.Result.Cast<AnimeLanguage>());
             return new ProxerResult();
@@ -254,7 +255,7 @@ namespace Azuria.Media
             private async Task<IProxerResult> InitStreams()
             {
                 ProxerApiResponse<StreamDataModel[]> lResult = await RequestHandler.ApiRequest(
-                        ApiRequestBuilder.AnimeGetStreams(this.ParentObject.Id, this.ContentIndex,
+                        AnimeRequestBuilder.GetStreams(this.ParentObject.Id, this.ContentIndex,
                             this.Language.ToString().ToLowerInvariant(), this.Senpai))
                     .ConfigureAwait(false);
                 if (!lResult.Success || (lResult.Result == null)) return new ProxerResult(lResult.Exceptions);
@@ -343,7 +344,7 @@ namespace Azuria.Media
                 private async Task<IProxerResult> InitStreamLink()
                 {
                     ProxerApiResponse<string> lResult = await RequestHandler.ApiRequest(
-                        ApiRequestBuilder.AnimeGetLink(this.Id)).ConfigureAwait(false);
+                        AnimeRequestBuilder.GetLink(this.Id)).ConfigureAwait(false);
                     if (!lResult.Success || (lResult.Result == null)) return new ProxerResult(lResult.Exceptions);
                     string lData = lResult.Result;
 

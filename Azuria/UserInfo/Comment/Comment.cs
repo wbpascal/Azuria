@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using Azuria.Api.v1;
 using Azuria.Api.v1.DataModels;
 using Azuria.Api.v1.DataModels.User;
+using Azuria.Api.v1.RequestBuilder;
 using Azuria.ErrorHandling;
 using Azuria.Media;
 
@@ -104,7 +105,7 @@ namespace Azuria.UserInfo.Comment
             if (progress < 0) return new ProxerResult(new[] {new ArgumentException(nameof(progress))});
 
             ProxerApiResponse lResult = await RequestHandler.ApiRequest(
-                    ApiRequestBuilder.UcpSetProgress(this.Id, progress, senpai))
+                    UcpRequestBuilder.SetProgress(this.Id, progress, senpai))
                 .ConfigureAwait(false);
             if (!lResult.Success) return new ProxerResult(lResult.Exceptions);
 

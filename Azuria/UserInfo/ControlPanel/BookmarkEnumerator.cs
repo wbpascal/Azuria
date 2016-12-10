@@ -4,6 +4,7 @@ using System.Reflection;
 using System.Threading.Tasks;
 using Azuria.Api.v1;
 using Azuria.Api.v1.DataModels.Ucp;
+using Azuria.Api.v1.RequestBuilder;
 using Azuria.Enumerable;
 using Azuria.ErrorHandling;
 using Azuria.Media;
@@ -27,7 +28,7 @@ namespace Azuria.UserInfo.ControlPanel
         internal override async Task<IProxerResult<IEnumerable<Bookmark<T>>>> GetNextPage(int nextPage)
         {
             ProxerApiResponse<BookmarkDataModel[]> lResult = await RequestHandler.ApiRequest(
-                    ApiRequestBuilder.UcpGetReminder(typeof(T).GetTypeInfo().Name.ToLowerInvariant(),
+                    UcpRequestBuilder.GetReminder(typeof(T).GetTypeInfo().Name.ToLowerInvariant(),
                         nextPage, ResultsPerPage, this._senpai))
                 .ConfigureAwait(false);
             if (!lResult.Success || (lResult.Result == null))

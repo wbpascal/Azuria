@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Azuria.Api.v1;
 using Azuria.Api.v1.DataModels.Search;
 using Azuria.Api.v1.Enums;
+using Azuria.Api.v1.RequestBuilder;
 using Azuria.Enumerable;
 using Azuria.ErrorHandling;
 using Azuria.Media;
@@ -44,7 +45,7 @@ namespace Azuria.Search
         internal override async Task<IProxerResult<IEnumerable<T>>> GetNextPage(int nextPage)
         {
             ProxerApiResponse<SearchDataModel[]> lResult = await RequestHandler.ApiRequest(
-                    ApiRequestBuilder.ListEntryList(this._input, typeof(T).GetTypeInfo().Name.ToLowerInvariant(),
+                    ListRequestBuilder.EntryList(this._input, typeof(T).GetTypeInfo().Name.ToLowerInvariant(),
                         ResultsPerPage, nextPage))
                 .ConfigureAwait(false);
             if (!lResult.Success || (lResult.Result == null))

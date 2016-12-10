@@ -3,6 +3,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Azuria.Api.v1;
 using Azuria.Api.v1.DataModels.Messenger;
+using Azuria.Api.v1.RequestBuilder;
 using Azuria.Enumerable;
 using Azuria.ErrorHandling;
 
@@ -30,7 +31,7 @@ namespace Azuria.Community
         {
             Message lLastMessage = this.GetCurrentPage().LastOrDefault();
             ProxerApiResponse<MessageDataModel[]> lResult = await RequestHandler.ApiRequest(
-                    ApiRequestBuilder.MessengerGetMessages(this._senpai, this._conferenceId,
+                    MessengerRequestBuilder.GetMessages(this._senpai, this._conferenceId,
                         lLastMessage?.MessageId ?? 0, this._markAsRead))
                 .ConfigureAwait(false);
             if (!lResult.Success || (lResult.Result == null))

@@ -78,6 +78,15 @@
     <Compile Include="Api\v1\DataModels\Manga\ChapterDataModel.cs" />
     <Compile Include="Api\v1\DataModels\Manga\PageDataModel.cs" />
     <Compile Include="Api\v1\DataModels\Media\HeaderDataModel.cs" />
+    <Compile Include="Api\v1\RequestBuilder\AnimeRequestBuilder.cs" />
+    <Compile Include="Api\v1\RequestBuilder\InfoRequestBuilder.cs" />
+    <Compile Include="Api\v1\RequestBuilder\ListRequestBuilder.cs" />
+    <Compile Include="Api\v1\RequestBuilder\MangaRequestBuilder.cs" />
+    <Compile Include="Api\v1\RequestBuilder\MediaRequestBuilder.cs" />
+    <Compile Include="Api\v1\RequestBuilder\MessengerRequestBuilder.cs" />
+    <Compile Include="Api\v1\RequestBuilder\NotificationsRequestBuilder.cs" />
+    <Compile Include="Api\v1\RequestBuilder\UcpRequestBuilder.cs" />
+    <Compile Include="Api\v1\RequestBuilder\UserRequestBuilder.cs" />
     <Compile Include="Enumerable\PagedEnumerable.cs" />
     <Compile Include="Enumerable\RetryableEnumerator.cs" />
     <Compile Include="ErrorHandling\IProxerResult.cs" />

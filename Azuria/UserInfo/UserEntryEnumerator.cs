@@ -3,6 +3,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Azuria.Api.v1;
 using Azuria.Api.v1.DataModels.User;
+using Azuria.Api.v1.RequestBuilder;
 using Azuria.Enumerable;
 using Azuria.ErrorHandling;
 using Azuria.Media;
@@ -26,7 +27,7 @@ namespace Azuria.UserInfo
         internal override async Task<IProxerResult<IEnumerable<UserProfileEntry<T>>>> GetNextPage(int nextPage)
         {
             ProxerApiResponse<ListDataModel[]> lResult = await RequestHandler.ApiRequest(
-                    ApiRequestBuilder.UserGetList(this._user.Id, typeof(T).Name.ToLowerInvariant(),
+                    UserRequestBuilder.GetList(this._user.Id, typeof(T).Name.ToLowerInvariant(),
                         nextPage, ResultsPerPage, this._senpai))
                 .ConfigureAwait(false);
             if (!lResult.Success || (lResult.Result == null))
