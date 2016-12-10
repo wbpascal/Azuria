@@ -165,7 +165,6 @@
     <Compile Include="Media\Properties\TagType.cs" />
     <Compile Include="Api\ApiInfo.cs" />
     <Compile Include="Api\v1\ApiRequest.cs" />
-    <Compile Include="Api\v1\ApiRequestBuilder.cs" />
     <Compile Include="Api\v1\Converters\LanguageConverter.cs" />
     <Compile Include="Api\v1\Converters\LanguageCommaCollectionConverter.cs" />
     <Compile Include="Api\v1\Converters\Info\StreamHosterConverter.cs" />
