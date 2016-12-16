@@ -4,12 +4,15 @@ using System.Collections.Generic;
 namespace Azuria.Enumerable
 {
     /// <summary>
+    /// Represents an enumerator which retries their <see cref="MoveNext()" /> method a specified number of times.
     /// </summary>
+    /// <typeparam name="T">The type of the objects this enumerator contains.</typeparam>
     public abstract class RetryableEnumerator<T> : IEnumerator<T>
     {
         /// <summary>
+        /// Initialises a new instance of <see cref="RetryableEnumerator{T}" />.
         /// </summary>
-        /// <param name="retryCount"></param>
+        /// <param name="retryCount">A number that indicates how many times the <see cref="MoveNext()" /> method should be retried.</param>
         protected RetryableEnumerator(int retryCount = 2)
         {
             this.RetryCount = retryCount;
@@ -25,6 +28,7 @@ namespace Azuria.Enumerable
 
 
         /// <summary>
+        /// Get or sets a value that inicates how many times the <see cref="MoveNext()" /> method should be retired.
         /// </summary>
         public int RetryCount { get; }
 
@@ -51,9 +55,10 @@ namespace Azuria.Enumerable
         }
 
         /// <summary>
+        /// Moves the pointer to the next element in the enumeration and returns if the action succeeded.
         /// </summary>
-        /// <param name="retryCount"></param>
-        /// <returns></returns>
+        /// <param name="retryCount">A number that indicates the current retry.</param>
+        /// <returns>A boolean value that indicates whether the pointer could be moved to the next element.</returns>
         public abstract bool MoveNext(int retryCount);
 
         /// <inheritdoc />
