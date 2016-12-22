@@ -31,7 +31,7 @@ namespace Azuria.Api.v1.DataModels.Manga
         /// </summary>
         [JsonProperty("pages")]
         [JsonConverter(typeof(PagesConverter))]
-        public IEnumerable<PageDataModel> Pages { get; set; }
+        public PageDataModel[] Pages { get; set; }
 
         /// <summary>
         /// </summary>
