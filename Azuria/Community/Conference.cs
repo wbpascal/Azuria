@@ -15,7 +15,7 @@ using Azuria.Utilities.Properties;
 namespace Azuria.Community
 {
     /// <summary>
-    /// Represents a messaging Conference.
+    /// Represents a Conference.
     /// </summary>
     [DebuggerDisplay("Conference: {Topic} [{Id}]")]
     public class Conference
@@ -51,7 +51,9 @@ namespace Azuria.Community
         #region Properties
 
         /// <summary>
-        /// Gets or sets a value indicating whether the conference is currently fetching new messages.
+        /// Gets or sets whether the conference is currently searching for new messages in the background and invoking the
+        /// <see cref="NewMessageRecieved" /> event when new messages were found. In order for the backround search to work you
+        /// need to have the permissions to access <see cref="Messages" />.
         /// </summary>
         public bool AutoCheck
         {
@@ -64,6 +66,8 @@ namespace Azuria.Community
         }
 
         /// <summary>
+        /// Gets or sets the interval in which new messages are searched for in the background if <see cref="AutoCheck" /> is set
+        /// to true.
         /// </summary>
         public TimeSpan AutoCheckInterval
         {
@@ -77,47 +81,65 @@ namespace Azuria.Community
         public int Id { get; }
 
         /// <summary>
+        /// Gets whether the current instance is a group conference. Commands can only be used in group conferences.
         /// </summary>
         public bool IsGroupConference { get; }
 
         /// <summary>
+        /// Gets whether all static variables of the class have already been initialised. Static variables can be initialised by
+        /// calling <see cref="Init" />.
         /// </summary>
         public static bool IsInitialised { get; private set; }
 
         /// <summary>
         /// Gets a <see cref="User" /> that is the current leader of the conference.
+        /// 
+        /// Api permissions required:
+        /// * Messenger - Level 0
         /// </summary>
         public IInitialisableProperty<User> Leader => this._leader;
 
         /// <summary>
+        /// Gets the max amount of characters that can be send per message. Needs to be initialised by <see cref="Init" />.
         /// </summary>
         /// <seealso cref="Init" />
         public static int MaxCharactersPerMessage { get; private set; }
 
         /// <summary>
+        /// Gets the max length of the topic in characters. Needs to be initialised by <see cref="Init" />.
         /// </summary>
         /// <seealso cref="Init" />
         public static int MaxCharactersTopic { get; private set; }
 
         /// <summary>
+        /// Gets the max amount of users a group conference can hold. Needs to be initialised by <see cref="Init" />.
         /// </summary>
         /// <seealso cref="Init" />
         public static int MaxUsersPerConference { get; private set; }
 
         /// <summary>
         /// Gets all messages of the current conference ordered by newest first.
+        /// 
+        /// Api permissions required:
+        /// * Messenger - Level 0
         /// </summary>
         public MessageEnumerable Messages => new MessageEnumerable(this.Id, this._senpai);
 
         internal static int MessagesPerPage { get; private set; }
 
         /// <summary>
-        /// Gets all participants of the current conference.
+        /// Gets an enumeration of all participants of the conference.
+        /// 
+        /// Api permissions required:
+        /// * Messenger - Level 0
         /// </summary>
         public IInitialisableProperty<IEnumerable<User>> Participants => this._participants;
 
         /// <summary>
-        /// Gets the current title of the current conference.
+        /// Gets the current title of the conference.
+        /// 
+        /// Api permissions required:
+        /// * Messenger - Level 0
         /// </summary>
         public IInitialisableProperty<string> Topic => this._topic;
 
@@ -126,27 +148,27 @@ namespace Azuria.Community
         #region Events
 
         /// <summary>
-        /// Represent a method, which is raised when an exception is thrown during the message fetching.
+        /// Represent a method which is invoked when an exception is thrown during the background search of new messages.
         /// </summary>
         /// <param name="sender">The conference that raised the event.</param>
-        /// <param name="exception">The exception thrown.</param>
+        /// <param name="exception">The exception that was thrown.</param>
         public delegate void ErrorThrownAutoMessageFetchEventHandler(Conference sender, Exception exception);
 
         /// <summary>
-        /// Represents a method, which is raised when new messages were recieved or once everytime Active is set to true.
+        /// Represents a method which is invoked when new messages were found or once everytime <see cref="AutoCheck" /> is set to
+        /// true.
         /// </summary>
         /// <param name="sender">The conference that raised the event.</param>
-        /// <param name="e">
-        /// Contains the new messages.
-        /// </param>
+        /// <param name="e">An enumeration of the new messages.</param>
         public delegate void NewMessageRecievedEventHandler(Conference sender, IEnumerable<Message> e);
 
         /// <summary>
+        /// Raised when an exception is thrown during the background search of new messages.
         /// </summary>
         public event ErrorThrownAutoMessageFetchEventHandler ErrorThrownAutoMessageFetch;
 
         /// <summary>
-        /// Occurs when new messages were recieved or once everytime Active is set to true.
+        /// Raised when new messages were recieved during the background search or once every time <see cref="AutoCheck" /> is set to true.
         /// </summary>
         public event NewMessageRecievedEventHandler NewMessageRecieved;
 
@@ -177,18 +199,19 @@ namespace Azuria.Community
         }
 
         /// <summary>
+        /// Creates or returns an existing conference with a specified user and sends a message to the conference.
+        /// 
+        /// Api permissions required:
+        /// * Messenger - Level 1
+        /// * User - Level 0
         /// </summary>
-        /// <param name="user"></param>
-        /// <param name="message"></param>
-        /// <param name="senpai"></param>
-        /// <returns></returns>
+        /// <param name="user">The user that will recieve the message.</param>
+        /// <param name="message">The message that will be send to the conference.</param>
+        /// <param name="senpai">The user that sends the message. Needs to be logged in.</param>
+        /// <returns>An asynchronous <see cref="Task" /> that returns an <see cref="IProxerResult" /> containing the conference.</returns>
         public static async Task<IProxerResult<Conference>> Create(User user, string message, Senpai senpai)
         {
-            if (!IsInitialised)
-                return new ProxerResult<Conference>(new NotInitialisedException("Please call " + nameof(Init)));
             if (user == null) return new ProxerResult<Conference>(new ArgumentException(nameof(user)));
-            if (string.IsNullOrEmpty(message) || (message.Length > MaxCharactersPerMessage))
-                return new ProxerResult<Conference>(new ArgumentException(message));
 
             IProxerResult<string> lUsernameResult = await user.UserName.Get().ConfigureAwait(false);
             if (!lUsernameResult.Success || string.IsNullOrEmpty(lUsernameResult.Result))
@@ -198,11 +221,15 @@ namespace Azuria.Community
         }
 
         /// <summary>
+        /// Creates or returns an existing conference with a specified user and sends a message to the conference.
+        /// 
+        /// Api permissions required:
+        /// * Messenger - Level 1
         /// </summary>
-        /// <param name="username"></param>
-        /// <param name="message"></param>
-        /// <param name="senpai"></param>
-        /// <returns></returns>
+        /// <param name="username">The username of the user that recieves the message.</param>
+        /// <param name="message">The message that will be send to the conference.</param>
+        /// <param name="senpai">The user that sends the message. Needs to be logged in.</param>
+        /// <returns>An asynchronous <see cref="Task" /> that returns an <see cref="IProxerResult" /> containing the conference.</returns>
         public static async Task<IProxerResult<Conference>> Create(string username, string message, Senpai senpai)
         {
             if (!IsInitialised)
@@ -220,17 +247,30 @@ namespace Azuria.Community
         }
 
         /// <summary>
+        /// Creates a new group conference with 2 or more participants with a specified topic and an optional message that is send.
+        /// 
+        /// Api permissions required:
+        /// * Messenger - Level 1
+        /// * User - Level 0
         /// </summary>
-        /// <param name="participants"></param>
-        /// <param name="topic"></param>
-        /// <param name="senpai"></param>
-        /// <param name="message"></param>
-        /// <returns></returns>
+        /// <param name="participants">
+        /// An enumertaion of the participants. The user who creates the conference does not need to be
+        /// included.
+        /// </param>
+        /// <param name="topic">The topic of the created conference.</param>
+        /// <param name="senpai">
+        /// The user that creates the conference and who will be the initial leader of the conference. Needs
+        /// to be logged in.
+        /// </param>
+        /// <param name="message">Optional. A message that is send to the created conference. Default: null</param>
+        /// <returns>An asynchronous <see cref="Task" /> that returns an <see cref="IProxerResult" /> containing the conference.</returns>
         public static async Task<IProxerResult<Conference>> CreateGroup(IEnumerable<User> participants,
             string topic, Senpai senpai, string message = null)
         {
             if (!IsInitialised)
                 return new ProxerResult<Conference>(new NotInitialisedException("Please call " + nameof(Init)));
+            if (participants == null)
+                return new ProxerResult<Conference>(new ArgumentException(nameof(participants)));
             if (string.IsNullOrEmpty(topic) || (topic.Length > MaxCharactersTopic))
                 return new ProxerResult<Conference>(new ArgumentException(nameof(topic)));
 
@@ -251,17 +291,29 @@ namespace Azuria.Community
         }
 
         /// <summary>
+        /// Creates a new group conference with 2 or more participants with a specified topic and an optional message that is send.
+        /// 
+        /// Api permissions required:
+        /// * Messenger - Level 1
         /// </summary>
-        /// <param name="participants"></param>
-        /// <param name="topic"></param>
-        /// <param name="senpai"></param>
-        /// <param name="message"></param>
-        /// <returns></returns>
+        /// <param name="participants">
+        /// An enumertaion of the usernames of the participants. The user who creates the conference
+        /// does not need to be included.
+        /// </param>
+        /// <param name="topic">The topic of the created conference.</param>
+        /// <param name="senpai">
+        /// The user that creates the conference and who will be the initial leader of the conference. Needs
+        /// to be logged in.
+        /// </param>
+        /// <param name="message">Optional. A message that is send to the created conference. Default: null</param>
+        /// <returns>An asynchronous <see cref="Task" /> that returns an <see cref="IProxerResult" /> containing the conference.</returns>
         public static async Task<IProxerResult<Conference>> CreateGroup(IEnumerable<string> participants,
             string topic, Senpai senpai, string message = null)
         {
             if (!IsInitialised)
                 return new ProxerResult<Conference>(new NotInitialisedException("Please call " + nameof(Init)));
+            if (participants == null)
+                return new ProxerResult<Conference>(new ArgumentException(nameof(participants)));
             if (string.IsNullOrEmpty(topic) || (topic.Length > MaxCharactersTopic))
                 return new ProxerResult<Conference>(new ArgumentException(nameof(topic)));
 
@@ -278,10 +330,20 @@ namespace Azuria.Community
         }
 
         /// <summary>
+        /// Gets all conferences a user is participant in.
+        /// 
+        /// Api permissions required:
+        /// * Messenger - Level 0
         /// </summary>
-        /// <param name="senpai"></param>
-        /// <param name="type"></param>
-        /// <returns></returns>
+        /// <param name="senpai">The user of which the conferences are returned. Needs to be logged in.</param>
+        /// <param name="type">
+        /// Optional. The type of conferences that will be returned. Default:
+        /// <see cref="ConferenceListType.Default" />
+        /// </param>
+        /// <returns>
+        /// An asynchronous <see cref="Task" /> that returns an <see cref="IProxerResult" /> containing an enumeration of
+        /// conferences.
+        /// </returns>
         public static async Task<IProxerResult<IEnumerable<ConferenceInfo>>> GetConferences(Senpai senpai,
             ConferenceListType type = ConferenceListType.Default)
         {
@@ -304,8 +366,12 @@ namespace Azuria.Community
         }
 
         /// <summary>
+        /// Initialises all static variables of the class. Needs to be executed successfully before any other method is called.
+        /// 
+        /// Api permissions required:
+        /// * Messenger - Level 0
         /// </summary>
-        /// <returns></returns>
+        /// <returns>An asynchronous <see cref="Task" /> that returns an <see cref="IProxerResult" />.</returns>
         public static async Task<IProxerResult> Init()
         {
             ProxerApiResponse<ConstantsDataModel> lResult = await RequestHandler.ApiRequest(
@@ -347,10 +413,13 @@ namespace Azuria.Community
         }
 
         /// <summary>
-        /// Sends a message to the current conference.
+        /// Sends a message to the conference.
+        /// 
+        /// Api permissions required:
+        /// * Messenger - Level 1
         /// </summary>
-        /// <param name="message">The content of the message that is being send.</param>
-        /// <returns>Whether the action was successfull.</returns>
+        /// <param name="message">The message that is send to the conference.</param>
+        /// <returns>An asynchronous <see cref="Task" /> that returns an <see cref="IProxerResult" />.</returns>
         public async Task<IProxerResult<string>> SendMessage(string message)
         {
             if (string.IsNullOrEmpty(message)) throw new ArgumentException(nameof(message));
@@ -364,9 +433,13 @@ namespace Azuria.Community
         }
 
         /// <summary>
+        /// Reports the conference to the admins with a specified reason.
+        /// 
+        /// Api permissions required:
+        /// * Messenger - Level 0
         /// </summary>
-        /// <param name="reason"></param>
-        /// <returns></returns>
+        /// <param name="reason">The reason why the conference is being reported.</param>
+        /// <returns>An asynchronous <see cref="Task" /> that returns an <see cref="IProxerResult" />.</returns>
         public async Task<IProxerResult> SendReport(string reason)
         {
             if (string.IsNullOrEmpty(reason)) return new ProxerResult(new ArgumentException(nameof(reason)));
@@ -380,9 +453,13 @@ namespace Azuria.Community
         }
 
         /// <summary>
+        /// Blocks or unblocks the conference.
+        /// 
+        /// Api permissions required:
+        /// * Messenger - Level 0
         /// </summary>
-        /// <param name="isBlocked"></param>
-        /// <returns></returns>
+        /// <param name="isBlocked">Whether the conference should be blocked or unblocked.</param>
+        /// <returns>An asynchronous <see cref="Task" /> that returns an <see cref="IProxerResult" />.</returns>
         public async Task<IProxerResult> SetBlock(bool isBlocked)
         {
             ProxerApiResponse<int> lResult =
@@ -396,9 +473,13 @@ namespace Azuria.Community
         }
 
         /// <summary>
+        /// Favours or unfavours the conference.
+        /// 
+        /// Api permissions required:
+        /// * Messenger - Level 1
         /// </summary>
-        /// <param name="isFavourite"></param>
-        /// <returns></returns>
+        /// <param name="isFavourite">Whether the conference should be blocked or unblocked.</param>
+        /// <returns>An asynchronous <see cref="Task" /> that returns an <see cref="IProxerResult" />.</returns>
         public async Task<IProxerResult> SetFavourite(bool isFavourite)
         {
             ProxerApiResponse<int> lResult =
@@ -412,9 +493,12 @@ namespace Azuria.Community
         }
 
         /// <summary>
-        /// Marks the current conference as unread.
+        /// Marks the conference as unread.
+        /// 
+        /// Api permissions required:
+        /// * Messenger - Level 1
         /// </summary>
-        /// <returns>Whether the action was successfull.</returns>
+        /// <returns>An asynchronous <see cref="Task" /> that returns an <see cref="IProxerResult" />.</returns>
         public async Task<IProxerResult> SetUnread()
         {
             ProxerApiResponse lResult = await RequestHandler.ApiRequest(
