@@ -64,15 +64,11 @@ namespace Azuria.Enumerable
         /// </returns>
         protected abstract Task<IProxerResult<IEnumerable<T>>> GetNextPage(int nextPage);
 
-        private void LoadNextPage(int retry = 0)
+        private void LoadNextPage()
         {
             IProxerResult<IEnumerable<T>> lGetSearchResult = Task.Run(() => this.GetNextPage(this._nextPage)).Result;
             if (!lGetSearchResult.Success || (lGetSearchResult.Result == null))
-            {
-                if (retry < this.RetryCount) this.LoadNextPage(retry + 1);
-                else throw lGetSearchResult.Exceptions.FirstOrDefault() ?? new Exception("Unkown error");
-                return;
-            }
+                throw lGetSearchResult.Exceptions.FirstOrDefault() ?? new Exception("Unkown error");
             this._currentPageContent = lGetSearchResult.Result as T[] ?? lGetSearchResult.Result.ToArray();
         }
 

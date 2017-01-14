@@ -36,7 +36,8 @@ namespace Azuria.UserInfo.Comment
 
         #region Methods
 
-        internal override async Task<IProxerResult<IEnumerable<Comment<T>>>> GetNextPage(int nextPage)
+        /// <inheritdoc />
+        protected override async Task<IProxerResult<IEnumerable<Comment<T>>>> GetNextPage(int nextPage)
         {
             ProxerApiResponse<CommentDataModel[]> lResult =
                 await RequestHandler.ApiRequest(this._user == null

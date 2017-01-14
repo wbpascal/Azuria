@@ -27,7 +27,8 @@ namespace Azuria.Community
 
         #region Methods
 
-        internal override async Task<IProxerResult<IEnumerable<Message>>> GetNextPage(int nextPage)
+        /// <inheritdoc />
+        protected override async Task<IProxerResult<IEnumerable<Message>>> GetNextPage(int nextPage)
         {
             Message lLastMessage = this.GetCurrentPage().LastOrDefault();
             ProxerApiResponse<MessageDataModel[]> lResult = await RequestHandler.ApiRequest(

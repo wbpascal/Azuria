@@ -25,7 +25,8 @@ namespace Azuria.UserInfo.ControlPanel
 
         #region Methods
 
-        internal override async Task<IProxerResult<IEnumerable<Bookmark<T>>>> GetNextPage(int nextPage)
+        /// <inheritdoc />
+        protected override async Task<IProxerResult<IEnumerable<Bookmark<T>>>> GetNextPage(int nextPage)
         {
             ProxerApiResponse<BookmarkDataModel[]> lResult = await RequestHandler.ApiRequest(
                     UcpRequestBuilder.GetReminder(typeof(T).GetTypeInfo().Name.ToLowerInvariant(),

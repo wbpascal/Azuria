@@ -15,7 +15,6 @@ namespace Azuria.Community
 
         internal ConferenceInfo(ConferenceDataModel dataModel, Senpai senpai)
         {
-            this.Senpai = senpai;
             this.Conference = new Conference(dataModel, senpai);
             this._unreadMessages =
                 new ArgumentInitialisableProperty<bool, IEnumerable<Message>>(
@@ -27,10 +26,6 @@ namespace Azuria.Community
         /// <summary>
         /// </summary>
         public Conference Conference { get; }
-
-        /// <summary>
-        /// </summary>
-        public Senpai Senpai { get; set; }
 
         /// <summary>
         /// </summary>

@@ -36,7 +36,7 @@ namespace Azuria.Api.v1.DataModels.Info
         {
             SeasonDataModel lDataModel = obj as SeasonDataModel;
             if (lDataModel != null) return (lDataModel.Year == this.Year) && (lDataModel.Season == this.Season);
-            return base.Equals(obj);
+            return obj == this;
         }
 
         /// <summary>Serves as the default hash function. </summary>

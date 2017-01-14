@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <!--[if IE]><![endif]-->
 <html>
   
@@ -10,7 +10,7 @@
     <meta name="viewport" content="width=device-width">
     <meta name="title" content="Class Conference
    ">
-    <meta name="generator" content="docfx 2.3.1.0">
+    <meta name="generator" content="docfx 2.9.3.0">
     
     <link rel="shortcut icon" href="../favicon.ico">
     <link rel="stylesheet" href="../styles/docfx.vendor.css">
@@ -33,6 +33,7 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
               </button>
+              
               <a class="navbar-brand" href="../index.html">
                 <img id="logo" class="svg" src="../logo.svg" alt="">
               </a>
@@ -68,11 +69,9 @@
             <article class="content wrap" id="_content">
               
               
-              <a href="https://github.com/InfiniteSoul/Azuria/new/new-docs/docfx_project/apispec/new?filename=Azuria_Community_Conference.md&amp;value=---%0Auid%3A%20Azuria.Community.Conference%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="btn btn-primary pull-right mobile-hide">Improve this Doc</a>
-              <a href="https://github.com/InfiniteSoul/Azuria/blob/new-docs/Azuria/Community/Conference.cs/#L19" class="btn btn-primary pull-right mobile-hide">View Source</a>
               <h1 id="Azuria_Community_Conference" data-uid="Azuria.Community.Conference">Class Conference
               </h1>
-              <div class="markdown level0 summary"><p>Represents a messaging Conference.</p>
+              <div class="markdown level0 summary"><p>Represents a Conference.</p>
 </div>
               <div class="markdown level0 conceptual"></div>
               <div class="inheritance">
@@ -108,8 +107,7 @@
               <h6><strong>Assembly</strong>:Azuria.dll</h6>
               <h5 id="Azuria_Community_Conference_syntax">Syntax</h5>
               <div class="codewrapper">
-                <pre><code class="lang-csharp hljs">[DebuggerDisplay(&quot;Conference: {Topic} [{Id}]&quot;)]
-public class Conference</code></pre>
+                <pre><code class="lang-csharp hljs">public class Conference</code></pre>
               </div>
               <h3 id="properties">Properties
               </h3>
@@ -118,10 +116,13 @@ public class Conference</code></pre>
                 <a href="https://github.com/InfiniteSoul/Azuria/new/new-docs/docfx_project/apispec/new?filename=Azuria_Community_Conference_AutoCheck.md&amp;value=---%0Auid%3A%20Azuria.Community.Conference.AutoCheck%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
               </span>
               <span class="small pull-right mobile-hide">
-                <a href="https://github.com/InfiniteSoul/Azuria/blob/new-docs/Azuria/Community/Conference.cs/#L55">View Source</a>
+                <a href="https://github.com/InfiniteSoul/Azuria/blob/new-docs/Azuria/Community/Conference.cs/#L57">View Source</a>
               </span>
+              <a id="Azuria_Community_Conference_AutoCheck_" data-uid="Azuria.Community.Conference.AutoCheck*"></a>
               <h4 id="Azuria_Community_Conference_AutoCheck" data-uid="Azuria.Community.Conference.AutoCheck">AutoCheck</h4>
-              <div class="markdown level1 summary"><p>Gets or sets a value indicating whether the conference is currently fetching new messages.</p>
+              <div class="markdown level1 summary"><p>Gets or sets whether the conference is currently searching for new messages in the background and invoking the
+<a class="xref" href="Azuria.Community.Conference.html#Azuria_Community_Conference_NewMessageRecieved">NewMessageRecieved</a> event when new messages were found. In order for the backround search to work you
+need to have the permissions to access <a class="xref" href="Azuria.Community.Conference.html#Azuria_Community_Conference_Messages">Messages</a>.</p>
 </div>
               <div class="markdown level1 conceptual"></div>
               <h5 class="decalaration">Declaration</h5>
@@ -145,11 +146,44 @@ public class Conference</code></pre>
               </table>
               <span class="small pull-right mobile-hide">
                 <span class="divider">|</span>
+                <a href="https://github.com/InfiniteSoul/Azuria/new/new-docs/docfx_project/apispec/new?filename=Azuria_Community_Conference_AutoCheckInterval.md&amp;value=---%0Auid%3A%20Azuria.Community.Conference.AutoCheckInterval%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+              </span>
+              <span class="small pull-right mobile-hide">
+                <a href="https://github.com/InfiniteSoul/Azuria/blob/new-docs/Azuria/Community/Conference.cs/#L71">View Source</a>
+              </span>
+              <a id="Azuria_Community_Conference_AutoCheckInterval_" data-uid="Azuria.Community.Conference.AutoCheckInterval*"></a>
+              <h4 id="Azuria_Community_Conference_AutoCheckInterval" data-uid="Azuria.Community.Conference.AutoCheckInterval">AutoCheckInterval</h4>
+              <div class="markdown level1 summary"><p>Gets or sets the interval in which new messages are searched for in the background if <a class="xref" href="Azuria.Community.Conference.html#Azuria_Community_Conference_AutoCheck">AutoCheck</a> is set
+to true.</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public TimeSpan AutoCheckInterval { get; set; }</code></pre>
+              </div>
+              <h5 class="propertyValue">Property Value</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.TimeSpan</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <span class="small pull-right mobile-hide">
+                <span class="divider">|</span>
                 <a href="https://github.com/InfiniteSoul/Azuria/new/new-docs/docfx_project/apispec/new?filename=Azuria_Community_Conference_Id.md&amp;value=---%0Auid%3A%20Azuria.Community.Conference.Id%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
               </span>
               <span class="small pull-right mobile-hide">
-                <a href="https://github.com/InfiniteSoul/Azuria/blob/new-docs/Azuria/Community/Conference.cs/#L68">View Source</a>
+                <a href="https://github.com/InfiniteSoul/Azuria/blob/new-docs/Azuria/Community/Conference.cs/#L80">View Source</a>
               </span>
+              <a id="Azuria_Community_Conference_Id_" data-uid="Azuria.Community.Conference.Id*"></a>
               <h4 id="Azuria_Community_Conference_Id" data-uid="Azuria.Community.Conference.Id">Id</h4>
               <div class="markdown level1 summary"><p>Gets the Id of the conference.</p>
 </div>
@@ -178,10 +212,12 @@ public class Conference</code></pre>
                 <a href="https://github.com/InfiniteSoul/Azuria/new/new-docs/docfx_project/apispec/new?filename=Azuria_Community_Conference_IsGroupConference.md&amp;value=---%0Auid%3A%20Azuria.Community.Conference.IsGroupConference%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
               </span>
               <span class="small pull-right mobile-hide">
-                <a href="https://github.com/InfiniteSoul/Azuria/blob/new-docs/Azuria/Community/Conference.cs/#L72">View Source</a>
+                <a href="https://github.com/InfiniteSoul/Azuria/blob/new-docs/Azuria/Community/Conference.cs/#L85">View Source</a>
               </span>
+              <a id="Azuria_Community_Conference_IsGroupConference_" data-uid="Azuria.Community.Conference.IsGroupConference*"></a>
               <h4 id="Azuria_Community_Conference_IsGroupConference" data-uid="Azuria.Community.Conference.IsGroupConference">IsGroupConference</h4>
-              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 summary"><p>Gets whether the current instance is a group conference. Commands can only be used in group conferences.</p>
+</div>
               <div class="markdown level1 conceptual"></div>
               <h5 class="decalaration">Declaration</h5>
               <div class="codewrapper">
@@ -204,13 +240,50 @@ public class Conference</code></pre>
               </table>
               <span class="small pull-right mobile-hide">
                 <span class="divider">|</span>
+                <a href="https://github.com/InfiniteSoul/Azuria/new/new-docs/docfx_project/apispec/new?filename=Azuria_Community_Conference_IsInitialised.md&amp;value=---%0Auid%3A%20Azuria.Community.Conference.IsInitialised%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+              </span>
+              <span class="small pull-right mobile-hide">
+                <a href="https://github.com/InfiniteSoul/Azuria/blob/new-docs/Azuria/Community/Conference.cs/#L91">View Source</a>
+              </span>
+              <a id="Azuria_Community_Conference_IsInitialised_" data-uid="Azuria.Community.Conference.IsInitialised*"></a>
+              <h4 id="Azuria_Community_Conference_IsInitialised" data-uid="Azuria.Community.Conference.IsInitialised">IsInitialised</h4>
+              <div class="markdown level1 summary"><p>Gets whether all static variables of the class have already been initialised. Static variables can be initialised by
+calling <a class="xref" href="Azuria.Community.Conference.html#Azuria_Community_Conference_Init">Init()</a>.</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public static bool IsInitialised { get; }</code></pre>
+              </div>
+              <h5 class="propertyValue">Property Value</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Boolean</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <span class="small pull-right mobile-hide">
+                <span class="divider">|</span>
                 <a href="https://github.com/InfiniteSoul/Azuria/new/new-docs/docfx_project/apispec/new?filename=Azuria_Community_Conference_Leader.md&amp;value=---%0Auid%3A%20Azuria.Community.Conference.Leader%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
               </span>
               <span class="small pull-right mobile-hide">
-                <a href="https://github.com/InfiniteSoul/Azuria/blob/new-docs/Azuria/Community/Conference.cs/#L77">View Source</a>
+                <a href="https://github.com/InfiniteSoul/Azuria/blob/new-docs/Azuria/Community/Conference.cs/#L99">View Source</a>
               </span>
+              <a id="Azuria_Community_Conference_Leader_" data-uid="Azuria.Community.Conference.Leader*"></a>
               <h4 id="Azuria_Community_Conference_Leader" data-uid="Azuria.Community.Conference.Leader">Leader</h4>
-              <div class="markdown level1 summary"><p>Gets a <a class="xref" href="Azuria.UserInfo.User.html#Azuria_UserInfo_User">User</a> that is the current leader of the conference.</p>
+              <div class="markdown level1 summary"><p>Gets a <a class="xref" href="Azuria.UserInfo.User.html">User</a> that is the current leader of the conference.</p>
+<p>Api permissions required:</p>
+<ul>
+<li>Messenger - Level 0</li>
+</ul>
 </div>
               <div class="markdown level1 conceptual"></div>
               <h5 class="decalaration">Declaration</h5>
@@ -227,7 +300,7 @@ public class Conference</code></pre>
                 </thead>
                 <tbody>
                   <tr>
-                    <td><a class="xref" href="Azuria.Utilities.Properties.IInitialisableProperty-1.html#Azuria_Utilities_Properties_IInitialisableProperty_1">IInitialisableProperty</a>&lt;<a class="xref" href="Azuria.UserInfo.User.html#Azuria_UserInfo_User">User</a>&gt;</td>
+                    <td><a class="xref" href="Azuria.Utilities.Properties.IInitialisableProperty-1.html">IInitialisableProperty</a>&lt;<a class="xref" href="Azuria.UserInfo.User.html">User</a>&gt;</td>
                     <td></td>
                   </tr>
                 </tbody>
@@ -237,10 +310,12 @@ public class Conference</code></pre>
                 <a href="https://github.com/InfiniteSoul/Azuria/new/new-docs/docfx_project/apispec/new?filename=Azuria_Community_Conference_MaxCharactersPerMessage.md&amp;value=---%0Auid%3A%20Azuria.Community.Conference.MaxCharactersPerMessage%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
               </span>
               <span class="small pull-right mobile-hide">
-                <a href="https://github.com/InfiniteSoul/Azuria/blob/new-docs/Azuria/Community/Conference.cs/#L82">View Source</a>
+                <a href="https://github.com/InfiniteSoul/Azuria/blob/new-docs/Azuria/Community/Conference.cs/#L105">View Source</a>
               </span>
+              <a id="Azuria_Community_Conference_MaxCharactersPerMessage_" data-uid="Azuria.Community.Conference.MaxCharactersPerMessage*"></a>
               <h4 id="Azuria_Community_Conference_MaxCharactersPerMessage" data-uid="Azuria.Community.Conference.MaxCharactersPerMessage">MaxCharactersPerMessage</h4>
-              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 summary"><p>Gets the max amount of characters that can be send per message. Needs to be initialised by <a class="xref" href="Azuria.Community.Conference.html#Azuria_Community_Conference_Init">Init()</a>.</p>
+</div>
               <div class="markdown level1 conceptual"></div>
               <h5 class="decalaration">Declaration</h5>
               <div class="codewrapper">
@@ -270,10 +345,12 @@ public class Conference</code></pre>
                 <a href="https://github.com/InfiniteSoul/Azuria/new/new-docs/docfx_project/apispec/new?filename=Azuria_Community_Conference_MaxCharactersTopic.md&amp;value=---%0Auid%3A%20Azuria.Community.Conference.MaxCharactersTopic%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
               </span>
               <span class="small pull-right mobile-hide">
-                <a href="https://github.com/InfiniteSoul/Azuria/blob/new-docs/Azuria/Community/Conference.cs/#L87">View Source</a>
+                <a href="https://github.com/InfiniteSoul/Azuria/blob/new-docs/Azuria/Community/Conference.cs/#L111">View Source</a>
               </span>
+              <a id="Azuria_Community_Conference_MaxCharactersTopic_" data-uid="Azuria.Community.Conference.MaxCharactersTopic*"></a>
               <h4 id="Azuria_Community_Conference_MaxCharactersTopic" data-uid="Azuria.Community.Conference.MaxCharactersTopic">MaxCharactersTopic</h4>
-              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 summary"><p>Gets the max length of the topic in characters. Needs to be initialised by <a class="xref" href="Azuria.Community.Conference.html#Azuria_Community_Conference_Init">Init()</a>.</p>
+</div>
               <div class="markdown level1 conceptual"></div>
               <h5 class="decalaration">Declaration</h5>
               <div class="codewrapper">
@@ -303,10 +380,12 @@ public class Conference</code></pre>
                 <a href="https://github.com/InfiniteSoul/Azuria/new/new-docs/docfx_project/apispec/new?filename=Azuria_Community_Conference_MaxUsersPerConference.md&amp;value=---%0Auid%3A%20Azuria.Community.Conference.MaxUsersPerConference%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
               </span>
               <span class="small pull-right mobile-hide">
-                <a href="https://github.com/InfiniteSoul/Azuria/blob/new-docs/Azuria/Community/Conference.cs/#L92">View Source</a>
+                <a href="https://github.com/InfiniteSoul/Azuria/blob/new-docs/Azuria/Community/Conference.cs/#L117">View Source</a>
               </span>
+              <a id="Azuria_Community_Conference_MaxUsersPerConference_" data-uid="Azuria.Community.Conference.MaxUsersPerConference*"></a>
               <h4 id="Azuria_Community_Conference_MaxUsersPerConference" data-uid="Azuria.Community.Conference.MaxUsersPerConference">MaxUsersPerConference</h4>
-              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 summary"><p>Gets the max amount of users a group conference can hold. Needs to be initialised by <a class="xref" href="Azuria.Community.Conference.html#Azuria_Community_Conference_Init">Init()</a>.</p>
+</div>
               <div class="markdown level1 conceptual"></div>
               <h5 class="decalaration">Declaration</h5>
               <div class="codewrapper">
@@ -336,15 +415,20 @@ public class Conference</code></pre>
                 <a href="https://github.com/InfiniteSoul/Azuria/new/new-docs/docfx_project/apispec/new?filename=Azuria_Community_Conference_Messages.md&amp;value=---%0Auid%3A%20Azuria.Community.Conference.Messages%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
               </span>
               <span class="small pull-right mobile-hide">
-                <a href="https://github.com/InfiniteSoul/Azuria/blob/new-docs/Azuria/Community/Conference.cs/#L97">View Source</a>
+                <a href="https://github.com/InfiniteSoul/Azuria/blob/new-docs/Azuria/Community/Conference.cs/#L125">View Source</a>
               </span>
+              <a id="Azuria_Community_Conference_Messages_" data-uid="Azuria.Community.Conference.Messages*"></a>
               <h4 id="Azuria_Community_Conference_Messages" data-uid="Azuria.Community.Conference.Messages">Messages</h4>
               <div class="markdown level1 summary"><p>Gets all messages of the current conference ordered by newest first.</p>
+<p>Api permissions required:</p>
+<ul>
+<li>Messenger - Level 0</li>
+</ul>
 </div>
               <div class="markdown level1 conceptual"></div>
               <h5 class="decalaration">Declaration</h5>
               <div class="codewrapper">
-                <pre><code class="lang-csharp hljs">public IEnumerable&lt;Message&gt; Messages { get; }</code></pre>
+                <pre><code class="lang-csharp hljs">public MessageEnumerable Messages { get; }</code></pre>
               </div>
               <h5 class="propertyValue">Property Value</h5>
               <table class="table table-bordered table-striped table-condensed">
@@ -356,7 +440,7 @@ public class Conference</code></pre>
                 </thead>
                 <tbody>
                   <tr>
-                    <td><span class="xref">System.Collections.Generic.IEnumerable</span>&lt;<a class="xref" href="Azuria.Community.Message.html#Azuria_Community_Message">Message</a>&gt;</td>
+                    <td><a class="xref" href="Azuria.Community.MessageEnumerable.html">MessageEnumerable</a></td>
                     <td></td>
                   </tr>
                 </tbody>
@@ -366,10 +450,15 @@ public class Conference</code></pre>
                 <a href="https://github.com/InfiniteSoul/Azuria/new/new-docs/docfx_project/apispec/new?filename=Azuria_Community_Conference_Participants.md&amp;value=---%0Auid%3A%20Azuria.Community.Conference.Participants%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
               </span>
               <span class="small pull-right mobile-hide">
-                <a href="https://github.com/InfiniteSoul/Azuria/blob/new-docs/Azuria/Community/Conference.cs/#L104">View Source</a>
+                <a href="https://github.com/InfiniteSoul/Azuria/blob/new-docs/Azuria/Community/Conference.cs/#L135">View Source</a>
               </span>
+              <a id="Azuria_Community_Conference_Participants_" data-uid="Azuria.Community.Conference.Participants*"></a>
               <h4 id="Azuria_Community_Conference_Participants" data-uid="Azuria.Community.Conference.Participants">Participants</h4>
-              <div class="markdown level1 summary"><p>Gets all participants of the current conference.</p>
+              <div class="markdown level1 summary"><p>Gets an enumeration of all participants of the conference.</p>
+<p>Api permissions required:</p>
+<ul>
+<li>Messenger - Level 0</li>
+</ul>
 </div>
               <div class="markdown level1 conceptual"></div>
               <h5 class="decalaration">Declaration</h5>
@@ -386,7 +475,39 @@ public class Conference</code></pre>
                 </thead>
                 <tbody>
                   <tr>
-                    <td><a class="xref" href="Azuria.Utilities.Properties.IInitialisableProperty-1.html#Azuria_Utilities_Properties_IInitialisableProperty_1">IInitialisableProperty</a>&lt;<span class="xref">System.Collections.Generic.IEnumerable</span>&lt;<a class="xref" href="Azuria.UserInfo.User.html#Azuria_UserInfo_User">User</a>&gt;&gt;</td>
+                    <td><a class="xref" href="Azuria.Utilities.Properties.IInitialisableProperty-1.html">IInitialisableProperty</a>&lt;<span class="xref">System.Collections.Generic.IEnumerable</span>&lt;<a class="xref" href="Azuria.UserInfo.User.html">User</a>&gt;&gt;</td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <span class="small pull-right mobile-hide">
+                <span class="divider">|</span>
+                <a href="https://github.com/InfiniteSoul/Azuria/new/new-docs/docfx_project/apispec/new?filename=Azuria_Community_Conference_Senpai.md&amp;value=---%0Auid%3A%20Azuria.Community.Conference.Senpai%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+              </span>
+              <span class="small pull-right mobile-hide">
+                <a href="https://github.com/InfiniteSoul/Azuria/blob/new-docs/Azuria/Community/Conference.cs/#L141">View Source</a>
+              </span>
+              <a id="Azuria_Community_Conference_Senpai_" data-uid="Azuria.Community.Conference.Senpai*"></a>
+              <h4 id="Azuria_Community_Conference_Senpai" data-uid="Azuria.Community.Conference.Senpai">Senpai</h4>
+              <div class="markdown level1 summary"><p>Gets the user that created this instance and is passed when calling <a class="xref" href="Azuria.Community.Conference.html#Azuria_Community_Conference_SendMessage_System_String_">SendMessage(String)</a>,
+<a class="xref" href="Azuria.Community.Conference.html#Azuria_Community_Conference_SendReport_System_String_">SendReport(String)</a>, <a class="xref" href="Azuria.Community.Conference.html#Azuria_Community_Conference_SetBlock_System_Boolean_">SetBlock(Boolean)</a>, <a class="xref" href="Azuria.Community.Conference.html#Azuria_Community_Conference_SetFavourite_System_Boolean_">SetFavourite(Boolean)</a> and <a class="xref" href="Azuria.Community.Conference.html#Azuria_Community_Conference_SetUnread">SetUnread()</a>.</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public Senpai Senpai { get; }</code></pre>
+              </div>
+              <h5 class="propertyValue">Property Value</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="Azuria.Senpai.html">Senpai</a></td>
                     <td></td>
                   </tr>
                 </tbody>
@@ -396,10 +517,15 @@ public class Conference</code></pre>
                 <a href="https://github.com/InfiniteSoul/Azuria/new/new-docs/docfx_project/apispec/new?filename=Azuria_Community_Conference_Topic.md&amp;value=---%0Auid%3A%20Azuria.Community.Conference.Topic%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
               </span>
               <span class="small pull-right mobile-hide">
-                <a href="https://github.com/InfiniteSoul/Azuria/blob/new-docs/Azuria/Community/Conference.cs/#L109">View Source</a>
+                <a href="https://github.com/InfiniteSoul/Azuria/blob/new-docs/Azuria/Community/Conference.cs/#L149">View Source</a>
               </span>
+              <a id="Azuria_Community_Conference_Topic_" data-uid="Azuria.Community.Conference.Topic*"></a>
               <h4 id="Azuria_Community_Conference_Topic" data-uid="Azuria.Community.Conference.Topic">Topic</h4>
-              <div class="markdown level1 summary"><p>Gets the current title of the current conference.</p>
+              <div class="markdown level1 summary"><p>Gets the current title of the conference.</p>
+<p>Api permissions required:</p>
+<ul>
+<li>Messenger - Level 0</li>
+</ul>
 </div>
               <div class="markdown level1 conceptual"></div>
               <h5 class="decalaration">Declaration</h5>
@@ -416,7 +542,7 @@ public class Conference</code></pre>
                 </thead>
                 <tbody>
                   <tr>
-                    <td><a class="xref" href="Azuria.Utilities.Properties.IInitialisableProperty-1.html#Azuria_Utilities_Properties_IInitialisableProperty_1">IInitialisableProperty</a>&lt;<span class="xref">System.String</span>&gt;</td>
+                    <td><a class="xref" href="Azuria.Utilities.Properties.IInitialisableProperty-1.html">IInitialisableProperty</a>&lt;<span class="xref">System.String</span>&gt;</td>
                     <td></td>
                   </tr>
                 </tbody>
@@ -428,14 +554,21 @@ public class Conference</code></pre>
                 <a href="https://github.com/InfiniteSoul/Azuria/new/new-docs/docfx_project/apispec/new?filename=Azuria_Community_Conference_Create_Azuria_UserInfo_User_System_String_Azuria_Senpai_.md&amp;value=---%0Auid%3A%20Azuria.Community.Conference.Create(Azuria.UserInfo.User%2CSystem.String%2CAzuria.Senpai)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
               </span>
               <span class="small pull-right mobile-hide">
-                <a href="https://github.com/InfiniteSoul/Azuria/blob/new-docs/Azuria/Community/Conference.cs/#L171">View Source</a>
+                <a href="https://github.com/InfiniteSoul/Azuria/blob/new-docs/Azuria/Community/Conference.cs/#L218">View Source</a>
               </span>
+              <a id="Azuria_Community_Conference_Create_" data-uid="Azuria.Community.Conference.Create*"></a>
               <h4 id="Azuria_Community_Conference_Create_Azuria_UserInfo_User_System_String_Azuria_Senpai_" data-uid="Azuria.Community.Conference.Create(Azuria.UserInfo.User,System.String,Azuria.Senpai)">Create(User, String, Senpai)</h4>
-              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 summary"><p>Creates or returns an existing conference with a specified user and sends a message to the conference.</p>
+<p>Api permissions required:</p>
+<ul>
+<li>Messenger - Level 1</li>
+<li>User - Level 0</li>
+</ul>
+</div>
               <div class="markdown level1 conceptual"></div>
               <h5 class="decalaration">Declaration</h5>
               <div class="codewrapper">
-                <pre><code class="lang-csharp hljs">public static Task&lt;ProxerResult&lt;Conference&gt;&gt; Create(User user, string message, Senpai senpai)</code></pre>
+                <pre><code class="lang-csharp hljs">public static Task&lt;IProxerResult&lt;Conference&gt;&gt; Create(User user, string message, Senpai senpai)</code></pre>
               </div>
               <h5 class="parameters">Parameters</h5>
               <table class="table table-bordered table-striped table-condensed">
@@ -448,19 +581,22 @@ public class Conference</code></pre>
                 </thead>
                 <tbody>
                   <tr>
-                    <td><a class="xref" href="Azuria.UserInfo.User.html#Azuria_UserInfo_User">User</a></td>
-                    <td><em>user</em></td>
-                    <td></td>
+                    <td><a class="xref" href="Azuria.UserInfo.User.html">User</a></td>
+                    <td><span class="parametername">user</span></td>
+                    <td><p>The user that will recieve the message.</p>
+</td>
                   </tr>
                   <tr>
                     <td><span class="xref">System.String</span></td>
-                    <td><em>message</em></td>
-                    <td></td>
+                    <td><span class="parametername">message</span></td>
+                    <td><p>The message that will be send to the conference.</p>
+</td>
                   </tr>
                   <tr>
-                    <td><a class="xref" href="Azuria.Senpai.html#Azuria_Senpai">Senpai</a></td>
-                    <td><em>senpai</em></td>
-                    <td></td>
+                    <td><a class="xref" href="Azuria.Senpai.html">Senpai</a></td>
+                    <td><span class="parametername">senpai</span></td>
+                    <td><p>The user that sends the message. Needs to be logged in.</p>
+</td>
                   </tr>
                 </tbody>
               </table>
@@ -474,8 +610,9 @@ public class Conference</code></pre>
                 </thead>
                 <tbody>
                   <tr>
-                    <td><span class="xref">System.Threading.Tasks.Task</span>&lt;<a class="xref" href="Azuria.ErrorHandling.ProxerResult-1.html#Azuria_ErrorHandling_ProxerResult_1">ProxerResult</a>&lt;<a class="xref" href="Azuria.Community.Conference.html#Azuria_Community_Conference">Conference</a>&gt;&gt;</td>
-                    <td></td>
+                    <td><span class="xref">System.Threading.Tasks.Task</span>&lt;<a class="xref" href="Azuria.ErrorHandling.IProxerResult-1.html">IProxerResult</a>&lt;<a class="xref" href="Azuria.Community.Conference.html">Conference</a>&gt;&gt;</td>
+                    <td><p>An asynchronous <span class="xref">System.Threading.Tasks.Task</span> that returns an <a class="xref" href="Azuria.ErrorHandling.IProxerResult.html">IProxerResult</a> containing the conference.</p>
+</td>
                   </tr>
                 </tbody>
               </table>
@@ -484,14 +621,20 @@ public class Conference</code></pre>
                 <a href="https://github.com/InfiniteSoul/Azuria/new/new-docs/docfx_project/apispec/new?filename=Azuria_Community_Conference_Create_System_String_System_String_Azuria_Senpai_.md&amp;value=---%0Auid%3A%20Azuria.Community.Conference.Create(System.String%2CSystem.String%2CAzuria.Senpai)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
               </span>
               <span class="small pull-right mobile-hide">
-                <a href="https://github.com/InfiniteSoul/Azuria/blob/new-docs/Azuria/Community/Conference.cs/#L186">View Source</a>
+                <a href="https://github.com/InfiniteSoul/Azuria/blob/new-docs/Azuria/Community/Conference.cs/#L239">View Source</a>
               </span>
+              <a id="Azuria_Community_Conference_Create_" data-uid="Azuria.Community.Conference.Create*"></a>
               <h4 id="Azuria_Community_Conference_Create_System_String_System_String_Azuria_Senpai_" data-uid="Azuria.Community.Conference.Create(System.String,System.String,Azuria.Senpai)">Create(String, String, Senpai)</h4>
-              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 summary"><p>Creates or returns an existing conference with a specified user and sends a message to the conference.</p>
+<p>Api permissions required:</p>
+<ul>
+<li>Messenger - Level 1</li>
+</ul>
+</div>
               <div class="markdown level1 conceptual"></div>
               <h5 class="decalaration">Declaration</h5>
               <div class="codewrapper">
-                <pre><code class="lang-csharp hljs">public static Task&lt;ProxerResult&lt;Conference&gt;&gt; Create(string username, string message, Senpai senpai)</code></pre>
+                <pre><code class="lang-csharp hljs">public static Task&lt;IProxerResult&lt;Conference&gt;&gt; Create(string username, string message, Senpai senpai)</code></pre>
               </div>
               <h5 class="parameters">Parameters</h5>
               <table class="table table-bordered table-striped table-condensed">
@@ -505,18 +648,21 @@ public class Conference</code></pre>
                 <tbody>
                   <tr>
                     <td><span class="xref">System.String</span></td>
-                    <td><em>username</em></td>
-                    <td></td>
+                    <td><span class="parametername">username</span></td>
+                    <td><p>The username of the user that recieves the message.</p>
+</td>
                   </tr>
                   <tr>
                     <td><span class="xref">System.String</span></td>
-                    <td><em>message</em></td>
-                    <td></td>
+                    <td><span class="parametername">message</span></td>
+                    <td><p>The message that will be send to the conference.</p>
+</td>
                   </tr>
                   <tr>
-                    <td><a class="xref" href="Azuria.Senpai.html#Azuria_Senpai">Senpai</a></td>
-                    <td><em>senpai</em></td>
-                    <td></td>
+                    <td><a class="xref" href="Azuria.Senpai.html">Senpai</a></td>
+                    <td><span class="parametername">senpai</span></td>
+                    <td><p>The user that sends the message. Needs to be logged in.</p>
+</td>
                   </tr>
                 </tbody>
               </table>
@@ -530,8 +676,9 @@ public class Conference</code></pre>
                 </thead>
                 <tbody>
                   <tr>
-                    <td><span class="xref">System.Threading.Tasks.Task</span>&lt;<a class="xref" href="Azuria.ErrorHandling.ProxerResult-1.html#Azuria_ErrorHandling_ProxerResult_1">ProxerResult</a>&lt;<a class="xref" href="Azuria.Community.Conference.html#Azuria_Community_Conference">Conference</a>&gt;&gt;</td>
-                    <td></td>
+                    <td><span class="xref">System.Threading.Tasks.Task</span>&lt;<a class="xref" href="Azuria.ErrorHandling.IProxerResult-1.html">IProxerResult</a>&lt;<a class="xref" href="Azuria.Community.Conference.html">Conference</a>&gt;&gt;</td>
+                    <td><p>An asynchronous <span class="xref">System.Threading.Tasks.Task</span> that returns an <a class="xref" href="Azuria.ErrorHandling.IProxerResult.html">IProxerResult</a> containing the conference.</p>
+</td>
                   </tr>
                 </tbody>
               </table>
@@ -540,14 +687,21 @@ public class Conference</code></pre>
                 <a href="https://github.com/InfiniteSoul/Azuria/new/new-docs/docfx_project/apispec/new?filename=Azuria_Community_Conference_CreateGroup_System_Collections_Generic_IEnumerable_Azuria_UserInfo_User__System_String_Azuria_Senpai_System_String_.md&amp;value=---%0Auid%3A%20Azuria.Community.Conference.CreateGroup(System.Collections.Generic.IEnumerable%7BAzuria.UserInfo.User%7D%2CSystem.String%2CAzuria.Senpai%2CSystem.String)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
               </span>
               <span class="small pull-right mobile-hide">
-                <a href="https://github.com/InfiniteSoul/Azuria/blob/new-docs/Azuria/Community/Conference.cs/#L205">View Source</a>
+                <a href="https://github.com/InfiniteSoul/Azuria/blob/new-docs/Azuria/Community/Conference.cs/#L273">View Source</a>
               </span>
+              <a id="Azuria_Community_Conference_CreateGroup_" data-uid="Azuria.Community.Conference.CreateGroup*"></a>
               <h4 id="Azuria_Community_Conference_CreateGroup_System_Collections_Generic_IEnumerable_Azuria_UserInfo_User__System_String_Azuria_Senpai_System_String_" data-uid="Azuria.Community.Conference.CreateGroup(System.Collections.Generic.IEnumerable{Azuria.UserInfo.User},System.String,Azuria.Senpai,System.String)">CreateGroup(IEnumerable&lt;User&gt;, String, Senpai, String)</h4>
-              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 summary"><p>Creates a new group conference with 2 or more participants with a specified topic and an optional message that is send.</p>
+<p>Api permissions required:</p>
+<ul>
+<li>Messenger - Level 1</li>
+<li>User - Level 0</li>
+</ul>
+</div>
               <div class="markdown level1 conceptual"></div>
               <h5 class="decalaration">Declaration</h5>
               <div class="codewrapper">
-                <pre><code class="lang-csharp hljs">public static Task&lt;ProxerResult&lt;Conference&gt;&gt; CreateGroup(IEnumerable&lt;User&gt; participants, string topic, Senpai senpai, string message = null)</code></pre>
+                <pre><code class="lang-csharp hljs">public static Task&lt;IProxerResult&lt;Conference&gt;&gt; CreateGroup(IEnumerable&lt;User&gt; participants, string topic, Senpai senpai, string message = null)</code></pre>
               </div>
               <h5 class="parameters">Parameters</h5>
               <table class="table table-bordered table-striped table-condensed">
@@ -560,24 +714,30 @@ public class Conference</code></pre>
                 </thead>
                 <tbody>
                   <tr>
-                    <td><span class="xref">System.Collections.Generic.IEnumerable</span>&lt;<a class="xref" href="Azuria.UserInfo.User.html#Azuria_UserInfo_User">User</a>&gt;</td>
-                    <td><em>participants</em></td>
-                    <td></td>
+                    <td><span class="xref">System.Collections.Generic.IEnumerable</span>&lt;<a class="xref" href="Azuria.UserInfo.User.html">User</a>&gt;</td>
+                    <td><span class="parametername">participants</span></td>
+                    <td><p>An enumertaion of the participants. The user who creates the conference does not need to be
+included.</p>
+</td>
                   </tr>
                   <tr>
                     <td><span class="xref">System.String</span></td>
-                    <td><em>topic</em></td>
-                    <td></td>
+                    <td><span class="parametername">topic</span></td>
+                    <td><p>The topic of the created conference.</p>
+</td>
                   </tr>
                   <tr>
-                    <td><a class="xref" href="Azuria.Senpai.html#Azuria_Senpai">Senpai</a></td>
-                    <td><em>senpai</em></td>
-                    <td></td>
+                    <td><a class="xref" href="Azuria.Senpai.html">Senpai</a></td>
+                    <td><span class="parametername">senpai</span></td>
+                    <td><p>The user that creates the conference and who will be the initial leader of the conference. Needs
+to be logged in.</p>
+</td>
                   </tr>
                   <tr>
                     <td><span class="xref">System.String</span></td>
-                    <td><em>message</em></td>
-                    <td></td>
+                    <td><span class="parametername">message</span></td>
+                    <td><p>Optional. A message that is send to the created conference. Default: null</p>
+</td>
                   </tr>
                 </tbody>
               </table>
@@ -591,8 +751,9 @@ public class Conference</code></pre>
                 </thead>
                 <tbody>
                   <tr>
-                    <td><span class="xref">System.Threading.Tasks.Task</span>&lt;<a class="xref" href="Azuria.ErrorHandling.ProxerResult-1.html#Azuria_ErrorHandling_ProxerResult_1">ProxerResult</a>&lt;<a class="xref" href="Azuria.Community.Conference.html#Azuria_Community_Conference">Conference</a>&gt;&gt;</td>
-                    <td></td>
+                    <td><span class="xref">System.Threading.Tasks.Task</span>&lt;<a class="xref" href="Azuria.ErrorHandling.IProxerResult-1.html">IProxerResult</a>&lt;<a class="xref" href="Azuria.Community.Conference.html">Conference</a>&gt;&gt;</td>
+                    <td><p>An asynchronous <span class="xref">System.Threading.Tasks.Task</span> that returns an <a class="xref" href="Azuria.ErrorHandling.IProxerResult.html">IProxerResult</a> containing the conference.</p>
+</td>
                   </tr>
                 </tbody>
               </table>
@@ -601,14 +762,20 @@ public class Conference</code></pre>
                 <a href="https://github.com/InfiniteSoul/Azuria/new/new-docs/docfx_project/apispec/new?filename=Azuria_Community_Conference_CreateGroup_System_Collections_Generic_IEnumerable_System_String__System_String_Azuria_Senpai_System_String_.md&amp;value=---%0Auid%3A%20Azuria.Community.Conference.CreateGroup(System.Collections.Generic.IEnumerable%7BSystem.String%7D%2CSystem.String%2CAzuria.Senpai%2CSystem.String)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
               </span>
               <span class="small pull-right mobile-hide">
-                <a href="https://github.com/InfiniteSoul/Azuria/blob/new-docs/Azuria/Community/Conference.cs/#L225">View Source</a>
+                <a href="https://github.com/InfiniteSoul/Azuria/blob/new-docs/Azuria/Community/Conference.cs/#L316">View Source</a>
               </span>
+              <a id="Azuria_Community_Conference_CreateGroup_" data-uid="Azuria.Community.Conference.CreateGroup*"></a>
               <h4 id="Azuria_Community_Conference_CreateGroup_System_Collections_Generic_IEnumerable_System_String__System_String_Azuria_Senpai_System_String_" data-uid="Azuria.Community.Conference.CreateGroup(System.Collections.Generic.IEnumerable{System.String},System.String,Azuria.Senpai,System.String)">CreateGroup(IEnumerable&lt;String&gt;, String, Senpai, String)</h4>
-              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 summary"><p>Creates a new group conference with 2 or more participants with a specified topic and an optional message that is send.</p>
+<p>Api permissions required:</p>
+<ul>
+<li>Messenger - Level 1</li>
+</ul>
+</div>
               <div class="markdown level1 conceptual"></div>
               <h5 class="decalaration">Declaration</h5>
               <div class="codewrapper">
-                <pre><code class="lang-csharp hljs">public static Task&lt;ProxerResult&lt;Conference&gt;&gt; CreateGroup(IEnumerable&lt;string&gt; participants, string topic, Senpai senpai, string message = null)</code></pre>
+                <pre><code class="lang-csharp hljs">public static Task&lt;IProxerResult&lt;Conference&gt;&gt; CreateGroup(IEnumerable&lt;string&gt; participants, string topic, Senpai senpai, string message = null)</code></pre>
               </div>
               <h5 class="parameters">Parameters</h5>
               <table class="table table-bordered table-striped table-condensed">
@@ -622,150 +789,28 @@ public class Conference</code></pre>
                 <tbody>
                   <tr>
                     <td><span class="xref">System.Collections.Generic.IEnumerable</span>&lt;<span class="xref">System.String</span>&gt;</td>
-                    <td><em>participants</em></td>
-                    <td></td>
+                    <td><span class="parametername">participants</span></td>
+                    <td><p>An enumertaion of the usernames of the participants. The user who creates the conference
+does not need to be included.</p>
+</td>
                   </tr>
                   <tr>
                     <td><span class="xref">System.String</span></td>
-                    <td><em>topic</em></td>
-                    <td></td>
+                    <td><span class="parametername">topic</span></td>
+                    <td><p>The topic of the created conference.</p>
+</td>
                   </tr>
                   <tr>
-                    <td><a class="xref" href="Azuria.Senpai.html#Azuria_Senpai">Senpai</a></td>
-                    <td><em>senpai</em></td>
-                    <td></td>
+                    <td><a class="xref" href="Azuria.Senpai.html">Senpai</a></td>
+                    <td><span class="parametername">senpai</span></td>
+                    <td><p>The user that creates the conference and who will be the initial leader of the conference. Needs
+to be logged in.</p>
+</td>
                   </tr>
                   <tr>
                     <td><span class="xref">System.String</span></td>
-                    <td><em>message</em></td>
-                    <td></td>
-                  </tr>
-                </tbody>
-              </table>
-              <h5 class="returns">Returns</h5>
-              <table class="table table-bordered table-striped table-condensed">
-                <thead>
-                  <tr>
-                    <th>Type</th>
-                    <th>Description</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <td><span class="xref">System.Threading.Tasks.Task</span>&lt;<a class="xref" href="Azuria.ErrorHandling.ProxerResult-1.html#Azuria_ErrorHandling_ProxerResult_1">ProxerResult</a>&lt;<a class="xref" href="Azuria.Community.Conference.html#Azuria_Community_Conference">Conference</a>&gt;&gt;</td>
-                    <td></td>
-                  </tr>
-                </tbody>
-              </table>
-              <span class="small pull-right mobile-hide">
-                <span class="divider">|</span>
-                <a href="https://github.com/InfiniteSoul/Azuria/new/new-docs/docfx_project/apispec/new?filename=Azuria_Community_Conference_GetConferences_Azuria_Senpai_Azuria_Community_ConferenceListType_.md&amp;value=---%0Auid%3A%20Azuria.Community.Conference.GetConferences(Azuria.Senpai%2CAzuria.Community.ConferenceListType)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
-              </span>
-              <span class="small pull-right mobile-hide">
-                <a href="https://github.com/InfiniteSoul/Azuria/blob/new-docs/Azuria/Community/Conference.cs/#L247">View Source</a>
-              </span>
-              <h4 id="Azuria_Community_Conference_GetConferences_Azuria_Senpai_Azuria_Community_ConferenceListType_" data-uid="Azuria.Community.Conference.GetConferences(Azuria.Senpai,Azuria.Community.ConferenceListType)">GetConferences(Senpai, ConferenceListType)</h4>
-              <div class="markdown level1 summary"></div>
-              <div class="markdown level1 conceptual"></div>
-              <h5 class="decalaration">Declaration</h5>
-              <div class="codewrapper">
-                <pre><code class="lang-csharp hljs">public static Task&lt;ProxerResult&lt;IEnumerable&lt;ConferenceInfo&gt;&gt;&gt; GetConferences(Senpai senpai, ConferenceListType type = ConferenceListType.Default)</code></pre>
-              </div>
-              <h5 class="parameters">Parameters</h5>
-              <table class="table table-bordered table-striped table-condensed">
-                <thead>
-                  <tr>
-                    <th>Type</th>
-                    <th>Name</th>
-                    <th>Description</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <td><a class="xref" href="Azuria.Senpai.html#Azuria_Senpai">Senpai</a></td>
-                    <td><em>senpai</em></td>
-                    <td></td>
-                  </tr>
-                  <tr>
-                    <td><a class="xref" href="Azuria.Community.ConferenceListType.html#Azuria_Community_ConferenceListType">ConferenceListType</a></td>
-                    <td><em>type</em></td>
-                    <td></td>
-                  </tr>
-                </tbody>
-              </table>
-              <h5 class="returns">Returns</h5>
-              <table class="table table-bordered table-striped table-condensed">
-                <thead>
-                  <tr>
-                    <th>Type</th>
-                    <th>Description</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <td><span class="xref">System.Threading.Tasks.Task</span>&lt;<a class="xref" href="Azuria.ErrorHandling.ProxerResult-1.html#Azuria_ErrorHandling_ProxerResult_1">ProxerResult</a>&lt;<span class="xref">System.Collections.Generic.IEnumerable</span>&lt;<a class="xref" href="Azuria.Community.ConferenceInfo.html#Azuria_Community_ConferenceInfo">ConferenceInfo</a>&gt;&gt;&gt;</td>
-                    <td></td>
-                  </tr>
-                </tbody>
-              </table>
-              <span class="small pull-right mobile-hide">
-                <span class="divider">|</span>
-                <a href="https://github.com/InfiniteSoul/Azuria/new/new-docs/docfx_project/apispec/new?filename=Azuria_Community_Conference_Init.md&amp;value=---%0Auid%3A%20Azuria.Community.Conference.Init%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
-              </span>
-              <span class="small pull-right mobile-hide">
-                <a href="https://github.com/InfiniteSoul/Azuria/blob/new-docs/Azuria/Community/Conference.cs/#L271">View Source</a>
-              </span>
-              <h4 id="Azuria_Community_Conference_Init" data-uid="Azuria.Community.Conference.Init">Init()</h4>
-              <div class="markdown level1 summary"></div>
-              <div class="markdown level1 conceptual"></div>
-              <h5 class="decalaration">Declaration</h5>
-              <div class="codewrapper">
-                <pre><code class="lang-csharp hljs">public static Task&lt;ProxerResult&gt; Init()</code></pre>
-              </div>
-              <h5 class="returns">Returns</h5>
-              <table class="table table-bordered table-striped table-condensed">
-                <thead>
-                  <tr>
-                    <th>Type</th>
-                    <th>Description</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <td><span class="xref">System.Threading.Tasks.Task</span>&lt;<a class="xref" href="Azuria.ErrorHandling.ProxerResult.html#Azuria_ErrorHandling_ProxerResult">ProxerResult</a>&gt;</td>
-                    <td></td>
-                  </tr>
-                </tbody>
-              </table>
-              <span class="small pull-right mobile-hide">
-                <span class="divider">|</span>
-                <a href="https://github.com/InfiniteSoul/Azuria/new/new-docs/docfx_project/apispec/new?filename=Azuria_Community_Conference_SendMessage_System_String_.md&amp;value=---%0Auid%3A%20Azuria.Community.Conference.SendMessage(System.String)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
-              </span>
-              <span class="small pull-right mobile-hide">
-                <a href="https://github.com/InfiniteSoul/Azuria/blob/new-docs/Azuria/Community/Conference.cs/#L314">View Source</a>
-              </span>
-              <h4 id="Azuria_Community_Conference_SendMessage_System_String_" data-uid="Azuria.Community.Conference.SendMessage(System.String)">SendMessage(String)</h4>
-              <div class="markdown level1 summary"><p>Sends a message to the current conference.</p>
-</div>
-              <div class="markdown level1 conceptual"></div>
-              <h5 class="decalaration">Declaration</h5>
-              <div class="codewrapper">
-                <pre><code class="lang-csharp hljs">public Task&lt;ProxerResult&lt;string&gt;&gt; SendMessage(string message)</code></pre>
-              </div>
-              <h5 class="parameters">Parameters</h5>
-              <table class="table table-bordered table-striped table-condensed">
-                <thead>
-                  <tr>
-                    <th>Type</th>
-                    <th>Name</th>
-                    <th>Description</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <td><span class="xref">System.String</span></td>
-                    <td><em>message</em></td>
-                    <td><p>The content of the message that is being send.</p>
+                    <td><span class="parametername">message</span></td>
+                    <td><p>Optional. A message that is send to the created conference. Default: null</p>
 </td>
                   </tr>
                 </tbody>
@@ -780,8 +825,160 @@ public class Conference</code></pre>
                 </thead>
                 <tbody>
                   <tr>
-                    <td><span class="xref">System.Threading.Tasks.Task</span>&lt;<a class="xref" href="Azuria.ErrorHandling.ProxerResult-1.html#Azuria_ErrorHandling_ProxerResult_1">ProxerResult</a>&lt;<span class="xref">System.String</span>&gt;&gt;</td>
-                    <td><p>Whether the action was successfull.</p>
+                    <td><span class="xref">System.Threading.Tasks.Task</span>&lt;<a class="xref" href="Azuria.ErrorHandling.IProxerResult-1.html">IProxerResult</a>&lt;<a class="xref" href="Azuria.Community.Conference.html">Conference</a>&gt;&gt;</td>
+                    <td><p>An asynchronous <span class="xref">System.Threading.Tasks.Task</span> that returns an <a class="xref" href="Azuria.ErrorHandling.IProxerResult.html">IProxerResult</a> containing the conference.</p>
+</td>
+                  </tr>
+                </tbody>
+              </table>
+              <span class="small pull-right mobile-hide">
+                <span class="divider">|</span>
+                <a href="https://github.com/InfiniteSoul/Azuria/new/new-docs/docfx_project/apispec/new?filename=Azuria_Community_Conference_GetConferences_Azuria_Senpai_Azuria_Community_ConferenceListType_.md&amp;value=---%0Auid%3A%20Azuria.Community.Conference.GetConferences(Azuria.Senpai%2CAzuria.Community.ConferenceListType)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+              </span>
+              <span class="small pull-right mobile-hide">
+                <a href="https://github.com/InfiniteSoul/Azuria/blob/new-docs/Azuria/Community/Conference.cs/#L353">View Source</a>
+              </span>
+              <a id="Azuria_Community_Conference_GetConferences_" data-uid="Azuria.Community.Conference.GetConferences*"></a>
+              <h4 id="Azuria_Community_Conference_GetConferences_Azuria_Senpai_Azuria_Community_ConferenceListType_" data-uid="Azuria.Community.Conference.GetConferences(Azuria.Senpai,Azuria.Community.ConferenceListType)">GetConferences(Senpai, ConferenceListType)</h4>
+              <div class="markdown level1 summary"><p>Gets all conferences a user is participant in.</p>
+<p>Api permissions required:</p>
+<ul>
+<li>Messenger - Level 0</li>
+</ul>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public static Task&lt;IProxerResult&lt;IEnumerable&lt;ConferenceInfo&gt;&gt;&gt; GetConferences(Senpai senpai, ConferenceListType type = ConferenceListType.Default)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="Azuria.Senpai.html">Senpai</a></td>
+                    <td><span class="parametername">senpai</span></td>
+                    <td><p>The user of which the conferences are returned. Needs to be logged in.</p>
+</td>
+                  </tr>
+                  <tr>
+                    <td><a class="xref" href="Azuria.Community.ConferenceListType.html">ConferenceListType</a></td>
+                    <td><span class="parametername">type</span></td>
+                    <td><p>Optional. The type of conferences that will be returned. Default:</p>
+<a class="xref" href="Azuria.Community.ConferenceListType.html#Azuria_Community_ConferenceListType_Default">Default</a>
+</td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Threading.Tasks.Task</span>&lt;<a class="xref" href="Azuria.ErrorHandling.IProxerResult-1.html">IProxerResult</a>&lt;<span class="xref">System.Collections.Generic.IEnumerable</span>&lt;<a class="xref" href="Azuria.Community.ConferenceInfo.html">ConferenceInfo</a>&gt;&gt;&gt;</td>
+                    <td><p>An asynchronous <span class="xref">System.Threading.Tasks.Task</span> that returns an <a class="xref" href="Azuria.ErrorHandling.IProxerResult.html">IProxerResult</a> containing an enumeration of
+conferences and all unread messages.</p>
+</td>
+                  </tr>
+                </tbody>
+              </table>
+              <span class="small pull-right mobile-hide">
+                <span class="divider">|</span>
+                <a href="https://github.com/InfiniteSoul/Azuria/new/new-docs/docfx_project/apispec/new?filename=Azuria_Community_Conference_Init.md&amp;value=---%0Auid%3A%20Azuria.Community.Conference.Init%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+              </span>
+              <span class="small pull-right mobile-hide">
+                <a href="https://github.com/InfiniteSoul/Azuria/blob/new-docs/Azuria/Community/Conference.cs/#L381">View Source</a>
+              </span>
+              <a id="Azuria_Community_Conference_Init_" data-uid="Azuria.Community.Conference.Init*"></a>
+              <h4 id="Azuria_Community_Conference_Init" data-uid="Azuria.Community.Conference.Init">Init()</h4>
+              <div class="markdown level1 summary"><p>Initialises all static variables of the class. Needs to be executed successfully before any other method is called.</p>
+<p>Api permissions required:</p>
+<ul>
+<li>Messenger - Level 0</li>
+</ul>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public static Task&lt;IProxerResult&gt; Init()</code></pre>
+              </div>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Threading.Tasks.Task</span>&lt;<a class="xref" href="Azuria.ErrorHandling.IProxerResult.html">IProxerResult</a>&gt;</td>
+                    <td><p>An asynchronous <span class="xref">System.Threading.Tasks.Task</span> that returns an <a class="xref" href="Azuria.ErrorHandling.IProxerResult.html">IProxerResult</a>.</p>
+</td>
+                  </tr>
+                </tbody>
+              </table>
+              <span class="small pull-right mobile-hide">
+                <span class="divider">|</span>
+                <a href="https://github.com/InfiniteSoul/Azuria/new/new-docs/docfx_project/apispec/new?filename=Azuria_Community_Conference_SendMessage_System_String_.md&amp;value=---%0Auid%3A%20Azuria.Community.Conference.SendMessage(System.String)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+              </span>
+              <span class="small pull-right mobile-hide">
+                <a href="https://github.com/InfiniteSoul/Azuria/blob/new-docs/Azuria/Community/Conference.cs/#L429">View Source</a>
+              </span>
+              <a id="Azuria_Community_Conference_SendMessage_" data-uid="Azuria.Community.Conference.SendMessage*"></a>
+              <h4 id="Azuria_Community_Conference_SendMessage_System_String_" data-uid="Azuria.Community.Conference.SendMessage(System.String)">SendMessage(String)</h4>
+              <div class="markdown level1 summary"><p>Sends a message to the conference.</p>
+<p>Api permissions required:</p>
+<ul>
+<li>Messenger - Level 1</li>
+</ul>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public Task&lt;IProxerResult&lt;string&gt;&gt; SendMessage(string message)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.String</span></td>
+                    <td><span class="parametername">message</span></td>
+                    <td><p>The message that is send to the conference.</p>
+</td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Threading.Tasks.Task</span>&lt;<a class="xref" href="Azuria.ErrorHandling.IProxerResult-1.html">IProxerResult</a>&lt;<span class="xref">System.String</span>&gt;&gt;</td>
+                    <td><p>An asynchronous <span class="xref">System.Threading.Tasks.Task</span> that returns an <a class="xref" href="Azuria.ErrorHandling.IProxerResult.html">IProxerResult</a>.</p>
 </td>
                   </tr>
                 </tbody>
@@ -791,14 +988,20 @@ public class Conference</code></pre>
                 <a href="https://github.com/InfiniteSoul/Azuria/new/new-docs/docfx_project/apispec/new?filename=Azuria_Community_Conference_SendReport_System_String_.md&amp;value=---%0Auid%3A%20Azuria.Community.Conference.SendReport(System.String)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
               </span>
               <span class="small pull-right mobile-hide">
-                <a href="https://github.com/InfiniteSoul/Azuria/blob/new-docs/Azuria/Community/Conference.cs/#L328">View Source</a>
+                <a href="https://github.com/InfiniteSoul/Azuria/blob/new-docs/Azuria/Community/Conference.cs/#L449">View Source</a>
               </span>
+              <a id="Azuria_Community_Conference_SendReport_" data-uid="Azuria.Community.Conference.SendReport*"></a>
               <h4 id="Azuria_Community_Conference_SendReport_System_String_" data-uid="Azuria.Community.Conference.SendReport(System.String)">SendReport(String)</h4>
-              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 summary"><p>Reports the conference to the admins with a specified reason.</p>
+<p>Api permissions required:</p>
+<ul>
+<li>Messenger - Level 0</li>
+</ul>
+</div>
               <div class="markdown level1 conceptual"></div>
               <h5 class="decalaration">Declaration</h5>
               <div class="codewrapper">
-                <pre><code class="lang-csharp hljs">public Task&lt;ProxerResult&gt; SendReport(string reason)</code></pre>
+                <pre><code class="lang-csharp hljs">public Task&lt;IProxerResult&gt; SendReport(string reason)</code></pre>
               </div>
               <h5 class="parameters">Parameters</h5>
               <table class="table table-bordered table-striped table-condensed">
@@ -812,8 +1015,9 @@ public class Conference</code></pre>
                 <tbody>
                   <tr>
                     <td><span class="xref">System.String</span></td>
-                    <td><em>reason</em></td>
-                    <td></td>
+                    <td><span class="parametername">reason</span></td>
+                    <td><p>The reason why the conference is being reported.</p>
+</td>
                   </tr>
                 </tbody>
               </table>
@@ -827,8 +1031,9 @@ public class Conference</code></pre>
                 </thead>
                 <tbody>
                   <tr>
-                    <td><span class="xref">System.Threading.Tasks.Task</span>&lt;<a class="xref" href="Azuria.ErrorHandling.ProxerResult.html#Azuria_ErrorHandling_ProxerResult">ProxerResult</a>&gt;</td>
-                    <td></td>
+                    <td><span class="xref">System.Threading.Tasks.Task</span>&lt;<a class="xref" href="Azuria.ErrorHandling.IProxerResult.html">IProxerResult</a>&gt;</td>
+                    <td><p>An asynchronous <span class="xref">System.Threading.Tasks.Task</span> that returns an <a class="xref" href="Azuria.ErrorHandling.IProxerResult.html">IProxerResult</a>.</p>
+</td>
                   </tr>
                 </tbody>
               </table>
@@ -837,14 +1042,20 @@ public class Conference</code></pre>
                 <a href="https://github.com/InfiniteSoul/Azuria/new/new-docs/docfx_project/apispec/new?filename=Azuria_Community_Conference_SetBlock_System_Boolean_.md&amp;value=---%0Auid%3A%20Azuria.Community.Conference.SetBlock(System.Boolean)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
               </span>
               <span class="small pull-right mobile-hide">
-                <a href="https://github.com/InfiniteSoul/Azuria/blob/new-docs/Azuria/Community/Conference.cs/#L341">View Source</a>
+                <a href="https://github.com/InfiniteSoul/Azuria/blob/new-docs/Azuria/Community/Conference.cs/#L469">View Source</a>
               </span>
+              <a id="Azuria_Community_Conference_SetBlock_" data-uid="Azuria.Community.Conference.SetBlock*"></a>
               <h4 id="Azuria_Community_Conference_SetBlock_System_Boolean_" data-uid="Azuria.Community.Conference.SetBlock(System.Boolean)">SetBlock(Boolean)</h4>
-              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 summary"><p>Blocks or unblocks the conference.</p>
+<p>Api permissions required:</p>
+<ul>
+<li>Messenger - Level 0</li>
+</ul>
+</div>
               <div class="markdown level1 conceptual"></div>
               <h5 class="decalaration">Declaration</h5>
               <div class="codewrapper">
-                <pre><code class="lang-csharp hljs">public Task&lt;ProxerResult&gt; SetBlock(bool isBlocked)</code></pre>
+                <pre><code class="lang-csharp hljs">public Task&lt;IProxerResult&gt; SetBlock(bool isBlocked)</code></pre>
               </div>
               <h5 class="parameters">Parameters</h5>
               <table class="table table-bordered table-striped table-condensed">
@@ -858,8 +1069,9 @@ public class Conference</code></pre>
                 <tbody>
                   <tr>
                     <td><span class="xref">System.Boolean</span></td>
-                    <td><em>isBlocked</em></td>
-                    <td></td>
+                    <td><span class="parametername">isBlocked</span></td>
+                    <td><p>Whether the conference should be blocked or unblocked.</p>
+</td>
                   </tr>
                 </tbody>
               </table>
@@ -873,8 +1085,9 @@ public class Conference</code></pre>
                 </thead>
                 <tbody>
                   <tr>
-                    <td><span class="xref">System.Threading.Tasks.Task</span>&lt;<a class="xref" href="Azuria.ErrorHandling.ProxerResult.html#Azuria_ErrorHandling_ProxerResult">ProxerResult</a>&gt;</td>
-                    <td></td>
+                    <td><span class="xref">System.Threading.Tasks.Task</span>&lt;<a class="xref" href="Azuria.ErrorHandling.IProxerResult.html">IProxerResult</a>&gt;</td>
+                    <td><p>An asynchronous <span class="xref">System.Threading.Tasks.Task</span> that returns an <a class="xref" href="Azuria.ErrorHandling.IProxerResult.html">IProxerResult</a>.</p>
+</td>
                   </tr>
                 </tbody>
               </table>
@@ -883,14 +1096,20 @@ public class Conference</code></pre>
                 <a href="https://github.com/InfiniteSoul/Azuria/new/new-docs/docfx_project/apispec/new?filename=Azuria_Community_Conference_SetFavourite_System_Boolean_.md&amp;value=---%0Auid%3A%20Azuria.Community.Conference.SetFavourite(System.Boolean)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
               </span>
               <span class="small pull-right mobile-hide">
-                <a href="https://github.com/InfiniteSoul/Azuria/blob/new-docs/Azuria/Community/Conference.cs/#L357">View Source</a>
+                <a href="https://github.com/InfiniteSoul/Azuria/blob/new-docs/Azuria/Community/Conference.cs/#L489">View Source</a>
               </span>
+              <a id="Azuria_Community_Conference_SetFavourite_" data-uid="Azuria.Community.Conference.SetFavourite*"></a>
               <h4 id="Azuria_Community_Conference_SetFavourite_System_Boolean_" data-uid="Azuria.Community.Conference.SetFavourite(System.Boolean)">SetFavourite(Boolean)</h4>
-              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 summary"><p>Favours or unfavours the conference.</p>
+<p>Api permissions required:</p>
+<ul>
+<li>Messenger - Level 1</li>
+</ul>
+</div>
               <div class="markdown level1 conceptual"></div>
               <h5 class="decalaration">Declaration</h5>
               <div class="codewrapper">
-                <pre><code class="lang-csharp hljs">public Task&lt;ProxerResult&gt; SetFavourite(bool isFavourite)</code></pre>
+                <pre><code class="lang-csharp hljs">public Task&lt;IProxerResult&gt; SetFavourite(bool isFavourite)</code></pre>
               </div>
               <h5 class="parameters">Parameters</h5>
               <table class="table table-bordered table-striped table-condensed">
@@ -904,8 +1123,9 @@ public class Conference</code></pre>
                 <tbody>
                   <tr>
                     <td><span class="xref">System.Boolean</span></td>
-                    <td><em>isFavourite</em></td>
-                    <td></td>
+                    <td><span class="parametername">isFavourite</span></td>
+                    <td><p>Whether the conference should be blocked or unblocked.</p>
+</td>
                   </tr>
                 </tbody>
               </table>
@@ -919,8 +1139,9 @@ public class Conference</code></pre>
                 </thead>
                 <tbody>
                   <tr>
-                    <td><span class="xref">System.Threading.Tasks.Task</span>&lt;<a class="xref" href="Azuria.ErrorHandling.ProxerResult.html#Azuria_ErrorHandling_ProxerResult">ProxerResult</a>&gt;</td>
-                    <td></td>
+                    <td><span class="xref">System.Threading.Tasks.Task</span>&lt;<a class="xref" href="Azuria.ErrorHandling.IProxerResult.html">IProxerResult</a>&gt;</td>
+                    <td><p>An asynchronous <span class="xref">System.Threading.Tasks.Task</span> that returns an <a class="xref" href="Azuria.ErrorHandling.IProxerResult.html">IProxerResult</a>.</p>
+</td>
                   </tr>
                 </tbody>
               </table>
@@ -929,15 +1150,20 @@ public class Conference</code></pre>
                 <a href="https://github.com/InfiniteSoul/Azuria/new/new-docs/docfx_project/apispec/new?filename=Azuria_Community_Conference_SetUnread.md&amp;value=---%0Auid%3A%20Azuria.Community.Conference.SetUnread%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
               </span>
               <span class="small pull-right mobile-hide">
-                <a href="https://github.com/InfiniteSoul/Azuria/blob/new-docs/Azuria/Community/Conference.cs/#L373">View Source</a>
+                <a href="https://github.com/InfiniteSoul/Azuria/blob/new-docs/Azuria/Community/Conference.cs/#L508">View Source</a>
               </span>
+              <a id="Azuria_Community_Conference_SetUnread_" data-uid="Azuria.Community.Conference.SetUnread*"></a>
               <h4 id="Azuria_Community_Conference_SetUnread" data-uid="Azuria.Community.Conference.SetUnread">SetUnread()</h4>
-              <div class="markdown level1 summary"><p>Marks the current conference as unread.</p>
+              <div class="markdown level1 summary"><p>Marks the conference as unread.</p>
+<p>Api permissions required:</p>
+<ul>
+<li>Messenger - Level 1</li>
+</ul>
 </div>
               <div class="markdown level1 conceptual"></div>
               <h5 class="decalaration">Declaration</h5>
               <div class="codewrapper">
-                <pre><code class="lang-csharp hljs">public Task&lt;ProxerResult&gt; SetUnread()</code></pre>
+                <pre><code class="lang-csharp hljs">public Task&lt;IProxerResult&gt; SetUnread()</code></pre>
               </div>
               <h5 class="returns">Returns</h5>
               <table class="table table-bordered table-striped table-condensed">
@@ -949,8 +1175,8 @@ public class Conference</code></pre>
                 </thead>
                 <tbody>
                   <tr>
-                    <td><span class="xref">System.Threading.Tasks.Task</span>&lt;<a class="xref" href="Azuria.ErrorHandling.ProxerResult.html#Azuria_ErrorHandling_ProxerResult">ProxerResult</a>&gt;</td>
-                    <td><p>Whether the action was successfull.</p>
+                    <td><span class="xref">System.Threading.Tasks.Task</span>&lt;<a class="xref" href="Azuria.ErrorHandling.IProxerResult.html">IProxerResult</a>&gt;</td>
+                    <td><p>An asynchronous <span class="xref">System.Threading.Tasks.Task</span> that returns an <a class="xref" href="Azuria.ErrorHandling.IProxerResult.html">IProxerResult</a>.</p>
 </td>
                   </tr>
                 </tbody>
@@ -962,10 +1188,11 @@ public class Conference</code></pre>
                 <a href="https://github.com/InfiniteSoul/Azuria/new/new-docs/docfx_project/apispec/new?filename=Azuria_Community_Conference_ErrorThrownAutoMessageFetch.md&amp;value=---%0Auid%3A%20Azuria.Community.Conference.ErrorThrownAutoMessageFetch%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
               </span>
               <span class="small pull-right mobile-hide">
-                <a href="https://github.com/InfiniteSoul/Azuria/blob/new-docs/Azuria/Community/Conference.cs/#L133">View Source</a>
+                <a href="https://github.com/InfiniteSoul/Azuria/blob/new-docs/Azuria/Community/Conference.cs/#L173">View Source</a>
               </span>
               <h4 id="Azuria_Community_Conference_ErrorThrownAutoMessageFetch" data-uid="Azuria.Community.Conference.ErrorThrownAutoMessageFetch">ErrorThrownAutoMessageFetch</h4>
-              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 summary"><p>Raised when an exception is thrown during the background search of new messages.</p>
+</div>
               <div class="markdown level1 conceptual"></div>
               <h5 class="decalaration">Declaration</h5>
               <div class="codewrapper">
@@ -981,7 +1208,7 @@ public class Conference</code></pre>
                 </thead>
                 <tbody>
                   <tr>
-                    <td><a class="xref" href="Azuria.Community.Conference.ErrorThrownAutoMessageFetchEventHandler.html#Azuria_Community_Conference_ErrorThrownAutoMessageFetchEventHandler">Conference.ErrorThrownAutoMessageFetchEventHandler</a></td>
+                    <td><a class="xref" href="Azuria.Community.Conference.ErrorThrownAutoMessageFetchEventHandler.html">Conference.ErrorThrownAutoMessageFetchEventHandler</a></td>
                     <td></td>
                   </tr>
                 </tbody>
@@ -991,10 +1218,11 @@ public class Conference</code></pre>
                 <a href="https://github.com/InfiniteSoul/Azuria/new/new-docs/docfx_project/apispec/new?filename=Azuria_Community_Conference_NewMessageRecieved.md&amp;value=---%0Auid%3A%20Azuria.Community.Conference.NewMessageRecieved%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
               </span>
               <span class="small pull-right mobile-hide">
-                <a href="https://github.com/InfiniteSoul/Azuria/blob/new-docs/Azuria/Community/Conference.cs/#L138">View Source</a>
+                <a href="https://github.com/InfiniteSoul/Azuria/blob/new-docs/Azuria/Community/Conference.cs/#L179">View Source</a>
               </span>
               <h4 id="Azuria_Community_Conference_NewMessageRecieved" data-uid="Azuria.Community.Conference.NewMessageRecieved">NewMessageRecieved</h4>
-              <div class="markdown level1 summary"><p>Occurs when new messages were recieved or once everytime Active is set to true.</p>
+              <div class="markdown level1 summary"><p>Raised when new messages were recieved during the background search or once every time <a class="xref" href="Azuria.Community.Conference.html#Azuria_Community_Conference_AutoCheck">AutoCheck</a> is set
+to true.</p>
 </div>
               <div class="markdown level1 conceptual"></div>
               <h5 class="decalaration">Declaration</h5>
@@ -1011,7 +1239,7 @@ public class Conference</code></pre>
                 </thead>
                 <tbody>
                   <tr>
-                    <td><a class="xref" href="Azuria.Community.Conference.NewMessageRecievedEventHandler.html#Azuria_Community_Conference_NewMessageRecievedEventHandler">Conference.NewMessageRecievedEventHandler</a></td>
+                    <td><a class="xref" href="Azuria.Community.Conference.NewMessageRecievedEventHandler.html">Conference.NewMessageRecievedEventHandler</a></td>
                     <td></td>
                   </tr>
                 </tbody>
@@ -1020,9 +1248,21 @@ public class Conference</code></pre>
           </div>
           
           <div class="hidden-sm col-md-2" role="complementary">
-            <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
-            <!-- <p><a class="back-to-top" href="#top">Back to top</a><p> -->
-            </nav>
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                  <li>
+                    <a href="https://github.com/InfiniteSoul/Azuria/new/new-docs/docfx_project/apispec/new?filename=Azuria_Community_Conference.md&amp;value=---%0Auid%3A%20Azuria.Community.Conference%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
+                  </li>
+                  <li>
+                    <a href="https://github.com/InfiniteSoul/Azuria/blob/new-docs/Azuria/Community/Conference.cs/#L20" class="contribution-link">View Source</a>
+                  </li>
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+              <!-- <p><a class="back-to-top" href="#top">Back to top</a><p> -->
+              </nav>
+            </div>
           </div>
         </div>
       </div>
@@ -1044,6 +1284,5 @@ public class Conference</code></pre>
     <script type="text/javascript" src="../styles/docfx.vendor.js"></script>
     <script type="text/javascript" src="../styles/docfx.js"></script>
     <script type="text/javascript" src="../styles/main.js"></script>
-    <script>hljs.initHighlightingOnLoad();</script>
   </body>
 </html>

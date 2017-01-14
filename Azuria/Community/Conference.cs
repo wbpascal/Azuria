@@ -24,14 +24,13 @@ namespace Azuria.Community
         private readonly Timer _checkMessagesTimer;
         private readonly InitialisableProperty<User> _leader;
         private readonly InitialisableProperty<IEnumerable<User>> _participants;
-        private readonly Senpai _senpai;
         private readonly InitialisableProperty<string> _topic;
         private Message _autoLastMessageRecieved;
 
         internal Conference(int conferenceId, bool isGroup, Senpai senpai)
         {
             this.Id = conferenceId;
-            this._senpai = senpai;
+            this.Senpai = senpai;
 
             this._checkMessagesTimer = new Timer {Interval = TimeSpan.FromSeconds(15).TotalMilliseconds};
             this._checkMessagesTimer.Elapsed += this.OnCheckMessagesTimerElapsed;
@@ -123,7 +122,7 @@ namespace Azuria.Community
         /// Api permissions required:
         /// * Messenger - Level 0
         /// </summary>
-        public MessageEnumerable Messages => new MessageEnumerable(this.Id, this._senpai);
+        public MessageEnumerable Messages => new MessageEnumerable(this.Id, this.Senpai);
 
         internal static int MessagesPerPage { get; private set; }
 
@@ -134,6 +133,12 @@ namespace Azuria.Community
         /// * Messenger - Level 0
         /// </summary>
         public IInitialisableProperty<IEnumerable<User>> Participants => this._participants;
+
+        /// <summary>
+        /// Gets the user that created this instance and is passed when calling <see cref="SendMessage" />,
+        /// <see cref="SendReport" />, <see cref="SetBlock" />, <see cref="SetFavourite" /> and <see cref="SetUnread" />.
+        /// </summary>
+        public Senpai Senpai { get; }
 
         /// <summary>
         /// Gets the current title of the conference.
@@ -168,7 +173,8 @@ namespace Azuria.Community
         public event ErrorThrownAutoMessageFetchEventHandler ErrorThrownAutoMessageFetch;
 
         /// <summary>
-        /// Raised when new messages were recieved during the background search or once every time <see cref="AutoCheck" /> is set to true.
+        /// Raised when new messages were recieved during the background search or once every time <see cref="AutoCheck" /> is set
+        /// to true.
         /// </summary>
         public event NewMessageRecievedEventHandler NewMessageRecieved;
 
@@ -342,7 +348,7 @@ namespace Azuria.Community
         /// </param>
         /// <returns>
         /// An asynchronous <see cref="Task" /> that returns an <see cref="IProxerResult" /> containing an enumeration of
-        /// conferences.
+        /// conferences and all unread messages.
         /// </returns>
         public static async Task<IProxerResult<IEnumerable<ConferenceInfo>>> GetConferences(Senpai senpai,
             ConferenceListType type = ConferenceListType.Default)
@@ -391,7 +397,7 @@ namespace Azuria.Community
         private async Task<IProxerResult> InitInfo()
         {
             ProxerApiResponse<ConferenceInfoDataModel> lResult = await RequestHandler.ApiRequest(
-                    MessengerRequestBuilder.GetConferenceInfo(this.Id, this._senpai))
+                    MessengerRequestBuilder.GetConferenceInfo(this.Id, this.Senpai))
                 .ConfigureAwait(false);
             if (!lResult.Success || (lResult.Result == null)) return new ProxerResult(lResult.Exceptions);
             ConferenceInfoDataModel lData = lResult.Result;
@@ -425,7 +431,7 @@ namespace Azuria.Community
             if (string.IsNullOrEmpty(message)) throw new ArgumentException(nameof(message));
 
             ProxerApiResponse<string> lResult = await RequestHandler.ApiRequest(
-                    MessengerRequestBuilder.SetMessage(this.Id, message, this._senpai))
+                    MessengerRequestBuilder.SetMessage(this.Id, message, this.Senpai))
                 .ConfigureAwait(false);
             return !lResult.Success
                 ? new ProxerResult<string>(lResult.Exceptions)
@@ -445,7 +451,7 @@ namespace Azuria.Community
             if (string.IsNullOrEmpty(reason)) return new ProxerResult(new ArgumentException(nameof(reason)));
 
             ProxerApiResponse<int> lResult = await RequestHandler.ApiRequest(
-                    MessengerRequestBuilder.SetReport(this.Id, reason, this._senpai))
+                    MessengerRequestBuilder.SetReport(this.Id, reason, this.Senpai))
                 .ConfigureAwait(false);
             return !lResult.Success
                 ? new ProxerResult(lResult.Exceptions)
@@ -464,8 +470,8 @@ namespace Azuria.Community
         {
             ProxerApiResponse<int> lResult =
                 await RequestHandler.ApiRequest(isBlocked
-                        ? MessengerRequestBuilder.SetBlock(this.Id, this._senpai)
-                        : MessengerRequestBuilder.SetUnblock(this.Id, this._senpai))
+                        ? MessengerRequestBuilder.SetBlock(this.Id, this.Senpai)
+                        : MessengerRequestBuilder.SetUnblock(this.Id, this.Senpai))
                     .ConfigureAwait(false);
             return !lResult.Success
                 ? new ProxerResult(lResult.Exceptions)
@@ -484,8 +490,8 @@ namespace Azuria.Community
         {
             ProxerApiResponse<int> lResult =
                 await RequestHandler.ApiRequest(isFavourite
-                        ? MessengerRequestBuilder.SetFavour(this.Id, this._senpai)
-                        : MessengerRequestBuilder.SetUnfavour(this.Id, this._senpai))
+                        ? MessengerRequestBuilder.SetFavour(this.Id, this.Senpai)
+                        : MessengerRequestBuilder.SetUnfavour(this.Id, this.Senpai))
                     .ConfigureAwait(false);
             return !lResult.Success
                 ? new ProxerResult(lResult.Exceptions)
@@ -502,7 +508,7 @@ namespace Azuria.Community
         public async Task<IProxerResult> SetUnread()
         {
             ProxerApiResponse lResult = await RequestHandler.ApiRequest(
-                    MessengerRequestBuilder.SetUnread(this.Id, this._senpai))
+                    MessengerRequestBuilder.SetUnread(this.Id, this.Senpai))
                 .ConfigureAwait(false);
             return !lResult.Success
                 ? new ProxerResult(lResult.Exceptions)

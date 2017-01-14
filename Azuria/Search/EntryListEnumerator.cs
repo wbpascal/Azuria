@@ -42,7 +42,7 @@ namespace Azuria.Search
         }
 
         /// <inheritdoc />
-        internal override async Task<IProxerResult<IEnumerable<T>>> GetNextPage(int nextPage)
+        protected override async Task<IProxerResult<IEnumerable<T>>> GetNextPage(int nextPage)
         {
             ProxerApiResponse<SearchDataModel[]> lResult = await RequestHandler.ApiRequest(
                     ListRequestBuilder.EntryList(this._input, typeof(T).GetTypeInfo().Name.ToLowerInvariant(),

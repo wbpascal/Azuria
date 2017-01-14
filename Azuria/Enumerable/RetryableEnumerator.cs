@@ -28,7 +28,7 @@ namespace Azuria.Enumerable
 
 
         /// <summary>
-        /// Get or sets a value that inicates how many times the <see cref="MoveNext()" /> method should be retired.
+        /// Get or sets a value that inicates how many times the <see cref="MoveNext()" /> method should be retried.
         /// </summary>
         public int RetryCount { get; }
 

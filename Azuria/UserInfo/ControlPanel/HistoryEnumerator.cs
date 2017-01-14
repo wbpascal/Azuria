@@ -37,7 +37,8 @@ namespace Azuria.UserInfo.ControlPanel
             return null;
         }
 
-        internal override async Task<IProxerResult<IEnumerable<HistoryObject<T>>>> GetNextPage(int nextPage)
+        /// <inheritdoc />
+        protected override async Task<IProxerResult<IEnumerable<HistoryObject<T>>>> GetNextPage(int nextPage)
         {
             ProxerApiResponse<HistoryDataModel[]> lResult = await RequestHandler.ApiRequest(
                     UcpRequestBuilder.GetHistory(nextPage, ResultsPerPage, this._senpai))

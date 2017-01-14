@@ -24,7 +24,7 @@ namespace Azuria.UserInfo
 
         #region Methods
 
-        internal override async Task<IProxerResult<IEnumerable<UserProfileEntry<T>>>> GetNextPage(int nextPage)
+        protected override async Task<IProxerResult<IEnumerable<UserProfileEntry<T>>>> GetNextPage(int nextPage)
         {
             ProxerApiResponse<ListDataModel[]> lResult = await RequestHandler.ApiRequest(
                     UserRequestBuilder.GetList(this._user.Id, typeof(T).Name.ToLowerInvariant(),

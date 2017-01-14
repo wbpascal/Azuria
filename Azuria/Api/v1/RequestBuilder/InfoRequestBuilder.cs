@@ -7,37 +7,55 @@ using Azuria.Media.Properties;
 namespace Azuria.Api.v1.RequestBuilder
 {
     /// <summary>
+    /// Represents the info api class.
     /// </summary>
     public static class InfoRequestBuilder
     {
         #region Methods
 
         /// <summary>
+        /// Creates an <see cref="ApiRequest" /> instance that returns all comments of an anime or manga (with more than 300
+        /// characters).
+        /// 
+        /// Api permissions required:
+        /// * Info - Level 0
         /// </summary>
-        /// <param name="entryId"></param>
-        /// <param name="page"></param>
-        /// <param name="limit"></param>
-        /// <param name="sort"></param>
-        /// <returns></returns>
-        public static ApiRequest<CommentDataModel[]> GetComments(int entryId, int page, int limit, string sort)
+        /// <param name="entryId">The id of the anime or manga.</param>
+        /// <param name="page">Optional. The index of the page that will be loaded. Default: 0</param>
+        /// <param name="limit">Optional. The amount of comments that will be returned per page. Default: 25</param>
+        /// <param name="sort">
+        /// Optional. The order in which the returned array will be sorted. Set it to "rating" to return the top
+        /// rated comments first, otherwise the newest comments will be returned first. Default: ""
+        /// </param>
+        /// <returns>An instance of <see cref="ApiRequest" /> that returns an array of comments.</returns>
+        public static ApiRequest<CommentDataModel[]> GetComments(int entryId, int page = 0, int limit = 25,
+            string sort = "")
         {
             return ApiRequest<CommentDataModel[]>.Create(
                 new Uri($"{ApiConstants.ApiUrlV1}/info/comments?id={entryId}&p={page}&limit={limit}&sort={sort}"));
         }
 
         /// <summary>
+        /// Creates an <see cref="ApiRequest" /> instance that returns the core information of an anime or manga.
+        /// 
+        /// Api permissions required:
+        /// * Info - Level 0
         /// </summary>
-        /// <param name="entryId"></param>
-        /// <returns></returns>
+        /// <param name="entryId">The id of the Anime or Manga.</param>
+        /// <returns>An instance of <see cref="ApiRequest" /> that returns the core information.</returns>
         public static ApiRequest<EntryDataModel> GetEntry(int entryId)
         {
             return ApiRequest<EntryDataModel>.Create(new Uri($"{ApiConstants.ApiUrlV1}/info/entry?id={entryId}"));
         }
 
         /// <summary>
+        /// Creates an <see cref="ApiRequest" /> instance that returns all tags of an anime or manga.
+        /// 
+        /// Api permissions required:
+        /// * Info - Level 0
         /// </summary>
-        /// <param name="entryId"></param>
-        /// <returns></returns>
+        /// <param name="entryId">The id of the anime or manga.</param>
+        /// <returns>An instance of <see cref="ApiRequest" /> that returns an array of tags.</returns>
         public static ApiRequest<MediaTagDataModel[]> GetEntryTags(int entryId)
         {
             return
@@ -45,9 +63,17 @@ namespace Azuria.Api.v1.RequestBuilder
         }
 
         /// <summary>
+        /// Creates an <see cref="ApiRequest" /> instance that returns all informations of an anime or manga.
+        /// 
+        /// **Warning!:**
+        /// The returned object creates a heavy load on the server if it is used in a request!
+        /// Be sure to only use it if you are certain that you need all returned informations!
+        /// 
+        /// Api permissions required:
+        /// * Info - Level 0
         /// </summary>
-        /// <param name="entryId"></param>
-        /// <returns></returns>
+        /// <param name="entryId">The id of the anime or manga.</param>
+        /// <returns>An instance of <see cref="ApiRequest" /> that returns the informations.</returns>
         public static ApiRequest<FullEntryDataModel> GetFullEntry(int entryId)
         {
             return ApiRequest<FullEntryDataModel>.Create(new Uri(
@@ -55,18 +81,27 @@ namespace Azuria.Api.v1.RequestBuilder
         }
 
         /// <summary>
+        /// Creates an <see cref="ApiRequest" /> instance that returns a boolean indicating if the anime or manga requires an 18+
+        /// age check.
+        /// 
+        /// Api permissions required:
+        /// * Info - Level 0
         /// </summary>
-        /// <param name="entryId"></param>
-        /// <returns></returns>
+        /// <param name="entryId">The id of the anime or manga.</param>
+        /// <returns>An instance of <see cref="ApiRequest" /> that returns a boolean.</returns>
         public static ApiRequest<bool> GetGate(int entryId)
         {
             return ApiRequest<bool>.Create(new Uri($"{ApiConstants.ApiUrlV1}/info/gate?id={entryId}"));
         }
 
         /// <summary>
+        /// Creates an <see cref="ApiRequest" /> instance that returns informations about the translators of an anime or manga.
+        /// 
+        /// Api permissions required:
+        /// * Info - Level 0
         /// </summary>
-        /// <param name="entryId"></param>
-        /// <returns></returns>
+        /// <param name="entryId">The id of the anime or manga.</param>
+        /// <returns>An instance of <see cref="ApiRequest" /> that returns an array of translators.</returns>
         public static ApiRequest<TranslatorDataModel[]> GetGroups(int entryId)
         {
             return ApiRequest<TranslatorDataModel[]>.Create(
@@ -74,9 +109,13 @@ namespace Azuria.Api.v1.RequestBuilder
         }
 
         /// <summary>
+        /// Creates an <see cref="ApiRequest" /> instance that returns all languages an anime or manga is available in.
+        /// 
+        /// Api permissions required:
+        /// * Info - Level 0
         /// </summary>
-        /// <param name="entryId"></param>
-        /// <returns></returns>
+        /// <param name="entryId">The id of the anime or manga.</param>
+        /// <returns>An instance of <see cref="ApiRequest" /> that returns an array of languages.</returns>
         public static ApiRequest<MediaLanguage[]> GetLanguage(int entryId)
         {
             return ApiRequest<MediaLanguage[]>.Create(new Uri($"{ApiConstants.ApiUrlV1}/info/lang?id={entryId}"))
@@ -84,30 +123,49 @@ namespace Azuria.Api.v1.RequestBuilder
         }
 
         /// <summary>
+        /// Creates an <see cref="ApiRequest" /> instance that returns all episodes or chapters of an anime or manga.
+        /// 
+        /// Api permissions required:
+        /// * Info - Level 0
         /// </summary>
-        /// <param name="entryId"></param>
-        /// <param name="page"></param>
-        /// <param name="limit"></param>
-        /// <returns></returns>
-        public static ApiRequest<ListInfoDataModel> GetListInfo(int entryId, int page, int limit)
+        /// <param name="entryId">The id of the anime or manga.</param>
+        /// <param name="page">Optional. The index of the page that will be loaded. Default: 0</param>
+        /// <param name="limit">Optional. The amount of episodes or chapters that will be returned. Default: 50</param>
+        /// <returns>
+        /// An instance of <see cref="ApiRequest" /> that returns an object containing all chapter/episodes and
+        /// information about the returned list.
+        /// </returns>
+        public static ApiRequest<ListInfoDataModel> GetListInfo(int entryId, int page = 0, int limit = 50)
         {
             return ApiRequest<ListInfoDataModel>.Create(
                 new Uri($"{ApiConstants.ApiUrlV1}/info/listinfo?id={entryId}&p={page}&limit={limit}"));
         }
 
         /// <summary>
+        /// Creates an <see cref="ApiRequest" /> instance that returns all names and synonymous of an anime or manga.
+        /// 
+        /// Api permissions required:
+        /// * Info - Level 0
         /// </summary>
-        /// <param name="entryId"></param>
-        /// <returns></returns>
+        /// <param name="entryId">The id of the anime or manga.</param>
+        /// <returns>
+        /// An instance of <see cref="ApiRequest" /> that returns an array of object containing the names and some
+        /// additional informations.
+        /// </returns>
         public static ApiRequest<NameDataModel[]> GetName(int entryId)
         {
             return ApiRequest<NameDataModel[]>.Create(new Uri($"{ApiConstants.ApiUrlV1}/info/names?id={entryId}"));
         }
 
         /// <summary>
+        /// Creates an <see cref="ApiRequest" /> instance that returns returns all organisations that were involved with creating
+        /// or publishing the an anime or manga.
+        /// 
+        /// Api permissions required:
+        /// * Info - Level 0
         /// </summary>
-        /// <param name="entryId"></param>
-        /// <returns></returns>
+        /// <param name="entryId">The id of the anime or manga.</param>
+        /// <returns>An instance of <see cref="ApiRequest" /> that returns an array of organisations.</returns>
         public static ApiRequest<PublisherDataModel[]> GetPublisher(int entryId)
         {
             return
@@ -115,9 +173,13 @@ namespace Azuria.Api.v1.RequestBuilder
         }
 
         /// <summary>
+        /// Creates an <see cref="ApiRequest" /> instance that returns all relations of an anime or manga.
+        /// 
+        /// Api permissions required:
+        /// * Info - Level 0
         /// </summary>
-        /// <param name="entryId"></param>
-        /// <returns></returns>
+        /// <param name="entryId">The id of the anime or manga.</param>
+        /// <returns>An instance of <see cref="ApiRequest" /> that returns an array of relations.</returns>
         public static ApiRequest<RelationDataModel[]> GetRelations(int entryId)
         {
             return
@@ -125,20 +187,28 @@ namespace Azuria.Api.v1.RequestBuilder
         }
 
         /// <summary>
+        /// Creates an <see cref="ApiRequest" /> instance that returns the seasons an anime or manga aired in.
+        /// 
+        /// Api permissions required:
+        /// * Info - Level 0
         /// </summary>
-        /// <param name="entryId"></param>
-        /// <returns></returns>
+        /// <param name="entryId">The id of the anime or manga.</param>
+        /// <returns>An instance of <see cref="ApiRequest" /> that returns an array of seasons.</returns>
         public static ApiRequest<SeasonDataModel[]> GetSeason(int entryId)
         {
             return ApiRequest<SeasonDataModel[]>.Create(new Uri($"{ApiConstants.ApiUrlV1}/info/season?id={entryId}"));
         }
 
         /// <summary>
+        /// Creates an <see cref="ApiRequest" /> instance that adds an anime or manga to a list of a logged in user.
+        /// 
+        /// Api permissions required:
+        /// * Info - Level 1
         /// </summary>
-        /// <param name="entryId"></param>
-        /// <param name="type"></param>
-        /// <param name="senpai"></param>
-        /// <returns></returns>
+        /// <param name="entryId">The id of the anime or manga.</param>
+        /// <param name="type">The list to which the anime or manga will be added. Possible values: "note", "favor", "finish"</param>
+        /// <param name="senpai">The logged in user.</param>
+        /// <returns>An instance of <see cref="ApiRequest" />.</returns>
         public static ApiRequest SetUserInfo(int entryId, string type, Senpai senpai)
         {
             return ApiRequest.Create(new Uri($"{ApiConstants.ApiUrlV1}/info/setuserinfo"))

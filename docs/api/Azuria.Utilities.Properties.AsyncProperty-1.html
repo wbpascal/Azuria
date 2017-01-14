@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <!--[if IE]><![endif]-->
 <html>
   
@@ -10,7 +10,7 @@
     <meta name="viewport" content="width=device-width">
     <meta name="title" content="Class AsyncProperty&lt;T&gt;
    ">
-    <meta name="generator" content="docfx 2.3.1.0">
+    <meta name="generator" content="docfx 2.9.3.0">
     
     <link rel="shortcut icon" href="../favicon.ico">
     <link rel="stylesheet" href="../styles/docfx.vendor.css">
@@ -33,6 +33,7 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
               </button>
+              
               <a class="navbar-brand" href="../index.html">
                 <img id="logo" class="svg" src="../logo.svg" alt="">
               </a>
@@ -68,8 +69,6 @@
             <article class="content wrap" id="_content">
               
               
-              <a href="https://github.com/InfiniteSoul/Azuria/new/new-docs/docfx_project/apispec/new?filename=Azuria_Utilities_Properties_AsyncProperty_1.md&amp;value=---%0Auid%3A%20Azuria.Utilities.Properties.AsyncProperty%601%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="btn btn-primary pull-right mobile-hide">Improve this Doc</a>
-              <a href="https://github.com/InfiniteSoul/Azuria/blob/new-docs/Azuria/Utilities/Properties/AsyncProperty.cs/#L12" class="btn btn-primary pull-right mobile-hide">View Source</a>
               <h1 id="Azuria_Utilities_Properties_AsyncProperty_1" data-uid="Azuria.Utilities.Properties.AsyncProperty`1">Class AsyncProperty&lt;T&gt;
               </h1>
               <div class="markdown level0 summary"><p>Represents a property where the get- and set-method is asynchronous.</p>
@@ -120,7 +119,7 @@
                 </thead>
                 <tbody>
                   <tr>
-                    <td><em>T</em></td>
+                    <td><span class="parametername">T</span></td>
                     <td></td>
                   </tr>
                 </tbody>
@@ -154,20 +153,20 @@
                 <tbody>
                   <tr>
                     <td><span class="xref">T</span></td>
-                    <td><em>initialValue</em></td>
+                    <td><span class="parametername">initialValue</span></td>
                     <td><p>The initial value.</p>
 </td>
                   </tr>
                   <tr>
-                    <td><span class="xref">System.Func</span>&lt;<span class="xref">System.Threading.Tasks.Task</span>&lt;<a class="xref" href="Azuria.ErrorHandling.ProxerResult-1.html#Azuria_ErrorHandling_ProxerResult_1">ProxerResult</a>&lt;T&gt;&gt;&gt;</td>
-                    <td><em>getFunc</em></td>
+                    <td><span class="xref">System.Func</span>&lt;<span class="xref">System.Threading.Tasks.Task</span>&lt;<a class="xref" href="Azuria.ErrorHandling.ProxerResult-1.html">ProxerResult</a>&lt;T&gt;&gt;&gt;</td>
+                    <td><span class="parametername">getFunc</span></td>
                     <td><p>An optional get-method. If not set the <a class="xref" href="Azuria.Utilities.Properties.AsyncProperty-1.html#Azuria_Utilities_Properties_AsyncProperty_1_Get">Get()</a>-method always just returns the current
 value.</p>
 </td>
                   </tr>
                   <tr>
-                    <td><span class="xref">System.Func</span>&lt;T, <span class="xref">System.Threading.Tasks.Task</span>&lt;<a class="xref" href="Azuria.ErrorHandling.ProxerResult.html#Azuria_ErrorHandling_ProxerResult">ProxerResult</a>&gt;&gt;</td>
-                    <td><em>setFunc</em></td>
+                    <td><span class="xref">System.Func</span>&lt;T, <span class="xref">System.Threading.Tasks.Task</span>&lt;<a class="xref" href="Azuria.ErrorHandling.ProxerResult.html">ProxerResult</a>&gt;&gt;</td>
+                    <td><span class="parametername">setFunc</span></td>
                     <td><p>An optional set-method. If not set the <a class="xref" href="Azuria.Utilities.Properties.AsyncProperty-1.html#Azuria_Utilities_Properties_AsyncProperty_1_Set__0_">Set(T)</a>-method always just sets the value to
 the passed one.</p>
 </td>
@@ -202,7 +201,7 @@ If the function was not set just the current value will be returned.</p>
                 </thead>
                 <tbody>
                   <tr>
-                    <td><span class="xref">System.Threading.Tasks.Task</span>&lt;<a class="xref" href="Azuria.ErrorHandling.ProxerResult-1.html#Azuria_ErrorHandling_ProxerResult_1">ProxerResult</a>&lt;T&gt;&gt;</td>
+                    <td><span class="xref">System.Threading.Tasks.Task</span>&lt;<a class="xref" href="Azuria.ErrorHandling.ProxerResult-1.html">ProxerResult</a>&lt;T&gt;&gt;</td>
                     <td><p>If the action was successful and if it was, the new value.</p>
 </td>
                   </tr>
@@ -266,7 +265,7 @@ value of <em>newValue</em>.</p>
                 <tbody>
                   <tr>
                     <td><span class="xref">T</span></td>
-                    <td><em>newValue</em></td>
+                    <td><span class="parametername">newValue</span></td>
                     <td><p>The new value.</p>
 </td>
                   </tr>
@@ -282,7 +281,7 @@ value of <em>newValue</em>.</p>
                 </thead>
                 <tbody>
                   <tr>
-                    <td><span class="xref">System.Threading.Tasks.Task</span>&lt;<a class="xref" href="Azuria.ErrorHandling.ProxerResult.html#Azuria_ErrorHandling_ProxerResult">ProxerResult</a>&gt;</td>
+                    <td><span class="xref">System.Threading.Tasks.Task</span>&lt;<a class="xref" href="Azuria.ErrorHandling.ProxerResult.html">ProxerResult</a>&gt;</td>
                     <td><p>If the action was successful.</p>
 </td>
                   </tr>
@@ -292,9 +291,21 @@ value of <em>newValue</em>.</p>
           </div>
           
           <div class="hidden-sm col-md-2" role="complementary">
-            <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
-            <!-- <p><a class="back-to-top" href="#top">Back to top</a><p> -->
-            </nav>
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                  <li>
+                    <a href="https://github.com/InfiniteSoul/Azuria/new/new-docs/docfx_project/apispec/new?filename=Azuria_Utilities_Properties_AsyncProperty_1.md&amp;value=---%0Auid%3A%20Azuria.Utilities.Properties.AsyncProperty%601%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
+                  </li>
+                  <li>
+                    <a href="https://github.com/InfiniteSoul/Azuria/blob/new-docs/Azuria/Utilities/Properties/AsyncProperty.cs/#L12" class="contribution-link">View Source</a>
+                  </li>
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+              <!-- <p><a class="back-to-top" href="#top">Back to top</a><p> -->
+              </nav>
+            </div>
           </div>
         </div>
       </div>
@@ -316,6 +327,5 @@ value of <em>newValue</em>.</p>
     <script type="text/javascript" src="../styles/docfx.vendor.js"></script>
     <script type="text/javascript" src="../styles/docfx.js"></script>
     <script type="text/javascript" src="../styles/main.js"></script>
-    <script>hljs.initHighlightingOnLoad();</script>
   </body>
 </html>

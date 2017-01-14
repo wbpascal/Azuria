@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <!--[if IE]><![endif]-->
 <html>
   
@@ -10,7 +10,7 @@
     <meta name="viewport" content="width=device-width">
     <meta name="title" content="Class Comment&lt;T&gt;
    ">
-    <meta name="generator" content="docfx 2.3.1.0">
+    <meta name="generator" content="docfx 2.9.3.0">
     
     <link rel="shortcut icon" href="../favicon.ico">
     <link rel="stylesheet" href="../styles/docfx.vendor.css">
@@ -33,6 +33,7 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
               </button>
+              
               <a class="navbar-brand" href="../index.html">
                 <img id="logo" class="svg" src="../logo.svg" alt="">
               </a>
@@ -68,11 +69,9 @@
             <article class="content wrap" id="_content">
               
               
-              <a href="https://github.com/InfiniteSoul/Azuria/new/new-docs/docfx_project/apispec/new?filename=Azuria_UserInfo_Comment_Comment_1.md&amp;value=---%0Auid%3A%20Azuria.UserInfo.Comment.Comment%601%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="btn btn-primary pull-right mobile-hide">Improve this Doc</a>
-              <a href="https://github.com/InfiniteSoul/Azuria/blob/new-docs/Azuria/UserInfo/Comment/Comment.cs/#L15" class="btn btn-primary pull-right mobile-hide">View Source</a>
               <h1 id="Azuria_UserInfo_Comment_Comment_1" data-uid="Azuria.UserInfo.Comment.Comment`1">Class Comment&lt;T&gt;
               </h1>
-              <div class="markdown level0 summary"><p>Represents a comment for an <a class="xref" href="Azuria.Media.Anime.html#Azuria_Media_Anime">Anime</a> or <a class="xref" href="Azuria.Media.Manga.html#Azuria_Media_Manga">Manga</a>.</p>
+              <div class="markdown level0 summary"><p>Represents a comment for an <a class="xref" href="Azuria.Media.Anime.html">Anime</a> or <a class="xref" href="Azuria.Media.Manga.html">Manga</a>.</p>
 </div>
               <div class="markdown level0 conceptual"></div>
               <div class="inheritance">
@@ -108,8 +107,7 @@
               <h6><strong>Assembly</strong>:Azuria.dll</h6>
               <h5 id="Azuria_UserInfo_Comment_Comment_1_syntax">Syntax</h5>
               <div class="codewrapper">
-                <pre><code class="lang-csharp hljs">public class Comment&lt;T&gt;
-    where T : IAnimeMangaObject</code></pre>
+                <pre><code class="lang-csharp hljs">public class Comment&lt;T&gt; : IComment where T : IMediaObject</code></pre>
               </div>
               <h5 class="typeParameters">Type Parameters</h5>
               <table class="table table-bordered table-striped table-condensed">
@@ -121,7 +119,7 @@
                 </thead>
                 <tbody>
                   <tr>
-                    <td><em>T</em></td>
+                    <td><span class="parametername">T</span></td>
                     <td></td>
                   </tr>
                 </tbody>
@@ -130,41 +128,12 @@
               </h3>
               <span class="small pull-right mobile-hide">
                 <span class="divider">|</span>
-                <a href="https://github.com/InfiniteSoul/Azuria/new/new-docs/docfx_project/apispec/new?filename=Azuria_UserInfo_Comment_Comment_1_AnimeMangaObject.md&amp;value=---%0Auid%3A%20Azuria.UserInfo.Comment.Comment%601.AnimeMangaObject%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
-              </span>
-              <span class="small pull-right mobile-hide">
-                <a href="https://github.com/InfiniteSoul/Azuria/blob/new-docs/Azuria/UserInfo/Comment/Comment.cs/#L48">View Source</a>
-              </span>
-              <h4 id="Azuria_UserInfo_Comment_Comment_1_AnimeMangaObject" data-uid="Azuria.UserInfo.Comment.Comment`1.AnimeMangaObject">AnimeMangaObject</h4>
-              <div class="markdown level1 summary"><p>Gets the <a class="xref" href="Azuria.Media.Anime.html#Azuria_Media_Anime">Anime</a> or <a class="xref" href="Azuria.Media.Manga.html#Azuria_Media_Manga">Manga</a> this comment is for.</p>
-</div>
-              <div class="markdown level1 conceptual"></div>
-              <h5 class="decalaration">Declaration</h5>
-              <div class="codewrapper">
-                <pre><code class="lang-csharp hljs">public T AnimeMangaObject { get; }</code></pre>
-              </div>
-              <h5 class="propertyValue">Property Value</h5>
-              <table class="table table-bordered table-striped table-condensed">
-                <thead>
-                  <tr>
-                    <th>Type</th>
-                    <th>Description</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <td><span class="xref">T</span></td>
-                    <td></td>
-                  </tr>
-                </tbody>
-              </table>
-              <span class="small pull-right mobile-hide">
-                <span class="divider">|</span>
                 <a href="https://github.com/InfiniteSoul/Azuria/new/new-docs/docfx_project/apispec/new?filename=Azuria_UserInfo_Comment_Comment_1_Author.md&amp;value=---%0Auid%3A%20Azuria.UserInfo.Comment.Comment%601.Author%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
               </span>
               <span class="small pull-right mobile-hide">
-                <a href="https://github.com/InfiniteSoul/Azuria/blob/new-docs/Azuria/UserInfo/Comment/Comment.cs/#L53">View Source</a>
+                <a href="https://github.com/InfiniteSoul/Azuria/blob/new-docs/Azuria/UserInfo/Comment/Comment.cs/#L49">View Source</a>
               </span>
+              <a id="Azuria_UserInfo_Comment_Comment_1_Author_" data-uid="Azuria.UserInfo.Comment.Comment`1.Author*"></a>
               <h4 id="Azuria_UserInfo_Comment_Comment_1_Author" data-uid="Azuria.UserInfo.Comment.Comment`1.Author">Author</h4>
               <div class="markdown level1 summary"><p>Gets the author of this comment.</p>
 </div>
@@ -183,18 +152,21 @@
                 </thead>
                 <tbody>
                   <tr>
-                    <td><a class="xref" href="Azuria.UserInfo.User.html#Azuria_UserInfo_User">User</a></td>
+                    <td><a class="xref" href="Azuria.UserInfo.User.html">User</a></td>
                     <td></td>
                   </tr>
                 </tbody>
               </table>
+              <h5 class="implements">Implements</h5>
+                  <div><a class="xref" href="Azuria.UserInfo.Comment.IComment.html#Azuria_UserInfo_Comment_IComment_Author">IComment.Author</a></div>
               <span class="small pull-right mobile-hide">
                 <span class="divider">|</span>
                 <a href="https://github.com/InfiniteSoul/Azuria/new/new-docs/docfx_project/apispec/new?filename=Azuria_UserInfo_Comment_Comment_1_Content.md&amp;value=---%0Auid%3A%20Azuria.UserInfo.Comment.Comment%601.Content%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
               </span>
               <span class="small pull-right mobile-hide">
-                <a href="https://github.com/InfiniteSoul/Azuria/blob/new-docs/Azuria/UserInfo/Comment/Comment.cs/#L58">View Source</a>
+                <a href="https://github.com/InfiniteSoul/Azuria/blob/new-docs/Azuria/UserInfo/Comment/Comment.cs/#L54">View Source</a>
               </span>
+              <a id="Azuria_UserInfo_Comment_Comment_1_Content_" data-uid="Azuria.UserInfo.Comment.Comment`1.Content*"></a>
               <h4 id="Azuria_UserInfo_Comment_Comment_1_Content" data-uid="Azuria.UserInfo.Comment.Comment`1.Content">Content</h4>
               <div class="markdown level1 summary"><p>Gets the content of this comment.</p>
 </div>
@@ -218,13 +190,16 @@
                   </tr>
                 </tbody>
               </table>
+              <h5 class="implements">Implements</h5>
+                  <div><a class="xref" href="Azuria.UserInfo.Comment.IComment.html#Azuria_UserInfo_Comment_IComment_Content">IComment.Content</a></div>
               <span class="small pull-right mobile-hide">
                 <span class="divider">|</span>
                 <a href="https://github.com/InfiniteSoul/Azuria/new/new-docs/docfx_project/apispec/new?filename=Azuria_UserInfo_Comment_Comment_1_Id.md&amp;value=---%0Auid%3A%20Azuria.UserInfo.Comment.Comment%601.Id%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
               </span>
               <span class="small pull-right mobile-hide">
-                <a href="https://github.com/InfiniteSoul/Azuria/blob/new-docs/Azuria/UserInfo/Comment/Comment.cs/#L62">View Source</a>
+                <a href="https://github.com/InfiniteSoul/Azuria/blob/new-docs/Azuria/UserInfo/Comment/Comment.cs/#L58">View Source</a>
               </span>
+              <a id="Azuria_UserInfo_Comment_Comment_1_Id_" data-uid="Azuria.UserInfo.Comment.Comment`1.Id*"></a>
               <h4 id="Azuria_UserInfo_Comment_Comment_1_Id" data-uid="Azuria.UserInfo.Comment.Comment`1.Id">Id</h4>
               <div class="markdown level1 summary"></div>
               <div class="markdown level1 conceptual"></div>
@@ -247,13 +222,47 @@
                   </tr>
                 </tbody>
               </table>
+              <h5 class="implements">Implements</h5>
+                  <div><a class="xref" href="Azuria.UserInfo.Comment.IComment.html#Azuria_UserInfo_Comment_IComment_Id">IComment.Id</a></div>
+              <span class="small pull-right mobile-hide">
+                <span class="divider">|</span>
+                <a href="https://github.com/InfiniteSoul/Azuria/new/new-docs/docfx_project/apispec/new?filename=Azuria_UserInfo_Comment_Comment_1_MediaObject.md&amp;value=---%0Auid%3A%20Azuria.UserInfo.Comment.Comment%601.MediaObject%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+              </span>
+              <span class="small pull-right mobile-hide">
+                <a href="https://github.com/InfiniteSoul/Azuria/blob/new-docs/Azuria/UserInfo/Comment/Comment.cs/#L63">View Source</a>
+              </span>
+              <a id="Azuria_UserInfo_Comment_Comment_1_MediaObject_" data-uid="Azuria.UserInfo.Comment.Comment`1.MediaObject*"></a>
+              <h4 id="Azuria_UserInfo_Comment_Comment_1_MediaObject" data-uid="Azuria.UserInfo.Comment.Comment`1.MediaObject">MediaObject</h4>
+              <div class="markdown level1 summary"><p>Gets the <a class="xref" href="Azuria.Media.Anime.html">Anime</a> or <a class="xref" href="Azuria.Media.Manga.html">Manga</a> this comment is for.</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public T MediaObject { get; }</code></pre>
+              </div>
+              <h5 class="propertyValue">Property Value</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">T</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
               <span class="small pull-right mobile-hide">
                 <span class="divider">|</span>
                 <a href="https://github.com/InfiniteSoul/Azuria/new/new-docs/docfx_project/apispec/new?filename=Azuria_UserInfo_Comment_Comment_1_Progress.md&amp;value=---%0Auid%3A%20Azuria.UserInfo.Comment.Comment%601.Progress%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
               </span>
               <span class="small pull-right mobile-hide">
-                <a href="https://github.com/InfiniteSoul/Azuria/blob/new-docs/Azuria/UserInfo/Comment/Comment.cs/#L66">View Source</a>
+                <a href="https://github.com/InfiniteSoul/Azuria/blob/new-docs/Azuria/UserInfo/Comment/Comment.cs/#L69">View Source</a>
               </span>
+              <a id="Azuria_UserInfo_Comment_Comment_1_Progress_" data-uid="Azuria.UserInfo.Comment.Comment`1.Progress*"></a>
               <h4 id="Azuria_UserInfo_Comment_Comment_1_Progress" data-uid="Azuria.UserInfo.Comment.Comment`1.Progress">Progress</h4>
               <div class="markdown level1 summary"></div>
               <div class="markdown level1 conceptual"></div>
@@ -276,20 +285,23 @@
                   </tr>
                 </tbody>
               </table>
+              <h5 class="implements">Implements</h5>
+                  <div><a class="xref" href="Azuria.UserInfo.Comment.IComment.html#Azuria_UserInfo_Comment_IComment_Progress">IComment.Progress</a></div>
               <span class="small pull-right mobile-hide">
                 <span class="divider">|</span>
                 <a href="https://github.com/InfiniteSoul/Azuria/new/new-docs/docfx_project/apispec/new?filename=Azuria_UserInfo_Comment_Comment_1_ProgressState.md&amp;value=---%0Auid%3A%20Azuria.UserInfo.Comment.Comment%601.ProgressState%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
               </span>
               <span class="small pull-right mobile-hide">
-                <a href="https://github.com/InfiniteSoul/Azuria/blob/new-docs/Azuria/UserInfo/Comment/Comment.cs/#L71">View Source</a>
+                <a href="https://github.com/InfiniteSoul/Azuria/blob/new-docs/Azuria/UserInfo/Comment/Comment.cs/#L74">View Source</a>
               </span>
+              <a id="Azuria_UserInfo_Comment_Comment_1_ProgressState_" data-uid="Azuria.UserInfo.Comment.Comment`1.ProgressState*"></a>
               <h4 id="Azuria_UserInfo_Comment_Comment_1_ProgressState" data-uid="Azuria.UserInfo.Comment.Comment`1.ProgressState">ProgressState</h4>
-              <div class="markdown level1 summary"><p>Gets the category the author has put his progress of the <a class="xref" href="Azuria.Media.Anime.html#Azuria_Media_Anime">Anime</a> or <a class="xref" href="Azuria.Media.Manga.html#Azuria_Media_Manga">Manga</a> in.</p>
+              <div class="markdown level1 summary"><p>Gets the category the author has put his progress of the <a class="xref" href="Azuria.Media.Anime.html">Anime</a> or <a class="xref" href="Azuria.Media.Manga.html">Manga</a> in.</p>
 </div>
               <div class="markdown level1 conceptual"></div>
               <h5 class="decalaration">Declaration</h5>
               <div class="codewrapper">
-                <pre><code class="lang-csharp hljs">public AnimeMangaProgressState ProgressState { get; }</code></pre>
+                <pre><code class="lang-csharp hljs">public MediaProgressState ProgressState { get; }</code></pre>
               </div>
               <h5 class="propertyValue">Property Value</h5>
               <table class="table table-bordered table-striped table-condensed">
@@ -301,18 +313,21 @@
                 </thead>
                 <tbody>
                   <tr>
-                    <td><a class="xref" href="Azuria.UserInfo.AnimeMangaProgressState.html#Azuria_UserInfo_AnimeMangaProgressState">AnimeMangaProgressState</a></td>
+                    <td><a class="xref" href="Azuria.UserInfo.MediaProgressState.html">MediaProgressState</a></td>
                     <td></td>
                   </tr>
                 </tbody>
               </table>
+              <h5 class="implements">Implements</h5>
+                  <div><a class="xref" href="Azuria.UserInfo.Comment.IComment.html#Azuria_UserInfo_Comment_IComment_ProgressState">IComment.ProgressState</a></div>
               <span class="small pull-right mobile-hide">
                 <span class="divider">|</span>
                 <a href="https://github.com/InfiniteSoul/Azuria/new/new-docs/docfx_project/apispec/new?filename=Azuria_UserInfo_Comment_Comment_1_Rating.md&amp;value=---%0Auid%3A%20Azuria.UserInfo.Comment.Comment%601.Rating%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
               </span>
               <span class="small pull-right mobile-hide">
-                <a href="https://github.com/InfiniteSoul/Azuria/blob/new-docs/Azuria/UserInfo/Comment/Comment.cs/#L76">View Source</a>
+                <a href="https://github.com/InfiniteSoul/Azuria/blob/new-docs/Azuria/UserInfo/Comment/Comment.cs/#L79">View Source</a>
               </span>
+              <a id="Azuria_UserInfo_Comment_Comment_1_Rating_" data-uid="Azuria.UserInfo.Comment.Comment`1.Rating*"></a>
               <h4 id="Azuria_UserInfo_Comment_Comment_1_Rating" data-uid="Azuria.UserInfo.Comment.Comment`1.Rating">Rating</h4>
               <div class="markdown level1 summary"><p>Gets the overall rating the <a class="xref" href="Azuria.UserInfo.Comment.Comment-1.html#Azuria_UserInfo_Comment_Comment_1_Author">Author</a> gave. Returns -1 if no rating was found.</p>
 </div>
@@ -336,13 +351,16 @@
                   </tr>
                 </tbody>
               </table>
+              <h5 class="implements">Implements</h5>
+                  <div><a class="xref" href="Azuria.UserInfo.Comment.IComment.html#Azuria_UserInfo_Comment_IComment_Rating">IComment.Rating</a></div>
               <span class="small pull-right mobile-hide">
                 <span class="divider">|</span>
                 <a href="https://github.com/InfiniteSoul/Azuria/new/new-docs/docfx_project/apispec/new?filename=Azuria_UserInfo_Comment_Comment_1_SubRatings.md&amp;value=---%0Auid%3A%20Azuria.UserInfo.Comment.Comment%601.SubRatings%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
               </span>
               <span class="small pull-right mobile-hide">
-                <a href="https://github.com/InfiniteSoul/Azuria/blob/new-docs/Azuria/UserInfo/Comment/Comment.cs/#L81">View Source</a>
+                <a href="https://github.com/InfiniteSoul/Azuria/blob/new-docs/Azuria/UserInfo/Comment/Comment.cs/#L84">View Source</a>
               </span>
+              <a id="Azuria_UserInfo_Comment_Comment_1_SubRatings_" data-uid="Azuria.UserInfo.Comment.Comment`1.SubRatings*"></a>
               <h4 id="Azuria_UserInfo_Comment_Comment_1_SubRatings" data-uid="Azuria.UserInfo.Comment.Comment`1.SubRatings">SubRatings</h4>
               <div class="markdown level1 summary"><p>Gets the rating of all subcategories.</p>
 </div>
@@ -361,18 +379,21 @@
                 </thead>
                 <tbody>
                   <tr>
-                    <td><span class="xref">System.Collections.Generic.Dictionary</span>&lt;<a class="xref" href="Azuria.UserInfo.Comment.RatingCategory.html#Azuria_UserInfo_Comment_RatingCategory">RatingCategory</a>, <span class="xref">System.Int32</span>&gt;</td>
+                    <td><span class="xref">System.Collections.Generic.Dictionary</span>&lt;<a class="xref" href="Azuria.UserInfo.Comment.RatingCategory.html">RatingCategory</a>, <span class="xref">System.Int32</span>&gt;</td>
                     <td></td>
                   </tr>
                 </tbody>
               </table>
+              <h5 class="implements">Implements</h5>
+                  <div><a class="xref" href="Azuria.UserInfo.Comment.IComment.html#Azuria_UserInfo_Comment_IComment_SubRatings">IComment.SubRatings</a></div>
               <span class="small pull-right mobile-hide">
                 <span class="divider">|</span>
                 <a href="https://github.com/InfiniteSoul/Azuria/new/new-docs/docfx_project/apispec/new?filename=Azuria_UserInfo_Comment_Comment_1_Upvotes.md&amp;value=---%0Auid%3A%20Azuria.UserInfo.Comment.Comment%601.Upvotes%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
               </span>
               <span class="small pull-right mobile-hide">
-                <a href="https://github.com/InfiniteSoul/Azuria/blob/new-docs/Azuria/UserInfo/Comment/Comment.cs/#L85">View Source</a>
+                <a href="https://github.com/InfiniteSoul/Azuria/blob/new-docs/Azuria/UserInfo/Comment/Comment.cs/#L88">View Source</a>
               </span>
+              <a id="Azuria_UserInfo_Comment_Comment_1_Upvotes_" data-uid="Azuria.UserInfo.Comment.Comment`1.Upvotes*"></a>
               <h4 id="Azuria_UserInfo_Comment_Comment_1_Upvotes" data-uid="Azuria.UserInfo.Comment.Comment`1.Upvotes">Upvotes</h4>
               <div class="markdown level1 summary"></div>
               <div class="markdown level1 conceptual"></div>
@@ -395,6 +416,8 @@
                   </tr>
                 </tbody>
               </table>
+              <h5 class="implements">Implements</h5>
+                  <div><a class="xref" href="Azuria.UserInfo.Comment.IComment.html#Azuria_UserInfo_Comment_IComment_Upvotes">IComment.Upvotes</a></div>
               <h3 id="methods">Methods
               </h3>
               <span class="small pull-right mobile-hide">
@@ -402,14 +425,15 @@
                 <a href="https://github.com/InfiniteSoul/Azuria/new/new-docs/docfx_project/apispec/new?filename=Azuria_UserInfo_Comment_Comment_1_SetProgress_System_Int32_Azuria_Senpai_.md&amp;value=---%0Auid%3A%20Azuria.UserInfo.Comment.Comment%601.SetProgress(System.Int32%2CAzuria.Senpai)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
               </span>
               <span class="small pull-right mobile-hide">
-                <a href="https://github.com/InfiniteSoul/Azuria/blob/new-docs/Azuria/UserInfo/Comment/Comment.cs/#L96">View Source</a>
+                <a href="https://github.com/InfiniteSoul/Azuria/blob/new-docs/Azuria/UserInfo/Comment/Comment.cs/#L99">View Source</a>
               </span>
+              <a id="Azuria_UserInfo_Comment_Comment_1_SetProgress_" data-uid="Azuria.UserInfo.Comment.Comment`1.SetProgress*"></a>
               <h4 id="Azuria_UserInfo_Comment_Comment_1_SetProgress_System_Int32_Azuria_Senpai_" data-uid="Azuria.UserInfo.Comment.Comment`1.SetProgress(System.Int32,Azuria.Senpai)">SetProgress(Int32, Senpai)</h4>
               <div class="markdown level1 summary"></div>
               <div class="markdown level1 conceptual"></div>
               <h5 class="decalaration">Declaration</h5>
               <div class="codewrapper">
-                <pre><code class="lang-csharp hljs">public Task&lt;ProxerResult&gt; SetProgress(int progress, Senpai senpai)</code></pre>
+                <pre><code class="lang-csharp hljs">public Task&lt;IProxerResult&gt; SetProgress(int progress, Senpai senpai)</code></pre>
               </div>
               <h5 class="parameters">Parameters</h5>
               <table class="table table-bordered table-striped table-condensed">
@@ -423,12 +447,12 @@
                 <tbody>
                   <tr>
                     <td><span class="xref">System.Int32</span></td>
-                    <td><em>progress</em></td>
+                    <td><span class="parametername">progress</span></td>
                     <td></td>
                   </tr>
                   <tr>
-                    <td><a class="xref" href="Azuria.Senpai.html#Azuria_Senpai">Senpai</a></td>
-                    <td><em>senpai</em></td>
+                    <td><a class="xref" href="Azuria.Senpai.html">Senpai</a></td>
+                    <td><span class="parametername">senpai</span></td>
                     <td></td>
                   </tr>
                 </tbody>
@@ -443,18 +467,64 @@
                 </thead>
                 <tbody>
                   <tr>
-                    <td><span class="xref">System.Threading.Tasks.Task</span>&lt;<a class="xref" href="Azuria.ErrorHandling.ProxerResult.html#Azuria_ErrorHandling_ProxerResult">ProxerResult</a>&gt;</td>
+                    <td><span class="xref">System.Threading.Tasks.Task</span>&lt;<a class="xref" href="Azuria.ErrorHandling.IProxerResult.html">IProxerResult</a>&gt;</td>
                     <td></td>
                   </tr>
                 </tbody>
               </table>
+              <h3 id="eii">Explicit Interface Implementations
+              </h3>
+              <span class="small pull-right mobile-hide">
+                <span class="divider">|</span>
+                <a href="https://github.com/InfiniteSoul/Azuria/new/new-docs/docfx_project/apispec/new?filename=Azuria_UserInfo_Comment_Comment_1_Azuria_UserInfo_Comment_IComment_MediaObject.md&amp;value=---%0Auid%3A%20Azuria.UserInfo.Comment.Comment%601.Azuria%23UserInfo%23Comment%23IComment%23MediaObject%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+              </span>
+              <span class="small pull-right mobile-hide">
+                <a href="https://github.com/InfiniteSoul/Azuria/blob/new-docs/Azuria/UserInfo/Comment/Comment.cs/#L65">View Source</a>
+              </span>
+              <a id="Azuria_UserInfo_Comment_Comment_1_Azuria_UserInfo_Comment_IComment_MediaObject_" data-uid="Azuria.UserInfo.Comment.Comment`1.Azuria#UserInfo#Comment#IComment#MediaObject*"></a>
+              <h4 id="Azuria_UserInfo_Comment_Comment_1_Azuria_UserInfo_Comment_IComment_MediaObject" data-uid="Azuria.UserInfo.Comment.Comment`1.Azuria#UserInfo#Comment#IComment#MediaObject">IComment.MediaObject</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">IMediaObject IComment.MediaObject { get; }</code></pre>
+              </div>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="Azuria.Media.IMediaObject.html">IMediaObject</a></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="implements">Implements</h5>
+                  <div><a class="xref" href="Azuria.UserInfo.Comment.IComment.html#Azuria_UserInfo_Comment_IComment_MediaObject">IComment.MediaObject</a></div>
             </article>
           </div>
           
           <div class="hidden-sm col-md-2" role="complementary">
-            <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
-            <!-- <p><a class="back-to-top" href="#top">Back to top</a><p> -->
-            </nav>
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                  <li>
+                    <a href="https://github.com/InfiniteSoul/Azuria/new/new-docs/docfx_project/apispec/new?filename=Azuria_UserInfo_Comment_Comment_1.md&amp;value=---%0Auid%3A%20Azuria.UserInfo.Comment.Comment%601%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
+                  </li>
+                  <li>
+                    <a href="https://github.com/InfiniteSoul/Azuria/blob/new-docs/Azuria/UserInfo/Comment/Comment.cs/#L16" class="contribution-link">View Source</a>
+                  </li>
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+              <!-- <p><a class="back-to-top" href="#top">Back to top</a><p> -->
+              </nav>
+            </div>
           </div>
         </div>
       </div>
@@ -476,6 +546,5 @@
     <script type="text/javascript" src="../styles/docfx.vendor.js"></script>
     <script type="text/javascript" src="../styles/docfx.js"></script>
     <script type="text/javascript" src="../styles/main.js"></script>
-    <script>hljs.initHighlightingOnLoad();</script>
   </body>
 </html>

@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <!--[if IE]><![endif]-->
 <html>
   
@@ -10,7 +10,7 @@
     <meta name="viewport" content="width=device-width">
     <meta name="title" content="Class ProxerResultExtensions
    ">
-    <meta name="generator" content="docfx 2.3.1.0">
+    <meta name="generator" content="docfx 2.9.3.0">
     
     <link rel="shortcut icon" href="../favicon.ico">
     <link rel="stylesheet" href="../styles/docfx.vendor.css">
@@ -33,6 +33,7 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
               </button>
+              
               <a class="navbar-brand" href="../index.html">
                 <img id="logo" class="svg" src="../logo.svg" alt="">
               </a>
@@ -68,8 +69,6 @@
             <article class="content wrap" id="_content">
               
               
-              <a href="https://github.com/InfiniteSoul/Azuria/new/new-docs/docfx_project/apispec/new?filename=Azuria_Utilities_Extensions_ProxerResultExtensions.md&amp;value=---%0Auid%3A%20Azuria.Utilities.Extensions.ProxerResultExtensions%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="btn btn-primary pull-right mobile-hide">Improve this Doc</a>
-              <a href="https://github.com/InfiniteSoul/Azuria/blob/new-docs/Azuria/Utilities/Extensions/ProxerResultExtensions.cs/#L10" class="btn btn-primary pull-right mobile-hide">View Source</a>
               <h1 id="Azuria_Utilities_Extensions_ProxerResultExtensions" data-uid="Azuria.Utilities.Extensions.ProxerResultExtensions">Class ProxerResultExtensions
               </h1>
               <div class="markdown level0 summary"></div>
@@ -113,17 +112,18 @@
               </h3>
               <span class="small pull-right mobile-hide">
                 <span class="divider">|</span>
-                <a href="https://github.com/InfiniteSoul/Azuria/new/new-docs/docfx_project/apispec/new?filename=Azuria_Utilities_Extensions_ProxerResultExtensions_ThrowFirstForNonSuccess_System_Threading_Tasks_Task_Azuria_ErrorHandling_ProxerResult__.md&amp;value=---%0Auid%3A%20Azuria.Utilities.Extensions.ProxerResultExtensions.ThrowFirstForNonSuccess(System.Threading.Tasks.Task%7BAzuria.ErrorHandling.ProxerResult%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+                <a href="https://github.com/InfiniteSoul/Azuria/new/new-docs/docfx_project/apispec/new?filename=Azuria_Utilities_Extensions_ProxerResultExtensions_OnError__2___0___1_.md&amp;value=---%0Auid%3A%20Azuria.Utilities.Extensions.ProxerResultExtensions.OnError%60%602(%60%600%2C%60%601)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
               </span>
               <span class="small pull-right mobile-hide">
-                <a href="https://github.com/InfiniteSoul/Azuria/blob/new-docs/Azuria/Utilities/Extensions/ProxerResultExtensions.cs/#L32">View Source</a>
+                <a href="https://github.com/InfiniteSoul/Azuria/blob/new-docs/Azuria/Utilities/Extensions/ProxerResultExtensions.cs/#L21">View Source</a>
               </span>
-              <h4 id="Azuria_Utilities_Extensions_ProxerResultExtensions_ThrowFirstForNonSuccess_System_Threading_Tasks_Task_Azuria_ErrorHandling_ProxerResult__" data-uid="Azuria.Utilities.Extensions.ProxerResultExtensions.ThrowFirstForNonSuccess(System.Threading.Tasks.Task{Azuria.ErrorHandling.ProxerResult})">ThrowFirstForNonSuccess(Task&lt;ProxerResult&gt;)</h4>
+              <a id="Azuria_Utilities_Extensions_ProxerResultExtensions_OnError_" data-uid="Azuria.Utilities.Extensions.ProxerResultExtensions.OnError*"></a>
+              <h4 id="Azuria_Utilities_Extensions_ProxerResultExtensions_OnError__2___0___1_" data-uid="Azuria.Utilities.Extensions.ProxerResultExtensions.OnError``2(``0,``1)">OnError&lt;T, TOut&gt;(T, TOut)</h4>
               <div class="markdown level1 summary"></div>
               <div class="markdown level1 conceptual"></div>
               <h5 class="decalaration">Declaration</h5>
               <div class="codewrapper">
-                <pre><code class="lang-csharp hljs">public static Task ThrowFirstForNonSuccess(this Task&lt;ProxerResult&gt; task)</code></pre>
+                <pre><code class="lang-csharp hljs">public static TOut OnError&lt;T, TOut&gt;(this T result, TOut onError)where T : IProxerResult&lt;TOut&gt;</code></pre>
               </div>
               <h5 class="parameters">Parameters</h5>
               <table class="table table-bordered table-striped table-condensed">
@@ -136,8 +136,150 @@
                 </thead>
                 <tbody>
                   <tr>
-                    <td><span class="xref">System.Threading.Tasks.Task</span>&lt;<a class="xref" href="Azuria.ErrorHandling.ProxerResult.html#Azuria_ErrorHandling_ProxerResult">ProxerResult</a>&gt;</td>
-                    <td><em>task</em></td>
+                    <td><span class="xref">T</span></td>
+                    <td><span class="parametername">result</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><span class="xref">TOut</span></td>
+                    <td><span class="parametername">onError</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">TOut</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="typeParameters">Type Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="parametername">T</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><span class="parametername">TOut</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <span class="small pull-right mobile-hide">
+                <span class="divider">|</span>
+                <a href="https://github.com/InfiniteSoul/Azuria/new/new-docs/docfx_project/apispec/new?filename=Azuria_Utilities_Extensions_ProxerResultExtensions_OnError__2_System_Threading_Tasks_Task___0____1_.md&amp;value=---%0Auid%3A%20Azuria.Utilities.Extensions.ProxerResultExtensions.OnError%60%602(System.Threading.Tasks.Task%7B%60%600%7D%2C%60%601)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+              </span>
+              <span class="small pull-right mobile-hide">
+                <a href="https://github.com/InfiniteSoul/Azuria/blob/new-docs/Azuria/Utilities/Extensions/ProxerResultExtensions.cs/#L33">View Source</a>
+              </span>
+              <a id="Azuria_Utilities_Extensions_ProxerResultExtensions_OnError_" data-uid="Azuria.Utilities.Extensions.ProxerResultExtensions.OnError*"></a>
+              <h4 id="Azuria_Utilities_Extensions_ProxerResultExtensions_OnError__2_System_Threading_Tasks_Task___0____1_" data-uid="Azuria.Utilities.Extensions.ProxerResultExtensions.OnError``2(System.Threading.Tasks.Task{``0},``1)">OnError&lt;T, TOut&gt;(Task&lt;T&gt;, TOut)</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public static Task&lt;TOut&gt; OnError&lt;T, TOut&gt;(this Task&lt;T&gt; task, TOut onError)where T : IProxerResult&lt;TOut&gt;</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Threading.Tasks.Task</span>&lt;T&gt;</td>
+                    <td><span class="parametername">task</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><span class="xref">TOut</span></td>
+                    <td><span class="parametername">onError</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Threading.Tasks.Task</span>&lt;TOut&gt;</td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="typeParameters">Type Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="parametername">T</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><span class="parametername">TOut</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <span class="small pull-right mobile-hide">
+                <span class="divider">|</span>
+                <a href="https://github.com/InfiniteSoul/Azuria/new/new-docs/docfx_project/apispec/new?filename=Azuria_Utilities_Extensions_ProxerResultExtensions_ThrowFirstForNonSuccess_System_Threading_Tasks_Task_Azuria_ErrorHandling_IProxerResult__.md&amp;value=---%0Auid%3A%20Azuria.Utilities.Extensions.ProxerResultExtensions.ThrowFirstForNonSuccess(System.Threading.Tasks.Task%7BAzuria.ErrorHandling.IProxerResult%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+              </span>
+              <span class="small pull-right mobile-hide">
+                <a href="https://github.com/InfiniteSoul/Azuria/blob/new-docs/Azuria/Utilities/Extensions/ProxerResultExtensions.cs/#L56">View Source</a>
+              </span>
+              <a id="Azuria_Utilities_Extensions_ProxerResultExtensions_ThrowFirstForNonSuccess_" data-uid="Azuria.Utilities.Extensions.ProxerResultExtensions.ThrowFirstForNonSuccess*"></a>
+              <h4 id="Azuria_Utilities_Extensions_ProxerResultExtensions_ThrowFirstForNonSuccess_System_Threading_Tasks_Task_Azuria_ErrorHandling_IProxerResult__" data-uid="Azuria.Utilities.Extensions.ProxerResultExtensions.ThrowFirstForNonSuccess(System.Threading.Tasks.Task{Azuria.ErrorHandling.IProxerResult})">ThrowFirstForNonSuccess(Task&lt;IProxerResult&gt;)</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public static Task ThrowFirstForNonSuccess(this Task&lt;IProxerResult&gt; task)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Threading.Tasks.Task</span>&lt;<a class="xref" href="Azuria.ErrorHandling.IProxerResult.html">IProxerResult</a>&gt;</td>
+                    <td><span class="parametername">task</span></td>
                     <td></td>
                   </tr>
                 </tbody>
@@ -159,17 +301,18 @@
               </table>
               <span class="small pull-right mobile-hide">
                 <span class="divider">|</span>
-                <a href="https://github.com/InfiniteSoul/Azuria/new/new-docs/docfx_project/apispec/new?filename=Azuria_Utilities_Extensions_ProxerResultExtensions_ThrowFirstForNonSuccess__1_System_Threading_Tasks_Task_Azuria_ErrorHandling_ProxerResult___0___.md&amp;value=---%0Auid%3A%20Azuria.Utilities.Extensions.ProxerResultExtensions.ThrowFirstForNonSuccess%60%601(System.Threading.Tasks.Task%7BAzuria.ErrorHandling.ProxerResult%7B%60%600%7D%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+                <a href="https://github.com/InfiniteSoul/Azuria/new/new-docs/docfx_project/apispec/new?filename=Azuria_Utilities_Extensions_ProxerResultExtensions_ThrowFirstForNonSuccess__1_System_Threading_Tasks_Task_Azuria_ErrorHandling_IProxerResult___0___.md&amp;value=---%0Auid%3A%20Azuria.Utilities.Extensions.ProxerResultExtensions.ThrowFirstForNonSuccess%60%601(System.Threading.Tasks.Task%7BAzuria.ErrorHandling.IProxerResult%7B%60%600%7D%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
               </span>
               <span class="small pull-right mobile-hide">
-                <a href="https://github.com/InfiniteSoul/Azuria/blob/new-docs/Azuria/Utilities/Extensions/ProxerResultExtensions.cs/#L19">View Source</a>
+                <a href="https://github.com/InfiniteSoul/Azuria/blob/new-docs/Azuria/Utilities/Extensions/ProxerResultExtensions.cs/#L44">View Source</a>
               </span>
-              <h4 id="Azuria_Utilities_Extensions_ProxerResultExtensions_ThrowFirstForNonSuccess__1_System_Threading_Tasks_Task_Azuria_ErrorHandling_ProxerResult___0___" data-uid="Azuria.Utilities.Extensions.ProxerResultExtensions.ThrowFirstForNonSuccess``1(System.Threading.Tasks.Task{Azuria.ErrorHandling.ProxerResult{``0}})">ThrowFirstForNonSuccess&lt;T&gt;(Task&lt;ProxerResult&lt;T&gt;&gt;)</h4>
+              <a id="Azuria_Utilities_Extensions_ProxerResultExtensions_ThrowFirstForNonSuccess_" data-uid="Azuria.Utilities.Extensions.ProxerResultExtensions.ThrowFirstForNonSuccess*"></a>
+              <h4 id="Azuria_Utilities_Extensions_ProxerResultExtensions_ThrowFirstForNonSuccess__1_System_Threading_Tasks_Task_Azuria_ErrorHandling_IProxerResult___0___" data-uid="Azuria.Utilities.Extensions.ProxerResultExtensions.ThrowFirstForNonSuccess``1(System.Threading.Tasks.Task{Azuria.ErrorHandling.IProxerResult{``0}})">ThrowFirstForNonSuccess&lt;T&gt;(Task&lt;IProxerResult&lt;T&gt;&gt;)</h4>
               <div class="markdown level1 summary"></div>
               <div class="markdown level1 conceptual"></div>
               <h5 class="decalaration">Declaration</h5>
               <div class="codewrapper">
-                <pre><code class="lang-csharp hljs">public static Task&lt;T&gt; ThrowFirstForNonSuccess&lt;T&gt;(this Task&lt;ProxerResult&lt;T&gt;&gt; task)</code></pre>
+                <pre><code class="lang-csharp hljs">public static Task&lt;T&gt; ThrowFirstForNonSuccess&lt;T&gt;(this Task&lt;IProxerResult&lt;T&gt;&gt; task)</code></pre>
               </div>
               <h5 class="parameters">Parameters</h5>
               <table class="table table-bordered table-striped table-condensed">
@@ -182,8 +325,8 @@
                 </thead>
                 <tbody>
                   <tr>
-                    <td><span class="xref">System.Threading.Tasks.Task</span>&lt;<a class="xref" href="Azuria.ErrorHandling.ProxerResult-1.html#Azuria_ErrorHandling_ProxerResult_1">ProxerResult</a>&lt;T&gt;&gt;</td>
-                    <td><em>task</em></td>
+                    <td><span class="xref">System.Threading.Tasks.Task</span>&lt;<a class="xref" href="Azuria.ErrorHandling.IProxerResult-1.html">IProxerResult</a>&lt;T&gt;&gt;</td>
+                    <td><span class="parametername">task</span></td>
                     <td></td>
                   </tr>
                 </tbody>
@@ -213,7 +356,7 @@
                 </thead>
                 <tbody>
                   <tr>
-                    <td><em>T</em></td>
+                    <td><span class="parametername">T</span></td>
                     <td></td>
                   </tr>
                 </tbody>
@@ -222,9 +365,21 @@
           </div>
           
           <div class="hidden-sm col-md-2" role="complementary">
-            <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
-            <!-- <p><a class="back-to-top" href="#top">Back to top</a><p> -->
-            </nav>
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                  <li>
+                    <a href="https://github.com/InfiniteSoul/Azuria/new/new-docs/docfx_project/apispec/new?filename=Azuria_Utilities_Extensions_ProxerResultExtensions.md&amp;value=---%0Auid%3A%20Azuria.Utilities.Extensions.ProxerResultExtensions%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
+                  </li>
+                  <li>
+                    <a href="https://github.com/InfiniteSoul/Azuria/blob/new-docs/Azuria/Utilities/Extensions/ProxerResultExtensions.cs/#L10" class="contribution-link">View Source</a>
+                  </li>
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+              <!-- <p><a class="back-to-top" href="#top">Back to top</a><p> -->
+              </nav>
+            </div>
           </div>
         </div>
       </div>
@@ -246,6 +401,5 @@
     <script type="text/javascript" src="../styles/docfx.vendor.js"></script>
     <script type="text/javascript" src="../styles/docfx.js"></script>
     <script type="text/javascript" src="../styles/main.js"></script>
-    <script>hljs.initHighlightingOnLoad();</script>
   </body>
 </html>

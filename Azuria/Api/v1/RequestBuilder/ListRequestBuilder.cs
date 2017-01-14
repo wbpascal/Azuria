@@ -12,12 +12,16 @@ namespace Azuria.Api.v1.RequestBuilder
         #region Methods
 
         /// <summary>
+        /// Creates an <see cref="ApiRequest"/> instance that...
+        /// 
+        /// Api permissions required:
+        ///  * List - Level 0
         /// </summary>
         /// <param name="input"></param>
         /// <param name="kat"></param>
         /// <param name="limit"></param>
         /// <param name="page"></param>
-        /// <returns></returns>
+        /// <returns>An instance of <see cref="ApiRequest"/> that returns...</returns>
         public static ApiRequest<SearchDataModel[]> EntryList(EntryListInput input, string kat, int limit,
             int page)
         {
@@ -27,11 +31,15 @@ namespace Azuria.Api.v1.RequestBuilder
         }
 
         /// <summary>
+        /// Creates an <see cref="ApiRequest"/> instance that...
+        /// 
+        /// Api permissions required:
+        ///  * List - Level 0
         /// </summary>
         /// <param name="input"></param>
         /// <param name="limit"></param>
         /// <param name="page"></param>
-        /// <returns></returns>
+        /// <returns>An instance of <see cref="ApiRequest"/> that returns...</returns>
         public static ApiRequest<SearchDataModel[]> EntrySearch(SearchInput input, int limit, int page)
         {
             return ApiRequest<SearchDataModel[]>.Create(

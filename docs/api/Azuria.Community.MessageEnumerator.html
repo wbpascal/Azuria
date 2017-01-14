@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <!--[if IE]><![endif]-->
 <html>
   
@@ -10,7 +10,7 @@
     <meta name="viewport" content="width=device-width">
     <meta name="title" content="Class MessageEnumerator
    ">
-    <meta name="generator" content="docfx 2.3.1.0">
+    <meta name="generator" content="docfx 2.9.3.0">
     
     <link rel="shortcut icon" href="../favicon.ico">
     <link rel="stylesheet" href="../styles/docfx.vendor.css">
@@ -33,6 +33,7 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
               </button>
+              
               <a class="navbar-brand" href="../index.html">
                 <img id="logo" class="svg" src="../logo.svg" alt="">
               </a>
@@ -68,8 +69,6 @@
             <article class="content wrap" id="_content">
               
               
-              <a href="https://github.com/InfiniteSoul/Azuria/new/new-docs/docfx_project/apispec/new?filename=Azuria_Community_MessageEnumerator.md&amp;value=---%0Auid%3A%20Azuria.Community.MessageEnumerator%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="btn btn-primary pull-right mobile-hide">Improve this Doc</a>
-              <a href="https://github.com/InfiniteSoul/Azuria/blob/new-docs/Azuria/Community/MessageEnumerator.cs/#L13" class="btn btn-primary pull-right mobile-hide">View Source</a>
               <h1 id="Azuria_Community_MessageEnumerator" data-uid="Azuria.Community.MessageEnumerator">Class MessageEnumerator
               </h1>
               <div class="markdown level0 summary"></div>
@@ -77,28 +76,35 @@
               <div class="inheritance">
                 <h5>Inheritance</h5>
                   <div class="level0"><span class="xref">System.Object</span></div>
-                  <div class="level1"><a class="xref" href="Azuria.Utilities.PageEnumerator-1.html#Azuria_Utilities_PageEnumerator_1">PageEnumerator</a>&lt;<a class="xref" href="Azuria.Community.Message.html#Azuria_Community_Message">Message</a>&gt;</div>
-                  <div class="level2"><span class="xref">MessageEnumerator</span></div>
+                  <div class="level1"><a class="xref" href="Azuria.Enumerable.RetryableEnumerator-1.html">RetryableEnumerator</a>&lt;<a class="xref" href="Azuria.Community.Message.html">Message</a>&gt;</div>
+                  <div class="level2"><a class="xref" href="Azuria.Enumerable.PagedEnumerator-1.html">PagedEnumerator</a>&lt;<a class="xref" href="Azuria.Community.Message.html">Message</a>&gt;</div>
+                  <div class="level3"><span class="xref">MessageEnumerator</span></div>
               </div>
               <div class="inheritedMembers">
                 <h5>Inherited Members</h5>
                 <div>
-                  <a class="xref" href="Azuria.Utilities.PageEnumerator-1.html#Azuria_Utilities_PageEnumerator_1_Current">PageEnumerator&lt;Message&gt;.Current</a>
+                  <a class="xref" href="Azuria.Enumerable.PagedEnumerator-1.html#Azuria_Enumerable_PagedEnumerator_1_Current">PagedEnumerator&lt;Message&gt;.Current</a>
                 </div>
                 <div>
-                  <span class="xref">Azuria.Utilities.PageEnumerator&lt;Azuria.Community.Message&gt;.System.Collections.IEnumerator.Current</span>
+                  <a class="xref" href="Azuria.Enumerable.PagedEnumerator-1.html#Azuria_Enumerable_PagedEnumerator_1_Dispose">PagedEnumerator&lt;Message&gt;.Dispose()</a>
                 </div>
                 <div>
-                  <a class="xref" href="Azuria.Utilities.PageEnumerator-1.html#Azuria_Utilities_PageEnumerator_1_Dispose">PageEnumerator&lt;Message&gt;.Dispose()</a>
+                  <a class="xref" href="Azuria.Enumerable.PagedEnumerator-1.html#Azuria_Enumerable_PagedEnumerator_1_GetCurrentPage">PagedEnumerator&lt;Message&gt;.GetCurrentPage()</a>
                 </div>
                 <div>
-                  <a class="xref" href="Azuria.Utilities.PageEnumerator-1.html#Azuria_Utilities_PageEnumerator_1_GetCurrentPage">PageEnumerator&lt;Message&gt;.GetCurrentPage()</a>
+                  <a class="xref" href="Azuria.Enumerable.PagedEnumerator-1.html#Azuria_Enumerable_PagedEnumerator_1_MoveNext_System_Int32_">PagedEnumerator&lt;Message&gt;.MoveNext(Int32)</a>
                 </div>
                 <div>
-                  <a class="xref" href="Azuria.Utilities.PageEnumerator-1.html#Azuria_Utilities_PageEnumerator_1_MoveNext">PageEnumerator&lt;Message&gt;.MoveNext()</a>
+                  <a class="xref" href="Azuria.Enumerable.PagedEnumerator-1.html#Azuria_Enumerable_PagedEnumerator_1_Reset">PagedEnumerator&lt;Message&gt;.Reset()</a>
                 </div>
                 <div>
-                  <a class="xref" href="Azuria.Utilities.PageEnumerator-1.html#Azuria_Utilities_PageEnumerator_1_Reset">PageEnumerator&lt;Message&gt;.Reset()</a>
+                  <span class="xref">Azuria.Enumerable.RetryableEnumerator&lt;Azuria.Community.Message&gt;.System.Collections.IEnumerator.Current</span>
+                </div>
+                <div>
+                  <a class="xref" href="Azuria.Enumerable.RetryableEnumerator-1.html#Azuria_Enumerable_RetryableEnumerator_1_RetryCount">RetryableEnumerator&lt;Message&gt;.RetryCount</a>
+                </div>
+                <div>
+                  <a class="xref" href="Azuria.Enumerable.RetryableEnumerator-1.html#Azuria_Enumerable_RetryableEnumerator_1_MoveNext">RetryableEnumerator&lt;Message&gt;.MoveNext()</a>
                 </div>
                 <div>
                   <span class="xref">System.Object.ToString()</span>
@@ -126,15 +132,78 @@
               <h6><strong>Assembly</strong>:Azuria.dll</h6>
               <h5 id="Azuria_Community_MessageEnumerator_syntax">Syntax</h5>
               <div class="codewrapper">
-                <pre><code class="lang-csharp hljs">public sealed class MessageEnumerator : PageEnumerator&lt;Message&gt;, IEnumerator&lt;Message&gt;, IDisposable, IEnumerator</code></pre>
+                <pre><code class="lang-csharp hljs">public sealed class MessageEnumerator : PagedEnumerator&lt;Message&gt;, IEnumerator&lt;Message&gt;, IDisposable, IEnumerator</code></pre>
               </div>
+              <h3 id="methods">Methods
+              </h3>
+              <span class="small pull-right mobile-hide">
+                <span class="divider">|</span>
+                <a href="https://github.com/InfiniteSoul/Azuria/new/new-docs/docfx_project/apispec/new?filename=Azuria_Community_MessageEnumerator_GetNextPage_System_Int32_.md&amp;value=---%0Auid%3A%20Azuria.Community.MessageEnumerator.GetNextPage(System.Int32)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+              </span>
+              <span class="small pull-right mobile-hide">
+                <a href="https://github.com/InfiniteSoul/Azuria/blob/new-docs/Azuria/Community/MessageEnumerator.cs/#L31">View Source</a>
+              </span>
+              <a id="Azuria_Community_MessageEnumerator_GetNextPage_" data-uid="Azuria.Community.MessageEnumerator.GetNextPage*"></a>
+              <h4 id="Azuria_Community_MessageEnumerator_GetNextPage_System_Int32_" data-uid="Azuria.Community.MessageEnumerator.GetNextPage(System.Int32)">GetNextPage(Int32)</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">protected override Task&lt;IProxerResult&lt;IEnumerable&lt;Message&gt;&gt;&gt; GetNextPage(int nextPage)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Int32</span></td>
+                    <td><span class="parametername">nextPage</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Threading.Tasks.Task</span>&lt;<a class="xref" href="Azuria.ErrorHandling.IProxerResult-1.html">IProxerResult</a>&lt;<span class="xref">System.Collections.Generic.IEnumerable</span>&lt;<a class="xref" href="Azuria.Community.Message.html">Message</a>&gt;&gt;&gt;</td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="overrides">Overrides</h5>
+              <div><span class="xref">Azuria.Enumerable.PagedEnumerator&lt;Azuria.Community.Message&gt;.GetNextPage(System.Int32)</span></div>
             </article>
           </div>
           
           <div class="hidden-sm col-md-2" role="complementary">
-            <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
-            <!-- <p><a class="back-to-top" href="#top">Back to top</a><p> -->
-            </nav>
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                  <li>
+                    <a href="https://github.com/InfiniteSoul/Azuria/new/new-docs/docfx_project/apispec/new?filename=Azuria_Community_MessageEnumerator.md&amp;value=---%0Auid%3A%20Azuria.Community.MessageEnumerator%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
+                  </li>
+                  <li>
+                    <a href="https://github.com/InfiniteSoul/Azuria/blob/new-docs/Azuria/Community/MessageEnumerator.cs/#L14" class="contribution-link">View Source</a>
+                  </li>
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+              <!-- <p><a class="back-to-top" href="#top">Back to top</a><p> -->
+              </nav>
+            </div>
           </div>
         </div>
       </div>
@@ -156,6 +225,5 @@
     <script type="text/javascript" src="../styles/docfx.vendor.js"></script>
     <script type="text/javascript" src="../styles/docfx.js"></script>
     <script type="text/javascript" src="../styles/main.js"></script>
-    <script>hljs.initHighlightingOnLoad();</script>
   </body>
 </html>

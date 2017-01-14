@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <!--[if IE]><![endif]-->
 <html>
   
@@ -10,7 +10,7 @@
     <meta name="viewport" content="width=device-width">
     <meta name="title" content="Class HttpClient
    ">
-    <meta name="generator" content="docfx 2.3.1.0">
+    <meta name="generator" content="docfx 2.9.3.0">
     
     <link rel="shortcut icon" href="../favicon.ico">
     <link rel="stylesheet" href="../styles/docfx.vendor.css">
@@ -33,6 +33,7 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
               </button>
+              
               <a class="navbar-brand" href="../index.html">
                 <img id="logo" class="svg" src="../logo.svg" alt="">
               </a>
@@ -68,8 +69,6 @@
             <article class="content wrap" id="_content">
               
               
-              <a href="https://github.com/InfiniteSoul/Azuria/new/new-docs/docfx_project/apispec/new?filename=Azuria_Web_HttpClient.md&amp;value=---%0Auid%3A%20Azuria.Web.HttpClient%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="btn btn-primary pull-right mobile-hide">Improve this Doc</a>
-              <a href="https://github.com/InfiniteSoul/Azuria/blob/new-docs/Azuria/Web/HttpClient.cs/#L15" class="btn btn-primary pull-right mobile-hide">View Source</a>
               <h1 id="Azuria_Web_HttpClient" data-uid="Azuria.Web.HttpClient">Class HttpClient
               </h1>
               <div class="markdown level0 summary"><p>Represents a class that communicates with the proxer servers.</p>
@@ -108,7 +107,7 @@
               <h6><strong>Assembly</strong>:Azuria.dll</h6>
               <h5 id="Azuria_Web_HttpClient_syntax">Syntax</h5>
               <div class="codewrapper">
-                <pre><code class="lang-csharp hljs">public class HttpClient : IHttpClient</code></pre>
+                <pre><code class="lang-csharp hljs">public class HttpClient : IHttpClient, IDisposable</code></pre>
               </div>
               <h3 id="constructors">Constructors
               </h3>
@@ -117,8 +116,9 @@
                 <a href="https://github.com/InfiniteSoul/Azuria/new/new-docs/docfx_project/apispec/new?filename=Azuria_Web_HttpClient__ctor_Azuria_Senpai_System_Int32_System_String_.md&amp;value=---%0Auid%3A%20Azuria.Web.HttpClient.%23ctor(Azuria.Senpai%2CSystem.Int32%2CSystem.String)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
               </span>
               <span class="small pull-right mobile-hide">
-                <a href="https://github.com/InfiniteSoul/Azuria/blob/new-docs/Azuria/Web/HttpClient.cs/#L33">View Source</a>
+                <a href="https://github.com/InfiniteSoul/Azuria/blob/new-docs/Azuria/Web/HttpClient.cs/#L39">View Source</a>
               </span>
+              <a id="Azuria_Web_HttpClient__ctor_" data-uid="Azuria.Web.HttpClient.#ctor*"></a>
               <h4 id="Azuria_Web_HttpClient__ctor_Azuria_Senpai_System_Int32_System_String_" data-uid="Azuria.Web.HttpClient.#ctor(Azuria.Senpai,System.Int32,System.String)">HttpClient(Senpai, Int32, String)</h4>
               <div class="markdown level1 summary"></div>
               <div class="markdown level1 conceptual"></div>
@@ -137,18 +137,81 @@
                 </thead>
                 <tbody>
                   <tr>
-                    <td><a class="xref" href="Azuria.Senpai.html#Azuria_Senpai">Senpai</a></td>
-                    <td><em>senpai</em></td>
+                    <td><a class="xref" href="Azuria.Senpai.html">Senpai</a></td>
+                    <td><span class="parametername">senpai</span></td>
                     <td></td>
                   </tr>
                   <tr>
                     <td><span class="xref">System.Int32</span></td>
-                    <td><em>timeout</em></td>
+                    <td><span class="parametername">timeout</span></td>
                     <td></td>
                   </tr>
                   <tr>
                     <td><span class="xref">System.String</span></td>
-                    <td><em>userAgentExtra</em></td>
+                    <td><span class="parametername">userAgentExtra</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h3 id="fields">Fields
+              </h3>
+              <span class="small pull-right mobile-hide">
+                <span class="divider">|</span>
+                <a href="https://github.com/InfiniteSoul/Azuria/new/new-docs/docfx_project/apispec/new?filename=Azuria_Web_HttpClient_UserAgent.md&amp;value=---%0Auid%3A%20Azuria.Web.HttpClient.UserAgent%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+              </span>
+              <span class="small pull-right mobile-hide">
+                <a href="https://github.com/InfiniteSoul/Azuria/blob/new-docs/Azuria/Web/HttpClient.cs/#L25">View Source</a>
+              </span>
+              <h4 id="Azuria_Web_HttpClient_UserAgent" data-uid="Azuria.Web.HttpClient.UserAgent">UserAgent</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">protected static readonly string UserAgent</code></pre>
+              </div>
+              <h5 class="fieldValue">Field Value</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.String</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h3 id="properties">Properties
+              </h3>
+              <span class="small pull-right mobile-hide">
+                <span class="divider">|</span>
+                <a href="https://github.com/InfiniteSoul/Azuria/new/new-docs/docfx_project/apispec/new?filename=Azuria_Web_HttpClient_Senpai.md&amp;value=---%0Auid%3A%20Azuria.Web.HttpClient.Senpai%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+              </span>
+              <span class="small pull-right mobile-hide">
+                <a href="https://github.com/InfiniteSoul/Azuria/blob/new-docs/Azuria/Web/HttpClient.cs/#L32">View Source</a>
+              </span>
+              <a id="Azuria_Web_HttpClient_Senpai_" data-uid="Azuria.Web.HttpClient.Senpai*"></a>
+              <h4 id="Azuria_Web_HttpClient_Senpai" data-uid="Azuria.Web.HttpClient.Senpai">Senpai</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">protected Senpai Senpai { get; }</code></pre>
+              </div>
+              <h5 class="propertyValue">Property Value</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="Azuria.Senpai.html">Senpai</a></td>
                     <td></td>
                   </tr>
                 </tbody>
@@ -157,17 +220,36 @@
               </h3>
               <span class="small pull-right mobile-hide">
                 <span class="divider">|</span>
+                <a href="https://github.com/InfiniteSoul/Azuria/new/new-docs/docfx_project/apispec/new?filename=Azuria_Web_HttpClient_Dispose.md&amp;value=---%0Auid%3A%20Azuria.Web.HttpClient.Dispose%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+              </span>
+              <span class="small pull-right mobile-hide">
+                <a href="https://github.com/InfiniteSoul/Azuria/blob/new-docs/Azuria/Web/HttpClient.cs/#L56">View Source</a>
+              </span>
+              <a id="Azuria_Web_HttpClient_Dispose_" data-uid="Azuria.Web.HttpClient.Dispose*"></a>
+              <h4 id="Azuria_Web_HttpClient_Dispose" data-uid="Azuria.Web.HttpClient.Dispose">Dispose()</h4>
+              <div class="markdown level1 summary"><p>DO NOT dispose <a class="xref" href="Azuria.Web.HttpClient.html#Azuria_Web_HttpClient_Senpai">Senpai</a> as this is most likely being called from a Senpai.Dispose() method.</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public virtual void Dispose()</code></pre>
+              </div>
+              <h5 class="implements">Implements</h5>
+                  <div><span class="xref">System.IDisposable.Dispose()</span></div>
+              <span class="small pull-right mobile-hide">
+                <span class="divider">|</span>
                 <a href="https://github.com/InfiniteSoul/Azuria/new/new-docs/docfx_project/apispec/new?filename=Azuria_Web_HttpClient_GetRequest_System_Uri_System_Collections_Generic_Dictionary_System_String_System_String__.md&amp;value=---%0Auid%3A%20Azuria.Web.HttpClient.GetRequest(System.Uri%2CSystem.Collections.Generic.Dictionary%7BSystem.String%2CSystem.String%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
               </span>
               <span class="small pull-right mobile-hide">
-                <a href="https://github.com/InfiniteSoul/Azuria/blob/new-docs/Azuria/Web/HttpClient.cs/#L51">View Source</a>
+                <a href="https://github.com/InfiniteSoul/Azuria/blob/new-docs/Azuria/Web/HttpClient.cs/#L66">View Source</a>
               </span>
+              <a id="Azuria_Web_HttpClient_GetRequest_" data-uid="Azuria.Web.HttpClient.GetRequest*"></a>
               <h4 id="Azuria_Web_HttpClient_GetRequest_System_Uri_System_Collections_Generic_Dictionary_System_String_System_String__" data-uid="Azuria.Web.HttpClient.GetRequest(System.Uri,System.Collections.Generic.Dictionary{System.String,System.String})">GetRequest(Uri, Dictionary&lt;String, String&gt;)</h4>
               <div class="markdown level1 summary"></div>
               <div class="markdown level1 conceptual"></div>
               <h5 class="decalaration">Declaration</h5>
               <div class="codewrapper">
-                <pre><code class="lang-csharp hljs">public Task&lt;ProxerResult&lt;string&gt;&gt; GetRequest(Uri url, Dictionary&lt;string, string&gt; headers = null)</code></pre>
+                <pre><code class="lang-csharp hljs">public virtual Task&lt;IProxerResult&lt;string&gt;&gt; GetRequest(Uri url, Dictionary&lt;string, string&gt; headers = null)</code></pre>
               </div>
               <h5 class="parameters">Parameters</h5>
               <table class="table table-bordered table-striped table-condensed">
@@ -181,12 +263,12 @@
                 <tbody>
                   <tr>
                     <td><span class="xref">System.Uri</span></td>
-                    <td><em>url</em></td>
+                    <td><span class="parametername">url</span></td>
                     <td></td>
                   </tr>
                   <tr>
                     <td><span class="xref">System.Collections.Generic.Dictionary</span>&lt;<span class="xref">System.String</span>, <span class="xref">System.String</span>&gt;</td>
-                    <td><em>headers</em></td>
+                    <td><span class="parametername">headers</span></td>
                     <td></td>
                   </tr>
                 </tbody>
@@ -201,7 +283,7 @@
                 </thead>
                 <tbody>
                   <tr>
-                    <td><span class="xref">System.Threading.Tasks.Task</span>&lt;<a class="xref" href="Azuria.ErrorHandling.ProxerResult-1.html#Azuria_ErrorHandling_ProxerResult_1">ProxerResult</a>&lt;<span class="xref">System.String</span>&gt;&gt;</td>
+                    <td><span class="xref">System.Threading.Tasks.Task</span>&lt;<a class="xref" href="Azuria.ErrorHandling.IProxerResult-1.html">IProxerResult</a>&lt;<span class="xref">System.String</span>&gt;&gt;</td>
                     <td></td>
                   </tr>
                 </tbody>
@@ -213,14 +295,15 @@
                 <a href="https://github.com/InfiniteSoul/Azuria/new/new-docs/docfx_project/apispec/new?filename=Azuria_Web_HttpClient_PostRequest_System_Uri_System_Collections_Generic_IEnumerable_System_Collections_Generic_KeyValuePair_System_String_System_String___System_Collections_Generic_Dictionary_System_String_System_String__.md&amp;value=---%0Auid%3A%20Azuria.Web.HttpClient.PostRequest(System.Uri%2CSystem.Collections.Generic.IEnumerable%7BSystem.Collections.Generic.KeyValuePair%7BSystem.String%2CSystem.String%7D%7D%2CSystem.Collections.Generic.Dictionary%7BSystem.String%2CSystem.String%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
               </span>
               <span class="small pull-right mobile-hide">
-                <a href="https://github.com/InfiniteSoul/Azuria/blob/new-docs/Azuria/Web/HttpClient.cs/#L100">View Source</a>
+                <a href="https://github.com/InfiniteSoul/Azuria/blob/new-docs/Azuria/Web/HttpClient.cs/#L113">View Source</a>
               </span>
+              <a id="Azuria_Web_HttpClient_PostRequest_" data-uid="Azuria.Web.HttpClient.PostRequest*"></a>
               <h4 id="Azuria_Web_HttpClient_PostRequest_System_Uri_System_Collections_Generic_IEnumerable_System_Collections_Generic_KeyValuePair_System_String_System_String___System_Collections_Generic_Dictionary_System_String_System_String__" data-uid="Azuria.Web.HttpClient.PostRequest(System.Uri,System.Collections.Generic.IEnumerable{System.Collections.Generic.KeyValuePair{System.String,System.String}},System.Collections.Generic.Dictionary{System.String,System.String})">PostRequest(Uri, IEnumerable&lt;KeyValuePair&lt;String, String&gt;&gt;, Dictionary&lt;String, String&gt;)</h4>
               <div class="markdown level1 summary"></div>
               <div class="markdown level1 conceptual"></div>
               <h5 class="decalaration">Declaration</h5>
               <div class="codewrapper">
-                <pre><code class="lang-csharp hljs">public Task&lt;ProxerResult&lt;string&gt;&gt; PostRequest(Uri url, IEnumerable&lt;KeyValuePair&lt;string, string&gt;&gt; postArgs, Dictionary&lt;string, string&gt; headers = null)</code></pre>
+                <pre><code class="lang-csharp hljs">public virtual Task&lt;IProxerResult&lt;string&gt;&gt; PostRequest(Uri url, IEnumerable&lt;KeyValuePair&lt;string, string&gt;&gt; postArgs, Dictionary&lt;string, string&gt; headers = null)</code></pre>
               </div>
               <h5 class="parameters">Parameters</h5>
               <table class="table table-bordered table-striped table-condensed">
@@ -234,17 +317,17 @@
                 <tbody>
                   <tr>
                     <td><span class="xref">System.Uri</span></td>
-                    <td><em>url</em></td>
+                    <td><span class="parametername">url</span></td>
                     <td></td>
                   </tr>
                   <tr>
                     <td><span class="xref">System.Collections.Generic.IEnumerable</span>&lt;<span class="xref">System.Collections.Generic.KeyValuePair</span>&lt;<span class="xref">System.String</span>, <span class="xref">System.String</span>&gt;&gt;</td>
-                    <td><em>postArgs</em></td>
+                    <td><span class="parametername">postArgs</span></td>
                     <td></td>
                   </tr>
                   <tr>
                     <td><span class="xref">System.Collections.Generic.Dictionary</span>&lt;<span class="xref">System.String</span>, <span class="xref">System.String</span>&gt;</td>
-                    <td><em>headers</em></td>
+                    <td><span class="parametername">headers</span></td>
                     <td></td>
                   </tr>
                 </tbody>
@@ -259,7 +342,7 @@
                 </thead>
                 <tbody>
                   <tr>
-                    <td><span class="xref">System.Threading.Tasks.Task</span>&lt;<a class="xref" href="Azuria.ErrorHandling.ProxerResult-1.html#Azuria_ErrorHandling_ProxerResult_1">ProxerResult</a>&lt;<span class="xref">System.String</span>&gt;&gt;</td>
+                    <td><span class="xref">System.Threading.Tasks.Task</span>&lt;<a class="xref" href="Azuria.ErrorHandling.IProxerResult-1.html">IProxerResult</a>&lt;<span class="xref">System.String</span>&gt;&gt;</td>
                     <td></td>
                   </tr>
                 </tbody>
@@ -270,9 +353,21 @@
           </div>
           
           <div class="hidden-sm col-md-2" role="complementary">
-            <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
-            <!-- <p><a class="back-to-top" href="#top">Back to top</a><p> -->
-            </nav>
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                  <li>
+                    <a href="https://github.com/InfiniteSoul/Azuria/new/new-docs/docfx_project/apispec/new?filename=Azuria_Web_HttpClient.md&amp;value=---%0Auid%3A%20Azuria.Web.HttpClient%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
+                  </li>
+                  <li>
+                    <a href="https://github.com/InfiniteSoul/Azuria/blob/new-docs/Azuria/Web/HttpClient.cs/#L15" class="contribution-link">View Source</a>
+                  </li>
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+              <!-- <p><a class="back-to-top" href="#top">Back to top</a><p> -->
+              </nav>
+            </div>
           </div>
         </div>
       </div>
@@ -294,6 +389,5 @@
     <script type="text/javascript" src="../styles/docfx.vendor.js"></script>
     <script type="text/javascript" src="../styles/docfx.js"></script>
     <script type="text/javascript" src="../styles/main.js"></script>
-    <script>hljs.initHighlightingOnLoad();</script>
   </body>
 </html>

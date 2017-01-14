@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <!--[if IE]><![endif]-->
 <html>
   
@@ -10,7 +10,7 @@
     <meta name="viewport" content="width=device-width">
     <meta name="title" content="Class HeaderHelper
    ">
-    <meta name="generator" content="docfx 2.3.1.0">
+    <meta name="generator" content="docfx 2.9.3.0">
     
     <link rel="shortcut icon" href="../favicon.ico">
     <link rel="stylesheet" href="../styles/docfx.vendor.css">
@@ -33,6 +33,7 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
               </button>
+              
               <a class="navbar-brand" href="../index.html">
                 <img id="logo" class="svg" src="../logo.svg" alt="">
               </a>
@@ -68,11 +69,10 @@
             <article class="content wrap" id="_content">
               
               
-              <a href="https://github.com/InfiniteSoul/Azuria/new/new-docs/docfx_project/apispec/new?filename=Azuria_Media_Headers_HeaderHelper.md&amp;value=---%0Auid%3A%20Azuria.Media.Headers.HeaderHelper%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="btn btn-primary pull-right mobile-hide">Improve this Doc</a>
-              <a href="https://github.com/InfiniteSoul/Azuria/blob/new-docs/Azuria/Media/Headers/HeaderHelper.cs/#L12" class="btn btn-primary pull-right mobile-hide">View Source</a>
               <h1 id="Azuria_Media_Headers_HeaderHelper" data-uid="Azuria.Media.Headers.HeaderHelper">Class HeaderHelper
               </h1>
-              <div class="markdown level0 summary"></div>
+              <div class="markdown level0 summary"><p>Represents a helper class that is used to get the current headers of Proxer.Me.</p>
+</div>
               <div class="markdown level0 conceptual"></div>
               <div class="inheritance">
                 <h5>Inheritance</h5>
@@ -116,14 +116,20 @@
                 <a href="https://github.com/InfiniteSoul/Azuria/new/new-docs/docfx_project/apispec/new?filename=Azuria_Media_Headers_HeaderHelper_GetHeaderList.md&amp;value=---%0Auid%3A%20Azuria.Media.Headers.HeaderHelper.GetHeaderList%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
               </span>
               <span class="small pull-right mobile-hide">
-                <a href="https://github.com/InfiniteSoul/Azuria/blob/new-docs/Azuria/Media/Headers/HeaderHelper.cs/#L19">View Source</a>
+                <a href="https://github.com/InfiniteSoul/Azuria/blob/new-docs/Azuria/Media/Headers/HeaderHelper.cs/#L25">View Source</a>
               </span>
+              <a id="Azuria_Media_Headers_HeaderHelper_GetHeaderList_" data-uid="Azuria.Media.Headers.HeaderHelper.GetHeaderList*"></a>
               <h4 id="Azuria_Media_Headers_HeaderHelper_GetHeaderList" data-uid="Azuria.Media.Headers.HeaderHelper.GetHeaderList">GetHeaderList()</h4>
-              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 summary"><p>Gets an enumeration of all current headers.</p>
+<p>Required api permissions:</p>
+<ul>
+<li>Media - Level 0</li>
+</ul>
+</div>
               <div class="markdown level1 conceptual"></div>
               <h5 class="decalaration">Declaration</h5>
               <div class="codewrapper">
-                <pre><code class="lang-csharp hljs">public static Task&lt;ProxerResult&lt;IEnumerable&lt;HeaderInfo&gt;&gt;&gt; GetHeaderList()</code></pre>
+                <pre><code class="lang-csharp hljs">public static Task&lt;IProxerResult&lt;IEnumerable&lt;HeaderInfo&gt;&gt;&gt; GetHeaderList()</code></pre>
               </div>
               <h5 class="returns">Returns</h5>
               <table class="table table-bordered table-striped table-condensed">
@@ -135,8 +141,9 @@
                 </thead>
                 <tbody>
                   <tr>
-                    <td><span class="xref">System.Threading.Tasks.Task</span>&lt;<a class="xref" href="Azuria.ErrorHandling.ProxerResult-1.html#Azuria_ErrorHandling_ProxerResult_1">ProxerResult</a>&lt;<span class="xref">System.Collections.Generic.IEnumerable</span>&lt;<a class="xref" href="Azuria.Media.Headers.HeaderInfo.html#Azuria_Media_Headers_HeaderInfo">HeaderInfo</a>&gt;&gt;&gt;</td>
-                    <td></td>
+                    <td><span class="xref">System.Threading.Tasks.Task</span>&lt;<a class="xref" href="Azuria.ErrorHandling.IProxerResult-1.html">IProxerResult</a>&lt;<span class="xref">System.Collections.Generic.IEnumerable</span>&lt;<a class="xref" href="Azuria.Media.Headers.HeaderInfo.html">HeaderInfo</a>&gt;&gt;&gt;</td>
+                    <td><p>An asynchronous Task of an <a class="xref" href="Azuria.ErrorHandling.IProxerResult.html">IProxerResult</a> object that returns an enumeration of headers.</p>
+</td>
                   </tr>
                 </tbody>
               </table>
@@ -145,14 +152,20 @@
                 <a href="https://github.com/InfiniteSoul/Azuria/new/new-docs/docfx_project/apispec/new?filename=Azuria_Media_Headers_HeaderHelper_GetRandomHeader_Azuria_Media_Headers_HeaderStyle_.md&amp;value=---%0Auid%3A%20Azuria.Media.Headers.HeaderHelper.GetRandomHeader(Azuria.Media.Headers.HeaderStyle)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
               </span>
               <span class="small pull-right mobile-hide">
-                <a href="https://github.com/InfiniteSoul/Azuria/blob/new-docs/Azuria/Media/Headers/HeaderHelper.cs/#L35">View Source</a>
+                <a href="https://github.com/InfiniteSoul/Azuria/blob/new-docs/Azuria/Media/Headers/HeaderHelper.cs/#L45">View Source</a>
               </span>
+              <a id="Azuria_Media_Headers_HeaderHelper_GetRandomHeader_" data-uid="Azuria.Media.Headers.HeaderHelper.GetRandomHeader*"></a>
               <h4 id="Azuria_Media_Headers_HeaderHelper_GetRandomHeader_Azuria_Media_Headers_HeaderStyle_" data-uid="Azuria.Media.Headers.HeaderHelper.GetRandomHeader(Azuria.Media.Headers.HeaderStyle)">GetRandomHeader(HeaderStyle)</h4>
-              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 summary"><p>Gets a random header with a specified style.</p>
+<p>Required api permissions:</p>
+<ul>
+<li>Media - Level 0</li>
+</ul>
+</div>
               <div class="markdown level1 conceptual"></div>
               <h5 class="decalaration">Declaration</h5>
               <div class="codewrapper">
-                <pre><code class="lang-csharp hljs">public static Task&lt;ProxerResult&lt;HeaderInfo&gt;&gt; GetRandomHeader(HeaderStyle style)</code></pre>
+                <pre><code class="lang-csharp hljs">public static Task&lt;IProxerResult&lt;HeaderInfo&gt;&gt; GetRandomHeader(HeaderStyle style)</code></pre>
               </div>
               <h5 class="parameters">Parameters</h5>
               <table class="table table-bordered table-striped table-condensed">
@@ -165,9 +178,10 @@
                 </thead>
                 <tbody>
                   <tr>
-                    <td><a class="xref" href="Azuria.Media.Headers.HeaderStyle.html#Azuria_Media_Headers_HeaderStyle">HeaderStyle</a></td>
-                    <td><em>style</em></td>
-                    <td></td>
+                    <td><a class="xref" href="Azuria.Media.Headers.HeaderStyle.html">HeaderStyle</a></td>
+                    <td><span class="parametername">style</span></td>
+                    <td><p>The style of the returned header.</p>
+</td>
                   </tr>
                 </tbody>
               </table>
@@ -181,8 +195,9 @@
                 </thead>
                 <tbody>
                   <tr>
-                    <td><span class="xref">System.Threading.Tasks.Task</span>&lt;<a class="xref" href="Azuria.ErrorHandling.ProxerResult-1.html#Azuria_ErrorHandling_ProxerResult_1">ProxerResult</a>&lt;<a class="xref" href="Azuria.Media.Headers.HeaderInfo.html#Azuria_Media_Headers_HeaderInfo">HeaderInfo</a>&gt;&gt;</td>
-                    <td></td>
+                    <td><span class="xref">System.Threading.Tasks.Task</span>&lt;<a class="xref" href="Azuria.ErrorHandling.IProxerResult-1.html">IProxerResult</a>&lt;<a class="xref" href="Azuria.Media.Headers.HeaderInfo.html">HeaderInfo</a>&gt;&gt;</td>
+                    <td><p>An asynchronous Task of an <a class="xref" href="Azuria.ErrorHandling.IProxerResult.html">IProxerResult</a> object that returns a single header.</p>
+</td>
                   </tr>
                 </tbody>
               </table>
@@ -190,9 +205,21 @@
           </div>
           
           <div class="hidden-sm col-md-2" role="complementary">
-            <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
-            <!-- <p><a class="back-to-top" href="#top">Back to top</a><p> -->
-            </nav>
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                  <li>
+                    <a href="https://github.com/InfiniteSoul/Azuria/new/new-docs/docfx_project/apispec/new?filename=Azuria_Media_Headers_HeaderHelper.md&amp;value=---%0Auid%3A%20Azuria.Media.Headers.HeaderHelper%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
+                  </li>
+                  <li>
+                    <a href="https://github.com/InfiniteSoul/Azuria/blob/new-docs/Azuria/Media/Headers/HeaderHelper.cs/#L14" class="contribution-link">View Source</a>
+                  </li>
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+              <!-- <p><a class="back-to-top" href="#top">Back to top</a><p> -->
+              </nav>
+            </div>
           </div>
         </div>
       </div>
@@ -214,6 +241,5 @@
     <script type="text/javascript" src="../styles/docfx.vendor.js"></script>
     <script type="text/javascript" src="../styles/docfx.js"></script>
     <script type="text/javascript" src="../styles/main.js"></script>
-    <script>hljs.initHighlightingOnLoad();</script>
   </body>
 </html>

@@ -11,9 +11,13 @@ namespace Azuria.Api.v1.RequestBuilder
         #region Methods
 
         /// <summary>
+        /// Creates an <see cref="ApiRequest"/> instance that...
+        /// 
+        /// Api permissions required:
+        ///  * User - Level 0
         /// </summary>
         /// <param name="senpai"></param>
-        /// <returns></returns>
+        /// <returns>An instance of <see cref="ApiRequest"/> that returns...</returns>
         public static ApiRequest<UserInfoDataModel> GetInfo(Senpai senpai)
         {
             return ApiRequest<UserInfoDataModel>.Create(new Uri($"{ApiConstants.ApiUrlV1}/user/userinfo"))
@@ -21,18 +25,26 @@ namespace Azuria.Api.v1.RequestBuilder
         }
 
         /// <summary>
+        /// Creates an <see cref="ApiRequest"/> instance that...
+        /// 
+        /// Api permissions required:
+        ///  * User - Level 0
         /// </summary>
         /// <param name="userId"></param>
-        /// <returns></returns>
+        /// <returns>An instance of <see cref="ApiRequest"/> that returns...</returns>
         public static ApiRequest<UserInfoDataModel> GetInfo(int userId)
         {
             return ApiRequest<UserInfoDataModel>.Create(new Uri($"{ApiConstants.ApiUrlV1}/user/userinfo?uid={userId}"));
         }
 
         /// <summary>
+        /// Creates an <see cref="ApiRequest"/> instance that...
+        /// 
+        /// Api permissions required:
+        ///  * User - Level 0
         /// </summary>
         /// <param name="username"></param>
-        /// <returns></returns>
+        /// <returns>An instance of <see cref="ApiRequest"/> that returns...</returns>
         public static ApiRequest<UserInfoDataModel> GetInfo(string username)
         {
             return ApiRequest<UserInfoDataModel>.Create(
@@ -40,6 +52,10 @@ namespace Azuria.Api.v1.RequestBuilder
         }
 
         /// <summary>
+        /// Creates an <see cref="ApiRequest"/> instance that...
+        /// 
+        /// Api permissions required:
+        ///  * User - Level 0
         /// </summary>
         /// <param name="userId"></param>
         /// <param name="page"></param>
@@ -47,7 +63,7 @@ namespace Azuria.Api.v1.RequestBuilder
         /// <param name="kat"></param>
         /// <param name="length"></param>
         /// <param name="senpai"></param>
-        /// <returns></returns>
+        /// <returns>An instance of <see cref="ApiRequest"/> that returns...</returns>
         public static ApiRequest<CommentDataModel[]> GetLatestComments(int userId, int page, int limit, string kat,
             int length, Senpai senpai = null)
         {
@@ -57,13 +73,17 @@ namespace Azuria.Api.v1.RequestBuilder
         }
 
         /// <summary>
+        /// Creates an <see cref="ApiRequest"/> instance that...
+        /// 
+        /// Api permissions required:
+        ///  * User - Level 0
         /// </summary>
         /// <param name="userId"></param>
         /// <param name="kat"></param>
         /// <param name="page"></param>
         /// <param name="limit"></param>
         /// <param name="senpai"></param>
-        /// <returns></returns>
+        /// <returns>An instance of <see cref="ApiRequest"/> that returns...</returns>
         public static ApiRequest<ListDataModel[]> GetList(int userId, string kat, int page, int limit,
             Senpai senpai = null)
         {
@@ -73,11 +93,15 @@ namespace Azuria.Api.v1.RequestBuilder
         }
 
         /// <summary>
+        /// Creates an <see cref="ApiRequest"/> instance that...
+        /// 
+        /// Api permissions required:
+        ///  * User - Level 0
         /// </summary>
         /// <param name="userId"></param>
         /// <param name="category"></param>
         /// <param name="senpai"></param>
-        /// <returns></returns>
+        /// <returns>An instance of <see cref="ApiRequest"/> that returns...</returns>
         public static ApiRequest<ToptenDataModel[]> GetTopten(int userId, string category,
             Senpai senpai = null)
         {
@@ -87,11 +111,15 @@ namespace Azuria.Api.v1.RequestBuilder
         }
 
         /// <summary>
+        /// Creates an <see cref="ApiRequest"/> instance that...
+        /// 
+        /// Api permissions required:
+        ///  * User - Level 0
         /// </summary>
         /// <param name="username"></param>
         /// <param name="password"></param>
         /// <param name="senpai"></param>
-        /// <returns></returns>
+        /// <returns>An instance of <see cref="ApiRequest"/> that returns...</returns>
         public static ApiRequest<LoginDataModel> Login(string username, string password, Senpai senpai)
         {
             return ApiRequest<LoginDataModel>.Create(new Uri($"{ApiConstants.ApiUrlV1}/user/login"))
@@ -101,9 +129,13 @@ namespace Azuria.Api.v1.RequestBuilder
         }
 
         /// <summary>
+        /// Creates an <see cref="ApiRequest"/> instance that...
+        /// 
+        /// Api permissions required:
+        ///  * User - Level 0
         /// </summary>
         /// <param name="senpai"></param>
-        /// <returns></returns>
+        /// <returns>An instance of <see cref="ApiRequest"/> that returns...</returns>
         public static ApiRequest Logout(Senpai senpai)
         {
             return ApiRequest.Create(new Uri($"{ApiConstants.ApiUrlV1}/user/logout"))

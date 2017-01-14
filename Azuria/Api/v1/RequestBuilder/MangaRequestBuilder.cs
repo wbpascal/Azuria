@@ -10,12 +10,16 @@ namespace Azuria.Api.v1.RequestBuilder
         #region Methods
 
         /// <summary>
+        /// Creates an <see cref="ApiRequest"/> instance that...
+        /// 
+        /// Api permissions required:
+        ///  * Manga - Level 0
         /// </summary>
         /// <param name="id"></param>
         /// <param name="episode"></param>
         /// <param name="language"></param>
         /// <param name="senpai"></param>
-        /// <returns></returns>
+        /// <returns>An instance of <see cref="ApiRequest"/> that returns...</returns>
         public static ApiRequest<ChapterDataModel> GetChapter(int id, int episode, string language,
             Senpai senpai = null)
         {
