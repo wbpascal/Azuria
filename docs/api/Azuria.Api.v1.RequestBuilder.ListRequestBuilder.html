@@ -71,7 +71,8 @@
               
               <h1 id="Azuria_Api_v1_RequestBuilder_ListRequestBuilder" data-uid="Azuria.Api.v1.RequestBuilder.ListRequestBuilder">Class ListRequestBuilder
               </h1>
-              <div class="markdown level0 summary"></div>
+              <div class="markdown level0 summary"><p>Represents the list api class.</p>
+</div>
               <div class="markdown level0 conceptual"></div>
               <div class="inheritance">
                 <h5>Inheritance</h5>
@@ -115,11 +116,11 @@
                 <a href="https://github.com/InfiniteSoul/Azuria/new/new-docs/docfx_project/apispec/new?filename=Azuria_Api_v1_RequestBuilder_ListRequestBuilder_EntryList_Azuria_Search_Input_EntryListInput_System_String_System_Int32_System_Int32_.md&amp;value=---%0Auid%3A%20Azuria.Api.v1.RequestBuilder.ListRequestBuilder.EntryList(Azuria.Search.Input.EntryListInput%2CSystem.String%2CSystem.Int32%2CSystem.Int32)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
               </span>
               <span class="small pull-right mobile-hide">
-                <a href="https://github.com/InfiniteSoul/Azuria/blob/new-docs/Azuria/Api/v1/RequestBuilder/ListRequestBuilder.cs/#L25">View Source</a>
+                <a href="https://github.com/InfiniteSoul/Azuria/blob/new-docs/Azuria/Api/v1/RequestBuilder/ListRequestBuilder.cs/#L26">View Source</a>
               </span>
               <a id="Azuria_Api_v1_RequestBuilder_ListRequestBuilder_EntryList_" data-uid="Azuria.Api.v1.RequestBuilder.ListRequestBuilder.EntryList*"></a>
               <h4 id="Azuria_Api_v1_RequestBuilder_ListRequestBuilder_EntryList_Azuria_Search_Input_EntryListInput_System_String_System_Int32_System_Int32_" data-uid="Azuria.Api.v1.RequestBuilder.ListRequestBuilder.EntryList(Azuria.Search.Input.EntryListInput,System.String,System.Int32,System.Int32)">EntryList(EntryListInput, String, Int32, Int32)</h4>
-              <div class="markdown level1 summary"><p>Creates an <a class="xref" href="Azuria.Api.v1.ApiRequest.html">ApiRequest</a> instance that...</p>
+              <div class="markdown level1 summary"><p>Creates an <a class="xref" href="Azuria.Api.v1.ApiRequest.html">ApiRequest</a> instance that returns a list of anime or manga that match the specified criteria.</p>
 <p>Api permissions required:</p>
 <ul>
 <li>List - Level 0</li>
@@ -128,7 +129,7 @@
               <div class="markdown level1 conceptual"></div>
               <h5 class="decalaration">Declaration</h5>
               <div class="codewrapper">
-                <pre><code class="lang-csharp hljs">public static ApiRequest&lt;SearchDataModel[]&gt; EntryList(EntryListInput input, string kat, int limit, int page)</code></pre>
+                <pre><code class="lang-csharp hljs">public static ApiRequest&lt;SearchDataModel[]&gt; EntryList(EntryListInput input, string kat = &quot;anime&quot;, int limit = 100, int page = 0)</code></pre>
               </div>
               <h5 class="parameters">Parameters</h5>
               <table class="table table-bordered table-striped table-condensed">
@@ -143,22 +144,26 @@
                   <tr>
                     <td><a class="xref" href="Azuria.Search.Input.EntryListInput.html">EntryListInput</a></td>
                     <td><span class="parametername">input</span></td>
-                    <td></td>
+                    <td><p>The criteria that the returned anime or manga should match.</p>
+</td>
                   </tr>
                   <tr>
                     <td><span class="xref">System.String</span></td>
                     <td><span class="parametername">kat</span></td>
-                    <td></td>
+                    <td><p>Optional. Whether only anime or manga should be included in the returned list. Possible values: &quot;anime&quot;, &quot;manga&quot;. Default: &quot;anime&quot;</p>
+</td>
                   </tr>
                   <tr>
                     <td><span class="xref">System.Int32</span></td>
                     <td><span class="parametername">limit</span></td>
-                    <td></td>
+                    <td><p>Optional. The amount of anime or manga that will be returned per page. Default: 100</p>
+</td>
                   </tr>
                   <tr>
                     <td><span class="xref">System.Int32</span></td>
                     <td><span class="parametername">page</span></td>
-                    <td></td>
+                    <td><p>Optional. The index of the page that will be loaded. Default: 0</p>
+</td>
                   </tr>
                 </tbody>
               </table>
@@ -173,7 +178,7 @@
                 <tbody>
                   <tr>
                     <td><a class="xref" href="Azuria.Api.v1.ApiRequest-1.html">ApiRequest</a>&lt;<a class="xref" href="Azuria.Api.v1.DataModels.Search.SearchDataModel.html">SearchDataModel</a>[]&gt;</td>
-                    <td><p>An instance of <a class="xref" href="Azuria.Api.v1.ApiRequest.html">ApiRequest</a> that returns...</p>
+                    <td><p>An instance of <a class="xref" href="Azuria.Api.v1.ApiRequest.html">ApiRequest</a> that returns an array of search results.</p>
 </td>
                   </tr>
                 </tbody>
@@ -183,11 +188,11 @@
                 <a href="https://github.com/InfiniteSoul/Azuria/new/new-docs/docfx_project/apispec/new?filename=Azuria_Api_v1_RequestBuilder_ListRequestBuilder_EntrySearch_Azuria_Search_Input_SearchInput_System_Int32_System_Int32_.md&amp;value=---%0Auid%3A%20Azuria.Api.v1.RequestBuilder.ListRequestBuilder.EntrySearch(Azuria.Search.Input.SearchInput%2CSystem.Int32%2CSystem.Int32)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
               </span>
               <span class="small pull-right mobile-hide">
-                <a href="https://github.com/InfiniteSoul/Azuria/blob/new-docs/Azuria/Api/v1/RequestBuilder/ListRequestBuilder.cs/#L43">View Source</a>
+                <a href="https://github.com/InfiniteSoul/Azuria/blob/new-docs/Azuria/Api/v1/RequestBuilder/ListRequestBuilder.cs/#L44">View Source</a>
               </span>
               <a id="Azuria_Api_v1_RequestBuilder_ListRequestBuilder_EntrySearch_" data-uid="Azuria.Api.v1.RequestBuilder.ListRequestBuilder.EntrySearch*"></a>
               <h4 id="Azuria_Api_v1_RequestBuilder_ListRequestBuilder_EntrySearch_Azuria_Search_Input_SearchInput_System_Int32_System_Int32_" data-uid="Azuria.Api.v1.RequestBuilder.ListRequestBuilder.EntrySearch(Azuria.Search.Input.SearchInput,System.Int32,System.Int32)">EntrySearch(SearchInput, Int32, Int32)</h4>
-              <div class="markdown level1 summary"><p>Creates an <a class="xref" href="Azuria.Api.v1.ApiRequest.html">ApiRequest</a> instance that...</p>
+              <div class="markdown level1 summary"><p>Creates an <a class="xref" href="Azuria.Api.v1.ApiRequest.html">ApiRequest</a> instance that returns the results of a search for anime and manga.</p>
 <p>Api permissions required:</p>
 <ul>
 <li>List - Level 0</li>
@@ -196,7 +201,7 @@
               <div class="markdown level1 conceptual"></div>
               <h5 class="decalaration">Declaration</h5>
               <div class="codewrapper">
-                <pre><code class="lang-csharp hljs">public static ApiRequest&lt;SearchDataModel[]&gt; EntrySearch(SearchInput input, int limit, int page)</code></pre>
+                <pre><code class="lang-csharp hljs">public static ApiRequest&lt;SearchDataModel[]&gt; EntrySearch(SearchInput input, int limit = 100, int page = 0)</code></pre>
               </div>
               <h5 class="parameters">Parameters</h5>
               <table class="table table-bordered table-striped table-condensed">
@@ -211,17 +216,20 @@
                   <tr>
                     <td><a class="xref" href="Azuria.Search.Input.SearchInput.html">SearchInput</a></td>
                     <td><span class="parametername">input</span></td>
-                    <td></td>
+                    <td><p>The criteria that will be searched for.</p>
+</td>
                   </tr>
                   <tr>
                     <td><span class="xref">System.Int32</span></td>
                     <td><span class="parametername">limit</span></td>
-                    <td></td>
+                    <td><p>Optional. The amount of anime and manga that will be returned per page. Default: 100</p>
+</td>
                   </tr>
                   <tr>
                     <td><span class="xref">System.Int32</span></td>
                     <td><span class="parametername">page</span></td>
-                    <td></td>
+                    <td><p>Optional. The index of the page that will be loaded. Default: 0</p>
+</td>
                   </tr>
                 </tbody>
               </table>
@@ -236,7 +244,7 @@
                 <tbody>
                   <tr>
                     <td><a class="xref" href="Azuria.Api.v1.ApiRequest-1.html">ApiRequest</a>&lt;<a class="xref" href="Azuria.Api.v1.DataModels.Search.SearchDataModel.html">SearchDataModel</a>[]&gt;</td>
-                    <td><p>An instance of <a class="xref" href="Azuria.Api.v1.ApiRequest.html">ApiRequest</a> that returns...</p>
+                    <td><p>An instance of <a class="xref" href="Azuria.Api.v1.ApiRequest.html">ApiRequest</a> that returns an array of search results.</p>
 </td>
                   </tr>
                 </tbody>
@@ -252,7 +260,7 @@
                     <a href="https://github.com/InfiniteSoul/Azuria/new/new-docs/docfx_project/apispec/new?filename=Azuria_Api_v1_RequestBuilder_ListRequestBuilder.md&amp;value=---%0Auid%3A%20Azuria.Api.v1.RequestBuilder.ListRequestBuilder%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
                   </li>
                   <li>
-                    <a href="https://github.com/InfiniteSoul/Azuria/blob/new-docs/Azuria/Api/v1/RequestBuilder/ListRequestBuilder.cs/#L10" class="contribution-link">View Source</a>
+                    <a href="https://github.com/InfiniteSoul/Azuria/blob/new-docs/Azuria/Api/v1/RequestBuilder/ListRequestBuilder.cs/#L11" class="contribution-link">View Source</a>
                   </li>
                 </ul>
               </div>

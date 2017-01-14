@@ -11,6 +11,7 @@ namespace Azuria.Search
 
         internal static Dictionary<string, string> Build(SearchInput input)
         {
+            if (input == null) return new Dictionary<string, string>();
             Dictionary<string, string> lReturn = new Dictionary<string, string>
             {
                 {"name", input.SearchTerm},
@@ -33,6 +34,7 @@ namespace Azuria.Search
 
         internal static Dictionary<string, string> Build(EntryListInput input)
         {
+            if (input == null) return new Dictionary<string, string>();
             Dictionary<string, string> lReturn = new Dictionary<string, string>
             {
                 {"isH", input.ShowHContent.ToString()},
