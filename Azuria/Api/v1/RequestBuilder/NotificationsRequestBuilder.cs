@@ -11,14 +11,14 @@ namespace Azuria.Api.v1.RequestBuilder
         #region Methods
 
         /// <summary>
-        /// Creates an <see cref="ApiRequest"/> instance that...
+        /// Creates an <see cref="ApiRequest" /> instance that...
         /// 
         /// Api permissions required:
-        ///  * Notifications - Level 0
+        /// * Notifications - Level 0
         /// </summary>
         /// <param name="senpai"></param>
         /// <param name="nid"></param>
-        /// <returns>An instance of <see cref="ApiRequest"/> that returns...</returns>
+        /// <returns>An instance of <see cref="ApiRequest" /> that returns...</returns>
         public static ApiRequest Delete(Senpai senpai, int nid = 0)
         {
             return ApiRequest.Create(new Uri($"{ApiConstants.ApiUrlV1}/notifications/delete"))
@@ -28,13 +28,13 @@ namespace Azuria.Api.v1.RequestBuilder
         }
 
         /// <summary>
-        /// Creates an <see cref="ApiRequest"/> instance that...
+        /// Creates an <see cref="ApiRequest" /> instance that...
         /// 
         /// Api permissions required:
-        ///  * Notifications - Level 0
+        /// * Notifications - Level 0
         /// </summary>
         /// <param name="senpai"></param>
-        /// <returns>An instance of <see cref="ApiRequest"/> that returns...</returns>
+        /// <returns>An instance of <see cref="ApiRequest" /> that returns...</returns>
         public static ApiRequest<NotificationCountDataModel> GetCount(Senpai senpai)
         {
             return ApiRequest<NotificationCountDataModel>.Create(new Uri($"{ApiConstants.ApiUrlV1}/notifications/count"))
@@ -44,15 +44,15 @@ namespace Azuria.Api.v1.RequestBuilder
         }
 
         /// <summary>
-        /// Creates an <see cref="ApiRequest"/> instance that...
+        /// Creates an <see cref="ApiRequest" /> instance that...
         /// 
         /// Api permissions required:
-        ///  * Notifications - Level 0
+        /// * Notifications - Level 0
         /// </summary>
         /// <param name="page"></param>
         /// <param name="limit"></param>
         /// <param name="senpai"></param>
-        /// <returns>An instance of <see cref="ApiRequest"/> that returns...</returns>
+        /// <returns>An instance of <see cref="ApiRequest" /> that returns...</returns>
         public static ApiRequest<NewsNotificationDataModel[]> GetNews(int page, int limit, Senpai senpai)
         {
             return ApiRequest<NewsNotificationDataModel[]>.Create(
