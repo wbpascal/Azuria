@@ -1,47 +1,47 @@
 # Azuria - A Proxer.Me API in .NET (inofficial)
 
-Master | Master (Mono) | NuGet
------ | ----- | -----
-[![AppVeyor branch](https://img.shields.io/appveyor/ci/InfiniteSoul/Azuria/master.svg?maxAge=2592000?style=flat-square)](https://ci.appveyor.com/project/InfiniteSoul/azuria/branch/master) | [![Travis](https://img.shields.io/travis/InfiniteSoul/Azuria.svg?maxAge=2592000?style=flat-square)](https://travis-ci.org/InfiniteSoul/Azuria/branches) |  [![NuGet](https://img.shields.io/nuget/v/Azuria.svg?style=flat-square)](https://www.nuget.org/packages/Azuria)
-
-##Warning!
-Because this Class Library implements not only the official API of Proxer.Me it is dependent on the Layout of the Website too. This implies that every change that is being made to the website, even little ones, can break parts or the entirety of this Class Library. If under any circumstances problems arise in result of the aforementioned problem, I ask you to report it to the  [issue Page](https://github.com/InfiniteSoul/Azuria/issues).
+Master | Master (Mono) | NuGet | Documentation
+----- | ----- | ----- | -----
+[![AppVeyor branch](https://img.shields.io/appveyor/ci/InfiniteSoul/Azuria/master.svg?maxAge=2592000?style=flat-square)](https://ci.appveyor.com/project/InfiniteSoul/azuria/branch/master) | [![Travis](https://img.shields.io/travis/InfiniteSoul/Azuria.svg?maxAge=2592000?style=flat-square)](https://travis-ci.org/InfiniteSoul/Azuria/branches) |  [![NuGet](https://img.shields.io/nuget/v/Azuria.svg?style=flat-square)](https://www.nuget.org/packages/Azuria) | [![Documentation](https://img.shields.io/badge/docs-offline-red.svg)]()
 
 ---
 
-##What does this do?
-Azuria is an **inofficial** Class Library, which exposes the functions of the official Proxer.Me API as well as a lot more to .NET compatible languages. The whole project consists at the moment of a "normal" class library in .NET 4.5, which means, albeit not tested enough, that it can be used in a Mono environment, and a portable version. 
+# Getting Started #
+
+## Step 1. Installing ##
+Installing Azuria is easy. Just download a compatible precompiled binary from the [GitHub release page](https://github.com/InfiniteSoul/Azuria/releases) and reference it in your project. Or you use NuGet to automaticaly find a compatible release for your project and install it. To install from NuGet just open the [Package Manager Console](https://docs.nuget.org/docs/start-here/using-the-package-manager-console) and run the following command:
+
+    PM> Install-Package Azuria
+
+### Step 1.1 Using Pre-Release Packages (MyGet)
+In order to use the pre-release packages available on MyGet you need to add one of the following nuget feed urls to your project:
+
+**NuGet V3:**
+
+	https://www.myget.org/F/infinitesoul/api/v3/index.json
+
+**NuGet V2:**
+
+	https://www.myget.org/F/infinitesoul/api/v2
+
+All packages available on MyGet are automatically generated every time an automated build of the 'master' branch succeeded.
 
 
-##Ok nice! Then... How do I install it?
-The currently most reliable method is to install it via NuGet. To install it via NuGet you have to open a compatible console (for example the build-in one in visual studio) and type in:
-```
-PM> Install-Package Azuria
-```
+## Step 2. Initialisation (v0.6.1+)##
+After installing you need to initialise the library to tell it some things that are needed to use the API like the API key. 
 
-##The `ProxerResult` class
-This class is used as a return type in a lot of methods and aims to help with handling errors encountered during runtime. The class exposes the following important members:
+The API key is needed to access the API of Proxer.Me. It also dictates which requests you are allowed to make and which not. Further information and how to get a key can be found [here](https://proxer.me/wiki/Proxer_API/v1).
 
-####The `Success` Property 
-As the name may entail it returns a true boolean value if the method was a success and a false one if it wasn't. If the method failed to execute more information as to why it did can be found in the `Exceptions` property.
-
-####The `Exceptions` Property
-Like mentioned in the description of the `Success` property this property returns all exceptions that happened during the execution of the method. This does not always mean the method failed! The only realiable method to check whether the method failed is to look at the `Success` property.
-
-####The `Result` Property (Only available in the `ProxerResult<T>` subclass)
-This property returns the result of the method if it returns anything else than `ProxerResult` or `Task<ProxerResult>`. The returned result is always of type T if `Success` is true and null if not.
-
-####The `OnError(T)` Method (Only available in the `ProxerResult<T>` subclass)
-If the method failed to execute and as a result the `Success` property returns false, this method automatically returns a specified object of type T. If the method executed normaly without problems it just returns the value specified in `Result`. Example in C#:
+Passing the key to the library is really easy. Just call this somewhere at the start of your application:
 ```csharp
-bool loggedIn = (await senpai.Login("benutzername", "passwort")).OnError(false);
+Azuria.Api.ApiInfo.Init(input =>
+{
+	input.ApiKeyV1 = "apiKey".ToCharArray();
+});
 ```
+Be sure to call this before any other methods of the library and pass the API key so that everything can be properly initialised.
 
 ## Special thanks
 To the authors of the following libraries:
 
 [JSON .NET](https://www.nuget.org/packages/Newtonsoft.Json/)
-
-[HtmlAgilityPack](https://htmlagilitypack.codeplex.com/)
-
-[Jint](https://github.com/sebastienros/jint)
