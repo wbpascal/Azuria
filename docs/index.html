@@ -5,9 +5,9 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <title>This is the HOMEPAGE. </title>
+    <title>Azuria - A Proxer.Me API in .NET (inofficial) </title>
     <meta name="viewport" content="width=device-width">
-    <meta name="title" content="This is the HOMEPAGE. ">
+    <meta name="title" content="Azuria - A Proxer.Me API in .NET (inofficial) ">
     <meta name="generator" content="docfx 2.9.3.0">
     
     <link rel="shortcut icon" href="favicon.ico">
@@ -58,13 +58,48 @@
         <div class="article row grid">
           <div class="col-md-10">
             <article class="content wrap" id="_content" data-uid="">
-              <h1 id="this-is-the-homepage">This is the <strong>HOMEPAGE</strong>.</h1>
+              <h1 id="azuria---a-proxerme-api-in-net-inofficial">Azuria - A Proxer.Me API in .NET (inofficial)</h1>
               
-<p>Refer to <a href="http://daringfireball.net/projects/markdown/">Markdown</a> for how to write markdown files.</p>
-<h2 id="quick-start-notes">Quick Start Notes:</h2>
-<ol>
-<li>Add images to the <em>images</em> folder if the file is referencing an image.</li>
-</ol>
+<table>
+<thead>
+<tr>
+<th>Master</th>
+<th>Master (Mono)</th>
+<th>NuGet</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="https://ci.appveyor.com/project/InfiniteSoul/azuria/branch/master"><img src="https://img.shields.io/appveyor/ci/InfiniteSoul/Azuria/master.svg?maxAge=2592000?style=flat-square" alt="AppVeyor branch"></a></td>
+<td><a href="https://travis-ci.org/InfiniteSoul/Azuria/branches"><img src="https://img.shields.io/travis/InfiniteSoul/Azuria.svg?maxAge=2592000?style=flat-square" alt="Travis"></a></td>
+<td><a href="https://www.nuget.org/packages/Azuria"><img src="https://img.shields.io/nuget/v/Azuria.svg?style=flat-square" alt="NuGet"></a></td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h1 id="getting-started">Getting Started</h1>
+<h2 id="step-1-installing">Step 1. Installing</h2>
+<p>Installing Azuria is easy. Just download a compatible precompiled binary from the <a href="https://github.com/InfiniteSoul/Azuria/releases">GitHub release page</a> and reference it in your project. Or you use NuGet to automaticaly find a compatible release for your project and install it. To install from NuGet just open the <a href="https://docs.nuget.org/docs/start-here/using-the-package-manager-console">Package Manager Console</a> and run the following command:</p>
+<pre><code>PM&gt; Install-Package Azuria
+</code></pre><h3 id="step-11-using-pre-release-packages-myget">Step 1.1 Using Pre-Release Packages (MyGet)</h3>
+<p>In order to use the pre-release packages available on MyGet you need to add one of the following nuget feed urls to your project:</p>
+<p><strong>NuGet V3:</strong></p>
+<pre><code>https://www.myget.org/F/infinitesoul/api/v3/index.json
+</code></pre><p><strong>NuGet V2:</strong></p>
+<pre><code>https://www.myget.org/F/infinitesoul/api/v2
+</code></pre><p>All packages available on MyGet are automatically generated every time an automated build of the &#39;master&#39; branch succeeded.</p>
+<h2 id="step-2-initialisation-v061">Step 2. Initialisation (v0.6.1+)</h2>
+<p>After installing you need to initialise the library to tell it some things that are needed to use the API like the API key. </p>
+<p>The API key is needed to access the API of Proxer.Me. It also dictates which requests you are allowed to make and which not. Further information and how to get a key can be found <a href="https://proxer.me/wiki/Proxer_API/v1">here</a>.</p>
+<p>Passing the key to the library is really easy. Just call this somewhere at the start of your application:</p>
+<pre><code class="lang-csharp">Azuria.Api.ApiInfo.Init(input =&gt;
+{
+    input.ApiKeyV1 = &quot;apiKey&quot;.ToCharArray();
+});
+</code></pre><p>Be sure to call this before any other methods of the library and pass the API key so that everything can be properly initialised.</p>
+<h2 id="special-thanks">Special thanks</h2>
+<p>To the authors of the following libraries:</p>
+<p><a href="https://www.nuget.org/packages/Newtonsoft.Json/">JSON .NET</a></p>
 
             </article>
           </div>
