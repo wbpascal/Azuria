@@ -1,4 +1,6 @@
-﻿using Azuria.UserInfo;
+﻿using System.Threading.Tasks;
+using Azuria.UserInfo;
+using Azuria.Utilities.Extensions;
 using NUnit.Framework;
 
 namespace Azuria.Test.UserTests
@@ -17,7 +19,9 @@ namespace Azuria.Test.UserTests
         [OneTimeSetUp]
         public void Setup()
         {
-            User = new User(1);
+            Task<User> lUserCreateTask = User.FromId(1).ThrowFirstForNonSuccess();
+            lUserCreateTask.Wait();
+            User = lUserCreateTask.Result;
         }
 
         #endregion
