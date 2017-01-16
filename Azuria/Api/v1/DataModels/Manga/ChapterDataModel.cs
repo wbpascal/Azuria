@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using Azuria.Api.v1.Converters;
 using Azuria.Api.v1.Converters.Manga;
 using Newtonsoft.Json;

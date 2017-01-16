@@ -96,6 +96,8 @@ namespace Azuria.Test.ConferenceTests
         [Test]
         public async Task CreateGroupTestUser()
         {
+            User lTestUser = await User.FromId(163825).ThrowFirstForNonSuccess();
+
             Assert.CatchAsync<ArgumentException>(
                 () => Conference.CreateGroup(new User[0], "topic", GeneralSetup.SenpaiInstance)
                     .ThrowFirstForNonSuccess());
@@ -103,32 +105,22 @@ namespace Azuria.Test.ConferenceTests
                 () => Conference.CreateGroup(new[] {User.System}, "topic", GeneralSetup.SenpaiInstance)
                     .ThrowFirstForNonSuccess());
             Assert.CatchAsync<ArgumentException>(
-                () => Conference.CreateGroup(new[] {new User(163825)}, "", GeneralSetup.SenpaiInstance)
+                () => Conference.CreateGroup(new[] {lTestUser}, "", GeneralSetup.SenpaiInstance)
                     .ThrowFirstForNonSuccess());
-            Assert.CatchAsync<ArgumentException>(() => Conference.CreateGroup(new[] {new User(163825)},
+            Assert.CatchAsync<ArgumentException>(() => Conference.CreateGroup(new[] {lTestUser},
                 new string(new char[Conference.MaxCharactersTopic + 1]),
                 GeneralSetup.SenpaiInstance).ThrowFirstForNonSuccess());
             Assert.CatchAsync<NotLoggedInException>(
-                () => Conference.CreateGroup(new[] {new User(163825)}, "topic", null)
+                () => Conference.CreateGroup(new[] {lTestUser}, "topic", null)
                     .ThrowFirstForNonSuccess());
 
-            Conference lConference =
-                await Conference.CreateGroup(new[] {new User(163825)}, "hello", GeneralSetup.SenpaiInstance)
-                    .ThrowFirstForNonSuccess();
+            Conference lConference = await Conference.CreateGroup(
+                    new[] {lTestUser}, "hello", GeneralSetup.SenpaiInstance)
+                .ThrowFirstForNonSuccess();
             Assert.IsNotNull(lConference);
             Assert.IsFalse(lConference.AutoCheck);
             Assert.AreNotEqual(lConference.Id, default(int));
             Assert.IsTrue(lConference.IsGroupConference);
-
-            Assert.AreEqual(ErrorCode.UserinfoUserNotFound,
-                Assert.CatchAsync<ProxerApiException>(
-                    () => Conference.CreateGroup(new[] {new User(int.MaxValue)}, "hello",
-                        GeneralSetup.SenpaiInstance).ThrowFirstForNonSuccess()).ErrorCode);
-            Assert.AreEqual(ErrorCode.MessengerNotEnoughUsers,
-                Assert.CatchAsync<ProxerApiException>(
-                    () => Conference.CreateGroup(new[] {new User(GeneralSetup.SenpaiInstance.Me.Id)},
-                        "hello",
-                        GeneralSetup.SenpaiInstance).ThrowFirstForNonSuccess()).ErrorCode);
         }
 
         [Test]
@@ -158,31 +150,24 @@ namespace Azuria.Test.ConferenceTests
         [Test]
         public async Task CreateTestUser()
         {
+            User lTestUser = await User.FromId(163825).ThrowFirstForNonSuccess();
+
             Assert.CatchAsync<ArgumentException>(
                 () => Conference.Create((User) null, "hello", GeneralSetup.SenpaiInstance)
                     .ThrowFirstForNonSuccess());
             Assert.CatchAsync<ArgumentException>(
-                () => Conference.Create(new User(177103), "", GeneralSetup.SenpaiInstance)
+                () => Conference.Create(lTestUser, "", GeneralSetup.SenpaiInstance)
                     .ThrowFirstForNonSuccess());
             Assert.CatchAsync<NotLoggedInException>(
-                () => Conference.Create(new User(177103), "hello", null).ThrowFirstForNonSuccess());
+                () => Conference.Create(lTestUser, "hello", null).ThrowFirstForNonSuccess());
 
             Conference lConference =
-                await Conference.Create(new User(163825), "hello", GeneralSetup.SenpaiInstance)
+                await Conference.Create(lTestUser, "hello", GeneralSetup.SenpaiInstance)
                     .ThrowFirstForNonSuccess();
             Assert.IsNotNull(lConference);
             Assert.IsFalse(lConference.AutoCheck);
             Assert.AreNotEqual(lConference.Id, default(int));
             Assert.IsFalse(lConference.IsGroupConference);
-
-            Assert.AreEqual(ErrorCode.UserinfoUserNotFound,
-                Assert.CatchAsync<ProxerApiException>(
-                    () => Conference.Create(new User(int.MaxValue), "hello", GeneralSetup.SenpaiInstance)
-                        .ThrowFirstForNonSuccess()).ErrorCode);
-            Assert.AreEqual(ErrorCode.MessengerUserInvalid,
-                Assert.CatchAsync<ProxerApiException>(
-                    () => Conference.Create(new User(177103), "hello", GeneralSetup.SenpaiInstance)
-                        .ThrowFirstForNonSuccess()).ErrorCode);
         }
 
         [Test]

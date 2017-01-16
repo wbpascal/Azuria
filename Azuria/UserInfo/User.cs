@@ -33,11 +33,7 @@ namespace Azuria.UserInfo
         private readonly ArgumentInitialisableProperty<Senpai, IEnumerable<Manga>> _toptenManga;
         private readonly InitialisableProperty<string> _userName;
 
-        /// <summary>
-        /// Initialises a new instance of the class.
-        /// </summary>
-        /// <param name="userId">The id of the user.</param>
-        public User(int userId)
+        internal User(int userId)
         {
             if (userId < 0) throw new ArgumentOutOfRangeException(nameof(userId));
 
@@ -153,6 +149,18 @@ namespace Azuria.UserInfo
         #endregion
 
         #region Methods
+
+        /// <summary>
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public static async Task<IProxerResult<User>> FromId(int id)
+        {
+            ProxerApiResponse<UserInfoDataModel> lResult = await RequestHandler.ApiRequest(
+                UserRequestBuilder.GetInfo(id)).ConfigureAwait(false);
+            if (!lResult.Success || (lResult.Result == null)) return new ProxerResult<User>(lResult.Exceptions);
+            return new ProxerResult<User>(new User(lResult.Result));
+        }
 
         /// <summary>
         /// </summary>

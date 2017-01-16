@@ -88,9 +88,12 @@ namespace Azuria.Test.UserTests
         }
 
         [Test]
-        public void ConstructorTest()
+        public async Task FromIdTest()
         {
-            Assert.Catch<ArgumentOutOfRangeException>(() => new User(-1));
+            IProxerResult<User> lResult = await User.FromId(1);
+            Assert.IsTrue(lResult.Success, JsonConvert.SerializeObject(lResult.Exceptions));
+            Assert.AreEqual(1, lResult.Result.Id);
+            Assert.AreEqual("Username", lResult.Result.UserName.GetIfInitialised(string.Empty));
         }
 
         [Test]
