@@ -201,10 +201,10 @@ namespace Azuria.UserInfo
             if (!lResult.Success || (lResult.Result == null)) return new ProxerResult(lResult.Exceptions);
 
             if (category == MediaEntryType.Anime)
-                this._toptenAnime.SetInitialisedObject(from toptenDataModel in lResult.Result
+                this._toptenAnime.Set(from toptenDataModel in lResult.Result
                     select new Anime(toptenDataModel.EntryName, toptenDataModel.EntryId));
             if (category == MediaEntryType.Manga)
-                this._toptenManga.SetInitialisedObject(from toptenDataModel in lResult.Result
+                this._toptenManga.Set(from toptenDataModel in lResult.Result
                     select new Manga(toptenDataModel.EntryName, toptenDataModel.EntryId));
 
             return new ProxerResult();
