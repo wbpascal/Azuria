@@ -171,7 +171,7 @@ namespace Azuria.Test.UserTests
             Assert.CatchAsync<InvalidUserException>(() => User.System.ToptenAnime.ThrowFirstOnNonSuccess(null));
 
             IProxerResult<IEnumerable<Anime>> lResult =
-                await this._user.ToptenAnime.GetObject(GeneralSetup.SenpaiInstance);
+                await this._user.ToptenAnime.Get(GeneralSetup.SenpaiInstance);
             Assert.IsTrue(lResult.Success, JsonConvert.SerializeObject(lResult.Exceptions));
             Assert.AreEqual(2, lResult.Result.Count());
             Assert.IsTrue(lResult.Result.All(anime => anime.Id != default(int)));
@@ -183,7 +183,7 @@ namespace Azuria.Test.UserTests
             Assert.CatchAsync<InvalidUserException>(() => User.System.ToptenManga.ThrowFirstOnNonSuccess(null));
 
             IProxerResult<IEnumerable<Manga>> lResult =
-                await this._user.ToptenManga.GetObject(GeneralSetup.SenpaiInstance);
+                await this._user.ToptenManga.Get(GeneralSetup.SenpaiInstance);
             Assert.IsTrue(lResult.Success, JsonConvert.SerializeObject(lResult.Exceptions));
             Assert.AreEqual(4, lResult.Result.Count());
             Assert.IsTrue(lResult.Result.All(manga => manga.Id != default(int)));
