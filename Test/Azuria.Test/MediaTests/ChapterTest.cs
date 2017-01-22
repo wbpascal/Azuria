@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Azuria.ErrorHandling;
+using Azuria.Info;
 using Azuria.Media;
 using Azuria.Media.Properties;
 using Azuria.UserInfo;

@@ -1,6 +1,8 @@
 ﻿using Azuria.Api.v1.DataModels.Info;
+using Azuria.Media;
+using Azuria.Media.Properties;
 
-namespace Azuria.Media.Properties
+namespace Azuria.Info
 {
     /// <summary>
     /// Represents a class which describes a <see cref="Translator" />, who translates <see cref="Anime" /> or

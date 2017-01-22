@@ -1,7 +1,7 @@
 ﻿
 #pragma warning disable 1591
 
-namespace Azuria.Media.Properties
+namespace Azuria.Info
 {
     /// <summary>
     /// Represents an enumeration which describes the type of the <see cref="Industry" />.
