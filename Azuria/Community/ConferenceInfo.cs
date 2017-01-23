@@ -38,13 +38,13 @@ namespace Azuria.Community
         private async Task<IProxerResult> GetUnreadMessages(ConferenceDataModel dataModel, bool markAsRead,
             Senpai senpai)
         {
-            if (dataModel.UnreadMessagesCount == 0) this._unreadMessages.SetInitialisedObject(new Message[0]);
+            if (dataModel.UnreadMessagesCount == 0) this._unreadMessages.Set(new Message[0]);
             else
             {
                 IEnumerable<Message> lUnreadMessages = await Task.Run(() =>
                     new MessageEnumerable(dataModel.ConferenceId, senpai, markAsRead)
                         .Take(dataModel.UnreadMessagesCount)).ConfigureAwait(false);
-                this._unreadMessages.SetInitialisedObject(lUnreadMessages);
+                this._unreadMessages.Set(lUnreadMessages);
             }
             return new ProxerResult();
         }

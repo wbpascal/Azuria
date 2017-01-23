@@ -12597,78 +12597,78 @@ references:
   fullName.vb: Azuria.Utilities.Properties.ArgumentInitialisableProperty(Of TIn, TOut).FetchObject
   nameWithType: ArgumentInitialisableProperty<TIn, TOut>.FetchObject
   nameWithType.vb: ArgumentInitialisableProperty(Of TIn, TOut).FetchObject
-- uid: Azuria.Utilities.Properties.ArgumentInitialisableProperty`2.GetNewObject(`0)
-  name: GetNewObject(TIn)
-  href: api/Azuria.Utilities.Properties.ArgumentInitialisableProperty-2.html#Azuria_Utilities_Properties_ArgumentInitialisableProperty_2_GetNewObject__0_
-  commentId: M:Azuria.Utilities.Properties.ArgumentInitialisableProperty`2.GetNewObject(`0)
-  fullName: Azuria.Utilities.Properties.ArgumentInitialisableProperty<TIn, TOut>.GetNewObject(TIn)
-  fullName.vb: Azuria.Utilities.Properties.ArgumentInitialisableProperty(Of TIn, TOut).GetNewObject(TIn)
-  nameWithType: ArgumentInitialisableProperty<TIn, TOut>.GetNewObject(TIn)
-  nameWithType.vb: ArgumentInitialisableProperty(Of TIn, TOut).GetNewObject(TIn)
-- uid: Azuria.Utilities.Properties.ArgumentInitialisableProperty`2.GetNewObject(`0,`1)
-  name: GetNewObject(TIn, TOut)
-  href: api/Azuria.Utilities.Properties.ArgumentInitialisableProperty-2.html#Azuria_Utilities_Properties_ArgumentInitialisableProperty_2_GetNewObject__0__1_
-  commentId: M:Azuria.Utilities.Properties.ArgumentInitialisableProperty`2.GetNewObject(`0,`1)
-  fullName: Azuria.Utilities.Properties.ArgumentInitialisableProperty<TIn, TOut>.GetNewObject(TIn, TOut)
-  fullName.vb: Azuria.Utilities.Properties.ArgumentInitialisableProperty(Of TIn, TOut).GetNewObject(TIn, TOut)
-  nameWithType: ArgumentInitialisableProperty<TIn, TOut>.GetNewObject(TIn, TOut)
-  nameWithType.vb: ArgumentInitialisableProperty(Of TIn, TOut).GetNewObject(TIn, TOut)
-- uid: Azuria.Utilities.Properties.ArgumentInitialisableProperty`2.GetNewObject*
-  name: GetNewObject
-  href: api/Azuria.Utilities.Properties.ArgumentInitialisableProperty-2.html#Azuria_Utilities_Properties_ArgumentInitialisableProperty_2_GetNewObject_
-  commentId: Overload:Azuria.Utilities.Properties.ArgumentInitialisableProperty`2.GetNewObject
-  fullName: Azuria.Utilities.Properties.ArgumentInitialisableProperty<TIn, TOut>.GetNewObject
-  fullName.vb: Azuria.Utilities.Properties.ArgumentInitialisableProperty(Of TIn, TOut).GetNewObject
-  nameWithType: ArgumentInitialisableProperty<TIn, TOut>.GetNewObject
-  nameWithType.vb: ArgumentInitialisableProperty(Of TIn, TOut).GetNewObject
-- uid: Azuria.Utilities.Properties.ArgumentInitialisableProperty`2.GetObject(`0)
-  name: GetObject(TIn)
-  href: api/Azuria.Utilities.Properties.ArgumentInitialisableProperty-2.html#Azuria_Utilities_Properties_ArgumentInitialisableProperty_2_GetObject__0_
-  commentId: M:Azuria.Utilities.Properties.ArgumentInitialisableProperty`2.GetObject(`0)
-  fullName: Azuria.Utilities.Properties.ArgumentInitialisableProperty<TIn, TOut>.GetObject(TIn)
-  fullName.vb: Azuria.Utilities.Properties.ArgumentInitialisableProperty(Of TIn, TOut).GetObject(TIn)
-  nameWithType: ArgumentInitialisableProperty<TIn, TOut>.GetObject(TIn)
-  nameWithType.vb: ArgumentInitialisableProperty(Of TIn, TOut).GetObject(TIn)
-- uid: Azuria.Utilities.Properties.ArgumentInitialisableProperty`2.GetObject(`0,`1)
-  name: GetObject(TIn, TOut)
-  href: api/Azuria.Utilities.Properties.ArgumentInitialisableProperty-2.html#Azuria_Utilities_Properties_ArgumentInitialisableProperty_2_GetObject__0__1_
-  commentId: M:Azuria.Utilities.Properties.ArgumentInitialisableProperty`2.GetObject(`0,`1)
-  fullName: Azuria.Utilities.Properties.ArgumentInitialisableProperty<TIn, TOut>.GetObject(TIn, TOut)
-  fullName.vb: Azuria.Utilities.Properties.ArgumentInitialisableProperty(Of TIn, TOut).GetObject(TIn, TOut)
-  nameWithType: ArgumentInitialisableProperty<TIn, TOut>.GetObject(TIn, TOut)
-  nameWithType.vb: ArgumentInitialisableProperty(Of TIn, TOut).GetObject(TIn, TOut)
-- uid: Azuria.Utilities.Properties.ArgumentInitialisableProperty`2.GetObject*
-  name: GetObject
-  href: api/Azuria.Utilities.Properties.ArgumentInitialisableProperty-2.html#Azuria_Utilities_Properties_ArgumentInitialisableProperty_2_GetObject_
-  commentId: Overload:Azuria.Utilities.Properties.ArgumentInitialisableProperty`2.GetObject
-  fullName: Azuria.Utilities.Properties.ArgumentInitialisableProperty<TIn, TOut>.GetObject
-  fullName.vb: Azuria.Utilities.Properties.ArgumentInitialisableProperty(Of TIn, TOut).GetObject
-  nameWithType: ArgumentInitialisableProperty<TIn, TOut>.GetObject
-  nameWithType.vb: ArgumentInitialisableProperty(Of TIn, TOut).GetObject
-- uid: Azuria.Utilities.Properties.ArgumentInitialisableProperty`2.GetObjectIfInitialised
-  name: GetObjectIfInitialised()
-  href: api/Azuria.Utilities.Properties.ArgumentInitialisableProperty-2.html#Azuria_Utilities_Properties_ArgumentInitialisableProperty_2_GetObjectIfInitialised
-  commentId: M:Azuria.Utilities.Properties.ArgumentInitialisableProperty`2.GetObjectIfInitialised
-  fullName: Azuria.Utilities.Properties.ArgumentInitialisableProperty<TIn, TOut>.GetObjectIfInitialised()
-  fullName.vb: Azuria.Utilities.Properties.ArgumentInitialisableProperty(Of TIn, TOut).GetObjectIfInitialised()
-  nameWithType: ArgumentInitialisableProperty<TIn, TOut>.GetObjectIfInitialised()
-  nameWithType.vb: ArgumentInitialisableProperty(Of TIn, TOut).GetObjectIfInitialised()
-- uid: Azuria.Utilities.Properties.ArgumentInitialisableProperty`2.GetObjectIfInitialised(`1)
-  name: GetObjectIfInitialised(TOut)
-  href: api/Azuria.Utilities.Properties.ArgumentInitialisableProperty-2.html#Azuria_Utilities_Properties_ArgumentInitialisableProperty_2_GetObjectIfInitialised__1_
-  commentId: M:Azuria.Utilities.Properties.ArgumentInitialisableProperty`2.GetObjectIfInitialised(`1)
-  fullName: Azuria.Utilities.Properties.ArgumentInitialisableProperty<TIn, TOut>.GetObjectIfInitialised(TOut)
-  fullName.vb: Azuria.Utilities.Properties.ArgumentInitialisableProperty(Of TIn, TOut).GetObjectIfInitialised(TOut)
-  nameWithType: ArgumentInitialisableProperty<TIn, TOut>.GetObjectIfInitialised(TOut)
-  nameWithType.vb: ArgumentInitialisableProperty(Of TIn, TOut).GetObjectIfInitialised(TOut)
-- uid: Azuria.Utilities.Properties.ArgumentInitialisableProperty`2.GetObjectIfInitialised*
-  name: GetObjectIfInitialised
-  href: api/Azuria.Utilities.Properties.ArgumentInitialisableProperty-2.html#Azuria_Utilities_Properties_ArgumentInitialisableProperty_2_GetObjectIfInitialised_
-  commentId: Overload:Azuria.Utilities.Properties.ArgumentInitialisableProperty`2.GetObjectIfInitialised
-  fullName: Azuria.Utilities.Properties.ArgumentInitialisableProperty<TIn, TOut>.GetObjectIfInitialised
-  fullName.vb: Azuria.Utilities.Properties.ArgumentInitialisableProperty(Of TIn, TOut).GetObjectIfInitialised
-  nameWithType: ArgumentInitialisableProperty<TIn, TOut>.GetObjectIfInitialised
-  nameWithType.vb: ArgumentInitialisableProperty(Of TIn, TOut).GetObjectIfInitialised
+- uid: Azuria.Utilities.Properties.ArgumentInitialisableProperty`2.Get(`0)
+  name: Get(TIn)
+  href: api/Azuria.Utilities.Properties.ArgumentInitialisableProperty-2.html#Azuria_Utilities_Properties_ArgumentInitialisableProperty_2_Get__0_
+  commentId: M:Azuria.Utilities.Properties.ArgumentInitialisableProperty`2.Get(`0)
+  fullName: Azuria.Utilities.Properties.ArgumentInitialisableProperty<TIn, TOut>.Get(TIn)
+  fullName.vb: Azuria.Utilities.Properties.ArgumentInitialisableProperty(Of TIn, TOut).Get(TIn)
+  nameWithType: ArgumentInitialisableProperty<TIn, TOut>.Get(TIn)
+  nameWithType.vb: ArgumentInitialisableProperty(Of TIn, TOut).Get(TIn)
+- uid: Azuria.Utilities.Properties.ArgumentInitialisableProperty`2.Get(`0,`1)
+  name: Get(TIn, TOut)
+  href: api/Azuria.Utilities.Properties.ArgumentInitialisableProperty-2.html#Azuria_Utilities_Properties_ArgumentInitialisableProperty_2_Get__0__1_
+  commentId: M:Azuria.Utilities.Properties.ArgumentInitialisableProperty`2.Get(`0,`1)
+  fullName: Azuria.Utilities.Properties.ArgumentInitialisableProperty<TIn, TOut>.Get(TIn, TOut)
+  fullName.vb: Azuria.Utilities.Properties.ArgumentInitialisableProperty(Of TIn, TOut).Get(TIn, TOut)
+  nameWithType: ArgumentInitialisableProperty<TIn, TOut>.Get(TIn, TOut)
+  nameWithType.vb: ArgumentInitialisableProperty(Of TIn, TOut).Get(TIn, TOut)
+- uid: Azuria.Utilities.Properties.ArgumentInitialisableProperty`2.Get*
+  name: Get
+  href: api/Azuria.Utilities.Properties.ArgumentInitialisableProperty-2.html#Azuria_Utilities_Properties_ArgumentInitialisableProperty_2_Get_
+  commentId: Overload:Azuria.Utilities.Properties.ArgumentInitialisableProperty`2.Get
+  fullName: Azuria.Utilities.Properties.ArgumentInitialisableProperty<TIn, TOut>.Get
+  fullName.vb: Azuria.Utilities.Properties.ArgumentInitialisableProperty(Of TIn, TOut).Get
+  nameWithType: ArgumentInitialisableProperty<TIn, TOut>.Get
+  nameWithType.vb: ArgumentInitialisableProperty(Of TIn, TOut).Get
+- uid: Azuria.Utilities.Properties.ArgumentInitialisableProperty`2.GetIfInitialised
+  name: GetIfInitialised()
+  href: api/Azuria.Utilities.Properties.ArgumentInitialisableProperty-2.html#Azuria_Utilities_Properties_ArgumentInitialisableProperty_2_GetIfInitialised
+  commentId: M:Azuria.Utilities.Properties.ArgumentInitialisableProperty`2.GetIfInitialised
+  fullName: Azuria.Utilities.Properties.ArgumentInitialisableProperty<TIn, TOut>.GetIfInitialised()
+  fullName.vb: Azuria.Utilities.Properties.ArgumentInitialisableProperty(Of TIn, TOut).GetIfInitialised()
+  nameWithType: ArgumentInitialisableProperty<TIn, TOut>.GetIfInitialised()
+  nameWithType.vb: ArgumentInitialisableProperty(Of TIn, TOut).GetIfInitialised()
+- uid: Azuria.Utilities.Properties.ArgumentInitialisableProperty`2.GetIfInitialised(`1)
+  name: GetIfInitialised(TOut)
+  href: api/Azuria.Utilities.Properties.ArgumentInitialisableProperty-2.html#Azuria_Utilities_Properties_ArgumentInitialisableProperty_2_GetIfInitialised__1_
+  commentId: M:Azuria.Utilities.Properties.ArgumentInitialisableProperty`2.GetIfInitialised(`1)
+  fullName: Azuria.Utilities.Properties.ArgumentInitialisableProperty<TIn, TOut>.GetIfInitialised(TOut)
+  fullName.vb: Azuria.Utilities.Properties.ArgumentInitialisableProperty(Of TIn, TOut).GetIfInitialised(TOut)
+  nameWithType: ArgumentInitialisableProperty<TIn, TOut>.GetIfInitialised(TOut)
+  nameWithType.vb: ArgumentInitialisableProperty(Of TIn, TOut).GetIfInitialised(TOut)
+- uid: Azuria.Utilities.Properties.ArgumentInitialisableProperty`2.GetIfInitialised*
+  name: GetIfInitialised
+  href: api/Azuria.Utilities.Properties.ArgumentInitialisableProperty-2.html#Azuria_Utilities_Properties_ArgumentInitialisableProperty_2_GetIfInitialised_
+  commentId: Overload:Azuria.Utilities.Properties.ArgumentInitialisableProperty`2.GetIfInitialised
+  fullName: Azuria.Utilities.Properties.ArgumentInitialisableProperty<TIn, TOut>.GetIfInitialised
+  fullName.vb: Azuria.Utilities.Properties.ArgumentInitialisableProperty(Of TIn, TOut).GetIfInitialised
+  nameWithType: ArgumentInitialisableProperty<TIn, TOut>.GetIfInitialised
+  nameWithType.vb: ArgumentInitialisableProperty(Of TIn, TOut).GetIfInitialised
+- uid: Azuria.Utilities.Properties.ArgumentInitialisableProperty`2.GetNew(`0)
+  name: GetNew(TIn)
+  href: api/Azuria.Utilities.Properties.ArgumentInitialisableProperty-2.html#Azuria_Utilities_Properties_ArgumentInitialisableProperty_2_GetNew__0_
+  commentId: M:Azuria.Utilities.Properties.ArgumentInitialisableProperty`2.GetNew(`0)
+  fullName: Azuria.Utilities.Properties.ArgumentInitialisableProperty<TIn, TOut>.GetNew(TIn)
+  fullName.vb: Azuria.Utilities.Properties.ArgumentInitialisableProperty(Of TIn, TOut).GetNew(TIn)
+  nameWithType: ArgumentInitialisableProperty<TIn, TOut>.GetNew(TIn)
+  nameWithType.vb: ArgumentInitialisableProperty(Of TIn, TOut).GetNew(TIn)
+- uid: Azuria.Utilities.Properties.ArgumentInitialisableProperty`2.GetNew(`0,`1)
+  name: GetNew(TIn, TOut)
+  href: api/Azuria.Utilities.Properties.ArgumentInitialisableProperty-2.html#Azuria_Utilities_Properties_ArgumentInitialisableProperty_2_GetNew__0__1_
+  commentId: M:Azuria.Utilities.Properties.ArgumentInitialisableProperty`2.GetNew(`0,`1)
+  fullName: Azuria.Utilities.Properties.ArgumentInitialisableProperty<TIn, TOut>.GetNew(TIn, TOut)
+  fullName.vb: Azuria.Utilities.Properties.ArgumentInitialisableProperty(Of TIn, TOut).GetNew(TIn, TOut)
+  nameWithType: ArgumentInitialisableProperty<TIn, TOut>.GetNew(TIn, TOut)
+  nameWithType.vb: ArgumentInitialisableProperty(Of TIn, TOut).GetNew(TIn, TOut)
+- uid: Azuria.Utilities.Properties.ArgumentInitialisableProperty`2.GetNew*
+  name: GetNew
+  href: api/Azuria.Utilities.Properties.ArgumentInitialisableProperty-2.html#Azuria_Utilities_Properties_ArgumentInitialisableProperty_2_GetNew_
+  commentId: Overload:Azuria.Utilities.Properties.ArgumentInitialisableProperty`2.GetNew
+  fullName: Azuria.Utilities.Properties.ArgumentInitialisableProperty<TIn, TOut>.GetNew
+  fullName.vb: Azuria.Utilities.Properties.ArgumentInitialisableProperty(Of TIn, TOut).GetNew
+  nameWithType: ArgumentInitialisableProperty<TIn, TOut>.GetNew
+  nameWithType.vb: ArgumentInitialisableProperty(Of TIn, TOut).GetNew
 - uid: Azuria.Utilities.Properties.ArgumentInitialisableProperty`2.InitialisedObject
   name: InitialisedObject
   href: api/Azuria.Utilities.Properties.ArgumentInitialisableProperty-2.html#Azuria_Utilities_Properties_ArgumentInitialisableProperty_2_InitialisedObject
@@ -12701,38 +12701,54 @@ references:
   fullName.vb: Azuria.Utilities.Properties.ArgumentInitialisableProperty(Of TIn, TOut).InitMethod
   nameWithType: ArgumentInitialisableProperty<TIn, TOut>.InitMethod
   nameWithType.vb: ArgumentInitialisableProperty(Of TIn, TOut).InitMethod
-- uid: Azuria.Utilities.Properties.ArgumentInitialisableProperty`2.IsInitialisedOnce
-  name: IsInitialisedOnce
-  href: api/Azuria.Utilities.Properties.ArgumentInitialisableProperty-2.html#Azuria_Utilities_Properties_ArgumentInitialisableProperty_2_IsInitialisedOnce
-  commentId: P:Azuria.Utilities.Properties.ArgumentInitialisableProperty`2.IsInitialisedOnce
-  fullName: Azuria.Utilities.Properties.ArgumentInitialisableProperty<TIn, TOut>.IsInitialisedOnce
-  fullName.vb: Azuria.Utilities.Properties.ArgumentInitialisableProperty(Of TIn, TOut).IsInitialisedOnce
-  nameWithType: ArgumentInitialisableProperty<TIn, TOut>.IsInitialisedOnce
-  nameWithType.vb: ArgumentInitialisableProperty(Of TIn, TOut).IsInitialisedOnce
-- uid: Azuria.Utilities.Properties.ArgumentInitialisableProperty`2.IsInitialisedOnce*
-  name: IsInitialisedOnce
-  href: api/Azuria.Utilities.Properties.ArgumentInitialisableProperty-2.html#Azuria_Utilities_Properties_ArgumentInitialisableProperty_2_IsInitialisedOnce_
-  commentId: Overload:Azuria.Utilities.Properties.ArgumentInitialisableProperty`2.IsInitialisedOnce
-  fullName: Azuria.Utilities.Properties.ArgumentInitialisableProperty<TIn, TOut>.IsInitialisedOnce
-  fullName.vb: Azuria.Utilities.Properties.ArgumentInitialisableProperty(Of TIn, TOut).IsInitialisedOnce
-  nameWithType: ArgumentInitialisableProperty<TIn, TOut>.IsInitialisedOnce
-  nameWithType.vb: ArgumentInitialisableProperty(Of TIn, TOut).IsInitialisedOnce
-- uid: Azuria.Utilities.Properties.ArgumentInitialisableProperty`2.SetInitialisedObject(`1)
-  name: SetInitialisedObject(TOut)
-  href: api/Azuria.Utilities.Properties.ArgumentInitialisableProperty-2.html#Azuria_Utilities_Properties_ArgumentInitialisableProperty_2_SetInitialisedObject__1_
-  commentId: M:Azuria.Utilities.Properties.ArgumentInitialisableProperty`2.SetInitialisedObject(`1)
-  fullName: Azuria.Utilities.Properties.ArgumentInitialisableProperty<TIn, TOut>.SetInitialisedObject(TOut)
-  fullName.vb: Azuria.Utilities.Properties.ArgumentInitialisableProperty(Of TIn, TOut).SetInitialisedObject(TOut)
-  nameWithType: ArgumentInitialisableProperty<TIn, TOut>.SetInitialisedObject(TOut)
-  nameWithType.vb: ArgumentInitialisableProperty(Of TIn, TOut).SetInitialisedObject(TOut)
-- uid: Azuria.Utilities.Properties.ArgumentInitialisableProperty`2.SetInitialisedObject*
-  name: SetInitialisedObject
-  href: api/Azuria.Utilities.Properties.ArgumentInitialisableProperty-2.html#Azuria_Utilities_Properties_ArgumentInitialisableProperty_2_SetInitialisedObject_
-  commentId: Overload:Azuria.Utilities.Properties.ArgumentInitialisableProperty`2.SetInitialisedObject
-  fullName: Azuria.Utilities.Properties.ArgumentInitialisableProperty<TIn, TOut>.SetInitialisedObject
-  fullName.vb: Azuria.Utilities.Properties.ArgumentInitialisableProperty(Of TIn, TOut).SetInitialisedObject
-  nameWithType: ArgumentInitialisableProperty<TIn, TOut>.SetInitialisedObject
-  nameWithType.vb: ArgumentInitialisableProperty(Of TIn, TOut).SetInitialisedObject
+- uid: Azuria.Utilities.Properties.ArgumentInitialisableProperty`2.IsInitialised
+  name: IsInitialised
+  href: api/Azuria.Utilities.Properties.ArgumentInitialisableProperty-2.html#Azuria_Utilities_Properties_ArgumentInitialisableProperty_2_IsInitialised
+  commentId: P:Azuria.Utilities.Properties.ArgumentInitialisableProperty`2.IsInitialised
+  fullName: Azuria.Utilities.Properties.ArgumentInitialisableProperty<TIn, TOut>.IsInitialised
+  fullName.vb: Azuria.Utilities.Properties.ArgumentInitialisableProperty(Of TIn, TOut).IsInitialised
+  nameWithType: ArgumentInitialisableProperty<TIn, TOut>.IsInitialised
+  nameWithType.vb: ArgumentInitialisableProperty(Of TIn, TOut).IsInitialised
+- uid: Azuria.Utilities.Properties.ArgumentInitialisableProperty`2.IsInitialised*
+  name: IsInitialised
+  href: api/Azuria.Utilities.Properties.ArgumentInitialisableProperty-2.html#Azuria_Utilities_Properties_ArgumentInitialisableProperty_2_IsInitialised_
+  commentId: Overload:Azuria.Utilities.Properties.ArgumentInitialisableProperty`2.IsInitialised
+  fullName: Azuria.Utilities.Properties.ArgumentInitialisableProperty<TIn, TOut>.IsInitialised
+  fullName.vb: Azuria.Utilities.Properties.ArgumentInitialisableProperty(Of TIn, TOut).IsInitialised
+  nameWithType: ArgumentInitialisableProperty<TIn, TOut>.IsInitialised
+  nameWithType.vb: ArgumentInitialisableProperty(Of TIn, TOut).IsInitialised
+- uid: Azuria.Utilities.Properties.ArgumentInitialisableProperty`2.Set(`1)
+  name: Set(TOut)
+  href: api/Azuria.Utilities.Properties.ArgumentInitialisableProperty-2.html#Azuria_Utilities_Properties_ArgumentInitialisableProperty_2_Set__1_
+  commentId: M:Azuria.Utilities.Properties.ArgumentInitialisableProperty`2.Set(`1)
+  fullName: Azuria.Utilities.Properties.ArgumentInitialisableProperty<TIn, TOut>.Set(TOut)
+  fullName.vb: Azuria.Utilities.Properties.ArgumentInitialisableProperty(Of TIn, TOut).Set(TOut)
+  nameWithType: ArgumentInitialisableProperty<TIn, TOut>.Set(TOut)
+  nameWithType.vb: ArgumentInitialisableProperty(Of TIn, TOut).Set(TOut)
+- uid: Azuria.Utilities.Properties.ArgumentInitialisableProperty`2.Set*
+  name: Set
+  href: api/Azuria.Utilities.Properties.ArgumentInitialisableProperty-2.html#Azuria_Utilities_Properties_ArgumentInitialisableProperty_2_Set_
+  commentId: Overload:Azuria.Utilities.Properties.ArgumentInitialisableProperty`2.Set
+  fullName: Azuria.Utilities.Properties.ArgumentInitialisableProperty<TIn, TOut>.Set
+  fullName.vb: Azuria.Utilities.Properties.ArgumentInitialisableProperty(Of TIn, TOut).Set
+  nameWithType: ArgumentInitialisableProperty<TIn, TOut>.Set
+  nameWithType.vb: ArgumentInitialisableProperty(Of TIn, TOut).Set
+- uid: Azuria.Utilities.Properties.ArgumentInitialisableProperty`2.SetIfNotInitialised(`1)
+  name: SetIfNotInitialised(TOut)
+  href: api/Azuria.Utilities.Properties.ArgumentInitialisableProperty-2.html#Azuria_Utilities_Properties_ArgumentInitialisableProperty_2_SetIfNotInitialised__1_
+  commentId: M:Azuria.Utilities.Properties.ArgumentInitialisableProperty`2.SetIfNotInitialised(`1)
+  fullName: Azuria.Utilities.Properties.ArgumentInitialisableProperty<TIn, TOut>.SetIfNotInitialised(TOut)
+  fullName.vb: Azuria.Utilities.Properties.ArgumentInitialisableProperty(Of TIn, TOut).SetIfNotInitialised(TOut)
+  nameWithType: ArgumentInitialisableProperty<TIn, TOut>.SetIfNotInitialised(TOut)
+  nameWithType.vb: ArgumentInitialisableProperty(Of TIn, TOut).SetIfNotInitialised(TOut)
+- uid: Azuria.Utilities.Properties.ArgumentInitialisableProperty`2.SetIfNotInitialised*
+  name: SetIfNotInitialised
+  href: api/Azuria.Utilities.Properties.ArgumentInitialisableProperty-2.html#Azuria_Utilities_Properties_ArgumentInitialisableProperty_2_SetIfNotInitialised_
+  commentId: Overload:Azuria.Utilities.Properties.ArgumentInitialisableProperty`2.SetIfNotInitialised
+  fullName: Azuria.Utilities.Properties.ArgumentInitialisableProperty<TIn, TOut>.SetIfNotInitialised
+  fullName.vb: Azuria.Utilities.Properties.ArgumentInitialisableProperty(Of TIn, TOut).SetIfNotInitialised
+  nameWithType: ArgumentInitialisableProperty<TIn, TOut>.SetIfNotInitialised
+  nameWithType.vb: ArgumentInitialisableProperty(Of TIn, TOut).SetIfNotInitialised
 - uid: Azuria.Utilities.Properties.ArgumentInitialisableProperty`2.ThrowFirstOnNonSuccess(`0)
   name: ThrowFirstOnNonSuccess(TIn)
   href: api/Azuria.Utilities.Properties.ArgumentInitialisableProperty-2.html#Azuria_Utilities_Properties_ArgumentInitialisableProperty_2_ThrowFirstOnNonSuccess__0_
@@ -12790,94 +12806,94 @@ references:
   fullName.vb: Azuria.Utilities.Properties.IArgumentInitialisableProperty(Of TIn, TOut).FetchObject
   nameWithType: IArgumentInitialisableProperty<TIn, TOut>.FetchObject
   nameWithType.vb: IArgumentInitialisableProperty(Of TIn, TOut).FetchObject
-- uid: Azuria.Utilities.Properties.IArgumentInitialisableProperty`2.GetNewObject(`0)
-  name: GetNewObject(TIn)
-  href: api/Azuria.Utilities.Properties.IArgumentInitialisableProperty-2.html#Azuria_Utilities_Properties_IArgumentInitialisableProperty_2_GetNewObject__0_
-  commentId: M:Azuria.Utilities.Properties.IArgumentInitialisableProperty`2.GetNewObject(`0)
-  fullName: Azuria.Utilities.Properties.IArgumentInitialisableProperty<TIn, TOut>.GetNewObject(TIn)
-  fullName.vb: Azuria.Utilities.Properties.IArgumentInitialisableProperty(Of TIn, TOut).GetNewObject(TIn)
-  nameWithType: IArgumentInitialisableProperty<TIn, TOut>.GetNewObject(TIn)
-  nameWithType.vb: IArgumentInitialisableProperty(Of TIn, TOut).GetNewObject(TIn)
-- uid: Azuria.Utilities.Properties.IArgumentInitialisableProperty`2.GetNewObject(`0,`1)
-  name: GetNewObject(TIn, TOut)
-  href: api/Azuria.Utilities.Properties.IArgumentInitialisableProperty-2.html#Azuria_Utilities_Properties_IArgumentInitialisableProperty_2_GetNewObject__0__1_
-  commentId: M:Azuria.Utilities.Properties.IArgumentInitialisableProperty`2.GetNewObject(`0,`1)
-  fullName: Azuria.Utilities.Properties.IArgumentInitialisableProperty<TIn, TOut>.GetNewObject(TIn, TOut)
-  fullName.vb: Azuria.Utilities.Properties.IArgumentInitialisableProperty(Of TIn, TOut).GetNewObject(TIn, TOut)
-  nameWithType: IArgumentInitialisableProperty<TIn, TOut>.GetNewObject(TIn, TOut)
-  nameWithType.vb: IArgumentInitialisableProperty(Of TIn, TOut).GetNewObject(TIn, TOut)
-- uid: Azuria.Utilities.Properties.IArgumentInitialisableProperty`2.GetNewObject*
-  name: GetNewObject
-  href: api/Azuria.Utilities.Properties.IArgumentInitialisableProperty-2.html#Azuria_Utilities_Properties_IArgumentInitialisableProperty_2_GetNewObject_
-  commentId: Overload:Azuria.Utilities.Properties.IArgumentInitialisableProperty`2.GetNewObject
-  fullName: Azuria.Utilities.Properties.IArgumentInitialisableProperty<TIn, TOut>.GetNewObject
-  fullName.vb: Azuria.Utilities.Properties.IArgumentInitialisableProperty(Of TIn, TOut).GetNewObject
-  nameWithType: IArgumentInitialisableProperty<TIn, TOut>.GetNewObject
-  nameWithType.vb: IArgumentInitialisableProperty(Of TIn, TOut).GetNewObject
-- uid: Azuria.Utilities.Properties.IArgumentInitialisableProperty`2.GetObject(`0)
-  name: GetObject(TIn)
-  href: api/Azuria.Utilities.Properties.IArgumentInitialisableProperty-2.html#Azuria_Utilities_Properties_IArgumentInitialisableProperty_2_GetObject__0_
-  commentId: M:Azuria.Utilities.Properties.IArgumentInitialisableProperty`2.GetObject(`0)
-  fullName: Azuria.Utilities.Properties.IArgumentInitialisableProperty<TIn, TOut>.GetObject(TIn)
-  fullName.vb: Azuria.Utilities.Properties.IArgumentInitialisableProperty(Of TIn, TOut).GetObject(TIn)
-  nameWithType: IArgumentInitialisableProperty<TIn, TOut>.GetObject(TIn)
-  nameWithType.vb: IArgumentInitialisableProperty(Of TIn, TOut).GetObject(TIn)
-- uid: Azuria.Utilities.Properties.IArgumentInitialisableProperty`2.GetObject(`0,`1)
-  name: GetObject(TIn, TOut)
-  href: api/Azuria.Utilities.Properties.IArgumentInitialisableProperty-2.html#Azuria_Utilities_Properties_IArgumentInitialisableProperty_2_GetObject__0__1_
-  commentId: M:Azuria.Utilities.Properties.IArgumentInitialisableProperty`2.GetObject(`0,`1)
-  fullName: Azuria.Utilities.Properties.IArgumentInitialisableProperty<TIn, TOut>.GetObject(TIn, TOut)
-  fullName.vb: Azuria.Utilities.Properties.IArgumentInitialisableProperty(Of TIn, TOut).GetObject(TIn, TOut)
-  nameWithType: IArgumentInitialisableProperty<TIn, TOut>.GetObject(TIn, TOut)
-  nameWithType.vb: IArgumentInitialisableProperty(Of TIn, TOut).GetObject(TIn, TOut)
-- uid: Azuria.Utilities.Properties.IArgumentInitialisableProperty`2.GetObject*
-  name: GetObject
-  href: api/Azuria.Utilities.Properties.IArgumentInitialisableProperty-2.html#Azuria_Utilities_Properties_IArgumentInitialisableProperty_2_GetObject_
-  commentId: Overload:Azuria.Utilities.Properties.IArgumentInitialisableProperty`2.GetObject
-  fullName: Azuria.Utilities.Properties.IArgumentInitialisableProperty<TIn, TOut>.GetObject
-  fullName.vb: Azuria.Utilities.Properties.IArgumentInitialisableProperty(Of TIn, TOut).GetObject
-  nameWithType: IArgumentInitialisableProperty<TIn, TOut>.GetObject
-  nameWithType.vb: IArgumentInitialisableProperty(Of TIn, TOut).GetObject
-- uid: Azuria.Utilities.Properties.IArgumentInitialisableProperty`2.GetObjectIfInitialised
-  name: GetObjectIfInitialised()
-  href: api/Azuria.Utilities.Properties.IArgumentInitialisableProperty-2.html#Azuria_Utilities_Properties_IArgumentInitialisableProperty_2_GetObjectIfInitialised
-  commentId: M:Azuria.Utilities.Properties.IArgumentInitialisableProperty`2.GetObjectIfInitialised
-  fullName: Azuria.Utilities.Properties.IArgumentInitialisableProperty<TIn, TOut>.GetObjectIfInitialised()
-  fullName.vb: Azuria.Utilities.Properties.IArgumentInitialisableProperty(Of TIn, TOut).GetObjectIfInitialised()
-  nameWithType: IArgumentInitialisableProperty<TIn, TOut>.GetObjectIfInitialised()
-  nameWithType.vb: IArgumentInitialisableProperty(Of TIn, TOut).GetObjectIfInitialised()
-- uid: Azuria.Utilities.Properties.IArgumentInitialisableProperty`2.GetObjectIfInitialised(`1)
-  name: GetObjectIfInitialised(TOut)
-  href: api/Azuria.Utilities.Properties.IArgumentInitialisableProperty-2.html#Azuria_Utilities_Properties_IArgumentInitialisableProperty_2_GetObjectIfInitialised__1_
-  commentId: M:Azuria.Utilities.Properties.IArgumentInitialisableProperty`2.GetObjectIfInitialised(`1)
-  fullName: Azuria.Utilities.Properties.IArgumentInitialisableProperty<TIn, TOut>.GetObjectIfInitialised(TOut)
-  fullName.vb: Azuria.Utilities.Properties.IArgumentInitialisableProperty(Of TIn, TOut).GetObjectIfInitialised(TOut)
-  nameWithType: IArgumentInitialisableProperty<TIn, TOut>.GetObjectIfInitialised(TOut)
-  nameWithType.vb: IArgumentInitialisableProperty(Of TIn, TOut).GetObjectIfInitialised(TOut)
-- uid: Azuria.Utilities.Properties.IArgumentInitialisableProperty`2.GetObjectIfInitialised*
-  name: GetObjectIfInitialised
-  href: api/Azuria.Utilities.Properties.IArgumentInitialisableProperty-2.html#Azuria_Utilities_Properties_IArgumentInitialisableProperty_2_GetObjectIfInitialised_
-  commentId: Overload:Azuria.Utilities.Properties.IArgumentInitialisableProperty`2.GetObjectIfInitialised
-  fullName: Azuria.Utilities.Properties.IArgumentInitialisableProperty<TIn, TOut>.GetObjectIfInitialised
-  fullName.vb: Azuria.Utilities.Properties.IArgumentInitialisableProperty(Of TIn, TOut).GetObjectIfInitialised
-  nameWithType: IArgumentInitialisableProperty<TIn, TOut>.GetObjectIfInitialised
-  nameWithType.vb: IArgumentInitialisableProperty(Of TIn, TOut).GetObjectIfInitialised
-- uid: Azuria.Utilities.Properties.IArgumentInitialisableProperty`2.IsInitialisedOnce
-  name: IsInitialisedOnce
-  href: api/Azuria.Utilities.Properties.IArgumentInitialisableProperty-2.html#Azuria_Utilities_Properties_IArgumentInitialisableProperty_2_IsInitialisedOnce
-  commentId: P:Azuria.Utilities.Properties.IArgumentInitialisableProperty`2.IsInitialisedOnce
-  fullName: Azuria.Utilities.Properties.IArgumentInitialisableProperty<TIn, TOut>.IsInitialisedOnce
-  fullName.vb: Azuria.Utilities.Properties.IArgumentInitialisableProperty(Of TIn, TOut).IsInitialisedOnce
-  nameWithType: IArgumentInitialisableProperty<TIn, TOut>.IsInitialisedOnce
-  nameWithType.vb: IArgumentInitialisableProperty(Of TIn, TOut).IsInitialisedOnce
-- uid: Azuria.Utilities.Properties.IArgumentInitialisableProperty`2.IsInitialisedOnce*
-  name: IsInitialisedOnce
-  href: api/Azuria.Utilities.Properties.IArgumentInitialisableProperty-2.html#Azuria_Utilities_Properties_IArgumentInitialisableProperty_2_IsInitialisedOnce_
-  commentId: Overload:Azuria.Utilities.Properties.IArgumentInitialisableProperty`2.IsInitialisedOnce
-  fullName: Azuria.Utilities.Properties.IArgumentInitialisableProperty<TIn, TOut>.IsInitialisedOnce
-  fullName.vb: Azuria.Utilities.Properties.IArgumentInitialisableProperty(Of TIn, TOut).IsInitialisedOnce
-  nameWithType: IArgumentInitialisableProperty<TIn, TOut>.IsInitialisedOnce
-  nameWithType.vb: IArgumentInitialisableProperty(Of TIn, TOut).IsInitialisedOnce
+- uid: Azuria.Utilities.Properties.IArgumentInitialisableProperty`2.Get(`0)
+  name: Get(TIn)
+  href: api/Azuria.Utilities.Properties.IArgumentInitialisableProperty-2.html#Azuria_Utilities_Properties_IArgumentInitialisableProperty_2_Get__0_
+  commentId: M:Azuria.Utilities.Properties.IArgumentInitialisableProperty`2.Get(`0)
+  fullName: Azuria.Utilities.Properties.IArgumentInitialisableProperty<TIn, TOut>.Get(TIn)
+  fullName.vb: Azuria.Utilities.Properties.IArgumentInitialisableProperty(Of TIn, TOut).Get(TIn)
+  nameWithType: IArgumentInitialisableProperty<TIn, TOut>.Get(TIn)
+  nameWithType.vb: IArgumentInitialisableProperty(Of TIn, TOut).Get(TIn)
+- uid: Azuria.Utilities.Properties.IArgumentInitialisableProperty`2.Get(`0,`1)
+  name: Get(TIn, TOut)
+  href: api/Azuria.Utilities.Properties.IArgumentInitialisableProperty-2.html#Azuria_Utilities_Properties_IArgumentInitialisableProperty_2_Get__0__1_
+  commentId: M:Azuria.Utilities.Properties.IArgumentInitialisableProperty`2.Get(`0,`1)
+  fullName: Azuria.Utilities.Properties.IArgumentInitialisableProperty<TIn, TOut>.Get(TIn, TOut)
+  fullName.vb: Azuria.Utilities.Properties.IArgumentInitialisableProperty(Of TIn, TOut).Get(TIn, TOut)
+  nameWithType: IArgumentInitialisableProperty<TIn, TOut>.Get(TIn, TOut)
+  nameWithType.vb: IArgumentInitialisableProperty(Of TIn, TOut).Get(TIn, TOut)
+- uid: Azuria.Utilities.Properties.IArgumentInitialisableProperty`2.Get*
+  name: Get
+  href: api/Azuria.Utilities.Properties.IArgumentInitialisableProperty-2.html#Azuria_Utilities_Properties_IArgumentInitialisableProperty_2_Get_
+  commentId: Overload:Azuria.Utilities.Properties.IArgumentInitialisableProperty`2.Get
+  fullName: Azuria.Utilities.Properties.IArgumentInitialisableProperty<TIn, TOut>.Get
+  fullName.vb: Azuria.Utilities.Properties.IArgumentInitialisableProperty(Of TIn, TOut).Get
+  nameWithType: IArgumentInitialisableProperty<TIn, TOut>.Get
+  nameWithType.vb: IArgumentInitialisableProperty(Of TIn, TOut).Get
+- uid: Azuria.Utilities.Properties.IArgumentInitialisableProperty`2.GetIfInitialised
+  name: GetIfInitialised()
+  href: api/Azuria.Utilities.Properties.IArgumentInitialisableProperty-2.html#Azuria_Utilities_Properties_IArgumentInitialisableProperty_2_GetIfInitialised
+  commentId: M:Azuria.Utilities.Properties.IArgumentInitialisableProperty`2.GetIfInitialised
+  fullName: Azuria.Utilities.Properties.IArgumentInitialisableProperty<TIn, TOut>.GetIfInitialised()
+  fullName.vb: Azuria.Utilities.Properties.IArgumentInitialisableProperty(Of TIn, TOut).GetIfInitialised()
+  nameWithType: IArgumentInitialisableProperty<TIn, TOut>.GetIfInitialised()
+  nameWithType.vb: IArgumentInitialisableProperty(Of TIn, TOut).GetIfInitialised()
+- uid: Azuria.Utilities.Properties.IArgumentInitialisableProperty`2.GetIfInitialised(`1)
+  name: GetIfInitialised(TOut)
+  href: api/Azuria.Utilities.Properties.IArgumentInitialisableProperty-2.html#Azuria_Utilities_Properties_IArgumentInitialisableProperty_2_GetIfInitialised__1_
+  commentId: M:Azuria.Utilities.Properties.IArgumentInitialisableProperty`2.GetIfInitialised(`1)
+  fullName: Azuria.Utilities.Properties.IArgumentInitialisableProperty<TIn, TOut>.GetIfInitialised(TOut)
+  fullName.vb: Azuria.Utilities.Properties.IArgumentInitialisableProperty(Of TIn, TOut).GetIfInitialised(TOut)
+  nameWithType: IArgumentInitialisableProperty<TIn, TOut>.GetIfInitialised(TOut)
+  nameWithType.vb: IArgumentInitialisableProperty(Of TIn, TOut).GetIfInitialised(TOut)
+- uid: Azuria.Utilities.Properties.IArgumentInitialisableProperty`2.GetIfInitialised*
+  name: GetIfInitialised
+  href: api/Azuria.Utilities.Properties.IArgumentInitialisableProperty-2.html#Azuria_Utilities_Properties_IArgumentInitialisableProperty_2_GetIfInitialised_
+  commentId: Overload:Azuria.Utilities.Properties.IArgumentInitialisableProperty`2.GetIfInitialised
+  fullName: Azuria.Utilities.Properties.IArgumentInitialisableProperty<TIn, TOut>.GetIfInitialised
+  fullName.vb: Azuria.Utilities.Properties.IArgumentInitialisableProperty(Of TIn, TOut).GetIfInitialised
+  nameWithType: IArgumentInitialisableProperty<TIn, TOut>.GetIfInitialised
+  nameWithType.vb: IArgumentInitialisableProperty(Of TIn, TOut).GetIfInitialised
+- uid: Azuria.Utilities.Properties.IArgumentInitialisableProperty`2.GetNew(`0)
+  name: GetNew(TIn)
+  href: api/Azuria.Utilities.Properties.IArgumentInitialisableProperty-2.html#Azuria_Utilities_Properties_IArgumentInitialisableProperty_2_GetNew__0_
+  commentId: M:Azuria.Utilities.Properties.IArgumentInitialisableProperty`2.GetNew(`0)
+  fullName: Azuria.Utilities.Properties.IArgumentInitialisableProperty<TIn, TOut>.GetNew(TIn)
+  fullName.vb: Azuria.Utilities.Properties.IArgumentInitialisableProperty(Of TIn, TOut).GetNew(TIn)
+  nameWithType: IArgumentInitialisableProperty<TIn, TOut>.GetNew(TIn)
+  nameWithType.vb: IArgumentInitialisableProperty(Of TIn, TOut).GetNew(TIn)
+- uid: Azuria.Utilities.Properties.IArgumentInitialisableProperty`2.GetNew(`0,`1)
+  name: GetNew(TIn, TOut)
+  href: api/Azuria.Utilities.Properties.IArgumentInitialisableProperty-2.html#Azuria_Utilities_Properties_IArgumentInitialisableProperty_2_GetNew__0__1_
+  commentId: M:Azuria.Utilities.Properties.IArgumentInitialisableProperty`2.GetNew(`0,`1)
+  fullName: Azuria.Utilities.Properties.IArgumentInitialisableProperty<TIn, TOut>.GetNew(TIn, TOut)
+  fullName.vb: Azuria.Utilities.Properties.IArgumentInitialisableProperty(Of TIn, TOut).GetNew(TIn, TOut)
+  nameWithType: IArgumentInitialisableProperty<TIn, TOut>.GetNew(TIn, TOut)
+  nameWithType.vb: IArgumentInitialisableProperty(Of TIn, TOut).GetNew(TIn, TOut)
+- uid: Azuria.Utilities.Properties.IArgumentInitialisableProperty`2.GetNew*
+  name: GetNew
+  href: api/Azuria.Utilities.Properties.IArgumentInitialisableProperty-2.html#Azuria_Utilities_Properties_IArgumentInitialisableProperty_2_GetNew_
+  commentId: Overload:Azuria.Utilities.Properties.IArgumentInitialisableProperty`2.GetNew
+  fullName: Azuria.Utilities.Properties.IArgumentInitialisableProperty<TIn, TOut>.GetNew
+  fullName.vb: Azuria.Utilities.Properties.IArgumentInitialisableProperty(Of TIn, TOut).GetNew
+  nameWithType: IArgumentInitialisableProperty<TIn, TOut>.GetNew
+  nameWithType.vb: IArgumentInitialisableProperty(Of TIn, TOut).GetNew
+- uid: Azuria.Utilities.Properties.IArgumentInitialisableProperty`2.IsInitialised
+  name: IsInitialised
+  href: api/Azuria.Utilities.Properties.IArgumentInitialisableProperty-2.html#Azuria_Utilities_Properties_IArgumentInitialisableProperty_2_IsInitialised
+  commentId: P:Azuria.Utilities.Properties.IArgumentInitialisableProperty`2.IsInitialised
+  fullName: Azuria.Utilities.Properties.IArgumentInitialisableProperty<TIn, TOut>.IsInitialised
+  fullName.vb: Azuria.Utilities.Properties.IArgumentInitialisableProperty(Of TIn, TOut).IsInitialised
+  nameWithType: IArgumentInitialisableProperty<TIn, TOut>.IsInitialised
+  nameWithType.vb: IArgumentInitialisableProperty(Of TIn, TOut).IsInitialised
+- uid: Azuria.Utilities.Properties.IArgumentInitialisableProperty`2.IsInitialised*
+  name: IsInitialised
+  href: api/Azuria.Utilities.Properties.IArgumentInitialisableProperty-2.html#Azuria_Utilities_Properties_IArgumentInitialisableProperty_2_IsInitialised_
+  commentId: Overload:Azuria.Utilities.Properties.IArgumentInitialisableProperty`2.IsInitialised
+  fullName: Azuria.Utilities.Properties.IArgumentInitialisableProperty<TIn, TOut>.IsInitialised
+  fullName.vb: Azuria.Utilities.Properties.IArgumentInitialisableProperty(Of TIn, TOut).IsInitialised
+  nameWithType: IArgumentInitialisableProperty<TIn, TOut>.IsInitialised
+  nameWithType.vb: IArgumentInitialisableProperty(Of TIn, TOut).IsInitialised
 - uid: Azuria.Utilities.Properties.IArgumentInitialisableProperty`2.ThrowFirstOnNonSuccess(`0)
   name: ThrowFirstOnNonSuccess(TIn)
   href: api/Azuria.Utilities.Properties.IArgumentInitialisableProperty-2.html#Azuria_Utilities_Properties_IArgumentInitialisableProperty_2_ThrowFirstOnNonSuccess__0_
