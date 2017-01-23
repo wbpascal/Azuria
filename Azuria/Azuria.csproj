@@ -95,7 +95,7 @@
     <Compile Include="Media\Headers\HeaderHelper.cs" />
     <Compile Include="Media\Headers\HeaderInfo.cs" />
     <Compile Include="Media\Headers\HeaderStyle.cs" />
-    <Compile Include="Media\Properties\IndustryType.cs" />
+    <Compile Include="Info\IndustryType.cs" />
     <Compile Include="Media\Properties\MediaRating.cs" />
     <Compile Include="Media\Properties\MediaSeason.cs" />
     <Compile Include="Media\Properties\MediaSeasonInfo.cs" />
@@ -231,8 +231,8 @@
     <Compile Include="UserInfo\Comment\Comment.cs" />
     <Compile Include="Media\Properties\FskType.cs" />
     <Compile Include="Media\Properties\FskHelper.cs" />
-    <Compile Include="Media\Properties\Translator.cs" />
-    <Compile Include="Media\Properties\Industry.cs" />
+    <Compile Include="Info\Translator.cs" />
+    <Compile Include="Info\Industry.cs" />
     <Compile Include="Media\Properties\Language.cs" />
     <Compile Include="Search\SearchResultEnumerable.cs" />
     <Compile Include="UserInfo\MediaProgressState.cs" />

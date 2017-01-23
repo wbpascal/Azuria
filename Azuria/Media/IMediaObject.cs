@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Azuria.Info;
 using Azuria.Media.Properties;
 using Azuria.UserInfo.Comment;
 using Azuria.Utilities.Properties;

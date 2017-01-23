@@ -8,6 +8,7 @@ using Azuria.Api.v1.DataModels.Info;
 using Azuria.Api.v1.Enums;
 using Azuria.Api.v1.RequestBuilder;
 using Azuria.ErrorHandling;
+using Azuria.Info;
 using Azuria.Media.Properties;
 using Azuria.UserInfo;
 using Azuria.UserInfo.Comment;

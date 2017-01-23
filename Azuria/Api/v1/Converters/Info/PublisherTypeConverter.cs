@@ -1,5 +1,5 @@
 ﻿using System;
-using Azuria.Media.Properties;
+using Azuria.Info;
 using Newtonsoft.Json;
 
 namespace Azuria.Api.v1.Converters.Info
