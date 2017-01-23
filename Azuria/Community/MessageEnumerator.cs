@@ -13,14 +13,14 @@ namespace Azuria.Community
     /// </summary>
     public sealed class MessageEnumerator : PagedEnumerator<Message>
     {
-        private readonly int _conferenceId;
+        private readonly Conference _conference;
         private readonly bool _markAsRead;
         private readonly Senpai _senpai;
 
-        internal MessageEnumerator(int conferenceId, bool markAsRead, Senpai senpai)
+        internal MessageEnumerator(Conference conference, bool markAsRead, Senpai senpai)
             : base(Conference.MessagesPerPage)
         {
-            this._conferenceId = conferenceId;
+            this._conference = conference;
             this._senpai = senpai;
             this._markAsRead = markAsRead;
         }
@@ -31,16 +31,14 @@ namespace Azuria.Community
         {
             Message lLastMessage = this.GetCurrentPage().LastOrDefault();
             ProxerApiResponse<MessageDataModel[]> lResult = await RequestHandler.ApiRequest(
-                    MessengerRequestBuilder.GetMessages(this._senpai, this._conferenceId,
+                    MessengerRequestBuilder.GetMessages(this._senpai, this._conference.Id,
                         lLastMessage?.MessageId ?? 0, this._markAsRead))
                 .ConfigureAwait(false);
             if (!lResult.Success || (lResult.Result == null))
                 return new ProxerResult<IEnumerable<Message>>(lResult.Exceptions);
 
             return new ProxerResult<IEnumerable<Message>>((from messageDataModel in lResult.Result
-                select new Message(messageDataModel, this._conferenceId != 0
-                    ? this._conferenceId
-                    : messageDataModel.ConferenceId)).Reverse());
+                select new Message(messageDataModel, this._conference)).Reverse());
         }
 
         #endregion

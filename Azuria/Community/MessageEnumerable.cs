@@ -6,12 +6,12 @@ namespace Azuria.Community
     /// </summary>
     public class MessageEnumerable : PagedEnumerable<Message>
     {
-        private readonly int _conferenceId;
+        private readonly Conference _conference;
         private readonly Senpai _senpai;
 
-        internal MessageEnumerable(int conferenceId, Senpai senpai, bool markAsRead = true)
+        internal MessageEnumerable(Conference conference, Senpai senpai, bool markAsRead = true)
         {
-            this._conferenceId = conferenceId;
+            this._conference = conference;
             this._senpai = senpai;
             this.MarkAsRead = markAsRead;
         }
@@ -30,7 +30,7 @@ namespace Azuria.Community
         /// <returns>An enumerator that can be used to iterate through the collection.</returns>
         public override PagedEnumerator<Message> GetEnumerator()
         {
-            return new MessageEnumerator(this._conferenceId, this.MarkAsRead, this._senpai);
+            return new MessageEnumerator(this._conference, this.MarkAsRead, this._senpai);
         }
 
         #endregion
