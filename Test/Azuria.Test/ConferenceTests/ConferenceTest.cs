@@ -19,9 +19,8 @@ namespace Azuria.Test.ConferenceTests
         [OneTimeSetUp]
         public async Task Setup()
         {
-            this._conference =
-                (await Conference.GetConferences(GeneralSetup.SenpaiInstance).ThrowFirstForNonSuccess()).First
-                    ().Conference;
+            this._conference = (await Conference.GetConferences(GeneralSetup.SenpaiInstance)
+                .ThrowFirstForNonSuccess()).First().Conference;
             Assert.AreEqual(124536, this._conference.Id);
         }
 
@@ -175,11 +174,11 @@ namespace Azuria.Test.ConferenceTests
         {
             Assert.CatchAsync<NotLoggedInException>(() => Conference.GetConferences(null).ThrowFirstForNonSuccess());
 
-            ConferenceInfo[] lConferences =
-                (await Conference.GetConferences(GeneralSetup.SenpaiInstance).ThrowFirstForNonSuccess())
-                    .ToArray();
+            ConferenceInfo[] lConferences = (await Conference.GetConferences(GeneralSetup.SenpaiInstance)
+                .ThrowFirstForNonSuccess()).ToArray();
             Assert.IsNotNull(lConferences);
             Assert.AreEqual(3, lConferences.Length);
+            Assert.AreEqual(1, lConferences.Count(info => info.UnreadMessagesCount != 0));
         }
 
         [Test]

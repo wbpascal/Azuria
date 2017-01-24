@@ -17,6 +17,7 @@ namespace Azuria.Community
         {
             this.Senpai = senpai;
             this.Conference = new Conference(dataModel, senpai);
+            this.UnreadMessagesCount = dataModel.UnreadMessagesCount;
             this._unreadMessages =
                 new ArgumentInitialisableProperty<bool, IEnumerable<Message>>(
                     markAsRead => this.GetUnreadMessages(dataModel, markAsRead, senpai));
@@ -29,6 +30,10 @@ namespace Azuria.Community
         public Conference Conference { get; }
 
         /// <summary>
+        /// 
+        /// </summary>
+        public int UnreadMessagesCount { get; }
+
         /// </summary>
         public Senpai Senpai { get; set; }
 
