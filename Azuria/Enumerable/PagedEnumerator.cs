@@ -7,7 +7,7 @@ using Azuria.ErrorHandling;
 namespace Azuria.Enumerable
 {
     /// <summary>
-    /// Represents an enumerator that fetches objects from a paged source.
+    /// Represents an enumerator that returns objects from a paged source.
     /// </summary>
     /// <typeparam name="T">The type of the objects.</typeparam>
     public abstract class PagedEnumerator<T> : RetryableEnumerator<T>
@@ -32,14 +32,18 @@ namespace Azuria.Enumerable
 
         #region Properties
 
-        /// <inheritdoc />
+        /// <summary>
+        /// Gets the element in the collection at the current position of the enumerator.
+        /// </summary>
         public override T Current => this._currentPageContent[this._currentPageContentIndex];
 
         #endregion
 
         #region Methods
 
-        /// <inheritdoc />
+        /// <summary>
+        /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
+        /// </summary>
         public override void Dispose()
         {
             this._currentPageContent = null;
@@ -72,7 +76,13 @@ namespace Azuria.Enumerable
             this._currentPageContent = lGetSearchResult.Result as T[] ?? lGetSearchResult.Result.ToArray();
         }
 
-        /// <inheritdoc />
+        /// <summary>
+        /// Moves the pointer to the next element in the enumeration and returns if the action succeeded.
+        /// </summary>
+        /// <param name="retryCount">A number that indicates the current retry.</param>
+        /// <returns>
+        /// A boolean value that indicates whether the pointer could be moved to the next element.
+        /// </returns>
         public override bool MoveNext(int retryCount)
         {
             if (this._currentPageContentIndex >= this._currentPageContent.Length - 1)
@@ -86,7 +96,9 @@ namespace Azuria.Enumerable
             return this._currentPageContentIndex < this._currentPageContent.Length;
         }
 
-        /// <inheritdoc />
+        /// <summary>
+        /// Sets the enumerator to its initial position, which is before the first element in the collection.
+        /// </summary>
         public override void Reset()
         {
             this._currentPageContent = new T[0];

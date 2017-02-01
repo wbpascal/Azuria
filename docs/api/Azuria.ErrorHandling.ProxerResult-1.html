@@ -71,7 +71,7 @@
               
               <h1 id="Azuria_ErrorHandling_ProxerResult_1" data-uid="Azuria.ErrorHandling.ProxerResult`1">Class ProxerResult&lt;T&gt;
               </h1>
-              <div class="markdown level0 summary"><p>Represents a result of a method.</p>
+              <div class="markdown level0 summary"><p>Represents the result of a method including a returned object.</p>
 </div>
               <div class="markdown level0 conceptual"></div>
               <div class="inheritance">
@@ -127,7 +127,7 @@
                 <tbody>
                   <tr>
                     <td><span class="parametername">T</span></td>
-                    <td><p>The type of the result.</p>
+                    <td><p>The type of the returned object.</p>
 </td>
                   </tr>
                 </tbody>
@@ -139,11 +139,11 @@
                 <a href="https://github.com/InfiniteSoul/Azuria/new/new-docs/apiSpec/new?filename=Azuria_ErrorHandling_ProxerResult_1__ctor__0_.md&amp;value=---%0Auid%3A%20Azuria.ErrorHandling.ProxerResult%601.%23ctor(%600)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
               </span>
               <span class="small pull-right mobile-hide">
-                <a href="https://github.com/InfiniteSoul/Azuria/blob/new-docs/Azuria/ErrorHandling/ProxerResult.cs/#L16">View Source</a>
+                <a href="https://github.com/InfiniteSoul/Azuria/blob/new-docs/Azuria/ErrorHandling/ProxerResult.cs/#L18">View Source</a>
               </span>
               <a id="Azuria_ErrorHandling_ProxerResult_1__ctor_" data-uid="Azuria.ErrorHandling.ProxerResult`1.#ctor*"></a>
               <h4 id="Azuria_ErrorHandling_ProxerResult_1__ctor__0_" data-uid="Azuria.ErrorHandling.ProxerResult`1.#ctor(`0)">ProxerResult(T)</h4>
-              <div class="markdown level1 summary"><p>Initialises a new instance with a specified result and indicates that the method was successful.</p>
+              <div class="markdown level1 summary"><p>Initializes a new instance of the <a class="xref" href="Azuria.ErrorHandling.ProxerResult-1.html">ProxerResult&lt;T&gt;</a> class.</p>
 </div>
               <div class="markdown level1 conceptual"></div>
               <h5 class="decalaration">Declaration</h5>
@@ -163,7 +163,7 @@
                   <tr>
                     <td><span class="xref">T</span></td>
                     <td><span class="parametername">result</span></td>
-                    <td><p>The result.</p>
+                    <td><p>The returned object of the method.</p>
 </td>
                   </tr>
                 </tbody>
@@ -173,12 +173,12 @@
                 <a href="https://github.com/InfiniteSoul/Azuria/new/new-docs/apiSpec/new?filename=Azuria_ErrorHandling_ProxerResult_1__ctor_System_Collections_Generic_IEnumerable_System_Exception__.md&amp;value=---%0Auid%3A%20Azuria.ErrorHandling.ProxerResult%601.%23ctor(System.Collections.Generic.IEnumerable%7BSystem.Exception%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
               </span>
               <span class="small pull-right mobile-hide">
-                <a href="https://github.com/InfiniteSoul/Azuria/blob/new-docs/Azuria/ErrorHandling/ProxerResult.cs/#L28">View Source</a>
+                <a href="https://github.com/InfiniteSoul/Azuria/blob/new-docs/Azuria/ErrorHandling/ProxerResult.cs/#L30">View Source</a>
               </span>
               <a id="Azuria_ErrorHandling_ProxerResult_1__ctor_" data-uid="Azuria.ErrorHandling.ProxerResult`1.#ctor*"></a>
               <h4 id="Azuria_ErrorHandling_ProxerResult_1__ctor_System_Collections_Generic_IEnumerable_System_Exception__" data-uid="Azuria.ErrorHandling.ProxerResult`1.#ctor(System.Collections.Generic.IEnumerable{System.Exception})">ProxerResult(IEnumerable&lt;Exception&gt;)</h4>
-              <div class="markdown level1 summary"><p>Initialises a new instance with the exceptions that were thrown during method execution and indicates that the
-method failed to execute.</p>
+              <div class="markdown level1 summary"><p>Initializes a new instance of the <a class="xref" href="Azuria.ErrorHandling.ProxerResult-1.html">ProxerResult&lt;T&gt;</a> class and sets <a class="xref" href="Azuria.ErrorHandling.ProxerResult.html#Azuria_ErrorHandling_ProxerResult_Success">Success</a> to
+false.</p>
 </div>
               <div class="markdown level1 conceptual"></div>
               <h5 class="decalaration">Declaration</h5>
@@ -198,7 +198,7 @@ method failed to execute.</p>
                   <tr>
                     <td><span class="xref">System.Collections.Generic.IEnumerable</span>&lt;<span class="xref">System.Exception</span>&gt;</td>
                     <td><span class="parametername">exceptions</span></td>
-                    <td><p>The exception that were thrown during method execution.</p>
+                    <td><p>An enumeration of the exceptions that were thrown during method execution.</p>
 </td>
                   </tr>
                 </tbody>
@@ -208,11 +208,13 @@ method failed to execute.</p>
                 <a href="https://github.com/InfiniteSoul/Azuria/new/new-docs/apiSpec/new?filename=Azuria_ErrorHandling_ProxerResult_1__ctor_System_Exception_.md&amp;value=---%0Auid%3A%20Azuria.ErrorHandling.ProxerResult%601.%23ctor(System.Exception)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
               </span>
               <span class="small pull-right mobile-hide">
-                <a href="https://github.com/InfiniteSoul/Azuria/blob/new-docs/Azuria/ErrorHandling/ProxerResult.cs/#L35">View Source</a>
+                <a href="https://github.com/InfiniteSoul/Azuria/blob/new-docs/Azuria/ErrorHandling/ProxerResult.cs/#L40">View Source</a>
               </span>
               <a id="Azuria_ErrorHandling_ProxerResult_1__ctor_" data-uid="Azuria.ErrorHandling.ProxerResult`1.#ctor*"></a>
               <h4 id="Azuria_ErrorHandling_ProxerResult_1__ctor_System_Exception_" data-uid="Azuria.ErrorHandling.ProxerResult`1.#ctor(System.Exception)">ProxerResult(Exception)</h4>
-              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 summary"><p>Initializes a new instance of the <a class="xref" href="Azuria.ErrorHandling.ProxerResult-1.html">ProxerResult&lt;T&gt;</a> class and sets <a class="xref" href="Azuria.ErrorHandling.ProxerResult.html#Azuria_ErrorHandling_ProxerResult_Success">Success</a> to
+false.</p>
+</div>
               <div class="markdown level1 conceptual"></div>
               <h5 class="decalaration">Declaration</h5>
               <div class="codewrapper">
@@ -231,7 +233,8 @@ method failed to execute.</p>
                   <tr>
                     <td><span class="xref">System.Exception</span></td>
                     <td><span class="parametername">exception</span></td>
-                    <td></td>
+                    <td><p>A single exception that was thrown during method execution.</p>
+</td>
                   </tr>
                 </tbody>
               </table>
@@ -242,11 +245,12 @@ method failed to execute.</p>
                 <a href="https://github.com/InfiniteSoul/Azuria/new/new-docs/apiSpec/new?filename=Azuria_ErrorHandling_ProxerResult_1_Result.md&amp;value=---%0Auid%3A%20Azuria.ErrorHandling.ProxerResult%601.Result%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
               </span>
               <span class="small pull-right mobile-hide">
-                <a href="https://github.com/InfiniteSoul/Azuria/blob/new-docs/Azuria/ErrorHandling/ProxerResult.cs/#L44">View Source</a>
+                <a href="https://github.com/InfiniteSoul/Azuria/blob/new-docs/Azuria/ErrorHandling/ProxerResult.cs/#L50">View Source</a>
               </span>
               <a id="Azuria_ErrorHandling_ProxerResult_1_Result_" data-uid="Azuria.ErrorHandling.ProxerResult`1.Result*"></a>
               <h4 id="Azuria_ErrorHandling_ProxerResult_1_Result" data-uid="Azuria.ErrorHandling.ProxerResult`1.Result">Result</h4>
-              <div class="markdown level1 summary"><p>Gets the result of the method if the method was successful.</p>
+              <div class="markdown level1 summary"><p>Gets the returned object if the method executed successfully. If the method did not execute successfully the default
+value of the type <span class="typeparamref">T</span> will be returned.</p>
 </div>
               <div class="markdown level1 conceptual"></div>
               <h5 class="decalaration">Declaration</h5>
@@ -270,6 +274,11 @@ method failed to execute.</p>
               </table>
               <h5 class="implements">Implements</h5>
                   <div><a class="xref" href="Azuria.ErrorHandling.IProxerResult-1.html#Azuria_ErrorHandling_IProxerResult_1_Result">IProxerResult&lt;T&gt;.Result</a></div>
+              <h3 id="seealso">See Also</h3>
+              <div class="seealso">
+                  <div><a class="xref" href="Azuria.ErrorHandling.ProxerResult.html">ProxerResult</a></div>
+                  <div><a class="xref" href="Azuria.ErrorHandling.IProxerResult-1.html">IProxerResult</a>&lt;T&gt;</div>
+              </div>
                         </article>
           </div>
           
@@ -281,7 +290,7 @@ method failed to execute.</p>
                     <a href="https://github.com/InfiniteSoul/Azuria/new/new-docs/apiSpec/new?filename=Azuria_ErrorHandling_ProxerResult_1.md&amp;value=---%0Auid%3A%20Azuria.ErrorHandling.ProxerResult%601%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
                   </li>
                   <li>
-                    <a href="https://github.com/InfiniteSoul/Azuria/blob/new-docs/Azuria/ErrorHandling/ProxerResult.cs/#L10" class="contribution-link">View Source</a>
+                    <a href="https://github.com/InfiniteSoul/Azuria/blob/new-docs/Azuria/ErrorHandling/ProxerResult.cs/#L12" class="contribution-link">View Source</a>
                   </li>
                 </ul>
               </div>

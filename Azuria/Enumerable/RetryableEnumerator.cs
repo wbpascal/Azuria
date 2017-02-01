@@ -20,10 +20,14 @@ namespace Azuria.Enumerable
 
         #region Properties
 
-        /// <inheritdoc />
+        /// <summary>
+        /// Gets the element in the collection at the current position of the enumerator.
+        /// </summary>
         public abstract T Current { get; }
 
-        /// <inheritdoc />
+        /// <summary>
+        /// Gets the element in the collection at the current position of the enumerator.
+        /// </summary>
         object IEnumerator.Current => this.Current;
 
 
@@ -36,10 +40,18 @@ namespace Azuria.Enumerable
 
         #region Methods
 
-        /// <inheritdoc />
+        /// <summary>
+        /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
+        /// </summary>
         public abstract void Dispose();
 
-        /// <inheritdoc />
+        /// <summary>
+        /// Advances the enumerator to the next element of the collection.
+        /// </summary>
+        /// <returns>
+        /// true if the enumerator was successfully advanced to the next element; false if the enumerator has passed the end of the
+        /// collection.
+        /// </returns>
         public bool MoveNext()
         {
             for (int i = 0; i <= this.RetryCount; i++)
@@ -61,7 +73,9 @@ namespace Azuria.Enumerable
         /// <returns>A boolean value that indicates whether the pointer could be moved to the next element.</returns>
         public abstract bool MoveNext(int retryCount);
 
-        /// <inheritdoc />
+        /// <summary>
+        /// Sets the enumerator to its initial position, which is before the first element in the collection.
+        /// </summary>
         public abstract void Reset();
 
         #endregion

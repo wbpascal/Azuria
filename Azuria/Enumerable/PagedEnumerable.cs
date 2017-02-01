@@ -4,7 +4,7 @@ using System.Collections.Generic;
 namespace Azuria.Enumerable
 {
     /// <summary>
-    /// Represents an enumeration of objects that are fetched from a paged source.
+    /// Represents an enumeration of objects that are returned from a paged source.
     /// </summary>
     /// <typeparam name="T">The type of the objects.</typeparam>
     public abstract class PagedEnumerable<T> : IEnumerable<T>
@@ -21,7 +21,12 @@ namespace Azuria.Enumerable
 
         #region Methods
 
-        /// <inheritdoc />
+        /// <summary>
+        /// Returns an enumerator that iterates through a collection.
+        /// </summary>
+        /// <returns>
+        /// An <see cref="PagedEnumerator{T}" /> object that can be used to iterate through the collection.
+        /// </returns>
         public abstract PagedEnumerator<T> GetEnumerator();
 
         IEnumerator<T> IEnumerable<T>.GetEnumerator()
@@ -29,7 +34,12 @@ namespace Azuria.Enumerable
             return this.GetEnumerator();
         }
 
-        /// <inheritdoc />
+        /// <summary>
+        /// Returns an enumerator that iterates through a collection.
+        /// </summary>
+        /// <returns>
+        /// An <see cref="T:System.Collections.IEnumerator" /> object that can be used to iterate through the collection.
+        /// </returns>
         IEnumerator IEnumerable.GetEnumerator()
         {
             return this.GetEnumerator();
