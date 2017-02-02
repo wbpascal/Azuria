@@ -158,7 +158,7 @@ namespace Azuria.UserInfo
         {
             ProxerApiResponse<UserInfoDataModel> lResult = await RequestHandler.ApiRequest(
                 UserRequestBuilder.GetInfo(id)).ConfigureAwait(false);
-            if (!lResult.Success || (lResult.Result == null)) return new ProxerResult<User>(lResult.Exceptions);
+            if (!lResult.Success || lResult.Result == null) return new ProxerResult<User>(lResult.Exceptions);
             return new ProxerResult<User>(new User(lResult.Result));
         }
 
@@ -170,7 +170,7 @@ namespace Azuria.UserInfo
         {
             ProxerApiResponse<UserInfoDataModel> lResult = await RequestHandler.ApiRequest(
                 UserRequestBuilder.GetInfo(username)).ConfigureAwait(false);
-            if (!lResult.Success || (lResult.Result == null)) return new ProxerResult<User>(lResult.Exceptions);
+            if (!lResult.Success || lResult.Result == null) return new ProxerResult<User>(lResult.Exceptions);
             return new ProxerResult<User>(new User(lResult.Result));
         }
 
@@ -180,7 +180,7 @@ namespace Azuria.UserInfo
 
             ProxerApiResponse<UserInfoDataModel> lResult = await RequestHandler.ApiRequest(
                 UserRequestBuilder.GetInfo(this.Id)).ConfigureAwait(false);
-            if (!lResult.Success || (lResult.Result == null)) return new ProxerResult(lResult.Exceptions);
+            if (!lResult.Success || lResult.Result == null) return new ProxerResult(lResult.Exceptions);
 
             UserInfoDataModel lDataModel = lResult.Result;
             this._avatar.Set(new Uri(ApiConstants.ProxerAvatarShortCdnUrl + lDataModel.AvatarId));
@@ -198,7 +198,7 @@ namespace Azuria.UserInfo
             ProxerApiResponse<ToptenDataModel[]> lResult = await RequestHandler.ApiRequest(
                     UserRequestBuilder.GetTopten(this.Id, category.ToString().ToLower(), senpai))
                 .ConfigureAwait(false);
-            if (!lResult.Success || (lResult.Result == null)) return new ProxerResult(lResult.Exceptions);
+            if (!lResult.Success || lResult.Result == null) return new ProxerResult(lResult.Exceptions);
 
             if (category == MediaEntryType.Anime)
                 this._toptenAnime.Set(from toptenDataModel in lResult.Result

@@ -20,12 +20,6 @@ namespace Azuria.Test.ConferenceTests
         }
 
         [Test]
-        public void UnreadMessagesCount()
-        {
-            Assert.AreEqual(3, this._conferenceInfo.UnreadMessagesCount);
-        }
-
-        [Test]
         public async Task GetUnreadMessages()
         {
             Message[] lUnreadMessages =
@@ -41,6 +35,12 @@ namespace Azuria.Test.ConferenceTests
             this._conferenceInfo = (await Conference.GetConferences(GeneralSetup.SenpaiInstance)
                 .ThrowFirstForNonSuccess()).First();
             Assert.IsNotNull(this._conferenceInfo);
+        }
+
+        [Test]
+        public void UnreadMessagesCount()
+        {
+            Assert.AreEqual(3, this._conferenceInfo.UnreadMessagesCount);
         }
 
         #endregion

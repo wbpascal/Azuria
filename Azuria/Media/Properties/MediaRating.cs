@@ -12,7 +12,7 @@
 
         internal MediaRating(int totalStars, int voters)
         {
-            this.Rating = voters != 0 ? totalStars/(decimal) voters : 0;
+            this.Rating = voters != 0 ? totalStars / (decimal) voters : 0;
             this.Voters = voters;
         }
 

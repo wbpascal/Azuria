@@ -78,9 +78,9 @@ namespace Azuria.Web
             }
             string lResponseString = await lResponseObject.Content.ReadAsStringAsync().ConfigureAwait(false);
 
-            if ((lResponseObject.StatusCode == HttpStatusCode.OK) && !string.IsNullOrEmpty(lResponseString))
+            if (lResponseObject.StatusCode == HttpStatusCode.OK && !string.IsNullOrEmpty(lResponseString))
                 lResponse = WebUtility.HtmlDecode(lResponseString).Replace("\n", "");
-            else if ((lResponseObject.StatusCode == HttpStatusCode.ServiceUnavailable) &&
+            else if (lResponseObject.StatusCode == HttpStatusCode.ServiceUnavailable &&
                      !string.IsNullOrEmpty(lResponseString))
                 return new ProxerResult<string>(new[] {new CloudflareException()});
             else
@@ -127,9 +127,9 @@ namespace Azuria.Web
             }
             string lResponseString = await lResponseObject.Content.ReadAsStringAsync().ConfigureAwait(false);
 
-            if ((lResponseObject.StatusCode == HttpStatusCode.OK) && !string.IsNullOrEmpty(lResponseString))
+            if (lResponseObject.StatusCode == HttpStatusCode.OK && !string.IsNullOrEmpty(lResponseString))
                 lResponse = WebUtility.HtmlDecode(lResponseString).Replace("\n", "");
-            else if ((lResponseObject.StatusCode == HttpStatusCode.ServiceUnavailable)
+            else if (lResponseObject.StatusCode == HttpStatusCode.ServiceUnavailable
                      && !string.IsNullOrEmpty(lResponseString))
                 return new ProxerResult<string>(new[] {new CloudflareException()});
             else

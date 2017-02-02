@@ -27,12 +27,12 @@ namespace Azuria.UserInfo.ControlPanel
 
         private static IMediaContent GetMediaContent(HistoryDataModel dataModel)
         {
-            if ((typeof(T) == typeof(Anime)) ||
-                ((typeof(T) == typeof(IMediaObject)) && (dataModel.EntryType == MediaEntryType.Anime)))
-                return new Anime.Episode(dataModel);
-            if ((typeof(T) == typeof(Manga)) ||
-                ((typeof(T) == typeof(IMediaObject)) && (dataModel.EntryType == MediaEntryType.Manga)))
-                return new Manga.Chapter(dataModel);
+            if (typeof(T) == typeof(Anime) ||
+                typeof(T) == typeof(IMediaObject) && dataModel.EntryType == MediaEntryType.Anime)
+                return new Episode(dataModel);
+            if (typeof(T) == typeof(Manga) ||
+                typeof(T) == typeof(IMediaObject) && dataModel.EntryType == MediaEntryType.Manga)
+                return new Chapter(dataModel);
 
             return null;
         }
@@ -42,7 +42,7 @@ namespace Azuria.UserInfo.ControlPanel
             ProxerApiResponse<HistoryDataModel[]> lResult = await RequestHandler.ApiRequest(
                     UcpRequestBuilder.GetHistory(nextPage, ResultsPerPage, this._senpai))
                 .ConfigureAwait(false);
-            if (!lResult.Success || (lResult.Result == null))
+            if (!lResult.Success || lResult.Result == null)
                 return new ProxerResult<IEnumerable<HistoryObject<T>>>(lResult.Exceptions);
             HistoryDataModel[] lData = lResult.Result;
 

@@ -27,7 +27,7 @@ namespace Azuria.Test.MediaTests
         {
             IProxerResult<HeaderInfo> lResult = await HeaderHelper.GetRandomHeader(style);
             Assert.IsTrue(lResult.Success, JsonConvert.SerializeObject(lResult.Exceptions));
-            if ((style == HeaderStyle.Black) || (style == HeaderStyle.Gray))
+            if (style == HeaderStyle.Black || style == HeaderStyle.Gray)
             {
                 Assert.IsNotNull(lResult.Result);
                 Assert.AreNotEqual(lResult.Result.HeaderId, default(int));
@@ -35,7 +35,10 @@ namespace Azuria.Test.MediaTests
                     new Regex(@"https:\/\/cdn\.proxer\.me\/gallery\/originals\/[\S]+?\/[\S]+").IsMatch(
                         lResult.Result.HeaderUrl.AbsoluteUri));
             }
-            else Assert.AreEqual(HeaderInfo.None, lResult.Result);
+            else
+            {
+                Assert.AreEqual(HeaderInfo.None, lResult.Result);
+            }
         }
     }
 }

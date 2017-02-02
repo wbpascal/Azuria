@@ -59,7 +59,7 @@ namespace Azuria.Api.v1
         private static async Task<IProxerResult> ApiRequestInternal<T>(ApiRequest request, bool forceTokenLogin = false,
             JsonSerializerSettings settings = null, int loopCount = 0) where T : ProxerApiResponse
         {
-            if (request.CheckLogin && ((request.Senpai == null) || !request.Senpai.IsProbablyLoggedIn))
+            if (request.CheckLogin && (request.Senpai == null || !request.Senpai.IsProbablyLoggedIn))
                 return new ProxerResult(new[] {new NotLoggedInException(request.Senpai)});
 
             IProxerResult<string> lResult =
@@ -78,7 +78,7 @@ namespace Azuria.Api.v1
 
                 Exception lException = HandleErrorCode(lApiResponse.ErrorCode, request);
                 if (lException == null) return new ProxerResult(new ProxerApiException(lApiResponse.ErrorCode));
-                if (lException is NotLoggedInException && (loopCount < 5))
+                if (lException is NotLoggedInException && loopCount < 5)
                     return await ApiRequestInternal<T>(request, true, settings, loopCount + 1).ConfigureAwait(false);
 
                 return new ProxerResult(lException);
@@ -96,7 +96,7 @@ namespace Azuria.Api.v1
                 {"proxer-api-key", new string(_apiKey.ReadValue())}
             };
             if (request.Senpai == null) return lHeaders;
-            if (forceTokenLogin || (request.CheckLogin && !request.Senpai.IsProbablyLoggedIn))
+            if (forceTokenLogin || request.CheckLogin && !request.Senpai.IsProbablyLoggedIn)
                 lHeaders.Add("proxer-api-token", new string(request.Senpai.LoginToken.ReadValue()));
 
             return lHeaders;

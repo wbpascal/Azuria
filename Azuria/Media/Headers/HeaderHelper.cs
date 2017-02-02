@@ -21,7 +21,7 @@ namespace Azuria.Media.Headers
         {
             ProxerApiResponse<HeaderDataModel[]> lResult = await RequestHandler.ApiRequest(
                 MediaRequestBuilder.GetHeaderList()).ConfigureAwait(false);
-            if (!lResult.Success || (lResult.Result == null))
+            if (!lResult.Success || lResult.Result == null)
                 return new ProxerResult<IEnumerable<HeaderInfo>>(lResult.Exceptions);
 
             return

@@ -214,7 +214,7 @@ namespace Azuria.Test.ConferenceTests
             Assert.IsNotNull(lParticipants);
             Assert.IsNotEmpty(lParticipants);
             Assert.AreEqual(10, lParticipants.Length);
-            Assert.IsTrue(lParticipants.All(user => (user != null) && (user != User.System)));
+            Assert.IsTrue(lParticipants.All(user => user != null && user != User.System));
         }
 
         [Test]

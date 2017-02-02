@@ -34,7 +34,7 @@ namespace Azuria.Community
                     MessengerRequestBuilder.GetMessages(this._senpai, this._conference.Id,
                         lLastMessage?.MessageId ?? 0, this._markAsRead))
                 .ConfigureAwait(false);
-            if (!lResult.Success || (lResult.Result == null))
+            if (!lResult.Success || lResult.Result == null)
                 return new ProxerResult<IEnumerable<Message>>(lResult.Exceptions);
 
             return new ProxerResult<IEnumerable<Message>>((from messageDataModel in lResult.Result

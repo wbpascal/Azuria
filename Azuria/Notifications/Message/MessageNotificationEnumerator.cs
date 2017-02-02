@@ -76,7 +76,7 @@ namespace Azuria.Notifications.Message
             {
                 IProxerResult<IEnumerable<MessageNotification>> lGetSearchResult =
                     Task.Run(this.GetNextPage).Result;
-                if (!lGetSearchResult.Success || (lGetSearchResult.Result == null))
+                if (!lGetSearchResult.Success || lGetSearchResult.Result == null)
                     throw lGetSearchResult.Exceptions.FirstOrDefault() ?? new Exception("Unkown error");
                 this._content = lGetSearchResult.Result as MessageNotification[] ??
                                 lGetSearchResult.Result.ToArray();

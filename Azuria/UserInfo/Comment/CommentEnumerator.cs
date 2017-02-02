@@ -45,11 +45,11 @@ namespace Azuria.UserInfo.Comment
                         : UserRequestBuilder.GetLatestComments(this._user.Id, nextPage, ResultsPerPage,
                             typeof(T).GetTypeInfo().Name.ToLower(), 0, this._senpai))
                     .ConfigureAwait(false);
-            if (!lResult.Success || (lResult.Result == null))
+            if (!lResult.Success || lResult.Result == null)
                 return new ProxerResult<IEnumerable<Comment<T>>>(lResult.Exceptions);
             CommentDataModel[] lData = lResult.Result;
 
-            if ((this._user != null) && lData.Any()) this.InitialiseUserValues(lData.First());
+            if (this._user != null && lData.Any()) this.InitialiseUserValues(lData.First());
             return new ProxerResult<IEnumerable<Comment<T>>>(this.ToCommentList(lData).ToArray());
         }
 

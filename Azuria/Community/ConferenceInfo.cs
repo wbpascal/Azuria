@@ -30,16 +30,17 @@ namespace Azuria.Community
         public Conference Conference { get; }
 
         /// <summary>
-        /// 
-        /// </summary>
-        public int UnreadMessagesCount { get; }
-
         /// </summary>
         public Senpai Senpai { get; set; }
 
         /// <summary>
         /// </summary>
         public IArgumentInitialisableProperty<bool, IEnumerable<Message>> UnreadMessages => this._unreadMessages;
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public int UnreadMessagesCount { get; }
 
         #endregion
 
@@ -48,7 +49,10 @@ namespace Azuria.Community
         private async Task<IProxerResult> GetUnreadMessages(ConferenceDataModel dataModel, bool markAsRead,
             Senpai senpai)
         {
-            if (dataModel.UnreadMessagesCount == 0) this._unreadMessages.Set(new Message[0]);
+            if (dataModel.UnreadMessagesCount == 0)
+            {
+                this._unreadMessages.Set(new Message[0]);
+            }
             else
             {
                 IEnumerable<Message> lUnreadMessages = await Task.Run(() =>

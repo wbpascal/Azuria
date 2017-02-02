@@ -13,15 +13,15 @@ namespace Azuria.Test.MediaTests
     [TestFixture]
     public class StreamTest
     {
-        private Anime.Episode.Stream _stream;
+        private Stream _stream;
 
         [OneTimeSetUp]
         public async Task Setup()
         {
             Anime lAnime = await MediaObject.CreateFromId(9200).ThrowFirstForNonSuccess() as Anime;
             Assert.IsNotNull(lAnime);
-            Anime.Episode lEpisode =
-                (await lAnime.GetEpisodes(AnimeLanguage.EngSub).ThrowFirstForNonSuccess()).FirstOrDefault();
+            Episode lEpisode = (await lAnime.GetEpisodes(AnimeLanguage.EngSub).ThrowFirstForNonSuccess())
+                .FirstOrDefault();
             Assert.IsNotNull(lEpisode);
             this._stream = (await lEpisode.Streams.ThrowFirstOnNonSuccess()).FirstOrDefault();
             Assert.IsNotNull(this._stream);

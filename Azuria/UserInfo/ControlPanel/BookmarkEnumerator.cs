@@ -31,15 +31,15 @@ namespace Azuria.UserInfo.ControlPanel
                     UcpRequestBuilder.GetReminder(typeof(T).GetTypeInfo().Name.ToLowerInvariant(),
                         nextPage, ResultsPerPage, this._senpai))
                 .ConfigureAwait(false);
-            if (!lResult.Success || (lResult.Result == null))
+            if (!lResult.Success || lResult.Result == null)
                 return new ProxerResult<IEnumerable<Bookmark<T>>>(lResult.Exceptions);
             BookmarkDataModel[] lData = lResult.Result;
 
             return new ProxerResult<IEnumerable<Bookmark<T>>>(from bookmarkDataModel in lData
                 select new Bookmark<T>(
                     typeof(T) == typeof(Anime)
-                        ? (IMediaContent<T>) new Anime.Episode(bookmarkDataModel)
-                        : (IMediaContent<T>) new Manga.Chapter(bookmarkDataModel),
+                        ? (IMediaContent<T>) new Episode(bookmarkDataModel)
+                        : (IMediaContent<T>) new Chapter(bookmarkDataModel),
                     bookmarkDataModel.BookmarkId, this._controlPanel));
         }
 

@@ -53,7 +53,7 @@ namespace Azuria.Notifications.Message
         {
             IProxerResult<IEnumerable<ConferenceInfo>> lConferencesResult =
                 await Conference.GetConferences(this.Senpai).ConfigureAwait(false);
-            if (!lConferencesResult.Success || (lConferencesResult.Result == null))
+            if (!lConferencesResult.Success || lConferencesResult.Result == null)
                 return new ProxerResult(lConferencesResult.Exceptions);
 
             this._conferenceInfo.Set(

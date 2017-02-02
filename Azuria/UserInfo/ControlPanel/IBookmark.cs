@@ -16,7 +16,7 @@ namespace Azuria.UserInfo.ControlPanel
         int BookmarkId { get; }
 
         /// <summary>
-        /// Gets the <see cref="Anime.Episode" /> or <see cref="Manga.Chapter" /> the user has bookmarked.
+        /// Gets the <see cref="Episode" /> or <see cref="Chapter" /> the user has bookmarked.
         /// </summary>
         IMediaContent MediaContentObject { get; }
 

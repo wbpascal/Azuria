@@ -52,7 +52,7 @@ namespace Azuria.Enumerable
         private void LoadNextPage(int retry = 0)
         {
             IProxerResult<IEnumerable<T>> lGetSearchResult = Task.Run(() => this.GetNextPage(this._nextPage)).Result;
-            if (!lGetSearchResult.Success || (lGetSearchResult.Result == null))
+            if (!lGetSearchResult.Success || lGetSearchResult.Result == null)
             {
                 if (retry < this.RetryCount) this.LoadNextPage(retry + 1);
                 else throw lGetSearchResult.Exceptions.FirstOrDefault() ?? new Exception("Unkown error");
@@ -66,7 +66,7 @@ namespace Azuria.Enumerable
         {
             if (this._currentPageContentIndex >= this._currentPageContent.Length - 1)
             {
-                if (this._currentPageContent.Length%this._resultsPerPage != 0) return false;
+                if (this._currentPageContent.Length % this._resultsPerPage != 0) return false;
                 this.LoadNextPage();
                 this._nextPage++;
                 this._currentPageContentIndex = -1;

@@ -5,7 +5,7 @@ using Azuria.Media;
 namespace Azuria.UserInfo.ControlPanel
 {
     /// <summary>
-    /// Represents an <see cref="Anime.Episode" /> or <see cref="Manga.Chapter" /> the user has bookmarked.
+    /// Represents an <see cref="Episode" /> or <see cref="Chapter" /> the user has bookmarked.
     /// </summary>
     /// <typeparam name="T">Specifies if the bookmark is an <see cref="Anime" /> or <see cref="Manga" />.</typeparam>
     public class Bookmark<T> : IBookmark where T : IMediaObject
@@ -24,7 +24,7 @@ namespace Azuria.UserInfo.ControlPanel
         public int BookmarkId { get; }
 
         /// <summary>
-        /// Gets the <see cref="Anime.Episode" /> or <see cref="Manga.Chapter" /> the user has bookmarked.
+        /// Gets the <see cref="Episode" /> or <see cref="Chapter" /> the user has bookmarked.
         /// </summary>
         public IMediaContent<T> MediaContentObject { get; }
 

@@ -39,8 +39,8 @@ namespace Azuria.Test.UcpTests
         [Test]
         public void MediaContentObjectTest()
         {
-            Anime.Episode lEpisode = this._animeBookmark.MediaContentObject as Anime.Episode;
-            Manga.Chapter lChapter = this._mangaBookmark.MediaContentObject as Manga.Chapter;
+            Episode lEpisode = this._animeBookmark.MediaContentObject as Episode;
+            Chapter lChapter = this._mangaBookmark.MediaContentObject as Chapter;
             Assert.IsNotNull(lEpisode);
             Assert.IsNotNull(lChapter);
             Assert.AreEqual(Language.German, lEpisode.GeneralLanguage);

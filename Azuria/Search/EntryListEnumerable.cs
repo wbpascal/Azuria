@@ -14,7 +14,7 @@ namespace Azuria.Search
 
         internal EntryListEnumerable(EntryListInput input)
         {
-            if ((typeof(T) != typeof(Anime)) && (typeof(T) != typeof(Manga))) throw new ArgumentException(nameof(T));
+            if (typeof(T) != typeof(Anime) && typeof(T) != typeof(Manga)) throw new ArgumentException(nameof(T));
             this._input = input;
         }
 

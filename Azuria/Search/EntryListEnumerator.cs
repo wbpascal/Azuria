@@ -21,7 +21,7 @@ namespace Azuria.Search
 
         internal EntryListEnumerator(EntryListInput input) : base(ResultsPerPage)
         {
-            if ((typeof(T) != typeof(Anime)) && (typeof(T) != typeof(Manga))) throw new ArgumentException(nameof(T));
+            if (typeof(T) != typeof(Anime) && typeof(T) != typeof(Manga)) throw new ArgumentException(nameof(T));
             this._input = input;
         }
 
@@ -48,7 +48,7 @@ namespace Azuria.Search
                     ListRequestBuilder.EntryList(this._input, typeof(T).GetTypeInfo().Name.ToLowerInvariant(),
                         ResultsPerPage, nextPage))
                 .ConfigureAwait(false);
-            if (!lResult.Success || (lResult.Result == null))
+            if (!lResult.Success || lResult.Result == null)
                 return new ProxerResult<IEnumerable<T>>(lResult.Exceptions);
             SearchDataModel[] lData = lResult.Result;
 
