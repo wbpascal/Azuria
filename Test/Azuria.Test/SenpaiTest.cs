@@ -25,8 +25,8 @@ namespace Azuria.Test
         {
             Senpai lNewSenpai = await Senpai.FromToken(
                 ("bknnY3QLb0X7CHdfHzimhOLo1Tz4cpumHSJGTzp3Gx9i2lvJSO4aCOwBH4ERr0d92UMStcU5w3kylUfdHilg7SXL" +
-                 "VuCfDQtCIfsapmiXmGsFyHSeZcv45kOXOoipcL2VYt6oNni02KOApFOmRhpvCbOox7OKPPDOhIa58sc5aYCxDrRs" +
-                 "Ggjgp9FWetE3gfOxXYAYoK2wID4k3UKH95XvcCgo43qkhePdanby6a5OO67OXQv4Uty74Yt6YTpf7cs").ToCharArray())
+                    "VuCfDQtCIfsapmiXmGsFyHSeZcv45kOXOoipcL2VYt6oNni02KOApFOmRhpvCbOox7OKPPDOhIa58sc5aYCxDrRs" +
+                    "Ggjgp9FWetE3gfOxXYAYoK2wID4k3UKH95XvcCgo43qkhePdanby6a5OO67OXQv4Uty74Yt6YTpf7cs").ToCharArray())
                 .ThrowFirstForNonSuccess();
             Assert.IsTrue(lNewSenpai.IsProbablyLoggedIn);
             Assert.AreEqual(this._senpai.Me.UserName.GetIfInitialised(), lNewSenpai.Me.UserName.GetIfInitialised());

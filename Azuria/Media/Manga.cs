@@ -16,8 +16,6 @@ using Azuria.Media.Properties;
 using Azuria.UserInfo.Comment;
 using Azuria.Utilities.Properties;
 
-// ReSharper disable LoopCanBeConvertedToQuery
-
 namespace Azuria.Media
 {
     /// <summary>
@@ -27,7 +25,6 @@ namespace Azuria.Media
     public class Manga : MediaObject
     {
         private readonly InitialisableProperty<IEnumerable<Language>> _availableLanguages;
-
         private readonly InitialisableProperty<MangaMedium> _mangaMedium;
 
         internal Manga(int id) : base(id)

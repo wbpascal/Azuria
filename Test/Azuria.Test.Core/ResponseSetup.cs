@@ -261,7 +261,7 @@ namespace Azuria.Test.Core
                 .Respond(FileResponses["media_getrandomheaderoldblue.json"]);
             ServerResponse.Create("https://proxer.me/api/v1",
                     response =>
-                        response.Get("/media/headerlist"))
+                            response.Get("/media/headerlist"))
                 .Respond(FileResponses["media_getheaderlist.json"]);
 
             #endregion
@@ -270,7 +270,7 @@ namespace Azuria.Test.Core
 
             ServerResponse.Create("https://proxer.me/api/v1",
                     response =>
-                        response.Get("/messenger/constants"))
+                            response.Get("/messenger/constants"))
                 .Respond(FileResponses["messenger_getconstants.json"]);
             ServerResponse.Create("https://proxer.me/api/v1",
                     response =>

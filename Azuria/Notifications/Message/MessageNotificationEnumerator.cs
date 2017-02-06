@@ -79,7 +79,7 @@ namespace Azuria.Notifications.Message
                 if (!lGetSearchResult.Success || lGetSearchResult.Result == null)
                     throw lGetSearchResult.Exceptions.FirstOrDefault() ?? new Exception("Unkown error");
                 this._content = lGetSearchResult.Result as MessageNotification[] ??
-                                lGetSearchResult.Result.ToArray();
+                    lGetSearchResult.Result.ToArray();
             }
             this._currentContentIndex++;
             return this._content.Length > this._currentContentIndex;

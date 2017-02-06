@@ -58,11 +58,11 @@ namespace Azuria.Media
         /// </summary>
         public Language GeneralLanguage
             =>
-                this.Language == AnimeLanguage.GerSub || this.Language == AnimeLanguage.GerDub
-                    ? Properties.Language.German
-                    : this.Language == AnimeLanguage.EngSub || this.Language == AnimeLanguage.EngDub
-                        ? Properties.Language.English
-                        : Properties.Language.Unkown;
+            this.Language == AnimeLanguage.GerSub || this.Language == AnimeLanguage.GerDub
+                ? Properties.Language.German
+                : this.Language == AnimeLanguage.EngSub || this.Language == AnimeLanguage.EngDub
+                    ? Properties.Language.English
+                    : Properties.Language.Unkown;
 
         /// <summary>
         /// Gets the language of the episode

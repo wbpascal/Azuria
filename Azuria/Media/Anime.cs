@@ -16,8 +16,6 @@ using Azuria.Media.Properties;
 using Azuria.UserInfo.Comment;
 using Azuria.Utilities.Properties;
 
-// ReSharper disable LoopCanBeConvertedToQuery
-
 namespace Azuria.Media
 {
     /// <summary>
@@ -27,7 +25,6 @@ namespace Azuria.Media
     public class Anime : MediaObject
     {
         private readonly InitialisableProperty<AnimeMedium> _animeMedium;
-
         private readonly InitialisableProperty<IEnumerable<AnimeLanguage>> _availableLanguages;
 
         internal Anime(int id) : base(id)
@@ -51,7 +48,7 @@ namespace Azuria.Media
             this._animeMedium.Set((AnimeMedium) dataModel.EntryMedium);
         }
 
-        private Anime(BookmarkDataModel dataModel) : this((IEntryInfoDataModel) dataModel)
+        internal Anime(BookmarkDataModel dataModel) : this((IEntryInfoDataModel) dataModel)
         {
             this._animeMedium.Set((AnimeMedium) dataModel.EntryMedium);
             this._status.Set(dataModel.Status);
