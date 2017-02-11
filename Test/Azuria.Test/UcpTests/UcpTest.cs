@@ -30,9 +30,8 @@ namespace Azuria.Test.UcpTests
             Assert.CatchAsync<ArgumentNullException>(
                 () => this._controlPanel.AddToBookmarks(null).ThrowFirstForNonSuccess());
 
-            Anime.Episode lEpisode = (await
-                ((Anime) await MediaObject.CreateFromId(9200).ThrowFirstForNonSuccess()).GetEpisodes(
-                    AnimeLanguage.EngSub).ThrowFirstForNonSuccess())?.FirstOrDefault();
+            Episode lEpisode = (await ((Anime) await MediaObject.CreateFromId(9200).ThrowFirstForNonSuccess())
+                .GetEpisodes(AnimeLanguage.EngSub).ThrowFirstForNonSuccess())?.FirstOrDefault();
             IProxerResult lResult = await this._controlPanel.AddToBookmarks(lEpisode);
             Assert.IsTrue(lResult.Success);
         }
@@ -153,7 +152,7 @@ namespace Azuria.Test.UcpTests
         {
             HistoryObject<IMediaObject>[] lHistory = this._controlPanel.History.ToArray();
             Assert.AreEqual(8, lHistory.Length);
-            Assert.IsTrue(lHistory.All(o => (o.TimeStamp != DateTime.MinValue) && (o.TimeStamp != DateTime.MaxValue)));
+            Assert.IsTrue(lHistory.All(o => o.TimeStamp != DateTime.MinValue && o.TimeStamp != DateTime.MaxValue));
             Assert.IsTrue(lHistory.All(o => o.UserControlPanel == this._controlPanel));
             Assert.IsTrue(lHistory.All(o => o.ContentObject != null));
             Assert.IsTrue(lHistory.All(o => o.ContentObject.ContentIndex != default(int)));

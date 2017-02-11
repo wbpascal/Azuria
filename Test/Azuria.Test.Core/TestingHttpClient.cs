@@ -39,7 +39,7 @@ namespace Azuria.Test.Core
             Dictionary<string, string> headers = null)
         {
             IEnumerable<KeyValuePair<string, string>> postArgsArray = postArgs as KeyValuePair<string, string>[] ??
-                                                                      postArgs.ToArray();
+                postArgs.ToArray();
             if (!ServerResponse.ServerResponses.Any()) ResponseSetup.InitRequests();
 
             NameValueCollection lQueryParams = HttpUtility.ParseQueryString(url.Query);
@@ -56,12 +56,12 @@ namespace Azuria.Test.Core
                     .Where(request => lQueryParams.All((key, value) =>
                         request.QueryParams.ContainsKey(key) &&
                         request.QueryParams[key].Equals(value)))
-                    .Where(request => !request.ContainsSenpai || (this._senpai != null))
+                    .Where(request => !request.ContainsSenpai || this._senpai != null)
                     .Where(request => postArgsArray.All(request.PostArguments.Contains) &&
-                                      request.PostArguments.All(postArgsArray.Contains))
-                    .Where(request => (headers == null) || request.Headers.All(headers.Contains))
-                    .Where(request => (request.IsLoggedIn == null) ||
-                                      (this._senpai.IsProbablyLoggedIn == request.IsLoggedIn.Value));
+                        request.PostArguments.All(postArgsArray.Contains))
+                    .Where(request => headers == null || request.Headers.All(headers.Contains))
+                    .Where(request => request.IsLoggedIn == null ||
+                        this._senpai.IsProbablyLoggedIn == request.IsLoggedIn.Value);
 
                 if (lMatchingRequests.Any())
                     return new ProxerResult<string>(response.Response);

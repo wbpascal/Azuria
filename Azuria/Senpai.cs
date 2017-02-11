@@ -99,14 +99,14 @@ namespace Azuria
 
         private async Task<IProxerResult> LoginWithCredentials(IProxerCredentials credentials)
         {
-            if (string.IsNullOrEmpty(credentials?.Username) || (credentials.Password.Length == 0))
+            if (string.IsNullOrEmpty(credentials?.Username) || credentials.Password.Length == 0)
                 return new ProxerResult(new[] {new ArgumentException(nameof(credentials))});
             if (this.IsProbablyLoggedIn) return new ProxerResult<bool>(new AlreadyLoggedInException());
 
             ProxerApiResponse<LoginDataModel> lResult = await RequestHandler.ApiRequest(
                     UserRequestBuilder.Login(credentials.Username, new string(credentials.Password), this))
                 .ConfigureAwait(false);
-            if (!lResult.Success || (lResult.Result == null))
+            if (!lResult.Success || lResult.Result == null)
                 return new ProxerResult(lResult.Exceptions);
 
             this.Me = new User(credentials.Username, lResult.Result.UserId,
@@ -119,13 +119,13 @@ namespace Azuria
 
         private async Task<IProxerResult> LoginWithToken(char[] token)
         {
-            if ((token == null) || (token.Length != 255))
+            if (token == null || token.Length != 255)
                 return new ProxerResult(new[] {new ArgumentException(nameof(token))});
 
             this.LoginToken.SetValue(token);
             ProxerApiResponse<UserInfoDataModel> lResult = await RequestHandler.ApiRequest(
                 UserRequestBuilder.GetInfo(this), true).ConfigureAwait(false);
-            if (!lResult.Success || (lResult.Result == null))
+            if (!lResult.Success || lResult.Result == null)
                 return new ProxerResult(lResult.Exceptions);
             UserInfoDataModel lDataModel = lResult.Result;
             this.Me = new User(lDataModel);

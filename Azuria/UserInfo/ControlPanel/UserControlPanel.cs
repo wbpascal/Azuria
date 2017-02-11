@@ -99,7 +99,7 @@ namespace Azuria.UserInfo.ControlPanel
             ProxerApiResponse lResult = await RequestHandler.ApiRequest(
                     UcpRequestBuilder.SetBookmark(contentObject.ParentObject.Id,
                         contentObject.ContentIndex,
-                        (contentObject as Anime.Episode)?.Language.ToString().ToLowerInvariant() ??
+                        (contentObject as Episode)?.Language.ToString().ToLowerInvariant() ??
                         (contentObject.GeneralLanguage == Language.German ? "de" : "en"),
                         contentObject.ParentObject.GetType().GetTypeInfo().Name.ToLowerInvariant(), this._senpai))
                 .ConfigureAwait(false);
@@ -188,7 +188,7 @@ namespace Azuria.UserInfo.ControlPanel
         {
             ProxerApiResponse<ToptenDataModel[]> lResult = await RequestHandler.ApiRequest(
                 UcpRequestBuilder.GetTopten(this._senpai)).ConfigureAwait(false);
-            if (!lResult.Success || (lResult.Result == null)) return new ProxerResult(lResult.Exceptions);
+            if (!lResult.Success || lResult.Result == null) return new ProxerResult(lResult.Exceptions);
 
             ToptenDataModel[] lData = lResult.Result;
             this._toptenAnime.Set(from toptenDataModel in lData
@@ -205,7 +205,7 @@ namespace Azuria.UserInfo.ControlPanel
         {
             ProxerApiResponse<VoteDataModel[]> lResult = await RequestHandler.ApiRequest(
                 UcpRequestBuilder.GetVotes(this._senpai)).ConfigureAwait(false);
-            if (!lResult.Success || (lResult.Result == null)) return new ProxerResult(lResult.Exceptions);
+            if (!lResult.Success || lResult.Result == null) return new ProxerResult(lResult.Exceptions);
 
             this._commentVotes.Set(from voteDataModel in lResult.Result
                 select new CommentVote(voteDataModel, this));

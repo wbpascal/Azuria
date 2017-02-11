@@ -9,9 +9,9 @@ namespace Azuria.Community
     /// </summary>
     public class Message
     {
-        internal Message(MessageDataModel dataModel, int conferenceId)
+        internal Message(MessageDataModel dataModel, Conference conference)
         {
-            this.ConferenceId = conferenceId;
+            this.Conference = conference;
             this.Content = dataModel.MessageContent;
             this.Device = dataModel.SenderDevice;
             this.Action = dataModel.MessageAction;
@@ -29,7 +29,7 @@ namespace Azuria.Community
 
         /// <summary>
         /// </summary>
-        public int ConferenceId { get; }
+        public Conference Conference { get; }
 
         /// <summary>
         /// Gets the message content.

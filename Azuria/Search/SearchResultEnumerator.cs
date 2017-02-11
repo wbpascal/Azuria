@@ -53,7 +53,7 @@ namespace Azuria.Search
             ProxerApiResponse<SearchDataModel[]> lResult = await RequestHandler.ApiRequest(
                     ListRequestBuilder.EntrySearch(this._input, ResultsPerPage, nextPage))
                 .ConfigureAwait(false);
-            if (!lResult.Success || (lResult.Result == null))
+            if (!lResult.Success || lResult.Result == null)
                 return new ProxerResult<IEnumerable<T>>(lResult.Exceptions);
             SearchDataModel[] lData = lResult.Result;
 

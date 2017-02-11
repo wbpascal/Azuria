@@ -80,10 +80,10 @@ namespace Azuria.Notifications.OtherMedia
             {
                 IProxerResult<IEnumerable<OtherMediaNotification>> lGetSearchResult =
                     Task.Run(this.GetNextPage).Result;
-                if (!lGetSearchResult.Success || (lGetSearchResult.Result == null))
+                if (!lGetSearchResult.Success || lGetSearchResult.Result == null)
                     throw lGetSearchResult.Exceptions.FirstOrDefault() ?? new Exception("Unkown error");
                 this._content = lGetSearchResult.Result as OtherMediaNotification[] ??
-                                lGetSearchResult.Result.ToArray();
+                    lGetSearchResult.Result.ToArray();
             }
             this._currentContentIndex++;
             return this._content.Length > this._currentContentIndex;

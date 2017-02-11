@@ -30,7 +30,7 @@ namespace Azuria.Media
         CommentEnumerable<IMediaObject> CommentsRating { get; }
 
         /// <summary>
-        /// Gets the count of the <see cref="Anime.Episode">Episodes</see> or <see cref="Manga.Chapter">Chapters</see> the
+        /// Gets the count of the <see cref="Episode">Episodes</see> or <see cref="Chapter">Chapters</see> the
         /// <see cref="Anime" /> or <see cref="Manga" /> contains.
         /// </summary>
         IInitialisableProperty<int> ContentCount { get; }

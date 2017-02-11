@@ -74,7 +74,7 @@ namespace Azuria.Notifications
         {
             ProxerApiResponse<NotificationCountDataModel> lResult = await RequestHandler.ApiRequest(
                 NotificationsRequestBuilder.GetCount(this._senpai)).ConfigureAwait(false);
-            return lResult.Success && (lResult.Result != null)
+            return lResult.Success && lResult.Result != null
                 ? new ProxerResult<NotificationCount>(new NotificationCount(lResult.Result))
                 : new ProxerResult<NotificationCount>(lResult.Exceptions);
         }

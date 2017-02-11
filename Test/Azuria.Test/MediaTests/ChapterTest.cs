@@ -17,7 +17,7 @@ namespace Azuria.Test.MediaTests
     [TestFixture]
     public class ChapterTest
     {
-        private Manga.Chapter _chapter;
+        private Chapter _chapter;
 
         [OneTimeSetUp]
         public async Task Setup()
@@ -51,7 +51,7 @@ namespace Azuria.Test.MediaTests
         [Test]
         public async Task PagesTest()
         {
-            IProxerResult<IEnumerable<Manga.Chapter.Page>> lResult = await this._chapter.Pages;
+            IProxerResult<IEnumerable<Page>> lResult = await this._chapter.Pages;
             Assert.IsTrue(lResult.Success, JsonConvert.SerializeObject(lResult.Exceptions));
             Assert.IsNotNull(lResult.Result);
             Assert.IsNotEmpty(lResult.Result);
@@ -60,7 +60,7 @@ namespace Azuria.Test.MediaTests
                     page =>
                         new Regex("https:\\/\\/manga[0-9]+\\.proxer\\.me\\/f\\/[0-9]+\\/[0-9]+\\/[\\S]+?\\.jpg")
                             .IsMatch(page.Image.AbsoluteUri)));
-            Assert.IsTrue(lResult.Result.All(page => (page.Height != default(int)) && (page.Width != default(int))));
+            Assert.IsTrue(lResult.Result.All(page => page.Height != default(int) && page.Width != default(int)));
         }
 
         [Test]

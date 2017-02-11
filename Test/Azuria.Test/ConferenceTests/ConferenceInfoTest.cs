@@ -26,15 +26,21 @@ namespace Azuria.Test.ConferenceTests
                 (await this._conferenceInfo.UnreadMessages.Get(false, new Message[0])).ToArray();
             Assert.IsNotEmpty(lUnreadMessages);
             Assert.AreEqual(3, lUnreadMessages.Length);
+            Assert.AreEqual(this._conferenceInfo.UnreadMessagesCount, lUnreadMessages.Length);
         }
 
         [OneTimeSetUp]
         public async Task Setup()
         {
-            this._conferenceInfo =
-                (await Conference.GetConferences(GeneralSetup.SenpaiInstance).ThrowFirstForNonSuccess()).First
-                    ();
+            this._conferenceInfo = (await Conference.GetConferences(GeneralSetup.SenpaiInstance)
+                .ThrowFirstForNonSuccess()).First();
             Assert.IsNotNull(this._conferenceInfo);
+        }
+
+        [Test]
+        public void UnreadMessagesCount()
+        {
+            Assert.AreEqual(3, this._conferenceInfo.UnreadMessagesCount);
         }
 
         #endregion

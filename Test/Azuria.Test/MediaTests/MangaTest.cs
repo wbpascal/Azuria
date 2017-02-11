@@ -37,7 +37,7 @@ namespace Azuria.Test.MediaTests
         [Test]
         public async Task GetChaptersTest()
         {
-            IProxerResult<IEnumerable<Manga.Chapter>> lResult = await this._manga.GetChapters(Language.English);
+            IProxerResult<IEnumerable<Chapter>> lResult = await this._manga.GetChapters(Language.English);
             Assert.IsTrue(lResult.Success, JsonConvert.SerializeObject(lResult.Exceptions));
             Assert.IsNotNull(lResult.Result);
             Assert.AreEqual(162, lResult.Result.Count());

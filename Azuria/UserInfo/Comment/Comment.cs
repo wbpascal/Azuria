@@ -19,7 +19,7 @@ namespace Azuria.UserInfo.Comment
         {
             this.MediaObject = mediaObject;
             this.Author = user ?? new User(dataModel.Username, dataModel.UserId,
-                              new Uri("https://cdn.proxer.me/avatar/" + dataModel.Avatar));
+                new Uri("https://cdn.proxer.me/avatar/" + dataModel.Avatar));
             this.Content = dataModel.CommentContent;
             this.Id = dataModel.CommentId;
             this.Progress = dataModel.ContentIndex;

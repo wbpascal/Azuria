@@ -4,7 +4,7 @@ using Azuria.Media;
 namespace Azuria.Exceptions
 {
     /// <summary>
-    /// Represents an exception that is thrown when a <see cref="Manga.Chapter" /> or <see cref="Anime.Episode" /> was
+    /// Represents an exception that is thrown when a <see cref="Chapter" /> or <see cref="Episode" /> was
     /// requested in a language it is not available in.
     /// </summary>
     public class LanguageNotAvailableException : Exception

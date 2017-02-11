@@ -5,7 +5,7 @@ using Azuria.Media.Properties;
 namespace Azuria.Media
 {
     /// <summary>
-    /// Represents an <see cref="Anime.Episode" /> or <see cref="Manga.Chapter" />.
+    /// Represents an <see cref="Episode" /> or <see cref="Chapter" />.
     /// </summary>
     /// <typeparam name="T">The type of the parent object. Either an <see cref="Anime" /> or <see cref="Manga" />.</typeparam>
     // ReSharper disable once TypeParameterCanBeVariant
@@ -14,8 +14,8 @@ namespace Azuria.Media
         #region Properties
 
         /// <summary>
-        /// Gets the <see cref="Anime" /> or <see cref="Manga" /> this <see cref="Anime.Episode" /> or
-        /// <see cref="Manga.Chapter" /> belongs to.
+        /// Gets the <see cref="Anime" /> or <see cref="Manga" /> this <see cref="Episode" /> or
+        /// <see cref="Chapter" /> belongs to.
         /// </summary>
         new T ParentObject { get; }
 
@@ -29,12 +29,12 @@ namespace Azuria.Media
         #region Properties
 
         /// <summary>
-        /// Gets the <see cref="Anime.Episode" />- or <see cref="Manga.Chapter" />-number.
+        /// Gets the <see cref="Episode" />- or <see cref="Chapter" />-number.
         /// </summary>
         int ContentIndex { get; }
 
         /// <summary>
-        /// Gets whether the language of the <see cref="Anime.Episode" /> or <see cref="Manga.Chapter" /> is
+        /// Gets whether the language of the <see cref="Episode" /> or <see cref="Chapter" /> is
         /// <see cref="Language.English">english</see> or <see cref="Language.German">german</see>.
         /// </summary>
         Language GeneralLanguage { get; }
@@ -48,7 +48,7 @@ namespace Azuria.Media
         #region Methods
 
         /// <summary>
-        /// Adds the <see cref="Anime.Episode" /> or <see cref="Manga.Chapter" /> to the bookmarks.
+        /// Adds the <see cref="Episode" /> or <see cref="Chapter" /> to the bookmarks.
         /// </summary>
         /// <param name="senpai"></param>
         /// <returns>If the action was successful.</returns>

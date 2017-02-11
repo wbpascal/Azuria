@@ -34,7 +34,7 @@ namespace Azuria.Test.UserTests
             Assert.IsTrue(lAnime.All(entry => entry.Comment.Progress > 0));
             Assert.IsTrue(lAnime.All(entry => entry.Comment.ProgressState == MediaProgressState.Finished));
             Assert.AreEqual(1, lAnime.Count(entry =>
-                    (entry.Comment.Rating != default(int)) && entry.Comment.SubRatings.Any()));
+                    entry.Comment.Rating != default(int) && entry.Comment.SubRatings.Any()));
             Assert.IsTrue(lAnime.All(entry => entry.MediaObject != null));
             Assert.IsTrue(lAnime.All(entry => entry.MediaObject.Id != default(int)));
             Assert.IsTrue(lAnime.All(entry =>

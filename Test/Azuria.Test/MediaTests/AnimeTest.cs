@@ -66,7 +66,7 @@ namespace Azuria.Test.MediaTests
             Assert.CatchAsync<LanguageNotAvailableException>(
                 () => this._anime.GetEpisodes(AnimeLanguage.EngDub).ThrowFirstForNonSuccess());
 
-            IProxerResult<IEnumerable<Anime.Episode>> lResult = await this._anime.GetEpisodes(AnimeLanguage.EngSub);
+            IProxerResult<IEnumerable<Episode>> lResult = await this._anime.GetEpisodes(AnimeLanguage.EngSub);
             Assert.IsTrue(lResult.Success, JsonConvert.SerializeObject(lResult.Exceptions));
             Assert.IsNotNull(lResult.Result);
             Assert.AreEqual(22, lResult.Result.Count());

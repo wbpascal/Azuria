@@ -122,7 +122,7 @@ namespace Azuria.Community
         /// Api permissions required:
         /// * Messenger - Level 0
         /// </summary>
-        public MessageEnumerable Messages => new MessageEnumerable(this.Id, this.Senpai);
+        public MessageEnumerable Messages => new MessageEnumerable(this, this.Senpai);
 
         internal static int MessagesPerPage { get; private set; }
 
@@ -242,7 +242,7 @@ namespace Azuria.Community
                 return new ProxerResult<Conference>(new NotInitialisedException("Please call " + nameof(Init)));
             if (string.IsNullOrEmpty(username))
                 return new ProxerResult<Conference>(new[] {new ArgumentException(nameof(username))});
-            if (string.IsNullOrEmpty(message) || (message.Length > MaxCharactersPerMessage))
+            if (string.IsNullOrEmpty(message) || message.Length > MaxCharactersPerMessage)
                 return new ProxerResult<Conference>(new ArgumentException(message));
 
             ProxerApiResponse<int> lResult = await RequestHandler.ApiRequest(
@@ -281,7 +281,7 @@ namespace Azuria.Community
                 return new ProxerResult<Conference>(new ArgumentException(nameof(topic)));
 
             IEnumerable<User> lParticipants = participants as User[] ?? participants.ToArray();
-            if (!lParticipants.Any() || lParticipants.Any(user => (user == null) || (user == User.System)))
+            if (!lParticipants.Any() || lParticipants.Any(user => user == null || user == User.System))
                 return new ProxerResult<Conference>(new[] {new ArgumentException(nameof(participants))});
 
             List<string> lParticipantNames = new List<string>();
@@ -358,12 +358,12 @@ namespace Azuria.Community
                     new[] {new NotInitialisedException("Please call " + nameof(Init))});
 
             List<ConferenceInfo> lConferences = new List<ConferenceInfo>();
-            for (int page = 0; (page == 0) || (lConferences.Count%_conferencesPerPage == 0); page++)
+            for (int page = 0; page == 0 || lConferences.Count % _conferencesPerPage == 0; page++)
             {
                 ProxerApiResponse<ConferenceDataModel[]> lResult = await RequestHandler.ApiRequest(
                         MessengerRequestBuilder.GetConferences(type, page, senpai))
                     .ConfigureAwait(false);
-                if (!lResult.Success || (lResult.Result == null))
+                if (!lResult.Success || lResult.Result == null)
                     return new ProxerResult<IEnumerable<ConferenceInfo>>(lResult.Exceptions);
                 lConferences.AddRange(from conferenceDataModel in lResult.Result
                     select new ConferenceInfo(conferenceDataModel, senpai));
@@ -382,7 +382,7 @@ namespace Azuria.Community
         {
             ProxerApiResponse<ConstantsDataModel> lResult = await RequestHandler.ApiRequest(
                 MessengerRequestBuilder.GetConstants()).ConfigureAwait(false);
-            if (!lResult.Success || (lResult.Result == null)) return new ProxerResult(lResult.Exceptions);
+            if (!lResult.Success || lResult.Result == null) return new ProxerResult(lResult.Exceptions);
             ConstantsDataModel lData = lResult.Result;
 
             MaxCharactersPerMessage = lData.MaxCharactersPerMessage;
@@ -399,7 +399,7 @@ namespace Azuria.Community
             ProxerApiResponse<ConferenceInfoDataModel> lResult = await RequestHandler.ApiRequest(
                     MessengerRequestBuilder.GetConferenceInfo(this.Id, this.Senpai))
                 .ConfigureAwait(false);
-            if (!lResult.Success || (lResult.Result == null)) return new ProxerResult(lResult.Exceptions);
+            if (!lResult.Success || lResult.Result == null) return new ProxerResult(lResult.Exceptions);
             ConferenceInfoDataModel lData = lResult.Result;
 
             this._leader.Set(new User(lData.MainInfo.LeaderUserId));

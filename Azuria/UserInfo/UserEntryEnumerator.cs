@@ -30,7 +30,7 @@ namespace Azuria.UserInfo
                     UserRequestBuilder.GetList(this._user.Id, typeof(T).Name.ToLowerInvariant(),
                         nextPage, ResultsPerPage, this._senpai))
                 .ConfigureAwait(false);
-            if (!lResult.Success || (lResult.Result == null))
+            if (!lResult.Success || lResult.Result == null)
                 return new ProxerResult<IEnumerable<UserProfileEntry<T>>>(lResult.Exceptions);
 
             return new ProxerResult<IEnumerable<UserProfileEntry<T>>>(from listDataModel in lResult.Result

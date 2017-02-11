@@ -20,10 +20,10 @@ namespace Azuria.Api.v1.Converters.Manga
             JsonSerializer serializer)
         {
             List<PageDataModel> lPageDataModels = new List<PageDataModel>();
-            while (reader.Read() && (reader.TokenType != JsonToken.EndArray))
+            while (reader.Read() && reader.TokenType != JsonToken.EndArray)
             {
                 PageDataModel lPageDataModel = new PageDataModel();
-                for (int innerIndex = 0; reader.Read() && (reader.TokenType != JsonToken.EndArray); innerIndex++)
+                for (int innerIndex = 0; reader.Read() && reader.TokenType != JsonToken.EndArray; innerIndex++)
                     switch (innerIndex)
                     {
                         case 0:

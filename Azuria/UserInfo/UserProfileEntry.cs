@@ -57,7 +57,10 @@ namespace Azuria.UserInfo
                     (MangaMedium) dataModel.EntryMedium);
                 lReturnObject = lManga as T;
             }
-            else throw new ArgumentException(nameof(T));
+            else
+            {
+                throw new ArgumentException(nameof(T));
+            }
 
             (lReturnObject?.ContentCount as InitialisableProperty<int>)?.Set(dataModel.ContentCount);
             (lReturnObject?.Status as InitialisableProperty<MediaStatus>)?.Set(

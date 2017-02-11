@@ -13,7 +13,7 @@ namespace Azuria.Test.MediaTests
     [TestFixture]
     public class EpisodeTest
     {
-        private Anime.Episode _episode;
+        private Episode _episode;
 
         [OneTimeSetUp]
         public async Task Setup()
@@ -47,7 +47,7 @@ namespace Azuria.Test.MediaTests
         [Test]
         public async Task StreamsTest()
         {
-            IProxerResult<IEnumerable<Anime.Episode.Stream>> lResult = await this._episode.Streams;
+            IProxerResult<IEnumerable<Stream>> lResult = await this._episode.Streams;
             Assert.IsTrue(lResult.Success, JsonConvert.SerializeObject(lResult.Exceptions));
             Assert.IsNotNull(lResult.Result);
             Assert.AreEqual(4, lResult.Result.Count());

@@ -30,7 +30,7 @@ namespace Azuria.Notifications.News
             ProxerApiResponse<NewsNotificationDataModel[]> lResult = await RequestHandler.ApiRequest(
                     NotificationsRequestBuilder.GetNews(nextPage, this._newsPerPage, this._senpai))
                 .ConfigureAwait(false);
-            if (!lResult.Success || (lResult.Result == null))
+            if (!lResult.Success || lResult.Result == null)
                 return new ProxerResult<IEnumerable<NewsNotification>>(lResult.Exceptions);
 
             return

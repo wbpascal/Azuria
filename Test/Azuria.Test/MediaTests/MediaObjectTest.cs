@@ -212,7 +212,7 @@ namespace Azuria.Test.MediaTests
             Assert.IsTrue(lResult.Success, JsonConvert.SerializeObject(lResult.Exceptions));
             Assert.IsNotNull(lResult.Result);
             Assert.AreEqual(4371, lResult.Result.Voters);
-            Assert.AreEqual(40527/(decimal) 4371, lResult.Result.Rating);
+            Assert.AreEqual(40527 / (decimal) 4371, lResult.Result.Rating);
         }
 
         [Test]
@@ -281,12 +281,12 @@ namespace Azuria.Test.MediaTests
             Assert.IsTrue(
                 lResult.Result.Any(
                     translator =>
-                        (translator.Language == Language.English) && (translator.Id == 795) &&
+                        translator.Language == Language.English && translator.Id == 795 &&
                         translator.Name.Equals("Dicescans")));
             Assert.IsTrue(
                 lResult.Result.Any(
                     translator =>
-                        (translator.Language == Language.German) && (translator.Id == 11) &&
+                        translator.Language == Language.German && translator.Id == 11 &&
                         translator.Name.Equals("Gruppe Kampfkuchen")));
         }
     }

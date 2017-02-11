@@ -19,9 +19,8 @@ namespace Azuria.Test.ConferenceTests
         [OneTimeSetUp]
         public async Task Setup()
         {
-            this._conference =
-                (await Conference.GetConferences(GeneralSetup.SenpaiInstance).ThrowFirstForNonSuccess()).First
-                    ().Conference;
+            this._conference = (await Conference.GetConferences(GeneralSetup.SenpaiInstance)
+                .ThrowFirstForNonSuccess()).First().Conference;
             Assert.AreEqual(124536, this._conference.Id);
         }
 
@@ -175,11 +174,11 @@ namespace Azuria.Test.ConferenceTests
         {
             Assert.CatchAsync<NotLoggedInException>(() => Conference.GetConferences(null).ThrowFirstForNonSuccess());
 
-            ConferenceInfo[] lConferences =
-                (await Conference.GetConferences(GeneralSetup.SenpaiInstance).ThrowFirstForNonSuccess())
-                    .ToArray();
+            ConferenceInfo[] lConferences = (await Conference.GetConferences(GeneralSetup.SenpaiInstance)
+                .ThrowFirstForNonSuccess()).ToArray();
             Assert.IsNotNull(lConferences);
             Assert.AreEqual(3, lConferences.Length);
+            Assert.AreEqual(1, lConferences.Count(info => info.UnreadMessagesCount != 0));
         }
 
         [Test]
@@ -202,7 +201,7 @@ namespace Azuria.Test.ConferenceTests
             Assert.IsTrue(lMessages.Any(message => message.Action == MessageAction.SetTopic));
             Assert.IsTrue(lMessages.Any(message => message.Action == MessageAction.SetLeader));
             Assert.IsTrue(lMessages.Any(message => message.Action == MessageAction.NoAction));
-            Assert.IsTrue(lMessages.All(message => message.ConferenceId == this._conference.Id));
+            Assert.IsTrue(lMessages.All(message => message.Conference == this._conference));
             Assert.IsTrue(lMessages.All(message => !string.IsNullOrEmpty(message.Content)));
             Assert.IsTrue(lMessages.All(message => message.Sender != null));
             Assert.IsTrue(lMessages.All(message => message.TimeStamp != default(DateTime)));
@@ -215,7 +214,7 @@ namespace Azuria.Test.ConferenceTests
             Assert.IsNotNull(lParticipants);
             Assert.IsNotEmpty(lParticipants);
             Assert.AreEqual(10, lParticipants.Length);
-            Assert.IsTrue(lParticipants.All(user => (user != null) && (user != User.System)));
+            Assert.IsTrue(lParticipants.All(user => user != null && user != User.System));
         }
 
         [Test]

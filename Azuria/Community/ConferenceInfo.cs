@@ -16,6 +16,7 @@ namespace Azuria.Community
         internal ConferenceInfo(ConferenceDataModel dataModel, Senpai senpai)
         {
             this.Conference = new Conference(dataModel, senpai);
+            this.UnreadMessagesCount = dataModel.UnreadMessagesCount;
             this._unreadMessages =
                 new ArgumentInitialisableProperty<bool, IEnumerable<Message>>(
                     markAsRead => this.GetUnreadMessages(dataModel, markAsRead, senpai));
@@ -31,6 +32,11 @@ namespace Azuria.Community
         /// </summary>
         public IArgumentInitialisableProperty<bool, IEnumerable<Message>> UnreadMessages => this._unreadMessages;
 
+        /// <summary>
+        /// 
+        /// </summary>
+        public int UnreadMessagesCount { get; }
+
         #endregion
 
         #region Methods
@@ -38,11 +44,14 @@ namespace Azuria.Community
         private async Task<IProxerResult> GetUnreadMessages(ConferenceDataModel dataModel, bool markAsRead,
             Senpai senpai)
         {
-            if (dataModel.UnreadMessagesCount == 0) this._unreadMessages.Set(new Message[0]);
+            if (dataModel.UnreadMessagesCount == 0)
+            {
+                this._unreadMessages.Set(new Message[0]);
+            }
             else
             {
                 IEnumerable<Message> lUnreadMessages = await Task.Run(() =>
-                    new MessageEnumerable(dataModel.ConferenceId, senpai, markAsRead)
+                    new MessageEnumerable(this.Conference, senpai, markAsRead)
                         .Take(dataModel.UnreadMessagesCount)).ConfigureAwait(false);
                 this._unreadMessages.Set(lUnreadMessages);
             }
