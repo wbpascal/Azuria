@@ -6097,12 +6097,12 @@ references:
   commentId: Overload:Azuria.Api.v1.RequestBuilder.MessengerRequestBuilder.GetConferenceInfo
   fullName: Azuria.Api.v1.RequestBuilder.MessengerRequestBuilder.GetConferenceInfo
   nameWithType: MessengerRequestBuilder.GetConferenceInfo
-- uid: Azuria.Api.v1.RequestBuilder.MessengerRequestBuilder.GetConferences(Azuria.Community.ConferenceListType,System.Int32,Azuria.Senpai)
-  name: GetConferences(ConferenceListType, Int32, Senpai)
-  href: api/Azuria.Api.v1.RequestBuilder.MessengerRequestBuilder.html#Azuria_Api_v1_RequestBuilder_MessengerRequestBuilder_GetConferences_Azuria_Community_ConferenceListType_System_Int32_Azuria_Senpai_
-  commentId: M:Azuria.Api.v1.RequestBuilder.MessengerRequestBuilder.GetConferences(Azuria.Community.ConferenceListType,System.Int32,Azuria.Senpai)
-  fullName: Azuria.Api.v1.RequestBuilder.MessengerRequestBuilder.GetConferences(Azuria.Community.ConferenceListType, System.Int32, Azuria.Senpai)
-  nameWithType: MessengerRequestBuilder.GetConferences(ConferenceListType, Int32, Senpai)
+- uid: Azuria.Api.v1.RequestBuilder.MessengerRequestBuilder.GetConferences(Azuria.Senpai,Azuria.Community.ConferenceListType,System.Int32)
+  name: GetConferences(Senpai, ConferenceListType, Int32)
+  href: api/Azuria.Api.v1.RequestBuilder.MessengerRequestBuilder.html#Azuria_Api_v1_RequestBuilder_MessengerRequestBuilder_GetConferences_Azuria_Senpai_Azuria_Community_ConferenceListType_System_Int32_
+  commentId: M:Azuria.Api.v1.RequestBuilder.MessengerRequestBuilder.GetConferences(Azuria.Senpai,Azuria.Community.ConferenceListType,System.Int32)
+  fullName: Azuria.Api.v1.RequestBuilder.MessengerRequestBuilder.GetConferences(Azuria.Senpai, Azuria.Community.ConferenceListType, System.Int32)
+  nameWithType: MessengerRequestBuilder.GetConferences(Senpai, ConferenceListType, Int32)
 - uid: Azuria.Api.v1.RequestBuilder.MessengerRequestBuilder.GetConferences*
   name: GetConferences
   href: api/Azuria.Api.v1.RequestBuilder.MessengerRequestBuilder.html#Azuria_Api_v1_RequestBuilder_MessengerRequestBuilder_GetConferences_
@@ -6196,6 +6196,18 @@ references:
   commentId: Overload:Azuria.Api.v1.RequestBuilder.MessengerRequestBuilder.SetMessage
   fullName: Azuria.Api.v1.RequestBuilder.MessengerRequestBuilder.SetMessage
   nameWithType: MessengerRequestBuilder.SetMessage
+- uid: Azuria.Api.v1.RequestBuilder.MessengerRequestBuilder.SetRead(System.Int32,Azuria.Senpai)
+  name: SetRead(Int32, Senpai)
+  href: api/Azuria.Api.v1.RequestBuilder.MessengerRequestBuilder.html#Azuria_Api_v1_RequestBuilder_MessengerRequestBuilder_SetRead_System_Int32_Azuria_Senpai_
+  commentId: M:Azuria.Api.v1.RequestBuilder.MessengerRequestBuilder.SetRead(System.Int32,Azuria.Senpai)
+  fullName: Azuria.Api.v1.RequestBuilder.MessengerRequestBuilder.SetRead(System.Int32, Azuria.Senpai)
+  nameWithType: MessengerRequestBuilder.SetRead(Int32, Senpai)
+- uid: Azuria.Api.v1.RequestBuilder.MessengerRequestBuilder.SetRead*
+  name: SetRead
+  href: api/Azuria.Api.v1.RequestBuilder.MessengerRequestBuilder.html#Azuria_Api_v1_RequestBuilder_MessengerRequestBuilder_SetRead_
+  commentId: Overload:Azuria.Api.v1.RequestBuilder.MessengerRequestBuilder.SetRead
+  fullName: Azuria.Api.v1.RequestBuilder.MessengerRequestBuilder.SetRead
+  nameWithType: MessengerRequestBuilder.SetRead
 - uid: Azuria.Api.v1.RequestBuilder.MessengerRequestBuilder.SetReport(System.Int32,System.String,Azuria.Senpai)
   name: SetReport(Int32, String, Senpai)
   href: api/Azuria.Api.v1.RequestBuilder.MessengerRequestBuilder.html#Azuria_Api_v1_RequestBuilder_MessengerRequestBuilder_SetReport_System_Int32_System_String_Azuria_Senpai_

@@ -361,7 +361,7 @@ namespace Azuria.Community
             for (int page = 0; page == 0 || lConferences.Count % _conferencesPerPage == 0; page++)
             {
                 ProxerApiResponse<ConferenceDataModel[]> lResult = await RequestHandler.ApiRequest(
-                        MessengerRequestBuilder.GetConferences(type, page, senpai))
+                        MessengerRequestBuilder.GetConferences(senpai, type, page))
                     .ConfigureAwait(false);
                 if (!lResult.Success || lResult.Result == null)
                     return new ProxerResult<IEnumerable<ConferenceInfo>>(lResult.Exceptions);
@@ -450,7 +450,7 @@ namespace Azuria.Community
         {
             if (string.IsNullOrEmpty(reason)) return new ProxerResult(new ArgumentException(nameof(reason)));
 
-            ProxerApiResponse<int> lResult = await RequestHandler.ApiRequest(
+            ProxerApiResponse lResult = await RequestHandler.ApiRequest(
                     MessengerRequestBuilder.SetReport(this.Id, reason, this.Senpai))
                 .ConfigureAwait(false);
             return !lResult.Success
@@ -468,7 +468,7 @@ namespace Azuria.Community
         /// <returns>An asynchronous <see cref="Task" /> that returns an <see cref="IProxerResult" />.</returns>
         public async Task<IProxerResult> SetBlock(bool isBlocked)
         {
-            ProxerApiResponse<int> lResult =
+            ProxerApiResponse lResult =
                 await RequestHandler.ApiRequest(isBlocked
                         ? MessengerRequestBuilder.SetBlock(this.Id, this.Senpai)
                         : MessengerRequestBuilder.SetUnblock(this.Id, this.Senpai))
@@ -488,7 +488,7 @@ namespace Azuria.Community
         /// <returns>An asynchronous <see cref="Task" /> that returns an <see cref="IProxerResult" />.</returns>
         public async Task<IProxerResult> SetFavourite(bool isFavourite)
         {
-            ProxerApiResponse<int> lResult =
+            ProxerApiResponse lResult =
                 await RequestHandler.ApiRequest(isFavourite
                         ? MessengerRequestBuilder.SetFavour(this.Id, this.Senpai)
                         : MessengerRequestBuilder.SetUnfavour(this.Id, this.Senpai))

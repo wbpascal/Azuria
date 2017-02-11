@@ -4,6 +4,7 @@ using Azuria.Api.v1.DataModels.Media;
 namespace Azuria.Api.v1.RequestBuilder
 {
     /// <summary>
+    /// Represents the media api class.
     /// </summary>
     public static class MediaRequestBuilder
     {
