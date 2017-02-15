@@ -6286,12 +6286,12 @@ references:
   commentId: Overload:Azuria.Api.v1.RequestBuilder.NotificationsRequestBuilder.GetCount
   fullName: Azuria.Api.v1.RequestBuilder.NotificationsRequestBuilder.GetCount
   nameWithType: NotificationsRequestBuilder.GetCount
-- uid: Azuria.Api.v1.RequestBuilder.NotificationsRequestBuilder.GetNews(System.Int32,System.Int32,Azuria.Senpai)
-  name: GetNews(Int32, Int32, Senpai)
-  href: api/Azuria.Api.v1.RequestBuilder.NotificationsRequestBuilder.html#Azuria_Api_v1_RequestBuilder_NotificationsRequestBuilder_GetNews_System_Int32_System_Int32_Azuria_Senpai_
-  commentId: M:Azuria.Api.v1.RequestBuilder.NotificationsRequestBuilder.GetNews(System.Int32,System.Int32,Azuria.Senpai)
-  fullName: Azuria.Api.v1.RequestBuilder.NotificationsRequestBuilder.GetNews(System.Int32, System.Int32, Azuria.Senpai)
-  nameWithType: NotificationsRequestBuilder.GetNews(Int32, Int32, Senpai)
+- uid: Azuria.Api.v1.RequestBuilder.NotificationsRequestBuilder.GetNews(Azuria.Senpai,System.Int32,System.Int32)
+  name: GetNews(Senpai, Int32, Int32)
+  href: api/Azuria.Api.v1.RequestBuilder.NotificationsRequestBuilder.html#Azuria_Api_v1_RequestBuilder_NotificationsRequestBuilder_GetNews_Azuria_Senpai_System_Int32_System_Int32_
+  commentId: M:Azuria.Api.v1.RequestBuilder.NotificationsRequestBuilder.GetNews(Azuria.Senpai,System.Int32,System.Int32)
+  fullName: Azuria.Api.v1.RequestBuilder.NotificationsRequestBuilder.GetNews(Azuria.Senpai, System.Int32, System.Int32)
+  nameWithType: NotificationsRequestBuilder.GetNews(Senpai, Int32, Int32)
 - uid: Azuria.Api.v1.RequestBuilder.NotificationsRequestBuilder.GetNews*
   name: GetNews
   href: api/Azuria.Api.v1.RequestBuilder.NotificationsRequestBuilder.html#Azuria_Api_v1_RequestBuilder_NotificationsRequestBuilder_GetNews_
