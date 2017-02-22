@@ -74,7 +74,7 @@ namespace Azuria.Web
             }
             catch (Exception ex)
             {
-                return new ProxerResult<string>(new[] {ex});
+                return new ProxerResult<string>(ex);
             }
             string lResponseString = await lResponseObject.Content.ReadAsStringAsync().ConfigureAwait(false);
 
@@ -111,8 +111,7 @@ namespace Azuria.Web
         /// <param name="headers"></param>
         /// <returns></returns>
         public virtual async Task<IProxerResult<string>> PostRequest(Uri url,
-            IEnumerable<KeyValuePair<string, string>> postArgs,
-            Dictionary<string, string> headers = null)
+            IEnumerable<KeyValuePair<string, string>> postArgs, Dictionary<string, string> headers = null)
         {
             string lResponse;
 
@@ -123,7 +122,7 @@ namespace Azuria.Web
             }
             catch (Exception ex)
             {
-                return new ProxerResult<string>(new[] {ex});
+                return new ProxerResult<string>(ex);
             }
             string lResponseString = await lResponseObject.Content.ReadAsStringAsync().ConfigureAwait(false);
 

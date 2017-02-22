@@ -18,11 +18,6 @@ namespace Azuria.Api.v1.DataModels.User
 
         /// <summary>
         /// </summary>
-        [JsonProperty("state")]
-        public MediaProgressState AuthorState { get; set; }
-
-        /// <summary>
-        /// </summary>
         [JsonProperty("comment")]
         public string CommentContent { get; set; }
 
@@ -41,6 +36,11 @@ namespace Azuria.Api.v1.DataModels.User
         [JsonProperty("timestamp")]
         [JsonConverter(typeof(UnixToDateTimeConverter))]
         public DateTime CommentLastChanged { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [JsonProperty("state")]
+        public MediaProgressState CommentState { get; set; }
 
         /// <summary>
         /// </summary>

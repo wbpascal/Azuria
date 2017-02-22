@@ -27,6 +27,13 @@ namespace Azuria.Utilities.Extensions
             return source;
         }
 
+        internal static void AddOrUpdateRange<TKey, TValue>(this IDictionary<TKey, TValue> source,
+            IEnumerable<KeyValuePair<TKey, TValue>> keyValuePairs)
+        {
+            foreach (KeyValuePair<TKey, TValue> pair in keyValuePairs)
+                source[pair.Key] = pair.Value;
+        }
+
         internal static Dictionary<TValue, TKey> ReverseDictionary<TKey, TValue>(this IDictionary<TKey, TValue> source)
         {
             Dictionary<TValue, TKey> dictionary = new Dictionary<TValue, TKey>();

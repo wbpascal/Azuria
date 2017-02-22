@@ -36,7 +36,7 @@ namespace Azuria.UserInfo.Comment
             this.Content = dataModel.CommentContent;
             this.Id = dataModel.CommentId;
             this.Progress = dataModel.CommentContentIndex;
-            this.ProgressState = dataModel.AuthorState;
+            this.ProgressState = dataModel.CommentState;
             this.Rating = dataModel.Rating;
             this.SubRatings = dataModel.CommentSubRatings;
         }
