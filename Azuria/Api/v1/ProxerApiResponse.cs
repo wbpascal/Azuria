@@ -33,12 +33,20 @@ namespace Azuria.Api.v1
         [JsonProperty("data")]
         public T Result { get; internal set; }
 
+        /// <inheritdoc />
+        public void Deconstruct(out bool sucess, out IEnumerable<Exception> exceptions, out T result)
+        {
+            sucess = this.Success;
+            exceptions = this.Exceptions;
+            result = this.Result;
+        }
+
         #endregion
     }
 
     /// <summary>
     /// </summary>
-    public class ProxerApiResponse : IProxerResult
+    public class ProxerApiResponse : ProxerResult
     {
         /// <summary>
         /// </summary>
@@ -69,17 +77,13 @@ namespace Azuria.Api.v1
         [JsonProperty("code")]
         internal ErrorCode ErrorCode { get; set; } = ErrorCode.NoError;
 
-        /// <summary>
-        /// </summary>
-        public IEnumerable<Exception> Exceptions { get; }
-
         [JsonProperty("message", Required = Required.Always)]
         internal string Message { get; set; }
 
         /// <inheritdoc />
         [JsonProperty("error", Required = Required.Always)]
         [JsonConverter(typeof(InvertBoolConverter))]
-        public bool Success { get; set; }
+        public new bool Success { get; set; }
 
         #endregion
     }

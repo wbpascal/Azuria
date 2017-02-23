@@ -5,13 +5,20 @@ namespace Azuria.ErrorHandling
 {
     /// <summary>
     /// </summary>
-    public interface IProxerResult<out T> : IProxerResult
+    public interface IProxerResult<T> : IProxerResult
     {
         #region Properties
 
         /// <summary>
         /// </summary>
         T Result { get; }
+
+        /// <summary>
+        /// </summary>
+        /// <param name="success"></param>
+        /// <param name="exceptions"></param>
+        /// <param name="result"></param>
+        void Deconstruct(out bool success, out IEnumerable<Exception> exceptions, out T result);
 
         #endregion
     }
@@ -31,6 +38,12 @@ namespace Azuria.ErrorHandling
         /// Gets a value that indicates whether the method executed successfully.
         /// </summary>
         bool Success { get; }
+
+        /// <summary>
+        /// </summary>
+        /// <param name="success"></param>
+        /// <param name="exceptions"></param>
+        void Deconstruct(out bool success, out IEnumerable<Exception> exceptions);
 
         #endregion
     }
