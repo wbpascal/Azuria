@@ -120,11 +120,11 @@ namespace Azuria.Api.v1
 
         /// <summary>
         /// </summary>
-        public Uri FullAddress => this.BuildAddress();
+        public bool CheckLogin { get; set; }
 
         /// <summary>
         /// </summary>
-        public bool CheckLogin { get; set; }
+        public Uri FullAddress => this.BuildAddress();
 
         /// <summary>
         /// </summary>
@@ -145,7 +145,7 @@ namespace Azuria.Api.v1
         #endregion
 
         #region Methods
-        
+
         private Uri BuildAddress()
         {
             UriBuilder lUriBuilder = new UriBuilder(this.BaseAddress);

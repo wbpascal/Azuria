@@ -33,6 +33,10 @@ namespace Azuria.Api.v1
         [JsonProperty("data")]
         public T Result { get; internal set; }
 
+        #endregion
+
+        #region Methods
+
         /// <inheritdoc />
         public void Deconstruct(out bool sucess, out IEnumerable<Exception> exceptions, out T result)
         {

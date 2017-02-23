@@ -43,6 +43,10 @@ namespace Azuria.ErrorHandling
         /// </summary>
         public T Result { get; set; }
 
+        #endregion
+
+        #region Methods
+
         /// <inheritdoc />
         public void Deconstruct(out bool sucess, out IEnumerable<Exception> exceptions, out T result)
         {
@@ -97,6 +101,10 @@ namespace Azuria.ErrorHandling
         /// Gets a value that indicates whether the method executed successfully.
         /// </summary>
         public bool Success { get; set; }
+
+        #endregion
+
+        #region Methods
 
         /// <inheritdoc />
         public void Deconstruct(out bool sucess, out IEnumerable<Exception> exceptions)

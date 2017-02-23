@@ -34,11 +34,11 @@ namespace Azuria.Test.UserTests
             Assert.IsTrue(lAnime.All(entry => entry.Comment.Progress > 0));
             Assert.IsTrue(lAnime.All(entry => entry.Comment.ProgressState == MediaProgressState.Finished));
             Assert.AreEqual(1, lAnime.Count(entry =>
-                    entry.Comment.Rating != default(int) && entry.Comment.SubRatings.Any()));
+                entry.Comment.Rating != default(int) && entry.Comment.SubRatings.Any()));
             Assert.IsTrue(lAnime.All(entry => entry.MediaObject != null));
             Assert.IsTrue(lAnime.All(entry => entry.MediaObject.Id != default(int)));
             Assert.IsTrue(lAnime.All(entry =>
-                    !string.IsNullOrEmpty(entry.MediaObject.Name.GetIfInitialised(string.Empty))));
+                !string.IsNullOrEmpty(entry.MediaObject.Name.GetIfInitialised(string.Empty))));
             Assert.IsTrue(lAnime.All(entry => entry.User == this._user));
         }
 
@@ -128,7 +128,7 @@ namespace Azuria.Test.UserTests
             Assert.IsTrue(lManga.All(entry => entry.MediaObject != null));
             Assert.IsTrue(lManga.All(entry => entry.MediaObject.Id != default(int)));
             Assert.IsTrue(lManga.All(entry =>
-                    !string.IsNullOrEmpty(entry.MediaObject.Name.GetIfInitialised(string.Empty))));
+                !string.IsNullOrEmpty(entry.MediaObject.Name.GetIfInitialised(string.Empty))));
             Assert.IsTrue(lManga.All(entry => entry.User == this._user));
         }
 

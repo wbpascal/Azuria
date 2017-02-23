@@ -13,6 +13,10 @@ namespace Azuria.ErrorHandling
         /// </summary>
         T Result { get; }
 
+        #endregion
+
+        #region Methods
+
         /// <summary>
         /// </summary>
         /// <param name="success"></param>
@@ -38,6 +42,10 @@ namespace Azuria.ErrorHandling
         /// Gets a value that indicates whether the method executed successfully.
         /// </summary>
         bool Success { get; }
+
+        #endregion
+
+        #region Methods
 
         /// <summary>
         /// </summary>

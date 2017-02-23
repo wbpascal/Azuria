@@ -57,7 +57,7 @@ namespace Azuria.Media
         /// Gets the general language (english/german) of the episode.
         /// </summary>
         public Language GeneralLanguage => this.GetGeneralLanguage();
-                
+
 
         /// <summary>
         /// Gets the language of the episode
