@@ -113,9 +113,9 @@ namespace Azuria.Api.v1.RequestBuilder
         /// <param name="conferenceId"></param>
         /// <param name="senpai"></param>
         /// <returns></returns>
-        public static ApiRequest<int> SetBlock(int conferenceId, Senpai senpai)
+        public static ApiRequest SetBlock(int conferenceId, Senpai senpai)
         {
-            return ApiRequest<int>.Create(new Uri($"{ApiConstants.ApiUrlV1}/messenger/setblock"))
+            return ApiRequest.Create(new Uri($"{ApiConstants.ApiUrlV1}/messenger/setblock"))
                 .WithGetParameter("conference_id", conferenceId.ToString())
                 .WithCheckLogin(true)
                 .WithSenpai(senpai);
@@ -126,9 +126,9 @@ namespace Azuria.Api.v1.RequestBuilder
         /// <param name="conferenceId"></param>
         /// <param name="senpai"></param>
         /// <returns></returns>
-        public static ApiRequest<int> SetFavour(int conferenceId, Senpai senpai)
+        public static ApiRequest SetFavour(int conferenceId, Senpai senpai)
         {
-            return ApiRequest<int>.Create(new Uri($"{ApiConstants.ApiUrlV1}/messenger/setfavour"))
+            return ApiRequest.Create(new Uri($"{ApiConstants.ApiUrlV1}/messenger/setfavour"))
                 .WithGetParameter("conference_id", conferenceId.ToString())
                 .WithCheckLogin(true)
                 .WithSenpai(senpai);
@@ -169,9 +169,9 @@ namespace Azuria.Api.v1.RequestBuilder
         /// <param name="conferenceId"></param>
         /// <param name="senpai"></param>
         /// <returns></returns>
-        public static ApiRequest<int> SetUnblock(int conferenceId, Senpai senpai)
+        public static ApiRequest SetUnblock(int conferenceId, Senpai senpai)
         {
-            return ApiRequest<int>.Create(new Uri($"{ApiConstants.ApiUrlV1}/messenger/setunblock"))
+            return ApiRequest.Create(new Uri($"{ApiConstants.ApiUrlV1}/messenger/setunblock"))
                 .WithGetParameter("conference_id", conferenceId.ToString())
                 .WithCheckLogin(true)
                 .WithSenpai(senpai);
@@ -182,9 +182,9 @@ namespace Azuria.Api.v1.RequestBuilder
         /// <param name="conferenceId"></param>
         /// <param name="senpai"></param>
         /// <returns></returns>
-        public static ApiRequest<int> SetUnfavour(int conferenceId, Senpai senpai)
+        public static ApiRequest SetUnfavour(int conferenceId, Senpai senpai)
         {
-            return ApiRequest<int>.Create(new Uri($"{ApiConstants.ApiUrlV1}/messenger/setunfavour"))
+            return ApiRequest.Create(new Uri($"{ApiConstants.ApiUrlV1}/messenger/setunfavour"))
                 .WithGetParameter("conference_id", conferenceId.ToString())
                 .WithCheckLogin(true)
                 .WithSenpai(senpai);

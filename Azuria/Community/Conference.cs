@@ -385,7 +385,7 @@ namespace Azuria.Community
         /// <returns></returns>
         public async Task<IProxerResult> SetBlock(bool isBlocked)
         {
-            ProxerApiResponse<int> lResult =
+            ProxerApiResponse lResult =
                 await RequestHandler.ApiRequest(isBlocked
                         ? MessengerRequestBuilder.SetBlock(this.Id, this._senpai)
                         : MessengerRequestBuilder.SetUnblock(this.Id, this._senpai))
@@ -401,7 +401,7 @@ namespace Azuria.Community
         /// <returns></returns>
         public async Task<IProxerResult> SetFavourite(bool isFavourite)
         {
-            ProxerApiResponse<int> lResult =
+            ProxerApiResponse lResult =
                 await RequestHandler.ApiRequest(isFavourite
                         ? MessengerRequestBuilder.SetFavour(this.Id, this._senpai)
                         : MessengerRequestBuilder.SetUnfavour(this.Id, this._senpai))
