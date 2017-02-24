@@ -2197,18 +2197,18 @@ references:
   commentId: Overload:Azuria.Api.v1.ApiRequest.#ctor
   fullName: Azuria.Api.v1.ApiRequest.ApiRequest
   nameWithType: ApiRequest.ApiRequest
-- uid: Azuria.Api.v1.ApiRequest.Address
-  name: Address
-  href: api/Azuria.Api.v1.ApiRequest.html#Azuria_Api_v1_ApiRequest_Address
-  commentId: P:Azuria.Api.v1.ApiRequest.Address
-  fullName: Azuria.Api.v1.ApiRequest.Address
-  nameWithType: ApiRequest.Address
-- uid: Azuria.Api.v1.ApiRequest.Address*
-  name: Address
-  href: api/Azuria.Api.v1.ApiRequest.html#Azuria_Api_v1_ApiRequest_Address_
-  commentId: Overload:Azuria.Api.v1.ApiRequest.Address
-  fullName: Azuria.Api.v1.ApiRequest.Address
-  nameWithType: ApiRequest.Address
+- uid: Azuria.Api.v1.ApiRequest.BaseAddress
+  name: BaseAddress
+  href: api/Azuria.Api.v1.ApiRequest.html#Azuria_Api_v1_ApiRequest_BaseAddress
+  commentId: P:Azuria.Api.v1.ApiRequest.BaseAddress
+  fullName: Azuria.Api.v1.ApiRequest.BaseAddress
+  nameWithType: ApiRequest.BaseAddress
+- uid: Azuria.Api.v1.ApiRequest.BaseAddress*
+  name: BaseAddress
+  href: api/Azuria.Api.v1.ApiRequest.html#Azuria_Api_v1_ApiRequest_BaseAddress_
+  commentId: Overload:Azuria.Api.v1.ApiRequest.BaseAddress
+  fullName: Azuria.Api.v1.ApiRequest.BaseAddress
+  nameWithType: ApiRequest.BaseAddress
 - uid: Azuria.Api.v1.ApiRequest.CheckLogin
   name: CheckLogin
   href: api/Azuria.Api.v1.ApiRequest.html#Azuria_Api_v1_ApiRequest_CheckLogin
@@ -2233,6 +2233,30 @@ references:
   commentId: Overload:Azuria.Api.v1.ApiRequest.Create
   fullName: Azuria.Api.v1.ApiRequest.Create
   nameWithType: ApiRequest.Create
+- uid: Azuria.Api.v1.ApiRequest.FullAddress
+  name: FullAddress
+  href: api/Azuria.Api.v1.ApiRequest.html#Azuria_Api_v1_ApiRequest_FullAddress
+  commentId: P:Azuria.Api.v1.ApiRequest.FullAddress
+  fullName: Azuria.Api.v1.ApiRequest.FullAddress
+  nameWithType: ApiRequest.FullAddress
+- uid: Azuria.Api.v1.ApiRequest.FullAddress*
+  name: FullAddress
+  href: api/Azuria.Api.v1.ApiRequest.html#Azuria_Api_v1_ApiRequest_FullAddress_
+  commentId: Overload:Azuria.Api.v1.ApiRequest.FullAddress
+  fullName: Azuria.Api.v1.ApiRequest.FullAddress
+  nameWithType: ApiRequest.FullAddress
+- uid: Azuria.Api.v1.ApiRequest.GetParameter
+  name: GetParameter
+  href: api/Azuria.Api.v1.ApiRequest.html#Azuria_Api_v1_ApiRequest_GetParameter
+  commentId: P:Azuria.Api.v1.ApiRequest.GetParameter
+  fullName: Azuria.Api.v1.ApiRequest.GetParameter
+  nameWithType: ApiRequest.GetParameter
+- uid: Azuria.Api.v1.ApiRequest.GetParameter*
+  name: GetParameter
+  href: api/Azuria.Api.v1.ApiRequest.html#Azuria_Api_v1_ApiRequest_GetParameter_
+  commentId: Overload:Azuria.Api.v1.ApiRequest.GetParameter
+  fullName: Azuria.Api.v1.ApiRequest.GetParameter
+  nameWithType: ApiRequest.GetParameter
 - uid: Azuria.Api.v1.ApiRequest.PostArguments
   name: PostArguments
   href: api/Azuria.Api.v1.ApiRequest.html#Azuria_Api_v1_ApiRequest_PostArguments
@@ -2269,6 +2293,33 @@ references:
   commentId: Overload:Azuria.Api.v1.ApiRequest.WithCheckLogin
   fullName: Azuria.Api.v1.ApiRequest.WithCheckLogin
   nameWithType: ApiRequest.WithCheckLogin
+- uid: Azuria.Api.v1.ApiRequest.WithGetParameter(System.String,System.String)
+  name: WithGetParameter(String, String)
+  href: api/Azuria.Api.v1.ApiRequest.html#Azuria_Api_v1_ApiRequest_WithGetParameter_System_String_System_String_
+  commentId: M:Azuria.Api.v1.ApiRequest.WithGetParameter(System.String,System.String)
+  fullName: Azuria.Api.v1.ApiRequest.WithGetParameter(System.String, System.String)
+  nameWithType: ApiRequest.WithGetParameter(String, String)
+- uid: Azuria.Api.v1.ApiRequest.WithGetParameter*
+  name: WithGetParameter
+  href: api/Azuria.Api.v1.ApiRequest.html#Azuria_Api_v1_ApiRequest_WithGetParameter_
+  commentId: Overload:Azuria.Api.v1.ApiRequest.WithGetParameter
+  fullName: Azuria.Api.v1.ApiRequest.WithGetParameter
+  nameWithType: ApiRequest.WithGetParameter
+- uid: Azuria.Api.v1.ApiRequest.WithGetParameters(System.Collections.Generic.IDictionary{System.String,System.String})
+  name: WithGetParameters(IDictionary<String, String>)
+  href: api/Azuria.Api.v1.ApiRequest.html#Azuria_Api_v1_ApiRequest_WithGetParameters_System_Collections_Generic_IDictionary_System_String_System_String__
+  commentId: M:Azuria.Api.v1.ApiRequest.WithGetParameters(System.Collections.Generic.IDictionary{System.String,System.String})
+  name.vb: WithGetParameters(IDictionary(Of String, String))
+  fullName: Azuria.Api.v1.ApiRequest.WithGetParameters(System.Collections.Generic.IDictionary<System.String, System.String>)
+  fullName.vb: Azuria.Api.v1.ApiRequest.WithGetParameters(System.Collections.Generic.IDictionary(Of System.String, System.String))
+  nameWithType: ApiRequest.WithGetParameters(IDictionary<String, String>)
+  nameWithType.vb: ApiRequest.WithGetParameters(IDictionary(Of String, String))
+- uid: Azuria.Api.v1.ApiRequest.WithGetParameters*
+  name: WithGetParameters
+  href: api/Azuria.Api.v1.ApiRequest.html#Azuria_Api_v1_ApiRequest_WithGetParameters_
+  commentId: Overload:Azuria.Api.v1.ApiRequest.WithGetParameters
+  fullName: Azuria.Api.v1.ApiRequest.WithGetParameters
+  nameWithType: ApiRequest.WithGetParameters
 - uid: Azuria.Api.v1.ApiRequest.WithPostArgument(System.String,System.String)
   name: WithPostArgument(String, String)
   href: api/Azuria.Api.v1.ApiRequest.html#Azuria_Api_v1_ApiRequest_WithPostArgument_System_String_System_String_
@@ -2398,6 +2449,39 @@ references:
   fullName.vb: Azuria.Api.v1.ApiRequest(Of T).WithCustomDataConverter
   nameWithType: ApiRequest<T>.WithCustomDataConverter
   nameWithType.vb: ApiRequest(Of T).WithCustomDataConverter
+- uid: Azuria.Api.v1.ApiRequest`1.WithGetParameter(System.String,System.String)
+  name: WithGetParameter(String, String)
+  href: api/Azuria.Api.v1.ApiRequest-1.html#Azuria_Api_v1_ApiRequest_1_WithGetParameter_System_String_System_String_
+  commentId: M:Azuria.Api.v1.ApiRequest`1.WithGetParameter(System.String,System.String)
+  fullName: Azuria.Api.v1.ApiRequest<T>.WithGetParameter(System.String, System.String)
+  fullName.vb: Azuria.Api.v1.ApiRequest(Of T).WithGetParameter(System.String, System.String)
+  nameWithType: ApiRequest<T>.WithGetParameter(String, String)
+  nameWithType.vb: ApiRequest(Of T).WithGetParameter(String, String)
+- uid: Azuria.Api.v1.ApiRequest`1.WithGetParameter*
+  name: WithGetParameter
+  href: api/Azuria.Api.v1.ApiRequest-1.html#Azuria_Api_v1_ApiRequest_1_WithGetParameter_
+  commentId: Overload:Azuria.Api.v1.ApiRequest`1.WithGetParameter
+  fullName: Azuria.Api.v1.ApiRequest<T>.WithGetParameter
+  fullName.vb: Azuria.Api.v1.ApiRequest(Of T).WithGetParameter
+  nameWithType: ApiRequest<T>.WithGetParameter
+  nameWithType.vb: ApiRequest(Of T).WithGetParameter
+- uid: Azuria.Api.v1.ApiRequest`1.WithGetParameters(System.Collections.Generic.IEnumerable{System.Collections.Generic.KeyValuePair{System.String,System.String}})
+  name: WithGetParameters(IEnumerable<KeyValuePair<String, String>>)
+  href: api/Azuria.Api.v1.ApiRequest-1.html#Azuria_Api_v1_ApiRequest_1_WithGetParameters_System_Collections_Generic_IEnumerable_System_Collections_Generic_KeyValuePair_System_String_System_String___
+  commentId: M:Azuria.Api.v1.ApiRequest`1.WithGetParameters(System.Collections.Generic.IEnumerable{System.Collections.Generic.KeyValuePair{System.String,System.String}})
+  name.vb: WithGetParameters(IEnumerable(Of KeyValuePair(Of String, String)))
+  fullName: Azuria.Api.v1.ApiRequest<T>.WithGetParameters(System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<System.String, System.String>>)
+  fullName.vb: Azuria.Api.v1.ApiRequest(Of T).WithGetParameters(System.Collections.Generic.IEnumerable(Of System.Collections.Generic.KeyValuePair(Of System.String, System.String)))
+  nameWithType: ApiRequest<T>.WithGetParameters(IEnumerable<KeyValuePair<String, String>>)
+  nameWithType.vb: ApiRequest(Of T).WithGetParameters(IEnumerable(Of KeyValuePair(Of String, String)))
+- uid: Azuria.Api.v1.ApiRequest`1.WithGetParameters*
+  name: WithGetParameters
+  href: api/Azuria.Api.v1.ApiRequest-1.html#Azuria_Api_v1_ApiRequest_1_WithGetParameters_
+  commentId: Overload:Azuria.Api.v1.ApiRequest`1.WithGetParameters
+  fullName: Azuria.Api.v1.ApiRequest<T>.WithGetParameters
+  fullName.vb: Azuria.Api.v1.ApiRequest(Of T).WithGetParameters
+  nameWithType: ApiRequest<T>.WithGetParameters
+  nameWithType.vb: ApiRequest(Of T).WithGetParameters
 - uid: Azuria.Api.v1.ApiRequest`1.WithPostArgument(System.String,System.String)
   name: WithPostArgument(String, String)
   href: api/Azuria.Api.v1.ApiRequest-1.html#Azuria_Api_v1_ApiRequest_1_WithPostArgument_System_String_System_String_
@@ -4962,18 +5046,6 @@ references:
   commentId: T:Azuria.Api.v1.DataModels.User.ListDataModel
   fullName: Azuria.Api.v1.DataModels.User.ListDataModel
   nameWithType: ListDataModel
-- uid: Azuria.Api.v1.DataModels.User.ListDataModel.AuthorState
-  name: AuthorState
-  href: api/Azuria.Api.v1.DataModels.User.ListDataModel.html#Azuria_Api_v1_DataModels_User_ListDataModel_AuthorState
-  commentId: P:Azuria.Api.v1.DataModels.User.ListDataModel.AuthorState
-  fullName: Azuria.Api.v1.DataModels.User.ListDataModel.AuthorState
-  nameWithType: ListDataModel.AuthorState
-- uid: Azuria.Api.v1.DataModels.User.ListDataModel.AuthorState*
-  name: AuthorState
-  href: api/Azuria.Api.v1.DataModels.User.ListDataModel.html#Azuria_Api_v1_DataModels_User_ListDataModel_AuthorState_
-  commentId: Overload:Azuria.Api.v1.DataModels.User.ListDataModel.AuthorState
-  fullName: Azuria.Api.v1.DataModels.User.ListDataModel.AuthorState
-  nameWithType: ListDataModel.AuthorState
 - uid: Azuria.Api.v1.DataModels.User.ListDataModel.CommentContent
   name: CommentContent
   href: api/Azuria.Api.v1.DataModels.User.ListDataModel.html#Azuria_Api_v1_DataModels_User_ListDataModel_CommentContent
@@ -5022,6 +5094,18 @@ references:
   commentId: Overload:Azuria.Api.v1.DataModels.User.ListDataModel.CommentLastChanged
   fullName: Azuria.Api.v1.DataModels.User.ListDataModel.CommentLastChanged
   nameWithType: ListDataModel.CommentLastChanged
+- uid: Azuria.Api.v1.DataModels.User.ListDataModel.CommentState
+  name: CommentState
+  href: api/Azuria.Api.v1.DataModels.User.ListDataModel.html#Azuria_Api_v1_DataModels_User_ListDataModel_CommentState
+  commentId: P:Azuria.Api.v1.DataModels.User.ListDataModel.CommentState
+  fullName: Azuria.Api.v1.DataModels.User.ListDataModel.CommentState
+  nameWithType: ListDataModel.CommentState
+- uid: Azuria.Api.v1.DataModels.User.ListDataModel.CommentState*
+  name: CommentState
+  href: api/Azuria.Api.v1.DataModels.User.ListDataModel.html#Azuria_Api_v1_DataModels_User_ListDataModel_CommentState_
+  commentId: Overload:Azuria.Api.v1.DataModels.User.ListDataModel.CommentState
+  fullName: Azuria.Api.v1.DataModels.User.ListDataModel.CommentState
+  nameWithType: ListDataModel.CommentState
 - uid: Azuria.Api.v1.DataModels.User.ListDataModel.CommentSubRatings
   name: CommentSubRatings
   href: api/Azuria.Api.v1.DataModels.User.ListDataModel.html#Azuria_Api_v1_DataModels_User_ListDataModel_CommentSubRatings
@@ -5721,18 +5805,6 @@ references:
   commentId: Overload:Azuria.Api.v1.ProxerApiResponse.#ctor
   fullName: Azuria.Api.v1.ProxerApiResponse.ProxerApiResponse
   nameWithType: ProxerApiResponse.ProxerApiResponse
-- uid: Azuria.Api.v1.ProxerApiResponse.Exceptions
-  name: Exceptions
-  href: api/Azuria.Api.v1.ProxerApiResponse.html#Azuria_Api_v1_ProxerApiResponse_Exceptions
-  commentId: P:Azuria.Api.v1.ProxerApiResponse.Exceptions
-  fullName: Azuria.Api.v1.ProxerApiResponse.Exceptions
-  nameWithType: ProxerApiResponse.Exceptions
-- uid: Azuria.Api.v1.ProxerApiResponse.Exceptions*
-  name: Exceptions
-  href: api/Azuria.Api.v1.ProxerApiResponse.html#Azuria_Api_v1_ProxerApiResponse_Exceptions_
-  commentId: Overload:Azuria.Api.v1.ProxerApiResponse.Exceptions
-  fullName: Azuria.Api.v1.ProxerApiResponse.Exceptions
-  nameWithType: ProxerApiResponse.Exceptions
 - uid: Azuria.Api.v1.ProxerApiResponse.Success
   name: Success
   href: api/Azuria.Api.v1.ProxerApiResponse.html#Azuria_Api_v1_ProxerApiResponse_Success
@@ -5787,6 +5859,23 @@ references:
   fullName.vb: Azuria.Api.v1.ProxerApiResponse(Of T).ProxerApiResponse
   nameWithType: ProxerApiResponse<T>.ProxerApiResponse
   nameWithType.vb: ProxerApiResponse(Of T).ProxerApiResponse
+- uid: Azuria.Api.v1.ProxerApiResponse`1.Deconstruct(System.Boolean@,System.Collections.Generic.IEnumerable{System.Exception}@,`0@)
+  name: Deconstruct(out Boolean, out IEnumerable<Exception>, out T)
+  href: api/Azuria.Api.v1.ProxerApiResponse-1.html#Azuria_Api_v1_ProxerApiResponse_1_Deconstruct_System_Boolean__System_Collections_Generic_IEnumerable_System_Exception____0__
+  commentId: M:Azuria.Api.v1.ProxerApiResponse`1.Deconstruct(System.Boolean@,System.Collections.Generic.IEnumerable{System.Exception}@,`0@)
+  name.vb: Deconstruct(ByRef Boolean, ByRef IEnumerable(Of Exception), ByRef T)
+  fullName: Azuria.Api.v1.ProxerApiResponse<T>.Deconstruct(out System.Boolean, out System.Collections.Generic.IEnumerable<System.Exception>, out T)
+  fullName.vb: Azuria.Api.v1.ProxerApiResponse(Of T).Deconstruct(ByRef System.Boolean, ByRef System.Collections.Generic.IEnumerable(Of System.Exception), ByRef T)
+  nameWithType: ProxerApiResponse<T>.Deconstruct(out Boolean, out IEnumerable<Exception>, out T)
+  nameWithType.vb: ProxerApiResponse(Of T).Deconstruct(ByRef Boolean, ByRef IEnumerable(Of Exception), ByRef T)
+- uid: Azuria.Api.v1.ProxerApiResponse`1.Deconstruct*
+  name: Deconstruct
+  href: api/Azuria.Api.v1.ProxerApiResponse-1.html#Azuria_Api_v1_ProxerApiResponse_1_Deconstruct_
+  commentId: Overload:Azuria.Api.v1.ProxerApiResponse`1.Deconstruct
+  fullName: Azuria.Api.v1.ProxerApiResponse<T>.Deconstruct
+  fullName.vb: Azuria.Api.v1.ProxerApiResponse(Of T).Deconstruct
+  nameWithType: ProxerApiResponse<T>.Deconstruct
+  nameWithType.vb: ProxerApiResponse(Of T).Deconstruct
 - uid: Azuria.Api.v1.ProxerApiResponse`1.Result
   name: Result
   href: api/Azuria.Api.v1.ProxerApiResponse-1.html#Azuria_Api_v1_ProxerApiResponse_1_Result
@@ -6208,18 +6297,6 @@ references:
   commentId: Overload:Azuria.Api.v1.RequestBuilder.MessengerRequestBuilder.SetRead
   fullName: Azuria.Api.v1.RequestBuilder.MessengerRequestBuilder.SetRead
   nameWithType: MessengerRequestBuilder.SetRead
-- uid: Azuria.Api.v1.RequestBuilder.MessengerRequestBuilder.SetReport(System.Int32,System.String,Azuria.Senpai)
-  name: SetReport(Int32, String, Senpai)
-  href: api/Azuria.Api.v1.RequestBuilder.MessengerRequestBuilder.html#Azuria_Api_v1_RequestBuilder_MessengerRequestBuilder_SetReport_System_Int32_System_String_Azuria_Senpai_
-  commentId: M:Azuria.Api.v1.RequestBuilder.MessengerRequestBuilder.SetReport(System.Int32,System.String,Azuria.Senpai)
-  fullName: Azuria.Api.v1.RequestBuilder.MessengerRequestBuilder.SetReport(System.Int32, System.String, Azuria.Senpai)
-  nameWithType: MessengerRequestBuilder.SetReport(Int32, String, Senpai)
-- uid: Azuria.Api.v1.RequestBuilder.MessengerRequestBuilder.SetReport*
-  name: SetReport
-  href: api/Azuria.Api.v1.RequestBuilder.MessengerRequestBuilder.html#Azuria_Api_v1_RequestBuilder_MessengerRequestBuilder_SetReport_
-  commentId: Overload:Azuria.Api.v1.RequestBuilder.MessengerRequestBuilder.SetReport
-  fullName: Azuria.Api.v1.RequestBuilder.MessengerRequestBuilder.SetReport
-  nameWithType: MessengerRequestBuilder.SetReport
 - uid: Azuria.Api.v1.RequestBuilder.MessengerRequestBuilder.SetUnblock(System.Int32,Azuria.Senpai)
   name: SetUnblock(Int32, Senpai)
   href: api/Azuria.Api.v1.RequestBuilder.MessengerRequestBuilder.html#Azuria_Api_v1_RequestBuilder_MessengerRequestBuilder_SetUnblock_System_Int32_Azuria_Senpai_
@@ -6352,6 +6429,18 @@ references:
   commentId: Overload:Azuria.Api.v1.RequestBuilder.UcpRequestBuilder.GetHistory
   fullName: Azuria.Api.v1.RequestBuilder.UcpRequestBuilder.GetHistory
   nameWithType: UcpRequestBuilder.GetHistory
+- uid: Azuria.Api.v1.RequestBuilder.UcpRequestBuilder.GetList(Azuria.Senpai,System.String,System.Int32,System.Int32,System.String,System.String,System.String)
+  name: GetList(Senpai, String, Int32, Int32, String, String, String)
+  href: api/Azuria.Api.v1.RequestBuilder.UcpRequestBuilder.html#Azuria_Api_v1_RequestBuilder_UcpRequestBuilder_GetList_Azuria_Senpai_System_String_System_Int32_System_Int32_System_String_System_String_System_String_
+  commentId: M:Azuria.Api.v1.RequestBuilder.UcpRequestBuilder.GetList(Azuria.Senpai,System.String,System.Int32,System.Int32,System.String,System.String,System.String)
+  fullName: Azuria.Api.v1.RequestBuilder.UcpRequestBuilder.GetList(Azuria.Senpai, System.String, System.Int32, System.Int32, System.String, System.String, System.String)
+  nameWithType: UcpRequestBuilder.GetList(Senpai, String, Int32, Int32, String, String, String)
+- uid: Azuria.Api.v1.RequestBuilder.UcpRequestBuilder.GetList*
+  name: GetList
+  href: api/Azuria.Api.v1.RequestBuilder.UcpRequestBuilder.html#Azuria_Api_v1_RequestBuilder_UcpRequestBuilder_GetList_
+  commentId: Overload:Azuria.Api.v1.RequestBuilder.UcpRequestBuilder.GetList
+  fullName: Azuria.Api.v1.RequestBuilder.UcpRequestBuilder.GetList
+  nameWithType: UcpRequestBuilder.GetList
 - uid: Azuria.Api.v1.RequestBuilder.UcpRequestBuilder.GetListsum(Azuria.Senpai,System.String)
   name: GetListsum(Senpai, String)
   href: api/Azuria.Api.v1.RequestBuilder.UcpRequestBuilder.html#Azuria_Api_v1_RequestBuilder_UcpRequestBuilder_GetListsum_Azuria_Senpai_System_String_
@@ -6400,30 +6489,30 @@ references:
   commentId: Overload:Azuria.Api.v1.RequestBuilder.UcpRequestBuilder.GetVotes
   fullName: Azuria.Api.v1.RequestBuilder.UcpRequestBuilder.GetVotes
   nameWithType: UcpRequestBuilder.GetVotes
-- uid: Azuria.Api.v1.RequestBuilder.UcpRequestBuilder.SetBookmark(System.Int32,System.Int32,System.String,System.String,Azuria.Senpai)
-  name: SetBookmark(Int32, Int32, String, String, Senpai)
-  href: api/Azuria.Api.v1.RequestBuilder.UcpRequestBuilder.html#Azuria_Api_v1_RequestBuilder_UcpRequestBuilder_SetBookmark_System_Int32_System_Int32_System_String_System_String_Azuria_Senpai_
-  commentId: M:Azuria.Api.v1.RequestBuilder.UcpRequestBuilder.SetBookmark(System.Int32,System.Int32,System.String,System.String,Azuria.Senpai)
-  fullName: Azuria.Api.v1.RequestBuilder.UcpRequestBuilder.SetBookmark(System.Int32, System.Int32, System.String, System.String, Azuria.Senpai)
-  nameWithType: UcpRequestBuilder.SetBookmark(Int32, Int32, String, String, Senpai)
-- uid: Azuria.Api.v1.RequestBuilder.UcpRequestBuilder.SetBookmark*
-  name: SetBookmark
-  href: api/Azuria.Api.v1.RequestBuilder.UcpRequestBuilder.html#Azuria_Api_v1_RequestBuilder_UcpRequestBuilder_SetBookmark_
-  commentId: Overload:Azuria.Api.v1.RequestBuilder.UcpRequestBuilder.SetBookmark
-  fullName: Azuria.Api.v1.RequestBuilder.UcpRequestBuilder.SetBookmark
-  nameWithType: UcpRequestBuilder.SetBookmark
-- uid: Azuria.Api.v1.RequestBuilder.UcpRequestBuilder.SetProgress(System.Int32,System.Int32,Azuria.Senpai)
-  name: SetProgress(Int32, Int32, Senpai)
-  href: api/Azuria.Api.v1.RequestBuilder.UcpRequestBuilder.html#Azuria_Api_v1_RequestBuilder_UcpRequestBuilder_SetProgress_System_Int32_System_Int32_Azuria_Senpai_
-  commentId: M:Azuria.Api.v1.RequestBuilder.UcpRequestBuilder.SetProgress(System.Int32,System.Int32,Azuria.Senpai)
-  fullName: Azuria.Api.v1.RequestBuilder.UcpRequestBuilder.SetProgress(System.Int32, System.Int32, Azuria.Senpai)
-  nameWithType: UcpRequestBuilder.SetProgress(Int32, Int32, Senpai)
-- uid: Azuria.Api.v1.RequestBuilder.UcpRequestBuilder.SetProgress*
-  name: SetProgress
-  href: api/Azuria.Api.v1.RequestBuilder.UcpRequestBuilder.html#Azuria_Api_v1_RequestBuilder_UcpRequestBuilder_SetProgress_
-  commentId: Overload:Azuria.Api.v1.RequestBuilder.UcpRequestBuilder.SetProgress
-  fullName: Azuria.Api.v1.RequestBuilder.UcpRequestBuilder.SetProgress
-  nameWithType: UcpRequestBuilder.SetProgress
+- uid: Azuria.Api.v1.RequestBuilder.UcpRequestBuilder.SetCommentState(System.Int32,System.Int32,Azuria.Senpai)
+  name: SetCommentState(Int32, Int32, Senpai)
+  href: api/Azuria.Api.v1.RequestBuilder.UcpRequestBuilder.html#Azuria_Api_v1_RequestBuilder_UcpRequestBuilder_SetCommentState_System_Int32_System_Int32_Azuria_Senpai_
+  commentId: M:Azuria.Api.v1.RequestBuilder.UcpRequestBuilder.SetCommentState(System.Int32,System.Int32,Azuria.Senpai)
+  fullName: Azuria.Api.v1.RequestBuilder.UcpRequestBuilder.SetCommentState(System.Int32, System.Int32, Azuria.Senpai)
+  nameWithType: UcpRequestBuilder.SetCommentState(Int32, Int32, Senpai)
+- uid: Azuria.Api.v1.RequestBuilder.UcpRequestBuilder.SetCommentState*
+  name: SetCommentState
+  href: api/Azuria.Api.v1.RequestBuilder.UcpRequestBuilder.html#Azuria_Api_v1_RequestBuilder_UcpRequestBuilder_SetCommentState_
+  commentId: Overload:Azuria.Api.v1.RequestBuilder.UcpRequestBuilder.SetCommentState
+  fullName: Azuria.Api.v1.RequestBuilder.UcpRequestBuilder.SetCommentState
+  nameWithType: UcpRequestBuilder.SetCommentState
+- uid: Azuria.Api.v1.RequestBuilder.UcpRequestBuilder.SetReminder(System.Int32,System.Int32,System.String,System.String,Azuria.Senpai)
+  name: SetReminder(Int32, Int32, String, String, Senpai)
+  href: api/Azuria.Api.v1.RequestBuilder.UcpRequestBuilder.html#Azuria_Api_v1_RequestBuilder_UcpRequestBuilder_SetReminder_System_Int32_System_Int32_System_String_System_String_Azuria_Senpai_
+  commentId: M:Azuria.Api.v1.RequestBuilder.UcpRequestBuilder.SetReminder(System.Int32,System.Int32,System.String,System.String,Azuria.Senpai)
+  fullName: Azuria.Api.v1.RequestBuilder.UcpRequestBuilder.SetReminder(System.Int32, System.Int32, System.String, System.String, Azuria.Senpai)
+  nameWithType: UcpRequestBuilder.SetReminder(Int32, Int32, String, String, Senpai)
+- uid: Azuria.Api.v1.RequestBuilder.UcpRequestBuilder.SetReminder*
+  name: SetReminder
+  href: api/Azuria.Api.v1.RequestBuilder.UcpRequestBuilder.html#Azuria_Api_v1_RequestBuilder_UcpRequestBuilder_SetReminder_
+  commentId: Overload:Azuria.Api.v1.RequestBuilder.UcpRequestBuilder.SetReminder
+  fullName: Azuria.Api.v1.RequestBuilder.UcpRequestBuilder.SetReminder
+  nameWithType: UcpRequestBuilder.SetReminder
 - uid: Azuria.Api.v1.RequestBuilder.UserRequestBuilder
   name: UserRequestBuilder
   href: api/Azuria.Api.v1.RequestBuilder.UserRequestBuilder.html
@@ -7716,6 +7805,21 @@ references:
   commentId: T:Azuria.ErrorHandling.IProxerResult
   fullName: Azuria.ErrorHandling.IProxerResult
   nameWithType: IProxerResult
+- uid: Azuria.ErrorHandling.IProxerResult.Deconstruct(System.Boolean@,System.Collections.Generic.IEnumerable{System.Exception}@)
+  name: Deconstruct(out Boolean, out IEnumerable<Exception>)
+  href: api/Azuria.ErrorHandling.IProxerResult.html#Azuria_ErrorHandling_IProxerResult_Deconstruct_System_Boolean__System_Collections_Generic_IEnumerable_System_Exception___
+  commentId: M:Azuria.ErrorHandling.IProxerResult.Deconstruct(System.Boolean@,System.Collections.Generic.IEnumerable{System.Exception}@)
+  name.vb: Deconstruct(ByRef Boolean, ByRef IEnumerable(Of Exception))
+  fullName: Azuria.ErrorHandling.IProxerResult.Deconstruct(out System.Boolean, out System.Collections.Generic.IEnumerable<System.Exception>)
+  fullName.vb: Azuria.ErrorHandling.IProxerResult.Deconstruct(ByRef System.Boolean, ByRef System.Collections.Generic.IEnumerable(Of System.Exception))
+  nameWithType: IProxerResult.Deconstruct(out Boolean, out IEnumerable<Exception>)
+  nameWithType.vb: IProxerResult.Deconstruct(ByRef Boolean, ByRef IEnumerable(Of Exception))
+- uid: Azuria.ErrorHandling.IProxerResult.Deconstruct*
+  name: Deconstruct
+  href: api/Azuria.ErrorHandling.IProxerResult.html#Azuria_ErrorHandling_IProxerResult_Deconstruct_
+  commentId: Overload:Azuria.ErrorHandling.IProxerResult.Deconstruct
+  fullName: Azuria.ErrorHandling.IProxerResult.Deconstruct
+  nameWithType: IProxerResult.Deconstruct
 - uid: Azuria.ErrorHandling.IProxerResult.Exceptions
   name: Exceptions
   href: api/Azuria.ErrorHandling.IProxerResult.html#Azuria_ErrorHandling_IProxerResult_Exceptions
@@ -7749,6 +7853,23 @@ references:
   fullName.vb: Azuria.ErrorHandling.IProxerResult(Of T)
   nameWithType: IProxerResult<T>
   nameWithType.vb: IProxerResult(Of T)
+- uid: Azuria.ErrorHandling.IProxerResult`1.Deconstruct(System.Boolean@,System.Collections.Generic.IEnumerable{System.Exception}@,`0@)
+  name: Deconstruct(out Boolean, out IEnumerable<Exception>, out T)
+  href: api/Azuria.ErrorHandling.IProxerResult-1.html#Azuria_ErrorHandling_IProxerResult_1_Deconstruct_System_Boolean__System_Collections_Generic_IEnumerable_System_Exception____0__
+  commentId: M:Azuria.ErrorHandling.IProxerResult`1.Deconstruct(System.Boolean@,System.Collections.Generic.IEnumerable{System.Exception}@,`0@)
+  name.vb: Deconstruct(ByRef Boolean, ByRef IEnumerable(Of Exception), ByRef T)
+  fullName: Azuria.ErrorHandling.IProxerResult<T>.Deconstruct(out System.Boolean, out System.Collections.Generic.IEnumerable<System.Exception>, out T)
+  fullName.vb: Azuria.ErrorHandling.IProxerResult(Of T).Deconstruct(ByRef System.Boolean, ByRef System.Collections.Generic.IEnumerable(Of System.Exception), ByRef T)
+  nameWithType: IProxerResult<T>.Deconstruct(out Boolean, out IEnumerable<Exception>, out T)
+  nameWithType.vb: IProxerResult(Of T).Deconstruct(ByRef Boolean, ByRef IEnumerable(Of Exception), ByRef T)
+- uid: Azuria.ErrorHandling.IProxerResult`1.Deconstruct*
+  name: Deconstruct
+  href: api/Azuria.ErrorHandling.IProxerResult-1.html#Azuria_ErrorHandling_IProxerResult_1_Deconstruct_
+  commentId: Overload:Azuria.ErrorHandling.IProxerResult`1.Deconstruct
+  fullName: Azuria.ErrorHandling.IProxerResult<T>.Deconstruct
+  fullName.vb: Azuria.ErrorHandling.IProxerResult(Of T).Deconstruct
+  nameWithType: IProxerResult<T>.Deconstruct
+  nameWithType.vb: IProxerResult(Of T).Deconstruct
 - uid: Azuria.ErrorHandling.IProxerResult`1.Result
   name: Result
   href: api/Azuria.ErrorHandling.IProxerResult-1.html#Azuria_ErrorHandling_IProxerResult_1_Result
@@ -7798,6 +7919,21 @@ references:
   commentId: Overload:Azuria.ErrorHandling.ProxerResult.#ctor
   fullName: Azuria.ErrorHandling.ProxerResult.ProxerResult
   nameWithType: ProxerResult.ProxerResult
+- uid: Azuria.ErrorHandling.ProxerResult.Deconstruct(System.Boolean@,System.Collections.Generic.IEnumerable{System.Exception}@)
+  name: Deconstruct(out Boolean, out IEnumerable<Exception>)
+  href: api/Azuria.ErrorHandling.ProxerResult.html#Azuria_ErrorHandling_ProxerResult_Deconstruct_System_Boolean__System_Collections_Generic_IEnumerable_System_Exception___
+  commentId: M:Azuria.ErrorHandling.ProxerResult.Deconstruct(System.Boolean@,System.Collections.Generic.IEnumerable{System.Exception}@)
+  name.vb: Deconstruct(ByRef Boolean, ByRef IEnumerable(Of Exception))
+  fullName: Azuria.ErrorHandling.ProxerResult.Deconstruct(out System.Boolean, out System.Collections.Generic.IEnumerable<System.Exception>)
+  fullName.vb: Azuria.ErrorHandling.ProxerResult.Deconstruct(ByRef System.Boolean, ByRef System.Collections.Generic.IEnumerable(Of System.Exception))
+  nameWithType: ProxerResult.Deconstruct(out Boolean, out IEnumerable<Exception>)
+  nameWithType.vb: ProxerResult.Deconstruct(ByRef Boolean, ByRef IEnumerable(Of Exception))
+- uid: Azuria.ErrorHandling.ProxerResult.Deconstruct*
+  name: Deconstruct
+  href: api/Azuria.ErrorHandling.ProxerResult.html#Azuria_ErrorHandling_ProxerResult_Deconstruct_
+  commentId: Overload:Azuria.ErrorHandling.ProxerResult.Deconstruct
+  fullName: Azuria.ErrorHandling.ProxerResult.Deconstruct
+  nameWithType: ProxerResult.Deconstruct
 - uid: Azuria.ErrorHandling.ProxerResult.Exceptions
   name: Exceptions
   href: api/Azuria.ErrorHandling.ProxerResult.html#Azuria_ErrorHandling_ProxerResult_Exceptions
@@ -7864,6 +8000,23 @@ references:
   fullName.vb: Azuria.ErrorHandling.ProxerResult(Of T).ProxerResult
   nameWithType: ProxerResult<T>.ProxerResult
   nameWithType.vb: ProxerResult(Of T).ProxerResult
+- uid: Azuria.ErrorHandling.ProxerResult`1.Deconstruct(System.Boolean@,System.Collections.Generic.IEnumerable{System.Exception}@,`0@)
+  name: Deconstruct(out Boolean, out IEnumerable<Exception>, out T)
+  href: api/Azuria.ErrorHandling.ProxerResult-1.html#Azuria_ErrorHandling_ProxerResult_1_Deconstruct_System_Boolean__System_Collections_Generic_IEnumerable_System_Exception____0__
+  commentId: M:Azuria.ErrorHandling.ProxerResult`1.Deconstruct(System.Boolean@,System.Collections.Generic.IEnumerable{System.Exception}@,`0@)
+  name.vb: Deconstruct(ByRef Boolean, ByRef IEnumerable(Of Exception), ByRef T)
+  fullName: Azuria.ErrorHandling.ProxerResult<T>.Deconstruct(out System.Boolean, out System.Collections.Generic.IEnumerable<System.Exception>, out T)
+  fullName.vb: Azuria.ErrorHandling.ProxerResult(Of T).Deconstruct(ByRef System.Boolean, ByRef System.Collections.Generic.IEnumerable(Of System.Exception), ByRef T)
+  nameWithType: ProxerResult<T>.Deconstruct(out Boolean, out IEnumerable<Exception>, out T)
+  nameWithType.vb: ProxerResult(Of T).Deconstruct(ByRef Boolean, ByRef IEnumerable(Of Exception), ByRef T)
+- uid: Azuria.ErrorHandling.ProxerResult`1.Deconstruct*
+  name: Deconstruct
+  href: api/Azuria.ErrorHandling.ProxerResult-1.html#Azuria_ErrorHandling_ProxerResult_1_Deconstruct_
+  commentId: Overload:Azuria.ErrorHandling.ProxerResult`1.Deconstruct
+  fullName: Azuria.ErrorHandling.ProxerResult<T>.Deconstruct
+  fullName.vb: Azuria.ErrorHandling.ProxerResult(Of T).Deconstruct
+  nameWithType: ProxerResult<T>.Deconstruct
+  nameWithType.vb: ProxerResult(Of T).Deconstruct
 - uid: Azuria.ErrorHandling.ProxerResult`1.Result
   name: Result
   href: api/Azuria.ErrorHandling.ProxerResult-1.html#Azuria_ErrorHandling_ProxerResult_1_Result

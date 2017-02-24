@@ -116,7 +116,7 @@
                 <a href="https://github.com/InfiniteSoul/Azuria/new/new-docs/apiSpec/new?filename=Azuria_Api_v1_ApiRequest__ctor_System_Uri_.md&amp;value=---%0Auid%3A%20Azuria.Api.v1.ApiRequest.%23ctor(System.Uri)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
               </span>
               <span class="small pull-right mobile-hide">
-                <a href="https://github.com/InfiniteSoul/Azuria/blob/new-docs/Azuria/Api/v1/ApiRequest.cs/#L84">View Source</a>
+                <a href="https://github.com/InfiniteSoul/Azuria/blob/new-docs/Azuria/Api/v1/ApiRequest.cs/#L110">View Source</a>
               </span>
               <a id="Azuria_Api_v1_ApiRequest__ctor_" data-uid="Azuria.Api.v1.ApiRequest.#ctor*"></a>
               <h4 id="Azuria_Api_v1_ApiRequest__ctor_System_Uri_" data-uid="Azuria.Api.v1.ApiRequest.#ctor(System.Uri)">ApiRequest(Uri)</h4>
@@ -124,7 +124,7 @@
               <div class="markdown level1 conceptual"></div>
               <h5 class="decalaration">Declaration</h5>
               <div class="codewrapper">
-                <pre><code class="lang-csharp hljs">protected ApiRequest(Uri address)</code></pre>
+                <pre><code class="lang-csharp hljs">protected ApiRequest(Uri baseAddress)</code></pre>
               </div>
               <h5 class="parameters">Parameters</h5>
               <table class="table table-bordered table-striped table-condensed">
@@ -138,7 +138,7 @@
                 <tbody>
                   <tr>
                     <td><span class="xref">System.Uri</span></td>
-                    <td><span class="parametername">address</span></td>
+                    <td><span class="parametername">baseAddress</span></td>
                     <td></td>
                   </tr>
                 </tbody>
@@ -147,18 +147,18 @@
               </h3>
               <span class="small pull-right mobile-hide">
                 <span class="divider">|</span>
-                <a href="https://github.com/InfiniteSoul/Azuria/new/new-docs/apiSpec/new?filename=Azuria_Api_v1_ApiRequest_Address.md&amp;value=---%0Auid%3A%20Azuria.Api.v1.ApiRequest.Address%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+                <a href="https://github.com/InfiniteSoul/Azuria/new/new-docs/apiSpec/new?filename=Azuria_Api_v1_ApiRequest_BaseAddress.md&amp;value=---%0Auid%3A%20Azuria.Api.v1.ApiRequest.BaseAddress%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
               </span>
               <span class="small pull-right mobile-hide">
-                <a href="https://github.com/InfiniteSoul/Azuria/blob/new-docs/Azuria/Api/v1/ApiRequest.cs/#L93">View Source</a>
+                <a href="https://github.com/InfiniteSoul/Azuria/blob/new-docs/Azuria/Api/v1/ApiRequest.cs/#L119">View Source</a>
               </span>
-              <a id="Azuria_Api_v1_ApiRequest_Address_" data-uid="Azuria.Api.v1.ApiRequest.Address*"></a>
-              <h4 id="Azuria_Api_v1_ApiRequest_Address" data-uid="Azuria.Api.v1.ApiRequest.Address">Address</h4>
+              <a id="Azuria_Api_v1_ApiRequest_BaseAddress_" data-uid="Azuria.Api.v1.ApiRequest.BaseAddress*"></a>
+              <h4 id="Azuria_Api_v1_ApiRequest_BaseAddress" data-uid="Azuria.Api.v1.ApiRequest.BaseAddress">BaseAddress</h4>
               <div class="markdown level1 summary"></div>
               <div class="markdown level1 conceptual"></div>
               <h5 class="decalaration">Declaration</h5>
               <div class="codewrapper">
-                <pre><code class="lang-csharp hljs">public Uri Address { get; set; }</code></pre>
+                <pre><code class="lang-csharp hljs">public Uri BaseAddress { get; set; }</code></pre>
               </div>
               <h5 class="propertyValue">Property Value</h5>
               <table class="table table-bordered table-striped table-condensed">
@@ -180,7 +180,7 @@
                 <a href="https://github.com/InfiniteSoul/Azuria/new/new-docs/apiSpec/new?filename=Azuria_Api_v1_ApiRequest_CheckLogin.md&amp;value=---%0Auid%3A%20Azuria.Api.v1.ApiRequest.CheckLogin%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
               </span>
               <span class="small pull-right mobile-hide">
-                <a href="https://github.com/InfiniteSoul/Azuria/blob/new-docs/Azuria/Api/v1/ApiRequest.cs/#L97">View Source</a>
+                <a href="https://github.com/InfiniteSoul/Azuria/blob/new-docs/Azuria/Api/v1/ApiRequest.cs/#L123">View Source</a>
               </span>
               <a id="Azuria_Api_v1_ApiRequest_CheckLogin_" data-uid="Azuria.Api.v1.ApiRequest.CheckLogin*"></a>
               <h4 id="Azuria_Api_v1_ApiRequest_CheckLogin" data-uid="Azuria.Api.v1.ApiRequest.CheckLogin">CheckLogin</h4>
@@ -207,10 +207,70 @@
               </table>
               <span class="small pull-right mobile-hide">
                 <span class="divider">|</span>
+                <a href="https://github.com/InfiniteSoul/Azuria/new/new-docs/apiSpec/new?filename=Azuria_Api_v1_ApiRequest_FullAddress.md&amp;value=---%0Auid%3A%20Azuria.Api.v1.ApiRequest.FullAddress%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+              </span>
+              <span class="small pull-right mobile-hide">
+                <a href="https://github.com/InfiniteSoul/Azuria/blob/new-docs/Azuria/Api/v1/ApiRequest.cs/#L127">View Source</a>
+              </span>
+              <a id="Azuria_Api_v1_ApiRequest_FullAddress_" data-uid="Azuria.Api.v1.ApiRequest.FullAddress*"></a>
+              <h4 id="Azuria_Api_v1_ApiRequest_FullAddress" data-uid="Azuria.Api.v1.ApiRequest.FullAddress">FullAddress</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public Uri FullAddress { get; }</code></pre>
+              </div>
+              <h5 class="propertyValue">Property Value</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Uri</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <span class="small pull-right mobile-hide">
+                <span class="divider">|</span>
+                <a href="https://github.com/InfiniteSoul/Azuria/new/new-docs/apiSpec/new?filename=Azuria_Api_v1_ApiRequest_GetParameter.md&amp;value=---%0Auid%3A%20Azuria.Api.v1.ApiRequest.GetParameter%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+              </span>
+              <span class="small pull-right mobile-hide">
+                <a href="https://github.com/InfiniteSoul/Azuria/blob/new-docs/Azuria/Api/v1/ApiRequest.cs/#L131">View Source</a>
+              </span>
+              <a id="Azuria_Api_v1_ApiRequest_GetParameter_" data-uid="Azuria.Api.v1.ApiRequest.GetParameter*"></a>
+              <h4 id="Azuria_Api_v1_ApiRequest_GetParameter" data-uid="Azuria.Api.v1.ApiRequest.GetParameter">GetParameter</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public IDictionary&lt;string, string&gt; GetParameter { get; set; }</code></pre>
+              </div>
+              <h5 class="propertyValue">Property Value</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Collections.Generic.IDictionary</span>&lt;<span class="xref">System.String</span>, <span class="xref">System.String</span>&gt;</td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <span class="small pull-right mobile-hide">
+                <span class="divider">|</span>
                 <a href="https://github.com/InfiniteSoul/Azuria/new/new-docs/apiSpec/new?filename=Azuria_Api_v1_ApiRequest_PostArguments.md&amp;value=---%0Auid%3A%20Azuria.Api.v1.ApiRequest.PostArguments%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
               </span>
               <span class="small pull-right mobile-hide">
-                <a href="https://github.com/InfiniteSoul/Azuria/blob/new-docs/Azuria/Api/v1/ApiRequest.cs/#L101">View Source</a>
+                <a href="https://github.com/InfiniteSoul/Azuria/blob/new-docs/Azuria/Api/v1/ApiRequest.cs/#L135">View Source</a>
               </span>
               <a id="Azuria_Api_v1_ApiRequest_PostArguments_" data-uid="Azuria.Api.v1.ApiRequest.PostArguments*"></a>
               <h4 id="Azuria_Api_v1_ApiRequest_PostArguments" data-uid="Azuria.Api.v1.ApiRequest.PostArguments">PostArguments</h4>
@@ -240,7 +300,7 @@
                 <a href="https://github.com/InfiniteSoul/Azuria/new/new-docs/apiSpec/new?filename=Azuria_Api_v1_ApiRequest_Senpai.md&amp;value=---%0Auid%3A%20Azuria.Api.v1.ApiRequest.Senpai%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
               </span>
               <span class="small pull-right mobile-hide">
-                <a href="https://github.com/InfiniteSoul/Azuria/blob/new-docs/Azuria/Api/v1/ApiRequest.cs/#L106">View Source</a>
+                <a href="https://github.com/InfiniteSoul/Azuria/blob/new-docs/Azuria/Api/v1/ApiRequest.cs/#L143">View Source</a>
               </span>
               <a id="Azuria_Api_v1_ApiRequest_Senpai_" data-uid="Azuria.Api.v1.ApiRequest.Senpai*"></a>
               <h4 id="Azuria_Api_v1_ApiRequest_Senpai" data-uid="Azuria.Api.v1.ApiRequest.Senpai">Senpai</h4>
@@ -272,7 +332,7 @@
                 <a href="https://github.com/InfiniteSoul/Azuria/new/new-docs/apiSpec/new?filename=Azuria_Api_v1_ApiRequest_Create_System_Uri_.md&amp;value=---%0Auid%3A%20Azuria.Api.v1.ApiRequest.Create(System.Uri)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
               </span>
               <span class="small pull-right mobile-hide">
-                <a href="https://github.com/InfiniteSoul/Azuria/blob/new-docs/Azuria/Api/v1/ApiRequest.cs/#L116">View Source</a>
+                <a href="https://github.com/InfiniteSoul/Azuria/blob/new-docs/Azuria/Api/v1/ApiRequest.cs/#L163">View Source</a>
               </span>
               <a id="Azuria_Api_v1_ApiRequest_Create_" data-uid="Azuria.Api.v1.ApiRequest.Create*"></a>
               <h4 id="Azuria_Api_v1_ApiRequest_Create_System_Uri_" data-uid="Azuria.Api.v1.ApiRequest.Create(System.Uri)">Create(Uri)</h4>
@@ -280,7 +340,7 @@
               <div class="markdown level1 conceptual"></div>
               <h5 class="decalaration">Declaration</h5>
               <div class="codewrapper">
-                <pre><code class="lang-csharp hljs">public static ApiRequest Create(Uri address)</code></pre>
+                <pre><code class="lang-csharp hljs">public static ApiRequest Create(Uri baseAddress)</code></pre>
               </div>
               <h5 class="parameters">Parameters</h5>
               <table class="table table-bordered table-striped table-condensed">
@@ -294,7 +354,7 @@
                 <tbody>
                   <tr>
                     <td><span class="xref">System.Uri</span></td>
-                    <td><span class="parametername">address</span></td>
+                    <td><span class="parametername">baseAddress</span></td>
                     <td></td>
                   </tr>
                 </tbody>
@@ -319,7 +379,7 @@
                 <a href="https://github.com/InfiniteSoul/Azuria/new/new-docs/apiSpec/new?filename=Azuria_Api_v1_ApiRequest_WithCheckLogin_System_Boolean_.md&amp;value=---%0Auid%3A%20Azuria.Api.v1.ApiRequest.WithCheckLogin(System.Boolean)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
               </span>
               <span class="small pull-right mobile-hide">
-                <a href="https://github.com/InfiniteSoul/Azuria/blob/new-docs/Azuria/Api/v1/ApiRequest.cs/#L125">View Source</a>
+                <a href="https://github.com/InfiniteSoul/Azuria/blob/new-docs/Azuria/Api/v1/ApiRequest.cs/#L172">View Source</a>
               </span>
               <a id="Azuria_Api_v1_ApiRequest_WithCheckLogin_" data-uid="Azuria.Api.v1.ApiRequest.WithCheckLogin*"></a>
               <h4 id="Azuria_Api_v1_ApiRequest_WithCheckLogin_System_Boolean_" data-uid="Azuria.Api.v1.ApiRequest.WithCheckLogin(System.Boolean)">WithCheckLogin(Boolean)</h4>
@@ -363,10 +423,109 @@
               </table>
               <span class="small pull-right mobile-hide">
                 <span class="divider">|</span>
+                <a href="https://github.com/InfiniteSoul/Azuria/new/new-docs/apiSpec/new?filename=Azuria_Api_v1_ApiRequest_WithGetParameter_System_String_System_String_.md&amp;value=---%0Auid%3A%20Azuria.Api.v1.ApiRequest.WithGetParameter(System.String%2CSystem.String)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+              </span>
+              <span class="small pull-right mobile-hide">
+                <a href="https://github.com/InfiniteSoul/Azuria/blob/new-docs/Azuria/Api/v1/ApiRequest.cs/#L184">View Source</a>
+              </span>
+              <a id="Azuria_Api_v1_ApiRequest_WithGetParameter_" data-uid="Azuria.Api.v1.ApiRequest.WithGetParameter*"></a>
+              <h4 id="Azuria_Api_v1_ApiRequest_WithGetParameter_System_String_System_String_" data-uid="Azuria.Api.v1.ApiRequest.WithGetParameter(System.String,System.String)">WithGetParameter(String, String)</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public ApiRequest WithGetParameter(string key, string value)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.String</span></td>
+                    <td><span class="parametername">key</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><span class="xref">System.String</span></td>
+                    <td><span class="parametername">value</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="Azuria.Api.v1.ApiRequest.html">ApiRequest</a></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <span class="small pull-right mobile-hide">
+                <span class="divider">|</span>
+                <a href="https://github.com/InfiniteSoul/Azuria/new/new-docs/apiSpec/new?filename=Azuria_Api_v1_ApiRequest_WithGetParameters_System_Collections_Generic_IDictionary_System_String_System_String__.md&amp;value=---%0Auid%3A%20Azuria.Api.v1.ApiRequest.WithGetParameters(System.Collections.Generic.IDictionary%7BSystem.String%2CSystem.String%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+              </span>
+              <span class="small pull-right mobile-hide">
+                <a href="https://github.com/InfiniteSoul/Azuria/blob/new-docs/Azuria/Api/v1/ApiRequest.cs/#L195">View Source</a>
+              </span>
+              <a id="Azuria_Api_v1_ApiRequest_WithGetParameters_" data-uid="Azuria.Api.v1.ApiRequest.WithGetParameters*"></a>
+              <h4 id="Azuria_Api_v1_ApiRequest_WithGetParameters_System_Collections_Generic_IDictionary_System_String_System_String__" data-uid="Azuria.Api.v1.ApiRequest.WithGetParameters(System.Collections.Generic.IDictionary{System.String,System.String})">WithGetParameters(IDictionary&lt;String, String&gt;)</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public ApiRequest WithGetParameters(IDictionary&lt;string, string&gt; getArgs)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Collections.Generic.IDictionary</span>&lt;<span class="xref">System.String</span>, <span class="xref">System.String</span>&gt;</td>
+                    <td><span class="parametername">getArgs</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="Azuria.Api.v1.ApiRequest.html">ApiRequest</a></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <span class="small pull-right mobile-hide">
+                <span class="divider">|</span>
                 <a href="https://github.com/InfiniteSoul/Azuria/new/new-docs/apiSpec/new?filename=Azuria_Api_v1_ApiRequest_WithPostArgument_System_String_System_String_.md&amp;value=---%0Auid%3A%20Azuria.Api.v1.ApiRequest.WithPostArgument(System.String%2CSystem.String)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
               </span>
               <span class="small pull-right mobile-hide">
-                <a href="https://github.com/InfiniteSoul/Azuria/blob/new-docs/Azuria/Api/v1/ApiRequest.cs/#L134">View Source</a>
+                <a href="https://github.com/InfiniteSoul/Azuria/blob/new-docs/Azuria/Api/v1/ApiRequest.cs/#L204">View Source</a>
               </span>
               <a id="Azuria_Api_v1_ApiRequest_WithPostArgument_" data-uid="Azuria.Api.v1.ApiRequest.WithPostArgument*"></a>
               <h4 id="Azuria_Api_v1_ApiRequest_WithPostArgument_System_String_System_String_" data-uid="Azuria.Api.v1.ApiRequest.WithPostArgument(System.String,System.String)">WithPostArgument(String, String)</h4>
@@ -418,7 +577,7 @@
                 <a href="https://github.com/InfiniteSoul/Azuria/new/new-docs/apiSpec/new?filename=Azuria_Api_v1_ApiRequest_WithPostArguments_System_Collections_Generic_IEnumerable_System_Collections_Generic_KeyValuePair_System_String_System_String___.md&amp;value=---%0Auid%3A%20Azuria.Api.v1.ApiRequest.WithPostArguments(System.Collections.Generic.IEnumerable%7BSystem.Collections.Generic.KeyValuePair%7BSystem.String%2CSystem.String%7D%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
               </span>
               <span class="small pull-right mobile-hide">
-                <a href="https://github.com/InfiniteSoul/Azuria/blob/new-docs/Azuria/Api/v1/ApiRequest.cs/#L145">View Source</a>
+                <a href="https://github.com/InfiniteSoul/Azuria/blob/new-docs/Azuria/Api/v1/ApiRequest.cs/#L213">View Source</a>
               </span>
               <a id="Azuria_Api_v1_ApiRequest_WithPostArguments_" data-uid="Azuria.Api.v1.ApiRequest.WithPostArguments*"></a>
               <h4 id="Azuria_Api_v1_ApiRequest_WithPostArguments_System_Collections_Generic_IEnumerable_System_Collections_Generic_KeyValuePair_System_String_System_String___" data-uid="Azuria.Api.v1.ApiRequest.WithPostArguments(System.Collections.Generic.IEnumerable{System.Collections.Generic.KeyValuePair{System.String,System.String}})">WithPostArguments(IEnumerable&lt;KeyValuePair&lt;String, String&gt;&gt;)</h4>
@@ -465,7 +624,7 @@
                 <a href="https://github.com/InfiniteSoul/Azuria/new/new-docs/apiSpec/new?filename=Azuria_Api_v1_ApiRequest_WithSenpai_Azuria_Senpai_.md&amp;value=---%0Auid%3A%20Azuria.Api.v1.ApiRequest.WithSenpai(Azuria.Senpai)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
               </span>
               <span class="small pull-right mobile-hide">
-                <a href="https://github.com/InfiniteSoul/Azuria/blob/new-docs/Azuria/Api/v1/ApiRequest.cs/#L155">View Source</a>
+                <a href="https://github.com/InfiniteSoul/Azuria/blob/new-docs/Azuria/Api/v1/ApiRequest.cs/#L223">View Source</a>
               </span>
               <a id="Azuria_Api_v1_ApiRequest_WithSenpai_" data-uid="Azuria.Api.v1.ApiRequest.WithSenpai*"></a>
               <h4 id="Azuria_Api_v1_ApiRequest_WithSenpai_Azuria_Senpai_" data-uid="Azuria.Api.v1.ApiRequest.WithSenpai(Azuria.Senpai)">WithSenpai(Senpai)</h4>
@@ -518,7 +677,7 @@
                     <a href="https://github.com/InfiniteSoul/Azuria/new/new-docs/apiSpec/new?filename=Azuria_Api_v1_ApiRequest.md&amp;value=---%0Auid%3A%20Azuria.Api.v1.ApiRequest%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
                   </li>
                   <li>
-                    <a href="https://github.com/InfiniteSoul/Azuria/blob/new-docs/Azuria/Api/v1/ApiRequest.cs/#L79" class="contribution-link">View Source</a>
+                    <a href="https://github.com/InfiniteSoul/Azuria/blob/new-docs/Azuria/Api/v1/ApiRequest.cs/#L103" class="contribution-link">View Source</a>
                   </li>
                 </ul>
               </div>
