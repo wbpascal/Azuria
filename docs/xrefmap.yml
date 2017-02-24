@@ -6297,6 +6297,18 @@ references:
   commentId: Overload:Azuria.Api.v1.RequestBuilder.MessengerRequestBuilder.SetRead
   fullName: Azuria.Api.v1.RequestBuilder.MessengerRequestBuilder.SetRead
   nameWithType: MessengerRequestBuilder.SetRead
+- uid: Azuria.Api.v1.RequestBuilder.MessengerRequestBuilder.SetReport(System.Int32,System.String,Azuria.Senpai)
+  name: SetReport(Int32, String, Senpai)
+  href: api/Azuria.Api.v1.RequestBuilder.MessengerRequestBuilder.html#Azuria_Api_v1_RequestBuilder_MessengerRequestBuilder_SetReport_System_Int32_System_String_Azuria_Senpai_
+  commentId: M:Azuria.Api.v1.RequestBuilder.MessengerRequestBuilder.SetReport(System.Int32,System.String,Azuria.Senpai)
+  fullName: Azuria.Api.v1.RequestBuilder.MessengerRequestBuilder.SetReport(System.Int32, System.String, Azuria.Senpai)
+  nameWithType: MessengerRequestBuilder.SetReport(Int32, String, Senpai)
+- uid: Azuria.Api.v1.RequestBuilder.MessengerRequestBuilder.SetReport*
+  name: SetReport
+  href: api/Azuria.Api.v1.RequestBuilder.MessengerRequestBuilder.html#Azuria_Api_v1_RequestBuilder_MessengerRequestBuilder_SetReport_
+  commentId: Overload:Azuria.Api.v1.RequestBuilder.MessengerRequestBuilder.SetReport
+  fullName: Azuria.Api.v1.RequestBuilder.MessengerRequestBuilder.SetReport
+  nameWithType: MessengerRequestBuilder.SetReport
 - uid: Azuria.Api.v1.RequestBuilder.MessengerRequestBuilder.SetUnblock(System.Int32,Azuria.Senpai)
   name: SetUnblock(Int32, Senpai)
   href: api/Azuria.Api.v1.RequestBuilder.MessengerRequestBuilder.html#Azuria_Api_v1_RequestBuilder_MessengerRequestBuilder_SetUnblock_System_Int32_Azuria_Senpai_

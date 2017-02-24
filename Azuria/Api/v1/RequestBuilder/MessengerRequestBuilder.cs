@@ -217,7 +217,25 @@ namespace Azuria.Api.v1.RequestBuilder
         /// <returns>An instance of <see cref="ApiRequest" />.</returns>
         public static ApiRequest SetRead(int conferenceId, Senpai senpai)
         {
-            return ApiRequest<int>.Create(new Uri($"{ApiConstants.ApiUrlV1}/messenger/report"))
+            return ApiRequest.Create(new Uri($"{ApiConstants.ApiUrlV1}/messenger/setread"))
+                .WithGetParameter("conference_id", conferenceId.ToString())
+                .WithCheckLogin(true)
+                .WithSenpai(senpai);
+        }
+
+        /// <summary>
+        /// Creates an <see cref="ApiRequest" /> instance that reports a conference to the admins.
+        /// 
+        /// Api permissions required:
+        /// * Messenger - Level 0
+        /// </summary>
+        /// <param name="conferenceId">The id of the conference that is being reported.</param>
+        /// <param name="reason">The reason that the conference is being reported.</param>
+        /// <param name="senpai">The user that reports the conference. Must be logged in and participant of the conference.</param>
+        /// <returns>An instance of <see cref="ApiRequest" />.</returns>
+        public static ApiRequest SetReport(int conferenceId, string reason, Senpai senpai)
+        {
+            return ApiRequest.Create(new Uri($"{ApiConstants.ApiUrlV1}/messenger/report"))
                 .WithGetParameter("conference_id", conferenceId.ToString())
                 .WithCheckLogin(true)
                 .WithPostArgument("text", reason)
