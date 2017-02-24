@@ -145,13 +145,28 @@ namespace Azuria.Api.v1.RequestBuilder
 
         /// <summary>
         /// </summary>
+        /// <param name="commentId"></param>
+        /// <param name="progress"></param>
+        /// <param name="senpai"></param>
+        /// <returns></returns>
+        public static ApiRequest SetCommentState(int commentId, int progress, Senpai senpai)
+        {
+            return ApiRequest.Create(new Uri($"{ApiConstants.ApiUrlV1}/ucp/setcommentstate"))
+                .WithCheckLogin(true)
+                .WithPostArgument("id", commentId.ToString())
+                .WithPostArgument("value", progress.ToString())
+                .WithSenpai(senpai);
+        }
+
+        /// <summary>
+        /// </summary>
         /// <param name="entryId"></param>
         /// <param name="contentIndex"></param>
         /// <param name="language"></param>
         /// <param name="kat"></param>
         /// <param name="senpai"></param>
         /// <returns></returns>
-        public static ApiRequest SetBookmark(int entryId, int contentIndex, string language, string kat,
+        public static ApiRequest SetReminder(int entryId, int contentIndex, string language, string kat,
             Senpai senpai)
         {
             return ApiRequest.Create(new Uri($"{ApiConstants.ApiUrlV1}/ucp/setreminder"))
@@ -160,21 +175,6 @@ namespace Azuria.Api.v1.RequestBuilder
                 .WithGetParameter("language", language)
                 .WithGetParameter("kat", kat)
                 .WithCheckLogin(true)
-                .WithSenpai(senpai);
-        }
-
-        /// <summary>
-        /// </summary>
-        /// <param name="commentId"></param>
-        /// <param name="progress"></param>
-        /// <param name="senpai"></param>
-        /// <returns></returns>
-        public static ApiRequest SetProgress(int commentId, int progress, Senpai senpai)
-        {
-            return ApiRequest.Create(new Uri($"{ApiConstants.ApiUrlV1}/ucp/setcommentstate"))
-                .WithCheckLogin(true)
-                .WithPostArgument("id", commentId.ToString())
-                .WithPostArgument("value", progress.ToString())
                 .WithSenpai(senpai);
         }
 
