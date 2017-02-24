@@ -27,8 +27,10 @@ namespace Azuria.Api.v1.RequestBuilder
         public static ApiRequest<ChapterDataModel> GetChapter(int id, int episode, string language,
             Senpai senpai = null)
         {
-            return ApiRequest<ChapterDataModel>.Create(
-                    new Uri($"{ApiConstants.ApiUrlV1}/manga/chapter?id={id}&episode={episode}&language={language}"))
+            return ApiRequest<ChapterDataModel>.Create(new Uri($"{ApiConstants.ApiUrlV1}/manga/chapter"))
+                .WithGetParameter("id", id.ToString())
+                .WithGetParameter("episode", episode.ToString())
+                .WithGetParameter("language", language)
                 .WithSenpai(senpai);
         }
 

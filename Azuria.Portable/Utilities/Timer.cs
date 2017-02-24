@@ -85,8 +85,6 @@ namespace System.Timers
         }
 
         /// <summary>
-        ///     Führt anwendungsspezifische Aufgaben aus, die mit dem Freigeben, Zurückgeben oder Zurücksetzen von nicht
-        ///     verwalteten Ressourcen zusammenhängen.
         /// </summary>
         public void Dispose()
         {

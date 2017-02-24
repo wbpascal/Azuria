@@ -30,8 +30,10 @@ namespace Azuria.Api.v1.RequestBuilder
             int limit = 100,
             int page = 0)
         {
-            return ApiRequest<SearchDataModel[]>.Create(
-                    new Uri($"{ApiConstants.ApiUrlV1}/list/entrylist?limit={limit}&p={page}&kat={kat}"))
+            return ApiRequest<SearchDataModel[]>.Create(new Uri($"{ApiConstants.ApiUrlV1}/list/entrylist"))
+                .WithGetParameter("limit", limit.ToString())
+                .WithGetParameter("p", page.ToString())
+                .WithGetParameter("kat", kat)
                 .WithPostArguments(SearchQueryBuilder.Build(input));
         }
 
@@ -47,8 +49,9 @@ namespace Azuria.Api.v1.RequestBuilder
         /// <returns>An instance of <see cref="ApiRequest" /> that returns an array of search results.</returns>
         public static ApiRequest<SearchDataModel[]> EntrySearch(SearchInput input, int limit = 100, int page = 0)
         {
-            return ApiRequest<SearchDataModel[]>.Create(
-                    new Uri($"{ApiConstants.ApiUrlV1}/list/entrysearch?limit={limit}&p={page}"))
+            return ApiRequest<SearchDataModel[]>.Create(new Uri($"{ApiConstants.ApiUrlV1}/list/entrysearch"))
+                .WithGetParameter("limit", limit.ToString())
+                .WithGetParameter("p", page.ToString())
                 .WithPostArguments(SearchQueryBuilder.Build(input));
         }
 

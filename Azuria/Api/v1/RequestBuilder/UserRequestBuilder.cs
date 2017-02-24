@@ -34,7 +34,8 @@ namespace Azuria.Api.v1.RequestBuilder
         /// <returns>An instance of <see cref="ApiRequest" /> that returns...</returns>
         public static ApiRequest<UserInfoDataModel> GetInfo(int userId)
         {
-            return ApiRequest<UserInfoDataModel>.Create(new Uri($"{ApiConstants.ApiUrlV1}/user/userinfo?uid={userId}"));
+            return ApiRequest<UserInfoDataModel>.Create(new Uri($"{ApiConstants.ApiUrlV1}/user/userinfo"))
+                .WithGetParameter("uid", userId.ToString());
         }
 
         /// <summary>
@@ -47,8 +48,8 @@ namespace Azuria.Api.v1.RequestBuilder
         /// <returns>An instance of <see cref="ApiRequest" /> that returns...</returns>
         public static ApiRequest<UserInfoDataModel> GetInfo(string username)
         {
-            return ApiRequest<UserInfoDataModel>.Create(
-                new Uri($"{ApiConstants.ApiUrlV1}/user/userinfo?username={username}"));
+            return ApiRequest<UserInfoDataModel>.Create(new Uri($"{ApiConstants.ApiUrlV1}/user/userinfo"))
+                .WithGetParameter("username", username);
         }
 
         /// <summary>
@@ -67,8 +68,12 @@ namespace Azuria.Api.v1.RequestBuilder
         public static ApiRequest<CommentDataModel[]> GetLatestComments(int userId, int page, int limit, string kat,
             int length, Senpai senpai = null)
         {
-            return ApiRequest<CommentDataModel[]>.Create(new Uri(
-                    $"{ApiConstants.ApiUrlV1}/user/comments?uid={userId}&p={page}&limit={limit}&kat={kat}&length={length}"))
+            return ApiRequest<CommentDataModel[]>.Create(new Uri($"{ApiConstants.ApiUrlV1}/user/comments"))
+                .WithGetParameter("uid", userId.ToString())
+                .WithGetParameter("p", page.ToString())
+                .WithGetParameter("limit", limit.ToString())
+                .WithGetParameter("kat", kat)
+                .WithGetParameter("length", length.ToString())
                 .WithSenpai(senpai);
         }
 
@@ -87,8 +92,11 @@ namespace Azuria.Api.v1.RequestBuilder
         public static ApiRequest<ListDataModel[]> GetList(int userId, string kat, int page, int limit,
             Senpai senpai = null)
         {
-            return ApiRequest<ListDataModel[]>.Create(new Uri(
-                    $"{ApiConstants.ApiUrlV1}/user/list?uid={userId}&kat={kat}&p={page}&limit={limit}"))
+            return ApiRequest<ListDataModel[]>.Create(new Uri($"{ApiConstants.ApiUrlV1}/user/list"))
+                .WithGetParameter("uid", userId.ToString())
+                .WithGetParameter("p", page.ToString())
+                .WithGetParameter("limit", limit.ToString())
+                .WithGetParameter("kat", kat)
                 .WithSenpai(senpai);
         }
 
@@ -105,8 +113,9 @@ namespace Azuria.Api.v1.RequestBuilder
         public static ApiRequest<ToptenDataModel[]> GetTopten(int userId, string category,
             Senpai senpai = null)
         {
-            return ApiRequest<ToptenDataModel[]>.Create(new Uri(
-                    $"{ApiConstants.ApiUrlV1}/user/topten?uid={userId}&kat={category}"))
+            return ApiRequest<ToptenDataModel[]>.Create(new Uri($"{ApiConstants.ApiUrlV1}/user/topten"))
+                .WithGetParameter("uid", userId.ToString())
+                .WithGetParameter("kat", category)
                 .WithSenpai(senpai);
         }
 

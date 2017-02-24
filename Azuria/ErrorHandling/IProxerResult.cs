@@ -7,7 +7,7 @@ namespace Azuria.ErrorHandling
     /// Represents the result of a method including a returned object.
     /// </summary>
     /// <typeparam name="T">The type of the returned object.</typeparam>
-    public interface IProxerResult<out T> : IProxerResult
+    public interface IProxerResult<T> : IProxerResult
     {
         #region Properties
 
@@ -16,6 +16,17 @@ namespace Azuria.ErrorHandling
         /// value of the type <typeparamref name="T" /> will be returned.
         /// </summary>
         T Result { get; }
+
+        #endregion
+
+        #region Methods
+
+        /// <summary>
+        /// </summary>
+        /// <param name="success"></param>
+        /// <param name="exceptions"></param>
+        /// <param name="result"></param>
+        void Deconstruct(out bool success, out IEnumerable<Exception> exceptions, out T result);
 
         #endregion
     }
@@ -36,6 +47,16 @@ namespace Azuria.ErrorHandling
         /// Gets a value indicating whether the method executed successfully.
         /// </summary>
         bool Success { get; }
+
+        #endregion
+
+        #region Methods
+
+        /// <summary>
+        /// </summary>
+        /// <param name="success"></param>
+        /// <param name="exceptions"></param>
+        void Deconstruct(out bool success, out IEnumerable<Exception> exceptions);
 
         #endregion
     }

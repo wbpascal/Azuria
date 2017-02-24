@@ -63,7 +63,7 @@ namespace Azuria.Api.v1
                 return new ProxerResult(new[] {new NotLoggedInException(request.Senpai)});
 
             IProxerResult<string> lResult =
-                await (request.Senpai?.HttpClient ?? ApiInfo.HttpClient).ProxerRequest(request.Address,
+                await (request.Senpai?.HttpClient ?? ApiInfo.HttpClient).ProxerRequest(request.FullAddress,
                     request.PostArguments, GetHeaders(request, forceTokenLogin)).ConfigureAwait(false);
             if (!lResult.Success || string.IsNullOrEmpty(lResult.Result))
                 return new ProxerResult(lResult.Exceptions);

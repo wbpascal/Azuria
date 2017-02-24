@@ -56,13 +56,8 @@ namespace Azuria.Media
         /// <summary>
         /// Gets the general language (english/german) of the episode.
         /// </summary>
-        public Language GeneralLanguage
-            =>
-            this.Language == AnimeLanguage.GerSub || this.Language == AnimeLanguage.GerDub
-                ? Properties.Language.German
-                : this.Language == AnimeLanguage.EngSub || this.Language == AnimeLanguage.EngDub
-                    ? Properties.Language.English
-                    : Properties.Language.Unkown;
+        public Language GeneralLanguage => this.GetGeneralLanguage();
+
 
         /// <summary>
         /// Gets the language of the episode
@@ -101,6 +96,21 @@ namespace Azuria.Media
         public Task<IProxerResult> AddToBookmarks(Senpai senpai)
         {
             return new UserControlPanel(senpai).AddToBookmarks(this);
+        }
+
+        private Language GetGeneralLanguage()
+        {
+            switch (this.Language)
+            {
+                case AnimeLanguage.GerSub:
+                case AnimeLanguage.GerDub:
+                    return Properties.Language.German;
+                case AnimeLanguage.EngSub:
+                case AnimeLanguage.EngDub:
+                    return Properties.Language.English;
+                default:
+                    return Properties.Language.Unkown;
+            }
         }
 
         private async Task<IProxerResult> InitStreams()

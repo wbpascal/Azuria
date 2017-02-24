@@ -62,8 +62,9 @@ namespace Azuria.Api.v1.RequestBuilder
         /// <returns>An instance of <see cref="ApiRequest" /> that returns an array of news.</returns>
         public static ApiRequest<NewsNotificationDataModel[]> GetNews(Senpai senpai = null, int page = 0, int limit = 15)
         {
-            return ApiRequest<NewsNotificationDataModel[]>.Create(
-                    new Uri($"{ApiConstants.ApiUrlV1}/notifications/news?p={page}&limit={limit}"))
+            return ApiRequest<NewsNotificationDataModel[]>.Create(new Uri($"{ApiConstants.ApiUrlV1}/notifications/news"))
+                .WithGetParameter("p", page.ToString())
+                .WithGetParameter("limit", limit.ToString())
                 .WithCheckLogin(true)
                 .WithSenpai(senpai);
         }

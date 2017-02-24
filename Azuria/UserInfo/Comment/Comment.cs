@@ -36,7 +36,7 @@ namespace Azuria.UserInfo.Comment
             this.Content = dataModel.CommentContent;
             this.Id = dataModel.CommentId;
             this.Progress = dataModel.CommentContentIndex;
-            this.ProgressState = dataModel.AuthorState;
+            this.ProgressState = dataModel.CommentState;
             this.Rating = dataModel.Rating;
             this.SubRatings = dataModel.CommentSubRatings;
         }
@@ -105,7 +105,7 @@ namespace Azuria.UserInfo.Comment
             if (progress < 0) return new ProxerResult(new[] {new ArgumentException(nameof(progress))});
 
             ProxerApiResponse lResult = await RequestHandler.ApiRequest(
-                    UcpRequestBuilder.SetProgress(this.Id, progress, senpai))
+                    UcpRequestBuilder.SetCommentState(this.Id, progress, senpai))
                 .ConfigureAwait(false);
             if (!lResult.Success) return new ProxerResult(lResult.Exceptions);
 

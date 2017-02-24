@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using Azuria.Api.v1.Converters;
+using Azuria.Utilities.Extensions;
 
 namespace Azuria.Api.v1
 {
@@ -11,7 +12,7 @@ namespace Azuria.Api.v1
     public class ApiRequest<T> : ApiRequest
     {
         /// <inheritdoc />
-        protected ApiRequest(Uri address) : base(address)
+        protected ApiRequest(Uri baseAddress) : base(baseAddress)
         {
         }
 
@@ -26,9 +27,9 @@ namespace Azuria.Api.v1
         #region Methods
 
         /// <inheritdoc />
-        public new static ApiRequest<T> Create(Uri address)
+        public new static ApiRequest<T> Create(Uri baseAddress)
         {
-            return new ApiRequest<T>(address);
+            return new ApiRequest<T>(baseAddress);
         }
 
         /// <inheritdoc />
@@ -45,6 +46,29 @@ namespace Azuria.Api.v1
         public ApiRequest<T> WithCustomDataConverter(DataConverter<T> customConverter)
         {
             this.CustomDataConverter = customConverter;
+            return this;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="key"></param>
+        /// <param name="value"></param>
+        /// <returns></returns>
+        public new ApiRequest<T> WithGetParameter(string key, string value)
+        {
+            this.GetParameter[key] = value;
+            return this;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="getArgs"></param>
+        /// <returns></returns>
+        public ApiRequest<T> WithGetParameters(IEnumerable<KeyValuePair<string, string>> getArgs)
+        {
+            this.GetParameter.AddOrUpdateRange(getArgs);
             return this;
         }
 
@@ -78,19 +102,21 @@ namespace Azuria.Api.v1
     /// </summary>
     public class ApiRequest
     {
+        private List<KeyValuePair<string, string>> _postArguments = new List<KeyValuePair<string, string>>();
+
         /// <summary>
         /// </summary>
-        /// <param name="address"></param>
-        protected ApiRequest(Uri address)
+        /// <param name="baseAddress"></param>
+        protected ApiRequest(Uri baseAddress)
         {
-            this.Address = address;
+            this.BaseAddress = baseAddress;
         }
 
         #region Properties
 
         /// <summary>
         /// </summary>
-        public Uri Address { get; set; }
+        public Uri BaseAddress { get; set; }
 
         /// <summary>
         /// </summary>
@@ -98,8 +124,19 @@ namespace Azuria.Api.v1
 
         /// <summary>
         /// </summary>
-        public IEnumerable<KeyValuePair<string, string>> PostArguments { get; set; } =
-            new Dictionary<string, string>();
+        public Uri FullAddress => this.BuildAddress();
+
+        /// <summary>
+        /// </summary>
+        public IDictionary<string, string> GetParameter { get; set; } = new Dictionary<string, string>();
+
+        /// <summary>
+        /// </summary>
+        public IEnumerable<KeyValuePair<string, string>> PostArguments
+        {
+            get { return this._postArguments; }
+            set { this._postArguments = value.ToList(); }
+        }
 
         /// <summary>
         /// </summary>
@@ -109,13 +146,23 @@ namespace Azuria.Api.v1
 
         #region Methods
 
+        private Uri BuildAddress()
+        {
+            UriBuilder lUriBuilder = new UriBuilder(this.BaseAddress);
+            string lQuery = lUriBuilder.Query;
+            foreach (KeyValuePair<string, string> pair in this.GetParameter)
+                lQuery += $"&{pair.Key}={pair.Value}";
+            if (!string.IsNullOrEmpty(lQuery)) lUriBuilder.Query = lQuery.Remove(0, 1);
+            return lUriBuilder.Uri;
+        }
+
         /// <summary>
         /// </summary>
-        /// <param name="address"></param>
+        /// <param name="baseAddress"></param>
         /// <returns></returns>
-        public static ApiRequest Create(Uri address)
+        public static ApiRequest Create(Uri baseAddress)
         {
-            return new ApiRequest(address);
+            return new ApiRequest(baseAddress);
         }
 
         /// <summary>
@@ -129,13 +176,34 @@ namespace Azuria.Api.v1
         }
 
         /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="key"></param>
+        /// <param name="value"></param>
+        /// <returns></returns>
+        public ApiRequest WithGetParameter(string key, string value)
+        {
+            this.GetParameter[key] = value;
+            return this;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="getArgs"></param>
+        /// <returns></returns>
+        public ApiRequest WithGetParameters(IDictionary<string, string> getArgs)
+        {
+            this.GetParameter.AddOrUpdateRange(getArgs);
+            return this;
+        }
+
+        /// <summary>
         /// </summary>
         /// <returns></returns>
         public ApiRequest WithPostArgument(string key, string value)
         {
-            List<KeyValuePair<string, string>> lPostArgs = this.PostArguments.ToList();
-            lPostArgs.Add(new KeyValuePair<string, string>(key, value));
-            this.PostArguments = lPostArgs;
+            this._postArguments.Add(new KeyValuePair<string, string>(key, value));
             return this;
         }
 
@@ -144,7 +212,7 @@ namespace Azuria.Api.v1
         /// <returns></returns>
         public ApiRequest WithPostArguments(IEnumerable<KeyValuePair<string, string>> postArgs)
         {
-            this.PostArguments = postArgs;
+            this._postArguments.AddRange(postArgs);
             return this;
         }
 

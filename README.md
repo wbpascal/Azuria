@@ -1,8 +1,8 @@
 # Azuria - A Proxer.Me API in .NET (inofficial)
 
-Master | Master (Mono) | NuGet | MyGet (Pre-Release Builds) | Documentation
------ | ----- | ----- | ----- | -----
-[![AppVeyor branch](https://img.shields.io/appveyor/ci/InfiniteSoul/Azuria/master.svg?maxAge=2592000?style=flat-square)](https://ci.appveyor.com/project/InfiniteSoul/azuria/branch/master) | [![Travis](https://img.shields.io/travis/InfiniteSoul/Azuria.svg?maxAge=2592000?style=flat-square)](https://travis-ci.org/InfiniteSoul/Azuria/branches) |  [![NuGet](https://img.shields.io/nuget/v/Azuria.svg?style=flat-square)](https://www.nuget.org/packages/Azuria) | [![MyGet](https://img.shields.io/myget/infinitesoul/vpre/Azuria.svg)](https://www.myget.org/feed/infinitesoul/package/nuget/Azuria) | [![Documentation](https://img.shields.io/badge/docs-offline-red.svg)]()
+Master | NuGet | MyGet (Pre-Release Builds) | Documentation
+----- | ----- | ----- | -----
+[![AppVeyor branch](https://img.shields.io/appveyor/ci/InfiniteSoul/Azuria/master.svg?maxAge=2592000?style=flat-square)](https://ci.appveyor.com/project/InfiniteSoul/azuria/branch/master) | [![NuGet](https://img.shields.io/nuget/v/Azuria.svg?style=flat-square)](https://www.nuget.org/packages/Azuria) | [![MyGet](https://img.shields.io/myget/infinitesoul/vpre/Azuria.svg)](https://www.myget.org/feed/infinitesoul/package/nuget/Azuria) | [![Documentation](https://img.shields.io/badge/docs-offline-red.svg)]()
 
 ---
 
@@ -28,9 +28,9 @@ All packages available on MyGet are automatically generated every time an automa
 
 
 ## Step 2. Initialisation (v0.6.1+)##
-After installing you need to initialise the library to tell it some things that are needed to use the API like the API key. 
+After installing you need to initialise the library to tell it some things that are needed to use the API (like the API key). 
 
-The API key is needed to access the API of Proxer.Me. It also dictates which requests you are allowed to make and which not. Further information and how to get a key can be found [here](https://proxer.me/wiki/Proxer_API/v1).
+The API key is needed to access the API of [Proxer.Me](https://proxer.me). It also dictates which requests you are allowed to make and which not. Further information and how to get a key can be found [here](https://proxer.me/wiki/Proxer_API/v1).
 
 Passing the key to the library is really easy. Just call this somewhere at the start of your application:
 ```csharp

@@ -97,7 +97,7 @@ namespace Azuria.UserInfo.ControlPanel
             if (contentObject == null) return new ProxerResult(new ArgumentNullException(nameof(contentObject)));
 
             ProxerApiResponse lResult = await RequestHandler.ApiRequest(
-                    UcpRequestBuilder.SetBookmark(contentObject.ParentObject.Id,
+                    UcpRequestBuilder.SetReminder(contentObject.ParentObject.Id,
                         contentObject.ContentIndex,
                         (contentObject as Episode)?.Language.ToString().ToLowerInvariant() ??
                         (contentObject.GeneralLanguage == Language.German ? "de" : "en"),

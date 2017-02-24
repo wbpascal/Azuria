@@ -20,7 +20,8 @@ namespace Azuria.Api.v1.RequestBuilder
         /// <returns>An instance of <see cref="ApiRequest" /> that returns a link as a string.</returns>
         public static ApiRequest<string> GetLink(int id)
         {
-            return ApiRequest<string>.Create(new Uri($"{ApiConstants.ApiUrlV1}/anime/link?id={id}"));
+            return ApiRequest<string>.Create(new Uri($"{ApiConstants.ApiUrlV1}/anime/link"))
+                .WithGetParameter("id", id.ToString());
         }
 
         /// <summary>
@@ -40,8 +41,10 @@ namespace Azuria.Api.v1.RequestBuilder
         public static ApiRequest<StreamDataModel[]> GetStreams(int id, int episode, string language,
             Senpai senpai = null)
         {
-            return ApiRequest<StreamDataModel[]>.Create(
-                    new Uri($"{ApiConstants.ApiUrlV1}/anime/streams?id={id}&episode={episode}&language={language}"))
+            return ApiRequest<StreamDataModel[]>.Create(new Uri($"{ApiConstants.ApiUrlV1}/anime/streams"))
+                .WithGetParameter("id", id.ToString())
+                .WithGetParameter("episode", episode.ToString())
+                .WithGetParameter("language", language)
                 .WithSenpai(senpai);
         }
 

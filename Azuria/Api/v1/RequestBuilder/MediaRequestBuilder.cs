@@ -35,8 +35,8 @@ namespace Azuria.Api.v1.RequestBuilder
         /// <returns>An instance of <see cref="ApiRequest" /> that returns a header.</returns>
         public static ApiRequest<HeaderDataModel> GetRandomHeader(string style = "gray")
         {
-            return ApiRequest<HeaderDataModel>.Create(
-                new Uri($"{ApiConstants.ApiUrlV1}/media/randomheader?style={style}"));
+            return ApiRequest<HeaderDataModel>.Create(new Uri($"{ApiConstants.ApiUrlV1}/media/randomheader"))
+                .WithGetParameter("style", style);
         }
 
         #endregion

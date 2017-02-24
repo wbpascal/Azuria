@@ -31,8 +31,11 @@ namespace Azuria.Api.v1.RequestBuilder
         public static ApiRequest<CommentDataModel[]> GetComments(int entryId, int page = 0, int limit = 25,
             string sort = "")
         {
-            return ApiRequest<CommentDataModel[]>.Create(
-                new Uri($"{ApiConstants.ApiUrlV1}/info/comments?id={entryId}&p={page}&limit={limit}&sort={sort}"));
+            return ApiRequest<CommentDataModel[]>.Create(new Uri($"{ApiConstants.ApiUrlV1}/info/comments"))
+                .WithGetParameter("id", entryId.ToString())
+                .WithGetParameter("p", page.ToString())
+                .WithGetParameter("limit", limit.ToString())
+                .WithGetParameter("sort", sort);
         }
 
         /// <summary>
@@ -45,7 +48,8 @@ namespace Azuria.Api.v1.RequestBuilder
         /// <returns>An instance of <see cref="ApiRequest" /> that returns the core information.</returns>
         public static ApiRequest<EntryDataModel> GetEntry(int entryId)
         {
-            return ApiRequest<EntryDataModel>.Create(new Uri($"{ApiConstants.ApiUrlV1}/info/entry?id={entryId}"));
+            return ApiRequest<EntryDataModel>.Create(new Uri($"{ApiConstants.ApiUrlV1}/info/entry"))
+                .WithGetParameter("id", entryId.ToString());
         }
 
         /// <summary>
@@ -58,8 +62,8 @@ namespace Azuria.Api.v1.RequestBuilder
         /// <returns>An instance of <see cref="ApiRequest" /> that returns an array of tags.</returns>
         public static ApiRequest<MediaTagDataModel[]> GetEntryTags(int entryId)
         {
-            return
-                ApiRequest<MediaTagDataModel[]>.Create(new Uri($"{ApiConstants.ApiUrlV1}/info/entrytags?id={entryId}"));
+            return ApiRequest<MediaTagDataModel[]>.Create(new Uri($"{ApiConstants.ApiUrlV1}/info/entrytags"))
+                .WithGetParameter("id", entryId.ToString());
         }
 
         /// <summary>
@@ -91,7 +95,8 @@ namespace Azuria.Api.v1.RequestBuilder
         /// <returns>An instance of <see cref="ApiRequest" /> that returns a boolean.</returns>
         public static ApiRequest<bool> GetGate(int entryId)
         {
-            return ApiRequest<bool>.Create(new Uri($"{ApiConstants.ApiUrlV1}/info/gate?id={entryId}"));
+            return ApiRequest<bool>.Create(new Uri($"{ApiConstants.ApiUrlV1}/info/gate"))
+                .WithGetParameter("id", entryId.ToString());
         }
 
         /// <summary>
@@ -104,8 +109,8 @@ namespace Azuria.Api.v1.RequestBuilder
         /// <returns>An instance of <see cref="ApiRequest" /> that returns an array of translators.</returns>
         public static ApiRequest<TranslatorDataModel[]> GetGroups(int entryId)
         {
-            return ApiRequest<TranslatorDataModel[]>.Create(
-                new Uri($"{ApiConstants.ApiUrlV1}/info/groups?id={entryId}"));
+            return ApiRequest<TranslatorDataModel[]>.Create(new Uri($"{ApiConstants.ApiUrlV1}/info/groups"))
+                .WithGetParameter("id", entryId.ToString());
         }
 
         /// <summary>
@@ -118,7 +123,8 @@ namespace Azuria.Api.v1.RequestBuilder
         /// <returns>An instance of <see cref="ApiRequest" /> that returns an array of languages.</returns>
         public static ApiRequest<MediaLanguage[]> GetLanguage(int entryId)
         {
-            return ApiRequest<MediaLanguage[]>.Create(new Uri($"{ApiConstants.ApiUrlV1}/info/lang?id={entryId}"))
+            return ApiRequest<MediaLanguage[]>.Create(new Uri($"{ApiConstants.ApiUrlV1}/info/lang"))
+                .WithGetParameter("id", entryId.ToString())
                 .WithCustomDataConverter(new LanguageCollectionConverter());
         }
 
@@ -137,8 +143,10 @@ namespace Azuria.Api.v1.RequestBuilder
         /// </returns>
         public static ApiRequest<ListInfoDataModel> GetListInfo(int entryId, int page = 0, int limit = 50)
         {
-            return ApiRequest<ListInfoDataModel>.Create(
-                new Uri($"{ApiConstants.ApiUrlV1}/info/listinfo?id={entryId}&p={page}&limit={limit}"));
+            return ApiRequest<ListInfoDataModel>.Create(new Uri($"{ApiConstants.ApiUrlV1}/info/listinfo"))
+                .WithGetParameter("id", entryId.ToString())
+                .WithGetParameter("p", page.ToString())
+                .WithGetParameter("limit", limit.ToString());
         }
 
         /// <summary>
@@ -154,7 +162,8 @@ namespace Azuria.Api.v1.RequestBuilder
         /// </returns>
         public static ApiRequest<NameDataModel[]> GetName(int entryId)
         {
-            return ApiRequest<NameDataModel[]>.Create(new Uri($"{ApiConstants.ApiUrlV1}/info/names?id={entryId}"));
+            return ApiRequest<NameDataModel[]>.Create(new Uri($"{ApiConstants.ApiUrlV1}/info/names"))
+                .WithGetParameter("id", entryId.ToString());
         }
 
         /// <summary>
@@ -168,8 +177,8 @@ namespace Azuria.Api.v1.RequestBuilder
         /// <returns>An instance of <see cref="ApiRequest" /> that returns an array of organisations.</returns>
         public static ApiRequest<PublisherDataModel[]> GetPublisher(int entryId)
         {
-            return
-                ApiRequest<PublisherDataModel[]>.Create(new Uri($"{ApiConstants.ApiUrlV1}/info/publisher?id={entryId}"));
+            return ApiRequest<PublisherDataModel[]>.Create(new Uri($"{ApiConstants.ApiUrlV1}/info/publisher"))
+                .WithGetParameter("id", entryId.ToString());
         }
 
         /// <summary>
@@ -182,8 +191,8 @@ namespace Azuria.Api.v1.RequestBuilder
         /// <returns>An instance of <see cref="ApiRequest" /> that returns an array of relations.</returns>
         public static ApiRequest<RelationDataModel[]> GetRelations(int entryId)
         {
-            return
-                ApiRequest<RelationDataModel[]>.Create(new Uri($"{ApiConstants.ApiUrlV1}/info/relations?id={entryId}"));
+            return ApiRequest<RelationDataModel[]>.Create(new Uri($"{ApiConstants.ApiUrlV1}/info/relations"))
+                .WithGetParameter("id", entryId.ToString());
         }
 
         /// <summary>
@@ -196,7 +205,8 @@ namespace Azuria.Api.v1.RequestBuilder
         /// <returns>An instance of <see cref="ApiRequest" /> that returns an array of seasons.</returns>
         public static ApiRequest<SeasonDataModel[]> GetSeason(int entryId)
         {
-            return ApiRequest<SeasonDataModel[]>.Create(new Uri($"{ApiConstants.ApiUrlV1}/info/season?id={entryId}"));
+            return ApiRequest<SeasonDataModel[]>.Create(new Uri($"{ApiConstants.ApiUrlV1}/info/season"))
+                .WithGetParameter("id", entryId.ToString());
         }
 
         /// <summary>
