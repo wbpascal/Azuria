@@ -29,8 +29,8 @@ namespace Azuria.UserInfo.ControlPanel
         protected override async Task<IProxerResult<IEnumerable<Bookmark<T>>>> GetNextPage(int nextPage)
         {
             ProxerApiResponse<BookmarkDataModel[]> lResult = await RequestHandler.ApiRequest(
-                    UcpRequestBuilder.GetReminder(typeof(T).GetTypeInfo().Name.ToLowerInvariant(),
-                        nextPage, ResultsPerPage, this._senpai))
+                    UcpRequestBuilder.GetReminder(this._senpai, typeof(T).GetTypeInfo().Name.ToLowerInvariant(),
+                        nextPage, ResultsPerPage))
                 .ConfigureAwait(false);
             if (!lResult.Success || lResult.Result == null)
                 return new ProxerResult<IEnumerable<Bookmark<T>>>(lResult.Exceptions);

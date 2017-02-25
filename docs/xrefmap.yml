@@ -6429,12 +6429,12 @@ references:
   commentId: Overload:Azuria.Api.v1.RequestBuilder.UcpRequestBuilder.DeleteVote
   fullName: Azuria.Api.v1.RequestBuilder.UcpRequestBuilder.DeleteVote
   nameWithType: UcpRequestBuilder.DeleteVote
-- uid: Azuria.Api.v1.RequestBuilder.UcpRequestBuilder.GetHistory(System.Int32,System.Int32,Azuria.Senpai)
-  name: GetHistory(Int32, Int32, Senpai)
-  href: api/Azuria.Api.v1.RequestBuilder.UcpRequestBuilder.html#Azuria_Api_v1_RequestBuilder_UcpRequestBuilder_GetHistory_System_Int32_System_Int32_Azuria_Senpai_
-  commentId: M:Azuria.Api.v1.RequestBuilder.UcpRequestBuilder.GetHistory(System.Int32,System.Int32,Azuria.Senpai)
-  fullName: Azuria.Api.v1.RequestBuilder.UcpRequestBuilder.GetHistory(System.Int32, System.Int32, Azuria.Senpai)
-  nameWithType: UcpRequestBuilder.GetHistory(Int32, Int32, Senpai)
+- uid: Azuria.Api.v1.RequestBuilder.UcpRequestBuilder.GetHistory(Azuria.Senpai,System.Int32,System.Int32)
+  name: GetHistory(Senpai, Int32, Int32)
+  href: api/Azuria.Api.v1.RequestBuilder.UcpRequestBuilder.html#Azuria_Api_v1_RequestBuilder_UcpRequestBuilder_GetHistory_Azuria_Senpai_System_Int32_System_Int32_
+  commentId: M:Azuria.Api.v1.RequestBuilder.UcpRequestBuilder.GetHistory(Azuria.Senpai,System.Int32,System.Int32)
+  fullName: Azuria.Api.v1.RequestBuilder.UcpRequestBuilder.GetHistory(Azuria.Senpai, System.Int32, System.Int32)
+  nameWithType: UcpRequestBuilder.GetHistory(Senpai, Int32, Int32)
 - uid: Azuria.Api.v1.RequestBuilder.UcpRequestBuilder.GetHistory*
   name: GetHistory
   href: api/Azuria.Api.v1.RequestBuilder.UcpRequestBuilder.html#Azuria_Api_v1_RequestBuilder_UcpRequestBuilder_GetHistory_
@@ -6465,12 +6465,12 @@ references:
   commentId: Overload:Azuria.Api.v1.RequestBuilder.UcpRequestBuilder.GetListsum
   fullName: Azuria.Api.v1.RequestBuilder.UcpRequestBuilder.GetListsum
   nameWithType: UcpRequestBuilder.GetListsum
-- uid: Azuria.Api.v1.RequestBuilder.UcpRequestBuilder.GetReminder(System.String,System.Int32,System.Int32,Azuria.Senpai)
-  name: GetReminder(String, Int32, Int32, Senpai)
-  href: api/Azuria.Api.v1.RequestBuilder.UcpRequestBuilder.html#Azuria_Api_v1_RequestBuilder_UcpRequestBuilder_GetReminder_System_String_System_Int32_System_Int32_Azuria_Senpai_
-  commentId: M:Azuria.Api.v1.RequestBuilder.UcpRequestBuilder.GetReminder(System.String,System.Int32,System.Int32,Azuria.Senpai)
-  fullName: Azuria.Api.v1.RequestBuilder.UcpRequestBuilder.GetReminder(System.String, System.Int32, System.Int32, Azuria.Senpai)
-  nameWithType: UcpRequestBuilder.GetReminder(String, Int32, Int32, Senpai)
+- uid: Azuria.Api.v1.RequestBuilder.UcpRequestBuilder.GetReminder(Azuria.Senpai,System.String,System.Int32,System.Int32)
+  name: GetReminder(Senpai, String, Int32, Int32)
+  href: api/Azuria.Api.v1.RequestBuilder.UcpRequestBuilder.html#Azuria_Api_v1_RequestBuilder_UcpRequestBuilder_GetReminder_Azuria_Senpai_System_String_System_Int32_System_Int32_
+  commentId: M:Azuria.Api.v1.RequestBuilder.UcpRequestBuilder.GetReminder(Azuria.Senpai,System.String,System.Int32,System.Int32)
+  fullName: Azuria.Api.v1.RequestBuilder.UcpRequestBuilder.GetReminder(Azuria.Senpai, System.String, System.Int32, System.Int32)
+  nameWithType: UcpRequestBuilder.GetReminder(Senpai, String, Int32, Int32)
 - uid: Azuria.Api.v1.RequestBuilder.UcpRequestBuilder.GetReminder*
   name: GetReminder
   href: api/Azuria.Api.v1.RequestBuilder.UcpRequestBuilder.html#Azuria_Api_v1_RequestBuilder_UcpRequestBuilder_GetReminder_

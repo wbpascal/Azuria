@@ -17,7 +17,7 @@ namespace Azuria.Api.v1.RequestBuilder
         /// Api permissions required:
         /// * Notifications - Level 0
         /// </summary>
-        /// <param name="senpai">The user that owns the notification. Needs to be logged in.</param>
+        /// <param name="senpai">The user that owns the notification. Must be logged in.</param>
         /// <param name="nid">
         /// Optional. The id of the notification that will be deleted. If not set or 0, all notifications, that
         /// are marked as read, will be deleted. Default: 0
@@ -37,7 +37,7 @@ namespace Azuria.Api.v1.RequestBuilder
         /// Api permissions required:
         /// * Notifications - Level 0
         /// </summary>
-        /// <param name="senpai">The user that recieved the notifications. Needs to be logged in.</param>
+        /// <param name="senpai">The user that recieved the notifications. Must be logged in.</param>
         /// <returns>An instance of <see cref="ApiRequest" /> that returns the number of notifications.</returns>
         public static ApiRequest<NotificationCountDataModel> GetCount(Senpai senpai)
         {

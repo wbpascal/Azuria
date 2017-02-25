@@ -27,8 +27,7 @@ namespace Azuria.Api.v1.RequestBuilder
         /// <param name="page">Optional. The index of the page that will be loaded. Default: 0</param>
         /// <returns>An instance of <see cref="ApiRequest" /> that returns an array of search results.</returns>
         public static ApiRequest<SearchDataModel[]> EntryList(EntryListInput input, string kat = "anime",
-            int limit = 100,
-            int page = 0)
+            int limit = 100, int page = 0)
         {
             return ApiRequest<SearchDataModel[]>.Create(new Uri($"{ApiConstants.ApiUrlV1}/list/entrylist"))
                 .WithGetParameter("limit", limit.ToString())

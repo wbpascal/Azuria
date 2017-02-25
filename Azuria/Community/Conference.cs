@@ -213,7 +213,7 @@ namespace Azuria.Community
         /// </summary>
         /// <param name="user">The user that will recieve the message.</param>
         /// <param name="message">The message that will be send to the conference.</param>
-        /// <param name="senpai">The user that sends the message. Needs to be logged in.</param>
+        /// <param name="senpai">The user that sends the message. Must be logged in.</param>
         /// <returns>An asynchronous <see cref="Task" /> that returns an <see cref="IProxerResult" /> containing the conference.</returns>
         public static async Task<IProxerResult<Conference>> Create(User user, string message, Senpai senpai)
         {
@@ -234,7 +234,7 @@ namespace Azuria.Community
         /// </summary>
         /// <param name="username">The username of the user that recieves the message.</param>
         /// <param name="message">The message that will be send to the conference.</param>
-        /// <param name="senpai">The user that sends the message. Needs to be logged in.</param>
+        /// <param name="senpai">The user that sends the message. Must be logged in.</param>
         /// <returns>An asynchronous <see cref="Task" /> that returns an <see cref="IProxerResult" /> containing the conference.</returns>
         public static async Task<IProxerResult<Conference>> Create(string username, string message, Senpai senpai)
         {
@@ -341,7 +341,7 @@ namespace Azuria.Community
         /// Api permissions required:
         /// * Messenger - Level 0
         /// </summary>
-        /// <param name="senpai">The user of which the conferences are returned. Needs to be logged in.</param>
+        /// <param name="senpai">The user of which the conferences are returned. Must be logged in.</param>
         /// <param name="type">
         /// Optional. The type of conferences that will be returned. Default:
         /// <see cref="ConferenceListType.Default" />

@@ -130,7 +130,7 @@ namespace Azuria.UserInfo.ControlPanel
         {
             if (bookmarkId < 0) return new ProxerResult(new ArgumentOutOfRangeException(nameof(bookmarkId)));
 
-            ProxerApiResponse<BookmarkDataModel[]> lResult = await RequestHandler.ApiRequest(
+            ProxerApiResponse lResult = await RequestHandler.ApiRequest(
                     UcpRequestBuilder.DeleteReminder(bookmarkId, this._senpai))
                 .ConfigureAwait(false);
             return lResult.Success ? new ProxerResult() : new ProxerResult(lResult.Exceptions);
@@ -144,7 +144,7 @@ namespace Azuria.UserInfo.ControlPanel
         {
             if (voteId < 0) return new ProxerResult(new ArgumentOutOfRangeException(nameof(voteId)));
 
-            ProxerApiResponse<BookmarkDataModel[]> lResult = await RequestHandler.ApiRequest(
+            ProxerApiResponse lResult = await RequestHandler.ApiRequest(
                     UcpRequestBuilder.DeleteVote(voteId, this._senpai))
                 .ConfigureAwait(false);
             return lResult.Success ? new ProxerResult() : new ProxerResult(lResult.Exceptions);
@@ -158,7 +158,7 @@ namespace Azuria.UserInfo.ControlPanel
         {
             if (toptenId < 0) return new ProxerResult(new ArgumentOutOfRangeException(nameof(toptenId)));
 
-            ProxerApiResponse<BookmarkDataModel[]> lResult = await RequestHandler.ApiRequest(
+            ProxerApiResponse lResult = await RequestHandler.ApiRequest(
                     UcpRequestBuilder.DeleteFavourite(toptenId, this._senpai))
                 .ConfigureAwait(false);
             return lResult.Success ? new ProxerResult() : new ProxerResult(lResult.Exceptions);
