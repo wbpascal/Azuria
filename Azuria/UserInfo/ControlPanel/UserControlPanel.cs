@@ -48,6 +48,11 @@ namespace Azuria.UserInfo.ControlPanel
         #region Properties
 
         /// <summary>
+        /// Gets all bookmarks of the user.
+        /// </summary>
+        public BookmarkEnumerable<IMediaObject> Bookmarks => new BookmarkEnumerable<IMediaObject>(this._senpai, this);
+
+        /// <summary>
         /// Gets all bookmarks of the user that are <see cref="Anime">Anime</see>.
         /// </summary>
         public BookmarkEnumerable<Anime> BookmarksAnime

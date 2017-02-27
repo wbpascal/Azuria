@@ -77,9 +77,8 @@ namespace Azuria.Test.MediaTests
             Assert.IsNotNull(lValidObject);
             Assert.AreEqual(9200, lValidObject.Id);
 
-            Assert.AreEqual(ErrorCode.InfoInvalidId,
-                Assert.CatchAsync<ProxerApiException>(() => MediaObject.CreateFromId(666).ThrowFirstForNonSuccess())
-                    .ErrorCode);
+            Assert.AreEqual(ErrorCode.InfoInvalidId, Assert.CatchAsync<ProxerApiException>(() =>
+                MediaObject.CreateFromId(666).ThrowFirstForNonSuccess()).ErrorCode);
         }
 
         [Test]

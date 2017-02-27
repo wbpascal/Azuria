@@ -1,0 +1,36 @@
+{
+  "error": 0,
+  "message": "Abfrage erfolgreich",
+  "data": [
+    {
+      "eid": "4188",
+      "kat": "manga",
+      "name": "Tower of God",
+      "episode": "320",
+      "language": "en",
+      "medium": "mangaseries",
+      "id": "45583336",
+      "state": "2"
+    },
+    {
+      "eid": "17532",
+      "kat": "anime",
+      "name": "Gabriel Dropout",
+      "episode": "3",
+      "language": "engsub",
+      "medium": "animeseries",
+      "id": "45553705",
+      "state": "2"
+    },
+    {
+      "eid": "16216",
+      "kat": "anime",
+      "name": "Kuzu no Honkai",
+      "episode": "3",
+      "language": "engsub",
+      "medium": "animeseries",
+      "id": "45489351",
+      "state": "2"
+    }
+  ]
+}

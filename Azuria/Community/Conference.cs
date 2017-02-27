@@ -277,7 +277,7 @@ namespace Azuria.Community
                 return new ProxerResult<Conference>(new NotInitialisedException("Please call " + nameof(Init)));
             if (participants == null)
                 return new ProxerResult<Conference>(new ArgumentException(nameof(participants)));
-            if (string.IsNullOrEmpty(topic) || (topic.Length > MaxCharactersTopic))
+            if (string.IsNullOrEmpty(topic) || topic.Length > MaxCharactersTopic)
                 return new ProxerResult<Conference>(new ArgumentException(nameof(topic)));
 
             IEnumerable<User> lParticipants = participants as User[] ?? participants.ToArray();
@@ -320,7 +320,7 @@ namespace Azuria.Community
                 return new ProxerResult<Conference>(new NotInitialisedException("Please call " + nameof(Init)));
             if (participants == null)
                 return new ProxerResult<Conference>(new ArgumentException(nameof(participants)));
-            if (string.IsNullOrEmpty(topic) || (topic.Length > MaxCharactersTopic))
+            if (string.IsNullOrEmpty(topic) || topic.Length > MaxCharactersTopic)
                 return new ProxerResult<Conference>(new ArgumentException(nameof(topic)));
 
             IEnumerable<string> lParticipantNames = participants as string[] ?? participants.ToArray();

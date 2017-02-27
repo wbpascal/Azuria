@@ -265,7 +265,7 @@ namespace Azuria.Api.v1.RequestBuilder
         /// Api permissions required:
         /// * Messenger - Level 1
         /// </summary>
-        /// <param name="conferenceId">The id of the conference that will be remoThe user that removes the conference from his favourites.ved from the favourites.</param>
+        /// <param name="conferenceId">The id of the conference that will be removed from the favourites.</param>
         /// <param name="senpai">The user that removes the conference from his favourites.</param>
         /// <returns>An instance of <see cref="ApiRequest" />.</returns>
         public static ApiRequest SetUnfavour(int conferenceId, Senpai senpai)

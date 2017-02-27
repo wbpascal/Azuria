@@ -55,11 +55,9 @@ namespace Azuria.Test.MediaTests
             Assert.IsTrue(lResult.Success, JsonConvert.SerializeObject(lResult.Exceptions));
             Assert.IsNotNull(lResult.Result);
             Assert.IsNotEmpty(lResult.Result);
-            Assert.IsTrue(
-                lResult.Result.All(
-                    page =>
-                        new Regex("https:\\/\\/manga[0-9]+\\.proxer\\.me\\/f\\/[0-9]+\\/[0-9]+\\/[\\S]+?\\.jpg")
-                            .IsMatch(page.Image.AbsoluteUri)));
+            Assert.IsTrue(lResult.Result.All(page =>
+                new Regex("https:\\/\\/manga[0-9]+\\.proxer\\.me\\/f\\/[0-9]+\\/[0-9]+\\/[\\S]+?\\.jpg")
+                    .IsMatch(page.Image.AbsoluteUri)));
             Assert.IsTrue(lResult.Result.All(page => page.Height != default(int) && page.Width != default(int)));
         }
 

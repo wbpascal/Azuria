@@ -6,7 +6,7 @@ namespace Azuria.UserInfo.ControlPanel
     /// <summary>
     /// </summary>
     /// <typeparam name="T"></typeparam>
-    public class BookmarkEnumerable<T> : PagedEnumerable<Bookmark<T>> where T : class, IMediaObject
+    public class BookmarkEnumerable<T> : PagedEnumerable<Bookmark<T>> where T : IMediaObject
     {
         private readonly UserControlPanel _controlPanel;
         private readonly Senpai _senpai;

@@ -459,6 +459,14 @@ namespace Azuria.Test.Core
             ServerResponse.Create("https://proxer.me/api/v1",
                     response =>
                         response.Get("/ucp/reminder")
+                            .WithQueryParameter("kat", "")
+                            .WithQueryParameter("p", "0")
+                            .WithQueryParameter("limit", "100")
+                            .WithLoggedInSenpai(true))
+                .Respond(FileResponses["ucp_getreminder.json"]);
+            ServerResponse.Create("https://proxer.me/api/v1",
+                    response =>
+                        response.Get("/ucp/reminder")
                             .WithQueryParameter("kat", "anime")
                             .WithQueryParameter("p", "0")
                             .WithQueryParameter("limit", "100")

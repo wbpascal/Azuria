@@ -52,8 +52,8 @@ namespace Azuria.Test.NotificationTests
             NewsNotification[] lNotifications = this._manager.NewsNotifications.ToArray();
             Assert.AreEqual(3, lNotifications.Length);
             Assert.IsTrue(lNotifications.All(notification => notification.Senpai == GeneralSetup.SenpaiInstance));
-            Assert.IsTrue(
-                lNotifications.All(notification => notification.Author != null && notification.Author != User.System));
+            Assert.IsTrue(lNotifications.All(notification =>
+                notification.Author != null && notification.Author != User.System));
             Assert.IsTrue(lNotifications.All(notification => notification.CategoryId != default(int)));
             Assert.IsTrue(lNotifications.All(notification => !string.IsNullOrEmpty(notification.CategoryName)));
             Assert.IsTrue(lNotifications.All(notification => !string.IsNullOrEmpty(notification.Description)));
@@ -73,11 +73,9 @@ namespace Azuria.Test.NotificationTests
             OtherMediaNotification[] lNotifications = this._manager.OtherMediaNotifications.ToArray();
             Assert.AreEqual(2, lNotifications.Length);
             Assert.AreEqual(1, lNotifications.Count(notification =>
-                notification.NotificationType == OtherMediaType.Other
-                && !string.IsNullOrEmpty(notification.Message)));
+                notification.NotificationType == OtherMediaType.Other && !string.IsNullOrEmpty(notification.Message)));
             Assert.AreEqual(1, lNotifications.Count(notification =>
-                notification.NotificationType == OtherMediaType.Media
-                && notification.MediaNotification != null));
+                notification.NotificationType == OtherMediaType.Media && notification.MediaNotification != null));
             Assert.IsTrue(lNotifications.All(notification => notification.Senpai == GeneralSetup.SenpaiInstance));
             Assert.IsTrue(lNotifications.All(notification => notification.NotificationId != default(int)));
         }

@@ -17606,6 +17606,18 @@ references:
   commentId: Overload:Azuria.UserInfo.ControlPanel.UserControlPanel.AddToProfileList
   fullName: Azuria.UserInfo.ControlPanel.UserControlPanel.AddToProfileList
   nameWithType: UserControlPanel.AddToProfileList
+- uid: Azuria.UserInfo.ControlPanel.UserControlPanel.Bookmarks
+  name: Bookmarks
+  href: api/Azuria.UserInfo.ControlPanel.UserControlPanel.html#Azuria_UserInfo_ControlPanel_UserControlPanel_Bookmarks
+  commentId: P:Azuria.UserInfo.ControlPanel.UserControlPanel.Bookmarks
+  fullName: Azuria.UserInfo.ControlPanel.UserControlPanel.Bookmarks
+  nameWithType: UserControlPanel.Bookmarks
+- uid: Azuria.UserInfo.ControlPanel.UserControlPanel.Bookmarks*
+  name: Bookmarks
+  href: api/Azuria.UserInfo.ControlPanel.UserControlPanel.html#Azuria_UserInfo_ControlPanel_UserControlPanel_Bookmarks_
+  commentId: Overload:Azuria.UserInfo.ControlPanel.UserControlPanel.Bookmarks
+  fullName: Azuria.UserInfo.ControlPanel.UserControlPanel.Bookmarks
+  nameWithType: UserControlPanel.Bookmarks
 - uid: Azuria.UserInfo.ControlPanel.UserControlPanel.BookmarksAnime
   name: BookmarksAnime
   href: api/Azuria.UserInfo.ControlPanel.UserControlPanel.html#Azuria_UserInfo_ControlPanel_UserControlPanel_BookmarksAnime

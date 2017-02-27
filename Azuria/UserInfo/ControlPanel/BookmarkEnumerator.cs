@@ -4,6 +4,7 @@ using System.Reflection;
 using System.Threading.Tasks;
 using Azuria.Api.v1;
 using Azuria.Api.v1.DataModels.Ucp;
+using Azuria.Api.v1.Enums;
 using Azuria.Api.v1.RequestBuilder;
 using Azuria.Enumerable;
 using Azuria.ErrorHandling;
@@ -11,7 +12,7 @@ using Azuria.Media;
 
 namespace Azuria.UserInfo.ControlPanel
 {
-    internal class BookmarkEnumerator<T> : PagedEnumerator<Bookmark<T>> where T : class, IMediaObject
+    internal class BookmarkEnumerator<T> : PagedEnumerator<Bookmark<T>> where T : IMediaObject
     {
         private const int ResultsPerPage = 100;
         private readonly UserControlPanel _controlPanel;
@@ -29,19 +30,33 @@ namespace Azuria.UserInfo.ControlPanel
         protected override async Task<IProxerResult<IEnumerable<Bookmark<T>>>> GetNextPage(int nextPage)
         {
             ProxerApiResponse<BookmarkDataModel[]> lResult = await RequestHandler.ApiRequest(
-                    UcpRequestBuilder.GetReminder(this._senpai, typeof(T).GetTypeInfo().Name.ToLowerInvariant(),
-                        nextPage, ResultsPerPage))
+                    UcpRequestBuilder.GetReminder(this._senpai, GetCategory(), nextPage, ResultsPerPage))
                 .ConfigureAwait(false);
             if (!lResult.Success || lResult.Result == null)
                 return new ProxerResult<IEnumerable<Bookmark<T>>>(lResult.Exceptions);
             BookmarkDataModel[] lData = lResult.Result;
 
-            return new ProxerResult<IEnumerable<Bookmark<T>>>(from bookmarkDataModel in lData
-                select new Bookmark<T>(
-                    typeof(T) == typeof(Anime)
-                        ? (IMediaContent<T>) new Episode(bookmarkDataModel)
-                        : (IMediaContent<T>) new Chapter(bookmarkDataModel),
-                    bookmarkDataModel.BookmarkId, this._controlPanel));
+            return new ProxerResult<IEnumerable<Bookmark<T>>>((from bookmarkDataModel in lData
+                select GetBookmark(bookmarkDataModel)).Where(bookmark => bookmark != null));
+
+            string GetCategory()
+            {
+                if (typeof(T) == typeof(Anime) || typeof(T) == typeof(Manga))
+                    return typeof(T).GetTypeInfo().Name.ToLowerInvariant();
+                return string.Empty;
+            }
+
+            Bookmark<T> GetBookmark(BookmarkDataModel dataModel)
+            {
+                if (typeof(T) != typeof(Manga) && dataModel.EntryType == MediaEntryType.Anime)
+                    return new Bookmark<T>((IMediaContent<T>) new Episode(dataModel), dataModel.BookmarkId,
+                        this._controlPanel);
+                if (typeof(T) != typeof(Anime) && dataModel.EntryType == MediaEntryType.Manga)
+                    return new Bookmark<T>((IMediaContent<T>) new Chapter(dataModel), dataModel.BookmarkId,
+                        this._controlPanel);
+
+                return null;
+            }
         }
 
         #endregion

@@ -73,8 +73,8 @@ namespace Azuria.Test.ConferenceTests
                 () => Conference.CreateGroup(new[] {"KutoSan"}, "", GeneralSetup.SenpaiInstance)
                     .ThrowFirstForNonSuccess());
             Assert.CatchAsync<ArgumentException>(() => Conference.CreateGroup(new[] {"KutoSan"},
-                new string(new char[Conference.MaxCharactersTopic + 1]),
-                GeneralSetup.SenpaiInstance).ThrowFirstForNonSuccess());
+                    new string(new char[Conference.MaxCharactersTopic + 1]), GeneralSetup.SenpaiInstance)
+                .ThrowFirstForNonSuccess());
             Assert.CatchAsync<NotLoggedInException>(
                 () => Conference.CreateGroup(new[] {"KutoSan"}, "topic", null).ThrowFirstForNonSuccess());
 
@@ -107,8 +107,8 @@ namespace Azuria.Test.ConferenceTests
                 () => Conference.CreateGroup(new[] {lTestUser}, "", GeneralSetup.SenpaiInstance)
                     .ThrowFirstForNonSuccess());
             Assert.CatchAsync<ArgumentException>(() => Conference.CreateGroup(new[] {lTestUser},
-                new string(new char[Conference.MaxCharactersTopic + 1]),
-                GeneralSetup.SenpaiInstance).ThrowFirstForNonSuccess());
+                    new string(new char[Conference.MaxCharactersTopic + 1]), GeneralSetup.SenpaiInstance)
+                .ThrowFirstForNonSuccess());
             Assert.CatchAsync<NotLoggedInException>(
                 () => Conference.CreateGroup(new[] {lTestUser}, "topic", null)
                     .ThrowFirstForNonSuccess());

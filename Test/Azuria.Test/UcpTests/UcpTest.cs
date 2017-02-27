@@ -57,16 +57,10 @@ namespace Azuria.Test.UcpTests
             Assert.IsTrue(lBookmarks.All(o => o.MediaContentObject != null));
             Assert.IsTrue(lBookmarks.All(o => o.MediaContentObject.ContentIndex != default(int)));
             Assert.IsTrue(lBookmarks.All(o => o.MediaContentObject.ParentObject.Id != default(int)));
-            Assert.IsTrue(
-                lBookmarks.All(
-                    o =>
-                        !string.IsNullOrEmpty(
-                            o.MediaContentObject.ParentObject.Name.GetIfInitialised(string.Empty))));
-            Assert.IsTrue(
-                lBookmarks.All(
-                    o =>
-                        o.MediaContentObject.ParentObject.AnimeMedium.GetIfInitialised(
-                            AnimeMedium.Unknown) != AnimeMedium.Unknown));
+            Assert.IsTrue(lBookmarks.All(o =>
+                !string.IsNullOrEmpty(o.MediaContentObject.ParentObject.Name.GetIfInitialised(string.Empty))));
+            Assert.IsTrue(lBookmarks.All(o => o.MediaContentObject.ParentObject.AnimeMedium
+                .GetIfInitialised(AnimeMedium.Unknown) != AnimeMedium.Unknown));
             Assert.IsTrue(lBookmarks.All(o => o.BookmarkId != default(int)));
             Assert.IsTrue(lBookmarks.All(o => o.UserControlPanel == this._controlPanel));
         }
@@ -79,16 +73,26 @@ namespace Azuria.Test.UcpTests
             Assert.IsTrue(lBookmarks.All(o => o.MediaContentObject != null));
             Assert.IsTrue(lBookmarks.All(o => o.MediaContentObject.ContentIndex != default(int)));
             Assert.IsTrue(lBookmarks.All(o => o.MediaContentObject.ParentObject.Id != default(int)));
-            Assert.IsTrue(
-                lBookmarks.All(
-                    o =>
-                        !string.IsNullOrEmpty(
-                            o.MediaContentObject.ParentObject.Name.GetIfInitialised(string.Empty))));
-            Assert.IsTrue(
-                lBookmarks.All(
-                    o =>
-                        o.MediaContentObject.ParentObject.MangaMedium.GetIfInitialised(
-                            MangaMedium.Unknown) != MangaMedium.Unknown));
+            Assert.IsTrue(lBookmarks.All(o =>
+                !string.IsNullOrEmpty(o.MediaContentObject.ParentObject.Name.GetIfInitialised(string.Empty))));
+            Assert.IsTrue(lBookmarks.All(o => o.MediaContentObject.ParentObject.MangaMedium
+                .GetIfInitialised(MangaMedium.Unknown) != MangaMedium.Unknown));
+            Assert.IsTrue(lBookmarks.All(o => o.BookmarkId != default(int)));
+            Assert.IsTrue(lBookmarks.All(o => o.UserControlPanel == this._controlPanel));
+        }
+
+        [Test]
+        public void BookmarkTest()
+        {
+            Bookmark<IMediaObject>[] lBookmarks = this._controlPanel.Bookmarks.ToArray();
+            Assert.AreEqual(3, lBookmarks.Length);
+            Assert.AreEqual(2, lBookmarks.Count(bookmark => bookmark.MediaContentObject.ParentObject is Anime));
+            Assert.AreEqual(1, lBookmarks.Count(bookmark => bookmark.MediaContentObject.ParentObject is Manga));
+            Assert.IsTrue(lBookmarks.All(o => o.MediaContentObject != null));
+            Assert.IsTrue(lBookmarks.All(o => o.MediaContentObject.ContentIndex != default(int)));
+            Assert.IsTrue(lBookmarks.All(o => o.MediaContentObject.ParentObject.Id != default(int)));
+            Assert.IsTrue(lBookmarks.All(o =>
+                !string.IsNullOrEmpty(o.MediaContentObject.ParentObject.Name.GetIfInitialised(string.Empty))));
             Assert.IsTrue(lBookmarks.All(o => o.BookmarkId != default(int)));
             Assert.IsTrue(lBookmarks.All(o => o.UserControlPanel == this._controlPanel));
         }
@@ -105,8 +109,8 @@ namespace Azuria.Test.UcpTests
             Assert.IsTrue(lResult.Result.All(vote => vote.Rating != default(int)));
             Assert.IsTrue(lResult.Result.All(vote => vote.UserControlPanel == this._controlPanel));
             Assert.IsTrue(lResult.Result.All(vote => vote.Author.Id == 163825));
-            Assert.IsTrue(
-                lResult.Result.All(vote => vote.Author.UserName.GetIfInitialised(string.Empty).Equals("KutoSan")));
+            Assert.IsTrue(lResult.Result.All(vote =>
+                vote.Author.UserName.GetIfInitialised(string.Empty).Equals("KutoSan")));
             Assert.IsTrue(lResult.Result.All(vote => !string.IsNullOrEmpty(vote.MediaName)));
             Assert.IsTrue(lResult.Result.All(vote => vote.CommentContent != null));
         }
@@ -158,9 +162,8 @@ namespace Azuria.Test.UcpTests
             Assert.IsTrue(lHistory.All(o => o.ContentObject.ContentIndex != default(int)));
             Assert.IsTrue(lHistory.All(o => o.ContentObject.GeneralLanguage != Language.Unkown));
             Assert.IsTrue(lHistory.All(o => o.ContentObject.ParentObject.Id != default(int)));
-            Assert.IsTrue(
-                lHistory.All(
-                    o => !string.IsNullOrEmpty(o.ContentObject.ParentObject.Name.GetIfInitialised(string.Empty))));
+            Assert.IsTrue(lHistory.All(o =>
+                !string.IsNullOrEmpty(o.ContentObject.ParentObject.Name.GetIfInitialised(string.Empty))));
         }
 
         [Test]
@@ -185,14 +188,10 @@ namespace Azuria.Test.UcpTests
             Assert.IsTrue(lResult.Result.All(o => o.ToptenId != default(int)));
             Assert.IsTrue(lResult.Result.All(o => o.MediaObject != null));
             Assert.IsTrue(lResult.Result.All(o => o.MediaObject.Id != default(int)));
-            Assert.IsTrue(
-                lResult.Result.All(
-                    o => !string.IsNullOrEmpty(o.MediaObject.Name.GetIfInitialised(string.Empty))));
-            Assert.IsTrue(
-                lResult.Result.All(
-                    o =>
-                        o.MediaObject.AnimeMedium.GetIfInitialised(AnimeMedium.Unknown) !=
-                        AnimeMedium.Unknown));
+            Assert.IsTrue(lResult.Result.All(o =>
+                !string.IsNullOrEmpty(o.MediaObject.Name.GetIfInitialised(string.Empty))));
+            Assert.IsTrue(lResult.Result.All(o => o.MediaObject.AnimeMedium
+                .GetIfInitialised(AnimeMedium.Unknown) != AnimeMedium.Unknown));
             Assert.IsTrue(lResult.Result.All(o => o.UserControlPanel == this._controlPanel));
         }
 
@@ -206,14 +205,10 @@ namespace Azuria.Test.UcpTests
             Assert.IsTrue(lResult.Result.All(o => o.ToptenId != default(int)));
             Assert.IsTrue(lResult.Result.All(o => o.MediaObject != null));
             Assert.IsTrue(lResult.Result.All(o => o.MediaObject.Id != default(int)));
-            Assert.IsTrue(
-                lResult.Result.All(
-                    o => !string.IsNullOrEmpty(o.MediaObject.Name.GetIfInitialised(string.Empty))));
-            Assert.IsTrue(
-                lResult.Result.All(
-                    o =>
-                        o.MediaObject.MangaMedium.GetIfInitialised(MangaMedium.Unknown) !=
-                        MangaMedium.Unknown));
+            Assert.IsTrue(lResult.Result.All(o =>
+                !string.IsNullOrEmpty(o.MediaObject.Name.GetIfInitialised(string.Empty))));
+            Assert.IsTrue(lResult.Result.All(o => o.MediaObject.MangaMedium
+                .GetIfInitialised(MangaMedium.Unknown) != MangaMedium.Unknown));
             Assert.IsTrue(lResult.Result.All(o => o.UserControlPanel == this._controlPanel));
         }
     }
