@@ -28,7 +28,7 @@ namespace Azuria.UserInfo
         {
             ProxerApiResponse<ListDataModel[]> lResult = await RequestHandler.ApiRequest(
                     UserRequestBuilder.GetList(this._user.Id, typeof(T).Name.ToLowerInvariant(),
-                        nextPage, ResultsPerPage, this._senpai))
+                        nextPage, ResultsPerPage, senpai: this._senpai))
                 .ConfigureAwait(false);
             if (!lResult.Success || lResult.Result == null)
                 return new ProxerResult<IEnumerable<UserProfileEntry<T>>>(lResult.Exceptions);

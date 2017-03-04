@@ -658,12 +658,18 @@ namespace Azuria.Test.Core
                             .WithQueryParameter("kat", "anime")
                             .WithQueryParameter("p", "0")
                             .WithQueryParameter("limit", "100")
+                            .WithQueryParameter("search", string.Empty)
+                            .WithQueryParameter("search_start", string.Empty)
+                            .WithQueryParameter("sort", string.Empty)
                             .WithLoggedInSenpai(true);
                         response.Get("/user/list")
                             .WithQueryParameter("username", "Username")
                             .WithQueryParameter("kat", "anime")
                             .WithQueryParameter("p", "0")
                             .WithQueryParameter("limit", "100")
+                            .WithQueryParameter("search", string.Empty)
+                            .WithQueryParameter("search_start", string.Empty)
+                            .WithQueryParameter("sort", string.Empty)
                             .WithLoggedInSenpai(true);
                     })
                 .Respond(FileResponses["user_getlistanime.json"]);
@@ -675,12 +681,18 @@ namespace Azuria.Test.Core
                             .WithQueryParameter("kat", "manga")
                             .WithQueryParameter("p", "0")
                             .WithQueryParameter("limit", "100")
+                            .WithQueryParameter("search", string.Empty)
+                            .WithQueryParameter("search_start", string.Empty)
+                            .WithQueryParameter("sort", string.Empty)
                             .WithLoggedInSenpai(true);
                         response.Get("/user/list")
                             .WithQueryParameter("username", "Username")
                             .WithQueryParameter("kat", "manga")
                             .WithQueryParameter("p", "0")
                             .WithQueryParameter("limit", "100")
+                            .WithQueryParameter("search", string.Empty)
+                            .WithQueryParameter("search_start", string.Empty)
+                            .WithQueryParameter("sort", string.Empty)
                             .WithLoggedInSenpai(true);
                     })
                 .Respond(FileResponses["user_getlistmanga.json"]);
