@@ -26,7 +26,7 @@
 
         /// <summary>
         /// </summary>
-        ApiKeyInsufficientPermissions = 1004,
+        ApiKeyNoPermission = 1004,
 
         /// <summary>
         /// </summary>
@@ -35,6 +35,14 @@
         /// <summary>
         /// </summary>
         ApiFunctionBlocked = 1006,
+
+        /// <summary>
+        /// </summary>
+        ProxerMaintenanceMode = 1007,
+
+        /// <summary>
+        /// </summary>
+        ApiMaintenanceMode = 1008,
 
         /// <summary>
         /// </summary>
@@ -54,7 +62,7 @@
 
         /// <summary>
         /// </summary>
-        NotificationsUserNotLoggedIn = 3002,
+        NotificationsNotLoggedIn = 3002,
 
         /// <summary>
         /// </summary>
@@ -62,7 +70,7 @@
 
         /// <summary>
         /// </summary>
-        UcpUserNotLoggedIn = 3004,
+        UcpNotLoggedIn = 3004,
 
         /// <summary>
         /// </summary>
@@ -78,23 +86,23 @@
 
         /// <summary>
         /// </summary>
-        InfoSetUserInfoInvalidType = 3008,
+        InfoInvalidType = 3008,
 
         /// <summary>
         /// </summary>
-        InfoSetUserInfoUserNotLoggedIn = 3009,
+        InfoNotLoggedIn = 3009,
 
         /// <summary>
         /// </summary>
-        InfoSetUserInfoAlreadyPresentInList = 3010,
+        InfoAlreadyInList = 3010,
 
         /// <summary>
         /// </summary>
-        InfoSetUserInfoTooManyFavourites = 3011,
+        InfoTooManyFavourites = 3011,
 
         /// <summary>
         /// </summary>
-        LoginUserAlreadyLoggedIn = 3012,
+        LoginAlreadyLoggedIn = 3012,
 
         /// <summary>
         /// </summary>
@@ -102,7 +110,7 @@
 
         /// <summary>
         /// </summary>
-        UserInsufficientPermissions = 3014,
+        UserNoPermission = 3014,
 
         /// <summary>
         /// </summary>
@@ -138,7 +146,7 @@
 
         /// <summary>
         /// </summary>
-        MessengerUserNotLoggedIn = 3023,
+        MessengerNotLoggedIn = 3023,
 
         /// <summary>
         /// </summary>
@@ -166,6 +174,66 @@
 
         /// <summary>
         /// </summary>
-        MessengerNotEnoughUsers = 3030
+        MessengerNotEnoughUsers = 3030,
+
+        /// <summary>
+        /// 
+        /// </summary>
+        ChatInvalidRoom = 3031,
+
+        /// <summary>
+        /// 
+        /// </summary>
+        ChatNoPermission = 3032,
+
+        /// <summary>
+        /// 
+        /// </summary>
+        ChatInvalidMessage = 3033,
+
+        /// <summary>
+        /// 
+        /// </summary>
+        ChatNotLoggedIn = 3034,
+
+        /// <summary>
+        /// 
+        /// </summary>
+        ListInvalidLanguage = 3035,
+
+        /// <summary>
+        /// 
+        /// </summary>
+        ListInvalidType = 3036,
+
+        /// <summary>
+        /// 
+        /// </summary>
+        ListInvalidId = 3037,
+
+        /// <summary>
+        /// 
+        /// </summary>
+        User2FaKeyNeeded = 3038,
+
+        /// <summary>
+        /// 
+        /// </summary>
+        UserAccountTimeout = 3039,
+
+        /// <summary>
+        /// 
+        /// </summary>
+        UserAccountBlocked = 3040,
+
+        /// <summary>
+        /// 
+        /// </summary>
+        UserInternalError = 3041,
+
+        /// <summary>
+        /// 
+        /// </summary>
+        ErrorLogEmptyString = 3042
     }
 }

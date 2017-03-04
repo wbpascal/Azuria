@@ -108,14 +108,16 @@ namespace Azuria.Api.v1
             {
                 case ErrorCode.IpBlocked:
                     return new CaptchaException("http://proxer.me/misc/captcha");
-                case ErrorCode.ApiKeyInsufficientPermissions:
+                case ErrorCode.ApiKeyNoPermission:
                     return new ApiKeyInsufficientException();
-                case ErrorCode.UserInsufficientPermissions:
+                case ErrorCode.UserNoPermission:
+                case ErrorCode.ChatNoPermission:
                     return new NoAccessException(request.Senpai);
-                case ErrorCode.NotificationsUserNotLoggedIn:
-                case ErrorCode.UcpUserNotLoggedIn:
-                case ErrorCode.InfoSetUserInfoUserNotLoggedIn:
-                case ErrorCode.MessengerUserNotLoggedIn:
+                case ErrorCode.NotificationsNotLoggedIn:
+                case ErrorCode.UcpNotLoggedIn:
+                case ErrorCode.InfoNotLoggedIn:
+                case ErrorCode.MessengerNotLoggedIn:
+                case ErrorCode.ChatNotLoggedIn:
                     return new NotLoggedInException(request.Senpai);
             }
 
