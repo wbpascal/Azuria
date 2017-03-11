@@ -4,7 +4,7 @@
     /// Represents an enumeration which aims to help categorizing an <see cref="Anime">Anime</see> or
     /// <see cref="Manga">Manga</see> for certain age groups. ("Freiwillige Selbstkontrolle")
     /// </summary>
-    public enum FskType
+    public enum Fsk
     {
         /// <summary>
         /// The <see cref="Anime">Anime</see> or <see cref="Manga">Manga</see> is suitable for all age groups.

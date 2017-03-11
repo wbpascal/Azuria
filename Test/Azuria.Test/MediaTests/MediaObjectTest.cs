@@ -120,26 +120,26 @@ namespace Azuria.Test.MediaTests
         [Test]
         public async Task FskTest()
         {
-            IProxerResult<IEnumerable<FskType>> lResult = await this._mediaObject.Fsk;
+            IProxerResult<IEnumerable<Fsk>> lResult = await this._mediaObject.Fsk;
             Assert.IsTrue(lResult.Success, JsonConvert.SerializeObject(lResult.Exceptions));
             Assert.IsNotNull(lResult.Result);
             Assert.AreEqual(1, lResult.Result.Count());
-            Assert.IsTrue(lResult.Result.Contains(FskType.Fsk12));
+            Assert.IsTrue(lResult.Result.Contains(Fsk.Fsk12));
         }
 
         [Test]
         public async Task GenreTest()
         {
-            IProxerResult<IEnumerable<GenreType>> lResult = await this._mediaObject.Genre;
+            IProxerResult<IEnumerable<Genre>> lResult = await this._mediaObject.Genre;
             Assert.IsTrue(lResult.Success, JsonConvert.SerializeObject(lResult.Exceptions));
             Assert.IsNotNull(lResult.Result);
-            Assert.IsTrue(lResult.Result.Contains(GenreType.Comedy));
-            Assert.IsTrue(lResult.Result.Contains(GenreType.Drama));
-            Assert.IsTrue(lResult.Result.Contains(GenreType.Music));
-            Assert.IsTrue(lResult.Result.Contains(GenreType.Romance));
-            Assert.IsTrue(lResult.Result.Contains(GenreType.School));
-            Assert.IsTrue(lResult.Result.Contains(GenreType.Shounen));
-            Assert.IsTrue(lResult.Result.Contains(GenreType.SliceOfLife));
+            Assert.IsTrue(lResult.Result.Contains(Genre.Comedy));
+            Assert.IsTrue(lResult.Result.Contains(Genre.Drama));
+            Assert.IsTrue(lResult.Result.Contains(Genre.Music));
+            Assert.IsTrue(lResult.Result.Contains(Genre.Romance));
+            Assert.IsTrue(lResult.Result.Contains(Genre.School));
+            Assert.IsTrue(lResult.Result.Contains(Genre.Shounen));
+            Assert.IsTrue(lResult.Result.Contains(Genre.SliceOfLife));
         }
 
         [Test]
@@ -165,7 +165,7 @@ namespace Azuria.Test.MediaTests
             Assert.IsFalse(lResult.Result.Any(industry => industry.Type == IndustryType.Unknown));
             Assert.IsTrue(lResult.Result.Any(industry => industry.Country == Country.Germany));
             Assert.IsTrue(lResult.Result.Any(industry => industry.Country == Country.Japan));
-            Assert.IsTrue(lResult.Result.Any(industry => industry.Country == Country.UnitedStates));
+            Assert.IsTrue(lResult.Result.Any(industry => industry.Country == Country.EnglandUnitedStates));
             Assert.IsFalse(lResult.Result.Any(industry => industry.Country == Country.Unkown));
         }
 

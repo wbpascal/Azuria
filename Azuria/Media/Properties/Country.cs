@@ -9,8 +9,9 @@
         Germany,
 
         /// <summary>
+        /// Dunno what should I call this
         /// </summary>
-        UnitedStates,
+        EnglandUnitedStates,
 
         /// <summary>
         /// </summary>

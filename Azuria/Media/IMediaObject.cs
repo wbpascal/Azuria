@@ -53,12 +53,12 @@ namespace Azuria.Media
         /// <summary>
         /// Gets an enumeration of the age restrictions of the <see cref="Anime" /> or <see cref="Manga" />.
         /// </summary>
-        IInitialisableProperty<IEnumerable<FskType>> Fsk { get; }
+        IInitialisableProperty<IEnumerable<Fsk>> Fsk { get; }
 
         /// <summary>
         /// Gets an enumeration of all the genre of the <see cref="Anime" /> or <see cref="Manga" /> contains.
         /// </summary>
-        IInitialisableProperty<IEnumerable<GenreType>> Genre { get; }
+        IInitialisableProperty<IEnumerable<Genre>> Genre { get; }
 
         /// <summary>
         /// Gets the german title of the <see cref="Anime" /> or <see cref="Manga" />.

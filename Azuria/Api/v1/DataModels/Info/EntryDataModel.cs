@@ -50,13 +50,13 @@ namespace Azuria.Api.v1.DataModels.Info
         /// </summary>
         [JsonProperty("fsk")]
         [JsonConverter(typeof(FskConverter))]
-        public IEnumerable<FskType> Fsk { get; set; }
+        public Fsk[] Fsk { get; set; }
 
         /// <summary>
         /// </summary>
         [JsonProperty("genre")]
         [JsonConverter(typeof(GenreConverter))]
-        public IEnumerable<GenreType> Genre { get; set; }
+        public Genre[] Genre { get; set; }
 
         /// <summary>
         /// </summary>
@@ -66,7 +66,7 @@ namespace Azuria.Api.v1.DataModels.Info
 
         /// <summary>
         /// </summary>
-        public MediaRating Rating => new MediaRating(this.TotalStars, this.Voters);
+        public MediaRating Rating => new MediaRating(this.RatingsSum, this.RatingsCount);
 
         /// <summary>
         /// </summary>
@@ -76,12 +76,12 @@ namespace Azuria.Api.v1.DataModels.Info
         /// <summary>
         /// </summary>
         [JsonProperty("rate_sum")]
-        public int TotalStars { get; set; }
+        public int RatingsSum { get; set; }
 
         /// <summary>
         /// </summary>
         [JsonProperty("rate_count")]
-        public int Voters { get; set; }
+        public int RatingsCount { get; set; }
 
         #endregion
     }

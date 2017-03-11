@@ -4,7 +4,7 @@ using System.Linq;
 using Azuria.Media.Properties;
 using Newtonsoft.Json;
 
-namespace Azuria.Api.v1.Converters.Info
+namespace Azuria.Api.v1.Converters
 {
     internal class FskConverter : JsonConverter
     {
@@ -12,17 +12,17 @@ namespace Azuria.Api.v1.Converters.Info
 
         public override bool CanConvert(Type objectType)
         {
-            return objectType == typeof(IEnumerable<FskType>);
+            return objectType == typeof(IEnumerable<Fsk>);
         }
 
         public override object ReadJson(JsonReader reader, Type objectType, object existingValue,
             JsonSerializer serializer)
         {
             string lValue = reader.Value.ToString();
-            if (string.IsNullOrEmpty(lValue.Trim())) return new FskType[0];
+            if (string.IsNullOrEmpty(lValue.Trim())) return new Fsk[0];
             return (from fskString in lValue.Split(' ')
                 where FskHelper.StringToFskDictionary.ContainsKey(fskString)
-                select FskHelper.StringToFskDictionary[fskString]).ToList();
+                select FskHelper.StringToFskDictionary[fskString]).ToArray();
         }
 
         public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)

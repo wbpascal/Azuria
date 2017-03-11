@@ -1,5 +1,4 @@
-﻿using System;
-using Azuria.Media.Properties;
+﻿using Azuria.Media.Properties;
 using Newtonsoft.Json;
 
 namespace Azuria.Api.v1.DataModels.Info
@@ -29,21 +28,22 @@ namespace Azuria.Api.v1.DataModels.Info
 
         #region Methods
 
-        /// <summary>Determines whether the specified object is equal to the current object.</summary>
-        /// <returns>true if the specified object  is equal to the current object; otherwise, false.</returns>
-        /// <param name="obj">The object to compare with the current object. </param>
-        public override bool Equals(object obj)
+        /// <inheritdoc />
+        public bool Equals(SeasonDataModel other)
         {
-            SeasonDataModel lDataModel = obj as SeasonDataModel;
-            if (lDataModel != null) return lDataModel.Year == this.Year && lDataModel.Season == this.Season;
-            return obj == this;
+            return this.Id == other.Id && this.Season == other.Season && this.Year == other.Year;
         }
 
-        /// <summary>Serves as the default hash function. </summary>
-        /// <returns>A hash code for the current object.</returns>
+        /// <inheritdoc />
         public override int GetHashCode()
         {
-            return Convert.ToInt32(this.Year.ToString() + (int) this.Season);
+            unchecked
+            {
+                int hashCode = this.Id;
+                hashCode = hashCode * 397 ^ (int) this.Season;
+                hashCode = hashCode * 397 ^ this.Year;
+                return hashCode;
+            }
         }
 
         #endregion

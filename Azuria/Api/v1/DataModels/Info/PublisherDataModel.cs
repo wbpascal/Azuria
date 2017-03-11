@@ -1,4 +1,5 @@
-﻿using Azuria.Api.v1.Converters.Info;
+﻿using Azuria.Api.v1.Converters;
+using Azuria.Api.v1.Converters.Info;
 using Azuria.Info;
 using Azuria.Media.Properties;
 using Newtonsoft.Json;
@@ -14,7 +15,7 @@ namespace Azuria.Api.v1.DataModels.Info
         /// <summary>
         /// </summary>
         [JsonProperty("country")]
-        [JsonConverter(typeof(PublisherCountryConverter))]
+        [JsonConverter(typeof(CountryConverter))]
         public Country Country { get; set; }
 
         /// <summary>
@@ -30,7 +31,7 @@ namespace Azuria.Api.v1.DataModels.Info
         /// <summary>
         /// </summary>
         [JsonProperty("type")]
-        [JsonConverter(typeof(PublisherTypeConverter))]
+        [JsonConverter(typeof(IndustryTypeConverter))]
         public IndustryType Type { get; set; }
 
         #endregion

@@ -4,7 +4,7 @@
     /// Represents an enumeration which contains every possible genre for an <see cref="Anime">Anime</see> or
     /// <see cref="Manga">Manga</see>.
     /// </summary>
-    public enum GenreType
+    public enum Genre
     {
         /// <summary>
         /// Represents the Adventure genre.

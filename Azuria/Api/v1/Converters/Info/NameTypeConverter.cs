@@ -41,8 +41,9 @@ namespace Azuria.Api.v1.Converters.Info
                     return MediaNameType.Japanese;
                 case "syn":
                     return MediaNameType.Synonym;
+                default:
+                    return null;
             }
-            return null;
         }
 
         /// <summary>Writes the JSON representation of the object.</summary>

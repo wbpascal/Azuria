@@ -12,6 +12,8 @@ namespace Azuria.Info
         Studio,
         Producer,
         StreamPartner,
+        RecordLabel,
+        TalentAgent,
         Unknown
     }
 }

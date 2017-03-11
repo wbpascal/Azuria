@@ -2,50 +2,47 @@
 
 namespace Azuria.Media.Properties
 {
-    /// <summary>
-    /// Represents a class which aims to help working with the <see cref="FskType">Fsk-enumeration</see>.
-    /// </summary>
-    public static class GenreHelper
+    internal static class GenreHelper
     {
         #region Properties
 
-        internal static Dictionary<string, GenreType> StringToGenreDictionary => new Dictionary<string, GenreType>
+        internal static Dictionary<string, Genre> StringToGenreDictionary => new Dictionary<string, Genre>
         {
-            {"Abenteuer", GenreType.Adventure},
-            {"Action", GenreType.Action},
-            {"Adult", GenreType.Adult},
-            {"Comedy", GenreType.Comedy},
-            {"Cyberpunk", GenreType.Cyberpunk},
-            {"Drama", GenreType.Drama},
-            {"Ecchi", GenreType.Ecchi},
-            {"Fantasy", GenreType.Fantasy},
-            {"Harem", GenreType.Harem},
-            {"Historical", GenreType.Historical},
-            {"Horror", GenreType.Horror},
-            {"Josei", GenreType.Josei},
-            {"Magic", GenreType.Magic},
-            {"Martial-Art", GenreType.MartialArt},
-            {"Mecha", GenreType.Mecha},
-            {"Military", GenreType.Military},
-            {"Musik", GenreType.Music},
-            {"Mystery", GenreType.Mystery},
-            {"Psychological", GenreType.Psychological},
-            {"Romance", GenreType.Romance},
-            {"School", GenreType.School},
-            {"SciFi", GenreType.SciFi},
-            {"Seinen", GenreType.Seinen},
-            {"Shoujou", GenreType.Shoujou},
-            {"Shoujou-Ai", GenreType.ShoujouAi},
-            {"Shounen", GenreType.Shounen},
-            {"Shounen-Ai", GenreType.ShounenAi},
-            {"Slice_of_Life", GenreType.SliceOfLife},
-            {"Splatter", GenreType.Splatter},
-            {"Sport", GenreType.Sport},
-            {"Superpower", GenreType.Superpower},
-            {"Vampire", GenreType.Vampire},
-            {"Violence", GenreType.Violence},
-            {"Yaoi", GenreType.Yaoi},
-            {"Yuri", GenreType.Yuri}
+            {"Abenteuer", Genre.Adventure},
+            {"Action", Genre.Action},
+            {"Adult", Genre.Adult},
+            {"Comedy", Genre.Comedy},
+            {"Cyberpunk", Genre.Cyberpunk},
+            {"Drama", Genre.Drama},
+            {"Ecchi", Genre.Ecchi},
+            {"Fantasy", Genre.Fantasy},
+            {"Harem", Genre.Harem},
+            {"Historical", Genre.Historical},
+            {"Horror", Genre.Horror},
+            {"Josei", Genre.Josei},
+            {"Magic", Genre.Magic},
+            {"Martial-Art", Genre.MartialArt},
+            {"Mecha", Genre.Mecha},
+            {"Military", Genre.Military},
+            {"Musik", Genre.Music},
+            {"Mystery", Genre.Mystery},
+            {"Psychological", Genre.Psychological},
+            {"Romance", Genre.Romance},
+            {"School", Genre.School},
+            {"SciFi", Genre.SciFi},
+            {"Seinen", Genre.Seinen},
+            {"Shoujou", Genre.Shoujou},
+            {"Shoujou-Ai", Genre.ShoujouAi},
+            {"Shounen", Genre.Shounen},
+            {"Shounen-Ai", Genre.ShounenAi},
+            {"Slice_of_Life", Genre.SliceOfLife},
+            {"Splatter", Genre.Splatter},
+            {"Sport", Genre.Sport},
+            {"Superpower", Genre.Superpower},
+            {"Vampire", Genre.Vampire},
+            {"Violence", Genre.Violence},
+            {"Yaoi", Genre.Yaoi},
+            {"Yuri", Genre.Yuri}
         };
 
         #endregion

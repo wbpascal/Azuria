@@ -46,24 +46,24 @@ namespace Azuria.Search
             return lReturn;
         }
 
-        private static string FskToString(IEnumerable<FskType> fskTypes)
+        private static string FskToString(IEnumerable<Fsk> fskTypes)
         {
             if (fskTypes == null) return string.Empty;
 
             string lReturn = string.Empty;
-            foreach (FskType fskType in fskTypes)
+            foreach (Fsk fskType in fskTypes)
                 if (FskHelper.FskToStringDictionary.ContainsKey(fskType))
                     lReturn += FskHelper.FskToStringDictionary[fskType] + " ";
             return lReturn.TrimEnd();
         }
 
-        private static string GenresToString(IEnumerable<GenreType> genre)
+        private static string GenresToString(IEnumerable<Genre> genre)
         {
             if (genre == null) return string.Empty;
 
             string lReturn = string.Empty;
-            Dictionary<GenreType, string> lLookupDictionary = GenreHelper.StringToGenreDictionary.ReverseDictionary();
-            foreach (GenreType genreType in genre)
+            Dictionary<Genre, string> lLookupDictionary = GenreHelper.StringToGenreDictionary.ReverseDictionary();
+            foreach (Genre genreType in genre)
                 if (lLookupDictionary.ContainsKey(genreType)) lReturn += lLookupDictionary[genreType] + " ";
             return lReturn.TrimEnd();
         }

@@ -27,8 +27,8 @@ namespace Azuria.Media
         protected readonly InitialisableProperty<int> _contentCount;
         protected readonly InitialisableProperty<string> _description;
         protected readonly InitialisableProperty<string> _englishTitle;
-        protected readonly InitialisableProperty<IEnumerable<FskType>> _fsk;
-        protected readonly InitialisableProperty<IEnumerable<GenreType>> _genre;
+        protected readonly InitialisableProperty<IEnumerable<Fsk>> _fsk;
+        protected readonly InitialisableProperty<IEnumerable<Genre>> _genre;
         protected readonly InitialisableProperty<string> _germanTitle;
         protected readonly InitialisableProperty<IEnumerable<Translator>> _groups;
         protected readonly InitialisableProperty<IEnumerable<Industry>> _industry;
@@ -55,8 +55,8 @@ namespace Azuria.Media
             {
                 IsInitialised = false
             };
-            this._fsk = new InitialisableProperty<IEnumerable<FskType>>(this.InitMainInfo);
-            this._genre = new InitialisableProperty<IEnumerable<GenreType>>(this.InitMainInfo);
+            this._fsk = new InitialisableProperty<IEnumerable<Fsk>>(this.InitMainInfo);
+            this._genre = new InitialisableProperty<IEnumerable<Genre>>(this.InitMainInfo);
             this._germanTitle = new InitialisableProperty<string>(this.InitNames, string.Empty)
             {
                 IsInitialised = false
@@ -109,10 +109,10 @@ namespace Azuria.Media
         public IInitialisableProperty<string> EnglishTitle => this._englishTitle;
 
         /// <inheritdoc />
-        public IInitialisableProperty<IEnumerable<FskType>> Fsk => this._fsk;
+        public IInitialisableProperty<IEnumerable<Fsk>> Fsk => this._fsk;
 
         /// <inheritdoc />
-        public IInitialisableProperty<IEnumerable<GenreType>> Genre => this._genre;
+        public IInitialisableProperty<IEnumerable<Genre>> Genre => this._genre;
 
         /// <inheritdoc />
         public IInitialisableProperty<string> GermanTitle => this._germanTitle;

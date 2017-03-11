@@ -2,9 +2,9 @@
 using Azuria.Info;
 using Newtonsoft.Json;
 
-namespace Azuria.Api.v1.Converters.Info
+namespace Azuria.Api.v1.Converters
 {
-    internal class PublisherTypeConverter : JsonConverter
+    internal class IndustryTypeConverter : JsonConverter
     {
         #region Methods
 
@@ -23,6 +23,10 @@ namespace Azuria.Api.v1.Converters.Info
             {
                 case "streaming":
                     return IndustryType.StreamPartner;
+                case "record_label":
+                    return IndustryType.RecordLabel;
+                case "talent_agent":
+                    return IndustryType.TalentAgent;
                 default:
                     return Enum.Parse(typeof(IndustryType), lValue, true);
             }

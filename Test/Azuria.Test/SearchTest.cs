@@ -40,9 +40,9 @@ namespace Azuria.Test
             IMediaObject[] lResult = SearchHelper.Search<IMediaObject>(input =>
             {
                 input.Length = 50;
-                input.Fsk = new[] {FskType.Fsk12};
-                input.GenreExclude = new[] {GenreType.Ecchi};
-                input.GenreInclude = new[] {GenreType.Action};
+                input.Fsk = new[] {Fsk.Fsk12};
+                input.GenreExclude = new[] {Genre.Ecchi};
+                input.GenreInclude = new[] {Genre.Action};
                 input.IsFilteringSpoilerTags = true;
                 input.IsFilteringUnratedTags = true;
                 input.Language = SearchLanguage.English;
@@ -57,14 +57,14 @@ namespace Azuria.Test
             Assert.AreEqual(3, lResult.Length);
             Assert.IsTrue(lResult.All(o => o.ContentCount.GetIfInitialised(int.MaxValue) <= 50));
             Assert.IsTrue(lResult.All(o => o.Name.GetIfInitialised("ERROR").Contains("a")));
-            Assert.IsTrue(lResult.All(o => o.Genre.GetIfInitialised(new GenreType[0]).Contains(GenreType.Action)));
+            Assert.IsTrue(lResult.All(o => o.Genre.GetIfInitialised(new Genre[0]).Contains(Genre.Action)));
 
             Anime[] lAnimeResult = SearchHelper.Search<Anime>(input =>
             {
                 input.Length = 50;
-                input.Fsk = new[] {FskType.Fsk12};
-                input.GenreExclude = new[] {GenreType.Ecchi};
-                input.GenreInclude = new[] {GenreType.Action};
+                input.Fsk = new[] {Fsk.Fsk12};
+                input.GenreExclude = new[] {Genre.Ecchi};
+                input.GenreInclude = new[] {Genre.Action};
                 input.IsFilteringSpoilerTags = true;
                 input.IsFilteringUnratedTags = true;
                 input.Language = SearchLanguage.English;
@@ -81,9 +81,9 @@ namespace Azuria.Test
             Manga[] lMangaResult = SearchHelper.Search<Manga>(input =>
             {
                 input.Length = 50;
-                input.Fsk = new[] {FskType.Fsk12};
-                input.GenreExclude = new[] {GenreType.Ecchi};
-                input.GenreInclude = new[] {GenreType.Action};
+                input.Fsk = new[] {Fsk.Fsk12};
+                input.GenreExclude = new[] {Genre.Ecchi};
+                input.GenreInclude = new[] {Genre.Action};
                 input.IsFilteringSpoilerTags = true;
                 input.IsFilteringUnratedTags = true;
                 input.Language = SearchLanguage.English;

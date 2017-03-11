@@ -1,30 +1,35 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using Azuria.Media.Properties;
 using Newtonsoft.Json;
 
 namespace Azuria.Api.v1.Converters
 {
-    internal class GenreConverter : JsonConverter
+    internal class CountryConverter : JsonConverter
     {
         #region Methods
-
+        
         public override bool CanConvert(Type objectType)
         {
-            return objectType == typeof(IEnumerable<Genre>);
+            return objectType == typeof(Country);
         }
-
+        
         public override object ReadJson(JsonReader reader, Type objectType, object existingValue,
             JsonSerializer serializer)
         {
-            string lValue = reader.Value.ToString();
-            if (string.IsNullOrEmpty(lValue.Trim())) return new Genre[0];
-            return (from genreString in lValue.Split(' ')
-                where GenreHelper.StringToGenreDictionary.ContainsKey(genreString)
-                select GenreHelper.StringToGenreDictionary[genreString]).ToArray();
+            switch (reader.Value.ToString())
+            {
+                case "de":
+                    return Country.Germany;
+                case "en":
+                case "us":
+                    return Country.EnglandUnitedStates;
+                case "jp":
+                    return Country.Japan;
+                default:
+                    return Country.Unkown;
+            }
         }
-
+        
         public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
         {
             throw new NotImplementedException();

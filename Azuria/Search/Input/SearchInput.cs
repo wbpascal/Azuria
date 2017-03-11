@@ -11,15 +11,15 @@ namespace Azuria.Search.Input
 
         /// <summary>
         /// </summary>
-        public IEnumerable<FskType> Fsk { get; set; }
+        public IEnumerable<Fsk> Fsk { get; set; }
 
         /// <summary>
         /// </summary>
-        public IEnumerable<GenreType> GenreExclude { get; set; }
+        public IEnumerable<Genre> GenreExclude { get; set; }
 
         /// <summary>
         /// </summary>
-        public IEnumerable<GenreType> GenreInclude { get; set; }
+        public IEnumerable<Genre> GenreInclude { get; set; }
 
         /// <summary>
         /// </summary>
