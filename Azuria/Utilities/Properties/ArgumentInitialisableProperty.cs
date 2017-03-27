@@ -116,7 +116,7 @@ namespace Azuria.Utilities.Properties
         /// <inheritdoc />
         public Task<TOut> ThrowFirstOnNonSuccess(TIn param)
         {
-            return this.Get(param).ThrowFirstForNonSuccess();
+            return this.Get(param).ThrowFirstForNonSuccess<TOut>();
         }
 
         /// <inheritdoc />

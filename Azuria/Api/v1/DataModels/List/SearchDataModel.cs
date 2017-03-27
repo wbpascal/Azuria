@@ -5,7 +5,7 @@ using Azuria.Media.Properties;
 using Azuria.Search.Input;
 using Newtonsoft.Json;
 
-namespace Azuria.Api.v1.DataModels.Search
+namespace Azuria.Api.v1.DataModels.List
 {
     /// <summary>
     /// </summary>
@@ -17,7 +17,7 @@ namespace Azuria.Api.v1.DataModels.Search
         /// </summary>
         [JsonProperty("language")]
         [JsonConverter(typeof(LanguageCommaCollectionConverter))]
-        public IEnumerable<MediaLanguage> AvailableLanguages { get; set; }
+        public MediaLanguage[] AvailableLanguages { get; set; }
 
         /// <summary>
         /// </summary>
@@ -44,7 +44,7 @@ namespace Azuria.Api.v1.DataModels.Search
         /// </summary>
         [JsonProperty("genre")]
         [JsonConverter(typeof(GenreConverter))]
-        public IEnumerable<GenreType> Genre { get; set; }
+        public Genre[] Genre { get; set; }
 
         /// <summary>
         /// </summary>

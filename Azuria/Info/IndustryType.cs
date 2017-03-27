@@ -11,7 +11,7 @@ namespace Azuria.Info
         Publisher,
         Studio,
         Producer,
-        StreamPartner,
+        Streaming,
         RecordLabel,
         TalentAgent,
         Unknown

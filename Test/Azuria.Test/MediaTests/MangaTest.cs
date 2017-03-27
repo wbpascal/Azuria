@@ -26,7 +26,7 @@ namespace Azuria.Test.MediaTests
         public async Task AvailableLanguagesTest()
         {
             IProxerResult<IEnumerable<Language>> lResult = await this._manga.AvailableLanguages;
-            Assert.IsTrue(lResult.Success, JsonConvert.SerializeObject(lResult.Exceptions));
+            AssertHelper.IsSuccess(lResult);
             Assert.IsNotNull(lResult.Result);
             Assert.IsNotEmpty(lResult.Result);
             Assert.IsTrue(lResult.Result.Contains(Language.English));
@@ -38,7 +38,7 @@ namespace Azuria.Test.MediaTests
         public async Task GetChaptersTest()
         {
             IProxerResult<IEnumerable<Chapter>> lResult = await this._manga.GetChapters(Language.English);
-            Assert.IsTrue(lResult.Success, JsonConvert.SerializeObject(lResult.Exceptions));
+            AssertHelper.IsSuccess(lResult);
             Assert.IsNotNull(lResult.Result);
             Assert.AreEqual(162, lResult.Result.Count());
             Assert.IsTrue(lResult.Result.All(chapter => chapter.Language == Language.English));
@@ -48,7 +48,7 @@ namespace Azuria.Test.MediaTests
         public async Task MangaMediumTest()
         {
             IProxerResult<MangaMedium> lResult = await this._manga.MangaMedium.GetNew();
-            Assert.IsTrue(lResult.Success, JsonConvert.SerializeObject(lResult.Exceptions));
+            AssertHelper.IsSuccess(lResult);
             Assert.AreEqual(MangaMedium.Series, lResult.Result);
         }
     }

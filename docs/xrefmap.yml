@@ -2652,6 +2652,30 @@ references:
   commentId: Overload:Azuria.Api.v1.Converters.InvertBoolConverter.WriteJson
   fullName: Azuria.Api.v1.Converters.InvertBoolConverter.WriteJson
   nameWithType: InvertBoolConverter.WriteJson
+- uid: Azuria.Api.v1.Converters.List
+  name: Azuria.Api.v1.Converters.List
+  href: api/Azuria.Api.v1.Converters.List.html
+  commentId: N:Azuria.Api.v1.Converters.List
+  fullName: Azuria.Api.v1.Converters.List
+  nameWithType: Azuria.Api.v1.Converters.List
+- uid: Azuria.Api.v1.Converters.List.TagIdConverter
+  name: TagIdConverter
+  href: api/Azuria.Api.v1.Converters.List.TagIdConverter.html
+  commentId: T:Azuria.Api.v1.Converters.List.TagIdConverter
+  fullName: Azuria.Api.v1.Converters.List.TagIdConverter
+  nameWithType: TagIdConverter
+- uid: Azuria.Api.v1.Converters.List.TagIdConverter.ConvertJson(Newtonsoft.Json.JsonReader,System.Type,System.Object,Newtonsoft.Json.JsonSerializer)
+  name: ConvertJson(JsonReader, Type, Object, JsonSerializer)
+  href: api/Azuria.Api.v1.Converters.List.TagIdConverter.html#Azuria_Api_v1_Converters_List_TagIdConverter_ConvertJson_Newtonsoft_Json_JsonReader_System_Type_System_Object_Newtonsoft_Json_JsonSerializer_
+  commentId: M:Azuria.Api.v1.Converters.List.TagIdConverter.ConvertJson(Newtonsoft.Json.JsonReader,System.Type,System.Object,Newtonsoft.Json.JsonSerializer)
+  fullName: Azuria.Api.v1.Converters.List.TagIdConverter.ConvertJson(Newtonsoft.Json.JsonReader, System.Type, System.Object, Newtonsoft.Json.JsonSerializer)
+  nameWithType: TagIdConverter.ConvertJson(JsonReader, Type, Object, JsonSerializer)
+- uid: Azuria.Api.v1.Converters.List.TagIdConverter.ConvertJson*
+  name: ConvertJson
+  href: api/Azuria.Api.v1.Converters.List.TagIdConverter.html#Azuria_Api_v1_Converters_List_TagIdConverter_ConvertJson_
+  commentId: Overload:Azuria.Api.v1.Converters.List.TagIdConverter.ConvertJson
+  fullName: Azuria.Api.v1.Converters.List.TagIdConverter.ConvertJson
+  nameWithType: TagIdConverter.ConvertJson
 - uid: Azuria.Api.v1.DataModels
   name: Azuria.Api.v1.DataModels
   href: api/Azuria.Api.v1.DataModels.html
@@ -3156,6 +3180,30 @@ references:
   commentId: Overload:Azuria.Api.v1.DataModels.Info.EntryDataModel.Rating
   fullName: Azuria.Api.v1.DataModels.Info.EntryDataModel.Rating
   nameWithType: EntryDataModel.Rating
+- uid: Azuria.Api.v1.DataModels.Info.EntryDataModel.RatingsCount
+  name: RatingsCount
+  href: api/Azuria.Api.v1.DataModels.Info.EntryDataModel.html#Azuria_Api_v1_DataModels_Info_EntryDataModel_RatingsCount
+  commentId: P:Azuria.Api.v1.DataModels.Info.EntryDataModel.RatingsCount
+  fullName: Azuria.Api.v1.DataModels.Info.EntryDataModel.RatingsCount
+  nameWithType: EntryDataModel.RatingsCount
+- uid: Azuria.Api.v1.DataModels.Info.EntryDataModel.RatingsCount*
+  name: RatingsCount
+  href: api/Azuria.Api.v1.DataModels.Info.EntryDataModel.html#Azuria_Api_v1_DataModels_Info_EntryDataModel_RatingsCount_
+  commentId: Overload:Azuria.Api.v1.DataModels.Info.EntryDataModel.RatingsCount
+  fullName: Azuria.Api.v1.DataModels.Info.EntryDataModel.RatingsCount
+  nameWithType: EntryDataModel.RatingsCount
+- uid: Azuria.Api.v1.DataModels.Info.EntryDataModel.RatingsSum
+  name: RatingsSum
+  href: api/Azuria.Api.v1.DataModels.Info.EntryDataModel.html#Azuria_Api_v1_DataModels_Info_EntryDataModel_RatingsSum
+  commentId: P:Azuria.Api.v1.DataModels.Info.EntryDataModel.RatingsSum
+  fullName: Azuria.Api.v1.DataModels.Info.EntryDataModel.RatingsSum
+  nameWithType: EntryDataModel.RatingsSum
+- uid: Azuria.Api.v1.DataModels.Info.EntryDataModel.RatingsSum*
+  name: RatingsSum
+  href: api/Azuria.Api.v1.DataModels.Info.EntryDataModel.html#Azuria_Api_v1_DataModels_Info_EntryDataModel_RatingsSum_
+  commentId: Overload:Azuria.Api.v1.DataModels.Info.EntryDataModel.RatingsSum
+  fullName: Azuria.Api.v1.DataModels.Info.EntryDataModel.RatingsSum
+  nameWithType: EntryDataModel.RatingsSum
 - uid: Azuria.Api.v1.DataModels.Info.EntryDataModel.Status
   name: Status
   href: api/Azuria.Api.v1.DataModels.Info.EntryDataModel.html#Azuria_Api_v1_DataModels_Info_EntryDataModel_Status
@@ -3168,30 +3216,6 @@ references:
   commentId: Overload:Azuria.Api.v1.DataModels.Info.EntryDataModel.Status
   fullName: Azuria.Api.v1.DataModels.Info.EntryDataModel.Status
   nameWithType: EntryDataModel.Status
-- uid: Azuria.Api.v1.DataModels.Info.EntryDataModel.TotalStars
-  name: TotalStars
-  href: api/Azuria.Api.v1.DataModels.Info.EntryDataModel.html#Azuria_Api_v1_DataModels_Info_EntryDataModel_TotalStars
-  commentId: P:Azuria.Api.v1.DataModels.Info.EntryDataModel.TotalStars
-  fullName: Azuria.Api.v1.DataModels.Info.EntryDataModel.TotalStars
-  nameWithType: EntryDataModel.TotalStars
-- uid: Azuria.Api.v1.DataModels.Info.EntryDataModel.TotalStars*
-  name: TotalStars
-  href: api/Azuria.Api.v1.DataModels.Info.EntryDataModel.html#Azuria_Api_v1_DataModels_Info_EntryDataModel_TotalStars_
-  commentId: Overload:Azuria.Api.v1.DataModels.Info.EntryDataModel.TotalStars
-  fullName: Azuria.Api.v1.DataModels.Info.EntryDataModel.TotalStars
-  nameWithType: EntryDataModel.TotalStars
-- uid: Azuria.Api.v1.DataModels.Info.EntryDataModel.Voters
-  name: Voters
-  href: api/Azuria.Api.v1.DataModels.Info.EntryDataModel.html#Azuria_Api_v1_DataModels_Info_EntryDataModel_Voters
-  commentId: P:Azuria.Api.v1.DataModels.Info.EntryDataModel.Voters
-  fullName: Azuria.Api.v1.DataModels.Info.EntryDataModel.Voters
-  nameWithType: EntryDataModel.Voters
-- uid: Azuria.Api.v1.DataModels.Info.EntryDataModel.Voters*
-  name: Voters
-  href: api/Azuria.Api.v1.DataModels.Info.EntryDataModel.html#Azuria_Api_v1_DataModels_Info_EntryDataModel_Voters_
-  commentId: Overload:Azuria.Api.v1.DataModels.Info.EntryDataModel.Voters
-  fullName: Azuria.Api.v1.DataModels.Info.EntryDataModel.Voters
-  nameWithType: EntryDataModel.Voters
 - uid: Azuria.Api.v1.DataModels.Info.FullEntryDataModel
   name: FullEntryDataModel
   href: api/Azuria.Api.v1.DataModels.Info.FullEntryDataModel.html
@@ -3564,12 +3588,12 @@ references:
   commentId: T:Azuria.Api.v1.DataModels.Info.SeasonDataModel
   fullName: Azuria.Api.v1.DataModels.Info.SeasonDataModel
   nameWithType: SeasonDataModel
-- uid: Azuria.Api.v1.DataModels.Info.SeasonDataModel.Equals(System.Object)
-  name: Equals(Object)
-  href: api/Azuria.Api.v1.DataModels.Info.SeasonDataModel.html#Azuria_Api_v1_DataModels_Info_SeasonDataModel_Equals_System_Object_
-  commentId: M:Azuria.Api.v1.DataModels.Info.SeasonDataModel.Equals(System.Object)
-  fullName: Azuria.Api.v1.DataModels.Info.SeasonDataModel.Equals(System.Object)
-  nameWithType: SeasonDataModel.Equals(Object)
+- uid: Azuria.Api.v1.DataModels.Info.SeasonDataModel.Equals(Azuria.Api.v1.DataModels.Info.SeasonDataModel)
+  name: Equals(SeasonDataModel)
+  href: api/Azuria.Api.v1.DataModels.Info.SeasonDataModel.html#Azuria_Api_v1_DataModels_Info_SeasonDataModel_Equals_Azuria_Api_v1_DataModels_Info_SeasonDataModel_
+  commentId: M:Azuria.Api.v1.DataModels.Info.SeasonDataModel.Equals(Azuria.Api.v1.DataModels.Info.SeasonDataModel)
+  fullName: Azuria.Api.v1.DataModels.Info.SeasonDataModel.Equals(Azuria.Api.v1.DataModels.Info.SeasonDataModel)
+  nameWithType: SeasonDataModel.Equals(SeasonDataModel)
 - uid: Azuria.Api.v1.DataModels.Info.SeasonDataModel.Equals*
   name: Equals
   href: api/Azuria.Api.v1.DataModels.Info.SeasonDataModel.html#Azuria_Api_v1_DataModels_Info_SeasonDataModel_Equals_
@@ -3630,6 +3654,18 @@ references:
   commentId: T:Azuria.Api.v1.DataModels.Info.TranslatorDataModel
   fullName: Azuria.Api.v1.DataModels.Info.TranslatorDataModel
   nameWithType: TranslatorDataModel
+- uid: Azuria.Api.v1.DataModels.Info.TranslatorDataModel.Country
+  name: Country
+  href: api/Azuria.Api.v1.DataModels.Info.TranslatorDataModel.html#Azuria_Api_v1_DataModels_Info_TranslatorDataModel_Country
+  commentId: P:Azuria.Api.v1.DataModels.Info.TranslatorDataModel.Country
+  fullName: Azuria.Api.v1.DataModels.Info.TranslatorDataModel.Country
+  nameWithType: TranslatorDataModel.Country
+- uid: Azuria.Api.v1.DataModels.Info.TranslatorDataModel.Country*
+  name: Country
+  href: api/Azuria.Api.v1.DataModels.Info.TranslatorDataModel.html#Azuria_Api_v1_DataModels_Info_TranslatorDataModel_Country_
+  commentId: Overload:Azuria.Api.v1.DataModels.Info.TranslatorDataModel.Country
+  fullName: Azuria.Api.v1.DataModels.Info.TranslatorDataModel.Country
+  nameWithType: TranslatorDataModel.Country
 - uid: Azuria.Api.v1.DataModels.Info.TranslatorDataModel.Id
   name: Id
   href: api/Azuria.Api.v1.DataModels.Info.TranslatorDataModel.html#Azuria_Api_v1_DataModels_Info_TranslatorDataModel_Id
@@ -3642,18 +3678,30 @@ references:
   commentId: Overload:Azuria.Api.v1.DataModels.Info.TranslatorDataModel.Id
   fullName: Azuria.Api.v1.DataModels.Info.TranslatorDataModel.Id
   nameWithType: TranslatorDataModel.Id
-- uid: Azuria.Api.v1.DataModels.Info.TranslatorDataModel.Language
-  name: Language
-  href: api/Azuria.Api.v1.DataModels.Info.TranslatorDataModel.html#Azuria_Api_v1_DataModels_Info_TranslatorDataModel_Language
-  commentId: P:Azuria.Api.v1.DataModels.Info.TranslatorDataModel.Language
-  fullName: Azuria.Api.v1.DataModels.Info.TranslatorDataModel.Language
-  nameWithType: TranslatorDataModel.Language
-- uid: Azuria.Api.v1.DataModels.Info.TranslatorDataModel.Language*
-  name: Language
-  href: api/Azuria.Api.v1.DataModels.Info.TranslatorDataModel.html#Azuria_Api_v1_DataModels_Info_TranslatorDataModel_Language_
-  commentId: Overload:Azuria.Api.v1.DataModels.Info.TranslatorDataModel.Language
-  fullName: Azuria.Api.v1.DataModels.Info.TranslatorDataModel.Language
-  nameWithType: TranslatorDataModel.Language
+- uid: Azuria.Api.v1.DataModels.Info.TranslatorDataModel.Image
+  name: Image
+  href: api/Azuria.Api.v1.DataModels.Info.TranslatorDataModel.html#Azuria_Api_v1_DataModels_Info_TranslatorDataModel_Image
+  commentId: P:Azuria.Api.v1.DataModels.Info.TranslatorDataModel.Image
+  fullName: Azuria.Api.v1.DataModels.Info.TranslatorDataModel.Image
+  nameWithType: TranslatorDataModel.Image
+- uid: Azuria.Api.v1.DataModels.Info.TranslatorDataModel.Image*
+  name: Image
+  href: api/Azuria.Api.v1.DataModels.Info.TranslatorDataModel.html#Azuria_Api_v1_DataModels_Info_TranslatorDataModel_Image_
+  commentId: Overload:Azuria.Api.v1.DataModels.Info.TranslatorDataModel.Image
+  fullName: Azuria.Api.v1.DataModels.Info.TranslatorDataModel.Image
+  nameWithType: TranslatorDataModel.Image
+- uid: Azuria.Api.v1.DataModels.Info.TranslatorDataModel.Link
+  name: Link
+  href: api/Azuria.Api.v1.DataModels.Info.TranslatorDataModel.html#Azuria_Api_v1_DataModels_Info_TranslatorDataModel_Link
+  commentId: P:Azuria.Api.v1.DataModels.Info.TranslatorDataModel.Link
+  fullName: Azuria.Api.v1.DataModels.Info.TranslatorDataModel.Link
+  nameWithType: TranslatorDataModel.Link
+- uid: Azuria.Api.v1.DataModels.Info.TranslatorDataModel.Link*
+  name: Link
+  href: api/Azuria.Api.v1.DataModels.Info.TranslatorDataModel.html#Azuria_Api_v1_DataModels_Info_TranslatorDataModel_Link_
+  commentId: Overload:Azuria.Api.v1.DataModels.Info.TranslatorDataModel.Link
+  fullName: Azuria.Api.v1.DataModels.Info.TranslatorDataModel.Link
+  nameWithType: TranslatorDataModel.Link
 - uid: Azuria.Api.v1.DataModels.Info.TranslatorDataModel.Name
   name: Name
   href: api/Azuria.Api.v1.DataModels.Info.TranslatorDataModel.html#Azuria_Api_v1_DataModels_Info_TranslatorDataModel_Name
@@ -3666,6 +3714,588 @@ references:
   commentId: Overload:Azuria.Api.v1.DataModels.Info.TranslatorDataModel.Name
   fullName: Azuria.Api.v1.DataModels.Info.TranslatorDataModel.Name
   nameWithType: TranslatorDataModel.Name
+- uid: Azuria.Api.v1.DataModels.List
+  name: Azuria.Api.v1.DataModels.List
+  href: api/Azuria.Api.v1.DataModels.List.html
+  commentId: N:Azuria.Api.v1.DataModels.List
+  fullName: Azuria.Api.v1.DataModels.List
+  nameWithType: Azuria.Api.v1.DataModels.List
+- uid: Azuria.Api.v1.DataModels.List.IndustryDataModel
+  name: IndustryDataModel
+  href: api/Azuria.Api.v1.DataModels.List.IndustryDataModel.html
+  commentId: T:Azuria.Api.v1.DataModels.List.IndustryDataModel
+  fullName: Azuria.Api.v1.DataModels.List.IndustryDataModel
+  nameWithType: IndustryDataModel
+- uid: Azuria.Api.v1.DataModels.List.IndustryDataModel.Country
+  name: Country
+  href: api/Azuria.Api.v1.DataModels.List.IndustryDataModel.html#Azuria_Api_v1_DataModels_List_IndustryDataModel_Country
+  commentId: P:Azuria.Api.v1.DataModels.List.IndustryDataModel.Country
+  fullName: Azuria.Api.v1.DataModels.List.IndustryDataModel.Country
+  nameWithType: IndustryDataModel.Country
+- uid: Azuria.Api.v1.DataModels.List.IndustryDataModel.Country*
+  name: Country
+  href: api/Azuria.Api.v1.DataModels.List.IndustryDataModel.html#Azuria_Api_v1_DataModels_List_IndustryDataModel_Country_
+  commentId: Overload:Azuria.Api.v1.DataModels.List.IndustryDataModel.Country
+  fullName: Azuria.Api.v1.DataModels.List.IndustryDataModel.Country
+  nameWithType: IndustryDataModel.Country
+- uid: Azuria.Api.v1.DataModels.List.IndustryDataModel.CoverImage
+  name: CoverImage
+  href: api/Azuria.Api.v1.DataModels.List.IndustryDataModel.html#Azuria_Api_v1_DataModels_List_IndustryDataModel_CoverImage
+  commentId: P:Azuria.Api.v1.DataModels.List.IndustryDataModel.CoverImage
+  fullName: Azuria.Api.v1.DataModels.List.IndustryDataModel.CoverImage
+  nameWithType: IndustryDataModel.CoverImage
+- uid: Azuria.Api.v1.DataModels.List.IndustryDataModel.CoverImage*
+  name: CoverImage
+  href: api/Azuria.Api.v1.DataModels.List.IndustryDataModel.html#Azuria_Api_v1_DataModels_List_IndustryDataModel_CoverImage_
+  commentId: Overload:Azuria.Api.v1.DataModels.List.IndustryDataModel.CoverImage
+  fullName: Azuria.Api.v1.DataModels.List.IndustryDataModel.CoverImage
+  nameWithType: IndustryDataModel.CoverImage
+- uid: Azuria.Api.v1.DataModels.List.IndustryDataModel.Id
+  name: Id
+  href: api/Azuria.Api.v1.DataModels.List.IndustryDataModel.html#Azuria_Api_v1_DataModels_List_IndustryDataModel_Id
+  commentId: P:Azuria.Api.v1.DataModels.List.IndustryDataModel.Id
+  fullName: Azuria.Api.v1.DataModels.List.IndustryDataModel.Id
+  nameWithType: IndustryDataModel.Id
+- uid: Azuria.Api.v1.DataModels.List.IndustryDataModel.Id*
+  name: Id
+  href: api/Azuria.Api.v1.DataModels.List.IndustryDataModel.html#Azuria_Api_v1_DataModels_List_IndustryDataModel_Id_
+  commentId: Overload:Azuria.Api.v1.DataModels.List.IndustryDataModel.Id
+  fullName: Azuria.Api.v1.DataModels.List.IndustryDataModel.Id
+  nameWithType: IndustryDataModel.Id
+- uid: Azuria.Api.v1.DataModels.List.IndustryDataModel.Name
+  name: Name
+  href: api/Azuria.Api.v1.DataModels.List.IndustryDataModel.html#Azuria_Api_v1_DataModels_List_IndustryDataModel_Name
+  commentId: P:Azuria.Api.v1.DataModels.List.IndustryDataModel.Name
+  fullName: Azuria.Api.v1.DataModels.List.IndustryDataModel.Name
+  nameWithType: IndustryDataModel.Name
+- uid: Azuria.Api.v1.DataModels.List.IndustryDataModel.Name*
+  name: Name
+  href: api/Azuria.Api.v1.DataModels.List.IndustryDataModel.html#Azuria_Api_v1_DataModels_List_IndustryDataModel_Name_
+  commentId: Overload:Azuria.Api.v1.DataModels.List.IndustryDataModel.Name
+  fullName: Azuria.Api.v1.DataModels.List.IndustryDataModel.Name
+  nameWithType: IndustryDataModel.Name
+- uid: Azuria.Api.v1.DataModels.List.IndustryDataModel.Type
+  name: Type
+  href: api/Azuria.Api.v1.DataModels.List.IndustryDataModel.html#Azuria_Api_v1_DataModels_List_IndustryDataModel_Type
+  commentId: P:Azuria.Api.v1.DataModels.List.IndustryDataModel.Type
+  fullName: Azuria.Api.v1.DataModels.List.IndustryDataModel.Type
+  nameWithType: IndustryDataModel.Type
+- uid: Azuria.Api.v1.DataModels.List.IndustryDataModel.Type*
+  name: Type
+  href: api/Azuria.Api.v1.DataModels.List.IndustryDataModel.html#Azuria_Api_v1_DataModels_List_IndustryDataModel_Type_
+  commentId: Overload:Azuria.Api.v1.DataModels.List.IndustryDataModel.Type
+  fullName: Azuria.Api.v1.DataModels.List.IndustryDataModel.Type
+  nameWithType: IndustryDataModel.Type
+- uid: Azuria.Api.v1.DataModels.List.IndustryProjectDataModel
+  name: IndustryProjectDataModel
+  href: api/Azuria.Api.v1.DataModels.List.IndustryProjectDataModel.html
+  commentId: T:Azuria.Api.v1.DataModels.List.IndustryProjectDataModel
+  fullName: Azuria.Api.v1.DataModels.List.IndustryProjectDataModel
+  nameWithType: IndustryProjectDataModel
+- uid: Azuria.Api.v1.DataModels.List.IndustryProjectDataModel.EntryFsk
+  name: EntryFsk
+  href: api/Azuria.Api.v1.DataModels.List.IndustryProjectDataModel.html#Azuria_Api_v1_DataModels_List_IndustryProjectDataModel_EntryFsk
+  commentId: P:Azuria.Api.v1.DataModels.List.IndustryProjectDataModel.EntryFsk
+  fullName: Azuria.Api.v1.DataModels.List.IndustryProjectDataModel.EntryFsk
+  nameWithType: IndustryProjectDataModel.EntryFsk
+- uid: Azuria.Api.v1.DataModels.List.IndustryProjectDataModel.EntryFsk*
+  name: EntryFsk
+  href: api/Azuria.Api.v1.DataModels.List.IndustryProjectDataModel.html#Azuria_Api_v1_DataModels_List_IndustryProjectDataModel_EntryFsk_
+  commentId: Overload:Azuria.Api.v1.DataModels.List.IndustryProjectDataModel.EntryFsk
+  fullName: Azuria.Api.v1.DataModels.List.IndustryProjectDataModel.EntryFsk
+  nameWithType: IndustryProjectDataModel.EntryFsk
+- uid: Azuria.Api.v1.DataModels.List.IndustryProjectDataModel.EntryGenre
+  name: EntryGenre
+  href: api/Azuria.Api.v1.DataModels.List.IndustryProjectDataModel.html#Azuria_Api_v1_DataModels_List_IndustryProjectDataModel_EntryGenre
+  commentId: P:Azuria.Api.v1.DataModels.List.IndustryProjectDataModel.EntryGenre
+  fullName: Azuria.Api.v1.DataModels.List.IndustryProjectDataModel.EntryGenre
+  nameWithType: IndustryProjectDataModel.EntryGenre
+- uid: Azuria.Api.v1.DataModels.List.IndustryProjectDataModel.EntryGenre*
+  name: EntryGenre
+  href: api/Azuria.Api.v1.DataModels.List.IndustryProjectDataModel.html#Azuria_Api_v1_DataModels_List_IndustryProjectDataModel_EntryGenre_
+  commentId: Overload:Azuria.Api.v1.DataModels.List.IndustryProjectDataModel.EntryGenre
+  fullName: Azuria.Api.v1.DataModels.List.IndustryProjectDataModel.EntryGenre
+  nameWithType: IndustryProjectDataModel.EntryGenre
+- uid: Azuria.Api.v1.DataModels.List.IndustryProjectDataModel.EntryId
+  name: EntryId
+  href: api/Azuria.Api.v1.DataModels.List.IndustryProjectDataModel.html#Azuria_Api_v1_DataModels_List_IndustryProjectDataModel_EntryId
+  commentId: P:Azuria.Api.v1.DataModels.List.IndustryProjectDataModel.EntryId
+  fullName: Azuria.Api.v1.DataModels.List.IndustryProjectDataModel.EntryId
+  nameWithType: IndustryProjectDataModel.EntryId
+- uid: Azuria.Api.v1.DataModels.List.IndustryProjectDataModel.EntryId*
+  name: EntryId
+  href: api/Azuria.Api.v1.DataModels.List.IndustryProjectDataModel.html#Azuria_Api_v1_DataModels_List_IndustryProjectDataModel_EntryId_
+  commentId: Overload:Azuria.Api.v1.DataModels.List.IndustryProjectDataModel.EntryId
+  fullName: Azuria.Api.v1.DataModels.List.IndustryProjectDataModel.EntryId
+  nameWithType: IndustryProjectDataModel.EntryId
+- uid: Azuria.Api.v1.DataModels.List.IndustryProjectDataModel.EntryMedium
+  name: EntryMedium
+  href: api/Azuria.Api.v1.DataModels.List.IndustryProjectDataModel.html#Azuria_Api_v1_DataModels_List_IndustryProjectDataModel_EntryMedium
+  commentId: P:Azuria.Api.v1.DataModels.List.IndustryProjectDataModel.EntryMedium
+  fullName: Azuria.Api.v1.DataModels.List.IndustryProjectDataModel.EntryMedium
+  nameWithType: IndustryProjectDataModel.EntryMedium
+- uid: Azuria.Api.v1.DataModels.List.IndustryProjectDataModel.EntryMedium*
+  name: EntryMedium
+  href: api/Azuria.Api.v1.DataModels.List.IndustryProjectDataModel.html#Azuria_Api_v1_DataModels_List_IndustryProjectDataModel_EntryMedium_
+  commentId: Overload:Azuria.Api.v1.DataModels.List.IndustryProjectDataModel.EntryMedium
+  fullName: Azuria.Api.v1.DataModels.List.IndustryProjectDataModel.EntryMedium
+  nameWithType: IndustryProjectDataModel.EntryMedium
+- uid: Azuria.Api.v1.DataModels.List.IndustryProjectDataModel.EntryName
+  name: EntryName
+  href: api/Azuria.Api.v1.DataModels.List.IndustryProjectDataModel.html#Azuria_Api_v1_DataModels_List_IndustryProjectDataModel_EntryName
+  commentId: P:Azuria.Api.v1.DataModels.List.IndustryProjectDataModel.EntryName
+  fullName: Azuria.Api.v1.DataModels.List.IndustryProjectDataModel.EntryName
+  nameWithType: IndustryProjectDataModel.EntryName
+- uid: Azuria.Api.v1.DataModels.List.IndustryProjectDataModel.EntryName*
+  name: EntryName
+  href: api/Azuria.Api.v1.DataModels.List.IndustryProjectDataModel.html#Azuria_Api_v1_DataModels_List_IndustryProjectDataModel_EntryName_
+  commentId: Overload:Azuria.Api.v1.DataModels.List.IndustryProjectDataModel.EntryName
+  fullName: Azuria.Api.v1.DataModels.List.IndustryProjectDataModel.EntryName
+  nameWithType: IndustryProjectDataModel.EntryName
+- uid: Azuria.Api.v1.DataModels.List.IndustryProjectDataModel.EntryRating
+  name: EntryRating
+  href: api/Azuria.Api.v1.DataModels.List.IndustryProjectDataModel.html#Azuria_Api_v1_DataModels_List_IndustryProjectDataModel_EntryRating
+  commentId: P:Azuria.Api.v1.DataModels.List.IndustryProjectDataModel.EntryRating
+  fullName: Azuria.Api.v1.DataModels.List.IndustryProjectDataModel.EntryRating
+  nameWithType: IndustryProjectDataModel.EntryRating
+- uid: Azuria.Api.v1.DataModels.List.IndustryProjectDataModel.EntryRating*
+  name: EntryRating
+  href: api/Azuria.Api.v1.DataModels.List.IndustryProjectDataModel.html#Azuria_Api_v1_DataModels_List_IndustryProjectDataModel_EntryRating_
+  commentId: Overload:Azuria.Api.v1.DataModels.List.IndustryProjectDataModel.EntryRating
+  fullName: Azuria.Api.v1.DataModels.List.IndustryProjectDataModel.EntryRating
+  nameWithType: IndustryProjectDataModel.EntryRating
+- uid: Azuria.Api.v1.DataModels.List.IndustryProjectDataModel.EntryRatingsCount
+  name: EntryRatingsCount
+  href: api/Azuria.Api.v1.DataModels.List.IndustryProjectDataModel.html#Azuria_Api_v1_DataModels_List_IndustryProjectDataModel_EntryRatingsCount
+  commentId: P:Azuria.Api.v1.DataModels.List.IndustryProjectDataModel.EntryRatingsCount
+  fullName: Azuria.Api.v1.DataModels.List.IndustryProjectDataModel.EntryRatingsCount
+  nameWithType: IndustryProjectDataModel.EntryRatingsCount
+- uid: Azuria.Api.v1.DataModels.List.IndustryProjectDataModel.EntryRatingsCount*
+  name: EntryRatingsCount
+  href: api/Azuria.Api.v1.DataModels.List.IndustryProjectDataModel.html#Azuria_Api_v1_DataModels_List_IndustryProjectDataModel_EntryRatingsCount_
+  commentId: Overload:Azuria.Api.v1.DataModels.List.IndustryProjectDataModel.EntryRatingsCount
+  fullName: Azuria.Api.v1.DataModels.List.IndustryProjectDataModel.EntryRatingsCount
+  nameWithType: IndustryProjectDataModel.EntryRatingsCount
+- uid: Azuria.Api.v1.DataModels.List.IndustryProjectDataModel.EntryRatingsSum
+  name: EntryRatingsSum
+  href: api/Azuria.Api.v1.DataModels.List.IndustryProjectDataModel.html#Azuria_Api_v1_DataModels_List_IndustryProjectDataModel_EntryRatingsSum
+  commentId: P:Azuria.Api.v1.DataModels.List.IndustryProjectDataModel.EntryRatingsSum
+  fullName: Azuria.Api.v1.DataModels.List.IndustryProjectDataModel.EntryRatingsSum
+  nameWithType: IndustryProjectDataModel.EntryRatingsSum
+- uid: Azuria.Api.v1.DataModels.List.IndustryProjectDataModel.EntryRatingsSum*
+  name: EntryRatingsSum
+  href: api/Azuria.Api.v1.DataModels.List.IndustryProjectDataModel.html#Azuria_Api_v1_DataModels_List_IndustryProjectDataModel_EntryRatingsSum_
+  commentId: Overload:Azuria.Api.v1.DataModels.List.IndustryProjectDataModel.EntryRatingsSum
+  fullName: Azuria.Api.v1.DataModels.List.IndustryProjectDataModel.EntryRatingsSum
+  nameWithType: IndustryProjectDataModel.EntryRatingsSum
+- uid: Azuria.Api.v1.DataModels.List.IndustryProjectDataModel.EntryStatus
+  name: EntryStatus
+  href: api/Azuria.Api.v1.DataModels.List.IndustryProjectDataModel.html#Azuria_Api_v1_DataModels_List_IndustryProjectDataModel_EntryStatus
+  commentId: P:Azuria.Api.v1.DataModels.List.IndustryProjectDataModel.EntryStatus
+  fullName: Azuria.Api.v1.DataModels.List.IndustryProjectDataModel.EntryStatus
+  nameWithType: IndustryProjectDataModel.EntryStatus
+- uid: Azuria.Api.v1.DataModels.List.IndustryProjectDataModel.EntryStatus*
+  name: EntryStatus
+  href: api/Azuria.Api.v1.DataModels.List.IndustryProjectDataModel.html#Azuria_Api_v1_DataModels_List_IndustryProjectDataModel_EntryStatus_
+  commentId: Overload:Azuria.Api.v1.DataModels.List.IndustryProjectDataModel.EntryStatus
+  fullName: Azuria.Api.v1.DataModels.List.IndustryProjectDataModel.EntryStatus
+  nameWithType: IndustryProjectDataModel.EntryStatus
+- uid: Azuria.Api.v1.DataModels.List.IndustryProjectDataModel.EntryType
+  name: EntryType
+  href: api/Azuria.Api.v1.DataModels.List.IndustryProjectDataModel.html#Azuria_Api_v1_DataModels_List_IndustryProjectDataModel_EntryType
+  commentId: P:Azuria.Api.v1.DataModels.List.IndustryProjectDataModel.EntryType
+  fullName: Azuria.Api.v1.DataModels.List.IndustryProjectDataModel.EntryType
+  nameWithType: IndustryProjectDataModel.EntryType
+- uid: Azuria.Api.v1.DataModels.List.IndustryProjectDataModel.EntryType*
+  name: EntryType
+  href: api/Azuria.Api.v1.DataModels.List.IndustryProjectDataModel.html#Azuria_Api_v1_DataModels_List_IndustryProjectDataModel_EntryType_
+  commentId: Overload:Azuria.Api.v1.DataModels.List.IndustryProjectDataModel.EntryType
+  fullName: Azuria.Api.v1.DataModels.List.IndustryProjectDataModel.EntryType
+  nameWithType: IndustryProjectDataModel.EntryType
+- uid: Azuria.Api.v1.DataModels.List.IndustryProjectDataModel.IndustryType
+  name: IndustryType
+  href: api/Azuria.Api.v1.DataModels.List.IndustryProjectDataModel.html#Azuria_Api_v1_DataModels_List_IndustryProjectDataModel_IndustryType
+  commentId: P:Azuria.Api.v1.DataModels.List.IndustryProjectDataModel.IndustryType
+  fullName: Azuria.Api.v1.DataModels.List.IndustryProjectDataModel.IndustryType
+  nameWithType: IndustryProjectDataModel.IndustryType
+- uid: Azuria.Api.v1.DataModels.List.IndustryProjectDataModel.IndustryType*
+  name: IndustryType
+  href: api/Azuria.Api.v1.DataModels.List.IndustryProjectDataModel.html#Azuria_Api_v1_DataModels_List_IndustryProjectDataModel_IndustryType_
+  commentId: Overload:Azuria.Api.v1.DataModels.List.IndustryProjectDataModel.IndustryType
+  fullName: Azuria.Api.v1.DataModels.List.IndustryProjectDataModel.IndustryType
+  nameWithType: IndustryProjectDataModel.IndustryType
+- uid: Azuria.Api.v1.DataModels.List.SearchDataModel
+  name: SearchDataModel
+  href: api/Azuria.Api.v1.DataModels.List.SearchDataModel.html
+  commentId: T:Azuria.Api.v1.DataModels.List.SearchDataModel
+  fullName: Azuria.Api.v1.DataModels.List.SearchDataModel
+  nameWithType: SearchDataModel
+- uid: Azuria.Api.v1.DataModels.List.SearchDataModel.AvailableLanguages
+  name: AvailableLanguages
+  href: api/Azuria.Api.v1.DataModels.List.SearchDataModel.html#Azuria_Api_v1_DataModels_List_SearchDataModel_AvailableLanguages
+  commentId: P:Azuria.Api.v1.DataModels.List.SearchDataModel.AvailableLanguages
+  fullName: Azuria.Api.v1.DataModels.List.SearchDataModel.AvailableLanguages
+  nameWithType: SearchDataModel.AvailableLanguages
+- uid: Azuria.Api.v1.DataModels.List.SearchDataModel.AvailableLanguages*
+  name: AvailableLanguages
+  href: api/Azuria.Api.v1.DataModels.List.SearchDataModel.html#Azuria_Api_v1_DataModels_List_SearchDataModel_AvailableLanguages_
+  commentId: Overload:Azuria.Api.v1.DataModels.List.SearchDataModel.AvailableLanguages
+  fullName: Azuria.Api.v1.DataModels.List.SearchDataModel.AvailableLanguages
+  nameWithType: SearchDataModel.AvailableLanguages
+- uid: Azuria.Api.v1.DataModels.List.SearchDataModel.ContentCount
+  name: ContentCount
+  href: api/Azuria.Api.v1.DataModels.List.SearchDataModel.html#Azuria_Api_v1_DataModels_List_SearchDataModel_ContentCount
+  commentId: P:Azuria.Api.v1.DataModels.List.SearchDataModel.ContentCount
+  fullName: Azuria.Api.v1.DataModels.List.SearchDataModel.ContentCount
+  nameWithType: SearchDataModel.ContentCount
+- uid: Azuria.Api.v1.DataModels.List.SearchDataModel.ContentCount*
+  name: ContentCount
+  href: api/Azuria.Api.v1.DataModels.List.SearchDataModel.html#Azuria_Api_v1_DataModels_List_SearchDataModel_ContentCount_
+  commentId: Overload:Azuria.Api.v1.DataModels.List.SearchDataModel.ContentCount
+  fullName: Azuria.Api.v1.DataModels.List.SearchDataModel.ContentCount
+  nameWithType: SearchDataModel.ContentCount
+- uid: Azuria.Api.v1.DataModels.List.SearchDataModel.EntryId
+  name: EntryId
+  href: api/Azuria.Api.v1.DataModels.List.SearchDataModel.html#Azuria_Api_v1_DataModels_List_SearchDataModel_EntryId
+  commentId: P:Azuria.Api.v1.DataModels.List.SearchDataModel.EntryId
+  fullName: Azuria.Api.v1.DataModels.List.SearchDataModel.EntryId
+  nameWithType: SearchDataModel.EntryId
+- uid: Azuria.Api.v1.DataModels.List.SearchDataModel.EntryId*
+  name: EntryId
+  href: api/Azuria.Api.v1.DataModels.List.SearchDataModel.html#Azuria_Api_v1_DataModels_List_SearchDataModel_EntryId_
+  commentId: Overload:Azuria.Api.v1.DataModels.List.SearchDataModel.EntryId
+  fullName: Azuria.Api.v1.DataModels.List.SearchDataModel.EntryId
+  nameWithType: SearchDataModel.EntryId
+- uid: Azuria.Api.v1.DataModels.List.SearchDataModel.EntryMedium
+  name: EntryMedium
+  href: api/Azuria.Api.v1.DataModels.List.SearchDataModel.html#Azuria_Api_v1_DataModels_List_SearchDataModel_EntryMedium
+  commentId: P:Azuria.Api.v1.DataModels.List.SearchDataModel.EntryMedium
+  fullName: Azuria.Api.v1.DataModels.List.SearchDataModel.EntryMedium
+  nameWithType: SearchDataModel.EntryMedium
+- uid: Azuria.Api.v1.DataModels.List.SearchDataModel.EntryMedium*
+  name: EntryMedium
+  href: api/Azuria.Api.v1.DataModels.List.SearchDataModel.html#Azuria_Api_v1_DataModels_List_SearchDataModel_EntryMedium_
+  commentId: Overload:Azuria.Api.v1.DataModels.List.SearchDataModel.EntryMedium
+  fullName: Azuria.Api.v1.DataModels.List.SearchDataModel.EntryMedium
+  nameWithType: SearchDataModel.EntryMedium
+- uid: Azuria.Api.v1.DataModels.List.SearchDataModel.EntryName
+  name: EntryName
+  href: api/Azuria.Api.v1.DataModels.List.SearchDataModel.html#Azuria_Api_v1_DataModels_List_SearchDataModel_EntryName
+  commentId: P:Azuria.Api.v1.DataModels.List.SearchDataModel.EntryName
+  fullName: Azuria.Api.v1.DataModels.List.SearchDataModel.EntryName
+  nameWithType: SearchDataModel.EntryName
+- uid: Azuria.Api.v1.DataModels.List.SearchDataModel.EntryName*
+  name: EntryName
+  href: api/Azuria.Api.v1.DataModels.List.SearchDataModel.html#Azuria_Api_v1_DataModels_List_SearchDataModel_EntryName_
+  commentId: Overload:Azuria.Api.v1.DataModels.List.SearchDataModel.EntryName
+  fullName: Azuria.Api.v1.DataModels.List.SearchDataModel.EntryName
+  nameWithType: SearchDataModel.EntryName
+- uid: Azuria.Api.v1.DataModels.List.SearchDataModel.EntryType
+  name: EntryType
+  href: api/Azuria.Api.v1.DataModels.List.SearchDataModel.html#Azuria_Api_v1_DataModels_List_SearchDataModel_EntryType
+  commentId: P:Azuria.Api.v1.DataModels.List.SearchDataModel.EntryType
+  fullName: Azuria.Api.v1.DataModels.List.SearchDataModel.EntryType
+  nameWithType: SearchDataModel.EntryType
+- uid: Azuria.Api.v1.DataModels.List.SearchDataModel.EntryType*
+  name: EntryType
+  href: api/Azuria.Api.v1.DataModels.List.SearchDataModel.html#Azuria_Api_v1_DataModels_List_SearchDataModel_EntryType_
+  commentId: Overload:Azuria.Api.v1.DataModels.List.SearchDataModel.EntryType
+  fullName: Azuria.Api.v1.DataModels.List.SearchDataModel.EntryType
+  nameWithType: SearchDataModel.EntryType
+- uid: Azuria.Api.v1.DataModels.List.SearchDataModel.Genre
+  name: Genre
+  href: api/Azuria.Api.v1.DataModels.List.SearchDataModel.html#Azuria_Api_v1_DataModels_List_SearchDataModel_Genre
+  commentId: P:Azuria.Api.v1.DataModels.List.SearchDataModel.Genre
+  fullName: Azuria.Api.v1.DataModels.List.SearchDataModel.Genre
+  nameWithType: SearchDataModel.Genre
+- uid: Azuria.Api.v1.DataModels.List.SearchDataModel.Genre*
+  name: Genre
+  href: api/Azuria.Api.v1.DataModels.List.SearchDataModel.html#Azuria_Api_v1_DataModels_List_SearchDataModel_Genre_
+  commentId: Overload:Azuria.Api.v1.DataModels.List.SearchDataModel.Genre
+  fullName: Azuria.Api.v1.DataModels.List.SearchDataModel.Genre
+  nameWithType: SearchDataModel.Genre
+- uid: Azuria.Api.v1.DataModels.List.SearchDataModel.RateCount
+  name: RateCount
+  href: api/Azuria.Api.v1.DataModels.List.SearchDataModel.html#Azuria_Api_v1_DataModels_List_SearchDataModel_RateCount
+  commentId: P:Azuria.Api.v1.DataModels.List.SearchDataModel.RateCount
+  fullName: Azuria.Api.v1.DataModels.List.SearchDataModel.RateCount
+  nameWithType: SearchDataModel.RateCount
+- uid: Azuria.Api.v1.DataModels.List.SearchDataModel.RateCount*
+  name: RateCount
+  href: api/Azuria.Api.v1.DataModels.List.SearchDataModel.html#Azuria_Api_v1_DataModels_List_SearchDataModel_RateCount_
+  commentId: Overload:Azuria.Api.v1.DataModels.List.SearchDataModel.RateCount
+  fullName: Azuria.Api.v1.DataModels.List.SearchDataModel.RateCount
+  nameWithType: SearchDataModel.RateCount
+- uid: Azuria.Api.v1.DataModels.List.SearchDataModel.RateSum
+  name: RateSum
+  href: api/Azuria.Api.v1.DataModels.List.SearchDataModel.html#Azuria_Api_v1_DataModels_List_SearchDataModel_RateSum
+  commentId: P:Azuria.Api.v1.DataModels.List.SearchDataModel.RateSum
+  fullName: Azuria.Api.v1.DataModels.List.SearchDataModel.RateSum
+  nameWithType: SearchDataModel.RateSum
+- uid: Azuria.Api.v1.DataModels.List.SearchDataModel.RateSum*
+  name: RateSum
+  href: api/Azuria.Api.v1.DataModels.List.SearchDataModel.html#Azuria_Api_v1_DataModels_List_SearchDataModel_RateSum_
+  commentId: Overload:Azuria.Api.v1.DataModels.List.SearchDataModel.RateSum
+  fullName: Azuria.Api.v1.DataModels.List.SearchDataModel.RateSum
+  nameWithType: SearchDataModel.RateSum
+- uid: Azuria.Api.v1.DataModels.List.SearchDataModel.Rating
+  name: Rating
+  href: api/Azuria.Api.v1.DataModels.List.SearchDataModel.html#Azuria_Api_v1_DataModels_List_SearchDataModel_Rating
+  commentId: P:Azuria.Api.v1.DataModels.List.SearchDataModel.Rating
+  fullName: Azuria.Api.v1.DataModels.List.SearchDataModel.Rating
+  nameWithType: SearchDataModel.Rating
+- uid: Azuria.Api.v1.DataModels.List.SearchDataModel.Rating*
+  name: Rating
+  href: api/Azuria.Api.v1.DataModels.List.SearchDataModel.html#Azuria_Api_v1_DataModels_List_SearchDataModel_Rating_
+  commentId: Overload:Azuria.Api.v1.DataModels.List.SearchDataModel.Rating
+  fullName: Azuria.Api.v1.DataModels.List.SearchDataModel.Rating
+  nameWithType: SearchDataModel.Rating
+- uid: Azuria.Api.v1.DataModels.List.SearchDataModel.Status
+  name: Status
+  href: api/Azuria.Api.v1.DataModels.List.SearchDataModel.html#Azuria_Api_v1_DataModels_List_SearchDataModel_Status
+  commentId: P:Azuria.Api.v1.DataModels.List.SearchDataModel.Status
+  fullName: Azuria.Api.v1.DataModels.List.SearchDataModel.Status
+  nameWithType: SearchDataModel.Status
+- uid: Azuria.Api.v1.DataModels.List.SearchDataModel.Status*
+  name: Status
+  href: api/Azuria.Api.v1.DataModels.List.SearchDataModel.html#Azuria_Api_v1_DataModels_List_SearchDataModel_Status_
+  commentId: Overload:Azuria.Api.v1.DataModels.List.SearchDataModel.Status
+  fullName: Azuria.Api.v1.DataModels.List.SearchDataModel.Status
+  nameWithType: SearchDataModel.Status
+- uid: Azuria.Api.v1.DataModels.List.TagDataModel
+  name: TagDataModel
+  href: api/Azuria.Api.v1.DataModels.List.TagDataModel.html
+  commentId: T:Azuria.Api.v1.DataModels.List.TagDataModel
+  fullName: Azuria.Api.v1.DataModels.List.TagDataModel
+  nameWithType: TagDataModel
+- uid: Azuria.Api.v1.DataModels.List.TagDataModel.Description
+  name: Description
+  href: api/Azuria.Api.v1.DataModels.List.TagDataModel.html#Azuria_Api_v1_DataModels_List_TagDataModel_Description
+  commentId: P:Azuria.Api.v1.DataModels.List.TagDataModel.Description
+  fullName: Azuria.Api.v1.DataModels.List.TagDataModel.Description
+  nameWithType: TagDataModel.Description
+- uid: Azuria.Api.v1.DataModels.List.TagDataModel.Description*
+  name: Description
+  href: api/Azuria.Api.v1.DataModels.List.TagDataModel.html#Azuria_Api_v1_DataModels_List_TagDataModel_Description_
+  commentId: Overload:Azuria.Api.v1.DataModels.List.TagDataModel.Description
+  fullName: Azuria.Api.v1.DataModels.List.TagDataModel.Description
+  nameWithType: TagDataModel.Description
+- uid: Azuria.Api.v1.DataModels.List.TagDataModel.Id
+  name: Id
+  href: api/Azuria.Api.v1.DataModels.List.TagDataModel.html#Azuria_Api_v1_DataModels_List_TagDataModel_Id
+  commentId: P:Azuria.Api.v1.DataModels.List.TagDataModel.Id
+  fullName: Azuria.Api.v1.DataModels.List.TagDataModel.Id
+  nameWithType: TagDataModel.Id
+- uid: Azuria.Api.v1.DataModels.List.TagDataModel.Id*
+  name: Id
+  href: api/Azuria.Api.v1.DataModels.List.TagDataModel.html#Azuria_Api_v1_DataModels_List_TagDataModel_Id_
+  commentId: Overload:Azuria.Api.v1.DataModels.List.TagDataModel.Id
+  fullName: Azuria.Api.v1.DataModels.List.TagDataModel.Id
+  nameWithType: TagDataModel.Id
+- uid: Azuria.Api.v1.DataModels.List.TagDataModel.Name
+  name: Name
+  href: api/Azuria.Api.v1.DataModels.List.TagDataModel.html#Azuria_Api_v1_DataModels_List_TagDataModel_Name
+  commentId: P:Azuria.Api.v1.DataModels.List.TagDataModel.Name
+  fullName: Azuria.Api.v1.DataModels.List.TagDataModel.Name
+  nameWithType: TagDataModel.Name
+- uid: Azuria.Api.v1.DataModels.List.TagDataModel.Name*
+  name: Name
+  href: api/Azuria.Api.v1.DataModels.List.TagDataModel.html#Azuria_Api_v1_DataModels_List_TagDataModel_Name_
+  commentId: Overload:Azuria.Api.v1.DataModels.List.TagDataModel.Name
+  fullName: Azuria.Api.v1.DataModels.List.TagDataModel.Name
+  nameWithType: TagDataModel.Name
+- uid: Azuria.Api.v1.DataModels.List.TranslatorDataModel
+  name: TranslatorDataModel
+  href: api/Azuria.Api.v1.DataModels.List.TranslatorDataModel.html
+  commentId: T:Azuria.Api.v1.DataModels.List.TranslatorDataModel
+  fullName: Azuria.Api.v1.DataModels.List.TranslatorDataModel
+  nameWithType: TranslatorDataModel
+- uid: Azuria.Api.v1.DataModels.List.TranslatorDataModel.Country
+  name: Country
+  href: api/Azuria.Api.v1.DataModels.List.TranslatorDataModel.html#Azuria_Api_v1_DataModels_List_TranslatorDataModel_Country
+  commentId: P:Azuria.Api.v1.DataModels.List.TranslatorDataModel.Country
+  fullName: Azuria.Api.v1.DataModels.List.TranslatorDataModel.Country
+  nameWithType: TranslatorDataModel.Country
+- uid: Azuria.Api.v1.DataModels.List.TranslatorDataModel.Country*
+  name: Country
+  href: api/Azuria.Api.v1.DataModels.List.TranslatorDataModel.html#Azuria_Api_v1_DataModels_List_TranslatorDataModel_Country_
+  commentId: Overload:Azuria.Api.v1.DataModels.List.TranslatorDataModel.Country
+  fullName: Azuria.Api.v1.DataModels.List.TranslatorDataModel.Country
+  nameWithType: TranslatorDataModel.Country
+- uid: Azuria.Api.v1.DataModels.List.TranslatorDataModel.Id
+  name: Id
+  href: api/Azuria.Api.v1.DataModels.List.TranslatorDataModel.html#Azuria_Api_v1_DataModels_List_TranslatorDataModel_Id
+  commentId: P:Azuria.Api.v1.DataModels.List.TranslatorDataModel.Id
+  fullName: Azuria.Api.v1.DataModels.List.TranslatorDataModel.Id
+  nameWithType: TranslatorDataModel.Id
+- uid: Azuria.Api.v1.DataModels.List.TranslatorDataModel.Id*
+  name: Id
+  href: api/Azuria.Api.v1.DataModels.List.TranslatorDataModel.html#Azuria_Api_v1_DataModels_List_TranslatorDataModel_Id_
+  commentId: Overload:Azuria.Api.v1.DataModels.List.TranslatorDataModel.Id
+  fullName: Azuria.Api.v1.DataModels.List.TranslatorDataModel.Id
+  nameWithType: TranslatorDataModel.Id
+- uid: Azuria.Api.v1.DataModels.List.TranslatorDataModel.Image
+  name: Image
+  href: api/Azuria.Api.v1.DataModels.List.TranslatorDataModel.html#Azuria_Api_v1_DataModels_List_TranslatorDataModel_Image
+  commentId: P:Azuria.Api.v1.DataModels.List.TranslatorDataModel.Image
+  fullName: Azuria.Api.v1.DataModels.List.TranslatorDataModel.Image
+  nameWithType: TranslatorDataModel.Image
+- uid: Azuria.Api.v1.DataModels.List.TranslatorDataModel.Image*
+  name: Image
+  href: api/Azuria.Api.v1.DataModels.List.TranslatorDataModel.html#Azuria_Api_v1_DataModels_List_TranslatorDataModel_Image_
+  commentId: Overload:Azuria.Api.v1.DataModels.List.TranslatorDataModel.Image
+  fullName: Azuria.Api.v1.DataModels.List.TranslatorDataModel.Image
+  nameWithType: TranslatorDataModel.Image
+- uid: Azuria.Api.v1.DataModels.List.TranslatorDataModel.Name
+  name: Name
+  href: api/Azuria.Api.v1.DataModels.List.TranslatorDataModel.html#Azuria_Api_v1_DataModels_List_TranslatorDataModel_Name
+  commentId: P:Azuria.Api.v1.DataModels.List.TranslatorDataModel.Name
+  fullName: Azuria.Api.v1.DataModels.List.TranslatorDataModel.Name
+  nameWithType: TranslatorDataModel.Name
+- uid: Azuria.Api.v1.DataModels.List.TranslatorDataModel.Name*
+  name: Name
+  href: api/Azuria.Api.v1.DataModels.List.TranslatorDataModel.html#Azuria_Api_v1_DataModels_List_TranslatorDataModel_Name_
+  commentId: Overload:Azuria.Api.v1.DataModels.List.TranslatorDataModel.Name
+  fullName: Azuria.Api.v1.DataModels.List.TranslatorDataModel.Name
+  nameWithType: TranslatorDataModel.Name
+- uid: Azuria.Api.v1.DataModels.List.TranslatorProjectDataModel
+  name: TranslatorProjectDataModel
+  href: api/Azuria.Api.v1.DataModels.List.TranslatorProjectDataModel.html
+  commentId: T:Azuria.Api.v1.DataModels.List.TranslatorProjectDataModel
+  fullName: Azuria.Api.v1.DataModels.List.TranslatorProjectDataModel
+  nameWithType: TranslatorProjectDataModel
+- uid: Azuria.Api.v1.DataModels.List.TranslatorProjectDataModel.EntryFsk
+  name: EntryFsk
+  href: api/Azuria.Api.v1.DataModels.List.TranslatorProjectDataModel.html#Azuria_Api_v1_DataModels_List_TranslatorProjectDataModel_EntryFsk
+  commentId: P:Azuria.Api.v1.DataModels.List.TranslatorProjectDataModel.EntryFsk
+  fullName: Azuria.Api.v1.DataModels.List.TranslatorProjectDataModel.EntryFsk
+  nameWithType: TranslatorProjectDataModel.EntryFsk
+- uid: Azuria.Api.v1.DataModels.List.TranslatorProjectDataModel.EntryFsk*
+  name: EntryFsk
+  href: api/Azuria.Api.v1.DataModels.List.TranslatorProjectDataModel.html#Azuria_Api_v1_DataModels_List_TranslatorProjectDataModel_EntryFsk_
+  commentId: Overload:Azuria.Api.v1.DataModels.List.TranslatorProjectDataModel.EntryFsk
+  fullName: Azuria.Api.v1.DataModels.List.TranslatorProjectDataModel.EntryFsk
+  nameWithType: TranslatorProjectDataModel.EntryFsk
+- uid: Azuria.Api.v1.DataModels.List.TranslatorProjectDataModel.EntryGenre
+  name: EntryGenre
+  href: api/Azuria.Api.v1.DataModels.List.TranslatorProjectDataModel.html#Azuria_Api_v1_DataModels_List_TranslatorProjectDataModel_EntryGenre
+  commentId: P:Azuria.Api.v1.DataModels.List.TranslatorProjectDataModel.EntryGenre
+  fullName: Azuria.Api.v1.DataModels.List.TranslatorProjectDataModel.EntryGenre
+  nameWithType: TranslatorProjectDataModel.EntryGenre
+- uid: Azuria.Api.v1.DataModels.List.TranslatorProjectDataModel.EntryGenre*
+  name: EntryGenre
+  href: api/Azuria.Api.v1.DataModels.List.TranslatorProjectDataModel.html#Azuria_Api_v1_DataModels_List_TranslatorProjectDataModel_EntryGenre_
+  commentId: Overload:Azuria.Api.v1.DataModels.List.TranslatorProjectDataModel.EntryGenre
+  fullName: Azuria.Api.v1.DataModels.List.TranslatorProjectDataModel.EntryGenre
+  nameWithType: TranslatorProjectDataModel.EntryGenre
+- uid: Azuria.Api.v1.DataModels.List.TranslatorProjectDataModel.EntryId
+  name: EntryId
+  href: api/Azuria.Api.v1.DataModels.List.TranslatorProjectDataModel.html#Azuria_Api_v1_DataModels_List_TranslatorProjectDataModel_EntryId
+  commentId: P:Azuria.Api.v1.DataModels.List.TranslatorProjectDataModel.EntryId
+  fullName: Azuria.Api.v1.DataModels.List.TranslatorProjectDataModel.EntryId
+  nameWithType: TranslatorProjectDataModel.EntryId
+- uid: Azuria.Api.v1.DataModels.List.TranslatorProjectDataModel.EntryId*
+  name: EntryId
+  href: api/Azuria.Api.v1.DataModels.List.TranslatorProjectDataModel.html#Azuria_Api_v1_DataModels_List_TranslatorProjectDataModel_EntryId_
+  commentId: Overload:Azuria.Api.v1.DataModels.List.TranslatorProjectDataModel.EntryId
+  fullName: Azuria.Api.v1.DataModels.List.TranslatorProjectDataModel.EntryId
+  nameWithType: TranslatorProjectDataModel.EntryId
+- uid: Azuria.Api.v1.DataModels.List.TranslatorProjectDataModel.EntryMedium
+  name: EntryMedium
+  href: api/Azuria.Api.v1.DataModels.List.TranslatorProjectDataModel.html#Azuria_Api_v1_DataModels_List_TranslatorProjectDataModel_EntryMedium
+  commentId: P:Azuria.Api.v1.DataModels.List.TranslatorProjectDataModel.EntryMedium
+  fullName: Azuria.Api.v1.DataModels.List.TranslatorProjectDataModel.EntryMedium
+  nameWithType: TranslatorProjectDataModel.EntryMedium
+- uid: Azuria.Api.v1.DataModels.List.TranslatorProjectDataModel.EntryMedium*
+  name: EntryMedium
+  href: api/Azuria.Api.v1.DataModels.List.TranslatorProjectDataModel.html#Azuria_Api_v1_DataModels_List_TranslatorProjectDataModel_EntryMedium_
+  commentId: Overload:Azuria.Api.v1.DataModels.List.TranslatorProjectDataModel.EntryMedium
+  fullName: Azuria.Api.v1.DataModels.List.TranslatorProjectDataModel.EntryMedium
+  nameWithType: TranslatorProjectDataModel.EntryMedium
+- uid: Azuria.Api.v1.DataModels.List.TranslatorProjectDataModel.EntryName
+  name: EntryName
+  href: api/Azuria.Api.v1.DataModels.List.TranslatorProjectDataModel.html#Azuria_Api_v1_DataModels_List_TranslatorProjectDataModel_EntryName
+  commentId: P:Azuria.Api.v1.DataModels.List.TranslatorProjectDataModel.EntryName
+  fullName: Azuria.Api.v1.DataModels.List.TranslatorProjectDataModel.EntryName
+  nameWithType: TranslatorProjectDataModel.EntryName
+- uid: Azuria.Api.v1.DataModels.List.TranslatorProjectDataModel.EntryName*
+  name: EntryName
+  href: api/Azuria.Api.v1.DataModels.List.TranslatorProjectDataModel.html#Azuria_Api_v1_DataModels_List_TranslatorProjectDataModel_EntryName_
+  commentId: Overload:Azuria.Api.v1.DataModels.List.TranslatorProjectDataModel.EntryName
+  fullName: Azuria.Api.v1.DataModels.List.TranslatorProjectDataModel.EntryName
+  nameWithType: TranslatorProjectDataModel.EntryName
+- uid: Azuria.Api.v1.DataModels.List.TranslatorProjectDataModel.EntryRating
+  name: EntryRating
+  href: api/Azuria.Api.v1.DataModels.List.TranslatorProjectDataModel.html#Azuria_Api_v1_DataModels_List_TranslatorProjectDataModel_EntryRating
+  commentId: P:Azuria.Api.v1.DataModels.List.TranslatorProjectDataModel.EntryRating
+  fullName: Azuria.Api.v1.DataModels.List.TranslatorProjectDataModel.EntryRating
+  nameWithType: TranslatorProjectDataModel.EntryRating
+- uid: Azuria.Api.v1.DataModels.List.TranslatorProjectDataModel.EntryRating*
+  name: EntryRating
+  href: api/Azuria.Api.v1.DataModels.List.TranslatorProjectDataModel.html#Azuria_Api_v1_DataModels_List_TranslatorProjectDataModel_EntryRating_
+  commentId: Overload:Azuria.Api.v1.DataModels.List.TranslatorProjectDataModel.EntryRating
+  fullName: Azuria.Api.v1.DataModels.List.TranslatorProjectDataModel.EntryRating
+  nameWithType: TranslatorProjectDataModel.EntryRating
+- uid: Azuria.Api.v1.DataModels.List.TranslatorProjectDataModel.EntryRatingsCount
+  name: EntryRatingsCount
+  href: api/Azuria.Api.v1.DataModels.List.TranslatorProjectDataModel.html#Azuria_Api_v1_DataModels_List_TranslatorProjectDataModel_EntryRatingsCount
+  commentId: P:Azuria.Api.v1.DataModels.List.TranslatorProjectDataModel.EntryRatingsCount
+  fullName: Azuria.Api.v1.DataModels.List.TranslatorProjectDataModel.EntryRatingsCount
+  nameWithType: TranslatorProjectDataModel.EntryRatingsCount
+- uid: Azuria.Api.v1.DataModels.List.TranslatorProjectDataModel.EntryRatingsCount*
+  name: EntryRatingsCount
+  href: api/Azuria.Api.v1.DataModels.List.TranslatorProjectDataModel.html#Azuria_Api_v1_DataModels_List_TranslatorProjectDataModel_EntryRatingsCount_
+  commentId: Overload:Azuria.Api.v1.DataModels.List.TranslatorProjectDataModel.EntryRatingsCount
+  fullName: Azuria.Api.v1.DataModels.List.TranslatorProjectDataModel.EntryRatingsCount
+  nameWithType: TranslatorProjectDataModel.EntryRatingsCount
+- uid: Azuria.Api.v1.DataModels.List.TranslatorProjectDataModel.EntryRatingsSum
+  name: EntryRatingsSum
+  href: api/Azuria.Api.v1.DataModels.List.TranslatorProjectDataModel.html#Azuria_Api_v1_DataModels_List_TranslatorProjectDataModel_EntryRatingsSum
+  commentId: P:Azuria.Api.v1.DataModels.List.TranslatorProjectDataModel.EntryRatingsSum
+  fullName: Azuria.Api.v1.DataModels.List.TranslatorProjectDataModel.EntryRatingsSum
+  nameWithType: TranslatorProjectDataModel.EntryRatingsSum
+- uid: Azuria.Api.v1.DataModels.List.TranslatorProjectDataModel.EntryRatingsSum*
+  name: EntryRatingsSum
+  href: api/Azuria.Api.v1.DataModels.List.TranslatorProjectDataModel.html#Azuria_Api_v1_DataModels_List_TranslatorProjectDataModel_EntryRatingsSum_
+  commentId: Overload:Azuria.Api.v1.DataModels.List.TranslatorProjectDataModel.EntryRatingsSum
+  fullName: Azuria.Api.v1.DataModels.List.TranslatorProjectDataModel.EntryRatingsSum
+  nameWithType: TranslatorProjectDataModel.EntryRatingsSum
+- uid: Azuria.Api.v1.DataModels.List.TranslatorProjectDataModel.EntryStatus
+  name: EntryStatus
+  href: api/Azuria.Api.v1.DataModels.List.TranslatorProjectDataModel.html#Azuria_Api_v1_DataModels_List_TranslatorProjectDataModel_EntryStatus
+  commentId: P:Azuria.Api.v1.DataModels.List.TranslatorProjectDataModel.EntryStatus
+  fullName: Azuria.Api.v1.DataModels.List.TranslatorProjectDataModel.EntryStatus
+  nameWithType: TranslatorProjectDataModel.EntryStatus
+- uid: Azuria.Api.v1.DataModels.List.TranslatorProjectDataModel.EntryStatus*
+  name: EntryStatus
+  href: api/Azuria.Api.v1.DataModels.List.TranslatorProjectDataModel.html#Azuria_Api_v1_DataModels_List_TranslatorProjectDataModel_EntryStatus_
+  commentId: Overload:Azuria.Api.v1.DataModels.List.TranslatorProjectDataModel.EntryStatus
+  fullName: Azuria.Api.v1.DataModels.List.TranslatorProjectDataModel.EntryStatus
+  nameWithType: TranslatorProjectDataModel.EntryStatus
+- uid: Azuria.Api.v1.DataModels.List.TranslatorProjectDataModel.EntryType
+  name: EntryType
+  href: api/Azuria.Api.v1.DataModels.List.TranslatorProjectDataModel.html#Azuria_Api_v1_DataModels_List_TranslatorProjectDataModel_EntryType
+  commentId: P:Azuria.Api.v1.DataModels.List.TranslatorProjectDataModel.EntryType
+  fullName: Azuria.Api.v1.DataModels.List.TranslatorProjectDataModel.EntryType
+  nameWithType: TranslatorProjectDataModel.EntryType
+- uid: Azuria.Api.v1.DataModels.List.TranslatorProjectDataModel.EntryType*
+  name: EntryType
+  href: api/Azuria.Api.v1.DataModels.List.TranslatorProjectDataModel.html#Azuria_Api_v1_DataModels_List_TranslatorProjectDataModel_EntryType_
+  commentId: Overload:Azuria.Api.v1.DataModels.List.TranslatorProjectDataModel.EntryType
+  fullName: Azuria.Api.v1.DataModels.List.TranslatorProjectDataModel.EntryType
+  nameWithType: TranslatorProjectDataModel.EntryType
+- uid: Azuria.Api.v1.DataModels.List.TranslatorProjectDataModel.Status
+  name: Status
+  href: api/Azuria.Api.v1.DataModels.List.TranslatorProjectDataModel.html#Azuria_Api_v1_DataModels_List_TranslatorProjectDataModel_Status
+  commentId: P:Azuria.Api.v1.DataModels.List.TranslatorProjectDataModel.Status
+  fullName: Azuria.Api.v1.DataModels.List.TranslatorProjectDataModel.Status
+  nameWithType: TranslatorProjectDataModel.Status
+- uid: Azuria.Api.v1.DataModels.List.TranslatorProjectDataModel.Status*
+  name: Status
+  href: api/Azuria.Api.v1.DataModels.List.TranslatorProjectDataModel.html#Azuria_Api_v1_DataModels_List_TranslatorProjectDataModel_Status_
+  commentId: Overload:Azuria.Api.v1.DataModels.List.TranslatorProjectDataModel.Status
+  fullName: Azuria.Api.v1.DataModels.List.TranslatorProjectDataModel.Status
+  nameWithType: TranslatorProjectDataModel.Status
 - uid: Azuria.Api.v1.DataModels.Manga
   name: Azuria.Api.v1.DataModels.Manga
   href: api/Azuria.Api.v1.DataModels.Manga.html
@@ -5556,12 +6186,18 @@ references:
   commentId: F:Azuria.Api.v1.ErrorCode.ApiFunctionNotFound
   fullName: Azuria.Api.v1.ErrorCode.ApiFunctionNotFound
   nameWithType: ErrorCode.ApiFunctionNotFound
-- uid: Azuria.Api.v1.ErrorCode.ApiKeyInsufficientPermissions
-  name: ApiKeyInsufficientPermissions
-  href: api/Azuria.Api.v1.ErrorCode.html#Azuria_Api_v1_ErrorCode_ApiKeyInsufficientPermissions
-  commentId: F:Azuria.Api.v1.ErrorCode.ApiKeyInsufficientPermissions
-  fullName: Azuria.Api.v1.ErrorCode.ApiKeyInsufficientPermissions
-  nameWithType: ErrorCode.ApiKeyInsufficientPermissions
+- uid: Azuria.Api.v1.ErrorCode.ApiKeyNoPermission
+  name: ApiKeyNoPermission
+  href: api/Azuria.Api.v1.ErrorCode.html#Azuria_Api_v1_ErrorCode_ApiKeyNoPermission
+  commentId: F:Azuria.Api.v1.ErrorCode.ApiKeyNoPermission
+  fullName: Azuria.Api.v1.ErrorCode.ApiKeyNoPermission
+  nameWithType: ErrorCode.ApiKeyNoPermission
+- uid: Azuria.Api.v1.ErrorCode.ApiMaintenanceMode
+  name: ApiMaintenanceMode
+  href: api/Azuria.Api.v1.ErrorCode.html#Azuria_Api_v1_ErrorCode_ApiMaintenanceMode
+  commentId: F:Azuria.Api.v1.ErrorCode.ApiMaintenanceMode
+  fullName: Azuria.Api.v1.ErrorCode.ApiMaintenanceMode
+  nameWithType: ErrorCode.ApiMaintenanceMode
 - uid: Azuria.Api.v1.ErrorCode.ApiVersionDeleted
   name: ApiVersionDeleted
   href: api/Azuria.Api.v1.ErrorCode.html#Azuria_Api_v1_ErrorCode_ApiVersionDeleted
@@ -5574,36 +6210,66 @@ references:
   commentId: F:Azuria.Api.v1.ErrorCode.ApiVersionNotFound
   fullName: Azuria.Api.v1.ErrorCode.ApiVersionNotFound
   nameWithType: ErrorCode.ApiVersionNotFound
+- uid: Azuria.Api.v1.ErrorCode.ChatInvalidMessage
+  name: ChatInvalidMessage
+  href: api/Azuria.Api.v1.ErrorCode.html#Azuria_Api_v1_ErrorCode_ChatInvalidMessage
+  commentId: F:Azuria.Api.v1.ErrorCode.ChatInvalidMessage
+  fullName: Azuria.Api.v1.ErrorCode.ChatInvalidMessage
+  nameWithType: ErrorCode.ChatInvalidMessage
+- uid: Azuria.Api.v1.ErrorCode.ChatInvalidRoom
+  name: ChatInvalidRoom
+  href: api/Azuria.Api.v1.ErrorCode.html#Azuria_Api_v1_ErrorCode_ChatInvalidRoom
+  commentId: F:Azuria.Api.v1.ErrorCode.ChatInvalidRoom
+  fullName: Azuria.Api.v1.ErrorCode.ChatInvalidRoom
+  nameWithType: ErrorCode.ChatInvalidRoom
+- uid: Azuria.Api.v1.ErrorCode.ChatNoPermission
+  name: ChatNoPermission
+  href: api/Azuria.Api.v1.ErrorCode.html#Azuria_Api_v1_ErrorCode_ChatNoPermission
+  commentId: F:Azuria.Api.v1.ErrorCode.ChatNoPermission
+  fullName: Azuria.Api.v1.ErrorCode.ChatNoPermission
+  nameWithType: ErrorCode.ChatNoPermission
+- uid: Azuria.Api.v1.ErrorCode.ChatNotLoggedIn
+  name: ChatNotLoggedIn
+  href: api/Azuria.Api.v1.ErrorCode.html#Azuria_Api_v1_ErrorCode_ChatNotLoggedIn
+  commentId: F:Azuria.Api.v1.ErrorCode.ChatNotLoggedIn
+  fullName: Azuria.Api.v1.ErrorCode.ChatNotLoggedIn
+  nameWithType: ErrorCode.ChatNotLoggedIn
+- uid: Azuria.Api.v1.ErrorCode.ErrorLogEmptyString
+  name: ErrorLogEmptyString
+  href: api/Azuria.Api.v1.ErrorCode.html#Azuria_Api_v1_ErrorCode_ErrorLogEmptyString
+  commentId: F:Azuria.Api.v1.ErrorCode.ErrorLogEmptyString
+  fullName: Azuria.Api.v1.ErrorCode.ErrorLogEmptyString
+  nameWithType: ErrorCode.ErrorLogEmptyString
+- uid: Azuria.Api.v1.ErrorCode.InfoAlreadyInList
+  name: InfoAlreadyInList
+  href: api/Azuria.Api.v1.ErrorCode.html#Azuria_Api_v1_ErrorCode_InfoAlreadyInList
+  commentId: F:Azuria.Api.v1.ErrorCode.InfoAlreadyInList
+  fullName: Azuria.Api.v1.ErrorCode.InfoAlreadyInList
+  nameWithType: ErrorCode.InfoAlreadyInList
 - uid: Azuria.Api.v1.ErrorCode.InfoInvalidId
   name: InfoInvalidId
   href: api/Azuria.Api.v1.ErrorCode.html#Azuria_Api_v1_ErrorCode_InfoInvalidId
   commentId: F:Azuria.Api.v1.ErrorCode.InfoInvalidId
   fullName: Azuria.Api.v1.ErrorCode.InfoInvalidId
   nameWithType: ErrorCode.InfoInvalidId
-- uid: Azuria.Api.v1.ErrorCode.InfoSetUserInfoAlreadyPresentInList
-  name: InfoSetUserInfoAlreadyPresentInList
-  href: api/Azuria.Api.v1.ErrorCode.html#Azuria_Api_v1_ErrorCode_InfoSetUserInfoAlreadyPresentInList
-  commentId: F:Azuria.Api.v1.ErrorCode.InfoSetUserInfoAlreadyPresentInList
-  fullName: Azuria.Api.v1.ErrorCode.InfoSetUserInfoAlreadyPresentInList
-  nameWithType: ErrorCode.InfoSetUserInfoAlreadyPresentInList
-- uid: Azuria.Api.v1.ErrorCode.InfoSetUserInfoInvalidType
-  name: InfoSetUserInfoInvalidType
-  href: api/Azuria.Api.v1.ErrorCode.html#Azuria_Api_v1_ErrorCode_InfoSetUserInfoInvalidType
-  commentId: F:Azuria.Api.v1.ErrorCode.InfoSetUserInfoInvalidType
-  fullName: Azuria.Api.v1.ErrorCode.InfoSetUserInfoInvalidType
-  nameWithType: ErrorCode.InfoSetUserInfoInvalidType
-- uid: Azuria.Api.v1.ErrorCode.InfoSetUserInfoTooManyFavourites
-  name: InfoSetUserInfoTooManyFavourites
-  href: api/Azuria.Api.v1.ErrorCode.html#Azuria_Api_v1_ErrorCode_InfoSetUserInfoTooManyFavourites
-  commentId: F:Azuria.Api.v1.ErrorCode.InfoSetUserInfoTooManyFavourites
-  fullName: Azuria.Api.v1.ErrorCode.InfoSetUserInfoTooManyFavourites
-  nameWithType: ErrorCode.InfoSetUserInfoTooManyFavourites
-- uid: Azuria.Api.v1.ErrorCode.InfoSetUserInfoUserNotLoggedIn
-  name: InfoSetUserInfoUserNotLoggedIn
-  href: api/Azuria.Api.v1.ErrorCode.html#Azuria_Api_v1_ErrorCode_InfoSetUserInfoUserNotLoggedIn
-  commentId: F:Azuria.Api.v1.ErrorCode.InfoSetUserInfoUserNotLoggedIn
-  fullName: Azuria.Api.v1.ErrorCode.InfoSetUserInfoUserNotLoggedIn
-  nameWithType: ErrorCode.InfoSetUserInfoUserNotLoggedIn
+- uid: Azuria.Api.v1.ErrorCode.InfoInvalidType
+  name: InfoInvalidType
+  href: api/Azuria.Api.v1.ErrorCode.html#Azuria_Api_v1_ErrorCode_InfoInvalidType
+  commentId: F:Azuria.Api.v1.ErrorCode.InfoInvalidType
+  fullName: Azuria.Api.v1.ErrorCode.InfoInvalidType
+  nameWithType: ErrorCode.InfoInvalidType
+- uid: Azuria.Api.v1.ErrorCode.InfoNotLoggedIn
+  name: InfoNotLoggedIn
+  href: api/Azuria.Api.v1.ErrorCode.html#Azuria_Api_v1_ErrorCode_InfoNotLoggedIn
+  commentId: F:Azuria.Api.v1.ErrorCode.InfoNotLoggedIn
+  fullName: Azuria.Api.v1.ErrorCode.InfoNotLoggedIn
+  nameWithType: ErrorCode.InfoNotLoggedIn
+- uid: Azuria.Api.v1.ErrorCode.InfoTooManyFavourites
+  name: InfoTooManyFavourites
+  href: api/Azuria.Api.v1.ErrorCode.html#Azuria_Api_v1_ErrorCode_InfoTooManyFavourites
+  commentId: F:Azuria.Api.v1.ErrorCode.InfoTooManyFavourites
+  fullName: Azuria.Api.v1.ErrorCode.InfoTooManyFavourites
+  nameWithType: ErrorCode.InfoTooManyFavourites
 - uid: Azuria.Api.v1.ErrorCode.IpBlocked
   name: IpBlocked
   href: api/Azuria.Api.v1.ErrorCode.html#Azuria_Api_v1_ErrorCode_IpBlocked
@@ -5616,12 +6282,36 @@ references:
   commentId: F:Azuria.Api.v1.ErrorCode.ListCategoryNotFound
   fullName: Azuria.Api.v1.ErrorCode.ListCategoryNotFound
   nameWithType: ErrorCode.ListCategoryNotFound
+- uid: Azuria.Api.v1.ErrorCode.ListInvalidId
+  name: ListInvalidId
+  href: api/Azuria.Api.v1.ErrorCode.html#Azuria_Api_v1_ErrorCode_ListInvalidId
+  commentId: F:Azuria.Api.v1.ErrorCode.ListInvalidId
+  fullName: Azuria.Api.v1.ErrorCode.ListInvalidId
+  nameWithType: ErrorCode.ListInvalidId
+- uid: Azuria.Api.v1.ErrorCode.ListInvalidLanguage
+  name: ListInvalidLanguage
+  href: api/Azuria.Api.v1.ErrorCode.html#Azuria_Api_v1_ErrorCode_ListInvalidLanguage
+  commentId: F:Azuria.Api.v1.ErrorCode.ListInvalidLanguage
+  fullName: Azuria.Api.v1.ErrorCode.ListInvalidLanguage
+  nameWithType: ErrorCode.ListInvalidLanguage
+- uid: Azuria.Api.v1.ErrorCode.ListInvalidType
+  name: ListInvalidType
+  href: api/Azuria.Api.v1.ErrorCode.html#Azuria_Api_v1_ErrorCode_ListInvalidType
+  commentId: F:Azuria.Api.v1.ErrorCode.ListInvalidType
+  fullName: Azuria.Api.v1.ErrorCode.ListInvalidType
+  nameWithType: ErrorCode.ListInvalidType
 - uid: Azuria.Api.v1.ErrorCode.ListMediumNotFound
   name: ListMediumNotFound
   href: api/Azuria.Api.v1.ErrorCode.html#Azuria_Api_v1_ErrorCode_ListMediumNotFound
   commentId: F:Azuria.Api.v1.ErrorCode.ListMediumNotFound
   fullName: Azuria.Api.v1.ErrorCode.ListMediumNotFound
   nameWithType: ErrorCode.ListMediumNotFound
+- uid: Azuria.Api.v1.ErrorCode.LoginAlreadyLoggedIn
+  name: LoginAlreadyLoggedIn
+  href: api/Azuria.Api.v1.ErrorCode.html#Azuria_Api_v1_ErrorCode_LoginAlreadyLoggedIn
+  commentId: F:Azuria.Api.v1.ErrorCode.LoginAlreadyLoggedIn
+  fullName: Azuria.Api.v1.ErrorCode.LoginAlreadyLoggedIn
+  nameWithType: ErrorCode.LoginAlreadyLoggedIn
 - uid: Azuria.Api.v1.ErrorCode.LoginCredentialsMissing
   name: LoginCredentialsMissing
   href: api/Azuria.Api.v1.ErrorCode.html#Azuria_Api_v1_ErrorCode_LoginCredentialsMissing
@@ -5646,12 +6336,6 @@ references:
   commentId: F:Azuria.Api.v1.ErrorCode.LoginTokenInvalid
   fullName: Azuria.Api.v1.ErrorCode.LoginTokenInvalid
   nameWithType: ErrorCode.LoginTokenInvalid
-- uid: Azuria.Api.v1.ErrorCode.LoginUserAlreadyLoggedIn
-  name: LoginUserAlreadyLoggedIn
-  href: api/Azuria.Api.v1.ErrorCode.html#Azuria_Api_v1_ErrorCode_LoginUserAlreadyLoggedIn
-  commentId: F:Azuria.Api.v1.ErrorCode.LoginUserAlreadyLoggedIn
-  fullName: Azuria.Api.v1.ErrorCode.LoginUserAlreadyLoggedIn
-  nameWithType: ErrorCode.LoginUserAlreadyLoggedIn
 - uid: Azuria.Api.v1.ErrorCode.MangaChapterNotFound
   name: MangaChapterNotFound
   href: api/Azuria.Api.v1.ErrorCode.html#Azuria_Api_v1_ErrorCode_MangaChapterNotFound
@@ -5688,6 +6372,12 @@ references:
   commentId: F:Azuria.Api.v1.ErrorCode.MessengerNotEnoughUsers
   fullName: Azuria.Api.v1.ErrorCode.MessengerNotEnoughUsers
   nameWithType: ErrorCode.MessengerNotEnoughUsers
+- uid: Azuria.Api.v1.ErrorCode.MessengerNotLoggedIn
+  name: MessengerNotLoggedIn
+  href: api/Azuria.Api.v1.ErrorCode.html#Azuria_Api_v1_ErrorCode_MessengerNotLoggedIn
+  commentId: F:Azuria.Api.v1.ErrorCode.MessengerNotLoggedIn
+  fullName: Azuria.Api.v1.ErrorCode.MessengerNotLoggedIn
+  nameWithType: ErrorCode.MessengerNotLoggedIn
 - uid: Azuria.Api.v1.ErrorCode.MessengerReportTooShort
   name: MessengerReportTooShort
   href: api/Azuria.Api.v1.ErrorCode.html#Azuria_Api_v1_ErrorCode_MessengerReportTooShort
@@ -5712,24 +6402,24 @@ references:
   commentId: F:Azuria.Api.v1.ErrorCode.MessengerUserLimitReached
   fullName: Azuria.Api.v1.ErrorCode.MessengerUserLimitReached
   nameWithType: ErrorCode.MessengerUserLimitReached
-- uid: Azuria.Api.v1.ErrorCode.MessengerUserNotLoggedIn
-  name: MessengerUserNotLoggedIn
-  href: api/Azuria.Api.v1.ErrorCode.html#Azuria_Api_v1_ErrorCode_MessengerUserNotLoggedIn
-  commentId: F:Azuria.Api.v1.ErrorCode.MessengerUserNotLoggedIn
-  fullName: Azuria.Api.v1.ErrorCode.MessengerUserNotLoggedIn
-  nameWithType: ErrorCode.MessengerUserNotLoggedIn
 - uid: Azuria.Api.v1.ErrorCode.NoError
   name: NoError
   href: api/Azuria.Api.v1.ErrorCode.html#Azuria_Api_v1_ErrorCode_NoError
   commentId: F:Azuria.Api.v1.ErrorCode.NoError
   fullName: Azuria.Api.v1.ErrorCode.NoError
   nameWithType: ErrorCode.NoError
-- uid: Azuria.Api.v1.ErrorCode.NotificationsUserNotLoggedIn
-  name: NotificationsUserNotLoggedIn
-  href: api/Azuria.Api.v1.ErrorCode.html#Azuria_Api_v1_ErrorCode_NotificationsUserNotLoggedIn
-  commentId: F:Azuria.Api.v1.ErrorCode.NotificationsUserNotLoggedIn
-  fullName: Azuria.Api.v1.ErrorCode.NotificationsUserNotLoggedIn
-  nameWithType: ErrorCode.NotificationsUserNotLoggedIn
+- uid: Azuria.Api.v1.ErrorCode.NotificationsNotLoggedIn
+  name: NotificationsNotLoggedIn
+  href: api/Azuria.Api.v1.ErrorCode.html#Azuria_Api_v1_ErrorCode_NotificationsNotLoggedIn
+  commentId: F:Azuria.Api.v1.ErrorCode.NotificationsNotLoggedIn
+  fullName: Azuria.Api.v1.ErrorCode.NotificationsNotLoggedIn
+  nameWithType: ErrorCode.NotificationsNotLoggedIn
+- uid: Azuria.Api.v1.ErrorCode.ProxerMaintenanceMode
+  name: ProxerMaintenanceMode
+  href: api/Azuria.Api.v1.ErrorCode.html#Azuria_Api_v1_ErrorCode_ProxerMaintenanceMode
+  commentId: F:Azuria.Api.v1.ErrorCode.ProxerMaintenanceMode
+  fullName: Azuria.Api.v1.ErrorCode.ProxerMaintenanceMode
+  nameWithType: ErrorCode.ProxerMaintenanceMode
 - uid: Azuria.Api.v1.ErrorCode.ServerError
   name: ServerError
   href: api/Azuria.Api.v1.ErrorCode.html#Azuria_Api_v1_ErrorCode_ServerError
@@ -5754,24 +6444,48 @@ references:
   commentId: F:Azuria.Api.v1.ErrorCode.UcpInvalidId
   fullName: Azuria.Api.v1.ErrorCode.UcpInvalidId
   nameWithType: ErrorCode.UcpInvalidId
-- uid: Azuria.Api.v1.ErrorCode.UcpUserNotLoggedIn
-  name: UcpUserNotLoggedIn
-  href: api/Azuria.Api.v1.ErrorCode.html#Azuria_Api_v1_ErrorCode_UcpUserNotLoggedIn
-  commentId: F:Azuria.Api.v1.ErrorCode.UcpUserNotLoggedIn
-  fullName: Azuria.Api.v1.ErrorCode.UcpUserNotLoggedIn
-  nameWithType: ErrorCode.UcpUserNotLoggedIn
+- uid: Azuria.Api.v1.ErrorCode.UcpNotLoggedIn
+  name: UcpNotLoggedIn
+  href: api/Azuria.Api.v1.ErrorCode.html#Azuria_Api_v1_ErrorCode_UcpNotLoggedIn
+  commentId: F:Azuria.Api.v1.ErrorCode.UcpNotLoggedIn
+  fullName: Azuria.Api.v1.ErrorCode.UcpNotLoggedIn
+  nameWithType: ErrorCode.UcpNotLoggedIn
+- uid: Azuria.Api.v1.ErrorCode.User2FaKeyNeeded
+  name: User2FaKeyNeeded
+  href: api/Azuria.Api.v1.ErrorCode.html#Azuria_Api_v1_ErrorCode_User2FaKeyNeeded
+  commentId: F:Azuria.Api.v1.ErrorCode.User2FaKeyNeeded
+  fullName: Azuria.Api.v1.ErrorCode.User2FaKeyNeeded
+  nameWithType: ErrorCode.User2FaKeyNeeded
+- uid: Azuria.Api.v1.ErrorCode.UserAccountBlocked
+  name: UserAccountBlocked
+  href: api/Azuria.Api.v1.ErrorCode.html#Azuria_Api_v1_ErrorCode_UserAccountBlocked
+  commentId: F:Azuria.Api.v1.ErrorCode.UserAccountBlocked
+  fullName: Azuria.Api.v1.ErrorCode.UserAccountBlocked
+  nameWithType: ErrorCode.UserAccountBlocked
+- uid: Azuria.Api.v1.ErrorCode.UserAccountTimeout
+  name: UserAccountTimeout
+  href: api/Azuria.Api.v1.ErrorCode.html#Azuria_Api_v1_ErrorCode_UserAccountTimeout
+  commentId: F:Azuria.Api.v1.ErrorCode.UserAccountTimeout
+  fullName: Azuria.Api.v1.ErrorCode.UserAccountTimeout
+  nameWithType: ErrorCode.UserAccountTimeout
 - uid: Azuria.Api.v1.ErrorCode.UserinfoUserNotFound
   name: UserinfoUserNotFound
   href: api/Azuria.Api.v1.ErrorCode.html#Azuria_Api_v1_ErrorCode_UserinfoUserNotFound
   commentId: F:Azuria.Api.v1.ErrorCode.UserinfoUserNotFound
   fullName: Azuria.Api.v1.ErrorCode.UserinfoUserNotFound
   nameWithType: ErrorCode.UserinfoUserNotFound
-- uid: Azuria.Api.v1.ErrorCode.UserInsufficientPermissions
-  name: UserInsufficientPermissions
-  href: api/Azuria.Api.v1.ErrorCode.html#Azuria_Api_v1_ErrorCode_UserInsufficientPermissions
-  commentId: F:Azuria.Api.v1.ErrorCode.UserInsufficientPermissions
-  fullName: Azuria.Api.v1.ErrorCode.UserInsufficientPermissions
-  nameWithType: ErrorCode.UserInsufficientPermissions
+- uid: Azuria.Api.v1.ErrorCode.UserInternalError
+  name: UserInternalError
+  href: api/Azuria.Api.v1.ErrorCode.html#Azuria_Api_v1_ErrorCode_UserInternalError
+  commentId: F:Azuria.Api.v1.ErrorCode.UserInternalError
+  fullName: Azuria.Api.v1.ErrorCode.UserInternalError
+  nameWithType: ErrorCode.UserInternalError
+- uid: Azuria.Api.v1.ErrorCode.UserNoPermission
+  name: UserNoPermission
+  href: api/Azuria.Api.v1.ErrorCode.html#Azuria_Api_v1_ErrorCode_UserNoPermission
+  commentId: F:Azuria.Api.v1.ErrorCode.UserNoPermission
+  fullName: Azuria.Api.v1.ErrorCode.UserNoPermission
+  nameWithType: ErrorCode.UserNoPermission
 - uid: Azuria.Api.v1.ProxerApiResponse
   name: ProxerApiResponse
   href: api/Azuria.Api.v1.ProxerApiResponse.html
@@ -6120,6 +6834,72 @@ references:
   commentId: Overload:Azuria.Api.v1.RequestBuilder.ListRequestBuilder.EntrySearch
   fullName: Azuria.Api.v1.RequestBuilder.ListRequestBuilder.EntrySearch
   nameWithType: ListRequestBuilder.EntrySearch
+- uid: Azuria.Api.v1.RequestBuilder.ListRequestBuilder.GetIndustries(System.String,System.String,System.String,System.String,System.Int32,System.Int32)
+  name: GetIndustries(String, String, String, String, Int32, Int32)
+  href: api/Azuria.Api.v1.RequestBuilder.ListRequestBuilder.html#Azuria_Api_v1_RequestBuilder_ListRequestBuilder_GetIndustries_System_String_System_String_System_String_System_String_System_Int32_System_Int32_
+  commentId: M:Azuria.Api.v1.RequestBuilder.ListRequestBuilder.GetIndustries(System.String,System.String,System.String,System.String,System.Int32,System.Int32)
+  fullName: Azuria.Api.v1.RequestBuilder.ListRequestBuilder.GetIndustries(System.String, System.String, System.String, System.String, System.Int32, System.Int32)
+  nameWithType: ListRequestBuilder.GetIndustries(String, String, String, String, Int32, Int32)
+- uid: Azuria.Api.v1.RequestBuilder.ListRequestBuilder.GetIndustries*
+  name: GetIndustries
+  href: api/Azuria.Api.v1.RequestBuilder.ListRequestBuilder.html#Azuria_Api_v1_RequestBuilder_ListRequestBuilder_GetIndustries_
+  commentId: Overload:Azuria.Api.v1.RequestBuilder.ListRequestBuilder.GetIndustries
+  fullName: Azuria.Api.v1.RequestBuilder.ListRequestBuilder.GetIndustries
+  nameWithType: ListRequestBuilder.GetIndustries
+- uid: Azuria.Api.v1.RequestBuilder.ListRequestBuilder.GetIndustryProjects(System.Int32,System.Nullable{Azuria.Info.IndustryType},System.Nullable{System.Boolean},System.Int32,System.Int32)
+  name: GetIndustryProjects(Int32, Nullable<IndustryType>, Nullable<Boolean>, Int32, Int32)
+  href: api/Azuria.Api.v1.RequestBuilder.ListRequestBuilder.html#Azuria_Api_v1_RequestBuilder_ListRequestBuilder_GetIndustryProjects_System_Int32_System_Nullable_Azuria_Info_IndustryType__System_Nullable_System_Boolean__System_Int32_System_Int32_
+  commentId: M:Azuria.Api.v1.RequestBuilder.ListRequestBuilder.GetIndustryProjects(System.Int32,System.Nullable{Azuria.Info.IndustryType},System.Nullable{System.Boolean},System.Int32,System.Int32)
+  name.vb: GetIndustryProjects(Int32, Nullable(Of IndustryType), Nullable(Of Boolean), Int32, Int32)
+  fullName: Azuria.Api.v1.RequestBuilder.ListRequestBuilder.GetIndustryProjects(System.Int32, System.Nullable<Azuria.Info.IndustryType>, System.Nullable<System.Boolean>, System.Int32, System.Int32)
+  fullName.vb: Azuria.Api.v1.RequestBuilder.ListRequestBuilder.GetIndustryProjects(System.Int32, System.Nullable(Of Azuria.Info.IndustryType), System.Nullable(Of System.Boolean), System.Int32, System.Int32)
+  nameWithType: ListRequestBuilder.GetIndustryProjects(Int32, Nullable<IndustryType>, Nullable<Boolean>, Int32, Int32)
+  nameWithType.vb: ListRequestBuilder.GetIndustryProjects(Int32, Nullable(Of IndustryType), Nullable(Of Boolean), Int32, Int32)
+- uid: Azuria.Api.v1.RequestBuilder.ListRequestBuilder.GetIndustryProjects*
+  name: GetIndustryProjects
+  href: api/Azuria.Api.v1.RequestBuilder.ListRequestBuilder.html#Azuria_Api_v1_RequestBuilder_ListRequestBuilder_GetIndustryProjects_
+  commentId: Overload:Azuria.Api.v1.RequestBuilder.ListRequestBuilder.GetIndustryProjects
+  fullName: Azuria.Api.v1.RequestBuilder.ListRequestBuilder.GetIndustryProjects
+  nameWithType: ListRequestBuilder.GetIndustryProjects
+- uid: Azuria.Api.v1.RequestBuilder.ListRequestBuilder.GetTagIds(System.String)
+  name: GetTagIds(String)
+  href: api/Azuria.Api.v1.RequestBuilder.ListRequestBuilder.html#Azuria_Api_v1_RequestBuilder_ListRequestBuilder_GetTagIds_System_String_
+  commentId: M:Azuria.Api.v1.RequestBuilder.ListRequestBuilder.GetTagIds(System.String)
+  fullName: Azuria.Api.v1.RequestBuilder.ListRequestBuilder.GetTagIds(System.String)
+  nameWithType: ListRequestBuilder.GetTagIds(String)
+- uid: Azuria.Api.v1.RequestBuilder.ListRequestBuilder.GetTagIds*
+  name: GetTagIds
+  href: api/Azuria.Api.v1.RequestBuilder.ListRequestBuilder.html#Azuria_Api_v1_RequestBuilder_ListRequestBuilder_GetTagIds_
+  commentId: Overload:Azuria.Api.v1.RequestBuilder.ListRequestBuilder.GetTagIds
+  fullName: Azuria.Api.v1.RequestBuilder.ListRequestBuilder.GetTagIds
+  nameWithType: ListRequestBuilder.GetTagIds
+- uid: Azuria.Api.v1.RequestBuilder.ListRequestBuilder.GetTranslatorgroups(System.String,System.String,System.String,System.Int32,System.Int32)
+  name: GetTranslatorgroups(String, String, String, Int32, Int32)
+  href: api/Azuria.Api.v1.RequestBuilder.ListRequestBuilder.html#Azuria_Api_v1_RequestBuilder_ListRequestBuilder_GetTranslatorgroups_System_String_System_String_System_String_System_Int32_System_Int32_
+  commentId: M:Azuria.Api.v1.RequestBuilder.ListRequestBuilder.GetTranslatorgroups(System.String,System.String,System.String,System.Int32,System.Int32)
+  fullName: Azuria.Api.v1.RequestBuilder.ListRequestBuilder.GetTranslatorgroups(System.String, System.String, System.String, System.Int32, System.Int32)
+  nameWithType: ListRequestBuilder.GetTranslatorgroups(String, String, String, Int32, Int32)
+- uid: Azuria.Api.v1.RequestBuilder.ListRequestBuilder.GetTranslatorgroups*
+  name: GetTranslatorgroups
+  href: api/Azuria.Api.v1.RequestBuilder.ListRequestBuilder.html#Azuria_Api_v1_RequestBuilder_ListRequestBuilder_GetTranslatorgroups_
+  commentId: Overload:Azuria.Api.v1.RequestBuilder.ListRequestBuilder.GetTranslatorgroups
+  fullName: Azuria.Api.v1.RequestBuilder.ListRequestBuilder.GetTranslatorgroups
+  nameWithType: ListRequestBuilder.GetTranslatorgroups
+- uid: Azuria.Api.v1.RequestBuilder.ListRequestBuilder.GetTranslatorProjects(System.Int32,System.Nullable{Azuria.Info.TranslationStatus},System.Nullable{System.Boolean},System.Int32,System.Int32)
+  name: GetTranslatorProjects(Int32, Nullable<TranslationStatus>, Nullable<Boolean>, Int32, Int32)
+  href: api/Azuria.Api.v1.RequestBuilder.ListRequestBuilder.html#Azuria_Api_v1_RequestBuilder_ListRequestBuilder_GetTranslatorProjects_System_Int32_System_Nullable_Azuria_Info_TranslationStatus__System_Nullable_System_Boolean__System_Int32_System_Int32_
+  commentId: M:Azuria.Api.v1.RequestBuilder.ListRequestBuilder.GetTranslatorProjects(System.Int32,System.Nullable{Azuria.Info.TranslationStatus},System.Nullable{System.Boolean},System.Int32,System.Int32)
+  name.vb: GetTranslatorProjects(Int32, Nullable(Of TranslationStatus), Nullable(Of Boolean), Int32, Int32)
+  fullName: Azuria.Api.v1.RequestBuilder.ListRequestBuilder.GetTranslatorProjects(System.Int32, System.Nullable<Azuria.Info.TranslationStatus>, System.Nullable<System.Boolean>, System.Int32, System.Int32)
+  fullName.vb: Azuria.Api.v1.RequestBuilder.ListRequestBuilder.GetTranslatorProjects(System.Int32, System.Nullable(Of Azuria.Info.TranslationStatus), System.Nullable(Of System.Boolean), System.Int32, System.Int32)
+  nameWithType: ListRequestBuilder.GetTranslatorProjects(Int32, Nullable<TranslationStatus>, Nullable<Boolean>, Int32, Int32)
+  nameWithType.vb: ListRequestBuilder.GetTranslatorProjects(Int32, Nullable(Of TranslationStatus), Nullable(Of Boolean), Int32, Int32)
+- uid: Azuria.Api.v1.RequestBuilder.ListRequestBuilder.GetTranslatorProjects*
+  name: GetTranslatorProjects
+  href: api/Azuria.Api.v1.RequestBuilder.ListRequestBuilder.html#Azuria_Api_v1_RequestBuilder_ListRequestBuilder_GetTranslatorProjects_
+  commentId: Overload:Azuria.Api.v1.RequestBuilder.ListRequestBuilder.GetTranslatorProjects
+  fullName: Azuria.Api.v1.RequestBuilder.ListRequestBuilder.GetTranslatorProjects
+  nameWithType: ListRequestBuilder.GetTranslatorProjects
 - uid: Azuria.Api.v1.RequestBuilder.MangaRequestBuilder
   name: MangaRequestBuilder
   href: api/Azuria.Api.v1.RequestBuilder.MangaRequestBuilder.html
@@ -6555,36 +7335,72 @@ references:
   commentId: Overload:Azuria.Api.v1.RequestBuilder.UserRequestBuilder.GetInfo
   fullName: Azuria.Api.v1.RequestBuilder.UserRequestBuilder.GetInfo
   nameWithType: UserRequestBuilder.GetInfo
+- uid: Azuria.Api.v1.RequestBuilder.UserRequestBuilder.GetLatestComments(Azuria.Senpai,System.Int32,System.Int32,System.String,System.Int32)
+  name: GetLatestComments(Senpai, Int32, Int32, String, Int32)
+  href: api/Azuria.Api.v1.RequestBuilder.UserRequestBuilder.html#Azuria_Api_v1_RequestBuilder_UserRequestBuilder_GetLatestComments_Azuria_Senpai_System_Int32_System_Int32_System_String_System_Int32_
+  commentId: M:Azuria.Api.v1.RequestBuilder.UserRequestBuilder.GetLatestComments(Azuria.Senpai,System.Int32,System.Int32,System.String,System.Int32)
+  fullName: Azuria.Api.v1.RequestBuilder.UserRequestBuilder.GetLatestComments(Azuria.Senpai, System.Int32, System.Int32, System.String, System.Int32)
+  nameWithType: UserRequestBuilder.GetLatestComments(Senpai, Int32, Int32, String, Int32)
 - uid: Azuria.Api.v1.RequestBuilder.UserRequestBuilder.GetLatestComments(System.Int32,System.Int32,System.Int32,System.String,System.Int32,Azuria.Senpai)
   name: GetLatestComments(Int32, Int32, Int32, String, Int32, Senpai)
   href: api/Azuria.Api.v1.RequestBuilder.UserRequestBuilder.html#Azuria_Api_v1_RequestBuilder_UserRequestBuilder_GetLatestComments_System_Int32_System_Int32_System_Int32_System_String_System_Int32_Azuria_Senpai_
   commentId: M:Azuria.Api.v1.RequestBuilder.UserRequestBuilder.GetLatestComments(System.Int32,System.Int32,System.Int32,System.String,System.Int32,Azuria.Senpai)
   fullName: Azuria.Api.v1.RequestBuilder.UserRequestBuilder.GetLatestComments(System.Int32, System.Int32, System.Int32, System.String, System.Int32, Azuria.Senpai)
   nameWithType: UserRequestBuilder.GetLatestComments(Int32, Int32, Int32, String, Int32, Senpai)
+- uid: Azuria.Api.v1.RequestBuilder.UserRequestBuilder.GetLatestComments(System.String,System.Int32,System.Int32,System.String,System.Int32,Azuria.Senpai)
+  name: GetLatestComments(String, Int32, Int32, String, Int32, Senpai)
+  href: api/Azuria.Api.v1.RequestBuilder.UserRequestBuilder.html#Azuria_Api_v1_RequestBuilder_UserRequestBuilder_GetLatestComments_System_String_System_Int32_System_Int32_System_String_System_Int32_Azuria_Senpai_
+  commentId: M:Azuria.Api.v1.RequestBuilder.UserRequestBuilder.GetLatestComments(System.String,System.Int32,System.Int32,System.String,System.Int32,Azuria.Senpai)
+  fullName: Azuria.Api.v1.RequestBuilder.UserRequestBuilder.GetLatestComments(System.String, System.Int32, System.Int32, System.String, System.Int32, Azuria.Senpai)
+  nameWithType: UserRequestBuilder.GetLatestComments(String, Int32, Int32, String, Int32, Senpai)
 - uid: Azuria.Api.v1.RequestBuilder.UserRequestBuilder.GetLatestComments*
   name: GetLatestComments
   href: api/Azuria.Api.v1.RequestBuilder.UserRequestBuilder.html#Azuria_Api_v1_RequestBuilder_UserRequestBuilder_GetLatestComments_
   commentId: Overload:Azuria.Api.v1.RequestBuilder.UserRequestBuilder.GetLatestComments
   fullName: Azuria.Api.v1.RequestBuilder.UserRequestBuilder.GetLatestComments
   nameWithType: UserRequestBuilder.GetLatestComments
-- uid: Azuria.Api.v1.RequestBuilder.UserRequestBuilder.GetList(System.Int32,System.String,System.Int32,System.Int32,Azuria.Senpai)
-  name: GetList(Int32, String, Int32, Int32, Senpai)
-  href: api/Azuria.Api.v1.RequestBuilder.UserRequestBuilder.html#Azuria_Api_v1_RequestBuilder_UserRequestBuilder_GetList_System_Int32_System_String_System_Int32_System_Int32_Azuria_Senpai_
-  commentId: M:Azuria.Api.v1.RequestBuilder.UserRequestBuilder.GetList(System.Int32,System.String,System.Int32,System.Int32,Azuria.Senpai)
-  fullName: Azuria.Api.v1.RequestBuilder.UserRequestBuilder.GetList(System.Int32, System.String, System.Int32, System.Int32, Azuria.Senpai)
-  nameWithType: UserRequestBuilder.GetList(Int32, String, Int32, Int32, Senpai)
+- uid: Azuria.Api.v1.RequestBuilder.UserRequestBuilder.GetList(Azuria.Senpai,System.String,System.Int32,System.Int32,System.String,System.String,System.String)
+  name: GetList(Senpai, String, Int32, Int32, String, String, String)
+  href: api/Azuria.Api.v1.RequestBuilder.UserRequestBuilder.html#Azuria_Api_v1_RequestBuilder_UserRequestBuilder_GetList_Azuria_Senpai_System_String_System_Int32_System_Int32_System_String_System_String_System_String_
+  commentId: M:Azuria.Api.v1.RequestBuilder.UserRequestBuilder.GetList(Azuria.Senpai,System.String,System.Int32,System.Int32,System.String,System.String,System.String)
+  fullName: Azuria.Api.v1.RequestBuilder.UserRequestBuilder.GetList(Azuria.Senpai, System.String, System.Int32, System.Int32, System.String, System.String, System.String)
+  nameWithType: UserRequestBuilder.GetList(Senpai, String, Int32, Int32, String, String, String)
+- uid: Azuria.Api.v1.RequestBuilder.UserRequestBuilder.GetList(System.Int32,System.String,System.Int32,System.Int32,System.String,System.String,System.String,Azuria.Senpai)
+  name: GetList(Int32, String, Int32, Int32, String, String, String, Senpai)
+  href: api/Azuria.Api.v1.RequestBuilder.UserRequestBuilder.html#Azuria_Api_v1_RequestBuilder_UserRequestBuilder_GetList_System_Int32_System_String_System_Int32_System_Int32_System_String_System_String_System_String_Azuria_Senpai_
+  commentId: M:Azuria.Api.v1.RequestBuilder.UserRequestBuilder.GetList(System.Int32,System.String,System.Int32,System.Int32,System.String,System.String,System.String,Azuria.Senpai)
+  fullName: Azuria.Api.v1.RequestBuilder.UserRequestBuilder.GetList(System.Int32, System.String, System.Int32, System.Int32, System.String, System.String, System.String, Azuria.Senpai)
+  nameWithType: UserRequestBuilder.GetList(Int32, String, Int32, Int32, String, String, String, Senpai)
+- uid: Azuria.Api.v1.RequestBuilder.UserRequestBuilder.GetList(System.String,System.String,System.Int32,System.Int32,System.String,System.String,System.String,Azuria.Senpai)
+  name: GetList(String, String, Int32, Int32, String, String, String, Senpai)
+  href: api/Azuria.Api.v1.RequestBuilder.UserRequestBuilder.html#Azuria_Api_v1_RequestBuilder_UserRequestBuilder_GetList_System_String_System_String_System_Int32_System_Int32_System_String_System_String_System_String_Azuria_Senpai_
+  commentId: M:Azuria.Api.v1.RequestBuilder.UserRequestBuilder.GetList(System.String,System.String,System.Int32,System.Int32,System.String,System.String,System.String,Azuria.Senpai)
+  fullName: Azuria.Api.v1.RequestBuilder.UserRequestBuilder.GetList(System.String, System.String, System.Int32, System.Int32, System.String, System.String, System.String, Azuria.Senpai)
+  nameWithType: UserRequestBuilder.GetList(String, String, Int32, Int32, String, String, String, Senpai)
 - uid: Azuria.Api.v1.RequestBuilder.UserRequestBuilder.GetList*
   name: GetList
   href: api/Azuria.Api.v1.RequestBuilder.UserRequestBuilder.html#Azuria_Api_v1_RequestBuilder_UserRequestBuilder_GetList_
   commentId: Overload:Azuria.Api.v1.RequestBuilder.UserRequestBuilder.GetList
   fullName: Azuria.Api.v1.RequestBuilder.UserRequestBuilder.GetList
   nameWithType: UserRequestBuilder.GetList
+- uid: Azuria.Api.v1.RequestBuilder.UserRequestBuilder.GetTopten(Azuria.Senpai,System.String)
+  name: GetTopten(Senpai, String)
+  href: api/Azuria.Api.v1.RequestBuilder.UserRequestBuilder.html#Azuria_Api_v1_RequestBuilder_UserRequestBuilder_GetTopten_Azuria_Senpai_System_String_
+  commentId: M:Azuria.Api.v1.RequestBuilder.UserRequestBuilder.GetTopten(Azuria.Senpai,System.String)
+  fullName: Azuria.Api.v1.RequestBuilder.UserRequestBuilder.GetTopten(Azuria.Senpai, System.String)
+  nameWithType: UserRequestBuilder.GetTopten(Senpai, String)
 - uid: Azuria.Api.v1.RequestBuilder.UserRequestBuilder.GetTopten(System.Int32,System.String,Azuria.Senpai)
   name: GetTopten(Int32, String, Senpai)
   href: api/Azuria.Api.v1.RequestBuilder.UserRequestBuilder.html#Azuria_Api_v1_RequestBuilder_UserRequestBuilder_GetTopten_System_Int32_System_String_Azuria_Senpai_
   commentId: M:Azuria.Api.v1.RequestBuilder.UserRequestBuilder.GetTopten(System.Int32,System.String,Azuria.Senpai)
   fullName: Azuria.Api.v1.RequestBuilder.UserRequestBuilder.GetTopten(System.Int32, System.String, Azuria.Senpai)
   nameWithType: UserRequestBuilder.GetTopten(Int32, String, Senpai)
+- uid: Azuria.Api.v1.RequestBuilder.UserRequestBuilder.GetTopten(System.String,System.String,Azuria.Senpai)
+  name: GetTopten(String, String, Senpai)
+  href: api/Azuria.Api.v1.RequestBuilder.UserRequestBuilder.html#Azuria_Api_v1_RequestBuilder_UserRequestBuilder_GetTopten_System_String_System_String_Azuria_Senpai_
+  commentId: M:Azuria.Api.v1.RequestBuilder.UserRequestBuilder.GetTopten(System.String,System.String,Azuria.Senpai)
+  fullName: Azuria.Api.v1.RequestBuilder.UserRequestBuilder.GetTopten(System.String, System.String, Azuria.Senpai)
+  nameWithType: UserRequestBuilder.GetTopten(String, String, Senpai)
 - uid: Azuria.Api.v1.RequestBuilder.UserRequestBuilder.GetTopten*
   name: GetTopten
   href: api/Azuria.Api.v1.RequestBuilder.UserRequestBuilder.html#Azuria_Api_v1_RequestBuilder_UserRequestBuilder_GetTopten_
@@ -6597,6 +7413,12 @@ references:
   commentId: M:Azuria.Api.v1.RequestBuilder.UserRequestBuilder.Login(System.String,System.String,Azuria.Senpai)
   fullName: Azuria.Api.v1.RequestBuilder.UserRequestBuilder.Login(System.String, System.String, Azuria.Senpai)
   nameWithType: UserRequestBuilder.Login(String, String, Senpai)
+- uid: Azuria.Api.v1.RequestBuilder.UserRequestBuilder.Login(System.String,System.String,System.String,Azuria.Senpai)
+  name: Login(String, String, String, Senpai)
+  href: api/Azuria.Api.v1.RequestBuilder.UserRequestBuilder.html#Azuria_Api_v1_RequestBuilder_UserRequestBuilder_Login_System_String_System_String_System_String_Azuria_Senpai_
+  commentId: M:Azuria.Api.v1.RequestBuilder.UserRequestBuilder.Login(System.String,System.String,System.String,Azuria.Senpai)
+  fullName: Azuria.Api.v1.RequestBuilder.UserRequestBuilder.Login(System.String, System.String, System.String, Azuria.Senpai)
+  nameWithType: UserRequestBuilder.Login(String, String, String, Senpai)
 - uid: Azuria.Api.v1.RequestBuilder.UserRequestBuilder.Login*
   name: Login
   href: api/Azuria.Api.v1.RequestBuilder.UserRequestBuilder.html#Azuria_Api_v1_RequestBuilder_UserRequestBuilder_Login_
@@ -8537,12 +9359,102 @@ references:
   commentId: N:Azuria.Info
   fullName: Azuria.Info
   nameWithType: Azuria.Info
+- uid: Azuria.Info.Enumerable
+  name: Azuria.Info.Enumerable
+  href: api/Azuria.Info.Enumerable.html
+  commentId: N:Azuria.Info.Enumerable
+  fullName: Azuria.Info.Enumerable
+  nameWithType: Azuria.Info.Enumerable
+- uid: Azuria.Info.Enumerable.IndustryEnumerable
+  name: IndustryEnumerable
+  href: api/Azuria.Info.Enumerable.IndustryEnumerable.html
+  commentId: T:Azuria.Info.Enumerable.IndustryEnumerable
+  fullName: Azuria.Info.Enumerable.IndustryEnumerable
+  nameWithType: IndustryEnumerable
+- uid: Azuria.Info.Enumerable.IndustryEnumerable.GetEnumerator
+  name: GetEnumerator()
+  href: api/Azuria.Info.Enumerable.IndustryEnumerable.html#Azuria_Info_Enumerable_IndustryEnumerable_GetEnumerator
+  commentId: M:Azuria.Info.Enumerable.IndustryEnumerable.GetEnumerator
+  fullName: Azuria.Info.Enumerable.IndustryEnumerable.GetEnumerator()
+  nameWithType: IndustryEnumerable.GetEnumerator()
+- uid: Azuria.Info.Enumerable.IndustryEnumerable.GetEnumerator*
+  name: GetEnumerator
+  href: api/Azuria.Info.Enumerable.IndustryEnumerable.html#Azuria_Info_Enumerable_IndustryEnumerable_GetEnumerator_
+  commentId: Overload:Azuria.Info.Enumerable.IndustryEnumerable.GetEnumerator
+  fullName: Azuria.Info.Enumerable.IndustryEnumerable.GetEnumerator
+  nameWithType: IndustryEnumerable.GetEnumerator
+- uid: Azuria.Info.Enumerable.IndustryProjectsEnumerable
+  name: IndustryProjectsEnumerable
+  href: api/Azuria.Info.Enumerable.IndustryProjectsEnumerable.html
+  commentId: T:Azuria.Info.Enumerable.IndustryProjectsEnumerable
+  fullName: Azuria.Info.Enumerable.IndustryProjectsEnumerable
+  nameWithType: IndustryProjectsEnumerable
+- uid: Azuria.Info.Enumerable.IndustryProjectsEnumerable.GetEnumerator
+  name: GetEnumerator()
+  href: api/Azuria.Info.Enumerable.IndustryProjectsEnumerable.html#Azuria_Info_Enumerable_IndustryProjectsEnumerable_GetEnumerator
+  commentId: M:Azuria.Info.Enumerable.IndustryProjectsEnumerable.GetEnumerator
+  fullName: Azuria.Info.Enumerable.IndustryProjectsEnumerable.GetEnumerator()
+  nameWithType: IndustryProjectsEnumerable.GetEnumerator()
+- uid: Azuria.Info.Enumerable.IndustryProjectsEnumerable.GetEnumerator*
+  name: GetEnumerator
+  href: api/Azuria.Info.Enumerable.IndustryProjectsEnumerable.html#Azuria_Info_Enumerable_IndustryProjectsEnumerable_GetEnumerator_
+  commentId: Overload:Azuria.Info.Enumerable.IndustryProjectsEnumerable.GetEnumerator
+  fullName: Azuria.Info.Enumerable.IndustryProjectsEnumerable.GetEnumerator
+  nameWithType: IndustryProjectsEnumerable.GetEnumerator
+- uid: Azuria.Info.Enumerable.TranslatorEnumerable
+  name: TranslatorEnumerable
+  href: api/Azuria.Info.Enumerable.TranslatorEnumerable.html
+  commentId: T:Azuria.Info.Enumerable.TranslatorEnumerable
+  fullName: Azuria.Info.Enumerable.TranslatorEnumerable
+  nameWithType: TranslatorEnumerable
+- uid: Azuria.Info.Enumerable.TranslatorEnumerable.GetEnumerator
+  name: GetEnumerator()
+  href: api/Azuria.Info.Enumerable.TranslatorEnumerable.html#Azuria_Info_Enumerable_TranslatorEnumerable_GetEnumerator
+  commentId: M:Azuria.Info.Enumerable.TranslatorEnumerable.GetEnumerator
+  fullName: Azuria.Info.Enumerable.TranslatorEnumerable.GetEnumerator()
+  nameWithType: TranslatorEnumerable.GetEnumerator()
+- uid: Azuria.Info.Enumerable.TranslatorEnumerable.GetEnumerator*
+  name: GetEnumerator
+  href: api/Azuria.Info.Enumerable.TranslatorEnumerable.html#Azuria_Info_Enumerable_TranslatorEnumerable_GetEnumerator_
+  commentId: Overload:Azuria.Info.Enumerable.TranslatorEnumerable.GetEnumerator
+  fullName: Azuria.Info.Enumerable.TranslatorEnumerable.GetEnumerator
+  nameWithType: TranslatorEnumerable.GetEnumerator
+- uid: Azuria.Info.Enumerable.TranslatorProjectEnumerable
+  name: TranslatorProjectEnumerable
+  href: api/Azuria.Info.Enumerable.TranslatorProjectEnumerable.html
+  commentId: T:Azuria.Info.Enumerable.TranslatorProjectEnumerable
+  fullName: Azuria.Info.Enumerable.TranslatorProjectEnumerable
+  nameWithType: TranslatorProjectEnumerable
+- uid: Azuria.Info.Enumerable.TranslatorProjectEnumerable.GetEnumerator
+  name: GetEnumerator()
+  href: api/Azuria.Info.Enumerable.TranslatorProjectEnumerable.html#Azuria_Info_Enumerable_TranslatorProjectEnumerable_GetEnumerator
+  commentId: M:Azuria.Info.Enumerable.TranslatorProjectEnumerable.GetEnumerator
+  fullName: Azuria.Info.Enumerable.TranslatorProjectEnumerable.GetEnumerator()
+  nameWithType: TranslatorProjectEnumerable.GetEnumerator()
+- uid: Azuria.Info.Enumerable.TranslatorProjectEnumerable.GetEnumerator*
+  name: GetEnumerator
+  href: api/Azuria.Info.Enumerable.TranslatorProjectEnumerable.html#Azuria_Info_Enumerable_TranslatorProjectEnumerable_GetEnumerator_
+  commentId: Overload:Azuria.Info.Enumerable.TranslatorProjectEnumerable.GetEnumerator
+  fullName: Azuria.Info.Enumerable.TranslatorProjectEnumerable.GetEnumerator
+  nameWithType: TranslatorProjectEnumerable.GetEnumerator
 - uid: Azuria.Info.Industry
   name: Industry
   href: api/Azuria.Info.Industry.html
   commentId: T:Azuria.Info.Industry
   fullName: Azuria.Info.Industry
   nameWithType: Industry
+- uid: Azuria.Info.Industry.#ctor(System.Int32,System.String,Azuria.Info.IndustryType,Azuria.Media.Properties.Country)
+  name: Industry(Int32, String, IndustryType, Country)
+  href: api/Azuria.Info.Industry.html#Azuria_Info_Industry__ctor_System_Int32_System_String_Azuria_Info_IndustryType_Azuria_Media_Properties_Country_
+  commentId: M:Azuria.Info.Industry.#ctor(System.Int32,System.String,Azuria.Info.IndustryType,Azuria.Media.Properties.Country)
+  fullName: Azuria.Info.Industry.Industry(System.Int32, System.String, Azuria.Info.IndustryType, Azuria.Media.Properties.Country)
+  nameWithType: Industry.Industry(Int32, String, IndustryType, Country)
+- uid: Azuria.Info.Industry.#ctor*
+  name: Industry
+  href: api/Azuria.Info.Industry.html#Azuria_Info_Industry__ctor_
+  commentId: Overload:Azuria.Info.Industry.#ctor
+  fullName: Azuria.Info.Industry.Industry
+  nameWithType: Industry.Industry
 - uid: Azuria.Info.Industry.Country
   name: Country
   href: api/Azuria.Info.Industry.html#Azuria_Info_Industry_Country
@@ -8555,12 +9467,36 @@ references:
   commentId: Overload:Azuria.Info.Industry.Country
   fullName: Azuria.Info.Industry.Country
   nameWithType: Industry.Country
-- uid: Azuria.Info.Industry.Error
-  name: Error
-  href: api/Azuria.Info.Industry.html#Azuria_Info_Industry_Error
-  commentId: F:Azuria.Info.Industry.Error
-  fullName: Azuria.Info.Industry.Error
-  nameWithType: Industry.Error
+- uid: Azuria.Info.Industry.GetList(System.String,System.String,System.Nullable{Azuria.Media.Properties.Country},System.Nullable{Azuria.Info.IndustryType})
+  name: GetList(String, String, Nullable<Country>, Nullable<IndustryType>)
+  href: api/Azuria.Info.Industry.html#Azuria_Info_Industry_GetList_System_String_System_String_System_Nullable_Azuria_Media_Properties_Country__System_Nullable_Azuria_Info_IndustryType__
+  commentId: M:Azuria.Info.Industry.GetList(System.String,System.String,System.Nullable{Azuria.Media.Properties.Country},System.Nullable{Azuria.Info.IndustryType})
+  name.vb: GetList(String, String, Nullable(Of Country), Nullable(Of IndustryType))
+  fullName: Azuria.Info.Industry.GetList(System.String, System.String, System.Nullable<Azuria.Media.Properties.Country>, System.Nullable<Azuria.Info.IndustryType>)
+  fullName.vb: Azuria.Info.Industry.GetList(System.String, System.String, System.Nullable(Of Azuria.Media.Properties.Country), System.Nullable(Of Azuria.Info.IndustryType))
+  nameWithType: Industry.GetList(String, String, Nullable<Country>, Nullable<IndustryType>)
+  nameWithType.vb: Industry.GetList(String, String, Nullable(Of Country), Nullable(Of IndustryType))
+- uid: Azuria.Info.Industry.GetList*
+  name: GetList
+  href: api/Azuria.Info.Industry.html#Azuria_Info_Industry_GetList_
+  commentId: Overload:Azuria.Info.Industry.GetList
+  fullName: Azuria.Info.Industry.GetList
+  nameWithType: Industry.GetList
+- uid: Azuria.Info.Industry.GetProjects(System.Nullable{Azuria.Info.IndustryType},System.Nullable{System.Boolean})
+  name: GetProjects(Nullable<IndustryType>, Nullable<Boolean>)
+  href: api/Azuria.Info.Industry.html#Azuria_Info_Industry_GetProjects_System_Nullable_Azuria_Info_IndustryType__System_Nullable_System_Boolean__
+  commentId: M:Azuria.Info.Industry.GetProjects(System.Nullable{Azuria.Info.IndustryType},System.Nullable{System.Boolean})
+  name.vb: GetProjects(Nullable(Of IndustryType), Nullable(Of Boolean))
+  fullName: Azuria.Info.Industry.GetProjects(System.Nullable<Azuria.Info.IndustryType>, System.Nullable<System.Boolean>)
+  fullName.vb: Azuria.Info.Industry.GetProjects(System.Nullable(Of Azuria.Info.IndustryType), System.Nullable(Of System.Boolean))
+  nameWithType: Industry.GetProjects(Nullable<IndustryType>, Nullable<Boolean>)
+  nameWithType.vb: Industry.GetProjects(Nullable(Of IndustryType), Nullable(Of Boolean))
+- uid: Azuria.Info.Industry.GetProjects*
+  name: GetProjects
+  href: api/Azuria.Info.Industry.html#Azuria_Info_Industry_GetProjects_
+  commentId: Overload:Azuria.Info.Industry.GetProjects
+  fullName: Azuria.Info.Industry.GetProjects
+  nameWithType: Industry.GetProjects
 - uid: Azuria.Info.Industry.Id
   name: Id
   href: api/Azuria.Info.Industry.html#Azuria_Info_Industry_Id
@@ -8615,30 +9551,126 @@ references:
   commentId: F:Azuria.Info.IndustryType.Publisher
   fullName: Azuria.Info.IndustryType.Publisher
   nameWithType: IndustryType.Publisher
-- uid: Azuria.Info.IndustryType.StreamPartner
-  name: StreamPartner
-  href: api/Azuria.Info.IndustryType.html#Azuria_Info_IndustryType_StreamPartner
-  commentId: F:Azuria.Info.IndustryType.StreamPartner
-  fullName: Azuria.Info.IndustryType.StreamPartner
-  nameWithType: IndustryType.StreamPartner
+- uid: Azuria.Info.IndustryType.RecordLabel
+  name: RecordLabel
+  href: api/Azuria.Info.IndustryType.html#Azuria_Info_IndustryType_RecordLabel
+  commentId: F:Azuria.Info.IndustryType.RecordLabel
+  fullName: Azuria.Info.IndustryType.RecordLabel
+  nameWithType: IndustryType.RecordLabel
+- uid: Azuria.Info.IndustryType.Streaming
+  name: Streaming
+  href: api/Azuria.Info.IndustryType.html#Azuria_Info_IndustryType_Streaming
+  commentId: F:Azuria.Info.IndustryType.Streaming
+  fullName: Azuria.Info.IndustryType.Streaming
+  nameWithType: IndustryType.Streaming
 - uid: Azuria.Info.IndustryType.Studio
   name: Studio
   href: api/Azuria.Info.IndustryType.html#Azuria_Info_IndustryType_Studio
   commentId: F:Azuria.Info.IndustryType.Studio
   fullName: Azuria.Info.IndustryType.Studio
   nameWithType: IndustryType.Studio
+- uid: Azuria.Info.IndustryType.TalentAgent
+  name: TalentAgent
+  href: api/Azuria.Info.IndustryType.html#Azuria_Info_IndustryType_TalentAgent
+  commentId: F:Azuria.Info.IndustryType.TalentAgent
+  fullName: Azuria.Info.IndustryType.TalentAgent
+  nameWithType: IndustryType.TalentAgent
 - uid: Azuria.Info.IndustryType.Unknown
   name: Unknown
   href: api/Azuria.Info.IndustryType.html#Azuria_Info_IndustryType_Unknown
   commentId: F:Azuria.Info.IndustryType.Unknown
   fullName: Azuria.Info.IndustryType.Unknown
   nameWithType: IndustryType.Unknown
+- uid: Azuria.Info.TranslationStatus
+  name: TranslationStatus
+  href: api/Azuria.Info.TranslationStatus.html
+  commentId: T:Azuria.Info.TranslationStatus
+  fullName: Azuria.Info.TranslationStatus
+  nameWithType: TranslationStatus
+- uid: Azuria.Info.TranslationStatus.Cancelled
+  name: Cancelled
+  href: api/Azuria.Info.TranslationStatus.html#Azuria_Info_TranslationStatus_Cancelled
+  commentId: F:Azuria.Info.TranslationStatus.Cancelled
+  fullName: Azuria.Info.TranslationStatus.Cancelled
+  nameWithType: TranslationStatus.Cancelled
+- uid: Azuria.Info.TranslationStatus.Finished
+  name: Finished
+  href: api/Azuria.Info.TranslationStatus.html#Azuria_Info_TranslationStatus_Finished
+  commentId: F:Azuria.Info.TranslationStatus.Finished
+  fullName: Azuria.Info.TranslationStatus.Finished
+  nameWithType: TranslationStatus.Finished
+- uid: Azuria.Info.TranslationStatus.Licensed
+  name: Licensed
+  href: api/Azuria.Info.TranslationStatus.html#Azuria_Info_TranslationStatus_Licensed
+  commentId: F:Azuria.Info.TranslationStatus.Licensed
+  fullName: Azuria.Info.TranslationStatus.Licensed
+  nameWithType: TranslationStatus.Licensed
+- uid: Azuria.Info.TranslationStatus.Ongoing
+  name: Ongoing
+  href: api/Azuria.Info.TranslationStatus.html#Azuria_Info_TranslationStatus_Ongoing
+  commentId: F:Azuria.Info.TranslationStatus.Ongoing
+  fullName: Azuria.Info.TranslationStatus.Ongoing
+  nameWithType: TranslationStatus.Ongoing
+- uid: Azuria.Info.TranslationStatus.Planned
+  name: Planned
+  href: api/Azuria.Info.TranslationStatus.html#Azuria_Info_TranslationStatus_Planned
+  commentId: F:Azuria.Info.TranslationStatus.Planned
+  fullName: Azuria.Info.TranslationStatus.Planned
+  nameWithType: TranslationStatus.Planned
+- uid: Azuria.Info.TranslationStatus.Unkown
+  name: Unkown
+  href: api/Azuria.Info.TranslationStatus.html#Azuria_Info_TranslationStatus_Unkown
+  commentId: F:Azuria.Info.TranslationStatus.Unkown
+  fullName: Azuria.Info.TranslationStatus.Unkown
+  nameWithType: TranslationStatus.Unkown
 - uid: Azuria.Info.Translator
   name: Translator
   href: api/Azuria.Info.Translator.html
   commentId: T:Azuria.Info.Translator
   fullName: Azuria.Info.Translator
   nameWithType: Translator
+- uid: Azuria.Info.Translator.Country
+  name: Country
+  href: api/Azuria.Info.Translator.html#Azuria_Info_Translator_Country
+  commentId: P:Azuria.Info.Translator.Country
+  fullName: Azuria.Info.Translator.Country
+  nameWithType: Translator.Country
+- uid: Azuria.Info.Translator.Country*
+  name: Country
+  href: api/Azuria.Info.Translator.html#Azuria_Info_Translator_Country_
+  commentId: Overload:Azuria.Info.Translator.Country
+  fullName: Azuria.Info.Translator.Country
+  nameWithType: Translator.Country
+- uid: Azuria.Info.Translator.GetList(System.String,System.String,System.Nullable{Azuria.Media.Properties.Country})
+  name: GetList(String, String, Nullable<Country>)
+  href: api/Azuria.Info.Translator.html#Azuria_Info_Translator_GetList_System_String_System_String_System_Nullable_Azuria_Media_Properties_Country__
+  commentId: M:Azuria.Info.Translator.GetList(System.String,System.String,System.Nullable{Azuria.Media.Properties.Country})
+  name.vb: GetList(String, String, Nullable(Of Country))
+  fullName: Azuria.Info.Translator.GetList(System.String, System.String, System.Nullable<Azuria.Media.Properties.Country>)
+  fullName.vb: Azuria.Info.Translator.GetList(System.String, System.String, System.Nullable(Of Azuria.Media.Properties.Country))
+  nameWithType: Translator.GetList(String, String, Nullable<Country>)
+  nameWithType.vb: Translator.GetList(String, String, Nullable(Of Country))
+- uid: Azuria.Info.Translator.GetList*
+  name: GetList
+  href: api/Azuria.Info.Translator.html#Azuria_Info_Translator_GetList_
+  commentId: Overload:Azuria.Info.Translator.GetList
+  fullName: Azuria.Info.Translator.GetList
+  nameWithType: Translator.GetList
+- uid: Azuria.Info.Translator.GetProjects(System.Nullable{Azuria.Info.TranslationStatus},System.Nullable{System.Boolean})
+  name: GetProjects(Nullable<TranslationStatus>, Nullable<Boolean>)
+  href: api/Azuria.Info.Translator.html#Azuria_Info_Translator_GetProjects_System_Nullable_Azuria_Info_TranslationStatus__System_Nullable_System_Boolean__
+  commentId: M:Azuria.Info.Translator.GetProjects(System.Nullable{Azuria.Info.TranslationStatus},System.Nullable{System.Boolean})
+  name.vb: GetProjects(Nullable(Of TranslationStatus), Nullable(Of Boolean))
+  fullName: Azuria.Info.Translator.GetProjects(System.Nullable<Azuria.Info.TranslationStatus>, System.Nullable<System.Boolean>)
+  fullName.vb: Azuria.Info.Translator.GetProjects(System.Nullable(Of Azuria.Info.TranslationStatus), System.Nullable(Of System.Boolean))
+  nameWithType: Translator.GetProjects(Nullable<TranslationStatus>, Nullable<Boolean>)
+  nameWithType.vb: Translator.GetProjects(Nullable(Of TranslationStatus), Nullable(Of Boolean))
+- uid: Azuria.Info.Translator.GetProjects*
+  name: GetProjects
+  href: api/Azuria.Info.Translator.html#Azuria_Info_Translator_GetProjects_
+  commentId: Overload:Azuria.Info.Translator.GetProjects
+  fullName: Azuria.Info.Translator.GetProjects
+  nameWithType: Translator.GetProjects
 - uid: Azuria.Info.Translator.Id
   name: Id
   href: api/Azuria.Info.Translator.html#Azuria_Info_Translator_Id
@@ -8651,18 +9683,18 @@ references:
   commentId: Overload:Azuria.Info.Translator.Id
   fullName: Azuria.Info.Translator.Id
   nameWithType: Translator.Id
-- uid: Azuria.Info.Translator.Language
-  name: Language
-  href: api/Azuria.Info.Translator.html#Azuria_Info_Translator_Language
-  commentId: P:Azuria.Info.Translator.Language
-  fullName: Azuria.Info.Translator.Language
-  nameWithType: Translator.Language
-- uid: Azuria.Info.Translator.Language*
-  name: Language
-  href: api/Azuria.Info.Translator.html#Azuria_Info_Translator_Language_
-  commentId: Overload:Azuria.Info.Translator.Language
-  fullName: Azuria.Info.Translator.Language
-  nameWithType: Translator.Language
+- uid: Azuria.Info.Translator.Image
+  name: Image
+  href: api/Azuria.Info.Translator.html#Azuria_Info_Translator_Image
+  commentId: P:Azuria.Info.Translator.Image
+  fullName: Azuria.Info.Translator.Image
+  nameWithType: Translator.Image
+- uid: Azuria.Info.Translator.Image*
+  name: Image
+  href: api/Azuria.Info.Translator.html#Azuria_Info_Translator_Image_
+  commentId: Overload:Azuria.Info.Translator.Image
+  fullName: Azuria.Info.Translator.Image
+  nameWithType: Translator.Image
 - uid: Azuria.Info.Translator.Name
   name: Name
   href: api/Azuria.Info.Translator.html#Azuria_Info_Translator_Name
@@ -8675,6 +9707,36 @@ references:
   commentId: Overload:Azuria.Info.Translator.Name
   fullName: Azuria.Info.Translator.Name
   nameWithType: Translator.Name
+- uid: Azuria.Info.TranslatorProject
+  name: TranslatorProject
+  href: api/Azuria.Info.TranslatorProject.html
+  commentId: T:Azuria.Info.TranslatorProject
+  fullName: Azuria.Info.TranslatorProject
+  nameWithType: TranslatorProject
+- uid: Azuria.Info.TranslatorProject.Entry
+  name: Entry
+  href: api/Azuria.Info.TranslatorProject.html#Azuria_Info_TranslatorProject_Entry
+  commentId: P:Azuria.Info.TranslatorProject.Entry
+  fullName: Azuria.Info.TranslatorProject.Entry
+  nameWithType: TranslatorProject.Entry
+- uid: Azuria.Info.TranslatorProject.Entry*
+  name: Entry
+  href: api/Azuria.Info.TranslatorProject.html#Azuria_Info_TranslatorProject_Entry_
+  commentId: Overload:Azuria.Info.TranslatorProject.Entry
+  fullName: Azuria.Info.TranslatorProject.Entry
+  nameWithType: TranslatorProject.Entry
+- uid: Azuria.Info.TranslatorProject.TranslationStatus
+  name: TranslationStatus
+  href: api/Azuria.Info.TranslatorProject.html#Azuria_Info_TranslatorProject_TranslationStatus
+  commentId: P:Azuria.Info.TranslatorProject.TranslationStatus
+  fullName: Azuria.Info.TranslatorProject.TranslationStatus
+  nameWithType: TranslatorProject.TranslationStatus
+- uid: Azuria.Info.TranslatorProject.TranslationStatus*
+  name: TranslationStatus
+  href: api/Azuria.Info.TranslatorProject.html#Azuria_Info_TranslatorProject_TranslationStatus_
+  commentId: Overload:Azuria.Info.TranslatorProject.TranslationStatus
+  fullName: Azuria.Info.TranslatorProject.TranslationStatus
+  nameWithType: TranslatorProject.TranslationStatus
 - uid: Azuria.Media
   name: Azuria.Media
   href: api/Azuria.Media.html
@@ -11376,6 +12438,12 @@ references:
   commentId: T:Azuria.Media.Properties.Country
   fullName: Azuria.Media.Properties.Country
   nameWithType: Country
+- uid: Azuria.Media.Properties.Country.EnglandUnitedStates
+  name: EnglandUnitedStates
+  href: api/Azuria.Media.Properties.Country.html#Azuria_Media_Properties_Country_EnglandUnitedStates
+  commentId: F:Azuria.Media.Properties.Country.EnglandUnitedStates
+  fullName: Azuria.Media.Properties.Country.EnglandUnitedStates
+  nameWithType: Country.EnglandUnitedStates
 - uid: Azuria.Media.Properties.Country.Germany
   name: Germany
   href: api/Azuria.Media.Properties.Country.html#Azuria_Media_Properties_Country_Germany
@@ -11388,18 +12456,78 @@ references:
   commentId: F:Azuria.Media.Properties.Country.Japan
   fullName: Azuria.Media.Properties.Country.Japan
   nameWithType: Country.Japan
-- uid: Azuria.Media.Properties.Country.UnitedStates
-  name: UnitedStates
-  href: api/Azuria.Media.Properties.Country.html#Azuria_Media_Properties_Country_UnitedStates
-  commentId: F:Azuria.Media.Properties.Country.UnitedStates
-  fullName: Azuria.Media.Properties.Country.UnitedStates
-  nameWithType: Country.UnitedStates
-- uid: Azuria.Media.Properties.Country.Unkown
-  name: Unkown
-  href: api/Azuria.Media.Properties.Country.html#Azuria_Media_Properties_Country_Unkown
-  commentId: F:Azuria.Media.Properties.Country.Unkown
-  fullName: Azuria.Media.Properties.Country.Unkown
-  nameWithType: Country.Unkown
+- uid: Azuria.Media.Properties.Country.Miscellaneous
+  name: Miscellaneous
+  href: api/Azuria.Media.Properties.Country.html#Azuria_Media_Properties_Country_Miscellaneous
+  commentId: F:Azuria.Media.Properties.Country.Miscellaneous
+  fullName: Azuria.Media.Properties.Country.Miscellaneous
+  nameWithType: Country.Miscellaneous
+- uid: Azuria.Media.Properties.Fsk
+  name: Fsk
+  href: api/Azuria.Media.Properties.Fsk.html
+  commentId: T:Azuria.Media.Properties.Fsk
+  fullName: Azuria.Media.Properties.Fsk
+  nameWithType: Fsk
+- uid: Azuria.Media.Properties.Fsk.BadWords
+  name: BadWords
+  href: api/Azuria.Media.Properties.Fsk.html#Azuria_Media_Properties_Fsk_BadWords
+  commentId: F:Azuria.Media.Properties.Fsk.BadWords
+  fullName: Azuria.Media.Properties.Fsk.BadWords
+  nameWithType: Fsk.BadWords
+- uid: Azuria.Media.Properties.Fsk.Fear
+  name: Fear
+  href: api/Azuria.Media.Properties.Fsk.html#Azuria_Media_Properties_Fsk_Fear
+  commentId: F:Azuria.Media.Properties.Fsk.Fear
+  fullName: Azuria.Media.Properties.Fsk.Fear
+  nameWithType: Fsk.Fear
+- uid: Azuria.Media.Properties.Fsk.Fsk0
+  name: Fsk0
+  href: api/Azuria.Media.Properties.Fsk.html#Azuria_Media_Properties_Fsk_Fsk0
+  commentId: F:Azuria.Media.Properties.Fsk.Fsk0
+  fullName: Azuria.Media.Properties.Fsk.Fsk0
+  nameWithType: Fsk.Fsk0
+- uid: Azuria.Media.Properties.Fsk.Fsk12
+  name: Fsk12
+  href: api/Azuria.Media.Properties.Fsk.html#Azuria_Media_Properties_Fsk_Fsk12
+  commentId: F:Azuria.Media.Properties.Fsk.Fsk12
+  fullName: Azuria.Media.Properties.Fsk.Fsk12
+  nameWithType: Fsk.Fsk12
+- uid: Azuria.Media.Properties.Fsk.Fsk16
+  name: Fsk16
+  href: api/Azuria.Media.Properties.Fsk.html#Azuria_Media_Properties_Fsk_Fsk16
+  commentId: F:Azuria.Media.Properties.Fsk.Fsk16
+  fullName: Azuria.Media.Properties.Fsk.Fsk16
+  nameWithType: Fsk.Fsk16
+- uid: Azuria.Media.Properties.Fsk.Fsk18
+  name: Fsk18
+  href: api/Azuria.Media.Properties.Fsk.html#Azuria_Media_Properties_Fsk_Fsk18
+  commentId: F:Azuria.Media.Properties.Fsk.Fsk18
+  fullName: Azuria.Media.Properties.Fsk.Fsk18
+  nameWithType: Fsk.Fsk18
+- uid: Azuria.Media.Properties.Fsk.Fsk6
+  name: Fsk6
+  href: api/Azuria.Media.Properties.Fsk.html#Azuria_Media_Properties_Fsk_Fsk6
+  commentId: F:Azuria.Media.Properties.Fsk.Fsk6
+  fullName: Azuria.Media.Properties.Fsk.Fsk6
+  nameWithType: Fsk.Fsk6
+- uid: Azuria.Media.Properties.Fsk.Sex
+  name: Sex
+  href: api/Azuria.Media.Properties.Fsk.html#Azuria_Media_Properties_Fsk_Sex
+  commentId: F:Azuria.Media.Properties.Fsk.Sex
+  fullName: Azuria.Media.Properties.Fsk.Sex
+  nameWithType: Fsk.Sex
+- uid: Azuria.Media.Properties.Fsk.Unknown
+  name: Unknown
+  href: api/Azuria.Media.Properties.Fsk.html#Azuria_Media_Properties_Fsk_Unknown
+  commentId: F:Azuria.Media.Properties.Fsk.Unknown
+  fullName: Azuria.Media.Properties.Fsk.Unknown
+  nameWithType: Fsk.Unknown
+- uid: Azuria.Media.Properties.Fsk.Violence
+  name: Violence
+  href: api/Azuria.Media.Properties.Fsk.html#Azuria_Media_Properties_Fsk_Violence
+  commentId: F:Azuria.Media.Properties.Fsk.Violence
+  fullName: Azuria.Media.Properties.Fsk.Violence
+  nameWithType: Fsk.Violence
 - uid: Azuria.Media.Properties.FskHelper
   name: FskHelper
   href: api/Azuria.Media.Properties.FskHelper.html
@@ -11472,6 +12600,228 @@ references:
   commentId: F:Azuria.Media.Properties.FskType.Violence
   fullName: Azuria.Media.Properties.FskType.Violence
   nameWithType: FskType.Violence
+- uid: Azuria.Media.Properties.Genre
+  name: Genre
+  href: api/Azuria.Media.Properties.Genre.html
+  commentId: T:Azuria.Media.Properties.Genre
+  fullName: Azuria.Media.Properties.Genre
+  nameWithType: Genre
+- uid: Azuria.Media.Properties.Genre.Action
+  name: Action
+  href: api/Azuria.Media.Properties.Genre.html#Azuria_Media_Properties_Genre_Action
+  commentId: F:Azuria.Media.Properties.Genre.Action
+  fullName: Azuria.Media.Properties.Genre.Action
+  nameWithType: Genre.Action
+- uid: Azuria.Media.Properties.Genre.Adult
+  name: Adult
+  href: api/Azuria.Media.Properties.Genre.html#Azuria_Media_Properties_Genre_Adult
+  commentId: F:Azuria.Media.Properties.Genre.Adult
+  fullName: Azuria.Media.Properties.Genre.Adult
+  nameWithType: Genre.Adult
+- uid: Azuria.Media.Properties.Genre.Adventure
+  name: Adventure
+  href: api/Azuria.Media.Properties.Genre.html#Azuria_Media_Properties_Genre_Adventure
+  commentId: F:Azuria.Media.Properties.Genre.Adventure
+  fullName: Azuria.Media.Properties.Genre.Adventure
+  nameWithType: Genre.Adventure
+- uid: Azuria.Media.Properties.Genre.Comedy
+  name: Comedy
+  href: api/Azuria.Media.Properties.Genre.html#Azuria_Media_Properties_Genre_Comedy
+  commentId: F:Azuria.Media.Properties.Genre.Comedy
+  fullName: Azuria.Media.Properties.Genre.Comedy
+  nameWithType: Genre.Comedy
+- uid: Azuria.Media.Properties.Genre.Cyberpunk
+  name: Cyberpunk
+  href: api/Azuria.Media.Properties.Genre.html#Azuria_Media_Properties_Genre_Cyberpunk
+  commentId: F:Azuria.Media.Properties.Genre.Cyberpunk
+  fullName: Azuria.Media.Properties.Genre.Cyberpunk
+  nameWithType: Genre.Cyberpunk
+- uid: Azuria.Media.Properties.Genre.Drama
+  name: Drama
+  href: api/Azuria.Media.Properties.Genre.html#Azuria_Media_Properties_Genre_Drama
+  commentId: F:Azuria.Media.Properties.Genre.Drama
+  fullName: Azuria.Media.Properties.Genre.Drama
+  nameWithType: Genre.Drama
+- uid: Azuria.Media.Properties.Genre.Ecchi
+  name: Ecchi
+  href: api/Azuria.Media.Properties.Genre.html#Azuria_Media_Properties_Genre_Ecchi
+  commentId: F:Azuria.Media.Properties.Genre.Ecchi
+  fullName: Azuria.Media.Properties.Genre.Ecchi
+  nameWithType: Genre.Ecchi
+- uid: Azuria.Media.Properties.Genre.Fantasy
+  name: Fantasy
+  href: api/Azuria.Media.Properties.Genre.html#Azuria_Media_Properties_Genre_Fantasy
+  commentId: F:Azuria.Media.Properties.Genre.Fantasy
+  fullName: Azuria.Media.Properties.Genre.Fantasy
+  nameWithType: Genre.Fantasy
+- uid: Azuria.Media.Properties.Genre.Harem
+  name: Harem
+  href: api/Azuria.Media.Properties.Genre.html#Azuria_Media_Properties_Genre_Harem
+  commentId: F:Azuria.Media.Properties.Genre.Harem
+  fullName: Azuria.Media.Properties.Genre.Harem
+  nameWithType: Genre.Harem
+- uid: Azuria.Media.Properties.Genre.Historical
+  name: Historical
+  href: api/Azuria.Media.Properties.Genre.html#Azuria_Media_Properties_Genre_Historical
+  commentId: F:Azuria.Media.Properties.Genre.Historical
+  fullName: Azuria.Media.Properties.Genre.Historical
+  nameWithType: Genre.Historical
+- uid: Azuria.Media.Properties.Genre.Horror
+  name: Horror
+  href: api/Azuria.Media.Properties.Genre.html#Azuria_Media_Properties_Genre_Horror
+  commentId: F:Azuria.Media.Properties.Genre.Horror
+  fullName: Azuria.Media.Properties.Genre.Horror
+  nameWithType: Genre.Horror
+- uid: Azuria.Media.Properties.Genre.Josei
+  name: Josei
+  href: api/Azuria.Media.Properties.Genre.html#Azuria_Media_Properties_Genre_Josei
+  commentId: F:Azuria.Media.Properties.Genre.Josei
+  fullName: Azuria.Media.Properties.Genre.Josei
+  nameWithType: Genre.Josei
+- uid: Azuria.Media.Properties.Genre.Magic
+  name: Magic
+  href: api/Azuria.Media.Properties.Genre.html#Azuria_Media_Properties_Genre_Magic
+  commentId: F:Azuria.Media.Properties.Genre.Magic
+  fullName: Azuria.Media.Properties.Genre.Magic
+  nameWithType: Genre.Magic
+- uid: Azuria.Media.Properties.Genre.MartialArt
+  name: MartialArt
+  href: api/Azuria.Media.Properties.Genre.html#Azuria_Media_Properties_Genre_MartialArt
+  commentId: F:Azuria.Media.Properties.Genre.MartialArt
+  fullName: Azuria.Media.Properties.Genre.MartialArt
+  nameWithType: Genre.MartialArt
+- uid: Azuria.Media.Properties.Genre.Mecha
+  name: Mecha
+  href: api/Azuria.Media.Properties.Genre.html#Azuria_Media_Properties_Genre_Mecha
+  commentId: F:Azuria.Media.Properties.Genre.Mecha
+  fullName: Azuria.Media.Properties.Genre.Mecha
+  nameWithType: Genre.Mecha
+- uid: Azuria.Media.Properties.Genre.Military
+  name: Military
+  href: api/Azuria.Media.Properties.Genre.html#Azuria_Media_Properties_Genre_Military
+  commentId: F:Azuria.Media.Properties.Genre.Military
+  fullName: Azuria.Media.Properties.Genre.Military
+  nameWithType: Genre.Military
+- uid: Azuria.Media.Properties.Genre.Music
+  name: Music
+  href: api/Azuria.Media.Properties.Genre.html#Azuria_Media_Properties_Genre_Music
+  commentId: F:Azuria.Media.Properties.Genre.Music
+  fullName: Azuria.Media.Properties.Genre.Music
+  nameWithType: Genre.Music
+- uid: Azuria.Media.Properties.Genre.Mystery
+  name: Mystery
+  href: api/Azuria.Media.Properties.Genre.html#Azuria_Media_Properties_Genre_Mystery
+  commentId: F:Azuria.Media.Properties.Genre.Mystery
+  fullName: Azuria.Media.Properties.Genre.Mystery
+  nameWithType: Genre.Mystery
+- uid: Azuria.Media.Properties.Genre.None
+  name: None
+  href: api/Azuria.Media.Properties.Genre.html#Azuria_Media_Properties_Genre_None
+  commentId: F:Azuria.Media.Properties.Genre.None
+  fullName: Azuria.Media.Properties.Genre.None
+  nameWithType: Genre.None
+- uid: Azuria.Media.Properties.Genre.Psychological
+  name: Psychological
+  href: api/Azuria.Media.Properties.Genre.html#Azuria_Media_Properties_Genre_Psychological
+  commentId: F:Azuria.Media.Properties.Genre.Psychological
+  fullName: Azuria.Media.Properties.Genre.Psychological
+  nameWithType: Genre.Psychological
+- uid: Azuria.Media.Properties.Genre.Romance
+  name: Romance
+  href: api/Azuria.Media.Properties.Genre.html#Azuria_Media_Properties_Genre_Romance
+  commentId: F:Azuria.Media.Properties.Genre.Romance
+  fullName: Azuria.Media.Properties.Genre.Romance
+  nameWithType: Genre.Romance
+- uid: Azuria.Media.Properties.Genre.School
+  name: School
+  href: api/Azuria.Media.Properties.Genre.html#Azuria_Media_Properties_Genre_School
+  commentId: F:Azuria.Media.Properties.Genre.School
+  fullName: Azuria.Media.Properties.Genre.School
+  nameWithType: Genre.School
+- uid: Azuria.Media.Properties.Genre.SciFi
+  name: SciFi
+  href: api/Azuria.Media.Properties.Genre.html#Azuria_Media_Properties_Genre_SciFi
+  commentId: F:Azuria.Media.Properties.Genre.SciFi
+  fullName: Azuria.Media.Properties.Genre.SciFi
+  nameWithType: Genre.SciFi
+- uid: Azuria.Media.Properties.Genre.Seinen
+  name: Seinen
+  href: api/Azuria.Media.Properties.Genre.html#Azuria_Media_Properties_Genre_Seinen
+  commentId: F:Azuria.Media.Properties.Genre.Seinen
+  fullName: Azuria.Media.Properties.Genre.Seinen
+  nameWithType: Genre.Seinen
+- uid: Azuria.Media.Properties.Genre.Shoujou
+  name: Shoujou
+  href: api/Azuria.Media.Properties.Genre.html#Azuria_Media_Properties_Genre_Shoujou
+  commentId: F:Azuria.Media.Properties.Genre.Shoujou
+  fullName: Azuria.Media.Properties.Genre.Shoujou
+  nameWithType: Genre.Shoujou
+- uid: Azuria.Media.Properties.Genre.ShoujouAi
+  name: ShoujouAi
+  href: api/Azuria.Media.Properties.Genre.html#Azuria_Media_Properties_Genre_ShoujouAi
+  commentId: F:Azuria.Media.Properties.Genre.ShoujouAi
+  fullName: Azuria.Media.Properties.Genre.ShoujouAi
+  nameWithType: Genre.ShoujouAi
+- uid: Azuria.Media.Properties.Genre.Shounen
+  name: Shounen
+  href: api/Azuria.Media.Properties.Genre.html#Azuria_Media_Properties_Genre_Shounen
+  commentId: F:Azuria.Media.Properties.Genre.Shounen
+  fullName: Azuria.Media.Properties.Genre.Shounen
+  nameWithType: Genre.Shounen
+- uid: Azuria.Media.Properties.Genre.ShounenAi
+  name: ShounenAi
+  href: api/Azuria.Media.Properties.Genre.html#Azuria_Media_Properties_Genre_ShounenAi
+  commentId: F:Azuria.Media.Properties.Genre.ShounenAi
+  fullName: Azuria.Media.Properties.Genre.ShounenAi
+  nameWithType: Genre.ShounenAi
+- uid: Azuria.Media.Properties.Genre.SliceOfLife
+  name: SliceOfLife
+  href: api/Azuria.Media.Properties.Genre.html#Azuria_Media_Properties_Genre_SliceOfLife
+  commentId: F:Azuria.Media.Properties.Genre.SliceOfLife
+  fullName: Azuria.Media.Properties.Genre.SliceOfLife
+  nameWithType: Genre.SliceOfLife
+- uid: Azuria.Media.Properties.Genre.Splatter
+  name: Splatter
+  href: api/Azuria.Media.Properties.Genre.html#Azuria_Media_Properties_Genre_Splatter
+  commentId: F:Azuria.Media.Properties.Genre.Splatter
+  fullName: Azuria.Media.Properties.Genre.Splatter
+  nameWithType: Genre.Splatter
+- uid: Azuria.Media.Properties.Genre.Sport
+  name: Sport
+  href: api/Azuria.Media.Properties.Genre.html#Azuria_Media_Properties_Genre_Sport
+  commentId: F:Azuria.Media.Properties.Genre.Sport
+  fullName: Azuria.Media.Properties.Genre.Sport
+  nameWithType: Genre.Sport
+- uid: Azuria.Media.Properties.Genre.Superpower
+  name: Superpower
+  href: api/Azuria.Media.Properties.Genre.html#Azuria_Media_Properties_Genre_Superpower
+  commentId: F:Azuria.Media.Properties.Genre.Superpower
+  fullName: Azuria.Media.Properties.Genre.Superpower
+  nameWithType: Genre.Superpower
+- uid: Azuria.Media.Properties.Genre.Vampire
+  name: Vampire
+  href: api/Azuria.Media.Properties.Genre.html#Azuria_Media_Properties_Genre_Vampire
+  commentId: F:Azuria.Media.Properties.Genre.Vampire
+  fullName: Azuria.Media.Properties.Genre.Vampire
+  nameWithType: Genre.Vampire
+- uid: Azuria.Media.Properties.Genre.Violence
+  name: Violence
+  href: api/Azuria.Media.Properties.Genre.html#Azuria_Media_Properties_Genre_Violence
+  commentId: F:Azuria.Media.Properties.Genre.Violence
+  fullName: Azuria.Media.Properties.Genre.Violence
+  nameWithType: Genre.Violence
+- uid: Azuria.Media.Properties.Genre.Yaoi
+  name: Yaoi
+  href: api/Azuria.Media.Properties.Genre.html#Azuria_Media_Properties_Genre_Yaoi
+  commentId: F:Azuria.Media.Properties.Genre.Yaoi
+  fullName: Azuria.Media.Properties.Genre.Yaoi
+  nameWithType: Genre.Yaoi
+- uid: Azuria.Media.Properties.Genre.Yuri
+  name: Yuri
+  href: api/Azuria.Media.Properties.Genre.html#Azuria_Media_Properties_Genre_Yuri
+  commentId: F:Azuria.Media.Properties.Genre.Yuri
+  fullName: Azuria.Media.Properties.Genre.Yuri
+  nameWithType: Genre.Yuri
 - uid: Azuria.Media.Properties.GenreHelper
   name: GenreHelper
   href: api/Azuria.Media.Properties.GenreHelper.html
@@ -18421,6 +19771,15 @@ references:
   commentId: Overload:Azuria.Utilities.Extensions.ProxerResultExtensions.ThrowFirstForNonSuccess
   fullName: Azuria.Utilities.Extensions.ProxerResultExtensions.ThrowFirstForNonSuccess
   nameWithType: ProxerResultExtensions.ThrowFirstForNonSuccess
+- uid: Azuria.Utilities.Extensions.ProxerResultExtensions.ThrowFirstForNonSuccess``1(System.Threading.Tasks.Task{Azuria.Api.v1.ProxerApiResponse{``0}})
+  name: ThrowFirstForNonSuccess<T>(Task<ProxerApiResponse<T>>)
+  href: api/Azuria.Utilities.Extensions.ProxerResultExtensions.html#Azuria_Utilities_Extensions_ProxerResultExtensions_ThrowFirstForNonSuccess__1_System_Threading_Tasks_Task_Azuria_Api_v1_ProxerApiResponse___0___
+  commentId: M:Azuria.Utilities.Extensions.ProxerResultExtensions.ThrowFirstForNonSuccess``1(System.Threading.Tasks.Task{Azuria.Api.v1.ProxerApiResponse{``0}})
+  name.vb: ThrowFirstForNonSuccess(Of T)(Task(Of ProxerApiResponse(Of T)))
+  fullName: Azuria.Utilities.Extensions.ProxerResultExtensions.ThrowFirstForNonSuccess<T>(System.Threading.Tasks.Task<Azuria.Api.v1.ProxerApiResponse<T>>)
+  fullName.vb: Azuria.Utilities.Extensions.ProxerResultExtensions.ThrowFirstForNonSuccess(Of T)(System.Threading.Tasks.Task(Of Azuria.Api.v1.ProxerApiResponse(Of T)))
+  nameWithType: ProxerResultExtensions.ThrowFirstForNonSuccess<T>(Task<ProxerApiResponse<T>>)
+  nameWithType.vb: ProxerResultExtensions.ThrowFirstForNonSuccess(Of T)(Task(Of ProxerApiResponse(Of T)))
 - uid: Azuria.Utilities.Extensions.ProxerResultExtensions.ThrowFirstForNonSuccess``1(System.Threading.Tasks.Task{Azuria.ErrorHandling.IProxerResult{``0}})
   name: ThrowFirstForNonSuccess<T>(Task<IProxerResult<T>>)
   href: api/Azuria.Utilities.Extensions.ProxerResultExtensions.html#Azuria_Utilities_Extensions_ProxerResultExtensions_ThrowFirstForNonSuccess__1_System_Threading_Tasks_Task_Azuria_ErrorHandling_IProxerResult___0___

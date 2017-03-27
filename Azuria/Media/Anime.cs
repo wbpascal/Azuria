@@ -76,6 +76,14 @@ namespace Azuria.Media
             this._availableLanguages.Set(dataModel.AvailableLanguages.Cast<AnimeLanguage>());
         }
 
+        internal Anime(IndustryProjectDataModel dataModel) : this((IEntryInfoDataModel) dataModel)
+        {
+            this._fsk.Set(dataModel.EntryFsk);
+            this._genre.Set(dataModel.EntryGenre);
+            this._rating.Set(dataModel.EntryRating);
+            this._status.Set(dataModel.EntryStatus);
+        }
+
         internal Anime(RelationDataModel dataModel) : this((EntryDataModel) dataModel)
         {
             this._availableLanguages.Set(dataModel.AvailableLanguages.Cast<AnimeLanguage>());
@@ -88,6 +96,14 @@ namespace Azuria.Media
             this._genre.Set(dataModel.Genre);
             this._rating.Set(dataModel.Rating);
             this._status.Set(dataModel.Status);
+        }
+
+        internal Anime(TranslatorProjectDataModel dataModel) : this((IEntryInfoDataModel) dataModel)
+        {
+            this._fsk.Set(dataModel.EntryFsk);
+            this._genre.Set(dataModel.EntryGenre);
+            this._rating.Set(dataModel.EntryRating);
+            this._status.Set(dataModel.EntryStatus);
         }
 
         #region Properties

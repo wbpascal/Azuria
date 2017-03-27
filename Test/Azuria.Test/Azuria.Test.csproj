@@ -54,6 +54,8 @@
     <Otherwise />
   </Choose>
   <ItemGroup>
+    <Compile Include="ApiTests\ListTest.cs" />
+    <Compile Include="AssertHelper.cs" />
     <Compile Include="ConferenceTests\ConferenceInfoTest.cs" />
     <Compile Include="ConferenceTests\ConferenceSetup.cs" />
     <Compile Include="ConferenceTests\ConferenceTest.cs" />

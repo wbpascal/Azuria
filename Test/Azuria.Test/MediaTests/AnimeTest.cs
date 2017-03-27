@@ -28,7 +28,7 @@ namespace Azuria.Test.MediaTests
         public async Task AnimeMediumTest()
         {
             IProxerResult<AnimeMedium> lResult = await this._anime.AnimeMedium;
-            Assert.IsTrue(lResult.Success, JsonConvert.SerializeObject(lResult.Exceptions));
+            AssertHelper.IsSuccess(lResult);
             Assert.AreEqual(AnimeMedium.Series, lResult.Result);
         }
 
@@ -36,7 +36,7 @@ namespace Azuria.Test.MediaTests
         public async Task AvailableLanguagesTest()
         {
             IProxerResult<IEnumerable<AnimeLanguage>> lResult = await this._anime.AvailableLanguages;
-            Assert.IsTrue(lResult.Success, JsonConvert.SerializeObject(lResult.Exceptions));
+            AssertHelper.IsSuccess(lResult);
             Assert.IsNotNull(lResult.Result);
             Assert.IsNotEmpty(lResult.Result);
             Assert.IsTrue(lResult.Result.Contains(AnimeLanguage.EngSub));
@@ -67,7 +67,7 @@ namespace Azuria.Test.MediaTests
                 this._anime.GetEpisodes(AnimeLanguage.EngDub).ThrowFirstForNonSuccess());
 
             IProxerResult<IEnumerable<Episode>> lResult = await this._anime.GetEpisodes(AnimeLanguage.EngSub);
-            Assert.IsTrue(lResult.Success, JsonConvert.SerializeObject(lResult.Exceptions));
+            AssertHelper.IsSuccess(lResult);
             Assert.IsNotNull(lResult.Result);
             Assert.AreEqual(22, lResult.Result.Count());
             Assert.IsTrue(lResult.Result.All(episode => episode.Language == AnimeLanguage.EngSub));

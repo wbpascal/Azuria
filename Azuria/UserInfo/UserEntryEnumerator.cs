@@ -33,8 +33,8 @@ namespace Azuria.UserInfo
             if (!lResult.Success || lResult.Result == null)
                 return new ProxerResult<IEnumerable<UserProfileEntry<T>>>(lResult.Exceptions);
 
-            return new ProxerResult<IEnumerable<UserProfileEntry<T>>>(from listDataModel in lResult.Result
-                select new UserProfileEntry<T>(listDataModel, this._user));
+            return new ProxerResult<IEnumerable<UserProfileEntry<T>>>(
+                lResult.Result.Select(listDataModel => new UserProfileEntry<T>(listDataModel, this._user)));
         }
 
         #endregion

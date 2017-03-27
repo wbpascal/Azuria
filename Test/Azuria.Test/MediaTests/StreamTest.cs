@@ -58,7 +58,7 @@ namespace Azuria.Test.MediaTests
         public async Task LinkTest()
         {
             IProxerResult<Uri> lResult = await this._stream.Link;
-            Assert.IsTrue(lResult.Success, JsonConvert.SerializeObject(lResult.Exceptions));
+            AssertHelper.IsSuccess(lResult);
             Assert.IsNotNull(lResult.Result);
             Assert.IsTrue(lResult.Result.AbsoluteUri.Contains("mp4upload.com"));
         }
@@ -69,7 +69,7 @@ namespace Azuria.Test.MediaTests
             Assert.IsNotNull(this._stream.Translator);
             Assert.AreEqual(1158, this._stream.Translator.Id);
             Assert.AreEqual("THORAnime", this._stream.Translator.Name);
-            Assert.AreEqual(Language.English, this._stream.Translator.Language);
+            Assert.AreEqual(Country.EnglandUnitedStates, this._stream.Translator.Country);
         }
 
         [Test]

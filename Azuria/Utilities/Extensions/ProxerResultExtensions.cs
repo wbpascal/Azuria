@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.Threading.Tasks;
+using Azuria.Api.v1;
 using Azuria.ErrorHandling;
 
 namespace Azuria.Utilities.Extensions
@@ -42,6 +43,19 @@ namespace Azuria.Utilities.Extensions
         /// <param name="task"></param>
         /// <returns></returns>
         public static async Task<T> ThrowFirstForNonSuccess<T>(this Task<IProxerResult<T>> task)
+        {
+            IProxerResult<T> lResult = await task.ConfigureAwait(false);
+            if (!lResult.Success) throw lResult.Exceptions.Any() ? lResult.Exceptions.First() : new Exception();
+
+            return lResult.Result;
+        }
+
+        /// <summary>
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="task"></param>
+        /// <returns></returns>
+        public static async Task<T> ThrowFirstForNonSuccess<T>(this Task<ProxerApiResponse<T>> task)
         {
             IProxerResult<T> lResult = await task.ConfigureAwait(false);
             if (!lResult.Success) throw lResult.Exceptions.Any() ? lResult.Exceptions.First() : new Exception();

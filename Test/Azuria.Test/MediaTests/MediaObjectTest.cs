@@ -32,7 +32,7 @@ namespace Azuria.Test.MediaTests
         public async Task ClicksTest()
         {
             IProxerResult<int> lResult = await this._mediaObject.Clicks;
-            Assert.IsTrue(lResult.Success, JsonConvert.SerializeObject(lResult.Exceptions));
+            AssertHelper.IsSuccess(lResult);
             Assert.AreEqual(23604, lResult.Result);
         }
 
@@ -56,7 +56,7 @@ namespace Azuria.Test.MediaTests
         public async Task ContentCountTest()
         {
             IProxerResult<int> lResult = await this._mediaObject.ContentCount;
-            Assert.IsTrue(lResult.Success, JsonConvert.SerializeObject(lResult.Exceptions));
+            AssertHelper.IsSuccess(lResult);
             Assert.AreEqual(22, lResult.Result);
         }
 
@@ -103,7 +103,7 @@ namespace Azuria.Test.MediaTests
         public async Task DescriptionTest()
         {
             IProxerResult<string> lResult = await this._mediaObject.Description;
-            Assert.IsTrue(lResult.Success, JsonConvert.SerializeObject(lResult.Exceptions));
+            AssertHelper.IsSuccess(lResult);
             Assert.IsNotNull(lResult.Result);
             Assert.AreEqual("Description Text", lResult.Result);
         }
@@ -112,7 +112,7 @@ namespace Azuria.Test.MediaTests
         public async Task EnglishTitleTest()
         {
             IProxerResult<string> lResult = await this._mediaObject.EnglishTitle;
-            Assert.IsTrue(lResult.Success, JsonConvert.SerializeObject(lResult.Exceptions));
+            AssertHelper.IsSuccess(lResult);
             Assert.IsNotNull(lResult.Result);
             Assert.IsNotEmpty(lResult.Result);
         }
@@ -121,7 +121,7 @@ namespace Azuria.Test.MediaTests
         public async Task FskTest()
         {
             IProxerResult<IEnumerable<Fsk>> lResult = await this._mediaObject.Fsk;
-            Assert.IsTrue(lResult.Success, JsonConvert.SerializeObject(lResult.Exceptions));
+            AssertHelper.IsSuccess(lResult);
             Assert.IsNotNull(lResult.Result);
             Assert.AreEqual(1, lResult.Result.Count());
             Assert.IsTrue(lResult.Result.Contains(Fsk.Fsk12));
@@ -131,7 +131,7 @@ namespace Azuria.Test.MediaTests
         public async Task GenreTest()
         {
             IProxerResult<IEnumerable<Genre>> lResult = await this._mediaObject.Genre;
-            Assert.IsTrue(lResult.Success, JsonConvert.SerializeObject(lResult.Exceptions));
+            AssertHelper.IsSuccess(lResult);
             Assert.IsNotNull(lResult.Result);
             Assert.IsTrue(lResult.Result.Contains(Genre.Comedy));
             Assert.IsTrue(lResult.Result.Contains(Genre.Drama));
@@ -146,7 +146,7 @@ namespace Azuria.Test.MediaTests
         public async Task GermanTitleTest()
         {
             IProxerResult<string> lResult = await this._mediaObject.GermanTitle;
-            Assert.IsTrue(lResult.Success, JsonConvert.SerializeObject(lResult.Exceptions));
+            AssertHelper.IsSuccess(lResult);
             Assert.IsNotNull(lResult.Result);
             Assert.IsNotEmpty(lResult.Result);
         }
@@ -155,25 +155,25 @@ namespace Azuria.Test.MediaTests
         public async Task IndustryTest()
         {
             IProxerResult<IEnumerable<Industry>> lResult = await this._mediaObject.Industry;
-            Assert.IsTrue(lResult.Success, JsonConvert.SerializeObject(lResult.Exceptions));
+            AssertHelper.IsSuccess(lResult);
             Assert.IsNotNull(lResult.Result);
             Assert.AreEqual(10, lResult.Result.Count());
             Assert.IsTrue(lResult.Result.Any(industry => industry.Type == IndustryType.Producer));
-            Assert.IsTrue(lResult.Result.Any(industry => industry.Type == IndustryType.StreamPartner));
+            Assert.IsTrue(lResult.Result.Any(industry => industry.Type == IndustryType.Streaming));
             Assert.IsTrue(lResult.Result.Any(industry => industry.Type == IndustryType.Publisher));
             Assert.IsTrue(lResult.Result.Any(industry => industry.Type == IndustryType.Studio));
             Assert.IsFalse(lResult.Result.Any(industry => industry.Type == IndustryType.Unknown));
             Assert.IsTrue(lResult.Result.Any(industry => industry.Country == Country.Germany));
             Assert.IsTrue(lResult.Result.Any(industry => industry.Country == Country.Japan));
             Assert.IsTrue(lResult.Result.Any(industry => industry.Country == Country.EnglandUnitedStates));
-            Assert.IsFalse(lResult.Result.Any(industry => industry.Country == Country.Unkown));
+            Assert.IsFalse(lResult.Result.Any(industry => industry.Country == Country.Miscellaneous));
         }
 
         [Test]
         public async Task IsHContentTest()
         {
             IProxerResult<bool> lResult = await this._mediaObject.IsHContent;
-            Assert.IsTrue(lResult.Success, JsonConvert.SerializeObject(lResult.Exceptions));
+            AssertHelper.IsSuccess(lResult);
             Assert.IsFalse(lResult.Result);
         }
 
@@ -181,7 +181,7 @@ namespace Azuria.Test.MediaTests
         public async Task IsLicensedTest()
         {
             IProxerResult<bool?> lResult = await this._mediaObject.IsLicensed.GetNew();
-            Assert.IsTrue(lResult.Success, JsonConvert.SerializeObject(lResult.Exceptions));
+            AssertHelper.IsSuccess(lResult);
             Assert.IsNotNull(lResult.Result);
             Assert.IsTrue(lResult.Result.Value);
         }
@@ -190,7 +190,7 @@ namespace Azuria.Test.MediaTests
         public async Task JapaneseTitleTest()
         {
             IProxerResult<string> lResult = await this._mediaObject.JapaneseTitle;
-            Assert.IsTrue(lResult.Success, JsonConvert.SerializeObject(lResult.Exceptions));
+            AssertHelper.IsSuccess(lResult);
             Assert.IsNotNull(lResult.Result);
             Assert.IsNotEmpty(lResult.Result);
         }
@@ -199,7 +199,7 @@ namespace Azuria.Test.MediaTests
         public async Task NameTest()
         {
             IProxerResult<string> lResult = await this._mediaObject.Name;
-            Assert.IsTrue(lResult.Success, JsonConvert.SerializeObject(lResult.Exceptions));
+            AssertHelper.IsSuccess(lResult);
             Assert.IsNotNull(lResult.Result);
             Assert.IsNotEmpty(lResult.Result);
         }
@@ -208,7 +208,7 @@ namespace Azuria.Test.MediaTests
         public async Task RatingTest()
         {
             IProxerResult<MediaRating> lResult = await this._mediaObject.Rating;
-            Assert.IsTrue(lResult.Success, JsonConvert.SerializeObject(lResult.Exceptions));
+            AssertHelper.IsSuccess(lResult);
             Assert.IsNotNull(lResult.Result);
             Assert.AreEqual(4371, lResult.Result.Voters);
             Assert.AreEqual(40527 / (decimal) 4371, lResult.Result.Rating);
@@ -218,7 +218,7 @@ namespace Azuria.Test.MediaTests
         public async Task RelationsTest()
         {
             IProxerResult<IEnumerable<IMediaObject>> lResult = await this._mediaObject.Relations;
-            Assert.IsTrue(lResult.Success, JsonConvert.SerializeObject(lResult.Exceptions));
+            AssertHelper.IsSuccess(lResult);
             Assert.IsNotNull(lResult.Result);
             Assert.AreEqual(4, lResult.Result.Count());
             Assert.IsTrue(lResult.Result.Any(o => o is Anime));
@@ -230,7 +230,7 @@ namespace Azuria.Test.MediaTests
         public async Task SeasonTest()
         {
             IProxerResult<MediaSeasonInfo> lResult = await this._mediaObject.Season;
-            Assert.IsTrue(lResult.Success, JsonConvert.SerializeObject(lResult.Exceptions));
+            AssertHelper.IsSuccess(lResult);
             Assert.IsNotNull(lResult.Result);
             Assert.IsNotNull(lResult.Result.StartSeason);
             Assert.AreEqual(Season.Autumn, lResult.Result.StartSeason.Season);
@@ -244,7 +244,7 @@ namespace Azuria.Test.MediaTests
         public async Task StatusTest()
         {
             IProxerResult<MediaStatus> lResult = await this._mediaObject.Status;
-            Assert.IsTrue(lResult.Success, JsonConvert.SerializeObject(lResult.Exceptions));
+            AssertHelper.IsSuccess(lResult);
             Assert.AreEqual(MediaStatus.Completed, lResult.Result);
         }
 
@@ -252,7 +252,7 @@ namespace Azuria.Test.MediaTests
         public async Task SynonymTest()
         {
             IProxerResult<string> lResult = await this._mediaObject.Synonym;
-            Assert.IsTrue(lResult.Success, JsonConvert.SerializeObject(lResult.Exceptions));
+            AssertHelper.IsSuccess(lResult);
             Assert.IsNull(lResult.Result);
         }
 
@@ -260,7 +260,7 @@ namespace Azuria.Test.MediaTests
         public async Task TagsTest()
         {
             IProxerResult<IEnumerable<Tag>> lResult = await this._mediaObject.Tags;
-            Assert.IsTrue(lResult.Success, JsonConvert.SerializeObject(lResult.Exceptions));
+            AssertHelper.IsSuccess(lResult);
             Assert.IsNotNull(lResult.Result);
             Assert.AreEqual(9, lResult.Result.Count());
             Assert.IsTrue(lResult.Result.Any(tag => tag.IsRated));
@@ -274,19 +274,15 @@ namespace Azuria.Test.MediaTests
         public async Task TranslatorsTest()
         {
             IProxerResult<IEnumerable<Translator>> lResult = await this._mediaObject.Translator;
-            Assert.IsTrue(lResult.Success, JsonConvert.SerializeObject(lResult.Exceptions));
+            AssertHelper.IsSuccess(lResult);
             Assert.IsNotNull(lResult.Result);
             Assert.AreEqual(4, lResult.Result.Count());
-            Assert.IsTrue(
-                lResult.Result.Any(
-                    translator =>
-                        translator.Language == Language.English && translator.Id == 795 &&
-                        translator.Name.Equals("Dicescans")));
-            Assert.IsTrue(
-                lResult.Result.Any(
-                    translator =>
-                        translator.Language == Language.German && translator.Id == 11 &&
-                        translator.Name.Equals("Gruppe Kampfkuchen")));
+            Assert.IsTrue(lResult.Result.Any(translator =>
+                translator.Country == Country.EnglandUnitedStates && translator.Id == 795 &&
+                translator.Name.Equals("Dicescans")));
+            Assert.IsTrue(lResult.Result.Any(translator =>
+                translator.Country == Country.Germany && translator.Id == 11 &&
+                translator.Name.Equals("Gruppe Kampfkuchen")));
         }
     }
 }

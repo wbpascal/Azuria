@@ -12,6 +12,7 @@ using Azuria.Info;
 using Azuria.Media.Properties;
 using Azuria.UserInfo;
 using Azuria.UserInfo.ControlPanel;
+using Azuria.Utilities;
 using Azuria.Utilities.Properties;
 
 namespace Azuria.Media
@@ -147,11 +148,16 @@ namespace Azuria.Media
             this._uploadDate.Set(lData.UploadTimestamp);
             this._uploader.Set(new User(lData.UploaderName, lData.UploaderId));
             this._title.Set(lData.ChapterTitle);
-            this._translator.Set(lData.TranslatorId == null
-                ? null
-                : new Translator(lData.TranslatorId.Value, lData.TranslatorName, this.GeneralLanguage));
+            this._translator.Set(GetTranslator(lData));
 
             return new ProxerResult();
+
+            Translator GetTranslator(ChapterDataModel dataModel)
+            {
+                if (dataModel.TranslatorId == null) return null;
+                return new Translator(dataModel.TranslatorId.Value, dataModel.TranslatorName,
+                    this.GeneralLanguage.GetCountry());
+            }
         }
 
         #endregion

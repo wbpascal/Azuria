@@ -1,4 +1,5 @@
-﻿using Azuria.Api.v1.Converters;
+﻿using System;
+using Azuria.Api.v1.Converters;
 using Azuria.Api.v1.Converters.Info;
 using Azuria.Media.Properties;
 using Newtonsoft.Json;
@@ -20,12 +21,24 @@ namespace Azuria.Api.v1.DataModels.Info
         /// </summary>
         [JsonProperty("country")]
         [JsonConverter(typeof(CountryConverter))]
-        public Language Language { get; set; }
+        public Country Country { get; set; }
 
         /// <summary>
         /// </summary>
         [JsonProperty("name")]
         public string Name { get; set; }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        [JsonProperty("link")]
+        public Uri Link { get; set; }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        [JsonProperty("image")]
+        public Uri Image { get; set; }
 
         #endregion
     }

@@ -3,11 +3,13 @@ using System.Threading.Tasks;
 using Azuria.Api;
 using Azuria.Api.v1;
 using Azuria.Api.v1.DataModels.Anime;
+using Azuria.Api.v1.DataModels.Manga;
 using Azuria.Api.v1.RequestBuilder;
 using Azuria.ErrorHandling;
 using Azuria.Info;
 using Azuria.Media.Properties;
 using Azuria.UserInfo;
+using Azuria.Utilities;
 using Azuria.Utilities.Properties;
 
 namespace Azuria.Media
@@ -29,12 +31,16 @@ namespace Azuria.Media
             this.HosterImage = new Uri(ApiConstants.ProxerHosterImageUrl + dataModel.HosterImageFileName);
             this.HostingType = dataModel.HostingType;
             this.Id = dataModel.StreamId;
-            this.Translator = dataModel.TranslatorId == null
-                ? null
-                : new Translator(dataModel.TranslatorId.Value, dataModel.TranslatorName,
-                    this.Episode.GeneralLanguage);
+            this.Translator = GetTranslator();
             this.UploadDate = dataModel.UploadTimestamp;
             this.Uploader = new User(dataModel.UploaderName, dataModel.UploaderId);
+
+            Translator GetTranslator()
+            {
+                if (dataModel.TranslatorId == null) return null;
+                return new Translator(dataModel.TranslatorId.Value, dataModel.TranslatorName, 
+                    this.Episode.GeneralLanguage.GetCountry());
+            }
         }
 
         #region Properties

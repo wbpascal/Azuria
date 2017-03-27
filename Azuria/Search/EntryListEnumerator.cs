@@ -4,7 +4,7 @@ using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
 using Azuria.Api.v1;
-using Azuria.Api.v1.DataModels.Search;
+using Azuria.Api.v1.DataModels.List;
 using Azuria.Api.v1.Enums;
 using Azuria.Api.v1.RequestBuilder;
 using Azuria.Enumerable;

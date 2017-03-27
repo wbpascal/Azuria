@@ -222,6 +222,18 @@ namespace Azuria.Test.Core
                             .WithPostArgument("notags", "157")
                             .WithPostArgument("name", "a"))
                 .Respond(FileResponses["list_getentrysearch.json"]);
+            ServerResponse.Create("https://proxer.me/api/v1",
+                    response => response.Get("/list/tagids")
+                        .WithQueryParameter("search", "yuri -action"))
+                .Respond(FileResponses["list_gettagids.json"]);
+            ServerResponse.Create("https://proxer.me/api/v1",
+                    response => response.Get("/list/translatorgroupprojects")
+                        .WithQueryParameter("id", "1")
+                        .WithQueryParameter("type", "4")
+                        .WithQueryParameter("isH", "0")
+                        .WithQueryParameter("p", "0")
+                        .WithQueryParameter("limit", "100"))
+                .Respond(FileResponses["list_gettranslatorgroupprojects.json"]);
 
             #endregion
 

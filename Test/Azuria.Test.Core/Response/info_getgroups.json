@@ -5,22 +5,30 @@
     {
       "name": "Lunatic-Studio",
       "id": "455",
-      "country": "de"
+      "country": "de",
+      "link": "",
+      "image": "" 
     },
     {
       "name": "KiboYami",
       "id": "692",
-      "country": "de"
+      "country": "de",
+      "link": "",
+      "image": ""
     },
     {
       "name": "Gruppe Kampfkuchen",
       "id": "11",
-      "country": "de"
+      "country": "de",
+      "link": "",
+      "image": ""
     },
     {
       "name": "Dicescans",
       "id": "795",
-      "country": "en"
+      "country": "en",
+      "link": "http://dicescans.blogspot.de/",
+      "image": "https://cdn.proxer.me/translatorgroups/795.jpg"
     }
   ]
 }

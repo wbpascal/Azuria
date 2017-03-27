@@ -4,7 +4,9 @@ using System.Linq;
 using System.Threading.Tasks;
 using Azuria.Api;
 using Azuria.Api.v1;
+using Azuria.Api.v1.DataModels;
 using Azuria.Api.v1.DataModels.Info;
+using Azuria.Api.v1.DataModels.List;
 using Azuria.Api.v1.Enums;
 using Azuria.Api.v1.RequestBuilder;
 using Azuria.ErrorHandling;
@@ -14,6 +16,7 @@ using Azuria.UserInfo;
 using Azuria.UserInfo.Comment;
 using Azuria.UserInfo.ControlPanel;
 using Azuria.Utilities.Properties;
+using TranslatorDataModel = Azuria.Api.v1.DataModels.Info.TranslatorDataModel;
 
 #pragma warning disable 1591
 

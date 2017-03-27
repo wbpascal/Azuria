@@ -55,7 +55,7 @@ namespace Azuria.Test
 
             lLoginResult = await Senpai.FromCredentials(
                 new ProxerCredentials("InfiniteSoul", "correct".ToCharArray()));
-            Assert.IsTrue(lLoginResult.Success);
+            AssertHelper.IsSuccess(lLoginResult);
             Assert.IsNotNull(lLoginResult.Result);
 
             Senpai lNewSenpai = lLoginResult.Result;
@@ -77,11 +77,11 @@ namespace Azuria.Test
         [Order(2)]
         public async Task LogoutTest()
         {
-            IProxerResult<Senpai> lLoginResult = await Senpai.FromCredentials(
+            IProxerResult<Senpai> lLogoutResult = await Senpai.FromCredentials(
                 new ProxerCredentials("InfiniteSoul", "correct".ToCharArray()));
-            Assert.IsTrue(lLoginResult.Success);
-            Assert.IsNotNull(lLoginResult.Result);
-            Senpai lSenpai = lLoginResult.Result;
+            AssertHelper.IsSuccess(lLogoutResult);
+            Assert.IsNotNull(lLogoutResult.Result);
+            Senpai lSenpai = lLogoutResult.Result;
 
             await lSenpai.Logout().ThrowFirstForNonSuccess();
             Assert.IsFalse(lSenpai.IsProbablyLoggedIn);

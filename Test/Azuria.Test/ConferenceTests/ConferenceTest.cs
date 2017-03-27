@@ -78,9 +78,11 @@ namespace Azuria.Test.ConferenceTests
             Assert.CatchAsync<NotLoggedInException>(
                 () => Conference.CreateGroup(new[] {"KutoSan"}, "topic", null).ThrowFirstForNonSuccess());
 
-            Conference lConference =
-                await Conference.CreateGroup(new[] {"KutoSan"}, "hello", GeneralSetup.SenpaiInstance)
-                    .ThrowFirstForNonSuccess();
+            IProxerResult<Conference> lResult = await Conference.CreateGroup(new[] {"KutoSan"}, "hello", 
+                GeneralSetup.SenpaiInstance);
+            AssertHelper.IsSuccess(lResult);
+
+            Conference lConference = lResult.Result;
             Assert.IsNotNull(lConference);
             Assert.IsFalse(lConference.AutoCheck);
             Assert.AreNotEqual(lConference.Id, default(int));
@@ -237,8 +239,7 @@ namespace Azuria.Test.ConferenceTests
             Assert.CatchAsync<ArgumentException>(() => this._conference.SendReport("").ThrowFirstForNonSuccess());
 
             IProxerResult lResult = await this._conference.SendReport("Report Reason");
-            Assert.IsTrue(lResult.Success,
-                $"{lResult.Exceptions.FirstOrDefault()?.GetType().FullName}: {lResult.Exceptions.FirstOrDefault()?.Message}");
+            AssertHelper.IsSuccess(lResult);
 
             Assert.AreEqual(ErrorCode.MessengerReportTooShort,
                 Assert.CatchAsync<ProxerApiException>(() => this._conference.SendReport("a").ThrowFirstForNonSuccess())
@@ -249,32 +250,27 @@ namespace Azuria.Test.ConferenceTests
         public async Task SetBlock()
         {
             IProxerResult lResult = await this._conference.SetBlock(true);
-            Assert.IsTrue(lResult.Success,
-                $"{lResult.Exceptions.FirstOrDefault()?.GetType().FullName}: {lResult.Exceptions.FirstOrDefault()?.Message}");
+            AssertHelper.IsSuccess(lResult);
 
             lResult = await this._conference.SetBlock(false);
-            Assert.IsTrue(lResult.Success,
-                $"{lResult.Exceptions.FirstOrDefault()?.GetType().FullName}: {lResult.Exceptions.FirstOrDefault()?.Message}");
+            AssertHelper.IsSuccess(lResult);
         }
 
         [Test]
         public async Task SetFavour()
         {
             IProxerResult lResult = await this._conference.SetFavourite(true);
-            Assert.IsTrue(lResult.Success,
-                $"{lResult.Exceptions.FirstOrDefault()?.GetType().FullName}: {lResult.Exceptions.FirstOrDefault()?.Message}");
+            AssertHelper.IsSuccess(lResult);
 
             lResult = await this._conference.SetFavourite(false);
-            Assert.IsTrue(lResult.Success,
-                $"{lResult.Exceptions.FirstOrDefault()?.GetType().FullName}: {lResult.Exceptions.FirstOrDefault()?.Message}");
+            AssertHelper.IsSuccess(lResult);
         }
 
         [Test]
         public async Task SetUnread()
         {
             IProxerResult lResult = await this._conference.SetUnread();
-            Assert.IsTrue(lResult.Success,
-                $"{lResult.Exceptions.FirstOrDefault()?.GetType().FullName}: {lResult.Exceptions.FirstOrDefault()?.Message}");
+            AssertHelper.IsSuccess(lResult);
         }
 
         [Test]

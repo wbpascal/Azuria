@@ -32,7 +32,7 @@ namespace Azuria.Test.MediaTests
         public async Task ChapterIdTest()
         {
             IProxerResult<int> lResult = await this._chapter.ChapterId;
-            Assert.IsTrue(lResult.Success, JsonConvert.SerializeObject(lResult.Exceptions));
+            AssertHelper.IsSuccess(lResult);
             Assert.AreEqual(241036, lResult.Result);
         }
 
@@ -52,7 +52,7 @@ namespace Azuria.Test.MediaTests
         public async Task PagesTest()
         {
             IProxerResult<IEnumerable<Page>> lResult = await this._chapter.Pages;
-            Assert.IsTrue(lResult.Success, JsonConvert.SerializeObject(lResult.Exceptions));
+            AssertHelper.IsSuccess(lResult);
             Assert.IsNotNull(lResult.Result);
             Assert.IsNotEmpty(lResult.Result);
             Assert.IsTrue(lResult.Result.All(page =>
@@ -72,7 +72,7 @@ namespace Azuria.Test.MediaTests
         public async Task TitleTest()
         {
             IProxerResult<string> lResult = await this._chapter.Title;
-            Assert.IsTrue(lResult.Success, JsonConvert.SerializeObject(lResult.Exceptions));
+            AssertHelper.IsSuccess(lResult);
             Assert.IsNotNull(lResult.Result);
             Assert.IsNotEmpty(lResult.Result);
             Assert.AreEqual("Chapter 159", lResult.Result);
@@ -82,18 +82,18 @@ namespace Azuria.Test.MediaTests
         public async Task TranslatorTest()
         {
             IProxerResult<Translator> lResult = await this._chapter.Translator;
-            Assert.IsTrue(lResult.Success, JsonConvert.SerializeObject(lResult.Exceptions));
+            AssertHelper.IsSuccess(lResult);
             Assert.IsNotNull(lResult.Result);
             Assert.AreEqual(795, lResult.Result.Id);
             Assert.AreEqual("Dicescans", lResult.Result.Name);
-            Assert.AreEqual(Language.English, lResult.Result.Language);
+            Assert.AreEqual(Country.EnglandUnitedStates, lResult.Result.Country);
         }
 
         [Test]
         public async Task UploadDateTest()
         {
             IProxerResult<DateTime> lResult = await this._chapter.UploadDate;
-            Assert.IsTrue(lResult.Success, JsonConvert.SerializeObject(lResult.Exceptions));
+            AssertHelper.IsSuccess(lResult);
             Assert.AreNotEqual(lResult.Result, DateTime.MinValue);
             Assert.AreNotEqual(lResult.Result, DateTime.MaxValue);
         }
@@ -102,7 +102,7 @@ namespace Azuria.Test.MediaTests
         public async Task UploaderTest()
         {
             IProxerResult<User> lResult = await this._chapter.Uploader;
-            Assert.IsTrue(lResult.Success, JsonConvert.SerializeObject(lResult.Exceptions));
+            AssertHelper.IsSuccess(lResult);
             Assert.IsNotNull(lResult.Result);
             Assert.AreEqual(177103, lResult.Result.Id);
             Assert.AreEqual("InfiniteSoul", lResult.Result.UserName.GetIfInitialised(string.Empty));

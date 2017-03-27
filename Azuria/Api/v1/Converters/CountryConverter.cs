@@ -26,7 +26,7 @@ namespace Azuria.Api.v1.Converters
                 case "jp":
                     return Country.Japan;
                 default:
-                    return Country.Unkown;
+                    return Country.Miscellaneous;
             }
         }
         

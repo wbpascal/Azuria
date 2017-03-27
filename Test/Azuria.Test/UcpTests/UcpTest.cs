@@ -46,7 +46,7 @@ namespace Azuria.Test.UcpTests
                 () => this._controlPanel.AddToProfileList(-1, profileList).ThrowFirstForNonSuccess());
 
             IProxerResult lResult = await this._controlPanel.AddToProfileList(1, profileList);
-            Assert.IsTrue(lResult.Success, JsonConvert.SerializeObject(lResult.Exceptions));
+            AssertHelper.IsSuccess(lResult);
         }
 
         [Test]
@@ -101,7 +101,7 @@ namespace Azuria.Test.UcpTests
         public async Task CommentVotesTest()
         {
             IProxerResult<IEnumerable<CommentVote>> lResult = await this._controlPanel.CommentVotes;
-            Assert.IsTrue(lResult.Success, JsonConvert.SerializeObject(lResult.Exceptions));
+            AssertHelper.IsSuccess(lResult);
             Assert.IsNotNull(lResult.Result);
             Assert.AreEqual(2, lResult.Result.Count());
             Assert.IsTrue(lResult.Result.All(vote => vote.CommentId != default(int)));
@@ -128,7 +128,7 @@ namespace Azuria.Test.UcpTests
                 () => this._controlPanel.DeleteBookmark(-1).ThrowFirstForNonSuccess());
 
             IProxerResult lResult = await this._controlPanel.DeleteBookmark(1);
-            Assert.IsTrue(lResult.Success, JsonConvert.SerializeObject(lResult.Exceptions));
+            AssertHelper.IsSuccess(lResult);
         }
 
         [Test]
@@ -138,7 +138,7 @@ namespace Azuria.Test.UcpTests
                 () => this._controlPanel.DeleteCommentVote(-1).ThrowFirstForNonSuccess());
 
             IProxerResult lResult = await this._controlPanel.DeleteCommentVote(1);
-            Assert.IsTrue(lResult.Success, JsonConvert.SerializeObject(lResult.Exceptions));
+            AssertHelper.IsSuccess(lResult);
         }
 
         [Test]
@@ -148,7 +148,7 @@ namespace Azuria.Test.UcpTests
                 () => this._controlPanel.DeleteTopten(-1).ThrowFirstForNonSuccess());
 
             IProxerResult lResult = await this._controlPanel.DeleteTopten(1);
-            Assert.IsTrue(lResult.Success, JsonConvert.SerializeObject(lResult.Exceptions));
+            AssertHelper.IsSuccess(lResult);
         }
 
         [Test]
@@ -170,11 +170,11 @@ namespace Azuria.Test.UcpTests
         public async Task PointsTest()
         {
             IProxerResult<int> lAnimeResult = await this._controlPanel.PointsAnime;
-            Assert.IsTrue(lAnimeResult.Success, JsonConvert.SerializeObject(lAnimeResult.Exceptions));
+            AssertHelper.IsSuccess(lAnimeResult);
             Assert.AreEqual(3330, lAnimeResult.Result);
 
             IProxerResult<int> lMangaResult = await this._controlPanel.PointsManga;
-            Assert.IsTrue(lMangaResult.Success, JsonConvert.SerializeObject(lMangaResult.Exceptions));
+            AssertHelper.IsSuccess(lMangaResult);
             Assert.AreEqual(1053, lMangaResult.Result);
         }
 
@@ -182,7 +182,7 @@ namespace Azuria.Test.UcpTests
         public async Task ToptenAnimeTest()
         {
             IProxerResult<IEnumerable<ToptenObject<Anime>>> lResult = await this._controlPanel.ToptenAnime;
-            Assert.IsTrue(lResult.Success, JsonConvert.SerializeObject(lResult.Exceptions));
+            AssertHelper.IsSuccess(lResult);
             Assert.IsNotNull(lResult.Result);
             Assert.AreEqual(1, lResult.Result.Count());
             Assert.IsTrue(lResult.Result.All(o => o.ToptenId != default(int)));
@@ -199,7 +199,7 @@ namespace Azuria.Test.UcpTests
         public async Task ToptenMangaTest()
         {
             IProxerResult<IEnumerable<ToptenObject<Manga>>> lResult = await this._controlPanel.ToptenManga;
-            Assert.IsTrue(lResult.Success, JsonConvert.SerializeObject(lResult.Exceptions));
+            AssertHelper.IsSuccess(lResult);
             Assert.IsNotNull(lResult.Result);
             Assert.AreEqual(1, lResult.Result.Count());
             Assert.IsTrue(lResult.Result.All(o => o.ToptenId != default(int)));

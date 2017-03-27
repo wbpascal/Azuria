@@ -22,7 +22,7 @@ namespace Azuria.Api.v1.Converters
             switch (lValue)
             {
                 case "streaming":
-                    return IndustryType.StreamPartner;
+                    return IndustryType.Streaming;
                 case "record_label":
                     return IndustryType.RecordLabel;
                 case "talent_agent":
