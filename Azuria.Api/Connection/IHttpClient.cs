@@ -16,7 +16,7 @@ namespace Azuria.Api.Connection
         /// <param name="url"></param>
         /// <param name="headers"></param>
         /// <returns></returns>
-        Task<IProxerResult<string>> GetRequest(Uri url, Dictionary<string, string> headers = null);
+        Task<IProxerResult<string>> GetRequestAsync(Uri url, Dictionary<string, string> headers = null);
 
         /// <summary>
         /// </summary>
@@ -24,7 +24,7 @@ namespace Azuria.Api.Connection
         /// <param name="postArgs"></param>
         /// <param name="headers"></param>
         /// <returns></returns>
-        Task<IProxerResult<string>> PostRequest(Uri url, IEnumerable<KeyValuePair<string, string>> postArgs,
+        Task<IProxerResult<string>> PostRequestAsync(Uri url, IEnumerable<KeyValuePair<string, string>> postArgs,
             Dictionary<string, string> headers = null);
 
         #endregion

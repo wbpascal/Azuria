@@ -55,14 +55,14 @@ namespace Azuria.Api.Connection
         /// <param name="url"></param>
         /// <param name="headers"></param>
         /// <returns></returns>
-        public virtual async Task<IProxerResult<string>> GetRequest(Uri url, Dictionary<string, string> headers = null)
+        public virtual async Task<IProxerResult<string>> GetRequestAsync(Uri url, Dictionary<string, string> headers = null)
         {
             string lResponse;
 
             HttpResponseMessage lResponseObject;
             try
             {
-                lResponseObject = await this.GetWebRequest(url, headers).ConfigureAwait(false);
+                lResponseObject = await this.GetWebRequestAsync(url, headers).ConfigureAwait(false);
             }
             catch (Exception ex)
             {
@@ -84,7 +84,7 @@ namespace Azuria.Api.Connection
                 : new ProxerResult<string>(lResponse);
         }
 
-        private async Task<HttpResponseMessage> GetWebRequest(Uri url, Dictionary<string, string> headers)
+        private async Task<HttpResponseMessage> GetWebRequestAsync(Uri url, Dictionary<string, string> headers)
         {
             this.User?.UsedCookies();
             this._client.DefaultRequestHeaders.Clear();
@@ -102,7 +102,7 @@ namespace Azuria.Api.Connection
         /// <param name="postArgs"></param>
         /// <param name="headers"></param>
         /// <returns></returns>
-        public virtual async Task<IProxerResult<string>> PostRequest(Uri url,
+        public virtual async Task<IProxerResult<string>> PostRequestAsync(Uri url,
             IEnumerable<KeyValuePair<string, string>> postArgs, Dictionary<string, string> headers = null)
         {
             string lResponse;
@@ -110,7 +110,7 @@ namespace Azuria.Api.Connection
             HttpResponseMessage lResponseObject;
             try
             {
-                lResponseObject = await this.PostWebRequest(url, postArgs, headers).ConfigureAwait(false);
+                lResponseObject = await this.PostWebRequestAsync(url, postArgs, headers).ConfigureAwait(false);
             }
             catch (Exception ex)
             {
@@ -131,7 +131,7 @@ namespace Azuria.Api.Connection
                 : new ProxerResult<string>(lResponseString);
         }
 
-        private async Task<HttpResponseMessage> PostWebRequest(Uri url,
+        private async Task<HttpResponseMessage> PostWebRequestAsync(Uri url,
             IEnumerable<KeyValuePair<string, string>> postArgs, Dictionary<string, string> headers)
         {
             this.User?.UsedCookies();

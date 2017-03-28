@@ -25,17 +25,16 @@ namespace Azuria.Api.v1
         /// <param name="forceTokenLogin"></param>
         /// <typeparam name="T"></typeparam>
         /// <returns></returns>
-        public static async Task<ProxerApiResponse<T>> ApiRequest<T>(ApiRequest<T> request,
+        public static async Task<ProxerApiResponse<T>> ApiRequestAsync<T>(this ApiRequest<T> request,
             bool forceTokenLogin = false)
         {
             IEnumerable<JsonConverter> lDataConverter = request.CustomDataConverter == null
                 ? new JsonConverter[0]
                 : new[] {request.CustomDataConverter};
 
-            IProxerResult lResult = await ApiRequestInternal<ProxerApiResponse<T>>(
-                    request, forceTokenLogin, new JsonSerializerSettings {Converters = lDataConverter.ToList()}
-                )
-                .ConfigureAwait(false);
+            IProxerResult lResult = await ApiRequestInternalAsync<ProxerApiResponse<T>>(
+                request, forceTokenLogin, new JsonSerializerSettings {Converters = lDataConverter.ToList()}
+            ).ConfigureAwait(false);
 
             return lResult.Success && lResult is ProxerApiResponse<T>
                 ? lResult as ProxerApiResponse<T>
@@ -47,9 +46,10 @@ namespace Azuria.Api.v1
         /// <param name="request"></param>
         /// <param name="forceTokenLogin"></param>
         /// <returns></returns>
-        public static async Task<ProxerApiResponse> ApiRequest(ApiRequest request, bool forceTokenLogin = false)
+        public static async Task<ProxerApiResponse> ApiRequestAsync(this ApiRequest request, 
+            bool forceTokenLogin = false)
         {
-            IProxerResult lResult = await ApiRequestInternal<ProxerApiResponse>(request, forceTokenLogin)
+            IProxerResult lResult = await ApiRequestInternalAsync<ProxerApiResponse>(request, forceTokenLogin)
                 .ConfigureAwait(false);
 
             return lResult.Success && lResult is ProxerApiResponse
@@ -57,33 +57,32 @@ namespace Azuria.Api.v1
                 : new ProxerApiResponse(lResult.Exceptions);
         }
 
-        private static async Task<IProxerResult> ApiRequestInternal<T>(ApiRequest request, bool useLoginToken = false, 
-            JsonSerializerSettings settings = null) where T : ProxerApiResponse
+        private static async Task<IProxerResult> ApiRequestInternalAsync<T>(ApiRequest request, 
+            bool useLoginToken = false, JsonSerializerSettings settings = null) where T : ProxerApiResponse
         {
             if (request.CheckLogin && (request.User == null || !request.User.IsProbablyLoggedIn))
                 return new ProxerResult(new[] {new NotLoggedInException(request.User)});
 
-            IProxerResult<string> lResult = await HttpClientService.GetForUser(request.User).ProxerRequest(
-                    request.FullAddress, request.PostArguments, GetHeaders(request, useLoginToken)
-                )
-                .ConfigureAwait(false);
+            IProxerResult<string> lResult = await HttpClientService.GetForUser(request.User).ProxerRequestAsync(
+                request.FullAddress, request.PostArguments, GetHeaders(request, useLoginToken)
+            ).ConfigureAwait(false);
             if (!lResult.Success || string.IsNullOrEmpty(lResult.Result))
                 return new ProxerResult(lResult.Exceptions);
 
             try
             {
                 T lApiResponse = await Task<T>.Factory.StartNew(() =>
-                        JsonConvert.DeserializeObject<T>(
-                            WebUtility.HtmlDecode(lResult.Result), settings ?? new JsonSerializerSettings())
+                    JsonConvert.DeserializeObject<T>(
+                        WebUtility.HtmlDecode(lResult.Result), settings ?? new JsonSerializerSettings()
                     )
-                    .ConfigureAwait(false);
+                ).ConfigureAwait(false);
 
                 if (lApiResponse.Success) return lApiResponse;
 
                 Exception lException = HandleErrorCode(lApiResponse.ErrorCode, request);
                 if (lException == null) return new ProxerResult(new ProxerApiException(lApiResponse.ErrorCode));
                 if (lException is NotLoggedInException && !useLoginToken)
-                    return await ApiRequestInternal<T>(request, true, settings).ConfigureAwait(false);
+                    return await ApiRequestInternalAsync<T>(request, true, settings).ConfigureAwait(false);
 
                 return new ProxerResult(lException);
             }
@@ -133,13 +132,14 @@ namespace Azuria.Api.v1
             _apiKey = apiKey;
         }
 
-        private static Task<IProxerResult<string>> ProxerRequest(this IHttpClient httpClient, Uri url,
+        private static Task<IProxerResult<string>> ProxerRequestAsync(this IHttpClient httpClient, Uri url,
             IEnumerable<KeyValuePair<string, string>> postArgs, Dictionary<string, string> headers)
         {
-            KeyValuePair<string, string>[] lPostArgs = postArgs as KeyValuePair<string, string>[] ?? postArgs.ToArray();
+            KeyValuePair<string, string>[] lPostArgs = 
+                postArgs as KeyValuePair<string, string>[] ?? postArgs.ToArray();
             return lPostArgs.Any()
-                ? httpClient.PostRequest(url, lPostArgs, headers)
-                : httpClient.GetRequest(url, headers);
+                ? httpClient.PostRequestAsync(url, lPostArgs, headers)
+                : httpClient.GetRequestAsync(url, headers);
         }
 
         #endregion

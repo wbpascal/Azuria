@@ -4,19 +4,20 @@ using System.Collections.Specialized;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
-using Azuria.ErrorHandling;
+using Azuria.Api;
+using Azuria.Api.Connection;
+using Azuria.Api.ErrorHandling;
 using Azuria.Test.Core.Utility;
-using Azuria.Web;
 
 namespace Azuria.Test.Core
 {
     public class TestingHttpClient : IHttpClient
     {
-        private readonly Senpai _senpai;
+        private readonly IProxerUser _user;
 
-        public TestingHttpClient(Senpai senpai)
+        public TestingHttpClient(IProxerUser user)
         {
-            this._senpai = senpai;
+            this._user = user;
         }
 
         #region Methods
@@ -27,19 +28,18 @@ namespace Azuria.Test.Core
         }
 
         /// <inheritdoc />
-        public async Task<IProxerResult<string>> GetRequest(Uri url, Dictionary<string, string> headers = null)
+        public async Task<IProxerResult<string>> GetRequestAsync(Uri url, Dictionary<string, string> headers = null)
         {
             return await Task.Factory.StartNew(() =>
-                    this.GetResponse(url, RequestMethod.Get, new Dictionary<string, string>(), headers))
-                .ConfigureAwait(false);
+                this.GetResponse(url, RequestMethod.Get, new Dictionary<string, string>(), headers)
+            ).ConfigureAwait(false);
         }
 
         private IProxerResult<string> GetResponse(Uri url, RequestMethod method,
-            IEnumerable<KeyValuePair<string, string>> postArgs,
-            Dictionary<string, string> headers = null)
+            IEnumerable<KeyValuePair<string, string>> postArgs, Dictionary<string, string> headers = null)
         {
-            IEnumerable<KeyValuePair<string, string>> postArgsArray = postArgs as KeyValuePair<string, string>[] ??
-                postArgs.ToArray();
+            IEnumerable<KeyValuePair<string, string>> postArgsArray =
+                postArgs as KeyValuePair<string, string>[] ?? postArgs.ToArray();
             if (!ServerResponse.ServerResponses.Any()) ResponseSetup.InitRequests();
 
             NameValueCollection lQueryParams = HttpUtility.ParseQueryString(url.Query);
@@ -56,12 +56,12 @@ namespace Azuria.Test.Core
                     .Where(request => lQueryParams.All((key, value) =>
                         request.QueryParams.ContainsKey(key) &&
                         request.QueryParams[key].Equals(value)))
-                    .Where(request => !request.ContainsSenpai || this._senpai != null)
+                    .Where(request => !request.ContainsSenpai || this._user != null)
                     .Where(request => postArgsArray.All(request.PostArguments.Contains) &&
                         request.PostArguments.All(postArgsArray.Contains))
                     .Where(request => headers == null || request.Headers.All(headers.Contains))
                     .Where(request => request.IsLoggedIn == null ||
-                        this._senpai.IsProbablyLoggedIn == request.IsLoggedIn.Value);
+                        this._user.IsProbablyLoggedIn == request.IsLoggedIn.Value);
 
                 if (lMatchingRequests.Any())
                     return new ProxerResult<string>(response.Response);
@@ -71,10 +71,13 @@ namespace Azuria.Test.Core
         }
 
         /// <inheritdoc />
-        public async Task<IProxerResult<string>> PostRequest(Uri url, IEnumerable<KeyValuePair<string, string>> postArgs,
+        public async Task<IProxerResult<string>> PostRequestAsync(Uri url,
+            IEnumerable<KeyValuePair<string, string>> postArgs,
             Dictionary<string, string> headers = null)
         {
-            return await Task.Factory.StartNew(() => this.GetResponse(url, RequestMethod.Post, postArgs, headers));
+            return await Task.Factory.StartNew(() =>
+                this.GetResponse(url, RequestMethod.Post, postArgs, headers)
+            ).ConfigureAwait(false);
         }
 
         #endregion
