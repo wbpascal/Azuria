@@ -30,6 +30,15 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Appveyor|AnyCPU'">
+    <OutputPath>bin\Appveyor\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -45,9 +54,9 @@
     <Compile Include="Utility\NameValueCollectionExtensions.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Azuria\Azuria.csproj">
-      <Project>{841dc1a7-9140-47e5-b13b-e4c57cfe6496}</Project>
-      <Name>Azuria</Name>
+    <ProjectReference Include="..\..\Azuria.Api\Azuria.Api.csproj">
+      <Project>{1f6adb05-7f7d-4c9e-bd2b-1555b4fed21a}</Project>
+      <Name>Azuria.Api</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

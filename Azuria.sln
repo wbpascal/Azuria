@@ -3,13 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.26228.9
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Azuria", "Azuria\Azuria.csproj", "{841DC1A7-9140-47E5-B13B-E4C57CFE6496}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Azuria.Portable", "Azuria.Portable\Azuria.Portable.csproj", "{5E392DE1-F823-4225-AE34-21FD6430D4DA}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Test", "Test", "{72F318C3-1B16-4B7F-8223-81AAF151D41C}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Azuria.Test", "Test\Azuria.Test\Azuria.Test.csproj", "{FA01BF31-B728-4FDE-A2D9-E8C33B94D674}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Azuria.Test.Core", "Test\Azuria.Test.Core\Azuria.Test.Core.csproj", "{FB2B7478-3B5D-4746-BEFA-20AEBEAA6FF1}"
 EndProject
@@ -22,22 +16,8 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{841DC1A7-9140-47E5-B13B-E4C57CFE6496}.Appveyor|Any CPU.ActiveCfg = Release|Any CPU
-		{841DC1A7-9140-47E5-B13B-E4C57CFE6496}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{841DC1A7-9140-47E5-B13B-E4C57CFE6496}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{841DC1A7-9140-47E5-B13B-E4C57CFE6496}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{841DC1A7-9140-47E5-B13B-E4C57CFE6496}.Release|Any CPU.Build.0 = Release|Any CPU
-		{5E392DE1-F823-4225-AE34-21FD6430D4DA}.Appveyor|Any CPU.ActiveCfg = Release|Any CPU
-		{5E392DE1-F823-4225-AE34-21FD6430D4DA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{5E392DE1-F823-4225-AE34-21FD6430D4DA}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{5E392DE1-F823-4225-AE34-21FD6430D4DA}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{5E392DE1-F823-4225-AE34-21FD6430D4DA}.Release|Any CPU.Build.0 = Release|Any CPU
-		{FA01BF31-B728-4FDE-A2D9-E8C33B94D674}.Appveyor|Any CPU.ActiveCfg = Release|Any CPU
-		{FA01BF31-B728-4FDE-A2D9-E8C33B94D674}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{FA01BF31-B728-4FDE-A2D9-E8C33B94D674}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{FA01BF31-B728-4FDE-A2D9-E8C33B94D674}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{FA01BF31-B728-4FDE-A2D9-E8C33B94D674}.Release|Any CPU.Build.0 = Release|Any CPU
-		{FB2B7478-3B5D-4746-BEFA-20AEBEAA6FF1}.Appveyor|Any CPU.ActiveCfg = Release|Any CPU
+		{FB2B7478-3B5D-4746-BEFA-20AEBEAA6FF1}.Appveyor|Any CPU.ActiveCfg = Appveyor|Any CPU
+		{FB2B7478-3B5D-4746-BEFA-20AEBEAA6FF1}.Appveyor|Any CPU.Build.0 = Appveyor|Any CPU
 		{FB2B7478-3B5D-4746-BEFA-20AEBEAA6FF1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{FB2B7478-3B5D-4746-BEFA-20AEBEAA6FF1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FB2B7478-3B5D-4746-BEFA-20AEBEAA6FF1}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -53,7 +33,6 @@ Global
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
-		{FA01BF31-B728-4FDE-A2D9-E8C33B94D674} = {72F318C3-1B16-4B7F-8223-81AAF151D41C}
 		{FB2B7478-3B5D-4746-BEFA-20AEBEAA6FF1} = {72F318C3-1B16-4B7F-8223-81AAF151D41C}
 	EndGlobalSection
 EndGlobal
