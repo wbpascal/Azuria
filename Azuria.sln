@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.26206.0
+VisualStudioVersion = 15.0.26228.9
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Azuria", "Azuria\Azuria.csproj", "{841DC1A7-9140-47E5-B13B-E4C57CFE6496}"
 EndProject
@@ -13,28 +13,41 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Azuria.Test", "Test\Azuria.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Azuria.Test.Core", "Test\Azuria.Test.Core\Azuria.Test.Core.csproj", "{FB2B7478-3B5D-4746-BEFA-20AEBEAA6FF1}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Azuria.Api", "Azuria.Api\Azuria.Api.csproj", "{1F6ADB05-7F7D-4C9E-BD2B-1555B4FED21A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Appveyor|Any CPU = Appveyor|Any CPU
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{841DC1A7-9140-47E5-B13B-E4C57CFE6496}.Appveyor|Any CPU.ActiveCfg = Release|Any CPU
 		{841DC1A7-9140-47E5-B13B-E4C57CFE6496}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{841DC1A7-9140-47E5-B13B-E4C57CFE6496}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{841DC1A7-9140-47E5-B13B-E4C57CFE6496}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{841DC1A7-9140-47E5-B13B-E4C57CFE6496}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5E392DE1-F823-4225-AE34-21FD6430D4DA}.Appveyor|Any CPU.ActiveCfg = Release|Any CPU
 		{5E392DE1-F823-4225-AE34-21FD6430D4DA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{5E392DE1-F823-4225-AE34-21FD6430D4DA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5E392DE1-F823-4225-AE34-21FD6430D4DA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5E392DE1-F823-4225-AE34-21FD6430D4DA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FA01BF31-B728-4FDE-A2D9-E8C33B94D674}.Appveyor|Any CPU.ActiveCfg = Release|Any CPU
 		{FA01BF31-B728-4FDE-A2D9-E8C33B94D674}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{FA01BF31-B728-4FDE-A2D9-E8C33B94D674}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FA01BF31-B728-4FDE-A2D9-E8C33B94D674}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FA01BF31-B728-4FDE-A2D9-E8C33B94D674}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FB2B7478-3B5D-4746-BEFA-20AEBEAA6FF1}.Appveyor|Any CPU.ActiveCfg = Release|Any CPU
 		{FB2B7478-3B5D-4746-BEFA-20AEBEAA6FF1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{FB2B7478-3B5D-4746-BEFA-20AEBEAA6FF1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FB2B7478-3B5D-4746-BEFA-20AEBEAA6FF1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FB2B7478-3B5D-4746-BEFA-20AEBEAA6FF1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1F6ADB05-7F7D-4C9E-BD2B-1555B4FED21A}.Appveyor|Any CPU.ActiveCfg = Appveyor|Any CPU
+		{1F6ADB05-7F7D-4C9E-BD2B-1555B4FED21A}.Appveyor|Any CPU.Build.0 = Appveyor|Any CPU
+		{1F6ADB05-7F7D-4C9E-BD2B-1555B4FED21A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1F6ADB05-7F7D-4C9E-BD2B-1555B4FED21A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1F6ADB05-7F7D-4C9E-BD2B-1555B4FED21A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1F6ADB05-7F7D-4C9E-BD2B-1555B4FED21A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

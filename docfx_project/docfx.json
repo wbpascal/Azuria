@@ -5,7 +5,7 @@
         {
           "cwd": "../",
           "files": [
-            "Azuria/**.csproj"
+            "Azuria.Api/**.csproj"
           ],
           "exclude": [
             "**/obj/**",

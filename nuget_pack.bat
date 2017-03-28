@@ -11,4 +11,5 @@ if /i [%arg1%]==[/pre] (
     for /f %%i in ('gitversion /output json /showvariable BuildMetaData') do set VERSION=%VERSIONPRE%.%%i
 )
 
-nuget pack Azuria.nuspec -version %VERSION%
+rem nuget pack Azuria.nuspec -version %VERSION%
+nuget pack Azuria.Api.nuspec -version %VERSION%

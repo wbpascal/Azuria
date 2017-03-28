@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -9,7 +9,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Azuria</RootNamespace>
     <AssemblyName>Azuria</AssemblyName>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.6.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />
     <UseMSBuildEngine>false</UseMSBuildEngine>
@@ -58,31 +58,6 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Api\v1\Converters\Anime\StreamPartnerConverter.cs" />
-    <Compile Include="Api\v1\Converters\DataConverter.cs" />
-    <Compile Include="Api\v1\Converters\IndustryTypeConverter.cs" />
-    <Compile Include="Api\v1\Converters\InvertBoolConverter.cs" />
-    <Compile Include="Api\v1\Converters\List\TagIdConverter.cs" />
-    <Compile Include="Api\v1\Converters\Manga\PagesConverter.cs" />
-    <Compile Include="Api\v1\DataModels\Anime\StreamDataModel.cs" />
-    <Compile Include="Api\v1\DataModels\Info\FullEntryDataModel.cs" />
-    <Compile Include="Api\v1\DataModels\List\IndustryDataModel.cs" />
-    <Compile Include="Api\v1\DataModels\List\IndustryProjectDataModel.cs" />
-    <Compile Include="Api\v1\DataModels\List\TagDataModel.cs" />
-    <Compile Include="Api\v1\DataModels\List\TranslatorDataModel.cs" />
-    <Compile Include="Api\v1\DataModels\List\TranslatorProjectDataModel.cs" />
-    <Compile Include="Api\v1\DataModels\Manga\ChapterDataModel.cs" />
-    <Compile Include="Api\v1\DataModels\Manga\PageDataModel.cs" />
-    <Compile Include="Api\v1\DataModels\Media\HeaderDataModel.cs" />
-    <Compile Include="Api\v1\RequestBuilder\AnimeRequestBuilder.cs" />
-    <Compile Include="Api\v1\RequestBuilder\InfoRequestBuilder.cs" />
-    <Compile Include="Api\v1\RequestBuilder\ListRequestBuilder.cs" />
-    <Compile Include="Api\v1\RequestBuilder\MangaRequestBuilder.cs" />
-    <Compile Include="Api\v1\RequestBuilder\MediaRequestBuilder.cs" />
-    <Compile Include="Api\v1\RequestBuilder\MessengerRequestBuilder.cs" />
-    <Compile Include="Api\v1\RequestBuilder\NotificationsRequestBuilder.cs" />
-    <Compile Include="Api\v1\RequestBuilder\UcpRequestBuilder.cs" />
-    <Compile Include="Api\v1\RequestBuilder\UserRequestBuilder.cs" />
     <Compile Include="Enumerable\PagedEnumerable.cs" />
     <Compile Include="Enumerable\RetryableEnumerator.cs" />
     <Compile Include="ErrorHandling\IProxerResult.cs" />
@@ -94,46 +69,18 @@
     <Compile Include="Info\Enumerable\TranslatorEnumerator.cs" />
     <Compile Include="Info\Enumerable\TranslatorProjectEnumerable.cs" />
     <Compile Include="Info\Enumerable\TranslatorProjectEnumerator.cs" />
-    <Compile Include="Info\TranslationStatus.cs" />
     <Compile Include="Info\TranslatorProject.cs" />
     <Compile Include="Media\Chapter.cs" />
     <Compile Include="Media\Episode.cs" />
     <Compile Include="Media\Page.cs" />
     <Compile Include="Media\Stream.cs" />
-    <Compile Include="Security\IProxerCredentials.cs" />
     <Compile Include="Media\MediaObject.cs" />
     <Compile Include="Media\Headers\HeaderHelper.cs" />
     <Compile Include="Media\Headers\HeaderInfo.cs" />
-    <Compile Include="Media\Headers\HeaderStyle.cs" />
-    <Compile Include="Info\IndustryType.cs" />
     <Compile Include="Media\Properties\MediaRating.cs" />
     <Compile Include="Media\Properties\MediaSeason.cs" />
     <Compile Include="Media\Properties\MediaSeasonInfo.cs" />
-    <Compile Include="Api\ApiConstants.cs" />
-    <Compile Include="Api\ApiInfoInput.cs" />
-    <Compile Include="Api\v1\Converters\Messenger\MessageActionConverter.cs" />
-    <Compile Include="Api\v1\Converters\Messenger\ImageConverter.cs" />
-    <Compile Include="Api\v1\Converters\Notifications\NotificationCountConverter.cs" />
-    <Compile Include="Api\v1\Converters\Ucp\CustomDateTimeConverter.cs" />
-    <Compile Include="Api\v1\DataModels\IEntryInfoDataModel.cs" />
-    <Compile Include="Api\v1\DataModels\Messenger\ConferenceDataModel.cs" />
-    <Compile Include="Api\v1\DataModels\Messenger\ConferenceInfoDataModel.cs" />
-    <Compile Include="Api\v1\DataModels\Messenger\ConferenceInfoMainDataModel.cs" />
-    <Compile Include="Api\v1\DataModels\Messenger\ConferenceInfoParticipantDataModel.cs" />
-    <Compile Include="Api\v1\DataModels\Messenger\MessageDataModel.cs" />
-    <Compile Include="Api\v1\DataModels\Notifications\NewsNotificationDataModel.cs" />
-    <Compile Include="Api\v1\DataModels\Notifications\NotificationCountDataModel.cs" />
-    <Compile Include="Api\v1\DataModels\List\SearchDataModel.cs" />
-    <Compile Include="Api\v1\DataModels\Ucp\BookmarkDataModel.cs" />
-    <Compile Include="Api\v1\DataModels\Ucp\HistoryDataModel.cs" />
-    <Compile Include="Api\v1\DataModels\Ucp\ToptenDataModel.cs" />
-    <Compile Include="Api\v1\DataModels\Ucp\VoteDataModel.cs" />
-    <Compile Include="Api\v1\DataModels\User\ListDataModel.cs" />
     <Compile Include="Community\ConferenceInfo.cs" />
-    <Compile Include="Community\ConferenceListType.cs" />
-    <Compile Include="Community\MessageAction.cs" />
-    <Compile Include="Exceptions\ApiNotInitialisedException.cs" />
-    <Compile Include="Exceptions\NotInitialisedException.cs" />
     <Compile Include="Notifications\NotificationCount.cs" />
     <Compile Include="Notifications\NotificationManager.cs" />
     <Compile Include="Notifications\OtherMedia\OtherMediaNotification.cs" />
@@ -148,7 +95,6 @@
     <Compile Include="Search\Input\SearchResultSort.cs" />
     <Compile Include="Search\SearchHelper.cs" />
     <Compile Include="Search\SearchQueryBuilder.cs" />
-    <Compile Include="Security\ProxerCredentials.cs" />
     <Compile Include="UserInfo\Comment\IComment.cs" />
     <Compile Include="UserInfo\ControlPanel\IBookmark.cs" />
     <Compile Include="UserInfo\ControlPanel\IHistoryObject.cs" />
@@ -157,94 +103,33 @@
     <Compile Include="UserInfo\MediaProfileList.cs" />
     <Compile Include="UserInfo\ControlPanel\CommentVote.cs" />
     <Compile Include="UserInfo\ControlPanel\ToptenObject.cs" />
-    <Compile Include="Api\v1\DataModels\Messenger\ConstantsDataModel.cs" />
     <Compile Include="Utilities\CountryHelpers.cs" />
-    <Compile Include="Utilities\Extensions\ProxerResultExtensions.cs" />
     <Compile Include="Enumerable\PagedEnumerator.cs" />
     <Compile Include="Utilities\IndustryHelpers.cs" />
     <Compile Include="Utilities\Properties\ArgumentInitialisableProperty.cs" />
     <Compile Include="Utilities\Properties\IArgumentInitialisableProperty.cs" />
-    <Compile Include="Web\IHttpClient.cs" />
     <Compile Include="UserInfo\Comment\CommentEnumerable.cs" />
     <Compile Include="UserInfo\Comment\CommentEnumerator.cs" />
-    <Compile Include="Media\Properties\Country.cs" />
-    <Compile Include="Media\Properties\GenreHelper.cs" />
-    <Compile Include="Media\Properties\Genre.cs" />
-    <Compile Include="Media\Properties\MangaMedium.cs" />
-    <Compile Include="Media\Properties\Season.cs" />
-    <Compile Include="Media\Properties\StreamHoster.cs" />
     <Compile Include="Media\Properties\Tag.cs" />
     <Compile Include="Media\Properties\TagType.cs" />
-    <Compile Include="Api\ApiInfo.cs" />
-    <Compile Include="Api\v1\ApiRequest.cs" />
-    <Compile Include="Api\v1\Converters\LanguageConverter.cs" />
-    <Compile Include="Api\v1\Converters\LanguageCommaCollectionConverter.cs" />
-    <Compile Include="Api\v1\Converters\Info\StreamHosterConverter.cs" />
-    <Compile Include="Api\v1\Converters\IntToBoolConverter.cs" />
-    <Compile Include="Api\v1\Converters\SubRatingsConverter.cs" />
-    <Compile Include="Api\v1\DataModels\Info\MediaContentDataModel.cs" />
-    <Compile Include="Api\v1\DataModels\CommentDataModel.cs" />
-    <Compile Include="Api\v1\DataModels\Info\ListInfoDataModel.cs" />
-    <Compile Include="Api\v1\Converters\Info\LanguageCollectionConverter.cs" />
-    <Compile Include="Api\v1\Converters\MediumConverter.cs" />
-    <Compile Include="Api\v1\Converters\CategoryConverter.cs" />
-    <Compile Include="Api\v1\Converters\FskConverter.cs" />
-    <Compile Include="Api\v1\Converters\GenreConverter.cs" />
-    <Compile Include="Api\v1\Converters\Info\IsLicensedConverter.cs" />
-    <Compile Include="Api\v1\Converters\Info\NameTypeConverter.cs" />
-    <Compile Include="Api\v1\Converters\CountryConverter.cs" />
-    <Compile Include="Api\v1\Converters\UnixToDateTimeConverter.cs" />
-    <Compile Include="Api\v1\DataModels\Info\EntryDataModel.cs" />
-    <Compile Include="Api\v1\DataModels\Info\TranslatorDataModel.cs" />
-    <Compile Include="Api\v1\DataModels\Info\NameDataModel.cs" />
-    <Compile Include="Api\v1\DataModels\Info\PublisherDataModel.cs" />
-    <Compile Include="Api\v1\DataModels\Info\RelationDataModel.cs" />
-    <Compile Include="Api\v1\DataModels\Info\SeasonDataModel.cs" />
-    <Compile Include="Api\v1\DataModels\Info\MediaTagDataModel.cs" />
-    <Compile Include="Api\v1\DataModels\User\ToptenDataModel.cs" />
-    <Compile Include="Api\v1\DataModels\User\UserInfoDataModel.cs" />
-    <Compile Include="Api\v1\Enums\MediaEntryType.cs" />
-    <Compile Include="Media\Properties\MediaLanguage.cs" />
     <Compile Include="Search\Input\MediaMedium.cs" />
-    <Compile Include="Api\v1\Enums\MediaNameType.cs" />
-    <Compile Include="Api\v1\RequestHandler.cs" />
     <Compile Include="Community\Conference.cs" />
     <Compile Include="Community\Message.cs" />
     <Compile Include="Community\MessageEnumerable.cs" />
     <Compile Include="Community\MessageEnumerator.cs" />
-    <Compile Include="Exceptions\ApiKeyInsufficientException.cs" />
-    <Compile Include="Exceptions\CaptchaException.cs" />
-    <Compile Include="Exceptions\CloudflareException.cs" />
-    <Compile Include="Security\ISecureContainer.cs" />
-    <Compile Include="Security\SecureStringContainer.cs" />
     <Compile Include="UserInfo\ControlPanel\HistoryObject.cs" />
     <Compile Include="UserInfo\ControlPanel\BookmarkEnumerable.cs" />
     <Compile Include="UserInfo\ControlPanel\BookmarkEnumerator.cs" />
     <Compile Include="UserInfo\ControlPanel\HistoryEnumerable.cs" />
     <Compile Include="UserInfo\ControlPanel\HistoryEnumerator.cs" />
-    <Compile Include="Utilities\Extensions\DictionaryExtensions.cs" />
-    <Compile Include="Exceptions\FirewallException.cs" />
-    <Compile Include="Exceptions\InvalidUserException.cs" />
-    <Compile Include="Exceptions\LanguageNotAvailableException.cs" />
-    <Compile Include="Exceptions\NoAccessException.cs" />
-    <Compile Include="Exceptions\NotLoggedInException.cs" />
-    <Compile Include="Exceptions\ProxerApiException.cs" />
-    <Compile Include="Exceptions\AlreadyLoggedInException.cs" />
-    <Compile Include="Exceptions\WrongResponseException.cs" />
     <Compile Include="Media\Anime.cs" />
-    <Compile Include="Media\Properties\MediaStatus.cs" />
     <Compile Include="Media\IMediaContent.cs" />
     <Compile Include="Media\IMediaObject.cs" />
     <Compile Include="Media\Manga.cs" />
-    <Compile Include="Media\Properties\AnimeLanguage.cs" />
-    <Compile Include="Media\Properties\AnimeMedium.cs" />
     <Compile Include="Search\SearchResultEnumerator.cs" />
     <Compile Include="UserInfo\Comment\Comment.cs" />
-    <Compile Include="Media\Properties\Fsk.cs" />
-    <Compile Include="Media\Properties\FskHelper.cs" />
     <Compile Include="Info\Translator.cs" />
     <Compile Include="Info\Industry.cs" />
-    <Compile Include="Media\Properties\Language.cs" />
     <Compile Include="Search\SearchResultEnumerable.cs" />
     <Compile Include="UserInfo\MediaProgressState.cs" />
     <Compile Include="UserInfo\Comment\RatingCategory.cs" />
@@ -268,16 +153,8 @@
     <Compile Include="UserInfo\UserPoints.cs" />
     <Compile Include="UserInfo\UserProfileEntry.cs" />
     <Compile Include="UserInfo\UserStatus.cs" />
-    <Compile Include="Utilities\Extensions\ListExtensions.cs" />
-    <Compile Include="Utilities\Extensions\SecureStringExtensions.cs" />
-    <Compile Include="Utilities\Extensions\StringExtensions.cs" />
     <Compile Include="Utilities\Properties\IInitialisableProperty.cs" />
     <Compile Include="Utilities\Properties\InitialisableProperty.cs" />
-    <Compile Include="Api\v1\DataModels\User\LoginDataModel.cs" />
-    <Compile Include="Api\v1\ErrorCode.cs" />
-    <Compile Include="Api\v1\DataModels\IDataModel.cs" />
-    <Compile Include="Api\v1\ProxerApiResponse.cs" />
-    <Compile Include="Web\HttpClient.cs" />
     <Compile Include="ErrorHandling\ProxerResult.cs" />
     <Compile Include="Utilities\Utility.cs" />
   </ItemGroup>
@@ -285,7 +162,12 @@
     <None Include="app.config" />
     <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <ProjectReference Include="..\Azuria.Api\Azuria.Api.csproj">
+      <Project>{1f6adb05-7f7d-4c9e-bd2b-1555b4fed21a}</Project>
+      <Name>Azuria.Api</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

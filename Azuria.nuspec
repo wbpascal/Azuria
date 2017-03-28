@@ -10,7 +10,7 @@
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>An unofficial api for the german anime and manga community Proxer.Me.</description>
     <releaseNotes></releaseNotes>
-    <copyright>Copyright InfiniteSoul 2016</copyright>
+    <copyright>Copyright InfiniteSoul 2017</copyright>
     <tags>proxer proxer.me</tags>
     <dependencies>
       <group targetFramework="netstandard1.0">

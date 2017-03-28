@@ -21,7 +21,7 @@ after_build:
 on_success:
   - appveyor_push.bat
 
-configuration: Release
+configuration: Appveyor
 
 build:
   project: Azuria.sln
