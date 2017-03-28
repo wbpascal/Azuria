@@ -2,9 +2,8 @@
 using System.Collections.Generic;
 using Azuria.Api.Enums;
 using Azuria.Api.Enums.Info;
+using Azuria.Api.Enums.User;
 using Azuria.Api.v1.Converters;
-using Azuria.UserInfo;
-using Azuria.UserInfo.Comment;
 using Newtonsoft.Json;
 
 namespace Azuria.Api.v1.DataModels.User

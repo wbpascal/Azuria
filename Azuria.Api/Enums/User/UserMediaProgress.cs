@@ -1,4 +1,4 @@
-﻿namespace Azuria.UserInfo
+﻿namespace Azuria.Api.Enums.User
 {
     /// <summary>
     /// Represents the category a user has categorised his progress of an anime or manga in.

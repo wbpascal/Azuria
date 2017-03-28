@@ -1,7 +1,7 @@
-﻿namespace Azuria.UserInfo.Comment
+﻿namespace Azuria.Api.Enums.User
 {
     /// <summary>
-    /// Represents a category in which the user gave a rating in his <see cref="Comment" />.
+    /// Represents a category in which the user gave a rating in his comment.
     /// </summary>
     public enum RatingCategory
     {
