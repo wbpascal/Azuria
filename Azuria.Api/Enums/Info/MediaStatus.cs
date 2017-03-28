@@ -1,7 +1,7 @@
 ﻿namespace Azuria.Api.Enums.Info
 {
     /// <summary>
-    /// Represents the airing status of an <see cref="Anime" /> or <see cref="Manga" />.
+    /// Represents the airing status of an anime or manga.
     /// </summary>
     public enum MediaStatus
     {

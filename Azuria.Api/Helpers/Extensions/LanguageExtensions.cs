@@ -1,12 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using Azuria.Api.Enums.Info;
+﻿using Azuria.Api.Enums.Info;
 
 namespace Azuria.Api.Helpers.Extensions
 {
     internal static class LanguageExtensions
     {
+        #region Methods
+
         internal static string ToShortString(this Language language)
         {
             switch (language)
@@ -19,5 +18,7 @@ namespace Azuria.Api.Helpers.Extensions
                     return string.Empty;
             }
         }
+
+        #endregion
     }
 }

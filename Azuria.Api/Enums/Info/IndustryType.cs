@@ -4,7 +4,7 @@
 namespace Azuria.Api.Enums.Info
 {
     /// <summary>
-    /// Represents an enumeration which describes the type of the <see cref="Industry" />.
+    /// Represents an enumeration which describes the type of the industry.
     /// </summary>
     public enum IndustryType
     {

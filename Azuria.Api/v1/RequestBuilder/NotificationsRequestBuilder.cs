@@ -59,7 +59,8 @@ namespace Azuria.Api.v1.RequestBuilder
         /// <param name="limit">Optional. The amount of news that will be returned per page. Default: 15</param>
         /// <param name="page">Optional. The index of the page that will be loaded. Default: 0</param>
         /// <returns>An instance of <see cref="ApiRequest" /> that returns an array of news.</returns>
-        public static ApiRequest<NewsNotificationDataModel[]> GetNews(IProxerUser user = null, int page = 0, int limit = 15)
+        public static ApiRequest<NewsNotificationDataModel[]> GetNews(IProxerUser user = null, int page = 0,
+            int limit = 15)
         {
             return ApiRequest<NewsNotificationDataModel[]>.Create(new Uri($"{ApiConstants.ApiUrlV1}/notifications/news"))
                 .WithGetParameter("p", page.ToString())

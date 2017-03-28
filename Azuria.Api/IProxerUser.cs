@@ -1,13 +1,31 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Azuria.Api
+﻿namespace Azuria.Api
 {
+    /// <summary>
+    /// 
+    /// </summary>
     public interface IProxerUser
     {
-        void UsedCookies();
+        #region Properties
+
+        /// <summary>
+        /// 
+        /// </summary>
         bool IsProbablyLoggedIn { get; }
+
+        /// <summary>
+        /// 
+        /// </summary>
         char[] LoginToken { get; set; }
+
+        #endregion
+
+        #region Methods
+
+        /// <summary>
+        /// 
+        /// </summary>
+        void UsedCookies();
+
+        #endregion
     }
 }

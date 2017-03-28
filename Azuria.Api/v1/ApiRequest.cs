@@ -32,13 +32,6 @@ namespace Azuria.Api.v1
             return new ApiRequest<T>(baseAddress);
         }
 
-        /// <inheritdoc />
-        public new ApiRequest<T> WithLoginCheck(bool checkLogin)
-        {
-            base.WithLoginCheck(checkLogin);
-            return this;
-        }
-
         /// <summary>
         /// </summary>
         /// <param name="customConverter"></param>
@@ -69,6 +62,13 @@ namespace Azuria.Api.v1
         public new ApiRequest<T> WithGetParameters(IDictionary<string, string> getArgs)
         {
             base.WithGetParameters(getArgs);
+            return this;
+        }
+
+        /// <inheritdoc />
+        public new ApiRequest<T> WithLoginCheck(bool checkLogin)
+        {
+            base.WithLoginCheck(checkLogin);
             return this;
         }
 
@@ -164,16 +164,6 @@ namespace Azuria.Api.v1
         }
 
         /// <summary>
-        /// </summary>
-        /// <param name="checkLogin"></param>
-        /// <returns></returns>
-        public ApiRequest WithLoginCheck(bool checkLogin)
-        {
-            this.CheckLogin = checkLogin;
-            return this;
-        }
-
-        /// <summary>
         /// 
         /// </summary>
         /// <param name="key"></param>
@@ -193,6 +183,16 @@ namespace Azuria.Api.v1
         public ApiRequest WithGetParameters(IDictionary<string, string> getArgs)
         {
             this.GetParameter.AddOrUpdateRange(getArgs);
+            return this;
+        }
+
+        /// <summary>
+        /// </summary>
+        /// <param name="checkLogin"></param>
+        /// <returns></returns>
+        public ApiRequest WithLoginCheck(bool checkLogin)
+        {
+            this.CheckLogin = checkLogin;
             return this;
         }
 

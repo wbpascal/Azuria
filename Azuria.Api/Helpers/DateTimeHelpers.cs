@@ -1,11 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace Azuria.Api.Helpers
 {
     internal static class DateTimeHelpers
     {
+        #region Methods
+
         internal static DateTime UnixTimeStampToDateTime(long unixTimeStamp)
         {
             if (unixTimeStamp < 0) return DateTime.MinValue;
@@ -13,5 +13,7 @@ namespace Azuria.Api.Helpers
             dtDateTime = dtDateTime.AddSeconds(unixTimeStamp).ToLocalTime();
             return dtDateTime;
         }
+
+        #endregion
     }
 }

@@ -7,12 +7,12 @@ namespace Azuria.Api.v1.Converters
     internal class CountryConverter : JsonConverter
     {
         #region Methods
-        
+
         public override bool CanConvert(Type objectType)
         {
             return objectType == typeof(Country);
         }
-        
+
         public override object ReadJson(JsonReader reader, Type objectType, object existingValue,
             JsonSerializer serializer)
         {
@@ -29,7 +29,7 @@ namespace Azuria.Api.v1.Converters
                     return Country.Miscellaneous;
             }
         }
-        
+
         public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
         {
             throw new NotImplementedException();

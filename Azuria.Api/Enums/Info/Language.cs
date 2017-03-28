@@ -1,23 +1,23 @@
 ﻿namespace Azuria.Api.Enums.Info
 {
     /// <summary>
-    /// Represents an enumeration wich describes the language of an <see cref="Anime">Anime</see> or
-    /// <see cref="Manga">Manga</see>.
+    /// Represents an enumeration wich describes the language of an anime or
+    /// manga.
     /// </summary>
     public enum Language
     {
         /// <summary>
-        /// The language of the <see cref="Anime">Anime</see> or <see cref="Manga">Manga</see> is german.
+        /// The language of the anime or manga is german.
         /// </summary>
         German = 0,
 
         /// <summary>
-        /// The language of the <see cref="Anime">Anime</see> or <see cref="Manga">Manga</see> is english.
+        /// The language of the anime or manga is english.
         /// </summary>
         English = 1,
 
         /// <summary>
-        /// The language of the <see cref="Anime">Anime</see> or <see cref="Manga">Manga</see> is unknown.
+        /// The language of the anime or manga is unknown.
         /// </summary>
         Unkown = 6
     }

@@ -2,7 +2,7 @@
   "error": 0,
   "message": "Abfrage erfolgreich",
   "data": {
-    "tags": [ "206" ],
-    "notags": [ "175" ]
+    "tags": ["206"],
+    "notags": ["175"]
   }
 }

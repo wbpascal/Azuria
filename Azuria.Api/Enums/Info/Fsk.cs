@@ -1,58 +1,58 @@
 ﻿namespace Azuria.Api.Enums.Info
 {
     /// <summary>
-    /// Represents an enumeration which aims to help categorizing an <see cref="Anime">Anime</see> or
-    /// <see cref="Manga">Manga</see> for certain age groups. ("Freiwillige Selbstkontrolle")
+    /// Represents an enumeration which aims to help categorizing an anime or
+    /// manga for certain age groups. ("Freiwillige Selbstkontrolle")
     /// </summary>
     public enum Fsk
     {
         /// <summary>
-        /// The <see cref="Anime">Anime</see> or <see cref="Manga">Manga</see> is suitable for all age groups.
+        /// The anime or manga is suitable for all age groups.
         /// </summary>
         Fsk0,
 
         /// <summary>
-        /// The <see cref="Anime">Anime</see> or <see cref="Manga">Manga</see> is only suitable for persons of age 6 or older.
+        /// The anime or manga is only suitable for persons of age 6 or older.
         /// </summary>
         Fsk6,
 
         /// <summary>
-        /// The <see cref="Anime">Anime</see> or <see cref="Manga">Manga</see> is only suitable for persons of age 12 or older.
+        /// The anime or manga is only suitable for persons of age 12 or older.
         /// </summary>
         Fsk12,
 
         /// <summary>
-        /// The <see cref="Anime">Anime</see> or <see cref="Manga">Manga</see> is only suitable for persons of age 16 or older.
+        /// The anime or manga is only suitable for persons of age 16 or older.
         /// </summary>
         Fsk16,
 
         /// <summary>
-        /// The <see cref="Anime">Anime</see> or <see cref="Manga">Manga</see> is only suitable for persons of age 18 or older.
+        /// The anime or manga is only suitable for persons of age 18 or older.
         /// </summary>
         Fsk18,
 
         /// <summary>
-        /// The <see cref="Anime">Anime</see> or <see cref="Manga">Manga</see> contains violent language.
+        /// The anime or manga contains violent language.
         /// </summary>
         BadWords,
 
         /// <summary>
-        /// The <see cref="Anime">Anime</see> or <see cref="Manga">Manga</see> contains violence.
+        /// The anime or manga contains violence.
         /// </summary>
         Violence,
 
         /// <summary>
-        /// The <see cref="Anime">Anime</see> or <see cref="Manga">Manga</see> could invoke feelings of fear for some persons.
+        /// The anime or manga could invoke feelings of fear for some persons.
         /// </summary>
         Fear,
 
         /// <summary>
-        /// The <see cref="Anime">Anime</see> or <see cref="Manga">Manga</see> contains sexually explicit content.
+        /// The anime or manga contains sexually explicit content.
         /// </summary>
         Sex,
 
         /// <summary>
-        /// The age group of the <see cref="Anime">Anime</see> or <see cref="Manga">Manga</see> is unknown.
+        /// The age group of the anime or manga is unknown.
         /// </summary>
         Unknown
     }

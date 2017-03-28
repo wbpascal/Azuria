@@ -1,7 +1,7 @@
 ﻿namespace Azuria.Api.Enums.Info
 {
     /// <summary>
-    /// Represents an enumeration that describes the language of an <see cref="Anime" />.
+    /// Represents an enumeration that describes the language of an anime.
     /// </summary>
     public enum AnimeLanguage
     {

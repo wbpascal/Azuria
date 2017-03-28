@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Azuria.Api.Enums;
+﻿using Azuria.Api.Enums;
 using Azuria.Api.Enums.Info;
 using Azuria.Api.v1.Converters;
 using Newtonsoft.Json;
@@ -59,7 +54,7 @@ namespace Azuria.Api.v1.DataModels.List
         public MediaStatus EntryStatus { get; set; }
 
         /// <inheritdoc />
-        public MediaEntryType EntryType => (int)this.EntryMedium < 4 ? MediaEntryType.Anime : MediaEntryType.Manga;
+        public MediaEntryType EntryType => (int) this.EntryMedium < 4 ? MediaEntryType.Anime : MediaEntryType.Manga;
 
         /// <summary>
         /// 

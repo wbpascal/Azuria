@@ -1,6 +1,5 @@
 ﻿using System;
 using Azuria.Api.v1.Converters;
-using Azuria.UserInfo;
 using Newtonsoft.Json;
 
 namespace Azuria.Api.v1.DataModels.User

@@ -46,7 +46,7 @@ namespace Azuria.Api.v1
         /// <param name="request"></param>
         /// <param name="forceTokenLogin"></param>
         /// <returns></returns>
-        public static async Task<ProxerApiResponse> ApiRequestAsync(this ApiRequest request, 
+        public static async Task<ProxerApiResponse> ApiRequestAsync(this ApiRequest request,
             bool forceTokenLogin = false)
         {
             IProxerResult lResult = await ApiRequestInternalAsync<ProxerApiResponse>(request, forceTokenLogin)
@@ -57,7 +57,7 @@ namespace Azuria.Api.v1
                 : new ProxerApiResponse(lResult.Exceptions);
         }
 
-        private static async Task<IProxerResult> ApiRequestInternalAsync<T>(ApiRequest request, 
+        private static async Task<IProxerResult> ApiRequestInternalAsync<T>(ApiRequest request,
             bool useLoginToken = false, JsonSerializerSettings settings = null) where T : ProxerApiResponse
         {
             if (request.CheckLogin && (request.User == null || !request.User.IsProbablyLoggedIn))
@@ -135,7 +135,7 @@ namespace Azuria.Api.v1
         private static Task<IProxerResult<string>> ProxerRequestAsync(this IHttpClient httpClient, Uri url,
             IEnumerable<KeyValuePair<string, string>> postArgs, Dictionary<string, string> headers)
         {
-            KeyValuePair<string, string>[] lPostArgs = 
+            KeyValuePair<string, string>[] lPostArgs =
                 postArgs as KeyValuePair<string, string>[] ?? postArgs.ToArray();
             return lPostArgs.Any()
                 ? httpClient.PostRequestAsync(url, lPostArgs, headers)

@@ -14,14 +14,10 @@ namespace Azuria.Api.Connection
     /// </summary>
     public class HttpClient : IHttpClient
     {
-        protected static readonly string UserAgent = 
+        protected static readonly string UserAgent =
             "Azuria/" + VersionHelpers.GetAssemblyVersion(typeof(HttpClient));
 
         private readonly System.Net.Http.HttpClient _client;
-
-        /// <summary>
-        /// </summary>
-        protected IProxerUser User { get; }
 
         /// <summary>
         /// </summary>
@@ -40,6 +36,14 @@ namespace Azuria.Api.Connection
                 $"{UserAgent} {userAgentExtra}".TrimEnd());
         }
 
+        #region Properties
+
+        /// <summary>
+        /// </summary>
+        protected IProxerUser User { get; }
+
+        #endregion
+
         #region Methods
 
         /// <summary>
@@ -55,7 +59,8 @@ namespace Azuria.Api.Connection
         /// <param name="url"></param>
         /// <param name="headers"></param>
         /// <returns></returns>
-        public virtual async Task<IProxerResult<string>> GetRequestAsync(Uri url, Dictionary<string, string> headers = null)
+        public virtual async Task<IProxerResult<string>> GetRequestAsync(Uri url,
+            Dictionary<string, string> headers = null)
         {
             string lResponse;
 

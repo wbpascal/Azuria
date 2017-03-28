@@ -1,27 +1,27 @@
 ﻿namespace Azuria.UserInfo
 {
     /// <summary>
-    /// Represents the category a user has categorised his progress of an <see cref="Anime" /> or <see cref="Manga" /> in.
+    /// Represents the category a user has categorised his progress of an anime or manga in.
     /// </summary>
     public enum MediaProgressState
     {
         /// <summary>
-        /// The user finished the <see cref="Anime" /> or <see cref="Manga" />.
+        /// The user finished the anime or manga.
         /// </summary>
         Finished = 0,
 
         /// <summary>
-        /// The user is currently watching the <see cref="Anime" /> or <see cref="Manga" />.
+        /// The user is currently watching the anime or manga.
         /// </summary>
         InProgress = 1,
 
         /// <summary>
-        /// The user plans to see the <see cref="Anime" /> or <see cref="Manga" />.
+        /// The user plans to see the anime or manga.
         /// </summary>
         Planned = 2,
 
         /// <summary>
-        /// The user has aborted watching the <see cref="Anime" /> or <see cref="Manga" />.
+        /// The user has aborted watching the anime or manga.
         /// </summary>
         Aborted = 3,
 

@@ -1,15 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
 using Azuria.Api.Connection;
 
 namespace Azuria.Api.Services
 {
     internal static class HttpClientService
     {
-        private static readonly Dictionary<IProxerUser, IHttpClient> ClientCache = 
-            new Dictionary<IProxerUser, IHttpClient>();
         private static Func<IProxerUser, IHttpClient> _clientFactory = user => new HttpClient(user);
+
+        private static readonly Dictionary<IProxerUser, IHttpClient> ClientCache =
+            new Dictionary<IProxerUser, IHttpClient>();
+
+        #region Methods
 
         internal static IHttpClient GetForUser(IProxerUser user)
         {
@@ -22,5 +24,7 @@ namespace Azuria.Api.Services
         {
             _clientFactory = clientFactory;
         }
+
+        #endregion
     }
 }

@@ -3,7 +3,8 @@
 namespace Azuria.Api.Exceptions
 {
     /// <summary>
-    /// Represents an exception that is thrown when a request was made to which the <see cref="IProxerUser" /> has no access to.
+    /// Represents an exception that is thrown when a request was made to which the <see cref="IProxerUser" /> has no access
+    /// to.
     /// </summary>
     public class NoAccessException : Exception
     {

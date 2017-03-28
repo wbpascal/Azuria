@@ -1,6 +1,5 @@
 ﻿using Azuria.Api.Enums.Info;
 using Azuria.Api.v1.Converters;
-using Azuria.Api.v1.Converters.Info;
 using Newtonsoft.Json;
 
 namespace Azuria.Api.v1.DataModels.Info

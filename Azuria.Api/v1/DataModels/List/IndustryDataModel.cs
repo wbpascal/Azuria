@@ -23,7 +23,7 @@ namespace Azuria.Api.v1.DataModels.List
         /// 
         /// </summary>
         public Uri CoverImage => new Uri($"https://cdn.proxer.me/industry/{this.Id}.jpg");
-                                                                                          
+
 
         /// <summary>
         /// 

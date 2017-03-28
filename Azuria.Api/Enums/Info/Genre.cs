@@ -1,8 +1,8 @@
 ﻿namespace Azuria.Api.Enums.Info
 {
     /// <summary>
-    /// Represents an enumeration which contains every possible genre for an <see cref="Anime">Anime</see> or
-    /// <see cref="Manga">Manga</see>.
+    /// Represents an enumeration which contains every possible genre for an anime or
+    /// manga.
     /// </summary>
     public enum Genre
     {

@@ -1,6 +1,4 @@
 ﻿using System;
-using Azuria.Api.Connection;
-using Azuria.Api.Exceptions;
 using Azuria.Api.Services;
 using Azuria.Api.v1;
 
