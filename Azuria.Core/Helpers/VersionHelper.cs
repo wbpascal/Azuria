@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Reflection;
 
-namespace Azuria.Api.Helpers
+namespace Azuria.Core.Helpers
 {
-    internal static class VersionHelpers
+    internal static class VersionHelper
     {
         #region Methods
 

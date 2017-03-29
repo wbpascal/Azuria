@@ -1,10 +1,10 @@
 ﻿using System;
 
-namespace Azuria.Api.Exceptions
+namespace Azuria.Core.Exceptions
 {
     /// <summary>
-    /// Represents an exception that is thrown when a request was made to which the <see cref="IProxerUser" /> has no access
-    /// to.
+    /// Represents an exception that is thrown when a request was made to which the <see cref="IProxerClient" />
+    /// has no access to.
     /// </summary>
     public class NoAccessException : Exception
     {
@@ -13,15 +13,6 @@ namespace Azuria.Api.Exceptions
         /// </summary>
         public NoAccessException()
         {
-        }
-
-        /// <summary>
-        /// Initialises a new instance of the <see cref="NotLoggedInException" /> class.
-        /// </summary>
-        /// <param name="user">The user that has no access to the action.</param>
-        public NoAccessException(IProxerUser user)
-        {
-            this.User = user;
         }
 
         /// <summary>
@@ -41,14 +32,5 @@ namespace Azuria.Api.Exceptions
         public NoAccessException(string message, Exception inner) : base(message, inner)
         {
         }
-
-        #region Properties
-
-        /// <summary>
-        /// Gets the <see cref="IProxerUser" /> object which is connected to this exception.
-        /// </summary>
-        public IProxerUser User { get; set; }
-
-        #endregion
     }
 }

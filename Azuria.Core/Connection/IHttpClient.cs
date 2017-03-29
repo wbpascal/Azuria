@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using Azuria.Api.ErrorHandling;
+using Azuria.Core.ErrorHandling;
 
-namespace Azuria.Api.Connection
+namespace Azuria.Core.Connection
 {
     /// <summary>
     /// </summary>

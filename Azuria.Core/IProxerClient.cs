@@ -1,30 +1,28 @@
-﻿namespace Azuria.Api
+﻿using Autofac;
+
+namespace Azuria.Core
 {
     /// <summary>
     /// 
     /// </summary>
-    public interface IProxerUser
+    public interface IProxerClient
     {
         #region Properties
 
         /// <summary>
         /// 
         /// </summary>
-        bool IsProbablyLoggedIn { get; }
+        char[] ApiKey { get; }
 
         /// <summary>
         /// 
         /// </summary>
-        char[] LoginToken { get; set; }
-
-        #endregion
-
-        #region Methods
+        IContainer Container { get; }
 
         /// <summary>
         /// 
         /// </summary>
-        void UsedCookies();
+        bool IsAuthenticated { get; set; }
 
         #endregion
     }

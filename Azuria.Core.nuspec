@@ -1,27 +1,25 @@
 <?xml version="1.0"?>
 <package >
   <metadata>
-    <id>Azuria.Api</id>
+    <id>Azuria.Core</id>
     <version>0.6.1</version>
     <title>Azuria</title>
     <authors>InfiniteSoul</authors>
     <owners>InfiniteSoul</owners>
     <projectUrl>https://github.com/InfiniteSoul/Azuria</projectUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
-    <description>The raw api part of Azuria.</description>
+    <description>An unofficial api for the german anime and manga community Proxer.Me.</description>
     <releaseNotes></releaseNotes>
     <copyright>Copyright InfiniteSoul 2017</copyright>
     <tags>proxer proxer.me api</tags>
     <dependencies>
       <group targetFramework="netstandard1.2">
-        <dependency id="Newtonsoft.Json" version="9.0.1" />
-        <dependency id="System.Net.Http" version="4.3.1" />
-        <dependency id="Azuria.Core" version="[%%Version%%]" />
+        <dependency id="Autofac" version="4.2.0" />
       </group>
     </dependencies>
   </metadata>
   <files>
-    <file src="Azuria.Api\bin\Appveyor\netstandard1.2\Azuria.Api.dll" target="lib\netstandard1.2" />
-    <file src="Azuria.Api\bin\Appveyor\netstandard1.2\Azuria.Api.xml" target="lib\netstandard1.2" />
+    <file src="Azuria.Core\bin\Appveyor\netstandard1.2\Azuria.Core.dll" target="lib\netstandard1.2" />
+    <file src="Azuria.Core\bin\Appveyor\netstandard1.2\Azuria.Core.xml" target="lib\netstandard1.2" />
   </files>
 </package>

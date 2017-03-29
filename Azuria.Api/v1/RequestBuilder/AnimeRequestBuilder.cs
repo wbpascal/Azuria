@@ -33,18 +33,13 @@ namespace Azuria.Api.v1.RequestBuilder
         /// <param name="id">The id of the anime.</param>
         /// <param name="episode">The number of the episode.</param>
         /// <param name="language">The language of the episode.</param>
-        /// <param name="user">
-        /// Optional. The user that creates the request. If passed and logged in, the user will recieve anime
-        /// points. Default: null
-        /// </param>
         /// <returns>An instance of <see cref="ApiRequest" /> that returns an array of streams.</returns>
-        public static ApiRequest<StreamDataModel[]> GetStreams(int id, int episode, string language,
-            IProxerUser user = null)
+        public static ApiRequest<StreamDataModel[]> GetStreams(int id, int episode, string language)
         {
             return ApiRequest<StreamDataModel[]>.Create(new Uri($"{ApiConstants.ApiUrlV1}/anime/streams"))
                 .WithGetParameter("id", id.ToString())
                 .WithGetParameter("episode", episode.ToString())
-                .WithGetParameter("language", language).WithUser(user);
+                .WithGetParameter("language", language);
         }
 
         #endregion

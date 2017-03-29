@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Azuria.Api.ErrorHandling
+namespace Azuria.Core.ErrorHandling
 {
     /// <summary>
     /// Represents the result of a method including a returned object.

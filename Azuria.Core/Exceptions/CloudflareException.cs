@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Azuria.Api.Exceptions
+namespace Azuria.Core.Exceptions
 {
     /// <summary>
     /// Represents an exception that is thrown when a request encounters cloudflares anti-DDoS page that it can not solve

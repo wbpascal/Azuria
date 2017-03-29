@@ -1,7 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using Azuria.Api.ErrorHandling;
+using Azuria.Api.Enums;
 using Azuria.Api.v1.Converters;
+using Azuria.Core.ErrorHandling;
 using Newtonsoft.Json;
 
 namespace Azuria.Api.v1

@@ -1,34 +1,34 @@
 ﻿using System;
 
-namespace Azuria.Api.Exceptions
+namespace Azuria.Core.Exceptions
 {
     /// <summary>
-    /// Represents an exception that is thrown when a respone of the server does not match the expected one.
+    /// Represents an exception that is thrown when a response of the server does not match the expected one.
     /// </summary>
-    public class WrongResponseException : Exception
+    public class InvalidResponseException : Exception
     {
         /// <summary>
-        /// Initialises a new instance of the <see cref="WrongResponseException" /> class.
+        /// Initialises a new instance of the <see cref="InvalidResponseException" /> class.
         /// </summary>
-        public WrongResponseException()
+        public InvalidResponseException()
         {
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="WrongResponseException" /> class with a specified error message.
+        /// Initializes a new instance of the <see cref="InvalidResponseException" /> class with a specified error message.
         /// </summary>
         /// <param name="message">The error message string.</param>
-        public WrongResponseException(string message) : base(message)
+        public InvalidResponseException(string message) : base(message)
         {
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="WrongResponseException" /> class with a specified error message and a
+        /// Initializes a new instance of the <see cref="InvalidResponseException" /> class with a specified error message and a
         /// reference to the inner exception that is the cause of this exception.
         /// </summary>
         /// <param name="message">The error message string.</param>
         /// <param name="inner">The inner exception reference.</param>
-        public WrongResponseException(string message, Exception inner) : base(message, inner)
+        public InvalidResponseException(string message, Exception inner) : base(message, inner)
         {
         }
 

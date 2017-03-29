@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
-using Azuria.Api.ErrorHandling;
-using Azuria.Api.Exceptions;
-using Azuria.Api.Helpers;
+using Azuria.Core.ErrorHandling;
+using Azuria.Core.Exceptions;
+using Azuria.Core.Helpers;
 
-namespace Azuria.Api.Connection
+namespace Azuria.Core.Connection
 {
     /// <summary>
     /// Represents a class that communicates with the proxer servers.
@@ -15,18 +15,16 @@ namespace Azuria.Api.Connection
     public class HttpClient : IHttpClient
     {
         protected static readonly string UserAgent =
-            "Azuria/" + VersionHelpers.GetAssemblyVersion(typeof(HttpClient));
+            "Azuria/" + VersionHelper.GetAssemblyVersion(typeof(HttpClient));
 
         private readonly System.Net.Http.HttpClient _client;
 
         /// <summary>
         /// </summary>
-        /// <param name="user"></param>
         /// <param name="timeout"></param>
         /// <param name="userAgentExtra"></param>
-        public HttpClient(IProxerUser user, int timeout = 5000, string userAgentExtra = "")
+        public HttpClient(int timeout = 5000, string userAgentExtra = "")
         {
-            this.User = user;
             this._client = new System.Net.Http.HttpClient(new HttpClientHandler
             {
                 AllowAutoRedirect = true,
@@ -36,18 +34,9 @@ namespace Azuria.Api.Connection
                 $"{UserAgent} {userAgentExtra}".TrimEnd());
         }
 
-        #region Properties
-
-        /// <summary>
-        /// </summary>
-        protected IProxerUser User { get; }
-
-        #endregion
-
         #region Methods
 
         /// <summary>
-        /// DO NOT dispose <see cref="User" /> as this is most likely being called from a IProxerUser.Dispose() method.
         /// </summary>
         public virtual void Dispose()
         {
@@ -82,16 +71,15 @@ namespace Azuria.Api.Connection
                 return new ProxerResult<string>(new[] {new CloudflareException()});
             else
                 return
-                    new ProxerResult<string>(new[] {new WrongResponseException()});
+                    new ProxerResult<string>(new[] {new InvalidResponseException()});
 
             return string.IsNullOrEmpty(lResponse)
-                ? new ProxerResult<string>(new Exception[] {new WrongResponseException()})
+                ? new ProxerResult<string>(new Exception[] {new InvalidResponseException()})
                 : new ProxerResult<string>(lResponse);
         }
 
         private async Task<HttpResponseMessage> GetWebRequestAsync(Uri url, Dictionary<string, string> headers)
         {
-            this.User?.UsedCookies();
             this._client.DefaultRequestHeaders.Clear();
 
             if (headers == null) return await this._client.GetAsync(url).ConfigureAwait(false);
@@ -129,17 +117,16 @@ namespace Azuria.Api.Connection
                 && !string.IsNullOrEmpty(lResponseString))
                 return new ProxerResult<string>(new[] {new CloudflareException()});
             else
-                return new ProxerResult<string>(new[] {new WrongResponseException()});
+                return new ProxerResult<string>(new[] {new InvalidResponseException()});
 
             return string.IsNullOrEmpty(lResponse)
-                ? new ProxerResult<string>(new Exception[] {new WrongResponseException {Response = lResponse}})
+                ? new ProxerResult<string>(new Exception[] {new InvalidResponseException {Response = lResponse}})
                 : new ProxerResult<string>(lResponseString);
         }
 
         private async Task<HttpResponseMessage> PostWebRequestAsync(Uri url,
             IEnumerable<KeyValuePair<string, string>> postArgs, Dictionary<string, string> headers)
         {
-            this.User?.UsedCookies();
             this._client.DefaultRequestHeaders.Clear();
 
             if (headers == null)

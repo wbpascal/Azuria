@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Linq;
 using System.Threading.Tasks;
-using Azuria.Api.ErrorHandling;
 using Azuria.Api.v1;
+using Azuria.Core.ErrorHandling;
 
 namespace Azuria.Api.Helpers.Extensions
 {

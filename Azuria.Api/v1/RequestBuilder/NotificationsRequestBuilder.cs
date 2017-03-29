@@ -17,18 +17,16 @@ namespace Azuria.Api.v1.RequestBuilder
         /// Api permissions required:
         /// * Notifications - Level 0
         /// </summary>
-        /// <param name="user">The user that owns the notification. Must be logged in.</param>
         /// <param name="nid">
         /// Optional. The id of the notification that will be deleted. If not set or 0, all notifications, that
         /// are marked as read, will be deleted. Default: 0
         /// </param>
         /// <returns>An instance of <see cref="ApiRequest" />.</returns>
-        public static ApiRequest Delete(IProxerUser user, int nid = 0)
+        public static ApiRequest Delete(int nid = 0)
         {
             return ApiRequest.Create(new Uri($"{ApiConstants.ApiUrlV1}/notifications/delete"))
                 .WithLoginCheck(true)
-                .WithPostParameter("nid", nid.ToString())
-                .WithUser(user);
+                .WithPostParameter("nid", nid.ToString());
         }
 
         /// <summary>
@@ -37,13 +35,12 @@ namespace Azuria.Api.v1.RequestBuilder
         /// Api permissions required:
         /// * Notifications - Level 0
         /// </summary>
-        /// <param name="user">The user that recieved the notifications. Must be logged in.</param>
         /// <returns>An instance of <see cref="ApiRequest" /> that returns the number of notifications.</returns>
-        public static ApiRequest<NotificationCountDataModel> GetCount(IProxerUser user)
+        public static ApiRequest<NotificationCountDataModel> GetCount()
         {
             return ApiRequest<NotificationCountDataModel>.Create(new Uri($"{ApiConstants.ApiUrlV1}/notifications/count"))
                 .WithLoginCheck(true)
-                .WithCustomDataConverter(new NotificationCountConverter()).WithUser(user);
+                .WithCustomDataConverter(new NotificationCountConverter());
         }
 
         /// <summary>
@@ -52,20 +49,15 @@ namespace Azuria.Api.v1.RequestBuilder
         /// Api permissions required:
         /// * Notifications - Level 0
         /// </summary>
-        /// <param name="user">
-        /// Optional. If given and logged in all recieved news notifications of the user will be marked as
-        /// read. Default: null
-        /// </param>
         /// <param name="limit">Optional. The amount of news that will be returned per page. Default: 15</param>
         /// <param name="page">Optional. The index of the page that will be loaded. Default: 0</param>
         /// <returns>An instance of <see cref="ApiRequest" /> that returns an array of news.</returns>
-        public static ApiRequest<NewsNotificationDataModel[]> GetNews(IProxerUser user = null, int page = 0,
-            int limit = 15)
+        public static ApiRequest<NewsNotificationDataModel[]> GetNews(int page = 0, int limit = 15)
         {
             return ApiRequest<NewsNotificationDataModel[]>.Create(new Uri($"{ApiConstants.ApiUrlV1}/notifications/news"))
                 .WithGetParameter("p", page.ToString())
                 .WithGetParameter("limit", limit.ToString())
-                .WithLoginCheck(true).WithUser(user);
+                .WithLoginCheck(true);
         }
 
         #endregion

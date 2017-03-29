@@ -1,5 +1,5 @@
 ﻿using System;
-using Azuria.Api.v1;
+using Azuria.Api.Enums;
 
 namespace Azuria.Api.Exceptions
 {

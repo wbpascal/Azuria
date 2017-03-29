@@ -1,4 +1,4 @@
-﻿namespace Azuria.Api.v1
+﻿namespace Azuria.Api.Enums
 {
     /// <summary>
     /// </summary>

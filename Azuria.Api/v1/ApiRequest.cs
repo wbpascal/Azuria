@@ -86,13 +86,6 @@ namespace Azuria.Api.v1
             return this;
         }
 
-        /// <inheritdoc />
-        public new ApiRequest<T> WithUser(IProxerUser user)
-        {
-            base.WithUser(user);
-            return this;
-        }
-
         #endregion
     }
 
@@ -135,10 +128,6 @@ namespace Azuria.Api.v1
             get { return this._postArguments; }
             set { this._postArguments = value.ToList(); }
         }
-
-        /// <summary>
-        /// </summary>
-        public IProxerUser User { get; set; }
 
         #endregion
 
@@ -211,16 +200,6 @@ namespace Azuria.Api.v1
         public ApiRequest WithPostParameters(IEnumerable<KeyValuePair<string, string>> postArgs)
         {
             this._postArguments.AddRange(postArgs);
-            return this;
-        }
-
-        /// <summary>
-        /// </summary>
-        /// <param name="user"></param>
-        /// <returns></returns>
-        public ApiRequest WithUser(IProxerUser user)
-        {
-            this.User = user;
             return this;
         }
 

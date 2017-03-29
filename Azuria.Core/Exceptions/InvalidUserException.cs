@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Azuria.Api.Exceptions
+namespace Azuria.Core.Exceptions
 {
     /// <summary>
     /// Represents an exception that is thrown when an invalid user was passed to a method or constructor.

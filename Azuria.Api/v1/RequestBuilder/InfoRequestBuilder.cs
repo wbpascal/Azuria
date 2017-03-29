@@ -211,21 +211,20 @@ namespace Azuria.Api.v1.RequestBuilder
 
         /// <summary>
         /// Creates an <see cref="ApiRequest" /> instance that adds an anime or manga to a list of a logged in user.
+        /// Requires authentication.
         /// 
         /// Api permissions required:
         /// * Info - Level 1
         /// </summary>
         /// <param name="entryId">The id of the anime or manga.</param>
         /// <param name="type">The list to which the anime or manga will be added. Possible values: "note", "favor", "finish"</param>
-        /// <param name="user">The logged in user.</param>
         /// <returns>An instance of <see cref="ApiRequest" />.</returns>
-        public static ApiRequest SetUserInfo(int entryId, string type, IProxerUser user)
+        public static ApiRequest SetUserInfo(int entryId, string type)
         {
             return ApiRequest.Create(new Uri($"{ApiConstants.ApiUrlV1}/info/setuserinfo"))
                 .WithLoginCheck(true)
                 .WithPostParameter("id", entryId.ToString())
-                .WithPostParameter("type", type)
-                .WithUser(user);
+                .WithPostParameter("type", type);
         }
 
         #endregion

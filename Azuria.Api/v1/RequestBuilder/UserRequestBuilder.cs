@@ -17,12 +17,10 @@ namespace Azuria.Api.v1.RequestBuilder
         /// Api permissions required:
         /// * User - Level 0
         /// </summary>
-        /// <param name="user"></param>
         /// <returns>An instance of <see cref="ApiRequest" /> that returns...</returns>
-        public static ApiRequest<UserInfoDataModel> GetInfo(IProxerUser user)
+        public static ApiRequest<UserInfoDataModel> GetInfo()
         {
-            return ApiRequest<UserInfoDataModel>.Create(new Uri($"{ApiConstants.ApiUrlV1}/user/userinfo"))
-                .WithUser(user);
+            return ApiRequest<UserInfoDataModel>.Create(new Uri($"{ApiConstants.ApiUrlV1}/user/userinfo"));
         }
 
         /// <summary>
@@ -64,12 +62,11 @@ namespace Azuria.Api.v1.RequestBuilder
         /// <param name="limit"></param>
         /// <param name="kat"></param>
         /// <param name="length"></param>
-        /// <param name="user"></param>
         /// <returns>An instance of <see cref="ApiRequest" /> that returns...</returns>
         public static ApiRequest<CommentDataModel[]> GetLatestComments(int userId, int page = 0, int limit = 25,
-            string kat = "anime", int length = 300, IProxerUser user = null)
+            string kat = "anime", int length = 300)
         {
-            return GetLatestComments(user, page, limit, kat, length)
+            return GetLatestComments(page, limit, kat, length)
                 .WithGetParameter("uid", userId.ToString());
         }
 
@@ -84,12 +81,11 @@ namespace Azuria.Api.v1.RequestBuilder
         /// <param name="limit"></param>
         /// <param name="kat"></param>
         /// <param name="length"></param>
-        /// <param name="user"></param>
         /// <returns>An instance of <see cref="ApiRequest" /> that returns...</returns>
         public static ApiRequest<CommentDataModel[]> GetLatestComments(string username, int page = 0, int limit = 25,
-            string kat = "anime", int length = 300, IProxerUser user = null)
+            string kat = "anime", int length = 300)
         {
-            return GetLatestComments(user, page, limit, kat, length)
+            return GetLatestComments(page, limit, kat, length)
                 .WithGetParameter("username", username);
         }
 
@@ -99,20 +95,19 @@ namespace Azuria.Api.v1.RequestBuilder
         /// Api permissions required:
         /// * User - Level 0
         /// </summary>
-        /// <param name="user"></param>
         /// <param name="page"></param>
         /// <param name="limit"></param>
         /// <param name="kat"></param>
         /// <param name="length"></param>
         /// <returns>An instance of <see cref="ApiRequest" /> that returns...</returns>
-        public static ApiRequest<CommentDataModel[]> GetLatestComments(IProxerUser user, int page = 0, int limit = 25,
+        public static ApiRequest<CommentDataModel[]> GetLatestComments(int page = 0, int limit = 25,
             string kat = "anime", int length = 300)
         {
             return ApiRequest<CommentDataModel[]>.Create(new Uri($"{ApiConstants.ApiUrlV1}/user/comments"))
                 .WithGetParameter("p", page.ToString())
                 .WithGetParameter("limit", limit.ToString())
                 .WithGetParameter("kat", kat)
-                .WithGetParameter("length", length.ToString()).WithUser(user);
+                .WithGetParameter("length", length.ToString());
         }
 
         /// <summary>
@@ -121,7 +116,6 @@ namespace Azuria.Api.v1.RequestBuilder
         /// Api permissions required:
         /// * User - Level 0
         /// </summary>
-        /// <param name="user"></param>
         /// <param name="kat"></param>
         /// <param name="page"></param>
         /// <param name="limit"></param>
@@ -129,7 +123,7 @@ namespace Azuria.Api.v1.RequestBuilder
         /// <param name="searchStart"></param>
         /// <param name="sort"></param>
         /// <returns>An instance of <see cref="ApiRequest" /> that returns...</returns>
-        public static ApiRequest<ListDataModel[]> GetList(IProxerUser user, string kat = "anime", int page = 0,
+        public static ApiRequest<ListDataModel[]> GetList(string kat = "anime", int page = 0,
             int limit = 100, string search = "", string searchStart = "", string sort = "")
         {
             return ApiRequest<ListDataModel[]>.Create(new Uri($"{ApiConstants.ApiUrlV1}/user/list"))
@@ -138,7 +132,7 @@ namespace Azuria.Api.v1.RequestBuilder
                 .WithGetParameter("limit", limit.ToString())
                 .WithGetParameter("search", search)
                 .WithGetParameter("search_start", searchStart)
-                .WithGetParameter("sort", sort).WithUser(user);
+                .WithGetParameter("sort", sort);
         }
 
         /// <summary>
@@ -154,12 +148,11 @@ namespace Azuria.Api.v1.RequestBuilder
         /// <param name="search"></param>
         /// <param name="searchStart"></param>
         /// <param name="sort"></param>
-        /// <param name="user"></param>
         /// <returns>An instance of <see cref="ApiRequest" /> that returns...</returns>
         public static ApiRequest<ListDataModel[]> GetList(int userId, string kat = "anime", int page = 0,
-            int limit = 100, string search = "", string searchStart = "", string sort = "", IProxerUser user = null)
+            int limit = 100, string search = "", string searchStart = "", string sort = "")
         {
-            return GetList(user, kat, page, limit, search, searchStart, sort)
+            return GetList(kat, page, limit, search, searchStart, sort)
                 .WithGetParameter("uid", userId.ToString());
         }
 
@@ -176,12 +169,11 @@ namespace Azuria.Api.v1.RequestBuilder
         /// <param name="search"></param>
         /// <param name="searchStart"></param>
         /// <param name="sort"></param>
-        /// <param name="user"></param>
         /// <returns>An instance of <see cref="ApiRequest" /> that returns...</returns>
         public static ApiRequest<ListDataModel[]> GetList(string username, string kat = "anime", int page = 0,
-            int limit = 100, string search = "", string searchStart = "", string sort = "", IProxerUser user = null)
+            int limit = 100, string search = "", string searchStart = "", string sort = "")
         {
-            return GetList(user, kat, page, limit, search, searchStart, sort)
+            return GetList(kat, page, limit, search, searchStart, sort)
                 .WithGetParameter("username", username);
         }
 
@@ -191,13 +183,12 @@ namespace Azuria.Api.v1.RequestBuilder
         /// Api permissions required:
         /// * User - Level 0
         /// </summary>
-        /// <param name="user"></param>
         /// <param name="category"></param>
         /// <returns>An instance of <see cref="ApiRequest" /> that returns...</returns>
-        public static ApiRequest<ToptenDataModel[]> GetTopten(IProxerUser user, string category = "anime")
+        public static ApiRequest<ToptenDataModel[]> GetTopten(string category = "anime")
         {
             return ApiRequest<ToptenDataModel[]>.Create(new Uri($"{ApiConstants.ApiUrlV1}/user/topten"))
-                .WithGetParameter("kat", category).WithUser(user);
+                .WithGetParameter("kat", category);
         }
 
         /// <summary>
@@ -207,13 +198,11 @@ namespace Azuria.Api.v1.RequestBuilder
         /// * User - Level 0
         /// </summary>
         /// <param name="userId"></param>
-        /// <param name="user"></param>
         /// <param name="category"></param>
         /// <returns>An instance of <see cref="ApiRequest" /> that returns...</returns>
-        public static ApiRequest<ToptenDataModel[]> GetTopten(int userId, string category = "anime",
-            IProxerUser user = null)
+        public static ApiRequest<ToptenDataModel[]> GetTopten(int userId, string category = "anime")
         {
-            return GetTopten(user, category)
+            return GetTopten(category)
                 .WithGetParameter("uid", userId.ToString());
         }
 
@@ -224,13 +213,11 @@ namespace Azuria.Api.v1.RequestBuilder
         /// * User - Level 0
         /// </summary>
         /// <param name="username"></param>
-        /// <param name="user"></param>
         /// <param name="category"></param>
         /// <returns>An instance of <see cref="ApiRequest" /> that returns...</returns>
-        public static ApiRequest<ToptenDataModel[]> GetTopten(string username, string category = "anime",
-            IProxerUser user = null)
+        public static ApiRequest<ToptenDataModel[]> GetTopten(string username, string category = "anime")
         {
-            return GetTopten(user, category)
+            return GetTopten(category)
                 .WithGetParameter("username", username);
         }
 
@@ -242,13 +229,12 @@ namespace Azuria.Api.v1.RequestBuilder
         /// </summary>
         /// <param name="username"></param>
         /// <param name="password"></param>
-        /// <param name="user"></param>
         /// <returns>An instance of <see cref="ApiRequest" /> that returns...</returns>
-        public static ApiRequest<LoginDataModel> Login(string username, string password, IProxerUser user = null)
+        public static ApiRequest<LoginDataModel> Login(string username, string password)
         {
             return ApiRequest<LoginDataModel>.Create(new Uri($"{ApiConstants.ApiUrlV1}/user/login"))
                 .WithPostParameter("username", username)
-                .WithPostParameter("password", password).WithUser(user);
+                .WithPostParameter("password", password);
         }
 
         /// <summary>
@@ -260,12 +246,10 @@ namespace Azuria.Api.v1.RequestBuilder
         /// <param name="username"></param>
         /// <param name="password"></param>
         /// <param name="secretKey"></param>
-        /// <param name="user"></param>
         /// <returns>An instance of <see cref="ApiRequest" /> that returns...</returns>
-        public static ApiRequest<LoginDataModel> Login(string username, string password, string secretKey,
-            IProxerUser user = null)
+        public static ApiRequest<LoginDataModel> Login(string username, string password, string secretKey)
         {
-            return Login(username, username, user)
+            return Login(username, username)
                 .WithGetParameter("secretKey", secretKey);
         }
 
@@ -275,13 +259,11 @@ namespace Azuria.Api.v1.RequestBuilder
         /// Api permissions required:
         /// * User - Level 0
         /// </summary>
-        /// <param name="user"></param>
         /// <returns>An instance of <see cref="ApiRequest" /> that returns...</returns>
-        public static ApiRequest Logout(IProxerUser user)
+        public static ApiRequest Logout()
         {
             return ApiRequest.Create(new Uri($"{ApiConstants.ApiUrlV1}/user/logout"))
-                .WithLoginCheck(true)
-                .WithUser(user);
+                .WithLoginCheck(true);
         }
 
         #endregion

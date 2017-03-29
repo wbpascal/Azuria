@@ -1,10 +1,10 @@
 ﻿using System;
 
-namespace Azuria.Api.Exceptions
+namespace Azuria.Core.Exceptions
 {
     /// <summary>
-    /// Represents an exception that is thrown when a <see cref="IProxerUser" /> object, which was not logged in, was passed to
-    /// a method or a constructor which required it to be logged in.
+    /// Represents an exception that is thrown when an unauthenticated <see cref="IProxerClient" /> performed
+    /// a authenticated request.
     /// </summary>
     public class NotLoggedInException : Exception
     {
@@ -13,15 +13,6 @@ namespace Azuria.Api.Exceptions
         /// </summary>
         public NotLoggedInException()
         {
-        }
-
-        /// <summary>
-        /// Initialises a new instance of the <see cref="NotLoggedInException" /> class.
-        /// </summary>
-        /// <param name="user">The user which is not logged in.</param>
-        public NotLoggedInException(IProxerUser user)
-        {
-            this.User = user;
         }
 
         /// <summary>
@@ -41,14 +32,5 @@ namespace Azuria.Api.Exceptions
         public NotLoggedInException(string message, Exception inner) : base(message, inner)
         {
         }
-
-        #region Properties
-
-        /// <summary>
-        /// Gets the <see cref="IProxerUser" /> object which is connected to this exception.
-        /// </summary>
-        public IProxerUser User { get; set; }
-
-        #endregion
     }
 }
