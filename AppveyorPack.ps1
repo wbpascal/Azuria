@@ -31,5 +31,5 @@ function MygetPush
     }
 }
 
-NugetPack ($env:APPVEYOR_REPO_TAG -eq "true")
+NugetPack ($env:APPVEYOR_REPO_TAG -eq "false")
 if ($env:APPVEYOR_REPO_BRANCH -eq "master") { MygetPush }
