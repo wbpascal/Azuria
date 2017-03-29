@@ -15,7 +15,7 @@ before_build:
   - nuget restore
   - ps: gitversion /l console /output buildserver /updateAssemblyInfo
 
-on_success:
+after_build:
   - ps: ./AppveyorPack.ps1
 
 configuration: Appveyor
