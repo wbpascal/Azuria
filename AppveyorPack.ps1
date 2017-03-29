@@ -1,10 +1,10 @@
 function NugetPack([bool] $pre) 
 {
-    $Version = gitversion /output json /showvariable MajorMinorPatch
+    $Version = $env:GitVersion_MajorMinorPatch
     if ($pre)
     {
         echo "Creating pre-release package..."
-        $VersionSuffix = "-ci$(gitversion /output json /showvariable BuildMetaData)"
+        $VersionSuffix = "-ci$($env:GitVersion_BuildMetaData)"
     } 
     else 
     {
@@ -31,5 +31,5 @@ function MygetPush
     }
 }
 
-NugetPack $env:APPVEYOR_REPO_TAG
+NugetPack ($env:APPVEYOR_REPO_TAG -eq "true")
 if ($env:APPVEYOR_REPO_BRANCH -eq "master") { MygetPush }
