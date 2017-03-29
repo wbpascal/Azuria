@@ -16,7 +16,7 @@ before_build:
   - ps: gitversion /l console /output buildserver /updateAssemblyInfo
 
 on_success:
-  - ps: AppveyorPack.ps1
+  - ps: ./AppveyorPack.ps1
 
 configuration: Appveyor
 
