@@ -4,22 +4,14 @@ using System.Collections.Specialized;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
-using Azuria.Api;
-using Azuria.Api.Connection;
-using Azuria.Api.ErrorHandling;
+using Azuria.Connection;
+using Azuria.ErrorHandling;
 using Azuria.Test.Core.Utility;
 
 namespace Azuria.Test.Core
 {
     public class TestingHttpClient : IHttpClient
     {
-        private readonly IProxerUser _user;
-
-        public TestingHttpClient(IProxerUser user)
-        {
-            this._user = user;
-        }
-
         #region Methods
 
         /// <inheritdoc />

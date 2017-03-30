@@ -16,8 +16,7 @@ function NugetPack([bool] $pre)
         (Get-Content $_) | ForEach-Object { $_ -replace "%%VERSION%%", "$($VERSION)$($VersionSuffix)" } | Set-Content $_
     }
     
-    nuget pack Azuria.Core.nuspec -version "$($VERSION)$($VersionSuffix)"
-    nuget pack Azuria.Api.nuspec -version "$($VERSION)$($VersionSuffix)"
+    nuget pack Azuria.nuspec -version "$($VERSION)$($VersionSuffix)"
 }
 
 function MygetPush 
