@@ -1,5 +1,6 @@
 ﻿using System;
 using Autofac;
+using Azuria.Authentication;
 using Azuria.Connection;
 
 namespace Azuria
@@ -9,6 +10,14 @@ namespace Azuria
     /// </summary>
     public class ProxerClientOptions
     {
+        /// <summary>
+        /// 
+        /// </summary>
+        public ProxerClientOptions()
+        {
+            RegisterComponents(this.ContainerBuilder);
+        }
+
         #region Properties
 
         internal ContainerBuilder ContainerBuilder { get; set; } = new ContainerBuilder();
@@ -16,6 +25,12 @@ namespace Azuria
         #endregion
 
         #region Methods
+
+        private static void RegisterComponents(ContainerBuilder builder)
+        {
+            builder.RegisterInstance(new HttpClient()).As<IHttpClient>();
+            builder.RegisterInstance(new LoginManager()).As<ILoginManager>();
+        }
 
         /// <summary>
         /// 

@@ -19,11 +19,6 @@ namespace Azuria
         /// </summary>
         IContainer Container { get; }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        bool IsAuthenticated { get; set; }
-
         #endregion
     }
 }

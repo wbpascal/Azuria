@@ -14,7 +14,8 @@ Installing Azuria is easy. Just download a compatible precompiled binary from th
     PM> Install-Package Azuria
 
 ### Step 1.1 Using Pre-Release Packages (MyGet)
-In order to use the pre-release packages available on MyGet you need to add one of the following nuget feed urls to your project:
+All packages are available on MyGet and are automatically generated every time an automated build of the `master` branch succeeds.
+In order to use the pre-release packages available you need to add one of the following nuget feed urls to your project:
 
 **NuGet V3:**
 
@@ -24,22 +25,10 @@ In order to use the pre-release packages available on MyGet you need to add one 
 
 	https://www.myget.org/F/infinitesoul/api/v2
 
-All packages available on MyGet are automatically generated every time an automated build of the 'master' branch succeeded.
 
 
-## Step 2. Initialisation (v0.6.1+)##
-After installing you need to initialise the library to tell it some things that are needed to use the API (like the API key). 
-
-The API key is needed to access the API of [Proxer.Me](https://proxer.me). It also dictates which requests you are allowed to make and which not. Further information and how to get a key can be found [here](https://proxer.me/wiki/Proxer_API/v1).
-
-Passing the key to the library is really easy. Just call this somewhere at the start of your application:
-```csharp
-Azuria.Api.ApiInfo.Init(input =>
-{
-	input.ApiKeyV1 = "apiKey".ToCharArray();
-});
-```
-Be sure to call this before any other methods of the library and pass the API key so that everything can be properly initialised.
+## Step 2. Creating The Client ##
+**TODO**
 
 ## Special thanks
 To the authors of the following libraries:
