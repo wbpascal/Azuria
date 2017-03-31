@@ -4,19 +4,13 @@ function NugetPack([bool] $pre)
     if ($pre)
     {
         echo "Creating pre-release package..."
-        $VersionSuffix = "-ci$($env:GitVersion_BuildMetaData)"
     } 
     else 
     {
         echo "Creating stable package..."
     }
-
-    Get-ChildItem $PSScriptRoot -Filter *.nuspec | 
-    Foreach-Object {
-        (Get-Content $_) | ForEach-Object { $_ -replace "%%VERSION%%", "$($VERSION)$($VersionSuffix)" } | Set-Content $_
-    }
     
-    nuget pack Azuria.nuspec -version "$($VERSION)$($VersionSuffix)"
+    nuget pack Azuria.nuspec -version "$($env:GitVersion_FullSemVer)"
 }
 
 function MygetPush 
