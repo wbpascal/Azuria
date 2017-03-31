@@ -1,6 +1,5 @@
 ﻿using System;
 using Autofac;
-using Azuria.Authentication;
 using Azuria.Connection;
 
 namespace Azuria
@@ -29,7 +28,7 @@ namespace Azuria
         private static void RegisterComponents(ContainerBuilder builder)
         {
             builder.RegisterInstance(new HttpClient()).As<IHttpClient>();
-            builder.RegisterInstance(new LoginManager()).As<ILoginManager>();
+            //builder.RegisterInstance(new LoginManager()).As<ILoginManager>();
         }
 
         /// <summary>
