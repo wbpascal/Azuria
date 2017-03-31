@@ -16,14 +16,15 @@ namespace Azuria.Api.v1.Converters
             return objectType == typeof(IEnumerable<Fsk>);
         }
 
-        public override object ReadJson(JsonReader reader, Type objectType, object existingValue,
+        public override object ReadJson(
+            JsonReader reader, Type objectType, object existingValue,
             JsonSerializer serializer)
         {
             string lValue = reader.Value.ToString();
             if (string.IsNullOrEmpty(lValue.Trim())) return new Fsk[0];
             return (from fskString in lValue.Split(' ')
-                where FskHelpers.StringToFskDictionary.ContainsKey(fskString)
-                select FskHelpers.StringToFskDictionary[fskString]).ToArray();
+                    where FskHelpers.StringToFskDictionary.ContainsKey(fskString)
+                    select FskHelpers.StringToFskDictionary[fskString]).ToArray();
         }
 
         public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)

@@ -16,14 +16,15 @@ namespace Azuria.Api.v1.Converters
             return objectType == typeof(IEnumerable<Genre>);
         }
 
-        public override object ReadJson(JsonReader reader, Type objectType, object existingValue,
+        public override object ReadJson(
+            JsonReader reader, Type objectType, object existingValue,
             JsonSerializer serializer)
         {
             string lValue = reader.Value.ToString();
             if (string.IsNullOrEmpty(lValue.Trim())) return new Genre[0];
             return lValue.Split(' ')
-                .Select(genre => GenreHelpers.StringToGenreDictionary[genre])
-                .ToArray();
+                         .Select(genre => GenreHelpers.StringToGenreDictionary[genre])
+                         .ToArray();
         }
 
         public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)

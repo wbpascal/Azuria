@@ -24,7 +24,8 @@ namespace Azuria.Connection
         /// <param name="postArgs"></param>
         /// <param name="headers"></param>
         /// <returns></returns>
-        Task<IProxerResult<string>> PostRequestAsync(Uri url, IEnumerable<KeyValuePair<string, string>> postArgs,
+        Task<IProxerResult<string>> PostRequestAsync(
+            Uri url, IEnumerable<KeyValuePair<string, string>> postArgs,
             Dictionary<string, string> headers = null);
 
         #endregion

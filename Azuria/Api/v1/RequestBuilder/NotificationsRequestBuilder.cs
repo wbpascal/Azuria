@@ -1,4 +1,5 @@
 ﻿using System;
+using Azuria.Api.Builder;
 using Azuria.Api.v1.Converters.Notifications;
 using Azuria.Api.v1.DataModels.Notifications;
 
@@ -7,8 +8,19 @@ namespace Azuria.Api.v1.RequestBuilder
     /// <summary>
     /// Represents the notification api class.
     /// </summary>
-    public static class NotificationsRequestBuilder
+    public class NotificationsRequestBuilder
     {
+        private readonly IProxerClient _client;
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="client"></param>
+        public NotificationsRequestBuilder(IProxerClient client)
+        {
+            this._client = client;
+        }
+
         #region Methods
 
         /// <summary>
@@ -22,10 +34,9 @@ namespace Azuria.Api.v1.RequestBuilder
         /// are marked as read, will be deleted. Default: 0
         /// </param>
         /// <returns>An instance of <see cref="ApiRequest" />.</returns>
-        public static ApiRequest Delete(int nid = 0)
+        public IUrlBuilder Delete(int nid = 0)
         {
-            return ApiRequest.Create(new Uri($"{ApiConstants.ApiUrlV1}/notifications/delete"))
-                .WithLoginCheck(true)
+            return new UrlBuilder(new Uri($"{ApiConstants.ApiUrlV1}/notifications/delete"), this._client)
                 .WithPostParameter("nid", nid.ToString());
         }
 
@@ -36,11 +47,11 @@ namespace Azuria.Api.v1.RequestBuilder
         /// * Notifications - Level 0
         /// </summary>
         /// <returns>An instance of <see cref="ApiRequest" /> that returns the number of notifications.</returns>
-        public static ApiRequest<NotificationCountDataModel> GetCount()
+        public IUrlBuilderWithResult<NotificationCountDataModel> GetCount()
         {
-            return ApiRequest<NotificationCountDataModel>.Create(new Uri($"{ApiConstants.ApiUrlV1}/notifications/count"))
-                .WithLoginCheck(true)
-                .WithCustomDataConverter(new NotificationCountConverter());
+            return new UrlBuilder<NotificationCountDataModel>(
+                new Uri($"{ApiConstants.ApiUrlV1}/notifications/count"), this._client
+            ).WithCustomDataConverter(new NotificationCountConverter());
         }
 
         /// <summary>
@@ -52,12 +63,12 @@ namespace Azuria.Api.v1.RequestBuilder
         /// <param name="limit">Optional. The amount of news that will be returned per page. Default: 15</param>
         /// <param name="page">Optional. The index of the page that will be loaded. Default: 0</param>
         /// <returns>An instance of <see cref="ApiRequest" /> that returns an array of news.</returns>
-        public static ApiRequest<NewsNotificationDataModel[]> GetNews(int page = 0, int limit = 15)
+        public IUrlBuilderWithResult<NewsNotificationDataModel[]> GetNews(int page = 0, int limit = 15)
         {
-            return ApiRequest<NewsNotificationDataModel[]>.Create(new Uri($"{ApiConstants.ApiUrlV1}/notifications/news"))
-                .WithGetParameter("p", page.ToString())
-                .WithGetParameter("limit", limit.ToString())
-                .WithLoginCheck(true);
+            return new UrlBuilder<NewsNotificationDataModel[]>(
+                    new Uri($"{ApiConstants.ApiUrlV1}/notifications/news"), this._client
+                ).WithGetParameter("p", page.ToString())
+                 .WithGetParameter("limit", limit.ToString());
         }
 
         #endregion

@@ -7,19 +7,24 @@ namespace Azuria.Api.Builder
     /// </summary>
     public class ApiRequestBuilder : IApiRequestBuilder
     {
-        private readonly IProxerClient _client;
-
         internal ApiRequestBuilder(IProxerClient client)
         {
-            this._client = client;
+            this.ProxerClient = client;
         }
+
+        #region Properties
+
+        /// <inheritdoc />
+        public IProxerClient ProxerClient { get; }
+
+        #endregion
 
         #region Methods
 
         /// <inheritdoc />
         public IUrlBuilder FromUrl(Uri baseUri)
         {
-            return new UrlBuilder(baseUri, this._client);
+            return new UrlBuilder(baseUri, this.ProxerClient);
         }
 
         #endregion

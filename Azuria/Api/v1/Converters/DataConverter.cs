@@ -22,11 +22,13 @@ namespace Azuria.Api.v1.Converters
         /// <param name="existingValue"></param>
         /// <param name="serializer"></param>
         /// <returns></returns>
-        public abstract T ConvertJson(JsonReader reader, Type objectType, object existingValue,
+        public abstract T ConvertJson(
+            JsonReader reader, Type objectType, object existingValue,
             JsonSerializer serializer);
 
         /// <inheritdoc />
-        public override object ReadJson(JsonReader reader, Type objectType, object existingValue,
+        public override object ReadJson(
+            JsonReader reader, Type objectType, object existingValue,
             JsonSerializer serializer)
         {
             return this.ConvertJson(reader, objectType, existingValue, serializer);

@@ -1,4 +1,5 @@
 ﻿using System;
+using Azuria.Api.Builder;
 using Azuria.Api.v1.DataModels.Media;
 
 namespace Azuria.Api.v1.RequestBuilder
@@ -6,8 +7,19 @@ namespace Azuria.Api.v1.RequestBuilder
     /// <summary>
     /// Represents the media api class.
     /// </summary>
-    public static class MediaRequestBuilder
+    public class MediaRequestBuilder
     {
+        private readonly IProxerClient _client;
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="client"></param>
+        public MediaRequestBuilder(IProxerClient client)
+        {
+            this._client = client;
+        }
+
         #region Methods
 
         /// <summary>
@@ -17,9 +29,11 @@ namespace Azuria.Api.v1.RequestBuilder
         /// * Media - Level 0
         /// </summary>
         /// <returns>An instance of <see cref="ApiRequest" /> that returns an array of headers.</returns>
-        public static ApiRequest<HeaderDataModel[]> GetHeaderList()
+        public IUrlBuilderWithResult<HeaderDataModel[]> GetHeaderList()
         {
-            return ApiRequest<HeaderDataModel[]>.Create(new Uri($"{ApiConstants.ApiUrlV1}/media/headerlist"));
+            return new UrlBuilder<HeaderDataModel[]>(
+                new Uri($"{ApiConstants.ApiUrlV1}/media/headerlist"), this._client
+            );
         }
 
         /// <summary>
@@ -33,10 +47,11 @@ namespace Azuria.Api.v1.RequestBuilder
         /// Default: "gray"
         /// </param>
         /// <returns>An instance of <see cref="ApiRequest" /> that returns a header.</returns>
-        public static ApiRequest<HeaderDataModel> GetRandomHeader(string style = "gray")
+        public IUrlBuilderWithResult<HeaderDataModel> GetRandomHeader(string style = "gray")
         {
-            return ApiRequest<HeaderDataModel>.Create(new Uri($"{ApiConstants.ApiUrlV1}/media/randomheader"))
-                .WithGetParameter("style", style);
+            return new UrlBuilder<HeaderDataModel>(
+                new Uri($"{ApiConstants.ApiUrlV1}/media/randomheader"), this._client
+            ).WithGetParameter("style", style);
         }
 
         #endregion

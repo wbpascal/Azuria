@@ -13,7 +13,8 @@ namespace Azuria.Api.v1.Converters.List
         #region Methods
 
         /// <inheritdoc />
-        public override Tuple<int[], int[]> ConvertJson(JsonReader reader, Type objectType, object existingValue,
+        public override Tuple<int[], int[]> ConvertJson(
+            JsonReader reader, Type objectType, object existingValue,
             JsonSerializer serializer)
         {
             int[] lTagIds = new int[0];

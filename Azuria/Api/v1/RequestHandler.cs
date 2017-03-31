@@ -22,52 +22,56 @@ namespace Azuria.Api.v1
         internal static async Task<ProxerApiResponse<T>> ApiRequestAsync<T>(this IUrlBuilderWithResult<T> request)
         {
             IEnumerable<JsonConverter> lDataConverter = request.CustomDataConverter == null
-                ? new JsonConverter[0]
-                : new[] {request.CustomDataConverter};
+                                                            ? new JsonConverter[0]
+                                                            : new[] {request.CustomDataConverter};
 
             IProxerResult lResult = await request.ApiRequestInternalAsync<ProxerApiResponse<T>>(
-                new JsonSerializerSettings {Converters = lDataConverter.ToList()}
-            ).ConfigureAwait(false);
+                                        new JsonSerializerSettings {Converters = lDataConverter.ToList()}
+                                    ).ConfigureAwait(false);
 
             return lResult.Success && lResult is ProxerApiResponse<T>
-                ? lResult as ProxerApiResponse<T>
-                : new ProxerApiResponse<T>(lResult.Exceptions);
+                       ? lResult as ProxerApiResponse<T>
+                       : new ProxerApiResponse<T>(lResult.Exceptions);
         }
 
         internal static async Task<ProxerApiResponse> ApiRequestAsync(this IUrlBuilder request)
         {
             IProxerResult lResult = await request.ApiRequestInternalAsync<ProxerApiResponse>()
-                .ConfigureAwait(false);
+                                                 .ConfigureAwait(false);
 
             return lResult.Success && lResult is ProxerApiResponse
-                ? lResult as ProxerApiResponse
-                : new ProxerApiResponse(lResult.Exceptions);
+                       ? lResult as ProxerApiResponse
+                       : new ProxerApiResponse(lResult.Exceptions);
         }
 
-        private static async Task<IProxerResult> ApiRequestInternalAsync<T>(this IUrlBuilderBase request,
+        private static async Task<IProxerResult> ApiRequestInternalAsync<T>(
+            this IUrlBuilderBase request,
             JsonSerializerSettings settings = null) where T : ProxerApiResponse
         {
             IProxerResult<string> lResult = await request.Client.Container.Resolve<IHttpClient>()
-                .ProxerRequestAsync(
-                    request.BuildUri(), request.PostArguments, GetHeaders(request.Client.ApiKey)
-                ).ConfigureAwait(false);
+                                                         .ProxerRequestAsync(
+                                                             request.BuildUri(), request.PostArguments,
+                                                             GetHeaders(request.Client.ApiKey)
+                                                         ).ConfigureAwait(false);
             if (!lResult.Success || string.IsNullOrEmpty(lResult.Result))
                 return new ProxerResult(lResult.Exceptions);
 
             try
             {
-                T lApiResponse = await Task<T>.Factory.StartNew(() =>
-                    JsonConvert.DeserializeObject<T>(
-                        WebUtility.HtmlDecode(lResult.Result), settings ?? new JsonSerializerSettings()
-                    )
-                ).ConfigureAwait(false);
+                T lApiResponse = await Task<T>.Factory.StartNew(
+                                     () =>
+                                         JsonConvert.DeserializeObject<T>(
+                                             WebUtility.HtmlDecode(lResult.Result),
+                                             settings ?? new JsonSerializerSettings()
+                                         )
+                                 ).ConfigureAwait(false);
 
                 if (lApiResponse.Success) return lApiResponse;
 
                 Exception lException = HandleErrorCode(lApiResponse.ErrorCode);
                 return lException == null
-                    ? new ProxerResult(new ProxerApiException(lApiResponse.ErrorCode))
-                    : new ProxerResult(lException);
+                           ? new ProxerResult(new ProxerApiException(lApiResponse.ErrorCode))
+                           : new ProxerResult(lException);
             }
             catch (Exception ex)
             {
@@ -107,14 +111,15 @@ namespace Azuria.Api.v1
             return null;
         }
 
-        private static Task<IProxerResult<string>> ProxerRequestAsync(this IHttpClient httpClient, Uri url,
+        private static Task<IProxerResult<string>> ProxerRequestAsync(
+            this IHttpClient httpClient, Uri url,
             IEnumerable<KeyValuePair<string, string>> postArgs, Dictionary<string, string> headers)
         {
             KeyValuePair<string, string>[] lPostArgs =
                 postArgs as KeyValuePair<string, string>[] ?? postArgs.ToArray();
             return lPostArgs.Any()
-                ? httpClient.PostRequestAsync(url, lPostArgs, headers)
-                : httpClient.GetRequestAsync(url, headers);
+                       ? httpClient.PostRequestAsync(url, lPostArgs, headers)
+                       : httpClient.GetRequestAsync(url, headers);
         }
 
         #endregion

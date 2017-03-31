@@ -13,7 +13,8 @@ namespace Azuria.Api.v1.Converters
             return objectType == typeof(MediaEntryType);
         }
 
-        public override object ReadJson(JsonReader reader, Type objectType, object existingValue,
+        public override object ReadJson(
+            JsonReader reader, Type objectType, object existingValue,
             JsonSerializer serializer)
         {
             return Enum.Parse(typeof(MediaEntryType), (string) reader.Value, true);

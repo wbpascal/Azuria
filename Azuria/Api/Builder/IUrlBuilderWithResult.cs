@@ -48,14 +48,14 @@ namespace Azuria.Api.Builder
         /// <param name="key"></param>
         /// <param name="value"></param>
         /// <returns></returns>
-        IUrlBuilderWithResult<T> WithPostArgument(string key, string value);
+        IUrlBuilderWithResult<T> WithPostParameter(string key, string value);
 
         /// <summary>
         /// 
         /// </summary>
         /// <param name="args"></param>
         /// <returns></returns>
-        IUrlBuilderWithResult<T> WithPostArgument(IEnumerable<KeyValuePair<string, string>> args);
+        IUrlBuilderWithResult<T> WithPostParameter(IEnumerable<KeyValuePair<string, string>> args);
 
         #endregion
     }

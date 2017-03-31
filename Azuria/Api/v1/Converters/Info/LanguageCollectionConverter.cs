@@ -11,7 +11,8 @@ namespace Azuria.Api.v1.Converters.Info
         #region Methods
 
         /// <inheritdoc />
-        public override MediaLanguage[] ConvertJson(JsonReader reader, Type objectType, object existingValue,
+        public override MediaLanguage[] ConvertJson(
+            JsonReader reader, Type objectType, object existingValue,
             JsonSerializer serializer)
         {
             List<MediaLanguage> lLanguages = new List<MediaLanguage>();

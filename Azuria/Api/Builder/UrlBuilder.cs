@@ -35,14 +35,14 @@ namespace Azuria.Api.Builder
         }
 
         /// <inheritdoc />
-        public IUrlBuilder WithPostArgument(string key, string value)
+        public IUrlBuilder WithPostParameter(string key, string value)
         {
             this.AddPostArgument(key, value);
             return this;
         }
 
         /// <inheritdoc />
-        public IUrlBuilder WithPostArgument(IEnumerable<KeyValuePair<string, string>> args)
+        public IUrlBuilder WithPostParameter(IEnumerable<KeyValuePair<string, string>> args)
         {
             this.AddPostArgument(args);
             return this;
@@ -111,14 +111,14 @@ namespace Azuria.Api.Builder
         }
 
         /// <inheritdoc />
-        public IUrlBuilderWithResult<T> WithPostArgument(string key, string value)
+        public IUrlBuilderWithResult<T> WithPostParameter(string key, string value)
         {
             this.AddPostArgument(key, value);
             return this;
         }
 
         /// <inheritdoc />
-        public IUrlBuilderWithResult<T> WithPostArgument(IEnumerable<KeyValuePair<string, string>> args)
+        public IUrlBuilderWithResult<T> WithPostParameter(IEnumerable<KeyValuePair<string, string>> args)
         {
             this.AddPostArgument(args);
             return this;

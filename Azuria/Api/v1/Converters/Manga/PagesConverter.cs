@@ -16,7 +16,8 @@ namespace Azuria.Api.v1.Converters.Manga
         }
 
         /// <inheritdoc />
-        public override object ReadJson(JsonReader reader, Type objectType, object existingValue,
+        public override object ReadJson(
+            JsonReader reader, Type objectType, object existingValue,
             JsonSerializer serializer)
         {
             List<PageDataModel> lPageDataModels = new List<PageDataModel>();

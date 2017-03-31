@@ -1,7 +1,5 @@
 ﻿using System;
 using Autofac;
-using Azuria.Authentication;
-using Azuria.Connection;
 
 namespace Azuria
 {

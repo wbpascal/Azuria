@@ -28,12 +28,14 @@ namespace Azuria.Connection
         /// <param name="userAgentExtra"></param>
         public HttpClient(int timeout = 5000, string userAgentExtra = "")
         {
-            this._client = new System.Net.Http.HttpClient(new HttpClientHandler
-            {
-                AllowAutoRedirect = true,
-                UseCookies = true
-            }) {Timeout = TimeSpan.FromMilliseconds(timeout)};
-            this._client.DefaultRequestHeaders.TryAddWithoutValidation("User-Agent",
+            this._client = new System.Net.Http.HttpClient(
+                new HttpClientHandler
+                {
+                    AllowAutoRedirect = true,
+                    UseCookies = true
+                }) {Timeout = TimeSpan.FromMilliseconds(timeout)};
+            this._client.DefaultRequestHeaders.TryAddWithoutValidation(
+                "User-Agent",
                 $"{UserAgent} {userAgentExtra}".TrimEnd());
         }
 
@@ -51,7 +53,8 @@ namespace Azuria.Connection
         /// <param name="url"></param>
         /// <param name="headers"></param>
         /// <returns></returns>
-        public virtual async Task<IProxerResult<string>> GetRequestAsync(Uri url,
+        public virtual async Task<IProxerResult<string>> GetRequestAsync(
+            Uri url,
             Dictionary<string, string> headers = null)
         {
             string lResponse;
@@ -70,15 +73,15 @@ namespace Azuria.Connection
             if (lResponseObject.StatusCode == HttpStatusCode.OK && !string.IsNullOrEmpty(lResponseString))
                 lResponse = WebUtility.HtmlDecode(lResponseString).Replace("\n", "");
             else if (lResponseObject.StatusCode == HttpStatusCode.ServiceUnavailable &&
-                !string.IsNullOrEmpty(lResponseString))
+                     !string.IsNullOrEmpty(lResponseString))
                 return new ProxerResult<string>(new[] {new CloudflareException()});
             else
                 return
                     new ProxerResult<string>(new[] {new InvalidResponseException()});
 
             return string.IsNullOrEmpty(lResponse)
-                ? new ProxerResult<string>(new Exception[] {new InvalidResponseException()})
-                : new ProxerResult<string>(lResponse);
+                       ? new ProxerResult<string>(new Exception[] {new InvalidResponseException()})
+                       : new ProxerResult<string>(lResponse);
         }
 
         private async Task<HttpResponseMessage> GetWebRequestAsync(Uri url, Dictionary<string, string> headers)
@@ -98,7 +101,8 @@ namespace Azuria.Connection
         /// <param name="postArgs"></param>
         /// <param name="headers"></param>
         /// <returns></returns>
-        public virtual async Task<IProxerResult<string>> PostRequestAsync(Uri url,
+        public virtual async Task<IProxerResult<string>> PostRequestAsync(
+            Uri url,
             IEnumerable<KeyValuePair<string, string>> postArgs, Dictionary<string, string> headers = null)
         {
             string lResponse;
@@ -117,17 +121,18 @@ namespace Azuria.Connection
             if (lResponseObject.StatusCode == HttpStatusCode.OK && !string.IsNullOrEmpty(lResponseString))
                 lResponse = WebUtility.HtmlDecode(lResponseString).Replace("\n", "");
             else if (lResponseObject.StatusCode == HttpStatusCode.ServiceUnavailable
-                && !string.IsNullOrEmpty(lResponseString))
+                     && !string.IsNullOrEmpty(lResponseString))
                 return new ProxerResult<string>(new[] {new CloudflareException()});
             else
                 return new ProxerResult<string>(new[] {new InvalidResponseException()});
 
             return string.IsNullOrEmpty(lResponse)
-                ? new ProxerResult<string>(new Exception[] {new InvalidResponseException {Response = lResponse}})
-                : new ProxerResult<string>(lResponseString);
+                       ? new ProxerResult<string>(new Exception[] {new InvalidResponseException {Response = lResponse}})
+                       : new ProxerResult<string>(lResponseString);
         }
 
-        private async Task<HttpResponseMessage> PostWebRequestAsync(Uri url,
+        private async Task<HttpResponseMessage> PostWebRequestAsync(
+            Uri url,
             IEnumerable<KeyValuePair<string, string>> postArgs, Dictionary<string, string> headers)
         {
             this._client.DefaultRequestHeaders.Clear();

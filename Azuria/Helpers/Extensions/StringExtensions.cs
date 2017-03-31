@@ -23,8 +23,10 @@ namespace Azuria.Helpers.Extensions
             {
                 while (index != startTag.Length - 1)
                 {
-                    stringsFound.Add(source.Substring(index,
-                        source.IndexOf(endTag, index, StringComparison.Ordinal) - index));
+                    stringsFound.Add(
+                        source.Substring(
+                            index,
+                            source.IndexOf(endTag, index, StringComparison.Ordinal) - index));
                     index = source.IndexOf(startTag, index, StringComparison.Ordinal) + startTag.Length;
                 }
             }

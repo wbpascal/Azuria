@@ -1,4 +1,5 @@
 ﻿using System;
+using Azuria.Api.Builder;
 using Azuria.Api.v1.DataModels.Ucp;
 using Azuria.Api.v1.DataModels.User;
 using ToptenDataModel = Azuria.Api.v1.DataModels.Ucp.ToptenDataModel;
@@ -8,8 +9,19 @@ namespace Azuria.Api.v1.RequestBuilder
     /// <summary>
     /// Represents the ucp api class.
     /// </summary>
-    public static class UcpRequestBuilder
+    public class UcpRequestBuilder
     {
+        private readonly IProxerClient _client;
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="client"></param>
+        public UcpRequestBuilder(IProxerClient client)
+        {
+            this._client = client;
+        }
+
         #region Methods
 
         /// <summary>
@@ -24,10 +36,9 @@ namespace Azuria.Api.v1.RequestBuilder
         /// </param>
         /// <returns>An instance of <see cref="ApiRequest" /> that removes an entry from a users topten.</returns>
         /// <seealso cref="GetTopten" />
-        public static ApiRequest DeleteFavourite(int favouriteId)
+        public IUrlBuilder DeleteFavourite(int favouriteId)
         {
-            return ApiRequest.Create(new Uri($"{ApiConstants.ApiUrlV1}/ucp/deletefavorite"))
-                .WithLoginCheck(true)
+            return new UrlBuilder(new Uri($"{ApiConstants.ApiUrlV1}/ucp/deletefavorite"), this._client)
                 .WithPostParameter("id", favouriteId.ToString());
         }
 
@@ -41,10 +52,9 @@ namespace Azuria.Api.v1.RequestBuilder
         /// <param name="reminderId">The id of the reminder that should be deleted (see <see cref="GetReminder" />).</param>
         /// <returns>An instance of <see cref="ApiRequest" /> that deletes a reminder.</returns>
         /// <seealso cref="GetReminder" />
-        public static ApiRequest DeleteReminder(int reminderId)
+        public IUrlBuilder DeleteReminder(int reminderId)
         {
-            return ApiRequest.Create(new Uri($"{ApiConstants.ApiUrlV1}/ucp/deletereminder"))
-                .WithLoginCheck(true)
+            return new UrlBuilder(new Uri($"{ApiConstants.ApiUrlV1}/ucp/deletereminder"), this._client)
                 .WithPostParameter("id", reminderId.ToString());
         }
 
@@ -58,10 +68,9 @@ namespace Azuria.Api.v1.RequestBuilder
         /// <param name="voteId">The id of the comment upvote that should be removed (see <see cref="GetVotes" />).</param>
         /// <returns>An instance of <see cref="ApiRequest" /> that removes a comment upvote.</returns>
         /// <seealso cref="GetVotes" />
-        public static ApiRequest DeleteVote(int voteId)
+        public IUrlBuilder DeleteVote(int voteId)
         {
-            return ApiRequest.Create(new Uri($"{ApiConstants.ApiUrlV1}/ucp/deletevote"))
-                .WithLoginCheck(true)
+            return new UrlBuilder(new Uri($"{ApiConstants.ApiUrlV1}/ucp/deletevote"), this._client)
                 .WithPostParameter("id", voteId.ToString());
         }
 
@@ -76,12 +85,12 @@ namespace Azuria.Api.v1.RequestBuilder
         /// <param name="page">Optional. The index of the page that should be loaded. Default: 0</param>
         /// <param name="limit">Optional. The number of entries that should be loaded per page. Default: 50</param>
         /// <returns>An instance of <see cref="ApiRequest" /> that returns an array of episodes and chapters.</returns>
-        public static ApiRequest<HistoryDataModel[]> GetHistory(int page = 0, int limit = 50)
+        public IUrlBuilderWithResult<HistoryDataModel[]> GetHistory(int page = 0, int limit = 50)
         {
-            return ApiRequest<HistoryDataModel[]>.Create(new Uri($"{ApiConstants.ApiUrlV1}/ucp/history"))
-                .WithGetParameter("p", page.ToString())
-                .WithGetParameter("limit", limit.ToString())
-                .WithLoginCheck(true);
+            return new UrlBuilder<HistoryDataModel[]>(
+                    new Uri($"{ApiConstants.ApiUrlV1}/ucp/history"), this._client
+                ).WithGetParameter("p", page.ToString())
+                 .WithGetParameter("limit", limit.ToString());
         }
 
         /// <summary>
@@ -110,17 +119,17 @@ namespace Azuria.Api.v1.RequestBuilder
         /// Default: "stateNameASC"
         /// </param>
         /// <returns>An instance of <see cref="ApiRequest" /> that returns an array of anime or manga entries.</returns>
-        public static ApiRequest<ListDataModel[]> GetList(string kat = "anime", int page = 0,
+        public IUrlBuilderWithResult<ListDataModel[]> GetList(
+            string kat = "anime", int page = 0,
             int limit = 100, string search = "", string searchStart = "", string sort = "stateNameAsc")
         {
-            return ApiRequest<ListDataModel[]>.Create(new Uri($"{ApiConstants.ApiUrlV1}/ucp/list"))
+            return new UrlBuilder<ListDataModel[]>(new Uri($"{ApiConstants.ApiUrlV1}/ucp/list"), this._client)
                 .WithGetParameter("kat", kat)
                 .WithGetParameter("p", page.ToString())
                 .WithGetParameter("limit", limit.ToString())
                 .WithGetParameter("search", search)
                 .WithGetParameter("search_start", searchStart)
-                .WithGetParameter("sort", sort)
-                .WithLoginCheck(true);
+                .WithGetParameter("sort", sort);
         }
 
         /// <summary>
@@ -135,11 +144,10 @@ namespace Azuria.Api.v1.RequestBuilder
         /// "manga". Default: "anime"
         /// </param>
         /// <returns>An instance of <see cref="ApiRequest" /> that returns a sum of watched episodes or read chapters.</returns>
-        public static ApiRequest<int> GetListsum(string kat = "anime")
+        public IUrlBuilderWithResult<int> GetListsum(string kat = "anime")
         {
-            return ApiRequest<int>.Create(new Uri($"{ApiConstants.ApiUrlV1}/ucp/listsum"))
-                .WithGetParameter("kat", kat)
-                .WithLoginCheck(true);
+            return new UrlBuilder<int>(new Uri($"{ApiConstants.ApiUrlV1}/ucp/listsum"), this._client)
+                .WithGetParameter("kat", kat);
         }
 
         /// <summary>
@@ -156,14 +164,15 @@ namespace Azuria.Api.v1.RequestBuilder
         /// <param name="page">Optional. The index of the page that should be loaded. Default: 0</param>
         /// <param name="limit">Optional. The number of entries that should be loaded per page. Default: 100</param>
         /// <returns>An instance of <see cref="ApiRequest" /> that returns an array of reminders.</returns>
-        public static ApiRequest<BookmarkDataModel[]> GetReminder(string kat = "", int page = 0,
+        public IUrlBuilderWithResult<BookmarkDataModel[]> GetReminder(
+            string kat = "", int page = 0,
             int limit = 100)
         {
-            return ApiRequest<BookmarkDataModel[]>.Create(new Uri($"{ApiConstants.ApiUrlV1}/ucp/reminder"))
-                .WithGetParameter("kat", kat)
-                .WithGetParameter("p", page.ToString())
-                .WithGetParameter("limit", limit.ToString())
-                .WithLoginCheck(true);
+            return new UrlBuilder<BookmarkDataModel[]>(
+                    new Uri($"{ApiConstants.ApiUrlV1}/ucp/reminder"), this._client
+                ).WithGetParameter("kat", kat)
+                 .WithGetParameter("p", page.ToString())
+                 .WithGetParameter("limit", limit.ToString());
         }
 
         /// <summary>
@@ -174,10 +183,11 @@ namespace Azuria.Api.v1.RequestBuilder
         /// * UCP - Level 0
         /// </summary>
         /// <returns>An instance of <see cref="ApiRequest" /> that returns an array of anime and manga.</returns>
-        public static ApiRequest<ToptenDataModel[]> GetTopten()
+        public IUrlBuilderWithResult<ToptenDataModel[]> GetTopten()
         {
-            return ApiRequest<ToptenDataModel[]>.Create(new Uri($"{ApiConstants.ApiUrlV1}/ucp/topten"))
-                .WithLoginCheck(true);
+            return new UrlBuilder<ToptenDataModel[]>(
+                new Uri($"{ApiConstants.ApiUrlV1}/ucp/topten"), this._client
+            );
         }
 
         /// <summary>
@@ -188,10 +198,11 @@ namespace Azuria.Api.v1.RequestBuilder
         /// * UCP - Level 0
         /// </summary>
         /// <returns>An instance of <see cref="ApiRequest" /> that returns an array of comments.</returns>
-        public static ApiRequest<VoteDataModel[]> GetVotes()
+        public IUrlBuilderWithResult<VoteDataModel[]> GetVotes()
         {
-            return ApiRequest<VoteDataModel[]>.Create(new Uri($"{ApiConstants.ApiUrlV1}/ucp/votes"))
-                .WithLoginCheck(true);
+            return new UrlBuilder<VoteDataModel[]>(
+                new Uri($"{ApiConstants.ApiUrlV1}/ucp/votes"), this._client
+            );
         }
 
         /// <summary>
@@ -206,10 +217,9 @@ namespace Azuria.Api.v1.RequestBuilder
         /// <param name="id">The id of the entry that should be edited (see <see cref="GetList" />).</param>
         /// <param name="progress">The amount of watched episodes/read chapters.</param>
         /// <returns>An instance of <see cref="ApiRequest" /> sets a users progress of an anime/manga.</returns>
-        public static ApiRequest SetCommentState(int id, int progress)
+        public IUrlBuilder SetCommentState(int id, int progress)
         {
-            return ApiRequest.Create(new Uri($"{ApiConstants.ApiUrlV1}/ucp/setcommentstate"))
-                .WithLoginCheck(true)
+            return new UrlBuilder(new Uri($"{ApiConstants.ApiUrlV1}/ucp/setcommentstate"), this._client)
                 .WithPostParameter("id", id.ToString())
                 .WithPostParameter("value", progress.ToString());
         }
@@ -232,14 +242,13 @@ namespace Azuria.Api.v1.RequestBuilder
         /// Possible values: "anime", "manga"
         /// </param>
         /// <returns>An instance of <see cref="ApiRequest" />.</returns>
-        public static ApiRequest SetReminder(int entryId, int contentIndex, string language, string kat)
+        public IUrlBuilder SetReminder(int entryId, int contentIndex, string language, string kat)
         {
-            return ApiRequest.Create(new Uri($"{ApiConstants.ApiUrlV1}/ucp/setreminder"))
+            return new UrlBuilder(new Uri($"{ApiConstants.ApiUrlV1}/ucp/setreminder"), this._client)
                 .WithGetParameter("id", entryId.ToString())
                 .WithGetParameter("episode", contentIndex.ToString())
                 .WithGetParameter("language", language)
-                .WithGetParameter("kat", kat)
-                .WithLoginCheck(true);
+                .WithGetParameter("kat", kat);
         }
 
         #endregion

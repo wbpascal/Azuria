@@ -30,14 +30,14 @@ namespace Azuria.Api.Builder
         /// <param name="key"></param>
         /// <param name="value"></param>
         /// <returns></returns>
-        IUrlBuilder WithPostArgument(string key, string value);
+        IUrlBuilder WithPostParameter(string key, string value);
 
         /// <summary>
         /// 
         /// </summary>
         /// <param name="args"></param>
         /// <returns></returns>
-        IUrlBuilder WithPostArgument(IEnumerable<KeyValuePair<string, string>> args);
+        IUrlBuilder WithPostParameter(IEnumerable<KeyValuePair<string, string>> args);
 
         /// <summary>
         /// 

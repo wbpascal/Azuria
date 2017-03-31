@@ -15,7 +15,8 @@ namespace Azuria.Api.v1.Converters
         }
 
         /// <inheritdoc />
-        public override object ReadJson(JsonReader reader, Type objectType, object existingValue,
+        public override object ReadJson(
+            JsonReader reader, Type objectType, object existingValue,
             JsonSerializer serializer)
         {
             string lValue = reader.Value.ToString();
