@@ -22,6 +22,7 @@
   </metadata>
   <files>
     <file src="Azuria\bin\Appveyor\netstandard1.2\Azuria.dll" target="lib\netstandard1.2" />
+    <file src="Azuria\bin\Appveyor\netstandard1.2\Azuria.pdb" target="lib\netstandard1.2" />
     <file src="Azuria\bin\Appveyor\netstandard1.2\Azuria.xml" target="lib\netstandard1.2" />
   </files>
 </package>
