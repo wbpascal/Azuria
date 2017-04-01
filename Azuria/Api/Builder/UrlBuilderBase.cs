@@ -102,8 +102,9 @@ namespace Azuria.Api.Builder
         {
             UriBuilder lUriBuilder = new UriBuilder(this._baseUri);
             lUriBuilder.Query += this.GetParameters.Aggregate(
-                string.Empty, (s, pair) => $"&{pair.Key}={pair.Value}"
-            ).Remove(0, 1);
+                    string.Empty, (s, pair) => $"&{pair.Key}={pair.Value}"
+                )
+                .RemoveIfNotEmpty(0, 1);
             return lUriBuilder.Uri;
         }
 

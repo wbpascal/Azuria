@@ -49,9 +49,9 @@ namespace Azuria.Api.v1.RequestBuilder
             return new UrlBuilder<CommentDataModel[]>(
                     new Uri($"{ApiConstants.ApiUrlV1}/info/comments"), this._client
                 ).WithGetParameter("id", entryId.ToString())
-                 .WithGetParameter("p", page.ToString())
-                 .WithGetParameter("limit", limit.ToString())
-                 .WithGetParameter("sort", sort);
+                .WithGetParameter("p", page.ToString())
+                .WithGetParameter("limit", limit.ToString())
+                .WithGetParameter("sort", sort);
         }
 
         /// <summary>
@@ -172,8 +172,8 @@ namespace Azuria.Api.v1.RequestBuilder
             return new UrlBuilder<ListInfoDataModel>(
                     new Uri($"{ApiConstants.ApiUrlV1}/info/listinfo"), this._client
                 ).WithGetParameter("id", entryId.ToString())
-                 .WithGetParameter("p", page.ToString())
-                 .WithGetParameter("limit", limit.ToString());
+                .WithGetParameter("p", page.ToString())
+                .WithGetParameter("limit", limit.ToString());
         }
 
         /// <summary>

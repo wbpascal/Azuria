@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Globalization;
-using System.Linq;
 
 namespace Azuria.Helpers.Extensions
 {
@@ -9,32 +7,9 @@ namespace Azuria.Helpers.Extensions
     {
         #region Methods
 
-        internal static bool ContainsOne(this string source, params string[] contains)
+        internal static string RemoveIfNotEmpty(this string source, int startIndex, int count)
         {
-            return contains.Any(source.Contains);
-        }
-
-        internal static List<string> GetTagContents(this string source, string startTag, string endTag)
-        {
-            List<string> stringsFound = new List<string>();
-            int index = source.IndexOf(startTag, StringComparison.Ordinal) + startTag.Length;
-
-            try
-            {
-                while (index != startTag.Length - 1)
-                {
-                    stringsFound.Add(
-                        source.Substring(
-                            index,
-                            source.IndexOf(endTag, index, StringComparison.Ordinal) - index));
-                    index = source.IndexOf(startTag, index, StringComparison.Ordinal) + startTag.Length;
-                }
-            }
-            catch
-            {
-                // ignored
-            }
-            return stringsFound;
+            return string.IsNullOrEmpty(source) ? source : source.Remove(startIndex, count);
         }
 
         internal static DateTime ToDateTime(this string stringToFormat, string format = "dd.MM.yyyy")

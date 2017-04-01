@@ -68,7 +68,7 @@ namespace Azuria.Api.v1.RequestBuilder
             return new UrlBuilder<NewsNotificationDataModel[]>(
                     new Uri($"{ApiConstants.ApiUrlV1}/notifications/news"), this._client
                 ).WithGetParameter("p", page.ToString())
-                 .WithGetParameter("limit", limit.ToString());
+                .WithGetParameter("limit", limit.ToString());
         }
 
         #endregion

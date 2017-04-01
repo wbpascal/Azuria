@@ -61,7 +61,7 @@ namespace Azuria.Api.v1.RequestBuilder
             return new UrlBuilder<ConferenceDataModel[]>(
                     new Uri($"{ApiConstants.ApiUrlV1}/messenger/conferences"), this._client
                 ).WithGetParameter("type", type.ToString().ToLowerInvariant())
-                 .WithGetParameter("p", page.ToString());
+                .WithGetParameter("p", page.ToString());
         }
 
         /// <summary>
@@ -108,8 +108,8 @@ namespace Azuria.Api.v1.RequestBuilder
             return new UrlBuilder<MessageDataModel[]>(
                     new Uri($"{ApiConstants.ApiUrlV1}/messenger/messages"), this._client
                 ).WithGetParameter("conference_id", conferenceId.ToString())
-                 .WithGetParameter("message_id", messageId.ToString())
-                 .WithGetParameter("read", markAsRead.ToString().ToLowerInvariant());
+                .WithGetParameter("message_id", messageId.ToString())
+                .WithGetParameter("read", markAsRead.ToString().ToLowerInvariant());
         }
 
         /// <summary>
@@ -128,7 +128,7 @@ namespace Azuria.Api.v1.RequestBuilder
             return new UrlBuilder<int>(
                     new Uri($"{ApiConstants.ApiUrlV1}/messenger/newconference"), this._client
                 ).WithPostParameter("username", username)
-                 .WithPostParameter("text", text);
+                .WithPostParameter("text", text);
         }
 
         /// <summary>
@@ -209,7 +209,7 @@ namespace Azuria.Api.v1.RequestBuilder
             return new UrlBuilder<string>(
                     new Uri($"{ApiConstants.ApiUrlV1}/messenger/setmessage"), this._client
                 ).WithGetParameter("conference_id", conferenceId.ToString())
-                 .WithPostParameter("text", message);
+                .WithPostParameter("text", message);
         }
 
         /// <summary>

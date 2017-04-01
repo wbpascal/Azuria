@@ -1,5 +1,7 @@
 ﻿using System;
 using Autofac;
+using Azuria.Api;
+using Azuria.Authentication;
 using Azuria.Connection;
 
 namespace Azuria
@@ -27,8 +29,20 @@ namespace Azuria
 
         private static void RegisterComponents(ContainerBuilder builder)
         {
+            builder.RegisterModule<ApiComponentModule>();
             builder.RegisterInstance(new HttpClient()).As<IHttpClient>();
-            //builder.RegisterInstance(new LoginManager()).As<ILoginManager>();
+            builder.RegisterInstance(new LoginManager()).As<ILoginManager>();
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="loginToken"></param>
+        /// <returns></returns>
+        public ProxerClientOptions WithAuthorisation(char[] loginToken)
+        {
+            this.ContainerBuilder.RegisterInstance(new LoginManager(loginToken)).As<ILoginManager>();
+            return this;
         }
 
         /// <summary>

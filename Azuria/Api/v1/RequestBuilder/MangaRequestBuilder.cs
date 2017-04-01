@@ -37,8 +37,8 @@ namespace Azuria.Api.v1.RequestBuilder
             return new UrlBuilder<ChapterDataModel>(
                     new Uri($"{ApiConstants.ApiUrlV1}/manga/chapter"), this._client
                 ).WithGetParameter("id", id.ToString())
-                 .WithGetParameter("episode", episode.ToString())
-                 .WithGetParameter("language", language);
+                .WithGetParameter("episode", episode.ToString())
+                .WithGetParameter("language", language);
         }
 
         #endregion

@@ -21,6 +21,7 @@
   <ItemGroup>
     <PackageReference Include="Autofac" Version="4.2.0" />
     <PackageReference Include="Newtonsoft.Json" Version="9.0.1" />
+    <PackageReference Include="System.Threading.Tasks.Extensions" Version="4.3.0" />
   </ItemGroup>
 
 </Project>

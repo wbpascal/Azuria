@@ -37,10 +37,10 @@ namespace Azuria.Api.v1.Converters
                 if (string.IsNullOrEmpty(reader.Value.ToString()) || reader.Value.ToString().Equals("[]"))
                     return new Dictionary<RatingCategory, int>();
                 return JsonConvert.DeserializeObject<Dictionary<string, int>>(reader.Value.ToString())
-                                  .ToDictionary(
-                                      keyValuePair =>
-                                          (RatingCategory) Enum.Parse(typeof(RatingCategory), keyValuePair.Key, true),
-                                      keyValuePair => keyValuePair.Value);
+                    .ToDictionary(
+                        keyValuePair =>
+                            (RatingCategory) Enum.Parse(typeof(RatingCategory), keyValuePair.Key, true),
+                        keyValuePair => keyValuePair.Value);
             }
             catch (Exception)
             {

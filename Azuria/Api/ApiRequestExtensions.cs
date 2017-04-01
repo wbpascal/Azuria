@@ -1,6 +1,8 @@
 ﻿using System.Threading.Tasks;
+using Autofac;
 using Azuria.Api.Builder;
 using Azuria.Api.v1;
+using Azuria.ErrorHandling;
 
 namespace Azuria.Api
 {
@@ -18,7 +20,7 @@ namespace Azuria.Api
         /// <returns></returns>
         public static IApiRequestBuilder CreateRequest(this IProxerClient client)
         {
-            return new ApiRequestBuilder(client);
+            return client.Container.Resolve<IApiRequestBuilder>();
         }
 
         /// <summary>
@@ -26,7 +28,7 @@ namespace Azuria.Api
         /// </summary>
         /// <param name="builder"></param>
         /// <returns></returns>
-        public static Task<ProxerApiResponse> DoRequestAsync(this IUrlBuilder builder)
+        public static Task<IProxerResult> DoRequestAsync(this IUrlBuilder builder)
         {
             return builder.ApiRequestAsync();
         }
@@ -37,7 +39,7 @@ namespace Azuria.Api
         /// <typeparam name="T"></typeparam>
         /// <param name="builder"></param>
         /// <returns></returns>
-        public static Task<ProxerApiResponse<T>> DoRequestAsync<T>(this IUrlBuilderWithResult<T> builder)
+        public static Task<IProxerResult<T>> DoRequestAsync<T>(this IUrlBuilderWithResult<T> builder)
         {
             return builder.ApiRequestAsync();
         }

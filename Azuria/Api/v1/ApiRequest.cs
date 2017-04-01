@@ -125,8 +125,8 @@ namespace Azuria.Api.v1
         /// </summary>
         public IEnumerable<KeyValuePair<string, string>> PostArguments
         {
-            get { return this._postArguments; }
-            set { this._postArguments = value.ToList(); }
+            get => this._postArguments;
+            set => this._postArguments = value.ToList();
         }
 
         #endregion

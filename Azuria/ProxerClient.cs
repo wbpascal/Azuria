@@ -11,6 +11,7 @@ namespace Azuria
         private ProxerClient(char[] apiKey, ProxerClientOptions options)
         {
             this.ApiKey = apiKey;
+            options.ContainerBuilder.RegisterInstance(this).As<IProxerClient>();
             this.Container = options.ContainerBuilder.Build();
         }
 

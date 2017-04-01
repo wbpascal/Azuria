@@ -90,7 +90,7 @@ namespace Azuria.Api.v1.RequestBuilder
             return new UrlBuilder<HistoryDataModel[]>(
                     new Uri($"{ApiConstants.ApiUrlV1}/ucp/history"), this._client
                 ).WithGetParameter("p", page.ToString())
-                 .WithGetParameter("limit", limit.ToString());
+                .WithGetParameter("limit", limit.ToString());
         }
 
         /// <summary>
@@ -171,8 +171,8 @@ namespace Azuria.Api.v1.RequestBuilder
             return new UrlBuilder<BookmarkDataModel[]>(
                     new Uri($"{ApiConstants.ApiUrlV1}/ucp/reminder"), this._client
                 ).WithGetParameter("kat", kat)
-                 .WithGetParameter("p", page.ToString())
-                 .WithGetParameter("limit", limit.ToString());
+                .WithGetParameter("p", page.ToString())
+                .WithGetParameter("limit", limit.ToString());
         }
 
         /// <summary>

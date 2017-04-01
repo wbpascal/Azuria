@@ -32,6 +32,7 @@ namespace Azuria.Api.v1.RequestBuilder
         /// <returns>An instance of <see cref="ApiRequest" /> that returns...</returns>
         public IUrlBuilderWithResult<UserInfoDataModel> GetInfo()
         {
+            //IMPORTANT: DO NOT CHECK LOGIN HERE
             return new UrlBuilder<UserInfoDataModel>(
                 new Uri($"{ApiConstants.ApiUrlV1}/user/userinfo"), this._client
             );
@@ -84,7 +85,7 @@ namespace Azuria.Api.v1.RequestBuilder
             int limit = 25, string kat = "anime", int length = 300)
         {
             return this.GetLatestComments(page, limit, kat, length)
-                       .WithGetParameter("uid", userId.ToString());
+                .WithGetParameter("uid", userId.ToString());
         }
 
         /// <summary>
@@ -104,7 +105,7 @@ namespace Azuria.Api.v1.RequestBuilder
             int limit = 25, string kat = "anime", int length = 300)
         {
             return this.GetLatestComments(page, limit, kat, length)
-                       .WithGetParameter("username", username);
+                .WithGetParameter("username", username);
         }
 
         /// <summary>
@@ -125,9 +126,9 @@ namespace Azuria.Api.v1.RequestBuilder
             return new UrlBuilder<CommentDataModel[]>(
                     new Uri($"{ApiConstants.ApiUrlV1}/user/comments"), this._client
                 ).WithGetParameter("p", page.ToString())
-                 .WithGetParameter("limit", limit.ToString())
-                 .WithGetParameter("kat", kat)
-                 .WithGetParameter("length", length.ToString());
+                .WithGetParameter("limit", limit.ToString())
+                .WithGetParameter("kat", kat)
+                .WithGetParameter("length", length.ToString());
         }
 
         /// <summary>
@@ -150,11 +151,11 @@ namespace Azuria.Api.v1.RequestBuilder
             return new UrlBuilder<ListDataModel[]>(
                     new Uri($"{ApiConstants.ApiUrlV1}/user/list"), this._client
                 ).WithGetParameter("kat", kat)
-                 .WithGetParameter("p", page.ToString())
-                 .WithGetParameter("limit", limit.ToString())
-                 .WithGetParameter("search", search)
-                 .WithGetParameter("search_start", searchStart)
-                 .WithGetParameter("sort", sort);
+                .WithGetParameter("p", page.ToString())
+                .WithGetParameter("limit", limit.ToString())
+                .WithGetParameter("search", search)
+                .WithGetParameter("search_start", searchStart)
+                .WithGetParameter("sort", sort);
         }
 
         /// <summary>
@@ -176,7 +177,7 @@ namespace Azuria.Api.v1.RequestBuilder
             int limit = 100, string search = "", string searchStart = "", string sort = "")
         {
             return this.GetList(kat, page, limit, search, searchStart, sort)
-                       .WithGetParameter("uid", userId.ToString());
+                .WithGetParameter("uid", userId.ToString());
         }
 
         /// <summary>
@@ -198,7 +199,7 @@ namespace Azuria.Api.v1.RequestBuilder
             int limit = 100, string search = "", string searchStart = "", string sort = "")
         {
             return this.GetList(kat, page, limit, search, searchStart, sort)
-                       .WithGetParameter("username", username);
+                .WithGetParameter("username", username);
         }
 
         /// <summary>
@@ -258,7 +259,7 @@ namespace Azuria.Api.v1.RequestBuilder
             return new UrlBuilder<LoginDataModel>(
                     new Uri($"{ApiConstants.ApiUrlV1}/user/login"), this._client
                 ).WithPostParameter("username", username)
-                 .WithPostParameter("password", password);
+                .WithPostParameter("password", password);
         }
 
         /// <summary>

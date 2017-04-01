@@ -50,9 +50,9 @@ namespace Azuria.Api.v1.RequestBuilder
             return new UrlBuilder<SearchDataModel[]>(
                     new Uri($"{ApiConstants.ApiUrlV1}/list/entrylist"), this._client
                 ).WithGetParameter("limit", limit.ToString())
-                 .WithGetParameter("p", page.ToString())
-                 .WithGetParameter("kat", kat)
-                 .WithPostParameter(SearchQueryBuilder.Build(input));
+                .WithGetParameter("p", page.ToString())
+                .WithGetParameter("kat", kat)
+                .WithPostParameter(SearchQueryBuilder.Build(input));
         }
 
         /// <summary>
@@ -77,8 +77,8 @@ namespace Azuria.Api.v1.RequestBuilder
             return new UrlBuilder<SearchDataModel[]>(
                     new Uri($"{ApiConstants.ApiUrlV1}/list/entrysearch"), this._client
                 ).WithGetParameter("limit", limit.ToString())
-                 .WithGetParameter("p", page.ToString())
-                 .WithPostParameter(SearchQueryBuilder.Build(input));
+                .WithGetParameter("p", page.ToString())
+                .WithPostParameter(SearchQueryBuilder.Build(input));
         }
 
         /// <summary>
@@ -101,11 +101,11 @@ namespace Azuria.Api.v1.RequestBuilder
             return new UrlBuilder<IndustryDataModel[]>(
                     new Uri($"{ApiConstants.ApiUrlV1}/list/industrys"), this._client
                 ).WithGetParameter("start", start)
-                 .WithGetParameter("contains", contains)
-                 .WithGetParameter("country", country)
-                 .WithGetParameter("type", type)
-                 .WithGetParameter("limit", limit.ToString())
-                 .WithGetParameter("p", page.ToString());
+                .WithGetParameter("contains", contains)
+                .WithGetParameter("country", country)
+                .WithGetParameter("type", type)
+                .WithGetParameter("limit", limit.ToString())
+                .WithGetParameter("p", page.ToString());
         }
 
         /// <summary>
@@ -127,15 +127,15 @@ namespace Azuria.Api.v1.RequestBuilder
             return new UrlBuilder<IndustryProjectDataModel[]>(
                     new Uri($"{ApiConstants.ApiUrlV1}/list/industryprojects"), this._client
                 ).WithGetParameter("id", translatorId.ToString())
-                 .WithGetParameter("type", type.ToString())
-                 .WithGetParameter(
-                     "isH", (isH is bool isHValue
-                                 ? isHValue
-                                       ? 1
-                                       : -1
-                                 : 0).ToString())
-                 .WithGetParameter("p", p.ToString())
-                 .WithGetParameter("limit", limit.ToString());
+                .WithGetParameter("type", type.ToString())
+                .WithGetParameter(
+                    "isH", (isH is bool isHValue
+                                ? isHValue
+                                      ? 1
+                                      : -1
+                                : 0).ToString())
+                .WithGetParameter("p", p.ToString())
+                .WithGetParameter("limit", limit.ToString());
         }
 
         /// <summary>
@@ -151,7 +151,7 @@ namespace Azuria.Api.v1.RequestBuilder
             return new UrlBuilder<Tuple<int[], int[]>>(
                     new Uri($"{ApiConstants.ApiUrlV1}/list/tagids"), this._client
                 ).WithGetParameter("search", search)
-                 .WithCustomDataConverter(new TagIdConverter());
+                .WithCustomDataConverter(new TagIdConverter());
         }
 
         /// <summary>
@@ -173,10 +173,10 @@ namespace Azuria.Api.v1.RequestBuilder
             return new UrlBuilder<TranslatorDataModel[]>(
                     new Uri($"{ApiConstants.ApiUrlV1}/list/translatorgroups"), this._client
                 ).WithGetParameter("start", start)
-                 .WithGetParameter("contains", contains)
-                 .WithGetParameter("country", country)
-                 .WithGetParameter("limit", limit.ToString())
-                 .WithGetParameter("p", page.ToString());
+                .WithGetParameter("contains", contains)
+                .WithGetParameter("country", country)
+                .WithGetParameter("limit", limit.ToString())
+                .WithGetParameter("p", page.ToString());
         }
 
         /// <summary>
@@ -198,18 +198,18 @@ namespace Azuria.Api.v1.RequestBuilder
             return new UrlBuilder<TranslatorProjectDataModel[]>(
                     new Uri($"{ApiConstants.ApiUrlV1}/list/translatorgroupprojects"), this._client
                 ).WithGetParameter("id", translatorId.ToString())
-                 .WithGetParameter(
-                     "type", type is TranslationStatus typeValue
-                                 ? ((int) typeValue).ToString()
-                                 : string.Empty)
-                 .WithGetParameter(
-                     "isH", (isH is bool isHValue
-                                 ? isHValue
-                                       ? 1
-                                       : -1
-                                 : 0).ToString())
-                 .WithGetParameter("p", p.ToString())
-                 .WithGetParameter("limit", limit.ToString());
+                .WithGetParameter(
+                    "type", type is TranslationStatus typeValue
+                                ? ((int) typeValue).ToString()
+                                : string.Empty)
+                .WithGetParameter(
+                    "isH", (isH is bool isHValue
+                                ? isHValue
+                                      ? 1
+                                      : -1
+                                : 0).ToString())
+                .WithGetParameter("p", p.ToString())
+                .WithGetParameter("limit", limit.ToString());
         }
 
         #endregion
