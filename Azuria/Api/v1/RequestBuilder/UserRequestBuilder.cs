@@ -274,7 +274,7 @@ namespace Azuria.Api.v1.RequestBuilder
         /// <returns>An instance of <see cref="ApiRequest" /> that returns...</returns>
         public IUrlBuilderWithResult<LoginDataModel> Login(string username, string password, string secretKey)
         {
-            return this.Login(username, username).WithGetParameter("secretKey", secretKey);
+            return this.Login(username, password).WithPostParameter("secretKey", secretKey);
         }
 
         /// <summary>

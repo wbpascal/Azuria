@@ -1,5 +1,9 @@
 ﻿using System;
 using System.Threading.Tasks;
+using Azuria.Api;
+using Azuria.Api.v1;
+using Azuria.Api.v1.DataModels.User;
+using Azuria.Api.v1.RequestBuilder;
 using Azuria.ErrorHandling;
 
 namespace Azuria.Authentication
@@ -9,12 +13,14 @@ namespace Azuria.Authentication
     /// </summary>
     public class LoginManager : ILoginManager
     {
+        private readonly IProxerClient _client;
         private bool _isLoginQueued;
         private DateTime _lastRequestPerformed = DateTime.MinValue;
         private DateTime _loginPerformed = DateTime.MinValue;
 
-        internal LoginManager(char[] loginToken = null)
+        internal LoginManager(IProxerClient client, char[] loginToken = null)
         {
+            this._client = client;
             this.LoginToken = loginToken;
         }
 
@@ -37,9 +43,34 @@ namespace Azuria.Authentication
         }
 
         /// <inheritdoc />
-        public Task<IProxerResult> PerformLogin(string username, string password, string secretKey = null)
+        public virtual async Task<IProxerResult> PerformLogin(string username, string password, string secretKey = null)
         {
-            throw new NotImplementedException();
+            UserRequestBuilder lRequestBuilder = this._client.CreateRequest().FromUserClass();
+            IProxerResult<LoginDataModel> lResult = await (secretKey == null
+                                                               ? lRequestBuilder.Login(username, password)
+                                                               : lRequestBuilder.Login(username, password, secretKey))
+                                                        .DoRequestAsync();
+            if (!lResult.Success || lResult.Result == null)
+                return new ProxerResult(lResult.Exceptions);
+
+            this.LoginToken = lResult.Result.Token.ToCharArray();
+            this._loginPerformed = DateTime.Now;
+            return new ProxerResult();
+        }
+
+        /// <inheritdoc />
+        public virtual async Task<IProxerResult> PerformLogout()
+        {
+            IProxerResult lResult = await this._client.CreateRequest()
+                                        .FromUserClass()
+                                        .Logout()
+                                        .DoRequestAsync();
+            if (!lResult.Success)
+                return new ProxerResult(lResult.Exceptions);
+
+            this.LoginToken = null;
+            this._loginPerformed = DateTime.MinValue;
+            return new ProxerResult();
         }
 
         /// <inheritdoc />
@@ -51,7 +82,7 @@ namespace Azuria.Authentication
         /// <inheritdoc />
         public bool SendTokenWithNextRequest()
         {
-            if (this._isLoginQueued || this.LoginToken?.Length == 255 && !this.IsLoginProbablyValid())
+            if (this.LoginToken?.Length == 255 && (this._isLoginQueued || !this.IsLoginProbablyValid()))
             {
                 this._loginPerformed = DateTime.Now;
                 this._lastRequestPerformed = DateTime.Now;

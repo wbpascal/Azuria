@@ -28,6 +28,12 @@ namespace Azuria.Authentication
         /// <summary>
         /// 
         /// </summary>
+        /// <returns></returns>
+        Task<IProxerResult> PerformLogout();
+
+        /// <summary>
+        /// 
+        /// </summary>
         void QueueLoginForNextRequest();
 
         /// <summary>

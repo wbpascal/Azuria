@@ -8,11 +8,9 @@ namespace Azuria
     /// </summary>
     public class ProxerClient : IProxerClient
     {
-        private ProxerClient(char[] apiKey, ProxerClientOptions options)
+        private ProxerClient(char[] apiKey)
         {
             this.ApiKey = apiKey;
-            options.ContainerBuilder.RegisterInstance(this).As<IProxerClient>();
-            this.Container = options.ContainerBuilder.Build();
         }
 
         #region Properties
@@ -25,7 +23,7 @@ namespace Azuria
         /// <summary>
         /// 
         /// </summary>
-        public IContainer Container { get; }
+        public IContainer Container { get; private set; }
 
         #endregion
 
@@ -39,9 +37,17 @@ namespace Azuria
         /// <returns></returns>
         public static IProxerClient Create(char[] apiKey, Action<ProxerClientOptions> optionsFactory = null)
         {
-            ProxerClientOptions lOptions = new ProxerClientOptions();
+            ProxerClient lClient = new ProxerClient(apiKey);
+            ProxerClientOptions lOptions = new ProxerClientOptions(lClient);
             optionsFactory?.Invoke(lOptions);
-            return new ProxerClient(apiKey, lOptions);
+            lClient.ProcessOptions(lOptions);
+            return lClient;
+        }
+
+        private void ProcessOptions(ProxerClientOptions options)
+        {
+            options.ContainerBuilder.RegisterInstance(this).As<IProxerClient>();
+            this.Container = options.ContainerBuilder.Build();
         }
 
         #endregion

@@ -102,8 +102,8 @@ namespace Azuria.Connection
         /// <param name="headers"></param>
         /// <returns></returns>
         public virtual async Task<IProxerResult<string>> PostRequestAsync(
-            Uri url,
-            IEnumerable<KeyValuePair<string, string>> postArgs, Dictionary<string, string> headers = null)
+            Uri url, IEnumerable<KeyValuePair<string, string>> postArgs, 
+            Dictionary<string, string> headers = null)
         {
             string lResponse;
 
@@ -132,8 +132,8 @@ namespace Azuria.Connection
         }
 
         private async Task<HttpResponseMessage> PostWebRequestAsync(
-            Uri url,
-            IEnumerable<KeyValuePair<string, string>> postArgs, Dictionary<string, string> headers)
+            Uri url, IEnumerable<KeyValuePair<string, string>> postArgs, 
+            Dictionary<string, string> headers)
         {
             this._client.DefaultRequestHeaders.Clear();
 
