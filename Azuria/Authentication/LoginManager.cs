@@ -35,7 +35,8 @@ namespace Azuria.Authentication
 
         #region Methods
 
-        private bool IsLoginProbablyValid()
+        /// <inheritdoc />
+        public bool CheckIsLoginProbablyValid()
         {
             if (this._lastRequestPerformed == DateTime.MinValue)
                 return DateTime.Now.Subtract(this._loginPerformed).TotalHours < 24;
@@ -82,7 +83,7 @@ namespace Azuria.Authentication
         /// <inheritdoc />
         public bool SendTokenWithNextRequest()
         {
-            if (this.LoginToken?.Length == 255 && (this._isLoginQueued || !this.IsLoginProbablyValid()))
+            if (this.LoginToken?.Length == 255 && (this._isLoginQueued || !this.CheckIsLoginProbablyValid()))
             {
                 this._loginPerformed = DateTime.Now;
                 this._lastRequestPerformed = DateTime.Now;

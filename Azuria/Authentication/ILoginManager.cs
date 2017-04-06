@@ -23,6 +23,12 @@ namespace Azuria.Authentication
         /// 
         /// </summary>
         /// <returns></returns>
+        bool CheckIsLoginProbablyValid();
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
         Task<IProxerResult> PerformLogin(string username, string password, string secretKey = null);
 
         /// <summary>
