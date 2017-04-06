@@ -14,9 +14,7 @@ using Newtonsoft.Json;
 
 namespace Azuria.Api.v1
 {
-    /// <summary>
-    /// </summary>
-    public static class RequestHandler
+    internal static class RequestHandler
     {
         #region Methods
 
