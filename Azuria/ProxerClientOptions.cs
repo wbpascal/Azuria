@@ -45,19 +45,20 @@ namespace Azuria
         }
 
         /// <summary>
-        /// 
+        /// Overrides <see cref="WithCustomLoginManager" />.
         /// </summary>
         /// <param name="loginToken"></param>
         /// <returns></returns>
         public ProxerClientOptions WithAuthorisation(char[] loginToken)
         {
+            if (loginToken?.Length != 255) throw new ArgumentException(nameof(loginToken));
             this.ContainerBuilder.RegisterInstance(new LoginManager(this.Client, loginToken))
                 .As<ILoginManager>();
             return this;
         }
 
         /// <summary>
-        /// 
+        /// Overrides <see cref="WithCustomHttpClient(int, string)" />.
         /// </summary>
         /// <param name="client"></param>
         /// <returns></returns>
@@ -69,7 +70,7 @@ namespace Azuria
         }
 
         /// <summary>
-        /// 
+        /// Overrides <see cref="WithCustomHttpClient(IHttpClient)" />.
         /// </summary>
         /// <param name="timeout"></param>
         /// <param name="userAgentExtra"></param>
@@ -81,7 +82,7 @@ namespace Azuria
         }
 
         /// <summary>
-        /// 
+        /// Overrides <see cref="WithAuthorisation" />.
         /// </summary>
         /// <param name="factory"></param>
         /// <returns></returns>

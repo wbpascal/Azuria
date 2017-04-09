@@ -73,7 +73,7 @@ namespace Azuria.Api.v1
                 if (lApiResponse.Success) return lApiResponse;
 
                 Exception lException = HandleErrorCode(lApiResponse.ErrorCode);
-                if (!(lException is NotLoggedInException))
+                if (!(lException is NotAuthenticatedException))
                     return lException == null
                                ? new ProxerResult(new ProxerApiException(lApiResponse.ErrorCode))
                                : new ProxerResult(lException);
@@ -104,18 +104,18 @@ namespace Azuria.Api.v1
             switch (code)
             {
                 case ErrorCode.IpBlocked:
-                    return new CaptchaException("http://proxer.me/misc/captcha");
+                    return new FirewallException("http://proxer.me/misc/captcha");
                 case ErrorCode.ApiKeyNoPermission:
                     return new ApiKeyInsufficientException();
                 case ErrorCode.UserNoPermission:
                 case ErrorCode.ChatNoPermission:
-                    return new NoAccessException();
+                    return new NoPermissionException();
                 case ErrorCode.NotificationsNotLoggedIn:
                 case ErrorCode.UcpNotLoggedIn:
                 case ErrorCode.InfoNotLoggedIn:
                 case ErrorCode.MessengerNotLoggedIn:
                 case ErrorCode.ChatNotLoggedIn:
-                    return new NotLoggedInException();
+                    return new NotAuthenticatedException();
             }
 
             return null;
