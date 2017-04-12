@@ -1,0 +1,116 @@
+﻿using System;
+using System.ComponentModel;
+using System.Linq;
+using System.Reflection;
+using Azuria.Enums.Info;
+using Azuria.Enums.Media;
+
+namespace Azuria.Helpers.Extensions
+{
+    internal static class EnumExtensions
+    {
+        #region Methods
+
+        internal static string GetDescription<T>(this T enumValue) where T : struct
+        {
+            Type type = enumValue.GetType();
+            if (!(enumValue is Enum))
+                throw new ArgumentException("EnumerationValue must be of Enum type", nameof(enumValue));
+
+            MemberInfo memberInfo = type.GetTypeInfo()
+                .DeclaredMembers.FirstOrDefault(info => info.Name == enumValue.ToString());
+
+            Attribute[] attrs = memberInfo?.GetCustomAttributes(typeof(DescriptionAttribute), false).ToArray();
+            if (attrs?.Any() ?? false)
+                return ((DescriptionAttribute) attrs[0]).Description;
+
+            throw new InvalidOperationException("Description Attribute not found!");
+        }
+
+        internal static string ToShortString(this Country country)
+        {
+            switch (country)
+            {
+                case Country.Germany:
+                    return "de";
+                case Country.England:
+                    return "en";
+                case Country.UnitedStates:
+                    return "us";
+                case Country.Japan:
+                    return "jp";
+                case Country.Misc:
+                    return "misc";
+                default:
+                    throw new InvalidOperationException("This Country cannot be converted to a short string!");
+            }
+        }
+
+        internal static string ToShortString(this Language language)
+        {
+            switch (language)
+            {
+                case Language.English:
+                    return "en";
+                case Language.German:
+                    return "de";
+                default:
+                    return string.Empty;
+            }
+        }
+
+        internal static string ToTypeString(this UserList list)
+        {
+            switch (list)
+            {
+                case UserList.Favourites:
+                    return "favor";
+                case UserList.Finished:
+                    return "finish";
+                default:
+                    return list.ToString().ToLowerInvariant();
+            }
+        }
+
+        internal static string ToTypeString(this IndustryType type)
+        {
+            switch (type)
+            {
+                case IndustryType.RecordLabel:
+                    return "record_label";
+                case IndustryType.TalentAgent:
+                    return "talent_agent";
+                default:
+                    return type.ToString().ToLowerInvariant();
+            }
+        }
+
+        internal static string ToTypeString(this HeaderStyle style)
+        {
+            switch (style)
+            {
+                case HeaderStyle.OldBlue:
+                    return "old_blue";
+                default:
+                    return style.ToString().ToLowerInvariant();
+            }
+        }
+
+        internal static string ToTypeString(this MediaLanguage language)
+        {
+            switch (language)
+            {
+                case MediaLanguage.German:
+                    return "de";
+                case MediaLanguage.English:
+                    return "en";
+                case MediaLanguage.Unkown:
+                    throw new InvalidOperationException();
+                default:
+                    return language.ToString().ToLowerInvariant();
+            }
+        }
+
+        #endregion
+    }
+}

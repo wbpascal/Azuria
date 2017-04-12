@@ -49,14 +49,11 @@ namespace Azuria.Api.v1.RequestBuilder
         /// Api permissions required:
         /// * Messenger - Level 0
         /// </summary>
-        /// <param name="type">
-        /// Optional. The list from which the conferences are returned. Default:
-        /// <see cref="ConferenceListType.Default" />
-        /// </param>
+        /// <param name="type">Optional. The list from which the conferences are returned.</param>
         /// <param name="page">Optional. The index of the page that will be loaded. Default: 0</param>
         /// <returns>An instance of <see cref="ApiRequest" /> that returns an array of conferences.</returns>
         public IUrlBuilderWithResult<ConferenceDataModel[]> GetConferences(
-            ConferenceListType type = ConferenceListType.Default, int page = 0)
+            ConferenceList type = ConferenceList.Default, int page = 0)
         {
             return new UrlBuilder<ConferenceDataModel[]>(
                     new Uri($"{ApiConstants.ApiUrlV1}/messenger/conferences"), this._client
@@ -102,8 +99,7 @@ namespace Azuria.Api.v1.RequestBuilder
         /// </param>
         /// <returns>An instance of <see cref="ApiRequest" /> that returns an array of messages.</returns>
         public IUrlBuilderWithResult<MessageDataModel[]> GetMessages(
-            int conferenceId = 0,
-            int messageId = 0, bool markAsRead = true)
+            int conferenceId = 0, int messageId = 0, bool markAsRead = true)
         {
             return new UrlBuilder<MessageDataModel[]>(
                     new Uri($"{ApiConstants.ApiUrlV1}/messenger/messages"), this._client
@@ -146,17 +142,19 @@ namespace Azuria.Api.v1.RequestBuilder
         /// <param name="text">Optional. A message that will be send to the conference. Default: null</param>
         /// <returns>An instance of <see cref="ApiRequest" /> that returns a id of a group conference.</returns>
         public IUrlBuilderWithResult<int> NewConferenceGroup(
-            IEnumerable<string> participantNames, string topic,
-            string text = null)
+            IEnumerable<string> participantNames, string topic, string text = null)
         {
             List<KeyValuePair<string, string>> lPostArgs = new List<KeyValuePair<string, string>>
             {
                 new KeyValuePair<string, string>("topic", topic)
             };
-            lPostArgs.AddIf(new KeyValuePair<string, string>("text", text), pair => !string.IsNullOrEmpty(pair.Value));
+            lPostArgs.AddIf(
+                new KeyValuePair<string, string>("text", text), pair => !string.IsNullOrEmpty(pair.Value)
+            );
             lPostArgs.AddRange(
                 from participantName in participantNames
-                select new KeyValuePair<string, string>("users[]", participantName));
+                select new KeyValuePair<string, string>("users[]", participantName)
+            );
 
             return new UrlBuilder<int>(
                 new Uri($"{ApiConstants.ApiUrlV1}/messenger/newconferencegroup"), this._client

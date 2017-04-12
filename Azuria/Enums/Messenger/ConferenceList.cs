@@ -2,7 +2,7 @@
 {
     /// <summary>
     /// </summary>
-    public enum ConferenceListType
+    public enum ConferenceList
     {
         /// <summary>
         /// </summary>

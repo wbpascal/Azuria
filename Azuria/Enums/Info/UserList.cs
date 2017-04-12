@@ -1,27 +1,23 @@
 ﻿namespace Azuria.Enums.Info
 {
     /// <summary>
+    /// 
     /// </summary>
-    public enum Country
+    public enum UserList
     {
         /// <summary>
+        /// 
         /// </summary>
-        Germany,
+        Note,
 
         /// <summary>
+        /// 
         /// </summary>
-        England,
+        Favourites,
 
         /// <summary>
+        /// 
         /// </summary>
-        UnitedStates,
-
-        /// <summary>
-        /// </summary>
-        Japan,
-
-        /// <summary>
-        /// </summary>
-        Misc
+        Finished
     }
 }

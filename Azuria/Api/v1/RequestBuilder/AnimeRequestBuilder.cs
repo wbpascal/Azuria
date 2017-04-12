@@ -1,6 +1,7 @@
 ﻿using System;
 using Azuria.Api.Builder;
 using Azuria.Api.v1.DataModels.Anime;
+using Azuria.Enums.Info;
 
 namespace Azuria.Api.v1.RequestBuilder
 {
@@ -46,12 +47,12 @@ namespace Azuria.Api.v1.RequestBuilder
         /// <param name="episode">The number of the episode.</param>
         /// <param name="language">The language of the episode.</param>
         /// <returns>An instance of <see cref="ApiRequest" /> that returns an array of streams.</returns>
-        public IUrlBuilderWithResult<StreamDataModel[]> GetStreams(int id, int episode, string language)
+        public IUrlBuilderWithResult<StreamDataModel[]> GetStreams(int id, int episode, AnimeLanguage language)
         {
             return new UrlBuilder<StreamDataModel[]>(new Uri($"{ApiConstants.ApiUrlV1}/anime/streams"), this._client)
                 .WithGetParameter("id", id.ToString())
                 .WithGetParameter("episode", episode.ToString())
-                .WithGetParameter("language", language);
+                .WithGetParameter("language", language.ToString().ToLowerInvariant());
         }
 
         #endregion

@@ -2,6 +2,10 @@
 using Azuria.Api.Builder;
 using Azuria.Api.v1.DataModels.Ucp;
 using Azuria.Api.v1.DataModels.User;
+using Azuria.Enums;
+using Azuria.Enums.Info;
+using Azuria.Enums.Ucp;
+using Azuria.Helpers.Extensions;
 using ToptenDataModel = Azuria.Api.v1.DataModels.Ucp.ToptenDataModel;
 
 namespace Azuria.Api.v1.RequestBuilder
@@ -100,36 +104,24 @@ namespace Azuria.Api.v1.RequestBuilder
         /// Api permissions required:
         /// * UCP - Level 0
         /// </summary>
-        /// <param name="kat">Optional. The category that should be loaded. Possible values: "anime", "manga". Default: "anime"</param>
+        /// <param name="category">Optional. The category that should be loaded.</param>
         /// <param name="page">Optional. The index of the page that should be loaded. Default: 0</param>
         /// <param name="limit">Optional. The number of entries that should be returned per page. Default: 100</param>
         /// <param name="search">Optional. The string that all returned entries should contain. Default: ""</param>
         /// <param name="searchStart">Optional. The string that all returned entries should start with. Default: ""</param>
-        /// <param name="sort">
-        /// Optional. The order in which the returned entries should be returned. Possible values:
-        /// * "nameASC": Order by entry name ascending.
-        /// * "nameDESC": Order by entry name descending.
-        /// * "stateNameASC": Order first by status of the entry and then by entry name ascending.
-        /// * "stateNameDESC": Order first by status of the entry and then by entry name descending.
-        /// * "changeDateASC": Order by last changed ascending.
-        /// * "changeDateDESC": Order by last changed descending.
-        /// * "stateChangeDateASC": Order first by status of the entry and then by last changed ascending.
-        /// * "stateChangeDateDESC": Order first by status of the entry and then by last changed descending.
-        /// 
-        /// Default: "stateNameASC"
-        /// </param>
+        /// <param name="sort">Optional. The order in which the returned entries should be returned.</param>
         /// <returns>An instance of <see cref="ApiRequest" /> that returns an array of anime or manga entries.</returns>
         public IUrlBuilderWithResult<ListDataModel[]> GetList(
-            string kat = "anime", int page = 0,
-            int limit = 100, string search = "", string searchStart = "", string sort = "stateNameAsc")
+            MediaEntryType category = MediaEntryType.Anime, int page = 0, int limit = 100, string search = "",
+            string searchStart = "", UserListSort sort = UserListSort.StateNameAsc)
         {
             return new UrlBuilder<ListDataModel[]>(new Uri($"{ApiConstants.ApiUrlV1}/ucp/list"), this._client)
-                .WithGetParameter("kat", kat)
+                .WithGetParameter("kat", category.ToString().ToLowerInvariant())
                 .WithGetParameter("p", page.ToString())
                 .WithGetParameter("limit", limit.ToString())
                 .WithGetParameter("search", search)
                 .WithGetParameter("search_start", searchStart)
-                .WithGetParameter("sort", sort);
+                .WithGetParameter("sort", sort.GetDescription());
         }
 
         /// <summary>
@@ -139,15 +131,12 @@ namespace Azuria.Api.v1.RequestBuilder
         /// Api permissions required:
         /// * UCP - Level 0
         /// </summary>
-        /// <param name="kat">
-        /// Optional. Whether only watched episodes or read chapters should be counted. Possible values: "anime",
-        /// "manga". Default: "anime"
-        /// </param>
+        /// <param name="category">Optional. Whether only watched episodes or read chapters should be counted.</param>
         /// <returns>An instance of <see cref="ApiRequest" /> that returns a sum of watched episodes or read chapters.</returns>
-        public IUrlBuilderWithResult<int> GetListsum(string kat = "anime")
+        public IUrlBuilderWithResult<int> GetListsum(MediaEntryType category = MediaEntryType.Anime)
         {
             return new UrlBuilder<int>(new Uri($"{ApiConstants.ApiUrlV1}/ucp/listsum"), this._client)
-                .WithGetParameter("kat", kat);
+                .WithGetParameter("kat", category.ToString().ToLowerInvariant());
         }
 
         /// <summary>
@@ -157,20 +146,16 @@ namespace Azuria.Api.v1.RequestBuilder
         /// Api permissions required:
         /// * UCP - Level 0
         /// </summary>
-        /// <param name="kat">
-        /// Optional. The category that should be loaded. If empty or not given both categories are loaded.
-        /// Possible values: "anime", "manga". Default: ""
-        /// </param>
+        /// <param name="category">Optional. The category that should be loaded. If null or not given both categories are loaded.</param>
         /// <param name="page">Optional. The index of the page that should be loaded. Default: 0</param>
         /// <param name="limit">Optional. The number of entries that should be loaded per page. Default: 100</param>
         /// <returns>An instance of <see cref="ApiRequest" /> that returns an array of reminders.</returns>
         public IUrlBuilderWithResult<BookmarkDataModel[]> GetReminder(
-            string kat = "", int page = 0,
-            int limit = 100)
+            MediaEntryType? category = null, int page = 0, int limit = 100)
         {
             return new UrlBuilder<BookmarkDataModel[]>(
                     new Uri($"{ApiConstants.ApiUrlV1}/ucp/reminder"), this._client
-                ).WithGetParameter("kat", kat)
+                ).WithGetParameter("kat", category.ToString().ToLowerInvariant())
                 .WithGetParameter("p", page.ToString())
                 .WithGetParameter("limit", limit.ToString());
         }
@@ -237,18 +222,18 @@ namespace Azuria.Api.v1.RequestBuilder
         /// The language of the episode/chapter. Possible values: "gersub" (anime), "gerdub" (anime),
         /// "engsub" (anime), "engdub" (anime), "de" (manga), "en" (manga)
         /// </param>
-        /// <param name="kat">
-        /// A string indicating whether the reminder is from an anime or manga (I don't know why we need this).
-        /// Possible values: "anime", "manga"
+        /// <param name="category">
+        /// A value indicating whether the reminder is from an anime or manga (I don't know why we need
+        /// this).
         /// </param>
         /// <returns>An instance of <see cref="ApiRequest" />.</returns>
-        public IUrlBuilder SetReminder(int entryId, int contentIndex, string language, string kat)
+        public IUrlBuilder SetReminder(int entryId, int contentIndex, MediaLanguage language, MediaEntryType category)
         {
             return new UrlBuilder(new Uri($"{ApiConstants.ApiUrlV1}/ucp/setreminder"), this._client)
                 .WithGetParameter("id", entryId.ToString())
                 .WithGetParameter("episode", contentIndex.ToString())
-                .WithGetParameter("language", language)
-                .WithGetParameter("kat", kat);
+                .WithGetParameter("language", language.ToTypeString())
+                .WithGetParameter("kat", category.ToString().ToLowerInvariant());
         }
 
         #endregion

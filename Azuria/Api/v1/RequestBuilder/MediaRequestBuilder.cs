@@ -1,6 +1,8 @@
 ﻿using System;
 using Azuria.Api.Builder;
 using Azuria.Api.v1.DataModels.Media;
+using Azuria.Enums.Media;
+using Azuria.Helpers.Extensions;
 
 namespace Azuria.Api.v1.RequestBuilder
 {
@@ -42,16 +44,13 @@ namespace Azuria.Api.v1.RequestBuilder
         /// Api permissions required:
         /// * Media - Level 0
         /// </summary>
-        /// <param name="style">
-        /// Optional. The style of the returned header. Possible values: "gray", "black", "old_blue", "pantsu".
-        /// Default: "gray"
-        /// </param>
+        /// <param name="style">Optional. The style of the returned header.</param>
         /// <returns>An instance of <see cref="ApiRequest" /> that returns a header.</returns>
-        public IUrlBuilderWithResult<HeaderDataModel> GetRandomHeader(string style = "gray")
+        public IUrlBuilderWithResult<HeaderDataModel> GetRandomHeader(HeaderStyle style = HeaderStyle.Gray)
         {
             return new UrlBuilder<HeaderDataModel>(
                 new Uri($"{ApiConstants.ApiUrlV1}/media/randomheader"), this._client
-            ).WithGetParameter("style", style);
+            ).WithGetParameter("style", style.ToTypeString());
         }
 
         #endregion

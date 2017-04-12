@@ -22,12 +22,13 @@ namespace Azuria.Api.v1.Converters
                 case "de":
                     return Country.Germany;
                 case "en":
+                    return Country.England;
                 case "us":
-                    return Country.EnglandUnitedStates;
+                    return Country.UnitedStates;
                 case "jp":
                     return Country.Japan;
                 default:
-                    return Country.Miscellaneous;
+                    return Country.Misc;
             }
         }
 

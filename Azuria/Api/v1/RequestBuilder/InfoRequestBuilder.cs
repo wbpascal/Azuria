@@ -4,6 +4,7 @@ using Azuria.Api.v1.Converters.Info;
 using Azuria.Api.v1.DataModels;
 using Azuria.Api.v1.DataModels.Info;
 using Azuria.Enums.Info;
+using Azuria.Helpers.Extensions;
 
 namespace Azuria.Api.v1.RequestBuilder
 {
@@ -43,15 +44,14 @@ namespace Azuria.Api.v1.RequestBuilder
         /// </param>
         /// <returns>An instance of <see cref="ApiRequest" /> that returns an array of comments.</returns>
         public IUrlBuilderWithResult<CommentDataModel[]> GetComments(
-            int entryId, int page = 0,
-            int limit = 25, string sort = "")
+            int entryId, int page = 0, int limit = 25, CommentSort sort = CommentSort.Newest)
         {
             return new UrlBuilder<CommentDataModel[]>(
                     new Uri($"{ApiConstants.ApiUrlV1}/info/comments"), this._client
                 ).WithGetParameter("id", entryId.ToString())
                 .WithGetParameter("p", page.ToString())
                 .WithGetParameter("limit", limit.ToString())
-                .WithGetParameter("sort", sort);
+                .WithGetParameter("sort", sort.ToString().ToLowerInvariant());
         }
 
         /// <summary>
@@ -252,15 +252,15 @@ namespace Azuria.Api.v1.RequestBuilder
         /// * Info - Level 1
         /// </summary>
         /// <param name="entryId">The id of the anime or manga.</param>
-        /// <param name="type">
+        /// <param name="list">
         /// The list to which the anime or manga will be added. Possible values: "note", "favor", "finish"
         /// </param>
         /// <returns>An instance of <see cref="ApiRequest" />.</returns>
-        public IUrlBuilder SetUserInfo(int entryId, string type)
+        public IUrlBuilder SetUserInfo(int entryId, UserList list)
         {
             return new UrlBuilder(new Uri($"{ApiConstants.ApiUrlV1}/info/setuserinfo"), this._client)
                 .WithPostParameter("id", entryId.ToString())
-                .WithPostParameter("type", type);
+                .WithPostParameter("type", list.ToTypeString());
         }
 
         #endregion

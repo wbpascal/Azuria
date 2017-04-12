@@ -14,10 +14,7 @@ namespace Azuria.Helpers.Extensions
 
         internal static DateTime ToDateTime(this string stringToFormat, string format = "dd.MM.yyyy")
         {
-            return DateTime.ParseExact(
-                stringToFormat,
-                format,
-                CultureInfo.InvariantCulture);
+            return DateTime.ParseExact(stringToFormat, format, CultureInfo.InvariantCulture);
         }
 
         #endregion

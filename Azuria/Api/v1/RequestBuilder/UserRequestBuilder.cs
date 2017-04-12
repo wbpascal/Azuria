@@ -2,6 +2,9 @@
 using Azuria.Api.Builder;
 using Azuria.Api.v1.DataModels;
 using Azuria.Api.v1.DataModels.User;
+using Azuria.Enums;
+using Azuria.Enums.Ucp;
+using Azuria.Helpers.Extensions;
 
 namespace Azuria.Api.v1.RequestBuilder
 {
@@ -32,7 +35,6 @@ namespace Azuria.Api.v1.RequestBuilder
         /// <returns>An instance of <see cref="ApiRequest" /> that returns...</returns>
         public IUrlBuilderWithResult<UserInfoDataModel> GetInfo()
         {
-            //IMPORTANT: DO NOT CHECK LOGIN HERE
             return new UrlBuilder<UserInfoDataModel>(
                 new Uri($"{ApiConstants.ApiUrlV1}/user/userinfo"), this._client
             );
@@ -77,14 +79,14 @@ namespace Azuria.Api.v1.RequestBuilder
         /// <param name="userId"></param>
         /// <param name="page"></param>
         /// <param name="limit"></param>
-        /// <param name="kat"></param>
+        /// <param name="category"></param>
         /// <param name="length"></param>
         /// <returns>An instance of <see cref="ApiRequest" /> that returns...</returns>
         public IUrlBuilderWithResult<CommentDataModel[]> GetLatestComments(
-            int userId, int page = 0,
-            int limit = 25, string kat = "anime", int length = 300)
+            int userId, int page = 0, int limit = 25, MediaEntryType category = MediaEntryType.Anime,
+            int length = 300)
         {
-            return this.GetLatestComments(page, limit, kat, length)
+            return this.GetLatestComments(page, limit, category, length)
                 .WithGetParameter("uid", userId.ToString());
         }
 
@@ -97,14 +99,14 @@ namespace Azuria.Api.v1.RequestBuilder
         /// <param name="username"></param>
         /// <param name="page"></param>
         /// <param name="limit"></param>
-        /// <param name="kat"></param>
+        /// <param name="category"></param>
         /// <param name="length"></param>
         /// <returns>An instance of <see cref="ApiRequest" /> that returns...</returns>
         public IUrlBuilderWithResult<CommentDataModel[]> GetLatestComments(
-            string username, int page = 0,
-            int limit = 25, string kat = "anime", int length = 300)
+            string username, int page = 0, int limit = 25, MediaEntryType category = MediaEntryType.Anime,
+            int length = 300)
         {
-            return this.GetLatestComments(page, limit, kat, length)
+            return this.GetLatestComments(page, limit, category, length)
                 .WithGetParameter("username", username);
         }
 
@@ -116,18 +118,17 @@ namespace Azuria.Api.v1.RequestBuilder
         /// </summary>
         /// <param name="page"></param>
         /// <param name="limit"></param>
-        /// <param name="kat"></param>
+        /// <param name="category"></param>
         /// <param name="length"></param>
         /// <returns>An instance of <see cref="ApiRequest" /> that returns...</returns>
         public IUrlBuilderWithResult<CommentDataModel[]> GetLatestComments(
-            int page = 0, int limit = 25,
-            string kat = "anime", int length = 300)
+            int page = 0, int limit = 25, MediaEntryType category = MediaEntryType.Anime, int length = 300)
         {
             return new UrlBuilder<CommentDataModel[]>(
                     new Uri($"{ApiConstants.ApiUrlV1}/user/comments"), this._client
                 ).WithGetParameter("p", page.ToString())
                 .WithGetParameter("limit", limit.ToString())
-                .WithGetParameter("kat", kat)
+                .WithGetParameter("kat", category.ToString().ToLowerInvariant())
                 .WithGetParameter("length", length.ToString());
         }
 
@@ -137,7 +138,7 @@ namespace Azuria.Api.v1.RequestBuilder
         /// Api permissions required:
         /// * User - Level 0
         /// </summary>
-        /// <param name="kat"></param>
+        /// <param name="category"></param>
         /// <param name="page"></param>
         /// <param name="limit"></param>
         /// <param name="search"></param>
@@ -145,17 +146,17 @@ namespace Azuria.Api.v1.RequestBuilder
         /// <param name="sort"></param>
         /// <returns>An instance of <see cref="ApiRequest" /> that returns...</returns>
         public IUrlBuilderWithResult<ListDataModel[]> GetList(
-            string kat = "anime", int page = 0,
-            int limit = 100, string search = "", string searchStart = "", string sort = "")
+            MediaEntryType category = MediaEntryType.Anime, int page = 0, int limit = 100, string search = "",
+            string searchStart = "", UserListSort sort = UserListSort.StateNameAsc)
         {
             return new UrlBuilder<ListDataModel[]>(
                     new Uri($"{ApiConstants.ApiUrlV1}/user/list"), this._client
-                ).WithGetParameter("kat", kat)
+                ).WithGetParameter("kat", category.ToString().ToLowerInvariant())
                 .WithGetParameter("p", page.ToString())
                 .WithGetParameter("limit", limit.ToString())
                 .WithGetParameter("search", search)
                 .WithGetParameter("search_start", searchStart)
-                .WithGetParameter("sort", sort);
+                .WithGetParameter("sort", sort.GetDescription());
         }
 
         /// <summary>
@@ -165,7 +166,7 @@ namespace Azuria.Api.v1.RequestBuilder
         /// * User - Level 0
         /// </summary>
         /// <param name="userId"></param>
-        /// <param name="kat"></param>
+        /// <param name="category"></param>
         /// <param name="page"></param>
         /// <param name="limit"></param>
         /// <param name="search"></param>
@@ -173,10 +174,10 @@ namespace Azuria.Api.v1.RequestBuilder
         /// <param name="sort"></param>
         /// <returns>An instance of <see cref="ApiRequest" /> that returns...</returns>
         public IUrlBuilderWithResult<ListDataModel[]> GetList(
-            int userId, string kat = "anime", int page = 0,
-            int limit = 100, string search = "", string searchStart = "", string sort = "")
+            int userId, MediaEntryType category = MediaEntryType.Anime, int page = 0, int limit = 100,
+            string search = "", string searchStart = "", UserListSort sort = UserListSort.StateNameAsc)
         {
-            return this.GetList(kat, page, limit, search, searchStart, sort)
+            return this.GetList(category, page, limit, search, searchStart, sort)
                 .WithGetParameter("uid", userId.ToString());
         }
 
@@ -187,7 +188,7 @@ namespace Azuria.Api.v1.RequestBuilder
         /// * User - Level 0
         /// </summary>
         /// <param name="username"></param>
-        /// <param name="kat"></param>
+        /// <param name="category"></param>
         /// <param name="page"></param>
         /// <param name="limit"></param>
         /// <param name="search"></param>
@@ -195,10 +196,10 @@ namespace Azuria.Api.v1.RequestBuilder
         /// <param name="sort"></param>
         /// <returns>An instance of <see cref="ApiRequest" /> that returns...</returns>
         public IUrlBuilderWithResult<ListDataModel[]> GetList(
-            string username, string kat = "anime", int page = 0,
-            int limit = 100, string search = "", string searchStart = "", string sort = "")
+            string username, MediaEntryType category = MediaEntryType.Anime, int page = 0, int limit = 100,
+            string search = "", string searchStart = "", UserListSort sort = UserListSort.StateNameAsc)
         {
-            return this.GetList(kat, page, limit, search, searchStart, sort)
+            return this.GetList(category, page, limit, search, searchStart, sort)
                 .WithGetParameter("username", username);
         }
 
@@ -210,11 +211,11 @@ namespace Azuria.Api.v1.RequestBuilder
         /// </summary>
         /// <param name="category"></param>
         /// <returns>An instance of <see cref="ApiRequest" /> that returns...</returns>
-        public IUrlBuilderWithResult<ToptenDataModel[]> GetTopten(string category = "anime")
+        public IUrlBuilderWithResult<ToptenDataModel[]> GetTopten(MediaEntryType category = MediaEntryType.Anime)
         {
             return new UrlBuilder<ToptenDataModel[]>(
                 new Uri($"{ApiConstants.ApiUrlV1}/user/topten"), this._client
-            ).WithGetParameter("kat", category);
+            ).WithGetParameter("kat", category.ToString().ToLowerInvariant());
         }
 
         /// <summary>
@@ -226,7 +227,8 @@ namespace Azuria.Api.v1.RequestBuilder
         /// <param name="userId"></param>
         /// <param name="category"></param>
         /// <returns>An instance of <see cref="ApiRequest" /> that returns...</returns>
-        public IUrlBuilderWithResult<ToptenDataModel[]> GetTopten(int userId, string category = "anime")
+        public IUrlBuilderWithResult<ToptenDataModel[]> GetTopten(
+            int userId, MediaEntryType category = MediaEntryType.Anime)
         {
             return this.GetTopten(category).WithGetParameter("uid", userId.ToString());
         }
@@ -240,7 +242,8 @@ namespace Azuria.Api.v1.RequestBuilder
         /// <param name="username"></param>
         /// <param name="category"></param>
         /// <returns>An instance of <see cref="ApiRequest" /> that returns...</returns>
-        public IUrlBuilderWithResult<ToptenDataModel[]> GetTopten(string username, string category = "anime")
+        public IUrlBuilderWithResult<ToptenDataModel[]> GetTopten(
+            string username, MediaEntryType category = MediaEntryType.Anime)
         {
             return this.GetTopten(category).WithGetParameter("username", username);
         }
@@ -274,7 +277,8 @@ namespace Azuria.Api.v1.RequestBuilder
         /// <returns>An instance of <see cref="ApiRequest" /> that returns...</returns>
         public IUrlBuilderWithResult<LoginDataModel> Login(string username, string password, string secretKey)
         {
-            return this.Login(username, password).WithPostParameter("secretKey", secretKey);
+            return this.Login(username, password)
+                .WithPostParameter("secretKey", secretKey);
         }
 
         /// <summary>
