@@ -10,7 +10,7 @@ function NugetPack([bool] $pre)
         echo "Creating stable package..."
     }
     
-    nuget pack Azuria.nuspec -symbols -version "$($env:GitVersion_FullSemVer)"
+    nuget pack Azuria.nuspec -symbols -version "$($env:GitVersion_LegacySemVer)"
 }
 
 NugetPack ($env:APPVEYOR_REPO_TAG -eq "false")
