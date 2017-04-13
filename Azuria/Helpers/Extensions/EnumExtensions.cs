@@ -13,16 +13,17 @@ namespace Azuria.Helpers.Extensions
 
         internal static string GetDescription<T>(this T enumValue) where T : struct
         {
-            Type type = enumValue.GetType();
+            Type lType = enumValue.GetType();
             if (!(enumValue is Enum))
-                throw new ArgumentException("EnumerationValue must be of Enum type", nameof(enumValue));
+                throw new ArgumentException("The value must be member of an enum", nameof(enumValue));
 
-            MemberInfo memberInfo = type.GetTypeInfo()
+            MemberInfo lMemberInfo = lType.GetTypeInfo()
                 .DeclaredMembers.FirstOrDefault(info => info.Name == enumValue.ToString());
 
-            Attribute[] attrs = memberInfo?.GetCustomAttributes(typeof(DescriptionAttribute), false).ToArray();
-            if (attrs?.Any() ?? false)
-                return ((DescriptionAttribute) attrs[0]).Description;
+            Attribute[] lAttributes =
+                lMemberInfo?.GetCustomAttributes(typeof(DescriptionAttribute), false).ToArray();
+            if (lAttributes?.Any() ?? false)
+                return ((DescriptionAttribute) lAttributes[0]).Description;
 
             throw new InvalidOperationException("Description Attribute not found!");
         }

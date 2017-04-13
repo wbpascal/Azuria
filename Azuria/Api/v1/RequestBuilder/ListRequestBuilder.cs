@@ -2,7 +2,6 @@
 using Azuria.Api.Builder;
 using Azuria.Api.v1.Converters.List;
 using Azuria.Api.v1.DataModels.List;
-using Azuria.Enums;
 using Azuria.Enums.Info;
 using Azuria.Helpers.Extensions;
 using Azuria.Helpers.Search;
@@ -29,31 +28,6 @@ namespace Azuria.Api.v1.RequestBuilder
         #region Methods
 
         /// <summary>
-        /// Creates an <see cref="ApiRequest" /> instance that returns a list of anime or manga that match
-        /// the specified criteria.
-        /// 
-        /// Api permissions required:
-        /// * List - Level 0
-        /// </summary>
-        /// <param name="input">The criteria that the returned anime or manga should match.</param>
-        /// <param name="category">Optional. Whether only anime or manga should be included in the returned list.</param>
-        /// <param name="limit">
-        /// Optional. The amount of anime or manga that will be returned per page. Default: 100
-        /// </param>
-        /// <param name="page">Optional. The index of the page that will be loaded. Default: 0</param>
-        /// <returns>An instance of <see cref="ApiRequest" /> that returns an array of search results.</returns>
-        public IUrlBuilderWithResult<SearchDataModel[]> EntryList(
-            EntryListInput input, MediaEntryType category = MediaEntryType.Anime, int limit = 100, int page = 0)
-        {
-            return new UrlBuilder<SearchDataModel[]>(
-                    new Uri($"{ApiConstants.ApiUrlV1}/list/entrylist"), this._client
-                ).WithGetParameter("limit", limit.ToString())
-                .WithGetParameter("p", page.ToString())
-                .WithGetParameter("kat", category.ToString().ToLowerInvariant())
-                .WithPostParameter(SearchQueryBuilder.Build(input));
-        }
-
-        /// <summary>
         /// Creates an <see cref="ApiRequest" /> instance that returns the results of a search for anime and
         /// manga.
         /// 
@@ -68,13 +42,37 @@ namespace Azuria.Api.v1.RequestBuilder
         /// <returns>
         /// An instance of <see cref="ApiRequest" /> that returns an array of search results.
         /// </returns>
-        public IUrlBuilderWithResult<SearchDataModel[]> EntrySearch(SearchInput input, int limit = 100, int page = 0)
+        public IUrlBuilderWithResult<SearchDataModel[]> EntrySearch(
+            SearchInput input, int limit = 100, int page = 0)
         {
             return new UrlBuilder<SearchDataModel[]>(
                     new Uri($"{ApiConstants.ApiUrlV1}/list/entrysearch"), this._client
                 ).WithGetParameter("limit", limit.ToString())
                 .WithGetParameter("p", page.ToString())
-                .WithPostParameter(SearchQueryBuilder.Build(input));
+                .WithPostParameter(input.Build());
+        }
+
+        /// <summary>
+        /// Creates an <see cref="ApiRequest" /> instance that returns a list of anime or manga that match
+        /// the specified criteria.
+        /// 
+        /// Api permissions required:
+        /// * List - Level 0
+        /// </summary>
+        /// <param name="input">The criteria that the returned anime or manga should match.</param>
+        /// <param name="limit">
+        /// Optional. The amount of anime or manga that will be returned per page. Default: 100
+        /// </param>
+        /// <param name="page">Optional. The index of the page that will be loaded. Default: 0</param>
+        /// <returns>An instance of <see cref="ApiRequest" /> that returns an array of search results.</returns>
+        public IUrlBuilderWithResult<SearchDataModel[]> GetEntryList(
+            EntryListInput input, int limit = 100, int page = 0)
+        {
+            return new UrlBuilder<SearchDataModel[]>(
+                    new Uri($"{ApiConstants.ApiUrlV1}/list/entrylist"), this._client
+                ).WithGetParameter("limit", limit.ToString())
+                .WithGetParameter("p", page.ToString())
+                .WithPostParameter(input.Build());
         }
 
         /// <summary>

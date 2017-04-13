@@ -1,4 +1,5 @@
 ﻿using Azuria.Enums;
+using Azuria.Enums.List;
 
 namespace Azuria.Input
 {
@@ -9,12 +10,27 @@ namespace Azuria.Input
         #region Properties
 
         /// <summary>
+        /// 
         /// </summary>
-        public MediaMedium Medium { get; set; } = MediaMedium.None;
+        public MediaEntryType Category { get; set; } = MediaEntryType.Anime;
+
+        /// <summary>
+        /// </summary>
+        public MediaMedium? Medium { get; set; } = null;
 
         /// <summary>
         /// </summary>
         public bool ShowHContent { get; set; }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public EntryListSort SortBy { get; set; } = EntryListSort.Title;
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public SortDirection SortDirection { get; set; } = SortDirection.Ascending;
 
         /// <summary>
         /// </summary>

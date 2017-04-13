@@ -1,19 +1,23 @@
-﻿namespace Azuria.Input
+﻿namespace Azuria.Enums.List
 {
     /// <summary>
+    /// 
     /// </summary>
-    public enum SearchLanguage
+    public enum EntryListSort
     {
         /// <summary>
+        /// 
         /// </summary>
-        English,
+        Title,
 
         /// <summary>
+        /// 
         /// </summary>
-        German,
+        Clicks,
 
         /// <summary>
+        /// 
         /// </summary>
-        Both
+        Rating
     }
 }

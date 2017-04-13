@@ -3,7 +3,7 @@ using Azuria.Api.Builder;
 using Azuria.Api.v1.DataModels;
 using Azuria.Api.v1.DataModels.User;
 using Azuria.Enums;
-using Azuria.Enums.Ucp;
+using Azuria.Enums.User;
 using Azuria.Helpers.Extensions;
 
 namespace Azuria.Api.v1.RequestBuilder
@@ -144,10 +144,12 @@ namespace Azuria.Api.v1.RequestBuilder
         /// <param name="search"></param>
         /// <param name="searchStart"></param>
         /// <param name="sort"></param>
+        /// <param name="sortDirection"></param>
         /// <returns>An instance of <see cref="ApiRequest" /> that returns...</returns>
         public IUrlBuilderWithResult<ListDataModel[]> GetList(
             MediaEntryType category = MediaEntryType.Anime, int page = 0, int limit = 100, string search = "",
-            string searchStart = "", UserListSort sort = UserListSort.StateNameAsc)
+            string searchStart = "", UserListSort sort = UserListSort.StateName,
+            SortDirection sortDirection = SortDirection.Ascending)
         {
             return new UrlBuilder<ListDataModel[]>(
                     new Uri($"{ApiConstants.ApiUrlV1}/user/list"), this._client
@@ -156,7 +158,7 @@ namespace Azuria.Api.v1.RequestBuilder
                 .WithGetParameter("limit", limit.ToString())
                 .WithGetParameter("search", search)
                 .WithGetParameter("search_start", searchStart)
-                .WithGetParameter("sort", sort.GetDescription());
+                .WithGetParameter("sort", sort.GetDescription() + sortDirection.GetDescription());
         }
 
         /// <summary>
@@ -172,12 +174,14 @@ namespace Azuria.Api.v1.RequestBuilder
         /// <param name="search"></param>
         /// <param name="searchStart"></param>
         /// <param name="sort"></param>
+        /// <param name="sortDirection"></param>
         /// <returns>An instance of <see cref="ApiRequest" /> that returns...</returns>
         public IUrlBuilderWithResult<ListDataModel[]> GetList(
             int userId, MediaEntryType category = MediaEntryType.Anime, int page = 0, int limit = 100,
-            string search = "", string searchStart = "", UserListSort sort = UserListSort.StateNameAsc)
+            string search = "", string searchStart = "", UserListSort sort = UserListSort.StateName,
+            SortDirection sortDirection = SortDirection.Ascending)
         {
-            return this.GetList(category, page, limit, search, searchStart, sort)
+            return this.GetList(category, page, limit, search, searchStart, sort, sortDirection)
                 .WithGetParameter("uid", userId.ToString());
         }
 
@@ -194,12 +198,14 @@ namespace Azuria.Api.v1.RequestBuilder
         /// <param name="search"></param>
         /// <param name="searchStart"></param>
         /// <param name="sort"></param>
+        /// <param name="sortDirection"></param>
         /// <returns>An instance of <see cref="ApiRequest" /> that returns...</returns>
         public IUrlBuilderWithResult<ListDataModel[]> GetList(
             string username, MediaEntryType category = MediaEntryType.Anime, int page = 0, int limit = 100,
-            string search = "", string searchStart = "", UserListSort sort = UserListSort.StateNameAsc)
+            string search = "", string searchStart = "", UserListSort sort = UserListSort.StateName,
+            SortDirection sortDirection = SortDirection.Ascending)
         {
-            return this.GetList(category, page, limit, search, searchStart, sort)
+            return this.GetList(category, page, limit, search, searchStart, sort, sortDirection)
                 .WithGetParameter("username", username);
         }
 

@@ -1,4 +1,4 @@
-﻿namespace Azuria.Input
+﻿namespace Azuria.Enums.List
 {
     /// <summary>
     /// </summary>

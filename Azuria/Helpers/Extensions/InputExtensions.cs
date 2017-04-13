@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using Azuria.Enums;
+using System.Linq;
 using Azuria.Enums.Info;
 using Azuria.Enums.List;
 using Azuria.Helpers.Extensions;
@@ -7,23 +7,34 @@ using Azuria.Input;
 
 namespace Azuria.Helpers.Search
 {
-    internal static class SearchQueryBuilder
+    /// <summary>
+    /// TODO: Doing this with extension methods is probably not needed. Maybe change it later and merge it with the input
+    /// classes?
+    /// </summary>
+    internal static class InputExtensions
     {
         #region Methods
 
-        internal static Dictionary<string, string> Build(SearchInput input)
+        internal static Dictionary<string, string> Build(this SearchInput input)
         {
             if (input == null) return new Dictionary<string, string>();
             Dictionary<string, string> lReturn = new Dictionary<string, string>
             {
-                {"name", input.SearchTerm},
+                {"name", input.Name},
                 {"type", TypeToString(input.Type)},
                 {"sort", input.Sort.ToString().ToLowerInvariant()},
                 {"length-limit", input.LengthLimit.ToString().ToLowerInvariant()},
-                {"tagratefilter", input.IsFilteringUnratedTags ? "rate_1" : "rate_10"},
-                {"tagspoilerfilter", input.IsFilteringSpoilerTags ? "spoiler_0" : "spoiler_10"}
+                {"tagratefilter", input.FilterUnratedTags ? "rate_1" : "rate_10"},
+                {
+                    "tagspoilerfilter",
+                    input.FilterSpoilerTags != null
+                        ? input.FilterSpoilerTags.Value
+                              ? "spoiler_0"
+                              : "spoiler_1"
+                        : "spoiler_10"
+                }
             };
-            lReturn.AddIf("language", input.Language.ToShortString(), (key, value) => !string.IsNullOrEmpty(value));
+            lReturn.AddIf("language", input.Language?.ToShortString(), (key, value) => !string.IsNullOrEmpty(value));
             lReturn.AddIf("genre", GenresToString(input.GenreInclude), (key, value) => !string.IsNullOrEmpty(value));
             lReturn.AddIf("nogenre", GenresToString(input.GenreExclude), (key, value) => !string.IsNullOrEmpty(value));
             lReturn.AddIf("fsk", FskToString(input.Fsk), (key, value) => !string.IsNullOrEmpty(value));
@@ -34,15 +45,18 @@ namespace Azuria.Helpers.Search
             return lReturn;
         }
 
-        internal static Dictionary<string, string> Build(EntryListInput input)
+        internal static Dictionary<string, string> Build(this EntryListInput input)
         {
             if (input == null) return new Dictionary<string, string>();
             Dictionary<string, string> lReturn = new Dictionary<string, string>
             {
+                {"kat", input.Category.ToString().ToLowerInvariant()},
                 {"isH", input.ShowHContent.ToString()},
-                {"start", input.StartWithNonAlphabeticalChar ? "nonAlpha" : input.StartWith}
+                {"start", input.StartWithNonAlphabeticalChar ? "nonAlpha" : input.StartWith},
+                {"sort", input.SortBy.ToString().ToLowerInvariant()},
+                {"sort_type", input.SortDirection.GetDescription()}
             };
-            if (input.Medium != MediaMedium.None)
+            if (input.Medium != null)
                 lReturn.Add("medium", input.Medium.ToString().ToLowerInvariant());
 
             return lReturn;
@@ -50,13 +64,8 @@ namespace Azuria.Helpers.Search
 
         private static string FskToString(IEnumerable<Fsk> fskTypes)
         {
-            if (fskTypes == null) return string.Empty;
-
-            string lReturn = string.Empty;
-            foreach (Fsk fskType in fskTypes)
-                if (FskHelpers.FskToStringDictionary.ContainsKey(fskType))
-                    lReturn += FskHelpers.FskToStringDictionary[fskType] + " ";
-            return lReturn.TrimEnd();
+            return fskTypes?.Aggregate(string.Empty, (s, fsk) => s + fsk.GetDescription()).TrimEnd()
+                   ?? string.Empty;
         }
 
         private static string GenresToString(IEnumerable<Genre> genre)
@@ -70,13 +79,13 @@ namespace Azuria.Helpers.Search
             return lReturn.TrimEnd();
         }
 
-        private static string TypeToString(MediaSearchType type)
+        private static string TypeToString(SearchMediaType type)
         {
             switch (type)
             {
-                case MediaSearchType.AllAnime:
+                case SearchMediaType.AllAnime:
                     return "all-anime";
-                case MediaSearchType.AllManga:
+                case SearchMediaType.AllManga:
                     return "all-manga";
                 default:
                     return type.ToString().ToLowerInvariant();

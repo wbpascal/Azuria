@@ -1,4 +1,6 @@
-﻿namespace Azuria.Enums.Info
+﻿using System.ComponentModel;
+
+namespace Azuria.Enums.Info
 {
     /// <summary>
     /// Represents an enumeration which aims to help categorizing an anime or
@@ -9,51 +11,51 @@
         /// <summary>
         /// The anime or manga is suitable for all age groups.
         /// </summary>
-        Fsk0,
+        [Description("fsk0")] Fsk0,
 
         /// <summary>
         /// The anime or manga is only suitable for persons of age 6 or older.
         /// </summary>
-        Fsk6,
+        [Description("fsk6")] Fsk6,
 
         /// <summary>
         /// The anime or manga is only suitable for persons of age 12 or older.
         /// </summary>
-        Fsk12,
+        [Description("fsk12")] Fsk12,
 
         /// <summary>
         /// The anime or manga is only suitable for persons of age 16 or older.
         /// </summary>
-        Fsk16,
+        [Description("fsk16")] Fsk16,
 
         /// <summary>
         /// The anime or manga is only suitable for persons of age 18 or older.
         /// </summary>
-        Fsk18,
+        [Description("fsk18")] Fsk18,
 
         /// <summary>
-        /// The anime or manga contains violent language.
+        /// The anime or manga contains bad language.
         /// </summary>
-        BadWords,
+        [Description("bad_language")] BadLanguage,
 
         /// <summary>
         /// The anime or manga contains violence.
         /// </summary>
-        Violence,
+        [Description("violence")] Violence,
 
         /// <summary>
-        /// The anime or manga could invoke feelings of fear for some persons.
+        /// The anime or manga could invoke feelings of fear.
         /// </summary>
-        Fear,
+        [Description("fear")] Fear,
 
         /// <summary>
         /// The anime or manga contains sexually explicit content.
         /// </summary>
-        Sex,
+        [Description("sex")] Sex,
 
         /// <summary>
         /// The age group of the anime or manga is unknown.
         /// </summary>
-        Unknown
+        [Description("unkown")] Unknown
     }
 }

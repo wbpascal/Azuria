@@ -12,6 +12,14 @@ namespace Azuria.Input
 
         /// <summary>
         /// </summary>
+        public bool? FilterSpoilerTags { get; set; } = true;
+
+        /// <summary>
+        /// </summary>
+        public bool FilterUnratedTags { get; set; } = true;
+
+        /// <summary>
+        /// </summary>
         public IEnumerable<Fsk> Fsk { get; set; }
 
         /// <summary>
@@ -24,15 +32,7 @@ namespace Azuria.Input
 
         /// <summary>
         /// </summary>
-        public bool IsFilteringSpoilerTags { get; set; }
-
-        /// <summary>
-        /// </summary>
-        public bool IsFilteringUnratedTags { get; set; } = true;
-
-        /// <summary>
-        /// </summary>
-        public Language Language { get; set; } = Language.Unkown;
+        public Language? Language { get; set; } = null;
 
         /// <summary>
         /// </summary>
@@ -44,7 +44,7 @@ namespace Azuria.Input
 
         /// <summary>
         /// </summary>
-        public string SearchTerm { get; set; }
+        public string Name { get; set; }
 
         /// <summary>
         /// </summary>
@@ -52,15 +52,15 @@ namespace Azuria.Input
 
         /// <summary>
         /// </summary>
-        public IEnumerable<string> TagsExclude { get; set; }
+        public IEnumerable<int> TagsExclude { get; set; }
 
         /// <summary>
         /// </summary>
-        public IEnumerable<string> TagsInclude { get; set; }
+        public IEnumerable<int> TagsInclude { get; set; }
 
         /// <summary>
         /// </summary>
-        public MediaSearchType Type { get; set; } = MediaSearchType.All;
+        public SearchMediaType Type { get; set; } = SearchMediaType.All;
 
         #endregion
     }

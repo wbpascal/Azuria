@@ -4,7 +4,7 @@ using Azuria.Api.v1.DataModels.Ucp;
 using Azuria.Api.v1.DataModels.User;
 using Azuria.Enums;
 using Azuria.Enums.Info;
-using Azuria.Enums.Ucp;
+using Azuria.Enums.User;
 using Azuria.Helpers.Extensions;
 using ToptenDataModel = Azuria.Api.v1.DataModels.Ucp.ToptenDataModel;
 
@@ -110,10 +110,14 @@ namespace Azuria.Api.v1.RequestBuilder
         /// <param name="search">Optional. The string that all returned entries should contain. Default: ""</param>
         /// <param name="searchStart">Optional. The string that all returned entries should start with. Default: ""</param>
         /// <param name="sort">Optional. The order in which the returned entries should be returned.</param>
+        /// <param name="sortDirection">
+        /// TODO: Add description here
+        /// </param>
         /// <returns>An instance of <see cref="ApiRequest" /> that returns an array of anime or manga entries.</returns>
         public IUrlBuilderWithResult<ListDataModel[]> GetList(
             MediaEntryType category = MediaEntryType.Anime, int page = 0, int limit = 100, string search = "",
-            string searchStart = "", UserListSort sort = UserListSort.StateNameAsc)
+            string searchStart = "", UserListSort sort = UserListSort.StateName,
+            SortDirection sortDirection = SortDirection.Ascending)
         {
             return new UrlBuilder<ListDataModel[]>(new Uri($"{ApiConstants.ApiUrlV1}/ucp/list"), this._client)
                 .WithGetParameter("kat", category.ToString().ToLowerInvariant())
@@ -121,7 +125,7 @@ namespace Azuria.Api.v1.RequestBuilder
                 .WithGetParameter("limit", limit.ToString())
                 .WithGetParameter("search", search)
                 .WithGetParameter("search_start", searchStart)
-                .WithGetParameter("sort", sort.GetDescription());
+                .WithGetParameter("sort", sort.GetDescription() + sortDirection.GetDescription());
         }
 
         /// <summary>
@@ -218,10 +222,7 @@ namespace Azuria.Api.v1.RequestBuilder
         /// </summary>
         /// <param name="entryId">The id of the anime/manga that contains the episode/chapter.</param>
         /// <param name="contentIndex">The episode/chapter number that should be added a reminder for.</param>
-        /// <param name="language">
-        /// The language of the episode/chapter. Possible values: "gersub" (anime), "gerdub" (anime),
-        /// "engsub" (anime), "engdub" (anime), "de" (manga), "en" (manga)
-        /// </param>
+        /// <param name="language">The language of the episode/chapter.</param>
         /// <param name="category">
         /// A value indicating whether the reminder is from an anime or manga (I don't know why we need
         /// this).
