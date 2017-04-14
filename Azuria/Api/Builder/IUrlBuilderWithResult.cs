@@ -45,6 +45,12 @@ namespace Azuria.Api.Builder
         /// <summary>
         /// 
         /// </summary>
+        /// <returns></returns>
+        IUrlBuilderWithResult<T> WithLoginCheck(bool check = true);
+
+        /// <summary>
+        /// 
+        /// </summary>
         /// <param name="key"></param>
         /// <param name="value"></param>
         /// <returns></returns>

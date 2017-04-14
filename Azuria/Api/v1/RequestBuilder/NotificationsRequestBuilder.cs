@@ -24,7 +24,7 @@ namespace Azuria.Api.v1.RequestBuilder
         #region Methods
 
         /// <summary>
-        /// Creates an <see cref="ApiRequest" /> instance that deletes a notification.
+        /// Builds a request that deletes a notification.
         /// 
         /// Api permissions required:
         /// * Notifications - Level 0
@@ -37,11 +37,12 @@ namespace Azuria.Api.v1.RequestBuilder
         public IUrlBuilder Delete(int nid = 0)
         {
             return new UrlBuilder(new Uri($"{ApiConstants.ApiUrlV1}/notifications/delete"), this._client)
-                .WithPostParameter("nid", nid.ToString());
+                .WithPostParameter("nid", nid.ToString())
+                .WithLoginCheck();
         }
 
         /// <summary>
-        /// Creates an <see cref="ApiRequest" /> instance that returns how many notifications a user has recieved and not read.
+        /// Builds a request that returns how many notifications a user has recieved and not read.
         /// 
         /// Api permissions required:
         /// * Notifications - Level 0
@@ -50,12 +51,13 @@ namespace Azuria.Api.v1.RequestBuilder
         public IUrlBuilderWithResult<NotificationCountDataModel> GetCount()
         {
             return new UrlBuilder<NotificationCountDataModel>(
-                new Uri($"{ApiConstants.ApiUrlV1}/notifications/count"), this._client
-            ).WithCustomDataConverter(new NotificationCountConverter());
+                    new Uri($"{ApiConstants.ApiUrlV1}/notifications/count"), this._client
+                ).WithCustomDataConverter(new NotificationCountConverter())
+                .WithLoginCheck();
         }
 
         /// <summary>
-        /// Creates an <see cref="ApiRequest" /> instance that returns the current news ordered by date of publication.
+        /// Builds a request that returns the current news ordered by date of publication.
         /// 
         /// Api permissions required:
         /// * Notifications - Level 0

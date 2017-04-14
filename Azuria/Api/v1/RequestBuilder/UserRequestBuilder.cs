@@ -27,7 +27,7 @@ namespace Azuria.Api.v1.RequestBuilder
         #region Methods
 
         /// <summary>
-        /// Creates an <see cref="ApiRequest" /> instance that...
+        /// Builds a request that...
         /// 
         /// Api permissions required:
         /// * User - Level 0
@@ -37,11 +37,11 @@ namespace Azuria.Api.v1.RequestBuilder
         {
             return new UrlBuilder<UserInfoDataModel>(
                 new Uri($"{ApiConstants.ApiUrlV1}/user/userinfo"), this._client
-            );
+            ).WithLoginCheck();
         }
 
         /// <summary>
-        /// Creates an <see cref="ApiRequest" /> instance that...
+        /// Builds a request that...
         /// 
         /// Api permissions required:
         /// * User - Level 0
@@ -50,13 +50,13 @@ namespace Azuria.Api.v1.RequestBuilder
         /// <returns>An instance of <see cref="ApiRequest" /> that returns...</returns>
         public IUrlBuilderWithResult<UserInfoDataModel> GetInfo(int userId)
         {
-            return new UrlBuilder<UserInfoDataModel>(
-                new Uri($"{ApiConstants.ApiUrlV1}/user/userinfo"), this._client
-            ).WithGetParameter("uid", userId.ToString());
+            return this.GetInfo()
+                .WithGetParameter("uid", userId.ToString())
+                .WithLoginCheck(false);
         }
 
         /// <summary>
-        /// Creates an <see cref="ApiRequest" /> instance that...
+        /// Builds a request that...
         /// 
         /// Api permissions required:
         /// * User - Level 0
@@ -65,13 +65,13 @@ namespace Azuria.Api.v1.RequestBuilder
         /// <returns>An instance of <see cref="ApiRequest" /> that returns...</returns>
         public IUrlBuilderWithResult<UserInfoDataModel> GetInfo(string username)
         {
-            return new UrlBuilder<UserInfoDataModel>(
-                new Uri($"{ApiConstants.ApiUrlV1}/user/userinfo"), this._client
-            ).WithGetParameter("username", username);
+            return this.GetInfo()
+                .WithGetParameter("username", username)
+                .WithLoginCheck(false);
         }
 
         /// <summary>
-        /// Creates an <see cref="ApiRequest" /> instance that...
+        /// Builds a request that...
         /// 
         /// Api permissions required:
         /// * User - Level 0
@@ -87,11 +87,12 @@ namespace Azuria.Api.v1.RequestBuilder
             int length = 300)
         {
             return this.GetLatestComments(page, limit, category, length)
-                .WithGetParameter("uid", userId.ToString());
+                .WithGetParameter("uid", userId.ToString())
+                .WithLoginCheck(false);
         }
 
         /// <summary>
-        /// Creates an <see cref="ApiRequest" /> instance that...
+        /// Builds a request that...
         /// 
         /// Api permissions required:
         /// * User - Level 0
@@ -107,11 +108,12 @@ namespace Azuria.Api.v1.RequestBuilder
             int length = 300)
         {
             return this.GetLatestComments(page, limit, category, length)
-                .WithGetParameter("username", username);
+                .WithGetParameter("username", username)
+                .WithLoginCheck(false);
         }
 
         /// <summary>
-        /// Creates an <see cref="ApiRequest" /> instance that...
+        /// Builds a request that...
         /// 
         /// Api permissions required:
         /// * User - Level 0
@@ -129,11 +131,12 @@ namespace Azuria.Api.v1.RequestBuilder
                 ).WithGetParameter("p", page.ToString())
                 .WithGetParameter("limit", limit.ToString())
                 .WithGetParameter("kat", category.ToString().ToLowerInvariant())
-                .WithGetParameter("length", length.ToString());
+                .WithGetParameter("length", length.ToString())
+                .WithLoginCheck();
         }
 
         /// <summary>
-        /// Creates an <see cref="ApiRequest" /> instance that...
+        /// Builds a request that...
         /// 
         /// Api permissions required:
         /// * User - Level 0
@@ -158,11 +161,12 @@ namespace Azuria.Api.v1.RequestBuilder
                 .WithGetParameter("limit", limit.ToString())
                 .WithGetParameter("search", search)
                 .WithGetParameter("search_start", searchStart)
-                .WithGetParameter("sort", sort.GetDescription() + sortDirection.GetDescription());
+                .WithGetParameter("sort", sort.GetDescription() + sortDirection.GetDescription())
+                .WithLoginCheck();
         }
 
         /// <summary>
-        /// Creates an <see cref="ApiRequest" /> instance that...
+        /// Builds a request that...
         /// 
         /// Api permissions required:
         /// * User - Level 0
@@ -182,11 +186,12 @@ namespace Azuria.Api.v1.RequestBuilder
             SortDirection sortDirection = SortDirection.Ascending)
         {
             return this.GetList(category, page, limit, search, searchStart, sort, sortDirection)
-                .WithGetParameter("uid", userId.ToString());
+                .WithGetParameter("uid", userId.ToString())
+                .WithLoginCheck(false);
         }
 
         /// <summary>
-        /// Creates an <see cref="ApiRequest" /> instance that...
+        /// Builds a request that...
         /// 
         /// Api permissions required:
         /// * User - Level 0
@@ -206,11 +211,12 @@ namespace Azuria.Api.v1.RequestBuilder
             SortDirection sortDirection = SortDirection.Ascending)
         {
             return this.GetList(category, page, limit, search, searchStart, sort, sortDirection)
-                .WithGetParameter("username", username);
+                .WithGetParameter("username", username)
+                .WithLoginCheck(false);
         }
 
         /// <summary>
-        /// Creates an <see cref="ApiRequest" /> instance that...
+        /// Builds a request that...
         /// 
         /// Api permissions required:
         /// * User - Level 0
@@ -220,12 +226,13 @@ namespace Azuria.Api.v1.RequestBuilder
         public IUrlBuilderWithResult<ToptenDataModel[]> GetTopten(MediaEntryType category = MediaEntryType.Anime)
         {
             return new UrlBuilder<ToptenDataModel[]>(
-                new Uri($"{ApiConstants.ApiUrlV1}/user/topten"), this._client
-            ).WithGetParameter("kat", category.ToString().ToLowerInvariant());
+                    new Uri($"{ApiConstants.ApiUrlV1}/user/topten"), this._client
+                ).WithGetParameter("kat", category.ToString().ToLowerInvariant())
+                .WithLoginCheck();
         }
 
         /// <summary>
-        /// Creates an <see cref="ApiRequest" /> instance that...
+        /// Builds a request that...
         /// 
         /// Api permissions required:
         /// * User - Level 0
@@ -236,11 +243,13 @@ namespace Azuria.Api.v1.RequestBuilder
         public IUrlBuilderWithResult<ToptenDataModel[]> GetTopten(
             int userId, MediaEntryType category = MediaEntryType.Anime)
         {
-            return this.GetTopten(category).WithGetParameter("uid", userId.ToString());
+            return this.GetTopten(category)
+                .WithGetParameter("uid", userId.ToString())
+                .WithLoginCheck(false);
         }
 
         /// <summary>
-        /// Creates an <see cref="ApiRequest" /> instance that...
+        /// Builds a request that...
         /// 
         /// Api permissions required:
         /// * User - Level 0
@@ -251,11 +260,13 @@ namespace Azuria.Api.v1.RequestBuilder
         public IUrlBuilderWithResult<ToptenDataModel[]> GetTopten(
             string username, MediaEntryType category = MediaEntryType.Anime)
         {
-            return this.GetTopten(category).WithGetParameter("username", username);
+            return this.GetTopten(category)
+                .WithGetParameter("username", username)
+                .WithLoginCheck(false);
         }
 
         /// <summary>
-        /// Creates an <see cref="ApiRequest" /> instance that...
+        /// Builds a request that...
         /// 
         /// Api permissions required:
         /// * User - Level 0
@@ -272,7 +283,7 @@ namespace Azuria.Api.v1.RequestBuilder
         }
 
         /// <summary>
-        /// Creates an <see cref="ApiRequest" /> instance that...
+        /// Builds a request that...
         /// 
         /// Api permissions required:
         /// * User - Level 0
@@ -288,7 +299,7 @@ namespace Azuria.Api.v1.RequestBuilder
         }
 
         /// <summary>
-        /// Creates an <see cref="ApiRequest" /> instance that...
+        /// Builds a request that...
         /// 
         /// Api permissions required:
         /// * User - Level 0

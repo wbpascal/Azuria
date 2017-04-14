@@ -27,7 +27,7 @@ namespace Azuria.Api.v1.RequestBuilder
         #region Methods
 
         /// <summary>
-        /// Creates an <see cref="ApiRequest" /> instance that returns all comments of an anime or manga
+        /// Builds a request that returns all comments of an anime or manga
         /// (with more than 300 characters).
         /// 
         /// Api permissions required:
@@ -55,7 +55,7 @@ namespace Azuria.Api.v1.RequestBuilder
         }
 
         /// <summary>
-        /// Creates an <see cref="ApiRequest" /> instance that returns the core information of an anime or
+        /// Builds a request that returns the core information of an anime or
         /// manga.
         /// 
         /// Api permissions required:
@@ -71,7 +71,7 @@ namespace Azuria.Api.v1.RequestBuilder
         }
 
         /// <summary>
-        /// Creates an <see cref="ApiRequest" /> instance that returns all tags of an anime or manga.
+        /// Builds a request that returns all tags of an anime or manga.
         /// 
         /// Api permissions required:
         /// * Info - Level 0
@@ -86,7 +86,7 @@ namespace Azuria.Api.v1.RequestBuilder
         }
 
         /// <summary>
-        /// Creates an <see cref="ApiRequest" /> instance that returns all informations of an anime or manga.
+        /// Builds a request that returns all informations of an anime or manga.
         /// 
         /// **Warning!:**
         /// The returned object creates a heavy load on the server if it is used in a request!
@@ -105,7 +105,7 @@ namespace Azuria.Api.v1.RequestBuilder
         }
 
         /// <summary>
-        /// Creates an <see cref="ApiRequest" /> instance that returns a boolean indicating if the anime or
+        /// Builds a request that returns a boolean indicating if the anime or
         /// manga requires an 18+ age check.
         /// 
         /// Api permissions required:
@@ -120,7 +120,7 @@ namespace Azuria.Api.v1.RequestBuilder
         }
 
         /// <summary>
-        /// Creates an <see cref="ApiRequest" /> instance that returns informations about the translators of
+        /// Builds a request that returns informations about the translators of
         /// an anime or manga.
         /// 
         /// Api permissions required:
@@ -136,7 +136,7 @@ namespace Azuria.Api.v1.RequestBuilder
         }
 
         /// <summary>
-        /// Creates an <see cref="ApiRequest" /> instance that returns all languages an anime or manga is
+        /// Builds a request that returns all languages an anime or manga is
         /// available in.
         /// 
         /// Api permissions required:
@@ -152,7 +152,7 @@ namespace Azuria.Api.v1.RequestBuilder
         }
 
         /// <summary>
-        /// Creates an <see cref="ApiRequest" /> instance that returns all episodes or chapters of an anime
+        /// Builds a request that returns all episodes or chapters of an anime
         /// or manga.
         /// 
         /// Api permissions required:
@@ -177,7 +177,7 @@ namespace Azuria.Api.v1.RequestBuilder
         }
 
         /// <summary>
-        /// Creates an <see cref="ApiRequest" /> instance that returns all names and synonymous of an anime
+        /// Builds a request that returns all names and synonymous of an anime
         /// or manga.
         /// 
         /// Api permissions required:
@@ -196,7 +196,7 @@ namespace Azuria.Api.v1.RequestBuilder
         }
 
         /// <summary>
-        /// Creates an <see cref="ApiRequest" /> instance that returns returns all organisations that were
+        /// Builds a request that returns returns all organisations that were
         /// involved with creating or publishing the an anime or manga.
         /// 
         /// Api permissions required:
@@ -214,7 +214,7 @@ namespace Azuria.Api.v1.RequestBuilder
         }
 
         /// <summary>
-        /// Creates an <see cref="ApiRequest" /> instance that returns all relations of an anime or manga.
+        /// Builds a request that returns all relations of an anime or manga.
         /// 
         /// Api permissions required:
         /// * Info - Level 0
@@ -229,7 +229,7 @@ namespace Azuria.Api.v1.RequestBuilder
         }
 
         /// <summary>
-        /// Creates an <see cref="ApiRequest" /> instance that returns the seasons an anime or manga aired in.
+        /// Builds a request that returns the seasons an anime or manga aired in.
         /// 
         /// Api permissions required:
         /// * Info - Level 0
@@ -244,7 +244,7 @@ namespace Azuria.Api.v1.RequestBuilder
         }
 
         /// <summary>
-        /// Creates an <see cref="ApiRequest" /> instance that adds an anime or manga to a list of a logged
+        /// Builds a request that adds an anime or manga to a list of a logged
         /// in user.
         /// Requires authentication.
         /// 
@@ -260,7 +260,8 @@ namespace Azuria.Api.v1.RequestBuilder
         {
             return new UrlBuilder(new Uri($"{ApiConstants.ApiUrlV1}/info/setuserinfo"), this._client)
                 .WithPostParameter("id", entryId.ToString())
-                .WithPostParameter("type", list.ToTypeString());
+                .WithPostParameter("type", list.ToTypeString())
+                .WithLoginCheck();
         }
 
         #endregion

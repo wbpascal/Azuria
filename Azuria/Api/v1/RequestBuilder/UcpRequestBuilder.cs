@@ -29,7 +29,7 @@ namespace Azuria.Api.v1.RequestBuilder
         #region Methods
 
         /// <summary>
-        /// Creates an <see cref="ApiRequest" /> instance that removes an entry from a users topten.
+        /// Builds a request that removes an entry from a users topten.
         /// Requires authentication.
         /// 
         /// Api permissions required:
@@ -43,11 +43,12 @@ namespace Azuria.Api.v1.RequestBuilder
         public IUrlBuilder DeleteFavourite(int favouriteId)
         {
             return new UrlBuilder(new Uri($"{ApiConstants.ApiUrlV1}/ucp/deletefavorite"), this._client)
-                .WithPostParameter("id", favouriteId.ToString());
+                .WithPostParameter("id", favouriteId.ToString())
+                .WithLoginCheck();
         }
 
         /// <summary>
-        /// Creates an <see cref="ApiRequest" /> instance that deletes a reminder of a user.
+        /// Builds a request that deletes a reminder of a user.
         /// Requires authentication.
         /// 
         /// Api permissions required:
@@ -59,11 +60,12 @@ namespace Azuria.Api.v1.RequestBuilder
         public IUrlBuilder DeleteReminder(int reminderId)
         {
             return new UrlBuilder(new Uri($"{ApiConstants.ApiUrlV1}/ucp/deletereminder"), this._client)
-                .WithPostParameter("id", reminderId.ToString());
+                .WithPostParameter("id", reminderId.ToString())
+                .WithLoginCheck();
         }
 
         /// <summary>
-        /// Creates an <see cref="ApiRequest" /> instance that removes a users comment upvote.
+        /// Builds a request that removes a users comment upvote.
         /// Requires authentication.
         /// 
         /// Api permissions required:
@@ -75,11 +77,12 @@ namespace Azuria.Api.v1.RequestBuilder
         public IUrlBuilder DeleteVote(int voteId)
         {
             return new UrlBuilder(new Uri($"{ApiConstants.ApiUrlV1}/ucp/deletevote"), this._client)
-                .WithPostParameter("id", voteId.ToString());
+                .WithPostParameter("id", voteId.ToString())
+                .WithLoginCheck();
         }
 
         /// <summary>
-        /// Creates an <see cref="ApiRequest" /> instance that returns the history of all watched episodes and read chapters of a
+        /// Builds a request that returns the history of all watched episodes and read chapters of a
         /// user.
         /// Requires authentication.
         /// 
@@ -94,11 +97,12 @@ namespace Azuria.Api.v1.RequestBuilder
             return new UrlBuilder<HistoryDataModel[]>(
                     new Uri($"{ApiConstants.ApiUrlV1}/ucp/history"), this._client
                 ).WithGetParameter("p", page.ToString())
-                .WithGetParameter("limit", limit.ToString());
+                .WithGetParameter("limit", limit.ToString())
+                .WithLoginCheck();
         }
 
         /// <summary>
-        /// Creates an <see cref="ApiRequest" /> instance that returns a list of all anime or manga a user has listed in their ucp.
+        /// Builds a request that returns a list of all anime or manga a user has listed in their ucp.
         /// Requires authentication.
         /// 
         /// Api permissions required:
@@ -125,11 +129,12 @@ namespace Azuria.Api.v1.RequestBuilder
                 .WithGetParameter("limit", limit.ToString())
                 .WithGetParameter("search", search)
                 .WithGetParameter("search_start", searchStart)
-                .WithGetParameter("sort", sort.GetDescription() + sortDirection.GetDescription());
+                .WithGetParameter("sort", sort.GetDescription() + sortDirection.GetDescription())
+                .WithLoginCheck();
         }
 
         /// <summary>
-        /// Creates an <see cref="ApiRequest" /> instance that returns the sum of a users watched episodes or read chapters.
+        /// Builds a request that returns the sum of a users watched episodes or read chapters.
         /// Requires authentication.
         /// 
         /// Api permissions required:
@@ -140,11 +145,12 @@ namespace Azuria.Api.v1.RequestBuilder
         public IUrlBuilderWithResult<int> GetListsum(MediaEntryType category = MediaEntryType.Anime)
         {
             return new UrlBuilder<int>(new Uri($"{ApiConstants.ApiUrlV1}/ucp/listsum"), this._client)
-                .WithGetParameter("kat", category.ToString().ToLowerInvariant());
+                .WithGetParameter("kat", category.ToString().ToLowerInvariant())
+                .WithLoginCheck();
         }
 
         /// <summary>
-        /// Creates an <see cref="ApiRequest" /> instance that returns all reminders of a user.
+        /// Builds a request that returns all reminders of a user.
         /// Requires authentication.
         /// 
         /// Api permissions required:
@@ -161,11 +167,12 @@ namespace Azuria.Api.v1.RequestBuilder
                     new Uri($"{ApiConstants.ApiUrlV1}/ucp/reminder"), this._client
                 ).WithGetParameter("kat", category.ToString().ToLowerInvariant())
                 .WithGetParameter("p", page.ToString())
-                .WithGetParameter("limit", limit.ToString());
+                .WithGetParameter("limit", limit.ToString())
+                .WithLoginCheck();
         }
 
         /// <summary>
-        /// Creates an <see cref="ApiRequest" /> instance that returns the topten of a user (anime and manga).
+        /// Builds a request that returns the topten of a user (anime and manga).
         /// Requires authentication.
         /// 
         /// Api permissions required:
@@ -176,11 +183,11 @@ namespace Azuria.Api.v1.RequestBuilder
         {
             return new UrlBuilder<ToptenDataModel[]>(
                 new Uri($"{ApiConstants.ApiUrlV1}/ucp/topten"), this._client
-            );
+            ).WithLoginCheck();
         }
 
         /// <summary>
-        /// Creates an <see cref="ApiRequest" /> instance that returns all comments a user has voted for.
+        /// Builds a request that returns all comments a user has voted for.
         /// Requires authentication.
         /// 
         /// Api permissions required:
@@ -191,11 +198,11 @@ namespace Azuria.Api.v1.RequestBuilder
         {
             return new UrlBuilder<VoteDataModel[]>(
                 new Uri($"{ApiConstants.ApiUrlV1}/ucp/votes"), this._client
-            );
+            ).WithLoginCheck();
         }
 
         /// <summary>
-        /// Creates an <see cref="ApiRequest" /> instance that sets the number of a users watched episodes/read chapters of an
+        /// Builds a request that sets the number of a users watched episodes/read chapters of an
         /// anime/manga. If the number is set to a value greater or equal of the amount of episodes/chapter the anime/manga has,
         /// the status of the entry will be set to "Finished" as well.
         /// Requires authentication.
@@ -210,11 +217,12 @@ namespace Azuria.Api.v1.RequestBuilder
         {
             return new UrlBuilder(new Uri($"{ApiConstants.ApiUrlV1}/ucp/setcommentstate"), this._client)
                 .WithPostParameter("id", id.ToString())
-                .WithPostParameter("value", progress.ToString());
+                .WithPostParameter("value", progress.ToString())
+                .WithLoginCheck();
         }
 
         /// <summary>
-        /// Creates an <see cref="ApiRequest" /> instance that adds a reminder for an episode/chapter to a users control-panel.
+        /// Builds a request that adds a reminder for an episode/chapter to a users control-panel.
         /// Requires authentication.
         /// 
         /// Api permissions required:
@@ -234,7 +242,8 @@ namespace Azuria.Api.v1.RequestBuilder
                 .WithGetParameter("id", entryId.ToString())
                 .WithGetParameter("episode", contentIndex.ToString())
                 .WithGetParameter("language", language.ToTypeString())
-                .WithGetParameter("kat", category.ToString().ToLowerInvariant());
+                .WithGetParameter("kat", category.ToString().ToLowerInvariant())
+                .WithLoginCheck();
         }
 
         #endregion

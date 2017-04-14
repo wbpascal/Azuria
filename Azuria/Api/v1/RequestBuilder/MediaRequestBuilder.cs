@@ -25,7 +25,7 @@ namespace Azuria.Api.v1.RequestBuilder
         #region Methods
 
         /// <summary>
-        /// Creates an <see cref="ApiRequest" /> instance that returns an array of all current headers.
+        /// Builds a request that returns an array of all current headers.
         /// 
         /// Api permissions required:
         /// * Media - Level 0
@@ -39,7 +39,7 @@ namespace Azuria.Api.v1.RequestBuilder
         }
 
         /// <summary>
-        /// Creates an <see cref="ApiRequest" /> instance that returns a random header for an optional specified style.
+        /// Builds a request that returns a random header for an optional specified style.
         /// 
         /// Api permissions required:
         /// * Media - Level 0

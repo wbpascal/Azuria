@@ -28,7 +28,7 @@ namespace Azuria.Api.v1.RequestBuilder
         #region Methods
 
         /// <summary>
-        /// Creates an <see cref="ApiRequest" /> instance that returns the results of a search for anime and
+        /// Builds a request that returns the results of a search for anime and
         /// manga.
         /// 
         /// Api permissions required:
@@ -53,7 +53,7 @@ namespace Azuria.Api.v1.RequestBuilder
         }
 
         /// <summary>
-        /// Creates an <see cref="ApiRequest" /> instance that returns a list of anime or manga that match
+        /// Builds a request that returns a list of anime or manga that match
         /// the specified criteria.
         /// 
         /// Api permissions required:
@@ -75,8 +75,14 @@ namespace Azuria.Api.v1.RequestBuilder
                 .WithPostParameter(input.Build());
         }
 
+        private static int GetHValue(bool? isH)
+        {
+            if (isH == null) return 0;
+            return isH.Value ? 1 : -1;
+        }
+
         /// <summary>
-        /// Creates an <see cref="ApiRequest" /> instance that returns
+        /// Builds a request that returns
         /// 
         /// Api permissions required:
         /// * List - Level 0
@@ -106,7 +112,7 @@ namespace Azuria.Api.v1.RequestBuilder
         }
 
         /// <summary>
-        /// Creates an <see cref="ApiRequest" /> instance that returns
+        /// Builds a request that returns
         /// 
         /// Api permissions required:
         /// * List - Level 0
@@ -124,18 +130,13 @@ namespace Azuria.Api.v1.RequestBuilder
                     new Uri($"{ApiConstants.ApiUrlV1}/list/industryprojects"), this._client
                 ).WithGetParameter("id", translatorId.ToString())
                 .WithGetParameter("type", type?.ToTypeString() ?? string.Empty)
-                .WithGetParameter(
-                    "isH", (isH != null
-                                ? isH.Value
-                                      ? 1
-                                      : -1
-                                : 0).ToString())
+                .WithGetParameter("isH", GetHValue(isH).ToString())
                 .WithGetParameter("p", p.ToString())
                 .WithGetParameter("limit", limit.ToString());
         }
 
         /// <summary>
-        /// Creates an <see cref="ApiRequest" /> instance that returns
+        /// Builds a request that returns
         /// 
         /// Api permissions required:
         /// * List - Level 0
@@ -151,7 +152,7 @@ namespace Azuria.Api.v1.RequestBuilder
         }
 
         /// <summary>
-        /// Creates an <see cref="ApiRequest" /> instance that returns
+        /// Builds a request that returns
         /// 
         /// Api permissions required:
         /// * List - Level 0
@@ -175,7 +176,7 @@ namespace Azuria.Api.v1.RequestBuilder
         }
 
         /// <summary>
-        /// Creates an <see cref="ApiRequest" /> instance that returns
+        /// Builds a request that returns
         /// 
         /// Api permissions required:
         /// * List - Level 0
@@ -192,16 +193,8 @@ namespace Azuria.Api.v1.RequestBuilder
             return new UrlBuilder<TranslatorProjectDataModel[]>(
                     new Uri($"{ApiConstants.ApiUrlV1}/list/translatorgroupprojects"), this._client
                 ).WithGetParameter("id", translatorId.ToString())
-                .WithGetParameter(
-                    "type", type != null
-                                ? ((int) type.Value).ToString()
-                                : string.Empty)
-                .WithGetParameter(
-                    "isH", (isH != null
-                                ? isH.Value
-                                      ? 1
-                                      : -1
-                                : 0).ToString())
+                .WithGetParameter("type", type != null ? ((int) type.Value).ToString() : string.Empty)
+                .WithGetParameter("isH", GetHValue(isH).ToString())
                 .WithGetParameter("p", p.ToString())
                 .WithGetParameter("limit", limit.ToString());
         }

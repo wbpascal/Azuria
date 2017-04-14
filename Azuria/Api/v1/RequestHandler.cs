@@ -56,42 +56,50 @@ namespace Azuria.Api.v1
             where T : ProxerApiResponse
         {
             ILoginManager lLoginManager = request.Client.Container.Resolve<ILoginManager>();
-
             Dictionary<string, string> lHeaders = GetHeaders(request.Client.ApiKey, lLoginManager);
-            IProxerResult<string> lResult = await request.Client.Container.Resolve<IHttpClient>()
-                                                .ProxerRequestAsync(
-                                                    request.BuildUri(), request.PostArguments, lHeaders, token
-                                                )
-                                                .ConfigureAwait(false);
+
+            if (request.CheckLogin && lLoginManager.CheckIsLoginProbablyValid() &&
+                !lHeaders.ContainsKey(LoginTokenHeaderName))
+                return new ProxerResult(
+                    new NotAuthenticatedException("The client must be authenticated to make this request!")
+                );
+
+            IProxerResult<string> lResult =
+                await request.Client.Container.Resolve<IHttpClient>()
+                    .ProxerRequestAsync(
+                        request.BuildUri(), request.PostArguments, lHeaders, token
+                    )
+                    .ConfigureAwait(false);
             if (!lResult.Success || string.IsNullOrEmpty(lResult.Result))
                 return new ProxerResult(lResult.Exceptions);
 
+            T lApiResponse;
             try
             {
-                T lApiResponse = await Task<T>.Factory.StartNew(
-                                         () =>
-                                             JsonConvert.DeserializeObject<T>(
-                                                 WebUtility.HtmlDecode(lResult.Result),
-                                                 settings ?? new JsonSerializerSettings()
-                                             ), token
-                                     )
-                                     .ConfigureAwait(false);
-
-                if (lApiResponse.Success) return lApiResponse;
-
-                Exception lException = HandleErrorCode(lApiResponse.ErrorCode);
-                if (!(lException is NotAuthenticatedException) || lHeaders.ContainsKey(LoginTokenHeaderName))
-                    return lException == null
-                               ? new ProxerResult(new ProxerApiException(lApiResponse.ErrorCode))
-                               : new ProxerResult(lException);
-
-                lLoginManager.QueueLoginForNextRequest();
-                return await ApiRequestInternalAsync<T>(request, token, settings).ConfigureAwait(false);
+                lApiResponse = await Task<T>.Factory.StartNew(
+                                       () =>
+                                           JsonConvert.DeserializeObject<T>(
+                                               WebUtility.HtmlDecode(lResult.Result),
+                                               settings ?? new JsonSerializerSettings()
+                                           ), token
+                                   )
+                                   .ConfigureAwait(false);
             }
             catch (Exception ex)
             {
                 return new ProxerResult(ex);
             }
+
+            if (lApiResponse.Success) return lApiResponse;
+
+            Exception lException = HandleErrorCode(lApiResponse.ErrorCode);
+            if (!(lException is NotAuthenticatedException) || lHeaders.ContainsKey(LoginTokenHeaderName))
+                return lException == null
+                           ? new ProxerResult(new ProxerApiException(lApiResponse.ErrorCode))
+                           : new ProxerResult(lException);
+
+            lLoginManager.QueueLoginForNextRequest();
+            return await ApiRequestInternalAsync<T>(request, token, settings).ConfigureAwait(false);
         }
 
         private static Dictionary<string, string> GetHeaders(char[] apiKey, ILoginManager loginManager)

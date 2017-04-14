@@ -51,7 +51,8 @@ namespace Azuria
         /// <returns></returns>
         public ProxerClientOptions WithAuthorisation(char[] loginToken)
         {
-            if (loginToken?.Length != 255) throw new ArgumentException(nameof(loginToken));
+            if (loginToken?.Length != 255)
+                throw new ArgumentException("A valid login token must be 255 characters long", nameof(loginToken));
             this.ContainerBuilder.RegisterInstance(new LoginManager(this.Client, loginToken))
                 .As<ILoginManager>();
             return this;

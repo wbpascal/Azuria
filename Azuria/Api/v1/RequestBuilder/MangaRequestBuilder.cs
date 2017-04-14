@@ -25,7 +25,7 @@ namespace Azuria.Api.v1.RequestBuilder
         #region Methods
 
         /// <summary>
-        /// Creates an <see cref="ApiRequest" /> instance that returns information about a chapter including the pages.
+        /// Builds a request that returns information about a chapter including the pages.
         /// 
         /// Api permissions required:
         /// * Manga - Level 0

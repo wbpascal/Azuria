@@ -35,6 +35,13 @@ namespace Azuria.Api.Builder
         }
 
         /// <inheritdoc />
+        public IUrlBuilder WithLoginCheck(bool check = true)
+        {
+            this.AddLoginCheck(check);
+            return this;
+        }
+
+        /// <inheritdoc />
         public IUrlBuilder WithPostParameter(string key, string value)
         {
             this.AddPostArgument(key, value);
@@ -107,6 +114,13 @@ namespace Azuria.Api.Builder
         public IUrlBuilderWithResult<T> WithGetParameter(IDictionary<string, string> parameter)
         {
             this.AddGetParameter(parameter);
+            return this;
+        }
+
+        /// <inheritdoc />
+        public IUrlBuilderWithResult<T> WithLoginCheck(bool check = true)
+        {
+            this.AddLoginCheck(check);
             return this;
         }
 

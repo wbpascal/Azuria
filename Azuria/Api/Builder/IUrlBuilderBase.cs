@@ -13,6 +13,11 @@ namespace Azuria.Api.Builder
         /// <summary>
         /// 
         /// </summary>
+        bool CheckLogin { get; }
+
+        /// <summary>
+        /// 
+        /// </summary>
         IProxerClient Client { get; }
 
         /// <summary>

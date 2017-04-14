@@ -24,7 +24,7 @@ namespace Azuria.Api.v1.RequestBuilder
         #region Methods
 
         /// <summary>
-        /// Creates an <see cref="ApiRequest" /> instance that returns the link of a specified stream.
+        /// Builds a request that returns the link of a specified stream.
         /// 
         /// Api permissions required:
         /// * Anime - Level 2
@@ -38,7 +38,7 @@ namespace Azuria.Api.v1.RequestBuilder
         }
 
         /// <summary>
-        /// Creates an <see cref="ApiRequest" /> instance that returns all streams of a specified episode.
+        /// Builds a request that returns all streams of a specified episode.
         /// 
         /// Api permissions required:
         /// * Anime - Level 2

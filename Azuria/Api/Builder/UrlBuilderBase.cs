@@ -43,6 +43,11 @@ namespace Azuria.Api.Builder
         /// <summary>
         /// 
         /// </summary>
+        public bool CheckLogin { get; private set; }
+
+        /// <summary>
+        /// 
+        /// </summary>
         public IProxerClient Client { get; }
 
         /// <summary>
@@ -76,6 +81,14 @@ namespace Azuria.Api.Builder
         protected void AddGetParameter(IDictionary<string, string> parameters)
         {
             this.GetParameters.AddOrUpdateRange(parameters);
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        protected void AddLoginCheck(bool check)
+        {
+            this.CheckLogin = check;
         }
 
         /// <summary>
