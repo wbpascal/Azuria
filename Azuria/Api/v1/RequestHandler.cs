@@ -17,6 +17,9 @@ namespace Azuria.Api.v1
 {
     internal static class RequestHandler
     {
+        private const string ApiKeyHeaderName = "proxer-api-key";
+        private const string LoginTokenHeaderName = "proxer-api-token";
+
         #region Methods
 
         internal static async Task<IProxerResult<T>> ApiRequestAsync<T>(
@@ -54,10 +57,10 @@ namespace Azuria.Api.v1
         {
             ILoginManager lLoginManager = request.Client.Container.Resolve<ILoginManager>();
 
+            Dictionary<string, string> lHeaders = GetHeaders(request.Client.ApiKey, lLoginManager);
             IProxerResult<string> lResult = await request.Client.Container.Resolve<IHttpClient>()
                                                 .ProxerRequestAsync(
-                                                    request.BuildUri(), request.PostArguments,
-                                                    GetHeaders(request.Client.ApiKey, lLoginManager), token
+                                                    request.BuildUri(), request.PostArguments, lHeaders, token
                                                 )
                                                 .ConfigureAwait(false);
             if (!lResult.Success || string.IsNullOrEmpty(lResult.Result))
@@ -70,13 +73,14 @@ namespace Azuria.Api.v1
                                              JsonConvert.DeserializeObject<T>(
                                                  WebUtility.HtmlDecode(lResult.Result),
                                                  settings ?? new JsonSerializerSettings()
-                                             ), token)
+                                             ), token
+                                     )
                                      .ConfigureAwait(false);
 
                 if (lApiResponse.Success) return lApiResponse;
 
                 Exception lException = HandleErrorCode(lApiResponse.ErrorCode);
-                if (!(lException is NotAuthenticatedException))
+                if (!(lException is NotAuthenticatedException) || lHeaders.ContainsKey(LoginTokenHeaderName))
                     return lException == null
                                ? new ProxerResult(new ProxerApiException(lApiResponse.ErrorCode))
                                : new ProxerResult(lException);
@@ -94,10 +98,10 @@ namespace Azuria.Api.v1
         {
             Dictionary<string, string> lHeaders = new Dictionary<string, string>
             {
-                {"proxer-api-key", new string(apiKey)}
+                {ApiKeyHeaderName, new string(apiKey)}
             };
             if (loginManager.SendTokenWithNextRequest())
-                lHeaders.Add("proxer-api-token", new string(loginManager.LoginToken));
+                lHeaders.Add(LoginTokenHeaderName, new string(loginManager.LoginToken));
 
             return lHeaders;
         }
