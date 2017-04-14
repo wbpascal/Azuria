@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Threading;
+using System.Threading.Tasks;
 using Azuria.ErrorHandling;
 
 namespace Azuria.Authentication
@@ -29,12 +30,20 @@ namespace Azuria.Authentication
         /// 
         /// </summary>
         /// <returns></returns>
-        Task<IProxerResult> PerformLogin(string username, string password, string secretKey = null);
+        Task<IProxerResult> PerformLogin(
+            string username, string password, CancellationToken token, string secretKey = null);
+
+        /// <inheritdoc cref="PerformLogin(string,string,CancellationToken,string)" />
+        Task<IProxerResult> PerformLogin(
+            string username, string password, string secretKey = null);
 
         /// <summary>
         /// 
         /// </summary>
         /// <returns></returns>
+        Task<IProxerResult> PerformLogout(CancellationToken token);
+
+        /// <inheritdoc cref="PerformLogout(CancellationToken)" />
         Task<IProxerResult> PerformLogout();
 
         /// <summary>

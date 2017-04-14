@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Threading;
+using System.Threading.Tasks;
 using Autofac;
 using Azuria.Api.Builder;
 using Azuria.Api.v1;
@@ -27,10 +28,29 @@ namespace Azuria.Api
         /// 
         /// </summary>
         /// <param name="builder"></param>
-        /// <returns></returns>
+        /// <param name="token"></param>
+        public static Task<IProxerResult> DoRequestAsync(this IUrlBuilder builder, CancellationToken token)
+        {
+            return builder.ApiRequestAsync(token);
+        }
+
+        /// <inheritdoc cref="DoRequestAsync(IUrlBuilder,CancellationToken)" />
         public static Task<IProxerResult> DoRequestAsync(this IUrlBuilder builder)
         {
-            return builder.ApiRequestAsync();
+            return builder.DoRequestAsync(new CancellationToken());
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="builder"></param>
+        /// <param name="token"></param>
+        /// <returns></returns>
+        public static Task<IProxerResult<T>> DoRequestAsync<T>(
+            this IUrlBuilderWithResult<T> builder, CancellationToken token)
+        {
+            return builder.ApiRequestAsync(token);
         }
 
         /// <summary>
@@ -41,7 +61,7 @@ namespace Azuria.Api
         /// <returns></returns>
         public static Task<IProxerResult<T>> DoRequestAsync<T>(this IUrlBuilderWithResult<T> builder)
         {
-            return builder.ApiRequestAsync();
+            return builder.DoRequestAsync(new CancellationToken());
         }
 
         #endregion

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Net;
 using System.Net.Http;
+using System.Threading;
 using System.Threading.Tasks;
 using Azuria.ErrorHandling;
 using Azuria.Exceptions;
@@ -48,21 +49,16 @@ namespace Azuria.Connection
             this._client.Dispose();
         }
 
-        /// <summary>
-        /// </summary>
-        /// <param name="url"></param>
-        /// <param name="headers"></param>
-        /// <returns></returns>
+        /// <inheritdoc />
         public virtual async Task<IProxerResult<string>> GetRequestAsync(
-            Uri url,
-            Dictionary<string, string> headers = null)
+            Uri url, CancellationToken token, Dictionary<string, string> headers = null)
         {
             string lResponse;
 
             HttpResponseMessage lResponseObject;
             try
             {
-                lResponseObject = await this.GetWebRequestAsync(url, headers).ConfigureAwait(false);
+                lResponseObject = await this.GetWebRequestAsync(url, headers, token).ConfigureAwait(false);
             }
             catch (Exception ex)
             {
@@ -84,25 +80,21 @@ namespace Azuria.Connection
                        : new ProxerResult<string>(lResponse);
         }
 
-        private async Task<HttpResponseMessage> GetWebRequestAsync(Uri url, Dictionary<string, string> headers)
+        private async Task<HttpResponseMessage> GetWebRequestAsync(
+            Uri url, Dictionary<string, string> headers, CancellationToken token)
         {
             this._client.DefaultRequestHeaders.Clear();
 
-            if (headers == null) return await this._client.GetAsync(url).ConfigureAwait(false);
+            if (headers == null) return await this._client.GetAsync(url, token).ConfigureAwait(false);
             foreach (KeyValuePair<string, string> header in headers)
                 this._client.DefaultRequestHeaders.Add(header.Key, header.Value);
 
-            return await this._client.GetAsync(url).ConfigureAwait(false);
+            return await this._client.GetAsync(url, token).ConfigureAwait(false);
         }
 
-        /// <summary>
-        /// </summary>
-        /// <param name="url"></param>
-        /// <param name="postArgs"></param>
-        /// <param name="headers"></param>
-        /// <returns></returns>
+        /// <inheritdoc />
         public virtual async Task<IProxerResult<string>> PostRequestAsync(
-            Uri url, IEnumerable<KeyValuePair<string, string>> postArgs,
+            Uri url, IEnumerable<KeyValuePair<string, string>> postArgs, CancellationToken token,
             Dictionary<string, string> headers = null)
         {
             string lResponse;
@@ -110,7 +102,8 @@ namespace Azuria.Connection
             HttpResponseMessage lResponseObject;
             try
             {
-                lResponseObject = await this.PostWebRequestAsync(url, postArgs, headers).ConfigureAwait(false);
+                lResponseObject = await this.PostWebRequestAsync(url, postArgs, headers, token)
+                                      .ConfigureAwait(false);
             }
             catch (Exception ex)
             {
@@ -133,16 +126,18 @@ namespace Azuria.Connection
 
         private async Task<HttpResponseMessage> PostWebRequestAsync(
             Uri url, IEnumerable<KeyValuePair<string, string>> postArgs,
-            Dictionary<string, string> headers)
+            Dictionary<string, string> headers, CancellationToken token)
         {
             this._client.DefaultRequestHeaders.Clear();
 
             if (headers == null)
-                return await this._client.PostAsync(url, new FormUrlEncodedContent(postArgs)).ConfigureAwait(false);
+                return await this._client.PostAsync(url, new FormUrlEncodedContent(postArgs), token)
+                           .ConfigureAwait(false);
             foreach (KeyValuePair<string, string> header in headers)
                 this._client.DefaultRequestHeaders.Add(header.Key, header.Value);
 
-            return await this._client.PostAsync(url, new FormUrlEncodedContent(postArgs)).ConfigureAwait(false);
+            return await this._client.PostAsync(url, new FormUrlEncodedContent(postArgs), token)
+                       .ConfigureAwait(false);
         }
 
         #endregion

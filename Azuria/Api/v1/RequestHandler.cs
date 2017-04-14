@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
+using System.Threading;
 using System.Threading.Tasks;
 using Autofac;
 using Azuria.Api.Builder;
@@ -18,25 +19,28 @@ namespace Azuria.Api.v1
     {
         #region Methods
 
-        internal static async Task<IProxerResult<T>> ApiRequestAsync<T>(this IUrlBuilderWithResult<T> request)
+        internal static async Task<IProxerResult<T>> ApiRequestAsync<T>(
+            this IUrlBuilderWithResult<T> request, CancellationToken token)
         {
             IEnumerable<JsonConverter> lDataConverter = request.CustomDataConverter == null
                                                             ? new JsonConverter[0]
                                                             : new[] {request.CustomDataConverter};
 
-            IProxerResult lResult = await request.ApiRequestInternalAsync<ProxerApiResponse<T>>(
-                                            new JsonSerializerSettings {Converters = lDataConverter.ToList()}
-                                        )
-                                        .ConfigureAwait(false);
+            IProxerResult lResult =
+                await request.ApiRequestInternalAsync<ProxerApiResponse<T>>(
+                        token, new JsonSerializerSettings {Converters = lDataConverter.ToList()}
+                    )
+                    .ConfigureAwait(false);
 
             return lResult.Success && lResult is ProxerApiResponse<T>
                        ? lResult as ProxerApiResponse<T>
                        : (IProxerResult<T>) new ProxerResult<T>(lResult.Exceptions);
         }
 
-        internal static async Task<IProxerResult> ApiRequestAsync(this IUrlBuilder request)
+        internal static async Task<IProxerResult> ApiRequestAsync(
+            this IUrlBuilder request, CancellationToken token)
         {
-            IProxerResult lResult = await request.ApiRequestInternalAsync<ProxerApiResponse>()
+            IProxerResult lResult = await request.ApiRequestInternalAsync<ProxerApiResponse>(token)
                                         .ConfigureAwait(false);
 
             return lResult.Success && lResult is ProxerApiResponse
@@ -45,15 +49,15 @@ namespace Azuria.Api.v1
         }
 
         private static async Task<IProxerResult> ApiRequestInternalAsync<T>(
-            this IUrlBuilderBase request,
-            JsonSerializerSettings settings = null) where T : ProxerApiResponse
+            this IUrlBuilderBase request, CancellationToken token, JsonSerializerSettings settings = null)
+            where T : ProxerApiResponse
         {
             ILoginManager lLoginManager = request.Client.Container.Resolve<ILoginManager>();
 
             IProxerResult<string> lResult = await request.Client.Container.Resolve<IHttpClient>()
                                                 .ProxerRequestAsync(
                                                     request.BuildUri(), request.PostArguments,
-                                                    GetHeaders(request.Client.ApiKey, lLoginManager)
+                                                    GetHeaders(request.Client.ApiKey, lLoginManager), token
                                                 )
                                                 .ConfigureAwait(false);
             if (!lResult.Success || string.IsNullOrEmpty(lResult.Result))
@@ -66,8 +70,7 @@ namespace Azuria.Api.v1
                                              JsonConvert.DeserializeObject<T>(
                                                  WebUtility.HtmlDecode(lResult.Result),
                                                  settings ?? new JsonSerializerSettings()
-                                             )
-                                     )
+                                             ), token)
                                      .ConfigureAwait(false);
 
                 if (lApiResponse.Success) return lApiResponse;
@@ -79,7 +82,7 @@ namespace Azuria.Api.v1
                                : new ProxerResult(lException);
 
                 lLoginManager.QueueLoginForNextRequest();
-                return await ApiRequestInternalAsync<T>(request, settings).ConfigureAwait(false);
+                return await ApiRequestInternalAsync<T>(request, token, settings).ConfigureAwait(false);
             }
             catch (Exception ex)
             {
@@ -122,14 +125,14 @@ namespace Azuria.Api.v1
         }
 
         private static Task<IProxerResult<string>> ProxerRequestAsync(
-            this IHttpClient httpClient, Uri url,
-            IEnumerable<KeyValuePair<string, string>> postArgs, Dictionary<string, string> headers)
+            this IHttpClient httpClient, Uri url, IEnumerable<KeyValuePair<string, string>> postArgs,
+            Dictionary<string, string> headers, CancellationToken token)
         {
             KeyValuePair<string, string>[] lPostArgs =
                 postArgs as KeyValuePair<string, string>[] ?? postArgs.ToArray();
             return lPostArgs.Any()
-                       ? httpClient.PostRequestAsync(url, lPostArgs, headers)
-                       : httpClient.GetRequestAsync(url, headers);
+                       ? httpClient.PostRequestAsync(url, lPostArgs, token, headers)
+                       : httpClient.GetRequestAsync(url, token, headers);
         }
 
         #endregion

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading;
 using System.Threading.Tasks;
 using Azuria.Api;
 using Azuria.Api.v1;
@@ -44,13 +45,14 @@ namespace Azuria.Authentication
         }
 
         /// <inheritdoc />
-        public virtual async Task<IProxerResult> PerformLogin(string username, string password, string secretKey = null)
+        public virtual async Task<IProxerResult> PerformLogin(
+            string username, string password, CancellationToken token, string secretKey = null)
         {
             UserRequestBuilder lRequestBuilder = this._client.CreateRequest().FromUserClass();
             IProxerResult<LoginDataModel> lResult = await (secretKey == null
                                                                ? lRequestBuilder.Login(username, password)
                                                                : lRequestBuilder.Login(username, password, secretKey))
-                                                        .DoRequestAsync();
+                                                        .DoRequestAsync(token);
             if (!lResult.Success || lResult.Result == null)
                 return new ProxerResult(lResult.Exceptions);
 
@@ -60,18 +62,30 @@ namespace Azuria.Authentication
         }
 
         /// <inheritdoc />
-        public virtual async Task<IProxerResult> PerformLogout()
+        public Task<IProxerResult> PerformLogin(string username, string password, string secretKey = null)
+        {
+            return this.PerformLogin(username, password, new CancellationToken(), secretKey);
+        }
+
+        /// <inheritdoc />
+        public virtual async Task<IProxerResult> PerformLogout(CancellationToken token)
         {
             IProxerResult lResult = await this._client.CreateRequest()
                                         .FromUserClass()
                                         .Logout()
-                                        .DoRequestAsync();
+                                        .DoRequestAsync(token);
             if (!lResult.Success)
                 return new ProxerResult(lResult.Exceptions);
 
             this.LoginToken = null;
             this._loginPerformed = DateTime.MinValue;
             return new ProxerResult();
+        }
+
+        /// <inheritdoc />
+        public Task<IProxerResult> PerformLogout()
+        {
+            return this.PerformLogout(new CancellationToken());
         }
 
         /// <inheritdoc />

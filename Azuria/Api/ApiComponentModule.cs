@@ -8,7 +8,6 @@ namespace Azuria.Api
         #region Methods
 
         /// <inheritdoc />
-        /// ööä
         protected override void Load(ContainerBuilder builder)
         {
             builder.Register(context => new ApiRequestBuilder(context.Resolve<IProxerClient>()))
