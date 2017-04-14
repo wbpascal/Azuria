@@ -46,7 +46,8 @@ namespace Azuria.Authentication
 
         /// <inheritdoc />
         public virtual async Task<IProxerResult> PerformLogin(
-            string username, string password, CancellationToken token, string secretKey = null)
+            string username, string password, string secretKey = null,
+            CancellationToken token = new CancellationToken())
         {
             UserRequestBuilder lRequestBuilder = this._client.CreateRequest().FromUserClass();
             IProxerResult<LoginDataModel> lResult = await (secretKey == null
@@ -62,13 +63,7 @@ namespace Azuria.Authentication
         }
 
         /// <inheritdoc />
-        public Task<IProxerResult> PerformLogin(string username, string password, string secretKey = null)
-        {
-            return this.PerformLogin(username, password, new CancellationToken(), secretKey);
-        }
-
-        /// <inheritdoc />
-        public virtual async Task<IProxerResult> PerformLogout(CancellationToken token)
+        public virtual async Task<IProxerResult> PerformLogout(CancellationToken token = new CancellationToken())
         {
             IProxerResult lResult = await this._client.CreateRequest()
                                         .FromUserClass()
@@ -80,12 +75,6 @@ namespace Azuria.Authentication
             this.LoginToken = null;
             this._loginPerformed = DateTime.MinValue;
             return new ProxerResult();
-        }
-
-        /// <inheritdoc />
-        public Task<IProxerResult> PerformLogout()
-        {
-            return this.PerformLogout(new CancellationToken());
         }
 
         /// <inheritdoc />

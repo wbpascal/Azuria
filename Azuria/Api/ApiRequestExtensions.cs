@@ -29,15 +29,10 @@ namespace Azuria.Api
         /// </summary>
         /// <param name="builder"></param>
         /// <param name="token"></param>
-        public static Task<IProxerResult> DoRequestAsync(this IUrlBuilder builder, CancellationToken token)
+        public static Task<IProxerResult> DoRequestAsync(
+            this IUrlBuilder builder, CancellationToken token = new CancellationToken())
         {
             return builder.ApiRequestAsync(token);
-        }
-
-        /// <inheritdoc cref="DoRequestAsync(IUrlBuilder,CancellationToken)" />
-        public static Task<IProxerResult> DoRequestAsync(this IUrlBuilder builder)
-        {
-            return builder.DoRequestAsync(new CancellationToken());
         }
 
         /// <summary>
@@ -48,20 +43,9 @@ namespace Azuria.Api
         /// <param name="token"></param>
         /// <returns></returns>
         public static Task<IProxerResult<T>> DoRequestAsync<T>(
-            this IUrlBuilderWithResult<T> builder, CancellationToken token)
+            this IUrlBuilderWithResult<T> builder, CancellationToken token = new CancellationToken())
         {
             return builder.ApiRequestAsync(token);
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="builder"></param>
-        /// <returns></returns>
-        public static Task<IProxerResult<T>> DoRequestAsync<T>(this IUrlBuilderWithResult<T> builder)
-        {
-            return builder.DoRequestAsync(new CancellationToken());
         }
 
         #endregion

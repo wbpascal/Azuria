@@ -22,17 +22,10 @@ namespace Azuria.Authentication
         /// <param name="secretKey"></param>
         /// <returns></returns>
         public static Task<IProxerResult> LoginAsync(
-            this IProxerClient client, string username, string password, CancellationToken token,
-            string secretKey = null)
+            this IProxerClient client, string username, string password, string secretKey = null,
+            CancellationToken token = new CancellationToken())
         {
-            return client.Container.Resolve<ILoginManager>().PerformLogin(username, password, token, secretKey);
-        }
-
-        /// <inheritdoc cref="LoginAsync(IProxerClient,string,string,CancellationToken,string)" />
-        public static Task<IProxerResult> LoginAsync(
-            this IProxerClient client, string username, string password, string secretKey = null)
-        {
-            return client.LoginAsync(username, password, new CancellationToken(), secretKey);
+            return client.Container.Resolve<ILoginManager>().PerformLogin(username, password, secretKey, token);
         }
 
         /// <summary>
@@ -41,15 +34,11 @@ namespace Azuria.Authentication
         /// <param name="client"></param>
         /// <param name="token"></param>
         /// <returns></returns>
-        public static Task<IProxerResult> LogoutAsync(this IProxerClient client, CancellationToken token)
+        public static Task<IProxerResult> LogoutAsync(
+            this IProxerClient client,
+            CancellationToken token = new CancellationToken())
         {
             return client.Container.Resolve<ILoginManager>().PerformLogout(token);
-        }
-
-        /// <inheritdoc cref="LogoutAsync(IProxerClient,CancellationToken)" />
-        public static Task<IProxerResult> LogoutAsync(this IProxerClient client)
-        {
-            return client.LogoutAsync(new CancellationToken());
         }
 
         #endregion

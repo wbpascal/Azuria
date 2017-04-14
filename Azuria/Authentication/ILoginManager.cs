@@ -31,20 +31,14 @@ namespace Azuria.Authentication
         /// </summary>
         /// <returns></returns>
         Task<IProxerResult> PerformLogin(
-            string username, string password, CancellationToken token, string secretKey = null);
-
-        /// <inheritdoc cref="PerformLogin(string,string,CancellationToken,string)" />
-        Task<IProxerResult> PerformLogin(
-            string username, string password, string secretKey = null);
+            string username, string password, string secretKey = null,
+            CancellationToken token = new CancellationToken());
 
         /// <summary>
         /// 
         /// </summary>
         /// <returns></returns>
-        Task<IProxerResult> PerformLogout(CancellationToken token);
-
-        /// <inheritdoc cref="PerformLogout(CancellationToken)" />
-        Task<IProxerResult> PerformLogout();
+        Task<IProxerResult> PerformLogout(CancellationToken token = new CancellationToken());
 
         /// <summary>
         /// 
