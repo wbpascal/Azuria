@@ -1,4 +1,8 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using Azuria.Helpers.Extensions;
+using Azuria.Test.Core.Utility;
 
 namespace Azuria.Test.Core
 {
@@ -35,6 +39,16 @@ namespace Azuria.Test.Core
             foreach (KeyValuePair<string, string> keyValuePair in this.QueryParams)
                 lQuery += $"{keyValuePair.Key}={keyValuePair.Value}&";
             return lQuery.Remove(lQuery.Length - 1);
+        }
+
+        public Uri BuildUri()
+        {
+            UriBuilder lUriBuilder = new UriBuilder(this.Url);
+            lUriBuilder.Query += this.QueryParams.Aggregate(
+                    string.Empty, (s, pair) => $"&{pair.Key}={pair.Value}"
+                )
+                .RemoveIfNotEmpty(0, 1);
+            return lUriBuilder.Uri;
         }
 
         public ServerRequest WithHeader(string key, string value)

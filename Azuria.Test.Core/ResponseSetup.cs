@@ -1,7 +1,15 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Threading;
+using System.Threading.Tasks;
+using Autofac;
+using Azuria.Authentication;
+using Azuria.Connection;
+using Azuria.ErrorHandling;
+using Moq;
 
 namespace Azuria.Test.Core
 {
@@ -10,21 +18,6 @@ namespace Azuria.Test.Core
         private static readonly Dictionary<string, string> FileResponses = GetFileResponses();
 
         #region Methods
-
-        public static ServerResponse CreateForMessageAutoCheck()
-        {
-            return ServerResponse.Create(
-                    "https://proxer.me/api/v1",
-                    response =>
-                    {
-                        response.Get("/messenger/messages")
-                            .WithQueryParameter("conference_id", "124536")
-                            .WithQueryParameter("message_id", "0")
-                            .WithQueryParameter("read", "true")
-                            .WithLoggedInSenpai(true);
-                    })
-                .Respond(FileResponses["messenger_getmessagesCheck.json"]);
-        }
 
         private static Dictionary<string, string> GetFileResponses()
         {
@@ -39,7 +32,7 @@ namespace Azuria.Test.Core
             return lReturn;
         }
 
-        public static void InitRequests()
+        private static void InitRequests()
         {
             #region Anime
 
@@ -797,6 +790,69 @@ namespace Azuria.Test.Core
                 .Respond(FileResponses["user_getlistmanga.json"]);
 
             #endregion
+        }
+
+        public static IHttpClient GetTestingClient(IProxerClient client)
+        {
+            if (!ServerResponse.ServerResponses.Any()) InitRequests();
+
+            Dictionary<string, string> lStandardHeaders = new Dictionary<string, string>
+            {
+                {"proxer-api-key", new string(client.ApiKey)}
+            };
+
+            Mock<IHttpClient> lHttpClientMock = new Mock<IHttpClient>();
+            foreach (ServerResponse serverResponse in ServerResponse.ServerResponses)
+            {
+                foreach (ServerRequest request in serverResponse.Requests)
+                {
+                    switch (request.RequestMethod)
+                    {
+                        case RequestMethod.Get:
+                            AddGetMethod(request, serverResponse.Response);
+                            break;
+                        case RequestMethod.Post:
+                            AddPostMethod(request, serverResponse.Response);
+                            break;
+                    }
+                }
+            }
+
+            return lHttpClientMock.Object;
+
+            void AddGetMethod(ServerRequest request, string response)
+            {
+                lHttpClientMock
+                    .Setup(
+                        httpClient => httpClient.GetRequestAsync(
+                            request.BuildUri(), new CancellationToken(), lStandardHeaders
+                        )
+                    )
+                    .Returns(() => Task.FromResult(CheckLogin(request, response)));
+            }
+
+            void AddPostMethod(ServerRequest request, string response)
+            {
+                lHttpClientMock
+                    .Setup(
+                        httpClient => httpClient.PostRequestAsync(
+                            request.BuildUri(), request.PostArguments, new CancellationToken(), lStandardHeaders
+                        )
+                    )
+                    .Returns(() => Task.FromResult(CheckLogin(request, response)));
+            }
+
+            IProxerResult<string> CheckLogin(ServerRequest request, string response)
+            {
+                ILoginManager lLoginManager = client.Container.Resolve<ILoginManager>();
+                if (request.IsLoggedIn == null
+                    || request.IsLoggedIn.Value == lLoginManager.CheckIsLoginProbablyValid())
+                    return new ProxerResult<string>(response);
+
+                return new ProxerResult<string>(
+                    new Exception("Authentication status does not match with those of the request!")
+                );
+            }
         }
 
         #endregion
