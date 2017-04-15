@@ -2,7 +2,9 @@
 using Azuria.Api.Builder;
 using Azuria.Api.v1.Converters.List;
 using Azuria.Api.v1.DataModels.List;
+using Azuria.Enums;
 using Azuria.Enums.Info;
+using Azuria.Enums.List;
 using Azuria.Helpers.Extensions;
 using Azuria.Helpers.Search;
 using Azuria.Input;
@@ -149,6 +151,31 @@ namespace Azuria.Api.v1.RequestBuilder
                     new Uri($"{ApiConstants.ApiUrlV1}/list/tagids"), this._client
                 ).WithGetParameter("search", search)
                 .WithCustomDataConverter(new TagIdConverter());
+        }
+
+        /// <summary>
+        /// Builds a request that returns
+        /// 
+        /// Api permissions required:
+        /// * List - Level 0
+        /// </summary>
+        /// <param name="search"></param>
+        /// <param name="type"></param>
+        /// <param name="sort"></param>
+        /// <param name="sortDirection"></param>
+        /// <param name="subtype"></param>
+        /// <returns></returns>
+        public IUrlBuilderWithResult<TagDataModel[]> GetTags(
+            string search = "", TagType? type = null, TagListSort sort = TagListSort.Tag,
+            SortDirection sortDirection = SortDirection.Ascending, TagSubtype? subtype = null)
+        {
+            return new UrlBuilder<TagDataModel[]>(
+                    new Uri($"{ApiConstants.ApiUrlV1}/list/tags"), this._client
+                ).WithGetParameter("search", search)
+                .WithGetParameter("type", type?.GetDescription() ?? string.Empty)
+                .WithGetParameter("sort", sort.ToString().ToLowerInvariant())
+                .WithGetParameter("sort_type", sortDirection.GetDescription())
+                .WithGetParameter("subtype", subtype?.GetDescription() ?? string.Empty);
         }
 
         /// <summary>
