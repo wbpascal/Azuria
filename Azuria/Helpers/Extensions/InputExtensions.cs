@@ -64,19 +64,12 @@ namespace Azuria.Helpers.Search
 
         private static string FskToString(IEnumerable<Fsk> fskTypes)
         {
-            return fskTypes?.Aggregate(string.Empty, (s, fsk) => s + fsk.GetDescription()).TrimEnd()
-                   ?? string.Empty;
+            return fskTypes?.Aggregate(string.Empty, (s, fsk) => s + fsk.GetDescription()) ?? string.Empty;
         }
 
-        private static string GenresToString(IEnumerable<Genre> genre)
+        private static string GenresToString(IEnumerable<Genre> genres)
         {
-            if (genre == null) return string.Empty;
-
-            string lReturn = string.Empty;
-            Dictionary<Genre, string> lLookupDictionary = GenreHelpers.StringToGenreDictionary.ReverseDictionary();
-            foreach (Genre genreType in genre)
-                if (lLookupDictionary.ContainsKey(genreType)) lReturn += lLookupDictionary[genreType] + " ";
-            return lReturn.TrimEnd();
+            return genres?.Aggregate(string.Empty, (s, genre) => s + genre.GetDescription()) ?? string.Empty;
         }
 
         private static string TypeToString(SearchMediaType type)

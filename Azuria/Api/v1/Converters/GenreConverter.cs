@@ -22,8 +22,11 @@ namespace Azuria.Api.v1.Converters
         {
             string lValue = reader.Value.ToString();
             if (string.IsNullOrEmpty(lValue.Trim())) return new Genre[0];
+
+            Dictionary<string, Genre> lStringDictionary = EnumHelpers.GetDescriptionDictionary<Genre>();
             return lValue.Split(' ')
-                .Select(genre => GenreHelpers.StringToGenreDictionary[genre])
+                .Where(genre => lStringDictionary.ContainsKey(genre))
+                .Select(genre => lStringDictionary[genre])
                 .ToArray();
         }
 

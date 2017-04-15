@@ -22,9 +22,11 @@ namespace Azuria.Api.v1.Converters
         {
             string lValue = reader.Value.ToString();
             if (string.IsNullOrEmpty(lValue.Trim())) return new Fsk[0];
+
+            Dictionary<string, Fsk> lStringDictionary = EnumHelpers.GetDescriptionDictionary<Fsk>();
             return lValue.Split(' ')
-                .Where(fskString => FskHelpers.StringToFskDictionary.ContainsKey(fskString))
-                .Select(fskString => FskHelpers.StringToFskDictionary[fskString])
+                .Where(fskString => lStringDictionary.ContainsKey(fskString))
+                .Select(fskString => lStringDictionary[fskString])
                 .ToArray();
         }
 
