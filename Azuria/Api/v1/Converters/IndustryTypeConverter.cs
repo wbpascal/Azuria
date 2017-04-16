@@ -4,20 +4,13 @@ using Newtonsoft.Json;
 
 namespace Azuria.Api.v1.Converters
 {
-    internal class IndustryTypeConverter : JsonConverter
+    internal class IndustryTypeConverter : DataConverter<IndustryType>
     {
         #region Methods
 
         /// <inheritdoc />
-        public override bool CanConvert(Type objectType)
-        {
-            return objectType == typeof(IndustryType);
-        }
-
-        /// <inheritdoc />
-        public override object ReadJson(
-            JsonReader reader, Type objectType, object existingValue,
-            JsonSerializer serializer)
+        public override IndustryType ConvertJson(
+            JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
         {
             string lValue = reader.Value.ToString();
             switch (lValue)
@@ -29,13 +22,8 @@ namespace Azuria.Api.v1.Converters
                 case "talent_agent":
                     return IndustryType.TalentAgent;
                 default:
-                    return Enum.Parse(typeof(IndustryType), lValue, true);
+                    return (IndustryType) Enum.Parse(typeof(IndustryType), lValue, true);
             }
-        }
-
-        /// <inheritdoc />
-        public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
-        {
         }
 
         #endregion

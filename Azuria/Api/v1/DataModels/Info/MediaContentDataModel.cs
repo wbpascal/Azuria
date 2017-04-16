@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using Azuria.Api.v1.Converters;
+﻿using Azuria.Api.v1.Converters;
 using Azuria.Api.v1.Converters.Info;
 using Azuria.Enums.Info;
 using Newtonsoft.Json;
@@ -27,7 +26,7 @@ namespace Azuria.Api.v1.DataModels.Info
         /// </summary>
         [JsonProperty("types")]
         [JsonConverter(typeof(StreamHosterConverter))]
-        public IEnumerable<StreamHoster> StreamHosters { get; set; }
+        public StreamHoster[] StreamHosters { get; set; }
 
         /// <summary>
         /// Only available for chapters

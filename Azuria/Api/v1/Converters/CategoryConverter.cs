@@ -4,25 +4,15 @@ using Newtonsoft.Json;
 
 namespace Azuria.Api.v1.Converters
 {
-    internal class CategoryConverter : JsonConverter
+    internal class CategoryConverter : DataConverter<MediaEntryType>
     {
         #region Methods
 
-        public override bool CanConvert(Type objectType)
+        /// <inheritdoc />
+        public override MediaEntryType ConvertJson(
+            JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
         {
-            return objectType == typeof(MediaEntryType);
-        }
-
-        public override object ReadJson(
-            JsonReader reader, Type objectType, object existingValue,
-            JsonSerializer serializer)
-        {
-            return Enum.Parse(typeof(MediaEntryType), (string) reader.Value, true);
-        }
-
-        public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
-        {
-            writer.WriteValue(value.ToString().ToLowerInvariant());
+            return (MediaEntryType) Enum.Parse(typeof(MediaEntryType), reader.Value.ToString(), true);
         }
 
         #endregion

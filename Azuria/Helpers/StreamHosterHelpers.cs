@@ -1,31 +1,29 @@
 ﻿using System;
 using Azuria.Enums.Info;
-using Newtonsoft.Json;
 
-namespace Azuria.Api.v1.Converters.Anime
+namespace Azuria.Helpers
 {
-    internal class StreamPartnerConverter : DataConverter<StreamHoster>
+    internal static class StreamHosterHelpers
     {
         #region Methods
 
-        /// <inheritdoc />
-        public override StreamHoster ConvertJson(
-            JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
+        public static StreamHoster GetFromString(string hosterString)
         {
-            switch (reader.Value.ToString())
+            switch (hosterString.ToLowerInvariant())
             {
                 case "clipfish-extern":
                     return StreamHoster.Clipfish;
+                case "crunchyroll_de":
                 case "crunchyroll_en":
                     return StreamHoster.Crunchyroll;
                 case "novamov":
                     return StreamHoster.Auroravid;
-                case "Proxer-Stream":
+                case "proxer-stream":
                     return StreamHoster.ProxerStream;
                 case "streamcloud2":
                     return StreamHoster.Streamcloud;
                 default:
-                    return (StreamHoster) Enum.Parse(typeof(StreamHoster), reader.Value.ToString(), true);
+                    return (StreamHoster) Enum.Parse(typeof(StreamHoster), hosterString, true);
             }
         }
 

@@ -31,7 +31,8 @@ namespace Azuria.Helpers.Extensions
         /// <typeparam name="T"></typeparam>
         /// <typeparam name="TOut"></typeparam>
         /// <returns></returns>
-        public static async Task<TOut> OnError<T, TOut>(this Task<T> task, TOut onError) where T : IProxerResult<TOut>
+        public static async Task<TOut> OnError<T, TOut>(this Task<T> task, TOut onError)
+            where T : IProxerResult<TOut>
         {
             T lResult = await task.ConfigureAwait(false);
             return lResult.Success ? lResult.Result : onError;
@@ -45,7 +46,8 @@ namespace Azuria.Helpers.Extensions
         public static async Task<T> ThrowFirstForNonSuccess<T>(this Task<IProxerResult<T>> task)
         {
             IProxerResult<T> lResult = await task.ConfigureAwait(false);
-            if (!lResult.Success) throw lResult.Exceptions.Any() ? lResult.Exceptions.First() : new Exception();
+            if (!lResult.Success)
+                throw lResult.Exceptions.Any() ? lResult.Exceptions.First() : new Exception();
 
             return lResult.Result;
         }
@@ -58,7 +60,8 @@ namespace Azuria.Helpers.Extensions
         public static async Task<T> ThrowFirstForNonSuccess<T>(this Task<ProxerApiResponse<T>> task)
         {
             IProxerResult<T> lResult = await task.ConfigureAwait(false);
-            if (!lResult.Success) throw lResult.Exceptions.Any() ? lResult.Exceptions.First() : new Exception();
+            if (!lResult.Success)
+                throw lResult.Exceptions.Any() ? lResult.Exceptions.First() : new Exception();
 
             return lResult.Result;
         }
@@ -70,7 +73,8 @@ namespace Azuria.Helpers.Extensions
         public static async Task ThrowFirstForNonSuccess(this Task<IProxerResult> task)
         {
             IProxerResult lResult = await task.ConfigureAwait(false);
-            if (!lResult.Success) throw lResult.Exceptions.Any() ? lResult.Exceptions.First() : new Exception();
+            if (!lResult.Success)
+                throw lResult.Exceptions.Any() ? lResult.Exceptions.First() : new Exception();
         }
 
         #endregion

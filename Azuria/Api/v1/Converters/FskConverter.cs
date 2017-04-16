@@ -7,18 +7,13 @@ using Newtonsoft.Json;
 
 namespace Azuria.Api.v1.Converters
 {
-    internal class FskConverter : JsonConverter
+    internal class FskConverter : DataConverter<Fsk[]>
     {
         #region Methods
 
-        public override bool CanConvert(Type objectType)
-        {
-            return objectType == typeof(IEnumerable<Fsk>);
-        }
-
-        public override object ReadJson(
-            JsonReader reader, Type objectType, object existingValue,
-            JsonSerializer serializer)
+        /// <inheritdoc />
+        public override Fsk[] ConvertJson(
+            JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
         {
             string lValue = reader.Value.ToString();
             if (string.IsNullOrEmpty(lValue.Trim())) return new Fsk[0];
@@ -28,11 +23,6 @@ namespace Azuria.Api.v1.Converters
                 .Where(fskString => lStringDictionary.ContainsKey(fskString))
                 .Select(fskString => lStringDictionary[fskString])
                 .ToArray();
-        }
-
-        public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
-        {
-            throw new NotImplementedException();
         }
 
         #endregion

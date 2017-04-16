@@ -4,18 +4,13 @@ using Newtonsoft.Json;
 
 namespace Azuria.Api.v1.Converters.Messenger
 {
-    internal class MessageActionConverter : JsonConverter
+    internal class MessageActionConverter : DataConverter<MessageAction>
     {
         #region Methods
 
-        public override bool CanConvert(Type objectType)
-        {
-            return objectType == typeof(MessageAction);
-        }
-
-        public override object ReadJson(
-            JsonReader reader, Type objectType, object existingValue,
-            JsonSerializer serializer)
+        /// <inheritdoc />
+        public override MessageAction ConvertJson(
+            JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
         {
             switch (reader.Value.ToString())
             {
@@ -30,11 +25,6 @@ namespace Azuria.Api.v1.Converters.Messenger
                 default:
                     return MessageAction.NoAction;
             }
-        }
-
-        public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
-        {
-            throw new NotImplementedException();
         }
 
         #endregion

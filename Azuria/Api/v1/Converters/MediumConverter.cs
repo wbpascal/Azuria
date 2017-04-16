@@ -4,18 +4,13 @@ using Newtonsoft.Json;
 
 namespace Azuria.Api.v1.Converters
 {
-    internal class MediumConverter : JsonConverter
+    internal class MediumConverter : DataConverter<MediaMedium>
     {
         #region Methods
 
-        public override bool CanConvert(Type objectType)
-        {
-            return objectType == typeof(MediaMedium);
-        }
-
-        public override object ReadJson(
-            JsonReader reader, Type objectType, object existingValue,
-            JsonSerializer serializer)
+        /// <inheritdoc />
+        public override MediaMedium ConvertJson(
+            JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
         {
             switch (reader.Value.ToString())
             {
@@ -37,11 +32,6 @@ namespace Azuria.Api.v1.Converters
                     return MediaMedium.HManga;
             }
             return MediaMedium.None;
-        }
-
-        public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
-        {
-            writer.WriteValue(value.ToString().ToLowerInvariant());
         }
 
         #endregion
