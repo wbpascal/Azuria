@@ -6,6 +6,7 @@ using Azuria.Enums;
 using Azuria.Enums.Info;
 using Azuria.Enums.User;
 using Azuria.Helpers.Extensions;
+using HistoryDataModel = Azuria.Api.v1.DataModels.Ucp.HistoryDataModel;
 using ToptenDataModel = Azuria.Api.v1.DataModels.Ucp.ToptenDataModel;
 
 namespace Azuria.Api.v1.RequestBuilder

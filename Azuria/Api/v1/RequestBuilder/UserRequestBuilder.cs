@@ -26,6 +26,42 @@ namespace Azuria.Api.v1.RequestBuilder
 
         #region Methods
 
+        private IUrlBuilderWithResult<HistoryDataModel[]> GetHistory(string page, string limit)
+        {
+            return new UrlBuilder<HistoryDataModel[]>(
+                    new Uri($"{ApiConstants.ApiUrlV1}/user/history"), this._client
+                ).WithGetParameter("p", page)
+                .WithGetParameter("limit", limit);
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="username"></param>
+        /// <param name="page"></param>
+        /// <param name="limit"></param>
+        /// <returns></returns>
+        public IUrlBuilderWithResult<HistoryDataModel[]> GetHistory(
+            string username, int page = 0, int limit = 100)
+        {
+            return this.GetHistory(page.ToString(), limit.ToString())
+                .WithGetParameter("username", username);
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="uid"></param>
+        /// <param name="page"></param>
+        /// <param name="limit"></param>
+        /// <returns></returns>
+        public IUrlBuilderWithResult<HistoryDataModel[]> GetHistory(
+            int uid, int page = 0, int limit = 100)
+        {
+            return this.GetHistory(page.ToString(), limit.ToString())
+                .WithGetParameter("username", uid.ToString());
+        }
+
         /// <summary>
         /// Builds a request that...
         /// 
@@ -70,6 +106,17 @@ namespace Azuria.Api.v1.RequestBuilder
                 .WithLoginCheck(false);
         }
 
+        private IUrlBuilderWithResult<CommentDataModel[]> GetLatestComments(
+            int page = 0, int limit = 25, MediaEntryType category = MediaEntryType.Anime, int length = 300)
+        {
+            return new UrlBuilder<CommentDataModel[]>(
+                    new Uri($"{ApiConstants.ApiUrlV1}/user/comments"), this._client
+                ).WithGetParameter("p", page.ToString())
+                .WithGetParameter("limit", limit.ToString())
+                .WithGetParameter("kat", category.ToString().ToLowerInvariant())
+                .WithGetParameter("length", length.ToString());
+        }
+
         /// <summary>
         /// Builds a request that...
         /// 
@@ -87,8 +134,7 @@ namespace Azuria.Api.v1.RequestBuilder
             int length = 300)
         {
             return this.GetLatestComments(page, limit, category, length)
-                .WithGetParameter("uid", userId.ToString())
-                .WithLoginCheck(false);
+                .WithGetParameter("uid", userId.ToString());
         }
 
         /// <summary>
@@ -108,48 +154,10 @@ namespace Azuria.Api.v1.RequestBuilder
             int length = 300)
         {
             return this.GetLatestComments(page, limit, category, length)
-                .WithGetParameter("username", username)
-                .WithLoginCheck(false);
+                .WithGetParameter("username", username);
         }
 
-        /// <summary>
-        /// Builds a request that...
-        /// 
-        /// Api permissions required:
-        /// * User - Level 0
-        /// </summary>
-        /// <param name="page"></param>
-        /// <param name="limit"></param>
-        /// <param name="category"></param>
-        /// <param name="length"></param>
-        /// <returns>An instance of <see cref="ApiRequest" /> that returns...</returns>
-        public IUrlBuilderWithResult<CommentDataModel[]> GetLatestComments(
-            int page = 0, int limit = 25, MediaEntryType category = MediaEntryType.Anime, int length = 300)
-        {
-            return new UrlBuilder<CommentDataModel[]>(
-                    new Uri($"{ApiConstants.ApiUrlV1}/user/comments"), this._client
-                ).WithGetParameter("p", page.ToString())
-                .WithGetParameter("limit", limit.ToString())
-                .WithGetParameter("kat", category.ToString().ToLowerInvariant())
-                .WithGetParameter("length", length.ToString())
-                .WithLoginCheck();
-        }
-
-        /// <summary>
-        /// Builds a request that...
-        /// 
-        /// Api permissions required:
-        /// * User - Level 0
-        /// </summary>
-        /// <param name="category"></param>
-        /// <param name="page"></param>
-        /// <param name="limit"></param>
-        /// <param name="search"></param>
-        /// <param name="searchStart"></param>
-        /// <param name="sort"></param>
-        /// <param name="sortDirection"></param>
-        /// <returns>An instance of <see cref="ApiRequest" /> that returns...</returns>
-        public IUrlBuilderWithResult<ListDataModel[]> GetList(
+        private IUrlBuilderWithResult<ListDataModel[]> GetList(
             MediaEntryType category = MediaEntryType.Anime, int page = 0, int limit = 100, string search = "",
             string searchStart = "", UserListSort sort = UserListSort.StateName,
             SortDirection sortDirection = SortDirection.Ascending)
@@ -161,8 +169,7 @@ namespace Azuria.Api.v1.RequestBuilder
                 .WithGetParameter("limit", limit.ToString())
                 .WithGetParameter("search", search)
                 .WithGetParameter("search_start", searchStart)
-                .WithGetParameter("sort", sort.GetDescription() + sortDirection.GetDescription())
-                .WithLoginCheck();
+                .WithGetParameter("sort", sort.GetDescription() + sortDirection.GetDescription());
         }
 
         /// <summary>
@@ -186,8 +193,7 @@ namespace Azuria.Api.v1.RequestBuilder
             SortDirection sortDirection = SortDirection.Ascending)
         {
             return this.GetList(category, page, limit, search, searchStart, sort, sortDirection)
-                .WithGetParameter("uid", userId.ToString())
-                .WithLoginCheck(false);
+                .WithGetParameter("uid", userId.ToString());
         }
 
         /// <summary>
@@ -211,24 +217,15 @@ namespace Azuria.Api.v1.RequestBuilder
             SortDirection sortDirection = SortDirection.Ascending)
         {
             return this.GetList(category, page, limit, search, searchStart, sort, sortDirection)
-                .WithGetParameter("username", username)
-                .WithLoginCheck(false);
+                .WithGetParameter("username", username);
         }
 
-        /// <summary>
-        /// Builds a request that...
-        /// 
-        /// Api permissions required:
-        /// * User - Level 0
-        /// </summary>
-        /// <param name="category"></param>
-        /// <returns>An instance of <see cref="ApiRequest" /> that returns...</returns>
-        public IUrlBuilderWithResult<ToptenDataModel[]> GetTopten(MediaEntryType category = MediaEntryType.Anime)
+        private IUrlBuilderWithResult<ToptenDataModel[]> GetTopten(
+            MediaEntryType category = MediaEntryType.Anime)
         {
             return new UrlBuilder<ToptenDataModel[]>(
-                    new Uri($"{ApiConstants.ApiUrlV1}/user/topten"), this._client
-                ).WithGetParameter("kat", category.ToString().ToLowerInvariant())
-                .WithLoginCheck();
+                new Uri($"{ApiConstants.ApiUrlV1}/user/topten"), this._client
+            ).WithGetParameter("kat", category.ToString().ToLowerInvariant());
         }
 
         /// <summary>
@@ -244,8 +241,7 @@ namespace Azuria.Api.v1.RequestBuilder
             int userId, MediaEntryType category = MediaEntryType.Anime)
         {
             return this.GetTopten(category)
-                .WithGetParameter("uid", userId.ToString())
-                .WithLoginCheck(false);
+                .WithGetParameter("uid", userId.ToString());
         }
 
         /// <summary>
@@ -261,8 +257,7 @@ namespace Azuria.Api.v1.RequestBuilder
             string username, MediaEntryType category = MediaEntryType.Anime)
         {
             return this.GetTopten(category)
-                .WithGetParameter("username", username)
-                .WithLoginCheck(false);
+                .WithGetParameter("username", username);
         }
 
         /// <summary>
