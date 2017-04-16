@@ -39,8 +39,7 @@ namespace Azuria.Api.v1.DataModels.Ucp
 
         /// <summary>
         /// </summary>
-        [JsonProperty("language")]
-        [JsonConverter(typeof(LanguageConverter))]
+        [JsonProperty("language", ItemConverterType = typeof(LanguageConverter))]
         public MediaLanguage Language { get; set; }
 
         /// <summary>

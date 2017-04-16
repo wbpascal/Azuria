@@ -47,8 +47,7 @@ namespace Azuria.Api.v1.DataModels.User
 
         /// <summary>
         /// </summary>
-        [JsonProperty("status_time")]
-        [JsonConverter(typeof(UnixToDateTimeConverter))]
+        [JsonProperty("status_time", ItemConverterType = typeof(UnixToDateTimeConverter))]
         public DateTime StatusLastChanged { get; set; }
 
         /// <summary>

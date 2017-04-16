@@ -13,8 +13,7 @@ namespace Azuria.Api.v1.DataModels.List
 
         /// <summary>
         /// </summary>
-        [JsonProperty("language")]
-        [JsonConverter(typeof(LanguageCommaCollectionConverter))]
+        [JsonProperty("language", ItemConverterType = typeof(LanguageCommaCollectionConverter))]
         public MediaLanguage[] AvailableLanguages { get; set; }
 
         /// <summary>
@@ -40,8 +39,7 @@ namespace Azuria.Api.v1.DataModels.List
 
         /// <summary>
         /// </summary>
-        [JsonProperty("genre")]
-        [JsonConverter(typeof(GenreConverter))]
+        [JsonProperty("genre", ItemConverterType = typeof(GenreConverter))]
         public Genre[] Genre { get; set; }
 
         /// <summary>

@@ -17,8 +17,7 @@ namespace Azuria.Api.v1.DataModels.Info
 
         /// <summary>
         /// </summary>
-        [JsonProperty("type")]
-        [JsonConverter(typeof(NameTypeConverter))]
+        [JsonProperty("type", ItemConverterType = typeof(NameTypeConverter))]
         public MediaNameType Type { get; set; }
 
         #endregion

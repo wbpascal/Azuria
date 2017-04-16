@@ -34,8 +34,7 @@ namespace Azuria.Api.v1.DataModels.Anime
 
         /// <summary>
         /// </summary>
-        [JsonProperty("type")]
-        [JsonConverter(typeof(StreamPartnerConverter))]
+        [JsonProperty("type", ItemConverterType = typeof(StreamPartnerConverter))]
         public StreamHoster StreamHoster { get; set; }
 
         /// <summary>
@@ -65,8 +64,7 @@ namespace Azuria.Api.v1.DataModels.Anime
 
         /// <summary>
         /// </summary>
-        [JsonProperty("timestamp")]
-        [JsonConverter(typeof(UnixToDateTimeConverter))]
+        [JsonProperty("timestamp", ItemConverterType = typeof(UnixToDateTimeConverter))]
         public DateTime UploadTimestamp { get; set; }
 
         #endregion

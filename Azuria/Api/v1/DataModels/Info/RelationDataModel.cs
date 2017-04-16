@@ -12,8 +12,7 @@ namespace Azuria.Api.v1.DataModels.Info
 
         /// <summary>
         /// </summary>
-        [JsonProperty("language")]
-        [JsonConverter(typeof(LanguageCommaCollectionConverter))]
+        [JsonProperty("language", ItemConverterType = typeof(LanguageCommaCollectionConverter))]
         public MediaLanguage[] AvailableLanguages { get; set; }
 
         #endregion

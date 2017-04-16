@@ -15,15 +15,13 @@ namespace Azuria.Api.v1.DataModels.List
         /// <summary>
         /// 
         /// </summary>
-        [JsonProperty("fsk")]
-        [JsonConverter(typeof(FskConverter))]
+        [JsonProperty("fsk", ItemConverterType = typeof(FskConverter))]
         public Fsk[] EntryFsk { get; set; }
 
         /// <summary>
         /// 
         /// </summary>
-        [JsonProperty("genre")]
-        [JsonConverter(typeof(GenreConverter))]
+        [JsonProperty("genre", ItemConverterType = typeof(GenreConverter))]
         public Genre[] EntryGenre { get; set; }
 
         /// <inheritdoc />
@@ -59,8 +57,7 @@ namespace Azuria.Api.v1.DataModels.List
         /// <summary>
         /// 
         /// </summary>
-        [JsonProperty("type")]
-        [JsonConverter(typeof(IndustryTypeConverter))]
+        [JsonProperty("type", ItemConverterType = typeof(IndustryTypeConverter))]
         public IndustryType IndustryType { get; set; }
 
         #endregion

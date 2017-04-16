@@ -19,8 +19,7 @@ namespace Azuria.Api.v1.DataModels.Messenger
 
         /// <summary>
         /// </summary>
-        [JsonProperty("action")]
-        [JsonConverter(typeof(MessageActionConverter))]
+        [JsonProperty("action", ItemConverterType = typeof(MessageActionConverter))]
         public MessageAction MessageAction { get; set; }
 
         /// <summary>
@@ -35,8 +34,7 @@ namespace Azuria.Api.v1.DataModels.Messenger
 
         /// <summary>
         /// </summary>
-        [JsonProperty("timestamp")]
-        [JsonConverter(typeof(UnixToDateTimeConverter))]
+        [JsonProperty("timestamp", ItemConverterType = typeof(UnixToDateTimeConverter))]
         public DateTime MessageTimeStamp { get; set; }
 
         /// <summary>

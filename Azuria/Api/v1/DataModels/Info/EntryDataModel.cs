@@ -40,26 +40,22 @@ namespace Azuria.Api.v1.DataModels.Info
         public string EntryName { get; set; }
 
         /// <inheritdoc />
-        [JsonProperty("kat")]
-        [JsonConverter(typeof(CategoryConverter))]
+        [JsonProperty("kat", ItemConverterType = typeof(CategoryConverter))]
         public MediaEntryType EntryType { get; set; }
 
         /// <summary>
         /// </summary>
-        [JsonProperty("fsk")]
-        [JsonConverter(typeof(FskConverter))]
+        [JsonProperty("fsk", ItemConverterType = typeof(FskConverter))]
         public Fsk[] Fsk { get; set; }
 
         /// <summary>
         /// </summary>
-        [JsonProperty("genre")]
-        [JsonConverter(typeof(GenreConverter))]
+        [JsonProperty("genre", ItemConverterType = typeof(GenreConverter))]
         public Genre[] Genre { get; set; }
 
         /// <summary>
         /// </summary>
-        [JsonProperty("license")]
-        [JsonConverter(typeof(IsLicensedConverter))]
+        [JsonProperty("license", ItemConverterType = typeof(IsLicensedConverter))]
         public bool? IsLicensed { get; set; }
 
         /// <summary>

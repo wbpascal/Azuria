@@ -15,8 +15,7 @@ namespace Azuria.Api.v1.DataModels.List
         /// <summary>
         /// 
         /// </summary>
-        [JsonProperty("country")]
-        [JsonConverter(typeof(CountryConverter))]
+        [JsonProperty("country", ItemConverterType = typeof(CountryConverter))]
         public Country Country { get; set; }
 
         /// <summary>
