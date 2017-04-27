@@ -12,9 +12,27 @@ namespace Azuria.Api.v1.DataModels.Info
         #region Properties
 
         /// <summary>
+        /// 
+        /// </summary>
+        [JsonProperty("count")]
+        public int Count { get; set; }
+
+        /// <summary>
         /// </summary>
         [JsonProperty("country", ItemConverterType = typeof(CountryConverter))]
         public Country Country { get; set; }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        [JsonProperty("cprojects")]
+        public int CProjects { get; set; }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        [JsonProperty("description")]
+        public string Description { get; set; }
 
         /// <summary>
         /// </summary>

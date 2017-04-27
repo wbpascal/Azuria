@@ -136,6 +136,21 @@ namespace Azuria.Api.v1.RequestBuilder
         }
 
         /// <summary>
+        /// Builds a request that returns information about a company.
+        /// 
+        /// Api permissions required:
+        /// * Info - Level 0
+        /// </summary>
+        /// <param name="id">The id of the company.</param>
+        /// <returns>An instance of <see cref="ApiRequest" /> that returns information about a company.</returns>
+        public IUrlBuilderWithResult<TranslatorDataModel[]> GetIndustry(int id)
+        {
+            return new UrlBuilder<TranslatorDataModel[]>(
+                new Uri($"{ApiConstants.ApiUrlV1}/info/industry"), this._client
+            ).WithGetParameter("id", id.ToString());
+        }
+
+        /// <summary>
         /// Builds a request that returns all languages an anime or manga is
         /// available in.
         /// 
@@ -241,6 +256,21 @@ namespace Azuria.Api.v1.RequestBuilder
             return new UrlBuilder<SeasonDataModel[]>(
                 new Uri($"{ApiConstants.ApiUrlV1}/info/season"), this._client
             ).WithGetParameter("id", entryId.ToString());
+        }
+
+        /// <summary>
+        /// Builds a request that returns information about a translator group.
+        /// 
+        /// Api permissions required:
+        /// * Info - Level 0
+        /// </summary>
+        /// <param name="id">The id of the translator group.</param>
+        /// <returns>An instance of <see cref="ApiRequest" /> that returns information about a translator group.</returns>
+        public IUrlBuilderWithResult<TranslatorDataModel[]> GetTranslatorGroup(int id)
+        {
+            return new UrlBuilder<TranslatorDataModel[]>(
+                new Uri($"{ApiConstants.ApiUrlV1}/info/translatorgroup"), this._client
+            ).WithGetParameter("id", id.ToString());
         }
 
         /// <summary>

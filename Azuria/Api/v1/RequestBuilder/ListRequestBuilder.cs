@@ -1,6 +1,7 @@
 ﻿using System;
 using Azuria.Api.Builder;
 using Azuria.Api.v1.Converters.List;
+using Azuria.Api.v1.DataModels.Info;
 using Azuria.Api.v1.DataModels.List;
 using Azuria.Enums;
 using Azuria.Enums.Info;
