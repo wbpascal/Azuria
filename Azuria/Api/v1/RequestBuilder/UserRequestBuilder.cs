@@ -65,7 +65,7 @@ namespace Azuria.Api.v1.RequestBuilder
         /// <summary>
         /// Builds a request that...
         /// 
-        /// Api permissions required:
+        /// Api permissions required (class - permission level):
         /// * User - Level 0
         /// </summary>
         /// <returns>An instance of <see cref="ApiRequest" /> that returns...</returns>
@@ -79,7 +79,7 @@ namespace Azuria.Api.v1.RequestBuilder
         /// <summary>
         /// Builds a request that...
         /// 
-        /// Api permissions required:
+        /// Api permissions required (class - permission level):
         /// * User - Level 0
         /// </summary>
         /// <param name="userId"></param>
@@ -94,7 +94,7 @@ namespace Azuria.Api.v1.RequestBuilder
         /// <summary>
         /// Builds a request that...
         /// 
-        /// Api permissions required:
+        /// Api permissions required (class - permission level):
         /// * User - Level 0
         /// </summary>
         /// <param name="username"></param>
@@ -120,7 +120,7 @@ namespace Azuria.Api.v1.RequestBuilder
         /// <summary>
         /// Builds a request that...
         /// 
-        /// Api permissions required:
+        /// Api permissions required (class - permission level):
         /// * User - Level 0
         /// </summary>
         /// <param name="userId"></param>
@@ -140,7 +140,7 @@ namespace Azuria.Api.v1.RequestBuilder
         /// <summary>
         /// Builds a request that...
         /// 
-        /// Api permissions required:
+        /// Api permissions required (class - permission level):
         /// * User - Level 0
         /// </summary>
         /// <param name="username"></param>
@@ -175,7 +175,7 @@ namespace Azuria.Api.v1.RequestBuilder
         /// <summary>
         /// Builds a request that...
         /// 
-        /// Api permissions required:
+        /// Api permissions required (class - permission level):
         /// * User - Level 0
         /// </summary>
         /// <param name="userId"></param>
@@ -199,7 +199,7 @@ namespace Azuria.Api.v1.RequestBuilder
         /// <summary>
         /// Builds a request that...
         /// 
-        /// Api permissions required:
+        /// Api permissions required (class - permission level):
         /// * User - Level 0
         /// </summary>
         /// <param name="username"></param>
@@ -231,7 +231,7 @@ namespace Azuria.Api.v1.RequestBuilder
         /// <summary>
         /// Builds a request that...
         /// 
-        /// Api permissions required:
+        /// Api permissions required (class - permission level):
         /// * User - Level 0
         /// </summary>
         /// <param name="userId"></param>
@@ -247,7 +247,7 @@ namespace Azuria.Api.v1.RequestBuilder
         /// <summary>
         /// Builds a request that...
         /// 
-        /// Api permissions required:
+        /// Api permissions required (class - permission level):
         /// * User - Level 0
         /// </summary>
         /// <param name="username"></param>
@@ -263,7 +263,7 @@ namespace Azuria.Api.v1.RequestBuilder
         /// <summary>
         /// Builds a request that...
         /// 
-        /// Api permissions required:
+        /// Api permissions required (class - permission level):
         /// * User - Level 0
         /// </summary>
         /// <param name="username"></param>
@@ -280,7 +280,7 @@ namespace Azuria.Api.v1.RequestBuilder
         /// <summary>
         /// Builds a request that...
         /// 
-        /// Api permissions required:
+        /// Api permissions required (class - permission level):
         /// * User - Level 0
         /// </summary>
         /// <param name="username"></param>
@@ -296,7 +296,7 @@ namespace Azuria.Api.v1.RequestBuilder
         /// <summary>
         /// Builds a request that...
         /// 
-        /// Api permissions required:
+        /// Api permissions required (class - permission level):
         /// * User - Level 0
         /// </summary>
         /// <returns>An instance of <see cref="ApiRequest" /> that returns...</returns>

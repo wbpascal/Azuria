@@ -27,7 +27,7 @@ namespace Azuria.Api.v1.RequestBuilder
         /// <summary>
         /// Builds a request that returns an array of all current headers.
         /// 
-        /// Api permissions required:
+        /// Api permissions required (class - permission level):
         /// * Media - Level 0
         /// </summary>
         /// <returns>An instance of <see cref="ApiRequest" /> that returns an array of headers.</returns>
@@ -41,7 +41,7 @@ namespace Azuria.Api.v1.RequestBuilder
         /// <summary>
         /// Builds a request that returns a random header for an optional specified style.
         /// 
-        /// Api permissions required:
+        /// Api permissions required (class - permission level):
         /// * Media - Level 0
         /// </summary>
         /// <param name="style">Optional. The style of the returned header.</param>

@@ -27,7 +27,7 @@ namespace Azuria.Api.v1.RequestBuilder
         /// <summary>
         /// Builds a request that returns information about a chapter including the pages.
         /// 
-        /// Api permissions required:
+        /// Api permissions required (class - permission level):
         /// * Manga - Level 0
         /// </summary>
         /// <param name="id">The id of the manga.</param>

@@ -34,7 +34,7 @@ namespace Azuria.Api.v1.RequestBuilder
         /// Builds a request that returns the results of a search for anime and
         /// manga.
         /// 
-        /// Api permissions required:
+        /// Api permissions required (class - permission level):
         /// * List - Level 0
         /// </summary>
         /// <param name="input">The criteria that will be searched for.</param>
@@ -59,7 +59,7 @@ namespace Azuria.Api.v1.RequestBuilder
         /// Builds a request that returns a list of anime or manga that match
         /// the specified criteria.
         /// 
-        /// Api permissions required:
+        /// Api permissions required (class - permission level):
         /// * List - Level 0
         /// </summary>
         /// <param name="input">The criteria that the returned anime or manga should match.</param>
@@ -87,7 +87,7 @@ namespace Azuria.Api.v1.RequestBuilder
         /// <summary>
         /// Builds a request that returns
         /// 
-        /// Api permissions required:
+        /// Api permissions required (class - permission level):
         /// * List - Level 0
         /// </summary>
         /// <param name="start"></param>
@@ -117,7 +117,7 @@ namespace Azuria.Api.v1.RequestBuilder
         /// <summary>
         /// Builds a request that returns
         /// 
-        /// Api permissions required:
+        /// Api permissions required (class - permission level):
         /// * List - Level 0
         /// </summary>
         /// <param name="translatorId"></param>
@@ -141,7 +141,7 @@ namespace Azuria.Api.v1.RequestBuilder
         /// <summary>
         /// Builds a request that returns
         /// 
-        /// Api permissions required:
+        /// Api permissions required (class - permission level):
         /// * List - Level 0
         /// </summary>
         /// <param name="search"></param>
@@ -157,7 +157,7 @@ namespace Azuria.Api.v1.RequestBuilder
         /// <summary>
         /// Builds a request that returns
         /// 
-        /// Api permissions required:
+        /// Api permissions required (class - permission level):
         /// * List - Level 0
         /// </summary>
         /// <param name="search"></param>
@@ -182,7 +182,7 @@ namespace Azuria.Api.v1.RequestBuilder
         /// <summary>
         /// Builds a request that returns
         /// 
-        /// Api permissions required:
+        /// Api permissions required (class - permission level):
         /// * List - Level 0
         /// </summary>
         /// <param name="start"></param>
@@ -206,7 +206,7 @@ namespace Azuria.Api.v1.RequestBuilder
         /// <summary>
         /// Builds a request that returns
         /// 
-        /// Api permissions required:
+        /// Api permissions required (class - permission level):
         /// * List - Level 0
         /// </summary>
         /// <param name="translatorId"></param>

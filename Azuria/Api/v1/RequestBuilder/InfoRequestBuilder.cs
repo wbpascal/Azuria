@@ -30,7 +30,7 @@ namespace Azuria.Api.v1.RequestBuilder
         /// Builds a request that returns all comments of an anime or manga
         /// (with more than 300 characters).
         /// 
-        /// Api permissions required:
+        /// Api permissions required (class - permission level):
         /// * Info - Level 0
         /// </summary>
         /// <param name="entryId">The id of the anime or manga.</param>
@@ -58,7 +58,7 @@ namespace Azuria.Api.v1.RequestBuilder
         /// Builds a request that returns the core information of an anime or
         /// manga.
         /// 
-        /// Api permissions required:
+        /// Api permissions required (class - permission level):
         /// * Info - Level 0
         /// </summary>
         /// <param name="entryId">The id of the Anime or Manga.</param>
@@ -73,7 +73,7 @@ namespace Azuria.Api.v1.RequestBuilder
         /// <summary>
         /// Builds a request that returns all tags of an anime or manga.
         /// 
-        /// Api permissions required:
+        /// Api permissions required (class - permission level):
         /// * Info - Level 0
         /// </summary>
         /// <param name="entryId">The id of the anime or manga.</param>
@@ -92,7 +92,7 @@ namespace Azuria.Api.v1.RequestBuilder
         /// The returned object creates a heavy load on the server if it is used in a request!
         /// Be sure to only use it if you are certain that you need all returned informations!
         /// 
-        /// Api permissions required:
+        /// Api permissions required (class - permission level):
         /// * Info - Level 0
         /// </summary>
         /// <param name="entryId">The id of the anime or manga.</param>
@@ -108,7 +108,7 @@ namespace Azuria.Api.v1.RequestBuilder
         /// Builds a request that returns a boolean indicating if the anime or
         /// manga requires an 18+ age check.
         /// 
-        /// Api permissions required:
+        /// Api permissions required (class - permission level):
         /// * Info - Level 0
         /// </summary>
         /// <param name="entryId">The id of the anime or manga.</param>
@@ -123,7 +123,7 @@ namespace Azuria.Api.v1.RequestBuilder
         /// Builds a request that returns informations about the translators of
         /// an anime or manga.
         /// 
-        /// Api permissions required:
+        /// Api permissions required (class - permission level):
         /// * Info - Level 0
         /// </summary>
         /// <param name="entryId">The id of the anime or manga.</param>
@@ -138,7 +138,7 @@ namespace Azuria.Api.v1.RequestBuilder
         /// <summary>
         /// Builds a request that returns information about a company.
         /// 
-        /// Api permissions required:
+        /// Api permissions required (class - permission level):
         /// * Info - Level 0
         /// </summary>
         /// <param name="id">The id of the company.</param>
@@ -154,7 +154,7 @@ namespace Azuria.Api.v1.RequestBuilder
         /// Builds a request that returns all languages an anime or manga is
         /// available in.
         /// 
-        /// Api permissions required:
+        /// Api permissions required (class - permission level):
         /// * Info - Level 0
         /// </summary>
         /// <param name="entryId">The id of the anime or manga.</param>
@@ -170,7 +170,7 @@ namespace Azuria.Api.v1.RequestBuilder
         /// Builds a request that returns all episodes or chapters of an anime
         /// or manga.
         /// 
-        /// Api permissions required:
+        /// Api permissions required (class - permission level):
         /// * Info - Level 0
         /// </summary>
         /// <param name="entryId">The id of the anime or manga.</param>
@@ -195,7 +195,7 @@ namespace Azuria.Api.v1.RequestBuilder
         /// Builds a request that returns all names and synonymous of an anime
         /// or manga.
         /// 
-        /// Api permissions required:
+        /// Api permissions required (class - permission level):
         /// * Info - Level 0
         /// </summary>
         /// <param name="entryId">The id of the anime or manga.</param>
@@ -214,7 +214,7 @@ namespace Azuria.Api.v1.RequestBuilder
         /// Builds a request that returns returns all organisations that were
         /// involved with creating or publishing the an anime or manga.
         /// 
-        /// Api permissions required:
+        /// Api permissions required (class - permission level):
         /// * Info - Level 0
         /// </summary>
         /// <param name="entryId">The id of the anime or manga.</param>
@@ -231,7 +231,7 @@ namespace Azuria.Api.v1.RequestBuilder
         /// <summary>
         /// Builds a request that returns all relations of an anime or manga.
         /// 
-        /// Api permissions required:
+        /// Api permissions required (class - permission level):
         /// * Info - Level 0
         /// </summary>
         /// <param name="entryId">The id of the anime or manga.</param>
@@ -246,7 +246,7 @@ namespace Azuria.Api.v1.RequestBuilder
         /// <summary>
         /// Builds a request that returns the seasons an anime or manga aired in.
         /// 
-        /// Api permissions required:
+        /// Api permissions required (class - permission level):
         /// * Info - Level 0
         /// </summary>
         /// <param name="entryId">The id of the anime or manga.</param>
@@ -261,7 +261,7 @@ namespace Azuria.Api.v1.RequestBuilder
         /// <summary>
         /// Builds a request that returns information about a translator group.
         /// 
-        /// Api permissions required:
+        /// Api permissions required (class - permission level):
         /// * Info - Level 0
         /// </summary>
         /// <param name="id">The id of the translator group.</param>
@@ -278,7 +278,7 @@ namespace Azuria.Api.v1.RequestBuilder
         /// in user.
         /// Requires authentication.
         /// 
-        /// Api permissions required:
+        /// Api permissions required (class - permission level):
         /// * Info - Level 1
         /// </summary>
         /// <param name="entryId">The id of the anime or manga.</param>

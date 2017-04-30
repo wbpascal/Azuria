@@ -26,7 +26,7 @@ namespace Azuria.Api.v1.RequestBuilder
         /// <summary>
         /// Builds a request that deletes a notification.
         /// 
-        /// Api permissions required:
+        /// Api permissions required (class - permission level):
         /// * Notifications - Level 0
         /// </summary>
         /// <param name="nid">
@@ -44,7 +44,7 @@ namespace Azuria.Api.v1.RequestBuilder
         /// <summary>
         /// Builds a request that returns how many notifications a user has recieved and not read.
         /// 
-        /// Api permissions required:
+        /// Api permissions required (class - permission level):
         /// * Notifications - Level 0
         /// </summary>
         /// <returns>An instance of <see cref="ApiRequest" /> that returns the number of notifications.</returns>
@@ -59,7 +59,7 @@ namespace Azuria.Api.v1.RequestBuilder
         /// <summary>
         /// Builds a request that returns the current news ordered by date of publication.
         /// 
-        /// Api permissions required:
+        /// Api permissions required (class - permission level):
         /// * Notifications - Level 0
         /// </summary>
         /// <param name="limit">Optional. The amount of news that will be returned per page. Default: 15</param>

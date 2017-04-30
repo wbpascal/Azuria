@@ -30,7 +30,7 @@ namespace Azuria.Api.v1.RequestBuilder
         /// Builds a request that returns informations about a specified conference.
         /// Requires authentication.
         /// 
-        /// Api permissions required:
+        /// Api permissions required (class - permission level):
         /// * Messenger - Level 0
         /// </summary>
         /// <param name="conferenceId">The id of the conference.</param>
@@ -47,7 +47,7 @@ namespace Azuria.Api.v1.RequestBuilder
         /// Builds a request that returns an array of conferences a user participates in.
         /// Requires authentication.
         /// 
-        /// Api permissions required:
+        /// Api permissions required (class - permission level):
         /// * Messenger - Level 0
         /// </summary>
         /// <param name="type">Optional. The list from which the conferences are returned.</param>
@@ -67,7 +67,7 @@ namespace Azuria.Api.v1.RequestBuilder
         /// Builds a request that returns all messenger constants. These values should only change
         /// every few months.
         /// 
-        /// Api permissions required:
+        /// Api permissions required (class - permission level):
         /// * Messenger - Level 0
         /// </summary>
         /// <returns>An instance of <see cref="ApiRequest" /> that returns the messenger constants.</returns>
@@ -82,7 +82,7 @@ namespace Azuria.Api.v1.RequestBuilder
         /// Builds a request that returns the most recent recieved messages of a conference or a user.
         /// Requires authentication.
         /// 
-        /// Api permissions required:
+        /// Api permissions required (class - permission level):
         /// * Messenger - Level 0
         /// </summary>
         /// <param name="conferenceId">
@@ -116,7 +116,7 @@ namespace Azuria.Api.v1.RequestBuilder
         /// If a conference between these users is already found the id of the existing conference will be returned.
         /// Requires authentication.
         /// 
-        /// Api permissions required:
+        /// Api permissions required (class - permission level):
         /// * Messenger - Level 1
         /// </summary>
         /// <param name="username">The username of the user whom the conference will be created with.</param>
@@ -135,7 +135,7 @@ namespace Azuria.Api.v1.RequestBuilder
         /// Builds a request that creates a new group conference and returns the id.
         /// Requires authentication.
         /// 
-        /// Api permissions required:
+        /// Api permissions required (class - permission level):
         /// * Messenger - Level 1
         /// </summary>
         /// <param name="participantNames">
@@ -169,7 +169,7 @@ namespace Azuria.Api.v1.RequestBuilder
         /// Builds a request that blocks a conference.
         /// Requires authentication.
         /// 
-        /// Api permissions required:
+        /// Api permissions required (class - permission level):
         /// * Messenger - Level 1
         /// </summary>
         /// <param name="conferenceId">The id of the conference that will be blocked.</param>
@@ -185,7 +185,7 @@ namespace Azuria.Api.v1.RequestBuilder
         /// Builds a request that marks a conference as a favourite.
         /// Requires authentication.
         /// 
-        /// Api permissions required:
+        /// Api permissions required (class - permission level):
         /// * Messenger - Level 1
         /// </summary>
         /// <param name="conferenceId">The id of the conference that will be marked as a favourite.</param>
@@ -202,7 +202,7 @@ namespace Azuria.Api.v1.RequestBuilder
         /// answer of the server will be returned.
         /// Requires authentication.
         /// 
-        /// Api permissions required:
+        /// Api permissions required (class - permission level):
         /// * Messenger - Level 1
         /// </summary>
         /// <param name="conferenceId">The id of the conference the message will be send to.</param>
@@ -221,7 +221,7 @@ namespace Azuria.Api.v1.RequestBuilder
         /// Builds a request that marks a conference as read.
         /// Requires authentication.
         /// 
-        /// Api permissions required:
+        /// Api permissions required (class - permission level):
         /// * Messenger - Level 0
         /// </summary>
         /// <param name="conferenceId">The id of the conference.</param>
@@ -237,7 +237,7 @@ namespace Azuria.Api.v1.RequestBuilder
         /// Builds a request that reports a conference to the admins.
         /// Requires authentication.
         /// 
-        /// Api permissions required:
+        /// Api permissions required (class - permission level):
         /// * Messenger - Level 0
         /// </summary>
         /// <param name="conferenceId">The id of the conference that is being reported.</param>
@@ -255,7 +255,7 @@ namespace Azuria.Api.v1.RequestBuilder
         /// Builds a request that unblocks a conference.
         /// Requires authentication.
         /// 
-        /// Api permissions required:
+        /// Api permissions required (class - permission level):
         /// * Messenger - Level 1
         /// </summary>
         /// <param name="conferenceId">The id of the conference that will be unblocked.</param>
@@ -271,7 +271,7 @@ namespace Azuria.Api.v1.RequestBuilder
         /// Builds a request that removes a conference from the favourites.
         /// Requires authentication.
         /// 
-        /// Api permissions required:
+        /// Api permissions required (class - permission level):
         /// * Messenger - Level 1
         /// </summary>
         /// <param name="conferenceId">The id of the conference that will be removed from the favourites.</param>
@@ -287,7 +287,7 @@ namespace Azuria.Api.v1.RequestBuilder
         /// Builds a request that marks a conference as unread.
         /// Requires authentication.
         /// 
-        /// Api permissions required:
+        /// Api permissions required (class - permission level):
         /// * Messenger - Level 1
         /// </summary>
         /// <param name="conferenceId">The id of the conference that will be marked as unread.</param>

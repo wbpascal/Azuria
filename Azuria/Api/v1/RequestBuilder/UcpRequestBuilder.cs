@@ -33,7 +33,7 @@ namespace Azuria.Api.v1.RequestBuilder
         /// Builds a request that removes an entry from a users topten.
         /// Requires authentication.
         /// 
-        /// Api permissions required:
+        /// Api permissions required (class - permission level):
         /// * UCP - Level 1
         /// </summary>
         /// <param name="favouriteId">
@@ -52,7 +52,7 @@ namespace Azuria.Api.v1.RequestBuilder
         /// Builds a request that deletes a reminder of a user.
         /// Requires authentication.
         /// 
-        /// Api permissions required:
+        /// Api permissions required (class - permission level):
         /// * UCP - Level 1
         /// </summary>
         /// <param name="reminderId">The id of the reminder that should be deleted (see <see cref="GetReminder" />).</param>
@@ -69,7 +69,7 @@ namespace Azuria.Api.v1.RequestBuilder
         /// Builds a request that removes a users comment upvote.
         /// Requires authentication.
         /// 
-        /// Api permissions required:
+        /// Api permissions required (class - permission level):
         /// * UCP - Level 1
         /// </summary>
         /// <param name="voteId">The id of the comment upvote that should be removed (see <see cref="GetVotes" />).</param>
@@ -87,7 +87,7 @@ namespace Azuria.Api.v1.RequestBuilder
         /// user.
         /// Requires authentication.
         /// 
-        /// Api permissions required:
+        /// Api permissions required (class - permission level):
         /// * UCP - Level 0
         /// </summary>
         /// <param name="page">Optional. The index of the page that should be loaded. Default: 0</param>
@@ -106,7 +106,7 @@ namespace Azuria.Api.v1.RequestBuilder
         /// Builds a request that returns a list of all anime or manga a user has listed in their ucp.
         /// Requires authentication.
         /// 
-        /// Api permissions required:
+        /// Api permissions required (class - permission level):
         /// * UCP - Level 0
         /// </summary>
         /// <param name="category">Optional. The category that should be loaded.</param>
@@ -138,7 +138,7 @@ namespace Azuria.Api.v1.RequestBuilder
         /// Builds a request that returns the sum of a users watched episodes or read chapters.
         /// Requires authentication.
         /// 
-        /// Api permissions required:
+        /// Api permissions required (class - permission level):
         /// * UCP - Level 0
         /// </summary>
         /// <param name="category">Optional. Whether only watched episodes or read chapters should be counted.</param>
@@ -154,7 +154,7 @@ namespace Azuria.Api.v1.RequestBuilder
         /// Builds a request that returns all reminders of a user.
         /// Requires authentication.
         /// 
-        /// Api permissions required:
+        /// Api permissions required (class - permission level):
         /// * UCP - Level 0
         /// </summary>
         /// <param name="category">Optional. The category that should be loaded. If null or not given both categories are loaded.</param>
@@ -176,7 +176,7 @@ namespace Azuria.Api.v1.RequestBuilder
         /// Builds a request that returns the topten of a user (anime and manga).
         /// Requires authentication.
         /// 
-        /// Api permissions required:
+        /// Api permissions required (class - permission level):
         /// * UCP - Level 0
         /// </summary>
         /// <returns>An instance of <see cref="ApiRequest" /> that returns an array of anime and manga.</returns>
@@ -191,7 +191,7 @@ namespace Azuria.Api.v1.RequestBuilder
         /// Builds a request that returns all comments a user has voted for.
         /// Requires authentication.
         /// 
-        /// Api permissions required:
+        /// Api permissions required (class - permission level):
         /// * UCP - Level 0
         /// </summary>
         /// <returns>An instance of <see cref="ApiRequest" /> that returns an array of comments.</returns>
@@ -208,7 +208,7 @@ namespace Azuria.Api.v1.RequestBuilder
         /// the status of the entry will be set to "Finished" as well.
         /// Requires authentication.
         /// 
-        /// Api permissions required:
+        /// Api permissions required (class - permission level):
         /// * UCP - Level 1
         /// </summary>
         /// <param name="id">The id of the entry that should be edited (see <see cref="GetList" />).</param>
@@ -226,7 +226,7 @@ namespace Azuria.Api.v1.RequestBuilder
         /// Builds a request that adds a reminder for an episode/chapter to a users control-panel.
         /// Requires authentication.
         /// 
-        /// Api permissions required:
+        /// Api permissions required (class - permission level):
         /// * UCP - Level 1
         /// </summary>
         /// <param name="entryId">The id of the anime/manga that contains the episode/chapter.</param>

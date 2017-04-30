@@ -26,7 +26,7 @@ namespace Azuria.Api.v1.RequestBuilder
         /// <summary>
         /// Builds a request that returns the link of a specified stream.
         /// 
-        /// Api permissions required:
+        /// Api permissions required (class - permission level):
         /// * Anime - Level 2
         /// </summary>
         /// <param name="id">The id of the stream.</param>
@@ -38,9 +38,29 @@ namespace Azuria.Api.v1.RequestBuilder
         }
 
         /// <summary>
-        /// Builds a request that returns all streams of a specified episode.
+        /// Builds a request that returns all streams (including the Proxerstream) of a specified episode.
         /// 
-        /// Api permissions required:
+        /// Api permissions required (class - permission level):
+        /// * Anime - Level 3
+        /// </summary>
+        /// <param name="id">The id of the anime.</param>
+        /// <param name="episode">The number of the episode.</param>
+        /// <param name="language">The language of the episode.</param>
+        /// <returns>An instance of <see cref="ApiRequest" /> that returns an array of streams.</returns>
+        public IUrlBuilderWithResult<StreamDataModel[]> GetProxerStreams(
+            int id, int episode, AnimeLanguage language)
+        {
+            return new UrlBuilder<StreamDataModel[]>(
+                    new Uri($"{ApiConstants.ApiUrlV1}/anime/proxerstreams"), this._client)
+                .WithGetParameter("id", id.ToString())
+                .WithGetParameter("episode", episode.ToString())
+                .WithGetParameter("language", language.ToString().ToLowerInvariant());
+        }
+
+        /// <summary>
+        /// Builds a request that returns all streams (without the Proxerstream) of a specified episode.
+        /// 
+        /// Api permissions required (class - permission level):
         /// * Anime - Level 2
         /// </summary>
         /// <param name="id">The id of the anime.</param>
@@ -49,7 +69,8 @@ namespace Azuria.Api.v1.RequestBuilder
         /// <returns>An instance of <see cref="ApiRequest" /> that returns an array of streams.</returns>
         public IUrlBuilderWithResult<StreamDataModel[]> GetStreams(int id, int episode, AnimeLanguage language)
         {
-            return new UrlBuilder<StreamDataModel[]>(new Uri($"{ApiConstants.ApiUrlV1}/anime/streams"), this._client)
+            return new UrlBuilder<StreamDataModel[]>(
+                    new Uri($"{ApiConstants.ApiUrlV1}/anime/streams"), this._client)
                 .WithGetParameter("id", id.ToString())
                 .WithGetParameter("episode", episode.ToString())
                 .WithGetParameter("language", language.ToString().ToLowerInvariant());
