@@ -34,14 +34,14 @@ namespace Azuria.Test.Core
 
         public ServerRequest Get(string url)
         {
-            ServerRequest lRequest = new ServerRequest(url) {RequestMethod = RequestMethod.Get};
+            ServerRequest lRequest = new ServerRequest(this.BaseUrl + url) {RequestMethod = RequestMethod.Get};
             this.Requests.Add(lRequest);
             return lRequest;
         }
 
         public ServerRequest Post(string url)
         {
-            ServerRequest lRequest = new ServerRequest(url) {RequestMethod = RequestMethod.Post};
+            ServerRequest lRequest = new ServerRequest(this.BaseUrl + url) {RequestMethod = RequestMethod.Post};
             this.Requests.Add(lRequest);
             return lRequest;
         }

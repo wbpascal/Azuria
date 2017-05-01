@@ -24,10 +24,10 @@ namespace Azuria.Test.Core
             Dictionary<string, string> lReturn = new Dictionary<string, string>();
             Assembly lAssembly = typeof(ResponseSetup).GetTypeInfo().Assembly;
             foreach (string resourceName in lAssembly.GetManifestResourceNames()
-                .Where(s => s.StartsWith("Azuria.Test.Core.Responses")))
+                .Where(s => s.StartsWith("Azuria.Test.Core.Response")))
                 using (StreamReader lReader = new StreamReader(lAssembly.GetManifestResourceStream(resourceName)))
                 {
-                    lReturn.Add(resourceName.Remove(0, "Azuria.Test.Core.Responses.".Length), lReader.ReadToEnd());
+                    lReturn.Add(resourceName.Remove(0, "Azuria.Test.Core.Response.".Length), lReader.ReadToEnd());
                 }
             return lReturn;
         }

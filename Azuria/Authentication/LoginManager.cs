@@ -39,6 +39,8 @@ namespace Azuria.Authentication
         /// <inheritdoc />
         public bool CheckIsLoginProbablyValid()
         {
+            if (this._loginPerformed == DateTime.MinValue)
+                return false;
             if (this._lastRequestPerformed == DateTime.MinValue)
                 return DateTime.Now.Subtract(this._loginPerformed).TotalHours < 24;
             return DateTime.Now.Subtract(this._lastRequestPerformed).TotalHours < 1;
