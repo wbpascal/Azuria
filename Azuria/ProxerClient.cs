@@ -4,7 +4,7 @@ using Autofac;
 namespace Azuria
 {
     /// <summary>
-    /// 
+    /// Represents a client that is used to connect to the api.
     /// </summary>
     public class ProxerClient : IProxerClient
     {
@@ -15,14 +15,10 @@ namespace Azuria
 
         #region Properties
 
-        /// <summary>
-        /// 
-        /// </summary>
+        /// <inheritdoc />
         public char[] ApiKey { get; }
 
-        /// <summary>
-        /// 
-        /// </summary>
+        /// <inheritdoc />
         public IContainer Container { get; private set; }
 
         #endregion
@@ -30,11 +26,11 @@ namespace Azuria
         #region Methods
 
         /// <summary>
-        /// 
+        /// Creates a new client with the specified api key and additional options.
         /// </summary>
-        /// <param name="apiKey"></param>
-        /// <param name="optionsFactory"></param>
-        /// <returns></returns>
+        /// <param name="apiKey">The api key used by the created client.</param>
+        /// <param name="optionsFactory">Optional. Additional creation options for the client.</param>
+        /// <returns>A client with the specified api key and options.</returns>
         public static IProxerClient Create(char[] apiKey, Action<ProxerClientOptions> optionsFactory = null)
         {
             ProxerClient lClient = new ProxerClient(apiKey);
@@ -46,7 +42,6 @@ namespace Azuria
 
         private void ProcessOptions(ProxerClientOptions options)
         {
-            options.ContainerBuilder.RegisterInstance(this).As<IProxerClient>();
             this.Container = options.ContainerBuilder.Build();
         }
 

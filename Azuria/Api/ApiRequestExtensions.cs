@@ -21,7 +21,7 @@ namespace Azuria.Api
         /// <returns></returns>
         public static IApiRequestBuilder CreateRequest(this IProxerClient client)
         {
-            return client.Container.Resolve<IApiRequestBuilder>();
+            return new ApiRequestBuilder(client);
         }
 
         /// <summary>

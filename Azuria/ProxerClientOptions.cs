@@ -38,7 +38,6 @@ namespace Azuria
 
         private void RegisterComponents(ContainerBuilder builder)
         {
-            builder.RegisterModule<ApiComponentModule>();
             builder.RegisterInstance(this.Client);
             builder.RegisterInstance(new HttpClient()).As<IHttpClient>();
             builder.RegisterInstance(new LoginManager(this.Client)).As<ILoginManager>();
@@ -48,6 +47,9 @@ namespace Azuria
         /// Overrides <see cref="WithCustomLoginManager" />.
         /// </summary>
         /// <param name="loginToken"></param>
+        /// <exception cref="ArgumentException">
+        /// Thrown if the <paramref name="loginToken">login token</paramref> is null or less then 255 characters long.
+        /// </exception>
         /// <returns></returns>
         public ProxerClientOptions WithAuthorisation(char[] loginToken)
         {
@@ -62,6 +64,7 @@ namespace Azuria
         /// Overrides <see cref="WithCustomHttpClient(int, string)" />.
         /// </summary>
         /// <param name="client"></param>
+        /// <exception cref="ArgumentNullException">Thrown if the <paramref name="client"/> ist null.</exception>
         /// <returns></returns>
         public ProxerClientOptions WithCustomHttpClient(IHttpClient client)
         {
@@ -86,11 +89,15 @@ namespace Azuria
         /// Overrides <see cref="WithAuthorisation" />.
         /// </summary>
         /// <param name="factory"></param>
+        /// <exception cref="ArgumentNullException">
+        /// Thrown if the <see cref="ILoginManager"/> created through the <paramref name="factory"/> is null.
+        /// </exception>
         /// <returns></returns>
         public ProxerClientOptions WithCustomLoginManager(Func<IProxerClient, ILoginManager> factory)
         {
             ILoginManager lLoginManager = factory?.Invoke(this.Client);
-            if (lLoginManager != null) this.ContainerBuilder.RegisterInstance(lLoginManager);
+            if(lLoginManager == null) throw new ArgumentNullException();
+            this.ContainerBuilder.RegisterInstance(lLoginManager);
             return this;
         }
 
