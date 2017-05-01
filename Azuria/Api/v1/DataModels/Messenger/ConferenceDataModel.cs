@@ -18,7 +18,8 @@ namespace Azuria.Api.v1.DataModels.Messenger
 
         /// <summary>
         /// </summary>
-        [JsonProperty("image", ItemConverterType = typeof(ImageConverter))]
+        [JsonProperty("image")]
+        [JsonConverter(typeof(ImageConverter))]
         public Uri ConferenceImage { get; set; }
 
         /// <summary>
@@ -43,7 +44,8 @@ namespace Azuria.Api.v1.DataModels.Messenger
 
         /// <summary>
         /// </summary>
-        [JsonProperty("timestamp_end", ItemConverterType = typeof(UnixToDateTimeConverter))]
+        [JsonProperty("timestamp_end")]
+        [JsonConverter(typeof(UnixToDateTimeConverter))]
         public DateTime LastMessageTimeStamp { get; set; }
 
         /// <summary>

@@ -21,12 +21,14 @@ namespace Azuria.Api.v1.DataModels.Info
 
         /// <summary>
         /// </summary>
-        [JsonProperty("rate_flag", ItemConverterType = typeof(IntToBoolConverter))]
+        [JsonProperty("rate_flag")]
+        [JsonConverter(typeof(IntToBoolConverter))]
         public bool IsRated { get; set; }
 
         /// <summary>
         /// </summary>
-        [JsonProperty("spoiler_flag", ItemConverterType = typeof(IntToBoolConverter))]
+        [JsonProperty("spoiler_flag")]
+        [JsonConverter(typeof(IntToBoolConverter))]
         public bool IsSpoiler { get; set; }
 
         /// <summary>

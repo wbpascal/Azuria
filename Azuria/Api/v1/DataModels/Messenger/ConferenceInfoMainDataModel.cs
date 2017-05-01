@@ -12,12 +12,14 @@ namespace Azuria.Api.v1.DataModels.Messenger
 
         /// <summary>
         /// </summary>
-        [JsonProperty("timestamp_start", ItemConverterType = typeof(UnixToDateTimeConverter))]
+        [JsonProperty("timestamp_start")]
+        [JsonConverter(typeof(UnixToDateTimeConverter))]
         public DateTime FirstMessageTimeStamp { get; set; }
 
         /// <summary>
         /// </summary>
-        [JsonProperty("timestamp_end", ItemConverterType = typeof(UnixToDateTimeConverter))]
+        [JsonProperty("timestamp_end")]
+        [JsonConverter(typeof(UnixToDateTimeConverter))]
         public DateTime LastMessageTimeStamp { get; set; }
 
         /// <summary>

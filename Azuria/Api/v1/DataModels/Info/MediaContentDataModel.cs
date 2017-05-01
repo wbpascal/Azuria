@@ -13,17 +13,19 @@ namespace Azuria.Api.v1.DataModels.Info
 
         /// <summary>
         /// </summary>
-        [JsonProperty("no")]
+        [JsonProperty("no", Required = Required.Always)]
         public int ContentIndex { get; set; }
 
         /// <summary>
         /// </summary>
-        [JsonProperty("typ", ItemConverterType = typeof(LanguageConverter))]
+        [JsonProperty("typ", Required = Required.Always)]
+        [JsonConverter(typeof(LanguageConverter))]
         public MediaLanguage Language { get; set; }
 
         /// <summary>
         /// </summary>
-        [JsonProperty("types", ItemConverterType = typeof(StreamHosterConverter))]
+        [JsonProperty("types")]
+        [JsonConverter(typeof(StreamHosterConverter))]
         public StreamHoster[] StreamHosters { get; set; }
 
         /// <summary>

@@ -28,7 +28,8 @@ namespace Azuria.Api.v1.DataModels.Manga
 
         /// <summary>
         /// </summary>
-        [JsonProperty("pages", ItemConverterType = typeof(PagesConverter))]
+        [JsonProperty("pages")]
+        [JsonConverter(typeof(PagesConverter))]
         public PageDataModel[] Pages { get; set; }
 
         /// <summary>
@@ -58,7 +59,8 @@ namespace Azuria.Api.v1.DataModels.Manga
 
         /// <summary>
         /// </summary>
-        [JsonProperty("timestamp", ItemConverterType = typeof(UnixToDateTimeConverter))]
+        [JsonProperty("timestamp")]
+        [JsonConverter(typeof(UnixToDateTimeConverter))]
         public DateTime UploadTimestamp { get; set; }
 
         #endregion

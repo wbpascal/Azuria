@@ -12,7 +12,8 @@ namespace Azuria.Api.v1.DataModels.Info
 
         /// <summary>
         /// </summary>
-        [JsonProperty("country", ItemConverterType = typeof(CountryConverter))]
+        [JsonProperty("country")]
+        [JsonConverter(typeof(CountryConverter))]
         public Country Country { get; set; }
 
         /// <summary>
@@ -27,7 +28,8 @@ namespace Azuria.Api.v1.DataModels.Info
 
         /// <summary>
         /// </summary>
-        [JsonProperty("type", ItemConverterType = typeof(IndustryTypeConverter))]
+        [JsonProperty("type")]
+        [JsonConverter(typeof(IndustryTypeConverter))]
         public IndustryType Type { get; set; }
 
         #endregion

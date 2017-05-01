@@ -12,7 +12,8 @@ namespace Azuria.Api.v1.DataModels.Info
 
         /// <summary>
         /// </summary>
-        [JsonProperty("kat", ItemConverterType = typeof(CategoryConverter))]
+        [JsonProperty("kat")]
+        [JsonConverter(typeof(CategoryConverter))]
         public MediaEntryType Category { get; set; }
 
         /// <summary>

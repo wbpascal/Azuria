@@ -31,7 +31,8 @@ namespace Azuria.Api.v1.DataModels.User
 
         /// <summary>
         /// </summary>
-        [JsonProperty("timestamp", ItemConverterType = typeof(UnixToDateTimeConverter))]
+        [JsonProperty("timestamp")]
+        [JsonConverter(typeof(UnixToDateTimeConverter))]
         public DateTime CommentLastChanged { get; set; }
 
         /// <summary>
@@ -41,7 +42,8 @@ namespace Azuria.Api.v1.DataModels.User
 
         /// <summary>
         /// </summary>
-        [JsonProperty("data", ItemConverterType = typeof(SubRatingsConverter))]
+        [JsonProperty("data")]
+        [JsonConverter(typeof(SubRatingsConverter))]
         public Dictionary<RatingCategory, int> CommentSubRatings { get; set; }
 
         /// <summary>

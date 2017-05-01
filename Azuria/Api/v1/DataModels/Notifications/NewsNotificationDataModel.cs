@@ -72,7 +72,8 @@ namespace Azuria.Api.v1.DataModels.Notifications
 
         /// <summary>
         /// </summary>
-        [JsonProperty("time", ItemConverterType = typeof(UnixToDateTimeConverter))]
+        [JsonProperty("time")]
+        [JsonConverter(typeof(UnixToDateTimeConverter))]
         public DateTime TimeStamp { get; set; }
 
         #endregion

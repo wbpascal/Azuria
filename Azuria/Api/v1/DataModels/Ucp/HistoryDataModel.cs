@@ -36,12 +36,14 @@ namespace Azuria.Api.v1.DataModels.Ucp
 
         /// <summary>
         /// </summary>
-        [JsonProperty("language", ItemConverterType = typeof(LanguageConverter))]
+        [JsonProperty("language")]
+        [JsonConverter(typeof(LanguageConverter))]
         public MediaLanguage Language { get; set; }
 
         /// <summary>
         /// </summary>
-        [JsonProperty("timestamp", ItemConverterType = typeof(CustomDateTimeConverter))]
+        [JsonProperty("timestamp")]
+        [JsonConverter(typeof(CustomDateTimeConverter))]
         public DateTime TimeStamp { get; set; }
 
         #endregion
