@@ -23,9 +23,10 @@ build:
   verbosity: minimal
   
 test_script:
-- cmd: >-
-    cd Azuria.Test
-    dotnet xunit -appveyor -configuration Release
+  - cmd: >-
+      cd Azuria.Test
+    
+      dotnet xunit -appveyor -configuration Release
 
 artifacts:
   - path: '*.nupkg'
