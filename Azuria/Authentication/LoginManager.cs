@@ -10,7 +10,8 @@ using Azuria.ErrorHandling;
 namespace Azuria.Authentication
 {
     /// <summary>
-    /// 
+    /// Represents a class that is used to authenticate a <see cref="IProxerClient">client</see> and keep it
+    /// authenticated.
     /// </summary>
     public class LoginManager : ILoginManager
     {
@@ -27,9 +28,7 @@ namespace Azuria.Authentication
 
         #region Properties
 
-        /// <summary>
-        /// 
-        /// </summary>
+        /// <inheritdoc />
         public char[] LoginToken { get; set; }
 
         #endregion
