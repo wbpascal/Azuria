@@ -143,8 +143,8 @@ namespace Azuria.Api.v1
             KeyValuePair<string, string>[] lPostArgs =
                 postArgs as KeyValuePair<string, string>[] ?? postArgs.ToArray();
             return lPostArgs.Any()
-                       ? httpClient.PostRequestAsync(url, lPostArgs, token, headers)
-                       : httpClient.GetRequestAsync(url, token, headers);
+                       ? httpClient.PostRequestAsync(url, lPostArgs, headers, token)
+                       : httpClient.GetRequestAsync(url, headers, token);
         }
 
         #endregion

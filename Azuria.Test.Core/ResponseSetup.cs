@@ -825,7 +825,7 @@ namespace Azuria.Test.Core
                 lHttpClientMock
                     .Setup(
                         httpClient => httpClient.GetRequestAsync(
-                            request.BuildUri(), new CancellationToken(), lStandardHeaders
+                            request.BuildUri(), lStandardHeaders, new CancellationToken()
                         )
                     )
                     .Returns(() => Task.FromResult(CheckLogin(request, response)));
@@ -836,7 +836,7 @@ namespace Azuria.Test.Core
                 lHttpClientMock
                     .Setup(
                         httpClient => httpClient.PostRequestAsync(
-                            request.BuildUri(), request.PostArguments, new CancellationToken(), lStandardHeaders
+                            request.BuildUri(), request.PostArguments, lStandardHeaders, new CancellationToken()
                         )
                     )
                     .Returns(() => Task.FromResult(CheckLogin(request, response)));

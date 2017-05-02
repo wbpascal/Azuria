@@ -11,12 +11,12 @@ using Azuria.Helpers;
 namespace Azuria.Connection
 {
     /// <summary>
-    /// Represents a class that communicates with the proxer servers.
+    /// Represents a class that sends http/s requests.
     /// </summary>
     public class HttpClient : IHttpClient
     {
         /// <summary>
-        /// 
+        /// The user-agent that is send with each request.
         /// </summary>
         protected static readonly string UserAgent =
             "Azuria/" + VersionHelper.GetAssemblyVersion(typeof(HttpClient));
@@ -24,9 +24,12 @@ namespace Azuria.Connection
         private readonly System.Net.Http.HttpClient _client;
 
         /// <summary>
+        /// Creates a new instance of <see cref="HttpClient"/>.
         /// </summary>
-        /// <param name="timeout"></param>
-        /// <param name="userAgentExtra"></param>
+        /// <param name="timeout">Optional. The timeout of each request send with this http client.</param>
+        /// <param name="userAgentExtra">
+        /// Optional. A string which is appended to the end of the user-agent that is send with each request.
+        /// </param>
         public HttpClient(int timeout = 5000, string userAgentExtra = "")
         {
             this._client = new System.Net.Http.HttpClient(
@@ -42,8 +45,7 @@ namespace Azuria.Connection
 
         #region Methods
 
-        /// <summary>
-        /// </summary>
+        /// <inheritdoc />
         public virtual void Dispose()
         {
             this._client.Dispose();
@@ -51,7 +53,7 @@ namespace Azuria.Connection
 
         /// <inheritdoc />
         public virtual async Task<IProxerResult<string>> GetRequestAsync(
-            Uri url, CancellationToken token, Dictionary<string, string> headers = null)
+            Uri url, Dictionary<string, string> headers = null, CancellationToken token = default(CancellationToken))
         {
             string lResponse;
 
@@ -94,8 +96,8 @@ namespace Azuria.Connection
 
         /// <inheritdoc />
         public virtual async Task<IProxerResult<string>> PostRequestAsync(
-            Uri url, IEnumerable<KeyValuePair<string, string>> postArgs, CancellationToken token,
-            Dictionary<string, string> headers = null)
+            Uri url, IEnumerable<KeyValuePair<string, string>> postArgs, Dictionary<string, string> headers = null,
+            CancellationToken token = default(CancellationToken))
         {
             string lResponse;
 
