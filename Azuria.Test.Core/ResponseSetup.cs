@@ -840,7 +840,7 @@ namespace Azuria.Test.Core
         {
             clientMock.Setup(
                     httpClient => httpClient.GetRequestAsync(
-                        request.BuildUri(), new CancellationToken(), headers
+                        request.BuildUri(), headers, new CancellationToken()
                     )
                 )
                 .Returns(() => Task.FromResult(client.CheckLogin(request, response)));
@@ -852,7 +852,7 @@ namespace Azuria.Test.Core
         {
             clientMock.Setup(
                     httpClient => httpClient.PostRequestAsync(
-                        request.BuildUri(), request.PostArguments, new CancellationToken(), headers
+                        request.BuildUri(), request.PostArguments, headers, new CancellationToken()
                     )
                 )
                 .Returns(() => Task.FromResult(client.CheckLogin(request, response)));
