@@ -1,6 +1,5 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
-using Autofac;
 using Azuria.Api.Builder;
 using Azuria.Api.v1;
 using Azuria.ErrorHandling;

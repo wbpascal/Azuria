@@ -7,7 +7,6 @@ using Azuria.Enums;
 using Azuria.Enums.Info;
 using Azuria.Enums.List;
 using Azuria.Helpers.Extensions;
-using Azuria.Helpers.Search;
 using Azuria.Input;
 
 namespace Azuria.Api.v1.RequestBuilder

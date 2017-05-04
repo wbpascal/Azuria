@@ -2,10 +2,9 @@
 using System.Linq;
 using Azuria.Enums.Info;
 using Azuria.Enums.List;
-using Azuria.Helpers.Extensions;
 using Azuria.Input;
 
-namespace Azuria.Helpers.Search
+namespace Azuria.Helpers.Extensions
 {
     /// <summary>
     /// TODO: Doing this with extension methods is probably not needed. Maybe change it later and merge it with the input

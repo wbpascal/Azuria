@@ -1,6 +1,5 @@
 ﻿using System;
 using Autofac;
-using Azuria.Api;
 using Azuria.Authentication;
 using Azuria.Connection;
 
@@ -64,7 +63,7 @@ namespace Azuria
         /// Overrides <see cref="WithCustomHttpClient(int, string)" />.
         /// </summary>
         /// <param name="client"></param>
-        /// <exception cref="ArgumentNullException">Thrown if the <paramref name="client"/> ist null.</exception>
+        /// <exception cref="ArgumentNullException">Thrown if the <paramref name="client" /> ist null.</exception>
         /// <returns></returns>
         public ProxerClientOptions WithCustomHttpClient(IHttpClient client)
         {
@@ -90,13 +89,13 @@ namespace Azuria
         /// </summary>
         /// <param name="factory"></param>
         /// <exception cref="ArgumentNullException">
-        /// Thrown if the <see cref="ILoginManager"/> created through the <paramref name="factory"/> is null.
+        /// Thrown if the <see cref="ILoginManager" /> created through the <paramref name="factory" /> is null.
         /// </exception>
         /// <returns></returns>
         public ProxerClientOptions WithCustomLoginManager(Func<IProxerClient, ILoginManager> factory)
         {
             ILoginManager lLoginManager = factory?.Invoke(this.Client);
-            if(lLoginManager == null) throw new ArgumentNullException();
+            if (lLoginManager == null) throw new ArgumentNullException();
             this.ContainerBuilder.RegisterInstance(lLoginManager);
             return this;
         }
