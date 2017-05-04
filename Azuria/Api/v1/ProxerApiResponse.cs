@@ -14,17 +14,17 @@ namespace Azuria.Api.v1
     {
         /// <summary>
         /// </summary>
-        public ProxerApiResponse()
+        internal ProxerApiResponse()
         {
         }
 
         /// <inheritdoc />
-        public ProxerApiResponse(IEnumerable<Exception> exceptions) : base(exceptions)
+        internal ProxerApiResponse(IEnumerable<Exception> exceptions) : base(exceptions)
         {
         }
 
         /// <inheritdoc />
-        public ProxerApiResponse(Exception exception) : base(exception)
+        internal ProxerApiResponse(Exception exception) : base(exception)
         {
         }
 
@@ -55,7 +55,7 @@ namespace Azuria.Api.v1
     {
         /// <summary>
         /// </summary>
-        public ProxerApiResponse()
+        internal ProxerApiResponse()
         {
         }
 
@@ -64,7 +64,7 @@ namespace Azuria.Api.v1
         /// method failed to execute.
         /// </summary>
         /// <param name="exceptions">The exception that were thrown during method execution.</param>
-        public ProxerApiResponse(IEnumerable<Exception> exceptions)
+        internal ProxerApiResponse(IEnumerable<Exception> exceptions)
         {
             this.Success = false;
             this.Exceptions = exceptions;
@@ -73,7 +73,7 @@ namespace Azuria.Api.v1
         /// <summary>
         /// </summary>
         /// <param name="exception"></param>
-        public ProxerApiResponse(Exception exception) : this(new[] {exception})
+        internal ProxerApiResponse(Exception exception) : this(new[] {exception})
         {
         }
 

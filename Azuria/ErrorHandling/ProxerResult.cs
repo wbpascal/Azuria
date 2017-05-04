@@ -4,15 +4,13 @@ using System.Collections.Generic;
 namespace Azuria.ErrorHandling
 {
     /// <summary>
-    /// Represents the result of a method including a returned object.
+    /// Represents the result of a method that returns an object.
     /// </summary>
     /// <typeparam name="T">The type of the returned object.</typeparam>
-    /// <seealso cref="ProxerResult" />
-    /// <seealso cref="IProxerResult{T}" />
-    public class ProxerResult<T> : ProxerResult, IProxerResult<T>
+    public class ProxerResult<T> : ProxerResultBase, IProxerResult<T>
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="ProxerResult{T}" /> class.
+        /// Initialises a new instance indicating the successful execution of the method.
         /// </summary>
         /// <param name="result">The returned object of the method.</param>
         public ProxerResult(T result)
@@ -23,18 +21,20 @@ namespace Azuria.ErrorHandling
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="ProxerResult{T}" /> class and sets <see cref="ProxerResult.Success" /> to
-        /// false.
+        /// Initialises a new instance with the exceptions that were thrown during method execution
+        /// (indicating that the method did not execute successfully).
         /// </summary>
-        /// <param name="exceptions">An enumeration of the exceptions that were thrown during method execution.</param>
+        /// <param name="exceptions">
+        /// An enumeration of the exceptions that were thrown during method execution.
+        /// </param>
         public ProxerResult(IEnumerable<Exception> exceptions) : base(exceptions)
         {
         }
 
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="ProxerResult{T}" /> class and sets <see cref="ProxerResult.Success" /> to
-        /// false.
+        /// Initialises a new instance with a single exception that was thrown during method execution
+        /// (indicating that the method did not execute successfully).
         /// </summary>
         /// <param name="exception">A single exception that was thrown during method execution.</param>
         public ProxerResult(Exception exception) : base(exception)
@@ -43,10 +43,7 @@ namespace Azuria.ErrorHandling
 
         #region Properties
 
-        /// <summary>
-        /// Gets the returned object if the method executed successfully. If the method did not execute successfully the default
-        /// value of the type <typeparamref name="T" /> will be returned.
-        /// </summary>
+        /// <inheritdoc />
         public T Result { get; set; }
 
         #endregion
@@ -65,54 +62,36 @@ namespace Azuria.ErrorHandling
     }
 
     /// <summary>
-    /// Represents the result of a method without a returned object.
+    /// Represents the result of a method.
     /// </summary>
-    /// <seealso cref="ProxerResult" />
-    /// <seealso cref="IProxerResult{T}" />
-    public class ProxerResult : IProxerResult
+    public class ProxerResult : ProxerResultBase, IProxerResult
     {
         /// <summary>
-        /// Initialises a new instance and sets <see cref="Success" /> to true.
+        /// Initialises a new instance indicating the successful execution of the method.
         /// </summary>
         public ProxerResult()
         {
-            this.Success = true;
-            this.Exceptions = new Exception[0];
         }
 
         /// <summary>
-        /// Initialises a new instance with the exceptions that were thrown during method execution and sets <see cref="Success" />
-        /// to false.
+        /// Initialises a new instance with the exceptions that were thrown during method execution
+        /// (indicating that the method did not execute successfully).
         /// </summary>
-        /// <param name="exceptions">An enumeration of the exceptions that were thrown during method execution.</param>
-        public ProxerResult(IEnumerable<Exception> exceptions)
+        /// <param name="exceptions">
+        /// An enumeration of the exceptions that were thrown during method execution.
+        /// </param>
+        public ProxerResult(IEnumerable<Exception> exceptions) : base(exceptions)
         {
-            this.Success = false;
-            this.Exceptions = exceptions;
         }
 
         /// <summary>
-        /// Initialises a new instance with a single exception that was thrown during method execution and sets
-        /// <see cref="Success" /> to true.
+        /// Initialises a new instance with a single exception that was thrown during method execution
+        /// (indicating that the method did not execute successfully).
         /// </summary>
         /// <param name="exception">A single exception that was thrown during method execution.</param>
-        public ProxerResult(Exception exception) : this(new[] {exception})
+        public ProxerResult(Exception exception) : base(exception)
         {
         }
-
-        #region Properties
-
-        /// <summary>
-        /// Gets an enumeration of the exceptions that were thrown during method execution.
-        /// </summary>
-        public IEnumerable<Exception> Exceptions { get; set; }
-
-        /// <summary>
-        /// Gets a value indicating whether the method executed successfully.
-        /// </summary>
-        public bool Success { get; set; }
-
-        #endregion
 
         #region Methods
 
