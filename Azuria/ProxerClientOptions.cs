@@ -6,28 +6,29 @@ using Azuria.Connection;
 namespace Azuria
 {
     /// <summary>
-    /// 
+    /// Represents the options that are used to create a <see cref="IProxerClient">proxer client</see>.
     /// </summary>
     public class ProxerClientOptions
     {
         /// <summary>
-        /// 
+        /// Creates a new instance of <see cref="ProxerClientOptions"/>.
         /// </summary>
+        /// <param name="client">The client that is created with the options.</param>
         public ProxerClientOptions(IProxerClient client)
         {
             this.Client = client;
-            this.RegisterComponents(this.ContainerBuilder);
+            this.RegisterDefaultComponents(this.ContainerBuilder);
         }
 
         #region Properties
 
         /// <summary>
-        /// 
+        /// Gets or sets the client that is created with the options.
         /// </summary>
         public IProxerClient Client { get; }
 
         /// <summary>
-        /// 
+        /// Gets or sets the builder that is used to register dependencies.
         /// </summary>
         public ContainerBuilder ContainerBuilder { get; } = new ContainerBuilder();
 
@@ -35,7 +36,7 @@ namespace Azuria
 
         #region Methods
 
-        private void RegisterComponents(ContainerBuilder builder)
+        private void RegisterDefaultComponents(ContainerBuilder builder)
         {
             builder.RegisterInstance(this.Client);
             builder.RegisterInstance(new HttpClient()).As<IHttpClient>();
@@ -43,13 +44,17 @@ namespace Azuria
         }
 
         /// <summary>
+        /// Registers a <see cref="ILoginManager">login manager</see> with the specified login token to the client
+        /// that will authenticate on the first request made.
+        ///
         /// Overrides <see cref="WithCustomLoginManager" />.
         /// </summary>
-        /// <param name="loginToken"></param>
+        /// <param name="loginToken">
+        /// The login token the <see cref="ILoginManager">login manager</see> is registered with.
+        /// </param>
         /// <exception cref="ArgumentException">
         /// Thrown if the <paramref name="loginToken">login token</paramref> is null or less then 255 characters long.
         /// </exception>
-        /// <returns></returns>
         public ProxerClientOptions WithAuthorisation(char[] loginToken)
         {
             if (loginToken?.Length != 255)
@@ -60,11 +65,13 @@ namespace Azuria
         }
 
         /// <summary>
+        /// Registers a custom <see cref="IHttpClient">http client</see> with the client that is used to make all
+        /// request of that client.
+        ///
         /// Overrides <see cref="WithCustomHttpClient(int, string)" />.
         /// </summary>
-        /// <param name="client"></param>
+        /// <param name="client">The custom http client that should be registered with the client.</param>
         /// <exception cref="ArgumentNullException">Thrown if the <paramref name="client" /> ist null.</exception>
-        /// <returns></returns>
         public ProxerClientOptions WithCustomHttpClient(IHttpClient client)
         {
             if (client == null) throw new ArgumentNullException(nameof(client));
@@ -73,11 +80,12 @@ namespace Azuria
         }
 
         /// <summary>
+        /// Registers a <see cref="IHttpClient">http client</see> with custom timeout and/or user-agent to the client.
+        ///
         /// Overrides <see cref="WithCustomHttpClient(IHttpClient)" />.
         /// </summary>
-        /// <param name="timeout"></param>
-        /// <param name="userAgentExtra"></param>
-        /// <returns></returns>
+        /// <param name="timeout">Optional. The custom timeout of the http client.</param>
+        /// <param name="userAgentExtra">Optional. A string that is appended to the user-agent of the http client.</param>
         public ProxerClientOptions WithCustomHttpClient(int timeout = 5000, string userAgentExtra = "")
         {
             this.ContainerBuilder.RegisterInstance(new HttpClient(timeout, userAgentExtra)).As<IHttpClient>();
@@ -85,13 +93,14 @@ namespace Azuria
         }
 
         /// <summary>
+        /// Registers a custom <see cref="ILoginManager">login manager</see> with the client.
+        ///
         /// Overrides <see cref="WithAuthorisation" />.
         /// </summary>
-        /// <param name="factory"></param>
+        /// <param name="factory">The factory that is used to create the custom login manager.</param>
         /// <exception cref="ArgumentNullException">
         /// Thrown if the <see cref="ILoginManager" /> created through the <paramref name="factory" /> is null.
         /// </exception>
-        /// <returns></returns>
         public ProxerClientOptions WithCustomLoginManager(Func<IProxerClient, ILoginManager> factory)
         {
             ILoginManager lLoginManager = factory?.Invoke(this.Client);
