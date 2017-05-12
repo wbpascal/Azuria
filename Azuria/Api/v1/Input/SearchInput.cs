@@ -2,7 +2,7 @@
 using Azuria.Enums.Info;
 using Azuria.Enums.List;
 
-namespace Azuria.Input
+namespace Azuria.Api.v1.Input
 {
     /// <summary>
     /// </summary>

@@ -1,9 +1,11 @@
-﻿using Azuria.Enums;
+﻿using Azuria.Api.v1.RequestBuilder;
+using Azuria.Enums;
 using Azuria.Enums.List;
 
-namespace Azuria.Input
+namespace Azuria.Api.v1.Input
 {
     /// <summary>
+    /// Represents the input of the <see cref="ListRequestBuilder.GetEntryList"/> method.
     /// </summary>
     public class EntryListInput
     {

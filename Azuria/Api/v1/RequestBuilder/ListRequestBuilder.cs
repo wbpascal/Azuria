@@ -3,11 +3,11 @@ using Azuria.Api.Builder;
 using Azuria.Api.v1.Converters.List;
 using Azuria.Api.v1.DataModels.Info;
 using Azuria.Api.v1.DataModels.List;
+using Azuria.Api.v1.Input;
 using Azuria.Enums;
 using Azuria.Enums.Info;
 using Azuria.Enums.List;
 using Azuria.Helpers.Extensions;
-using Azuria.Input;
 
 namespace Azuria.Api.v1.RequestBuilder
 {

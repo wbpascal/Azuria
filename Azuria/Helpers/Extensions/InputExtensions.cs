@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using Azuria.Api.v1.Input;
 using Azuria.Enums.Info;
 using Azuria.Enums.List;
-using Azuria.Input;
 
 namespace Azuria.Helpers.Extensions
 {
