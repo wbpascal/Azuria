@@ -34,7 +34,7 @@ namespace Azuria
         public static IProxerClient Create(char[] apiKey, Action<ProxerClientOptions> optionsFactory = null)
         {
             ProxerClient lClient = new ProxerClient(apiKey);
-            ProxerClientOptions lOptions = new ProxerClientOptions(lClient);
+            ProxerClientOptions lOptions = new ProxerClientOptions(apiKey);
             optionsFactory?.Invoke(lOptions);
             lClient.ProcessOptions(lOptions);
             return lClient;
@@ -42,6 +42,7 @@ namespace Azuria
 
         private void ProcessOptions(ProxerClientOptions options)
         {
+            options.ContainerBuilder.RegisterInstance(this).As<IProxerClient>();
             this.Container = options.ContainerBuilder.Build();
         }
 

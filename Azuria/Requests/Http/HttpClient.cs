@@ -8,7 +8,7 @@ using Azuria.ErrorHandling;
 using Azuria.Exceptions;
 using Azuria.Helpers;
 
-namespace Azuria.Connection
+namespace Azuria.Requests.Http
 {
     /// <summary>
     /// Represents a class that sends http/s requests.

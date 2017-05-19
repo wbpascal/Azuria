@@ -7,7 +7,11 @@ namespace Azuria.Api.Builder
     /// </summary>
     public class ApiRequestBuilder : IApiRequestBuilder
     {
-        internal ApiRequestBuilder(IProxerClient client)
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="client"></param>
+        public ApiRequestBuilder(IProxerClient client)
         {
             this.ProxerClient = client;
         }

@@ -1,11 +1,10 @@
 ﻿using System;
 using System.Threading;
 using System.Threading.Tasks;
-using Azuria.Api;
-using Azuria.Api.v1;
 using Azuria.Api.v1.DataModels.User;
 using Azuria.Api.v1.RequestBuilder;
 using Azuria.ErrorHandling;
+using Azuria.Requests;
 
 namespace Azuria.Authentication
 {
@@ -15,14 +14,14 @@ namespace Azuria.Authentication
     /// </summary>
     public class LoginManager : ILoginManager
     {
-        private readonly IProxerClient _client;
+        private readonly UserRequestBuilder _userRequestBuilder;
         private bool _isLoginQueued;
         private DateTime _lastRequestPerformed = DateTime.MinValue;
         private DateTime _loginPerformed = DateTime.MinValue;
 
-        internal LoginManager(IProxerClient client, char[] loginToken = null)
+        public LoginManager(UserRequestBuilder userRequestBuilder, char[] loginToken = null)
         {
-            this._client = client;
+            this._userRequestBuilder = userRequestBuilder;
             this.LoginToken = loginToken;
         }
 
@@ -50,11 +49,12 @@ namespace Azuria.Authentication
             string username, string password, string secretKey = null,
             CancellationToken token = new CancellationToken())
         {
-            UserRequestBuilder lRequestBuilder = this._client.CreateRequest().FromUserClass();
-            IProxerResult<LoginDataModel> lResult = await (secretKey == null
-                                                               ? lRequestBuilder.Login(username, password)
-                                                               : lRequestBuilder.Login(username, password, secretKey))
-                                                        .DoRequestAsync(token);
+            IProxerResult<LoginDataModel> lResult =
+                await (secretKey == null
+                           ? this._userRequestBuilder.Login(username, password)
+                           : this._userRequestBuilder.Login(username, password, secretKey))
+                    .DoRequestAsync(token);
+
             if (!lResult.Success || lResult.Result == null)
                 return new ProxerResult(lResult.Exceptions);
 
@@ -66,10 +66,7 @@ namespace Azuria.Authentication
         /// <inheritdoc />
         public virtual async Task<IProxerResult> PerformLogout(CancellationToken token = new CancellationToken())
         {
-            IProxerResult lResult = await this._client.CreateRequest()
-                                        .FromUserClass()
-                                        .Logout()
-                                        .DoRequestAsync(token);
+            IProxerResult lResult = await this._userRequestBuilder.Logout().DoRequestAsync(token);
             if (!lResult.Success)
                 return new ProxerResult(lResult.Exceptions);
 

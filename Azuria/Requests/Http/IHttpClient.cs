@@ -4,7 +4,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Azuria.ErrorHandling;
 
-namespace Azuria.Connection
+namespace Azuria.Requests.Http
 {
     /// <summary>
     /// An interface that is used to send http/s requests.
