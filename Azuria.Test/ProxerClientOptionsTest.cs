@@ -2,7 +2,7 @@ using System;
 using System.Linq;
 using Autofac;
 using Azuria.Authentication;
-using Azuria.Connection;
+using Azuria.Requests.Http;
 using Moq;
 using Xunit;
 
@@ -18,7 +18,7 @@ namespace Azuria.Test
 
             IHttpClient lHttpClient = Mock.Of<IHttpClient>();
             IProxerClient lClient = ProxerClient.Create(
-                new char[0], options => options.WithCustomHttpClient(lHttpClient));
+                new char[0], options => options.WithCustomHttpClient(context => lHttpClient));
             Assert.True(lClient.Container.IsRegistered<IHttpClient>());
             Assert.Same(lHttpClient, lClient.Container.Resolve<IHttpClient>());
 
@@ -32,7 +32,7 @@ namespace Azuria.Test
         {
             ILoginManager lLoginManager = Mock.Of<ILoginManager>();
             IProxerClient lClient = ProxerClient.Create("apiKey".ToCharArray(),
-                options => options.WithCustomLoginManager(client => lLoginManager));
+                options => options.WithCustomLoginManager(context => lLoginManager));
             Assert.True(lClient.Container.IsRegistered<ILoginManager>());
             Assert.Same(lLoginManager, lClient.Container.Resolve<ILoginManager>());
         }

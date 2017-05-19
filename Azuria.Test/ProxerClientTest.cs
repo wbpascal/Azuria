@@ -1,13 +1,15 @@
 ﻿using System.Linq;
-using System.Linq.Expressions;
 using System.Threading.Tasks;
 using Autofac;
+using Azuria.Api.Builder;
+using Azuria.Api.v1;
+using Azuria.Api.v1.DataModels.User;
 using Azuria.Authentication;
-using Azuria.Connection;
 using Azuria.Enums;
 using Azuria.ErrorHandling;
 using Azuria.Exceptions;
-using Azuria.Test.Core;
+using Azuria.Requests;
+using Azuria.Requests.Http;
 using Azuria.Test.Core.Utility;
 using Xunit;
 
@@ -22,6 +24,7 @@ namespace Azuria.Test
             Assert.NotEmpty(lClient.ApiKey);
             Assert.True(lClient.Container.IsRegistered<IHttpClient>());
             Assert.True(lClient.Container.IsRegistered<IProxerClient>());
+            Assert.True(lClient.Container.IsRegistered<ILoginManager>());
         }
 
         [Fact]
@@ -40,10 +43,56 @@ namespace Azuria.Test
             );
 
             lResult = await lClient.LoginAsync("InfiniteSoul", "correct");
-            Assert.True(lResult.Success);
+            Assert.True(lResult.Success, lResult.Exceptions.GetExceptionInfo());
             Assert.Empty(lResult.Exceptions);
 
             Assert.True(lLoginManager.CheckIsLoginProbablyValid());
+        }
+
+        [Fact]
+        public async Task LoginTokenTest()
+        {
+            IProxerClient lClient = ProxerClient.Create(
+                new char[32],
+                options =>
+                    options.WithTestingHttpClient()
+                        .WithAuthorisation(new char[255].Select(_ => 'a').ToArray())
+            );
+            ILoginManager lLoginManager = lClient.Container.Resolve<ILoginManager>();
+            Assert.False(lLoginManager.CheckIsLoginProbablyValid());
+
+            IProxerResult<UserInfoDataModel> lResult =
+                await lClient.CreateRequest().FromUserClass().GetInfo().DoRequestAsync();
+            Assert.True(lResult.Success, lResult.Exceptions.GetExceptionInfo());
+            Assert.Empty(lResult.Exceptions);
+            Assert.NotNull(lResult.Result);
+            Assert.Equal(lResult.Result.UserId, 177103);
+            Assert.Equal(lResult.Result.Username, "InfiniteSoul");
+
+            Assert.True(lLoginManager.CheckIsLoginProbablyValid());
+        }
+
+        [Fact]
+        public async Task LogoutTest()
+        {
+            IProxerClient lClient = ProxerClient.Create(
+                new char[32], options => options.WithTestingHttpClient());
+            IProxerResult lResult = await lClient.LoginAsync("InfiniteSoul", "correct");
+            Assert.True(lResult.Success, lResult.Exceptions.GetExceptionInfo());
+            Assert.True(lClient.Container.Resolve<ILoginManager>().CheckIsLoginProbablyValid());
+
+            lResult = await lClient.LogoutAsync();
+            Assert.True(lResult.Success, lResult.Exceptions.GetExceptionInfo());
+            Assert.False(lClient.Container.Resolve<ILoginManager>().CheckIsLoginProbablyValid());
+        }
+
+        [Fact]
+        public void CreateRequestTest()
+        {
+            IProxerClient lClient = ProxerClient.Create(new char[32]);
+            IApiRequestBuilder lRequestBuilder = lClient.CreateRequest();
+            Assert.NotNull(lRequestBuilder);
+            Assert.Same(lClient, lRequestBuilder.ProxerClient);
         }
     }
 }

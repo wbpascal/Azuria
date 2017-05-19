@@ -5,10 +5,9 @@ using System.Linq;
 using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
-using Autofac;
 using Azuria.Authentication;
-using Azuria.Connection;
 using Azuria.ErrorHandling;
+using Azuria.Requests.Http;
 using Moq;
 
 namespace Azuria.Test.Core
@@ -622,8 +621,11 @@ namespace Azuria.Test.Core
                 .Respond(FileResponses["user_login_3001.json"]);
             ServerResponse.Create(
                     "https://proxer.me/api/v1",
-                    response => response.Get("/user/logout")
-                        .WithLoggedInSenpai(true))
+                    response =>
+                    {
+                        response.Get("/user/logout")
+                            .WithLoggedInSenpai(true);
+                    })
                 .Respond(FileResponses["user_logout.json"]);
             ServerResponse.Create(
                     "https://proxer.me/api/v1",
@@ -789,13 +791,13 @@ namespace Azuria.Test.Core
             #endregion
         }
 
-        public static IHttpClient GetTestingClient(IProxerClient client)
+        public static IHttpClient GetTestingClient(char[] apiKey, ILoginManager loginManager)
         {
             if (!ServerResponse.ServerResponses.Any()) InitRequests();
 
             Dictionary<string, string> lStandardHeaders = new Dictionary<string, string>
             {
-                {"proxer-api-key", new string(client.ApiKey)}
+                {"proxer-api-key", new string(apiKey)}
             };
 
             Mock<IHttpClient> lHttpClientMock = new Mock<IHttpClient>();
@@ -807,12 +809,12 @@ namespace Azuria.Test.Core
                     {
                         case RequestMethod.Get:
                             lHttpClientMock.AddGetMethod(
-                                client, request, GetHeaders(request), serverResponse.Response
+                                loginManager, request, GetHeaders(request), serverResponse.Response
                             );
                             break;
                         case RequestMethod.Post:
                             lHttpClientMock.AddPostMethod(
-                                client, request, GetHeaders(request), serverResponse.Response
+                                loginManager, request, GetHeaders(request), serverResponse.Response
                             );
                             break;
                     }
@@ -835,7 +837,7 @@ namespace Azuria.Test.Core
         }
 
         private static void AddGetMethod(
-            this Mock<IHttpClient> clientMock, IProxerClient client, ServerRequest request,
+            this Mock<IHttpClient> clientMock, ILoginManager loginManager, ServerRequest request,
             Dictionary<string, string> headers, string response)
         {
             clientMock.Setup(
@@ -843,11 +845,11 @@ namespace Azuria.Test.Core
                         request.BuildUri(), headers, new CancellationToken()
                     )
                 )
-                .Returns(() => Task.FromResult(client.CheckLogin(request, response)));
+                .Returns(() => Task.FromResult(loginManager.CheckLogin(request, response)));
         }
 
         private static void AddPostMethod(
-            this Mock<IHttpClient> clientMock, IProxerClient client, ServerRequest request,
+            this Mock<IHttpClient> clientMock, ILoginManager loginManager, ServerRequest request,
             Dictionary<string, string> headers, string response)
         {
             clientMock.Setup(
@@ -855,15 +857,15 @@ namespace Azuria.Test.Core
                         request.BuildUri(), request.PostArguments, headers, new CancellationToken()
                     )
                 )
-                .Returns(() => Task.FromResult(client.CheckLogin(request, response)));
+                .Returns(() => Task.FromResult(loginManager.CheckLogin(request, response)));
         }
 
-        private static IProxerResult<string> CheckLogin(this IProxerClient client, ServerRequest request, string response)
+        private static IProxerResult<string> CheckLogin(
+            this ILoginManager loginManager, ServerRequest request, string response)
         {
-            ILoginManager lLoginManager = client.Container.Resolve<ILoginManager>();
             if (request.IsLoggedIn == null
-                || request.IsLoggedIn.Value == lLoginManager.CheckIsLoginProbablyValid()
-                || request.IsLoggedIn.Value && (lLoginManager.LoginToken?.Any() ?? false))
+                || request.IsLoggedIn.Value == loginManager.CheckIsLoginProbablyValid()
+                || request.IsLoggedIn.Value && (loginManager.LoginToken?.Any() ?? false))
                 return new ProxerResult<string>(response);
 
             return new ProxerResult<string>(
