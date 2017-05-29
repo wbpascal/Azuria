@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Autofac;
 using Azuria.Api.Builder;
 using Azuria.ErrorHandling;
+using Azuria.Requests.Builder;
 using Azuria.Requests.Http;
 
 namespace Azuria.Requests
@@ -42,7 +43,7 @@ namespace Azuria.Requests
         /// <param name="builder"></param>
         /// <param name="token"></param>
         public static Task<IProxerResult> DoRequestAsync(
-            this IUrlBuilder builder, CancellationToken token = new CancellationToken())
+            this IRequestBuilder builder, CancellationToken token = new CancellationToken())
         {
             return builder.Client.Container.Resolve<IRequestHandler>().ApiRequestAsync(builder, token);
         }
@@ -55,7 +56,7 @@ namespace Azuria.Requests
         /// <param name="token"></param>
         /// <returns></returns>
         public static Task<IProxerResult<T>> DoRequestAsync<T>(
-            this IUrlBuilderWithResult<T> builder, CancellationToken token = new CancellationToken())
+            this IRequestBuilderWithResult<T> builder, CancellationToken token = new CancellationToken())
         {
             return builder.Client.Container.Resolve<IRequestHandler>().ApiRequestAsync(builder, token);
         }

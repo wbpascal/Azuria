@@ -5,6 +5,7 @@ using Azuria.Api.Builder;
 using Azuria.Api.v1.DataModels.Messenger;
 using Azuria.Enums.Messenger;
 using Azuria.Helpers.Extensions;
+using Azuria.Requests.Builder;
 
 namespace Azuria.Api.v1.RequestBuilder
 {
@@ -35,9 +36,9 @@ namespace Azuria.Api.v1.RequestBuilder
         /// </summary>
         /// <param name="conferenceId">The id of the conference.</param>
         /// <returns>An instance of <see cref="ApiRequest" /> that returns information about a conference.</returns>
-        public IUrlBuilderWithResult<ConferenceInfoDataModel> GetConferenceInfo(int conferenceId)
+        public IRequestBuilderWithResult<ConferenceInfoDataModel> GetConferenceInfo(int conferenceId)
         {
-            return new UrlBuilder<ConferenceInfoDataModel>(
+            return new RequestBuilder<ConferenceInfoDataModel>(
                     new Uri($"{ApiConstants.ApiUrlV1}/messenger/conferenceinfo"), this._client
                 ).WithGetParameter("conference_id", conferenceId.ToString())
                 .WithLoginCheck();
@@ -53,10 +54,10 @@ namespace Azuria.Api.v1.RequestBuilder
         /// <param name="type">Optional. The list from which the conferences are returned.</param>
         /// <param name="page">Optional. The index of the page that will be loaded. Default: 0</param>
         /// <returns>An instance of <see cref="ApiRequest" /> that returns an array of conferences.</returns>
-        public IUrlBuilderWithResult<ConferenceDataModel[]> GetConferences(
+        public IRequestBuilderWithResult<ConferenceDataModel[]> GetConferences(
             ConferenceList type = ConferenceList.Default, int page = 0)
         {
-            return new UrlBuilder<ConferenceDataModel[]>(
+            return new RequestBuilder<ConferenceDataModel[]>(
                     new Uri($"{ApiConstants.ApiUrlV1}/messenger/conferences"), this._client
                 ).WithGetParameter("type", type.ToString().ToLowerInvariant())
                 .WithGetParameter("p", page.ToString())
@@ -71,9 +72,9 @@ namespace Azuria.Api.v1.RequestBuilder
         /// * Messenger - Level 0
         /// </summary>
         /// <returns>An instance of <see cref="ApiRequest" /> that returns the messenger constants.</returns>
-        public IUrlBuilderWithResult<ConstantsDataModel> GetConstants()
+        public IRequestBuilderWithResult<ConstantsDataModel> GetConstants()
         {
-            return new UrlBuilder<ConstantsDataModel>(
+            return new RequestBuilder<ConstantsDataModel>(
                 new Uri($"{ApiConstants.ApiUrlV1}/messenger/constants"), this._client
             );
         }
@@ -100,10 +101,10 @@ namespace Azuria.Api.v1.RequestBuilder
         /// Default: true
         /// </param>
         /// <returns>An instance of <see cref="ApiRequest" /> that returns an array of messages.</returns>
-        public IUrlBuilderWithResult<MessageDataModel[]> GetMessages(
+        public IRequestBuilderWithResult<MessageDataModel[]> GetMessages(
             int conferenceId = 0, int messageId = 0, bool markAsRead = true)
         {
-            return new UrlBuilder<MessageDataModel[]>(
+            return new RequestBuilder<MessageDataModel[]>(
                     new Uri($"{ApiConstants.ApiUrlV1}/messenger/messages"), this._client
                 ).WithGetParameter("conference_id", conferenceId.ToString())
                 .WithGetParameter("message_id", messageId.ToString())
@@ -122,9 +123,9 @@ namespace Azuria.Api.v1.RequestBuilder
         /// <param name="username">The username of the user whom the conference will be created with.</param>
         /// <param name="text">The message that will be send to the conference.</param>
         /// <returns>An instance of <see cref="ApiRequest" /> that returns a id of a conference.</returns>
-        public IUrlBuilderWithResult<int> NewConference(string username, string text)
+        public IRequestBuilderWithResult<int> NewConference(string username, string text)
         {
-            return new UrlBuilder<int>(
+            return new RequestBuilder<int>(
                     new Uri($"{ApiConstants.ApiUrlV1}/messenger/newconference"), this._client
                 ).WithPostParameter("username", username)
                 .WithPostParameter("text", text)
@@ -145,7 +146,7 @@ namespace Azuria.Api.v1.RequestBuilder
         /// <param name="topic">The topic of the new conference.</param>
         /// <param name="text">Optional. A message that will be send to the conference. Default: null</param>
         /// <returns>An instance of <see cref="ApiRequest" /> that returns a id of a group conference.</returns>
-        public IUrlBuilderWithResult<int> NewConferenceGroup(
+        public IRequestBuilderWithResult<int> NewConferenceGroup(
             IEnumerable<string> participantNames, string topic, string text = null)
         {
             List<KeyValuePair<string, string>> lPostArgs = new List<KeyValuePair<string, string>>
@@ -159,7 +160,7 @@ namespace Azuria.Api.v1.RequestBuilder
                 participantNames.Select(name => new KeyValuePair<string, string>("users[]", name))
             );
 
-            return new UrlBuilder<int>(
+            return new RequestBuilder<int>(
                     new Uri($"{ApiConstants.ApiUrlV1}/messenger/newconferencegroup"), this._client
                 ).WithPostParameter(lPostArgs)
                 .WithLoginCheck();
@@ -174,9 +175,9 @@ namespace Azuria.Api.v1.RequestBuilder
         /// </summary>
         /// <param name="conferenceId">The id of the conference that will be blocked.</param>
         /// <returns>An instance of <see cref="ApiRequest" />.</returns>
-        public IUrlBuilder SetBlock(int conferenceId)
+        public IRequestBuilder SetBlock(int conferenceId)
         {
-            return new UrlBuilder(new Uri($"{ApiConstants.ApiUrlV1}/messenger/setblock"), this._client)
+            return new Requests.Builder.RequestBuilder(new Uri($"{ApiConstants.ApiUrlV1}/messenger/setblock"), this._client)
                 .WithGetParameter("conference_id", conferenceId.ToString())
                 .WithLoginCheck();
         }
@@ -190,9 +191,9 @@ namespace Azuria.Api.v1.RequestBuilder
         /// </summary>
         /// <param name="conferenceId">The id of the conference that will be marked as a favourite.</param>
         /// <returns>An instance of <see cref="ApiRequest" />.</returns>
-        public IUrlBuilder SetFavour(int conferenceId)
+        public IRequestBuilder SetFavour(int conferenceId)
         {
-            return new UrlBuilder(new Uri($"{ApiConstants.ApiUrlV1}/messenger/setfavour"), this._client)
+            return new Requests.Builder.RequestBuilder(new Uri($"{ApiConstants.ApiUrlV1}/messenger/setfavour"), this._client)
                 .WithGetParameter("conference_id", conferenceId.ToString())
                 .WithLoginCheck();
         }
@@ -208,9 +209,9 @@ namespace Azuria.Api.v1.RequestBuilder
         /// <param name="conferenceId">The id of the conference the message will be send to.</param>
         /// <param name="message">The message that will be send.</param>
         /// <returns>An instance of <see cref="ApiRequest" /> that returns a string.</returns>
-        public IUrlBuilderWithResult<string> SetMessage(int conferenceId, string message)
+        public IRequestBuilderWithResult<string> SetMessage(int conferenceId, string message)
         {
-            return new UrlBuilder<string>(
+            return new RequestBuilder<string>(
                     new Uri($"{ApiConstants.ApiUrlV1}/messenger/setmessage"), this._client
                 ).WithGetParameter("conference_id", conferenceId.ToString())
                 .WithPostParameter("text", message)
@@ -226,9 +227,9 @@ namespace Azuria.Api.v1.RequestBuilder
         /// </summary>
         /// <param name="conferenceId">The id of the conference.</param>
         /// <returns>An instance of <see cref="ApiRequest" />.</returns>
-        public IUrlBuilder SetRead(int conferenceId)
+        public IRequestBuilder SetRead(int conferenceId)
         {
-            return new UrlBuilder(new Uri($"{ApiConstants.ApiUrlV1}/messenger/setread"), this._client)
+            return new Requests.Builder.RequestBuilder(new Uri($"{ApiConstants.ApiUrlV1}/messenger/setread"), this._client)
                 .WithGetParameter("conference_id", conferenceId.ToString())
                 .WithLoginCheck();
         }
@@ -243,9 +244,9 @@ namespace Azuria.Api.v1.RequestBuilder
         /// <param name="conferenceId">The id of the conference that is being reported.</param>
         /// <param name="reason">The reason that the conference is being reported.</param>
         /// <returns>An instance of <see cref="ApiRequest" />.</returns>
-        public IUrlBuilder SetReport(int conferenceId, string reason)
+        public IRequestBuilder SetReport(int conferenceId, string reason)
         {
-            return new UrlBuilder(new Uri($"{ApiConstants.ApiUrlV1}/messenger/report"), this._client)
+            return new Requests.Builder.RequestBuilder(new Uri($"{ApiConstants.ApiUrlV1}/messenger/report"), this._client)
                 .WithGetParameter("conference_id", conferenceId.ToString())
                 .WithPostParameter("text", reason)
                 .WithLoginCheck();
@@ -260,9 +261,9 @@ namespace Azuria.Api.v1.RequestBuilder
         /// </summary>
         /// <param name="conferenceId">The id of the conference that will be unblocked.</param>
         /// <returns>An instance of <see cref="ApiRequest" />.</returns>
-        public IUrlBuilder SetUnblock(int conferenceId)
+        public IRequestBuilder SetUnblock(int conferenceId)
         {
-            return new UrlBuilder(new Uri($"{ApiConstants.ApiUrlV1}/messenger/setunblock"), this._client)
+            return new Requests.Builder.RequestBuilder(new Uri($"{ApiConstants.ApiUrlV1}/messenger/setunblock"), this._client)
                 .WithGetParameter("conference_id", conferenceId.ToString())
                 .WithLoginCheck();
         }
@@ -276,9 +277,9 @@ namespace Azuria.Api.v1.RequestBuilder
         /// </summary>
         /// <param name="conferenceId">The id of the conference that will be removed from the favourites.</param>
         /// <returns>An instance of <see cref="ApiRequest" />.</returns>
-        public IUrlBuilder SetUnfavour(int conferenceId)
+        public IRequestBuilder SetUnfavour(int conferenceId)
         {
-            return new UrlBuilder(new Uri($"{ApiConstants.ApiUrlV1}/messenger/setunfavour"), this._client)
+            return new Requests.Builder.RequestBuilder(new Uri($"{ApiConstants.ApiUrlV1}/messenger/setunfavour"), this._client)
                 .WithGetParameter("conference_id", conferenceId.ToString())
                 .WithLoginCheck();
         }
@@ -292,9 +293,9 @@ namespace Azuria.Api.v1.RequestBuilder
         /// </summary>
         /// <param name="conferenceId">The id of the conference that will be marked as unread.</param>
         /// <returns>An instance of <see cref="ApiRequest" />.</returns>
-        public IUrlBuilder SetUnread(int conferenceId)
+        public IRequestBuilder SetUnread(int conferenceId)
         {
-            return new UrlBuilder(new Uri($"{ApiConstants.ApiUrlV1}/messenger/setunread"), this._client)
+            return new Requests.Builder.RequestBuilder(new Uri($"{ApiConstants.ApiUrlV1}/messenger/setunread"), this._client)
                 .WithGetParameter("conference_id", conferenceId.ToString())
                 .WithLoginCheck();
         }

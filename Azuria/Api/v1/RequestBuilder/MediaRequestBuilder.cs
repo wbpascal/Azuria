@@ -3,6 +3,7 @@ using Azuria.Api.Builder;
 using Azuria.Api.v1.DataModels.Media;
 using Azuria.Enums.Media;
 using Azuria.Helpers.Extensions;
+using Azuria.Requests.Builder;
 
 namespace Azuria.Api.v1.RequestBuilder
 {
@@ -31,9 +32,9 @@ namespace Azuria.Api.v1.RequestBuilder
         /// * Media - Level 0
         /// </summary>
         /// <returns>An instance of <see cref="ApiRequest" /> that returns an array of headers.</returns>
-        public IUrlBuilderWithResult<HeaderDataModel[]> GetHeaderList()
+        public IRequestBuilderWithResult<HeaderDataModel[]> GetHeaderList()
         {
-            return new UrlBuilder<HeaderDataModel[]>(
+            return new RequestBuilder<HeaderDataModel[]>(
                 new Uri($"{ApiConstants.ApiUrlV1}/media/headerlist"), this._client
             );
         }
@@ -46,9 +47,9 @@ namespace Azuria.Api.v1.RequestBuilder
         /// </summary>
         /// <param name="style">Optional. The style of the returned header.</param>
         /// <returns>An instance of <see cref="ApiRequest" /> that returns a header.</returns>
-        public IUrlBuilderWithResult<HeaderDataModel> GetRandomHeader(HeaderStyle style = HeaderStyle.Gray)
+        public IRequestBuilderWithResult<HeaderDataModel> GetRandomHeader(HeaderStyle style = HeaderStyle.Gray)
         {
-            return new UrlBuilder<HeaderDataModel>(
+            return new RequestBuilder<HeaderDataModel>(
                 new Uri($"{ApiConstants.ApiUrlV1}/media/randomheader"), this._client
             ).WithGetParameter("style", style.ToTypeString());
         }

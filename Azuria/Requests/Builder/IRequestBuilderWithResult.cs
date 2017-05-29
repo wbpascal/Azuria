@@ -1,13 +1,13 @@
 ﻿using System.Collections.Generic;
 using Azuria.Api.v1.Converters;
 
-namespace Azuria.Api.Builder
+namespace Azuria.Requests.Builder
 {
     /// <summary>
     /// 
     /// </summary>
     /// <typeparam name="T"></typeparam>
-    public interface IUrlBuilderWithResult<T> : IUrlBuilderBase
+    public interface IRequestBuilderWithResult<T> : IRequestBuilderBase
     {
         #region Properties
 
@@ -25,7 +25,7 @@ namespace Azuria.Api.Builder
         /// </summary>
         /// <param name="converter"></param>
         /// <returns></returns>
-        IUrlBuilderWithResult<T> WithCustomDataConverter(DataConverter<T> converter);
+        IRequestBuilderWithResult<T> WithCustomDataConverter(DataConverter<T> converter);
 
         /// <summary>
         /// 
@@ -33,20 +33,20 @@ namespace Azuria.Api.Builder
         /// <param name="key"></param>
         /// <param name="value"></param>
         /// <returns></returns>
-        IUrlBuilderWithResult<T> WithGetParameter(string key, string value);
+        IRequestBuilderWithResult<T> WithGetParameter(string key, string value);
 
         /// <summary>
         /// 
         /// </summary>
         /// <param name="parameter"></param>
         /// <returns></returns>
-        IUrlBuilderWithResult<T> WithGetParameter(IDictionary<string, string> parameter);
+        IRequestBuilderWithResult<T> WithGetParameter(IDictionary<string, string> parameter);
 
         /// <summary>
         /// 
         /// </summary>
         /// <returns></returns>
-        IUrlBuilderWithResult<T> WithLoginCheck(bool check = true);
+        IRequestBuilderWithResult<T> WithLoginCheck(bool check = true);
 
         /// <summary>
         /// 
@@ -54,14 +54,14 @@ namespace Azuria.Api.Builder
         /// <param name="key"></param>
         /// <param name="value"></param>
         /// <returns></returns>
-        IUrlBuilderWithResult<T> WithPostParameter(string key, string value);
+        IRequestBuilderWithResult<T> WithPostParameter(string key, string value);
 
         /// <summary>
         /// 
         /// </summary>
         /// <param name="args"></param>
         /// <returns></returns>
-        IUrlBuilderWithResult<T> WithPostParameter(IEnumerable<KeyValuePair<string, string>> args);
+        IRequestBuilderWithResult<T> WithPostParameter(IEnumerable<KeyValuePair<string, string>> args);
 
         #endregion
     }

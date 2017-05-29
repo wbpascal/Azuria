@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Azuria.Api.Builder
+namespace Azuria.Requests.Builder
 {
     /// <summary>
     /// 
     /// </summary>
-    public interface IUrlBuilderBase
+    public interface IRequestBuilderBase
     {
         #region Properties
 

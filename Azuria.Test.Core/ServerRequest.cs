@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Azuria.Test.Core.Utility;
+using Azuria.Test.Core.Helpers;
 
 namespace Azuria.Test.Core
 {

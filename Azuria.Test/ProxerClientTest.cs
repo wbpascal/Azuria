@@ -10,7 +10,8 @@ using Azuria.ErrorHandling;
 using Azuria.Exceptions;
 using Azuria.Requests;
 using Azuria.Requests.Http;
-using Azuria.Test.Core.Utility;
+using Azuria.Serialization;
+using Azuria.Test.Core.Helpers;
 using Xunit;
 
 namespace Azuria.Test
@@ -25,6 +26,11 @@ namespace Azuria.Test
             Assert.True(lClient.Container.IsRegistered<IHttpClient>());
             Assert.True(lClient.Container.IsRegistered<IProxerClient>());
             Assert.True(lClient.Container.IsRegistered<ILoginManager>());
+            Assert.True(lClient.Container.IsRegistered<IRequestHandler>());
+            Assert.True(lClient.Container.IsRegistered<IApiRequestBuilder>());
+            Assert.True(lClient.Container.IsRegistered<IRequestErrorHandler>());
+            Assert.True(lClient.Container.IsRegistered<IJsonDeserializer>());
+            Assert.True(lClient.Container.IsRegistered<IRequestHeaderManager>());
         }
 
         [Fact]

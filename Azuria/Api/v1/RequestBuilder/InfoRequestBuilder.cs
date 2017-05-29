@@ -5,6 +5,7 @@ using Azuria.Api.v1.DataModels;
 using Azuria.Api.v1.DataModels.Info;
 using Azuria.Enums.Info;
 using Azuria.Helpers.Extensions;
+using Azuria.Requests.Builder;
 
 namespace Azuria.Api.v1.RequestBuilder
 {
@@ -43,10 +44,10 @@ namespace Azuria.Api.v1.RequestBuilder
         /// top rated comments first, otherwise the newest comments will be returned first. Default: ""
         /// </param>
         /// <returns>An instance of <see cref="ApiRequest" /> that returns an array of comments.</returns>
-        public IUrlBuilderWithResult<CommentDataModel[]> GetComments(
+        public IRequestBuilderWithResult<CommentDataModel[]> GetComments(
             int entryId, int page = 0, int limit = 25, CommentSort sort = CommentSort.Newest)
         {
-            return new UrlBuilder<CommentDataModel[]>(
+            return new RequestBuilder<CommentDataModel[]>(
                     new Uri($"{ApiConstants.ApiUrlV1}/info/comments"), this._client
                 ).WithGetParameter("id", entryId.ToString())
                 .WithGetParameter("p", page.ToString())
@@ -63,9 +64,9 @@ namespace Azuria.Api.v1.RequestBuilder
         /// </summary>
         /// <param name="entryId">The id of the Anime or Manga.</param>
         /// <returns>An instance of <see cref="ApiRequest" /> that returns the core information.</returns>
-        public IUrlBuilderWithResult<EntryDataModel> GetEntry(int entryId)
+        public IRequestBuilderWithResult<EntryDataModel> GetEntry(int entryId)
         {
-            return new UrlBuilder<EntryDataModel>(
+            return new RequestBuilder<EntryDataModel>(
                 new Uri($"{ApiConstants.ApiUrlV1}/info/entry"), this._client
             ).WithGetParameter("id", entryId.ToString());
         }
@@ -78,9 +79,9 @@ namespace Azuria.Api.v1.RequestBuilder
         /// </summary>
         /// <param name="entryId">The id of the anime or manga.</param>
         /// <returns>An instance of <see cref="ApiRequest" /> that returns an array of tags.</returns>
-        public IUrlBuilderWithResult<MediaTagDataModel[]> GetEntryTags(int entryId)
+        public IRequestBuilderWithResult<MediaTagDataModel[]> GetEntryTags(int entryId)
         {
-            return new UrlBuilder<MediaTagDataModel[]>(
+            return new RequestBuilder<MediaTagDataModel[]>(
                 new Uri($"{ApiConstants.ApiUrlV1}/info/entrytags"), this._client
             ).WithGetParameter("id", entryId.ToString());
         }
@@ -97,9 +98,9 @@ namespace Azuria.Api.v1.RequestBuilder
         /// </summary>
         /// <param name="entryId">The id of the anime or manga.</param>
         /// <returns>An instance of <see cref="ApiRequest" /> that returns the informations.</returns>
-        public IUrlBuilderWithResult<FullEntryDataModel> GetFullEntry(int entryId)
+        public IRequestBuilderWithResult<FullEntryDataModel> GetFullEntry(int entryId)
         {
-            return new UrlBuilder<FullEntryDataModel>(
+            return new RequestBuilder<FullEntryDataModel>(
                 new Uri($"{ApiConstants.ApiUrlV1}/info/fullentry?id={entryId}"), this._client
             );
         }
@@ -113,9 +114,9 @@ namespace Azuria.Api.v1.RequestBuilder
         /// </summary>
         /// <param name="entryId">The id of the anime or manga.</param>
         /// <returns>An instance of <see cref="ApiRequest" /> that returns a boolean.</returns>
-        public IUrlBuilderWithResult<bool> GetGate(int entryId)
+        public IRequestBuilderWithResult<bool> GetGate(int entryId)
         {
-            return new UrlBuilder<bool>(new Uri($"{ApiConstants.ApiUrlV1}/info/gate"), this._client)
+            return new RequestBuilder<bool>(new Uri($"{ApiConstants.ApiUrlV1}/info/gate"), this._client)
                 .WithGetParameter("id", entryId.ToString());
         }
 
@@ -128,9 +129,9 @@ namespace Azuria.Api.v1.RequestBuilder
         /// </summary>
         /// <param name="entryId">The id of the anime or manga.</param>
         /// <returns>An instance of <see cref="ApiRequest" /> that returns an array of translators.</returns>
-        public IUrlBuilderWithResult<TranslatorDataModel[]> GetGroups(int entryId)
+        public IRequestBuilderWithResult<TranslatorDataModel[]> GetGroups(int entryId)
         {
-            return new UrlBuilder<TranslatorDataModel[]>(
+            return new RequestBuilder<TranslatorDataModel[]>(
                 new Uri($"{ApiConstants.ApiUrlV1}/info/groups"), this._client
             ).WithGetParameter("id", entryId.ToString());
         }
@@ -143,9 +144,9 @@ namespace Azuria.Api.v1.RequestBuilder
         /// </summary>
         /// <param name="id">The id of the company.</param>
         /// <returns>An instance of <see cref="ApiRequest" /> that returns information about a company.</returns>
-        public IUrlBuilderWithResult<TranslatorDataModel[]> GetIndustry(int id)
+        public IRequestBuilderWithResult<TranslatorDataModel[]> GetIndustry(int id)
         {
-            return new UrlBuilder<TranslatorDataModel[]>(
+            return new RequestBuilder<TranslatorDataModel[]>(
                 new Uri($"{ApiConstants.ApiUrlV1}/info/industry"), this._client
             ).WithGetParameter("id", id.ToString());
         }
@@ -159,9 +160,9 @@ namespace Azuria.Api.v1.RequestBuilder
         /// </summary>
         /// <param name="entryId">The id of the anime or manga.</param>
         /// <returns>An instance of <see cref="ApiRequest" /> that returns an array of languages.</returns>
-        public IUrlBuilderWithResult<MediaLanguage[]> GetLanguage(int entryId)
+        public IRequestBuilderWithResult<MediaLanguage[]> GetLanguage(int entryId)
         {
-            return new UrlBuilder<MediaLanguage[]>(new Uri($"{ApiConstants.ApiUrlV1}/info/lang"), this._client)
+            return new RequestBuilder<MediaLanguage[]>(new Uri($"{ApiConstants.ApiUrlV1}/info/lang"), this._client)
                 .WithGetParameter("id", entryId.ToString())
                 .WithCustomDataConverter(new LanguageCollectionConverter());
         }
@@ -182,9 +183,9 @@ namespace Azuria.Api.v1.RequestBuilder
         /// An instance of <see cref="ApiRequest" /> that returns an object containing all chapter/episodes
         /// and information about the returned list.
         /// </returns>
-        public IUrlBuilderWithResult<ListInfoDataModel> GetListInfo(int entryId, int page = 0, int limit = 50)
+        public IRequestBuilderWithResult<ListInfoDataModel> GetListInfo(int entryId, int page = 0, int limit = 50)
         {
-            return new UrlBuilder<ListInfoDataModel>(
+            return new RequestBuilder<ListInfoDataModel>(
                     new Uri($"{ApiConstants.ApiUrlV1}/info/listinfo"), this._client
                 ).WithGetParameter("id", entryId.ToString())
                 .WithGetParameter("p", page.ToString())
@@ -203,9 +204,9 @@ namespace Azuria.Api.v1.RequestBuilder
         /// An instance of <see cref="ApiRequest" /> that returns an array of object containing the names
         /// and some additional informations.
         /// </returns>
-        public IUrlBuilderWithResult<NameDataModel[]> GetName(int entryId)
+        public IRequestBuilderWithResult<NameDataModel[]> GetName(int entryId)
         {
-            return new UrlBuilder<NameDataModel[]>(
+            return new RequestBuilder<NameDataModel[]>(
                 new Uri($"{ApiConstants.ApiUrlV1}/info/names"), this._client
             ).WithGetParameter("id", entryId.ToString());
         }
@@ -221,9 +222,9 @@ namespace Azuria.Api.v1.RequestBuilder
         /// <returns>
         /// An instance of <see cref="ApiRequest" /> that returns an array of organisations.
         /// </returns>
-        public IUrlBuilderWithResult<PublisherDataModel[]> GetPublisher(int entryId)
+        public IRequestBuilderWithResult<PublisherDataModel[]> GetPublisher(int entryId)
         {
-            return new UrlBuilder<PublisherDataModel[]>(
+            return new RequestBuilder<PublisherDataModel[]>(
                 new Uri($"{ApiConstants.ApiUrlV1}/info/publisher"), this._client
             ).WithGetParameter("id", entryId.ToString());
         }
@@ -236,9 +237,9 @@ namespace Azuria.Api.v1.RequestBuilder
         /// </summary>
         /// <param name="entryId">The id of the anime or manga.</param>
         /// <returns>An instance of <see cref="ApiRequest" /> that returns an array of relations.</returns>
-        public IUrlBuilderWithResult<RelationDataModel[]> GetRelations(int entryId)
+        public IRequestBuilderWithResult<RelationDataModel[]> GetRelations(int entryId)
         {
-            return new UrlBuilder<RelationDataModel[]>(
+            return new RequestBuilder<RelationDataModel[]>(
                 new Uri($"{ApiConstants.ApiUrlV1}/info/relations"), this._client
             ).WithGetParameter("id", entryId.ToString());
         }
@@ -251,9 +252,9 @@ namespace Azuria.Api.v1.RequestBuilder
         /// </summary>
         /// <param name="entryId">The id of the anime or manga.</param>
         /// <returns>An instance of <see cref="ApiRequest" /> that returns an array of seasons.</returns>
-        public IUrlBuilderWithResult<SeasonDataModel[]> GetSeason(int entryId)
+        public IRequestBuilderWithResult<SeasonDataModel[]> GetSeason(int entryId)
         {
-            return new UrlBuilder<SeasonDataModel[]>(
+            return new RequestBuilder<SeasonDataModel[]>(
                 new Uri($"{ApiConstants.ApiUrlV1}/info/season"), this._client
             ).WithGetParameter("id", entryId.ToString());
         }
@@ -266,9 +267,9 @@ namespace Azuria.Api.v1.RequestBuilder
         /// </summary>
         /// <param name="id">The id of the translator group.</param>
         /// <returns>An instance of <see cref="ApiRequest" /> that returns information about a translator group.</returns>
-        public IUrlBuilderWithResult<TranslatorDataModel[]> GetTranslatorGroup(int id)
+        public IRequestBuilderWithResult<TranslatorDataModel[]> GetTranslatorGroup(int id)
         {
-            return new UrlBuilder<TranslatorDataModel[]>(
+            return new RequestBuilder<TranslatorDataModel[]>(
                 new Uri($"{ApiConstants.ApiUrlV1}/info/translatorgroup"), this._client
             ).WithGetParameter("id", id.ToString());
         }
@@ -286,9 +287,9 @@ namespace Azuria.Api.v1.RequestBuilder
         /// The list to which the anime or manga will be added. Possible values: "note", "favor", "finish"
         /// </param>
         /// <returns>An instance of <see cref="ApiRequest" />.</returns>
-        public IUrlBuilder SetUserInfo(int entryId, UserList list)
+        public IRequestBuilder SetUserInfo(int entryId, UserList list)
         {
-            return new UrlBuilder(new Uri($"{ApiConstants.ApiUrlV1}/info/setuserinfo"), this._client)
+            return new Requests.Builder.RequestBuilder(new Uri($"{ApiConstants.ApiUrlV1}/info/setuserinfo"), this._client)
                 .WithPostParameter("id", entryId.ToString())
                 .WithPostParameter("type", list.ToTypeString())
                 .WithLoginCheck();

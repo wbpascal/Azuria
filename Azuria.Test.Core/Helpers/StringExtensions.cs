@@ -1,4 +1,4 @@
-﻿namespace Azuria.Test.Core.Utility
+﻿namespace Azuria.Test.Core.Helpers
 {
     internal static class StringExtensions
     {

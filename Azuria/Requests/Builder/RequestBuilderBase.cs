@@ -3,12 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using Azuria.Helpers.Extensions;
 
-namespace Azuria.Api.Builder
+namespace Azuria.Requests.Builder
 {
     /// <summary>
     /// 
     /// </summary>
-    public abstract class UrlBuilderBase : IUrlBuilderBase
+    public abstract class RequestBuilderBase : IRequestBuilderBase
     {
         private readonly Uri _baseUri;
 
@@ -20,7 +20,7 @@ namespace Azuria.Api.Builder
         /// </summary>
         /// <param name="baseUri"></param>
         /// <param name="client"></param>
-        protected UrlBuilderBase(Uri baseUri, IProxerClient client)
+        protected RequestBuilderBase(Uri baseUri, IProxerClient client)
         {
             this._baseUri = baseUri;
             this.Client = client;
@@ -30,9 +30,10 @@ namespace Azuria.Api.Builder
         /// 
         /// </summary>
         /// <param name="builderBase"></param>
-        protected UrlBuilderBase(UrlBuilderBase builderBase)
+        protected RequestBuilderBase(RequestBuilderBase builderBase)
         {
             this.Client = builderBase.Client;
+            this.CheckLogin = builderBase.CheckLogin;
             this._baseUri = builderBase._baseUri;
             this._postArguments = builderBase._postArguments;
             this.GetParameters = builderBase.GetParameters;

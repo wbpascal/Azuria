@@ -7,6 +7,7 @@ using Azuria.Api.Builder;
 using Azuria.Authentication;
 using Azuria.ErrorHandling;
 using Azuria.Exceptions;
+using Azuria.Requests.Builder;
 using Azuria.Requests.Http;
 using Azuria.Serialization;
 using Newtonsoft.Json;
@@ -33,7 +34,7 @@ namespace Azuria.Requests
         #region Methods
 
         /// <inheritdoc />
-        public async Task<IProxerResult> ApiRequestAsync(IUrlBuilder request, CancellationToken token)
+        public async Task<IProxerResult> ApiRequestAsync(IRequestBuilder request, CancellationToken token)
         {
             IProxerResult lResult = await this.ApiRequestInternalAsync<ProxerApiResponse>(request, token)
                                         .ConfigureAwait(false);
@@ -45,7 +46,7 @@ namespace Azuria.Requests
 
         /// <inheritdoc />
         public async Task<IProxerResult<T>> ApiRequestAsync<T>(
-            IUrlBuilderWithResult<T> request, CancellationToken token)
+            IRequestBuilderWithResult<T> request, CancellationToken token)
         {
             JsonSerializerSettings lSerializerSettings =
                 new JsonSerializerSettings() {Converters = GetCustomConverter(request)};
@@ -59,7 +60,7 @@ namespace Azuria.Requests
                        : (IProxerResult<T>) new ProxerResult<T>(lResult.Exceptions);
         }
 
-        private static IList<JsonConverter> GetCustomConverter<T>(IUrlBuilderWithResult<T> request)
+        private static IList<JsonConverter> GetCustomConverter<T>(IRequestBuilderWithResult<T> request)
         {
             return request.CustomDataConverter == null
                        ? new JsonConverter[0]
@@ -67,7 +68,7 @@ namespace Azuria.Requests
         }
 
         private async Task<IProxerResult> ApiRequestInternalAsync<T>(
-            IUrlBuilderBase request, CancellationToken token, JsonSerializerSettings settings = null)
+            IRequestBuilderBase request, CancellationToken token, JsonSerializerSettings settings = null)
             where T : ProxerApiResponse
         {
             Dictionary<string, string> lHeaders = this._headerManager.GetHeader();

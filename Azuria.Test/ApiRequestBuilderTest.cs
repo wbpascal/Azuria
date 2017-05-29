@@ -4,7 +4,8 @@ using Azuria.Api.Builder;
 using Azuria.Api.v1;
 using Azuria.Api.v1.RequestBuilder;
 using Azuria.Requests;
-using Azuria.Test.Core.Utility;
+using Azuria.Requests.Builder;
+using Azuria.Test.Core.Helpers;
 using Xunit;
 
 namespace Azuria.Test
@@ -22,17 +23,17 @@ namespace Azuria.Test
         [Fact]
         public void FromUrlTest()
         {
-            IUrlBuilder lUrlBuilder = this._apiRequestBuilder.FromUrl(new Uri("https://google.com/"))
+            IRequestBuilder lRequestBuilder = this._apiRequestBuilder.FromUrl(new Uri("https://google.com/"))
                 .WithGetParameter("test", "value")
                 .WithPostParameter("testPost", "postValue");
 
-            Assert.Equal(1, lUrlBuilder.GetParameters.Count);
-            Assert.True(lUrlBuilder.GetParameters.ContainsKey("test"));
-            Assert.Equal("value", lUrlBuilder.GetParameters["test"]);
-            Assert.Equal(1, lUrlBuilder.PostArguments.Count());
-            Assert.True(lUrlBuilder.PostArguments.Any(pair => pair.Key == "testPost" && pair.Value == "postValue"));
+            Assert.Equal(1, lRequestBuilder.GetParameters.Count);
+            Assert.True(lRequestBuilder.GetParameters.ContainsKey("test"));
+            Assert.Equal("value", lRequestBuilder.GetParameters["test"]);
+            Assert.Equal(1, lRequestBuilder.PostArguments.Count());
+            Assert.True(lRequestBuilder.PostArguments.Any(pair => pair.Key == "testPost" && pair.Value == "postValue"));
 
-            Assert.Equal("https://google.com/?test=value", lUrlBuilder.BuildUri().AbsoluteUri);
+            Assert.Equal("https://google.com/?test=value", lRequestBuilder.BuildUri().AbsoluteUri);
         }
 
         [Fact]

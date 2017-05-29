@@ -2,63 +2,63 @@
 using System.Collections.Generic;
 using Azuria.Api.v1.Converters;
 
-namespace Azuria.Api.Builder
+namespace Azuria.Requests.Builder
 {
     /// <summary>
     /// 
     /// </summary>
-    public class UrlBuilder : UrlBuilderBase, IUrlBuilder
+    public class RequestBuilder : RequestBuilderBase, IRequestBuilder
     {
         /// <summary>
         /// 
         /// </summary>
         /// <param name="baseUri"></param>
         /// <param name="client"></param>
-        public UrlBuilder(Uri baseUri, IProxerClient client) : base(baseUri, client)
+        public RequestBuilder(Uri baseUri, IProxerClient client) : base(baseUri, client)
         {
         }
 
         #region Methods
 
         /// <inheritdoc />
-        public IUrlBuilder WithGetParameter(string key, string value)
+        public IRequestBuilder WithGetParameter(string key, string value)
         {
             this.AddGetParameter(key, value);
             return this;
         }
 
         /// <inheritdoc />
-        public IUrlBuilder WithGetParameter(IDictionary<string, string> parameter)
+        public IRequestBuilder WithGetParameter(IDictionary<string, string> parameter)
         {
             this.AddGetParameter(parameter);
             return this;
         }
 
         /// <inheritdoc />
-        public IUrlBuilder WithLoginCheck(bool check = true)
+        public IRequestBuilder WithLoginCheck(bool check = true)
         {
             this.AddLoginCheck(check);
             return this;
         }
 
         /// <inheritdoc />
-        public IUrlBuilder WithPostParameter(string key, string value)
+        public IRequestBuilder WithPostParameter(string key, string value)
         {
             this.AddPostArgument(key, value);
             return this;
         }
 
         /// <inheritdoc />
-        public IUrlBuilder WithPostParameter(IEnumerable<KeyValuePair<string, string>> args)
+        public IRequestBuilder WithPostParameter(IEnumerable<KeyValuePair<string, string>> args)
         {
             this.AddPostArgument(args);
             return this;
         }
 
         /// <inheritdoc />
-        public IUrlBuilderWithResult<T> WithResult<T>()
+        public IRequestBuilderWithResult<T> WithResult<T>()
         {
-            return new UrlBuilder<T>(this);
+            return new RequestBuilder<T>(this);
         }
 
         #endregion
@@ -68,14 +68,14 @@ namespace Azuria.Api.Builder
     /// 
     /// </summary>
     /// <typeparam name="T"></typeparam>
-    public class UrlBuilder<T> : UrlBuilderBase, IUrlBuilderWithResult<T>
+    public class RequestBuilder<T> : RequestBuilderBase, IRequestBuilderWithResult<T>
     {
         /// <summary>
         /// 
         /// </summary>
         /// <param name="baseUri"></param>
         /// <param name="client"></param>
-        public UrlBuilder(Uri baseUri, IProxerClient client) : base(baseUri, client)
+        public RequestBuilder(Uri baseUri, IProxerClient client) : base(baseUri, client)
         {
         }
 
@@ -83,7 +83,7 @@ namespace Azuria.Api.Builder
         /// 
         /// </summary>
         /// <param name="builder"></param>
-        public UrlBuilder(UrlBuilderBase builder) : base(builder)
+        public RequestBuilder(RequestBuilderBase builder) : base(builder)
         {
         }
 
@@ -97,42 +97,42 @@ namespace Azuria.Api.Builder
         #region Methods
 
         /// <inheritdoc />
-        public IUrlBuilderWithResult<T> WithCustomDataConverter(DataConverter<T> converter)
+        public IRequestBuilderWithResult<T> WithCustomDataConverter(DataConverter<T> converter)
         {
             this.CustomDataConverter = converter;
             return this;
         }
 
         /// <inheritdoc />
-        public IUrlBuilderWithResult<T> WithGetParameter(string key, string value)
+        public IRequestBuilderWithResult<T> WithGetParameter(string key, string value)
         {
             this.AddGetParameter(key, value);
             return this;
         }
 
         /// <inheritdoc />
-        public IUrlBuilderWithResult<T> WithGetParameter(IDictionary<string, string> parameter)
+        public IRequestBuilderWithResult<T> WithGetParameter(IDictionary<string, string> parameter)
         {
             this.AddGetParameter(parameter);
             return this;
         }
 
         /// <inheritdoc />
-        public IUrlBuilderWithResult<T> WithLoginCheck(bool check = true)
+        public IRequestBuilderWithResult<T> WithLoginCheck(bool check = true)
         {
             this.AddLoginCheck(check);
             return this;
         }
 
         /// <inheritdoc />
-        public IUrlBuilderWithResult<T> WithPostParameter(string key, string value)
+        public IRequestBuilderWithResult<T> WithPostParameter(string key, string value)
         {
             this.AddPostArgument(key, value);
             return this;
         }
 
         /// <inheritdoc />
-        public IUrlBuilderWithResult<T> WithPostParameter(IEnumerable<KeyValuePair<string, string>> args)
+        public IRequestBuilderWithResult<T> WithPostParameter(IEnumerable<KeyValuePair<string, string>> args)
         {
             this.AddPostArgument(args);
             return this;

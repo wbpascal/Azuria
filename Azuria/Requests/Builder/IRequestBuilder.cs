@@ -1,11 +1,11 @@
 ﻿using System.Collections.Generic;
 
-namespace Azuria.Api.Builder
+namespace Azuria.Requests.Builder
 {
     /// <summary>
     /// 
     /// </summary>
-    public interface IUrlBuilder : IUrlBuilderBase
+    public interface IRequestBuilder : IRequestBuilderBase
     {
         #region Methods
 
@@ -15,20 +15,20 @@ namespace Azuria.Api.Builder
         /// <param name="key"></param>
         /// <param name="value"></param>
         /// <returns></returns>
-        IUrlBuilder WithGetParameter(string key, string value);
+        IRequestBuilder WithGetParameter(string key, string value);
 
         /// <summary>
         /// 
         /// </summary>
         /// <param name="parameter"></param>
         /// <returns></returns>
-        IUrlBuilder WithGetParameter(IDictionary<string, string> parameter);
+        IRequestBuilder WithGetParameter(IDictionary<string, string> parameter);
 
         /// <summary>
         /// 
         /// </summary>
         /// <returns></returns>
-        IUrlBuilder WithLoginCheck(bool check = true);
+        IRequestBuilder WithLoginCheck(bool check = true);
 
         /// <summary>
         /// 
@@ -36,21 +36,21 @@ namespace Azuria.Api.Builder
         /// <param name="key"></param>
         /// <param name="value"></param>
         /// <returns></returns>
-        IUrlBuilder WithPostParameter(string key, string value);
+        IRequestBuilder WithPostParameter(string key, string value);
 
         /// <summary>
         /// 
         /// </summary>
         /// <param name="args"></param>
         /// <returns></returns>
-        IUrlBuilder WithPostParameter(IEnumerable<KeyValuePair<string, string>> args);
+        IRequestBuilder WithPostParameter(IEnumerable<KeyValuePair<string, string>> args);
 
         /// <summary>
         /// 
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <returns></returns>
-        IUrlBuilderWithResult<T> WithResult<T>();
+        IRequestBuilderWithResult<T> WithResult<T>();
 
         #endregion
     }

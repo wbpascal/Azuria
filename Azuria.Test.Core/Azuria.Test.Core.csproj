@@ -1,11 +1,8 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-
   <PropertyGroup>
     <TargetFramework>netstandard1.4</TargetFramework>
   </PropertyGroup>
-
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Appveyor|AnyCPU'" />
-
   <ItemGroup>
     <None Remove="Response\anime_getlink.json" />
     <None Remove="Response\anime_getstreams.json" />
@@ -93,7 +90,6 @@
     <None Remove="Response\user_login_3001.json" />
     <None Remove="Response\user_logout.json" />
   </ItemGroup>
-
   <ItemGroup>
     <EmbeddedResource Include="Response\anime_getlink.json" />
     <EmbeddedResource Include="Response\anime_getstreams.json" />
@@ -181,15 +177,12 @@
     <EmbeddedResource Include="Response\user_login_3001.json" />
     <EmbeddedResource Include="Response\user_logout.json" />
   </ItemGroup>
-
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.WebUtilities" Version="1.1.1" />
     <PackageReference Include="Moq" Version="4.7.8" />
     <PackageReference Include="System.ValueTuple" Version="4.3.0" />
   </ItemGroup>
-
   <ItemGroup>
     <ProjectReference Include="..\Azuria\Azuria.csproj" />
   </ItemGroup>
-
 </Project>

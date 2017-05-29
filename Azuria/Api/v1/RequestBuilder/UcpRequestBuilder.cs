@@ -6,6 +6,7 @@ using Azuria.Enums;
 using Azuria.Enums.Info;
 using Azuria.Enums.User;
 using Azuria.Helpers.Extensions;
+using Azuria.Requests.Builder;
 using HistoryDataModel = Azuria.Api.v1.DataModels.Ucp.HistoryDataModel;
 using ToptenDataModel = Azuria.Api.v1.DataModels.Ucp.ToptenDataModel;
 
@@ -41,9 +42,9 @@ namespace Azuria.Api.v1.RequestBuilder
         /// </param>
         /// <returns>An instance of <see cref="ApiRequest" /> that removes an entry from a users topten.</returns>
         /// <seealso cref="GetTopten" />
-        public IUrlBuilder DeleteFavourite(int favouriteId)
+        public IRequestBuilder DeleteFavourite(int favouriteId)
         {
-            return new UrlBuilder(new Uri($"{ApiConstants.ApiUrlV1}/ucp/deletefavorite"), this._client)
+            return new Requests.Builder.RequestBuilder(new Uri($"{ApiConstants.ApiUrlV1}/ucp/deletefavorite"), this._client)
                 .WithPostParameter("id", favouriteId.ToString())
                 .WithLoginCheck();
         }
@@ -58,9 +59,9 @@ namespace Azuria.Api.v1.RequestBuilder
         /// <param name="reminderId">The id of the reminder that should be deleted (see <see cref="GetReminder" />).</param>
         /// <returns>An instance of <see cref="ApiRequest" /> that deletes a reminder.</returns>
         /// <seealso cref="GetReminder" />
-        public IUrlBuilder DeleteReminder(int reminderId)
+        public IRequestBuilder DeleteReminder(int reminderId)
         {
-            return new UrlBuilder(new Uri($"{ApiConstants.ApiUrlV1}/ucp/deletereminder"), this._client)
+            return new Requests.Builder.RequestBuilder(new Uri($"{ApiConstants.ApiUrlV1}/ucp/deletereminder"), this._client)
                 .WithPostParameter("id", reminderId.ToString())
                 .WithLoginCheck();
         }
@@ -75,9 +76,9 @@ namespace Azuria.Api.v1.RequestBuilder
         /// <param name="voteId">The id of the comment upvote that should be removed (see <see cref="GetVotes" />).</param>
         /// <returns>An instance of <see cref="ApiRequest" /> that removes a comment upvote.</returns>
         /// <seealso cref="GetVotes" />
-        public IUrlBuilder DeleteVote(int voteId)
+        public IRequestBuilder DeleteVote(int voteId)
         {
-            return new UrlBuilder(new Uri($"{ApiConstants.ApiUrlV1}/ucp/deletevote"), this._client)
+            return new Requests.Builder.RequestBuilder(new Uri($"{ApiConstants.ApiUrlV1}/ucp/deletevote"), this._client)
                 .WithPostParameter("id", voteId.ToString())
                 .WithLoginCheck();
         }
@@ -93,9 +94,9 @@ namespace Azuria.Api.v1.RequestBuilder
         /// <param name="page">Optional. The index of the page that should be loaded. Default: 0</param>
         /// <param name="limit">Optional. The number of entries that should be loaded per page. Default: 50</param>
         /// <returns>An instance of <see cref="ApiRequest" /> that returns an array of episodes and chapters.</returns>
-        public IUrlBuilderWithResult<HistoryDataModel[]> GetHistory(int page = 0, int limit = 50)
+        public IRequestBuilderWithResult<HistoryDataModel[]> GetHistory(int page = 0, int limit = 50)
         {
-            return new UrlBuilder<HistoryDataModel[]>(
+            return new RequestBuilder<HistoryDataModel[]>(
                     new Uri($"{ApiConstants.ApiUrlV1}/ucp/history"), this._client
                 ).WithGetParameter("p", page.ToString())
                 .WithGetParameter("limit", limit.ToString())
@@ -119,12 +120,12 @@ namespace Azuria.Api.v1.RequestBuilder
         /// TODO: Add description here
         /// </param>
         /// <returns>An instance of <see cref="ApiRequest" /> that returns an array of anime or manga entries.</returns>
-        public IUrlBuilderWithResult<ListDataModel[]> GetList(
+        public IRequestBuilderWithResult<ListDataModel[]> GetList(
             MediaEntryType category = MediaEntryType.Anime, int page = 0, int limit = 100, string search = "",
             string searchStart = "", UserListSort sort = UserListSort.StateName,
             SortDirection sortDirection = SortDirection.Ascending)
         {
-            return new UrlBuilder<ListDataModel[]>(new Uri($"{ApiConstants.ApiUrlV1}/ucp/list"), this._client)
+            return new RequestBuilder<ListDataModel[]>(new Uri($"{ApiConstants.ApiUrlV1}/ucp/list"), this._client)
                 .WithGetParameter("kat", category.ToString().ToLowerInvariant())
                 .WithGetParameter("p", page.ToString())
                 .WithGetParameter("limit", limit.ToString())
@@ -143,9 +144,9 @@ namespace Azuria.Api.v1.RequestBuilder
         /// </summary>
         /// <param name="category">Optional. Whether only watched episodes or read chapters should be counted.</param>
         /// <returns>An instance of <see cref="ApiRequest" /> that returns a sum of watched episodes or read chapters.</returns>
-        public IUrlBuilderWithResult<int> GetListsum(MediaEntryType category = MediaEntryType.Anime)
+        public IRequestBuilderWithResult<int> GetListsum(MediaEntryType category = MediaEntryType.Anime)
         {
-            return new UrlBuilder<int>(new Uri($"{ApiConstants.ApiUrlV1}/ucp/listsum"), this._client)
+            return new RequestBuilder<int>(new Uri($"{ApiConstants.ApiUrlV1}/ucp/listsum"), this._client)
                 .WithGetParameter("kat", category.ToString().ToLowerInvariant())
                 .WithLoginCheck();
         }
@@ -161,10 +162,10 @@ namespace Azuria.Api.v1.RequestBuilder
         /// <param name="page">Optional. The index of the page that should be loaded. Default: 0</param>
         /// <param name="limit">Optional. The number of entries that should be loaded per page. Default: 100</param>
         /// <returns>An instance of <see cref="ApiRequest" /> that returns an array of reminders.</returns>
-        public IUrlBuilderWithResult<BookmarkDataModel[]> GetReminder(
+        public IRequestBuilderWithResult<BookmarkDataModel[]> GetReminder(
             MediaEntryType? category = null, int page = 0, int limit = 100)
         {
-            return new UrlBuilder<BookmarkDataModel[]>(
+            return new RequestBuilder<BookmarkDataModel[]>(
                     new Uri($"{ApiConstants.ApiUrlV1}/ucp/reminder"), this._client
                 ).WithGetParameter("kat", category.ToString().ToLowerInvariant())
                 .WithGetParameter("p", page.ToString())
@@ -180,9 +181,9 @@ namespace Azuria.Api.v1.RequestBuilder
         /// * UCP - Level 0
         /// </summary>
         /// <returns>An instance of <see cref="ApiRequest" /> that returns an array of anime and manga.</returns>
-        public IUrlBuilderWithResult<ToptenDataModel[]> GetTopten()
+        public IRequestBuilderWithResult<ToptenDataModel[]> GetTopten()
         {
-            return new UrlBuilder<ToptenDataModel[]>(
+            return new RequestBuilder<ToptenDataModel[]>(
                 new Uri($"{ApiConstants.ApiUrlV1}/ucp/topten"), this._client
             ).WithLoginCheck();
         }
@@ -195,9 +196,9 @@ namespace Azuria.Api.v1.RequestBuilder
         /// * UCP - Level 0
         /// </summary>
         /// <returns>An instance of <see cref="ApiRequest" /> that returns an array of comments.</returns>
-        public IUrlBuilderWithResult<VoteDataModel[]> GetVotes()
+        public IRequestBuilderWithResult<VoteDataModel[]> GetVotes()
         {
-            return new UrlBuilder<VoteDataModel[]>(
+            return new RequestBuilder<VoteDataModel[]>(
                 new Uri($"{ApiConstants.ApiUrlV1}/ucp/votes"), this._client
             ).WithLoginCheck();
         }
@@ -214,9 +215,9 @@ namespace Azuria.Api.v1.RequestBuilder
         /// <param name="id">The id of the entry that should be edited (see <see cref="GetList" />).</param>
         /// <param name="progress">The amount of watched episodes/read chapters.</param>
         /// <returns>An instance of <see cref="ApiRequest" /> sets a users progress of an anime/manga.</returns>
-        public IUrlBuilder SetCommentState(int id, int progress)
+        public IRequestBuilder SetCommentState(int id, int progress)
         {
-            return new UrlBuilder(new Uri($"{ApiConstants.ApiUrlV1}/ucp/setcommentstate"), this._client)
+            return new Requests.Builder.RequestBuilder(new Uri($"{ApiConstants.ApiUrlV1}/ucp/setcommentstate"), this._client)
                 .WithPostParameter("id", id.ToString())
                 .WithPostParameter("value", progress.ToString())
                 .WithLoginCheck();
@@ -237,9 +238,9 @@ namespace Azuria.Api.v1.RequestBuilder
         /// this).
         /// </param>
         /// <returns>An instance of <see cref="ApiRequest" />.</returns>
-        public IUrlBuilder SetReminder(int entryId, int contentIndex, MediaLanguage language, MediaEntryType category)
+        public IRequestBuilder SetReminder(int entryId, int contentIndex, MediaLanguage language, MediaEntryType category)
         {
-            return new UrlBuilder(new Uri($"{ApiConstants.ApiUrlV1}/ucp/setreminder"), this._client)
+            return new Requests.Builder.RequestBuilder(new Uri($"{ApiConstants.ApiUrlV1}/ucp/setreminder"), this._client)
                 .WithGetParameter("id", entryId.ToString())
                 .WithGetParameter("episode", contentIndex.ToString())
                 .WithGetParameter("language", language.ToTypeString())

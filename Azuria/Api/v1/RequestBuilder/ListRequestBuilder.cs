@@ -8,6 +8,7 @@ using Azuria.Enums;
 using Azuria.Enums.Info;
 using Azuria.Enums.List;
 using Azuria.Helpers.Extensions;
+using Azuria.Requests.Builder;
 
 namespace Azuria.Api.v1.RequestBuilder
 {
@@ -44,10 +45,10 @@ namespace Azuria.Api.v1.RequestBuilder
         /// <returns>
         /// An instance of <see cref="ApiRequest" /> that returns an array of search results.
         /// </returns>
-        public IUrlBuilderWithResult<SearchDataModel[]> EntrySearch(
+        public IRequestBuilderWithResult<SearchDataModel[]> EntrySearch(
             SearchInput input, int limit = 100, int page = 0)
         {
-            return new UrlBuilder<SearchDataModel[]>(
+            return new RequestBuilder<SearchDataModel[]>(
                     new Uri($"{ApiConstants.ApiUrlV1}/list/entrysearch"), this._client
                 ).WithGetParameter("limit", limit.ToString())
                 .WithGetParameter("p", page.ToString())
@@ -67,10 +68,10 @@ namespace Azuria.Api.v1.RequestBuilder
         /// </param>
         /// <param name="page">Optional. The index of the page that will be loaded. Default: 0</param>
         /// <returns>An instance of <see cref="ApiRequest" /> that returns an array of search results.</returns>
-        public IUrlBuilderWithResult<SearchDataModel[]> GetEntryList(
+        public IRequestBuilderWithResult<SearchDataModel[]> GetEntryList(
             EntryListInput input, int limit = 100, int page = 0)
         {
-            return new UrlBuilder<SearchDataModel[]>(
+            return new RequestBuilder<SearchDataModel[]>(
                     new Uri($"{ApiConstants.ApiUrlV1}/list/entrylist"), this._client
                 ).WithGetParameter("limit", limit.ToString())
                 .WithGetParameter("p", page.ToString())
@@ -96,14 +97,14 @@ namespace Azuria.Api.v1.RequestBuilder
         /// <param name="limit"></param>
         /// <param name="page"></param>
         /// <returns>An instance of <see cref="ApiRequest" /> that returns</returns>
-        public IUrlBuilderWithResult<IndustryDataModel[]> GetIndustries(
+        public IRequestBuilderWithResult<IndustryDataModel[]> GetIndustries(
             string start = "", string contains = "", Country? country = null, IndustryType? type = null,
             int limit = 100, int page = 0)
         {
             if (country == Country.England)
                 throw new NotSupportedException("England is not supported in this request");
 
-            return new UrlBuilder<IndustryDataModel[]>(
+            return new RequestBuilder<IndustryDataModel[]>(
                     new Uri($"{ApiConstants.ApiUrlV1}/list/industrys"), this._client
                 ).WithGetParameter("start", start)
                 .WithGetParameter("contains", contains)
@@ -125,10 +126,10 @@ namespace Azuria.Api.v1.RequestBuilder
         /// <param name="p"></param>
         /// <param name="limit"></param>
         /// <returns>An instance of <see cref="ApiRequest" /> that returns</returns>
-        public IUrlBuilderWithResult<IndustryProjectDataModel[]> GetIndustryProjects(
+        public IRequestBuilderWithResult<IndustryProjectDataModel[]> GetIndustryProjects(
             int translatorId, IndustryType? type = null, bool? isH = false, int p = 0, int limit = 100)
         {
-            return new UrlBuilder<IndustryProjectDataModel[]>(
+            return new RequestBuilder<IndustryProjectDataModel[]>(
                     new Uri($"{ApiConstants.ApiUrlV1}/list/industryprojects"), this._client
                 ).WithGetParameter("id", translatorId.ToString())
                 .WithGetParameter("type", type?.ToTypeString() ?? string.Empty)
@@ -145,9 +146,9 @@ namespace Azuria.Api.v1.RequestBuilder
         /// </summary>
         /// <param name="search"></param>
         /// <returns>An instance of <see cref="ApiRequest" /> that returns</returns>
-        public IUrlBuilderWithResult<Tuple<int[], int[]>> GetTagIds(string search)
+        public IRequestBuilderWithResult<Tuple<int[], int[]>> GetTagIds(string search)
         {
-            return new UrlBuilder<Tuple<int[], int[]>>(
+            return new RequestBuilder<Tuple<int[], int[]>>(
                     new Uri($"{ApiConstants.ApiUrlV1}/list/tagids"), this._client
                 ).WithGetParameter("search", search)
                 .WithCustomDataConverter(new TagIdConverter());
@@ -165,11 +166,11 @@ namespace Azuria.Api.v1.RequestBuilder
         /// <param name="sortDirection"></param>
         /// <param name="subtype"></param>
         /// <returns></returns>
-        public IUrlBuilderWithResult<TagDataModel[]> GetTags(
+        public IRequestBuilderWithResult<TagDataModel[]> GetTags(
             string search = "", TagType? type = null, TagListSort sort = TagListSort.Tag,
             SortDirection sortDirection = SortDirection.Ascending, TagSubtype? subtype = null)
         {
-            return new UrlBuilder<TagDataModel[]>(
+            return new RequestBuilder<TagDataModel[]>(
                     new Uri($"{ApiConstants.ApiUrlV1}/list/tags"), this._client
                 ).WithGetParameter("search", search)
                 .WithGetParameter("type", type?.GetDescription() ?? string.Empty)
@@ -190,10 +191,10 @@ namespace Azuria.Api.v1.RequestBuilder
         /// <param name="limit"></param>
         /// <param name="page"></param>
         /// <returns>An instance of <see cref="ApiRequest" /> that returns</returns>
-        public IUrlBuilderWithResult<TranslatorDataModel[]> GetTranslatorgroups(
+        public IRequestBuilderWithResult<TranslatorDataModel[]> GetTranslatorgroups(
             string start = "", string contains = "", Country? country = null, int limit = 100, int page = 0)
         {
-            return new UrlBuilder<TranslatorDataModel[]>(
+            return new RequestBuilder<TranslatorDataModel[]>(
                     new Uri($"{ApiConstants.ApiUrlV1}/list/translatorgroups"), this._client
                 ).WithGetParameter("start", start)
                 .WithGetParameter("contains", contains)
@@ -214,10 +215,10 @@ namespace Azuria.Api.v1.RequestBuilder
         /// <param name="p"></param>
         /// <param name="limit"></param>
         /// <returns>An instance of <see cref="ApiRequest" /> that returns</returns>
-        public IUrlBuilderWithResult<TranslatorProjectDataModel[]> GetTranslatorProjects(
+        public IRequestBuilderWithResult<TranslatorProjectDataModel[]> GetTranslatorProjects(
             int translatorId, TranslationStatus? type = null, bool? isH = false, int p = 0, int limit = 100)
         {
-            return new UrlBuilder<TranslatorProjectDataModel[]>(
+            return new RequestBuilder<TranslatorProjectDataModel[]>(
                     new Uri($"{ApiConstants.ApiUrlV1}/list/translatorgroupprojects"), this._client
                 ).WithGetParameter("id", translatorId.ToString())
                 .WithGetParameter("type", type != null ? ((int) type.Value).ToString() : string.Empty)

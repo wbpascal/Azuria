@@ -2,6 +2,7 @@
 using Azuria.Api.Builder;
 using Azuria.Api.v1.DataModels.Anime;
 using Azuria.Enums.Info;
+using Azuria.Requests.Builder;
 
 namespace Azuria.Api.v1.RequestBuilder
 {
@@ -31,9 +32,9 @@ namespace Azuria.Api.v1.RequestBuilder
         /// </summary>
         /// <param name="id">The id of the stream.</param>
         /// <returns>An instance of <see cref="ApiRequest" /> that returns a link as a string.</returns>
-        public IUrlBuilderWithResult<string> GetLink(int id)
+        public IRequestBuilderWithResult<string> GetLink(int id)
         {
-            return new UrlBuilder<string>(new Uri($"{ApiConstants.ApiUrlV1}/anime/link"), this._client)
+            return new RequestBuilder<string>(new Uri($"{ApiConstants.ApiUrlV1}/anime/link"), this._client)
                 .WithGetParameter("id", id.ToString());
         }
 
@@ -47,10 +48,10 @@ namespace Azuria.Api.v1.RequestBuilder
         /// <param name="episode">The number of the episode.</param>
         /// <param name="language">The language of the episode.</param>
         /// <returns>An instance of <see cref="ApiRequest" /> that returns an array of streams.</returns>
-        public IUrlBuilderWithResult<StreamDataModel[]> GetProxerStreams(
+        public IRequestBuilderWithResult<StreamDataModel[]> GetProxerStreams(
             int id, int episode, AnimeLanguage language)
         {
-            return new UrlBuilder<StreamDataModel[]>(
+            return new RequestBuilder<StreamDataModel[]>(
                     new Uri($"{ApiConstants.ApiUrlV1}/anime/proxerstreams"), this._client)
                 .WithGetParameter("id", id.ToString())
                 .WithGetParameter("episode", episode.ToString())
@@ -67,9 +68,9 @@ namespace Azuria.Api.v1.RequestBuilder
         /// <param name="episode">The number of the episode.</param>
         /// <param name="language">The language of the episode.</param>
         /// <returns>An instance of <see cref="ApiRequest" /> that returns an array of streams.</returns>
-        public IUrlBuilderWithResult<StreamDataModel[]> GetStreams(int id, int episode, AnimeLanguage language)
+        public IRequestBuilderWithResult<StreamDataModel[]> GetStreams(int id, int episode, AnimeLanguage language)
         {
-            return new UrlBuilder<StreamDataModel[]>(
+            return new RequestBuilder<StreamDataModel[]>(
                     new Uri($"{ApiConstants.ApiUrlV1}/anime/streams"), this._client)
                 .WithGetParameter("id", id.ToString())
                 .WithGetParameter("episode", episode.ToString())

@@ -4,7 +4,7 @@ using Autofac;
 using Azuria.Authentication;
 using Newtonsoft.Json;
 
-namespace Azuria.Test.Core.Utility
+namespace Azuria.Test.Core.Helpers
 {
     public static class TestingExtensions
     {

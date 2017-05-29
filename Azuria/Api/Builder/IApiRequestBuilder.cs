@@ -1,4 +1,5 @@
 ﻿using System;
+using Azuria.Requests.Builder;
 
 namespace Azuria.Api.Builder
 {
@@ -23,7 +24,7 @@ namespace Azuria.Api.Builder
         /// </summary>
         /// <param name="baseUri"></param>
         /// <returns></returns>
-        IUrlBuilder FromUrl(Uri baseUri);
+        IRequestBuilder FromUrl(Uri baseUri);
 
         #endregion
     }

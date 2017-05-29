@@ -5,6 +5,7 @@ using Azuria.Api.v1.DataModels.User;
 using Azuria.Enums;
 using Azuria.Enums.User;
 using Azuria.Helpers.Extensions;
+using Azuria.Requests.Builder;
 
 namespace Azuria.Api.v1.RequestBuilder
 {
@@ -26,9 +27,9 @@ namespace Azuria.Api.v1.RequestBuilder
 
         #region Methods
 
-        private IUrlBuilderWithResult<HistoryDataModel[]> GetHistory(string page, string limit)
+        private IRequestBuilderWithResult<HistoryDataModel[]> GetHistory(string page, string limit)
         {
-            return new UrlBuilder<HistoryDataModel[]>(
+            return new RequestBuilder<HistoryDataModel[]>(
                     new Uri($"{ApiConstants.ApiUrlV1}/user/history"), this._client
                 ).WithGetParameter("p", page)
                 .WithGetParameter("limit", limit);
@@ -41,7 +42,7 @@ namespace Azuria.Api.v1.RequestBuilder
         /// <param name="page"></param>
         /// <param name="limit"></param>
         /// <returns></returns>
-        public IUrlBuilderWithResult<HistoryDataModel[]> GetHistory(
+        public IRequestBuilderWithResult<HistoryDataModel[]> GetHistory(
             string username, int page = 0, int limit = 100)
         {
             return this.GetHistory(page.ToString(), limit.ToString())
@@ -55,7 +56,7 @@ namespace Azuria.Api.v1.RequestBuilder
         /// <param name="page"></param>
         /// <param name="limit"></param>
         /// <returns></returns>
-        public IUrlBuilderWithResult<HistoryDataModel[]> GetHistory(
+        public IRequestBuilderWithResult<HistoryDataModel[]> GetHistory(
             int uid, int page = 0, int limit = 100)
         {
             return this.GetHistory(page.ToString(), limit.ToString())
@@ -69,9 +70,9 @@ namespace Azuria.Api.v1.RequestBuilder
         /// * User - Level 0
         /// </summary>
         /// <returns>An instance of <see cref="ApiRequest" /> that returns...</returns>
-        public IUrlBuilderWithResult<UserInfoDataModel> GetInfo()
+        public IRequestBuilderWithResult<UserInfoDataModel> GetInfo()
         {
-            return new UrlBuilder<UserInfoDataModel>(
+            return new RequestBuilder<UserInfoDataModel>(
                 new Uri($"{ApiConstants.ApiUrlV1}/user/userinfo"), this._client
             ).WithLoginCheck();
         }
@@ -84,7 +85,7 @@ namespace Azuria.Api.v1.RequestBuilder
         /// </summary>
         /// <param name="userId"></param>
         /// <returns>An instance of <see cref="ApiRequest" /> that returns...</returns>
-        public IUrlBuilderWithResult<UserInfoDataModel> GetInfo(int userId)
+        public IRequestBuilderWithResult<UserInfoDataModel> GetInfo(int userId)
         {
             return this.GetInfo()
                 .WithGetParameter("uid", userId.ToString())
@@ -99,17 +100,17 @@ namespace Azuria.Api.v1.RequestBuilder
         /// </summary>
         /// <param name="username"></param>
         /// <returns>An instance of <see cref="ApiRequest" /> that returns...</returns>
-        public IUrlBuilderWithResult<UserInfoDataModel> GetInfo(string username)
+        public IRequestBuilderWithResult<UserInfoDataModel> GetInfo(string username)
         {
             return this.GetInfo()
                 .WithGetParameter("username", username)
                 .WithLoginCheck(false);
         }
 
-        private IUrlBuilderWithResult<CommentDataModel[]> GetLatestComments(
+        private IRequestBuilderWithResult<CommentDataModel[]> GetLatestComments(
             int page = 0, int limit = 25, MediaEntryType category = MediaEntryType.Anime, int length = 300)
         {
-            return new UrlBuilder<CommentDataModel[]>(
+            return new RequestBuilder<CommentDataModel[]>(
                     new Uri($"{ApiConstants.ApiUrlV1}/user/comments"), this._client
                 ).WithGetParameter("p", page.ToString())
                 .WithGetParameter("limit", limit.ToString())
@@ -129,7 +130,7 @@ namespace Azuria.Api.v1.RequestBuilder
         /// <param name="category"></param>
         /// <param name="length"></param>
         /// <returns>An instance of <see cref="ApiRequest" /> that returns...</returns>
-        public IUrlBuilderWithResult<CommentDataModel[]> GetLatestComments(
+        public IRequestBuilderWithResult<CommentDataModel[]> GetLatestComments(
             int userId, int page = 0, int limit = 25, MediaEntryType category = MediaEntryType.Anime,
             int length = 300)
         {
@@ -149,7 +150,7 @@ namespace Azuria.Api.v1.RequestBuilder
         /// <param name="category"></param>
         /// <param name="length"></param>
         /// <returns>An instance of <see cref="ApiRequest" /> that returns...</returns>
-        public IUrlBuilderWithResult<CommentDataModel[]> GetLatestComments(
+        public IRequestBuilderWithResult<CommentDataModel[]> GetLatestComments(
             string username, int page = 0, int limit = 25, MediaEntryType category = MediaEntryType.Anime,
             int length = 300)
         {
@@ -157,12 +158,12 @@ namespace Azuria.Api.v1.RequestBuilder
                 .WithGetParameter("username", username);
         }
 
-        private IUrlBuilderWithResult<ListDataModel[]> GetList(
+        private IRequestBuilderWithResult<ListDataModel[]> GetList(
             MediaEntryType category = MediaEntryType.Anime, int page = 0, int limit = 100, string search = "",
             string searchStart = "", UserListSort sort = UserListSort.StateName,
             SortDirection sortDirection = SortDirection.Ascending)
         {
-            return new UrlBuilder<ListDataModel[]>(
+            return new RequestBuilder<ListDataModel[]>(
                     new Uri($"{ApiConstants.ApiUrlV1}/user/list"), this._client
                 ).WithGetParameter("kat", category.ToString().ToLowerInvariant())
                 .WithGetParameter("p", page.ToString())
@@ -187,7 +188,7 @@ namespace Azuria.Api.v1.RequestBuilder
         /// <param name="sort"></param>
         /// <param name="sortDirection"></param>
         /// <returns>An instance of <see cref="ApiRequest" /> that returns...</returns>
-        public IUrlBuilderWithResult<ListDataModel[]> GetList(
+        public IRequestBuilderWithResult<ListDataModel[]> GetList(
             int userId, MediaEntryType category = MediaEntryType.Anime, int page = 0, int limit = 100,
             string search = "", string searchStart = "", UserListSort sort = UserListSort.StateName,
             SortDirection sortDirection = SortDirection.Ascending)
@@ -211,7 +212,7 @@ namespace Azuria.Api.v1.RequestBuilder
         /// <param name="sort"></param>
         /// <param name="sortDirection"></param>
         /// <returns>An instance of <see cref="ApiRequest" /> that returns...</returns>
-        public IUrlBuilderWithResult<ListDataModel[]> GetList(
+        public IRequestBuilderWithResult<ListDataModel[]> GetList(
             string username, MediaEntryType category = MediaEntryType.Anime, int page = 0, int limit = 100,
             string search = "", string searchStart = "", UserListSort sort = UserListSort.StateName,
             SortDirection sortDirection = SortDirection.Ascending)
@@ -220,10 +221,10 @@ namespace Azuria.Api.v1.RequestBuilder
                 .WithGetParameter("username", username);
         }
 
-        private IUrlBuilderWithResult<ToptenDataModel[]> GetTopten(
+        private IRequestBuilderWithResult<ToptenDataModel[]> GetTopten(
             MediaEntryType category = MediaEntryType.Anime)
         {
-            return new UrlBuilder<ToptenDataModel[]>(
+            return new RequestBuilder<ToptenDataModel[]>(
                 new Uri($"{ApiConstants.ApiUrlV1}/user/topten"), this._client
             ).WithGetParameter("kat", category.ToString().ToLowerInvariant());
         }
@@ -237,7 +238,7 @@ namespace Azuria.Api.v1.RequestBuilder
         /// <param name="userId"></param>
         /// <param name="category"></param>
         /// <returns>An instance of <see cref="ApiRequest" /> that returns...</returns>
-        public IUrlBuilderWithResult<ToptenDataModel[]> GetTopten(
+        public IRequestBuilderWithResult<ToptenDataModel[]> GetTopten(
             int userId, MediaEntryType category = MediaEntryType.Anime)
         {
             return this.GetTopten(category)
@@ -253,7 +254,7 @@ namespace Azuria.Api.v1.RequestBuilder
         /// <param name="username"></param>
         /// <param name="category"></param>
         /// <returns>An instance of <see cref="ApiRequest" /> that returns...</returns>
-        public IUrlBuilderWithResult<ToptenDataModel[]> GetTopten(
+        public IRequestBuilderWithResult<ToptenDataModel[]> GetTopten(
             string username, MediaEntryType category = MediaEntryType.Anime)
         {
             return this.GetTopten(category)
@@ -269,9 +270,9 @@ namespace Azuria.Api.v1.RequestBuilder
         /// <param name="username"></param>
         /// <param name="password"></param>
         /// <returns>An instance of <see cref="ApiRequest" /> that returns...</returns>
-        public IUrlBuilderWithResult<LoginDataModel> Login(string username, string password)
+        public IRequestBuilderWithResult<LoginDataModel> Login(string username, string password)
         {
-            return new UrlBuilder<LoginDataModel>(
+            return new RequestBuilder<LoginDataModel>(
                     new Uri($"{ApiConstants.ApiUrlV1}/user/login"), this._client
                 ).WithPostParameter("username", username)
                 .WithPostParameter("password", password);
@@ -287,7 +288,7 @@ namespace Azuria.Api.v1.RequestBuilder
         /// <param name="password"></param>
         /// <param name="secretKey"></param>
         /// <returns>An instance of <see cref="ApiRequest" /> that returns...</returns>
-        public IUrlBuilderWithResult<LoginDataModel> Login(string username, string password, string secretKey)
+        public IRequestBuilderWithResult<LoginDataModel> Login(string username, string password, string secretKey)
         {
             return this.Login(username, password)
                 .WithPostParameter("secretKey", secretKey);
@@ -300,9 +301,9 @@ namespace Azuria.Api.v1.RequestBuilder
         /// * User - Level 0
         /// </summary>
         /// <returns>An instance of <see cref="ApiRequest" /> that returns...</returns>
-        public IUrlBuilder Logout()
+        public IRequestBuilder Logout()
         {
-            return new UrlBuilder(new Uri($"{ApiConstants.ApiUrlV1}/user/logout"), this._client);
+            return new Requests.Builder.RequestBuilder(new Uri($"{ApiConstants.ApiUrlV1}/user/logout"), this._client);
         }
 
         #endregion

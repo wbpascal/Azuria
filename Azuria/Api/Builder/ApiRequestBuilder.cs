@@ -1,4 +1,5 @@
 ﻿using System;
+using Azuria.Requests.Builder;
 
 namespace Azuria.Api.Builder
 {
@@ -26,9 +27,9 @@ namespace Azuria.Api.Builder
         #region Methods
 
         /// <inheritdoc />
-        public IUrlBuilder FromUrl(Uri baseUri)
+        public IRequestBuilder FromUrl(Uri baseUri)
         {
-            return new UrlBuilder(baseUri, this.ProxerClient);
+            return new RequestBuilder(baseUri, this.ProxerClient);
         }
 
         #endregion

@@ -3,6 +3,7 @@ using Azuria.Api.Builder;
 using Azuria.Api.v1.DataModels.Manga;
 using Azuria.Enums.Info;
 using Azuria.Helpers.Extensions;
+using Azuria.Requests.Builder;
 
 namespace Azuria.Api.v1.RequestBuilder
 {
@@ -34,9 +35,9 @@ namespace Azuria.Api.v1.RequestBuilder
         /// <param name="episode">The number of the chapter.</param>
         /// <param name="language">The language of the chapter.</param>
         /// <returns>An instance of <see cref="ApiRequest" /> that returns the chapter.</returns>
-        public IUrlBuilderWithResult<ChapterDataModel> GetChapter(int id, int episode, Language language)
+        public IRequestBuilderWithResult<ChapterDataModel> GetChapter(int id, int episode, Language language)
         {
-            return new UrlBuilder<ChapterDataModel>(
+            return new RequestBuilder<ChapterDataModel>(
                     new Uri($"{ApiConstants.ApiUrlV1}/manga/chapter"), this._client
                 ).WithGetParameter("id", id.ToString())
                 .WithGetParameter("episode", episode.ToString())

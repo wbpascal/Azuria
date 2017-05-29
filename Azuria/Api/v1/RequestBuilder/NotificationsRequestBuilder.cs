@@ -2,6 +2,7 @@
 using Azuria.Api.Builder;
 using Azuria.Api.v1.Converters.Notifications;
 using Azuria.Api.v1.DataModels.Notifications;
+using Azuria.Requests.Builder;
 
 namespace Azuria.Api.v1.RequestBuilder
 {
@@ -34,9 +35,9 @@ namespace Azuria.Api.v1.RequestBuilder
         /// are marked as read, will be deleted. Default: 0
         /// </param>
         /// <returns>An instance of <see cref="ApiRequest" />.</returns>
-        public IUrlBuilder Delete(int nid = 0)
+        public IRequestBuilder Delete(int nid = 0)
         {
-            return new UrlBuilder(new Uri($"{ApiConstants.ApiUrlV1}/notifications/delete"), this._client)
+            return new Requests.Builder.RequestBuilder(new Uri($"{ApiConstants.ApiUrlV1}/notifications/delete"), this._client)
                 .WithPostParameter("nid", nid.ToString())
                 .WithLoginCheck();
         }
@@ -48,9 +49,9 @@ namespace Azuria.Api.v1.RequestBuilder
         /// * Notifications - Level 0
         /// </summary>
         /// <returns>An instance of <see cref="ApiRequest" /> that returns the number of notifications.</returns>
-        public IUrlBuilderWithResult<NotificationCountDataModel> GetCount()
+        public IRequestBuilderWithResult<NotificationCountDataModel> GetCount()
         {
-            return new UrlBuilder<NotificationCountDataModel>(
+            return new RequestBuilder<NotificationCountDataModel>(
                     new Uri($"{ApiConstants.ApiUrlV1}/notifications/count"), this._client
                 ).WithCustomDataConverter(new NotificationCountConverter())
                 .WithLoginCheck();
@@ -65,9 +66,9 @@ namespace Azuria.Api.v1.RequestBuilder
         /// <param name="limit">Optional. The amount of news that will be returned per page. Default: 15</param>
         /// <param name="page">Optional. The index of the page that will be loaded. Default: 0</param>
         /// <returns>An instance of <see cref="ApiRequest" /> that returns an array of news.</returns>
-        public IUrlBuilderWithResult<NewsNotificationDataModel[]> GetNews(int page = 0, int limit = 15)
+        public IRequestBuilderWithResult<NewsNotificationDataModel[]> GetNews(int page = 0, int limit = 15)
         {
-            return new UrlBuilder<NewsNotificationDataModel[]>(
+            return new RequestBuilder<NewsNotificationDataModel[]>(
                     new Uri($"{ApiConstants.ApiUrlV1}/notifications/news"), this._client
                 ).WithGetParameter("p", page.ToString())
                 .WithGetParameter("limit", limit.ToString());
