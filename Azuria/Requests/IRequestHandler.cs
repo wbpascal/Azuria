@@ -18,7 +18,7 @@ namespace Azuria.Requests
         /// <param name="token"></param>
         /// <typeparam name="T"></typeparam>
         /// <returns></returns>
-        Task<IProxerResult<T>> ApiRequestAsync<T>(IRequestBuilderWithResult<T> request, CancellationToken token);
+        Task<IProxerResult<T>> MakeRequestAsync<T>(IRequestBuilderWithResult<T> request, CancellationToken token);
 
         /// <summary>
         /// 
@@ -26,6 +26,6 @@ namespace Azuria.Requests
         /// <param name="request"></param>
         /// <param name="token"></param>
         /// <returns></returns>
-        Task<IProxerResult> ApiRequestAsync(IRequestBuilder request, CancellationToken token);
+        Task<IProxerResult> MakeRequestAsync(IRequestBuilder request, CancellationToken token);
     }
 }

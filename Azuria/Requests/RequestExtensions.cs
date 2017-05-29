@@ -45,7 +45,7 @@ namespace Azuria.Requests
         public static Task<IProxerResult> DoRequestAsync(
             this IRequestBuilder builder, CancellationToken token = new CancellationToken())
         {
-            return builder.Client.Container.Resolve<IRequestHandler>().ApiRequestAsync(builder, token);
+            return builder.Client.Container.Resolve<IRequestHandler>().MakeRequestAsync(builder, token);
         }
 
         /// <summary>
@@ -58,7 +58,7 @@ namespace Azuria.Requests
         public static Task<IProxerResult<T>> DoRequestAsync<T>(
             this IRequestBuilderWithResult<T> builder, CancellationToken token = new CancellationToken())
         {
-            return builder.Client.Container.Resolve<IRequestHandler>().ApiRequestAsync(builder, token);
+            return builder.Client.Container.Resolve<IRequestHandler>().MakeRequestAsync(builder, token);
         }
     }
 }
