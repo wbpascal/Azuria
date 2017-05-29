@@ -1,12 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Azuria.Api.Builder;
 using Azuria.Requests;
 using Azuria.Requests.Builder;
 using Xunit;
 
-namespace Azuria.Test
+namespace Azuria.Test.Requests
 {
     //TODO: Complete tests
     public class RequestBuilderTest

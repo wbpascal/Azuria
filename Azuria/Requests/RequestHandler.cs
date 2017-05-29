@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Runtime.Serialization;
 using System.Threading;
 using System.Threading.Tasks;
 using Autofac;
@@ -97,7 +99,11 @@ namespace Azuria.Requests
                     )
                     .ConfigureAwait(false);
             if (!lResult.Success || string.IsNullOrEmpty(lResult.Result))
-                return new ProxerResult(lResult.Exceptions);
+                return new ProxerResult(
+                    lResult.Exceptions.Any()
+                        ? lResult.Exceptions
+                        : new[] {new SerializationException("Cannot serialize empty response!")}
+                );
 
             IProxerResult<T> lSerializationResult = await this._jsonDeserializer
                                                         .Deserialize<T>(lResult.Result, settings, token)

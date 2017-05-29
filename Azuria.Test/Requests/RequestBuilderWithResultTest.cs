@@ -1,4 +1,4 @@
-﻿namespace Azuria.Test
+﻿namespace Azuria.Test.Requests
 {
     //TODO: Complete tests
     public class RequestBuilderWithResultTest
