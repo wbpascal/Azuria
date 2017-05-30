@@ -8,8 +8,6 @@ namespace Azuria.Api.v1.DataModels.Info
     /// </summary>
     public class FullEntryDataModel : EntryDataModel
     {
-        #region Properties
-
         /// <summary>
         /// </summary>
         [JsonProperty("lang")]
@@ -45,7 +43,5 @@ namespace Azuria.Api.v1.DataModels.Info
         /// </summary>
         [JsonProperty("groups")]
         public TranslatorDataModel[] Translator { get; set; }
-
-        #endregion
     }
 }

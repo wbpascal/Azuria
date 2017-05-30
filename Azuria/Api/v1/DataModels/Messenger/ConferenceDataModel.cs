@@ -9,8 +9,6 @@ namespace Azuria.Api.v1.DataModels.Messenger
     /// </summary>
     public class ConferenceDataModel : IDataModel
     {
-        #region Properties
-
         /// <summary>
         /// </summary>
         [JsonProperty("id")]
@@ -62,7 +60,5 @@ namespace Azuria.Api.v1.DataModels.Messenger
         /// </summary>
         [JsonProperty("read_count")]
         public int UnreadMessagesCount { get; set; }
-
-        #endregion
     }
 }

@@ -7,8 +7,6 @@ namespace Azuria.Api.v1.DataModels.Info
     /// </summary>
     public class SeasonDataModel : IDataModel
     {
-        #region Properties
-
         /// <summary>
         /// </summary>
         [JsonProperty("id")]
@@ -23,10 +21,6 @@ namespace Azuria.Api.v1.DataModels.Info
         /// </summary>
         [JsonProperty("year")]
         public int Year { get; set; }
-
-        #endregion
-
-        #region Methods
 
         /// <inheritdoc />
         public bool Equals(SeasonDataModel other)
@@ -45,7 +39,5 @@ namespace Azuria.Api.v1.DataModels.Info
                 return hashCode;
             }
         }
-
-        #endregion
     }
 }

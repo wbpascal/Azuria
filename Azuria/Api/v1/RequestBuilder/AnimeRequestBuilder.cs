@@ -22,8 +22,6 @@ namespace Azuria.Api.v1.RequestBuilder
             this._client = client;
         }
 
-        #region Methods
-
         /// <summary>
         /// Builds a request that returns the link of a specified stream.
         /// 
@@ -76,7 +74,5 @@ namespace Azuria.Api.v1.RequestBuilder
                 .WithGetParameter("episode", episode.ToString())
                 .WithGetParameter("language", language.ToString().ToLowerInvariant());
         }
-
-        #endregion
     }
 }

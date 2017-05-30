@@ -5,8 +5,6 @@ namespace Azuria.Api.v1.Converters.Messenger
 {
     internal class ImageConverter : DataConverter<Uri>
     {
-        #region Methods
-
         /// <inheritdoc />
         public override Uri ConvertJson(
             JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
@@ -16,7 +14,5 @@ namespace Azuria.Api.v1.Converters.Messenger
                        ? new Uri($"{ApiConstants.ProxerAvatarCdnUrl}/{lValue.Split(':')[1]}")
                        : null;
         }
-
-        #endregion
     }
 }

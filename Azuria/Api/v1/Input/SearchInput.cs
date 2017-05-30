@@ -8,8 +8,6 @@ namespace Azuria.Api.v1.Input
     /// </summary>
     public class SearchInput
     {
-        #region Properties
-
         /// <summary>
         /// </summary>
         public bool? FilterSpoilerTags { get; set; } = true;
@@ -61,7 +59,5 @@ namespace Azuria.Api.v1.Input
         /// <summary>
         /// </summary>
         public SearchMediaType Type { get; set; } = SearchMediaType.All;
-
-        #endregion
     }
 }

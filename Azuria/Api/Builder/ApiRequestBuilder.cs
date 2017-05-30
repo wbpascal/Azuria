@@ -17,21 +17,13 @@ namespace Azuria.Api.Builder
             this.ProxerClient = client;
         }
 
-        #region Properties
-
         /// <inheritdoc />
         public IProxerClient ProxerClient { get; }
-
-        #endregion
-
-        #region Methods
 
         /// <inheritdoc />
         public IRequestBuilder FromUrl(Uri baseUri)
         {
             return new RequestBuilder(baseUri, this.ProxerClient);
         }
-
-        #endregion
     }
 }

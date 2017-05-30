@@ -11,8 +11,6 @@ namespace Azuria.Requests.Http
     /// </summary>
     public interface IHttpClient : IDisposable
     {
-        #region Methods
-
         /// <summary>
         /// Creates a "GET" request to a given url with optional header.
         /// </summary>
@@ -34,7 +32,5 @@ namespace Azuria.Requests.Http
         Task<IProxerResult<string>> PostRequestAsync(
             Uri url, IEnumerable<KeyValuePair<string, string>> postArgs,
             Dictionary<string, string> header = null, CancellationToken token = default(CancellationToken));
-
-        #endregion
     }
 }

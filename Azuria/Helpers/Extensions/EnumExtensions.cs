@@ -9,8 +9,6 @@ namespace Azuria.Helpers.Extensions
 {
     internal static class EnumExtensions
     {
-        #region Methods
-
         internal static string GetDescription<T>(this T enumValue) where T : struct
         {
             Type lType = enumValue.GetType();
@@ -111,7 +109,5 @@ namespace Azuria.Helpers.Extensions
                     return language.ToString().ToLowerInvariant();
             }
         }
-
-        #endregion
     }
 }

@@ -12,8 +12,6 @@ namespace Azuria.Api.v1.DataModels.User
     /// </summary>
     public class ListDataModel : IEntryInfoDataModel
     {
-        #region Properties
-
         /// <summary>
         /// </summary>
         [JsonProperty("comment")]
@@ -76,7 +74,5 @@ namespace Azuria.Api.v1.DataModels.User
         /// </summary>
         [JsonProperty("rating")]
         public int Rating { get; set; }
-
-        #endregion
     }
 }

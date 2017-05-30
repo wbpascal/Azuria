@@ -8,8 +8,6 @@ namespace Azuria.Api.v1.Converters.Info
 {
     internal class StreamHosterConverter : DataConverter<StreamHoster[]>
     {
-        #region Methods
-
         /// <inheritdoc />
         public override StreamHoster[] ConvertJson(
             JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
@@ -20,7 +18,5 @@ namespace Azuria.Api.v1.Converters.Info
                 .Where(hoster => hoster != StreamHoster.None)
                 .ToArray();
         }
-
-        #endregion
     }
 }

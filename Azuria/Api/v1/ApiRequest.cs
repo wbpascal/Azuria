@@ -16,15 +16,9 @@ namespace Azuria.Api.v1
         {
         }
 
-        #region Properties
-
         /// <summary>
         /// </summary>
         public DataConverter<T> CustomDataConverter { get; set; }
-
-        #endregion
-
-        #region Methods
 
         /// <inheritdoc />
         public new static ApiRequest<T> Create(Uri baseAddress)
@@ -85,8 +79,6 @@ namespace Azuria.Api.v1
             base.WithPostParameters(postArgs);
             return this;
         }
-
-        #endregion
     }
 
     /// <summary>
@@ -102,8 +94,6 @@ namespace Azuria.Api.v1
         {
             this.BaseAddress = baseAddress;
         }
-
-        #region Properties
 
         /// <summary>
         /// </summary>
@@ -128,10 +118,6 @@ namespace Azuria.Api.v1
             get => this._postArguments;
             set => this._postArguments = value.ToList();
         }
-
-        #endregion
-
-        #region Methods
 
         private Uri BuildAddress()
         {
@@ -202,7 +188,5 @@ namespace Azuria.Api.v1
             this._postArguments.AddRange(postArgs);
             return this;
         }
-
-        #endregion
     }
 }

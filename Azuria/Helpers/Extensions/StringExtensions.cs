@@ -5,8 +5,6 @@ namespace Azuria.Helpers.Extensions
 {
     internal static class StringExtensions
     {
-        #region Methods
-
         internal static string RemoveIfNotEmpty(this string source, int startIndex, int count)
         {
             return string.IsNullOrEmpty(source) ? source : source.Remove(startIndex, count);
@@ -16,7 +14,5 @@ namespace Azuria.Helpers.Extensions
         {
             return DateTime.ParseExact(stringToFormat, format, CultureInfo.InvariantCulture);
         }
-
-        #endregion
     }
 }

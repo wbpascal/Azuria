@@ -27,16 +27,10 @@ namespace Azuria.ErrorHandling
         {
         }
 
-        #region Properties
-
         /// <inheritdoc />
         [JsonProperty("data")]
         public T Result { get; internal set; }
-
-        #endregion
-
-        #region Methods
-
+        
         /// <inheritdoc />
         public void Deconstruct(out bool sucess, out IEnumerable<Exception> exceptions, out T result)
         {
@@ -44,8 +38,6 @@ namespace Azuria.ErrorHandling
             exceptions = this.Exceptions;
             result = this.Result;
         }
-
-        #endregion
     }
 
     /// <summary>
@@ -75,9 +67,7 @@ namespace Azuria.ErrorHandling
         internal ProxerApiResponse(Exception exception) : this(new[] {exception})
         {
         }
-
-        #region Properties
-
+        
         [JsonProperty("code")]
         internal ErrorCode ErrorCode { get; set; } = ErrorCode.NoError;
 
@@ -88,7 +78,5 @@ namespace Azuria.ErrorHandling
         [JsonProperty("error", Required = Required.Always)]
         [JsonConverter(typeof(InvertBoolConverter))]
         public new bool Success { get; set; }
-
-        #endregion
     }
 }

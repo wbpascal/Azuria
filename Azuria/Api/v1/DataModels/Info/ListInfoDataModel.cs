@@ -8,8 +8,6 @@ namespace Azuria.Api.v1.DataModels.Info
     /// </summary>
     public class ListInfoDataModel : IDataModel
     {
-        #region Properties
-
         /// <summary>
         /// </summary>
         [JsonProperty("kat")]
@@ -30,7 +28,5 @@ namespace Azuria.Api.v1.DataModels.Info
         /// </summary>
         [JsonProperty("start")]
         public int StartIndex { get; set; }
-
-        #endregion
     }
 }

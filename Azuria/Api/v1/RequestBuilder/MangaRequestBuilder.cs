@@ -23,8 +23,6 @@ namespace Azuria.Api.v1.RequestBuilder
             this._client = client;
         }
 
-        #region Methods
-
         /// <summary>
         /// Builds a request that returns information about a chapter including the pages.
         /// 
@@ -43,7 +41,5 @@ namespace Azuria.Api.v1.RequestBuilder
                 .WithGetParameter("episode", episode.ToString())
                 .WithGetParameter("language", language.ToShortString());
         }
-
-        #endregion
     }
 }

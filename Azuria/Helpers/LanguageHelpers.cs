@@ -4,8 +4,6 @@ namespace Azuria.Helpers
 {
     internal static class LanguageHelpers
     {
-        #region Methods
-
         internal static MediaLanguage GetMediaLanguage(string lang)
         {
             switch (lang)
@@ -26,7 +24,5 @@ namespace Azuria.Helpers
                     return MediaLanguage.Unkown;
             }
         }
-
-        #endregion
     }
 }

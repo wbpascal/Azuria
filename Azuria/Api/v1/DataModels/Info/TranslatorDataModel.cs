@@ -9,8 +9,6 @@ namespace Azuria.Api.v1.DataModels.Info
     /// </summary>
     public class TranslatorDataModel : IDataModel
     {
-        #region Properties
-
         /// <summary>
         /// 
         /// </summary>
@@ -56,7 +54,5 @@ namespace Azuria.Api.v1.DataModels.Info
         /// </summary>
         [JsonProperty("name")]
         public string Name { get; set; }
-
-        #endregion
     }
 }

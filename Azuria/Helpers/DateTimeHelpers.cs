@@ -4,8 +4,6 @@ namespace Azuria.Helpers
 {
     internal static class DateTimeHelpers
     {
-        #region Methods
-
         internal static DateTime UnixTimeStampToDateTime(long unixTimeStamp)
         {
             if (unixTimeStamp < 0) return DateTime.MinValue;
@@ -13,7 +11,5 @@ namespace Azuria.Helpers
             dtDateTime = dtDateTime.AddSeconds(unixTimeStamp).ToLocalTime();
             return dtDateTime;
         }
-
-        #endregion
     }
 }

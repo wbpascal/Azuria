@@ -7,13 +7,10 @@ using Azuria.Enums.List;
 namespace Azuria.Helpers.Extensions
 {
     /// <summary>
-    /// TODO: Doing this with extension methods is probably not needed. Maybe change it later and merge it with the input
-    /// classes?
+    /// TODO: Doing this with extension methods is probably not needed. Maybe change it later and merge it with the input classes?
     /// </summary>
     internal static class InputExtensions
     {
-        #region Methods
-
         internal static Dictionary<string, string> Build(this SearchInput input)
         {
             if (input == null) return new Dictionary<string, string>();
@@ -83,7 +80,5 @@ namespace Azuria.Helpers.Extensions
                     return type.ToString().ToLowerInvariant();
             }
         }
-
-        #endregion
     }
 }

@@ -9,8 +9,6 @@ namespace Azuria.Helpers.Extensions
     /// </summary>
     public static class ProxerResultExtensions
     {
-        #region Methods
-
         /// <summary>
         /// </summary>
         /// <param name="result"></param>
@@ -61,7 +59,5 @@ namespace Azuria.Helpers.Extensions
             if (!lResult.Success)
                 throw lResult.Exceptions.Any() ? lResult.Exceptions.First() : new Exception();
         }
-
-        #endregion
     }
 }

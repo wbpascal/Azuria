@@ -13,17 +13,11 @@ namespace Azuria
             this.ApiKey = apiKey;
         }
 
-        #region Properties
-
         /// <inheritdoc />
         public char[] ApiKey { get; }
 
         /// <inheritdoc />
         public IContainer Container { get; private set; }
-
-        #endregion
-
-        #region Methods
 
         /// <summary>
         /// Creates a new client with the specified api key and additional options.
@@ -45,7 +39,5 @@ namespace Azuria
             options.ContainerBuilder.RegisterInstance(this).As<IProxerClient>();
             this.Container = options.ContainerBuilder.Build();
         }
-
-        #endregion
     }
 }

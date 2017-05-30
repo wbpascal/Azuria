@@ -8,8 +8,6 @@ namespace Azuria.Api.v1.Converters.List
 {
     internal class TagTypeConverter : DataConverter<TagType>
     {
-        #region Methods
-
         public override TagType ConvertJson(
             JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
         {
@@ -17,7 +15,5 @@ namespace Azuria.Api.v1.Converters.List
             Dictionary<string, TagType> lStringDictionary = EnumHelpers.GetDescriptionDictionary<TagType>();
             return lStringDictionary.ContainsKey(lTagType) ? lStringDictionary[lTagType] : TagType.Unkown;
         }
-
-        #endregion
     }
 }

@@ -9,8 +9,6 @@ namespace Azuria.Api.v1.DataModels.List
     /// </summary>
     public class TagDataModel : IDataModel
     {
-        #region Properties
-
         /// <summary>
         /// 
         /// </summary>
@@ -40,7 +38,5 @@ namespace Azuria.Api.v1.DataModels.List
         /// </summary>
         [JsonProperty("type", ItemConverterType = typeof(TagTypeConverter))]
         public TagType TagType { get; set; }
-
-        #endregion
     }
 }

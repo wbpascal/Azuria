@@ -9,8 +9,6 @@ namespace Azuria.Api.v1
     /// </summary>
     public static class ApiClassBuilderExtensions
     {
-        #region Methods
-
         /// <summary>
         ///
         /// </summary>
@@ -100,7 +98,5 @@ namespace Azuria.Api.v1
         {
             return builder.ProxerClient.Container.Resolve<UserRequestBuilder>();
         }
-
-        #endregion
     }
 }

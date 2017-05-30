@@ -43,8 +43,6 @@ namespace Azuria.Requests.Http
                 $"{UserAgent} {userAgentExtra}".TrimEnd());
         }
 
-        #region Methods
-
         /// <inheritdoc />
         public virtual void Dispose()
         {
@@ -141,7 +139,5 @@ namespace Azuria.Requests.Http
             return await this._client.PostAsync(url, new FormUrlEncodedContent(postArgs), token)
                        .ConfigureAwait(false);
         }
-
-        #endregion
     }
 }

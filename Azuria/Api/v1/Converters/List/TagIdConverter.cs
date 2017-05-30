@@ -7,8 +7,6 @@ namespace Azuria.Api.v1.Converters.List
 {
     internal class TagIdConverter : DataConverter<Tuple<int[], int[]>>
     {
-        #region Methods
-
         public override Tuple<int[], int[]> ConvertJson(
             JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
         {
@@ -35,7 +33,5 @@ namespace Azuria.Api.v1.Converters.List
                     yield return Convert.ToInt32(reader.Value);
             }
         }
-
-        #endregion
     }
 }

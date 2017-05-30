@@ -7,8 +7,6 @@ namespace Azuria.Api.v1.Converters.Manga
 {
     internal class PagesConverter : DataConverter<PageDataModel[]>
     {
-        #region Methods
-
         /// <inheritdoc />
         public override PageDataModel[] ConvertJson(
             JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
@@ -35,7 +33,5 @@ namespace Azuria.Api.v1.Converters.Manga
 
             return lPageDataModels.ToArray();
         }
-
-        #endregion
     }
 }

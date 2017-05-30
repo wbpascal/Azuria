@@ -5,8 +5,6 @@ namespace Azuria.Helpers
 {
     internal static class StreamHosterHelpers
     {
-        #region Methods
-
         public static StreamHoster GetFromString(string hosterString)
         {
             switch (hosterString.ToLowerInvariant())
@@ -26,7 +24,5 @@ namespace Azuria.Helpers
                     return (StreamHoster) Enum.Parse(typeof(StreamHoster), hosterString, true);
             }
         }
-
-        #endregion
     }
 }

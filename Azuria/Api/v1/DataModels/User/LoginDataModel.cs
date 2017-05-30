@@ -6,8 +6,6 @@ namespace Azuria.Api.v1.DataModels.User
     /// </summary>
     public class LoginDataModel : IDataModel
     {
-        #region Properties
-
         /// <summary>
         /// </summary>
         [JsonProperty("avatar")]
@@ -22,7 +20,5 @@ namespace Azuria.Api.v1.DataModels.User
         /// </summary>
         [JsonProperty("uid")]
         public int UserId { get; set; }
-
-        #endregion
     }
 }

@@ -10,8 +10,6 @@ namespace Azuria.Api.v1.DataModels.List
     /// </summary>
     public class IndustryProjectDataModel : IEntryInfoDataModel
     {
-        #region Properties
-
         /// <summary>
         /// 
         /// </summary>
@@ -62,7 +60,5 @@ namespace Azuria.Api.v1.DataModels.List
         [JsonProperty("type")]
         [JsonConverter(typeof(IndustryTypeConverter))]
         public IndustryType IndustryType { get; set; }
-
-        #endregion
     }
 }

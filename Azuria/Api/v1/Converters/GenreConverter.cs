@@ -9,8 +9,6 @@ namespace Azuria.Api.v1.Converters
 {
     internal class GenreConverter : DataConverter<Genre[]>
     {
-        #region Methods
-
         /// <inheritdoc />
         public override Genre[] ConvertJson(
             JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
@@ -24,7 +22,5 @@ namespace Azuria.Api.v1.Converters
                 .Select(genre => lStringDictionary[genre])
                 .ToArray();
         }
-
-        #endregion
     }
 }

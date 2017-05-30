@@ -5,8 +5,6 @@ namespace Azuria.Api.v1.Converters.Info
 {
     internal class IsLicensedConverter : DataConverter<bool?>
     {
-        #region Methods
-
         /// <inheritdoc />
         public override bool? ConvertJson(
             JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
@@ -21,7 +19,5 @@ namespace Azuria.Api.v1.Converters.Info
                     return null;
             }
         }
-
-        #endregion
     }
 }

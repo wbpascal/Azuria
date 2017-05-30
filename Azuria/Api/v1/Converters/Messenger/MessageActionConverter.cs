@@ -6,8 +6,6 @@ namespace Azuria.Api.v1.Converters.Messenger
 {
     internal class MessageActionConverter : DataConverter<MessageAction>
     {
-        #region Methods
-
         /// <inheritdoc />
         public override MessageAction ConvertJson(
             JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
@@ -26,7 +24,5 @@ namespace Azuria.Api.v1.Converters.Messenger
                     return MessageAction.NoAction;
             }
         }
-
-        #endregion
     }
 }

@@ -10,8 +10,6 @@ namespace Azuria.Api.v1.DataModels.User
     /// </summary>
     public class HistoryDataModel : IEntryInfoDataModel
     {
-        #region Properties
-
         /// <summary>
         /// 
         /// </summary>
@@ -39,7 +37,5 @@ namespace Azuria.Api.v1.DataModels.User
         /// </summary>
         [JsonProperty("language", ItemConverterType = typeof(LanguageConverter))]
         public MediaLanguage Language { get; set; }
-
-        #endregion
     }
 }

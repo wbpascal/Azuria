@@ -25,8 +25,6 @@ namespace Azuria.Api.v1.RequestBuilder
             this._client = client;
         }
 
-        #region Methods
-
         /// <summary>
         /// Builds a request that returns informations about a specified conference.
         /// Requires authentication.
@@ -299,7 +297,5 @@ namespace Azuria.Api.v1.RequestBuilder
                 .WithGetParameter("conference_id", conferenceId.ToString())
                 .WithLoginCheck();
         }
-
-        #endregion
     }
 }

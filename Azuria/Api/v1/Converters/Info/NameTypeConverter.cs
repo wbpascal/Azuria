@@ -6,8 +6,6 @@ namespace Azuria.Api.v1.Converters.Info
 {
     internal class NameTypeConverter : DataConverter<MediaNameType>
     {
-        #region Methods
-
         /// <inheritdoc />
         public override MediaNameType ConvertJson(
             JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
@@ -28,7 +26,5 @@ namespace Azuria.Api.v1.Converters.Info
                     throw new InvalidOperationException();
             }
         }
-
-        #endregion
     }
 }

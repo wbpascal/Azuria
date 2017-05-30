@@ -9,16 +9,10 @@ namespace Azuria.Requests.Builder
     /// <typeparam name="T"></typeparam>
     public interface IRequestBuilderWithResult<T> : IRequestBuilderBase
     {
-        #region Properties
-
         /// <summary>
         /// 
         /// </summary>
         DataConverter<T> CustomDataConverter { get; }
-
-        #endregion
-
-        #region Methods
 
         /// <summary>
         /// 
@@ -62,7 +56,5 @@ namespace Azuria.Requests.Builder
         /// <param name="args"></param>
         /// <returns></returns>
         IRequestBuilderWithResult<T> WithPostParameter(IEnumerable<KeyValuePair<string, string>> args);
-
-        #endregion
     }
 }

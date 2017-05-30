@@ -8,8 +8,6 @@ namespace Azuria.Api.v1.DataModels.Info
     /// </summary>
     public class NameDataModel : IDataModel
     {
-        #region Properties
-
         /// <summary>
         /// </summary>
         [JsonProperty("name")]
@@ -20,7 +18,5 @@ namespace Azuria.Api.v1.DataModels.Info
         [JsonProperty("type")]
         [JsonConverter(typeof(NameTypeConverter))]
         public MediaNameType Type { get; set; }
-
-        #endregion
     }
 }

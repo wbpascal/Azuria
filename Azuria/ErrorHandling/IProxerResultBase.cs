@@ -8,8 +8,6 @@ namespace Azuria.ErrorHandling
     /// </summary>
     public interface IProxerResultBase
     {
-        #region Properties
-
         /// <summary>
         /// Gets the enumeration of exceptions that were thrown during method execution.
         /// </summary>
@@ -19,7 +17,5 @@ namespace Azuria.ErrorHandling
         /// Gets a value indicating, whether or not the method executed successfully.
         /// </summary>
         bool Success { get; }
-
-        #endregion
     }
 }

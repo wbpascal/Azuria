@@ -8,8 +8,6 @@ namespace Azuria.Helpers
 {
     internal static class EnumHelpers
     {
-        #region Methods
-
         internal static Dictionary<string, T> GetDescriptionDictionary<T>() where T : struct
         {
             Type lType = typeof(T);
@@ -17,7 +15,5 @@ namespace Azuria.Helpers
                 throw new ArgumentException("The type parameter must be an enum", nameof(T));
             return Enum.GetValues(lType).Cast<T>().ToDictionary(arg => arg.GetDescription(), arg => arg);
         }
-
-        #endregion
     }
 }

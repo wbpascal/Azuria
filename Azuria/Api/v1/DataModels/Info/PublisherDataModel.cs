@@ -8,8 +8,6 @@ namespace Azuria.Api.v1.DataModels.Info
     /// </summary>
     public class PublisherDataModel : IDataModel
     {
-        #region Properties
-
         /// <summary>
         /// </summary>
         [JsonProperty("country")]
@@ -31,7 +29,5 @@ namespace Azuria.Api.v1.DataModels.Info
         [JsonProperty("type")]
         [JsonConverter(typeof(IndustryTypeConverter))]
         public IndustryType Type { get; set; }
-
-        #endregion
     }
 }

@@ -10,8 +10,6 @@ namespace Azuria.Authentication
     /// </summary>
     public static class AuthenticationExtensions
     {
-        #region Methods
-
         /// <summary>
         /// Authenticates a <see cref="IProxerClient">client</see> with a username, password and an optional 2FA-Token.
         /// </summary>
@@ -39,7 +37,5 @@ namespace Azuria.Authentication
         {
             return client.Container.Resolve<ILoginManager>().PerformLogout(token);
         }
-
-        #endregion
     }
 }

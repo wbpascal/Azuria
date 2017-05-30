@@ -41,14 +41,8 @@ namespace Azuria.ErrorHandling
         {
         }
 
-        #region Properties
-
         /// <inheritdoc />
         public T Result { get; set; }
-
-        #endregion
-
-        #region Methods
 
         /// <inheritdoc />
         public void Deconstruct(out bool sucess, out IEnumerable<Exception> exceptions, out T result)
@@ -57,8 +51,6 @@ namespace Azuria.ErrorHandling
             exceptions = this.Exceptions;
             result = this.Result;
         }
-
-        #endregion
     }
 
     /// <summary>
@@ -93,15 +85,11 @@ namespace Azuria.ErrorHandling
         {
         }
 
-        #region Methods
-
         /// <inheritdoc />
         public void Deconstruct(out bool sucess, out IEnumerable<Exception> exceptions)
         {
             sucess = this.Success;
             exceptions = this.Exceptions;
         }
-
-        #endregion
     }
 }

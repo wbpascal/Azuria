@@ -23,8 +23,6 @@ namespace Azuria.Api.v1.RequestBuilder
             this._client = client;
         }
 
-        #region Methods
-
         /// <summary>
         /// Builds a request that returns an array of all current headers.
         /// 
@@ -53,7 +51,5 @@ namespace Azuria.Api.v1.RequestBuilder
                 new Uri($"{ApiConstants.ApiUrlV1}/media/randomheader"), this._client
             ).WithGetParameter("style", style.ToTypeString());
         }
-
-        #endregion
     }
 }

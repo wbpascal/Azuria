@@ -9,8 +9,6 @@ namespace Azuria.Api.v1.DataModels.Ucp
     /// </summary>
     public class BookmarkDataModel : IEntryInfoDataModel
     {
-        #region Properties
-
         /// <summary>
         /// </summary>
         [JsonProperty("id")]
@@ -47,7 +45,5 @@ namespace Azuria.Api.v1.DataModels.Ucp
         /// </summary>
         [JsonProperty("state")]
         public MediaStatus Status { get; set; }
-
-        #endregion
     }
 }

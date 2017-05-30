@@ -10,8 +10,6 @@ namespace Azuria.Api.v1.DataModels.Info
     /// </summary>
     public class EntryDataModel : IEntryInfoDataModel
     {
-        #region Properties
-
         /// <summary>
         /// </summary>
         [JsonProperty("clicks")]
@@ -76,7 +74,5 @@ namespace Azuria.Api.v1.DataModels.Info
         /// </summary>
         [JsonProperty("state")]
         public MediaStatus Status { get; set; }
-
-        #endregion
     }
 }

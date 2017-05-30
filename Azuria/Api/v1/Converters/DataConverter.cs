@@ -7,8 +7,6 @@ namespace Azuria.Api.v1.Converters
     /// </summary>
     public abstract class DataConverter<T> : JsonConverter
     {
-        #region Methods
-
         /// <inheritdoc />
         public override bool CanConvert(Type objectType)
         {
@@ -37,7 +35,5 @@ namespace Azuria.Api.v1.Converters
         {
             throw new NotImplementedException();
         }
-
-        #endregion
     }
 }

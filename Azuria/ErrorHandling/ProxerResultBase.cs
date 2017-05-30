@@ -39,14 +39,10 @@ namespace Azuria.ErrorHandling
         {
         }
 
-        #region Properties
-
         /// <inheritdoc />
         public IEnumerable<Exception> Exceptions { get; set; }
 
         /// <inheritdoc />
         public bool Success { get; set; }
-
-        #endregion
     }
 }

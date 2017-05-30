@@ -9,8 +9,6 @@ namespace Azuria.Api.v1.DataModels.Info
     /// </summary>
     public class MediaContentDataModel : IDataModel
     {
-        #region Properties
-
         /// <summary>
         /// </summary>
         [JsonProperty("no", Required = Required.Always)]
@@ -33,7 +31,5 @@ namespace Azuria.Api.v1.DataModels.Info
         /// </summary>
         [JsonProperty("title")]
         public string Title { get; set; }
-
-        #endregion
     }
 }

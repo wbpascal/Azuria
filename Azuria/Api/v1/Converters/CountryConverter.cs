@@ -6,8 +6,6 @@ namespace Azuria.Api.v1.Converters
 {
     internal class CountryConverter : DataConverter<Country>
     {
-        #region Methods
-
         /// <inheritdoc />
         public override Country ConvertJson(
             JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
@@ -26,7 +24,5 @@ namespace Azuria.Api.v1.Converters
                     return Country.Misc;
             }
         }
-
-        #endregion
     }
 }

@@ -9,8 +9,6 @@ namespace Azuria.Api.v1.Converters.Info
 {
     internal class LanguageCollectionConverter : DataConverter<MediaLanguage[]>
     {
-        #region Methods
-
         /// <inheritdoc />
         public override MediaLanguage[] ConvertJson(
             JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
@@ -25,7 +23,5 @@ namespace Azuria.Api.v1.Converters.Info
             }
             return lLanguages.ToArray();
         }
-
-        #endregion
     }
 }

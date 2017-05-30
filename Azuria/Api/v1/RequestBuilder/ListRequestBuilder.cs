@@ -28,8 +28,6 @@ namespace Azuria.Api.v1.RequestBuilder
             this._client = client;
         }
 
-        #region Methods
-
         /// <summary>
         /// Builds a request that returns the results of a search for anime and
         /// manga.
@@ -226,7 +224,5 @@ namespace Azuria.Api.v1.RequestBuilder
                 .WithGetParameter("p", p.ToString())
                 .WithGetParameter("limit", limit.ToString());
         }
-
-        #endregion
     }
 }

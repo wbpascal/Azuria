@@ -33,8 +33,6 @@ namespace Azuria.Requests
             this._jsonDeserializer = jsonDeserializer;
         }
 
-        #region Methods
-
         /// <inheritdoc />
         public async Task<IProxerResult> MakeRequestAsync(IRequestBuilder request, CancellationToken token)
         {
@@ -122,9 +120,5 @@ namespace Azuria.Requests
             this._loginManager.QueueLoginForNextRequest();
             return await this.ApiRequestInternalAsync<T>(request, token, settings).ConfigureAwait(false);
         }
-
-
-
-        #endregion
     }
 }

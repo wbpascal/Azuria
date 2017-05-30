@@ -39,8 +39,6 @@ namespace Azuria.Requests.Builder
             this.GetParameters = builderBase.GetParameters;
         }
 
-        #region Properties
-
         /// <summary>
         /// 
         /// </summary>
@@ -60,10 +58,6 @@ namespace Azuria.Requests.Builder
         /// 
         /// </summary>
         public IEnumerable<KeyValuePair<string, string>> PostArguments => this._postArguments;
-
-        #endregion
-
-        #region Methods
 
         /// <summary>
         /// 
@@ -121,7 +115,5 @@ namespace Azuria.Requests.Builder
                 .RemoveIfNotEmpty(0, 1);
             return lUriBuilder.Uri;
         }
-
-        #endregion
     }
 }

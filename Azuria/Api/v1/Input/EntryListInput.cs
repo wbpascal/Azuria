@@ -9,8 +9,6 @@ namespace Azuria.Api.v1.Input
     /// </summary>
     public class EntryListInput
     {
-        #region Properties
-
         /// <summary>
         /// 
         /// </summary>
@@ -41,7 +39,5 @@ namespace Azuria.Api.v1.Input
         /// <summary>
         /// </summary>
         public bool StartWithNonAlphabeticalChar { get; set; }
-
-        #endregion
     }
 }

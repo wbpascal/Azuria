@@ -6,8 +6,6 @@ namespace Azuria.Api.v1.Converters.Anime
 {
     internal class StreamPartnerConverter : DataConverter<StreamHoster>
     {
-        #region Methods
-
         /// <inheritdoc />
         public override StreamHoster ConvertJson(
             JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
@@ -28,7 +26,5 @@ namespace Azuria.Api.v1.Converters.Anime
                     return (StreamHoster) Enum.Parse(typeof(StreamHoster), reader.Value.ToString(), true);
             }
         }
-
-        #endregion
     }
 }

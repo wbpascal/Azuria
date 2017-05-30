@@ -4,8 +4,6 @@
     /// </summary>
     public class NotificationCountDataModel : IDataModel
     {
-        #region Properties
-
         /// <summary>
         /// </summary>
         public int FriendRequests { get; set; }
@@ -21,7 +19,5 @@
         /// <summary>
         /// </summary>
         public int PrivateMessages { get; set; }
-
-        #endregion
     }
 }

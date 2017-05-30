@@ -25,8 +25,6 @@ namespace Azuria
             this.RegisterDefaultComponents(this.ContainerBuilder);
         }
 
-        #region Properties
-
         /// <summary>
         ///
         /// </summary>
@@ -36,10 +34,6 @@ namespace Azuria
         /// Gets or sets the builder that is used to register dependencies.
         /// </summary>
         public ContainerBuilder ContainerBuilder { get; } = new ContainerBuilder();
-
-        #endregion
-
-        #region Methods
 
         private void RegisterDefaultComponents(ContainerBuilder builder)
         {
@@ -123,7 +117,5 @@ namespace Azuria
             this.ContainerBuilder.Register(factory).As<ILoginManager>().SingleInstance();
             return this;
         }
-
-        #endregion
     }
 }

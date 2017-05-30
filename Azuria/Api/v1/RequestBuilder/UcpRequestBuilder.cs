@@ -28,8 +28,6 @@ namespace Azuria.Api.v1.RequestBuilder
             this._client = client;
         }
 
-        #region Methods
-
         /// <summary>
         /// Builds a request that removes an entry from a users topten.
         /// Requires authentication.
@@ -247,7 +245,5 @@ namespace Azuria.Api.v1.RequestBuilder
                 .WithGetParameter("kat", category.ToString().ToLowerInvariant())
                 .WithLoginCheck();
         }
-
-        #endregion
     }
 }

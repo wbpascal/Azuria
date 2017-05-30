@@ -6,8 +6,6 @@ namespace Azuria.Api.v1.Converters.Notifications
 {
     internal class NotificationCountConverter : DataConverter<NotificationCountDataModel>
     {
-        #region Methods
-
         /// <inheritdoc />
         public override NotificationCountDataModel ConvertJson(
             JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
@@ -35,7 +33,5 @@ namespace Azuria.Api.v1.Converters.Notifications
             }
             return lDataModel;
         }
-
-        #endregion
     }
 }

@@ -8,8 +8,6 @@ namespace Azuria.Api.v1.Converters
 {
     internal class LanguageCommaCollectionConverter : DataConverter<MediaLanguage[]>
     {
-        #region Methods
-
         /// <inheritdoc />
         public override MediaLanguage[] ConvertJson(
             JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
@@ -20,7 +18,5 @@ namespace Azuria.Api.v1.Converters
                 .Where(language => language != MediaLanguage.Unkown)
                 .ToArray();
         }
-
-        #endregion
     }
 }

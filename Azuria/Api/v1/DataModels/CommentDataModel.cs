@@ -10,8 +10,6 @@ namespace Azuria.Api.v1.DataModels
     /// </summary>
     public class CommentDataModel : IDataModel
     {
-        #region Properties
-
         /// <summary>
         /// </summary>
         [JsonProperty("avatar")]
@@ -73,7 +71,5 @@ namespace Azuria.Api.v1.DataModels
         /// </summary>
         [JsonProperty("username")]
         public string Username { get; set; }
-
-        #endregion
     }
 }

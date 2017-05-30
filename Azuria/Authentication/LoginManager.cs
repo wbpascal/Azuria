@@ -19,20 +19,19 @@ namespace Azuria.Authentication
         private DateTime _lastRequestPerformed = DateTime.MinValue;
         private DateTime _loginPerformed = DateTime.MinValue;
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="userRequestBuilder"></param>
+        /// <param name="loginToken"></param>
         public LoginManager(UserRequestBuilder userRequestBuilder, char[] loginToken = null)
         {
             this._userRequestBuilder = userRequestBuilder;
             this.LoginToken = loginToken;
         }
 
-        #region Properties
-
         /// <inheritdoc />
         public char[] LoginToken { get; set; }
-
-        #endregion
-
-        #region Methods
 
         /// <inheritdoc />
         public bool CheckIsLoginProbablyValid()
@@ -94,7 +93,5 @@ namespace Azuria.Authentication
             this._lastRequestPerformed = DateTime.Now;
             return false;
         }
-
-        #endregion
     }
 }

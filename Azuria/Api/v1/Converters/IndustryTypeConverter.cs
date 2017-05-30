@@ -6,8 +6,6 @@ namespace Azuria.Api.v1.Converters
 {
     internal class IndustryTypeConverter : DataConverter<IndustryType>
     {
-        #region Methods
-
         /// <inheritdoc />
         public override IndustryType ConvertJson(
             JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
@@ -25,7 +23,5 @@ namespace Azuria.Api.v1.Converters
                     return (IndustryType) Enum.Parse(typeof(IndustryType), lValue, true);
             }
         }
-
-        #endregion
     }
 }

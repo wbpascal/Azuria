@@ -8,16 +8,10 @@ namespace Azuria.Api.Builder
     /// </summary>
     public interface IApiRequestBuilder
     {
-        #region Properties
-
         /// <summary>
         /// 
         /// </summary>
         IProxerClient ProxerClient { get; }
-
-        #endregion
-
-        #region Methods
 
         /// <summary>
         /// 
@@ -25,7 +19,5 @@ namespace Azuria.Api.Builder
         /// <param name="baseUri"></param>
         /// <returns></returns>
         IRequestBuilder FromUrl(Uri baseUri);
-
-        #endregion
     }
 }

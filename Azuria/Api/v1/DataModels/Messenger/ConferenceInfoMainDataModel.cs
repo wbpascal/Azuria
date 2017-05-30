@@ -8,8 +8,6 @@ namespace Azuria.Api.v1.DataModels.Messenger
     /// </summary>
     public class ConferenceInfoMainDataModel : IDataModel
     {
-        #region Properties
-
         /// <summary>
         /// </summary>
         [JsonProperty("timestamp_start")]
@@ -36,7 +34,5 @@ namespace Azuria.Api.v1.DataModels.Messenger
         /// </summary>
         [JsonProperty("count")]
         public int UserCount { get; set; }
-
-        #endregion
     }
 }

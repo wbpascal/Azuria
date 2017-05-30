@@ -10,16 +10,10 @@ namespace Azuria.Authentication
     /// </summary>
     public interface ILoginManager
     {
-        #region Properties
-
         /// <summary>
         /// The login token that is used to keep the client authenticated.
         /// </summary>
         char[] LoginToken { get; set; }
-
-        #endregion
-
-        #region Methods
 
         /// <summary>
         /// Gets if the client is probably logged in (based on <see cref="DateTime"/> so results
@@ -59,7 +53,5 @@ namespace Azuria.Authentication
         /// </summary>
         /// <returns>A boolean that indicates if the login token should be send with the next request.</returns>
         bool SendTokenWithNextRequest();
-
-        #endregion
     }
 }

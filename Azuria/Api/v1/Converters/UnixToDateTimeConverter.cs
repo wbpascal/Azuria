@@ -6,15 +6,11 @@ namespace Azuria.Api.v1.Converters
 {
     internal class UnixToDateTimeConverter : DataConverter<DateTime>
     {
-        #region Methods
-
         /// <inheritdoc />
         public override DateTime ConvertJson(
             JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
         {
             return DateTimeHelpers.UnixTimeStampToDateTime(Convert.ToInt64(reader.Value));
         }
-
-        #endregion
     }
 }

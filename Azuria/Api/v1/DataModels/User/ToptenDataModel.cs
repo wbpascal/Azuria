@@ -7,8 +7,6 @@ namespace Azuria.Api.v1.DataModels.User
     /// </summary>
     public class ToptenDataModel : IEntryInfoDataModel
     {
-        #region Properties
-
         /// <inheritdoc />
         [JsonProperty("eid")]
         public int EntryId { get; set; }
@@ -24,7 +22,5 @@ namespace Azuria.Api.v1.DataModels.User
         /// <inheritdoc />
         [JsonProperty("kat")]
         public MediaEntryType EntryType { get; set; }
-
-        #endregion
     }
 }

@@ -41,12 +41,8 @@ namespace Azuria.Exceptions
         {
         }
 
-        #region Properties
-
         /// <summary>
         /// </summary>
         public ErrorCode ErrorCode { get; }
-
-        #endregion
     }
 }

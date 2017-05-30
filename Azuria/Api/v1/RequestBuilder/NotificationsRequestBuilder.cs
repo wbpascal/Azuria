@@ -22,8 +22,6 @@ namespace Azuria.Api.v1.RequestBuilder
             this._client = client;
         }
 
-        #region Methods
-
         /// <summary>
         /// Builds a request that deletes a notification.
         /// 
@@ -73,7 +71,5 @@ namespace Azuria.Api.v1.RequestBuilder
                 ).WithGetParameter("p", page.ToString())
                 .WithGetParameter("limit", limit.ToString());
         }
-
-        #endregion
     }
 }

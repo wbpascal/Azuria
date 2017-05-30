@@ -7,8 +7,6 @@ namespace Azuria.Requests.Builder
     /// </summary>
     public interface IRequestBuilder : IRequestBuilderBase
     {
-        #region Methods
-
         /// <summary>
         /// 
         /// </summary>
@@ -51,7 +49,5 @@ namespace Azuria.Requests.Builder
         /// <typeparam name="T"></typeparam>
         /// <returns></returns>
         IRequestBuilderWithResult<T> WithResult<T>();
-
-        #endregion
     }
 }

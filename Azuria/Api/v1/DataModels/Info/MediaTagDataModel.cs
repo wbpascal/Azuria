@@ -7,8 +7,6 @@ namespace Azuria.Api.v1.DataModels.Info
     /// </summary>
     public class MediaTagDataModel : IDataModel
     {
-        #region Properties
-
         /// <summary>
         /// </summary>
         [JsonProperty("description")]
@@ -35,7 +33,5 @@ namespace Azuria.Api.v1.DataModels.Info
         /// </summary>
         [JsonProperty("tid")]
         public int TagId { get; set; }
-
-        #endregion
     }
 }

@@ -17,9 +17,7 @@ namespace Azuria.Requests.Builder
         public RequestBuilder(Uri baseUri, IProxerClient client) : base(baseUri, client)
         {
         }
-
-        #region Methods
-
+        
         /// <inheritdoc />
         public IRequestBuilder WithGetParameter(string key, string value)
         {
@@ -60,8 +58,6 @@ namespace Azuria.Requests.Builder
         {
             return new RequestBuilder<T>(this);
         }
-
-        #endregion
     }
 
     /// <summary>
@@ -87,14 +83,8 @@ namespace Azuria.Requests.Builder
         {
         }
 
-        #region Properties
-
         /// <inheritdoc />
         public DataConverter<T> CustomDataConverter { get; private set; }
-
-        #endregion
-
-        #region Methods
 
         /// <inheritdoc />
         public IRequestBuilderWithResult<T> WithCustomDataConverter(DataConverter<T> converter)
@@ -137,7 +127,5 @@ namespace Azuria.Requests.Builder
             this.AddPostArgument(args);
             return this;
         }
-
-        #endregion
     }
 }

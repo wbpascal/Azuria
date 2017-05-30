@@ -8,8 +8,6 @@ namespace Azuria.Api.v1.DataModels.User
     /// </summary>
     public class UserInfoDataModel : IDataModel
     {
-        #region Properties
-
         /// <summary>
         /// </summary>
         [JsonProperty("avatar")]
@@ -65,7 +63,5 @@ namespace Azuria.Api.v1.DataModels.User
         /// </summary>
         [JsonProperty("username")]
         public string Username { get; set; }
-
-        #endregion
     }
 }

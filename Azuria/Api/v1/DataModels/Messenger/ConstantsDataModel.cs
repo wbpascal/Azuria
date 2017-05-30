@@ -6,8 +6,6 @@ namespace Azuria.Api.v1.DataModels.Messenger
     /// </summary>
     public class ConstantsDataModel : IDataModel
     {
-        #region Properties
-
         /// <summary>
         /// </summary>
         [JsonProperty("conferenceLimit")]
@@ -32,7 +30,5 @@ namespace Azuria.Api.v1.DataModels.Messenger
         /// </summary>
         [JsonProperty("messagesLimit")]
         public int MessagesPerPage { get; set; }
-
-        #endregion
     }
 }

@@ -9,8 +9,6 @@ namespace Azuria.Api.v1.DataModels.List
     /// </summary>
     public class SearchDataModel : IEntryInfoDataModel
     {
-        #region Properties
-
         /// <summary>
         /// </summary>
         [JsonProperty("language")]
@@ -58,7 +56,5 @@ namespace Azuria.Api.v1.DataModels.List
         /// </summary>
         [JsonProperty("state")]
         public MediaStatus Status { get; set; }
-
-        #endregion
     }
 }

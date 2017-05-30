@@ -8,8 +8,6 @@ namespace Azuria.Requests.Builder
     /// </summary>
     public interface IRequestBuilderBase
     {
-        #region Properties
-
         /// <summary>
         /// 
         /// </summary>
@@ -30,16 +28,10 @@ namespace Azuria.Requests.Builder
         /// </summary>
         IEnumerable<KeyValuePair<string, string>> PostArguments { get; }
 
-        #endregion
-
-        #region Methods
-
         /// <summary>
         /// 
         /// </summary>
         /// <returns></returns>
         Uri BuildUri();
-
-        #endregion
     }
 }

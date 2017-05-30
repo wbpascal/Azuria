@@ -11,8 +11,6 @@ namespace Azuria.Api.v1.DataModels.Ucp
     /// </summary>
     public class HistoryDataModel : IEntryInfoDataModel
     {
-        #region Properties
-
         /// <summary>
         /// </summary>
         [JsonProperty("episode")]
@@ -45,7 +43,5 @@ namespace Azuria.Api.v1.DataModels.Ucp
         [JsonProperty("timestamp")]
         [JsonConverter(typeof(CustomDateTimeConverter))]
         public DateTime TimeStamp { get; set; }
-
-        #endregion
     }
 }

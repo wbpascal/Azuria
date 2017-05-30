@@ -10,8 +10,6 @@ namespace Azuria.Api.v1.DataModels.Info
     /// </summary>
     public class IndustryDataModel : IDataModel
     {
-        #region Properties
-
         /// <summary>
         /// 
         /// </summary>
@@ -48,7 +46,5 @@ namespace Azuria.Api.v1.DataModels.Info
         [JsonProperty("type")]
         [JsonConverter(typeof(IndustryTypeConverter))]
         public IndustryType Type { get; set; }
-
-        #endregion
     }
 }

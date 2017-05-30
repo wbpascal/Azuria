@@ -9,8 +9,6 @@ namespace Azuria.Api.v1.DataModels.Manga
     /// </summary>
     public class ChapterDataModel
     {
-        #region Properties
-
         /// <summary>
         /// </summary>
         [JsonProperty("cid")]
@@ -62,7 +60,5 @@ namespace Azuria.Api.v1.DataModels.Manga
         [JsonProperty("timestamp")]
         [JsonConverter(typeof(UnixToDateTimeConverter))]
         public DateTime UploadTimestamp { get; set; }
-
-        #endregion
     }
 }

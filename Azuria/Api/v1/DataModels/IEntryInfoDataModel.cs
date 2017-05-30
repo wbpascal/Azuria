@@ -8,8 +8,6 @@ namespace Azuria.Api.v1.DataModels
     /// </summary>
     public interface IEntryInfoDataModel : IDataModel
     {
-        #region Properties
-
         /// <summary>
         /// </summary>
         int EntryId { get; }
@@ -27,7 +25,5 @@ namespace Azuria.Api.v1.DataModels
         /// </summary>
         [JsonConverter(typeof(CategoryConverter))]
         MediaEntryType EntryType { get; }
-
-        #endregion
     }
 }

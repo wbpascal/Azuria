@@ -6,8 +6,6 @@ namespace Azuria.Api.v1.Converters
 {
     internal class MediumConverter : DataConverter<MediaMedium>
     {
-        #region Methods
-
         /// <inheritdoc />
         public override MediaMedium ConvertJson(
             JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
@@ -33,7 +31,5 @@ namespace Azuria.Api.v1.Converters
             }
             return MediaMedium.None;
         }
-
-        #endregion
     }
 }

@@ -25,8 +25,6 @@ namespace Azuria.Api.v1.RequestBuilder
             this._client = client;
         }
 
-        #region Methods
-
         private IRequestBuilderWithResult<HistoryDataModel[]> GetHistory(string page, string limit)
         {
             return new RequestBuilder<HistoryDataModel[]>(
@@ -305,7 +303,5 @@ namespace Azuria.Api.v1.RequestBuilder
         {
             return new Requests.Builder.RequestBuilder(new Uri($"{ApiConstants.ApiUrlV1}/user/logout"), this._client);
         }
-
-        #endregion
     }
 }

@@ -7,8 +7,6 @@ namespace Azuria
     /// </summary>
     public interface IProxerClient
     {
-        #region Properties
-
         /// <summary>
         /// Gets the api key the client uses.
         /// </summary>
@@ -18,7 +16,5 @@ namespace Azuria
         /// Gets the container that is used to resolve dependencies for this client.
         /// </summary>
         IContainer Container { get; }
-
-        #endregion
     }
 }

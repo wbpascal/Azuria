@@ -10,8 +10,6 @@ namespace Azuria.Api.v1.DataModels.Anime
     /// </summary>
     public class StreamDataModel
     {
-        #region Properties
-
         /// <summary>
         /// </summary>
         [JsonProperty("name")]
@@ -68,7 +66,5 @@ namespace Azuria.Api.v1.DataModels.Anime
         [JsonProperty("timestamp")]
         [JsonConverter(typeof(UnixToDateTimeConverter))]
         public DateTime UploadTimestamp { get; set; }
-
-        #endregion
     }
 }

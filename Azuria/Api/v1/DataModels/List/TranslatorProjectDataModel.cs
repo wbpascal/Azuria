@@ -10,8 +10,6 @@ namespace Azuria.Api.v1.DataModels.List
     /// </summary>
     public class TranslatorProjectDataModel : IEntryInfoDataModel
     {
-        #region Properties
-
         /// <summary>
         /// 
         /// </summary>
@@ -61,7 +59,5 @@ namespace Azuria.Api.v1.DataModels.List
         /// </summary>
         [JsonProperty("type")]
         public TranslationStatus Status { get; set; }
-
-        #endregion
     }
 }

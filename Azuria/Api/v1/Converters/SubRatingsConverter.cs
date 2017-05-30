@@ -8,8 +8,6 @@ namespace Azuria.Api.v1.Converters
 {
     internal class SubRatingsConverter : DataConverter<Dictionary<RatingCategory, int>>
     {
-        #region Methods
-
         /// <inheritdoc />
         public override Dictionary<RatingCategory, int> ConvertJson(
             JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
@@ -29,7 +27,5 @@ namespace Azuria.Api.v1.Converters
                 return new Dictionary<RatingCategory, int>();
             }
         }
-
-        #endregion
     }
 }

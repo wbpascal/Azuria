@@ -9,8 +9,6 @@ namespace Azuria.Api.v1.Converters
 {
     internal class FskConverter : DataConverter<Fsk[]>
     {
-        #region Methods
-
         /// <inheritdoc />
         public override Fsk[] ConvertJson(
             JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
@@ -24,7 +22,5 @@ namespace Azuria.Api.v1.Converters
                 .Select(fskString => lStringDictionary[fskString])
                 .ToArray();
         }
-
-        #endregion
     }
 }

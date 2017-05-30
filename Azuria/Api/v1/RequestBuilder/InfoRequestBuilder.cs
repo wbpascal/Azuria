@@ -25,8 +25,6 @@ namespace Azuria.Api.v1.RequestBuilder
             this._client = client;
         }
 
-        #region Methods
-
         /// <summary>
         /// Builds a request that returns all comments of an anime or manga
         /// (with more than 300 characters).
@@ -294,7 +292,5 @@ namespace Azuria.Api.v1.RequestBuilder
                 .WithPostParameter("type", list.ToTypeString())
                 .WithLoginCheck();
         }
-
-        #endregion
     }
 }
