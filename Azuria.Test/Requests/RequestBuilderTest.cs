@@ -7,7 +7,6 @@ using Xunit;
 
 namespace Azuria.Test.Requests
 {
-    //TODO: Complete tests
     public class RequestBuilderTest
     {
         private const string BaseUrl = "https://proxer.me/";
@@ -85,6 +84,16 @@ namespace Azuria.Test.Requests
             Assert.Equal(lRequestBuilder.GetParameters, lWithResult.GetParameters);
             Assert.Equal(lRequestBuilder.PostArguments, lWithResult.PostArguments);
             Assert.Same(lRequestBuilder.Client, lWithResult.Client);
+        }
+
+        [Fact]
+        public void WithLoginCheckTest()
+        {
+            IRequestBuilder lRequestBuilder = this._client.CreateRequest().FromUrl(new Uri(BaseUrl));
+            lRequestBuilder.WithLoginCheck(true);
+            Assert.True(lRequestBuilder.CheckLogin);
+            lRequestBuilder.WithLoginCheck(false);
+            Assert.False(lRequestBuilder.CheckLogin);
         }
     }
 }

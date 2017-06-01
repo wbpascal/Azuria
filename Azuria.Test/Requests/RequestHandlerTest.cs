@@ -22,8 +22,9 @@ namespace Azuria.Test.Requests
         {
             {TestConstants.ApiKeyHeaderName, new string(new char[32])}
         };
+
         private readonly IRequestHandler _requestHandler;
-        
+
         public RequestHandlerTest()
         {
             IProxerClient lClient = ProxerClient.Create(new char[32]);
@@ -35,7 +36,7 @@ namespace Azuria.Test.Requests
         {
             IRequestBuilder lRequestBuilder =
                 new RequestBuilder(new Uri("https://google.com"), ProxerClient.Create(new char[32]));
-            
+
             IProxerResult lResult =
                 await this._requestHandler.MakeRequestAsync(lRequestBuilder, CancellationToken.None);
             Assert.False(lResult.Success);
@@ -73,7 +74,7 @@ namespace Azuria.Test.Requests
             Assert.True(lResult.Success, lResult.Exceptions.GetExceptionInfo());
             Assert.Empty(lResult.Exceptions);
         }
-        
+
         [Fact]
         public async Task MakeRequestPostTest()
         {
@@ -102,7 +103,7 @@ namespace Azuria.Test.Requests
             Assert.True(lResult.Success, lResult.Exceptions.GetExceptionInfo());
             Assert.Empty(lResult.Exceptions);
         }
-        
+
         [Fact]
         public async Task MakeRequestWithResultGetTest()
         {
@@ -130,7 +131,7 @@ namespace Azuria.Test.Requests
             Assert.Empty(lResult.Exceptions);
             Assert.Equal("dataValue", lResult.Result);
         }
-        
+
         [Fact]
         public async Task MakeRequestWithResultPostTest()
         {
