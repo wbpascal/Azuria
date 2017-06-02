@@ -11,6 +11,7 @@ using Azuria.Requests.Builder;
 using Azuria.Requests.Http;
 using Azuria.Test.Core;
 using Azuria.Test.Core.Helpers;
+using Azuria.Test.Serilization;
 using Moq;
 using Xunit;
 
@@ -121,15 +122,16 @@ namespace Azuria.Test.Requests
             );
             IRequestHandler lRequestHandler = lClient.Container.Resolve<IRequestHandler>();
 
-            IRequestBuilderWithResult<string> lRequestBuilder =
+            IRequestBuilderWithResult<int> lRequestBuilder =
                 new RequestBuilder(new Uri("https://proxer.me/api/v1/user/test"), lClient)
                     .WithGetParameter("test", "value")
-                    .WithResult<string>();
-            IProxerResult<string> lResult =
+                    .WithResult<int>()
+                    .WithCustomDataConverter(new TestConverter());
+            IProxerResult<int> lResult =
                 await lRequestHandler.MakeRequestAsync(lRequestBuilder, CancellationToken.None);
             Assert.True(lResult.Success, lResult.Exceptions.GetExceptionInfo());
             Assert.Empty(lResult.Exceptions);
-            Assert.Equal("dataValue", lResult.Result);
+            Assert.Equal(42, lResult.Result);
         }
 
         [Fact]
@@ -154,15 +156,16 @@ namespace Azuria.Test.Requests
             );
             IRequestHandler lRequestHandler = lClient.Container.Resolve<IRequestHandler>();
 
-            IRequestBuilderWithResult<string> lRequestBuilder =
+            IRequestBuilderWithResult<int> lRequestBuilder =
                 new RequestBuilder(new Uri("https://proxer.me/api/v1/user/test"), lClient)
                     .WithPostParameter(lPostArgs)
-                    .WithResult<string>();
-            IProxerResult<string> lResult =
+                    .WithResult<int>()
+                    .WithCustomDataConverter(new TestConverter());
+            IProxerResult<int> lResult =
                 await lRequestHandler.MakeRequestAsync(lRequestBuilder, CancellationToken.None);
             Assert.True(lResult.Success, lResult.Exceptions.GetExceptionInfo());
             Assert.Empty(lResult.Exceptions);
-            Assert.Equal("dataValue", lResult.Result);
+            Assert.Equal(42, lResult.Result);
         }
     }
 }
