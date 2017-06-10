@@ -35,7 +35,8 @@ namespace Azuria.Api.v1.RequestBuilder
         /// <returns>An instance of <see cref="ApiRequest" />.</returns>
         public IRequestBuilder Delete(int nid = 0)
         {
-            return new Requests.Builder.RequestBuilder(new Uri($"{ApiConstants.ApiUrlV1}/notifications/delete"), this._client)
+            return new Requests.Builder.RequestBuilder(
+                    new Uri($"{ApiConstants.ApiUrlV1}/notifications/delete"), this._client)
                 .WithPostParameter("nid", nid.ToString())
                 .WithLoginCheck();
         }

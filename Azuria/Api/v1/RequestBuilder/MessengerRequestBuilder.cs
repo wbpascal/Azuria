@@ -175,7 +175,8 @@ namespace Azuria.Api.v1.RequestBuilder
         /// <returns>An instance of <see cref="ApiRequest" />.</returns>
         public IRequestBuilder SetBlock(int conferenceId)
         {
-            return new Requests.Builder.RequestBuilder(new Uri($"{ApiConstants.ApiUrlV1}/messenger/setblock"), this._client)
+            return new Requests.Builder.RequestBuilder(
+                    new Uri($"{ApiConstants.ApiUrlV1}/messenger/setblock"), this._client)
                 .WithGetParameter("conference_id", conferenceId.ToString())
                 .WithLoginCheck();
         }
@@ -191,7 +192,8 @@ namespace Azuria.Api.v1.RequestBuilder
         /// <returns>An instance of <see cref="ApiRequest" />.</returns>
         public IRequestBuilder SetFavour(int conferenceId)
         {
-            return new Requests.Builder.RequestBuilder(new Uri($"{ApiConstants.ApiUrlV1}/messenger/setfavour"), this._client)
+            return new Requests.Builder.RequestBuilder(
+                    new Uri($"{ApiConstants.ApiUrlV1}/messenger/setfavour"), this._client)
                 .WithGetParameter("conference_id", conferenceId.ToString())
                 .WithLoginCheck();
         }
@@ -227,7 +229,8 @@ namespace Azuria.Api.v1.RequestBuilder
         /// <returns>An instance of <see cref="ApiRequest" />.</returns>
         public IRequestBuilder SetRead(int conferenceId)
         {
-            return new Requests.Builder.RequestBuilder(new Uri($"{ApiConstants.ApiUrlV1}/messenger/setread"), this._client)
+            return new Requests.Builder.RequestBuilder(
+                    new Uri($"{ApiConstants.ApiUrlV1}/messenger/setread"), this._client)
                 .WithGetParameter("conference_id", conferenceId.ToString())
                 .WithLoginCheck();
         }
@@ -244,7 +247,8 @@ namespace Azuria.Api.v1.RequestBuilder
         /// <returns>An instance of <see cref="ApiRequest" />.</returns>
         public IRequestBuilder SetReport(int conferenceId, string reason)
         {
-            return new Requests.Builder.RequestBuilder(new Uri($"{ApiConstants.ApiUrlV1}/messenger/report"), this._client)
+            return new Requests.Builder.RequestBuilder(
+                    new Uri($"{ApiConstants.ApiUrlV1}/messenger/report"), this._client)
                 .WithGetParameter("conference_id", conferenceId.ToString())
                 .WithPostParameter("text", reason)
                 .WithLoginCheck();
@@ -261,7 +265,8 @@ namespace Azuria.Api.v1.RequestBuilder
         /// <returns>An instance of <see cref="ApiRequest" />.</returns>
         public IRequestBuilder SetUnblock(int conferenceId)
         {
-            return new Requests.Builder.RequestBuilder(new Uri($"{ApiConstants.ApiUrlV1}/messenger/setunblock"), this._client)
+            return new Requests.Builder.RequestBuilder(
+                    new Uri($"{ApiConstants.ApiUrlV1}/messenger/setunblock"), this._client)
                 .WithGetParameter("conference_id", conferenceId.ToString())
                 .WithLoginCheck();
         }
@@ -277,7 +282,8 @@ namespace Azuria.Api.v1.RequestBuilder
         /// <returns>An instance of <see cref="ApiRequest" />.</returns>
         public IRequestBuilder SetUnfavour(int conferenceId)
         {
-            return new Requests.Builder.RequestBuilder(new Uri($"{ApiConstants.ApiUrlV1}/messenger/setunfavour"), this._client)
+            return new Requests.Builder.RequestBuilder(
+                    new Uri($"{ApiConstants.ApiUrlV1}/messenger/setunfavour"), this._client)
                 .WithGetParameter("conference_id", conferenceId.ToString())
                 .WithLoginCheck();
         }
@@ -293,7 +299,8 @@ namespace Azuria.Api.v1.RequestBuilder
         /// <returns>An instance of <see cref="ApiRequest" />.</returns>
         public IRequestBuilder SetUnread(int conferenceId)
         {
-            return new Requests.Builder.RequestBuilder(new Uri($"{ApiConstants.ApiUrlV1}/messenger/setunread"), this._client)
+            return new Requests.Builder.RequestBuilder(
+                    new Uri($"{ApiConstants.ApiUrlV1}/messenger/setunread"), this._client)
                 .WithGetParameter("conference_id", conferenceId.ToString())
                 .WithLoginCheck();
         }

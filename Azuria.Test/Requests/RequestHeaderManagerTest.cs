@@ -13,7 +13,7 @@ namespace Azuria.Test.Requests
     {
         private readonly char[] _apiKey = ArrayHelpers.GetRandomChars(32);
         private readonly IRequestHeaderManager _headerManager;
-        
+
         public RequestHeaderManagerTest()
         {
             IProxerClient lClient = ProxerClient.Create(this._apiKey);
@@ -28,12 +28,12 @@ namespace Azuria.Test.Requests
             Assert.Equal(this._apiKey, lHeaders[TestConstants.ApiKeyHeaderName]);
             Assert.False(lHeaders.ContainsKey(TestConstants.LoginTokenHeaderName));
         }
-        
+
         [Fact]
         public void GetHeaderAuthenticatedTest()
         {
             char[] lLoginToken = ArrayHelpers.GetRandomChars(255);
-            
+
             Mock<ILoginManager> lLoginManager = new Mock<ILoginManager>();
             lLoginManager.Setup(manager => manager.SendTokenWithNextRequest()).Returns(true);
             lLoginManager.SetupGet(manager => manager.LoginToken).Returns(lLoginToken);
@@ -54,7 +54,7 @@ namespace Azuria.Test.Requests
         {
             Dictionary<string, string> lHeadersToTest = new Dictionary<string, string>();
             Assert.False(this._headerManager.ContainsAuthenticationHeaders(lHeadersToTest));
-            
+
             lHeadersToTest.Add(TestConstants.LoginTokenHeaderName, new string((char) 0, 255));
             Assert.True(this._headerManager.ContainsAuthenticationHeaders(lHeadersToTest));
         }

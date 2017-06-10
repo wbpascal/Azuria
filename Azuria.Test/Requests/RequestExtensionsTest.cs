@@ -44,10 +44,7 @@ namespace Azuria.Test.Requests
         {
             Mock<IRequestHandler> lRequestHandlerMock = new Mock<IRequestHandler>();
             IProxerClient lClient = ProxerClient.Create(
-                new char[32], options =>
-                {
-                    options.ContainerBuilder.RegisterInstance(lRequestHandlerMock.Object);
-                });
+                new char[32], options => { options.ContainerBuilder.RegisterInstance(lRequestHandlerMock.Object); });
 
             RequestBuilder lRequest = new RequestBuilder(new Uri("https://proxer.me"), lClient);
             CancellationTokenSource lCancellationTokenSource = new CancellationTokenSource();
@@ -69,10 +66,7 @@ namespace Azuria.Test.Requests
         {
             Mock<IRequestHandler> lRequestHandlerMock = new Mock<IRequestHandler>();
             IProxerClient lClient = ProxerClient.Create(
-                new char[32], options =>
-                {
-                    options.ContainerBuilder.RegisterInstance(lRequestHandlerMock.Object);
-                });
+                new char[32], options => { options.ContainerBuilder.RegisterInstance(lRequestHandlerMock.Object); });
 
             IRequestBuilderWithResult<object> lRequest = new RequestBuilder(new Uri("https://proxer.me"), lClient)
                 .WithResult<object>();

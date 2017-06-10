@@ -26,7 +26,7 @@ namespace Azuria.Test.Serilization
                 await this._jsonDeserializer.Deserialize<ProxerApiResponse<string>>(
                     TestConstants.DummySuccessResponseString, null
                 );
-            
+
             Assert.True(lDeserializeResult.Success);
             Assert.Empty(lDeserializeResult.Exceptions);
             Assert.NotNull(lDeserializeResult.Result);
@@ -45,7 +45,7 @@ namespace Azuria.Test.Serilization
                 await this._jsonDeserializer.Deserialize<ProxerApiResponse<int>>(
                     TestConstants.DummySuccessResponseString, lSettings
                 );
-            
+
             Assert.True(lDeserializeResult.Success);
             Assert.Empty(lDeserializeResult.Exceptions);
             Assert.NotNull(lDeserializeResult.Result);

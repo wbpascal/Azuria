@@ -86,7 +86,7 @@ namespace Azuria
         /// <exception cref="ArgumentNullException">Thrown if the <paramref name="factory" /> ist null.</exception>
         public ProxerClientOptions WithCustomHttpClient(Func<IComponentContext, IHttpClient> factory)
         {
-            if(factory == null) throw new ArgumentNullException(nameof(factory));
+            if (factory == null) throw new ArgumentNullException(nameof(factory));
             this.ContainerBuilder.Register(factory).As<IHttpClient>().SingleInstance();
             return this;
         }
@@ -113,7 +113,7 @@ namespace Azuria
         /// <exception cref="ArgumentNullException">Thrown if the <paramref name="factory" /> ist null.</exception>
         public ProxerClientOptions WithCustomLoginManager(Func<IComponentContext, ILoginManager> factory)
         {
-            if(factory == null) throw new ArgumentNullException(nameof(factory));
+            if (factory == null) throw new ArgumentNullException(nameof(factory));
             this.ContainerBuilder.Register(factory).As<ILoginManager>().SingleInstance();
             return this;
         }

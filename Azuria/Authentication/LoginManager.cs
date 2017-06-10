@@ -79,7 +79,7 @@ namespace Azuria.Authentication
         {
             this._lastRequestPerformed = DateTime.Now;
             this._isLoginQueued = false;
-            if(sendLoginToken) this._loginPerformed = DateTime.Now;
+            if (sendLoginToken) this._loginPerformed = DateTime.Now;
         }
 
         /// <inheritdoc />

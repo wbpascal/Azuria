@@ -287,7 +287,8 @@ namespace Azuria.Api.v1.RequestBuilder
         /// <returns>An instance of <see cref="ApiRequest" />.</returns>
         public IRequestBuilder SetUserInfo(int entryId, UserList list)
         {
-            return new Requests.Builder.RequestBuilder(new Uri($"{ApiConstants.ApiUrlV1}/info/setuserinfo"), this._client)
+            return new Requests.Builder.RequestBuilder(
+                    new Uri($"{ApiConstants.ApiUrlV1}/info/setuserinfo"), this._client)
                 .WithPostParameter("id", entryId.ToString())
                 .WithPostParameter("type", list.ToTypeString())
                 .WithLoginCheck();

@@ -108,7 +108,7 @@ namespace Azuria.Test.Authentication
             IProxerResult lResult = await lLoginManager.PerformLogout(lCancellationToken);
             Assert.True(lResult.Success);
             Assert.Empty(lResult.Exceptions);
-            
+
             Assert.Equal(null, lLoginManager.LoginToken);
             Assert.False(lLoginManager.CheckIsLoginProbablyValid());
         }
@@ -121,7 +121,7 @@ namespace Azuria.Test.Authentication
             lLoginManager.LoginToken = new char[255];
             //Pretend, that the user logged in
             lLoginManager.PerformedRequest(true);
-            
+
             Assert.False(lLoginManager.SendTokenWithNextRequest());
             lLoginManager.QueueLoginForNextRequest();
             Assert.True(lLoginManager.SendTokenWithNextRequest());

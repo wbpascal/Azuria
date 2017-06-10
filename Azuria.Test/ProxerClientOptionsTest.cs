@@ -31,7 +31,8 @@ namespace Azuria.Test
         public void LoginManagerTest()
         {
             ILoginManager lLoginManager = Mock.Of<ILoginManager>();
-            IProxerClient lClient = ProxerClient.Create("apiKey".ToCharArray(),
+            IProxerClient lClient = ProxerClient.Create(
+                "apiKey".ToCharArray(),
                 options => options.WithCustomLoginManager(context => lLoginManager));
             Assert.True(lClient.Container.IsRegistered<ILoginManager>());
             Assert.Same(lLoginManager, lClient.Container.Resolve<ILoginManager>());

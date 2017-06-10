@@ -17,7 +17,7 @@ namespace Azuria.Requests.Builder
         public RequestBuilder(Uri baseUri, IProxerClient client) : base(baseUri, client)
         {
         }
-        
+
         /// <inheritdoc />
         public IRequestBuilder WithGetParameter(string key, string value)
         {

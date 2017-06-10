@@ -38,7 +38,7 @@ namespace Azuria.Requests
         {
             if (!IsApiUrl(request.BuildUri()))
                 return new ProxerResult(new InvalidRequestException("The given request was not a valid api url!"));
-            
+
             IProxerResult lResult = await this.ApiRequestInternalAsync<ProxerApiResponse>(request, token)
                                         .ConfigureAwait(false);
 
@@ -53,7 +53,7 @@ namespace Azuria.Requests
         {
             if (!IsApiUrl(request.BuildUri()))
                 return new ProxerResult<T>(new InvalidRequestException("The given request was not a valid api url!"));
-            
+
             JsonSerializerSettings lSerializerSettings =
                 new JsonSerializerSettings() {Converters = GetCustomConverter(request)};
 
@@ -106,8 +106,8 @@ namespace Azuria.Requests
             IProxerResult<T> lSerializationResult = await this._jsonDeserializer
                                                         .Deserialize<T>(lResult.Result, settings, token)
                                                         .ConfigureAwait(false);
-            if(!lSerializationResult.Success) return new ProxerResult(lSerializationResult.Exceptions);
-            
+            if (!lSerializationResult.Success) return new ProxerResult(lSerializationResult.Exceptions);
+
             this._loginManager.PerformedRequest(
                 lSerializationResult.Result.ErrorCode != ErrorCode.LoginTokenInvalid &&
                 this._headerManager.ContainsAuthenticationHeaders(lHeaders)
@@ -117,7 +117,8 @@ namespace Azuria.Requests
             if (lApiResponse.Success) return lApiResponse;
 
             Exception lException = this._errorHandler.HandleError(lApiResponse.ErrorCode);
-            if (!(lException is NotAuthenticatedException) || this._headerManager.ContainsAuthenticationHeaders(lHeaders))
+            if (!(lException is NotAuthenticatedException) ||
+                this._headerManager.ContainsAuthenticationHeaders(lHeaders))
                 return lException == null
                            ? new ProxerResult(new ProxerApiException(lApiResponse.ErrorCode))
                            : new ProxerResult(lException);

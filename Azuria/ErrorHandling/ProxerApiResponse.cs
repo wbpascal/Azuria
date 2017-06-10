@@ -30,7 +30,7 @@ namespace Azuria.ErrorHandling
         /// <inheritdoc />
         [JsonProperty("data")]
         public T Result { get; internal set; }
-        
+
         /// <inheritdoc />
         public void Deconstruct(out bool sucess, out IEnumerable<Exception> exceptions, out T result)
         {
@@ -67,7 +67,7 @@ namespace Azuria.ErrorHandling
         internal ProxerApiResponse(Exception exception) : this(new[] {exception})
         {
         }
-        
+
         [JsonProperty("code")]
         internal ErrorCode ErrorCode { get; set; } = ErrorCode.NoError;
 

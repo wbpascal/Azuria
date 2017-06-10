@@ -20,7 +20,7 @@ namespace Azuria.Test.Requests
             IProxerClient lClient = ProxerClient.Create(new char[32]);
             this._httpClient = lClient.Container.Resolve<IHttpClient>();
         }
-        
+
         [Fact]
         public async Task GetRequestAsyncTest()
         {
@@ -47,7 +47,7 @@ namespace Azuria.Test.Requests
             Assert.False(lResult.Success);
             Assert.True(lResult.Exceptions.Any(exception => exception.GetType() == typeof(TaskCanceledException)));
         }
-        
+
         [Fact]
         public async Task PostRequestAsyncTest()
         {
@@ -66,7 +66,7 @@ namespace Azuria.Test.Requests
             Assert.Equal("headerValue", lJsonObject["headers"]["Header-Key"].Value<string>());
             Assert.Equal("postValue", lJsonObject["form"]["postKey"].Value<string>());
         }
-        
+
         [Fact]
         public async Task PostRequestAsyncCancelTokenTest()
         {

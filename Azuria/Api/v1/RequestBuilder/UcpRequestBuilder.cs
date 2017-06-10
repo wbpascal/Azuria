@@ -42,7 +42,8 @@ namespace Azuria.Api.v1.RequestBuilder
         /// <seealso cref="GetTopten" />
         public IRequestBuilder DeleteFavourite(int favouriteId)
         {
-            return new Requests.Builder.RequestBuilder(new Uri($"{ApiConstants.ApiUrlV1}/ucp/deletefavorite"), this._client)
+            return new Requests.Builder.RequestBuilder(
+                    new Uri($"{ApiConstants.ApiUrlV1}/ucp/deletefavorite"), this._client)
                 .WithPostParameter("id", favouriteId.ToString())
                 .WithLoginCheck();
         }
@@ -59,7 +60,8 @@ namespace Azuria.Api.v1.RequestBuilder
         /// <seealso cref="GetReminder" />
         public IRequestBuilder DeleteReminder(int reminderId)
         {
-            return new Requests.Builder.RequestBuilder(new Uri($"{ApiConstants.ApiUrlV1}/ucp/deletereminder"), this._client)
+            return new Requests.Builder.RequestBuilder(
+                    new Uri($"{ApiConstants.ApiUrlV1}/ucp/deletereminder"), this._client)
                 .WithPostParameter("id", reminderId.ToString())
                 .WithLoginCheck();
         }
@@ -215,7 +217,8 @@ namespace Azuria.Api.v1.RequestBuilder
         /// <returns>An instance of <see cref="ApiRequest" /> sets a users progress of an anime/manga.</returns>
         public IRequestBuilder SetCommentState(int id, int progress)
         {
-            return new Requests.Builder.RequestBuilder(new Uri($"{ApiConstants.ApiUrlV1}/ucp/setcommentstate"), this._client)
+            return new Requests.Builder.RequestBuilder(
+                    new Uri($"{ApiConstants.ApiUrlV1}/ucp/setcommentstate"), this._client)
                 .WithPostParameter("id", id.ToString())
                 .WithPostParameter("value", progress.ToString())
                 .WithLoginCheck();
@@ -236,9 +239,11 @@ namespace Azuria.Api.v1.RequestBuilder
         /// this).
         /// </param>
         /// <returns>An instance of <see cref="ApiRequest" />.</returns>
-        public IRequestBuilder SetReminder(int entryId, int contentIndex, MediaLanguage language, MediaEntryType category)
+        public IRequestBuilder SetReminder(
+            int entryId, int contentIndex, MediaLanguage language, MediaEntryType category)
         {
-            return new Requests.Builder.RequestBuilder(new Uri($"{ApiConstants.ApiUrlV1}/ucp/setreminder"), this._client)
+            return new Requests.Builder.RequestBuilder(
+                    new Uri($"{ApiConstants.ApiUrlV1}/ucp/setreminder"), this._client)
                 .WithGetParameter("id", entryId.ToString())
                 .WithGetParameter("episode", contentIndex.ToString())
                 .WithGetParameter("language", language.ToTypeString())
