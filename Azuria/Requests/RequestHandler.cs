@@ -5,8 +5,8 @@ using System.Runtime.Serialization;
 using System.Threading;
 using System.Threading.Tasks;
 using Autofac;
-using Azuria.Api.Builder;
 using Azuria.Authentication;
+using Azuria.Enums;
 using Azuria.ErrorHandling;
 using Azuria.Exceptions;
 using Azuria.Requests.Builder;
@@ -84,7 +84,7 @@ namespace Azuria.Requests
         {
             Dictionary<string, string> lHeaders = this._headerManager.GetHeader();
 
-            if (request.CheckLogin && this._loginManager.CheckIsLoginProbablyValid() &&
+            if (request.CheckLogin && !this._loginManager.CheckIsLoginProbablyValid() &&
                 !this._headerManager.ContainsAuthenticationHeaders(lHeaders))
                 return new ProxerResult(
                     new NotAuthenticatedException("The client must be authenticated to make this request!")
@@ -107,6 +107,11 @@ namespace Azuria.Requests
                                                         .Deserialize<T>(lResult.Result, settings, token)
                                                         .ConfigureAwait(false);
             if(!lSerializationResult.Success) return new ProxerResult(lSerializationResult.Exceptions);
+            
+            this._loginManager.PerformedRequest(
+                lSerializationResult.Result.ErrorCode != ErrorCode.LoginTokenInvalid &&
+                this._headerManager.ContainsAuthenticationHeaders(lHeaders)
+            );
 
             T lApiResponse = lSerializationResult.Result;
             if (lApiResponse.Success) return lApiResponse;
@@ -117,7 +122,6 @@ namespace Azuria.Requests
                            ? new ProxerResult(new ProxerApiException(lApiResponse.ErrorCode))
                            : new ProxerResult(lException);
 
-            this._loginManager.QueueLoginForNextRequest();
             return await this.ApiRequestInternalAsync<T>(request, token, settings).ConfigureAwait(false);
         }
     }

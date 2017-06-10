@@ -39,7 +39,12 @@ namespace Azuria.Authentication
         /// </summary>
         /// <param name="token">Optional. The cancellation token used for cancelling the request.</param>
         /// <returns>A <see cref="Task"/> that returns the result of the request.</returns>
-        Task<IProxerResult> PerformLogout(CancellationToken token =default(CancellationToken));
+        Task<IProxerResult> PerformLogout(CancellationToken token = default(CancellationToken));
+
+        /// <summary>
+        /// 
+        /// </summary>
+        void PerformedRequest(bool sendLoginToken = false);
 
         /// <summary>
         /// Queues the login token to be send with the next request.
@@ -47,9 +52,7 @@ namespace Azuria.Authentication
         void QueueLoginForNextRequest();
 
         /// <summary>
-        /// This methods gets called internally. Only call this method yourself if you are sure what you are doing.
-        /// Gets wether or not the login token should be send with the current request. If the request was not
-        /// successfull, <see cref="QueueLoginForNextRequest"/> should be called.
+        /// Gets wether or not the login token should be send with the current request.
         /// </summary>
         /// <returns>A boolean that indicates if the login token should be send with the next request.</returns>
         bool SendTokenWithNextRequest();

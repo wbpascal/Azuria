@@ -46,7 +46,7 @@ namespace Azuria.Authentication
         /// <inheritdoc />
         public virtual async Task<IProxerResult> PerformLogin(
             string username, string password, string secretKey = null,
-            CancellationToken token = new CancellationToken())
+            CancellationToken token = default(CancellationToken))
         {
             IProxerResult<LoginDataModel> lResult =
                 await (secretKey == null
@@ -63,7 +63,7 @@ namespace Azuria.Authentication
         }
 
         /// <inheritdoc />
-        public virtual async Task<IProxerResult> PerformLogout(CancellationToken token = new CancellationToken())
+        public virtual async Task<IProxerResult> PerformLogout(CancellationToken token = default(CancellationToken))
         {
             IProxerResult lResult = await this._userRequestBuilder.Logout().DoRequestAsync(token);
             if (!lResult.Success)
@@ -75,23 +75,21 @@ namespace Azuria.Authentication
         }
 
         /// <inheritdoc />
-        public void QueueLoginForNextRequest()
+        public void PerformedRequest(bool sendLoginToken = false)
         {
-            this._isLoginQueued = true;
+            this._lastRequestPerformed = DateTime.Now;
+            this._isLoginQueued = false;
+            if(sendLoginToken) this._loginPerformed = DateTime.Now;
         }
 
         /// <inheritdoc />
-        public bool SendTokenWithNextRequest()
+        public void QueueLoginForNextRequest()
         {
-            if (this.LoginToken?.Length == 255 && (this._isLoginQueued || !this.CheckIsLoginProbablyValid()))
-            {
-                this._loginPerformed = DateTime.Now;
-                this._lastRequestPerformed = DateTime.Now;
-                return true;
-            }
-
-            this._lastRequestPerformed = DateTime.Now;
-            return false;
+            this._isLoginQueued = this.LoginToken?.Length == 255;
         }
+
+        /// <inheritdoc />
+        public bool SendTokenWithNextRequest() => this.LoginToken?.Length == 255 &&
+                                                  (this._isLoginQueued || !this.CheckIsLoginProbablyValid());
     }
 }
