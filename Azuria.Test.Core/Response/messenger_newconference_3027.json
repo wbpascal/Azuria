@@ -1,5 +1,5 @@
 {
-  "error": 1,
-  "message": "Ungültiger Empfänger.",
-  "code": 3027
+    "error": 1,
+    "message": "Ungültiger Empfänger.",
+    "code": 3027
 }

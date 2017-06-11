@@ -1,176 +1,176 @@
 {
-  "error": 0,
-  "message": "Abfrage erfolgreich",
-  "data": [
-    {
-      "eid": "355",
-      "kat": "anime",
-      "name": "Initial D First Stage",
-      "episode": "23",
-      "language": "gersub",
-      "medium": "animeseries",
-      "id": "1",
-      "state": "1"
-    },
-    {
-      "eid": "17767",
-      "kat": "anime",
-      "name": "Bloodivores",
-      "episode": "4",
-      "language": "engsub",
-      "medium": "animeseries",
-      "id": "38461562",
-      "state": "2"
-    },
-    {
-      "eid": "16536",
-      "kat": "anime",
-      "name": "Bungou Stray Dogs 2nd Season",
-      "episode": "3",
-      "language": "engsub",
-      "medium": "animeseries",
-      "id": "38407651",
-      "state": "2"
-    },
-    {
-      "eid": "17851",
-      "kat": "anime",
-      "name": "Cheating Craft",
-      "episode": "2",
-      "language": "engsub",
-      "medium": "animeseries",
-      "id": "38389417",
-      "state": "2"
-    },
-    {
-      "eid": "16220",
-      "kat": "anime",
-      "name": "Occultic;Nine",
-      "episode": "2",
-      "language": "engsub",
-      "medium": "animeseries",
-      "id": "38140289",
-      "state": "2"
-    },
-    {
-      "eid": "4865",
-      "kat": "anime",
-      "name": "Shinsekai yori",
-      "episode": "24",
-      "language": "gersub",
-      "medium": "animeseries",
-      "id": "37399241",
-      "state": "1"
-    },
-    {
-      "eid": "13772",
-      "kat": "anime",
-      "name": "Servamp",
-      "episode": "3",
-      "language": "engsub",
-      "medium": "animeseries",
-      "id": "36672008",
-      "state": "1"
-    },
-    {
-      "eid": "7011",
-      "kat": "anime",
-      "name": "Yuusha ni Narenakatta Ore wa Shibushibu Shuushoku o Ketsui Shimashita.",
-      "episode": "5",
-      "language": "engsub",
-      "medium": "animeseries",
-      "id": "35902652",
-      "state": "1"
-    },
-    {
-      "eid": "701",
-      "kat": "anime",
-      "name": "To Aru Kagaku no Railgun",
-      "episode": "15",
-      "language": "gersub",
-      "medium": "animeseries",
-      "id": "33790519",
-      "state": "1"
-    },
-    {
-      "eid": "15459",
-      "kat": "anime",
-      "name": "Sousei no Onmyouji",
-      "episode": "14",
-      "language": "engsub",
-      "medium": "animeseries",
-      "id": "33164351",
-      "state": "2"
-    },
-    {
-      "eid": "15210",
-      "kat": "anime",
-      "name": "Steins;Gate: Kyoukaimenjou no Missing Link - Divide By Zero",
-      "episode": "1",
-      "language": "engsub",
-      "medium": "ova",
-      "id": "32152469",
-      "state": "1"
-    },
-    {
-      "eid": "14877",
-      "kat": "anime",
-      "name": "Gyakuten Saiban: Sono \"Shinjitsu\", Igi Ari!",
-      "episode": "11",
-      "language": "engsub",
-      "medium": "animeseries",
-      "id": "31476511",
-      "state": "1"
-    },
-    {
-      "eid": "62",
-      "kat": "anime",
-      "name": "Nyan Koi",
-      "episode": "5",
-      "language": "engsub",
-      "medium": "animeseries",
-      "id": "30663080",
-      "state": "1"
-    },
-    {
-      "eid": "414",
-      "kat": "anime",
-      "name": "Kimi ni Todoke",
-      "episode": "6",
-      "language": "engsub",
-      "medium": "animeseries",
-      "id": "29349833",
-      "state": "1"
-    },
-    {
-      "eid": "14879",
-      "kat": "anime",
-      "name": "Dagashi Kashi",
-      "episode": "5",
-      "language": "engsub",
-      "medium": "animeseries",
-      "id": "24565741",
-      "state": "1"
-    },
-    {
-      "eid": "14538",
-      "kat": "anime",
-      "name": "Sekkou Boys",
-      "episode": "3",
-      "language": "engsub",
-      "medium": "animeseries",
-      "id": "23928890",
-      "state": "1"
-    },
-    {
-      "eid": "12294",
-      "kat": "anime",
-      "name": "K: Return of Kings",
-      "episode": "10",
-      "language": "engsub",
-      "medium": "animeseries",
-      "id": "21635747",
-      "state": "1"
-    }
-  ]
+    "error": 0,
+    "message": "Abfrage erfolgreich",
+    "data": [
+        {
+            "eid": "355",
+            "kat": "anime",
+            "name": "Initial D First Stage",
+            "episode": "23",
+            "language": "gersub",
+            "medium": "animeseries",
+            "id": "1",
+            "state": "1"
+        },
+        {
+            "eid": "17767",
+            "kat": "anime",
+            "name": "Bloodivores",
+            "episode": "4",
+            "language": "engsub",
+            "medium": "animeseries",
+            "id": "38461562",
+            "state": "2"
+        },
+        {
+            "eid": "16536",
+            "kat": "anime",
+            "name": "Bungou Stray Dogs 2nd Season",
+            "episode": "3",
+            "language": "engsub",
+            "medium": "animeseries",
+            "id": "38407651",
+            "state": "2"
+        },
+        {
+            "eid": "17851",
+            "kat": "anime",
+            "name": "Cheating Craft",
+            "episode": "2",
+            "language": "engsub",
+            "medium": "animeseries",
+            "id": "38389417",
+            "state": "2"
+        },
+        {
+            "eid": "16220",
+            "kat": "anime",
+            "name": "Occultic;Nine",
+            "episode": "2",
+            "language": "engsub",
+            "medium": "animeseries",
+            "id": "38140289",
+            "state": "2"
+        },
+        {
+            "eid": "4865",
+            "kat": "anime",
+            "name": "Shinsekai yori",
+            "episode": "24",
+            "language": "gersub",
+            "medium": "animeseries",
+            "id": "37399241",
+            "state": "1"
+        },
+        {
+            "eid": "13772",
+            "kat": "anime",
+            "name": "Servamp",
+            "episode": "3",
+            "language": "engsub",
+            "medium": "animeseries",
+            "id": "36672008",
+            "state": "1"
+        },
+        {
+            "eid": "7011",
+            "kat": "anime",
+            "name": "Yuusha ni Narenakatta Ore wa Shibushibu Shuushoku o Ketsui Shimashita.",
+            "episode": "5",
+            "language": "engsub",
+            "medium": "animeseries",
+            "id": "35902652",
+            "state": "1"
+        },
+        {
+            "eid": "701",
+            "kat": "anime",
+            "name": "To Aru Kagaku no Railgun",
+            "episode": "15",
+            "language": "gersub",
+            "medium": "animeseries",
+            "id": "33790519",
+            "state": "1"
+        },
+        {
+            "eid": "15459",
+            "kat": "anime",
+            "name": "Sousei no Onmyouji",
+            "episode": "14",
+            "language": "engsub",
+            "medium": "animeseries",
+            "id": "33164351",
+            "state": "2"
+        },
+        {
+            "eid": "15210",
+            "kat": "anime",
+            "name": "Steins;Gate: Kyoukaimenjou no Missing Link - Divide By Zero",
+            "episode": "1",
+            "language": "engsub",
+            "medium": "ova",
+            "id": "32152469",
+            "state": "1"
+        },
+        {
+            "eid": "14877",
+            "kat": "anime",
+            "name": "Gyakuten Saiban: Sono \"Shinjitsu\", Igi Ari!",
+            "episode": "11",
+            "language": "engsub",
+            "medium": "animeseries",
+            "id": "31476511",
+            "state": "1"
+        },
+        {
+            "eid": "62",
+            "kat": "anime",
+            "name": "Nyan Koi",
+            "episode": "5",
+            "language": "engsub",
+            "medium": "animeseries",
+            "id": "30663080",
+            "state": "1"
+        },
+        {
+            "eid": "414",
+            "kat": "anime",
+            "name": "Kimi ni Todoke",
+            "episode": "6",
+            "language": "engsub",
+            "medium": "animeseries",
+            "id": "29349833",
+            "state": "1"
+        },
+        {
+            "eid": "14879",
+            "kat": "anime",
+            "name": "Dagashi Kashi",
+            "episode": "5",
+            "language": "engsub",
+            "medium": "animeseries",
+            "id": "24565741",
+            "state": "1"
+        },
+        {
+            "eid": "14538",
+            "kat": "anime",
+            "name": "Sekkou Boys",
+            "episode": "3",
+            "language": "engsub",
+            "medium": "animeseries",
+            "id": "23928890",
+            "state": "1"
+        },
+        {
+            "eid": "12294",
+            "kat": "anime",
+            "name": "K: Return of Kings",
+            "episode": "10",
+            "language": "engsub",
+            "medium": "animeseries",
+            "id": "21635747",
+            "state": "1"
+        }
+    ]
 }

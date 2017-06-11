@@ -1,271 +1,271 @@
 {
-  "error": 0,
-  "message": "Abfrage erfolgreich.",
-  "data": [
-    {
-      "message_id": "4980586",
-      "conference_id": "124536",
-      "user_id": "391004",
-      "username": "cuechan",
-      "message": "Masterside... Du spricht mir aus der Seele",
-      "action": "",
-      "timestamp": "1473097441",
-      "device": "default"
-    },
-    {
-      "message_id": "4980587",
-      "conference_id": "124536",
-      "user_id": "406647",
-      "username": "Marco-",
-      "message": "Oder habe ich wieder irgendwas released was nicht funktioniert xD?",
-      "action": "setTopic",
-      "timestamp": "1473097474",
-      "device": "default"
-    },
-    {
-      "message_id": "4980608",
-      "conference_id": "124536",
-      "user_id": "391004",
-      "username": "cuechan",
-      "message": "Bei mir werden nur 15 Childs gespawned und nichts angezeigt...",
-      "action": "",
-      "timestamp": "1473097842",
-      "device": "default"
-    },
-    {
-      "message_id": "4980636",
-      "conference_id": "124536",
-      "user_id": "391004",
-      "username": "cuechan",
-      "message": "Mit openjdk8 auf Debian",
-      "action": "",
-      "timestamp": "1473098172",
-      "device": "default"
-    },
-    {
-      "message_id": "4980639",
-      "conference_id": "124536",
-      "user_id": "254543",
-      "username": "Masterside",
-      "message":
-        "Ich hab mir die Java Runtime drauf gezogen. Wenn ich die jar Datei jetzt mit der Java.exe öffne blitzt kurz ein cmd fenster auf und geht direkt wieder zu.",
-      "action": "",
-      "timestamp": "1473098214",
-      "device": "default"
-    },
-    {
-      "message_id": "4980649",
-      "conference_id": "124536",
-      "user_id": "406647",
-      "username": "Marco-",
-      "message": "hm kann ich dein Betriebssystem nochmal erfahren?",
-      "action": "",
-      "timestamp": "1473098391",
-      "device": "default"
-    },
-    {
-      "message_id": "4980650",
-      "conference_id": "124536",
-      "user_id": "254543",
-      "username": "Masterside",
-      "message": "Win10 Pro x64",
-      "action": "setLeader",
-      "timestamp": "1473098424",
-      "device": "default"
-    },
-    {
-      "message_id": "4980655",
-      "conference_id": "124536",
-      "user_id": "121658",
-      "username": "RubyDerBoss",
-      "message": "Bei mir gehts. @cuechan, sofern java im PATH is, \"java -jar <Dateiname>\" ausführen.",
-      "action": "",
-      "timestamp": "1473098524",
-      "device": "default"
-    },
-    {
-      "message_id": "4980660",
-      "conference_id": "124536",
-      "user_id": "254543",
-      "username": "Masterside",
-      "message": "hat sich erledigt. Sollte Java auch richtig installieren. xD",
-      "action": "",
-      "timestamp": "1473098618",
-      "device": "default"
-    },
-    {
-      "message_id": "4980668",
-      "conference_id": "124536",
-      "user_id": "406647",
-      "username": "Marco-",
-      "message": ":D klappt es? Wenn ja ist gut, eine Sorge weniger für mich ^_^",
-      "action": "",
-      "timestamp": "1473098730",
-      "device": "default"
-    },
-    {
-      "message_id": "4980738",
-      "conference_id": "124536",
-      "user_id": "391004",
-      "username": "cuechan",
-      "message": "Bei mir funzt es nicht :( \nhttp://pastebin.com/VMLDzsBy",
-      "action": "",
-      "timestamp": "1473099943",
-      "device": "default"
-    },
-    {
-      "message_id": "4980745",
-      "conference_id": "124536",
-      "user_id": "121658",
-      "username": "RubyDerBoss",
-      "message":
-        "@Cuechan installier das Paket OpenJfx (Oder java-openjfk heißt das glaube ich, irgendwie so wirst du das finden^^) da sind JavaFX Komponenten drinnen, die bei Linux seltsamerweise nicht in dem normalen JDK drin sind... (Bei Windows sind sie es schon)",
-      "action": "",
-      "timestamp": "1473100069",
-      "device": "default"
-    },
-    {
-      "message_id": "4980753",
-      "conference_id": "124536",
-      "user_id": "406647",
-      "username": "Marco-",
-      "message": "Das war dann wohl auch das Problem das ich beim testen mit meinem RaspberryPi hatte",
-      "action": "",
-      "timestamp": "1473100220",
-      "device": "default"
-    },
-    {
-      "message_id": "4980771",
-      "conference_id": "124536",
-      "user_id": "391004",
-      "username": "cuechan",
-      "message": "Jop jetzt gehts. Dankeee :)",
-      "action": "",
-      "timestamp": "1473100466",
-      "device": "default"
-    },
-    {
-      "message_id": "4981146",
-      "conference_id": "124536",
-      "user_id": "254543",
-      "username": "Masterside",
-      "message": "http://proxer.me/forum/anwendungen/379477-proxer-me-uwp-2\nFalls es einen interessiert xD",
-      "action": "",
-      "timestamp": "1473106361",
-      "device": "default"
-    },
-    {
-      "message_id": "4987543",
-      "conference_id": "124536",
-      "user_id": "254543",
-      "username": "Masterside",
-      "message": "So, wer bock hat kann test.\nhttp://proxer.me/forum/anwendungen/379477-proxer-me-uwp-2#765517",
-      "action": "",
-      "timestamp": "1473358658",
-      "device": "default"
-    },
-    {
-      "message_id": "4987705",
-      "conference_id": "124536",
-      "user_id": "121658",
-      "username": "RubyDerBoss",
-      "message":
-        "\\O/ funktioniert des auch mit x64? Glaube das nur noch die wenigsten ein x86 Windows installiert haben...",
-      "action": "",
-      "timestamp": "1473361080",
-      "device": "default"
-    },
-    {
-      "message_id": "4987726",
-      "conference_id": "124536",
-      "user_id": "391004",
-      "username": "cuechan",
-      "message": "X64 ist x86",
-      "action": "",
-      "timestamp": "1473361641",
-      "device": "default"
-    },
-    {
-      "message_id": "4987727",
-      "conference_id": "124536",
-      "user_id": "391004",
-      "username": "cuechan",
-      "message": "Bloß mit 32 bits mehr",
-      "action": "",
-      "timestamp": "1473361656",
-      "device": "default"
-    },
-    {
-      "message_id": "4987728",
-      "conference_id": "124536",
-      "user_id": "391004",
-      "username": "cuechan",
-      "message": "Müsste korrekterweise auch x86_64 heißen",
-      "action": "",
-      "timestamp": "1473361708",
-      "device": "default"
-    },
-    {
-      "message_id": "4987741",
-      "conference_id": "124536",
-      "user_id": "121658",
-      "username": "RubyDerBoss",
-      "message": "Okee^^",
-      "action": "",
-      "timestamp": "1473361992",
-      "device": "default"
-    },
-    {
-      "message_id": "4987743",
-      "conference_id": "124536",
-      "user_id": "391004",
-      "username": "cuechan",
-      "message": "^^",
-      "action": "",
-      "timestamp": "1473362057",
-      "device": "default"
-    },
-    {
-      "message_id": "4988295",
-      "conference_id": "124536",
-      "user_id": "406647",
-      "username": "Marco-",
-      "message": "Ich mag das Interface ^_^\n\nSwing sieht daneben so \"lasch\" aus...",
-      "action": "",
-      "timestamp": "1473369697",
-      "device": "default"
-    },
-    {
-      "message_id": "4988726",
-      "conference_id": "124536",
-      "user_id": "254543",
-      "username": "Masterside",
-      "message":
-        "XAML machst möglich, kannst einfach super schnell eigene Styles erstellen und die Controls die UWP schon mitbringt, sind echt super.",
-      "action": "",
-      "timestamp": "1473401930",
-      "device": "default"
-    },
-    {
-      "message_id": "4993905",
-      "conference_id": "124536",
-      "user_id": "406647",
-      "username": "Marco-",
-      "message":
-        "Hat schon jemand herausgefunden in welchem Zeitabstand man Anfragen in einer Schleife senden kann ohne ins Captcha zu laufen?",
-      "action": "",
-      "timestamp": "1473602469",
-      "device": "default"
-    },
-    {
-      "message_id": "4993929",
-      "conference_id": "124536",
-      "user_id": "121658",
-      "username": "RubyDerBoss",
-      "message": "10 pro 30 Sekunden, dann wird wieder zurückgesetzt",
-      "action": "",
-      "timestamp": "1473602846",
-      "device": "default"
-    }
-  ]
+    "error": 0,
+    "message": "Abfrage erfolgreich.",
+    "data": [
+        {
+            "message_id": "4980586",
+            "conference_id": "124536",
+            "user_id": "391004",
+            "username": "cuechan",
+            "message": "Masterside... Du spricht mir aus der Seele",
+            "action": "",
+            "timestamp": "1473097441",
+            "device": "default"
+        },
+        {
+            "message_id": "4980587",
+            "conference_id": "124536",
+            "user_id": "406647",
+            "username": "Marco-",
+            "message": "Oder habe ich wieder irgendwas released was nicht funktioniert xD?",
+            "action": "setTopic",
+            "timestamp": "1473097474",
+            "device": "default"
+        },
+        {
+            "message_id": "4980608",
+            "conference_id": "124536",
+            "user_id": "391004",
+            "username": "cuechan",
+            "message": "Bei mir werden nur 15 Childs gespawned und nichts angezeigt...",
+            "action": "",
+            "timestamp": "1473097842",
+            "device": "default"
+        },
+        {
+            "message_id": "4980636",
+            "conference_id": "124536",
+            "user_id": "391004",
+            "username": "cuechan",
+            "message": "Mit openjdk8 auf Debian",
+            "action": "",
+            "timestamp": "1473098172",
+            "device": "default"
+        },
+        {
+            "message_id": "4980639",
+            "conference_id": "124536",
+            "user_id": "254543",
+            "username": "Masterside",
+            "message":
+                "Ich hab mir die Java Runtime drauf gezogen. Wenn ich die jar Datei jetzt mit der Java.exe öffne blitzt kurz ein cmd fenster auf und geht direkt wieder zu.",
+            "action": "",
+            "timestamp": "1473098214",
+            "device": "default"
+        },
+        {
+            "message_id": "4980649",
+            "conference_id": "124536",
+            "user_id": "406647",
+            "username": "Marco-",
+            "message": "hm kann ich dein Betriebssystem nochmal erfahren?",
+            "action": "",
+            "timestamp": "1473098391",
+            "device": "default"
+        },
+        {
+            "message_id": "4980650",
+            "conference_id": "124536",
+            "user_id": "254543",
+            "username": "Masterside",
+            "message": "Win10 Pro x64",
+            "action": "setLeader",
+            "timestamp": "1473098424",
+            "device": "default"
+        },
+        {
+            "message_id": "4980655",
+            "conference_id": "124536",
+            "user_id": "121658",
+            "username": "RubyDerBoss",
+            "message": "Bei mir gehts. @cuechan, sofern java im PATH is, \"java -jar <Dateiname>\" ausführen.",
+            "action": "",
+            "timestamp": "1473098524",
+            "device": "default"
+        },
+        {
+            "message_id": "4980660",
+            "conference_id": "124536",
+            "user_id": "254543",
+            "username": "Masterside",
+            "message": "hat sich erledigt. Sollte Java auch richtig installieren. xD",
+            "action": "",
+            "timestamp": "1473098618",
+            "device": "default"
+        },
+        {
+            "message_id": "4980668",
+            "conference_id": "124536",
+            "user_id": "406647",
+            "username": "Marco-",
+            "message": ":D klappt es? Wenn ja ist gut, eine Sorge weniger für mich ^_^",
+            "action": "",
+            "timestamp": "1473098730",
+            "device": "default"
+        },
+        {
+            "message_id": "4980738",
+            "conference_id": "124536",
+            "user_id": "391004",
+            "username": "cuechan",
+            "message": "Bei mir funzt es nicht :( \nhttp://pastebin.com/VMLDzsBy",
+            "action": "",
+            "timestamp": "1473099943",
+            "device": "default"
+        },
+        {
+            "message_id": "4980745",
+            "conference_id": "124536",
+            "user_id": "121658",
+            "username": "RubyDerBoss",
+            "message":
+                "@Cuechan installier das Paket OpenJfx (Oder java-openjfk heißt das glaube ich, irgendwie so wirst du das finden^^) da sind JavaFX Komponenten drinnen, die bei Linux seltsamerweise nicht in dem normalen JDK drin sind... (Bei Windows sind sie es schon)",
+            "action": "",
+            "timestamp": "1473100069",
+            "device": "default"
+        },
+        {
+            "message_id": "4980753",
+            "conference_id": "124536",
+            "user_id": "406647",
+            "username": "Marco-",
+            "message": "Das war dann wohl auch das Problem das ich beim testen mit meinem RaspberryPi hatte",
+            "action": "",
+            "timestamp": "1473100220",
+            "device": "default"
+        },
+        {
+            "message_id": "4980771",
+            "conference_id": "124536",
+            "user_id": "391004",
+            "username": "cuechan",
+            "message": "Jop jetzt gehts. Dankeee :)",
+            "action": "",
+            "timestamp": "1473100466",
+            "device": "default"
+        },
+        {
+            "message_id": "4981146",
+            "conference_id": "124536",
+            "user_id": "254543",
+            "username": "Masterside",
+            "message": "http://proxer.me/forum/anwendungen/379477-proxer-me-uwp-2\nFalls es einen interessiert xD",
+            "action": "",
+            "timestamp": "1473106361",
+            "device": "default"
+        },
+        {
+            "message_id": "4987543",
+            "conference_id": "124536",
+            "user_id": "254543",
+            "username": "Masterside",
+            "message": "So, wer bock hat kann test.\nhttp://proxer.me/forum/anwendungen/379477-proxer-me-uwp-2#765517",
+            "action": "",
+            "timestamp": "1473358658",
+            "device": "default"
+        },
+        {
+            "message_id": "4987705",
+            "conference_id": "124536",
+            "user_id": "121658",
+            "username": "RubyDerBoss",
+            "message":
+                "\\O/ funktioniert des auch mit x64? Glaube das nur noch die wenigsten ein x86 Windows installiert haben...",
+            "action": "",
+            "timestamp": "1473361080",
+            "device": "default"
+        },
+        {
+            "message_id": "4987726",
+            "conference_id": "124536",
+            "user_id": "391004",
+            "username": "cuechan",
+            "message": "X64 ist x86",
+            "action": "",
+            "timestamp": "1473361641",
+            "device": "default"
+        },
+        {
+            "message_id": "4987727",
+            "conference_id": "124536",
+            "user_id": "391004",
+            "username": "cuechan",
+            "message": "Bloß mit 32 bits mehr",
+            "action": "",
+            "timestamp": "1473361656",
+            "device": "default"
+        },
+        {
+            "message_id": "4987728",
+            "conference_id": "124536",
+            "user_id": "391004",
+            "username": "cuechan",
+            "message": "Müsste korrekterweise auch x86_64 heißen",
+            "action": "",
+            "timestamp": "1473361708",
+            "device": "default"
+        },
+        {
+            "message_id": "4987741",
+            "conference_id": "124536",
+            "user_id": "121658",
+            "username": "RubyDerBoss",
+            "message": "Okee^^",
+            "action": "",
+            "timestamp": "1473361992",
+            "device": "default"
+        },
+        {
+            "message_id": "4987743",
+            "conference_id": "124536",
+            "user_id": "391004",
+            "username": "cuechan",
+            "message": "^^",
+            "action": "",
+            "timestamp": "1473362057",
+            "device": "default"
+        },
+        {
+            "message_id": "4988295",
+            "conference_id": "124536",
+            "user_id": "406647",
+            "username": "Marco-",
+            "message": "Ich mag das Interface ^_^\n\nSwing sieht daneben so \"lasch\" aus...",
+            "action": "",
+            "timestamp": "1473369697",
+            "device": "default"
+        },
+        {
+            "message_id": "4988726",
+            "conference_id": "124536",
+            "user_id": "254543",
+            "username": "Masterside",
+            "message":
+                "XAML machst möglich, kannst einfach super schnell eigene Styles erstellen und die Controls die UWP schon mitbringt, sind echt super.",
+            "action": "",
+            "timestamp": "1473401930",
+            "device": "default"
+        },
+        {
+            "message_id": "4993905",
+            "conference_id": "124536",
+            "user_id": "406647",
+            "username": "Marco-",
+            "message":
+                "Hat schon jemand herausgefunden in welchem Zeitabstand man Anfragen in einer Schleife senden kann ohne ins Captcha zu laufen?",
+            "action": "",
+            "timestamp": "1473602469",
+            "device": "default"
+        },
+        {
+            "message_id": "4993929",
+            "conference_id": "124536",
+            "user_id": "121658",
+            "username": "RubyDerBoss",
+            "message": "10 pro 30 Sekunden, dann wird wieder zurückgesetzt",
+            "action": "",
+            "timestamp": "1473602846",
+            "device": "default"
+        }
+    ]
 }

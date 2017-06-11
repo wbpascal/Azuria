@@ -1,8 +1,6 @@
-﻿
-#pragma warning disable 1591
-
-namespace Azuria.Enums.Info
+﻿namespace Azuria.Enums.Info
 {
+#pragma warning disable 1591
     /// <summary>
     /// 
     /// </summary>

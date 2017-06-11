@@ -1,19 +1,19 @@
 {
-  "error": 0,
-  "message": "Abfrage erfolgreich.",
-  "data": {
-    "id": "9200",
-    "name": "Shigatsu wa Kimi no Uso",
-    "genre": "Comedy Drama Musik Romance School Shounen Slice_of_Life",
-    "fsk": "fsk12",
-    "description": "Description Text",
-    "medium": "animeseries",
-    "count": "22",
-    "state": "1",
-    "rate_sum": "40527",
-    "rate_count": "4371",
-    "clicks": "23604",
-    "kat": "anime",
-    "license": "2"
-  }
+    "error": 0,
+    "message": "Abfrage erfolgreich.",
+    "data": {
+        "id": "9200",
+        "name": "Shigatsu wa Kimi no Uso",
+        "genre": "Comedy Drama Musik Romance School Shounen Slice_of_Life",
+        "fsk": "fsk12",
+        "description": "Description Text",
+        "medium": "animeseries",
+        "count": "22",
+        "state": "1",
+        "rate_sum": "40527",
+        "rate_count": "4371",
+        "clicks": "23604",
+        "kat": "anime",
+        "license": "2"
+    }
 }

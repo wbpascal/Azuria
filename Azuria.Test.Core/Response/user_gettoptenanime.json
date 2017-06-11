@@ -1,18 +1,18 @@
 {
-  "error": 0,
-  "message": "Abfrage erfolgreich",
-  "data": [
-    {
-      "eid": "2085",
-      "name": "Guilty Crown",
-      "kat": "anime",
-      "medium": "animeseries"
-    },
-    {
-      "eid": "9200",
-      "name": "Shigatsu wa Kimi no Uso",
-      "kat": "anime",
-      "medium": "animeseries"
-    }
-  ]
+    "error": 0,
+    "message": "Abfrage erfolgreich",
+    "data": [
+        {
+            "eid": "2085",
+            "name": "Guilty Crown",
+            "kat": "anime",
+            "medium": "animeseries"
+        },
+        {
+            "eid": "9200",
+            "name": "Shigatsu wa Kimi no Uso",
+            "kat": "anime",
+            "medium": "animeseries"
+        }
+    ]
 }

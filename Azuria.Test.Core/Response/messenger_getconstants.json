@@ -1,11 +1,11 @@
 {
-  "error": 0,
-  "message": "Abfrage erfolgreich.",
-  "data": {
-    "textCount": 65000,
-    "conferenceLimit": 48,
-    "messagesLimit": 30,
-    "userLimit": 100,
-    "topicCount": 32
-  }
+    "error": 0,
+    "message": "Abfrage erfolgreich.",
+    "data": {
+        "textCount": 65000,
+        "conferenceLimit": 48,
+        "messagesLimit": 30,
+        "userLimit": 100,
+        "topicCount": 32
+    }
 }

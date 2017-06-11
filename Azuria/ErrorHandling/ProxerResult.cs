@@ -31,7 +31,6 @@ namespace Azuria.ErrorHandling
         {
         }
 
-
         /// <summary>
         /// Initialises a new instance with a single exception that was thrown during method execution
         /// (indicating that the method did not execute successfully).

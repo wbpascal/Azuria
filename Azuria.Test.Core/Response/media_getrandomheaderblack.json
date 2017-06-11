@@ -1,9 +1,9 @@
 {
-  "error": 0,
-  "message": "Abfrage erfolgreich",
-  "data": {
-    "gid": "59243",
-    "catpath": "other_stuff__memes_17/63",
-    "imgfilename": "59243"
-  }
+    "error": 0,
+    "message": "Abfrage erfolgreich",
+    "data": {
+        "gid": "59243",
+        "catpath": "other_stuff__memes_17/63",
+        "imgfilename": "59243"
+    }
 }
