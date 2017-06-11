@@ -1,6 +1,7 @@
 ﻿using System;
 using Azuria.Api.v1.Converters;
 using Azuria.Api.v1.Converters.Anime;
+using Azuria.Api.v1.DataModels.Media;
 using Azuria.Enums.Info;
 using Newtonsoft.Json;
 
@@ -8,7 +9,7 @@ namespace Azuria.Api.v1.DataModels.Anime
 {
     /// <summary>
     /// </summary>
-    public class StreamDataModel
+    public class StreamDataModel : UploadedMediaDataModel
     {
         /// <summary>
         /// </summary>
@@ -40,26 +41,6 @@ namespace Azuria.Api.v1.DataModels.Anime
         /// </summary>
         [JsonProperty("id")]
         public int StreamId { get; set; }
-
-        /// <summary>
-        /// </summary>
-        [JsonProperty("tid")]
-        public int? TranslatorId { get; set; }
-
-        /// <summary>
-        /// </summary>
-        [JsonProperty("tname")]
-        public string TranslatorName { get; set; }
-
-        /// <summary>
-        /// </summary>
-        [JsonProperty("uploader")]
-        public int UploaderId { get; set; }
-
-        /// <summary>
-        /// </summary>
-        [JsonProperty("username")]
-        public string UploaderName { get; set; }
 
         /// <summary>
         /// </summary>
