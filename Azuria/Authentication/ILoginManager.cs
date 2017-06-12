@@ -30,7 +30,7 @@ namespace Azuria.Authentication
         /// <param name="secretKey">Optional. The 2FA-Token used to authenticate the client.</param>
         /// <param name="token">Optional. The cancellation token used for cancelling the request.</param>
         /// <returns>A <see cref="Task"/> that returns the result of the request.</returns>
-        Task<IProxerResult> PerformLogin(
+        Task<IProxerResult> PerformLoginAsync(
             string username, string password, string secretKey = null,
             CancellationToken token = default(CancellationToken));
 
@@ -39,7 +39,7 @@ namespace Azuria.Authentication
         /// </summary>
         /// <param name="token">Optional. The cancellation token used for cancelling the request.</param>
         /// <returns>A <see cref="Task"/> that returns the result of the request.</returns>
-        Task<IProxerResult> PerformLogout(CancellationToken token = default(CancellationToken));
+        Task<IProxerResult> PerformLogoutAsync(CancellationToken token = default(CancellationToken));
 
         /// <summary>
         /// 

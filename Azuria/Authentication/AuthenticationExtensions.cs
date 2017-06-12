@@ -23,7 +23,7 @@ namespace Azuria.Authentication
             this IProxerClient client, string username, string password, string secretKey = null,
             CancellationToken token = default(CancellationToken))
         {
-            return client.Container.Resolve<ILoginManager>().PerformLogin(username, password, secretKey, token);
+            return client.Container.Resolve<ILoginManager>().PerformLoginAsync(username, password, secretKey, token);
         }
 
         /// <summary>
@@ -35,7 +35,7 @@ namespace Azuria.Authentication
         public static Task<IProxerResult> LogoutAsync(
             this IProxerClient client, CancellationToken token = default(CancellationToken))
         {
-            return client.Container.Resolve<ILoginManager>().PerformLogout(token);
+            return client.Container.Resolve<ILoginManager>().PerformLogoutAsync(token);
         }
     }
 }

@@ -48,7 +48,7 @@ namespace Azuria.Test.Authentication
                 new char[32], options => { options.ContainerBuilder.RegisterInstance(lRequestHandler); });
             ILoginManager lLoginManager = lClient.Container.Resolve<ILoginManager>();
 
-            IProxerResult lResult = await lLoginManager.PerformLogin("username", "password", token: lCancellationToken);
+            IProxerResult lResult = await lLoginManager.PerformLoginAsync("username", "password", token: lCancellationToken);
             Assert.True(lResult.Success);
             Assert.Empty(lResult.Exceptions);
 
@@ -78,7 +78,7 @@ namespace Azuria.Test.Authentication
                 new char[32], options => { options.ContainerBuilder.RegisterInstance(lRequestHandler); });
             ILoginManager lLoginManager = lClient.Container.Resolve<ILoginManager>();
 
-            IProxerResult lResult = await lLoginManager.PerformLogin(
+            IProxerResult lResult = await lLoginManager.PerformLoginAsync(
                                         "username", "password", new string(new char[6]), lCancellationToken
                                     );
             Assert.True(lResult.Success);
@@ -105,7 +105,7 @@ namespace Azuria.Test.Authentication
                 new char[32], options => { options.ContainerBuilder.RegisterInstance(lRequestHandler); });
             ILoginManager lLoginManager = lClient.Container.Resolve<ILoginManager>();
 
-            IProxerResult lResult = await lLoginManager.PerformLogout(lCancellationToken);
+            IProxerResult lResult = await lLoginManager.PerformLogoutAsync(lCancellationToken);
             Assert.True(lResult.Success);
             Assert.Empty(lResult.Exceptions);
 
