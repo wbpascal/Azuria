@@ -44,9 +44,9 @@ namespace Azuria.ErrorHandling
         public T Result { get; set; }
 
         /// <inheritdoc />
-        public void Deconstruct(out bool sucess, out IEnumerable<Exception> exceptions, out T result)
+        public void Deconstruct(out bool success, out IEnumerable<Exception> exceptions, out T result)
         {
-            sucess = this.Success;
+            success = this.Success;
             exceptions = this.Exceptions;
             result = this.Result;
         }
@@ -85,9 +85,9 @@ namespace Azuria.ErrorHandling
         }
 
         /// <inheritdoc />
-        public void Deconstruct(out bool sucess, out IEnumerable<Exception> exceptions)
+        public void Deconstruct(out bool success, out IEnumerable<Exception> exceptions)
         {
-            sucess = this.Success;
+            success = this.Success;
             exceptions = this.Exceptions;
         }
     }
