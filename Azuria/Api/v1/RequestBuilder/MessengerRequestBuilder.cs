@@ -12,18 +12,19 @@ namespace Azuria.Api.v1.RequestBuilder
     /// <summary>
     /// Represents the messenger api class.
     /// </summary>
-    public class MessengerRequestBuilder
+    public class MessengerRequestBuilder : IApiClassRequestBuilder
     {
-        private readonly IProxerClient _client;
-
         /// <summary>
         /// 
         /// </summary>
         /// <param name="client"></param>
         public MessengerRequestBuilder(IProxerClient client)
         {
-            this._client = client;
+            this.ProxerClient = client;
         }
+
+        /// <inheritdoc />
+        public IProxerClient ProxerClient { get; }
 
         /// <summary>
         /// Builds a request that returns informations about a specified conference.
@@ -37,7 +38,7 @@ namespace Azuria.Api.v1.RequestBuilder
         public IRequestBuilderWithResult<ConferenceInfoDataModel> GetConferenceInfo(int conferenceId)
         {
             return new RequestBuilder<ConferenceInfoDataModel>(
-                    new Uri($"{ApiConstants.ApiUrlV1}/messenger/conferenceinfo"), this._client
+                    new Uri($"{ApiConstants.ApiUrlV1}/messenger/conferenceinfo"), this.ProxerClient
                 ).WithGetParameter("conference_id", conferenceId.ToString())
                 .WithLoginCheck();
         }
@@ -56,7 +57,7 @@ namespace Azuria.Api.v1.RequestBuilder
             ConferenceList type = ConferenceList.Default, int page = 0)
         {
             return new RequestBuilder<ConferenceDataModel[]>(
-                    new Uri($"{ApiConstants.ApiUrlV1}/messenger/conferences"), this._client
+                    new Uri($"{ApiConstants.ApiUrlV1}/messenger/conferences"), this.ProxerClient
                 ).WithGetParameter("type", type.ToString().ToLowerInvariant())
                 .WithGetParameter("p", page.ToString())
                 .WithLoginCheck();
@@ -73,7 +74,7 @@ namespace Azuria.Api.v1.RequestBuilder
         public IRequestBuilderWithResult<ConstantsDataModel> GetConstants()
         {
             return new RequestBuilder<ConstantsDataModel>(
-                new Uri($"{ApiConstants.ApiUrlV1}/messenger/constants"), this._client
+                new Uri($"{ApiConstants.ApiUrlV1}/messenger/constants"), this.ProxerClient
             );
         }
 
@@ -103,7 +104,7 @@ namespace Azuria.Api.v1.RequestBuilder
             int conferenceId = 0, int messageId = 0, bool markAsRead = true)
         {
             return new RequestBuilder<MessageDataModel[]>(
-                    new Uri($"{ApiConstants.ApiUrlV1}/messenger/messages"), this._client
+                    new Uri($"{ApiConstants.ApiUrlV1}/messenger/messages"), this.ProxerClient
                 ).WithGetParameter("conference_id", conferenceId.ToString())
                 .WithGetParameter("message_id", messageId.ToString())
                 .WithGetParameter("read", markAsRead.ToString().ToLowerInvariant())
@@ -124,7 +125,7 @@ namespace Azuria.Api.v1.RequestBuilder
         public IRequestBuilderWithResult<int> NewConference(string username, string text)
         {
             return new RequestBuilder<int>(
-                    new Uri($"{ApiConstants.ApiUrlV1}/messenger/newconference"), this._client
+                    new Uri($"{ApiConstants.ApiUrlV1}/messenger/newconference"), this.ProxerClient
                 ).WithPostParameter("username", username)
                 .WithPostParameter("text", text)
                 .WithLoginCheck();
@@ -159,7 +160,7 @@ namespace Azuria.Api.v1.RequestBuilder
             );
 
             return new RequestBuilder<int>(
-                    new Uri($"{ApiConstants.ApiUrlV1}/messenger/newconferencegroup"), this._client
+                    new Uri($"{ApiConstants.ApiUrlV1}/messenger/newconferencegroup"), this.ProxerClient
                 ).WithPostParameter(lPostArgs)
                 .WithLoginCheck();
         }
@@ -176,7 +177,7 @@ namespace Azuria.Api.v1.RequestBuilder
         public IRequestBuilder SetBlock(int conferenceId)
         {
             return new Requests.Builder.RequestBuilder(
-                    new Uri($"{ApiConstants.ApiUrlV1}/messenger/setblock"), this._client)
+                    new Uri($"{ApiConstants.ApiUrlV1}/messenger/setblock"), this.ProxerClient)
                 .WithGetParameter("conference_id", conferenceId.ToString())
                 .WithLoginCheck();
         }
@@ -193,7 +194,7 @@ namespace Azuria.Api.v1.RequestBuilder
         public IRequestBuilder SetFavour(int conferenceId)
         {
             return new Requests.Builder.RequestBuilder(
-                    new Uri($"{ApiConstants.ApiUrlV1}/messenger/setfavour"), this._client)
+                    new Uri($"{ApiConstants.ApiUrlV1}/messenger/setfavour"), this.ProxerClient)
                 .WithGetParameter("conference_id", conferenceId.ToString())
                 .WithLoginCheck();
         }
@@ -212,7 +213,7 @@ namespace Azuria.Api.v1.RequestBuilder
         public IRequestBuilderWithResult<string> SetMessage(int conferenceId, string message)
         {
             return new RequestBuilder<string>(
-                    new Uri($"{ApiConstants.ApiUrlV1}/messenger/setmessage"), this._client
+                    new Uri($"{ApiConstants.ApiUrlV1}/messenger/setmessage"), this.ProxerClient
                 ).WithGetParameter("conference_id", conferenceId.ToString())
                 .WithPostParameter("text", message)
                 .WithLoginCheck();
@@ -230,7 +231,7 @@ namespace Azuria.Api.v1.RequestBuilder
         public IRequestBuilder SetRead(int conferenceId)
         {
             return new Requests.Builder.RequestBuilder(
-                    new Uri($"{ApiConstants.ApiUrlV1}/messenger/setread"), this._client)
+                    new Uri($"{ApiConstants.ApiUrlV1}/messenger/setread"), this.ProxerClient)
                 .WithGetParameter("conference_id", conferenceId.ToString())
                 .WithLoginCheck();
         }
@@ -248,7 +249,7 @@ namespace Azuria.Api.v1.RequestBuilder
         public IRequestBuilder SetReport(int conferenceId, string reason)
         {
             return new Requests.Builder.RequestBuilder(
-                    new Uri($"{ApiConstants.ApiUrlV1}/messenger/report"), this._client)
+                    new Uri($"{ApiConstants.ApiUrlV1}/messenger/report"), this.ProxerClient)
                 .WithGetParameter("conference_id", conferenceId.ToString())
                 .WithPostParameter("text", reason)
                 .WithLoginCheck();
@@ -266,7 +267,7 @@ namespace Azuria.Api.v1.RequestBuilder
         public IRequestBuilder SetUnblock(int conferenceId)
         {
             return new Requests.Builder.RequestBuilder(
-                    new Uri($"{ApiConstants.ApiUrlV1}/messenger/setunblock"), this._client)
+                    new Uri($"{ApiConstants.ApiUrlV1}/messenger/setunblock"), this.ProxerClient)
                 .WithGetParameter("conference_id", conferenceId.ToString())
                 .WithLoginCheck();
         }
@@ -283,7 +284,7 @@ namespace Azuria.Api.v1.RequestBuilder
         public IRequestBuilder SetUnfavour(int conferenceId)
         {
             return new Requests.Builder.RequestBuilder(
-                    new Uri($"{ApiConstants.ApiUrlV1}/messenger/setunfavour"), this._client)
+                    new Uri($"{ApiConstants.ApiUrlV1}/messenger/setunfavour"), this.ProxerClient)
                 .WithGetParameter("conference_id", conferenceId.ToString())
                 .WithLoginCheck();
         }
@@ -300,7 +301,7 @@ namespace Azuria.Api.v1.RequestBuilder
         public IRequestBuilder SetUnread(int conferenceId)
         {
             return new Requests.Builder.RequestBuilder(
-                    new Uri($"{ApiConstants.ApiUrlV1}/messenger/setunread"), this._client)
+                    new Uri($"{ApiConstants.ApiUrlV1}/messenger/setunread"), this.ProxerClient)
                 .WithGetParameter("conference_id", conferenceId.ToString())
                 .WithLoginCheck();
         }

@@ -15,18 +15,19 @@ namespace Azuria.Api.v1.RequestBuilder
     /// <summary>
     /// Represents the list api class.
     /// </summary>
-    public class ListRequestBuilder
+    public class ListRequestBuilder : IApiClassRequestBuilder
     {
-        private readonly IProxerClient _client;
-
         /// <summary>
         /// 
         /// </summary>
         /// <param name="client"></param>
         public ListRequestBuilder(IProxerClient client)
         {
-            this._client = client;
+            this.ProxerClient = client;
         }
+
+        /// <inheritdoc />
+        public IProxerClient ProxerClient { get; }
 
         /// <summary>
         /// Builds a request that returns the results of a search for anime and
@@ -47,7 +48,7 @@ namespace Azuria.Api.v1.RequestBuilder
             SearchInput input, int limit = 100, int page = 0)
         {
             return new RequestBuilder<SearchDataModel[]>(
-                    new Uri($"{ApiConstants.ApiUrlV1}/list/entrysearch"), this._client
+                    new Uri($"{ApiConstants.ApiUrlV1}/list/entrysearch"), this.ProxerClient
                 ).WithGetParameter("limit", limit.ToString())
                 .WithGetParameter("p", page.ToString())
                 .WithPostParameter(input.Build());
@@ -70,7 +71,7 @@ namespace Azuria.Api.v1.RequestBuilder
             EntryListInput input, int limit = 100, int page = 0)
         {
             return new RequestBuilder<SearchDataModel[]>(
-                    new Uri($"{ApiConstants.ApiUrlV1}/list/entrylist"), this._client
+                    new Uri($"{ApiConstants.ApiUrlV1}/list/entrylist"), this.ProxerClient
                 ).WithGetParameter("limit", limit.ToString())
                 .WithGetParameter("p", page.ToString())
                 .WithPostParameter(input.Build());
@@ -103,7 +104,7 @@ namespace Azuria.Api.v1.RequestBuilder
                 throw new NotSupportedException("England is not supported in this request");
 
             return new RequestBuilder<IndustryDataModel[]>(
-                    new Uri($"{ApiConstants.ApiUrlV1}/list/industrys"), this._client
+                    new Uri($"{ApiConstants.ApiUrlV1}/list/industrys"), this.ProxerClient
                 ).WithGetParameter("start", start)
                 .WithGetParameter("contains", contains)
                 .WithGetParameter("country", country?.ToShortString() ?? string.Empty)
@@ -128,7 +129,7 @@ namespace Azuria.Api.v1.RequestBuilder
             int translatorId, IndustryType? type = null, bool? isH = false, int p = 0, int limit = 100)
         {
             return new RequestBuilder<IndustryProjectDataModel[]>(
-                    new Uri($"{ApiConstants.ApiUrlV1}/list/industryprojects"), this._client
+                    new Uri($"{ApiConstants.ApiUrlV1}/list/industryprojects"), this.ProxerClient
                 ).WithGetParameter("id", translatorId.ToString())
                 .WithGetParameter("type", type?.ToTypeString() ?? string.Empty)
                 .WithGetParameter("isH", GetHValue(isH).ToString())
@@ -147,7 +148,7 @@ namespace Azuria.Api.v1.RequestBuilder
         public IRequestBuilderWithResult<Tuple<int[], int[]>> GetTagIds(string search)
         {
             return new RequestBuilder<Tuple<int[], int[]>>(
-                    new Uri($"{ApiConstants.ApiUrlV1}/list/tagids"), this._client
+                    new Uri($"{ApiConstants.ApiUrlV1}/list/tagids"), this.ProxerClient
                 ).WithGetParameter("search", search)
                 .WithCustomDataConverter(new TagIdConverter());
         }
@@ -169,7 +170,7 @@ namespace Azuria.Api.v1.RequestBuilder
             SortDirection sortDirection = SortDirection.Ascending, TagSubtype? subtype = null)
         {
             return new RequestBuilder<TagDataModel[]>(
-                    new Uri($"{ApiConstants.ApiUrlV1}/list/tags"), this._client
+                    new Uri($"{ApiConstants.ApiUrlV1}/list/tags"), this.ProxerClient
                 ).WithGetParameter("search", search)
                 .WithGetParameter("type", type?.GetDescription() ?? string.Empty)
                 .WithGetParameter("sort", sort.ToString().ToLowerInvariant())
@@ -193,7 +194,7 @@ namespace Azuria.Api.v1.RequestBuilder
             string start = "", string contains = "", Country? country = null, int limit = 100, int page = 0)
         {
             return new RequestBuilder<TranslatorDataModel[]>(
-                    new Uri($"{ApiConstants.ApiUrlV1}/list/translatorgroups"), this._client
+                    new Uri($"{ApiConstants.ApiUrlV1}/list/translatorgroups"), this.ProxerClient
                 ).WithGetParameter("start", start)
                 .WithGetParameter("contains", contains)
                 .WithGetParameter("country", country?.ToShortString() ?? string.Empty)
@@ -217,7 +218,7 @@ namespace Azuria.Api.v1.RequestBuilder
             int translatorId, TranslationStatus? type = null, bool? isH = false, int p = 0, int limit = 100)
         {
             return new RequestBuilder<TranslatorProjectDataModel[]>(
-                    new Uri($"{ApiConstants.ApiUrlV1}/list/translatorgroupprojects"), this._client
+                    new Uri($"{ApiConstants.ApiUrlV1}/list/translatorgroupprojects"), this.ProxerClient
                 ).WithGetParameter("id", translatorId.ToString())
                 .WithGetParameter("type", type != null ? ((int) type.Value).ToString() : string.Empty)
                 .WithGetParameter("isH", GetHValue(isH).ToString())

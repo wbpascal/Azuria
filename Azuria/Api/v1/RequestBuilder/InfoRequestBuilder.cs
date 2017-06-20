@@ -12,18 +12,19 @@ namespace Azuria.Api.v1.RequestBuilder
     /// <summary>
     /// Represents the info api class.
     /// </summary>
-    public class InfoRequestBuilder
+    public class InfoRequestBuilder : IApiClassRequestBuilder
     {
-        private readonly IProxerClient _client;
-
         /// <summary>
         /// 
         /// </summary>
         /// <param name="client"></param>
         public InfoRequestBuilder(IProxerClient client)
         {
-            this._client = client;
+            this.ProxerClient = client;
         }
+
+        /// <inheritdoc />
+        public IProxerClient ProxerClient { get; }
 
         /// <summary>
         /// Builds a request that returns all comments of an anime or manga
@@ -46,7 +47,7 @@ namespace Azuria.Api.v1.RequestBuilder
             int entryId, int page = 0, int limit = 25, CommentSort sort = CommentSort.Newest)
         {
             return new RequestBuilder<CommentDataModel[]>(
-                    new Uri($"{ApiConstants.ApiUrlV1}/info/comments"), this._client
+                    new Uri($"{ApiConstants.ApiUrlV1}/info/comments"), this.ProxerClient
                 ).WithGetParameter("id", entryId.ToString())
                 .WithGetParameter("p", page.ToString())
                 .WithGetParameter("limit", limit.ToString())
@@ -65,7 +66,7 @@ namespace Azuria.Api.v1.RequestBuilder
         public IRequestBuilderWithResult<EntryDataModel> GetEntry(int entryId)
         {
             return new RequestBuilder<EntryDataModel>(
-                new Uri($"{ApiConstants.ApiUrlV1}/info/entry"), this._client
+                new Uri($"{ApiConstants.ApiUrlV1}/info/entry"), this.ProxerClient
             ).WithGetParameter("id", entryId.ToString());
         }
 
@@ -80,7 +81,7 @@ namespace Azuria.Api.v1.RequestBuilder
         public IRequestBuilderWithResult<MediaTagDataModel[]> GetEntryTags(int entryId)
         {
             return new RequestBuilder<MediaTagDataModel[]>(
-                new Uri($"{ApiConstants.ApiUrlV1}/info/entrytags"), this._client
+                new Uri($"{ApiConstants.ApiUrlV1}/info/entrytags"), this.ProxerClient
             ).WithGetParameter("id", entryId.ToString());
         }
 
@@ -99,7 +100,7 @@ namespace Azuria.Api.v1.RequestBuilder
         public IRequestBuilderWithResult<FullEntryDataModel> GetFullEntry(int entryId)
         {
             return new RequestBuilder<FullEntryDataModel>(
-                new Uri($"{ApiConstants.ApiUrlV1}/info/fullentry?id={entryId}"), this._client
+                new Uri($"{ApiConstants.ApiUrlV1}/info/fullentry?id={entryId}"), this.ProxerClient
             );
         }
 
@@ -114,7 +115,7 @@ namespace Azuria.Api.v1.RequestBuilder
         /// <returns>An instance of <see cref="ApiRequest" /> that returns a boolean.</returns>
         public IRequestBuilderWithResult<bool> GetGate(int entryId)
         {
-            return new RequestBuilder<bool>(new Uri($"{ApiConstants.ApiUrlV1}/info/gate"), this._client)
+            return new RequestBuilder<bool>(new Uri($"{ApiConstants.ApiUrlV1}/info/gate"), this.ProxerClient)
                 .WithGetParameter("id", entryId.ToString());
         }
 
@@ -130,7 +131,7 @@ namespace Azuria.Api.v1.RequestBuilder
         public IRequestBuilderWithResult<TranslatorDataModel[]> GetGroups(int entryId)
         {
             return new RequestBuilder<TranslatorDataModel[]>(
-                new Uri($"{ApiConstants.ApiUrlV1}/info/groups"), this._client
+                new Uri($"{ApiConstants.ApiUrlV1}/info/groups"), this.ProxerClient
             ).WithGetParameter("id", entryId.ToString());
         }
 
@@ -145,7 +146,7 @@ namespace Azuria.Api.v1.RequestBuilder
         public IRequestBuilderWithResult<TranslatorDataModel[]> GetIndustry(int id)
         {
             return new RequestBuilder<TranslatorDataModel[]>(
-                new Uri($"{ApiConstants.ApiUrlV1}/info/industry"), this._client
+                new Uri($"{ApiConstants.ApiUrlV1}/info/industry"), this.ProxerClient
             ).WithGetParameter("id", id.ToString());
         }
 
@@ -160,7 +161,7 @@ namespace Azuria.Api.v1.RequestBuilder
         /// <returns>An instance of <see cref="ApiRequest" /> that returns an array of languages.</returns>
         public IRequestBuilderWithResult<MediaLanguage[]> GetLanguage(int entryId)
         {
-            return new RequestBuilder<MediaLanguage[]>(new Uri($"{ApiConstants.ApiUrlV1}/info/lang"), this._client)
+            return new RequestBuilder<MediaLanguage[]>(new Uri($"{ApiConstants.ApiUrlV1}/info/lang"), this.ProxerClient)
                 .WithGetParameter("id", entryId.ToString())
                 .WithCustomDataConverter(new LanguageCollectionConverter());
         }
@@ -184,7 +185,7 @@ namespace Azuria.Api.v1.RequestBuilder
         public IRequestBuilderWithResult<ListInfoDataModel> GetListInfo(int entryId, int page = 0, int limit = 50)
         {
             return new RequestBuilder<ListInfoDataModel>(
-                    new Uri($"{ApiConstants.ApiUrlV1}/info/listinfo"), this._client
+                    new Uri($"{ApiConstants.ApiUrlV1}/info/listinfo"), this.ProxerClient
                 ).WithGetParameter("id", entryId.ToString())
                 .WithGetParameter("p", page.ToString())
                 .WithGetParameter("limit", limit.ToString());
@@ -205,7 +206,7 @@ namespace Azuria.Api.v1.RequestBuilder
         public IRequestBuilderWithResult<NameDataModel[]> GetName(int entryId)
         {
             return new RequestBuilder<NameDataModel[]>(
-                new Uri($"{ApiConstants.ApiUrlV1}/info/names"), this._client
+                new Uri($"{ApiConstants.ApiUrlV1}/info/names"), this.ProxerClient
             ).WithGetParameter("id", entryId.ToString());
         }
 
@@ -223,7 +224,7 @@ namespace Azuria.Api.v1.RequestBuilder
         public IRequestBuilderWithResult<PublisherDataModel[]> GetPublisher(int entryId)
         {
             return new RequestBuilder<PublisherDataModel[]>(
-                new Uri($"{ApiConstants.ApiUrlV1}/info/publisher"), this._client
+                new Uri($"{ApiConstants.ApiUrlV1}/info/publisher"), this.ProxerClient
             ).WithGetParameter("id", entryId.ToString());
         }
 
@@ -238,7 +239,7 @@ namespace Azuria.Api.v1.RequestBuilder
         public IRequestBuilderWithResult<RelationDataModel[]> GetRelations(int entryId)
         {
             return new RequestBuilder<RelationDataModel[]>(
-                new Uri($"{ApiConstants.ApiUrlV1}/info/relations"), this._client
+                new Uri($"{ApiConstants.ApiUrlV1}/info/relations"), this.ProxerClient
             ).WithGetParameter("id", entryId.ToString());
         }
 
@@ -253,7 +254,7 @@ namespace Azuria.Api.v1.RequestBuilder
         public IRequestBuilderWithResult<SeasonDataModel[]> GetSeason(int entryId)
         {
             return new RequestBuilder<SeasonDataModel[]>(
-                new Uri($"{ApiConstants.ApiUrlV1}/info/season"), this._client
+                new Uri($"{ApiConstants.ApiUrlV1}/info/season"), this.ProxerClient
             ).WithGetParameter("id", entryId.ToString());
         }
 
@@ -268,7 +269,7 @@ namespace Azuria.Api.v1.RequestBuilder
         public IRequestBuilderWithResult<TranslatorDataModel[]> GetTranslatorGroup(int id)
         {
             return new RequestBuilder<TranslatorDataModel[]>(
-                new Uri($"{ApiConstants.ApiUrlV1}/info/translatorgroup"), this._client
+                new Uri($"{ApiConstants.ApiUrlV1}/info/translatorgroup"), this.ProxerClient
             ).WithGetParameter("id", id.ToString());
         }
 
@@ -288,7 +289,7 @@ namespace Azuria.Api.v1.RequestBuilder
         public IRequestBuilder SetUserInfo(int entryId, UserList list)
         {
             return new Requests.Builder.RequestBuilder(
-                    new Uri($"{ApiConstants.ApiUrlV1}/info/setuserinfo"), this._client)
+                    new Uri($"{ApiConstants.ApiUrlV1}/info/setuserinfo"), this.ProxerClient)
                 .WithPostParameter("id", entryId.ToString())
                 .WithPostParameter("type", list.ToTypeString())
                 .WithLoginCheck();

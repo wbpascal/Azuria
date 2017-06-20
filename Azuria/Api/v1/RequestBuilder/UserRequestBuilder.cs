@@ -12,23 +12,24 @@ namespace Azuria.Api.v1.RequestBuilder
     /// <summary>
     /// Represents the user api class.
     /// </summary>
-    public class UserRequestBuilder
+    public class UserRequestBuilder : IApiClassRequestBuilder
     {
-        private readonly IProxerClient _client;
-
         /// <summary>
         /// 
         /// </summary>
         /// <param name="client"></param>
         public UserRequestBuilder(IProxerClient client)
         {
-            this._client = client;
+            this.ProxerClient = client;
         }
+
+        /// <inheritdoc />
+        public IProxerClient ProxerClient { get; }
 
         private IRequestBuilderWithResult<HistoryDataModel[]> GetHistory(string page, string limit)
         {
             return new RequestBuilder<HistoryDataModel[]>(
-                    new Uri($"{ApiConstants.ApiUrlV1}/user/history"), this._client
+                    new Uri($"{ApiConstants.ApiUrlV1}/user/history"), this.ProxerClient
                 ).WithGetParameter("p", page)
                 .WithGetParameter("limit", limit);
         }
@@ -71,7 +72,7 @@ namespace Azuria.Api.v1.RequestBuilder
         public IRequestBuilderWithResult<UserInfoDataModel> GetInfo()
         {
             return new RequestBuilder<UserInfoDataModel>(
-                new Uri($"{ApiConstants.ApiUrlV1}/user/userinfo"), this._client
+                new Uri($"{ApiConstants.ApiUrlV1}/user/userinfo"), this.ProxerClient
             ).WithLoginCheck();
         }
 
@@ -109,7 +110,7 @@ namespace Azuria.Api.v1.RequestBuilder
             int page = 0, int limit = 25, MediaEntryType category = MediaEntryType.Anime, int length = 300)
         {
             return new RequestBuilder<CommentDataModel[]>(
-                    new Uri($"{ApiConstants.ApiUrlV1}/user/comments"), this._client
+                    new Uri($"{ApiConstants.ApiUrlV1}/user/comments"), this.ProxerClient
                 ).WithGetParameter("p", page.ToString())
                 .WithGetParameter("limit", limit.ToString())
                 .WithGetParameter("kat", category.ToString().ToLowerInvariant())
@@ -162,7 +163,7 @@ namespace Azuria.Api.v1.RequestBuilder
             SortDirection sortDirection = SortDirection.Ascending)
         {
             return new RequestBuilder<ListDataModel[]>(
-                    new Uri($"{ApiConstants.ApiUrlV1}/user/list"), this._client
+                    new Uri($"{ApiConstants.ApiUrlV1}/user/list"), this.ProxerClient
                 ).WithGetParameter("kat", category.ToString().ToLowerInvariant())
                 .WithGetParameter("p", page.ToString())
                 .WithGetParameter("limit", limit.ToString())
@@ -223,7 +224,7 @@ namespace Azuria.Api.v1.RequestBuilder
             MediaEntryType category = MediaEntryType.Anime)
         {
             return new RequestBuilder<ToptenDataModel[]>(
-                new Uri($"{ApiConstants.ApiUrlV1}/user/topten"), this._client
+                new Uri($"{ApiConstants.ApiUrlV1}/user/topten"), this.ProxerClient
             ).WithGetParameter("kat", category.ToString().ToLowerInvariant());
         }
 
@@ -271,7 +272,7 @@ namespace Azuria.Api.v1.RequestBuilder
         public IRequestBuilderWithResult<LoginDataModel> Login(string username, string password)
         {
             return new RequestBuilder<LoginDataModel>(
-                    new Uri($"{ApiConstants.ApiUrlV1}/user/login"), this._client
+                    new Uri($"{ApiConstants.ApiUrlV1}/user/login"), this.ProxerClient
                 ).WithPostParameter("username", username)
                 .WithPostParameter("password", password);
         }
@@ -301,7 +302,8 @@ namespace Azuria.Api.v1.RequestBuilder
         /// <returns>An instance of <see cref="ApiRequest" /> that returns...</returns>
         public IRequestBuilder Logout()
         {
-            return new Requests.Builder.RequestBuilder(new Uri($"{ApiConstants.ApiUrlV1}/user/logout"), this._client);
+            return new Requests.Builder.RequestBuilder(
+                new Uri($"{ApiConstants.ApiUrlV1}/user/logout"), this.ProxerClient);
         }
     }
 }

@@ -10,18 +10,19 @@ namespace Azuria.Api.v1.RequestBuilder
     /// <summary>
     /// Represents the media api class.
     /// </summary>
-    public class MediaRequestBuilder
+    public class MediaRequestBuilder : IApiClassRequestBuilder
     {
-        private readonly IProxerClient _client;
-
         /// <summary>
         /// 
         /// </summary>
         /// <param name="client"></param>
         public MediaRequestBuilder(IProxerClient client)
         {
-            this._client = client;
+            this.ProxerClient = client;
         }
+
+        /// <inheritdoc />
+        public IProxerClient ProxerClient { get; }
 
         /// <summary>
         /// Builds a request that returns an array of all current headers.
@@ -33,7 +34,7 @@ namespace Azuria.Api.v1.RequestBuilder
         public IRequestBuilderWithResult<HeaderDataModel[]> GetHeaderList()
         {
             return new RequestBuilder<HeaderDataModel[]>(
-                new Uri($"{ApiConstants.ApiUrlV1}/media/headerlist"), this._client
+                new Uri($"{ApiConstants.ApiUrlV1}/media/headerlist"), this.ProxerClient
             );
         }
 
@@ -48,7 +49,7 @@ namespace Azuria.Api.v1.RequestBuilder
         public IRequestBuilderWithResult<HeaderDataModel> GetRandomHeader(HeaderStyle style = HeaderStyle.Gray)
         {
             return new RequestBuilder<HeaderDataModel>(
-                new Uri($"{ApiConstants.ApiUrlV1}/media/randomheader"), this._client
+                new Uri($"{ApiConstants.ApiUrlV1}/media/randomheader"), this.ProxerClient
             ).WithGetParameter("style", style.ToTypeString());
         }
     }

@@ -9,18 +9,19 @@ namespace Azuria.Api.v1.RequestBuilder
     /// <summary>
     /// Represents the notification api class.
     /// </summary>
-    public class NotificationsRequestBuilder
+    public class NotificationsRequestBuilder : IApiClassRequestBuilder
     {
-        private readonly IProxerClient _client;
-
         /// <summary>
         /// 
         /// </summary>
         /// <param name="client"></param>
         public NotificationsRequestBuilder(IProxerClient client)
         {
-            this._client = client;
+            this.ProxerClient = client;
         }
+
+        /// <inheritdoc />
+        public IProxerClient ProxerClient { get; }
 
         /// <summary>
         /// Builds a request that deletes a notification.
@@ -36,7 +37,7 @@ namespace Azuria.Api.v1.RequestBuilder
         public IRequestBuilder Delete(int nid = 0)
         {
             return new Requests.Builder.RequestBuilder(
-                    new Uri($"{ApiConstants.ApiUrlV1}/notifications/delete"), this._client)
+                    new Uri($"{ApiConstants.ApiUrlV1}/notifications/delete"), this.ProxerClient)
                 .WithPostParameter("nid", nid.ToString())
                 .WithLoginCheck();
         }
@@ -51,7 +52,7 @@ namespace Azuria.Api.v1.RequestBuilder
         public IRequestBuilderWithResult<NotificationCountDataModel> GetCount()
         {
             return new RequestBuilder<NotificationCountDataModel>(
-                    new Uri($"{ApiConstants.ApiUrlV1}/notifications/count"), this._client
+                    new Uri($"{ApiConstants.ApiUrlV1}/notifications/count"), this.ProxerClient
                 ).WithCustomDataConverter(new NotificationCountConverter())
                 .WithLoginCheck();
         }
@@ -68,7 +69,7 @@ namespace Azuria.Api.v1.RequestBuilder
         public IRequestBuilderWithResult<NewsNotificationDataModel[]> GetNews(int page = 0, int limit = 15)
         {
             return new RequestBuilder<NewsNotificationDataModel[]>(
-                    new Uri($"{ApiConstants.ApiUrlV1}/notifications/news"), this._client
+                    new Uri($"{ApiConstants.ApiUrlV1}/notifications/news"), this.ProxerClient
                 ).WithGetParameter("p", page.ToString())
                 .WithGetParameter("limit", limit.ToString());
         }

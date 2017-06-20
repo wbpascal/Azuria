@@ -9,18 +9,19 @@ namespace Azuria.Api.v1.RequestBuilder
     /// <summary>
     /// Represents the anime api class.
     /// </summary>
-    public class AnimeRequestBuilder
+    public class AnimeRequestBuilder : IApiClassRequestBuilder
     {
-        private readonly IProxerClient _client;
-
         /// <summary>
         /// 
         /// </summary>
         /// <param name="client"></param>
         public AnimeRequestBuilder(IProxerClient client)
         {
-            this._client = client;
+            this.ProxerClient = client;
         }
+
+        /// <inheritdoc />
+        public IProxerClient ProxerClient { get; }
 
         /// <summary>
         /// Builds a request that returns the link of a specified stream.
@@ -32,7 +33,7 @@ namespace Azuria.Api.v1.RequestBuilder
         /// <returns>An instance of <see cref="ApiRequest" /> that returns a link as a string.</returns>
         public IRequestBuilderWithResult<string> GetLink(int id)
         {
-            return new RequestBuilder<string>(new Uri($"{ApiConstants.ApiUrlV1}/anime/link"), this._client)
+            return new RequestBuilder<string>(new Uri($"{ApiConstants.ApiUrlV1}/anime/link"), this.ProxerClient)
                 .WithGetParameter("id", id.ToString());
         }
 
@@ -50,7 +51,7 @@ namespace Azuria.Api.v1.RequestBuilder
             int id, int episode, AnimeLanguage language)
         {
             return new RequestBuilder<StreamDataModel[]>(
-                    new Uri($"{ApiConstants.ApiUrlV1}/anime/proxerstreams"), this._client)
+                    new Uri($"{ApiConstants.ApiUrlV1}/anime/proxerstreams"), this.ProxerClient)
                 .WithGetParameter("id", id.ToString())
                 .WithGetParameter("episode", episode.ToString())
                 .WithGetParameter("language", language.ToString().ToLowerInvariant());
@@ -69,7 +70,7 @@ namespace Azuria.Api.v1.RequestBuilder
         public IRequestBuilderWithResult<StreamDataModel[]> GetStreams(int id, int episode, AnimeLanguage language)
         {
             return new RequestBuilder<StreamDataModel[]>(
-                    new Uri($"{ApiConstants.ApiUrlV1}/anime/streams"), this._client)
+                    new Uri($"{ApiConstants.ApiUrlV1}/anime/streams"), this.ProxerClient)
                 .WithGetParameter("id", id.ToString())
                 .WithGetParameter("episode", episode.ToString())
                 .WithGetParameter("language", language.ToString().ToLowerInvariant());

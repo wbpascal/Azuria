@@ -10,18 +10,19 @@ namespace Azuria.Api.v1.RequestBuilder
     /// <summary>
     /// Represents the manga api class.
     /// </summary>
-    public class MangaRequestBuilder
+    public class MangaRequestBuilder : IApiClassRequestBuilder
     {
-        private readonly IProxerClient _client;
-
         /// <summary>
         /// 
         /// </summary>
         /// <param name="client"></param>
         public MangaRequestBuilder(IProxerClient client)
         {
-            this._client = client;
+            this.ProxerClient = client;
         }
+
+        /// <inheritdoc />
+        public IProxerClient ProxerClient { get; }
 
         /// <summary>
         /// Builds a request that returns information about a chapter including the pages.
@@ -36,7 +37,7 @@ namespace Azuria.Api.v1.RequestBuilder
         public IRequestBuilderWithResult<ChapterDataModel> GetChapter(int id, int episode, Language language)
         {
             return new RequestBuilder<ChapterDataModel>(
-                    new Uri($"{ApiConstants.ApiUrlV1}/manga/chapter"), this._client
+                    new Uri($"{ApiConstants.ApiUrlV1}/manga/chapter"), this.ProxerClient
                 ).WithGetParameter("id", id.ToString())
                 .WithGetParameter("episode", episode.ToString())
                 .WithGetParameter("language", language.ToShortString());

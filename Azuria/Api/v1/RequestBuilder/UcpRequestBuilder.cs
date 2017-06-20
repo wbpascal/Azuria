@@ -15,18 +15,19 @@ namespace Azuria.Api.v1.RequestBuilder
     /// <summary>
     /// Represents the ucp api class.
     /// </summary>
-    public class UcpRequestBuilder
+    public class UcpRequestBuilder : IApiClassRequestBuilder
     {
-        private readonly IProxerClient _client;
-
         /// <summary>
         /// 
         /// </summary>
         /// <param name="client"></param>
         public UcpRequestBuilder(IProxerClient client)
         {
-            this._client = client;
+            this.ProxerClient = client;
         }
+
+        /// <inheritdoc />
+        public IProxerClient ProxerClient { get; }
 
         /// <summary>
         /// Builds a request that removes an entry from a users topten.
@@ -43,7 +44,7 @@ namespace Azuria.Api.v1.RequestBuilder
         public IRequestBuilder DeleteFavourite(int favouriteId)
         {
             return new Requests.Builder.RequestBuilder(
-                    new Uri($"{ApiConstants.ApiUrlV1}/ucp/deletefavorite"), this._client)
+                    new Uri($"{ApiConstants.ApiUrlV1}/ucp/deletefavorite"), this.ProxerClient)
                 .WithPostParameter("id", favouriteId.ToString())
                 .WithLoginCheck();
         }
@@ -61,7 +62,7 @@ namespace Azuria.Api.v1.RequestBuilder
         public IRequestBuilder DeleteReminder(int reminderId)
         {
             return new Requests.Builder.RequestBuilder(
-                    new Uri($"{ApiConstants.ApiUrlV1}/ucp/deletereminder"), this._client)
+                    new Uri($"{ApiConstants.ApiUrlV1}/ucp/deletereminder"), this.ProxerClient)
                 .WithPostParameter("id", reminderId.ToString())
                 .WithLoginCheck();
         }
@@ -78,8 +79,9 @@ namespace Azuria.Api.v1.RequestBuilder
         /// <seealso cref="GetVotes" />
         public IRequestBuilder DeleteVote(int voteId)
         {
-            return new Requests.Builder.RequestBuilder(new Uri($"{ApiConstants.ApiUrlV1}/ucp/deletevote"), this._client)
-                .WithPostParameter("id", voteId.ToString())
+            return new Requests.Builder.RequestBuilder(
+                    new Uri($"{ApiConstants.ApiUrlV1}/ucp/deletevote"), this.ProxerClient
+                ).WithPostParameter("id", voteId.ToString())
                 .WithLoginCheck();
         }
 
@@ -97,7 +99,7 @@ namespace Azuria.Api.v1.RequestBuilder
         public IRequestBuilderWithResult<HistoryDataModel[]> GetHistory(int page = 0, int limit = 50)
         {
             return new RequestBuilder<HistoryDataModel[]>(
-                    new Uri($"{ApiConstants.ApiUrlV1}/ucp/history"), this._client
+                    new Uri($"{ApiConstants.ApiUrlV1}/ucp/history"), this.ProxerClient
                 ).WithGetParameter("p", page.ToString())
                 .WithGetParameter("limit", limit.ToString())
                 .WithLoginCheck();
@@ -125,7 +127,7 @@ namespace Azuria.Api.v1.RequestBuilder
             string searchStart = "", UserListSort sort = UserListSort.StateName,
             SortDirection sortDirection = SortDirection.Ascending)
         {
-            return new RequestBuilder<ListDataModel[]>(new Uri($"{ApiConstants.ApiUrlV1}/ucp/list"), this._client)
+            return new RequestBuilder<ListDataModel[]>(new Uri($"{ApiConstants.ApiUrlV1}/ucp/list"), this.ProxerClient)
                 .WithGetParameter("kat", category.ToString().ToLowerInvariant())
                 .WithGetParameter("p", page.ToString())
                 .WithGetParameter("limit", limit.ToString())
@@ -146,7 +148,7 @@ namespace Azuria.Api.v1.RequestBuilder
         /// <returns>An instance of <see cref="ApiRequest" /> that returns a sum of watched episodes or read chapters.</returns>
         public IRequestBuilderWithResult<int> GetListsum(MediaEntryType category = MediaEntryType.Anime)
         {
-            return new RequestBuilder<int>(new Uri($"{ApiConstants.ApiUrlV1}/ucp/listsum"), this._client)
+            return new RequestBuilder<int>(new Uri($"{ApiConstants.ApiUrlV1}/ucp/listsum"), this.ProxerClient)
                 .WithGetParameter("kat", category.ToString().ToLowerInvariant())
                 .WithLoginCheck();
         }
@@ -166,7 +168,7 @@ namespace Azuria.Api.v1.RequestBuilder
             MediaEntryType? category = null, int page = 0, int limit = 100)
         {
             return new RequestBuilder<BookmarkDataModel[]>(
-                    new Uri($"{ApiConstants.ApiUrlV1}/ucp/reminder"), this._client
+                    new Uri($"{ApiConstants.ApiUrlV1}/ucp/reminder"), this.ProxerClient
                 ).WithGetParameter("kat", category.ToString().ToLowerInvariant())
                 .WithGetParameter("p", page.ToString())
                 .WithGetParameter("limit", limit.ToString())
@@ -184,7 +186,7 @@ namespace Azuria.Api.v1.RequestBuilder
         public IRequestBuilderWithResult<ToptenDataModel[]> GetTopten()
         {
             return new RequestBuilder<ToptenDataModel[]>(
-                new Uri($"{ApiConstants.ApiUrlV1}/ucp/topten"), this._client
+                new Uri($"{ApiConstants.ApiUrlV1}/ucp/topten"), this.ProxerClient
             ).WithLoginCheck();
         }
 
@@ -199,7 +201,7 @@ namespace Azuria.Api.v1.RequestBuilder
         public IRequestBuilderWithResult<VoteDataModel[]> GetVotes()
         {
             return new RequestBuilder<VoteDataModel[]>(
-                new Uri($"{ApiConstants.ApiUrlV1}/ucp/votes"), this._client
+                new Uri($"{ApiConstants.ApiUrlV1}/ucp/votes"), this.ProxerClient
             ).WithLoginCheck();
         }
 
@@ -218,7 +220,7 @@ namespace Azuria.Api.v1.RequestBuilder
         public IRequestBuilder SetCommentState(int id, int progress)
         {
             return new Requests.Builder.RequestBuilder(
-                    new Uri($"{ApiConstants.ApiUrlV1}/ucp/setcommentstate"), this._client)
+                    new Uri($"{ApiConstants.ApiUrlV1}/ucp/setcommentstate"), this.ProxerClient)
                 .WithPostParameter("id", id.ToString())
                 .WithPostParameter("value", progress.ToString())
                 .WithLoginCheck();
@@ -243,7 +245,7 @@ namespace Azuria.Api.v1.RequestBuilder
             int entryId, int contentIndex, MediaLanguage language, MediaEntryType category)
         {
             return new Requests.Builder.RequestBuilder(
-                    new Uri($"{ApiConstants.ApiUrlV1}/ucp/setreminder"), this._client)
+                    new Uri($"{ApiConstants.ApiUrlV1}/ucp/setreminder"), this.ProxerClient)
                 .WithGetParameter("id", entryId.ToString())
                 .WithGetParameter("episode", contentIndex.ToString())
                 .WithGetParameter("language", language.ToTypeString())
