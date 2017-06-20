@@ -91,14 +91,5 @@ namespace Azuria.Test
             Assert.True(lResult.Success, lResult.Exceptions.GetExceptionInfo());
             Assert.False(lClient.Container.Resolve<ILoginManager>().CheckIsLoginProbablyValid());
         }
-
-        [Fact]
-        public void CreateRequestTest()
-        {
-            IProxerClient lClient = ProxerClient.Create(new char[32]);
-            IApiRequestBuilder lRequestBuilder = lClient.CreateRequest();
-            Assert.NotNull(lRequestBuilder);
-            Assert.Same(lClient, lRequestBuilder.ProxerClient);
-        }
     }
 }
