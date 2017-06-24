@@ -50,6 +50,9 @@ namespace Azuria.Api.v1.RequestBuilder
         public IRequestBuilderWithResult<StreamDataModel[]> GetProxerStreams(
             int id, int episode, AnimeLanguage language)
         {
+            if (language == AnimeLanguage.Unknown)
+                throw new ArgumentException("Unkown language is not a valid parameter", nameof(language));
+            
             return new RequestBuilder<StreamDataModel[]>(
                     new Uri($"{ApiConstants.ApiUrlV1}/anime/proxerstreams"), this.ProxerClient)
                 .WithGetParameter("id", id.ToString())
@@ -69,6 +72,9 @@ namespace Azuria.Api.v1.RequestBuilder
         /// <returns>An instance of <see cref="ApiRequest" /> that returns an array of streams.</returns>
         public IRequestBuilderWithResult<StreamDataModel[]> GetStreams(int id, int episode, AnimeLanguage language)
         {
+            if (language == AnimeLanguage.Unknown)
+                throw new ArgumentException("Unkown language is not a valid parameter", nameof(language));
+            
             return new RequestBuilder<StreamDataModel[]>(
                     new Uri($"{ApiConstants.ApiUrlV1}/anime/streams"), this.ProxerClient)
                 .WithGetParameter("id", id.ToString())

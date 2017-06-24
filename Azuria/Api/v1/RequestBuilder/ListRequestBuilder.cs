@@ -79,8 +79,15 @@ namespace Azuria.Api.v1.RequestBuilder
 
         private static int GetHValue(bool? isH)
         {
-            if (isH == null) return 0;
-            return isH.Value ? 1 : -1;
+            switch (isH)
+            {
+                case true:
+                    return 1;
+                case false:
+                    return -1;
+                default:
+                    return 0;
+            }
         }
 
         /// <summary>

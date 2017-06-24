@@ -9,7 +9,7 @@ namespace Azuria.Helpers.Extensions
         internal static string ToString(this IEnumerable enumerable, char seperator)
         {
             IEnumerable<object> lEnumerable = enumerable.Cast<object>();
-            return lEnumerable.Aggregate(string.Empty, (o, o1) => string.Concat(o, seperator, o1));
+            return lEnumerable.Aggregate(string.Empty, (o, o1) => string.Concat(o, seperator, o1)).Remove(0, 1);
         }
     }
 }

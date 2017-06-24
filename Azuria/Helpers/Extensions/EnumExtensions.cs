@@ -5,11 +5,12 @@ using System.Reflection;
 using Azuria.Enums.Info;
 using Azuria.Enums.Media;
 
+#pragma warning disable 1591
 namespace Azuria.Helpers.Extensions
 {
-    internal static class EnumExtensions
+    public static class EnumExtensions
     {
-        internal static string GetDescription<T>(this T enumValue) where T : struct
+        public static string GetDescription<T>(this T enumValue) where T : struct
         {
             Type lType = enumValue.GetType();
             if (!(enumValue is Enum))
@@ -26,7 +27,7 @@ namespace Azuria.Helpers.Extensions
             throw new InvalidOperationException("Description Attribute not found!");
         }
 
-        internal static string ToShortString(this Country country)
+        public static string ToShortString(this Country country)
         {
             switch (country)
             {
@@ -45,7 +46,7 @@ namespace Azuria.Helpers.Extensions
             }
         }
 
-        internal static string ToShortString(this Language language)
+        public static string ToShortString(this Language language)
         {
             switch (language)
             {
@@ -58,7 +59,7 @@ namespace Azuria.Helpers.Extensions
             }
         }
 
-        internal static string ToTypeString(this UserList list)
+        public static string ToTypeString(this UserList list)
         {
             switch (list)
             {
@@ -71,7 +72,7 @@ namespace Azuria.Helpers.Extensions
             }
         }
 
-        internal static string ToTypeString(this IndustryType type)
+        public static string ToTypeString(this IndustryType type)
         {
             switch (type)
             {
@@ -84,7 +85,7 @@ namespace Azuria.Helpers.Extensions
             }
         }
 
-        internal static string ToTypeString(this HeaderStyle style)
+        public static string ToTypeString(this HeaderStyle style)
         {
             switch (style)
             {
@@ -95,7 +96,7 @@ namespace Azuria.Helpers.Extensions
             }
         }
 
-        internal static string ToTypeString(this MediaLanguage language)
+        public static string ToTypeString(this MediaLanguage language)
         {
             switch (language)
             {

@@ -100,8 +100,8 @@ namespace Azuria.Api.v1.RequestBuilder
         public IRequestBuilderWithResult<FullEntryDataModel> GetFullEntry(int entryId)
         {
             return new RequestBuilder<FullEntryDataModel>(
-                new Uri($"{ApiConstants.ApiUrlV1}/info/fullentry?id={entryId}"), this.ProxerClient
-            );
+                new Uri($"{ApiConstants.ApiUrlV1}/info/fullentry"), this.ProxerClient
+            ).WithGetParameter("id", entryId.ToString());
         }
 
         /// <summary>

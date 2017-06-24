@@ -21,22 +21,15 @@ namespace Azuria.Helpers.Extensions
                 {"sort", input.Sort.ToString().ToLowerInvariant()},
                 {"length-limit", input.LengthLimit.ToString().ToLowerInvariant()},
                 {"tagratefilter", input.FilterUnratedTags ? "rate_1" : "rate_10"},
-                {
-                    "tagspoilerfilter",
-                    input.FilterSpoilerTags != null
-                        ? input.FilterSpoilerTags.Value
-                              ? "spoiler_0"
-                              : "spoiler_1"
-                        : "spoiler_10"
-                }
+                {"tagspoilerfilter", GetTagSpoilerFilterString(input.FilterSpoilerTags)}
             };
-            lReturn.AddIf("language", input.Language?.ToShortString(), (key, value) => !string.IsNullOrEmpty(value));
-            lReturn.AddIf("genre", GenresToString(input.GenreInclude), (key, value) => !string.IsNullOrEmpty(value));
-            lReturn.AddIf("nogenre", GenresToString(input.GenreExclude), (key, value) => !string.IsNullOrEmpty(value));
-            lReturn.AddIf("fsk", FskToString(input.Fsk), (key, value) => !string.IsNullOrEmpty(value));
+            lReturn.AddIfNotEmptyString("language", input.Language?.ToShortString());
+            lReturn.AddIfNotEmptyString("genre", GenresToString(input.GenreInclude));
+            lReturn.AddIfNotEmptyString("nogenre", GenresToString(input.GenreExclude));
+            lReturn.AddIfNotEmptyString("fsk", FskToString(input.Fsk));
             lReturn.AddIf("length", input.Length.ToString(), (key, value) => input.Length != null);
-            lReturn.AddIf("tags", input.TagsInclude.ToString(' '), (key, value) => !string.IsNullOrEmpty(value));
-            lReturn.AddIf("notags", input.TagsExclude.ToString(' '), (key, value) => !string.IsNullOrEmpty(value));
+            lReturn.AddIfNotEmptyString("tags", input.TagsInclude.ToString(' '));
+            lReturn.AddIfNotEmptyString("notags", input.TagsExclude.ToString(' '));
 
             return lReturn;
         }
@@ -60,12 +53,15 @@ namespace Azuria.Helpers.Extensions
 
         private static string FskToString(IEnumerable<Fsk> fskTypes)
         {
-            return fskTypes?.Aggregate(string.Empty, (s, fsk) => s + fsk.GetDescription()) ?? string.Empty;
+            return fskTypes?.Aggregate(string.Empty, (s, fsk) => string.Concat(s, fsk.GetDescription(), " ")).Trim() ??
+                   string.Empty;
         }
 
         private static string GenresToString(IEnumerable<Genre> genres)
         {
-            return genres?.Aggregate(string.Empty, (s, genre) => s + genre.GetDescription()) ?? string.Empty;
+            return genres?.Aggregate(
+                       string.Empty, (s, genre) => string.Concat(s, genre.GetDescription(), " ")
+                   ).Trim() ?? string.Empty;
         }
 
         private static string TypeToString(SearchMediaType type)
@@ -78,6 +74,19 @@ namespace Azuria.Helpers.Extensions
                     return "all-manga";
                 default:
                     return type.ToString().ToLowerInvariant();
+            }
+        }
+
+        private static string GetTagSpoilerFilterString(bool? filtered)
+        {
+            switch (filtered)
+            {
+                case false:
+                    return "spoiler_0";
+                case true:
+                    return "spoiler_1";
+                default:
+                    return "spoiler_10";
             }
         }
     }

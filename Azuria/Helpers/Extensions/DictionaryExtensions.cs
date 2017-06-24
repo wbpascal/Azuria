@@ -12,6 +12,11 @@ namespace Azuria.Helpers.Extensions
             if (condition.Invoke(key, value)) source.Add(key, value);
         }
 
+        internal static void AddIfNotEmptyString<TKey>(this Dictionary<TKey, string> source, TKey key, string value)
+        {
+            source.AddIf(key, value, (key1, s) => !string.IsNullOrWhiteSpace(value));
+        }
+
         internal static Dictionary<TKey, TValue> AddIfAndReturn<TKey, TValue>(
             this Dictionary<TKey, TValue> source,
             TKey key, TValue value, Func<TKey, TValue, bool> condition)
