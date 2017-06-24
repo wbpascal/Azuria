@@ -27,7 +27,7 @@ build:
   
 test_script:
   - ps: >-
-      PrepareTestEnv.ps1
+      ./PrepareTestEnv.ps1
       
       cd ./Azuria.Test
     
