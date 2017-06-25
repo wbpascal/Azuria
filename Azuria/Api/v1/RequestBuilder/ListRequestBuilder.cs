@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using Azuria.Api.Builder;
 using Azuria.Api.v1.Converters.List;
 using Azuria.Api.v1.DataModels.Info;
@@ -42,11 +43,14 @@ namespace Azuria.Api.v1.RequestBuilder
         /// </param>
         /// <param name="page">Optional. The index of the page that will be loaded. Default: 0</param>
         /// <returns>
-        /// An instance of <see cref="ApiRequest" /> that returns an array of search results.
+        /// An instance of <see cref="IRequestBuilderWithResult{T}" /> that returns an array of search results.
         /// </returns>
         public IRequestBuilderWithResult<SearchDataModel[]> EntrySearch(
             SearchInput input, int limit = 100, int page = 0)
         {
+            if (input == null)
+                throw new ArgumentNullException(nameof(input));
+
             return new RequestBuilder<SearchDataModel[]>(
                     new Uri($"{ApiConstants.ApiUrlV1}/list/entrysearch"), this.ProxerClient
                 ).WithGetParameter("limit", limit.ToString())
@@ -66,10 +70,13 @@ namespace Azuria.Api.v1.RequestBuilder
         /// Optional. The amount of anime or manga that will be returned per page. Default: 100
         /// </param>
         /// <param name="page">Optional. The index of the page that will be loaded. Default: 0</param>
-        /// <returns>An instance of <see cref="ApiRequest" /> that returns an array of search results.</returns>
+        /// <returns>An instance of <see cref="IRequestBuilderWithResult{T}" /> that returns an array of search results.</returns>
         public IRequestBuilderWithResult<SearchDataModel[]> GetEntryList(
             EntryListInput input, int limit = 100, int page = 0)
         {
+            if (input == null)
+                throw new ArgumentNullException(nameof(input));
+
             return new RequestBuilder<SearchDataModel[]>(
                     new Uri($"{ApiConstants.ApiUrlV1}/list/entrylist"), this.ProxerClient
                 ).WithGetParameter("limit", limit.ToString())
@@ -102,13 +109,18 @@ namespace Azuria.Api.v1.RequestBuilder
         /// <param name="type"></param>
         /// <param name="limit"></param>
         /// <param name="page"></param>
-        /// <returns>An instance of <see cref="ApiRequest" /> that returns</returns>
+        /// <returns>An instance of <see cref="IRequestBuilderWithResult{T}" /> that returns</returns>
         public IRequestBuilderWithResult<IndustryDataModel[]> GetIndustries(
             string start = "", string contains = "", Country? country = null, IndustryType? type = null,
             int limit = 100, int page = 0)
         {
             if (country == Country.England)
-                throw new NotSupportedException("England is not supported in this request");
+                throw new ArgumentException(
+                    "Country.England is not supported in this request! " +
+                    "Please use Country.UnitedStates instead!", nameof(country)
+                );
+            if (type == IndustryType.Unknown)
+                throw new ArgumentException("The given industry type is invalid for this request!", nameof(type));
 
             return new RequestBuilder<IndustryDataModel[]>(
                     new Uri($"{ApiConstants.ApiUrlV1}/list/industrys"), this.ProxerClient
@@ -131,10 +143,13 @@ namespace Azuria.Api.v1.RequestBuilder
         /// <param name="isH"></param>
         /// <param name="p"></param>
         /// <param name="limit"></param>
-        /// <returns>An instance of <see cref="ApiRequest" /> that returns</returns>
+        /// <returns>An instance of <see cref="IRequestBuilderWithResult{T}" /> that returns</returns>
         public IRequestBuilderWithResult<IndustryProjectDataModel[]> GetIndustryProjects(
             int translatorId, IndustryType? type = null, bool? isH = false, int p = 0, int limit = 100)
         {
+            if (type == IndustryType.Unknown)
+                throw new ArgumentException("The given industry type is invalid for this request!", nameof(type));
+
             return new RequestBuilder<IndustryProjectDataModel[]>(
                     new Uri($"{ApiConstants.ApiUrlV1}/list/industryprojects"), this.ProxerClient
                 ).WithGetParameter("id", translatorId.ToString())
@@ -150,13 +165,21 @@ namespace Azuria.Api.v1.RequestBuilder
         /// Api permissions required (class - permission level):
         /// * List - Level 0
         /// </summary>
-        /// <param name="search"></param>
-        /// <returns>An instance of <see cref="ApiRequest" /> that returns</returns>
-        public IRequestBuilderWithResult<Tuple<int[], int[]>> GetTagIds(string search)
+        /// <param name="tagsInclude"></param>
+        /// <param name="tagsExclude"></param>
+        /// <returns>An instance of <see cref="IRequestBuilderWithResult{T}" /> that returns</returns>
+        public IRequestBuilderWithResult<Tuple<int[], int[]>> GetTagIds(string[] tagsInclude, string[] tagsExclude)
         {
+            if (tagsInclude == null)
+                throw new ArgumentNullException(nameof(tagsInclude));
+            if (tagsExclude == null)
+                throw new ArgumentNullException(nameof(tagsExclude));
+
+            string lSearch = tagsInclude.ToString(" ") + " " + tagsExclude.Aggregate(
+                                 string.Empty, (s, s1) => string.Concat(s, " -", s1)).Trim();
             return new RequestBuilder<Tuple<int[], int[]>>(
                     new Uri($"{ApiConstants.ApiUrlV1}/list/tagids"), this.ProxerClient
-                ).WithGetParameter("search", search)
+                ).WithGetParameter("search", lSearch)
                 .WithCustomDataConverter(new TagIdConverter());
         }
 
@@ -176,6 +199,11 @@ namespace Azuria.Api.v1.RequestBuilder
             string search = "", TagType? type = null, TagListSort sort = TagListSort.Tag,
             SortDirection sortDirection = SortDirection.Ascending, TagSubtype? subtype = null)
         {
+            if (type == TagType.Unkown)
+                throw new ArgumentException("The given tag type is invalid for this request!", nameof(type));
+            if (subtype == TagSubtype.Unkown)
+                throw new ArgumentException("The given tag subtype is invalid for this request!", nameof(subtype));
+
             return new RequestBuilder<TagDataModel[]>(
                     new Uri($"{ApiConstants.ApiUrlV1}/list/tags"), this.ProxerClient
                 ).WithGetParameter("search", search)
@@ -196,10 +224,13 @@ namespace Azuria.Api.v1.RequestBuilder
         /// <param name="country"></param>
         /// <param name="limit"></param>
         /// <param name="page"></param>
-        /// <returns>An instance of <see cref="ApiRequest" /> that returns</returns>
+        /// <returns>An instance of <see cref="IRequestBuilderWithResult{T}" /> that returns</returns>
         public IRequestBuilderWithResult<TranslatorDataModel[]> GetTranslatorgroups(
             string start = "", string contains = "", Country? country = null, int limit = 100, int page = 0)
         {
+            if (country == Country.Japan || country == Country.UnitedStates)
+                throw new ArgumentException("The given country is invalid for this request!", nameof(country));
+
             return new RequestBuilder<TranslatorDataModel[]>(
                     new Uri($"{ApiConstants.ApiUrlV1}/list/translatorgroups"), this.ProxerClient
                 ).WithGetParameter("start", start)
@@ -220,7 +251,7 @@ namespace Azuria.Api.v1.RequestBuilder
         /// <param name="isH"></param>
         /// <param name="p"></param>
         /// <param name="limit"></param>
-        /// <returns>An instance of <see cref="ApiRequest" /> that returns</returns>
+        /// <returns>An instance of <see cref="IRequestBuilderWithResult{T}" /> that returns</returns>
         public IRequestBuilderWithResult<TranslatorProjectDataModel[]> GetTranslatorProjects(
             int translatorId, TranslationStatus? type = null, bool? isH = false, int p = 0, int limit = 100)
         {

@@ -30,7 +30,7 @@ namespace Azuria.Api.v1.RequestBuilder
         /// Api permissions required (class - permission level):
         /// * Media - Level 0
         /// </summary>
-        /// <returns>An instance of <see cref="ApiRequest" /> that returns an array of headers.</returns>
+        /// <returns>An instance of <see cref="IRequestBuilderWithResult{T}" /> that returns an array of headers.</returns>
         public IRequestBuilderWithResult<HeaderDataModel[]> GetHeaderList()
         {
             return new RequestBuilder<HeaderDataModel[]>(
@@ -45,7 +45,7 @@ namespace Azuria.Api.v1.RequestBuilder
         /// * Media - Level 0
         /// </summary>
         /// <param name="style">Optional. The style of the returned header.</param>
-        /// <returns>An instance of <see cref="ApiRequest" /> that returns a header.</returns>
+        /// <returns>An instance of <see cref="IRequestBuilderWithResult{T}" /> that returns a header.</returns>
         public IRequestBuilderWithResult<HeaderDataModel> GetRandomHeader(HeaderStyle style = HeaderStyle.Gray)
         {
             return new RequestBuilder<HeaderDataModel>(

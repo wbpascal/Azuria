@@ -34,7 +34,7 @@ namespace Azuria.Api.v1.RequestBuilder
         /// * Messenger - Level 0
         /// </summary>
         /// <param name="conferenceId">The id of the conference.</param>
-        /// <returns>An instance of <see cref="ApiRequest" /> that returns information about a conference.</returns>
+        /// <returns>An instance of <see cref="IRequestBuilderWithResult{T}" /> that returns information about a conference.</returns>
         public IRequestBuilderWithResult<ConferenceInfoDataModel> GetConferenceInfo(int conferenceId)
         {
             return new RequestBuilder<ConferenceInfoDataModel>(
@@ -52,7 +52,7 @@ namespace Azuria.Api.v1.RequestBuilder
         /// </summary>
         /// <param name="type">Optional. The list from which the conferences are returned.</param>
         /// <param name="page">Optional. The index of the page that will be loaded. Default: 0</param>
-        /// <returns>An instance of <see cref="ApiRequest" /> that returns an array of conferences.</returns>
+        /// <returns>An instance of <see cref="IRequestBuilderWithResult{T}" /> that returns an array of conferences.</returns>
         public IRequestBuilderWithResult<ConferenceDataModel[]> GetConferences(
             ConferenceList type = ConferenceList.Default, int page = 0)
         {
@@ -70,7 +70,7 @@ namespace Azuria.Api.v1.RequestBuilder
         /// Api permissions required (class - permission level):
         /// * Messenger - Level 0
         /// </summary>
-        /// <returns>An instance of <see cref="ApiRequest" /> that returns the messenger constants.</returns>
+        /// <returns>An instance of <see cref="IRequestBuilderWithResult{T}" /> that returns the messenger constants.</returns>
         public IRequestBuilderWithResult<ConstantsDataModel> GetConstants()
         {
             return new RequestBuilder<ConstantsDataModel>(
@@ -99,7 +99,7 @@ namespace Azuria.Api.v1.RequestBuilder
         /// the messages. The value of this parameter will be ignored if <paramref name="conferenceId" /> is 0 or not specified.
         /// Default: true
         /// </param>
-        /// <returns>An instance of <see cref="ApiRequest" /> that returns an array of messages.</returns>
+        /// <returns>An instance of <see cref="IRequestBuilderWithResult{T}" /> that returns an array of messages.</returns>
         public IRequestBuilderWithResult<MessageDataModel[]> GetMessages(
             int conferenceId = 0, int messageId = 0, bool markAsRead = true)
         {
@@ -121,7 +121,7 @@ namespace Azuria.Api.v1.RequestBuilder
         /// </summary>
         /// <param name="username">The username of the user whom the conference will be created with.</param>
         /// <param name="text">The message that will be send to the conference.</param>
-        /// <returns>An instance of <see cref="ApiRequest" /> that returns a id of a conference.</returns>
+        /// <returns>An instance of <see cref="IRequestBuilderWithResult{T}" /> that returns the id of a conference.</returns>
         public IRequestBuilderWithResult<int> NewConference(string username, string text)
         {
             return new RequestBuilder<int>(
@@ -144,7 +144,7 @@ namespace Azuria.Api.v1.RequestBuilder
         /// </param>
         /// <param name="topic">The topic of the new conference.</param>
         /// <param name="text">Optional. A message that will be send to the conference. Default: null</param>
-        /// <returns>An instance of <see cref="ApiRequest" /> that returns a id of a group conference.</returns>
+        /// <returns>An instance of <see cref="IRequestBuilderWithResult{T}" /> that returns the id of a group conference.</returns>
         public IRequestBuilderWithResult<int> NewConferenceGroup(
             IEnumerable<string> participantNames, string topic, string text = null)
         {
@@ -173,7 +173,7 @@ namespace Azuria.Api.v1.RequestBuilder
         /// * Messenger - Level 1
         /// </summary>
         /// <param name="conferenceId">The id of the conference that will be blocked.</param>
-        /// <returns>An instance of <see cref="ApiRequest" />.</returns>
+        /// <returns>An instance of <see cref="IRequestBuilder" />.</returns>
         public IRequestBuilder SetBlock(int conferenceId)
         {
             return new Requests.Builder.RequestBuilder(
@@ -190,7 +190,7 @@ namespace Azuria.Api.v1.RequestBuilder
         /// * Messenger - Level 1
         /// </summary>
         /// <param name="conferenceId">The id of the conference that will be marked as a favourite.</param>
-        /// <returns>An instance of <see cref="ApiRequest" />.</returns>
+        /// <returns>An instance of <see cref="IRequestBuilder" />.</returns>
         public IRequestBuilder SetFavour(int conferenceId)
         {
             return new Requests.Builder.RequestBuilder(
@@ -209,7 +209,7 @@ namespace Azuria.Api.v1.RequestBuilder
         /// </summary>
         /// <param name="conferenceId">The id of the conference the message will be send to.</param>
         /// <param name="message">The message that will be send.</param>
-        /// <returns>An instance of <see cref="ApiRequest" /> that returns a string.</returns>
+        /// <returns>An instance of <see cref="IRequestBuilderWithResult{T}" /> that returns a string.</returns>
         public IRequestBuilderWithResult<string> SetMessage(int conferenceId, string message)
         {
             return new RequestBuilder<string>(
@@ -227,7 +227,7 @@ namespace Azuria.Api.v1.RequestBuilder
         /// * Messenger - Level 0
         /// </summary>
         /// <param name="conferenceId">The id of the conference.</param>
-        /// <returns>An instance of <see cref="ApiRequest" />.</returns>
+        /// <returns>An instance of <see cref="IRequestBuilder" />.</returns>
         public IRequestBuilder SetRead(int conferenceId)
         {
             return new Requests.Builder.RequestBuilder(
@@ -245,7 +245,7 @@ namespace Azuria.Api.v1.RequestBuilder
         /// </summary>
         /// <param name="conferenceId">The id of the conference that is being reported.</param>
         /// <param name="reason">The reason that the conference is being reported.</param>
-        /// <returns>An instance of <see cref="ApiRequest" />.</returns>
+        /// <returns>An instance of <see cref="IRequestBuilder" />.</returns>
         public IRequestBuilder SetReport(int conferenceId, string reason)
         {
             return new Requests.Builder.RequestBuilder(
@@ -263,7 +263,7 @@ namespace Azuria.Api.v1.RequestBuilder
         /// * Messenger - Level 1
         /// </summary>
         /// <param name="conferenceId">The id of the conference that will be unblocked.</param>
-        /// <returns>An instance of <see cref="ApiRequest" />.</returns>
+        /// <returns>An instance of <see cref="IRequestBuilder" />.</returns>
         public IRequestBuilder SetUnblock(int conferenceId)
         {
             return new Requests.Builder.RequestBuilder(
@@ -280,7 +280,7 @@ namespace Azuria.Api.v1.RequestBuilder
         /// * Messenger - Level 1
         /// </summary>
         /// <param name="conferenceId">The id of the conference that will be removed from the favourites.</param>
-        /// <returns>An instance of <see cref="ApiRequest" />.</returns>
+        /// <returns>An instance of <see cref="IRequestBuilder" />.</returns>
         public IRequestBuilder SetUnfavour(int conferenceId)
         {
             return new Requests.Builder.RequestBuilder(
@@ -297,7 +297,7 @@ namespace Azuria.Api.v1.RequestBuilder
         /// * Messenger - Level 1
         /// </summary>
         /// <param name="conferenceId">The id of the conference that will be marked as unread.</param>
-        /// <returns>An instance of <see cref="ApiRequest" />.</returns>
+        /// <returns>An instance of <see cref="IRequestBuilder" />.</returns>
         public IRequestBuilder SetUnread(int conferenceId)
         {
             return new Requests.Builder.RequestBuilder(

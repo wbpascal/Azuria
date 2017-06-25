@@ -33,7 +33,7 @@ namespace Azuria.Api.v1.RequestBuilder
         /// <param name="id">The id of the manga.</param>
         /// <param name="episode">The number of the chapter.</param>
         /// <param name="language">The language of the chapter.</param>
-        /// <returns>An instance of <see cref="ApiRequest" /> that returns the chapter.</returns>
+        /// <returns>An instance of <see cref="IRequestBuilderWithResult{T}" /> that returns the chapter.</returns>
         public IRequestBuilderWithResult<ChapterDataModel> GetChapter(int id, int episode, Language language)
         {
             return new RequestBuilder<ChapterDataModel>(

@@ -42,7 +42,7 @@ namespace Azuria.Api.v1.RequestBuilder
         /// Optional. The order in which the returned array will be sorted. Set it to "rating" to return the
         /// top rated comments first, otherwise the newest comments will be returned first. Default: ""
         /// </param>
-        /// <returns>An instance of <see cref="ApiRequest" /> that returns an array of comments.</returns>
+        /// <returns>An instance of <see cref="IRequestBuilderWithResult{T}" /> that returns an array of comments.</returns>
         public IRequestBuilderWithResult<CommentDataModel[]> GetComments(
             int entryId, int page = 0, int limit = 25, CommentSort sort = CommentSort.Newest)
         {
@@ -62,7 +62,7 @@ namespace Azuria.Api.v1.RequestBuilder
         /// * Info - Level 0
         /// </summary>
         /// <param name="entryId">The id of the Anime or Manga.</param>
-        /// <returns>An instance of <see cref="ApiRequest" /> that returns the core information.</returns>
+        /// <returns>An instance of <see cref="IRequestBuilderWithResult{T}" /> that returns the core information.</returns>
         public IRequestBuilderWithResult<EntryDataModel> GetEntry(int entryId)
         {
             return new RequestBuilder<EntryDataModel>(
@@ -77,7 +77,7 @@ namespace Azuria.Api.v1.RequestBuilder
         /// * Info - Level 0
         /// </summary>
         /// <param name="entryId">The id of the anime or manga.</param>
-        /// <returns>An instance of <see cref="ApiRequest" /> that returns an array of tags.</returns>
+        /// <returns>An instance of <see cref="IRequestBuilderWithResult{T}" /> that returns an array of tags.</returns>
         public IRequestBuilderWithResult<MediaTagDataModel[]> GetEntryTags(int entryId)
         {
             return new RequestBuilder<MediaTagDataModel[]>(
@@ -96,7 +96,7 @@ namespace Azuria.Api.v1.RequestBuilder
         /// * Info - Level 0
         /// </summary>
         /// <param name="entryId">The id of the anime or manga.</param>
-        /// <returns>An instance of <see cref="ApiRequest" /> that returns the informations.</returns>
+        /// <returns>An instance of <see cref="IRequestBuilderWithResult{T}" /> that returns the informations.</returns>
         public IRequestBuilderWithResult<FullEntryDataModel> GetFullEntry(int entryId)
         {
             return new RequestBuilder<FullEntryDataModel>(
@@ -112,7 +112,7 @@ namespace Azuria.Api.v1.RequestBuilder
         /// * Info - Level 0
         /// </summary>
         /// <param name="entryId">The id of the anime or manga.</param>
-        /// <returns>An instance of <see cref="ApiRequest" /> that returns a boolean.</returns>
+        /// <returns>An instance of <see cref="IRequestBuilderWithResult{T}" /> that returns a boolean.</returns>
         public IRequestBuilderWithResult<bool> GetGate(int entryId)
         {
             return new RequestBuilder<bool>(new Uri($"{ApiConstants.ApiUrlV1}/info/gate"), this.ProxerClient)
@@ -127,7 +127,7 @@ namespace Azuria.Api.v1.RequestBuilder
         /// * Info - Level 0
         /// </summary>
         /// <param name="entryId">The id of the anime or manga.</param>
-        /// <returns>An instance of <see cref="ApiRequest" /> that returns an array of translators.</returns>
+        /// <returns>An instance of <see cref="IRequestBuilderWithResult{T}" /> that returns an array of translators.</returns>
         public IRequestBuilderWithResult<TranslatorDataModel[]> GetGroups(int entryId)
         {
             return new RequestBuilder<TranslatorDataModel[]>(
@@ -142,7 +142,7 @@ namespace Azuria.Api.v1.RequestBuilder
         /// * Info - Level 0
         /// </summary>
         /// <param name="id">The id of the company.</param>
-        /// <returns>An instance of <see cref="ApiRequest" /> that returns information about a company.</returns>
+        /// <returns>An instance of <see cref="IRequestBuilderWithResult{T}" /> that returns information about a company.</returns>
         public IRequestBuilderWithResult<TranslatorDataModel[]> GetIndustry(int id)
         {
             return new RequestBuilder<TranslatorDataModel[]>(
@@ -158,7 +158,7 @@ namespace Azuria.Api.v1.RequestBuilder
         /// * Info - Level 0
         /// </summary>
         /// <param name="entryId">The id of the anime or manga.</param>
-        /// <returns>An instance of <see cref="ApiRequest" /> that returns an array of languages.</returns>
+        /// <returns>An instance of <see cref="IRequestBuilderWithResult{T}" /> that returns an array of languages.</returns>
         public IRequestBuilderWithResult<MediaLanguage[]> GetLanguage(int entryId)
         {
             return new RequestBuilder<MediaLanguage[]>(new Uri($"{ApiConstants.ApiUrlV1}/info/lang"), this.ProxerClient)
@@ -179,7 +179,7 @@ namespace Azuria.Api.v1.RequestBuilder
         /// Optional. The amount of episodes or chapters that will be returned. Default: 50
         /// </param>
         /// <returns>
-        /// An instance of <see cref="ApiRequest" /> that returns an object containing all chapter/episodes
+        /// An instance of <see cref="IRequestBuilderWithResult{T}" /> that returns an object containing all chapter/episodes
         /// and information about the returned list.
         /// </returns>
         public IRequestBuilderWithResult<ListInfoDataModel> GetListInfo(int entryId, int page = 0, int limit = 50)
@@ -200,7 +200,7 @@ namespace Azuria.Api.v1.RequestBuilder
         /// </summary>
         /// <param name="entryId">The id of the anime or manga.</param>
         /// <returns>
-        /// An instance of <see cref="ApiRequest" /> that returns an array of object containing the names
+        /// An instance of <see cref="IRequestBuilderWithResult{T}" /> that returns an array of object containing the names
         /// and some additional informations.
         /// </returns>
         public IRequestBuilderWithResult<NameDataModel[]> GetName(int entryId)
@@ -219,7 +219,7 @@ namespace Azuria.Api.v1.RequestBuilder
         /// </summary>
         /// <param name="entryId">The id of the anime or manga.</param>
         /// <returns>
-        /// An instance of <see cref="ApiRequest" /> that returns an array of organisations.
+        /// An instance of <see cref="IRequestBuilderWithResult{T}" /> that returns an array of organisations.
         /// </returns>
         public IRequestBuilderWithResult<PublisherDataModel[]> GetPublisher(int entryId)
         {
@@ -235,7 +235,7 @@ namespace Azuria.Api.v1.RequestBuilder
         /// * Info - Level 0
         /// </summary>
         /// <param name="entryId">The id of the anime or manga.</param>
-        /// <returns>An instance of <see cref="ApiRequest" /> that returns an array of relations.</returns>
+        /// <returns>An instance of <see cref="IRequestBuilderWithResult{T}" /> that returns an array of relations.</returns>
         public IRequestBuilderWithResult<RelationDataModel[]> GetRelations(int entryId)
         {
             return new RequestBuilder<RelationDataModel[]>(
@@ -250,7 +250,7 @@ namespace Azuria.Api.v1.RequestBuilder
         /// * Info - Level 0
         /// </summary>
         /// <param name="entryId">The id of the anime or manga.</param>
-        /// <returns>An instance of <see cref="ApiRequest" /> that returns an array of seasons.</returns>
+        /// <returns>An instance of <see cref="IRequestBuilderWithResult{T}" /> that returns an array of seasons.</returns>
         public IRequestBuilderWithResult<SeasonDataModel[]> GetSeason(int entryId)
         {
             return new RequestBuilder<SeasonDataModel[]>(
@@ -265,7 +265,7 @@ namespace Azuria.Api.v1.RequestBuilder
         /// * Info - Level 0
         /// </summary>
         /// <param name="id">The id of the translator group.</param>
-        /// <returns>An instance of <see cref="ApiRequest" /> that returns information about a translator group.</returns>
+        /// <returns>An instance of <see cref="IRequestBuilderWithResult{T}" /> that returns information about a translator group.</returns>
         public IRequestBuilderWithResult<TranslatorDataModel[]> GetTranslatorGroup(int id)
         {
             return new RequestBuilder<TranslatorDataModel[]>(
@@ -285,7 +285,7 @@ namespace Azuria.Api.v1.RequestBuilder
         /// <param name="list">
         /// The list to which the anime or manga will be added. Possible values: "note", "favor", "finish"
         /// </param>
-        /// <returns>An instance of <see cref="ApiRequest" />.</returns>
+        /// <returns>An instance of <see cref="IRequestBuilder" />.</returns>
         public IRequestBuilder SetUserInfo(int entryId, UserList list)
         {
             return new Requests.Builder.RequestBuilder(

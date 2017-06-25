@@ -30,7 +30,7 @@ namespace Azuria.Api.v1.RequestBuilder
         /// * Anime - Level 2
         /// </summary>
         /// <param name="id">The id of the stream.</param>
-        /// <returns>An instance of <see cref="ApiRequest" /> that returns a link as a string.</returns>
+        /// <returns>An instance of <see cref="IRequestBuilderWithResult{T}" /> that returns a link as a string.</returns>
         public IRequestBuilderWithResult<string> GetLink(int id)
         {
             return new RequestBuilder<string>(new Uri($"{ApiConstants.ApiUrlV1}/anime/link"), this.ProxerClient)
@@ -46,13 +46,13 @@ namespace Azuria.Api.v1.RequestBuilder
         /// <param name="id">The id of the anime.</param>
         /// <param name="episode">The number of the episode.</param>
         /// <param name="language">The language of the episode.</param>
-        /// <returns>An instance of <see cref="ApiRequest" /> that returns an array of streams.</returns>
+        /// <returns>An instance of <see cref="IRequestBuilderWithResult{T}" /> that returns an array of streams.</returns>
         public IRequestBuilderWithResult<StreamDataModel[]> GetProxerStreams(
             int id, int episode, AnimeLanguage language)
         {
             if (language == AnimeLanguage.Unknown)
-                throw new ArgumentException("Unkown language is not a valid parameter", nameof(language));
-            
+                throw new ArgumentException("The given language is invalid for this request!", nameof(language));
+
             return new RequestBuilder<StreamDataModel[]>(
                     new Uri($"{ApiConstants.ApiUrlV1}/anime/proxerstreams"), this.ProxerClient)
                 .WithGetParameter("id", id.ToString())
@@ -69,12 +69,12 @@ namespace Azuria.Api.v1.RequestBuilder
         /// <param name="id">The id of the anime.</param>
         /// <param name="episode">The number of the episode.</param>
         /// <param name="language">The language of the episode.</param>
-        /// <returns>An instance of <see cref="ApiRequest" /> that returns an array of streams.</returns>
+        /// <returns>An instance of <see cref="IRequestBuilderWithResult{T}" /> that returns an array of streams.</returns>
         public IRequestBuilderWithResult<StreamDataModel[]> GetStreams(int id, int episode, AnimeLanguage language)
         {
             if (language == AnimeLanguage.Unknown)
-                throw new ArgumentException("Unkown language is not a valid parameter", nameof(language));
-            
+                throw new ArgumentException("The given language is invalid for this request!", nameof(language));
+
             return new RequestBuilder<StreamDataModel[]>(
                     new Uri($"{ApiConstants.ApiUrlV1}/anime/streams"), this.ProxerClient)
                 .WithGetParameter("id", id.ToString())

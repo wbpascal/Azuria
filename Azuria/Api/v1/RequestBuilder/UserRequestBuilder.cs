@@ -68,7 +68,7 @@ namespace Azuria.Api.v1.RequestBuilder
         /// Api permissions required (class - permission level):
         /// * User - Level 0
         /// </summary>
-        /// <returns>An instance of <see cref="ApiRequest" /> that returns...</returns>
+        /// <returns>An instance of <see cref="IRequestBuilderWithResult{T}" /> that returns...</returns>
         public IRequestBuilderWithResult<UserInfoDataModel> GetInfo()
         {
             return new RequestBuilder<UserInfoDataModel>(
@@ -83,7 +83,7 @@ namespace Azuria.Api.v1.RequestBuilder
         /// * User - Level 0
         /// </summary>
         /// <param name="userId"></param>
-        /// <returns>An instance of <see cref="ApiRequest" /> that returns...</returns>
+        /// <returns>An instance of <see cref="IRequestBuilderWithResult{T}" /> that returns...</returns>
         public IRequestBuilderWithResult<UserInfoDataModel> GetInfo(int userId)
         {
             return this.GetInfo()
@@ -98,7 +98,7 @@ namespace Azuria.Api.v1.RequestBuilder
         /// * User - Level 0
         /// </summary>
         /// <param name="username"></param>
-        /// <returns>An instance of <see cref="ApiRequest" /> that returns...</returns>
+        /// <returns>An instance of <see cref="IRequestBuilderWithResult{T}" /> that returns...</returns>
         public IRequestBuilderWithResult<UserInfoDataModel> GetInfo(string username)
         {
             return this.GetInfo()
@@ -128,7 +128,7 @@ namespace Azuria.Api.v1.RequestBuilder
         /// <param name="limit"></param>
         /// <param name="category"></param>
         /// <param name="length"></param>
-        /// <returns>An instance of <see cref="ApiRequest" /> that returns...</returns>
+        /// <returns>An instance of <see cref="IRequestBuilderWithResult{T}" /> that returns...</returns>
         public IRequestBuilderWithResult<CommentDataModel[]> GetLatestComments(
             int userId, int page = 0, int limit = 25, MediaEntryType category = MediaEntryType.Anime,
             int length = 300)
@@ -148,7 +148,7 @@ namespace Azuria.Api.v1.RequestBuilder
         /// <param name="limit"></param>
         /// <param name="category"></param>
         /// <param name="length"></param>
-        /// <returns>An instance of <see cref="ApiRequest" /> that returns...</returns>
+        /// <returns>An instance of <see cref="IRequestBuilderWithResult{T}" /> that returns...</returns>
         public IRequestBuilderWithResult<CommentDataModel[]> GetLatestComments(
             string username, int page = 0, int limit = 25, MediaEntryType category = MediaEntryType.Anime,
             int length = 300)
@@ -186,7 +186,7 @@ namespace Azuria.Api.v1.RequestBuilder
         /// <param name="searchStart"></param>
         /// <param name="sort"></param>
         /// <param name="sortDirection"></param>
-        /// <returns>An instance of <see cref="ApiRequest" /> that returns...</returns>
+        /// <returns>An instance of <see cref="IRequestBuilderWithResult{T}" /> that returns...</returns>
         public IRequestBuilderWithResult<ListDataModel[]> GetList(
             int userId, MediaEntryType category = MediaEntryType.Anime, int page = 0, int limit = 100,
             string search = "", string searchStart = "", UserListSort sort = UserListSort.StateName,
@@ -210,7 +210,7 @@ namespace Azuria.Api.v1.RequestBuilder
         /// <param name="searchStart"></param>
         /// <param name="sort"></param>
         /// <param name="sortDirection"></param>
-        /// <returns>An instance of <see cref="ApiRequest" /> that returns...</returns>
+        /// <returns>An instance of <see cref="IRequestBuilderWithResult{T}" /> that returns...</returns>
         public IRequestBuilderWithResult<ListDataModel[]> GetList(
             string username, MediaEntryType category = MediaEntryType.Anime, int page = 0, int limit = 100,
             string search = "", string searchStart = "", UserListSort sort = UserListSort.StateName,
@@ -236,7 +236,7 @@ namespace Azuria.Api.v1.RequestBuilder
         /// </summary>
         /// <param name="userId"></param>
         /// <param name="category"></param>
-        /// <returns>An instance of <see cref="ApiRequest" /> that returns...</returns>
+        /// <returns>An instance of <see cref="IRequestBuilderWithResult{T}" /> that returns...</returns>
         public IRequestBuilderWithResult<ToptenDataModel[]> GetTopten(
             int userId, MediaEntryType category = MediaEntryType.Anime)
         {
@@ -252,7 +252,7 @@ namespace Azuria.Api.v1.RequestBuilder
         /// </summary>
         /// <param name="username"></param>
         /// <param name="category"></param>
-        /// <returns>An instance of <see cref="ApiRequest" /> that returns...</returns>
+        /// <returns>An instance of <see cref="IRequestBuilderWithResult{T}" /> that returns...</returns>
         public IRequestBuilderWithResult<ToptenDataModel[]> GetTopten(
             string username, MediaEntryType category = MediaEntryType.Anime)
         {
@@ -268,7 +268,7 @@ namespace Azuria.Api.v1.RequestBuilder
         /// </summary>
         /// <param name="username"></param>
         /// <param name="password"></param>
-        /// <returns>An instance of <see cref="ApiRequest" /> that returns...</returns>
+        /// <returns>An instance of <see cref="IRequestBuilderWithResult{T}" /> that returns...</returns>
         public IRequestBuilderWithResult<LoginDataModel> Login(string username, string password)
         {
             return new RequestBuilder<LoginDataModel>(
@@ -286,7 +286,7 @@ namespace Azuria.Api.v1.RequestBuilder
         /// <param name="username"></param>
         /// <param name="password"></param>
         /// <param name="secretKey"></param>
-        /// <returns>An instance of <see cref="ApiRequest" /> that returns...</returns>
+        /// <returns>An instance of <see cref="IRequestBuilderWithResult{T}" /> that returns...</returns>
         public IRequestBuilderWithResult<LoginDataModel> Login(string username, string password, string secretKey)
         {
             return this.Login(username, password)
@@ -299,7 +299,7 @@ namespace Azuria.Api.v1.RequestBuilder
         /// Api permissions required (class - permission level):
         /// * User - Level 0
         /// </summary>
-        /// <returns>An instance of <see cref="ApiRequest" /> that returns...</returns>
+        /// <returns>An instance of <see cref="IRequestBuilder" /> that returns...</returns>
         public IRequestBuilder Logout()
         {
             return new Requests.Builder.RequestBuilder(

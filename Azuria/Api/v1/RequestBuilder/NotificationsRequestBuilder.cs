@@ -33,7 +33,7 @@ namespace Azuria.Api.v1.RequestBuilder
         /// Optional. The id of the notification that will be deleted. If not set or 0, all notifications, that
         /// are marked as read, will be deleted. Default: 0
         /// </param>
-        /// <returns>An instance of <see cref="ApiRequest" />.</returns>
+        /// <returns>An instance of <see cref="IRequestBuilder" />.</returns>
         public IRequestBuilder Delete(int nid = 0)
         {
             return new Requests.Builder.RequestBuilder(
@@ -48,7 +48,7 @@ namespace Azuria.Api.v1.RequestBuilder
         /// Api permissions required (class - permission level):
         /// * Notifications - Level 0
         /// </summary>
-        /// <returns>An instance of <see cref="ApiRequest" /> that returns the number of notifications.</returns>
+        /// <returns>An instance of <see cref="IRequestBuilderWithResult{T}" /> that returns the number of notifications.</returns>
         public IRequestBuilderWithResult<NotificationCountDataModel> GetCount()
         {
             return new RequestBuilder<NotificationCountDataModel>(
@@ -65,7 +65,7 @@ namespace Azuria.Api.v1.RequestBuilder
         /// </summary>
         /// <param name="limit">Optional. The amount of news that will be returned per page. Default: 15</param>
         /// <param name="page">Optional. The index of the page that will be loaded. Default: 0</param>
-        /// <returns>An instance of <see cref="ApiRequest" /> that returns an array of news.</returns>
+        /// <returns>An instance of <see cref="IRequestBuilderWithResult{T}" /> that returns an array of news.</returns>
         public IRequestBuilderWithResult<NewsNotificationDataModel[]> GetNews(int page = 0, int limit = 15)
         {
             return new RequestBuilder<NewsNotificationDataModel[]>(

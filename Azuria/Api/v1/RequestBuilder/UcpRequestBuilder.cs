@@ -39,7 +39,7 @@ namespace Azuria.Api.v1.RequestBuilder
         /// <param name="favouriteId">
         /// The id of the entry that should be removed from the topten (see <see cref="GetTopten" />).
         /// </param>
-        /// <returns>An instance of <see cref="ApiRequest" /> that removes an entry from a users topten.</returns>
+        /// <returns>An instance of <see cref="IRequestBuilder" /> that removes an entry from a users topten.</returns>
         /// <seealso cref="GetTopten" />
         public IRequestBuilder DeleteFavourite(int favouriteId)
         {
@@ -57,7 +57,7 @@ namespace Azuria.Api.v1.RequestBuilder
         /// * UCP - Level 1
         /// </summary>
         /// <param name="reminderId">The id of the reminder that should be deleted (see <see cref="GetReminder" />).</param>
-        /// <returns>An instance of <see cref="ApiRequest" /> that deletes a reminder.</returns>
+        /// <returns>An instance of <see cref="IRequestBuilder" /> that deletes a reminder.</returns>
         /// <seealso cref="GetReminder" />
         public IRequestBuilder DeleteReminder(int reminderId)
         {
@@ -75,7 +75,7 @@ namespace Azuria.Api.v1.RequestBuilder
         /// * UCP - Level 1
         /// </summary>
         /// <param name="voteId">The id of the comment upvote that should be removed (see <see cref="GetVotes" />).</param>
-        /// <returns>An instance of <see cref="ApiRequest" /> that removes a comment upvote.</returns>
+        /// <returns>An instance of <see cref="IRequestBuilder" /> that removes a comment upvote.</returns>
         /// <seealso cref="GetVotes" />
         public IRequestBuilder DeleteVote(int voteId)
         {
@@ -95,7 +95,7 @@ namespace Azuria.Api.v1.RequestBuilder
         /// </summary>
         /// <param name="page">Optional. The index of the page that should be loaded. Default: 0</param>
         /// <param name="limit">Optional. The number of entries that should be loaded per page. Default: 50</param>
-        /// <returns>An instance of <see cref="ApiRequest" /> that returns an array of episodes and chapters.</returns>
+        /// <returns>An instance of <see cref="IRequestBuilderWithResult{T}" /> that returns an array of episodes and chapters.</returns>
         public IRequestBuilderWithResult<HistoryDataModel[]> GetHistory(int page = 0, int limit = 50)
         {
             return new RequestBuilder<HistoryDataModel[]>(
@@ -121,7 +121,7 @@ namespace Azuria.Api.v1.RequestBuilder
         /// <param name="sortDirection">
         /// TODO: Add description here
         /// </param>
-        /// <returns>An instance of <see cref="ApiRequest" /> that returns an array of anime or manga entries.</returns>
+        /// <returns>An instance of <see cref="IRequestBuilderWithResult{T}" /> that returns an array of anime or manga entries.</returns>
         public IRequestBuilderWithResult<ListDataModel[]> GetList(
             MediaEntryType category = MediaEntryType.Anime, int page = 0, int limit = 100, string search = "",
             string searchStart = "", UserListSort sort = UserListSort.StateName,
@@ -145,7 +145,7 @@ namespace Azuria.Api.v1.RequestBuilder
         /// * UCP - Level 0
         /// </summary>
         /// <param name="category">Optional. Whether only watched episodes or read chapters should be counted.</param>
-        /// <returns>An instance of <see cref="ApiRequest" /> that returns a sum of watched episodes or read chapters.</returns>
+        /// <returns>An instance of <see cref="IRequestBuilderWithResult{T}" /> that returns a sum of watched episodes or read chapters.</returns>
         public IRequestBuilderWithResult<int> GetListsum(MediaEntryType category = MediaEntryType.Anime)
         {
             return new RequestBuilder<int>(new Uri($"{ApiConstants.ApiUrlV1}/ucp/listsum"), this.ProxerClient)
@@ -163,7 +163,7 @@ namespace Azuria.Api.v1.RequestBuilder
         /// <param name="category">Optional. The category that should be loaded. If null or not given both categories are loaded.</param>
         /// <param name="page">Optional. The index of the page that should be loaded. Default: 0</param>
         /// <param name="limit">Optional. The number of entries that should be loaded per page. Default: 100</param>
-        /// <returns>An instance of <see cref="ApiRequest" /> that returns an array of reminders.</returns>
+        /// <returns>An instance of <see cref="IRequestBuilderWithResult{T}" /> that returns an array of reminders.</returns>
         public IRequestBuilderWithResult<BookmarkDataModel[]> GetReminder(
             MediaEntryType? category = null, int page = 0, int limit = 100)
         {
@@ -182,7 +182,7 @@ namespace Azuria.Api.v1.RequestBuilder
         /// Api permissions required (class - permission level):
         /// * UCP - Level 0
         /// </summary>
-        /// <returns>An instance of <see cref="ApiRequest" /> that returns an array of anime and manga.</returns>
+        /// <returns>An instance of <see cref="IRequestBuilderWithResult{T}" /> that returns an array of anime and manga.</returns>
         public IRequestBuilderWithResult<ToptenDataModel[]> GetTopten()
         {
             return new RequestBuilder<ToptenDataModel[]>(
@@ -197,7 +197,7 @@ namespace Azuria.Api.v1.RequestBuilder
         /// Api permissions required (class - permission level):
         /// * UCP - Level 0
         /// </summary>
-        /// <returns>An instance of <see cref="ApiRequest" /> that returns an array of comments.</returns>
+        /// <returns>An instance of <see cref="IRequestBuilderWithResult{T}" /> that returns an array of comments.</returns>
         public IRequestBuilderWithResult<VoteDataModel[]> GetVotes()
         {
             return new RequestBuilder<VoteDataModel[]>(
@@ -216,7 +216,7 @@ namespace Azuria.Api.v1.RequestBuilder
         /// </summary>
         /// <param name="id">The id of the entry that should be edited (see <see cref="GetList" />).</param>
         /// <param name="progress">The amount of watched episodes/read chapters.</param>
-        /// <returns>An instance of <see cref="ApiRequest" /> sets a users progress of an anime/manga.</returns>
+        /// <returns>An instance of <see cref="IRequestBuilder" /> sets a users progress of an anime/manga.</returns>
         public IRequestBuilder SetCommentState(int id, int progress)
         {
             return new Requests.Builder.RequestBuilder(
@@ -240,7 +240,7 @@ namespace Azuria.Api.v1.RequestBuilder
         /// A value indicating whether the reminder is from an anime or manga (I don't know why we need
         /// this).
         /// </param>
-        /// <returns>An instance of <see cref="ApiRequest" />.</returns>
+        /// <returns>An instance of <see cref="IRequestBuilder" />.</returns>
         public IRequestBuilder SetReminder(
             int entryId, int contentIndex, MediaLanguage language, MediaEntryType category)
         {
