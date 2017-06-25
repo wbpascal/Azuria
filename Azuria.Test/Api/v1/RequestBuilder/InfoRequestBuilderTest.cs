@@ -1,5 +1,4 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 using Azuria.Api.v1.DataModels;
 using Azuria.Api.v1.DataModels.Info;
 using Azuria.Api.v1.RequestBuilder;
@@ -21,6 +20,7 @@ namespace Azuria.Test.Api.v1.RequestBuilder
             IRequestBuilderWithResult<CommentDataModel[]> lRequest =
                 this.RequestBuilder.GetComments(lRandomId, 2, 31, sort);
             this.CheckUrl(lRequest, "info", "comments");
+            Assert.Same(this.ProxerClient, lRequest.Client);
             Assert.True(lRequest.GetParameters.ContainsKey("id"));
             Assert.True(lRequest.GetParameters.ContainsKey("p"));
             Assert.True(lRequest.GetParameters.ContainsKey("limit"));
@@ -32,21 +32,23 @@ namespace Azuria.Test.Api.v1.RequestBuilder
         }
 
         [Fact]
-        public void GetEntryTest()
-        {
-            int lRandomId = this.GetRandomNumber(4200);
-            IRequestBuilderWithResult<EntryDataModel> lRequest = this.RequestBuilder.GetEntry(lRandomId);
-            this.CheckUrl(lRequest, "info", "entry");
-            Assert.True(lRequest.GetParameters.ContainsKey("id"));
-            Assert.Equal(lRandomId.ToString(), lRequest.GetParameters["id"]);
-        }
-
-        [Fact]
         public void GetEntryTagTest()
         {
             int lRandomId = this.GetRandomNumber(4200);
             IRequestBuilderWithResult<MediaTagDataModel[]> lRequest = this.RequestBuilder.GetEntryTags(lRandomId);
             this.CheckUrl(lRequest, "info", "entrytags");
+            Assert.Same(this.ProxerClient, lRequest.Client);
+            Assert.True(lRequest.GetParameters.ContainsKey("id"));
+            Assert.Equal(lRandomId.ToString(), lRequest.GetParameters["id"]);
+        }
+
+        [Fact]
+        public void GetEntryTest()
+        {
+            int lRandomId = this.GetRandomNumber(4200);
+            IRequestBuilderWithResult<EntryDataModel> lRequest = this.RequestBuilder.GetEntry(lRandomId);
+            this.CheckUrl(lRequest, "info", "entry");
+            Assert.Same(this.ProxerClient, lRequest.Client);
             Assert.True(lRequest.GetParameters.ContainsKey("id"));
             Assert.Equal(lRandomId.ToString(), lRequest.GetParameters["id"]);
         }
@@ -57,6 +59,7 @@ namespace Azuria.Test.Api.v1.RequestBuilder
             int lRandomId = this.GetRandomNumber(4200);
             IRequestBuilderWithResult<FullEntryDataModel> lRequest = this.RequestBuilder.GetFullEntry(lRandomId);
             this.CheckUrl(lRequest, "info", "fullentry");
+            Assert.Same(this.ProxerClient, lRequest.Client);
             Assert.True(lRequest.GetParameters.ContainsKey("id"));
             Assert.Equal(lRandomId.ToString(), lRequest.GetParameters["id"]);
         }
@@ -67,6 +70,7 @@ namespace Azuria.Test.Api.v1.RequestBuilder
             int lRandomId = this.GetRandomNumber(4200);
             IRequestBuilderWithResult<bool> lRequest = this.RequestBuilder.GetGate(lRandomId);
             this.CheckUrl(lRequest, "info", "gate");
+            Assert.Same(this.ProxerClient, lRequest.Client);
             Assert.True(lRequest.GetParameters.ContainsKey("id"));
             Assert.Equal(lRandomId.ToString(), lRequest.GetParameters["id"]);
         }
@@ -77,6 +81,7 @@ namespace Azuria.Test.Api.v1.RequestBuilder
             int lRandomId = this.GetRandomNumber(4200);
             IRequestBuilderWithResult<TranslatorDataModel[]> lRequest = this.RequestBuilder.GetGroups(lRandomId);
             this.CheckUrl(lRequest, "info", "groups");
+            Assert.Same(this.ProxerClient, lRequest.Client);
             Assert.True(lRequest.GetParameters.ContainsKey("id"));
             Assert.Equal(lRandomId.ToString(), lRequest.GetParameters["id"]);
         }
@@ -87,6 +92,7 @@ namespace Azuria.Test.Api.v1.RequestBuilder
             int lRandomId = this.GetRandomNumber(4200);
             IRequestBuilderWithResult<TranslatorDataModel[]> lRequest = this.RequestBuilder.GetIndustry(lRandomId);
             this.CheckUrl(lRequest, "info", "industry");
+            Assert.Same(this.ProxerClient, lRequest.Client);
             Assert.True(lRequest.GetParameters.ContainsKey("id"));
             Assert.Equal(lRandomId.ToString(), lRequest.GetParameters["id"]);
         }
@@ -97,6 +103,7 @@ namespace Azuria.Test.Api.v1.RequestBuilder
             int lRandomId = this.GetRandomNumber(4200);
             IRequestBuilderWithResult<MediaLanguage[]> lRequest = this.RequestBuilder.GetLanguage(lRandomId);
             this.CheckUrl(lRequest, "info", "lang");
+            Assert.Same(this.ProxerClient, lRequest.Client);
             Assert.True(lRequest.GetParameters.ContainsKey("id"));
             Assert.Equal(lRandomId.ToString(), lRequest.GetParameters["id"]);
             Assert.NotNull(lRequest.CustomDataConverter);
@@ -108,6 +115,7 @@ namespace Azuria.Test.Api.v1.RequestBuilder
             int lRandomId = this.GetRandomNumber(4200);
             IRequestBuilderWithResult<ListInfoDataModel> lRequest = this.RequestBuilder.GetListInfo(lRandomId, 1, 15);
             this.CheckUrl(lRequest, "info", "listinfo");
+            Assert.Same(this.ProxerClient, lRequest.Client);
             Assert.True(lRequest.GetParameters.ContainsKey("id"));
             Assert.True(lRequest.GetParameters.ContainsKey("p"));
             Assert.True(lRequest.GetParameters.ContainsKey("limit"));
@@ -122,6 +130,7 @@ namespace Azuria.Test.Api.v1.RequestBuilder
             int lRandomId = this.GetRandomNumber(4200);
             IRequestBuilderWithResult<NameDataModel[]> lRequest = this.RequestBuilder.GetName(lRandomId);
             this.CheckUrl(lRequest, "info", "names");
+            Assert.Same(this.ProxerClient, lRequest.Client);
             Assert.True(lRequest.GetParameters.ContainsKey("id"));
             Assert.Equal(lRandomId.ToString(), lRequest.GetParameters["id"]);
         }
@@ -132,6 +141,7 @@ namespace Azuria.Test.Api.v1.RequestBuilder
             int lRandomId = this.GetRandomNumber(4200);
             IRequestBuilderWithResult<PublisherDataModel[]> lRequest = this.RequestBuilder.GetPublisher(lRandomId);
             this.CheckUrl(lRequest, "info", "publisher");
+            Assert.Same(this.ProxerClient, lRequest.Client);
             Assert.True(lRequest.GetParameters.ContainsKey("id"));
             Assert.Equal(lRandomId.ToString(), lRequest.GetParameters["id"]);
         }
@@ -142,6 +152,7 @@ namespace Azuria.Test.Api.v1.RequestBuilder
             int lRandomId = this.GetRandomNumber(4200);
             IRequestBuilderWithResult<RelationDataModel[]> lRequest = this.RequestBuilder.GetRelations(lRandomId);
             this.CheckUrl(lRequest, "info", "relations");
+            Assert.Same(this.ProxerClient, lRequest.Client);
             Assert.True(lRequest.GetParameters.ContainsKey("id"));
             Assert.Equal(lRandomId.ToString(), lRequest.GetParameters["id"]);
         }
@@ -152,6 +163,7 @@ namespace Azuria.Test.Api.v1.RequestBuilder
             int lRandomId = this.GetRandomNumber(4200);
             IRequestBuilderWithResult<SeasonDataModel[]> lRequest = this.RequestBuilder.GetSeason(lRandomId);
             this.CheckUrl(lRequest, "info", "season");
+            Assert.Same(this.ProxerClient, lRequest.Client);
             Assert.True(lRequest.GetParameters.ContainsKey("id"));
             Assert.Equal(lRandomId.ToString(), lRequest.GetParameters["id"]);
         }
@@ -160,10 +172,18 @@ namespace Azuria.Test.Api.v1.RequestBuilder
         public void GetTranslatorGroupTest()
         {
             int lRandomId = this.GetRandomNumber(4200);
-            IRequestBuilderWithResult<TranslatorDataModel[]> lRequest = this.RequestBuilder.GetTranslatorGroup(lRandomId);
+            IRequestBuilderWithResult<TranslatorDataModel[]> lRequest =
+                this.RequestBuilder.GetTranslatorGroup(lRandomId);
             this.CheckUrl(lRequest, "info", "translatorgroup");
+            Assert.Same(this.ProxerClient, lRequest.Client);
             Assert.True(lRequest.GetParameters.ContainsKey("id"));
             Assert.Equal(lRandomId.ToString(), lRequest.GetParameters["id"]);
+        }
+
+        [Fact]
+        public override void ProxerClientTest()
+        {
+            base.ProxerClientTest();
         }
 
         [Theory]
@@ -175,15 +195,10 @@ namespace Azuria.Test.Api.v1.RequestBuilder
             int lRandomId = this.GetRandomNumber(4200);
             IRequestBuilder lRequest = this.RequestBuilder.SetUserInfo(lRandomId, list);
             this.CheckUrl(lRequest, "info", "setuserinfo");
+            Assert.Same(this.ProxerClient, lRequest.Client);
             Assert.True(lRequest.PostArguments.Any(pair => pair.Key == "id" && pair.Value == lRandomId.ToString()));
             Assert.True(lRequest.PostArguments.Any(pair => pair.Key == "type" && pair.Value == list.ToTypeString()));
             Assert.True(lRequest.CheckLogin);
-        }
-
-        [Fact]
-        public override void ProxerClientTest()
-        {
-            base.ProxerClientTest();
         }
     }
 }

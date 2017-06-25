@@ -20,6 +20,16 @@ namespace Azuria.Test.Requests
         }
 
         [Fact]
+        public void WithCustomDataConverterTest()
+        {
+            IRequestBuilderWithResult<object> lRequestBuilder =
+                this._client.CreateRequest().FromUrl(new Uri(BaseUrl)).WithResult<object>();
+            DataConverter<object> lDataConverter = Mock.Of<DataConverter<object>>();
+            lRequestBuilder.WithCustomDataConverter(lDataConverter);
+            Assert.Same(lDataConverter, lRequestBuilder.CustomDataConverter);
+        }
+
+        [Fact]
         public void WithGetParameterTest()
         {
             IRequestBuilderWithResult<object> lRequestBuilder =
@@ -50,6 +60,17 @@ namespace Azuria.Test.Requests
         }
 
         [Fact]
+        public void WithLoginCheckTest()
+        {
+            IRequestBuilderWithResult<object> lRequestBuilder =
+                this._client.CreateRequest().FromUrl(new Uri(BaseUrl)).WithResult<object>();
+            lRequestBuilder.WithLoginCheck(true);
+            Assert.True(lRequestBuilder.CheckLogin);
+            lRequestBuilder.WithLoginCheck(false);
+            Assert.False(lRequestBuilder.CheckLogin);
+        }
+
+        [Fact]
         public void WithPostParameterTest()
         {
             IRequestBuilderWithResult<object> lRequestBuilder =
@@ -74,27 +95,6 @@ namespace Azuria.Test.Requests
             Assert.True(lRequestBuilder.PostArguments.Any(pair => pair.Key == "test" && pair.Value == "value2"));
             Assert.True(lRequestBuilder.PostArguments.Any(pair => pair.Key == "test2" && pair.Value == "value3"));
             Assert.True(lRequestBuilder.PostArguments.Any(pair => pair.Key == "testNew" && pair.Value == "value"));
-        }
-
-        [Fact]
-        public void WithLoginCheckTest()
-        {
-            IRequestBuilderWithResult<object> lRequestBuilder =
-                this._client.CreateRequest().FromUrl(new Uri(BaseUrl)).WithResult<object>();
-            lRequestBuilder.WithLoginCheck(true);
-            Assert.True(lRequestBuilder.CheckLogin);
-            lRequestBuilder.WithLoginCheck(false);
-            Assert.False(lRequestBuilder.CheckLogin);
-        }
-
-        [Fact]
-        public void WithCustomDataConverterTest()
-        {
-            IRequestBuilderWithResult<object> lRequestBuilder =
-                this._client.CreateRequest().FromUrl(new Uri(BaseUrl)).WithResult<object>();
-            DataConverter<object> lDataConverter = Mock.Of<DataConverter<object>>();
-            lRequestBuilder.WithCustomDataConverter(lDataConverter);
-            Assert.Same(lDataConverter, lRequestBuilder.CustomDataConverter);
         }
     }
 }

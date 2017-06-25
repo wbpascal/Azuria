@@ -10,7 +10,6 @@ namespace Azuria.Api.v1.DataModels.Info
     public class TranslatorDataModel : IDataModel
     {
         /// <summary>
-        /// 
         /// </summary>
         [JsonProperty("count")]
         public int Count { get; set; }
@@ -22,13 +21,11 @@ namespace Azuria.Api.v1.DataModels.Info
         public Country Country { get; set; }
 
         /// <summary>
-        /// 
         /// </summary>
         [JsonProperty("cprojects")]
         public int CProjects { get; set; }
 
         /// <summary>
-        /// 
         /// </summary>
         [JsonProperty("description")]
         public string Description { get; set; }
@@ -39,13 +36,11 @@ namespace Azuria.Api.v1.DataModels.Info
         public int Id { get; set; }
 
         /// <summary>
-        /// 
         /// </summary>
         [JsonProperty("image")]
         public Uri Image { get; set; }
 
         /// <summary>
-        /// 
         /// </summary>
         [JsonProperty("link")]
         public Uri Link { get; set; }

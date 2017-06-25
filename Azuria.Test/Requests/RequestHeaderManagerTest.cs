@@ -21,12 +21,13 @@ namespace Azuria.Test.Requests
         }
 
         [Fact]
-        public void GetHeaderTest()
+        public void ContainsAuthenticationHeadersTest()
         {
-            Dictionary<string, string> lHeaders = this._headerManager.GetHeader();
-            Assert.True(lHeaders.ContainsKey(TestConstants.ApiKeyHeaderName));
-            Assert.Equal(this._apiKey, lHeaders[TestConstants.ApiKeyHeaderName]);
-            Assert.False(lHeaders.ContainsKey(TestConstants.LoginTokenHeaderName));
+            Dictionary<string, string> lHeadersToTest = new Dictionary<string, string>();
+            Assert.False(this._headerManager.ContainsAuthenticationHeaders(lHeadersToTest));
+
+            lHeadersToTest.Add(TestConstants.LoginTokenHeaderName, new string((char) 0, 255));
+            Assert.True(this._headerManager.ContainsAuthenticationHeaders(lHeadersToTest));
         }
 
         [Fact]
@@ -50,13 +51,12 @@ namespace Azuria.Test.Requests
         }
 
         [Fact]
-        public void ContainsAuthenticationHeadersTest()
+        public void GetHeaderTest()
         {
-            Dictionary<string, string> lHeadersToTest = new Dictionary<string, string>();
-            Assert.False(this._headerManager.ContainsAuthenticationHeaders(lHeadersToTest));
-
-            lHeadersToTest.Add(TestConstants.LoginTokenHeaderName, new string((char) 0, 255));
-            Assert.True(this._headerManager.ContainsAuthenticationHeaders(lHeadersToTest));
+            Dictionary<string, string> lHeaders = this._headerManager.GetHeader();
+            Assert.True(lHeaders.ContainsKey(TestConstants.ApiKeyHeaderName));
+            Assert.Equal(this._apiKey, lHeaders[TestConstants.ApiKeyHeaderName]);
+            Assert.False(lHeaders.ContainsKey(TestConstants.LoginTokenHeaderName));
         }
     }
 }

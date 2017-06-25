@@ -5,12 +5,12 @@ using Azuria.Enums.List;
 namespace Azuria.Api.v1.Input
 {
     /// <summary>
-    /// Represents the input of the <see cref="ListRequestBuilder.GetEntryList"/> method.
+    /// Represents the input of the <see cref="ListRequestBuilder.GetEntryList" /> method.
     /// </summary>
     public class EntryListInput
     {
         /// <summary>
-        /// Gets or sets the category of which entries are returned. Default: <see cref="MediaEntryType.Anime"/>
+        /// Gets or sets the category of which entries are returned. Default: <see cref="MediaEntryType.Anime" />
         /// </summary>
         public MediaEntryType Category { get; set; } = MediaEntryType.Anime;
 
@@ -26,13 +26,13 @@ namespace Azuria.Api.v1.Input
         public bool ShowHContent { get; set; }
 
         /// <summary>
-        /// Gets or sets the properties the returned entries will be sorted by. Default: <see cref="EntryListSort.Title"/>
+        /// Gets or sets the properties the returned entries will be sorted by. Default: <see cref="EntryListSort.Title" />
         /// </summary>
         public EntryListSort SortBy { get; set; } = EntryListSort.Title;
 
         /// <summary>
         /// Gets or sets the direction the returned entries will be sorted by.
-        /// Default: <see cref="Enums.SortDirection.Ascending"/>
+        /// Default: <see cref="Enums.SortDirection.Ascending" />
         /// </summary>
         public SortDirection SortDirection { get; set; } = SortDirection.Ascending;
 

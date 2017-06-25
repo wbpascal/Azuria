@@ -22,6 +22,18 @@ namespace Azuria.Test.Requests
         }
 
         [Fact]
+        public async Task GetRequestAsyncCancelTokenTest()
+        {
+            //Start request and cancel after 1 ms
+            IProxerResult<string> lResult =
+                await this._httpClient.GetRequestAsync(
+                    new Uri("https://httpbin.org/get"), token: new CancellationTokenSource(1).Token
+                );
+            Assert.False(lResult.Success);
+            Assert.True(lResult.Exceptions.Any(exception => exception.GetType() == typeof(TaskCanceledException)));
+        }
+
+        [Fact]
         public async Task GetRequestAsyncTest()
         {
             Dictionary<string, string> lHeaders = new Dictionary<string, string> {{"Header-Key", "headerValue"}};
@@ -37,12 +49,13 @@ namespace Azuria.Test.Requests
         }
 
         [Fact]
-        public async Task GetRequestAsyncCancelTokenTest()
+        public async Task PostRequestAsyncCancelTokenTest()
         {
             //Start request and cancel after 1 ms
             IProxerResult<string> lResult =
-                await this._httpClient.GetRequestAsync(
-                    new Uri("https://httpbin.org/get"), token: new CancellationTokenSource(1).Token
+                await this._httpClient.PostRequestAsync(
+                    new Uri("https://httpbin.org/post"), new KeyValuePair<string, string>[0],
+                    token: new CancellationTokenSource(1).Token
                 );
             Assert.False(lResult.Success);
             Assert.True(lResult.Exceptions.Any(exception => exception.GetType() == typeof(TaskCanceledException)));
@@ -65,19 +78,6 @@ namespace Azuria.Test.Requests
             Assert.Equal("value", lJsonObject["args"]["test"].Value<string>());
             Assert.Equal("headerValue", lJsonObject["headers"]["Header-Key"].Value<string>());
             Assert.Equal("postValue", lJsonObject["form"]["postKey"].Value<string>());
-        }
-
-        [Fact]
-        public async Task PostRequestAsyncCancelTokenTest()
-        {
-            //Start request and cancel after 1 ms
-            IProxerResult<string> lResult =
-                await this._httpClient.PostRequestAsync(
-                    new Uri("https://httpbin.org/post"), new KeyValuePair<string, string>[0],
-                    token: new CancellationTokenSource(1).Token
-                );
-            Assert.False(lResult.Success);
-            Assert.True(lResult.Exceptions.Any(exception => exception.GetType() == typeof(TaskCanceledException)));
         }
     }
 }

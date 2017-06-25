@@ -4,7 +4,6 @@ using Azuria.Authentication;
 namespace Azuria.Requests
 {
     /// <summary>
-    ///
     /// </summary>
     public class RequestHeaderManager : IRequestHeaderManager
     {
@@ -21,6 +20,12 @@ namespace Azuria.Requests
         }
 
         /// <inheritdoc />
+        public bool ContainsAuthenticationHeaders(Dictionary<string, string> header)
+        {
+            return header.ContainsKey(LoginTokenHeaderName);
+        }
+
+        /// <inheritdoc />
         public Dictionary<string, string> GetHeader()
         {
             Dictionary<string, string> lHeaders = new Dictionary<string, string>
@@ -31,12 +36,6 @@ namespace Azuria.Requests
                 lHeaders.Add(LoginTokenHeaderName, new string(this._loginManager.LoginToken));
 
             return lHeaders;
-        }
-
-        /// <inheritdoc />
-        public bool ContainsAuthenticationHeaders(Dictionary<string, string> header)
-        {
-            return header.ContainsKey(LoginTokenHeaderName);
         }
     }
 }

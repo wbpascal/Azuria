@@ -6,12 +6,10 @@ using Newtonsoft.Json;
 namespace Azuria.Api.v1.DataModels.User
 {
     /// <summary>
-    /// 
     /// </summary>
     public class HistoryDataModel : IEntryInfoDataModel
     {
         /// <summary>
-        /// 
         /// </summary>
         [JsonProperty("episode")]
         public int ContentIndex { get; set; }
@@ -33,7 +31,6 @@ namespace Azuria.Api.v1.DataModels.User
         public MediaEntryType EntryType { get; set; }
 
         /// <summary>
-        /// 
         /// </summary>
         [JsonProperty("language", ItemConverterType = typeof(LanguageConverter))]
         public MediaLanguage Language { get; set; }

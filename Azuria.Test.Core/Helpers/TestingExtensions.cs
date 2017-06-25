@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using Autofac;
 using Azuria.Authentication;
 using Newtonsoft.Json;
@@ -9,15 +8,6 @@ namespace Azuria.Test.Core.Helpers
 {
     public static class TestingExtensions
     {
-        #region Methods
-
-        public static ProxerClientOptions WithTestingHttpClient(this ProxerClientOptions options)
-        {
-            return options.WithCustomHttpClient(
-                context => ResponseSetup.GetTestingClient(options.ApiKey, context.Resolve<ILoginManager>())
-            );
-        }
-
         public static string GetExceptionInfo(this IEnumerable<Exception> exceptions)
         {
             return JsonConvert.SerializeObject(
@@ -27,6 +17,11 @@ namespace Azuria.Test.Core.Helpers
                 });
         }
 
-        #endregion
+        public static ProxerClientOptions WithTestingHttpClient(this ProxerClientOptions options)
+        {
+            return options.WithCustomHttpClient(
+                context => ResponseSetup.GetTestingClient(options.ApiKey, context.Resolve<ILoginManager>())
+            );
+        }
     }
 }

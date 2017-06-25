@@ -1,5 +1,4 @@
 ﻿using System;
-using Azuria.Api.Builder;
 using Azuria.Api.v1.DataModels.Anime;
 using Azuria.Enums.Info;
 using Azuria.Requests.Builder;
@@ -12,7 +11,6 @@ namespace Azuria.Api.v1.RequestBuilder
     public class AnimeRequestBuilder : IApiClassRequestBuilder
     {
         /// <summary>
-        /// 
         /// </summary>
         /// <param name="client"></param>
         public AnimeRequestBuilder(IProxerClient client)
@@ -25,7 +23,6 @@ namespace Azuria.Api.v1.RequestBuilder
 
         /// <summary>
         /// Builds a request that returns the link of a specified stream.
-        /// 
         /// Api permissions required (class - permission level):
         /// * Anime - Level 2
         /// </summary>
@@ -39,7 +36,6 @@ namespace Azuria.Api.v1.RequestBuilder
 
         /// <summary>
         /// Builds a request that returns all streams (including the Proxerstream) of a specified episode.
-        /// 
         /// Api permissions required (class - permission level):
         /// * Anime - Level 3
         /// </summary>
@@ -62,7 +58,6 @@ namespace Azuria.Api.v1.RequestBuilder
 
         /// <summary>
         /// Builds a request that returns all streams (without the Proxerstream) of a specified episode.
-        /// 
         /// Api permissions required (class - permission level):
         /// * Anime - Level 2
         /// </summary>

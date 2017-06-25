@@ -16,7 +16,42 @@ namespace Azuria.Test.Core
     {
         private static readonly Dictionary<string, string> FileResponses = GetFileResponses();
 
-        #region Methods
+        private static void AddGetMethod(
+            this Mock<IHttpClient> clientMock, ILoginManager loginManager, ServerRequest request,
+            Dictionary<string, string> headers, string response)
+        {
+            clientMock.Setup(
+                    httpClient => httpClient.GetRequestAsync(
+                        request.BuildUri(), headers, new CancellationToken()
+                    )
+                )
+                .Returns(() => Task.FromResult(loginManager.CheckLogin(request, response)));
+        }
+
+        private static void AddPostMethod(
+            this Mock<IHttpClient> clientMock, ILoginManager loginManager, ServerRequest request,
+            Dictionary<string, string> headers, string response)
+        {
+            clientMock.Setup(
+                    httpClient => httpClient.PostRequestAsync(
+                        request.BuildUri(), request.PostArguments, headers, new CancellationToken()
+                    )
+                )
+                .Returns(() => Task.FromResult(loginManager.CheckLogin(request, response)));
+        }
+
+        private static IProxerResult<string> CheckLogin(
+            this ILoginManager loginManager, ServerRequest request, string response)
+        {
+            if (request.IsLoggedIn == null
+                || request.IsLoggedIn.Value == loginManager.CheckIsLoginProbablyValid()
+                || request.IsLoggedIn.Value && (loginManager.LoginToken?.Any() ?? false))
+                return new ProxerResult<string>(response);
+
+            return new ProxerResult<string>(
+                new Exception("Authentication status does not match with those of the request!")
+            );
+        }
 
         private static Dictionary<string, string> GetFileResponses()
         {
@@ -31,10 +66,47 @@ namespace Azuria.Test.Core
             return lReturn;
         }
 
+        public static IHttpClient GetTestingClient(char[] apiKey, ILoginManager loginManager)
+        {
+            if (!ServerResponse.ServerResponses.Any()) InitRequests();
+
+            Dictionary<string, string> lStandardHeaders = new Dictionary<string, string>
+            {
+                {"proxer-api-key", new string(apiKey)}
+            };
+
+            Mock<IHttpClient> lHttpClientMock = new Mock<IHttpClient>();
+            foreach (ServerResponse serverResponse in ServerResponse.ServerResponses)
+            foreach (ServerRequest request in serverResponse.Requests)
+                switch (request.RequestMethod)
+                {
+                    case RequestMethod.Get:
+                        lHttpClientMock.AddGetMethod(
+                            loginManager, request, GetHeaders(request), serverResponse.Response
+                        );
+                        break;
+                    case RequestMethod.Post:
+                        lHttpClientMock.AddPostMethod(
+                            loginManager, request, GetHeaders(request), serverResponse.Response
+                        );
+                        break;
+                }
+
+            return lHttpClientMock.Object;
+
+            Dictionary<string, string> GetHeaders(ServerRequest request)
+            {
+                Dictionary<string, string> lHeaders = new Dictionary<string, string>(lStandardHeaders);
+                if (!request.Headers.Any()) return lHeaders;
+                foreach (KeyValuePair<string, string> header in request.Headers)
+                    lHeaders.Add(header.Key, header.Value);
+
+                return lHeaders;
+            }
+        }
+
         private static void InitRequests()
         {
-            #region Anime
-
             ServerResponse.Create(
                     "https://proxer.me/api/v1",
                     response =>
@@ -50,10 +122,6 @@ namespace Azuria.Test.Core
                         response.Get("/anime/link")
                             .WithQueryParameter("id", "401217"))
                 .Respond(FileResponses["anime_getlink.json"]);
-
-            #endregion
-
-            #region Info
 
             ServerResponse.Create(
                     "https://proxer.me/api/v1",
@@ -207,10 +275,6 @@ namespace Azuria.Test.Core
                             .WithLoggedInSenpai(true))
                 .Respond(FileResponses["info_setuserinfonote.json"]);
 
-            #endregion
-
-            #region List
-
             ServerResponse.Create(
                     "https://proxer.me/api/v1",
                     response =>
@@ -257,10 +321,6 @@ namespace Azuria.Test.Core
                         .WithQueryParameter("limit", "100"))
                 .Respond(FileResponses["list_gettranslatorgroupprojects.json"]);
 
-            #endregion
-
-            #region Manga
-
             ServerResponse.Create(
                     "https://proxer.me/api/v1",
                     response =>
@@ -269,10 +329,6 @@ namespace Azuria.Test.Core
                             .WithQueryParameter("episode", "162")
                             .WithQueryParameter("language", "en"))
                 .Respond(FileResponses["manga_getchapter.json"]);
-
-            #endregion
-
-            #region Media
 
             ServerResponse.Create(
                     "https://proxer.me/api/v1",
@@ -303,10 +359,6 @@ namespace Azuria.Test.Core
                     response =>
                         response.Get("/media/headerlist"))
                 .Respond(FileResponses["media_getheaderlist.json"]);
-
-            #endregion
-
-            #region Messenger
 
             ServerResponse.Create(
                     "https://proxer.me/api/v1",
@@ -480,10 +532,6 @@ namespace Azuria.Test.Core
                             .WithLoggedInSenpai(true))
                 .Respond(FileResponses["messages_notifications.html"]);
 
-            #endregion
-
-            #region Notifications
-
             ServerResponse.Create(
                     "https://proxer.me/api/v1",
                     response =>
@@ -502,10 +550,6 @@ namespace Azuria.Test.Core
                         response.Get("/notifications_misc.php")
                             .WithLoggedInSenpai(true))
                 .Respond(FileResponses["notifications_misc.php"]);
-
-            #endregion
-
-            #region Ucp
 
             ServerResponse.Create(
                     "https://proxer.me/api/v1",
@@ -596,10 +640,6 @@ namespace Azuria.Test.Core
                             .WithQueryParameter("kat", "anime")
                             .WithLoggedInSenpai(true))
                 .Respond(FileResponses["ucp_setreminder9200.json"]);
-
-            #endregion
-
-            #region User
 
             ServerResponse.Create(
                     "https://proxer.me/api/v1", response =>
@@ -787,92 +827,6 @@ namespace Azuria.Test.Core
                             .WithLoggedInSenpai(true);
                     })
                 .Respond(FileResponses["user_getlistmanga.json"]);
-
-            #endregion
         }
-
-        public static IHttpClient GetTestingClient(char[] apiKey, ILoginManager loginManager)
-        {
-            if (!ServerResponse.ServerResponses.Any()) InitRequests();
-
-            Dictionary<string, string> lStandardHeaders = new Dictionary<string, string>
-            {
-                {"proxer-api-key", new string(apiKey)}
-            };
-
-            Mock<IHttpClient> lHttpClientMock = new Mock<IHttpClient>();
-            foreach (ServerResponse serverResponse in ServerResponse.ServerResponses)
-            {
-                foreach (ServerRequest request in serverResponse.Requests)
-                {
-                    switch (request.RequestMethod)
-                    {
-                        case RequestMethod.Get:
-                            lHttpClientMock.AddGetMethod(
-                                loginManager, request, GetHeaders(request), serverResponse.Response
-                            );
-                            break;
-                        case RequestMethod.Post:
-                            lHttpClientMock.AddPostMethod(
-                                loginManager, request, GetHeaders(request), serverResponse.Response
-                            );
-                            break;
-                    }
-                }
-            }
-
-            return lHttpClientMock.Object;
-
-            Dictionary<string, string> GetHeaders(ServerRequest request)
-            {
-                Dictionary<string, string> lHeaders = new Dictionary<string, string>(lStandardHeaders);
-                if (!request.Headers.Any()) return lHeaders;
-                foreach (KeyValuePair<string, string> header in request.Headers)
-                {
-                    lHeaders.Add(header.Key, header.Value);
-                }
-
-                return lHeaders;
-            }
-        }
-
-        private static void AddGetMethod(
-            this Mock<IHttpClient> clientMock, ILoginManager loginManager, ServerRequest request,
-            Dictionary<string, string> headers, string response)
-        {
-            clientMock.Setup(
-                    httpClient => httpClient.GetRequestAsync(
-                        request.BuildUri(), headers, new CancellationToken()
-                    )
-                )
-                .Returns(() => Task.FromResult(loginManager.CheckLogin(request, response)));
-        }
-
-        private static void AddPostMethod(
-            this Mock<IHttpClient> clientMock, ILoginManager loginManager, ServerRequest request,
-            Dictionary<string, string> headers, string response)
-        {
-            clientMock.Setup(
-                    httpClient => httpClient.PostRequestAsync(
-                        request.BuildUri(), request.PostArguments, headers, new CancellationToken()
-                    )
-                )
-                .Returns(() => Task.FromResult(loginManager.CheckLogin(request, response)));
-        }
-
-        private static IProxerResult<string> CheckLogin(
-            this ILoginManager loginManager, ServerRequest request, string response)
-        {
-            if (request.IsLoggedIn == null
-                || request.IsLoggedIn.Value == loginManager.CheckIsLoginProbablyValid()
-                || request.IsLoggedIn.Value && (loginManager.LoginToken?.Any() ?? false))
-                return new ProxerResult<string>(response);
-
-            return new ProxerResult<string>(
-                new Exception("Authentication status does not match with those of the request!")
-            );
-        }
-
-        #endregion
     }
 }

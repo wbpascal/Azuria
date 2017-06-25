@@ -1,11 +1,8 @@
 ﻿using System;
-using System.Linq;
-using System.Threading;
 using Azuria.Api.v1.DataModels.Anime;
 using Azuria.Api.v1.RequestBuilder;
 using Azuria.Enums.Info;
 using Azuria.Requests.Builder;
-using Azuria.Test.Core;
 using Xunit;
 
 namespace Azuria.Test.Api.v1.RequestBuilder
@@ -18,6 +15,7 @@ namespace Azuria.Test.Api.v1.RequestBuilder
             int lRandomId = this.GetRandomNumber(4200);
             IRequestBuilderWithResult<string> lRequest = this.RequestBuilder.GetLink(lRandomId);
             this.CheckUrl(lRequest, "anime", "link");
+            Assert.Same(this.ProxerClient, lRequest.Client);
             Assert.True(lRequest.GetParameters.ContainsKey("id"));
             Assert.Equal(lRandomId.ToString(), lRequest.GetParameters["id"]);
         }
@@ -34,6 +32,7 @@ namespace Azuria.Test.Api.v1.RequestBuilder
             IRequestBuilderWithResult<StreamDataModel[]> lRequest =
                 this.RequestBuilder.GetProxerStreams(lRandomId, lRandomEpisode, language);
             this.CheckUrl(lRequest, "anime", "proxerstreams");
+            Assert.Same(this.ProxerClient, lRequest.Client);
             Assert.True(lRequest.GetParameters.ContainsKey("id"));
             Assert.True(lRequest.GetParameters.ContainsKey("episode"));
             Assert.True(lRequest.GetParameters.ContainsKey("language"));
@@ -45,13 +44,11 @@ namespace Azuria.Test.Api.v1.RequestBuilder
         [Fact]
         public void GetProxerStreamUnkownLanguageErrorTest()
         {
-            ArgumentException lException = Assert.Throws<ArgumentException>(
+            Assert.Throws<ArgumentException>(
                 () => this.RequestBuilder.GetProxerStreams(42, 42, AnimeLanguage.Unknown)
             );
-            Assert.NotEmpty(lException.Message);
-            Assert.Equal("language", lException.ParamName);
         }
-        
+
 
         [Theory]
         [InlineData(AnimeLanguage.EngSub)]
@@ -65,6 +62,7 @@ namespace Azuria.Test.Api.v1.RequestBuilder
             IRequestBuilderWithResult<StreamDataModel[]> lRequest =
                 this.RequestBuilder.GetStreams(lRandomId, lRandomEpisode, language);
             this.CheckUrl(lRequest, "anime", "streams");
+            Assert.Same(this.ProxerClient, lRequest.Client);
             Assert.True(lRequest.GetParameters.ContainsKey("id"));
             Assert.True(lRequest.GetParameters.ContainsKey("episode"));
             Assert.True(lRequest.GetParameters.ContainsKey("language"));
@@ -76,13 +74,11 @@ namespace Azuria.Test.Api.v1.RequestBuilder
         [Fact]
         public void GetStreamUnkownLanguageErrorTest()
         {
-            ArgumentException lException = Assert.Throws<ArgumentException>(
+            Assert.Throws<ArgumentException>(
                 () => this.RequestBuilder.GetStreams(42, 42, AnimeLanguage.Unknown)
             );
-            Assert.NotEmpty(lException.Message);
-            Assert.Equal("language", lException.ParamName);
         }
-        
+
         [Fact]
         public override void ProxerClientTest()
         {

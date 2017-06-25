@@ -16,7 +16,7 @@ namespace Azuria
     public class ProxerClientOptions
     {
         /// <summary>
-        /// Creates a new instance of <see cref="ProxerClientOptions"/>.
+        /// Creates a new instance of <see cref="ProxerClientOptions" />.
         /// </summary>
         /// <param name="apiKey"></param>
         public ProxerClientOptions(char[] apiKey)
@@ -26,7 +26,6 @@ namespace Azuria
         }
 
         /// <summary>
-        ///
         /// </summary>
         public char[] ApiKey { get; }
 
@@ -57,7 +56,6 @@ namespace Azuria
         /// <summary>
         /// Registers a <see cref="ILoginManager">login manager</see> with the specified login token to the client
         /// that will authenticate on the first request made.
-        ///
         /// Overrides <see cref="WithCustomLoginManager" />.
         /// </summary>
         /// <param name="loginToken">
@@ -77,12 +75,12 @@ namespace Azuria
             return this;
         }
 
-        ///  <summary>
-        ///  Registers a custom <see cref="IHttpClient">http client</see> with the client that is used to make all
-        ///  request of that client.
-        ///  Overrides <see cref="WithCustomHttpClient(int, string)" />.
-        ///  </summary>
-        ///  <param name="factory">The factory that is used to create the http client.</param>
+        /// <summary>
+        /// Registers a custom <see cref="IHttpClient">http client</see> with the client that is used to make all
+        /// request of that client.
+        /// Overrides <see cref="WithCustomHttpClient(int, string)" />.
+        /// </summary>
+        /// <param name="factory">The factory that is used to create the http client.</param>
         /// <exception cref="ArgumentNullException">Thrown if the <paramref name="factory" /> ist null.</exception>
         public ProxerClientOptions WithCustomHttpClient(Func<IComponentContext, IHttpClient> factory)
         {
@@ -93,7 +91,6 @@ namespace Azuria
 
         /// <summary>
         /// Registers a <see cref="IHttpClient">http client</see> with custom timeout and/or user-agent to the client.
-        ///
         /// Overrides <see cref="WithCustomHttpClient(System.Func{Autofac.IComponentContext,Azuria.Requests.Http.IHttpClient})" />.
         /// </summary>
         /// <param name="timeout">Optional. The custom timeout of the http client.</param>
@@ -106,7 +103,6 @@ namespace Azuria
 
         /// <summary>
         /// Registers a custom <see cref="ILoginManager">login manager</see> with the client.
-        /// 
         /// Overrides <see cref="WithAuthorisation" />.
         /// </summary>
         /// <param name="factory">The factory that is used to create the login manager.</param>

@@ -16,11 +16,15 @@ namespace Azuria.Authentication
         char[] LoginToken { get; set; }
 
         /// <summary>
-        /// Gets if the client is probably logged in (based on <see cref="DateTime"/> so results
+        /// Gets if the client is probably logged in (based on <see cref="DateTime" /> so results
         /// may be inaccurate).
         /// </summary>
         /// <returns>A boolean that indicates if the client is probably logged in.</returns>
         bool CheckIsLoginProbablyValid();
+
+        /// <summary>
+        /// </summary>
+        void PerformedRequest(bool sendLoginToken = false);
 
         /// <summary>
         /// Performs the login of the client with the given username, password and optional 2FA-Token.
@@ -29,7 +33,7 @@ namespace Azuria.Authentication
         /// <param name="password">The password of the user that is being authenticated.</param>
         /// <param name="secretKey">Optional. The 2FA-Token used to authenticate the client.</param>
         /// <param name="token">Optional. The cancellation token used for cancelling the request.</param>
-        /// <returns>A <see cref="Task"/> that returns the result of the request.</returns>
+        /// <returns>A <see cref="Task" /> that returns the result of the request.</returns>
         Task<IProxerResult> PerformLoginAsync(
             string username, string password, string secretKey = null,
             CancellationToken token = default(CancellationToken));
@@ -38,13 +42,8 @@ namespace Azuria.Authentication
         /// Performs the logout of the client.
         /// </summary>
         /// <param name="token">Optional. The cancellation token used for cancelling the request.</param>
-        /// <returns>A <see cref="Task"/> that returns the result of the request.</returns>
+        /// <returns>A <see cref="Task" /> that returns the result of the request.</returns>
         Task<IProxerResult> PerformLogoutAsync(CancellationToken token = default(CancellationToken));
-
-        /// <summary>
-        /// 
-        /// </summary>
-        void PerformedRequest(bool sendLoginToken = false);
 
         /// <summary>
         /// Queues the login token to be send with the next request.

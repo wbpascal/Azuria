@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Linq;
-using Azuria.Api.Builder;
 using Azuria.Api.v1.Converters.List;
 using Azuria.Api.v1.DataModels.Info;
 using Azuria.Api.v1.DataModels.List;
@@ -19,7 +18,6 @@ namespace Azuria.Api.v1.RequestBuilder
     public class ListRequestBuilder : IApiClassRequestBuilder
     {
         /// <summary>
-        /// 
         /// </summary>
         /// <param name="client"></param>
         public ListRequestBuilder(IProxerClient client)
@@ -33,7 +31,6 @@ namespace Azuria.Api.v1.RequestBuilder
         /// <summary>
         /// Builds a request that returns the results of a search for anime and
         /// manga.
-        /// 
         /// Api permissions required (class - permission level):
         /// * List - Level 0
         /// </summary>
@@ -61,7 +58,6 @@ namespace Azuria.Api.v1.RequestBuilder
         /// <summary>
         /// Builds a request that returns a list of anime or manga that match
         /// the specified criteria.
-        /// 
         /// Api permissions required (class - permission level):
         /// * List - Level 0
         /// </summary>
@@ -99,7 +95,6 @@ namespace Azuria.Api.v1.RequestBuilder
 
         /// <summary>
         /// Builds a request that returns
-        /// 
         /// Api permissions required (class - permission level):
         /// * List - Level 0
         /// </summary>
@@ -134,7 +129,6 @@ namespace Azuria.Api.v1.RequestBuilder
 
         /// <summary>
         /// Builds a request that returns
-        /// 
         /// Api permissions required (class - permission level):
         /// * List - Level 0
         /// </summary>
@@ -161,7 +155,6 @@ namespace Azuria.Api.v1.RequestBuilder
 
         /// <summary>
         /// Builds a request that returns
-        /// 
         /// Api permissions required (class - permission level):
         /// * List - Level 0
         /// </summary>
@@ -185,7 +178,6 @@ namespace Azuria.Api.v1.RequestBuilder
 
         /// <summary>
         /// Builds a request that returns
-        /// 
         /// Api permissions required (class - permission level):
         /// * List - Level 0
         /// </summary>
@@ -215,7 +207,6 @@ namespace Azuria.Api.v1.RequestBuilder
 
         /// <summary>
         /// Builds a request that returns
-        /// 
         /// Api permissions required (class - permission level):
         /// * List - Level 0
         /// </summary>
@@ -242,7 +233,6 @@ namespace Azuria.Api.v1.RequestBuilder
 
         /// <summary>
         /// Builds a request that returns
-        /// 
         /// Api permissions required (class - permission level):
         /// * List - Level 0
         /// </summary>

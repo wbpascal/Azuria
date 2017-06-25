@@ -3,7 +3,6 @@
 namespace Azuria.Enums.User
 {
     /// <summary>
-    /// 
     /// </summary>
     public enum UserListSort
     {

@@ -12,8 +12,6 @@ namespace Azuria.Test.Core
             this.Url = url;
         }
 
-        #region Properties
-
         public bool ContainsSenpai { get; set; }
 
         public IDictionary<string, string> Headers { get; set; } = new Dictionary<string, string>();
@@ -28,18 +26,6 @@ namespace Azuria.Test.Core
 
         public string Url { get; set; }
 
-        #endregion
-
-        #region Methods
-
-        public string GetQuery()
-        {
-            string lQuery = "?";
-            foreach (KeyValuePair<string, string> keyValuePair in this.QueryParams)
-                lQuery += $"{keyValuePair.Key}={keyValuePair.Value}&";
-            return lQuery.Remove(lQuery.Length - 1);
-        }
-
         public Uri BuildUri()
         {
             UriBuilder lUriBuilder = new UriBuilder(this.Url);
@@ -48,6 +34,14 @@ namespace Azuria.Test.Core
                 )
                 .RemoveIfNotEmpty(0, 1);
             return lUriBuilder.Uri;
+        }
+
+        public string GetQuery()
+        {
+            string lQuery = "?";
+            foreach (KeyValuePair<string, string> keyValuePair in this.QueryParams)
+                lQuery += $"{keyValuePair.Key}={keyValuePair.Value}&";
+            return lQuery.Remove(lQuery.Length - 1);
         }
 
         public ServerRequest WithHeader(string key, string value)
@@ -80,7 +74,5 @@ namespace Azuria.Test.Core
             this.ContainsSenpai = true;
             return this;
         }
-
-        #endregion
     }
 }

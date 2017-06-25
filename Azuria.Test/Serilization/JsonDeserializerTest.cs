@@ -3,7 +3,6 @@ using Autofac;
 using Azuria.ErrorHandling;
 using Azuria.Serialization;
 using Azuria.Test.Core;
-using Moq;
 using Newtonsoft.Json;
 using Xunit;
 

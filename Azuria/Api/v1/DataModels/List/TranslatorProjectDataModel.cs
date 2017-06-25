@@ -6,19 +6,16 @@ using Newtonsoft.Json;
 namespace Azuria.Api.v1.DataModels.List
 {
     /// <summary>
-    /// 
     /// </summary>
     public class TranslatorProjectDataModel : IEntryInfoDataModel
     {
         /// <summary>
-        /// 
         /// </summary>
         [JsonProperty("fsk")]
         [JsonConverter(typeof(FskConverter))]
         public Fsk[] EntryFsk { get; set; }
 
         /// <summary>
-        /// 
         /// </summary>
         [JsonProperty("genre")]
         [JsonConverter(typeof(GenreConverter))]
@@ -55,7 +52,6 @@ namespace Azuria.Api.v1.DataModels.List
         public MediaEntryType EntryType => (int) this.EntryMedium < 4 ? MediaEntryType.Anime : MediaEntryType.Manga;
 
         /// <summary>
-        /// 
         /// </summary>
         [JsonProperty("type")]
         public TranslationStatus Status { get; set; }

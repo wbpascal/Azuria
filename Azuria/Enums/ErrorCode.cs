@@ -177,62 +177,50 @@
         MessengerNotEnoughUsers = 3030,
 
         /// <summary>
-        /// 
         /// </summary>
         ChatInvalidRoom = 3031,
 
         /// <summary>
-        /// 
         /// </summary>
         ChatNoPermission = 3032,
 
         /// <summary>
-        /// 
         /// </summary>
         ChatInvalidMessage = 3033,
 
         /// <summary>
-        /// 
         /// </summary>
         ChatNotLoggedIn = 3034,
 
         /// <summary>
-        /// 
         /// </summary>
         ListInvalidLanguage = 3035,
 
         /// <summary>
-        /// 
         /// </summary>
         ListInvalidType = 3036,
 
         /// <summary>
-        /// 
         /// </summary>
         ListInvalidId = 3037,
 
         /// <summary>
-        /// 
         /// </summary>
         User2FaKeyNeeded = 3038,
 
         /// <summary>
-        /// 
         /// </summary>
         UserAccountTimeout = 3039,
 
         /// <summary>
-        /// 
         /// </summary>
         UserAccountBlocked = 3040,
 
         /// <summary>
-        /// 
         /// </summary>
         UserInternalError = 3041,
 
         /// <summary>
-        /// 
         /// </summary>
         ErrorLogEmptyString = 3042
     }

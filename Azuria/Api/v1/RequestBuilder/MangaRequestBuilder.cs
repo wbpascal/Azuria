@@ -1,5 +1,4 @@
 ﻿using System;
-using Azuria.Api.Builder;
 using Azuria.Api.v1.DataModels.Manga;
 using Azuria.Enums.Info;
 using Azuria.Helpers.Extensions;
@@ -13,7 +12,6 @@ namespace Azuria.Api.v1.RequestBuilder
     public class MangaRequestBuilder : IApiClassRequestBuilder
     {
         /// <summary>
-        /// 
         /// </summary>
         /// <param name="client"></param>
         public MangaRequestBuilder(IProxerClient client)
@@ -26,7 +24,6 @@ namespace Azuria.Api.v1.RequestBuilder
 
         /// <summary>
         /// Builds a request that returns information about a chapter including the pages.
-        /// 
         /// Api permissions required (class - permission level):
         /// * Manga - Level 0
         /// </summary>

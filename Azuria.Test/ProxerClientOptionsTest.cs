@@ -11,6 +11,17 @@ namespace Azuria.Test
     public class ProxerClientOptionsTest
     {
         [Fact]
+        public void AuthorisationTest()
+        {
+            Assert.Throws<ArgumentException>(
+                () => ProxerClient.Create(new char[0], options => options.WithAuthorisation(new char[0])));
+            char[] lLoginKey = new char[255].Select(c => (char) new Random().Next(255)).ToArray();
+            IProxerClient lClient = ProxerClient.Create(new char[0], options => options.WithAuthorisation(lLoginKey));
+            Assert.True(lClient.Container.IsRegistered<ILoginManager>());
+            Assert.Equal(lLoginKey, lClient.Container.Resolve<ILoginManager>().LoginToken);
+        }
+
+        [Fact]
         public void CustomHttpClientTest()
         {
             Assert.Throws<ArgumentNullException>(
@@ -36,17 +47,6 @@ namespace Azuria.Test
                 options => options.WithCustomLoginManager(context => lLoginManager));
             Assert.True(lClient.Container.IsRegistered<ILoginManager>());
             Assert.Same(lLoginManager, lClient.Container.Resolve<ILoginManager>());
-        }
-
-        [Fact]
-        public void AuthorisationTest()
-        {
-            Assert.Throws<ArgumentException>(
-                () => ProxerClient.Create(new char[0], options => options.WithAuthorisation(new char[0])));
-            char[] lLoginKey = new char[255].Select(c => (char) new Random().Next(255)).ToArray();
-            IProxerClient lClient = ProxerClient.Create(new char[0], options => options.WithAuthorisation(lLoginKey));
-            Assert.True(lClient.Container.IsRegistered<ILoginManager>());
-            Assert.Equal(lLoginKey, lClient.Container.Resolve<ILoginManager>().LoginToken);
         }
     }
 }

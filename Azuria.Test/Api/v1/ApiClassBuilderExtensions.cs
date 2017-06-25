@@ -1,5 +1,4 @@
-﻿using System.Threading;
-using Azuria.Api.Builder;
+﻿using Azuria.Api.Builder;
 using Azuria.Api.v1;
 using Azuria.Api.v1.RequestBuilder;
 using Azuria.Requests;

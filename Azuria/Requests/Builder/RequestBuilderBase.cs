@@ -6,7 +6,6 @@ using Azuria.Helpers.Extensions;
 namespace Azuria.Requests.Builder
 {
     /// <summary>
-    /// 
     /// </summary>
     public abstract class RequestBuilderBase : IRequestBuilderBase
     {
@@ -16,7 +15,6 @@ namespace Azuria.Requests.Builder
             = new List<KeyValuePair<string, string>>();
 
         /// <summary>
-        /// 
         /// </summary>
         /// <param name="baseUri"></param>
         /// <param name="client"></param>
@@ -27,7 +25,6 @@ namespace Azuria.Requests.Builder
         }
 
         /// <summary>
-        /// 
         /// </summary>
         /// <param name="builderBase"></param>
         protected RequestBuilderBase(RequestBuilderBase builderBase)
@@ -40,27 +37,22 @@ namespace Azuria.Requests.Builder
         }
 
         /// <summary>
-        /// 
         /// </summary>
         public bool CheckLogin { get; private set; }
 
         /// <summary>
-        /// 
         /// </summary>
         public IProxerClient Client { get; }
 
         /// <summary>
-        /// 
         /// </summary>
         public IDictionary<string, string> GetParameters { get; } = new Dictionary<string, string>();
 
         /// <summary>
-        /// 
         /// </summary>
         public IEnumerable<KeyValuePair<string, string>> PostArguments => this._postArguments;
 
         /// <summary>
-        /// 
         /// </summary>
         /// <param name="key"></param>
         /// <param name="value"></param>
@@ -70,7 +62,6 @@ namespace Azuria.Requests.Builder
         }
 
         /// <summary>
-        /// 
         /// </summary>
         /// <param name="parameters"></param>
         protected void AddGetParameter(IDictionary<string, string> parameters)
@@ -79,7 +70,6 @@ namespace Azuria.Requests.Builder
         }
 
         /// <summary>
-        /// 
         /// </summary>
         protected void AddLoginCheck(bool check)
         {
@@ -87,7 +77,6 @@ namespace Azuria.Requests.Builder
         }
 
         /// <summary>
-        /// 
         /// </summary>
         /// <param name="key"></param>
         /// <param name="value"></param>
@@ -97,7 +86,6 @@ namespace Azuria.Requests.Builder
         }
 
         /// <summary>
-        /// 
         /// </summary>
         /// <param name="args"></param>
         protected void AddPostArgument(IEnumerable<KeyValuePair<string, string>> args)

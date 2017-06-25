@@ -12,23 +12,10 @@ using Azuria.Requests.Http;
 namespace Azuria.Requests
 {
     /// <summary>
-    ///
     /// </summary>
     public static class RequestExtensions
     {
-        internal static Task<IProxerResult<string>> ProxerRequestAsync(
-            this IHttpClient httpClient, Uri url, IEnumerable<KeyValuePair<string, string>> postArgs,
-            Dictionary<string, string> headers, CancellationToken token)
-        {
-            KeyValuePair<string, string>[] lPostArgs =
-                postArgs as KeyValuePair<string, string>[] ?? postArgs.ToArray();
-            return lPostArgs.Any()
-                       ? httpClient.PostRequestAsync(url, lPostArgs, headers, token)
-                       : httpClient.GetRequestAsync(url, headers, token);
-        }
-
         /// <summary>
-        ///
         /// </summary>
         /// <param name="client"></param>
         /// <returns></returns>
@@ -38,7 +25,6 @@ namespace Azuria.Requests
         }
 
         /// <summary>
-        ///
         /// </summary>
         /// <param name="builder"></param>
         /// <param name="token"></param>
@@ -49,7 +35,6 @@ namespace Azuria.Requests
         }
 
         /// <summary>
-        ///
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="builder"></param>
@@ -59,6 +44,17 @@ namespace Azuria.Requests
             this IRequestBuilderWithResult<T> builder, CancellationToken token = new CancellationToken())
         {
             return builder.Client.Container.Resolve<IRequestHandler>().MakeRequestAsync(builder, token);
+        }
+
+        internal static Task<IProxerResult<string>> ProxerRequestAsync(
+            this IHttpClient httpClient, Uri url, IEnumerable<KeyValuePair<string, string>> postArgs,
+            Dictionary<string, string> headers, CancellationToken token)
+        {
+            KeyValuePair<string, string>[] lPostArgs =
+                postArgs as KeyValuePair<string, string>[] ?? postArgs.ToArray();
+            return lPostArgs.Any()
+                       ? httpClient.PostRequestAsync(url, lPostArgs, headers, token)
+                       : httpClient.GetRequestAsync(url, headers, token);
         }
     }
 }

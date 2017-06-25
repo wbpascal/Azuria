@@ -4,25 +4,21 @@ using Azuria.Api.v1.Converters;
 namespace Azuria.Requests.Builder
 {
     /// <summary>
-    /// 
     /// </summary>
     /// <typeparam name="T"></typeparam>
     public interface IRequestBuilderWithResult<T> : IRequestBuilderBase
     {
         /// <summary>
-        /// 
         /// </summary>
         DataConverter<T> CustomDataConverter { get; }
 
         /// <summary>
-        /// 
         /// </summary>
         /// <param name="converter"></param>
         /// <returns></returns>
         IRequestBuilderWithResult<T> WithCustomDataConverter(DataConverter<T> converter);
 
         /// <summary>
-        /// 
         /// </summary>
         /// <param name="key"></param>
         /// <param name="value"></param>
@@ -30,20 +26,17 @@ namespace Azuria.Requests.Builder
         IRequestBuilderWithResult<T> WithGetParameter(string key, string value);
 
         /// <summary>
-        /// 
         /// </summary>
         /// <param name="parameter"></param>
         /// <returns></returns>
         IRequestBuilderWithResult<T> WithGetParameter(IDictionary<string, string> parameter);
 
         /// <summary>
-        /// 
         /// </summary>
         /// <returns></returns>
         IRequestBuilderWithResult<T> WithLoginCheck(bool check = true);
 
         /// <summary>
-        /// 
         /// </summary>
         /// <param name="key"></param>
         /// <param name="value"></param>
@@ -51,7 +44,6 @@ namespace Azuria.Requests.Builder
         IRequestBuilderWithResult<T> WithPostParameter(string key, string value);
 
         /// <summary>
-        /// 
         /// </summary>
         /// <param name="args"></param>
         /// <returns></returns>

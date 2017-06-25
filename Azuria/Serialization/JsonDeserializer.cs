@@ -8,7 +8,6 @@ using Newtonsoft.Json;
 namespace Azuria.Serialization
 {
     /// <summary>
-    ///
     /// </summary>
     public class JsonDeserializer : IJsonDeserializer
     {

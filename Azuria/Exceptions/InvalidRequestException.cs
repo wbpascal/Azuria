@@ -3,7 +3,6 @@ using System;
 namespace Azuria.Exceptions
 {
     /// <summary>
-    /// 
     /// </summary>
     public class InvalidRequestException : Exception
     {

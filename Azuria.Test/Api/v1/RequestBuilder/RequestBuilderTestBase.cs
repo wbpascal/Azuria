@@ -17,20 +17,10 @@ namespace Azuria.Test.Api.v1.RequestBuilder
             this.ProxerClient = Azuria.ProxerClient.Create(new char[32]);
             this.RequestBuilder = this.ProxerClient.Container.Resolve<T>();
         }
-        
-        public T RequestBuilder { get; }
-        
+
         public IProxerClient ProxerClient { get; set; }
 
-        public int GetRandomNumber(int max)
-        {
-            return this._random.Next(max);
-        }
-
-        public virtual void ProxerClientTest()
-        {
-            Assert.Same(this.ProxerClient, this.RequestBuilder.ProxerClient);
-        }
+        public T RequestBuilder { get; }
 
         protected void CheckUrl(IRequestBuilderBase builder, string apiClassName, string apiFunctionName)
         {
@@ -40,6 +30,16 @@ namespace Azuria.Test.Api.v1.RequestBuilder
             Assert.Equal(
                 $"{TestConstants.ProxerApiV1Path}/{apiClassName}/{apiFunctionName}", lUri.AbsolutePath
             );
+        }
+
+        public int GetRandomNumber(int max)
+        {
+            return this._random.Next(max);
+        }
+
+        public virtual void ProxerClientTest()
+        {
+            Assert.Same(this.ProxerClient, this.RequestBuilder.ProxerClient);
         }
     }
 }

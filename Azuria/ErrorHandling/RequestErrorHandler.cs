@@ -5,7 +5,6 @@ using Azuria.Exceptions;
 namespace Azuria.ErrorHandling
 {
     /// <summary>
-    /// 
     /// </summary>
     public class RequestErrorHandler : IRequestErrorHandler
     {

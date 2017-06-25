@@ -1,5 +1,4 @@
 ﻿using System;
-using Azuria.Api.Builder;
 using Azuria.Api.v1.DataModels;
 using Azuria.Api.v1.DataModels.User;
 using Azuria.Enums;
@@ -15,7 +14,6 @@ namespace Azuria.Api.v1.RequestBuilder
     public class UserRequestBuilder : IApiClassRequestBuilder
     {
         /// <summary>
-        /// 
         /// </summary>
         /// <param name="client"></param>
         public UserRequestBuilder(IProxerClient client)
@@ -35,7 +33,6 @@ namespace Azuria.Api.v1.RequestBuilder
         }
 
         /// <summary>
-        /// 
         /// </summary>
         /// <param name="username"></param>
         /// <param name="page"></param>
@@ -49,7 +46,6 @@ namespace Azuria.Api.v1.RequestBuilder
         }
 
         /// <summary>
-        /// 
         /// </summary>
         /// <param name="uid"></param>
         /// <param name="page"></param>
@@ -64,7 +60,6 @@ namespace Azuria.Api.v1.RequestBuilder
 
         /// <summary>
         /// Builds a request that...
-        /// 
         /// Api permissions required (class - permission level):
         /// * User - Level 0
         /// </summary>
@@ -78,7 +73,6 @@ namespace Azuria.Api.v1.RequestBuilder
 
         /// <summary>
         /// Builds a request that...
-        /// 
         /// Api permissions required (class - permission level):
         /// * User - Level 0
         /// </summary>
@@ -93,7 +87,6 @@ namespace Azuria.Api.v1.RequestBuilder
 
         /// <summary>
         /// Builds a request that...
-        /// 
         /// Api permissions required (class - permission level):
         /// * User - Level 0
         /// </summary>
@@ -119,7 +112,6 @@ namespace Azuria.Api.v1.RequestBuilder
 
         /// <summary>
         /// Builds a request that...
-        /// 
         /// Api permissions required (class - permission level):
         /// * User - Level 0
         /// </summary>
@@ -139,7 +131,6 @@ namespace Azuria.Api.v1.RequestBuilder
 
         /// <summary>
         /// Builds a request that...
-        /// 
         /// Api permissions required (class - permission level):
         /// * User - Level 0
         /// </summary>
@@ -174,7 +165,6 @@ namespace Azuria.Api.v1.RequestBuilder
 
         /// <summary>
         /// Builds a request that...
-        /// 
         /// Api permissions required (class - permission level):
         /// * User - Level 0
         /// </summary>
@@ -198,7 +188,6 @@ namespace Azuria.Api.v1.RequestBuilder
 
         /// <summary>
         /// Builds a request that...
-        /// 
         /// Api permissions required (class - permission level):
         /// * User - Level 0
         /// </summary>
@@ -230,7 +219,6 @@ namespace Azuria.Api.v1.RequestBuilder
 
         /// <summary>
         /// Builds a request that...
-        /// 
         /// Api permissions required (class - permission level):
         /// * User - Level 0
         /// </summary>
@@ -246,7 +234,6 @@ namespace Azuria.Api.v1.RequestBuilder
 
         /// <summary>
         /// Builds a request that...
-        /// 
         /// Api permissions required (class - permission level):
         /// * User - Level 0
         /// </summary>
@@ -262,7 +249,6 @@ namespace Azuria.Api.v1.RequestBuilder
 
         /// <summary>
         /// Builds a request that...
-        /// 
         /// Api permissions required (class - permission level):
         /// * User - Level 0
         /// </summary>
@@ -279,7 +265,6 @@ namespace Azuria.Api.v1.RequestBuilder
 
         /// <summary>
         /// Builds a request that...
-        /// 
         /// Api permissions required (class - permission level):
         /// * User - Level 0
         /// </summary>
@@ -295,7 +280,6 @@ namespace Azuria.Api.v1.RequestBuilder
 
         /// <summary>
         /// Builds a request that...
-        /// 
         /// Api permissions required (class - permission level):
         /// * User - Level 0
         /// </summary>

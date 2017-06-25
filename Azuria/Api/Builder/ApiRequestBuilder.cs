@@ -4,12 +4,10 @@ using Azuria.Requests.Builder;
 namespace Azuria.Api.Builder
 {
     /// <summary>
-    /// 
     /// </summary>
     public class ApiRequestBuilder : IApiRequestBuilder
     {
         /// <summary>
-        /// 
         /// </summary>
         /// <param name="client"></param>
         public ApiRequestBuilder(IProxerClient client)

@@ -1,13 +1,16 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Azuria.Api.v1.Input;
+using Azuria.Enums;
 using Azuria.Enums.Info;
 using Azuria.Enums.List;
 
 namespace Azuria.Helpers.Extensions
 {
     /// <summary>
-    /// TODO: Doing this with extension methods is probably not needed. Maybe change it later and merge it with the input classes?
+    /// TODO: Doing this with extension methods is probably not needed. Maybe change it later and merge it with the input
+    /// classes?
     /// </summary>
     internal static class InputExtensions
     {
@@ -37,10 +40,12 @@ namespace Azuria.Helpers.Extensions
         internal static Dictionary<string, string> Build(this EntryListInput input)
         {
             if (input == null) return new Dictionary<string, string>();
+            if (input.Medium == MediaMedium.None)
+                throw new InvalidOperationException("MediaMedium.None is not allowed as a medium!");
             Dictionary<string, string> lReturn = new Dictionary<string, string>
             {
                 {"kat", input.Category.ToString().ToLowerInvariant()},
-                {"isH", input.ShowHContent.ToString()},
+                {"isH", input.ShowHContent.ToString().ToLowerInvariant()},
                 {"start", input.StartWithNonAlphabeticalChar ? "nonAlpha" : input.StartWith},
                 {"sort", input.SortBy.ToString().ToLowerInvariant()},
                 {"sort_type", input.SortDirection.GetDescription()}
@@ -64,19 +69,6 @@ namespace Azuria.Helpers.Extensions
                    ).Trim() ?? string.Empty;
         }
 
-        private static string TypeToString(SearchMediaType type)
-        {
-            switch (type)
-            {
-                case SearchMediaType.AllAnime:
-                    return "all-anime";
-                case SearchMediaType.AllManga:
-                    return "all-manga";
-                default:
-                    return type.ToString().ToLowerInvariant();
-            }
-        }
-
         private static string GetTagSpoilerFilterString(bool? filtered)
         {
             switch (filtered)
@@ -87,6 +79,19 @@ namespace Azuria.Helpers.Extensions
                     return "spoiler_1";
                 default:
                     return "spoiler_10";
+            }
+        }
+
+        private static string TypeToString(SearchMediaType type)
+        {
+            switch (type)
+            {
+                case SearchMediaType.AllAnime:
+                    return "all-anime";
+                case SearchMediaType.AllManga:
+                    return "all-manga";
+                default:
+                    return type.ToString().ToLowerInvariant();
             }
         }
     }

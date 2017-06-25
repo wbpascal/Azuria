@@ -5,12 +5,10 @@ using Azuria.Api.v1.Converters;
 namespace Azuria.Requests.Builder
 {
     /// <summary>
-    /// 
     /// </summary>
     public class RequestBuilder : RequestBuilderBase, IRequestBuilder
     {
         /// <summary>
-        /// 
         /// </summary>
         /// <param name="baseUri"></param>
         /// <param name="client"></param>
@@ -61,13 +59,11 @@ namespace Azuria.Requests.Builder
     }
 
     /// <summary>
-    /// 
     /// </summary>
     /// <typeparam name="T"></typeparam>
     public class RequestBuilder<T> : RequestBuilderBase, IRequestBuilderWithResult<T>
     {
         /// <summary>
-        /// 
         /// </summary>
         /// <param name="baseUri"></param>
         /// <param name="client"></param>
@@ -76,7 +72,6 @@ namespace Azuria.Requests.Builder
         }
 
         /// <summary>
-        /// 
         /// </summary>
         /// <param name="builder"></param>
         public RequestBuilder(RequestBuilderBase builder) : base(builder)

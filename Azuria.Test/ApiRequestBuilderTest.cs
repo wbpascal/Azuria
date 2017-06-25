@@ -21,22 +21,6 @@ namespace Azuria.Test
         }
 
         [Fact]
-        public void FromUrlTest()
-        {
-            IRequestBuilder lRequestBuilder = this._apiRequestBuilder.FromUrl(new Uri("https://google.com/"))
-                .WithGetParameter("test", "value")
-                .WithPostParameter("testPost", "postValue");
-
-            Assert.Equal(1, lRequestBuilder.GetParameters.Count);
-            Assert.True(lRequestBuilder.GetParameters.ContainsKey("test"));
-            Assert.Equal("value", lRequestBuilder.GetParameters["test"]);
-            Assert.Equal(1, lRequestBuilder.PostArguments.Count());
-            Assert.True(lRequestBuilder.PostArguments.Any(pair => pair.Key == "testPost" && pair.Value == "postValue"));
-
-            Assert.Equal("https://google.com/?test=value", lRequestBuilder.BuildUri().AbsoluteUri);
-        }
-
-        [Fact]
         public void FromAnimeClassTest()
         {
             AnimeRequestBuilder lRequestBuilder = this._apiRequestBuilder.FromAnimeClass();
@@ -90,6 +74,22 @@ namespace Azuria.Test
         {
             UcpRequestBuilder lRequestBuilder = this._apiRequestBuilder.FromUcpClass();
             Assert.NotNull(lRequestBuilder);
+        }
+
+        [Fact]
+        public void FromUrlTest()
+        {
+            IRequestBuilder lRequestBuilder = this._apiRequestBuilder.FromUrl(new Uri("https://google.com/"))
+                .WithGetParameter("test", "value")
+                .WithPostParameter("testPost", "postValue");
+
+            Assert.Equal(1, lRequestBuilder.GetParameters.Count);
+            Assert.True(lRequestBuilder.GetParameters.ContainsKey("test"));
+            Assert.Equal("value", lRequestBuilder.GetParameters["test"]);
+            Assert.Equal(1, lRequestBuilder.PostArguments.Count());
+            Assert.True(lRequestBuilder.PostArguments.Any(pair => pair.Key == "testPost" && pair.Value == "postValue"));
+
+            Assert.Equal("https://google.com/?test=value", lRequestBuilder.BuildUri().AbsoluteUri);
         }
 
         [Fact]

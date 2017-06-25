@@ -1,9 +1,7 @@
-using System;
 using System.Threading;
 using System.Threading.Tasks;
 using Autofac;
 using Azuria.Api.v1.DataModels.User;
-using Azuria.Api.v1.RequestBuilder;
 using Azuria.Authentication;
 using Azuria.ErrorHandling;
 using Azuria.Requests;
@@ -24,6 +22,19 @@ namespace Azuria.Test.Authentication
                 new char[32], options => options.WithAuthorisation(lRandomToken));
             ILoginManager lLoginManager = lClient.Container.Resolve<ILoginManager>();
             Assert.Same(lRandomToken, lLoginManager.LoginToken);
+        }
+
+        [Fact]
+        public void PerformedRequestTest()
+        {
+            IProxerClient lClient = ProxerClient.Create(new char[32]);
+            ILoginManager lLoginManager = lClient.Container.Resolve<ILoginManager>();
+            lLoginManager.LoginToken = new char[255];
+            Assert.False(lLoginManager.CheckIsLoginProbablyValid());
+            lLoginManager.PerformedRequest(false);
+            Assert.False(lLoginManager.CheckIsLoginProbablyValid());
+            lLoginManager.PerformedRequest(true);
+            Assert.True(lLoginManager.CheckIsLoginProbablyValid());
         }
 
         [Fact]
@@ -48,7 +59,8 @@ namespace Azuria.Test.Authentication
                 new char[32], options => { options.ContainerBuilder.RegisterInstance(lRequestHandler); });
             ILoginManager lLoginManager = lClient.Container.Resolve<ILoginManager>();
 
-            IProxerResult lResult = await lLoginManager.PerformLoginAsync("username", "password", token: lCancellationToken);
+            IProxerResult lResult = await lLoginManager.PerformLoginAsync(
+                                        "username", "password", token: lCancellationToken);
             Assert.True(lResult.Success);
             Assert.Empty(lResult.Exceptions);
 
@@ -125,19 +137,6 @@ namespace Azuria.Test.Authentication
             Assert.False(lLoginManager.SendTokenWithNextRequest());
             lLoginManager.QueueLoginForNextRequest();
             Assert.True(lLoginManager.SendTokenWithNextRequest());
-        }
-
-        [Fact]
-        public void PerformedRequestTest()
-        {
-            IProxerClient lClient = ProxerClient.Create(new char[32]);
-            ILoginManager lLoginManager = lClient.Container.Resolve<ILoginManager>();
-            lLoginManager.LoginToken = new char[255];
-            Assert.False(lLoginManager.CheckIsLoginProbablyValid());
-            lLoginManager.PerformedRequest(false);
-            Assert.False(lLoginManager.CheckIsLoginProbablyValid());
-            lLoginManager.PerformedRequest(true);
-            Assert.True(lLoginManager.CheckIsLoginProbablyValid());
         }
 
         [Fact]

@@ -24,7 +24,7 @@ namespace Azuria.Requests.Http
         private readonly System.Net.Http.HttpClient _client;
 
         /// <summary>
-        /// Creates a new instance of <see cref="HttpClient"/>.
+        /// Creates a new instance of <see cref="HttpClient" />.
         /// </summary>
         /// <param name="timeout">Optional. The timeout of each request send with this http client.</param>
         /// <param name="userAgentExtra">

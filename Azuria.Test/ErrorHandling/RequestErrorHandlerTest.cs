@@ -18,25 +18,6 @@ namespace Azuria.Test.ErrorHandling
         }
 
         [Theory]
-        [InlineData(ErrorCode.NotificationsNotLoggedIn)]
-        [InlineData(ErrorCode.UcpNotLoggedIn)]
-        [InlineData(ErrorCode.InfoNotLoggedIn)]
-        [InlineData(ErrorCode.MessengerNotLoggedIn)]
-        [InlineData(ErrorCode.ChatNotLoggedIn)]
-        public void HandleNotAuthenticatedErrorTest(ErrorCode errorCode)
-        {
-            Assert.IsType<NotAuthenticatedException>(this._requestErrorHandler.HandleError(errorCode));
-        }
-
-        [Theory]
-        [InlineData(ErrorCode.UserNoPermission)]
-        [InlineData(ErrorCode.ChatNoPermission)]
-        public void HandleNoPermissionErrorTest(ErrorCode errorCode)
-        {
-            Assert.IsType<NoPermissionException>(this._requestErrorHandler.HandleError(errorCode));
-        }
-
-        [Theory]
         [InlineData(ErrorCode.ApiKeyNoPermission)]
         public void HandleApiKeyInsufficientErrorTest(ErrorCode errorCode)
         {
@@ -50,6 +31,25 @@ namespace Azuria.Test.ErrorHandling
             Exception lException = this._requestErrorHandler.HandleError(errorCode);
             Assert.IsType<FirewallException>(lException);
             Assert.Equal("http://proxer.me/misc/captcha", lException.Message);
+        }
+
+        [Theory]
+        [InlineData(ErrorCode.UserNoPermission)]
+        [InlineData(ErrorCode.ChatNoPermission)]
+        public void HandleNoPermissionErrorTest(ErrorCode errorCode)
+        {
+            Assert.IsType<NoPermissionException>(this._requestErrorHandler.HandleError(errorCode));
+        }
+
+        [Theory]
+        [InlineData(ErrorCode.NotificationsNotLoggedIn)]
+        [InlineData(ErrorCode.UcpNotLoggedIn)]
+        [InlineData(ErrorCode.InfoNotLoggedIn)]
+        [InlineData(ErrorCode.MessengerNotLoggedIn)]
+        [InlineData(ErrorCode.ChatNotLoggedIn)]
+        public void HandleNotAuthenticatedErrorTest(ErrorCode errorCode)
+        {
+            Assert.IsType<NotAuthenticatedException>(this._requestErrorHandler.HandleError(errorCode));
         }
     }
 }

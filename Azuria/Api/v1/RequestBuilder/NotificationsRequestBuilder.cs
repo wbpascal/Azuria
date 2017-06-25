@@ -1,5 +1,4 @@
 ﻿using System;
-using Azuria.Api.Builder;
 using Azuria.Api.v1.Converters.Notifications;
 using Azuria.Api.v1.DataModels.Notifications;
 using Azuria.Requests.Builder;
@@ -12,7 +11,6 @@ namespace Azuria.Api.v1.RequestBuilder
     public class NotificationsRequestBuilder : IApiClassRequestBuilder
     {
         /// <summary>
-        /// 
         /// </summary>
         /// <param name="client"></param>
         public NotificationsRequestBuilder(IProxerClient client)
@@ -25,7 +23,6 @@ namespace Azuria.Api.v1.RequestBuilder
 
         /// <summary>
         /// Builds a request that deletes a notification.
-        /// 
         /// Api permissions required (class - permission level):
         /// * Notifications - Level 0
         /// </summary>
@@ -44,7 +41,6 @@ namespace Azuria.Api.v1.RequestBuilder
 
         /// <summary>
         /// Builds a request that returns how many notifications a user has recieved and not read.
-        /// 
         /// Api permissions required (class - permission level):
         /// * Notifications - Level 0
         /// </summary>
@@ -59,7 +55,6 @@ namespace Azuria.Api.v1.RequestBuilder
 
         /// <summary>
         /// Builds a request that returns the current news ordered by date of publication.
-        /// 
         /// Api permissions required (class - permission level):
         /// * Notifications - Level 0
         /// </summary>

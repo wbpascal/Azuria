@@ -10,8 +10,6 @@ namespace Azuria.Test.Core
             this.BaseUrl = baseUrl;
         }
 
-        #region Properties
-
         public string BaseUrl { get; }
 
         public List<ServerRequest> Requests { get; set; } = new List<ServerRequest>();
@@ -19,10 +17,6 @@ namespace Azuria.Test.Core
         public string Response { get; private set; }
 
         public static List<ServerResponse> ServerResponses { get; set; } = new List<ServerResponse>();
-
-        #endregion
-
-        #region Methods
 
         public static ServerResponse Create(string baseUrl, Action<ServerResponse> factory)
         {
@@ -51,7 +45,5 @@ namespace Azuria.Test.Core
             this.Response = response;
             return this;
         }
-
-        #endregion
     }
 }

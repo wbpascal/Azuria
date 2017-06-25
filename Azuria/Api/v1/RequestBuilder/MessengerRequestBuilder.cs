@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Azuria.Api.Builder;
 using Azuria.Api.v1.DataModels.Messenger;
 using Azuria.Enums.Messenger;
 using Azuria.Helpers.Extensions;
@@ -15,7 +14,6 @@ namespace Azuria.Api.v1.RequestBuilder
     public class MessengerRequestBuilder : IApiClassRequestBuilder
     {
         /// <summary>
-        /// 
         /// </summary>
         /// <param name="client"></param>
         public MessengerRequestBuilder(IProxerClient client)
@@ -29,7 +27,6 @@ namespace Azuria.Api.v1.RequestBuilder
         /// <summary>
         /// Builds a request that returns informations about a specified conference.
         /// Requires authentication.
-        /// 
         /// Api permissions required (class - permission level):
         /// * Messenger - Level 0
         /// </summary>
@@ -46,7 +43,6 @@ namespace Azuria.Api.v1.RequestBuilder
         /// <summary>
         /// Builds a request that returns an array of conferences a user participates in.
         /// Requires authentication.
-        /// 
         /// Api permissions required (class - permission level):
         /// * Messenger - Level 0
         /// </summary>
@@ -66,7 +62,6 @@ namespace Azuria.Api.v1.RequestBuilder
         /// <summary>
         /// Builds a request that returns all messenger constants. These values should only change
         /// every few months.
-        /// 
         /// Api permissions required (class - permission level):
         /// * Messenger - Level 0
         /// </summary>
@@ -81,7 +76,6 @@ namespace Azuria.Api.v1.RequestBuilder
         /// <summary>
         /// Builds a request that returns the most recent recieved messages of a conference or a user.
         /// Requires authentication.
-        /// 
         /// Api permissions required (class - permission level):
         /// * Messenger - Level 0
         /// </summary>
@@ -115,7 +109,6 @@ namespace Azuria.Api.v1.RequestBuilder
         /// Builds a request that creates a new conference between only two users and returns the id.
         /// If a conference between these users is already found the id of the existing conference will be returned.
         /// Requires authentication.
-        /// 
         /// Api permissions required (class - permission level):
         /// * Messenger - Level 1
         /// </summary>
@@ -134,7 +127,6 @@ namespace Azuria.Api.v1.RequestBuilder
         /// <summary>
         /// Builds a request that creates a new group conference and returns the id.
         /// Requires authentication.
-        /// 
         /// Api permissions required (class - permission level):
         /// * Messenger - Level 1
         /// </summary>
@@ -168,7 +160,6 @@ namespace Azuria.Api.v1.RequestBuilder
         /// <summary>
         /// Builds a request that blocks a conference.
         /// Requires authentication.
-        /// 
         /// Api permissions required (class - permission level):
         /// * Messenger - Level 1
         /// </summary>
@@ -185,7 +176,6 @@ namespace Azuria.Api.v1.RequestBuilder
         /// <summary>
         /// Builds a request that marks a conference as a favourite.
         /// Requires authentication.
-        /// 
         /// Api permissions required (class - permission level):
         /// * Messenger - Level 1
         /// </summary>
@@ -203,7 +193,6 @@ namespace Azuria.Api.v1.RequestBuilder
         /// Builds a request that sends a message to a conference. If the message was a command the
         /// answer of the server will be returned.
         /// Requires authentication.
-        /// 
         /// Api permissions required (class - permission level):
         /// * Messenger - Level 1
         /// </summary>
@@ -222,7 +211,6 @@ namespace Azuria.Api.v1.RequestBuilder
         /// <summary>
         /// Builds a request that marks a conference as read.
         /// Requires authentication.
-        /// 
         /// Api permissions required (class - permission level):
         /// * Messenger - Level 0
         /// </summary>
@@ -239,7 +227,6 @@ namespace Azuria.Api.v1.RequestBuilder
         /// <summary>
         /// Builds a request that reports a conference to the admins.
         /// Requires authentication.
-        /// 
         /// Api permissions required (class - permission level):
         /// * Messenger - Level 0
         /// </summary>
@@ -258,7 +245,6 @@ namespace Azuria.Api.v1.RequestBuilder
         /// <summary>
         /// Builds a request that unblocks a conference.
         /// Requires authentication.
-        /// 
         /// Api permissions required (class - permission level):
         /// * Messenger - Level 1
         /// </summary>
@@ -275,7 +261,6 @@ namespace Azuria.Api.v1.RequestBuilder
         /// <summary>
         /// Builds a request that removes a conference from the favourites.
         /// Requires authentication.
-        /// 
         /// Api permissions required (class - permission level):
         /// * Messenger - Level 1
         /// </summary>
@@ -292,7 +277,6 @@ namespace Azuria.Api.v1.RequestBuilder
         /// <summary>
         /// Builds a request that marks a conference as unread.
         /// Requires authentication.
-        /// 
         /// Api permissions required (class - permission level):
         /// * Messenger - Level 1
         /// </summary>

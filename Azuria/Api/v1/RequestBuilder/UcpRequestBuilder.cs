@@ -1,5 +1,4 @@
 ﻿using System;
-using Azuria.Api.Builder;
 using Azuria.Api.v1.DataModels.Ucp;
 using Azuria.Api.v1.DataModels.User;
 using Azuria.Enums;
@@ -18,7 +17,6 @@ namespace Azuria.Api.v1.RequestBuilder
     public class UcpRequestBuilder : IApiClassRequestBuilder
     {
         /// <summary>
-        /// 
         /// </summary>
         /// <param name="client"></param>
         public UcpRequestBuilder(IProxerClient client)
@@ -32,7 +30,6 @@ namespace Azuria.Api.v1.RequestBuilder
         /// <summary>
         /// Builds a request that removes an entry from a users topten.
         /// Requires authentication.
-        /// 
         /// Api permissions required (class - permission level):
         /// * UCP - Level 1
         /// </summary>
@@ -52,7 +49,6 @@ namespace Azuria.Api.v1.RequestBuilder
         /// <summary>
         /// Builds a request that deletes a reminder of a user.
         /// Requires authentication.
-        /// 
         /// Api permissions required (class - permission level):
         /// * UCP - Level 1
         /// </summary>
@@ -70,7 +66,6 @@ namespace Azuria.Api.v1.RequestBuilder
         /// <summary>
         /// Builds a request that removes a users comment upvote.
         /// Requires authentication.
-        /// 
         /// Api permissions required (class - permission level):
         /// * UCP - Level 1
         /// </summary>
@@ -89,7 +84,6 @@ namespace Azuria.Api.v1.RequestBuilder
         /// Builds a request that returns the history of all watched episodes and read chapters of a
         /// user.
         /// Requires authentication.
-        /// 
         /// Api permissions required (class - permission level):
         /// * UCP - Level 0
         /// </summary>
@@ -108,7 +102,6 @@ namespace Azuria.Api.v1.RequestBuilder
         /// <summary>
         /// Builds a request that returns a list of all anime or manga a user has listed in their ucp.
         /// Requires authentication.
-        /// 
         /// Api permissions required (class - permission level):
         /// * UCP - Level 0
         /// </summary>
@@ -140,12 +133,14 @@ namespace Azuria.Api.v1.RequestBuilder
         /// <summary>
         /// Builds a request that returns the sum of a users watched episodes or read chapters.
         /// Requires authentication.
-        /// 
         /// Api permissions required (class - permission level):
         /// * UCP - Level 0
         /// </summary>
         /// <param name="category">Optional. Whether only watched episodes or read chapters should be counted.</param>
-        /// <returns>An instance of <see cref="IRequestBuilderWithResult{T}" /> that returns a sum of watched episodes or read chapters.</returns>
+        /// <returns>
+        /// An instance of <see cref="IRequestBuilderWithResult{T}" /> that returns a sum of watched episodes or read
+        /// chapters.
+        /// </returns>
         public IRequestBuilderWithResult<int> GetListsum(MediaEntryType category = MediaEntryType.Anime)
         {
             return new RequestBuilder<int>(new Uri($"{ApiConstants.ApiUrlV1}/ucp/listsum"), this.ProxerClient)
@@ -156,7 +151,6 @@ namespace Azuria.Api.v1.RequestBuilder
         /// <summary>
         /// Builds a request that returns all reminders of a user.
         /// Requires authentication.
-        /// 
         /// Api permissions required (class - permission level):
         /// * UCP - Level 0
         /// </summary>
@@ -178,7 +172,6 @@ namespace Azuria.Api.v1.RequestBuilder
         /// <summary>
         /// Builds a request that returns the topten of a user (anime and manga).
         /// Requires authentication.
-        /// 
         /// Api permissions required (class - permission level):
         /// * UCP - Level 0
         /// </summary>
@@ -193,7 +186,6 @@ namespace Azuria.Api.v1.RequestBuilder
         /// <summary>
         /// Builds a request that returns all comments a user has voted for.
         /// Requires authentication.
-        /// 
         /// Api permissions required (class - permission level):
         /// * UCP - Level 0
         /// </summary>
@@ -210,7 +202,6 @@ namespace Azuria.Api.v1.RequestBuilder
         /// anime/manga. If the number is set to a value greater or equal of the amount of episodes/chapter the anime/manga has,
         /// the status of the entry will be set to "Finished" as well.
         /// Requires authentication.
-        /// 
         /// Api permissions required (class - permission level):
         /// * UCP - Level 1
         /// </summary>
@@ -229,7 +220,6 @@ namespace Azuria.Api.v1.RequestBuilder
         /// <summary>
         /// Builds a request that adds a reminder for an episode/chapter to a users control-panel.
         /// Requires authentication.
-        /// 
         /// Api permissions required (class - permission level):
         /// * UCP - Level 1
         /// </summary>

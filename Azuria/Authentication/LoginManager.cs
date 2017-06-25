@@ -20,7 +20,6 @@ namespace Azuria.Authentication
         private DateTime _loginPerformed = DateTime.MinValue;
 
         /// <summary>
-        /// 
         /// </summary>
         /// <param name="userRequestBuilder"></param>
         /// <param name="loginToken"></param>
@@ -44,6 +43,14 @@ namespace Azuria.Authentication
         }
 
         /// <inheritdoc />
+        public void PerformedRequest(bool sendLoginToken = false)
+        {
+            this._lastRequestPerformed = DateTime.Now;
+            this._isLoginQueued = false;
+            if (sendLoginToken) this._loginPerformed = DateTime.Now;
+        }
+
+        /// <inheritdoc />
         public virtual async Task<IProxerResult> PerformLoginAsync(
             string username, string password, string secretKey = null,
             CancellationToken token = default(CancellationToken))
@@ -63,7 +70,8 @@ namespace Azuria.Authentication
         }
 
         /// <inheritdoc />
-        public virtual async Task<IProxerResult> PerformLogoutAsync(CancellationToken token = default(CancellationToken))
+        public virtual async Task<IProxerResult> PerformLogoutAsync(
+            CancellationToken token = default(CancellationToken))
         {
             IProxerResult lResult = await this._userRequestBuilder.Logout().DoRequestAsync(token);
             if (!lResult.Success)
@@ -75,21 +83,16 @@ namespace Azuria.Authentication
         }
 
         /// <inheritdoc />
-        public void PerformedRequest(bool sendLoginToken = false)
-        {
-            this._lastRequestPerformed = DateTime.Now;
-            this._isLoginQueued = false;
-            if (sendLoginToken) this._loginPerformed = DateTime.Now;
-        }
-
-        /// <inheritdoc />
         public void QueueLoginForNextRequest()
         {
             this._isLoginQueued = this.LoginToken?.Length == 255;
         }
 
         /// <inheritdoc />
-        public bool SendTokenWithNextRequest() => this.LoginToken?.Length == 255 &&
-                                                  (this._isLoginQueued || !this.CheckIsLoginProbablyValid());
+        public bool SendTokenWithNextRequest()
+        {
+            return this.LoginToken?.Length == 255 &&
+                   (this._isLoginQueued || !this.CheckIsLoginProbablyValid());
+        }
     }
 }

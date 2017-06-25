@@ -2,7 +2,6 @@
 {
 #pragma warning disable 1591
     /// <summary>
-    /// 
     /// </summary>
     public enum TranslationStatus
     {

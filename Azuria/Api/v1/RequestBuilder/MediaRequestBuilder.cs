@@ -1,5 +1,4 @@
 ﻿using System;
-using Azuria.Api.Builder;
 using Azuria.Api.v1.DataModels.Media;
 using Azuria.Enums.Media;
 using Azuria.Helpers.Extensions;
@@ -13,7 +12,6 @@ namespace Azuria.Api.v1.RequestBuilder
     public class MediaRequestBuilder : IApiClassRequestBuilder
     {
         /// <summary>
-        /// 
         /// </summary>
         /// <param name="client"></param>
         public MediaRequestBuilder(IProxerClient client)
@@ -26,7 +24,6 @@ namespace Azuria.Api.v1.RequestBuilder
 
         /// <summary>
         /// Builds a request that returns an array of all current headers.
-        /// 
         /// Api permissions required (class - permission level):
         /// * Media - Level 0
         /// </summary>
@@ -40,7 +37,6 @@ namespace Azuria.Api.v1.RequestBuilder
 
         /// <summary>
         /// Builds a request that returns a random header for an optional specified style.
-        /// 
         /// Api permissions required (class - permission level):
         /// * Media - Level 0
         /// </summary>

@@ -5,12 +5,10 @@ using Azuria.Api.v1.RequestBuilder;
 namespace Azuria.Api.v1
 {
     /// <summary>
-    ///
     /// </summary>
     public static class ApiClassBuilderExtensions
     {
         /// <summary>
-        ///
         /// </summary>
         /// <param name="builder"></param>
         /// <returns></returns>
@@ -20,7 +18,6 @@ namespace Azuria.Api.v1
         }
 
         /// <summary>
-        ///
         /// </summary>
         /// <param name="builder"></param>
         /// <returns></returns>
@@ -30,7 +27,6 @@ namespace Azuria.Api.v1
         }
 
         /// <summary>
-        ///
         /// </summary>
         /// <param name="builder"></param>
         /// <returns></returns>
@@ -40,7 +36,6 @@ namespace Azuria.Api.v1
         }
 
         /// <summary>
-        ///
         /// </summary>
         /// <param name="builder"></param>
         /// <returns></returns>
@@ -50,7 +45,6 @@ namespace Azuria.Api.v1
         }
 
         /// <summary>
-        ///
         /// </summary>
         /// <param name="builder"></param>
         /// <returns></returns>
@@ -60,7 +54,6 @@ namespace Azuria.Api.v1
         }
 
         /// <summary>
-        ///
         /// </summary>
         /// <param name="builder"></param>
         /// <returns></returns>
@@ -70,7 +63,6 @@ namespace Azuria.Api.v1
         }
 
         /// <summary>
-        ///
         /// </summary>
         /// <param name="builder"></param>
         /// <returns></returns>
@@ -80,7 +72,6 @@ namespace Azuria.Api.v1
         }
 
         /// <summary>
-        ///
         /// </summary>
         /// <param name="builder"></param>
         /// <returns></returns>
@@ -90,7 +81,6 @@ namespace Azuria.Api.v1
         }
 
         /// <summary>
-        ///
         /// </summary>
         /// <param name="builder"></param>
         /// <returns></returns>

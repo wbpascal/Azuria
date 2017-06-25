@@ -2,7 +2,6 @@ using System.Threading;
 using System.Threading.Tasks;
 using Azuria.Authentication;
 using Azuria.ErrorHandling;
-using Azuria.Test.Core;
 using Moq;
 using Xunit;
 
@@ -10,9 +9,9 @@ namespace Azuria.Test.Authentication
 {
     public class AuthenticationExtensionsTest
     {
-        private const string Username = "username";
         private const string Password = "password";
         private const string SecretKey = "ACGES1";
+        private const string Username = "username";
         private readonly CancellationToken _cancellationToken = new CancellationToken();
         private readonly Mock<ILoginManager> _loginMangerMock;
         private readonly IProxerClient _proxerClient;
