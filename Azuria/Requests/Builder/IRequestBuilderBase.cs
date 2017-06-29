@@ -21,7 +21,7 @@ namespace Azuria.Requests.Builder
 
         /// <summary>
         /// </summary>
-        IEnumerable<KeyValuePair<string, string>> PostArguments { get; }
+        IEnumerable<KeyValuePair<string, string>> PostParameter { get; }
 
         /// <summary>
         /// </summary>

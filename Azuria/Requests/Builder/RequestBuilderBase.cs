@@ -50,7 +50,7 @@ namespace Azuria.Requests.Builder
 
         /// <summary>
         /// </summary>
-        public IEnumerable<KeyValuePair<string, string>> PostArguments => this._postArguments;
+        public IEnumerable<KeyValuePair<string, string>> PostParameter => this._postArguments;
 
         /// <summary>
         /// </summary>
