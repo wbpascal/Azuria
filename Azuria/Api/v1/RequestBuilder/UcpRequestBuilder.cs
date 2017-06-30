@@ -29,9 +29,12 @@ namespace Azuria.Api.v1.RequestBuilder
 
         /// <summary>
         /// Builds a request that removes an entry from a users topten.
-        /// Requires authentication.
+        /// **Requires authentication.**
+        /// <para>
         /// Api permissions required (class - permission level):
+        /// <para />
         /// * UCP - Level 1
+        /// </para>
         /// </summary>
         /// <param name="favouriteId">
         /// The id of the entry that should be removed from the topten (see <see cref="GetTopten" />).
@@ -48,9 +51,12 @@ namespace Azuria.Api.v1.RequestBuilder
 
         /// <summary>
         /// Builds a request that deletes a reminder of a user.
-        /// Requires authentication.
+        /// **Requires authentication.**
+        /// <para>
         /// Api permissions required (class - permission level):
+        /// <para />
         /// * UCP - Level 1
+        /// </para>
         /// </summary>
         /// <param name="reminderId">The id of the reminder that should be deleted (see <see cref="GetReminder" />).</param>
         /// <returns>An instance of <see cref="IRequestBuilder" /> that deletes a reminder.</returns>
@@ -65,7 +71,7 @@ namespace Azuria.Api.v1.RequestBuilder
 
         /// <summary>
         /// Builds a request that removes a users comment upvote.
-        /// Requires authentication.
+        /// **Requires authentication.**
         /// Api permissions required (class - permission level):
         /// * UCP - Level 1
         /// </summary>
@@ -103,6 +109,7 @@ namespace Azuria.Api.v1.RequestBuilder
         /// Builds a request that returns a list of all anime or manga a user has listed in their ucp.
         /// Requires authentication.
         /// Api permissions required (class - permission level):
+        /// <para />
         /// * UCP - Level 0
         /// </summary>
         /// <param name="category">Optional. The category that should be loaded.</param>
@@ -161,12 +168,16 @@ namespace Azuria.Api.v1.RequestBuilder
         public IRequestBuilderWithResult<BookmarkDataModel[]> GetReminder(
             MediaEntryType? category = null, int page = 0, int limit = 100)
         {
-            return new RequestBuilder<BookmarkDataModel[]>(
+            IRequestBuilderWithResult<BookmarkDataModel[]> lRequest = new RequestBuilder<BookmarkDataModel[]>(
                     new Uri($"{ApiConstants.ApiUrlV1}/ucp/reminder"), this.ProxerClient
-                ).WithGetParameter("kat", category.ToString().ToLowerInvariant())
-                .WithGetParameter("p", page.ToString())
+                ).WithGetParameter("p", page.ToString())
                 .WithGetParameter("limit", limit.ToString())
                 .WithLoginCheck();
+
+            if (category != null)
+                lRequest.WithGetParameter("kat", category.ToString().ToLowerInvariant());
+            
+            return lRequest;
         }
 
         /// <summary>
@@ -234,6 +245,9 @@ namespace Azuria.Api.v1.RequestBuilder
         public IRequestBuilder SetReminder(
             int entryId, int contentIndex, MediaLanguage language, MediaEntryType category)
         {
+            if (language == MediaLanguage.Unkown)
+                throw new ArgumentException("The given language is invalid for this request!", nameof(language));
+                
             return new Requests.Builder.RequestBuilder(
                     new Uri($"{ApiConstants.ApiUrlV1}/ucp/setreminder"), this.ProxerClient)
                 .WithGetParameter("id", entryId.ToString())

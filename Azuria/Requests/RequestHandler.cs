@@ -48,7 +48,7 @@ namespace Azuria.Requests
             IProxerResult<string> lResult =
                 await request.Client.Container.Resolve<IHttpClient>()
                     .ProxerRequestAsync(
-                        request.BuildUri(), request.PostArguments, lHeaders, token
+                        request.BuildUri(), request.PostParameter, lHeaders, token
                     )
                     .ConfigureAwait(false);
             if (!lResult.Success || string.IsNullOrEmpty(lResult.Result))

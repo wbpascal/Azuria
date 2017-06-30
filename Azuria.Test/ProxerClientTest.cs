@@ -72,8 +72,8 @@ namespace Azuria.Test
             Assert.True(lResult.Success, lResult.Exceptions.GetExceptionInfo());
             Assert.Empty(lResult.Exceptions);
             Assert.NotNull(lResult.Result);
-            Assert.Equal(lResult.Result.UserId, 177103);
-            Assert.Equal(lResult.Result.Username, "InfiniteSoul");
+            Assert.Equal(177103, lResult.Result.UserId);
+            Assert.Equal("InfiniteSoul", lResult.Result.Username);
 
             Assert.True(lLoginManager.CheckIsLoginProbablyValid());
         }

@@ -22,7 +22,7 @@ namespace Azuria.Test.Api.Builder
         {
             IRequestBuilder lRequestBuilder = this._apiRequestBuilder.FromUrl(new Uri("https://proxer.me"));
             Assert.Empty(lRequestBuilder.GetParameters);
-            Assert.Empty(lRequestBuilder.PostArguments);
+            Assert.Empty(lRequestBuilder.PostParameter);
             Assert.False(lRequestBuilder.CheckLogin);
             Assert.Same(this._client, lRequestBuilder.Client);
             Assert.Equal(new Uri("https://proxer.me"), lRequestBuilder.BuildUri());

@@ -48,34 +48,35 @@ namespace Azuria.Test.Api.v1.RequestBuilder
             Assert.Same(this.ProxerClient, lRequest.Client);
             Assert.True(lRequest.GetParameters.ContainsKey("limit"));
             Assert.True(lRequest.GetParameters.ContainsKey("p"));
-            Assert.True(lRequest.PostArguments.ContainsKey("name"));
-            Assert.True(lRequest.PostArguments.ContainsKey("type"));
-            Assert.True(lRequest.PostArguments.ContainsKey("sort"));
-            Assert.True(lRequest.PostArguments.ContainsKey("length-limit"));
-            Assert.True(lRequest.PostArguments.ContainsKey("tagratefilter"));
-            Assert.True(lRequest.PostArguments.ContainsKey("tagspoilerfilter"));
-            Assert.True(lRequest.PostArguments.ContainsKey("language"));
-            Assert.True(lRequest.PostArguments.ContainsKey("genre"));
-            Assert.True(lRequest.PostArguments.ContainsKey("nogenre"));
-            Assert.True(lRequest.PostArguments.ContainsKey("fsk"));
-            Assert.True(lRequest.PostArguments.ContainsKey("length"));
-            Assert.True(lRequest.PostArguments.ContainsKey("tags"));
-            Assert.True(lRequest.PostArguments.ContainsKey("notags"));
+            Assert.True(lRequest.PostParameter.ContainsKey("name"));
+            Assert.True(lRequest.PostParameter.ContainsKey("type"));
+            Assert.True(lRequest.PostParameter.ContainsKey("sort"));
+            Assert.True(lRequest.PostParameter.ContainsKey("length-limit"));
+            Assert.True(lRequest.PostParameter.ContainsKey("tagratefilter"));
+            Assert.True(lRequest.PostParameter.ContainsKey("tagspoilerfilter"));
+            Assert.True(lRequest.PostParameter.ContainsKey("language"));
+            Assert.True(lRequest.PostParameter.ContainsKey("genre"));
+            Assert.True(lRequest.PostParameter.ContainsKey("nogenre"));
+            Assert.True(lRequest.PostParameter.ContainsKey("fsk"));
+            Assert.True(lRequest.PostParameter.ContainsKey("length"));
+            Assert.True(lRequest.PostParameter.ContainsKey("tags"));
+            Assert.True(lRequest.PostParameter.ContainsKey("notags"));
             Assert.Equal("30", lRequest.GetParameters["limit"]);
             Assert.Equal("1", lRequest.GetParameters["p"]);
-            Assert.Equal(lInput.Name, lRequest.PostArguments.GetValue("name").First());
-            Assert.Equal("oneshot", lRequest.PostArguments.GetValue("type").First());
-            Assert.Equal("clicks", lRequest.PostArguments.GetValue("sort").First());
-            Assert.Equal("up", lRequest.PostArguments.GetValue("length-limit").First());
-            Assert.Equal("rate_10", lRequest.PostArguments.GetValue("tagratefilter").First());
-            Assert.Equal("spoiler_10", lRequest.PostArguments.GetValue("tagspoilerfilter").First());
-            Assert.Equal("en", lRequest.PostArguments.GetValue("language").First());
-            Assert.Equal("Action Abenteuer", lRequest.PostArguments.GetValue("genre").First());
-            Assert.Equal("Adult", lRequest.PostArguments.GetValue("nogenre").First());
-            Assert.Equal("bad_language", lRequest.PostArguments.GetValue("fsk").First());
-            Assert.Equal("150", lRequest.PostArguments.GetValue("length").First());
-            Assert.Equal("15 4", lRequest.PostArguments.GetValue("tags").First());
-            Assert.Equal("2 3", lRequest.PostArguments.GetValue("notags").First());
+            Assert.Equal(lInput.Name, lRequest.PostParameter.GetValue("name").First());
+            Assert.Equal("oneshot", lRequest.PostParameter.GetValue("type").First());
+            Assert.Equal("clicks", lRequest.PostParameter.GetValue("sort").First());
+            Assert.Equal("up", lRequest.PostParameter.GetValue("length-limit").First());
+            Assert.Equal("rate_10", lRequest.PostParameter.GetValue("tagratefilter").First());
+            Assert.Equal("spoiler_10", lRequest.PostParameter.GetValue("tagspoilerfilter").First());
+            Assert.Equal("en", lRequest.PostParameter.GetValue("language").First());
+            Assert.Equal("Action Abenteuer", lRequest.PostParameter.GetValue("genre").First());
+            Assert.Equal("Adult", lRequest.PostParameter.GetValue("nogenre").First());
+            Assert.Equal("bad_language", lRequest.PostParameter.GetValue("fsk").First());
+            Assert.Equal("150", lRequest.PostParameter.GetValue("length").First());
+            Assert.Equal("15 4", lRequest.PostParameter.GetValue("tags").First());
+            Assert.Equal("2 3", lRequest.PostParameter.GetValue("notags").First());
+            Assert.False(lRequest.CheckLogin);
         }
 
         [Fact]
@@ -105,23 +106,24 @@ namespace Azuria.Test.Api.v1.RequestBuilder
             Assert.Same(this.ProxerClient, lRequest.Client);
             Assert.True(lRequest.GetParameters.ContainsKey("limit"));
             Assert.True(lRequest.GetParameters.ContainsKey("p"));
-            Assert.True(lRequest.PostArguments.ContainsKey("kat"));
-            Assert.True(lRequest.PostArguments.ContainsKey("isH"));
-            Assert.True(lRequest.PostArguments.ContainsKey("start"));
-            Assert.True(lRequest.PostArguments.ContainsKey("sort"));
-            Assert.True(lRequest.PostArguments.ContainsKey("sort_type"));
-            Assert.True(lRequest.PostArguments.ContainsKey("medium"));
+            Assert.True(lRequest.PostParameter.ContainsKey("kat"));
+            Assert.True(lRequest.PostParameter.ContainsKey("isH"));
+            Assert.True(lRequest.PostParameter.ContainsKey("start"));
+            Assert.True(lRequest.PostParameter.ContainsKey("sort"));
+            Assert.True(lRequest.PostParameter.ContainsKey("sort_type"));
+            Assert.True(lRequest.PostParameter.ContainsKey("medium"));
             Assert.Equal("50", lRequest.GetParameters["limit"]);
             Assert.Equal("2", lRequest.GetParameters["p"]);
-            Assert.Equal("manga", lRequest.PostArguments.GetValue("kat").First());
-            Assert.Equal("true", lRequest.PostArguments.GetValue("isH").First());
+            Assert.Equal("manga", lRequest.PostParameter.GetValue("kat").First());
+            Assert.Equal("true", lRequest.PostParameter.GetValue("isH").First());
             Assert.Equal(
                 startWithNonAlphabeticalChar ? "nonAlpha" : lInput.StartWith,
-                lRequest.PostArguments.GetValue("start").First()
+                lRequest.PostParameter.GetValue("start").First()
             );
-            Assert.Equal("rating", lRequest.PostArguments.GetValue("sort").First());
-            Assert.Equal("DESC", lRequest.PostArguments.GetValue("sort_type").First());
-            Assert.Equal("mangaseries", lRequest.PostArguments.GetValue("medium").First());
+            Assert.Equal("rating", lRequest.PostParameter.GetValue("sort").First());
+            Assert.Equal("DESC", lRequest.PostParameter.GetValue("sort_type").First());
+            Assert.Equal("mangaseries", lRequest.PostParameter.GetValue("medium").First());
+            Assert.False(lRequest.CheckLogin);
         }
 
         [Theory]
@@ -148,6 +150,7 @@ namespace Azuria.Test.Api.v1.RequestBuilder
             Assert.Equal(string.Empty, lRequest.GetParameters["type"]);
             Assert.Equal("30", lRequest.GetParameters["limit"]);
             Assert.Equal("2", lRequest.GetParameters["p"]);
+            Assert.False(lRequest.CheckLogin);
         }
 
         [Fact]
@@ -188,6 +191,7 @@ namespace Azuria.Test.Api.v1.RequestBuilder
             Assert.Equal(type?.ToTypeString() ?? string.Empty, lRequest.GetParameters["type"]);
             Assert.Equal("30", lRequest.GetParameters["limit"]);
             Assert.Equal("2", lRequest.GetParameters["p"]);
+            Assert.False(lRequest.CheckLogin);
         }
 
         [Fact]
@@ -222,6 +226,7 @@ namespace Azuria.Test.Api.v1.RequestBuilder
             Assert.Equal("0", lRequest.GetParameters["isH"]);
             Assert.Equal("1", lRequest.GetParameters["p"]);
             Assert.Equal("150", lRequest.GetParameters["limit"]);
+            Assert.False(lRequest.CheckLogin);
         }
 
         [Fact]
@@ -241,6 +246,7 @@ namespace Azuria.Test.Api.v1.RequestBuilder
             Assert.True(lRequest.GetParameters.ContainsKey("search"));
             Assert.Equal("test1 -testExclude1 -testExclude2", lRequest.GetParameters["search"]);
             Assert.NotNull(lRequest.CustomDataConverter);
+            Assert.False(lRequest.CheckLogin);
         }
 
         [Fact]
@@ -283,6 +289,7 @@ namespace Azuria.Test.Api.v1.RequestBuilder
             Assert.Equal("id", lRequest.GetParameters["sort"]);
             Assert.Equal("DESC", lRequest.GetParameters["sort_type"]);
             Assert.Equal(subtype?.GetDescription() ?? string.Empty, lRequest.GetParameters["subtype"]);
+            Assert.False(lRequest.CheckLogin);
         }
 
         [Theory]
@@ -308,6 +315,7 @@ namespace Azuria.Test.Api.v1.RequestBuilder
             Assert.Equal("id", lRequest.GetParameters["sort"]);
             Assert.Equal("DESC", lRequest.GetParameters["sort_type"]);
             Assert.Equal(string.Empty, lRequest.GetParameters["subtype"]);
+            Assert.False(lRequest.CheckLogin);
         }
 
         [Fact]
@@ -340,6 +348,7 @@ namespace Azuria.Test.Api.v1.RequestBuilder
             Assert.Equal(country?.ToShortString() ?? string.Empty, lRequest.GetParameters["country"]);
             Assert.Equal("50", lRequest.GetParameters["limit"]);
             Assert.Equal("1", lRequest.GetParameters["p"]);
+            Assert.False(lRequest.CheckLogin);
         }
 
         [Theory]
@@ -367,6 +376,7 @@ namespace Azuria.Test.Api.v1.RequestBuilder
             Assert.Equal("1", lRequest.GetParameters["isH"]);
             Assert.Equal("1", lRequest.GetParameters["p"]);
             Assert.Equal("50", lRequest.GetParameters["limit"]);
+            Assert.False(lRequest.CheckLogin);
         }
 
         [Fact]

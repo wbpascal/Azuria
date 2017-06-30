@@ -29,6 +29,7 @@ namespace Azuria.Test.Api.v1.RequestBuilder
             Assert.Equal("2", lRequest.GetParameters["p"]);
             Assert.Equal("31", lRequest.GetParameters["limit"]);
             Assert.Equal(sort.ToString().ToLowerInvariant(), lRequest.GetParameters["sort"]);
+            Assert.False(lRequest.CheckLogin);
         }
 
         [Fact]
@@ -40,6 +41,7 @@ namespace Azuria.Test.Api.v1.RequestBuilder
             Assert.Same(this.ProxerClient, lRequest.Client);
             Assert.True(lRequest.GetParameters.ContainsKey("id"));
             Assert.Equal(lRandomId.ToString(), lRequest.GetParameters["id"]);
+            Assert.False(lRequest.CheckLogin);
         }
 
         [Fact]
@@ -51,6 +53,7 @@ namespace Azuria.Test.Api.v1.RequestBuilder
             Assert.Same(this.ProxerClient, lRequest.Client);
             Assert.True(lRequest.GetParameters.ContainsKey("id"));
             Assert.Equal(lRandomId.ToString(), lRequest.GetParameters["id"]);
+            Assert.False(lRequest.CheckLogin);
         }
 
         [Fact]
@@ -62,6 +65,7 @@ namespace Azuria.Test.Api.v1.RequestBuilder
             Assert.Same(this.ProxerClient, lRequest.Client);
             Assert.True(lRequest.GetParameters.ContainsKey("id"));
             Assert.Equal(lRandomId.ToString(), lRequest.GetParameters["id"]);
+            Assert.False(lRequest.CheckLogin);
         }
 
         [Fact]
@@ -73,6 +77,7 @@ namespace Azuria.Test.Api.v1.RequestBuilder
             Assert.Same(this.ProxerClient, lRequest.Client);
             Assert.True(lRequest.GetParameters.ContainsKey("id"));
             Assert.Equal(lRandomId.ToString(), lRequest.GetParameters["id"]);
+            Assert.False(lRequest.CheckLogin);
         }
 
         [Fact]
@@ -84,6 +89,7 @@ namespace Azuria.Test.Api.v1.RequestBuilder
             Assert.Same(this.ProxerClient, lRequest.Client);
             Assert.True(lRequest.GetParameters.ContainsKey("id"));
             Assert.Equal(lRandomId.ToString(), lRequest.GetParameters["id"]);
+            Assert.False(lRequest.CheckLogin);
         }
 
         [Fact]
@@ -95,6 +101,7 @@ namespace Azuria.Test.Api.v1.RequestBuilder
             Assert.Same(this.ProxerClient, lRequest.Client);
             Assert.True(lRequest.GetParameters.ContainsKey("id"));
             Assert.Equal(lRandomId.ToString(), lRequest.GetParameters["id"]);
+            Assert.False(lRequest.CheckLogin);
         }
 
         [Fact]
@@ -107,6 +114,7 @@ namespace Azuria.Test.Api.v1.RequestBuilder
             Assert.True(lRequest.GetParameters.ContainsKey("id"));
             Assert.Equal(lRandomId.ToString(), lRequest.GetParameters["id"]);
             Assert.NotNull(lRequest.CustomDataConverter);
+            Assert.False(lRequest.CheckLogin);
         }
 
         [Fact]
@@ -122,6 +130,7 @@ namespace Azuria.Test.Api.v1.RequestBuilder
             Assert.Equal(lRandomId.ToString(), lRequest.GetParameters["id"]);
             Assert.Equal("1", lRequest.GetParameters["p"]);
             Assert.Equal("15", lRequest.GetParameters["limit"]);
+            Assert.False(lRequest.CheckLogin);
         }
 
         [Fact]
@@ -133,6 +142,7 @@ namespace Azuria.Test.Api.v1.RequestBuilder
             Assert.Same(this.ProxerClient, lRequest.Client);
             Assert.True(lRequest.GetParameters.ContainsKey("id"));
             Assert.Equal(lRandomId.ToString(), lRequest.GetParameters["id"]);
+            Assert.False(lRequest.CheckLogin);
         }
 
         [Fact]
@@ -144,6 +154,7 @@ namespace Azuria.Test.Api.v1.RequestBuilder
             Assert.Same(this.ProxerClient, lRequest.Client);
             Assert.True(lRequest.GetParameters.ContainsKey("id"));
             Assert.Equal(lRandomId.ToString(), lRequest.GetParameters["id"]);
+            Assert.False(lRequest.CheckLogin);
         }
 
         [Fact]
@@ -155,6 +166,7 @@ namespace Azuria.Test.Api.v1.RequestBuilder
             Assert.Same(this.ProxerClient, lRequest.Client);
             Assert.True(lRequest.GetParameters.ContainsKey("id"));
             Assert.Equal(lRandomId.ToString(), lRequest.GetParameters["id"]);
+            Assert.False(lRequest.CheckLogin);
         }
 
         [Fact]
@@ -166,6 +178,7 @@ namespace Azuria.Test.Api.v1.RequestBuilder
             Assert.Same(this.ProxerClient, lRequest.Client);
             Assert.True(lRequest.GetParameters.ContainsKey("id"));
             Assert.Equal(lRandomId.ToString(), lRequest.GetParameters["id"]);
+            Assert.False(lRequest.CheckLogin);
         }
 
         [Fact]
@@ -178,6 +191,7 @@ namespace Azuria.Test.Api.v1.RequestBuilder
             Assert.Same(this.ProxerClient, lRequest.Client);
             Assert.True(lRequest.GetParameters.ContainsKey("id"));
             Assert.Equal(lRandomId.ToString(), lRequest.GetParameters["id"]);
+            Assert.False(lRequest.CheckLogin);
         }
 
         [Fact]
@@ -196,8 +210,8 @@ namespace Azuria.Test.Api.v1.RequestBuilder
             IRequestBuilder lRequest = this.RequestBuilder.SetUserInfo(lRandomId, list);
             this.CheckUrl(lRequest, "info", "setuserinfo");
             Assert.Same(this.ProxerClient, lRequest.Client);
-            Assert.True(lRequest.PostArguments.Any(pair => pair.Key == "id" && pair.Value == lRandomId.ToString()));
-            Assert.True(lRequest.PostArguments.Any(pair => pair.Key == "type" && pair.Value == list.ToTypeString()));
+            Assert.True(lRequest.PostParameter.Any(pair => pair.Key == "id" && pair.Value == lRandomId.ToString()));
+            Assert.True(lRequest.PostParameter.Any(pair => pair.Key == "type" && pair.Value == list.ToTypeString()));
             Assert.True(lRequest.CheckLogin);
         }
     }

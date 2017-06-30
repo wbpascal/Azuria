@@ -11,7 +11,7 @@ namespace Azuria.Test.Requests
 {
     public class RequestHeaderManagerTest
     {
-        private readonly char[] _apiKey = ArrayHelpers.GetRandomChars(32);
+        private readonly char[] _apiKey = RandomHelper.GetRandomString(32).ToCharArray();
         private readonly IRequestHeaderManager _headerManager;
 
         public RequestHeaderManagerTest()
@@ -33,7 +33,7 @@ namespace Azuria.Test.Requests
         [Fact]
         public void GetHeaderAuthenticatedTest()
         {
-            char[] lLoginToken = ArrayHelpers.GetRandomChars(255);
+            char[] lLoginToken = RandomHelper.GetRandomString(255).ToCharArray();
 
             Mock<ILoginManager> lLoginManager = new Mock<ILoginManager>();
             lLoginManager.Setup(manager => manager.SendTokenWithNextRequest()).Returns(true);

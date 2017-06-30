@@ -55,7 +55,7 @@ namespace Azuria.Api.v1.RequestBuilder
             int uid, int page = 0, int limit = 100)
         {
             return this.GetHistory(page.ToString(), limit.ToString())
-                .WithGetParameter("username", uid.ToString());
+                .WithGetParameter("uid", uid.ToString());
         }
 
         /// <summary>

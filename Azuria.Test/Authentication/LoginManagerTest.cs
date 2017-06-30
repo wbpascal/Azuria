@@ -17,7 +17,7 @@ namespace Azuria.Test.Authentication
         [Fact]
         public void LoginTokenTest()
         {
-            char[] lRandomToken = ArrayHelpers.GetRandomChars(255);
+            char[] lRandomToken = RandomHelper.GetRandomString(255).ToCharArray();
             IProxerClient lClient = ProxerClient.Create(
                 new char[32], options => options.WithAuthorisation(lRandomToken));
             ILoginManager lLoginManager = lClient.Container.Resolve<ILoginManager>();
@@ -46,7 +46,7 @@ namespace Azuria.Test.Authentication
             LoginDataModel lSuccessDataModel = new LoginDataModel
             {
                 UserId = 1,
-                Token = new string(ArrayHelpers.GetRandomChars(255))
+                Token = RandomHelper.GetRandomString(255)
             };
             Mock.Get(lRequestHandler).Setup(
                     handler => handler.MakeRequestAsync(
@@ -77,7 +77,7 @@ namespace Azuria.Test.Authentication
             LoginDataModel lSuccessDataModel = new LoginDataModel
             {
                 UserId = 1,
-                Token = new string(ArrayHelpers.GetRandomChars(255))
+                Token = RandomHelper.GetRandomString(255)
             };
             Mock.Get(lRequestHandler).Setup(
                     handler => handler.MakeRequestAsync(
@@ -121,7 +121,7 @@ namespace Azuria.Test.Authentication
             Assert.True(lResult.Success);
             Assert.Empty(lResult.Exceptions);
 
-            Assert.Equal(null, lLoginManager.LoginToken);
+            Assert.Null(lLoginManager.LoginToken);
             Assert.False(lLoginManager.CheckIsLoginProbablyValid());
         }
 

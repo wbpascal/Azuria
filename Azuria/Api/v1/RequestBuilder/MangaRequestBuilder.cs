@@ -23,9 +23,17 @@ namespace Azuria.Api.v1.RequestBuilder
         public IProxerClient ProxerClient { get; }
 
         /// <summary>
+        /// <para>
         /// Builds a request that returns information about a chapter including the pages.
+        /// </para>
+        /// <para>
         /// Api permissions required (class - permission level):
-        /// * Manga - Level 0
+        /// <list type="table">
+        /// <item>
+        /// <term>Manga - Level 2</term>
+        /// </item>
+        /// </list>
+        /// </para>
         /// </summary>
         /// <param name="id">The id of the manga.</param>
         /// <param name="episode">The number of the chapter.</param>
@@ -33,6 +41,9 @@ namespace Azuria.Api.v1.RequestBuilder
         /// <returns>An instance of <see cref="IRequestBuilderWithResult{T}" /> that returns the chapter.</returns>
         public IRequestBuilderWithResult<ChapterDataModel> GetChapter(int id, int episode, Language language)
         {
+            if (language == Language.Unkown)
+                throw new ArgumentException("The given language is invalid for this request!", nameof(language));
+
             return new RequestBuilder<ChapterDataModel>(
                     new Uri($"{ApiConstants.ApiUrlV1}/manga/chapter"), this.ProxerClient
                 ).WithGetParameter("id", id.ToString())

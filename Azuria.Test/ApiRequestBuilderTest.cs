@@ -86,8 +86,8 @@ namespace Azuria.Test
             Assert.Equal(1, lRequestBuilder.GetParameters.Count);
             Assert.True(lRequestBuilder.GetParameters.ContainsKey("test"));
             Assert.Equal("value", lRequestBuilder.GetParameters["test"]);
-            Assert.Equal(1, lRequestBuilder.PostArguments.Count());
-            Assert.True(lRequestBuilder.PostArguments.Any(pair => pair.Key == "testPost" && pair.Value == "postValue"));
+            Assert.Equal(1, lRequestBuilder.PostParameter.Count());
+            Assert.True(lRequestBuilder.PostParameter.Any(pair => pair.Key == "testPost" && pair.Value == "postValue"));
 
             Assert.Equal("https://google.com/?test=value", lRequestBuilder.BuildUri().AbsoluteUri);
         }

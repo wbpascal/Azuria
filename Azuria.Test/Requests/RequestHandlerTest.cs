@@ -24,7 +24,7 @@ namespace Azuria.Test.Requests
             new Dictionary<string, string>
             {
                 {TestConstants.ApiKeyHeaderName, new string(new char[32])},
-                {TestConstants.LoginTokenHeaderName, new string(ArrayHelpers.GetRandomChars(255))}
+                {TestConstants.LoginTokenHeaderName, RandomHelper.GetRandomString(255)}
             };
 
         private static readonly Dictionary<string, string> StandardHeaders = new Dictionary<string, string>
