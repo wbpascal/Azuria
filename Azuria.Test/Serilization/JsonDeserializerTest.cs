@@ -1,4 +1,4 @@
-using System.Threading.Tasks;
+using System.Collections.Generic;
 using Autofac;
 using Azuria.ErrorHandling;
 using Azuria.Serialization;
@@ -51,6 +51,18 @@ namespace Azuria.Test.Serilization
             Assert.True(lDeserializeResult.Result.Success);
             Assert.Empty(lDeserializeResult.Result.Exceptions);
             Assert.Equal(42, lDeserializeResult.Result.Result);
+        }
+
+        [Fact]
+        public void DeserializeInvalidJsonTest()
+        {
+            const string lInvalidJson = "{\"test:}";
+            IProxerResult<Dictionary<string, string>> lDeserializeResult =
+                this._jsonDeserializer.Deserialize<Dictionary<string, string>>(lInvalidJson, null);
+            Assert.False(lDeserializeResult.Success);
+            Assert.Null(lDeserializeResult.Result);
+            Assert.NotNull(lDeserializeResult.Exceptions);
+            Assert.NotEmpty(lDeserializeResult.Exceptions);
         }
     }
 }
