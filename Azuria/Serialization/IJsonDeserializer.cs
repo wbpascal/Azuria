@@ -13,10 +13,8 @@ namespace Azuria.Serialization
         /// </summary>
         /// <param name="json"></param>
         /// <param name="settings"></param>
-        /// <param name="token"></param>
         /// <typeparam name="T"></typeparam>
         /// <returns></returns>
-        Task<IProxerResult<T>> Deserialize<T>(
-            string json, JsonSerializerSettings settings, CancellationToken token = default(CancellationToken));
+        IProxerResult<T> Deserialize<T>(string json, JsonSerializerSettings settings);
     }
 }

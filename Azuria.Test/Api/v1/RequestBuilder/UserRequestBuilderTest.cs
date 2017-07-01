@@ -1,4 +1,3 @@
-using System;
 using System.Linq;
 using Azuria.Api.v1.DataModels;
 using Azuria.Api.v1.DataModels.User;
@@ -14,7 +13,7 @@ namespace Azuria.Test.Api.v1.RequestBuilder
 {
     public class UserRequestBuilderTest : RequestBuilderTestBase<UserRequestBuilder>
     {
-        public void GetHistoryTestBase(IRequestBuilderBase requestBuilderBase)
+        private void GetHistoryTestBase(IRequestBuilderBase requestBuilderBase)
         {
             this.CheckUrl(requestBuilderBase, "user", "history");
             Assert.Same(this.ProxerClient, requestBuilderBase.Client);
@@ -47,7 +46,7 @@ namespace Azuria.Test.Api.v1.RequestBuilder
             Assert.Equal(lRandomId.ToString(), lRequest.GetParameters["uid"]);
         }
 
-        public void GetInfoTestBase(IRequestBuilderBase requestBuilderBase)
+        private void GetInfoTestBase(IRequestBuilderBase requestBuilderBase)
         {
             this.CheckUrl(requestBuilderBase, "user", "userinfo");
             Assert.Same(this.ProxerClient, requestBuilderBase.Client);
@@ -83,7 +82,7 @@ namespace Azuria.Test.Api.v1.RequestBuilder
             Assert.False(lRequest.CheckLogin);
         }
 
-        public void GetLatestCommentsTestBase(IRequestBuilderBase requestBuilderBase, MediaEntryType kat)
+        private void GetLatestCommentsTestBase(IRequestBuilderBase requestBuilderBase, MediaEntryType kat)
         {
             this.CheckUrl(requestBuilderBase, "user", "comments");
             Assert.Same(this.ProxerClient, requestBuilderBase.Client);
@@ -125,7 +124,7 @@ namespace Azuria.Test.Api.v1.RequestBuilder
             Assert.False(lRequest.CheckLogin);
         }
 
-        public void GetListTestBase(
+        private void GetListTestBase(
             IRequestBuilderBase requestBuilderBase, MediaEntryType category, UserListSort sort,
             SortDirection sortDirection)
         {
@@ -143,7 +142,8 @@ namespace Azuria.Test.Api.v1.RequestBuilder
             Assert.Equal("test_search", requestBuilderBase.GetParameters["search"]);
             Assert.Equal("test_search_start", requestBuilderBase.GetParameters["search_start"]);
             Assert.Equal(
-                sort.GetDescription() + sortDirection.GetDescription(), requestBuilderBase.GetParameters["sort"]);
+                sort.GetDescription() + sortDirection.GetDescription(), requestBuilderBase.GetParameters["sort"]
+            );
         }
 
         [Theory]
@@ -180,7 +180,7 @@ namespace Azuria.Test.Api.v1.RequestBuilder
             Assert.False(lRequest.CheckLogin);
         }
 
-        public void GetToptenTestBase(IRequestBuilderBase requestBuilderBase, MediaEntryType category)
+        private void GetToptenTestBase(IRequestBuilderBase requestBuilderBase, MediaEntryType category)
         {
             this.CheckUrl(requestBuilderBase, "user", "topten");
             Assert.Same(this.ProxerClient, requestBuilderBase.Client);

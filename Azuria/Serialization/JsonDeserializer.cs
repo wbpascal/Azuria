@@ -12,23 +12,19 @@ namespace Azuria.Serialization
     public class JsonDeserializer : IJsonDeserializer
     {
         /// <inheritdoc />
-        public Task<IProxerResult<T>> Deserialize<T>(
-            string json, JsonSerializerSettings settings, CancellationToken token = default(CancellationToken))
+        public IProxerResult<T> Deserialize<T>(string json, JsonSerializerSettings settings)
         {
             try
             {
-                return Task<IProxerResult<T>>.Factory.StartNew(
-                    () =>
-                        new ProxerResult<T>(
-                            JsonConvert.DeserializeObject<T>(
-                                WebUtility.HtmlDecode(json), settings ?? new JsonSerializerSettings()
-                            )
-                        ), token
+                T lDeserializedObject = JsonConvert.DeserializeObject<T>(
+                    WebUtility.HtmlDecode(json), settings ?? new JsonSerializerSettings()
                 );
+
+                return new ProxerResult<T>(lDeserializedObject);
             }
             catch (Exception ex)
             {
-                return Task.FromResult((IProxerResult<T>) new ProxerResult<T>(ex));
+                return new ProxerResult<T>(ex);
             }
         }
     }

@@ -1,6 +1,4 @@
-using System;
 using System.Linq;
-using System.Threading;
 using Azuria.Api.v1.DataModels.Notifications;
 using Azuria.Api.v1.RequestBuilder;
 using Azuria.Requests.Builder;
@@ -46,7 +44,7 @@ namespace Azuria.Test.Api.v1.RequestBuilder
             Assert.Equal("40", lRequest.GetParameters["limit"]);
             Assert.False(lRequest.CheckLogin);
         }
-        
+
         [Fact]
         public override void ProxerClientTest()
         {

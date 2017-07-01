@@ -176,7 +176,7 @@ namespace Azuria.Api.v1.RequestBuilder
 
             if (category != null)
                 lRequest.WithGetParameter("kat", category.ToString().ToLowerInvariant());
-            
+
             return lRequest;
         }
 
@@ -247,7 +247,7 @@ namespace Azuria.Api.v1.RequestBuilder
         {
             if (language == MediaLanguage.Unkown)
                 throw new ArgumentException("The given language is invalid for this request!", nameof(language));
-                
+
             return new Requests.Builder.RequestBuilder(
                     new Uri($"{ApiConstants.ApiUrlV1}/ucp/setreminder"), this.ProxerClient)
                 .WithGetParameter("id", entryId.ToString())

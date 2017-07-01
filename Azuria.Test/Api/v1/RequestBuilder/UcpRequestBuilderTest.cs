@@ -29,7 +29,7 @@ namespace Azuria.Test.Api.v1.RequestBuilder
             Assert.Equal(lRandomId.ToString(), lRequest.PostParameter.GetValue("id").First());
             Assert.True(lRequest.CheckLogin);
         }
-        
+
         [Fact]
         public void DeleteReminderTest()
         {
@@ -42,7 +42,7 @@ namespace Azuria.Test.Api.v1.RequestBuilder
             Assert.Equal(lRandomId.ToString(), lRequest.PostParameter.GetValue("id").First());
             Assert.True(lRequest.CheckLogin);
         }
-        
+
         [Fact]
         public void DeleteVoteTest()
         {
@@ -156,7 +156,7 @@ namespace Azuria.Test.Api.v1.RequestBuilder
             Assert.True(lRequest.GetParameters.ContainsKey("kat") && category != null || category == null);
             Assert.True(lRequest.GetParameters.ContainsKey("p"));
             Assert.True(lRequest.GetParameters.ContainsKey("limit"));
-            if(category != null)
+            if (category != null)
                 Assert.Equal(category?.ToString().ToLowerInvariant(), lRequest.GetParameters["kat"]);
             Assert.Equal("5", lRequest.GetParameters["p"]);
             Assert.Equal("1", lRequest.GetParameters["limit"]);
@@ -254,7 +254,7 @@ namespace Azuria.Test.Api.v1.RequestBuilder
                 () => this.RequestBuilder.SetReminder(42, 42, MediaLanguage.Unkown, MediaEntryType.Anime)
             );
         }
-        
+
         [Fact]
         public override void ProxerClientTest()
         {

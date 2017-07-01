@@ -19,10 +19,10 @@ namespace Azuria.Test.Serilization
         }
 
         [Fact]
-        public async Task DeserializeTest()
+        public void DeserializeTest()
         {
             IProxerResult<ProxerApiResponse<string>> lDeserializeResult =
-                await this._jsonDeserializer.Deserialize<ProxerApiResponse<string>>(
+                this._jsonDeserializer.Deserialize<ProxerApiResponse<string>>(
                     TestConstants.DummySuccessResponseString, null
                 );
 
@@ -35,13 +35,13 @@ namespace Azuria.Test.Serilization
         }
 
         [Fact]
-        public async Task DeserializeWithSettingsTest()
+        public void DeserializeWithSettingsTest()
         {
             JsonSerializerSettings lSettings = new JsonSerializerSettings();
             lSettings.Converters.Add(new TestConverter());
 
             IProxerResult<ProxerApiResponse<int>> lDeserializeResult =
-                await this._jsonDeserializer.Deserialize<ProxerApiResponse<int>>(
+                this._jsonDeserializer.Deserialize<ProxerApiResponse<int>>(
                     TestConstants.DummySuccessResponseString, lSettings
                 );
 

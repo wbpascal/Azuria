@@ -58,9 +58,7 @@ namespace Azuria.Requests
                         : new[] {new SerializationException("Cannot serialize empty response!")}
                 );
 
-            IProxerResult<T> lSerializationResult = await this._jsonDeserializer
-                                                        .Deserialize<T>(lResult.Result, settings, token)
-                                                        .ConfigureAwait(false);
+            IProxerResult<T> lSerializationResult = this._jsonDeserializer.Deserialize<T>(lResult.Result, settings);
             if (!lSerializationResult.Success) return new ProxerResult(lSerializationResult.Exceptions);
 
             this._loginManager.PerformedRequest(
