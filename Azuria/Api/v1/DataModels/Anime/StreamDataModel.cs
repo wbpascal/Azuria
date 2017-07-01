@@ -1,6 +1,5 @@
 ﻿using System;
 using Azuria.Api.v1.Converters;
-using Azuria.Api.v1.Converters.Anime;
 using Azuria.Api.v1.DataModels.Media;
 using Azuria.Enums.Info;
 using Newtonsoft.Json;
@@ -34,8 +33,7 @@ namespace Azuria.Api.v1.DataModels.Anime
         /// <summary>
         /// </summary>
         [JsonProperty("type")]
-        [JsonConverter(typeof(StreamPartnerConverter))]
-        public StreamHoster StreamHoster { get; set; }
+        public string StreamHoster { get; set; }
 
         /// <summary>
         /// </summary>

@@ -5,7 +5,7 @@ namespace Azuria.Api.v1.Converters
 {
     /// <summary>
     /// </summary>
-    public abstract class DataConverter<T> : JsonConverter
+    public abstract class DataConverter<T> : JsonConverter, IDataConverter
     {
         /// <inheritdoc />
         public override bool CanConvert(Type objectType)

@@ -6,16 +6,14 @@ using Newtonsoft.Json;
 
 namespace Azuria.Api.v1.Converters.Info
 {
-    internal class StreamHosterConverter : DataConverter<StreamHoster[]>
+    internal class StreamHosterConverter : DataConverter<string[]>
     {
         /// <inheritdoc />
-        public override StreamHoster[] ConvertJson(
+        public override string[] ConvertJson(
             JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
         {
             return reader.Value.ToString()
                 .Split(',')
-                .Select(StreamHosterHelpers.GetFromString)
-                .Where(hoster => hoster != StreamHoster.None)
                 .ToArray();
         }
     }

@@ -24,7 +24,7 @@ namespace Azuria.Api.v1.DataModels.Info
         /// </summary>
         [JsonProperty("types")]
         [JsonConverter(typeof(StreamHosterConverter))]
-        public StreamHoster[] StreamHosters { get; set; }
+        public string[] StreamHosters { get; set; }
 
         /// <summary>
         /// Only available for chapters
