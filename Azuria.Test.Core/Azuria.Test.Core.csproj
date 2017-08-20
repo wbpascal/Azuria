@@ -97,20 +97,13 @@
     <EmbeddedResource Include="Response\anime_getlink.json" />
     <EmbeddedResource Include="Response\anime_getstreams.json" />
     <EmbeddedResource Include="Response\info_getcommentslatest.json" />
-    <EmbeddedResource Include="Response\info_getcommentsrating1.json" />
-    <EmbeddedResource Include="Response\info_getcommentsrating2.json" />
     <EmbeddedResource Include="Response\info_getentry.json" />
-    <EmbeddedResource Include="Response\info_getentry7834.json" />
     <EmbeddedResource Include="Response\info_getentrytags.json" />
-    <EmbeddedResource Include="Response\info_getentry_3007.json" />
     <EmbeddedResource Include="Response\info_getfullentry.json" />
-    <EmbeddedResource Include="Response\info_getfullentry_3007.json" />
     <EmbeddedResource Include="Response\info_getgate.json" />
     <EmbeddedResource Include="Response\info_getgroups.json" />
     <EmbeddedResource Include="Response\info_getlang.json" />
-    <EmbeddedResource Include="Response\info_getlang7834.json" />
-    <EmbeddedResource Include="Response\info_getlistinfo7834.json" />
-    <EmbeddedResource Include="Response\info_getlistinfo9200.json" />
+    <EmbeddedResource Include="Response\info_getlistinfo.json" />
     <EmbeddedResource Include="Response\info_getnames.json" />
     <EmbeddedResource Include="Response\info_getpublisher.json" />
     <EmbeddedResource Include="Response\info_getrelations.json" />
@@ -118,8 +111,6 @@
     <EmbeddedResource Include="Response\info_setuserinfofavor.json" />
     <EmbeddedResource Include="Response\info_setuserinfofinish.json" />
     <EmbeddedResource Include="Response\info_setuserinfonote.json" />
-    <EmbeddedResource Include="Response\info_setuserinfo_3010.json" />
-    <EmbeddedResource Include="Response\info_setuserinfo_3011.json" />
     <EmbeddedResource Include="Response\list_getentrylist.json" />
     <EmbeddedResource Include="Response\list_getentrysearch.json" />
     <EmbeddedResource Include="Response\list_gettagids.json" />
@@ -130,30 +121,22 @@
     <EmbeddedResource Include="Response\media_getrandomheadergray.json" />
     <EmbeddedResource Include="Response\media_getrandomheaderoldblue.json" />
     <EmbeddedResource Include="Response\media_getrandomheaderpantsu.json" />
-    <EmbeddedResource Include="Response\messages_notifications.html" />
     <EmbeddedResource Include="Response\messenger_getconferenceinfo.json" />
     <EmbeddedResource Include="Response\messenger_getconferences.json" />
-    <EmbeddedResource Include="Response\messenger_getconferences_3023.json" />
     <EmbeddedResource Include="Response\messenger_getconstants.json" />
-    <EmbeddedResource Include="Response\messenger_getmessages1.json" />
-    <EmbeddedResource Include="Response\messenger_getmessages2.json" />
     <EmbeddedResource Include="Response\messenger_getmessagesCheck.json" />
     <EmbeddedResource Include="Response\messenger_newconference.json" />
     <EmbeddedResource Include="Response\messenger_newconferencegroup.json" />
-    <EmbeddedResource Include="Response\messenger_newconferencegroup_3030.json" />
-    <EmbeddedResource Include="Response\messenger_newconference_3027.json" />
     <EmbeddedResource Include="Response\messenger_setblock.json" />
     <EmbeddedResource Include="Response\messenger_setfavour.json" />
     <EmbeddedResource Include="Response\messenger_setmessage.json" />
     <EmbeddedResource Include="Response\messenger_setmessageHelp.json" />
     <EmbeddedResource Include="Response\messenger_setreport.json" />
-    <EmbeddedResource Include="Response\messenger_setreport_3025.json" />
     <EmbeddedResource Include="Response\messenger_setunblock.json" />
     <EmbeddedResource Include="Response\messenger_setunfavour.json" />
     <EmbeddedResource Include="Response\messenger_setunread.json" />
     <EmbeddedResource Include="Response\notifications_getcount.json" />
     <EmbeddedResource Include="Response\notifications_getnews.json" />
-    <EmbeddedResource Include="Response\notifications_misc.php" />
     <EmbeddedResource Include="Response\ucp_deletefavourite.json" />
     <EmbeddedResource Include="Response\ucp_deletereminder.json" />
     <EmbeddedResource Include="Response\ucp_deletevote.json" />
@@ -165,7 +148,6 @@
     <EmbeddedResource Include="Response\ucp_getremindermanga.json" />
     <EmbeddedResource Include="Response\ucp_gettopten.json" />
     <EmbeddedResource Include="Response\ucp_getvotes.json" />
-    <EmbeddedResource Include="Response\ucp_setreminder9200.json" />
     <EmbeddedResource Include="Response\user_getlatestcommentsanime.json" />
     <EmbeddedResource Include="Response\user_getlatestcommentsmanga.json" />
     <EmbeddedResource Include="Response\user_getlistanime.json" />
@@ -173,11 +155,7 @@
     <EmbeddedResource Include="Response\user_gettoptenanime.json" />
     <EmbeddedResource Include="Response\user_gettoptenmanga.json" />
     <EmbeddedResource Include="Response\user_getuserinfo.json" />
-    <EmbeddedResource Include="Response\user_getuserinfo163825.json" />
-    <EmbeddedResource Include="Response\user_getuserinfo177103.json" />
-    <EmbeddedResource Include="Response\user_getuserinfo_3003.json" />
     <EmbeddedResource Include="Response\user_login.json" />
-    <EmbeddedResource Include="Response\user_login_3001.json" />
     <EmbeddedResource Include="Response\user_logout.json" />
   </ItemGroup>
   <ItemGroup>
@@ -187,5 +165,8 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Azuria\Azuria.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Remove="signing_key.snk" />
   </ItemGroup>
 </Project>

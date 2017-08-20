@@ -205,3 +205,7 @@ ConsoleApplication1/
 /Components/
 /packages/
 /.idea/
+/docfx_project/
+/docs/
+/.sonarqube/
+/scan.bat

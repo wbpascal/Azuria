@@ -16,12 +16,5 @@ namespace Azuria.Test.Core.Helpers
                     ReferenceLoopHandling = ReferenceLoopHandling.Ignore
                 });
         }
-
-        public static ProxerClientOptions WithTestingHttpClient(this ProxerClientOptions options)
-        {
-            return options.WithCustomHttpClient(
-                context => ResponseSetup.GetTestingClient(options.ApiKey, context.Resolve<ILoginManager>())
-            );
-        }
     }
 }
