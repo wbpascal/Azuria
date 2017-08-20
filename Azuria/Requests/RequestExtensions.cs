@@ -48,7 +48,7 @@ namespace Azuria.Requests
 
         internal static Task<IProxerResult<string>> ProxerRequestAsync(
             this IHttpClient httpClient, Uri url, IEnumerable<KeyValuePair<string, string>> postArgs,
-            Dictionary<string, string> headers, CancellationToken token)
+            IDictionary<string, string> headers, CancellationToken token)
         {
             KeyValuePair<string, string>[] lPostArgs =
                 postArgs as KeyValuePair<string, string>[] ?? postArgs.ToArray();

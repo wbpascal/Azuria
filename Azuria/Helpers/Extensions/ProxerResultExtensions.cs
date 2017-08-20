@@ -43,10 +43,7 @@ namespace Azuria.Helpers.Extensions
         public static async Task<T> ThrowFirstForNonSuccess<T>(this Task<IProxerResult<T>> task)
         {
             IProxerResult<T> lResult = await task.ConfigureAwait(false);
-            if (!lResult.Success)
-                throw lResult.Exceptions.Any() ? lResult.Exceptions.First() : new Exception();
-
-            return lResult.Result;
+            return lResult.Success ? lResult.Result : throw new AggregateException(lResult.Exceptions);
         }
 
         /// <summary>
@@ -56,8 +53,7 @@ namespace Azuria.Helpers.Extensions
         public static async Task ThrowFirstForNonSuccess<T>(this Task<T> task) where T : IProxerResult
         {
             IProxerResult lResult = await task.ConfigureAwait(false);
-            if (!lResult.Success)
-                throw lResult.Exceptions.Any() ? lResult.Exceptions.First() : new Exception();
+            if (!lResult.Success) throw new AggregateException(lResult.Exceptions);
         }
     }
 }
