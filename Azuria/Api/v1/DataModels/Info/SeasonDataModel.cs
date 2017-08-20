@@ -21,23 +21,5 @@ namespace Azuria.Api.v1.DataModels.Info
         /// </summary>
         [JsonProperty("year")]
         public int Year { get; set; }
-
-        /// <inheritdoc />
-        public bool Equals(SeasonDataModel other)
-        {
-            return this.Id == other.Id && this.Season == other.Season && this.Year == other.Year;
-        }
-
-        /// <inheritdoc />
-        public override int GetHashCode()
-        {
-            unchecked
-            {
-                int hashCode = this.Id;
-                hashCode = hashCode * 397 ^ (int) this.Season;
-                hashCode = hashCode * 397 ^ this.Year;
-                return hashCode;
-            }
-        }
     }
 }
