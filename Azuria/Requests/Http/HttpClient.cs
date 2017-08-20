@@ -61,7 +61,7 @@ namespace Azuria.Requests.Http
 
         /// <inheritdoc />
         public virtual async Task<IProxerResult<string>> GetRequestAsync(
-            Uri url, Dictionary<string, string> headers = null, CancellationToken token = default(CancellationToken))
+            Uri url, IDictionary<string, string> headers = null, CancellationToken token = default(CancellationToken))
         {
             string lResponse;
 
@@ -91,7 +91,7 @@ namespace Azuria.Requests.Http
         }
 
         private async Task<HttpResponseMessage> GetWebRequestAsync(
-            Uri url, Dictionary<string, string> headers, CancellationToken token)
+            Uri url, IDictionary<string, string> headers, CancellationToken token)
         {
             this._client.DefaultRequestHeaders.Clear();
 
@@ -104,7 +104,7 @@ namespace Azuria.Requests.Http
 
         /// <inheritdoc />
         public virtual async Task<IProxerResult<string>> PostRequestAsync(
-            Uri url, IEnumerable<KeyValuePair<string, string>> postArgs, Dictionary<string, string> headers = null,
+            Uri url, IEnumerable<KeyValuePair<string, string>> postArgs, IDictionary<string, string> headers = null,
             CancellationToken token = default(CancellationToken))
         {
             string lResponse;
@@ -135,8 +135,8 @@ namespace Azuria.Requests.Http
         }
 
         private async Task<HttpResponseMessage> PostWebRequestAsync(
-            Uri url, IEnumerable<KeyValuePair<string, string>> postArgs,
-            Dictionary<string, string> headers, CancellationToken token)
+            Uri url, IEnumerable<KeyValuePair<string, string>> postArgs, IDictionary<string, string> headers, 
+            CancellationToken token)
         {
             this._client.DefaultRequestHeaders.Clear();
 
