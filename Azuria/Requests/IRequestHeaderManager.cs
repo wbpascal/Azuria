@@ -10,7 +10,7 @@ namespace Azuria.Requests
         /// </summary>
         /// <param name="header"></param>
         /// <returns></returns>
-        bool ContainsAuthenticationHeaders(Dictionary<string, string> header);
+        bool ContainsAuthenticationHeaders(IDictionary<string, string> header);
 
         /// <summary>
         /// </summary>

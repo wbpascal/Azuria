@@ -5,7 +5,7 @@ namespace Azuria.Helpers.Extensions
 {
     internal static class ListExtensions
     {
-        internal static void AddIf<T>(this List<T> list, T item, Func<T, bool> condition)
+        internal static void AddIf<T>(this ICollection<T> list, T item, Func<T, bool> condition)
         {
             if (condition.Invoke(item)) list.Add(item);
         }

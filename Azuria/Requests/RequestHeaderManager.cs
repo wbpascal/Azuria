@@ -20,7 +20,7 @@ namespace Azuria.Requests
         }
 
         /// <inheritdoc />
-        public bool ContainsAuthenticationHeaders(Dictionary<string, string> header)
+        public bool ContainsAuthenticationHeaders(IDictionary<string, string> header)
         {
             return header.ContainsKey(LoginTokenHeaderName);
         }
