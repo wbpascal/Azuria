@@ -9,7 +9,7 @@ namespace Azuria.Requests.Http
     /// <summary>
     /// An interface that is used to send http/s requests.
     /// </summary>
-    public interface IHttpClient : IDisposable
+    public interface IHttpClient
     {
         /// <summary>
         /// Creates a "GET" request to a given url with optional header.

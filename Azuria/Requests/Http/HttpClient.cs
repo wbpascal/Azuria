@@ -13,7 +13,7 @@ namespace Azuria.Requests.Http
     /// <summary>
     /// Represents a class that sends http/s requests.
     /// </summary>
-    public class HttpClient : IHttpClient
+    public class HttpClient : IHttpClient, IDisposable
     {
         /// <summary>
         /// The user-agent that is send with each request.
@@ -44,7 +44,17 @@ namespace Azuria.Requests.Http
         }
 
         /// <inheritdoc />
-        public virtual void Dispose()
+        public void Dispose()
+        {
+            this.Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="disposing"></param>
+        protected virtual void Dispose(bool disposing)
         {
             this._client.Dispose();
         }
