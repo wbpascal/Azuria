@@ -3,11 +3,14 @@ environment:
     secure: RpJa3MpXjYvN8clOld28OQRmiEofer3+x74FzE/pGcw=
   COVERALLS_REPO_TOKEN:
     secure: TJu0jqrb61YdQNdn7E/+qe9ApI2Apuj+Jfn789TuWy4jsojLhVM9nlvULwdy+Ypr
+  SONAR_QUBE_TOKEN:
+    secure: od0IGy6svr+STk26LVllpjGRxVVu8YJ3Z2kjUa2+V/iuVR6ui8yUUDk6eANnP8xX
 
 image: Visual Studio 2017
 
 install:
   - choco install gitversion.portable -pre -y
+  - choco install msbuild-sonarqube-runner -y
   - nuget install secure-file -ExcludeVersion
   - nuget install coveralls.net -ExcludeVersion
   - secure-file\tools\secure-file -decrypt signing_key.snk.enc -out Azuria/signing_key.snk -secret %enc_secret%
@@ -15,6 +18,11 @@ install:
 before_build:
   - nuget restore
   - ps: gitversion /l console /output buildserver /updateAssemblyInfo
+  
+build_script:
+  - SonarQube.Scanner.MSBuild.exe begin /k:"Azuria" /d:sonar.host.url=https://sonarcloud.io /d:sonar.organization=infinitesoul-github /d:sonar.login=%SONAR_QUBE_TOKEN% /v:%GitVersion_LegacySemVer%
+  - msbuild Azuria.sln
+  - SonarQube.Scanner.MSBuild.exe end /d:sonar.login=%SONAR_QUBE_TOKEN%
 
 after_build:
   - ps: ./AppveyorPack.ps1
