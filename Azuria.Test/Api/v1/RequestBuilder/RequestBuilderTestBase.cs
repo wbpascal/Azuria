@@ -7,11 +7,11 @@ using Xunit;
 
 namespace Azuria.Test.Api.v1.RequestBuilder
 {
-    public class RequestBuilderTestBase<T> where T : class, IApiClassRequestBuilder
+    public abstract class RequestBuilderTestBase<T> where T : class, IApiClassRequestBuilder
     {
         private readonly Random _random;
 
-        public RequestBuilderTestBase()
+        protected RequestBuilderTestBase()
         {
             this._random = new Random();
             this.ProxerClient = Azuria.ProxerClient.Create(new char[32]);

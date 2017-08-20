@@ -1,10 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using Azuria.Api.v1.Converters;
+using Azuria.Api.v1.Converters.Info;
 using Azuria.Enums.User;
 using Newtonsoft.Json;
 
-namespace Azuria.Api.v1.DataModels
+namespace Azuria.Api.v1.DataModels.Info
 {
     /// <summary>
     /// </summary>
@@ -18,7 +19,7 @@ namespace Azuria.Api.v1.DataModels
         /// <summary>
         /// </summary>
         [JsonProperty("comment")]
-        public string CommentContent { get; set; }
+        public string CommentText { get; set; }
 
         /// <summary>
         /// </summary>
@@ -32,12 +33,6 @@ namespace Azuria.Api.v1.DataModels
 
         /// <summary>
         /// </summary>
-        [JsonProperty("timestamp")]
-        [JsonConverter(typeof(UnixToDateTimeConverter))]
-        public DateTime Date { get; set; }
-
-        /// <summary>
-        /// </summary>
         [JsonProperty("tid")]
         public int EntryId { get; set; }
 
@@ -48,14 +43,26 @@ namespace Azuria.Api.v1.DataModels
 
         /// <summary>
         /// </summary>
-        [JsonProperty("status")]
+        [JsonProperty("state")]
         public MediaProgressState State { get; set; }
 
         /// <summary>
         /// </summary>
         [JsonProperty("data")]
         [JsonConverter(typeof(SubRatingsConverter))]
-        public Dictionary<RatingCategory, int> SubRatings { get; set; }
+        public IReadOnlyDictionary<RatingCategory, int> SubRatings { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [JsonProperty("timestamp")]
+        [JsonConverter(typeof(UnixToDateTimeConverter))]
+        public DateTime TimeStamp { get; set; }
+        
+        /// <summary>
+        /// 
+        /// </summary>
+        [JsonProperty("type")]
+        public string Type { get; set; }
 
         /// <summary>
         /// </summary>

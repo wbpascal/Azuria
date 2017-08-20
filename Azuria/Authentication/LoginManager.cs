@@ -5,6 +5,7 @@ using Azuria.Api.v1.DataModels.User;
 using Azuria.Api.v1.RequestBuilder;
 using Azuria.ErrorHandling;
 using Azuria.Requests;
+using Azuria.Requests.Builder;
 
 namespace Azuria.Authentication
 {
@@ -55,11 +56,13 @@ namespace Azuria.Authentication
             string username, string password, string secretKey = null,
             CancellationToken token = default(CancellationToken))
         {
-            IProxerResult<LoginDataModel> lResult =
-                await (secretKey == null
-                           ? this._userRequestBuilder.Login(username, password)
-                           : this._userRequestBuilder.Login(username, password, secretKey))
-                    .DoRequestAsync(token);
+            IRequestBuilderWithResult<LoginDataModel> lRequest = secretKey == null
+                                                                     ? this._userRequestBuilder.Login(
+                                                                         username, password)
+                                                                     : this._userRequestBuilder.Login(
+                                                                         username, password, secretKey);
+            
+            IProxerResult<LoginDataModel> lResult = await lRequest.DoRequestAsync(token);
 
             if (!lResult.Success || lResult.Result == null)
                 return new ProxerResult(lResult.Exceptions);

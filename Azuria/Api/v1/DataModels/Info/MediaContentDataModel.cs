@@ -11,20 +11,27 @@ namespace Azuria.Api.v1.DataModels.Info
     {
         /// <summary>
         /// </summary>
-        [JsonProperty("no", Required = Required.Always)]
+        [JsonProperty("no")]
         public int ContentIndex { get; set; }
 
         /// <summary>
         /// </summary>
-        [JsonProperty("typ", Required = Required.Always)]
+        [JsonProperty("typ")]
         [JsonConverter(typeof(LanguageConverter))]
         public MediaLanguage Language { get; set; }
 
         /// <summary>
         /// </summary>
         [JsonProperty("types")]
-        [JsonConverter(typeof(StreamHosterConverter))]
+        [JsonConverter(typeof(StringCommaCollectionConverter))]
         public string[] StreamHosters { get; set; }
+        
+        /// <summary>
+        /// 
+        /// </summary>
+        [JsonProperty("typeimg")]
+        [JsonConverter(typeof(StringCommaCollectionConverter))]
+        public string[] StreamHosterImages { get; set; }
 
         /// <summary>
         /// Only available for chapters

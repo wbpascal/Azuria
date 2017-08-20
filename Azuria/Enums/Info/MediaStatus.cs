@@ -26,9 +26,9 @@
         Completed = 1,
 
         /// <summary>
-        /// The anime or manga is completed but not fully subbed.
+        /// The anime or manga is completed but not fully translated.
         /// </summary>
-        CompletedNotFullySubbed = 4,
+        CompletedNotFullyTranslated = 4,
 
         /// <summary>
         /// The airing status of the anime or manga is unknown.
