@@ -97,6 +97,7 @@
     <EmbeddedResource Include="Response\anime_getlink.json" />
     <EmbeddedResource Include="Response\anime_getstreams.json" />
     <EmbeddedResource Include="Response\info_getcommentslatest.json" />
+    <EmbeddedResource Include="Response\info_getcommentsrating.json" />
     <EmbeddedResource Include="Response\info_getentry.json" />
     <EmbeddedResource Include="Response\info_getentrytags.json" />
     <EmbeddedResource Include="Response\info_getfullentry.json" />
