@@ -21,40 +21,10 @@
             "country": "jp"
         },
         {
-            "name": "Kodansha",
-            "id": "19",
-            "type": "producer",
-            "country": "jp"
-        },
-        {
-            "name": "Fuji Television Network, Inc.",
-            "id": "307",
-            "type": "producer",
-            "country": "jp"
-        },
-        {
-            "name": "Dentsu",
-            "id": "136",
-            "type": "producer",
-            "country": "jp"
-        },
-        {
             "name": "Aniplex of America",
             "id": "431",
             "type": "publisher",
             "country": "us"
-        },
-        {
-            "name": "Aniplex",
-            "id": "135",
-            "type": "producer",
-            "country": "jp"
-        },
-        {
-            "name": "AKIBA PASS",
-            "id": "445",
-            "type": "streaming",
-            "country": "de"
         },
         {
             "name": "A-1 Pictures",

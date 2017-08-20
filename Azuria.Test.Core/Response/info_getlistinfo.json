@@ -1,0 +1,25 @@
+{
+    "error": 0,
+    "message": "Abfrage erfolgreich.",
+    "data": {
+        "start": 1,
+        "end": "22",
+        "kat": "anime",
+        "lang": ["gersub", "engsub"],
+        "state": 0,
+        "episodes": [
+            {
+                "no": "1",
+                "typ": "engsub",
+                "types": "mp4upload,yourupload,viewster,proxer-stream,streamcloud2",
+                "typeimg": "mp4upload.png,yourupload.png,viewster.png,proxer-stream.png,streamcloud.png"
+            },
+            {
+                "no": "4",
+                "typ": "gersub",
+                "types": "viewster,akibapass",
+                "typeimg": "viewster.png,akibapass.png"
+            }
+        ]
+    }
+}

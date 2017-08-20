@@ -4,16 +4,15 @@
     "data": {
         "id": "9200",
         "name": "Shigatsu wa Kimi no Uso",
-        "genre": "Comedy Drama Musik Romance School Shounen Slice_of_Life",
-        "fsk": "fsk12",
-        "description":
-            "Arima Kosei war eine weithin bekannte Koriphäe auf dem Piano, doch endete seine Karriere abrupt als seine Mutter starb, die auch seine Pianolehrerin war, und für Kosei die Welt zusammenbrach. Aufgrund des Schocks war es ihm seitdem unmöglich Töne oder den Klang seines Pianos wahrzunehmen und seine ehemals von Musik geprägte Welt versank in Stille und Dunkelheit. Auch zwei Jahre später ist Kosei weiterhin entschlossen ein Leben ohne Musik zu führen und stattdessen seine Freizeit mit seinen Freunden Watari und Tsubaki zu verbringen. Doch ein Mädchen wirft schließlich seine Vorsätze über den Haufen: Miyazono Kaori, die nicht nur wunderschön ist und eine offenherzige Persönlichkeit besitzt, sondern deren Stil Violine zu Spielen einem Abbild dieser positiven Eigenschaften gleicht. Mit ihrer gefühlsbetonten Vortragsweise führt Kaori Kosei wieder hin zur Welt der Musik und zeigt ihm abermals deren Freuden",
+        "genre": "Comedy Shounen Slice_of_Life",
+        "fsk": "fsk12 fsk18",
+        "description": "Description Text",
         "medium": "animeseries",
         "count": "22",
         "state": "1",
-        "rate_sum": "41435",
-        "rate_count": "4471",
-        "clicks": "33700",
+        "rate_sum": "40527",
+        "rate_count": "4371",
+        "clicks": "23604",
         "kat": "anime",
         "license": "2",
         "names": [
@@ -58,14 +57,9 @@
         ],
         "groups": [
             {
-                "name": "Lunatic-Studio",
+                "name": "English Studio",
                 "id": "455",
-                "country": "de"
-            },
-            {
-                "name": "KiboYami",
-                "id": "692",
-                "country": "de"
+                "country": "en"
             },
             {
                 "name": "Gruppe Kampfkuchen",
@@ -93,40 +87,10 @@
                 "country": "jp"
             },
             {
-                "name": "Kodansha",
-                "id": "19",
-                "type": "producer",
-                "country": "jp"
-            },
-            {
-                "name": "Fuji Television Network, Inc.",
-                "id": "307",
-                "type": "producer",
-                "country": "jp"
-            },
-            {
-                "name": "Dentsu",
-                "id": "136",
-                "type": "producer",
-                "country": "jp"
-            },
-            {
                 "name": "Aniplex of America",
                 "id": "431",
                 "type": "publisher",
                 "country": "us"
-            },
-            {
-                "name": "Aniplex",
-                "id": "135",
-                "type": "producer",
-                "country": "jp"
-            },
-            {
-                "name": "AKIBA PASS",
-                "id": "445",
-                "type": "streaming",
-                "country": "de"
             },
             {
                 "name": "A-1 Pictures",
@@ -143,46 +107,7 @@
                 "rate_flag": "0",
                 "spoiler_flag": "1",
                 "tag": "Bad End",
-                "description": "Dieses Werk hat ein rein negatives Ende."
-            },
-            {
-                "id": "899",
-                "tid": "297",
-                "timestamp": "2016-06-17 22:12:24",
-                "rate_flag": "1",
-                "spoiler_flag": "1",
-                "tag": "Bittersweet End",
-                "description":
-                    "Dieses Werk hat ein teils positives, teils negatives Ende. Meist fallen hierunter Geschichten, deren Enden emotional mitreißen, aber auch einen Lichtblick für die Charaktere aufzeigen."
-            },
-            {
-                "id": "12702",
-                "tid": "325",
-                "timestamp": "2016-09-12 03:42:24",
-                "rate_flag": "0",
-                "spoiler_flag": "0",
-                "tag": "Charakterentwicklung",
-                "description":
-                    "Ein für die Geschichte wichtiger Charakter geht im Laufe der Zeit einen großen, wesensverändernden Wandel durch."
-            },
-            {
-                "id": "9416",
-                "tid": "324",
-                "timestamp": "2016-07-24 03:22:55",
-                "rate_flag": "0",
-                "spoiler_flag": "0",
-                "tag": "Dreiecksbeziehung",
-                "description":
-                    "Auch bekannt als \"Love Triangle\". A und B buhlen um C? A ist in B verliebt, B in C und C in A? A liebt B und C? Egal, Hauptsache drei Personen. Welche Beziehung siegt am Ende?"
-            },
-            {
-                "id": "7715",
-                "tid": "305",
-                "timestamp": "2016-07-10 01:33:22",
-                "rate_flag": "0",
-                "spoiler_flag": "0",
-                "tag": "Mehrere Protagonisten",
-                "description": "Dieses Werk hat mehr als einen Protagonisten."
+                "description": "Bad End Beschreibungstext"
             },
             {
                 "id": "3949",
@@ -191,34 +116,7 @@
                 "rate_flag": "1",
                 "spoiler_flag": "0",
                 "tag": "Osananajimi",
-                "description": "Ein alter Kindheitsfreund, mit dem ein tiefes gegenseitiges Verständnis geteilt wird."
-            },
-            {
-                "id": "1225",
-                "tid": "242",
-                "timestamp": "2016-06-17 23:27:27",
-                "rate_flag": "1",
-                "spoiler_flag": "0",
-                "tag": "Protagonist",
-                "description": "Die Hauptrolle wird von einer männlichen Person besetzt."
-            },
-            {
-                "id": "6687",
-                "tid": "243",
-                "timestamp": "2016-06-30 18:30:26",
-                "rate_flag": "0",
-                "spoiler_flag": "0",
-                "tag": "Protagonistin",
-                "description": "Die Hauptrolle wird von einer weiblichen Person besetzt."
-            },
-            {
-                "id": "173",
-                "tid": "292",
-                "timestamp": "2016-06-17 15:08:51",
-                "rate_flag": "1",
-                "spoiler_flag": "0",
-                "tag": "Tragische Vergangenheit",
-                "description": "Der Protagonist hat eine tragische Vergangenheit."
+                "description": "Osananajimi Beschreibung"
             }
         ]
     }
