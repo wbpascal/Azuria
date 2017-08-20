@@ -39,7 +39,7 @@ test_script:
       
       cd ./Azuria.Test
     
-      ../OpenCover/opencover.console.exe -register:user -target:"C:/Program Files/dotnet/dotnet.exe" -targetargs:"xunit -appveyor -configuration Release" -filter:"+[*]* -[Azuria.Test*]* -[*]Azuria.Api.v1.DataModels* -[*]Azuria.Exceptions*" -output:"coverage.xml"
+      ../OpenCover/opencover.console.exe -register:user -target:"C:/Program Files/dotnet/dotnet.exe" -targetargs:"xunit -appveyor -configuration Release" -filter:"+[*]* -[Azuria.Test*]* -[*]Azuria.Exceptions*" -output:"coverage.xml"
       
       ../coveralls.net/tools/csmacnz.Coveralls.exe --opencover -i coverage.xml --repoToken $env:COVERALLS_REPO_TOKEN --useRelativePaths --commitId $env:APPVEYOR_REPO_COMMIT --commitBranch $env:APPVEYOR_REPO_BRANCH --commitAuthor $env:APPVEYOR_REPO_COMMIT_AUTHOR --commitEmail $env:APPVEYOR_REPO_COMMIT_AUTHOR_EMAIL --commitMessage $env:APPVEYOR_REPO_COMMIT_MESSAGE --jobId $env:APPVEYOR_BUILD_NUMBER --serviceName appveyor
 
