@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Azuria.Api.v1.Input.Converter;
 using Azuria.Enums.Info;
@@ -10,7 +11,7 @@ namespace Azuria.Api.v1.Input.List
 {
     /// <summary>
     /// </summary>
-    public class SearchInput : IInputDataModel
+    public class SearchInput : InputDataModel
     {
         /// <summary>
         /// </summary>
@@ -25,21 +26,21 @@ namespace Azuria.Api.v1.Input.List
         /// <summary>
         /// </summary>
         [InputData(
-            "fsk", ConverterMethodName = nameof(FskToString), ForbiddenValues = new object[] {string.Empty},
+            "fsk", ConverterMethodName = nameof(FskToString), ForbiddenValues = new object[] {""},
             Optional = true)]
         public IEnumerable<Fsk> Fsk { get; set; }
 
         /// <summary>
         /// </summary>
         [InputData(
-            "nogenre", ConverterMethodName = nameof(GenresToString), ForbiddenValues = new object[] {string.Empty},
+            "nogenre", ConverterMethodName = nameof(GenresToString), ForbiddenValues = new object[] {""},
             Optional = true)]
         public IEnumerable<Genre> GenreExclude { get; set; }
 
         /// <summary>
         /// </summary>
         [InputData(
-            "genre", ConverterMethodName = nameof(GenresToString), ForbiddenValues = new object[] {string.Empty},
+            "genre", ConverterMethodName = nameof(GenresToString), ForbiddenValues = new object[] {""},
             Optional = true)]
         public IEnumerable<Genre> GenreInclude { get; set; }
 

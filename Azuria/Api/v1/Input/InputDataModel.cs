@@ -54,7 +54,8 @@ namespace Azuria.Api.v1.Input
             if (lConversionMethod != null)
             {
                 string lConvertedValue = lConversionMethod.Invoke(propertyInfo.GetValue(this));
-                if (lConvertedValue != null && !attribute.ForbiddenValues.Contains(lConvertedValue))
+                if (lConvertedValue != null && (attribute.ForbiddenValues == null ||
+                                                !attribute.ForbiddenValues.Contains(lConvertedValue)))
                     return lConvertedValue;
                 if (attribute.Optional) return null;
                 throw new InvalidOperationException($"This value is not supported for {propertyInfo.Name}");
