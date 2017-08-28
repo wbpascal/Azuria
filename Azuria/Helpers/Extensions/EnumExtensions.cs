@@ -2,6 +2,7 @@
 using System.ComponentModel;
 using System.Linq;
 using System.Reflection;
+using System.Runtime.InteropServices;
 using Azuria.Enums.Info;
 using Azuria.Enums.Media;
 
@@ -10,13 +11,17 @@ namespace Azuria.Helpers.Extensions
 {
     public static class EnumExtensions
     {
-        public static string GetDescription<T>(this T enumValue) where T : struct
+        public static string GetDescription<T>(this T enumValue) where T : struct 
         {
             Type lType = enumValue.GetType();
             if (!(enumValue is Enum))
                 throw new ArgumentException("The value must be member of an enum", nameof(enumValue));
+            return (enumValue as Enum).GetDescription();
+        }
 
-            MemberInfo lMemberInfo = lType.GetTypeInfo()
+        internal static string GetDescription(this Enum enumValue)
+        {
+            MemberInfo lMemberInfo = enumValue.GetType().GetTypeInfo()
                 .DeclaredMembers.FirstOrDefault(info => info.Name == enumValue.ToString());
 
             Attribute[] lAttributes =
@@ -55,7 +60,7 @@ namespace Azuria.Helpers.Extensions
                 case Language.German:
                     return "de";
                 default:
-                    return string.Empty;
+                    return null;
             }
         }
 
