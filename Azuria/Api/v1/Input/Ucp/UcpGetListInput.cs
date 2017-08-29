@@ -14,10 +14,5 @@ namespace Azuria.Api.v1.Input.Ucp
         /// </summary>
         [InputData("kat", Converter = typeof(ToLowerConverter))]
         public MediaEntryType Category { get; set; }
-
-        internal string GetCategoryString(MediaEntryType category)
-        {
-            return this.Category.ToString().ToLowerInvariant();
-        }
     }
 }

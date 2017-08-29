@@ -13,7 +13,6 @@ namespace Azuria.Helpers.Extensions
     {
         public static string GetDescription<T>(this T enumValue) where T : struct 
         {
-            Type lType = enumValue.GetType();
             if (!(enumValue is Enum))
                 throw new ArgumentException("The value must be member of an enum", nameof(enumValue));
             return (enumValue as Enum).GetDescription();
