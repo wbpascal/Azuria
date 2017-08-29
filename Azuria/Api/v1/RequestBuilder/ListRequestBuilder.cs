@@ -35,7 +35,7 @@ namespace Azuria.Api.v1.RequestBuilder
         /// Api permissions required (class - permission level):
         /// * List - Level 0
         /// </summary>
-        /// <param name="input">The criteria that will be searched for.</param>
+        /// <param name="input">The data model that contains further input parameters for the request.</param>
         /// <param name="limit">
         /// Optional. The amount of anime and manga that will be returned per page. Default: 100
         /// </param>
@@ -62,7 +62,7 @@ namespace Azuria.Api.v1.RequestBuilder
         /// Api permissions required (class - permission level):
         /// * List - Level 0
         /// </summary>
-        /// <param name="input">The criteria that the returned anime or manga should match.</param>
+        /// <param name="input">The data model that contains further input parameters for the request.</param>
         /// <param name="limit">
         /// Optional. The amount of anime or manga that will be returned per page. Default: 100
         /// </param>

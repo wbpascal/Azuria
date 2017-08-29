@@ -1,6 +1,7 @@
 ﻿using System;
 using Azuria.Api.v1.DataModels;
 using Azuria.Api.v1.DataModels.User;
+using Azuria.Api.v1.Input.User;
 using Azuria.Enums;
 using Azuria.Enums.User;
 using Azuria.Helpers.Extensions;
@@ -148,65 +149,24 @@ namespace Azuria.Api.v1.RequestBuilder
                 .WithGetParameter("username", username);
         }
 
-        private IRequestBuilderWithResult<ListDataModel[]> GetList(
-            MediaEntryType category = MediaEntryType.Anime, int page = 0, int limit = 100, string search = "",
-            string searchStart = "", UserListSort sort = UserListSort.StateName,
-            SortDirection sortDirection = SortDirection.Ascending)
+        /// <summary>
+        /// Builds a request that...
+        /// Api permissions required (class - permission level):
+        /// * User - Level 0
+        /// </summary>
+        /// <param name="input"></param>
+        /// <param name="page"></param>
+        /// <param name="limit"></param>
+        /// <returns>An instance of <see cref="IRequestBuilderWithResult{T}" /> that returns...</returns>
+        public IRequestBuilderWithResult<ListDataModel[]> GetList(
+            UserGetListInput input, int page = 0, int limit = 100)
         {
             return new RequestBuilder<ListDataModel[]>(
                     new Uri($"{ApiConstants.ApiUrlV1}/user/list"), this.ProxerClient
-                ).WithGetParameter("kat", category.ToString().ToLowerInvariant())
-                .WithGetParameter("p", page.ToString())
+                ).WithGetParameter("p", page.ToString())
                 .WithGetParameter("limit", limit.ToString())
-                .WithGetParameter("search", search)
-                .WithGetParameter("search_start", searchStart)
-                .WithGetParameter("sort", sort.GetDescription() + sortDirection.GetDescription());
-        }
-
-        /// <summary>
-        /// Builds a request that...
-        /// Api permissions required (class - permission level):
-        /// * User - Level 0
-        /// </summary>
-        /// <param name="userId"></param>
-        /// <param name="category"></param>
-        /// <param name="page"></param>
-        /// <param name="limit"></param>
-        /// <param name="search"></param>
-        /// <param name="searchStart"></param>
-        /// <param name="sort"></param>
-        /// <param name="sortDirection"></param>
-        /// <returns>An instance of <see cref="IRequestBuilderWithResult{T}" /> that returns...</returns>
-        public IRequestBuilderWithResult<ListDataModel[]> GetList(
-            int userId, MediaEntryType category = MediaEntryType.Anime, int page = 0, int limit = 100,
-            string search = "", string searchStart = "", UserListSort sort = UserListSort.StateName,
-            SortDirection sortDirection = SortDirection.Ascending)
-        {
-            return this.GetList(category, page, limit, search, searchStart, sort, sortDirection)
-                .WithGetParameter("uid", userId.ToString());
-        }
-
-        /// <summary>
-        /// Builds a request that...
-        /// Api permissions required (class - permission level):
-        /// * User - Level 0
-        /// </summary>
-        /// <param name="username"></param>
-        /// <param name="category"></param>
-        /// <param name="page"></param>
-        /// <param name="limit"></param>
-        /// <param name="search"></param>
-        /// <param name="searchStart"></param>
-        /// <param name="sort"></param>
-        /// <param name="sortDirection"></param>
-        /// <returns>An instance of <see cref="IRequestBuilderWithResult{T}" /> that returns...</returns>
-        public IRequestBuilderWithResult<ListDataModel[]> GetList(
-            string username, MediaEntryType category = MediaEntryType.Anime, int page = 0, int limit = 100,
-            string search = "", string searchStart = "", UserListSort sort = UserListSort.StateName,
-            SortDirection sortDirection = SortDirection.Ascending)
-        {
-            return this.GetList(category, page, limit, search, searchStart, sort, sortDirection)
-                .WithGetParameter("username", username);
+                .WithGetParameter(input.Build())
+                .WithLoginCheck(input.UserId == null && input.Username == null);
         }
 
         private IRequestBuilderWithResult<ToptenDataModel[]> GetTopten(

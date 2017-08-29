@@ -2,6 +2,7 @@ using System;
 using System.Linq;
 using Azuria.Api.v1.DataModels.Ucp;
 using Azuria.Api.v1.DataModels.User;
+using Azuria.Api.v1.Input.Ucp;
 using Azuria.Api.v1.RequestBuilder;
 using Azuria.Enums;
 using Azuria.Enums.Info;
@@ -77,9 +78,16 @@ namespace Azuria.Test.Api.v1.RequestBuilder
             string lSearch = RandomHelper.GetRandomString(20);
             string lSearchStart = RandomHelper.GetRandomString(20);
 
-            IRequestBuilderWithResult<ListDataModel[]> lRequest = this.RequestBuilder.GetList(
-                category, 1, 140, lSearch, lSearchStart, UserListSort.ChangeDate, SortDirection.Descending
-            );
+            UcpGetListInput lInputDataModel = new UcpGetListInput
+            {
+                Category = category,
+                Search = lSearch,
+                SearchStart = lSearchStart,
+                Sort = UserListSort.ChangeDate,
+                SortDirection = SortDirection.Descending
+            };
+            
+            IRequestBuilderWithResult<ListDataModel[]> lRequest = this.RequestBuilder.GetList(lInputDataModel, 1, 140);
             this.CheckUrl(lRequest, "ucp", "list");
             Assert.Same(this.ProxerClient, lRequest.Client);
             Assert.True(lRequest.GetParameters.ContainsKey("kat"));
@@ -111,9 +119,16 @@ namespace Azuria.Test.Api.v1.RequestBuilder
             string lSearch = RandomHelper.GetRandomString(20);
             string lSearchStart = RandomHelper.GetRandomString(20);
 
-            IRequestBuilderWithResult<ListDataModel[]> lRequest = this.RequestBuilder.GetList(
-                MediaEntryType.Anime, 1, 140, lSearch, lSearchStart, sort, sortDirection
-            );
+            UcpGetListInput lInputDataModel = new UcpGetListInput
+            {
+                Category = MediaEntryType.Anime,
+                Search = lSearch,
+                SearchStart = lSearchStart,
+                Sort = sort,
+                SortDirection = sortDirection
+            };
+
+            IRequestBuilderWithResult<ListDataModel[]> lRequest = this.RequestBuilder.GetList(lInputDataModel, 1, 140);
             this.CheckUrl(lRequest, "ucp", "list");
             Assert.Same(this.ProxerClient, lRequest.Client);
             Assert.True(lRequest.GetParameters.ContainsKey("kat"));

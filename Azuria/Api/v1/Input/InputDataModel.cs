@@ -77,15 +77,15 @@ namespace Azuria.Api.v1.Input
                 return lMethods.FirstOrDefault(
                            info => info.GetParameters().First().ParameterType == propertyInfo.PropertyType
                        ) ?? lMethods.FirstOrDefault(
-                           info => propertyInfo.PropertyType.IsSameOrSubclass(
-                               info.GetParameters().First().ParameterType
+                           info => info.GetParameters().First().ParameterType.GetTypeInfo().IsAssignableFrom(
+                               propertyInfo.PropertyType.GetTypeInfo()
                            )
                        );
             }
 
             MethodInfo lConverterMethod = FindFromName(this.GetType(), attribute.ConverterMethodName);
             if (lConverterMethod != null)
-                return o => lConverterMethod.Invoke(this, new[] {o}).ToString();
+                return o => lConverterMethod.Invoke(this, new[] {o})?.ToString();
             if (attribute.Converter == null ||
                 !ImplementsInputDataConverter(attribute.Converter.GetTypeInfo(), propertyInfo.PropertyType))
                 return null;
@@ -110,7 +110,7 @@ namespace Azuria.Api.v1.Input
             return type.ImplementedInterfaces.Select(type1 => type1.GetTypeInfo())
                 .Where(info => info.IsGenericType && info.GetGenericTypeDefinition() == typeof(IInputDataConverter<>))
                 .SelectMany(info => info.GenericTypeArguments)
-                .Any(dataType.IsSameOrSubclass);
+                .Any(type1 => type1.GetTypeInfo().IsAssignableFrom(dataType.GetTypeInfo()));
         }
     }
 }

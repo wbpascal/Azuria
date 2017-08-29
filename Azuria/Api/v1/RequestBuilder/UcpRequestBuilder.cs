@@ -1,6 +1,7 @@
 ﻿using System;
 using Azuria.Api.v1.DataModels.Ucp;
 using Azuria.Api.v1.DataModels.User;
+using Azuria.Api.v1.Input.Ucp;
 using Azuria.Enums;
 using Azuria.Enums.Info;
 using Azuria.Enums.User;
@@ -112,28 +113,16 @@ namespace Azuria.Api.v1.RequestBuilder
         /// <para />
         /// * UCP - Level 0
         /// </summary>
-        /// <param name="category">Optional. The category that should be loaded.</param>
+        /// <param name="input">The data model that contains further input parameters for the request.</param>
         /// <param name="page">Optional. The index of the page that should be loaded. Default: 0</param>
         /// <param name="limit">Optional. The number of entries that should be returned per page. Default: 100</param>
-        /// <param name="search">Optional. The string that all returned entries should contain. Default: ""</param>
-        /// <param name="searchStart">Optional. The string that all returned entries should start with. Default: ""</param>
-        /// <param name="sort">Optional. The order in which the returned entries should be returned.</param>
-        /// <param name="sortDirection">
-        /// TODO: Add description here
-        /// </param>
         /// <returns>An instance of <see cref="IRequestBuilderWithResult{T}" /> that returns an array of anime or manga entries.</returns>
-        public IRequestBuilderWithResult<ListDataModel[]> GetList(
-            MediaEntryType category = MediaEntryType.Anime, int page = 0, int limit = 100, string search = "",
-            string searchStart = "", UserListSort sort = UserListSort.StateName,
-            SortDirection sortDirection = SortDirection.Ascending)
+        public IRequestBuilderWithResult<ListDataModel[]> GetList(UcpGetListInput input, int page = 0, int limit = 100)
         {
             return new RequestBuilder<ListDataModel[]>(new Uri($"{ApiConstants.ApiUrlV1}/ucp/list"), this.ProxerClient)
-                .WithGetParameter("kat", category.ToString().ToLowerInvariant())
                 .WithGetParameter("p", page.ToString())
                 .WithGetParameter("limit", limit.ToString())
-                .WithGetParameter("search", search)
-                .WithGetParameter("search_start", searchStart)
-                .WithGetParameter("sort", sort.GetDescription() + sortDirection.GetDescription())
+                .WithGetParameter(input.Build())
                 .WithLoginCheck();
         }
 

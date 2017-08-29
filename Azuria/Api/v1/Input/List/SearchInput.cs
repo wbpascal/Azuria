@@ -71,12 +71,12 @@ namespace Azuria.Api.v1.Input.List
 
         /// <summary>
         /// </summary>
-        [InputData("name", Converter = typeof(SpaceSeparatedEnumerationConverter), Optional = true)]
+        [InputData("notags", Converter = typeof(SpaceSeparatedEnumerationConverter), Optional = true)]
         public IEnumerable<int> TagsExclude { get; set; }
 
         /// <summary>
         /// </summary>
-        [InputData("name", Converter = typeof(SpaceSeparatedEnumerationConverter), Optional = true)]
+        [InputData("tags", Converter = typeof(SpaceSeparatedEnumerationConverter), Optional = true)]
         public IEnumerable<int> TagsInclude { get; set; }
 
         /// <summary>
