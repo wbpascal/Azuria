@@ -1,8 +1,6 @@
 environment:
   enc_secret:
     secure: RpJa3MpXjYvN8clOld28OQRmiEofer3+x74FzE/pGcw=
-  COVERALLS_REPO_TOKEN:
-    secure: TJu0jqrb61YdQNdn7E/+qe9ApI2Apuj+Jfn789TuWy4jsojLhVM9nlvULwdy+Ypr
   SONAR_QUBE_TOKEN:
     secure: od0IGy6svr+STk26LVllpjGRxVVu8YJ3Z2kjUa2+V/iuVR6ui8yUUDk6eANnP8xX
 
