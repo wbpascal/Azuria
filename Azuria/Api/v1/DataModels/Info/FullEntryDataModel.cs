@@ -37,7 +37,7 @@ namespace Azuria.Api.v1.DataModels.Info
         /// <summary>
         /// </summary>
         [JsonProperty("tags")]
-        public MediaTagDataModel[] Tags { get; set; }
+        public TagDataModel[] Tags { get; set; }
 
         /// <summary>
         /// </summary>

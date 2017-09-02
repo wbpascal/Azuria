@@ -35,7 +35,7 @@ namespace Azuria.Test.Api.v1.RequestBuilder
         public void GetEntryTagTest()
         {
             int lRandomId = this.GetRandomNumber(4200);
-            IRequestBuilderWithResult<MediaTagDataModel[]> lRequest = this.RequestBuilder.GetEntryTags(lRandomId);
+            IRequestBuilderWithResult<TagDataModel[]> lRequest = this.RequestBuilder.GetEntryTags(lRandomId);
             this.CheckUrl(lRequest, "info", "entrytags");
             Assert.Same(this.ProxerClient, lRequest.Client);
             Assert.True(lRequest.GetParameters.ContainsKey("id"));

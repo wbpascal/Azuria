@@ -72,9 +72,9 @@ namespace Azuria.Api.v1.RequestBuilder
         /// </summary>
         /// <param name="entryId">The id of the anime or manga.</param>
         /// <returns>An instance of <see cref="IRequestBuilderWithResult{T}" /> that returns an array of tags.</returns>
-        public IRequestBuilderWithResult<MediaTagDataModel[]> GetEntryTags(int entryId)
+        public IRequestBuilderWithResult<TagDataModel[]> GetEntryTags(int entryId)
         {
-            return new RequestBuilder<MediaTagDataModel[]>(
+            return new RequestBuilder<TagDataModel[]>(
                 new Uri($"{ApiConstants.ApiUrlV1}/info/entrytags"), this.ProxerClient
             ).WithGetParameter("id", entryId.ToString());
         }

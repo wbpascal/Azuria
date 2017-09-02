@@ -9,6 +9,7 @@ using Azuria.Enums.Info;
 using Azuria.Enums.List;
 using Azuria.Helpers.Extensions;
 using Azuria.Requests.Builder;
+using TagDataModel = Azuria.Api.v1.DataModels.List.TagDataModel;
 
 namespace Azuria.Api.v1.RequestBuilder
 {

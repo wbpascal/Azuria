@@ -5,7 +5,7 @@ namespace Azuria.Api.v1.DataModels.Info
 {
     /// <summary>
     /// </summary>
-    public class MediaTagDataModel : IDataModel
+    public class TagDataModel : IDataModel
     {
         /// <summary>
         /// </summary>

@@ -11,6 +11,7 @@ using Azuria.Helpers.Extensions;
 using Azuria.Requests.Builder;
 using Azuria.Test.Core.Helpers;
 using Xunit;
+using TagDataModel = Azuria.Api.v1.DataModels.List.TagDataModel;
 
 namespace Azuria.Test.Api.v1.RequestBuilder
 {
