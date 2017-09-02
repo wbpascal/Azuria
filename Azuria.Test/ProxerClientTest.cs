@@ -1,22 +1,11 @@
-﻿using System.Linq;
-using System.Threading;
-using System.Threading.Tasks;
-using Autofac;
+﻿using Autofac;
 using Azuria.Api.Builder;
-using Azuria.Api.v1;
-using Azuria.Api.v1.DataModels.User;
 using Azuria.Authentication;
-using Azuria.Enums;
 using Azuria.ErrorHandling;
-using Azuria.Exceptions;
 using Azuria.Requests;
-using Azuria.Requests.Builder;
 using Azuria.Requests.Http;
 using Azuria.Serialization;
-using Azuria.Test.Core.Helpers;
-using Moq;
 using Xunit;
-using Xunit.Sdk;
 
 namespace Azuria.Test
 {

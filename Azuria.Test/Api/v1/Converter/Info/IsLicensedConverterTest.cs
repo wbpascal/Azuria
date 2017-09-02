@@ -3,17 +3,20 @@ using Xunit;
 
 namespace Azuria.Test.Api.v1.Converter.Info
 {
-    public class IsLicensedConverterTest : DataConverterTestBase
+    public class IsLicensedConverterTest : DataConverterTestBase<bool?>
     {
-        private IsLicensedConverter Converter { get; } = new IsLicensedConverter();
-        
+        /// <inheritdoc />
+        public IsLicensedConverterTest() : base(new IsLicensedConverter())
+        {
+        }
+
         [Theory]
         [InlineData(0)]
         [InlineData(1)]
         [InlineData(2)]
         public void CanConvertTest(int isLicensed)
         {
-            bool? lValue = this.DeserializeValue(isLicensed.ToString(), this.Converter);
+            bool? lValue = this.DeserializeValue(isLicensed.ToString());
             switch (isLicensed)
             {
                 case 0:

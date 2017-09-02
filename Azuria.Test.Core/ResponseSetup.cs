@@ -1,14 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
-using System.Threading;
-using System.Threading.Tasks;
-using Azuria.Authentication;
-using Azuria.ErrorHandling;
-using Azuria.Requests.Http;
-using Moq;
 
 namespace Azuria.Test.Core
 {

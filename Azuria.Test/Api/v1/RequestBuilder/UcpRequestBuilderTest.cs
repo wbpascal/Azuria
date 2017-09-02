@@ -86,7 +86,7 @@ namespace Azuria.Test.Api.v1.RequestBuilder
                 Sort = UserListSort.ChangeDate,
                 SortDirection = SortDirection.Descending
             };
-            
+
             IRequestBuilderWithResult<ListDataModel[]> lRequest = this.RequestBuilder.GetList(lInputDataModel, 1, 140);
             this.CheckUrl(lRequest, "ucp", "list");
             Assert.Same(this.ProxerClient, lRequest.Client);

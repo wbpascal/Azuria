@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Runtime.InteropServices.ComTypes;
 using Autofac;
 using Azuria.Api.v1.Converters;
 using Azuria.ErrorHandling;
@@ -9,29 +8,33 @@ using Xunit;
 
 namespace Azuria.Test.Api.v1.Converter
 {
-    public abstract class DataConverterTestBase
+    public abstract class DataConverterTestBase<TOut>
     {
-        protected DataConverterTestBase()
+        protected DataConverterTestBase(DataConverter<TOut> converter)
         {
             IProxerClient lClient = ProxerClient.Create(new char[32]);
+            this.Converter = converter;
             this.JsonDeserializer = lClient.Container.Resolve<IJsonDeserializer>();
         }
-        
+
+        public DataConverter<TOut> Converter { get; set; }
+
         public IJsonDeserializer JsonDeserializer { get; set; }
 
-        public JsonSerializerSettings GetSerializerSettings<T>(DataConverter<T> converter)
+        public JsonSerializerSettings GetSerializerSettings()
         {
             return new JsonSerializerSettings
             {
-                Converters = new List<JsonConverter>(new[] {converter})
+                Converters = new List<JsonConverter>(new[] {this.Converter})
             };
         }
 
-        public T DeserializeValue<T>(string value, DataConverter<T> converter)
+        public TOut DeserializeValue(string value)
         {
-            IProxerResult<Dictionary<string, T>> lResult = this.JsonDeserializer.Deserialize<Dictionary<string, T>>(
-                this.GetTestJsonString(value), this.GetSerializerSettings(converter)
-            );
+            IProxerResult<Dictionary<string, TOut>> lResult =
+                this.JsonDeserializer.Deserialize<Dictionary<string, TOut>>(
+                    this.GetTestJsonString(value), this.GetSerializerSettings()
+                );
             Assert.True(lResult.Success);
             Assert.Empty(lResult.Exceptions);
             Assert.NotNull(lResult.Result);

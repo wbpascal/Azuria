@@ -1,1 +1,12 @@
-{"error":0,"message":"Abfrage erfolgreich","data":{"id":"1292","type":"streaming","name":"Animax UK","country":"us","link":"https://www.animaxtv.co.uk/","description":"Entertainment Networks (UK) Limited ist eine Tochter von Sony Pictures Europe. Es betreibt den Video on Demand Service von Animax UK."}}
+{
+    "error": 0,
+    "message": "Abfrage erfolgreich",
+    "data": {
+        "id": "1292",
+        "type": "streaming",
+        "name": "Animax UK",
+        "country": "us",
+        "link": "https://www.animaxtv.co.uk/",
+        "description": "Animax UK Description Test Text"
+    }
+}

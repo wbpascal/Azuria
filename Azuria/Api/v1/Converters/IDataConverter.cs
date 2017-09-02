@@ -1,7 +1,4 @@
-﻿using System;
-using Newtonsoft.Json;
-
-namespace Azuria.Api.v1.Converters
+﻿namespace Azuria.Api.v1.Converters
 {
     /// <summary>
     /// 

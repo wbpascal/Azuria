@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using Autofac;
-using Azuria.Authentication;
 using Newtonsoft.Json;
 
 namespace Azuria.Test.Core.Helpers

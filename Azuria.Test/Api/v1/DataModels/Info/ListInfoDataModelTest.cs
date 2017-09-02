@@ -1,5 +1,4 @@
-﻿using System;
-using Azuria.Api.v1.DataModels.Info;
+﻿using Azuria.Api.v1.DataModels.Info;
 using Azuria.Enums;
 using Azuria.Enums.Info;
 using Azuria.ErrorHandling;
@@ -30,14 +29,14 @@ namespace Azuria.Test.Api.v1.DataModels.Info
                 Assert.Equal(hosters, contentModel.StreamHosters);
                 Assert.Equal(title, contentModel.Title);
             }
-            
+
             Assert.Equal(1, dataModel.StartIndex);
             Assert.Equal(22, dataModel.EndIndex);
             Assert.Equal(MediaEntryType.Anime, dataModel.Category);
             CheckContentObject(
                 dataModel.ContentObjects[0], 1, MediaLanguage.EngSub,
                 new[] {"mp4upload", "yourupload", "viewster", "proxer-stream", "streamcloud2"},
-                new[] {"mp4upload.png", "yourupload.png", "viewster.png", "proxer-stream.png", "streamcloud.png"}, 
+                new[] {"mp4upload.png", "yourupload.png", "viewster.png", "proxer-stream.png", "streamcloud.png"},
                 null);
             CheckContentObject(
                 dataModel.ContentObjects[1], 4, MediaLanguage.GerSub,

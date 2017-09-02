@@ -2,7 +2,6 @@ using System;
 using System.Linq;
 using Azuria.Api.v1.DataModels.Info;
 using Azuria.Api.v1.DataModels.List;
-using Azuria.Api.v1.Input;
 using Azuria.Api.v1.Input.List;
 using Azuria.Api.v1.RequestBuilder;
 using Azuria.Enums;

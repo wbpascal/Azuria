@@ -1,5 +1,4 @@
 using System.Linq;
-using Azuria.Api.v1.DataModels;
 using Azuria.Api.v1.DataModels.User;
 using Azuria.Api.v1.Input.User;
 using Azuria.Api.v1.RequestBuilder;
@@ -155,7 +154,7 @@ namespace Azuria.Test.Api.v1.RequestBuilder
         public void GetListUserIdTest(MediaEntryType category, UserListSort sort, SortDirection sortDirection)
         {
             int lRandomId = this.GetRandomNumber(200_000);
-            
+
             UserGetListInput lInputDataModel = new UserGetListInput
             {
                 Category = category,
@@ -165,7 +164,7 @@ namespace Azuria.Test.Api.v1.RequestBuilder
                 SortDirection = sortDirection,
                 UserId = lRandomId
             };
-            
+
             IRequestBuilderWithResult<ListDataModel[]> lRequest = this.RequestBuilder.GetList(lInputDataModel, 2, 72);
             this.GetListTestBase(lRequest, category, sort, sortDirection);
             Assert.True(lRequest.GetParameters.ContainsKey("uid"));
@@ -181,7 +180,7 @@ namespace Azuria.Test.Api.v1.RequestBuilder
         public void GetListUsernameTest(MediaEntryType category, UserListSort sort, SortDirection sortDirection)
         {
             string lRandomUsername = RandomHelper.GetRandomString(10);
-            
+
             UserGetListInput lInputDataModel = new UserGetListInput
             {
                 Category = category,
@@ -191,7 +190,7 @@ namespace Azuria.Test.Api.v1.RequestBuilder
                 SortDirection = sortDirection,
                 Username = lRandomUsername
             };
-            
+
             IRequestBuilderWithResult<ListDataModel[]> lRequest = this.RequestBuilder.GetList(lInputDataModel, 2, 72);
             this.GetListTestBase(lRequest, category, sort, sortDirection);
             Assert.True(lRequest.GetParameters.ContainsKey("username"));

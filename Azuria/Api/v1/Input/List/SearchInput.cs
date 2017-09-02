@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using Azuria.Api.v1.Input.Converter;
 using Azuria.Enums.Info;

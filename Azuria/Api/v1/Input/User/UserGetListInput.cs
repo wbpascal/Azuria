@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Linq.Expressions;
-using Azuria.Api.v1.Input.Ucp;
+﻿using Azuria.Api.v1.Input.Ucp;
 using Azuria.Helpers.Attributes;
 
 namespace Azuria.Api.v1.Input.User
@@ -15,7 +13,7 @@ namespace Azuria.Api.v1.Input.User
         /// </summary>
         [InputData("uid", Optional = true)]
         public int? UserId { get; set; }
-        
+
         /// <summary>
         /// If <see cref="UserId"/> is given this value will be ignored.
         /// </summary>

@@ -28,6 +28,11 @@ namespace Azuria.Api.v1.DataModels.Info
         /// </summary>
         [JsonProperty("id")]
         public int Id { get; set; }
+        
+        /// <summary>
+        /// </summary>
+        [JsonProperty("link")]
+        public Uri Link { get; set; }
 
         /// <summary>
         /// </summary>

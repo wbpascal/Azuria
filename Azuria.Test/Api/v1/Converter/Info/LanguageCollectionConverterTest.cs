@@ -4,15 +4,18 @@ using Xunit;
 
 namespace Azuria.Test.Api.v1.Converter.Info
 {
-    public class LanguageCollectionConverterTest : DataConverterTestBase
+    public class LanguageCollectionConverterTest : DataConverterTestBase<MediaLanguage[]>
     {
-        private LanguageCollectionConverter Converter { get; } = new LanguageCollectionConverter();
+        /// <inheritdoc />
+        public LanguageCollectionConverterTest() : base(new LanguageCollectionConverter())
+        {
+        }
 
         [Fact]
         public void CanConvertTest()
         {
             const string lJson = "['de','gerdub','gersub','en','engsub','engdub']";
-            MediaLanguage[] lValue = this.DeserializeValue(lJson, this.Converter);
+            MediaLanguage[] lValue = this.DeserializeValue(lJson);
             Assert.Equal(6, lValue.Length);
             Assert.Contains(MediaLanguage.German, lValue);
             Assert.Contains(MediaLanguage.GerDub, lValue);

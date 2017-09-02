@@ -61,7 +61,7 @@ namespace Azuria.Authentication
                                                                          username, password)
                                                                      : this._userRequestBuilder.Login(
                                                                          username, password, secretKey);
-            
+
             IProxerResult<LoginDataModel> lResult = await lRequest.DoRequestAsync(token);
 
             if (!lResult.Success || lResult.Result == null)

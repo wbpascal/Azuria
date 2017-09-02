@@ -2,7 +2,6 @@
 using System.ComponentModel;
 using System.Linq;
 using System.Reflection;
-using System.Runtime.InteropServices;
 using Azuria.Enums.Info;
 using Azuria.Enums.Media;
 
@@ -11,7 +10,7 @@ namespace Azuria.Helpers.Extensions
 {
     public static class EnumExtensions
     {
-        public static string GetDescription<T>(this T enumValue) where T : struct 
+        public static string GetDescription<T>(this T enumValue) where T : struct
         {
             if (!(enumValue is Enum))
                 throw new ArgumentException("The value must be member of an enum", nameof(enumValue));

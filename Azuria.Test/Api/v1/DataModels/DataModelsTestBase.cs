@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Reflection.Metadata.Ecma335;
+﻿using System.Collections.Generic;
 using Autofac;
 using Azuria.Api.v1.Converters;
 using Azuria.Api.v1.DataModels;
@@ -18,9 +16,9 @@ namespace Azuria.Test.Api.v1.DataModels
             this.Client = ProxerClient.Create(new char[32]);
             this.Deserializer = this.Client.Container.Resolve<IJsonDeserializer>();
         }
-        
+
         public IProxerClient Client { get; }
-        
+
         public IJsonDeserializer Deserializer { get; }
 
         public ProxerApiResponse<T[]> ConvertArray(string json, DataConverter<T[]> converter = null)

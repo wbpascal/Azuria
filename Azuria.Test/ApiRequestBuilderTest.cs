@@ -5,7 +5,6 @@ using Azuria.Api.v1;
 using Azuria.Api.v1.RequestBuilder;
 using Azuria.Requests;
 using Azuria.Requests.Builder;
-using Azuria.Test.Core.Helpers;
 using Xunit;
 
 namespace Azuria.Test

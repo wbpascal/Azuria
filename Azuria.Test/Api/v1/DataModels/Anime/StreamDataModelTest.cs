@@ -1,5 +1,4 @@
-﻿using System.IO;
-using Azuria.Api.v1.DataModels.Anime;
+﻿using Azuria.Api.v1.DataModels.Anime;
 using Azuria.ErrorHandling;
 using Azuria.Helpers;
 using Azuria.Test.Core;
@@ -29,7 +28,7 @@ namespace Azuria.Test.Api.v1.DataModels.Anime
             Assert.Equal(DateTimeHelpers.UnixTimeStampToDateTime(1412882290), lDataModels[0].UploadTimestamp);
             Assert.Equal(1158, lDataModels[0].TranslatorId);
             Assert.Equal("THORAnime", lDataModels[0].TranslatorName);
-            
+
             Assert.Equal(515544, lDataModels[1].StreamId);
             Assert.Null(lDataModels[1].TranslatorId);
             Assert.Null(lDataModels[1].TranslatorName);

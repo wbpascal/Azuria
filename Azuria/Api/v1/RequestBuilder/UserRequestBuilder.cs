@@ -1,10 +1,7 @@
 ﻿using System;
-using Azuria.Api.v1.DataModels;
 using Azuria.Api.v1.DataModels.User;
 using Azuria.Api.v1.Input.User;
 using Azuria.Enums;
-using Azuria.Enums.User;
-using Azuria.Helpers.Extensions;
 using Azuria.Requests.Builder;
 
 namespace Azuria.Api.v1.RequestBuilder

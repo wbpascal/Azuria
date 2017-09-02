@@ -1,5 +1,4 @@
 ﻿using System.Linq;
-using Azuria.Api.v1.DataModels;
 using Azuria.Api.v1.DataModels.Info;
 using Azuria.Api.v1.RequestBuilder;
 using Azuria.Enums.Info;

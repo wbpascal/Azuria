@@ -2,8 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using Autofac;
-using Azuria.Api.v1.DataModels.Messenger;
 using Azuria.Api.v1.Input.Converter;
 using Azuria.Exceptions;
 using Azuria.Helpers.Attributes;
@@ -61,7 +59,7 @@ namespace Azuria.Api.v1.Input
                 throw new InvalidOperationException($"This value is not supported for {propertyInfo.Name}");
             }
             if (attribute.Optional) return null;
-            
+
             throw new MethodNotFoundException(attribute.ConverterMethodName);
         }
 

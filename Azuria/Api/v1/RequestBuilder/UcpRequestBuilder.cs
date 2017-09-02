@@ -4,7 +4,6 @@ using Azuria.Api.v1.DataModels.User;
 using Azuria.Api.v1.Input.Ucp;
 using Azuria.Enums;
 using Azuria.Enums.Info;
-using Azuria.Enums.User;
 using Azuria.Helpers.Extensions;
 using Azuria.Requests.Builder;
 using HistoryDataModel = Azuria.Api.v1.DataModels.Ucp.HistoryDataModel;

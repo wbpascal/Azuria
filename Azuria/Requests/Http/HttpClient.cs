@@ -135,7 +135,7 @@ namespace Azuria.Requests.Http
         }
 
         private async Task<HttpResponseMessage> PostWebRequestAsync(
-            Uri url, IEnumerable<KeyValuePair<string, string>> postArgs, IDictionary<string, string> headers, 
+            Uri url, IEnumerable<KeyValuePair<string, string>> postArgs, IDictionary<string, string> headers,
             CancellationToken token)
         {
             this._client.DefaultRequestHeaders.Clear();

@@ -12,22 +12,22 @@ namespace Azuria.Helpers.Attributes
         /// 
         /// </summary>
         public Type Converter { get; set; }
-        
+
         /// <summary>
         /// Checks this first, if presents skips <see cref="Converter"/>.
         /// </summary>
         public string ConverterMethodName { get; set; }
-        
+
         /// <summary>
         /// 
         /// </summary>
         public object[] ForbiddenValues { get; set; }
-        
+
         /// <summary>
         /// 
         /// </summary>
         public string Key { get; set; }
-        
+
         /// <summary>
         /// 
         /// </summary>
