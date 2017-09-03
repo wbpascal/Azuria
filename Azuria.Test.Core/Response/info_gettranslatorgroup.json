@@ -1,0 +1,14 @@
+{
+    "error": 0,
+    "message": "Abfrage erfolgreich",
+    "data": {
+        "id": "48",
+        "name": "Melon-Subs",
+        "link": "http://melon-subs.de/index.php",
+        "country": "de",
+        "image": "http://www.melon-subs.de/wp-content/uploads/2014/05/cropped-ML-Logo-1080p-v12.png",
+        "description": "TranslatorGroup Description Test Text",
+        "count": "4855",
+        "cprojects": "11"
+    }
+}

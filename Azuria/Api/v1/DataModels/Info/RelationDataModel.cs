@@ -13,5 +13,22 @@ namespace Azuria.Api.v1.DataModels.Info
         [JsonProperty("language")]
         [JsonConverter(typeof(LanguageCommaCollectionConverter))]
         public MediaLanguage[] AvailableLanguages { get; set; }
+
+        /// <summary>
+        /// Does not include the id of the season
+        /// </summary>
+        public SeasonDataModel StartSeason => new SeasonDataModel
+        {
+            EntryId = this.EntryId,
+            Id = int.MinValue,
+            Season = this.Season,
+            Year = this.Year
+        };
+
+        [JsonProperty("season")]
+        internal Season Season { get; set; }
+
+        [JsonProperty("year")]
+        internal int Year { get; set; }
     }
 }

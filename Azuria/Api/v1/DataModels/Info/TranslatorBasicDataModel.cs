@@ -5,8 +5,9 @@ using Newtonsoft.Json;
 namespace Azuria.Api.v1.DataModels.Info
 {
     /// <summary>
+    /// 
     /// </summary>
-    public class PublisherDataModel : IDataModel
+    public class TranslatorBasicDataModel : IDataModel
     {
         /// <summary>
         /// </summary>
@@ -23,11 +24,5 @@ namespace Azuria.Api.v1.DataModels.Info
         /// </summary>
         [JsonProperty("name")]
         public string Name { get; set; }
-
-        /// <summary>
-        /// </summary>
-        [JsonProperty("type")]
-        [JsonConverter(typeof(IndustryTypeConverter))]
-        public IndustryType Type { get; set; }
     }
 }

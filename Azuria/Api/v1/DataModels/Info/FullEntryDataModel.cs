@@ -16,6 +16,11 @@ namespace Azuria.Api.v1.DataModels.Info
 
         /// <summary>
         /// </summary>
+        [JsonProperty("publisher")]
+        public IndustryBasicDataModel[] Industry { get; set; }
+
+        /// <summary>
+        /// </summary>
         [JsonProperty("gate")]
         public bool IsHContent { get; set; }
 
@@ -23,11 +28,6 @@ namespace Azuria.Api.v1.DataModels.Info
         /// </summary>
         [JsonProperty("names")]
         public NameDataModel[] Names { get; set; }
-
-        /// <summary>
-        /// </summary>
-        [JsonProperty("publisher")]
-        public PublisherDataModel[] Publisher { get; set; }
 
         /// <summary>
         /// </summary>
@@ -42,6 +42,6 @@ namespace Azuria.Api.v1.DataModels.Info
         /// <summary>
         /// </summary>
         [JsonProperty("groups")]
-        public TranslatorDataModel[] Translator { get; set; }
+        public TranslatorBasicDataModel[] Translator { get; set; }
     }
 }

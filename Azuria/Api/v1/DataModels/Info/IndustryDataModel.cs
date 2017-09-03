@@ -1,20 +1,12 @@
 ﻿using System;
-using Azuria.Api.v1.Converters;
-using Azuria.Enums.Info;
 using Newtonsoft.Json;
 
 namespace Azuria.Api.v1.DataModels.Info
 {
     /// <summary>
     /// </summary>
-    public class IndustryDataModel : IDataModel
+    public class IndustryDataModel : IndustryBasicDataModel
     {
-        /// <summary>
-        /// </summary>
-        [JsonProperty("country")]
-        [JsonConverter(typeof(CountryConverter))]
-        public Country Country { get; set; }
-
         /// <summary>
         /// </summary>
         public Uri CoverImage => new Uri($"https://cdn.proxer.me/industry/{this.Id}.jpg");
@@ -26,23 +18,7 @@ namespace Azuria.Api.v1.DataModels.Info
 
         /// <summary>
         /// </summary>
-        [JsonProperty("id")]
-        public int Id { get; set; }
-        
-        /// <summary>
-        /// </summary>
         [JsonProperty("link")]
         public Uri Link { get; set; }
-
-        /// <summary>
-        /// </summary>
-        [JsonProperty("name")]
-        public string Name { get; set; }
-
-        /// <summary>
-        /// </summary>
-        [JsonProperty("type")]
-        [JsonConverter(typeof(IndustryTypeConverter))]
-        public IndustryType Type { get; set; }
     }
 }

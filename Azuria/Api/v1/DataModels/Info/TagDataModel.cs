@@ -1,4 +1,5 @@
-﻿using Azuria.Api.v1.Converters;
+﻿using System;
+using Azuria.Api.v1.Converters;
 using Newtonsoft.Json;
 
 namespace Azuria.Api.v1.DataModels.Info
@@ -31,7 +32,18 @@ namespace Azuria.Api.v1.DataModels.Info
 
         /// <summary>
         /// </summary>
+        [JsonProperty("tag")]
+        public string Name { get; set; }
+
+        /// <summary>
+        /// </summary>
         [JsonProperty("tid")]
         public int TagId { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [JsonProperty("timestamp")]
+        [JsonConverter(typeof(CustomDateTimeConverter))]
+        public DateTime Timestamp { get; set; }
     }
 }

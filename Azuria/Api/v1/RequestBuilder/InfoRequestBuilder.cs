@@ -132,9 +132,9 @@ namespace Azuria.Api.v1.RequestBuilder
         /// </summary>
         /// <param name="id">The id of the company.</param>
         /// <returns>An instance of <see cref="IRequestBuilderWithResult{T}" /> that returns information about a company.</returns>
-        public IRequestBuilderWithResult<TranslatorDataModel[]> GetIndustry(int id)
+        public IRequestBuilderWithResult<IndustryDataModel> GetIndustry(int id)
         {
-            return new RequestBuilder<TranslatorDataModel[]>(
+            return new RequestBuilder<IndustryDataModel>(
                 new Uri($"{ApiConstants.ApiUrlV1}/info/industry"), this.ProxerClient
             ).WithGetParameter("id", id.ToString());
         }
@@ -189,7 +189,7 @@ namespace Azuria.Api.v1.RequestBuilder
         /// An instance of <see cref="IRequestBuilderWithResult{T}" /> that returns an array of object containing the names
         /// and some additional informations.
         /// </returns>
-        public IRequestBuilderWithResult<NameDataModel[]> GetName(int entryId)
+        public IRequestBuilderWithResult<NameDataModel[]> GetNames(int entryId)
         {
             return new RequestBuilder<NameDataModel[]>(
                 new Uri($"{ApiConstants.ApiUrlV1}/info/names"), this.ProxerClient
@@ -206,9 +206,9 @@ namespace Azuria.Api.v1.RequestBuilder
         /// <returns>
         /// An instance of <see cref="IRequestBuilderWithResult{T}" /> that returns an array of organisations.
         /// </returns>
-        public IRequestBuilderWithResult<PublisherDataModel[]> GetPublisher(int entryId)
+        public IRequestBuilderWithResult<IndustryBasicDataModel[]> GetPublisher(int entryId)
         {
-            return new RequestBuilder<PublisherDataModel[]>(
+            return new RequestBuilder<IndustryBasicDataModel[]>(
                 new Uri($"{ApiConstants.ApiUrlV1}/info/publisher"), this.ProxerClient
             ).WithGetParameter("id", entryId.ToString());
         }
@@ -248,9 +248,9 @@ namespace Azuria.Api.v1.RequestBuilder
         /// </summary>
         /// <param name="id">The id of the translator group.</param>
         /// <returns>An instance of <see cref="IRequestBuilderWithResult{T}" /> that returns information about a translator group.</returns>
-        public IRequestBuilderWithResult<TranslatorDataModel[]> GetTranslatorGroup(int id)
+        public IRequestBuilderWithResult<TranslatorDataModel> GetTranslatorGroup(int id)
         {
-            return new RequestBuilder<TranslatorDataModel[]>(
+            return new RequestBuilder<TranslatorDataModel>(
                 new Uri($"{ApiConstants.ApiUrlV1}/info/translatorgroup"), this.ProxerClient
             ).WithGetParameter("id", id.ToString());
         }

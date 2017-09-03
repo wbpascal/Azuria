@@ -95,7 +95,7 @@ namespace Azuria.Test.Api.v1.RequestBuilder
         public void GetIndustryTest()
         {
             int lRandomId = this.GetRandomNumber(4200);
-            IRequestBuilderWithResult<TranslatorDataModel[]> lRequest = this.RequestBuilder.GetIndustry(lRandomId);
+            IRequestBuilderWithResult<IndustryDataModel> lRequest = this.RequestBuilder.GetIndustry(lRandomId);
             this.CheckUrl(lRequest, "info", "industry");
             Assert.Same(this.ProxerClient, lRequest.Client);
             Assert.True(lRequest.GetParameters.ContainsKey("id"));
@@ -136,7 +136,7 @@ namespace Azuria.Test.Api.v1.RequestBuilder
         public void GetNameTest()
         {
             int lRandomId = this.GetRandomNumber(4200);
-            IRequestBuilderWithResult<NameDataModel[]> lRequest = this.RequestBuilder.GetName(lRandomId);
+            IRequestBuilderWithResult<NameDataModel[]> lRequest = this.RequestBuilder.GetNames(lRandomId);
             this.CheckUrl(lRequest, "info", "names");
             Assert.Same(this.ProxerClient, lRequest.Client);
             Assert.True(lRequest.GetParameters.ContainsKey("id"));
@@ -148,7 +148,7 @@ namespace Azuria.Test.Api.v1.RequestBuilder
         public void GetPublisherTest()
         {
             int lRandomId = this.GetRandomNumber(4200);
-            IRequestBuilderWithResult<PublisherDataModel[]> lRequest = this.RequestBuilder.GetPublisher(lRandomId);
+            IRequestBuilderWithResult<IndustryBasicDataModel[]> lRequest = this.RequestBuilder.GetPublisher(lRandomId);
             this.CheckUrl(lRequest, "info", "publisher");
             Assert.Same(this.ProxerClient, lRequest.Client);
             Assert.True(lRequest.GetParameters.ContainsKey("id"));
@@ -184,8 +184,7 @@ namespace Azuria.Test.Api.v1.RequestBuilder
         public void GetTranslatorGroupTest()
         {
             int lRandomId = this.GetRandomNumber(4200);
-            IRequestBuilderWithResult<TranslatorDataModel[]> lRequest =
-                this.RequestBuilder.GetTranslatorGroup(lRandomId);
+            IRequestBuilderWithResult<TranslatorDataModel> lRequest = this.RequestBuilder.GetTranslatorGroup(lRandomId);
             this.CheckUrl(lRequest, "info", "translatorgroup");
             Assert.Same(this.ProxerClient, lRequest.Client);
             Assert.True(lRequest.GetParameters.ContainsKey("id"));

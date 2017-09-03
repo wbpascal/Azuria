@@ -9,8 +9,13 @@ namespace Azuria.Api.v1.DataModels.Info
     {
         /// <summary>
         /// </summary>
+        [JsonProperty("eid")]
+        public int EntryId { get; set; } = int.MinValue;
+
+        /// <summary>
+        /// </summary>
         [JsonProperty("id")]
-        public int Id { get; set; }
+        public int Id { get; set; } = int.MinValue;
 
         /// <summary>
         /// </summary>

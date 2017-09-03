@@ -3,32 +3,14 @@
     "message": "Abfrage erfolgreich.",
     "data": [
         {
-            "name": "Lunatic-Studio",
+            "name": "English Studio",
             "id": "455",
-            "country": "de",
-            "link": "",
-            "image": ""
-        },
-        {
-            "name": "KiboYami",
-            "id": "692",
-            "country": "de",
-            "link": "",
-            "image": ""
+            "country": "en"
         },
         {
             "name": "Gruppe Kampfkuchen",
             "id": "11",
-            "country": "de",
-            "link": "",
-            "image": ""
-        },
-        {
-            "name": "Dicescans",
-            "id": "795",
-            "country": "en",
-            "link": "http://dicescans.blogspot.de/",
-            "image": "https://cdn.proxer.me/translatorgroups/795.jpg"
+            "country": "de"
         }
     ]
 }

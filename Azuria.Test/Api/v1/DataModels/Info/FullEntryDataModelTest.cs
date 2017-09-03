@@ -14,8 +14,11 @@ namespace Azuria.Test.Api.v1.DataModels.Info
             ProxerApiResponse<FullEntryDataModel> lResponse = this.Convert(lJson);
             this.CheckSuccessResponse(lResponse);
             EntryDataModelTest.CheckDataModel(lResponse.Result);
-            PublisherDataModelTest.CheckDataModels(lResponse.Result.Publisher);
+            IndustryBasicDataModelTest.CheckDataModels(lResponse.Result.Industry);
             NameDataModelTest.CheckDataModels(lResponse.Result.Names);
+            SeasonDataModelTest.CheckDataModels(lResponse.Result.Seasons, true);
+            TagDataModelTest.CheckDataModels(lResponse.Result.Tags);
+            TranslatorBasicDataModelTest.CheckDataModels(lResponse.Result.Translator);
         }
     }
 }

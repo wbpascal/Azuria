@@ -6,18 +6,18 @@ using Xunit;
 
 namespace Azuria.Test.Api.v1.DataModels.Info
 {
-    public class PublisherDataModelTest : DataModelsTestBase<PublisherDataModel>
+    public class IndustryBasicDataModelTest : DataModelsTestBase<IndustryBasicDataModel>
     {
         [Fact]
         public void ConvertTest()
         {
             string lJson = ResponseSetup.FileResponses["info_getpublisher.json"];
-            ProxerApiResponse<PublisherDataModel[]> lResponse = this.ConvertArray(lJson);
+            ProxerApiResponse<IndustryBasicDataModel[]> lResponse = this.ConvertArray(lJson);
             this.CheckSuccessResponse(lResponse);
             CheckDataModels(lResponse.Result);
         }
 
-        public static void CheckDataModels(PublisherDataModel[] dataModels)
+        public static void CheckDataModels(IndustryBasicDataModel[] dataModels)
         {
             Assert.Equal(5, dataModels.Length);
 

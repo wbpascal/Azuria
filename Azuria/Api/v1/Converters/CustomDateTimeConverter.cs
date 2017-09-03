@@ -1,7 +1,7 @@
 ﻿using System;
 using Newtonsoft.Json;
 
-namespace Azuria.Api.v1.Converters.Ucp
+namespace Azuria.Api.v1.Converters
 {
     internal class CustomDateTimeConverter : DataConverter<DateTime>
     {

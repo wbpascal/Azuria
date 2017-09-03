@@ -23,6 +23,7 @@
     <EmbeddedResource Include="Response\info_getpublisher.json" />
     <EmbeddedResource Include="Response\info_getrelations.json" />
     <EmbeddedResource Include="Response\info_getseason.json" />
+    <EmbeddedResource Include="Response\info_gettranslatorgroup.json" />
     <EmbeddedResource Include="Response\info_setuserinfofavor.json" />
     <EmbeddedResource Include="Response\info_setuserinfofinish.json" />
     <EmbeddedResource Include="Response\info_setuserinfonote.json" />
