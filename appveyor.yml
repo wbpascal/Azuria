@@ -36,7 +36,7 @@ test_script:
       
       cd ./Azuria.Test
     
-      ../OpenCover/opencover.console.exe -register:user -target:"C:/Program Files/dotnet/dotnet.exe" -targetargs:"test --configuration Release" -filter:"+[*]* -[Azuria.Test*]* -[*]Azuria.Exceptions*" -output:"coverage.xml"
+      ../OpenCover/opencover.console.exe -register:user -target:"C:/Program Files/dotnet/dotnet.exe" -targetargs:"test --configuration Release /logger:Appveyor" -filter:"+[*]* -[Azuria.Test*]* -[*]Azuria.Exceptions*" -output:"coverage.xml"
       
       cd ..
   - SonarQube.Scanner.MSBuild.exe end /d:sonar.login=%SONAR_QUBE_TOKEN%
