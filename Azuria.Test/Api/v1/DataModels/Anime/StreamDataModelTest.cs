@@ -2,34 +2,35 @@
 using Azuria.ErrorHandling;
 using Azuria.Helpers;
 using Azuria.Test.Core;
-using Xunit;
+using NUnit.Framework;
 
 namespace Azuria.Test.Api.v1.DataModels.Anime
 {
+    [TestFixture]
     public class StreamDataModelTest : DataModelsTestBase<StreamDataModel>
     {
-        [Fact]
+        [Test]
         public void ConvertTest()
         {
             string lJson = ResponseSetup.FileResponses["anime_getstreams.json"];
             ProxerApiResponse<StreamDataModel[]> lResponse = this.ConvertArray(lJson);
             this.CheckSuccessResponse(lResponse);
-            Assert.NotEmpty(lResponse.Result);
+            Assert.IsNotEmpty(lResponse.Result);
 
             StreamDataModel[] lDataModels = lResponse.Result;
-            Assert.Equal(401217, lDataModels[0].StreamId);
-            Assert.Equal("mp4upload", lDataModels[0].StreamHoster);
-            Assert.Equal("iframe", lDataModels[0].HostingType);
-            Assert.Equal("MP4Upload", lDataModels[0].HosterFullName);
-            Assert.Equal("mp4upload.png", lDataModels[0].HosterImageFileName);
-            Assert.Equal("http://www.mp4upload.com/embed-#.html", lDataModels[0].PlaceholderLink);
-            Assert.Equal(205400, lDataModels[0].UploaderId);
-            Assert.Equal("Tadakuni", lDataModels[0].UploaderName);
-            Assert.Equal(DateTimeHelpers.UnixTimeStampToDateTime(1412882290), lDataModels[0].UploadTimestamp);
-            Assert.Equal(1158, lDataModels[0].TranslatorId);
-            Assert.Equal("THORAnime", lDataModels[0].TranslatorName);
+            Assert.AreEqual(401217, lDataModels[0].StreamId);
+            Assert.AreEqual("mp4upload", lDataModels[0].StreamHoster);
+            Assert.AreEqual("iframe", lDataModels[0].HostingType);
+            Assert.AreEqual("MP4Upload", lDataModels[0].HosterFullName);
+            Assert.AreEqual("mp4upload.png", lDataModels[0].HosterImageFileName);
+            Assert.AreEqual("http://www.mp4upload.com/embed-#.html", lDataModels[0].PlaceholderLink);
+            Assert.AreEqual(205400, lDataModels[0].UploaderId);
+            Assert.AreEqual("Tadakuni", lDataModels[0].UploaderName);
+            Assert.AreEqual(DateTimeHelpers.UnixTimeStampToDateTime(1412882290), lDataModels[0].UploadTimestamp);
+            Assert.AreEqual(1158, lDataModels[0].TranslatorId);
+            Assert.AreEqual("THORAnime", lDataModels[0].TranslatorName);
 
-            Assert.Equal(515544, lDataModels[1].StreamId);
+            Assert.AreEqual(515544, lDataModels[1].StreamId);
             Assert.Null(lDataModels[1].TranslatorId);
             Assert.Null(lDataModels[1].TranslatorName);
         }

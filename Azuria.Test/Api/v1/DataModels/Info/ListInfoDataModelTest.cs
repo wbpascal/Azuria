@@ -3,13 +3,14 @@ using Azuria.Enums;
 using Azuria.Enums.Info;
 using Azuria.ErrorHandling;
 using Azuria.Test.Core;
-using Xunit;
+using NUnit.Framework;
 
 namespace Azuria.Test.Api.v1.DataModels.Info
 {
+    [TestFixture]
     public class ListInfoDataModelTest : DataModelsTestBase<ListInfoDataModel>
     {
-        [Fact]
+        [Test]
         public void ConvertTest()
         {
             string lJson = ResponseSetup.FileResponses["info_getlistinfo.json"];
@@ -24,15 +25,15 @@ namespace Azuria.Test.Api.v1.DataModels.Info
                 MediaContentDataModel contentModel, int contentIndex, MediaLanguage language, string[] hosters,
                 string[] hosterImages, string title)
             {
-                Assert.Equal(contentIndex, contentModel.ContentIndex);
-                Assert.Equal(language, contentModel.Language);
-                Assert.Equal(hosters, contentModel.StreamHosters);
-                Assert.Equal(title, contentModel.Title);
+                Assert.AreEqual(contentIndex, contentModel.ContentIndex);
+                Assert.AreEqual(language, contentModel.Language);
+                Assert.AreEqual(hosters, contentModel.StreamHosters);
+                Assert.AreEqual(title, contentModel.Title);
             }
 
-            Assert.Equal(1, dataModel.StartIndex);
-            Assert.Equal(22, dataModel.EndIndex);
-            Assert.Equal(MediaEntryType.Anime, dataModel.Category);
+            Assert.AreEqual(1, dataModel.StartIndex);
+            Assert.AreEqual(22, dataModel.EndIndex);
+            Assert.AreEqual(MediaEntryType.Anime, dataModel.Category);
             CheckContentObject(
                 dataModel.ContentObjects[0], 1, MediaLanguage.EngSub,
                 new[] {"mp4upload", "yourupload", "viewster", "proxer-stream", "streamcloud2"},

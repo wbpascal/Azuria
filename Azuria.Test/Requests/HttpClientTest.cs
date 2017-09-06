@@ -7,10 +7,11 @@ using Autofac;
 using Azuria.ErrorHandling;
 using Azuria.Requests.Http;
 using Newtonsoft.Json.Linq;
-using Xunit;
+using NUnit.Framework;
 
 namespace Azuria.Test.Requests
 {
+    [TestFixture]
     public class HttpClientTest
     {
         private readonly IHttpClient _httpClient;
@@ -21,7 +22,7 @@ namespace Azuria.Test.Requests
             this._httpClient = lClient.Container.Resolve<IHttpClient>();
         }
 
-        [Fact]
+        [Test]
         public async Task GetRequestAsyncCancelTokenTest()
         {
             //Start request and cancel after 1 ms
@@ -33,22 +34,22 @@ namespace Azuria.Test.Requests
             Assert.True(lResult.Exceptions.Any(exception => exception.GetType() == typeof(TaskCanceledException)));
         }
 
-        [Fact]
+        [Test]
         public async Task GetRequestAsyncTest()
         {
             Dictionary<string, string> lHeaders = new Dictionary<string, string> {{"Header-Key", "headerValue"}};
             IProxerResult<string> lResult =
                 await this._httpClient.GetRequestAsync(new Uri("https://httpbin.org/get?test=value"), lHeaders);
             Assert.True(lResult.Success);
-            Assert.Empty(lResult.Exceptions);
-            Assert.NotEmpty(lResult.Result);
+            Assert.IsEmpty(lResult.Exceptions);
+            Assert.IsNotEmpty(lResult.Result);
 
             JObject lJsonObject = JObject.Parse(lResult.Result);
-            Assert.Equal("value", lJsonObject["args"]["test"].Value<string>());
-            Assert.Equal("headerValue", lJsonObject["headers"]["Header-Key"].Value<string>());
+            Assert.AreEqual("value", lJsonObject["args"]["test"].Value<string>());
+            Assert.AreEqual("headerValue", lJsonObject["headers"]["Header-Key"].Value<string>());
         }
 
-        [Fact]
+        [Test]
         public async Task PostRequestAsyncCancelTokenTest()
         {
             //Start request and cancel after 1 ms
@@ -61,7 +62,7 @@ namespace Azuria.Test.Requests
             Assert.True(lResult.Exceptions.Any(exception => exception.GetType() == typeof(TaskCanceledException)));
         }
 
-        [Fact]
+        [Test]
         public async Task PostRequestAsyncTest()
         {
             Dictionary<string, string> lHeaders = new Dictionary<string, string> {{"Header-Key", "headerValue"}};
@@ -71,13 +72,13 @@ namespace Azuria.Test.Requests
                     new Uri("https://httpbin.org/post?test=value"), lPostArgs, lHeaders
                 );
             Assert.True(lResult.Success);
-            Assert.Empty(lResult.Exceptions);
-            Assert.NotEmpty(lResult.Result);
+            Assert.IsEmpty(lResult.Exceptions);
+            Assert.IsNotEmpty(lResult.Result);
 
             JObject lJsonObject = JObject.Parse(lResult.Result);
-            Assert.Equal("value", lJsonObject["args"]["test"].Value<string>());
-            Assert.Equal("headerValue", lJsonObject["headers"]["Header-Key"].Value<string>());
-            Assert.Equal("postValue", lJsonObject["form"]["postKey"].Value<string>());
+            Assert.AreEqual("value", lJsonObject["args"]["test"].Value<string>());
+            Assert.AreEqual("headerValue", lJsonObject["headers"]["Header-Key"].Value<string>());
+            Assert.AreEqual("postValue", lJsonObject["form"]["postKey"].Value<string>());
         }
     }
 }

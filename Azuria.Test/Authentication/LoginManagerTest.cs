@@ -8,23 +8,24 @@ using Azuria.Requests;
 using Azuria.Requests.Builder;
 using Azuria.Test.Core.Helpers;
 using Moq;
-using Xunit;
+using NUnit.Framework;
 
 namespace Azuria.Test.Authentication
 {
+    [TestFixture]
     public class LoginManagerTest
     {
-        [Fact]
+        [Test]
         public void LoginTokenTest()
         {
             char[] lRandomToken = RandomHelper.GetRandomString(255).ToCharArray();
             IProxerClient lClient = ProxerClient.Create(
                 new char[32], options => options.WithAuthorisation(lRandomToken));
             ILoginManager lLoginManager = lClient.Container.Resolve<ILoginManager>();
-            Assert.Same(lRandomToken, lLoginManager.LoginToken);
+            Assert.AreSame(lRandomToken, lLoginManager.LoginToken);
         }
 
-        [Fact]
+        [Test]
         public void PerformedRequestTest()
         {
             IProxerClient lClient = ProxerClient.Create(new char[32]);
@@ -37,7 +38,7 @@ namespace Azuria.Test.Authentication
             Assert.True(lLoginManager.CheckIsLoginProbablyValid());
         }
 
-        [Fact]
+        [Test]
         public async Task PerformLoginTest()
         {
             CancellationToken lCancellationToken = new CancellationTokenSource().Token;
@@ -62,13 +63,13 @@ namespace Azuria.Test.Authentication
             IProxerResult lResult = await lLoginManager.PerformLoginAsync(
                                         "username", "password", token: lCancellationToken);
             Assert.True(lResult.Success);
-            Assert.Empty(lResult.Exceptions);
+            Assert.IsEmpty(lResult.Exceptions);
 
-            Assert.Equal(lSuccessDataModel.Token, lLoginManager.LoginToken);
+            Assert.AreEqual(lSuccessDataModel.Token, lLoginManager.LoginToken);
             Assert.True(lLoginManager.CheckIsLoginProbablyValid());
         }
 
-        [Fact]
+        [Test]
         public async Task PerformLoginWith2FaTokenTest()
         {
             CancellationToken lCancellationToken = new CancellationTokenSource().Token;
@@ -94,13 +95,13 @@ namespace Azuria.Test.Authentication
                                         "username", "password", new string(new char[6]), lCancellationToken
                                     );
             Assert.True(lResult.Success);
-            Assert.Empty(lResult.Exceptions);
+            Assert.IsEmpty(lResult.Exceptions);
 
-            Assert.Equal(lSuccessDataModel.Token, lLoginManager.LoginToken);
+            Assert.AreEqual(lSuccessDataModel.Token, lLoginManager.LoginToken);
             Assert.True(lLoginManager.CheckIsLoginProbablyValid());
         }
 
-        [Fact]
+        [Test]
         public async Task PerformLogoutTest()
         {
             CancellationToken lCancellationToken = new CancellationToken();
@@ -119,13 +120,13 @@ namespace Azuria.Test.Authentication
 
             IProxerResult lResult = await lLoginManager.PerformLogoutAsync(lCancellationToken);
             Assert.True(lResult.Success);
-            Assert.Empty(lResult.Exceptions);
+            Assert.IsEmpty(lResult.Exceptions);
 
             Assert.Null(lLoginManager.LoginToken);
             Assert.False(lLoginManager.CheckIsLoginProbablyValid());
         }
 
-        [Fact]
+        [Test]
         public void QueueLoginForNextRequestTest()
         {
             IProxerClient lClient = ProxerClient.Create(new char[32]);
@@ -139,7 +140,7 @@ namespace Azuria.Test.Authentication
             Assert.True(lLoginManager.SendTokenWithNextRequest());
         }
 
-        [Fact]
+        [Test]
         public void SendTokenWithNextRequest()
         {
             IProxerClient lClient = ProxerClient.Create(new char[32]);

@@ -1,13 +1,15 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Azuria.ErrorHandling;
-using Xunit;
+using NUnit.Framework;
 
 namespace Azuria.Test.ErrorHandling
 {
+    [TestFixture]
     public class ProxerResultTest
     {
-        [Fact]
+        [Test]
         public void DeconstructTest()
         {
             IProxerResult GetTestResult(bool isSuccess)
@@ -17,14 +19,14 @@ namespace Azuria.Test.ErrorHandling
 
             (bool success, IEnumerable<Exception> exceptions) = GetTestResult(true);
             Assert.True(success);
-            Assert.Empty(exceptions);
+            Assert.IsEmpty(exceptions);
 
             (success, exceptions) = GetTestResult(false);
             Assert.False(success);
-            Assert.NotEmpty(exceptions);
+            Assert.IsNotEmpty(exceptions);
         }
 
-        [Fact]
+        [Test]
         public void DeconstructWithValueTest()
         {
             IProxerResult<int> GetTestResult(bool isSuccess)
@@ -34,16 +36,16 @@ namespace Azuria.Test.ErrorHandling
 
             (bool success, IEnumerable<Exception> exceptions, int value) = GetTestResult(true);
             Assert.True(success);
-            Assert.Empty(exceptions);
-            Assert.Equal(int.MaxValue, value);
+            Assert.IsEmpty(exceptions);
+            Assert.AreEqual(int.MaxValue, value);
 
             (success, exceptions, value) = GetTestResult(false);
             Assert.False(success);
-            Assert.NotEmpty(exceptions);
-            Assert.Equal(default(int), value);
+            Assert.IsNotEmpty(exceptions);
+            Assert.AreEqual(default(int), value);
         }
 
-        [Fact]
+        [Test]
         public void ExceptionConstructorTest()
         {
             Exception lException = new Exception("test");
@@ -51,32 +53,32 @@ namespace Azuria.Test.ErrorHandling
 
             ProxerResult lResult = new ProxerResult(lExceptions);
             Assert.False(lResult.Success);
-            Assert.Equal(lExceptions, lResult.Exceptions);
+            Assert.AreEqual(lExceptions, lResult.Exceptions);
             lResult = new ProxerResult(lException);
             Assert.False(lResult.Success);
-            Assert.Contains(lException, lResult.Exceptions);
+            Assert.Contains(lException, lResult.Exceptions.ToArray());
 
             ProxerResult<int> lResultWithValue = new ProxerResult<int>(lExceptions);
             Assert.False(lResultWithValue.Success);
-            Assert.Equal(lExceptions, lResultWithValue.Exceptions);
-            Assert.Equal(default(int), lResultWithValue.Result);
+            Assert.AreEqual(lExceptions, lResultWithValue.Exceptions);
+            Assert.AreEqual(default(int), lResultWithValue.Result);
             lResultWithValue = new ProxerResult<int>(lException);
             Assert.False(lResultWithValue.Success);
-            Assert.Contains(lException, lResultWithValue.Exceptions);
-            Assert.Equal(default(int), lResultWithValue.Result);
+            Assert.Contains(lException, lResultWithValue.Exceptions.ToArray());
+            Assert.AreEqual(default(int), lResultWithValue.Result);
         }
 
-        [Fact]
+        [Test]
         public void SuccessResultTest()
         {
             ProxerResult lResult = new ProxerResult();
             Assert.True(lResult.Success);
-            Assert.Empty(lResult.Exceptions);
+            Assert.IsEmpty(lResult.Exceptions);
 
             ProxerResult<int> lResultWithValue = new ProxerResult<int>(int.MaxValue);
             Assert.True(lResultWithValue.Success);
-            Assert.Empty(lResultWithValue.Exceptions);
-            Assert.Equal(int.MaxValue, lResultWithValue.Result);
+            Assert.IsEmpty(lResultWithValue.Exceptions);
+            Assert.AreEqual(int.MaxValue, lResultWithValue.Result);
         }
     }
 }

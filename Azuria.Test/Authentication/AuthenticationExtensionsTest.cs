@@ -3,10 +3,11 @@ using System.Threading.Tasks;
 using Azuria.Authentication;
 using Azuria.ErrorHandling;
 using Moq;
-using Xunit;
+using NUnit.Framework;
 
 namespace Azuria.Test.Authentication
 {
+    [TestFixture]
     public class AuthenticationExtensionsTest
     {
         private const string Password = "password";
@@ -30,25 +31,25 @@ namespace Azuria.Test.Authentication
             );
         }
 
-        [Fact]
+        [Test]
         public async Task PerformLoginAsyncCalledLoginManagerMethodTest()
         {
             IProxerResult lResult =
                 await this._proxerClient.LoginAsync("username", "password", SecretKey, this._cancellationToken);
             Assert.True(lResult.Success);
-            Assert.Empty(lResult.Exceptions);
+            Assert.IsEmpty(lResult.Exceptions);
             this._loginMangerMock.Verify(
                 manager => manager.PerformLoginAsync(Username, Password, SecretKey, this._cancellationToken),
                 Times.Once
             );
         }
 
-        [Fact]
+        [Test]
         public async Task PerformLogoutAsyncCalledLoginManagerMethodTest()
         {
             IProxerResult lResult = await this._proxerClient.LogoutAsync(this._cancellationToken);
             Assert.True(lResult.Success);
-            Assert.Empty(lResult.Exceptions);
+            Assert.IsEmpty(lResult.Exceptions);
             this._loginMangerMock.Verify(manager => manager.PerformLogoutAsync(this._cancellationToken), Times.Once);
         }
     }

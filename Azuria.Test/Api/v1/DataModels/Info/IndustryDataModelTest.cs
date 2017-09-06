@@ -3,13 +3,14 @@ using Azuria.Api.v1.DataModels.Info;
 using Azuria.Enums.Info;
 using Azuria.ErrorHandling;
 using Azuria.Test.Core;
-using Xunit;
+using NUnit.Framework;
 
 namespace Azuria.Test.Api.v1.DataModels.Info
 {
+    [TestFixture]
     public class IndustryDataModelTest : DataModelsTestBase<IndustryDataModel>
     {
-        [Fact]
+        [Test]
         public void ConvertTest()
         {
             string lJson = ResponseSetup.FileResponses["info_getindustry.json"];
@@ -17,13 +18,13 @@ namespace Azuria.Test.Api.v1.DataModels.Info
             this.CheckSuccessResponse(lResponse);
             IndustryDataModel lDataModel = lResponse.Result;
 
-            Assert.Equal(1292, lDataModel.Id);
-            Assert.Equal(IndustryType.Streaming, lDataModel.Type);
-            Assert.Equal("Animax UK", lDataModel.Name);
-            Assert.Equal(Country.UnitedStates, lDataModel.Country);
-            Assert.Equal(new Uri("https://www.animaxtv.co.uk/"), lDataModel.Link);
-            Assert.Equal("Animax UK Description Test Text", lDataModel.Description);
-            Assert.Equal(new Uri("https://cdn.proxer.me/industry/1292.jpg"), lDataModel.CoverImage);
+            Assert.AreEqual(1292, lDataModel.Id);
+            Assert.AreEqual(IndustryType.Streaming, lDataModel.Type);
+            Assert.AreEqual("Animax UK", lDataModel.Name);
+            Assert.AreEqual(Country.UnitedStates, lDataModel.Country);
+            Assert.AreEqual(new Uri("https://www.animaxtv.co.uk/"), lDataModel.Link);
+            Assert.AreEqual("Animax UK Description Test Text", lDataModel.Description);
+            Assert.AreEqual(new Uri("https://cdn.proxer.me/industry/1292.jpg"), lDataModel.CoverImage);
         }
     }
 }

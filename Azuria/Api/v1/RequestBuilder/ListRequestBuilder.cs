@@ -99,33 +99,18 @@ namespace Azuria.Api.v1.RequestBuilder
         /// Api permissions required (class - permission level):
         /// * List - Level 0
         /// </summary>
-        /// <param name="start"></param>
-        /// <param name="contains"></param>
-        /// <param name="country"></param>
-        /// <param name="type"></param>
+        /// <param name="input"></param>
         /// <param name="limit"></param>
         /// <param name="page"></param>
         /// <returns>An instance of <see cref="IRequestBuilderWithResult{T}" /> that returns</returns>
         public IRequestBuilderWithResult<IndustryDataModel[]> GetIndustries(
-            string start = "", string contains = "", Country? country = null, IndustryType? type = null,
-            int limit = 100, int page = 0)
+            IndustryListInput input, int limit = 100, int page = 0)
         {
-            if (country == Country.England)
-                throw new ArgumentException(
-                    "Country.England is not supported in this request! " +
-                    "Please use Country.UnitedStates instead!", nameof(country)
-                );
-            if (type == IndustryType.Unknown)
-                throw new ArgumentException("The given industry type is invalid for this request!", nameof(type));
-
             return new RequestBuilder<IndustryDataModel[]>(
                     new Uri($"{ApiConstants.ApiUrlV1}/list/industrys"), this.ProxerClient
-                ).WithGetParameter("start", start)
-                .WithGetParameter("contains", contains)
-                .WithGetParameter("country", country?.ToShortString() ?? string.Empty)
-                .WithGetParameter("type", type?.ToTypeString() ?? string.Empty)
-                .WithGetParameter("limit", limit.ToString())
-                .WithGetParameter("p", page.ToString());
+                ).WithGetParameter("limit", limit.ToString())
+                .WithGetParameter("p", page.ToString())
+                .WithGetParameter(input.Build());
         }
 
         /// <summary>
@@ -133,25 +118,18 @@ namespace Azuria.Api.v1.RequestBuilder
         /// Api permissions required (class - permission level):
         /// * List - Level 0
         /// </summary>
-        /// <param name="translatorId"></param>
-        /// <param name="type"></param>
-        /// <param name="isH"></param>
+        /// <param name="input"></param>
         /// <param name="p"></param>
         /// <param name="limit"></param>
         /// <returns>An instance of <see cref="IRequestBuilderWithResult{T}" /> that returns</returns>
         public IRequestBuilderWithResult<IndustryProjectDataModel[]> GetIndustryProjects(
-            int translatorId, IndustryType? type = null, bool? isH = false, int p = 0, int limit = 100)
+            IndustryProjectsInput input, int p = 0, int limit = 100)
         {
-            if (type == IndustryType.Unknown)
-                throw new ArgumentException("The given industry type is invalid for this request!", nameof(type));
-
             return new RequestBuilder<IndustryProjectDataModel[]>(
                     new Uri($"{ApiConstants.ApiUrlV1}/list/industryprojects"), this.ProxerClient
-                ).WithGetParameter("id", translatorId.ToString())
-                .WithGetParameter("type", type?.ToTypeString() ?? string.Empty)
-                .WithGetParameter("isH", GetHValue(isH).ToString())
-                .WithGetParameter("p", p.ToString())
-                .WithGetParameter("limit", limit.ToString());
+                ).WithGetParameter("p", p.ToString())
+                .WithGetParameter("limit", limit.ToString())
+                .WithGetParameter(input.Build());
         }
 
         /// <summary>
@@ -182,28 +160,13 @@ namespace Azuria.Api.v1.RequestBuilder
         /// Api permissions required (class - permission level):
         /// * List - Level 0
         /// </summary>
-        /// <param name="search"></param>
-        /// <param name="type"></param>
-        /// <param name="sort"></param>
-        /// <param name="sortDirection"></param>
-        /// <param name="subtype"></param>
+        /// <param name="input"></param>
         /// <returns></returns>
-        public IRequestBuilderWithResult<TagDataModel[]> GetTags(
-            string search = "", TagType? type = null, TagListSort sort = TagListSort.Tag,
-            SortDirection sortDirection = SortDirection.Ascending, TagSubtype? subtype = null)
+        public IRequestBuilderWithResult<TagDataModel[]> GetTags(TagListInput input)
         {
-            if (type == TagType.Unkown)
-                throw new ArgumentException("The given tag type is invalid for this request!", nameof(type));
-            if (subtype == TagSubtype.Unkown)
-                throw new ArgumentException("The given tag subtype is invalid for this request!", nameof(subtype));
-
             return new RequestBuilder<TagDataModel[]>(
                     new Uri($"{ApiConstants.ApiUrlV1}/list/tags"), this.ProxerClient
-                ).WithGetParameter("search", search)
-                .WithGetParameter("type", type?.GetDescription() ?? string.Empty)
-                .WithGetParameter("sort", sort.ToString().ToLowerInvariant())
-                .WithGetParameter("sort_type", sortDirection.GetDescription())
-                .WithGetParameter("subtype", subtype?.GetDescription() ?? string.Empty);
+                ).WithGetParameter(input.Build());
         }
 
         /// <summary>
@@ -211,25 +174,18 @@ namespace Azuria.Api.v1.RequestBuilder
         /// Api permissions required (class - permission level):
         /// * List - Level 0
         /// </summary>
-        /// <param name="start"></param>
-        /// <param name="contains"></param>
-        /// <param name="country"></param>
+        /// <param name="input"></param>
         /// <param name="limit"></param>
         /// <param name="page"></param>
         /// <returns>An instance of <see cref="IRequestBuilderWithResult{T}" /> that returns</returns>
         public IRequestBuilderWithResult<TranslatorDataModel[]> GetTranslatorgroups(
-            string start = "", string contains = "", Country? country = null, int limit = 100, int page = 0)
+            TranslatorListInput input, int limit = 100, int page = 0)
         {
-            if (country == Country.Japan || country == Country.UnitedStates)
-                throw new ArgumentException("The given country is invalid for this request!", nameof(country));
-
             return new RequestBuilder<TranslatorDataModel[]>(
                     new Uri($"{ApiConstants.ApiUrlV1}/list/translatorgroups"), this.ProxerClient
-                ).WithGetParameter("start", start)
-                .WithGetParameter("contains", contains)
-                .WithGetParameter("country", country?.ToShortString() ?? string.Empty)
-                .WithGetParameter("limit", limit.ToString())
-                .WithGetParameter("p", page.ToString());
+                ).WithGetParameter("limit", limit.ToString())
+                .WithGetParameter("p", page.ToString())
+                .WithGetParameter(input.Build());
         }
 
         /// <summary>
@@ -237,22 +193,18 @@ namespace Azuria.Api.v1.RequestBuilder
         /// Api permissions required (class - permission level):
         /// * List - Level 0
         /// </summary>
-        /// <param name="translatorId"></param>
-        /// <param name="type"></param>
-        /// <param name="isH"></param>
+        /// <param name="input"></param>
         /// <param name="p"></param>
         /// <param name="limit"></param>
         /// <returns>An instance of <see cref="IRequestBuilderWithResult{T}" /> that returns</returns>
         public IRequestBuilderWithResult<TranslatorProjectDataModel[]> GetTranslatorProjects(
-            int translatorId, TranslationStatus? type = null, bool? isH = false, int p = 0, int limit = 100)
+            TranslatorProjectsInput input, int p = 0, int limit = 100)
         {
             return new RequestBuilder<TranslatorProjectDataModel[]>(
                     new Uri($"{ApiConstants.ApiUrlV1}/list/translatorgroupprojects"), this.ProxerClient
-                ).WithGetParameter("id", translatorId.ToString())
-                .WithGetParameter("type", type != null ? ((int) type.Value).ToString() : string.Empty)
-                .WithGetParameter("isH", GetHValue(isH).ToString())
-                .WithGetParameter("p", p.ToString())
-                .WithGetParameter("limit", limit.ToString());
+                ).WithGetParameter("p", p.ToString())
+                .WithGetParameter("limit", limit.ToString())
+                .WithGetParameter(input.Build());
         }
     }
 }

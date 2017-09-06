@@ -7,10 +7,11 @@ using Azuria.ErrorHandling;
 using Azuria.Requests;
 using Azuria.Requests.Builder;
 using Moq;
-using Xunit;
+using NUnit.Framework;
 
 namespace Azuria.Test.Requests
 {
+    [TestFixture]
     public class RequestExtensionsTest
     {
         private readonly IProxerClient _client;
@@ -20,7 +21,7 @@ namespace Azuria.Test.Requests
             this._client = ProxerClient.Create(new char[32]);
         }
 
-        [Fact]
+        [Test]
         public void CreateRequestTest()
         {
             Mock<IApiRequestBuilder> lApiRequestBuilderMock = new Mock<IApiRequestBuilder>();
@@ -31,7 +32,7 @@ namespace Azuria.Test.Requests
             );
 
             IApiRequestBuilder lApiRequestBuilder = lClient.CreateRequest();
-            Assert.Same(lApiRequestBuilderMock.Object, lApiRequestBuilder);
+            Assert.AreSame(lApiRequestBuilderMock.Object, lApiRequestBuilder);
 
             IRequestBuilder lRequestBuilder = lApiRequestBuilder.FromUrl(new Uri("https://proxer.me"));
             Assert.Null(lRequestBuilder);
@@ -39,7 +40,7 @@ namespace Azuria.Test.Requests
             lApiRequestBuilderMock.Verify(builder => builder.FromUrl(new Uri("https://proxer.me")), Times.Exactly(1));
         }
 
-        [Fact]
+        [Test]
         public async Task DoRequestAsyncTest()
         {
             Mock<IRequestHandler> lRequestHandlerMock = new Mock<IRequestHandler>();
@@ -54,14 +55,14 @@ namespace Azuria.Test.Requests
 
             IProxerResult lResult = await lRequest.DoRequestAsync(lCancellationTokenSource.Token);
             Assert.True(lResult.Success);
-            Assert.Empty(lResult.Exceptions);
+            Assert.IsEmpty(lResult.Exceptions);
 
             lRequestHandlerMock.Verify(
                 handler => handler.MakeRequestAsync(lRequest, lCancellationTokenSource.Token), Times.Once
             );
         }
 
-        [Fact]
+        [Test]
         public async Task DoRequestAsyncWithResultTest()
         {
             Mock<IRequestHandler> lRequestHandlerMock = new Mock<IRequestHandler>();
@@ -77,7 +78,7 @@ namespace Azuria.Test.Requests
 
             IProxerResult<object> lResult = await lRequest.DoRequestAsync(lCancellationTokenSource.Token);
             Assert.True(lResult.Success);
-            Assert.Empty(lResult.Exceptions);
+            Assert.IsEmpty(lResult.Exceptions);
             Assert.NotNull(lResult.Result);
 
             lRequestHandlerMock.Verify(

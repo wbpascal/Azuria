@@ -13,7 +13,9 @@ namespace Azuria.Api.v1.Converters.List
         {
             string lSubtype = reader.Value?.ToString();
             Dictionary<string, TagSubtype> lStringDictionary = EnumHelpers.GetDescriptionDictionary<TagSubtype>();
-            return lStringDictionary.ContainsKey(lSubtype) ? lStringDictionary[lSubtype] : TagSubtype.Unkown;
+            return lStringDictionary.ContainsKey(lSubtype)
+                       ? lStringDictionary[lSubtype]
+                       : throw new InvalidOperationException($"'{lSubtype}' is not a valid subtype!");
         }
     }
 }

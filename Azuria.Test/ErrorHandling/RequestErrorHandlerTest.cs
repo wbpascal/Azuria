@@ -3,10 +3,11 @@ using Autofac;
 using Azuria.Enums;
 using Azuria.ErrorHandling;
 using Azuria.Exceptions;
-using Xunit;
+using NUnit.Framework;
 
 namespace Azuria.Test.ErrorHandling
 {
+    [TestFixture]
     public class RequestErrorHandlerTest
     {
         private readonly IRequestErrorHandler _requestErrorHandler;
@@ -17,39 +18,39 @@ namespace Azuria.Test.ErrorHandling
             this._requestErrorHandler = lClient.Container.Resolve<IRequestErrorHandler>();
         }
 
-        [Theory]
-        [InlineData(ErrorCode.ApiKeyNoPermission)]
+        [Test]
+        [TestCase(ErrorCode.ApiKeyNoPermission)]
         public void HandleApiKeyInsufficientErrorTest(ErrorCode errorCode)
         {
-            Assert.IsType<ApiKeyInsufficientException>(this._requestErrorHandler.HandleError(errorCode));
+            Assert.IsAssignableFrom<ApiKeyInsufficientException>(this._requestErrorHandler.HandleError(errorCode));
         }
 
-        [Theory]
-        [InlineData(ErrorCode.IpBlocked)]
+        [Test]
+        [TestCase(ErrorCode.IpBlocked)]
         public void HandleIpBlockedErrorTest(ErrorCode errorCode)
         {
             Exception lException = this._requestErrorHandler.HandleError(errorCode);
-            Assert.IsType<FirewallException>(lException);
-            Assert.Equal("http://proxer.me/misc/captcha", lException.Message);
+            Assert.IsAssignableFrom<FirewallException>(lException);
+            Assert.AreEqual("http://proxer.me/misc/captcha", lException.Message);
         }
 
-        [Theory]
-        [InlineData(ErrorCode.UserNoPermission)]
-        [InlineData(ErrorCode.ChatNoPermission)]
+        [Test]
+        [TestCase(ErrorCode.UserNoPermission)]
+        [TestCase(ErrorCode.ChatNoPermission)]
         public void HandleNoPermissionErrorTest(ErrorCode errorCode)
         {
-            Assert.IsType<NoPermissionException>(this._requestErrorHandler.HandleError(errorCode));
+            Assert.IsAssignableFrom<NoPermissionException>(this._requestErrorHandler.HandleError(errorCode));
         }
 
-        [Theory]
-        [InlineData(ErrorCode.NotificationsNotLoggedIn)]
-        [InlineData(ErrorCode.UcpNotLoggedIn)]
-        [InlineData(ErrorCode.InfoNotLoggedIn)]
-        [InlineData(ErrorCode.MessengerNotLoggedIn)]
-        [InlineData(ErrorCode.ChatNotLoggedIn)]
+        [Test]
+        [TestCase(ErrorCode.NotificationsNotLoggedIn)]
+        [TestCase(ErrorCode.UcpNotLoggedIn)]
+        [TestCase(ErrorCode.InfoNotLoggedIn)]
+        [TestCase(ErrorCode.MessengerNotLoggedIn)]
+        [TestCase(ErrorCode.ChatNotLoggedIn)]
         public void HandleNotAuthenticatedErrorTest(ErrorCode errorCode)
         {
-            Assert.IsType<NotAuthenticatedException>(this._requestErrorHandler.HandleError(errorCode));
+            Assert.IsAssignableFrom<NotAuthenticatedException>(this._requestErrorHandler.HandleError(errorCode));
         }
     }
 }

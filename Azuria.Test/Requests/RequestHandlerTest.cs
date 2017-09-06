@@ -14,10 +14,11 @@ using Azuria.Test.Core;
 using Azuria.Test.Core.Helpers;
 using Azuria.Test.Serilization;
 using Moq;
-using Xunit;
+using NUnit.Framework;
 
 namespace Azuria.Test.Requests
 {
+    [TestFixture]
     public class RequestHandlerTest
     {
         private static readonly Dictionary<string, string> StandardAuthenticationHeaders =
@@ -40,7 +41,7 @@ namespace Azuria.Test.Requests
             this._requestHandler = lClient.Container.Resolve<IRequestHandler>();
         }
 
-        [Fact]
+        [Test]
         public async Task CancelNonApiRequestsTest()
         {
             IRequestBuilder lRequestBuilder =
@@ -60,7 +61,7 @@ namespace Azuria.Test.Requests
             );
         }
 
-        [Fact]
+        [Test]
         public async Task MakeRequestCheckLoginTest()
         {
             Mock<ILoginManager> lLoginManagerMock = new Mock<ILoginManager>();
@@ -100,10 +101,10 @@ namespace Azuria.Test.Requests
                 .WithLoginCheck();
             lResult = await lRequestHandler.MakeRequestAsync(lRequestBuilder, CancellationToken.None);
             Assert.True(lResult.Success);
-            Assert.Empty(lResult.Exceptions);
+            Assert.IsEmpty(lResult.Exceptions);
         }
 
-        [Fact]
+        [Test]
         public async Task MakeRequestGetTest()
         {
             Mock<IHttpClient> lHttpClientMock = new Mock<IHttpClient>();
@@ -124,10 +125,10 @@ namespace Azuria.Test.Requests
                 .WithGetParameter("test", "value");
             IProxerResult lResult = await lRequestHandler.MakeRequestAsync(lRequestBuilder, CancellationToken.None);
             Assert.True(lResult.Success, lResult.Exceptions.GetExceptionInfo());
-            Assert.Empty(lResult.Exceptions);
+            Assert.IsEmpty(lResult.Exceptions);
         }
 
-        [Fact]
+        [Test]
         public async Task MakeRequestPerformRequestCalledTest()
         {
             Mock<ILoginManager> lLoginManagerMock = new Mock<ILoginManager>();
@@ -156,12 +157,12 @@ namespace Azuria.Test.Requests
                 .WithGetParameter("test", "value");
             IProxerResult lResult = await lRequestHandler.MakeRequestAsync(lRequestBuilder, CancellationToken.None);
             Assert.True(lResult.Success);
-            Assert.Empty(lResult.Exceptions);
+            Assert.IsEmpty(lResult.Exceptions);
 
             lLoginManagerMock.Verify(manager => manager.PerformedRequest(true), Times.Once);
         }
 
-        [Fact]
+        [Test]
         public async Task MakeRequestPostTest()
         {
             Dictionary<string, string> lPostArgs = new Dictionary<string, string>
@@ -187,10 +188,10 @@ namespace Azuria.Test.Requests
                 .WithPostParameter(lPostArgs);
             IProxerResult lResult = await lRequestHandler.MakeRequestAsync(lRequestBuilder, CancellationToken.None);
             Assert.True(lResult.Success, lResult.Exceptions.GetExceptionInfo());
-            Assert.Empty(lResult.Exceptions);
+            Assert.IsEmpty(lResult.Exceptions);
         }
 
-        [Fact]
+        [Test]
         public async Task MakeRequestWithResultGetTest()
         {
             Mock<IHttpClient> lHttpClientMock = new Mock<IHttpClient>();
@@ -215,11 +216,11 @@ namespace Azuria.Test.Requests
             IProxerResult<int> lResult =
                 await lRequestHandler.MakeRequestAsync(lRequestBuilder, CancellationToken.None);
             Assert.True(lResult.Success, lResult.Exceptions.GetExceptionInfo());
-            Assert.Empty(lResult.Exceptions);
-            Assert.Equal(42, lResult.Result);
+            Assert.IsEmpty(lResult.Exceptions);
+            Assert.AreEqual(42, lResult.Result);
         }
 
-        [Fact]
+        [Test]
         public async Task MakeRequestWithResultPostTest()
         {
             Dictionary<string, string> lPostArgs = new Dictionary<string, string>
@@ -249,8 +250,8 @@ namespace Azuria.Test.Requests
             IProxerResult<int> lResult =
                 await lRequestHandler.MakeRequestAsync(lRequestBuilder, CancellationToken.None);
             Assert.True(lResult.Success, lResult.Exceptions.GetExceptionInfo());
-            Assert.Empty(lResult.Exceptions);
-            Assert.Equal(42, lResult.Result);
+            Assert.IsEmpty(lResult.Exceptions);
+            Assert.AreEqual(42, lResult.Result);
         }
     }
 }

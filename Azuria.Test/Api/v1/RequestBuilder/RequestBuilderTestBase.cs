@@ -3,10 +3,11 @@ using Autofac;
 using Azuria.Api.v1.RequestBuilder;
 using Azuria.Requests.Builder;
 using Azuria.Test.Core;
-using Xunit;
+using NUnit.Framework;
 
 namespace Azuria.Test.Api.v1.RequestBuilder
 {
+    [TestFixture]
     public abstract class RequestBuilderTestBase<T> where T : class, IApiClassRequestBuilder
     {
         private readonly Random _random;
@@ -25,9 +26,9 @@ namespace Azuria.Test.Api.v1.RequestBuilder
         protected void CheckUrl(IRequestBuilderBase builder, string apiClassName, string apiFunctionName)
         {
             Uri lUri = builder.BuildUri();
-            Assert.Equal("https", lUri.Scheme);
-            Assert.Equal("proxer.me", lUri.Host);
-            Assert.Equal(
+            Assert.AreEqual("https", lUri.Scheme);
+            Assert.AreEqual("proxer.me", lUri.Host);
+            Assert.AreEqual(
                 $"{TestConstants.ProxerApiV1Path}/{apiClassName}/{apiFunctionName}", lUri.AbsolutePath
             );
         }
@@ -39,7 +40,7 @@ namespace Azuria.Test.Api.v1.RequestBuilder
 
         public virtual void ProxerClientTest()
         {
-            Assert.Same(this.ProxerClient, this.RequestBuilder.ProxerClient);
+            Assert.AreSame(this.ProxerClient, this.RequestBuilder.ProxerClient);
         }
     }
 }

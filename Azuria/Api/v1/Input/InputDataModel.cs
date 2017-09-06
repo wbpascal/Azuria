@@ -9,8 +9,8 @@ using Azuria.Helpers.Extensions;
 
 namespace Azuria.Api.v1.Input
 {
+    /// <inheritdoc />
     /// <summary>
-    /// 
     /// </summary>
     public abstract class InputDataModel : IInputDataModel
     {
@@ -73,12 +73,10 @@ namespace Azuria.Api.v1.Input
                     .Where(info => info.ReturnType == typeof(string))
                     .Where(info => info.GetParameters().Length == 1).ToArray();
                 return lMethods.FirstOrDefault(
-                           info => info.GetParameters().First().ParameterType == propertyInfo.PropertyType
-                       ) ?? lMethods.FirstOrDefault(
-                           info => info.GetParameters().First().ParameterType.GetTypeInfo().IsAssignableFrom(
-                               propertyInfo.PropertyType.GetTypeInfo()
-                           )
-                       );
+                    info => info.GetParameters().First().ParameterType.GetTypeInfo().IsAssignableFrom(
+                        GetNullableType(propertyInfo.PropertyType).GetTypeInfo()
+                    )
+                );
             }
 
             MethodInfo lConverterMethod = FindFromName(this.GetType(), attribute.ConverterMethodName);
@@ -108,7 +106,12 @@ namespace Azuria.Api.v1.Input
             return type.ImplementedInterfaces.Select(type1 => type1.GetTypeInfo())
                 .Where(info => info.IsGenericType && info.GetGenericTypeDefinition() == typeof(IInputDataConverter<>))
                 .SelectMany(info => info.GenericTypeArguments)
-                .Any(type1 => type1.GetTypeInfo().IsAssignableFrom(dataType.GetTypeInfo()));
+                .Any(type1 => type1.GetTypeInfo().IsAssignableFrom(GetNullableType(dataType).GetTypeInfo()));
+        }
+        
+        private static Type GetNullableType(Type nullable)
+        {
+            return Nullable.GetUnderlyingType(nullable) ?? nullable;
         }
     }
 }

@@ -21,9 +21,5 @@ namespace Azuria.Enums.List
         /// <summary>
         /// </summary>
         [Description("gallery")] Gallery,
-
-        /// <summary>
-        /// </summary>
-        [Description("unkown")] Unkown
     }
 }

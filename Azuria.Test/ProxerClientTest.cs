@@ -5,17 +5,18 @@ using Azuria.ErrorHandling;
 using Azuria.Requests;
 using Azuria.Requests.Http;
 using Azuria.Serialization;
-using Xunit;
+using NUnit.Framework;
 
 namespace Azuria.Test
 {
+    [TestFixture]
     public class ProxerClientTest
     {
-        [Fact]
+        [Test]
         public void CreateNoOptionsTest()
         {
             IProxerClient lClient = ProxerClient.Create(new char[32]);
-            Assert.NotEmpty(lClient.ApiKey);
+            Assert.IsNotEmpty(lClient.ApiKey);
             Assert.True(lClient.Container.IsRegistered<IHttpClient>());
             Assert.True(lClient.Container.IsRegistered<IProxerClient>());
             Assert.True(lClient.Container.IsRegistered<ILoginManager>());

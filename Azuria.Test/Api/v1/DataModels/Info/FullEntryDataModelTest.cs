@@ -1,24 +1,29 @@
 ﻿using Azuria.Api.v1.DataModels.Info;
 using Azuria.ErrorHandling;
 using Azuria.Test.Core;
-using Xunit;
+using NUnit.Framework;
 
 namespace Azuria.Test.Api.v1.DataModels.Info
 {
+    [TestFixture]
     public class FullEntryDataModelTest : DataModelsTestBase<FullEntryDataModel>
     {
-        [Fact]
+        [Test]
         public void ConvertTest()
         {
             string lJson = ResponseSetup.FileResponses["info_getfullentry.json"];
             ProxerApiResponse<FullEntryDataModel> lResponse = this.Convert(lJson);
             this.CheckSuccessResponse(lResponse);
-            EntryDataModelTest.CheckDataModel(lResponse.Result);
-            IndustryBasicDataModelTest.CheckDataModels(lResponse.Result.Industry);
-            NameDataModelTest.CheckDataModels(lResponse.Result.Names);
-            SeasonDataModelTest.CheckDataModels(lResponse.Result.Seasons, true);
-            TagDataModelTest.CheckDataModels(lResponse.Result.Tags);
-            TranslatorBasicDataModelTest.CheckDataModels(lResponse.Result.Translator);
+
+            FullEntryDataModel lDataModel = lResponse.Result;
+            EntryDataModelTest.CheckDataModel(lDataModel);
+            IndustryBasicDataModelTest.CheckDataModels(lDataModel.Industry);
+            NameDataModelTest.CheckDataModels(lDataModel.Names);
+            SeasonDataModelTest.CheckDataModels(lDataModel.Seasons, true);
+            TagDataModelTest.CheckDataModels(lDataModel.Tags);
+            TranslatorBasicDataModelTest.CheckDataModels(lDataModel.Translator);
+
+            Assert.False(lDataModel.IsHContent);
         }
     }
 }

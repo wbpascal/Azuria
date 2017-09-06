@@ -4,10 +4,11 @@ using Azuria.ErrorHandling;
 using Azuria.Serialization;
 using Azuria.Test.Core;
 using Newtonsoft.Json;
-using Xunit;
+using NUnit.Framework;
 
 namespace Azuria.Test.Serilization
 {
+    [TestFixture]
     public class JsonDeserializerTest
     {
         private readonly IJsonDeserializer _jsonDeserializer;
@@ -18,7 +19,7 @@ namespace Azuria.Test.Serilization
             this._jsonDeserializer = lClient.Container.Resolve<IJsonDeserializer>();
         }
 
-        [Fact]
+        [Test]
         public void DeserializeTest()
         {
             IProxerResult<ProxerApiResponse<string>> lDeserializeResult =
@@ -27,14 +28,14 @@ namespace Azuria.Test.Serilization
                 );
 
             Assert.True(lDeserializeResult.Success);
-            Assert.Empty(lDeserializeResult.Exceptions);
+            Assert.IsEmpty(lDeserializeResult.Exceptions);
             Assert.NotNull(lDeserializeResult.Result);
             Assert.True(lDeserializeResult.Result.Success);
-            Assert.Empty(lDeserializeResult.Result.Exceptions);
-            Assert.Equal("dataValue", lDeserializeResult.Result.Result);
+            Assert.IsEmpty(lDeserializeResult.Result.Exceptions);
+            Assert.AreEqual("dataValue", lDeserializeResult.Result.Result);
         }
 
-        [Fact]
+        [Test]
         public void DeserializeWithSettingsTest()
         {
             JsonSerializerSettings lSettings = new JsonSerializerSettings();
@@ -46,14 +47,14 @@ namespace Azuria.Test.Serilization
                 );
 
             Assert.True(lDeserializeResult.Success);
-            Assert.Empty(lDeserializeResult.Exceptions);
+            Assert.IsEmpty(lDeserializeResult.Exceptions);
             Assert.NotNull(lDeserializeResult.Result);
             Assert.True(lDeserializeResult.Result.Success);
-            Assert.Empty(lDeserializeResult.Result.Exceptions);
-            Assert.Equal(42, lDeserializeResult.Result.Result);
+            Assert.IsEmpty(lDeserializeResult.Result.Exceptions);
+            Assert.AreEqual(42, lDeserializeResult.Result.Result);
         }
 
-        [Fact]
+        [Test]
         public void DeserializeInvalidJsonTest()
         {
             const string lInvalidJson = "{\"test:}";
@@ -62,7 +63,7 @@ namespace Azuria.Test.Serilization
             Assert.False(lDeserializeResult.Success);
             Assert.Null(lDeserializeResult.Result);
             Assert.NotNull(lDeserializeResult.Exceptions);
-            Assert.NotEmpty(lDeserializeResult.Exceptions);
+            Assert.IsNotEmpty(lDeserializeResult.Exceptions);
         }
     }
 }

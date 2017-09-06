@@ -2,80 +2,81 @@
 using Azuria.Api.v1;
 using Azuria.Api.v1.RequestBuilder;
 using Azuria.Requests;
-using Xunit;
+using NUnit.Framework;
 
 namespace Azuria.Test.Api.v1
 {
-    public class ApiClassBuilderExtensions
+    [TestFixture]
+    public class ApiClassBuilderExtensionsTest
     {
         private readonly IApiRequestBuilder _apiRequestBuilder;
 
-        public ApiClassBuilderExtensions()
+        public ApiClassBuilderExtensionsTest()
         {
             this._apiRequestBuilder = ProxerClient.Create(new char[32]).CreateRequest();
         }
 
-        [Fact]
+        [Test]
         public void FromAnimeClassTest()
         {
             AnimeRequestBuilder lRequestBuilder = this._apiRequestBuilder.FromAnimeClass();
-            Assert.IsType<AnimeRequestBuilder>(lRequestBuilder);
+            Assert.IsAssignableFrom<AnimeRequestBuilder>(lRequestBuilder);
         }
 
-        [Fact]
+        [Test]
         public void FromInfoClassTest()
         {
             InfoRequestBuilder lRequestBuilder = this._apiRequestBuilder.FromInfoClass();
-            Assert.IsType<InfoRequestBuilder>(lRequestBuilder);
+            Assert.IsAssignableFrom<InfoRequestBuilder>(lRequestBuilder);
         }
 
-        [Fact]
+        [Test]
         public void FromListClassTest()
         {
             ListRequestBuilder lRequestBuilder = this._apiRequestBuilder.FromListClass();
-            Assert.IsType<ListRequestBuilder>(lRequestBuilder);
+            Assert.IsAssignableFrom<ListRequestBuilder>(lRequestBuilder);
         }
 
-        [Fact]
+        [Test]
         public void FromMangaClassTest()
         {
             MangaRequestBuilder lRequestBuilder = this._apiRequestBuilder.FromMangaClass();
-            Assert.IsType<MangaRequestBuilder>(lRequestBuilder);
+            Assert.IsAssignableFrom<MangaRequestBuilder>(lRequestBuilder);
         }
 
-        [Fact]
+        [Test]
         public void FromMediaClassTest()
         {
             MediaRequestBuilder lRequestBuilder = this._apiRequestBuilder.FromMediaClass();
-            Assert.IsType<MediaRequestBuilder>(lRequestBuilder);
+            Assert.IsAssignableFrom<MediaRequestBuilder>(lRequestBuilder);
         }
 
-        [Fact]
+        [Test]
         public void FromMessengerClassTest()
         {
             MessengerRequestBuilder lRequestBuilder = this._apiRequestBuilder.FromMessengerClass();
-            Assert.IsType<MessengerRequestBuilder>(lRequestBuilder);
+            Assert.IsAssignableFrom<MessengerRequestBuilder>(lRequestBuilder);
         }
 
-        [Fact]
+        [Test]
         public void FromNotificationClassTest()
         {
             NotificationsRequestBuilder lRequestBuilder = this._apiRequestBuilder.FromNotificationClass();
-            Assert.IsType<NotificationsRequestBuilder>(lRequestBuilder);
+            Assert.IsAssignableFrom<NotificationsRequestBuilder>(lRequestBuilder);
         }
 
-        [Fact]
+        [Test]
         public void FromUcpClassTest()
         {
             UcpRequestBuilder lRequestBuilder = this._apiRequestBuilder.FromUcpClass();
-            Assert.IsType<UcpRequestBuilder>(lRequestBuilder);
+            Assert.IsAssignableFrom<UcpRequestBuilder>(lRequestBuilder);
         }
 
-        [Fact]
+        [Test]
         public void FromUserClassTest()
         {
             UserRequestBuilder lRequestBuilder = this._apiRequestBuilder.FromUserClass();
-            Assert.IsType<UserRequestBuilder>(lRequestBuilder);
+            Assert.IsAssignableFrom<UserRequestBuilder>(lRequestBuilder);
         }
     }
 }

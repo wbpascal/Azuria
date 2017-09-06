@@ -44,10 +44,6 @@ namespace Azuria.Enums.List
 
         /// <summary>
         /// </summary>
-        [Description("prota")] Protagonist,
-
-        /// <summary>
-        /// </summary>
-        [Description("unkown")] Unkown
+        [Description("prota")] Protagonist
     }
 }

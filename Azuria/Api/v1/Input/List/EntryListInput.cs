@@ -49,17 +49,17 @@ namespace Azuria.Api.v1.Input.List
         /// Gets or sets the string that all returned entries will start with.
         /// </summary>
         [InputData("start", ConverterMethodName = nameof(GetStartString), Optional = true)]
-        public string StartWith { get; set; }
+        public string StartsWith { get; set; }
 
         /// <summary>
         /// Gets or sets a value whether only entries will be returned if they start with non alphabetic
-        /// characters (only numericals).
+        /// characters (only numericals). Overrides value of <see cref="StartsWith"/>.
         /// </summary>
         public bool StartWithNonAlphabeticalChar { get; set; }
 
         internal string GetStartString(string startWith)
         {
-            return this.StartWithNonAlphabeticalChar ? "nonAlpha" : this.StartWith;
+            return this.StartWithNonAlphabeticalChar ? "nonAlpha" : this.StartsWith;
         }
     }
 }

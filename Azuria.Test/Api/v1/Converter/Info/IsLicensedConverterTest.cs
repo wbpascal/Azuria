@@ -1,8 +1,9 @@
 ﻿using Azuria.Api.v1.Converters.Info;
-using Xunit;
+using NUnit.Framework;
 
 namespace Azuria.Test.Api.v1.Converter.Info
 {
+    [TestFixture]
     public class IsLicensedConverterTest : DataConverterTestBase<bool?>
     {
         /// <inheritdoc />
@@ -10,11 +11,8 @@ namespace Azuria.Test.Api.v1.Converter.Info
         {
         }
 
-        [Theory]
-        [InlineData(0)]
-        [InlineData(1)]
-        [InlineData(2)]
-        public void CanConvertTest(int isLicensed)
+        [Test]
+        public void CanConvertTest([Values(0, 1, 2)] int isLicensed)
         {
             bool? lValue = this.DeserializeValue(isLicensed.ToString());
             switch (isLicensed)

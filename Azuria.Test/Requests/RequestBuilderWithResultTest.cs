@@ -5,10 +5,11 @@ using Azuria.Api.v1.Converters;
 using Azuria.Requests;
 using Azuria.Requests.Builder;
 using Moq;
-using Xunit;
+using NUnit.Framework;
 
 namespace Azuria.Test.Requests
 {
+    [TestFixture]
     public class RequestBuilderWithResultTest
     {
         private const string BaseUrl = "https://proxer.me/";
@@ -19,30 +20,30 @@ namespace Azuria.Test.Requests
             this._client = ProxerClient.Create(new char[32]);
         }
 
-        [Fact]
+        [Test]
         public void WithCustomDataConverterTest()
         {
             IRequestBuilderWithResult<object> lRequestBuilder =
                 this._client.CreateRequest().FromUrl(new Uri(BaseUrl)).WithResult<object>();
             DataConverter<object> lDataConverter = Mock.Of<DataConverter<object>>();
             lRequestBuilder.WithCustomDataConverter(lDataConverter);
-            Assert.Same(lDataConverter, lRequestBuilder.CustomDataConverter);
+            Assert.AreSame(lDataConverter, lRequestBuilder.CustomDataConverter);
         }
 
-        [Fact]
+        [Test]
         public void WithGetParameterTest()
         {
             IRequestBuilderWithResult<object> lRequestBuilder =
                 this._client.CreateRequest().FromUrl(new Uri(BaseUrl)).WithResult<object>();
             lRequestBuilder.WithGetParameter("test", "value1");
-            Assert.Equal(1, lRequestBuilder.GetParameters.Count);
+            Assert.AreEqual(1, lRequestBuilder.GetParameters.Count);
             Assert.True(lRequestBuilder.GetParameters.ContainsKey("test"));
-            Assert.Equal("value1", lRequestBuilder.GetParameters["test"]);
+            Assert.AreEqual("value1", lRequestBuilder.GetParameters["test"]);
 
             lRequestBuilder.WithGetParameter("test", "value2");
-            Assert.Equal(1, lRequestBuilder.GetParameters.Count);
+            Assert.AreEqual(1, lRequestBuilder.GetParameters.Count);
             Assert.True(lRequestBuilder.GetParameters.ContainsKey("test"));
-            Assert.Equal("value2", lRequestBuilder.GetParameters["test"]);
+            Assert.AreEqual("value2", lRequestBuilder.GetParameters["test"]);
 
             lRequestBuilder.WithGetParameter(
                 new Dictionary<string, string>
@@ -50,16 +51,16 @@ namespace Azuria.Test.Requests
                     {"test2", "value3"},
                     {"testNew", "value"}
                 });
-            Assert.Equal(3, lRequestBuilder.GetParameters.Count);
+            Assert.AreEqual(3, lRequestBuilder.GetParameters.Count);
             Assert.True(lRequestBuilder.GetParameters.ContainsKey("test"));
             Assert.True(lRequestBuilder.GetParameters.ContainsKey("test2"));
             Assert.True(lRequestBuilder.GetParameters.ContainsKey("testNew"));
-            Assert.Equal("value2", lRequestBuilder.GetParameters["test"]);
-            Assert.Equal("value3", lRequestBuilder.GetParameters["test2"]);
-            Assert.Equal("value", lRequestBuilder.GetParameters["testNew"]);
+            Assert.AreEqual("value2", lRequestBuilder.GetParameters["test"]);
+            Assert.AreEqual("value3", lRequestBuilder.GetParameters["test2"]);
+            Assert.AreEqual("value", lRequestBuilder.GetParameters["testNew"]);
         }
 
-        [Fact]
+        [Test]
         public void WithLoginCheckTest()
         {
             IRequestBuilderWithResult<object> lRequestBuilder =
@@ -70,17 +71,17 @@ namespace Azuria.Test.Requests
             Assert.False(lRequestBuilder.CheckLogin);
         }
 
-        [Fact]
+        [Test]
         public void WithPostParameterTest()
         {
             IRequestBuilderWithResult<object> lRequestBuilder =
                 this._client.CreateRequest().FromUrl(new Uri(BaseUrl)).WithResult<object>();
             lRequestBuilder.WithPostParameter("test", "value1");
-            Assert.Equal(1, lRequestBuilder.PostParameter.Count());
+            Assert.AreEqual(1, lRequestBuilder.PostParameter.Count());
             Assert.True(lRequestBuilder.PostParameter.Any(pair => pair.Key == "test" && pair.Value == "value1"));
 
             lRequestBuilder.WithPostParameter("test", "value2");
-            Assert.Equal(2, lRequestBuilder.PostParameter.Count());
+            Assert.AreEqual(2, lRequestBuilder.PostParameter.Count());
             Assert.True(lRequestBuilder.PostParameter.Any(pair => pair.Key == "test" && pair.Value == "value1"));
             Assert.True(lRequestBuilder.PostParameter.Any(pair => pair.Key == "test" && pair.Value == "value2"));
 
@@ -90,7 +91,7 @@ namespace Azuria.Test.Requests
                     {"test2", "value3"},
                     {"testNew", "value"}
                 });
-            Assert.Equal(4, lRequestBuilder.PostParameter.Count());
+            Assert.AreEqual(4, lRequestBuilder.PostParameter.Count());
             Assert.True(lRequestBuilder.PostParameter.Any(pair => pair.Key == "test" && pair.Value == "value1"));
             Assert.True(lRequestBuilder.PostParameter.Any(pair => pair.Key == "test" && pair.Value == "value2"));
             Assert.True(lRequestBuilder.PostParameter.Any(pair => pair.Key == "test2" && pair.Value == "value3"));

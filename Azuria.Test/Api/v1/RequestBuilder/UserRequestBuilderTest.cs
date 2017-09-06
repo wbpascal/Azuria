@@ -7,24 +7,25 @@ using Azuria.Enums.User;
 using Azuria.Helpers.Extensions;
 using Azuria.Requests.Builder;
 using Azuria.Test.Core.Helpers;
-using Xunit;
+using NUnit.Framework;
 
 namespace Azuria.Test.Api.v1.RequestBuilder
 {
+    [TestFixture]
     public class UserRequestBuilderTest : RequestBuilderTestBase<UserRequestBuilder>
     {
         private void GetHistoryTestBase(IRequestBuilderBase requestBuilderBase)
         {
             this.CheckUrl(requestBuilderBase, "user", "history");
-            Assert.Same(this.ProxerClient, requestBuilderBase.Client);
+            Assert.AreSame(this.ProxerClient, requestBuilderBase.Client);
             Assert.True(requestBuilderBase.GetParameters.ContainsKey("p"));
             Assert.True(requestBuilderBase.GetParameters.ContainsKey("limit"));
-            Assert.Equal("4", requestBuilderBase.GetParameters["p"]);
-            Assert.Equal("132", requestBuilderBase.GetParameters["limit"]);
+            Assert.AreEqual("4", requestBuilderBase.GetParameters["p"]);
+            Assert.AreEqual("132", requestBuilderBase.GetParameters["limit"]);
             Assert.False(requestBuilderBase.CheckLogin);
         }
 
-        [Fact]
+        [Test]
         public void GetHistoryUsernameTest()
         {
             string lRandomUsername = RandomHelper.GetRandomString(10);
@@ -32,10 +33,10 @@ namespace Azuria.Test.Api.v1.RequestBuilder
                 lRandomUsername, 4, 132);
             this.GetHistoryTestBase(lRequest);
             Assert.True(lRequest.GetParameters.ContainsKey("username"));
-            Assert.Equal(lRandomUsername, lRequest.GetParameters["username"]);
+            Assert.AreEqual(lRandomUsername, lRequest.GetParameters["username"]);
         }
 
-        [Fact]
+        [Test]
         public void GetHistoryUserIdTest()
         {
             int lRandomId = this.GetRandomNumber(200_000);
@@ -43,16 +44,16 @@ namespace Azuria.Test.Api.v1.RequestBuilder
                 lRandomId, 4, 132);
             this.GetHistoryTestBase(lRequest);
             Assert.True(lRequest.GetParameters.ContainsKey("uid"));
-            Assert.Equal(lRandomId.ToString(), lRequest.GetParameters["uid"]);
+            Assert.AreEqual(lRandomId.ToString(), lRequest.GetParameters["uid"]);
         }
 
         private void GetInfoTestBase(IRequestBuilderBase requestBuilderBase)
         {
             this.CheckUrl(requestBuilderBase, "user", "userinfo");
-            Assert.Same(this.ProxerClient, requestBuilderBase.Client);
+            Assert.AreSame(this.ProxerClient, requestBuilderBase.Client);
         }
 
-        [Fact]
+        [Test]
         public void GetInfoTest()
         {
             IRequestBuilderWithResult<UserInfoDataModel> lRequest = this.RequestBuilder.GetInfo();
@@ -60,45 +61,45 @@ namespace Azuria.Test.Api.v1.RequestBuilder
             Assert.True(lRequest.CheckLogin);
         }
 
-        [Fact]
+        [Test]
         public void GetInfoUserIdTest()
         {
             int lRandomId = this.GetRandomNumber(200_000);
             IRequestBuilderWithResult<UserInfoDataModel> lRequest = this.RequestBuilder.GetInfo(lRandomId);
             this.GetInfoTestBase(lRequest);
             Assert.True(lRequest.GetParameters.ContainsKey("uid"));
-            Assert.Equal(lRandomId.ToString(), lRequest.GetParameters["uid"]);
+            Assert.AreEqual(lRandomId.ToString(), lRequest.GetParameters["uid"]);
             Assert.False(lRequest.CheckLogin);
         }
 
-        [Fact]
+        [Test]
         public void GetInfoUsernameTest()
         {
             string lRandomUsername = RandomHelper.GetRandomString(10);
             IRequestBuilderWithResult<UserInfoDataModel> lRequest = this.RequestBuilder.GetInfo(lRandomUsername);
             this.GetInfoTestBase(lRequest);
             Assert.True(lRequest.GetParameters.ContainsKey("username"));
-            Assert.Equal(lRandomUsername, lRequest.GetParameters["username"]);
+            Assert.AreEqual(lRandomUsername, lRequest.GetParameters["username"]);
             Assert.False(lRequest.CheckLogin);
         }
 
         private void GetLatestCommentsTestBase(IRequestBuilderBase requestBuilderBase, MediaEntryType kat)
         {
             this.CheckUrl(requestBuilderBase, "user", "comments");
-            Assert.Same(this.ProxerClient, requestBuilderBase.Client);
+            Assert.AreSame(this.ProxerClient, requestBuilderBase.Client);
             Assert.True(requestBuilderBase.GetParameters.ContainsKey("p"));
             Assert.True(requestBuilderBase.GetParameters.ContainsKey("limit"));
             Assert.True(requestBuilderBase.GetParameters.ContainsKey("kat"));
             Assert.True(requestBuilderBase.GetParameters.ContainsKey("length"));
-            Assert.Equal("4", requestBuilderBase.GetParameters["p"]);
-            Assert.Equal("43", requestBuilderBase.GetParameters["limit"]);
-            Assert.Equal(kat.ToString().ToLowerInvariant(), requestBuilderBase.GetParameters["kat"]);
-            Assert.Equal("379", requestBuilderBase.GetParameters["length"]);
+            Assert.AreEqual("4", requestBuilderBase.GetParameters["p"]);
+            Assert.AreEqual("43", requestBuilderBase.GetParameters["limit"]);
+            Assert.AreEqual(kat.ToString().ToLowerInvariant(), requestBuilderBase.GetParameters["kat"]);
+            Assert.AreEqual("379", requestBuilderBase.GetParameters["length"]);
         }
 
-        [Theory]
-        [InlineData(MediaEntryType.Anime)]
-        [InlineData(MediaEntryType.Manga)]
+        [Test]
+        [TestCase(MediaEntryType.Anime)]
+        [TestCase(MediaEntryType.Manga)]
         public void GetLatestCommentsUsernameTest(MediaEntryType category)
         {
             string lRandomUsername = RandomHelper.GetRandomString(10);
@@ -106,13 +107,13 @@ namespace Azuria.Test.Api.v1.RequestBuilder
                 this.RequestBuilder.GetLatestComments(lRandomUsername, 4, 43, category, 379);
             this.GetLatestCommentsTestBase(lRequest, category);
             Assert.True(lRequest.GetParameters.ContainsKey("username"));
-            Assert.Equal(lRandomUsername, lRequest.GetParameters["username"]);
+            Assert.AreEqual(lRandomUsername, lRequest.GetParameters["username"]);
             Assert.False(lRequest.CheckLogin);
         }
 
-        [Theory]
-        [InlineData(MediaEntryType.Anime)]
-        [InlineData(MediaEntryType.Manga)]
+        [Test]
+        [TestCase(MediaEntryType.Anime)]
+        [TestCase(MediaEntryType.Manga)]
         public void GetLatestCommentsUserIdTest(MediaEntryType category)
         {
             int lRandomId = this.GetRandomNumber(200_000);
@@ -120,7 +121,7 @@ namespace Azuria.Test.Api.v1.RequestBuilder
                 this.RequestBuilder.GetLatestComments(lRandomId, 4, 43, category, 379);
             this.GetLatestCommentsTestBase(lRequest, category);
             Assert.True(lRequest.GetParameters.ContainsKey("uid"));
-            Assert.Equal(lRandomId.ToString(), lRequest.GetParameters["uid"]);
+            Assert.AreEqual(lRandomId.ToString(), lRequest.GetParameters["uid"]);
             Assert.False(lRequest.CheckLogin);
         }
 
@@ -129,28 +130,28 @@ namespace Azuria.Test.Api.v1.RequestBuilder
             SortDirection sortDirection)
         {
             this.CheckUrl(requestBuilderBase, "user", "list");
-            Assert.Same(this.ProxerClient, requestBuilderBase.Client);
+            Assert.AreSame(this.ProxerClient, requestBuilderBase.Client);
             Assert.True(requestBuilderBase.GetParameters.ContainsKey("p"));
             Assert.True(requestBuilderBase.GetParameters.ContainsKey("limit"));
             Assert.True(requestBuilderBase.GetParameters.ContainsKey("kat"));
             Assert.True(requestBuilderBase.GetParameters.ContainsKey("search"));
             Assert.True(requestBuilderBase.GetParameters.ContainsKey("search_start"));
             Assert.True(requestBuilderBase.GetParameters.ContainsKey("sort"));
-            Assert.Equal("2", requestBuilderBase.GetParameters["p"]);
-            Assert.Equal("72", requestBuilderBase.GetParameters["limit"]);
-            Assert.Equal(category.ToString().ToLowerInvariant(), requestBuilderBase.GetParameters["kat"]);
-            Assert.Equal("test_search", requestBuilderBase.GetParameters["search"]);
-            Assert.Equal("test_search_start", requestBuilderBase.GetParameters["search_start"]);
-            Assert.Equal(
+            Assert.AreEqual("2", requestBuilderBase.GetParameters["p"]);
+            Assert.AreEqual("72", requestBuilderBase.GetParameters["limit"]);
+            Assert.AreEqual(category.ToString().ToLowerInvariant(), requestBuilderBase.GetParameters["kat"]);
+            Assert.AreEqual("test_search", requestBuilderBase.GetParameters["search"]);
+            Assert.AreEqual("test_search_start", requestBuilderBase.GetParameters["search_start"]);
+            Assert.AreEqual(
                 sort.GetDescription() + sortDirection.GetDescription(), requestBuilderBase.GetParameters["sort"]
             );
         }
 
-        [Theory]
-        [InlineData(MediaEntryType.Anime, UserListSort.ChangeDate, SortDirection.Ascending)]
-        [InlineData(MediaEntryType.Anime, UserListSort.StateChangeDate, SortDirection.Descending)]
-        [InlineData(MediaEntryType.Manga, UserListSort.Name, SortDirection.Descending)]
-        [InlineData(MediaEntryType.Manga, UserListSort.StateName, SortDirection.Ascending)]
+        [Test]
+        [TestCase(MediaEntryType.Anime, UserListSort.ChangeDate, SortDirection.Ascending)]
+        [TestCase(MediaEntryType.Anime, UserListSort.StateChangeDate, SortDirection.Descending)]
+        [TestCase(MediaEntryType.Manga, UserListSort.Name, SortDirection.Descending)]
+        [TestCase(MediaEntryType.Manga, UserListSort.StateName, SortDirection.Ascending)]
         public void GetListUserIdTest(MediaEntryType category, UserListSort sort, SortDirection sortDirection)
         {
             int lRandomId = this.GetRandomNumber(200_000);
@@ -168,15 +169,15 @@ namespace Azuria.Test.Api.v1.RequestBuilder
             IRequestBuilderWithResult<ListDataModel[]> lRequest = this.RequestBuilder.GetList(lInputDataModel, 2, 72);
             this.GetListTestBase(lRequest, category, sort, sortDirection);
             Assert.True(lRequest.GetParameters.ContainsKey("uid"));
-            Assert.Equal(lRandomId.ToString(), lRequest.GetParameters["uid"]);
+            Assert.AreEqual(lRandomId.ToString(), lRequest.GetParameters["uid"]);
             Assert.False(lRequest.CheckLogin);
         }
 
-        [Theory]
-        [InlineData(MediaEntryType.Anime, UserListSort.ChangeDate, SortDirection.Ascending)]
-        [InlineData(MediaEntryType.Anime, UserListSort.StateChangeDate, SortDirection.Descending)]
-        [InlineData(MediaEntryType.Manga, UserListSort.Name, SortDirection.Descending)]
-        [InlineData(MediaEntryType.Manga, UserListSort.StateName, SortDirection.Ascending)]
+        [Test]
+        [TestCase(MediaEntryType.Anime, UserListSort.ChangeDate, SortDirection.Ascending)]
+        [TestCase(MediaEntryType.Anime, UserListSort.StateChangeDate, SortDirection.Descending)]
+        [TestCase(MediaEntryType.Manga, UserListSort.Name, SortDirection.Descending)]
+        [TestCase(MediaEntryType.Manga, UserListSort.StateName, SortDirection.Ascending)]
         public void GetListUsernameTest(MediaEntryType category, UserListSort sort, SortDirection sortDirection)
         {
             string lRandomUsername = RandomHelper.GetRandomString(10);
@@ -194,34 +195,34 @@ namespace Azuria.Test.Api.v1.RequestBuilder
             IRequestBuilderWithResult<ListDataModel[]> lRequest = this.RequestBuilder.GetList(lInputDataModel, 2, 72);
             this.GetListTestBase(lRequest, category, sort, sortDirection);
             Assert.True(lRequest.GetParameters.ContainsKey("username"));
-            Assert.Equal(lRandomUsername, lRequest.GetParameters["username"]);
+            Assert.AreEqual(lRandomUsername, lRequest.GetParameters["username"]);
             Assert.False(lRequest.CheckLogin);
         }
 
         private void GetToptenTestBase(IRequestBuilderBase requestBuilderBase, MediaEntryType category)
         {
             this.CheckUrl(requestBuilderBase, "user", "topten");
-            Assert.Same(this.ProxerClient, requestBuilderBase.Client);
+            Assert.AreSame(this.ProxerClient, requestBuilderBase.Client);
             Assert.True(requestBuilderBase.GetParameters.ContainsKey("kat"));
-            Assert.Equal(category.ToString().ToLowerInvariant(), requestBuilderBase.GetParameters["kat"]);
+            Assert.AreEqual(category.ToString().ToLowerInvariant(), requestBuilderBase.GetParameters["kat"]);
         }
 
-        [Theory]
-        [InlineData(MediaEntryType.Anime)]
-        [InlineData(MediaEntryType.Manga)]
+        [Test]
+        [TestCase(MediaEntryType.Anime)]
+        [TestCase(MediaEntryType.Manga)]
         public void GetToptenUserIdTest(MediaEntryType category)
         {
             int lRandomId = this.GetRandomNumber(200_000);
             IRequestBuilderWithResult<ToptenDataModel[]> lRequest = this.RequestBuilder.GetTopten(lRandomId, category);
             this.GetToptenTestBase(lRequest, category);
             Assert.True(lRequest.GetParameters.ContainsKey("uid"));
-            Assert.Equal(lRandomId.ToString(), lRequest.GetParameters["uid"]);
+            Assert.AreEqual(lRandomId.ToString(), lRequest.GetParameters["uid"]);
             Assert.False(lRequest.CheckLogin);
         }
 
-        [Theory]
-        [InlineData(MediaEntryType.Anime)]
-        [InlineData(MediaEntryType.Manga)]
+        [Test]
+        [TestCase(MediaEntryType.Anime)]
+        [TestCase(MediaEntryType.Manga)]
         public void GetToptenUsernameTest(MediaEntryType category)
         {
             string lRandomUsername = RandomHelper.GetRandomString(10);
@@ -229,11 +230,11 @@ namespace Azuria.Test.Api.v1.RequestBuilder
                 lRandomUsername, category);
             this.GetToptenTestBase(lRequest, category);
             Assert.True(lRequest.GetParameters.ContainsKey("username"));
-            Assert.Equal(lRandomUsername, lRequest.GetParameters["username"]);
+            Assert.AreEqual(lRandomUsername, lRequest.GetParameters["username"]);
             Assert.False(lRequest.CheckLogin);
         }
 
-        [Fact]
+        [Test]
         public void LoginTest()
         {
             string lRandomUsername = RandomHelper.GetRandomString(10);
@@ -241,15 +242,15 @@ namespace Azuria.Test.Api.v1.RequestBuilder
             IRequestBuilderWithResult<LoginDataModel> lRequest =
                 this.RequestBuilder.Login(lRandomUsername, lRandomPassword);
             this.CheckUrl(lRequest, "user", "login");
-            Assert.Same(this.ProxerClient, lRequest.Client);
+            Assert.AreSame(this.ProxerClient, lRequest.Client);
             Assert.True(lRequest.PostParameter.ContainsKey("username"));
             Assert.True(lRequest.PostParameter.ContainsKey("password"));
-            Assert.Equal(lRandomUsername, lRequest.PostParameter.GetValue("username").First());
-            Assert.Equal(lRandomPassword, lRequest.PostParameter.GetValue("password").First());
+            Assert.AreEqual(lRandomUsername, lRequest.PostParameter.GetValue("username").First());
+            Assert.AreEqual(lRandomPassword, lRequest.PostParameter.GetValue("password").First());
             Assert.False(lRequest.CheckLogin);
         }
 
-        [Fact]
+        [Test]
         public void LoginSecretKeyTest()
         {
             string lRandomUsername = RandomHelper.GetRandomString(10);
@@ -258,26 +259,26 @@ namespace Azuria.Test.Api.v1.RequestBuilder
             IRequestBuilderWithResult<LoginDataModel> lRequest =
                 this.RequestBuilder.Login(lRandomUsername, lRandomPassword, lRandomSecretKey);
             this.CheckUrl(lRequest, "user", "login");
-            Assert.Same(this.ProxerClient, lRequest.Client);
+            Assert.AreSame(this.ProxerClient, lRequest.Client);
             Assert.True(lRequest.PostParameter.ContainsKey("username"));
             Assert.True(lRequest.PostParameter.ContainsKey("password"));
             Assert.True(lRequest.PostParameter.ContainsKey("secretKey"));
-            Assert.Equal(lRandomUsername, lRequest.PostParameter.GetValue("username").First());
-            Assert.Equal(lRandomPassword, lRequest.PostParameter.GetValue("password").First());
-            Assert.Equal(lRandomSecretKey, lRequest.PostParameter.GetValue("secretKey").First());
+            Assert.AreEqual(lRandomUsername, lRequest.PostParameter.GetValue("username").First());
+            Assert.AreEqual(lRandomPassword, lRequest.PostParameter.GetValue("password").First());
+            Assert.AreEqual(lRandomSecretKey, lRequest.PostParameter.GetValue("secretKey").First());
             Assert.False(lRequest.CheckLogin);
         }
 
-        [Fact]
+        [Test]
         public void LogoutTest()
         {
             IRequestBuilder lRequest = this.RequestBuilder.Logout();
             this.CheckUrl(lRequest, "user", "logout");
-            Assert.Same(this.ProxerClient, lRequest.Client);
+            Assert.AreSame(this.ProxerClient, lRequest.Client);
             Assert.False(lRequest.CheckLogin);
         }
 
-        [Fact]
+        [Test]
         public override void ProxerClientTest()
         {
             base.ProxerClientTest();

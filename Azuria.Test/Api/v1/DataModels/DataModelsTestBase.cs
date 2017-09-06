@@ -5,7 +5,7 @@ using Azuria.Api.v1.DataModels;
 using Azuria.ErrorHandling;
 using Azuria.Serialization;
 using Newtonsoft.Json;
-using Xunit;
+using NUnit.Framework;
 
 namespace Azuria.Test.Api.v1.DataModels
 {
@@ -46,7 +46,7 @@ namespace Azuria.Test.Api.v1.DataModels
                 this.Deserializer.Deserialize<ProxerApiResponse<T1>>(json, GetSettingsWithConverter());
             Assert.True(lResult.Success);
             Assert.NotNull(lResult.Exceptions);
-            Assert.Empty(lResult.Exceptions);
+            Assert.IsEmpty(lResult.Exceptions);
             Assert.NotNull(lResult.Result);
             return lResult.Result;
         }
@@ -55,7 +55,7 @@ namespace Azuria.Test.Api.v1.DataModels
         {
             Assert.True(response.Success);
             Assert.NotNull(response.Exceptions);
-            Assert.Empty(response.Exceptions);
+            Assert.IsEmpty(response.Exceptions);
             Assert.NotNull(response.Result);
         }
     }

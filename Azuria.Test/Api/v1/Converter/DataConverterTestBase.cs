@@ -4,7 +4,7 @@ using Azuria.Api.v1.Converters;
 using Azuria.ErrorHandling;
 using Azuria.Serialization;
 using Newtonsoft.Json;
-using Xunit;
+using NUnit.Framework;
 
 namespace Azuria.Test.Api.v1.Converter
 {
@@ -36,7 +36,7 @@ namespace Azuria.Test.Api.v1.Converter
                     this.GetTestJsonString(value), this.GetSerializerSettings()
                 );
             Assert.True(lResult.Success);
-            Assert.Empty(lResult.Exceptions);
+            Assert.IsEmpty(lResult.Exceptions);
             Assert.NotNull(lResult.Result);
             Assert.True(lResult.Result.ContainsKey("data"));
             return lResult.Result["data"];

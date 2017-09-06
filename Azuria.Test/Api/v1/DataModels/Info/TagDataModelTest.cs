@@ -2,13 +2,14 @@
 using Azuria.Api.v1.DataModels.Info;
 using Azuria.ErrorHandling;
 using Azuria.Test.Core;
-using Xunit;
+using NUnit.Framework;
 
 namespace Azuria.Test.Api.v1.DataModels.Info
 {
+    [TestFixture]
     public class TagDataModelTest : DataModelsTestBase<TagDataModel>
     {
-        [Fact]
+        [Test]
         public void ConvertTest()
         {
             string lJson = ResponseSetup.FileResponses["info_getentrytags.json"];
@@ -23,12 +24,12 @@ namespace Azuria.Test.Api.v1.DataModels.Info
                 TagDataModel dataModel, int id, int tagId, DateTime timestamp, bool isRated, bool isSpoiler,
                 string name, string description)
             {
-                Assert.Equal(id, dataModel.Id);
-                Assert.Equal(tagId, dataModel.TagId);
-                Assert.Equal(timestamp, dataModel.Timestamp);
-                Assert.Equal(isRated, dataModel.IsRated);
-                Assert.Equal(isSpoiler, dataModel.IsSpoiler);
-                Assert.Equal(name, dataModel.Name);
+                Assert.AreEqual(id, dataModel.Id);
+                Assert.AreEqual(tagId, dataModel.TagId);
+                Assert.AreEqual(timestamp, dataModel.Timestamp);
+                Assert.AreEqual(isRated, dataModel.IsRated);
+                Assert.AreEqual(isSpoiler, dataModel.IsSpoiler);
+                Assert.AreEqual(name, dataModel.Name);
             }
 
             CheckDataModel(
