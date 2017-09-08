@@ -24,11 +24,7 @@ namespace Azuria.Test.Api.v1.RequestBuilder
         }
 
         [Test]
-        [TestCase(ConferenceList.Block)]
-        [TestCase(ConferenceList.Default)]
-        [TestCase(ConferenceList.Group)]
-        [TestCase(ConferenceList.Favour)]
-        public void GetConferencesTest(ConferenceList list)
+        public void GetConferencesTest([Values] ConferenceList list)
         {
             IRequestBuilderWithResult<ConferenceDataModel[]> lRequest = this.RequestBuilder.GetConferences(list, 51);
             this.CheckUrl(lRequest, "messenger", "conferences");

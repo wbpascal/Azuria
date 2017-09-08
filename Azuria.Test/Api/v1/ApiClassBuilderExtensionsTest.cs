@@ -20,63 +20,63 @@ namespace Azuria.Test.Api.v1
         public void FromAnimeClassTest()
         {
             AnimeRequestBuilder lRequestBuilder = this._apiRequestBuilder.FromAnimeClass();
-            Assert.IsAssignableFrom<AnimeRequestBuilder>(lRequestBuilder);
+            Assert.NotNull(lRequestBuilder);
         }
 
         [Test]
         public void FromInfoClassTest()
         {
             InfoRequestBuilder lRequestBuilder = this._apiRequestBuilder.FromInfoClass();
-            Assert.IsAssignableFrom<InfoRequestBuilder>(lRequestBuilder);
+            Assert.NotNull(lRequestBuilder);
         }
 
         [Test]
         public void FromListClassTest()
         {
             ListRequestBuilder lRequestBuilder = this._apiRequestBuilder.FromListClass();
-            Assert.IsAssignableFrom<ListRequestBuilder>(lRequestBuilder);
+            Assert.NotNull(lRequestBuilder);
         }
 
         [Test]
         public void FromMangaClassTest()
         {
             MangaRequestBuilder lRequestBuilder = this._apiRequestBuilder.FromMangaClass();
-            Assert.IsAssignableFrom<MangaRequestBuilder>(lRequestBuilder);
+            Assert.NotNull(lRequestBuilder);
         }
 
         [Test]
         public void FromMediaClassTest()
         {
             MediaRequestBuilder lRequestBuilder = this._apiRequestBuilder.FromMediaClass();
-            Assert.IsAssignableFrom<MediaRequestBuilder>(lRequestBuilder);
+            Assert.NotNull(lRequestBuilder);
         }
 
         [Test]
         public void FromMessengerClassTest()
         {
             MessengerRequestBuilder lRequestBuilder = this._apiRequestBuilder.FromMessengerClass();
-            Assert.IsAssignableFrom<MessengerRequestBuilder>(lRequestBuilder);
+            Assert.NotNull(lRequestBuilder);
         }
 
         [Test]
         public void FromNotificationClassTest()
         {
             NotificationsRequestBuilder lRequestBuilder = this._apiRequestBuilder.FromNotificationClass();
-            Assert.IsAssignableFrom<NotificationsRequestBuilder>(lRequestBuilder);
+            Assert.NotNull(lRequestBuilder);
         }
 
         [Test]
         public void FromUcpClassTest()
         {
             UcpRequestBuilder lRequestBuilder = this._apiRequestBuilder.FromUcpClass();
-            Assert.IsAssignableFrom<UcpRequestBuilder>(lRequestBuilder);
+            Assert.NotNull(lRequestBuilder);
         }
 
         [Test]
         public void FromUserClassTest()
         {
             UserRequestBuilder lRequestBuilder = this._apiRequestBuilder.FromUserClass();
-            Assert.IsAssignableFrom<UserRequestBuilder>(lRequestBuilder);
+            Assert.NotNull(lRequestBuilder);
         }
     }
 }

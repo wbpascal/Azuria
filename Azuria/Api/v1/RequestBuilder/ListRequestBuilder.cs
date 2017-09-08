@@ -165,8 +165,8 @@ namespace Azuria.Api.v1.RequestBuilder
         public IRequestBuilderWithResult<TagDataModel[]> GetTags(TagListInput input)
         {
             return new RequestBuilder<TagDataModel[]>(
-                    new Uri($"{ApiConstants.ApiUrlV1}/list/tags"), this.ProxerClient
-                ).WithGetParameter(input.Build());
+                new Uri($"{ApiConstants.ApiUrlV1}/list/tags"), this.ProxerClient
+            ).WithGetParameter(input.Build());
         }
 
         /// <summary>

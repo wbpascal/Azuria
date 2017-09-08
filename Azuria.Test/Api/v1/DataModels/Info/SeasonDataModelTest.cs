@@ -22,10 +22,14 @@ namespace Azuria.Test.Api.v1.DataModels.Info
         {
             void CheckDataModel(SeasonDataModel dataModel, int id, int year, Season season, int entryId)
             {
-                Assert.AreEqual(id, dataModel.Id);
-                Assert.AreEqual(year, dataModel.Year);
-                Assert.AreEqual(season, dataModel.Season);
-                if (!ignoreEntryId) Assert.AreEqual(entryId, dataModel.EntryId);
+                Assert.Multiple(
+                    () =>
+                    {
+                        Assert.AreEqual(id, dataModel.Id);
+                        Assert.AreEqual(year, dataModel.Year);
+                        Assert.AreEqual(season, dataModel.Season);
+                        if (!ignoreEntryId) Assert.AreEqual(entryId, dataModel.EntryId);
+                    });
             }
 
             Assert.AreEqual(2, dataModels.Length);

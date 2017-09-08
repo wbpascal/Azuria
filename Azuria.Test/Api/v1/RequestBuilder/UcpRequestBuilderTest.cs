@@ -72,9 +72,7 @@ namespace Azuria.Test.Api.v1.RequestBuilder
         }
 
         [Test]
-        [TestCase(MediaEntryType.Anime)]
-        [TestCase(MediaEntryType.Manga)]
-        public void GetListCategoryTest(MediaEntryType category)
+        public void GetListCategoryTest([Values] MediaEntryType category)
         {
             string lSearch = RandomHelper.GetRandomString(20);
             string lSearchStart = RandomHelper.GetRandomString(20);
@@ -106,16 +104,8 @@ namespace Azuria.Test.Api.v1.RequestBuilder
             Assert.True(lRequest.CheckLogin);
         }
 
-        [Test]
-        [TestCase(UserListSort.ChangeDate, SortDirection.Ascending)]
-        [TestCase(UserListSort.Name, SortDirection.Ascending)]
-        [TestCase(UserListSort.StateChangeDate, SortDirection.Ascending)]
-        [TestCase(UserListSort.StateName, SortDirection.Ascending)]
-        [TestCase(UserListSort.ChangeDate, SortDirection.Descending)]
-        [TestCase(UserListSort.Name, SortDirection.Descending)]
-        [TestCase(UserListSort.StateChangeDate, SortDirection.Descending)]
-        [TestCase(UserListSort.StateName, SortDirection.Descending)]
-        public void GetListSortTest(UserListSort sort, SortDirection sortDirection)
+        [Test, Combinatorial]
+        public void GetListSortTest([Values] UserListSort sort, [Values] SortDirection sortDirection)
         {
             string lSearch = RandomHelper.GetRandomString(20);
             string lSearchStart = RandomHelper.GetRandomString(20);
@@ -148,9 +138,7 @@ namespace Azuria.Test.Api.v1.RequestBuilder
         }
 
         [Test]
-        [TestCase(MediaEntryType.Anime)]
-        [TestCase(MediaEntryType.Manga)]
-        public void GetListsumTest(MediaEntryType category)
+        public void GetListsumTest([Values] MediaEntryType category)
         {
             IRequestBuilderWithResult<int> lRequest = this.RequestBuilder.GetListsum(category);
             this.CheckUrl(lRequest, "ucp", "listsum");
@@ -161,10 +149,7 @@ namespace Azuria.Test.Api.v1.RequestBuilder
         }
 
         [Test]
-        [TestCase(null)]
-        [TestCase(MediaEntryType.Anime)]
-        [TestCase(MediaEntryType.Manga)]
-        public void GetReminderTest(MediaEntryType? category)
+        public void GetReminderTest([Values(null, MediaEntryType.Anime, MediaEntryType.Manga)] MediaEntryType? category)
         {
             IRequestBuilderWithResult<BookmarkDataModel[]> lRequest = this.RequestBuilder.GetReminder(category, 5, 1);
             this.CheckUrl(lRequest, "ucp", "reminder");
@@ -214,19 +199,22 @@ namespace Azuria.Test.Api.v1.RequestBuilder
         }
 
         [Test]
-        [TestCase(MediaLanguage.EngDub)]
-        [TestCase(MediaLanguage.English)]
-        [TestCase(MediaLanguage.EngSub)]
-        [TestCase(MediaLanguage.GerDub)]
-        [TestCase(MediaLanguage.German)]
-        [TestCase(MediaLanguage.GerSub)]
-        public void SetReminderLanguageTest(MediaLanguage language)
+        public void SetReminderLanguageTest([Values] MediaLanguage language)
         {
             int lRandomId = this.GetRandomNumber(10000);
             int lRandomEpisode = this.GetRandomNumber(50);
 
+            if (language == MediaLanguage.Unkown)
+            {
+                Assert.Throws<ArgumentException>(
+                    () => this.RequestBuilder.SetReminder(lRandomId, lRandomEpisode, language, MediaEntryType.Anime)
+                );
+                return;
+            }
+
             IRequestBuilder lRequest = this.RequestBuilder.SetReminder(
-                lRandomId, lRandomEpisode, language, MediaEntryType.Anime);
+                lRandomId, lRandomEpisode, language, MediaEntryType.Anime
+            );
             this.CheckUrl(lRequest, "ucp", "setreminder");
             Assert.AreSame(this.ProxerClient, lRequest.Client);
             Assert.True(lRequest.GetParameters.ContainsKey("id"));
@@ -241,9 +229,7 @@ namespace Azuria.Test.Api.v1.RequestBuilder
         }
 
         [Test]
-        [TestCase(MediaEntryType.Anime)]
-        [TestCase(MediaEntryType.Manga)]
-        public void SetReminderCategoryTest(MediaEntryType category)
+        public void SetReminderCategoryTest([Values] MediaEntryType category)
         {
             int lRandomId = this.GetRandomNumber(10000);
             int lRandomEpisode = this.GetRandomNumber(50);
@@ -261,14 +247,6 @@ namespace Azuria.Test.Api.v1.RequestBuilder
             Assert.AreEqual("engdub", lRequest.GetParameters["language"]);
             Assert.AreEqual(category.ToString().ToLowerInvariant(), lRequest.GetParameters["kat"]);
             Assert.True(lRequest.CheckLogin);
-        }
-
-        [Test]
-        public void SetReminderInvalidLanguageTest()
-        {
-            Assert.Throws<ArgumentException>(
-                () => this.RequestBuilder.SetReminder(42, 42, MediaLanguage.Unkown, MediaEntryType.Anime)
-            );
         }
 
         [Test]

@@ -24,12 +24,16 @@ namespace Azuria.Test.Api.v1.DataModels.Info
                 TagDataModel dataModel, int id, int tagId, DateTime timestamp, bool isRated, bool isSpoiler,
                 string name, string description)
             {
-                Assert.AreEqual(id, dataModel.Id);
-                Assert.AreEqual(tagId, dataModel.TagId);
-                Assert.AreEqual(timestamp, dataModel.Timestamp);
-                Assert.AreEqual(isRated, dataModel.IsRated);
-                Assert.AreEqual(isSpoiler, dataModel.IsSpoiler);
-                Assert.AreEqual(name, dataModel.Name);
+                Assert.Multiple(
+                    () =>
+                    {
+                        Assert.AreEqual(id, dataModel.Id);
+                        Assert.AreEqual(tagId, dataModel.TagId);
+                        Assert.AreEqual(timestamp, dataModel.Timestamp);
+                        Assert.AreEqual(isRated, dataModel.IsRated);
+                        Assert.AreEqual(isSpoiler, dataModel.IsSpoiler);
+                        Assert.AreEqual(name, dataModel.Name);
+                    });
             }
 
             CheckDataModel(

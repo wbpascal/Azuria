@@ -25,14 +25,14 @@ namespace Azuria.Test.Api.v1.RequestBuilder
         [Test]
         public void GetProxerStreamTest([Values] AnimeLanguage language)
         {
-            if(language == AnimeLanguage.Unknown)
+            if (language == AnimeLanguage.Unknown)
             {
                 Assert.Throws<ArgumentException>(
                     () => this.RequestBuilder.GetProxerStreams(42, 42, AnimeLanguage.Unknown)
                 );
                 return;
             }
-            
+
             int lRandomId = this.GetRandomNumber(4200);
             int lRandomEpisode = this.GetRandomNumber(42);
             IRequestBuilderWithResult<StreamDataModel[]> lRequest =
@@ -51,14 +51,14 @@ namespace Azuria.Test.Api.v1.RequestBuilder
         [Test]
         public void GetStreamTest([Values] AnimeLanguage language)
         {
-            if(language == AnimeLanguage.Unknown)
+            if (language == AnimeLanguage.Unknown)
             {
                 Assert.Throws<ArgumentException>(
                     () => this.RequestBuilder.GetStreams(42, 42, AnimeLanguage.Unknown)
                 );
                 return;
             }
-            
+
             int lRandomId = this.GetRandomNumber(4200);
             int lRandomEpisode = this.GetRandomNumber(42);
             IRequestBuilderWithResult<StreamDataModel[]> lRequest =

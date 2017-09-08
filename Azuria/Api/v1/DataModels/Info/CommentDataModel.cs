@@ -6,14 +6,18 @@ using Newtonsoft.Json;
 
 namespace Azuria.Api.v1.DataModels.Info
 {
+    /// <inheritdoc />
     /// <summary>
     /// </summary>
     public class CommentDataModel : IDataModel
     {
         /// <summary>
+        /// 
         /// </summary>
+        public Uri Avatar => new Uri(ApiConstants.ProxerAvatarShortCdnUrl + this.AvatarId);
+
         [JsonProperty("avatar")]
-        public string Avatar { get; set; }
+        internal string AvatarId { get; set; }
 
         /// <summary>
         /// </summary>
@@ -38,7 +42,7 @@ namespace Azuria.Api.v1.DataModels.Info
         /// <summary>
         /// </summary>
         [JsonProperty("rating")]
-        public int OverallRating { get; set; }
+        public int Rating { get; set; }
 
         /// <summary>
         /// </summary>
@@ -49,7 +53,8 @@ namespace Azuria.Api.v1.DataModels.Info
         /// </summary>
         [JsonProperty("data")]
         [JsonConverter(typeof(SubRatingsConverter))]
-        public IReadOnlyDictionary<RatingCategory, int> SubRatings { get; set; }
+        public IReadOnlyDictionary<RatingCategory, int> SubRatings { get; set; } =
+            new Dictionary<RatingCategory, int>();
 
         /// <summary>
         /// </summary>

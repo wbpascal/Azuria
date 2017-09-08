@@ -22,9 +22,13 @@ namespace Azuria.Test.Api.v1.DataModels.Info
         {
             void CheckDataModel(TranslatorBasicDataModel dataModel, string name, int id, Country country)
             {
-                Assert.AreEqual(country, dataModel.Country);
-                Assert.AreEqual(id, dataModel.Id);
-                Assert.AreEqual(name, dataModel.Name);
+                Assert.Multiple(
+                    () =>
+                    {
+                        Assert.AreEqual(country, dataModel.Country);
+                        Assert.AreEqual(id, dataModel.Id);
+                        Assert.AreEqual(name, dataModel.Name);
+                    });
             }
 
             Assert.AreEqual(2, dataModels.Length);

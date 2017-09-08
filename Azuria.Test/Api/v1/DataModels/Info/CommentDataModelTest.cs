@@ -1,4 +1,7 @@
-﻿using Azuria.Api.v1.DataModels.Info;
+﻿using System;
+using System.Collections.Generic;
+using Azuria.Api;
+using Azuria.Api.v1.DataModels.Info;
 using Azuria.Enums.User;
 using Azuria.ErrorHandling;
 using Azuria.Helpers;
@@ -21,78 +24,61 @@ namespace Azuria.Test.Api.v1.DataModels.Info
 
         private static void CheckDataModels(CommentDataModel[] dataModels)
         {
+            void CheckDataModel(
+                CommentDataModel dataModel, int commentId, int entryId, int userId, MediaProgressState state,
+                Dictionary<RatingCategory, int> subratings, string commentText, int rating, int contentIndex,
+                int upvotes, long timestamp, string username, string avatar)
+            {
+                Assert.Multiple(
+                    () =>
+                    {
+                        Assert.AreEqual(commentId, dataModel.CommentId);
+                        Assert.AreEqual(entryId, dataModel.EntryId);
+                        Assert.AreEqual(userId, dataModel.UserId);
+                        Assert.AreEqual(state, dataModel.State);
+                        Assert.AreEqual(commentText, dataModel.CommentText);
+                        Assert.AreEqual(rating, dataModel.Rating);
+                        Assert.AreEqual(contentIndex, dataModel.ContentIndex);
+                        Assert.AreEqual(upvotes, dataModel.Upvotes);
+                        Assert.AreEqual(DateTimeHelpers.UnixTimeStampToDateTime(timestamp), dataModel.TimeStamp);
+                        Assert.AreEqual(username, dataModel.Username);
+                        Assert.AreEqual(new Uri(ApiConstants.ProxerAvatarShortCdnUrl + avatar), dataModel.Avatar);
+
+                        Assert.AreEqual(subratings.Count, dataModel.SubRatings.Count);
+                        foreach (RatingCategory key in subratings.Keys)
+                            Assert.AreEqual(subratings[key], dataModel.SubRatings[key]);
+                    });
+            }
+
             Assert.AreEqual(3, dataModels.Length);
 
-            Assert.AreEqual(11660523, dataModels[0].CommentId);
-            Assert.AreEqual(9223553, dataModels[1].CommentId);
-            Assert.AreEqual(9091832, dataModels[2].CommentId);
+            Dictionary<RatingCategory, int> lSubRatings = new Dictionary<RatingCategory, int>
+            {
+                {RatingCategory.Genre, 4},
+                {RatingCategory.Story, 4},
+                {RatingCategory.Animation, 5},
+                {RatingCategory.Characters, 5},
+                {RatingCategory.Music, 5}
+            };
+            CheckDataModel(
+                dataModels[0], 11660523, 9200, 82932, MediaProgressState.Finished, lSubRatings, "comment text 1", 10,
+                22, 7, 1440565134, "Username 1", "104302_2jXP5i.jpg");
 
-            Assert.AreEqual(9200, dataModels[0].EntryId);
-            Assert.AreEqual(9200, dataModels[1].EntryId);
-            Assert.AreEqual(9200, dataModels[2].EntryId);
+            lSubRatings = new Dictionary<RatingCategory, int>
+            {
+                {RatingCategory.Genre, 5},
+                {RatingCategory.Story, 5},
+                {RatingCategory.Animation, 5},
+                {RatingCategory.Characters, 4}
+            };
+            CheckDataModel(
+                dataModels[1], 9223553, 9200, 192734, MediaProgressState.InProgress, lSubRatings, "comment text 2", 9,
+                4, 1, 1424444000, "Username 2", "81017_55958x946de72.jpg");
 
-            Assert.AreEqual(82932, dataModels[0].UserId);
-            Assert.AreEqual(192734, dataModels[1].UserId);
-            Assert.AreEqual(628395, dataModels[2].UserId);
-
-            Assert.AreEqual(MediaProgressState.Finished, dataModels[0].State);
-            Assert.AreEqual(MediaProgressState.InProgress, dataModels[1].State);
-            Assert.AreEqual(MediaProgressState.Planned, dataModels[2].State);
-
-            Assert.NotNull(dataModels[0].SubRatings);
-            Assert.AreEqual(5, dataModels[0].SubRatings.Count);
-            Assert.True(dataModels[0].SubRatings.ContainsKey(RatingCategory.Genre));
-            Assert.AreEqual(4, dataModels[0].SubRatings[RatingCategory.Genre]);
-            Assert.True(dataModels[0].SubRatings.ContainsKey(RatingCategory.Story));
-            Assert.AreEqual(4, dataModels[0].SubRatings[RatingCategory.Story]);
-            Assert.True(dataModels[0].SubRatings.ContainsKey(RatingCategory.Animation));
-            Assert.AreEqual(5, dataModels[0].SubRatings[RatingCategory.Animation]);
-            Assert.True(dataModels[0].SubRatings.ContainsKey(RatingCategory.Characters));
-            Assert.AreEqual(5, dataModels[0].SubRatings[RatingCategory.Characters]);
-            Assert.True(dataModels[0].SubRatings.ContainsKey(RatingCategory.Music));
-            Assert.AreEqual(5, dataModels[0].SubRatings[RatingCategory.Music]);
-
-            Assert.NotNull(dataModels[1].SubRatings);
-            Assert.AreEqual(4, dataModels[1].SubRatings.Count);
-            Assert.True(dataModels[1].SubRatings.ContainsKey(RatingCategory.Genre));
-            Assert.AreEqual(5, dataModels[1].SubRatings[RatingCategory.Genre]);
-            Assert.True(dataModels[1].SubRatings.ContainsKey(RatingCategory.Story));
-            Assert.AreEqual(5, dataModels[1].SubRatings[RatingCategory.Story]);
-            Assert.True(dataModels[1].SubRatings.ContainsKey(RatingCategory.Animation));
-            Assert.AreEqual(5, dataModels[1].SubRatings[RatingCategory.Animation]);
-            Assert.True(dataModels[1].SubRatings.ContainsKey(RatingCategory.Characters));
-            Assert.AreEqual(4, dataModels[1].SubRatings[RatingCategory.Characters]);
-
-            Assert.NotNull(dataModels[2].SubRatings);
-            Assert.AreEqual(0, dataModels[2].SubRatings.Count);
-
-            Assert.AreEqual("comment text 1", dataModels[0].CommentText);
-            Assert.AreEqual("comment text 2", dataModels[1].CommentText);
-            Assert.AreEqual("comment text 3", dataModels[2].CommentText);
-
-            Assert.AreEqual(10, dataModels[0].OverallRating);
-            Assert.AreEqual(9, dataModels[1].OverallRating);
-            Assert.AreEqual(7, dataModels[2].OverallRating);
-
-            Assert.AreEqual(22, dataModels[0].ContentIndex);
-            Assert.AreEqual(4, dataModels[1].ContentIndex);
-            Assert.AreEqual(21, dataModels[2].ContentIndex);
-
-            Assert.AreEqual(7, dataModels[0].Upvotes);
-            Assert.AreEqual(1, dataModels[1].Upvotes);
-            Assert.AreEqual(0, dataModels[2].Upvotes);
-
-            Assert.AreEqual(DateTimeHelpers.UnixTimeStampToDateTime(1440565134), dataModels[0].TimeStamp);
-            Assert.AreEqual(DateTimeHelpers.UnixTimeStampToDateTime(1424444000), dataModels[1].TimeStamp);
-            Assert.AreEqual(DateTimeHelpers.UnixTimeStampToDateTime(1444404588), dataModels[2].TimeStamp);
-
-            Assert.AreEqual("Username 1", dataModels[0].Username);
-            Assert.AreEqual("Username 2", dataModels[1].Username);
-            Assert.AreEqual("Username 3", dataModels[2].Username);
-
-            Assert.AreEqual("104302_2jXP5i.jpg", dataModels[0].Avatar);
-            Assert.AreEqual("81017_55958x946de72.jpg", dataModels[1].Avatar);
-            Assert.AreEqual("360478_5KfIf7.jpg", dataModels[2].Avatar);
+            CheckDataModel(
+                dataModels[2], 9091832, 9200, 628395, MediaProgressState.Planned,
+                new Dictionary<RatingCategory, int>(), "comment text 3", 7, 21, 0, 1444404588, "Username 3",
+                "360478_5KfIf7.jpg");
         }
     }
 }

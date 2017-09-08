@@ -25,10 +25,14 @@ namespace Azuria.Test.Api.v1.DataModels.Info
                 MediaContentDataModel contentModel, int contentIndex, MediaLanguage language, string[] hosters,
                 string[] hosterImages, string title)
             {
-                Assert.AreEqual(contentIndex, contentModel.ContentIndex);
-                Assert.AreEqual(language, contentModel.Language);
-                Assert.AreEqual(hosters, contentModel.StreamHosters);
-                Assert.AreEqual(title, contentModel.Title);
+                Assert.Multiple(
+                    () =>
+                    {
+                        Assert.AreEqual(contentIndex, contentModel.ContentIndex);
+                        Assert.AreEqual(language, contentModel.Language);
+                        Assert.AreEqual(hosters, contentModel.StreamHosters);
+                        Assert.AreEqual(title, contentModel.Title);
+                    });
             }
 
             Assert.AreEqual(1, dataModel.StartIndex);

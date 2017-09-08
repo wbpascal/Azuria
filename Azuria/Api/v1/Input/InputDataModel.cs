@@ -108,7 +108,7 @@ namespace Azuria.Api.v1.Input
                 .SelectMany(info => info.GenericTypeArguments)
                 .Any(type1 => type1.GetTypeInfo().IsAssignableFrom(GetNullableType(dataType).GetTypeInfo()));
         }
-        
+
         private static Type GetNullableType(Type nullable)
         {
             return Nullable.GetUnderlyingType(nullable) ?? nullable;

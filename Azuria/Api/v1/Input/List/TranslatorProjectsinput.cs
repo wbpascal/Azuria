@@ -15,13 +15,13 @@ namespace Azuria.Api.v1.Input.List
         /// </summary>
         [InputData("isH", Converter = typeof(IsHConverter), Optional = true)]
         public bool? IsH { get; set; }
-        
+
         /// <summary>
         /// 
         /// </summary>
         [InputData("type", ConverterMethodName = nameof(GetTranslationStatusString), Optional = true)]
         public TranslationStatus? TranslationStatus { get; set; }
-        
+
         /// <summary>
         /// 
         /// </summary>

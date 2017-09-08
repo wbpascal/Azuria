@@ -98,9 +98,7 @@ namespace Azuria.Test.Api.v1.RequestBuilder
         }
 
         [Test]
-        [TestCase(MediaEntryType.Anime)]
-        [TestCase(MediaEntryType.Manga)]
-        public void GetLatestCommentsUsernameTest(MediaEntryType category)
+        public void GetLatestCommentsUsernameTest([Values] MediaEntryType category)
         {
             string lRandomUsername = RandomHelper.GetRandomString(10);
             IRequestBuilderWithResult<CommentDataModel[]> lRequest =
@@ -112,9 +110,7 @@ namespace Azuria.Test.Api.v1.RequestBuilder
         }
 
         [Test]
-        [TestCase(MediaEntryType.Anime)]
-        [TestCase(MediaEntryType.Manga)]
-        public void GetLatestCommentsUserIdTest(MediaEntryType category)
+        public void GetLatestCommentsUserIdTest([Values] MediaEntryType category)
         {
             int lRandomId = this.GetRandomNumber(200_000);
             IRequestBuilderWithResult<CommentDataModel[]> lRequest =
@@ -147,12 +143,9 @@ namespace Azuria.Test.Api.v1.RequestBuilder
             );
         }
 
-        [Test]
-        [TestCase(MediaEntryType.Anime, UserListSort.ChangeDate, SortDirection.Ascending)]
-        [TestCase(MediaEntryType.Anime, UserListSort.StateChangeDate, SortDirection.Descending)]
-        [TestCase(MediaEntryType.Manga, UserListSort.Name, SortDirection.Descending)]
-        [TestCase(MediaEntryType.Manga, UserListSort.StateName, SortDirection.Ascending)]
-        public void GetListUserIdTest(MediaEntryType category, UserListSort sort, SortDirection sortDirection)
+        [Test, Pairwise]
+        public void GetListUserIdTest(
+            [Values] MediaEntryType category, [Values] UserListSort sort, [Values] SortDirection sortDirection)
         {
             int lRandomId = this.GetRandomNumber(200_000);
 
@@ -173,12 +166,9 @@ namespace Azuria.Test.Api.v1.RequestBuilder
             Assert.False(lRequest.CheckLogin);
         }
 
-        [Test]
-        [TestCase(MediaEntryType.Anime, UserListSort.ChangeDate, SortDirection.Ascending)]
-        [TestCase(MediaEntryType.Anime, UserListSort.StateChangeDate, SortDirection.Descending)]
-        [TestCase(MediaEntryType.Manga, UserListSort.Name, SortDirection.Descending)]
-        [TestCase(MediaEntryType.Manga, UserListSort.StateName, SortDirection.Ascending)]
-        public void GetListUsernameTest(MediaEntryType category, UserListSort sort, SortDirection sortDirection)
+        [Test, Pairwise]
+        public void GetListUsernameTest(
+            [Values] MediaEntryType category, [Values] UserListSort sort, [Values] SortDirection sortDirection)
         {
             string lRandomUsername = RandomHelper.GetRandomString(10);
 
@@ -208,9 +198,7 @@ namespace Azuria.Test.Api.v1.RequestBuilder
         }
 
         [Test]
-        [TestCase(MediaEntryType.Anime)]
-        [TestCase(MediaEntryType.Manga)]
-        public void GetToptenUserIdTest(MediaEntryType category)
+        public void GetToptenUserIdTest([Values] MediaEntryType category)
         {
             int lRandomId = this.GetRandomNumber(200_000);
             IRequestBuilderWithResult<ToptenDataModel[]> lRequest = this.RequestBuilder.GetTopten(lRandomId, category);
@@ -221,9 +209,7 @@ namespace Azuria.Test.Api.v1.RequestBuilder
         }
 
         [Test]
-        [TestCase(MediaEntryType.Anime)]
-        [TestCase(MediaEntryType.Manga)]
-        public void GetToptenUsernameTest(MediaEntryType category)
+        public void GetToptenUsernameTest([Values] MediaEntryType category)
         {
             string lRandomUsername = RandomHelper.GetRandomString(10);
             IRequestBuilderWithResult<ToptenDataModel[]> lRequest = this.RequestBuilder.GetTopten(

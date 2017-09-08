@@ -20,11 +20,7 @@ namespace Azuria.Test.Api.v1.RequestBuilder
         }
 
         [Test]
-        [TestCase(HeaderStyle.Black)]
-        [TestCase(HeaderStyle.Gray)]
-        [TestCase(HeaderStyle.OldBlue)]
-        [TestCase(HeaderStyle.Pantsu)]
-        public void GetRandomHeaderTest(HeaderStyle style)
+        public void GetRandomHeaderTest([Values] HeaderStyle style)
         {
             IRequestBuilderWithResult<HeaderDataModel> lRequest = this.RequestBuilder.GetRandomHeader(style);
             this.CheckUrl(lRequest, "media", "randomheader");

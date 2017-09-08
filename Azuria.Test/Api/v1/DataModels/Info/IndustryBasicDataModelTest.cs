@@ -20,31 +20,28 @@ namespace Azuria.Test.Api.v1.DataModels.Info
 
         public static void CheckDataModels(IndustryBasicDataModel[] dataModels)
         {
+            void CheckDataModel(
+                IndustryBasicDataModel dataModel, string name, int id, IndustryType type, Country country)
+            {
+                Assert.Multiple(
+                    () =>
+                    {
+                        Assert.AreEqual(name, dataModel.Name);
+                        Assert.AreEqual(id, dataModel.Id);
+                        Assert.AreEqual(type, dataModel.Type);
+                        Assert.AreEqual(country, dataModel.Country);
+                    });
+            }
+
             Assert.AreEqual(5, dataModels.Length);
 
-            Assert.AreEqual("Viewster", dataModels[0].Name);
-            Assert.AreEqual("Peppermint Anime", dataModels[1].Name);
-            Assert.AreEqual("Kyoraku Industrial Holdings Co.,Ltd.", dataModels[2].Name);
-            Assert.AreEqual("Aniplex of America", dataModels[3].Name);
-            Assert.AreEqual("A-1 Pictures", dataModels[4].Name);
-
-            Assert.AreEqual(216, dataModels[0].Id);
-            Assert.AreEqual(9, dataModels[1].Id);
-            Assert.AreEqual(430, dataModels[2].Id);
-            Assert.AreEqual(431, dataModels[3].Id);
-            Assert.AreEqual(7, dataModels[4].Id);
-
-            Assert.AreEqual(IndustryType.Streaming, dataModels[0].Type);
-            Assert.AreEqual(IndustryType.Publisher, dataModels[1].Type);
-            Assert.AreEqual(IndustryType.Producer, dataModels[2].Type);
-            Assert.AreEqual(IndustryType.Publisher, dataModels[3].Type);
-            Assert.AreEqual(IndustryType.Studio, dataModels[4].Type);
-
-            Assert.AreEqual(Country.Germany, dataModels[0].Country);
-            Assert.AreEqual(Country.Germany, dataModels[1].Country);
-            Assert.AreEqual(Country.Japan, dataModels[2].Country);
-            Assert.AreEqual(Country.UnitedStates, dataModels[3].Country);
-            Assert.AreEqual(Country.Japan, dataModels[4].Country);
+            CheckDataModel(dataModels[0], "Viewster", 216, IndustryType.Streaming, Country.Germany);
+            CheckDataModel(dataModels[1], "Peppermint Anime", 9, IndustryType.Publisher, Country.Germany);
+            CheckDataModel(
+                dataModels[2], "Kyoraku Industrial Holdings Co.,Ltd.", 430, IndustryType.Producer, Country.Japan
+            );
+            CheckDataModel(dataModels[3], "Aniplex of America", 431, IndustryType.Publisher, Country.UnitedStates);
+            CheckDataModel(dataModels[4], "A-1 Pictures", 7, IndustryType.Studio, Country.Japan);
         }
     }
 }

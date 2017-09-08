@@ -15,13 +15,13 @@ namespace Azuria.Api.v1.Input.List
         /// </summary>
         [InputData("search", Optional = true)]
         public string Search { get; set; }
-        
+
         /// <summary>
         /// 
         /// </summary>
         [InputData("sort", Converter = typeof(ToLowerConverter), Optional = true)]
         public TagListSort Sort { get; set; } = TagListSort.Tag;
-        
+
         /// <summary>
         /// 
         /// </summary>

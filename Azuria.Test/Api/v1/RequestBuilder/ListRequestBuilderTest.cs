@@ -205,7 +205,9 @@ namespace Azuria.Test.Api.v1.RequestBuilder
         }
 
         [Test, Sequential]
-        public void GetTagsTest([Values] TagType type, [Values] TagSubtype subtype, [Values] TagListSort sort, [Values] SortDirection direction)
+        public void GetTagsTest(
+            [Values] TagType type, [Values] TagSubtype subtype, [Values] TagListSort sort,
+            [Values] SortDirection direction)
         {
             TagListInput lInput = new TagListInput
             {
@@ -261,8 +263,8 @@ namespace Azuria.Test.Api.v1.RequestBuilder
         [Test, Combinatorial]
         public void GetTranslatorProjectsTest([Values] TranslationStatus status, [Values(null, true, false)] bool? isH)
         {
-            if(status == TranslationStatus.Unkown) return;
-            
+            if (status == TranslationStatus.Unkown) return;
+
             TranslatorProjectsInput lInput = new TranslatorProjectsInput
             {
                 IsH = isH,

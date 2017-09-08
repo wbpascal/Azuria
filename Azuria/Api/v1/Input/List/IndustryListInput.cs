@@ -15,13 +15,13 @@ namespace Azuria.Api.v1.Input.List
         /// </summary>
         [InputData("contains", ForbiddenValues = new object[] {""}, Optional = true)]
         public string Contains { get; set; }
-        
+
         /// <summary>
         /// 
         /// </summary>
         [InputData("country", ConverterMethodName = nameof(GetCountryString), Optional = true)]
         public Country? Country { get; set; }
-        
+
         /// <summary>
         /// 
         /// </summary>
