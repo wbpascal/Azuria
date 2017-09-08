@@ -81,19 +81,6 @@ namespace Azuria.Api.v1.RequestBuilder
                 .WithPostParameter(input.Build());
         }
 
-        private static int GetHValue(bool? isH)
-        {
-            switch (isH)
-            {
-                case true:
-                    return 1;
-                case false:
-                    return -1;
-                default:
-                    return 0;
-            }
-        }
-
         /// <summary>
         /// Builds a request that returns
         /// Api permissions required (class - permission level):
