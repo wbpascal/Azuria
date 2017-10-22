@@ -25,8 +25,9 @@ namespace Azuria.Test.Api.v1.RequestBuilder
             Assert.Throws<ArgumentNullException>(() => this.RequestBuilder.EntrySearch(null));
         }
 
-        [Test]
-        public void EntrySearchTest()
+        [Test, Sequential]
+        public void EntrySearchTest(
+            [Values] SearchResultSort sort, [Values] SearchMediaType type, [Values] LengthLimit lengthLimit)
         {
             SearchInput lInput = new SearchInput
             {
@@ -42,15 +43,16 @@ namespace Azuria.Test.Api.v1.RequestBuilder
                 Sort = SearchResultSort.Clicks,
                 TagsExclude = new[] {2, 3},
                 TagsInclude = new[] {15, 4},
-                Type = SearchMediaType.OneShot
+                Type = SearchMediaType.OneShot,
+                Limit = 30,
+                Page = 1
             };
-            IRequestBuilderWithResult<SearchDataModel[]> lRequest =
-                this.RequestBuilder.EntrySearch(lInput, 30, 1);
+            IRequestBuilderWithResult<SearchDataModel[]> lRequest = this.RequestBuilder.EntrySearch(lInput);
 
             this.CheckUrl(lRequest, "list", "entrysearch");
             Assert.AreSame(this.ProxerClient, lRequest.Client);
-            Assert.True(lRequest.GetParameters.ContainsKey("limit"));
-            Assert.True(lRequest.GetParameters.ContainsKey("p"));
+            Assert.True(lRequest.PostParameter.ContainsKey("limit"));
+            Assert.True(lRequest.PostParameter.ContainsKey("p"));
             Assert.True(lRequest.PostParameter.ContainsKey("name"));
             Assert.True(lRequest.PostParameter.ContainsKey("type"));
             Assert.True(lRequest.PostParameter.ContainsKey("sort"));
@@ -64,8 +66,8 @@ namespace Azuria.Test.Api.v1.RequestBuilder
             Assert.True(lRequest.PostParameter.ContainsKey("length"));
             Assert.True(lRequest.PostParameter.ContainsKey("tags"));
             Assert.True(lRequest.PostParameter.ContainsKey("notags"));
-            Assert.AreEqual("30", lRequest.GetParameters["limit"]);
-            Assert.AreEqual("1", lRequest.GetParameters["p"]);
+            Assert.AreEqual("30", lRequest.PostParameter.GetValue("limit").First());
+            Assert.AreEqual("1", lRequest.PostParameter.GetValue("p").First());
             Assert.AreEqual(lInput.Name, lRequest.PostParameter.GetValue("name").First());
             Assert.AreEqual("oneshot", lRequest.PostParameter.GetValue("type").First());
             Assert.AreEqual("clicks", lRequest.PostParameter.GetValue("sort").First());
@@ -99,22 +101,24 @@ namespace Azuria.Test.Api.v1.RequestBuilder
                 SortBy = EntryListSort.Rating,
                 SortDirection = SortDirection.Descending,
                 StartsWith = "a",
-                StartWithNonAlphabeticalChar = startWithNonAlphabeticalChar
+                StartWithNonAlphabeticalChar = startWithNonAlphabeticalChar,
+                Limit = 50,
+                Page = 2
             };
-            IRequestBuilderWithResult<SearchDataModel[]> lRequest = this.RequestBuilder.GetEntryList(lInput, 50, 2);
+            IRequestBuilderWithResult<SearchDataModel[]> lRequest = this.RequestBuilder.GetEntryList(lInput);
 
             this.CheckUrl(lRequest, "list", "entrylist");
             Assert.AreSame(this.ProxerClient, lRequest.Client);
-            Assert.True(lRequest.GetParameters.ContainsKey("limit"));
-            Assert.True(lRequest.GetParameters.ContainsKey("p"));
+            Assert.True(lRequest.PostParameter.ContainsKey("limit"));
+            Assert.True(lRequest.PostParameter.ContainsKey("p"));
             Assert.True(lRequest.PostParameter.ContainsKey("kat"));
             Assert.True(lRequest.PostParameter.ContainsKey("isH"));
             Assert.True(lRequest.PostParameter.ContainsKey("start"));
             Assert.True(lRequest.PostParameter.ContainsKey("sort"));
             Assert.True(lRequest.PostParameter.ContainsKey("sort_type"));
             Assert.True(lRequest.PostParameter.ContainsKey("medium"));
-            Assert.AreEqual("50", lRequest.GetParameters["limit"]);
-            Assert.AreEqual("2", lRequest.GetParameters["p"]);
+            Assert.AreEqual("50", lRequest.PostParameter.GetValue("limit").First());
+            Assert.AreEqual("2", lRequest.PostParameter.GetValue("p").First());
             Assert.AreEqual("manga", lRequest.PostParameter.GetValue("kat").First());
             Assert.AreEqual("true", lRequest.PostParameter.GetValue("isH").First());
             Assert.AreEqual(
@@ -137,24 +141,25 @@ namespace Azuria.Test.Api.v1.RequestBuilder
                 Country = country,
                 Contains = "test_contains",
                 StartsWith = "test_start",
-                Type = type
+                Type = type,
+                Limit = 30,
+                Page = 2
             };
-            IRequestBuilderWithResult<IndustryDataModel[]> lRequest =
-                this.RequestBuilder.GetIndustries(lInput, 30, 2);
+            IRequestBuilderWithResult<IndustryDataModel[]> lRequest = this.RequestBuilder.GetIndustries(lInput);
             this.CheckUrl(lRequest, "list", "industrys");
             Assert.AreSame(this.ProxerClient, lRequest.Client);
-            Assert.True(lRequest.GetParameters.ContainsKey("start"));
-            Assert.True(lRequest.GetParameters.ContainsKey("contains"));
-            Assert.True(lRequest.GetParameters.ContainsKey("country"));
-            Assert.True(lRequest.GetParameters.ContainsKey("type"));
-            Assert.True(lRequest.GetParameters.ContainsKey("limit"));
-            Assert.True(lRequest.GetParameters.ContainsKey("p"));
-            Assert.AreEqual("test_start", lRequest.GetParameters["start"]);
-            Assert.AreEqual("test_contains", lRequest.GetParameters["contains"]);
-            Assert.AreEqual(country.ToShortString(), lRequest.GetParameters["country"]);
-            Assert.AreEqual(type.ToTypeString(), lRequest.GetParameters["type"]);
-            Assert.AreEqual("30", lRequest.GetParameters["limit"]);
-            Assert.AreEqual("2", lRequest.GetParameters["p"]);
+            Assert.True(lRequest.PostParameter.ContainsKey("start"));
+            Assert.True(lRequest.PostParameter.ContainsKey("contains"));
+            Assert.True(lRequest.PostParameter.ContainsKey("country"));
+            Assert.True(lRequest.PostParameter.ContainsKey("type"));
+            Assert.True(lRequest.PostParameter.ContainsKey("limit"));
+            Assert.True(lRequest.PostParameter.ContainsKey("p"));
+            Assert.AreEqual("test_start", lRequest.PostParameter.GetValue("start").First());
+            Assert.AreEqual("test_contains", lRequest.PostParameter.GetValue("contains").First());
+            Assert.AreEqual(country.ToShortString(), lRequest.PostParameter.GetValue("country").First());
+            Assert.AreEqual(type.ToTypeString(), lRequest.PostParameter.GetValue("type").First());
+            Assert.AreEqual("30", lRequest.PostParameter.GetValue("limit").First());
+            Assert.AreEqual("2", lRequest.PostParameter.GetValue("p").First());
             Assert.False(lRequest.CheckLogin);
         }
 
@@ -165,37 +170,37 @@ namespace Azuria.Test.Api.v1.RequestBuilder
             {
                 IndustryId = 42,
                 IsH = isH,
-                Type = type
+                Type = type,
+                Limit = 150,
+                Page = 1
             };
             IRequestBuilderWithResult<IndustryProjectDataModel[]> lRequest =
-                this.RequestBuilder.GetIndustryProjects(lInput, 1, 150);
+                this.RequestBuilder.GetIndustryProjects(lInput);
             this.CheckUrl(lRequest, "list", "industryprojects");
             Assert.AreSame(this.ProxerClient, lRequest.Client);
-            Assert.True(lRequest.GetParameters.ContainsKey("id"));
-            Assert.True(lRequest.GetParameters.ContainsKey("type"));
-            Assert.True(lRequest.GetParameters.ContainsKey("isH"));
-            Assert.True(lRequest.GetParameters.ContainsKey("p"));
-            Assert.True(lRequest.GetParameters.ContainsKey("limit"));
-            Assert.AreEqual("42", lRequest.GetParameters["id"]);
-            Assert.AreEqual(type.ToTypeString(), lRequest.GetParameters["type"]);
-            Assert.AreEqual(GetIsHString(isH), lRequest.GetParameters["isH"]);
-            Assert.AreEqual("1", lRequest.GetParameters["p"]);
-            Assert.AreEqual("150", lRequest.GetParameters["limit"]);
+            Assert.True(lRequest.PostParameter.ContainsKey("id"));
+            Assert.True(lRequest.PostParameter.ContainsKey("type"));
+            Assert.True(lRequest.PostParameter.ContainsKey("isH"));
+            Assert.True(lRequest.PostParameter.ContainsKey("p"));
+            Assert.True(lRequest.PostParameter.ContainsKey("limit"));
+            Assert.AreEqual("42", lRequest.PostParameter.GetValue("id").First());
+            Assert.AreEqual(type.ToTypeString(), lRequest.PostParameter.GetValue("type").First());
+            Assert.AreEqual(GetIsHString(isH), lRequest.PostParameter.GetValue("isH").First());
+            Assert.AreEqual("1", lRequest.PostParameter.GetValue("p").First());
+            Assert.AreEqual("150", lRequest.PostParameter.GetValue("limit").First());
             Assert.False(lRequest.CheckLogin);
-        }
-
-        [Test]
-        public void GetTagIdsNullInputTest()
-        {
-            Assert.Throws<ArgumentNullException>(() => this.RequestBuilder.GetTagIds(null, new string[0]));
-            Assert.Throws<ArgumentNullException>(() => this.RequestBuilder.GetTagIds(new string[0], null));
         }
 
         [Test]
         public void GetTagIdsTest()
         {
-            IRequestBuilderWithResult<Tuple<int[], int[]>> lRequest = this.RequestBuilder.GetTagIds(
-                new[] {"test1"}, new[] {"testExclude1", "testExclude2"});
+            TagIdSearchInput lInput = new TagIdSearchInput
+            {
+                TagsExclude = new[] {"testExclude1", "testExclude2"},
+                TagsInclude = new[] {"test1"}
+            };
+
+            IRequestBuilderWithResult<Tuple<int[], int[]>> lRequest = this.RequestBuilder.GetTagIds(lInput);
             this.CheckUrl(lRequest, "list", "tagids");
             Assert.AreSame(this.ProxerClient, lRequest.Client);
             Assert.True(lRequest.GetParameters.ContainsKey("search"));
@@ -220,16 +225,16 @@ namespace Azuria.Test.Api.v1.RequestBuilder
             IRequestBuilderWithResult<TagDataModel[]> lRequest = this.RequestBuilder.GetTags(lInput);
             this.CheckUrl(lRequest, "list", "tags");
             Assert.AreSame(this.ProxerClient, lRequest.Client);
-            Assert.True(lRequest.GetParameters.ContainsKey("search"));
-            Assert.True(lRequest.GetParameters.ContainsKey("type"));
-            Assert.True(lRequest.GetParameters.ContainsKey("sort"));
-            Assert.True(lRequest.GetParameters.ContainsKey("sort_type"));
-            Assert.True(lRequest.GetParameters.ContainsKey("subtype"));
-            Assert.AreEqual("test_search", lRequest.GetParameters["search"]);
-            Assert.AreEqual(type.GetDescription(), lRequest.GetParameters["type"]);
-            Assert.AreEqual(sort.ToString().ToLowerInvariant(), lRequest.GetParameters["sort"]);
-            Assert.AreEqual(direction.GetDescription(), lRequest.GetParameters["sort_type"]);
-            Assert.AreEqual(subtype.GetDescription(), lRequest.GetParameters["subtype"]);
+            Assert.True(lRequest.PostParameter.ContainsKey("search"));
+            Assert.True(lRequest.PostParameter.ContainsKey("type"));
+            Assert.True(lRequest.PostParameter.ContainsKey("sort"));
+            Assert.True(lRequest.PostParameter.ContainsKey("sort_type"));
+            Assert.True(lRequest.PostParameter.ContainsKey("subtype"));
+            Assert.AreEqual("test_search", lRequest.PostParameter.GetValue("search").First());
+            Assert.AreEqual(type.GetDescription(), lRequest.PostParameter.GetValue("type").First());
+            Assert.AreEqual(sort.ToString().ToLowerInvariant(), lRequest.PostParameter.GetValue("sort").First());
+            Assert.AreEqual(direction.GetDescription(), lRequest.PostParameter.GetValue("sort_type").First());
+            Assert.AreEqual(subtype.GetDescription(), lRequest.PostParameter.GetValue("subtype").First());
             Assert.False(lRequest.CheckLogin);
         }
 
@@ -241,22 +246,23 @@ namespace Azuria.Test.Api.v1.RequestBuilder
             {
                 Contains = "test_contains",
                 Country = country,
-                StartsWith = "test_start"
+                StartsWith = "test_start",
+                Limit = 50,
+                Page = 1
             };
-            IRequestBuilderWithResult<TranslatorDataModel[]> lRequest =
-                this.RequestBuilder.GetTranslatorgroups(lInput, 50, 1);
+            IRequestBuilderWithResult<TranslatorDataModel[]> lRequest = this.RequestBuilder.GetTranslatorgroups(lInput);
             this.CheckUrl(lRequest, "list", "translatorgroups");
             Assert.AreSame(this.ProxerClient, lRequest.Client);
-            Assert.True(lRequest.GetParameters.ContainsKey("start"));
-            Assert.True(lRequest.GetParameters.ContainsKey("contains"));
-            Assert.True(lRequest.GetParameters.ContainsKey("country"));
-            Assert.True(lRequest.GetParameters.ContainsKey("limit"));
-            Assert.True(lRequest.GetParameters.ContainsKey("p"));
-            Assert.AreEqual("test_start", lRequest.GetParameters["start"]);
-            Assert.AreEqual("test_contains", lRequest.GetParameters["contains"]);
-            Assert.AreEqual(country.ToShortString() ?? string.Empty, lRequest.GetParameters["country"]);
-            Assert.AreEqual("50", lRequest.GetParameters["limit"]);
-            Assert.AreEqual("1", lRequest.GetParameters["p"]);
+            Assert.True(lRequest.PostParameter.ContainsKey("start"));
+            Assert.True(lRequest.PostParameter.ContainsKey("contains"));
+            Assert.True(lRequest.PostParameter.ContainsKey("country"));
+            Assert.True(lRequest.PostParameter.ContainsKey("limit"));
+            Assert.True(lRequest.PostParameter.ContainsKey("p"));
+            Assert.AreEqual("test_start", lRequest.PostParameter.GetValue("start").First());
+            Assert.AreEqual("test_contains", lRequest.PostParameter.GetValue("contains").First());
+            Assert.AreEqual(country.ToShortString() ?? string.Empty, lRequest.PostParameter.GetValue("country").First());
+            Assert.AreEqual("50", lRequest.PostParameter.GetValue("limit").First());
+            Assert.AreEqual("1", lRequest.PostParameter.GetValue("p").First());
             Assert.False(lRequest.CheckLogin);
         }
 
@@ -269,22 +275,24 @@ namespace Azuria.Test.Api.v1.RequestBuilder
             {
                 IsH = isH,
                 TranslationStatus = status,
-                TranslatorId = 42
+                TranslatorId = 42,
+                Limit = 50,
+                Page = 1
             };
             IRequestBuilderWithResult<TranslatorProjectDataModel[]> lRequest =
-                this.RequestBuilder.GetTranslatorProjects(lInput, 1, 50);
+                this.RequestBuilder.GetTranslatorProjects(lInput);
             this.CheckUrl(lRequest, "list", "translatorgroupprojects");
             Assert.AreSame(this.ProxerClient, lRequest.Client);
-            Assert.True(lRequest.GetParameters.ContainsKey("id"));
-            Assert.True(lRequest.GetParameters.ContainsKey("type"));
-            Assert.True(lRequest.GetParameters.ContainsKey("isH"));
-            Assert.True(lRequest.GetParameters.ContainsKey("p"));
-            Assert.True(lRequest.GetParameters.ContainsKey("limit"));
-            Assert.AreEqual("42", lRequest.GetParameters["id"]);
-            Assert.AreEqual(((int) status).ToString(), lRequest.GetParameters["type"]);
-            Assert.AreEqual(GetIsHString(isH), lRequest.GetParameters["isH"]);
-            Assert.AreEqual("1", lRequest.GetParameters["p"]);
-            Assert.AreEqual("50", lRequest.GetParameters["limit"]);
+            Assert.True(lRequest.PostParameter.ContainsKey("id"));
+            Assert.True(lRequest.PostParameter.ContainsKey("type"));
+            Assert.True(lRequest.PostParameter.ContainsKey("isH"));
+            Assert.True(lRequest.PostParameter.ContainsKey("p"));
+            Assert.True(lRequest.PostParameter.ContainsKey("limit"));
+            Assert.AreEqual("42", lRequest.PostParameter.GetValue("id").First());
+            Assert.AreEqual(((int) status).ToString(), lRequest.PostParameter.GetValue("type").First());
+            Assert.AreEqual(GetIsHString(isH), lRequest.PostParameter.GetValue("isH").First());
+            Assert.AreEqual("1", lRequest.PostParameter.GetValue("p").First());
+            Assert.AreEqual("50", lRequest.PostParameter.GetValue("limit").First());
             Assert.False(lRequest.CheckLogin);
         }
 

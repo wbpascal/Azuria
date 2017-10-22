@@ -6,16 +6,15 @@ namespace Azuria.Api.v1.Input.User
     /// <summary>
     /// 
     /// </summary>
-    public class UserGetListInput : UcpGetListInput
+    public sealed class UserGetListInput : UcpGetListInputBase
     {
         /// <summary>
-        /// If this is given the value of <see cref="Username"/> is ignored.
         /// </summary>
         [InputData("uid", Optional = true)]
         public int? UserId { get; set; }
 
         /// <summary>
-        /// If <see cref="UserId"/> is given this value will be ignored.
+        /// Ignored if <see cref="UserId"/> is given.
         /// </summary>
         [InputData("username", ConverterMethodName = nameof(GetUsernameString), Optional = true)]
         public string Username { get; set; }

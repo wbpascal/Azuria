@@ -1,7 +1,9 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using Autofac;
 using Azuria.Api.v1.Input.Converter;
 using Azuria.Exceptions;
 using Azuria.Helpers.Attributes;
@@ -15,7 +17,16 @@ namespace Azuria.Api.v1.Input
     public abstract class InputDataModel : IInputDataModel
     {
         /// <inheritdoc />
-        public virtual Dictionary<string, string> Build()
+        public override bool Equals(object obj)
+        {
+            if (obj.GetType() != this.GetType()) return base.Equals(obj);
+            return this.GetType().GetRuntimeProperties().All(
+                info => obj.GetType().GetRuntimeProperty(info.Name).GetValue(obj).Equals(info.GetValue(this))
+            );
+        }
+
+        /// <inheritdoc />
+        public virtual IEnumerable<KeyValuePair<string, string>> Build()
         {
             IEnumerable<Tuple<PropertyInfo, InputDataAttribute>> lInputDataProperties = this.GetType()
                 .GetRuntimeProperties()
@@ -25,13 +36,13 @@ namespace Azuria.Api.v1.Input
                     )
                 ).Where(tuple => tuple.Item2 != null);
 
-            Dictionary<string, string> lReturn = new Dictionary<string, string>();
-            lReturn.AddOrUpdateRange(
+            List<KeyValuePair<string, string>> lReturn = new List<KeyValuePair<string, string>>();
+            lReturn.AddRange(
                 lInputDataProperties.Select(
-                    tuple => new KeyValuePair<string, string>(
-                        tuple.Item2.Key, this.GetPropertyValue(tuple.Item1, tuple.Item2)
-                    )
-                ).Where(pair => pair.Value != null)
+                        tuple => new KeyValuePair<string, string>(
+                            tuple.Item2.Key, this.GetPropertyValue(tuple.Item1, tuple.Item2))
+                        )
+                    .Where(pair => pair.Value != null)
             );
             return lReturn;
         }
@@ -45,7 +56,10 @@ namespace Azuria.Api.v1.Input
                                  $"This value is not supported for {propertyInfo.Name}"
                              );
             if (string.IsNullOrWhiteSpace(attribute.ConverterMethodName) && attribute.Converter == null)
-                return propertyInfo.GetValue(this)?.ToString() ?? (attribute.Optional ? null : string.Empty);
+                return propertyInfo.GetValue(this)?.ToString() ??
+                       (attribute.Optional
+                            ? (string) null
+                            : throw new ArgumentNullException($"{propertyInfo.Name} is required!"));
 
             Func<object, string> lConversionMethod = this.FindConversionMethod(propertyInfo, attribute);
 
@@ -89,7 +103,7 @@ namespace Azuria.Api.v1.Input
             lConverterMethod = FindFromName(attribute.Converter, "Convert");
             object lConverterInstance = Activator.CreateInstance(attribute.Converter);
             if (lConverterMethod != null)
-                return o => lConverterMethod.Invoke(lConverterInstance, new[] {o}).ToString();
+                return o => lConverterMethod.Invoke(lConverterInstance, new[] {o})?.ToString();
 
             return null;
         }

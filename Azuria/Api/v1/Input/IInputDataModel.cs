@@ -11,6 +11,6 @@ namespace Azuria.Api.v1.Input
         /// 
         /// </summary>
         /// <returns></returns>
-        Dictionary<string, string> Build();
+        IEnumerable<KeyValuePair<string, string>> Build();
     }
 }

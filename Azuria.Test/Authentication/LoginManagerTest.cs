@@ -2,6 +2,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Autofac;
 using Azuria.Api.v1.DataModels.User;
+using Azuria.Api.v1.Input.User;
 using Azuria.Authentication;
 using Azuria.ErrorHandling;
 using Azuria.Requests;
@@ -61,7 +62,8 @@ namespace Azuria.Test.Authentication
             ILoginManager lLoginManager = lClient.Container.Resolve<ILoginManager>();
 
             IProxerResult lResult = await lLoginManager.PerformLoginAsync(
-                                        "username", "password", token: lCancellationToken);
+                                        new LoginInput("username", "password"), token: lCancellationToken
+                                    );
             Assert.True(lResult.Success);
             Assert.IsEmpty(lResult.Exceptions);
 
@@ -92,7 +94,8 @@ namespace Azuria.Test.Authentication
             ILoginManager lLoginManager = lClient.Container.Resolve<ILoginManager>();
 
             IProxerResult lResult = await lLoginManager.PerformLoginAsync(
-                                        "username", "password", new string(new char[6]), lCancellationToken
+                                        new LoginInput("username", "password", new string(new char[6])),
+                                        lCancellationToken
                                     );
             Assert.True(lResult.Success);
             Assert.IsEmpty(lResult.Exceptions);

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Threading;
 using System.Threading.Tasks;
+using Azuria.Api.v1.Input.User;
 using Azuria.ErrorHandling;
 
 namespace Azuria.Authentication
@@ -29,14 +30,11 @@ namespace Azuria.Authentication
         /// <summary>
         /// Performs the login of the client with the given username, password and optional 2FA-Token.
         /// </summary>
-        /// <param name="username">The username of the user that is being authenticated.</param>
-        /// <param name="password">The password of the user that is being authenticated.</param>
-        /// <param name="secretKey">Optional. The 2FA-Token used to authenticate the client.</param>
+        /// <param name="input">The input model that contains the login data.</param>
         /// <param name="token">Optional. The cancellation token used for cancelling the request.</param>
         /// <returns>A <see cref="Task" /> that returns the result of the request.</returns>
         Task<IProxerResult> PerformLoginAsync(
-            string username, string password, string secretKey = null,
-            CancellationToken token = default(CancellationToken));
+            LoginInput input, CancellationToken token = default(CancellationToken));
 
         /// <summary>
         /// Performs the logout of the client.

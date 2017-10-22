@@ -1,3 +1,4 @@
+using System;
 using System.Linq;
 using Azuria.Api.v1.DataModels.User;
 using Azuria.Api.v1.Input.User;
@@ -28,23 +29,31 @@ namespace Azuria.Test.Api.v1.RequestBuilder
         [Test]
         public void GetHistoryUsernameTest()
         {
-            string lRandomUsername = RandomHelper.GetRandomString(10);
-            IRequestBuilderWithResult<HistoryDataModel[]> lRequest = this.RequestBuilder.GetHistory(
-                lRandomUsername, 4, 132);
+            UserEntryHistoryInput lInput = new UserEntryHistoryInput
+            {
+                Username = RandomHelper.GetRandomString(10),
+                Limit = 132,
+                Page = 4
+            };
+            IRequestBuilderWithResult<HistoryDataModel[]> lRequest = this.RequestBuilder.GetHistory(lInput);
             this.GetHistoryTestBase(lRequest);
             Assert.True(lRequest.GetParameters.ContainsKey("username"));
-            Assert.AreEqual(lRandomUsername, lRequest.GetParameters["username"]);
+            Assert.AreEqual(lInput.Username, lRequest.GetParameters["username"]);
         }
 
         [Test]
         public void GetHistoryUserIdTest()
         {
-            int lRandomId = this.GetRandomNumber(200_000);
-            IRequestBuilderWithResult<HistoryDataModel[]> lRequest = this.RequestBuilder.GetHistory(
-                lRandomId, 4, 132);
+            UserEntryHistoryInput lInput = new UserEntryHistoryInput
+            {
+                UserId = this.GetRandomNumber(500_000),
+                Limit = 132,
+                Page = 4
+            };
+            IRequestBuilderWithResult<HistoryDataModel[]> lRequest = this.RequestBuilder.GetHistory(lInput);
             this.GetHistoryTestBase(lRequest);
             Assert.True(lRequest.GetParameters.ContainsKey("uid"));
-            Assert.AreEqual(lRandomId.ToString(), lRequest.GetParameters["uid"]);
+            Assert.AreEqual(lInput.UserId.ToString(), lRequest.GetParameters["uid"]);
         }
 
         private void GetInfoTestBase(IRequestBuilderBase requestBuilderBase)
@@ -56,7 +65,7 @@ namespace Azuria.Test.Api.v1.RequestBuilder
         [Test]
         public void GetInfoTest()
         {
-            IRequestBuilderWithResult<UserInfoDataModel> lRequest = this.RequestBuilder.GetInfo();
+            IRequestBuilderWithResult<UserInfoDataModel> lRequest = this.RequestBuilder.GetInfo(new UserInfoInput());
             this.GetInfoTestBase(lRequest);
             Assert.True(lRequest.CheckLogin);
         }
@@ -64,22 +73,28 @@ namespace Azuria.Test.Api.v1.RequestBuilder
         [Test]
         public void GetInfoUserIdTest()
         {
-            int lRandomId = this.GetRandomNumber(200_000);
-            IRequestBuilderWithResult<UserInfoDataModel> lRequest = this.RequestBuilder.GetInfo(lRandomId);
+            UserInfoInput lInput = new UserInfoInput
+            {
+                UserId = this.GetRandomNumber(500_000)
+            };
+            IRequestBuilderWithResult<UserInfoDataModel> lRequest = this.RequestBuilder.GetInfo(lInput);
             this.GetInfoTestBase(lRequest);
             Assert.True(lRequest.GetParameters.ContainsKey("uid"));
-            Assert.AreEqual(lRandomId.ToString(), lRequest.GetParameters["uid"]);
+            Assert.AreEqual(lInput.UserId.ToString(), lRequest.GetParameters["uid"]);
             Assert.False(lRequest.CheckLogin);
         }
 
         [Test]
         public void GetInfoUsernameTest()
         {
-            string lRandomUsername = RandomHelper.GetRandomString(10);
-            IRequestBuilderWithResult<UserInfoDataModel> lRequest = this.RequestBuilder.GetInfo(lRandomUsername);
+            UserInfoInput lInput = new UserInfoInput
+            {
+                Username = RandomHelper.GetRandomString(10)
+            };
+            IRequestBuilderWithResult<UserInfoDataModel> lRequest = this.RequestBuilder.GetInfo(lInput);
             this.GetInfoTestBase(lRequest);
             Assert.True(lRequest.GetParameters.ContainsKey("username"));
-            Assert.AreEqual(lRandomUsername, lRequest.GetParameters["username"]);
+            Assert.AreEqual(lInput.Username, lRequest.GetParameters["username"]);
             Assert.False(lRequest.CheckLogin);
         }
 
@@ -100,24 +115,36 @@ namespace Azuria.Test.Api.v1.RequestBuilder
         [Test]
         public void GetLatestCommentsUsernameTest([Values] MediaEntryType category)
         {
-            string lRandomUsername = RandomHelper.GetRandomString(10);
-            IRequestBuilderWithResult<CommentDataModel[]> lRequest =
-                this.RequestBuilder.GetLatestComments(lRandomUsername, 4, 43, category, 379);
+            UserCommentsListInput lInput = new UserCommentsListInput
+            {
+                Username = RandomHelper.GetRandomString(10),
+                Category = category,
+                Page = 4,
+                Limit = 43,
+                Length = 379
+            };
+            IRequestBuilderWithResult<CommentDataModel[]> lRequest = this.RequestBuilder.GetLatestComments(lInput);
             this.GetLatestCommentsTestBase(lRequest, category);
             Assert.True(lRequest.GetParameters.ContainsKey("username"));
-            Assert.AreEqual(lRandomUsername, lRequest.GetParameters["username"]);
+            Assert.AreEqual(lInput.Username, lRequest.GetParameters["username"]);
             Assert.False(lRequest.CheckLogin);
         }
 
         [Test]
         public void GetLatestCommentsUserIdTest([Values] MediaEntryType category)
         {
-            int lRandomId = this.GetRandomNumber(200_000);
-            IRequestBuilderWithResult<CommentDataModel[]> lRequest =
-                this.RequestBuilder.GetLatestComments(lRandomId, 4, 43, category, 379);
+            UserCommentsListInput lInput = new UserCommentsListInput
+            {
+                UserId = this.GetRandomNumber(500_000),
+                Category = category,
+                Page = 4,
+                Limit = 43,
+                Length = 379
+            };
+            IRequestBuilderWithResult<CommentDataModel[]> lRequest = this.RequestBuilder.GetLatestComments(lInput);
             this.GetLatestCommentsTestBase(lRequest, category);
             Assert.True(lRequest.GetParameters.ContainsKey("uid"));
-            Assert.AreEqual(lRandomId.ToString(), lRequest.GetParameters["uid"]);
+            Assert.AreEqual(lInput.UserId.ToString(), lRequest.GetParameters["uid"]);
             Assert.False(lRequest.CheckLogin);
         }
 
@@ -147,8 +174,6 @@ namespace Azuria.Test.Api.v1.RequestBuilder
         public void GetListUserIdTest(
             [Values] MediaEntryType category, [Values] UserListSort sort, [Values] SortDirection sortDirection)
         {
-            int lRandomId = this.GetRandomNumber(200_000);
-
             UserGetListInput lInputDataModel = new UserGetListInput
             {
                 Category = category,
@@ -156,13 +181,15 @@ namespace Azuria.Test.Api.v1.RequestBuilder
                 SearchStart = "test_search_start",
                 Sort = sort,
                 SortDirection = sortDirection,
-                UserId = lRandomId
+                UserId = this.GetRandomNumber(200_000),
+                Limit = 72,
+                Page = 2
             };
 
-            IRequestBuilderWithResult<ListDataModel[]> lRequest = this.RequestBuilder.GetList(lInputDataModel, 2, 72);
+            IRequestBuilderWithResult<ListDataModel[]> lRequest = this.RequestBuilder.GetList(lInputDataModel);
             this.GetListTestBase(lRequest, category, sort, sortDirection);
             Assert.True(lRequest.GetParameters.ContainsKey("uid"));
-            Assert.AreEqual(lRandomId.ToString(), lRequest.GetParameters["uid"]);
+            Assert.AreEqual(lInputDataModel.UserId.ToString(), lRequest.GetParameters["uid"]);
             Assert.False(lRequest.CheckLogin);
         }
 
@@ -170,8 +197,6 @@ namespace Azuria.Test.Api.v1.RequestBuilder
         public void GetListUsernameTest(
             [Values] MediaEntryType category, [Values] UserListSort sort, [Values] SortDirection sortDirection)
         {
-            string lRandomUsername = RandomHelper.GetRandomString(10);
-
             UserGetListInput lInputDataModel = new UserGetListInput
             {
                 Category = category,
@@ -179,13 +204,15 @@ namespace Azuria.Test.Api.v1.RequestBuilder
                 SearchStart = "test_search_start",
                 Sort = sort,
                 SortDirection = sortDirection,
-                Username = lRandomUsername
+                Username = RandomHelper.GetRandomString(10),
+                Limit = 72,
+                Page = 2
             };
 
-            IRequestBuilderWithResult<ListDataModel[]> lRequest = this.RequestBuilder.GetList(lInputDataModel, 2, 72);
+            IRequestBuilderWithResult<ListDataModel[]> lRequest = this.RequestBuilder.GetList(lInputDataModel);
             this.GetListTestBase(lRequest, category, sort, sortDirection);
             Assert.True(lRequest.GetParameters.ContainsKey("username"));
-            Assert.AreEqual(lRandomUsername, lRequest.GetParameters["username"]);
+            Assert.AreEqual(lInputDataModel.Username, lRequest.GetParameters["username"]);
             Assert.False(lRequest.CheckLogin);
         }
 
@@ -200,58 +227,69 @@ namespace Azuria.Test.Api.v1.RequestBuilder
         [Test]
         public void GetToptenUserIdTest([Values] MediaEntryType category)
         {
-            int lRandomId = this.GetRandomNumber(200_000);
-            IRequestBuilderWithResult<ToptenDataModel[]> lRequest = this.RequestBuilder.GetTopten(lRandomId, category);
+            UserToptenListInput lInput = new UserToptenListInput
+            {
+                Category = category,
+                UserId = this.GetRandomNumber(500_000)
+            };
+            IRequestBuilderWithResult<ToptenDataModel[]> lRequest = this.RequestBuilder.GetTopten(lInput);
             this.GetToptenTestBase(lRequest, category);
             Assert.True(lRequest.GetParameters.ContainsKey("uid"));
-            Assert.AreEqual(lRandomId.ToString(), lRequest.GetParameters["uid"]);
+            Assert.AreEqual(lInput.UserId.ToString(), lRequest.GetParameters["uid"]);
             Assert.False(lRequest.CheckLogin);
         }
 
         [Test]
         public void GetToptenUsernameTest([Values] MediaEntryType category)
         {
-            string lRandomUsername = RandomHelper.GetRandomString(10);
-            IRequestBuilderWithResult<ToptenDataModel[]> lRequest = this.RequestBuilder.GetTopten(
-                lRandomUsername, category);
+            UserToptenListInput lInput = new UserToptenListInput
+            {
+                Category = category,
+                Username = RandomHelper.GetRandomString(10)
+            };
+            IRequestBuilderWithResult<ToptenDataModel[]> lRequest = this.RequestBuilder.GetTopten(lInput);
             this.GetToptenTestBase(lRequest, category);
             Assert.True(lRequest.GetParameters.ContainsKey("username"));
-            Assert.AreEqual(lRandomUsername, lRequest.GetParameters["username"]);
+            Assert.AreEqual(lInput.Username, lRequest.GetParameters["username"]);
             Assert.False(lRequest.CheckLogin);
         }
 
         [Test]
         public void LoginTest()
         {
-            string lRandomUsername = RandomHelper.GetRandomString(10);
-            string lRandomPassword = RandomHelper.GetRandomString(20);
-            IRequestBuilderWithResult<LoginDataModel> lRequest =
-                this.RequestBuilder.Login(lRandomUsername, lRandomPassword);
+            LoginInput lInput = new LoginInput
+            {
+                Username = RandomHelper.GetRandomString(10),
+                Password = RandomHelper.GetRandomString(16)
+            };
+            IRequestBuilderWithResult<LoginDataModel> lRequest = this.RequestBuilder.Login(lInput);
             this.CheckUrl(lRequest, "user", "login");
             Assert.AreSame(this.ProxerClient, lRequest.Client);
             Assert.True(lRequest.PostParameter.ContainsKey("username"));
             Assert.True(lRequest.PostParameter.ContainsKey("password"));
-            Assert.AreEqual(lRandomUsername, lRequest.PostParameter.GetValue("username").First());
-            Assert.AreEqual(lRandomPassword, lRequest.PostParameter.GetValue("password").First());
+            Assert.AreEqual(lInput.Username, lRequest.PostParameter.GetValue("username").First());
+            Assert.AreEqual(lInput.Password, lRequest.PostParameter.GetValue("password").First());
             Assert.False(lRequest.CheckLogin);
         }
 
         [Test]
         public void LoginSecretKeyTest()
         {
-            string lRandomUsername = RandomHelper.GetRandomString(10);
-            string lRandomPassword = RandomHelper.GetRandomString(20);
-            string lRandomSecretKey = RandomHelper.GetRandomString(6);
-            IRequestBuilderWithResult<LoginDataModel> lRequest =
-                this.RequestBuilder.Login(lRandomUsername, lRandomPassword, lRandomSecretKey);
+            LoginInput lInput = new LoginInput
+            {
+                Username = RandomHelper.GetRandomString(10),
+                Password = RandomHelper.GetRandomString(16),
+                SecretKey = this.GetRandomNumber(6).ToString()
+            };
+            IRequestBuilderWithResult<LoginDataModel> lRequest = this.RequestBuilder.Login(lInput);
             this.CheckUrl(lRequest, "user", "login");
             Assert.AreSame(this.ProxerClient, lRequest.Client);
             Assert.True(lRequest.PostParameter.ContainsKey("username"));
             Assert.True(lRequest.PostParameter.ContainsKey("password"));
             Assert.True(lRequest.PostParameter.ContainsKey("secretKey"));
-            Assert.AreEqual(lRandomUsername, lRequest.PostParameter.GetValue("username").First());
-            Assert.AreEqual(lRandomPassword, lRequest.PostParameter.GetValue("password").First());
-            Assert.AreEqual(lRandomSecretKey, lRequest.PostParameter.GetValue("secretKey").First());
+            Assert.AreEqual(lInput.Username, lRequest.PostParameter.GetValue("username").First());
+            Assert.AreEqual(lInput.Password, lRequest.PostParameter.GetValue("password").First());
+            Assert.AreEqual(lInput.SecretKey, lRequest.PostParameter.GetValue("secretKey").First());
             Assert.False(lRequest.CheckLogin);
         }
 

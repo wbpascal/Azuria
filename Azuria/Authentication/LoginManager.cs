@@ -2,6 +2,7 @@
 using System.Threading;
 using System.Threading.Tasks;
 using Azuria.Api.v1.DataModels.User;
+using Azuria.Api.v1.Input.User;
 using Azuria.Api.v1.RequestBuilder;
 using Azuria.ErrorHandling;
 using Azuria.Requests;
@@ -53,14 +54,9 @@ namespace Azuria.Authentication
 
         /// <inheritdoc />
         public virtual async Task<IProxerResult> PerformLoginAsync(
-            string username, string password, string secretKey = null,
-            CancellationToken token = default(CancellationToken))
+            LoginInput input, CancellationToken token = default(CancellationToken))
         {
-            IRequestBuilderWithResult<LoginDataModel> lRequest = secretKey == null
-                                                                     ? this._userRequestBuilder.Login(
-                                                                         username, password)
-                                                                     : this._userRequestBuilder.Login(
-                                                                         username, password, secretKey);
+            IRequestBuilderWithResult<LoginDataModel> lRequest = this._userRequestBuilder.Login(input);
 
             IProxerResult<LoginDataModel> lResult = await lRequest.DoRequestAsync(token);
 

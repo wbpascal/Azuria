@@ -1,5 +1,6 @@
 using System.Threading;
 using System.Threading.Tasks;
+using Azuria.Api.v1.Input.User;
 using Azuria.Authentication;
 using Azuria.ErrorHandling;
 using Moq;
@@ -21,7 +22,11 @@ namespace Azuria.Test.Authentication
         {
             this._loginMangerMock = new Mock<ILoginManager>();
             this._loginMangerMock
-                .Setup(manager => manager.PerformLoginAsync(Username, Password, SecretKey, this._cancellationToken))
+                .Setup(
+                    manager => manager.PerformLoginAsync(
+                        new LoginInput(Username, Password, SecretKey), this._cancellationToken
+                    )
+                )
                 .ReturnsAsync(new ProxerResult());
             this._loginMangerMock
                 .Setup(manager => manager.PerformLogoutAsync(this._cancellationToken))
@@ -34,12 +39,15 @@ namespace Azuria.Test.Authentication
         [Test]
         public async Task PerformLoginAsyncCalledLoginManagerMethodTest()
         {
-            IProxerResult lResult =
-                await this._proxerClient.LoginAsync("username", "password", SecretKey, this._cancellationToken);
+            IProxerResult lResult = await this._proxerClient.LoginAsync(
+                                        new LoginInput("username", "password", SecretKey), this._cancellationToken
+                                    );
             Assert.True(lResult.Success);
             Assert.IsEmpty(lResult.Exceptions);
             this._loginMangerMock.Verify(
-                manager => manager.PerformLoginAsync(Username, Password, SecretKey, this._cancellationToken),
+                manager => manager.PerformLoginAsync(
+                    new LoginInput(Username, Password, SecretKey), this._cancellationToken
+                ),
                 Times.Once
             );
         }

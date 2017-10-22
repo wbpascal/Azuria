@@ -10,19 +10,22 @@ namespace Azuria.Api.v1.Input.List
 {
     /// <summary>
     /// </summary>
-    public class SearchInput : InputDataModel
+    public sealed class SearchInput : PagedInputDataModel
     {
         /// <summary>
+        /// Optional, if omitted (or null) the default value of the api method will be used.
         /// </summary>
         [InputData("tagspoilerfilter", ConverterMethodName = nameof(GetTagSpoilerFilterString), Optional = true)]
         public bool? FilterSpoilerTags { get; set; } = true;
 
         /// <summary>
+        /// Optional, if omitted (or null) the default value of the api method will be used.
         /// </summary>
         [InputData("tagratefilter", ConverterMethodName = nameof(GetTagRateFilterString), Optional = true)]
-        public bool FilterUnratedTags { get; set; } = true;
+        public bool? FilterUnratedTags { get; set; }
 
         /// <summary>
+        /// Optional, if omitted (or null) the default value of the api method will be used.
         /// </summary>
         [InputData(
             "fsk", ConverterMethodName = nameof(FskToString), ForbiddenValues = new object[] {""},
@@ -30,6 +33,7 @@ namespace Azuria.Api.v1.Input.List
         public IEnumerable<Fsk> Fsk { get; set; }
 
         /// <summary>
+        /// Optional, if omitted (or null) the default value of the api method will be used.
         /// </summary>
         [InputData(
             "nogenre", ConverterMethodName = nameof(GenresToString), ForbiddenValues = new object[] {""},
@@ -37,6 +41,7 @@ namespace Azuria.Api.v1.Input.List
         public IEnumerable<Genre> GenreExclude { get; set; }
 
         /// <summary>
+        /// Optional, if omitted (or null) the default value of the api method will be used.
         /// </summary>
         [InputData(
             "genre", ConverterMethodName = nameof(GenresToString), ForbiddenValues = new object[] {""},
@@ -44,44 +49,52 @@ namespace Azuria.Api.v1.Input.List
         public IEnumerable<Genre> GenreInclude { get; set; }
 
         /// <summary>
+        /// Optional, if omitted (or null) the default value of the api method will be used.
         /// </summary>
         [InputData("language", Converter = typeof(ToShortStringConverter), Optional = true)]
-        public Language? Language { get; set; } = null;
+        public Language? Language { get; set; }
 
         /// <summary>
+        /// Optional, if omitted (or null) the default value of the api method will be used.
         /// </summary>
         [InputData("length", Optional = true)]
         public int? Length { get; set; }
 
         /// <summary>
+        /// Optional, if omitted (or null) the default value of the api method will be used.
         /// </summary>
         [InputData("length-limit", Converter = typeof(ToLowerConverter), Optional = true)]
-        public LengthLimit LengthLimit { get; set; } = LengthLimit.Down;
+        public LengthLimit? LengthLimit { get; set; }
 
         /// <summary>
+        /// Optional, if omitted (or null) the default value of the api method will be used.
         /// </summary>
         [InputData("name", Optional = true)]
         public string Name { get; set; }
 
         /// <summary>
+        /// Optional, if omitted (or null) the default value of the api method will be used.
         /// </summary>
         [InputData("sort", Converter = typeof(ToLowerConverter), Optional = true)]
-        public SearchResultSort Sort { get; set; } = SearchResultSort.Relevance;
+        public SearchResultSort? Sort { get; set; }
 
         /// <summary>
+        /// Optional, if omitted (or null) the default value of the api method will be used.
         /// </summary>
         [InputData("notags", Converter = typeof(SpaceSeparatedEnumerationConverter), Optional = true)]
         public IEnumerable<int> TagsExclude { get; set; }
 
         /// <summary>
+        /// Optional, if omitted (or null) the default value of the api method will be used.
         /// </summary>
         [InputData("tags", Converter = typeof(SpaceSeparatedEnumerationConverter), Optional = true)]
         public IEnumerable<int> TagsInclude { get; set; }
 
         /// <summary>
+        /// Optional, if omitted (or null) the default value of the api method will be used.
         /// </summary>
         [InputData("type", ConverterMethodName = nameof(TypeToString), Optional = true)]
-        public SearchMediaType Type { get; set; } = SearchMediaType.All;
+        public SearchMediaType? Type { get; set; }
 
         private static string FskToString(IEnumerable<Fsk> fskTypes)
         {

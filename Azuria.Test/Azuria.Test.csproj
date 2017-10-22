@@ -9,7 +9,7 @@
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="15.0.0" />
     <PackageReference Include="NUnit" Version="3.8.1" />
     <PackageReference Include="NUnit3TestAdapter" Version="3.8.0" />
-	<PackageReference Include="Mono.Cecil" Version="0.10.0-beta6" />
+    <PackageReference Include="Mono.Cecil" Version="0.10.0-beta6" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Azuria.Test.Core\Azuria.Test.Core.csproj" />
@@ -20,5 +20,8 @@
   </ItemGroup>
   <ItemGroup>
     <None Remove="signing_key.snk" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Api\v1\DataModels\List" />
   </ItemGroup>
 </Project>

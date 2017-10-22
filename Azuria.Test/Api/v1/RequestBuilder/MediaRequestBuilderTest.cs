@@ -1,4 +1,5 @@
 using Azuria.Api.v1.DataModels.Media;
+using Azuria.Api.v1.Input.Media;
 using Azuria.Api.v1.RequestBuilder;
 using Azuria.Enums.Media;
 using Azuria.Helpers.Extensions;
@@ -22,7 +23,11 @@ namespace Azuria.Test.Api.v1.RequestBuilder
         [Test]
         public void GetRandomHeaderTest([Values] HeaderStyle style)
         {
-            IRequestBuilderWithResult<HeaderDataModel> lRequest = this.RequestBuilder.GetRandomHeader(style);
+            RandomHeaderInput lInput = new RandomHeaderInput()
+            {
+                HeaderStyle = style
+            };
+            IRequestBuilderWithResult<HeaderDataModel> lRequest = this.RequestBuilder.GetRandomHeader(lInput);
             this.CheckUrl(lRequest, "media", "randomheader");
             Assert.AreSame(this.ProxerClient, lRequest.Client);
             Assert.True(lRequest.GetParameters.ContainsKey("style"));

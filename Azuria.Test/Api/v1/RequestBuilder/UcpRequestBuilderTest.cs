@@ -22,46 +22,57 @@ namespace Azuria.Test.Api.v1.RequestBuilder
         [Test]
         public void DeleteFavouriteTest()
         {
-            int lRandomId = this.GetRandomNumber(10000);
-
-            IRequestBuilder lRequest = this.RequestBuilder.DeleteFavourite(lRandomId);
+            DeleteToptenInput lInput = new DeleteToptenInput
+            {
+                ToptenId = this.GetRandomNumber(10000)
+            };
+            IRequestBuilder lRequest = this.RequestBuilder.DeleteTopten(lInput);
             this.CheckUrl(lRequest, "ucp", "deletefavorite");
             Assert.AreSame(this.ProxerClient, lRequest.Client);
             Assert.True(lRequest.PostParameter.ContainsKey("id"));
-            Assert.AreEqual(lRandomId.ToString(), lRequest.PostParameter.GetValue("id").First());
+            Assert.AreEqual(lInput.ToptenId.ToString(), lRequest.PostParameter.GetValue("id").First());
             Assert.True(lRequest.CheckLogin);
         }
 
         [Test]
         public void DeleteReminderTest()
         {
-            int lRandomId = this.GetRandomNumber(10000);
-
-            IRequestBuilder lRequest = this.RequestBuilder.DeleteReminder(lRandomId);
+            DeleteReminderInput lInput = new DeleteReminderInput()
+            {
+                ReminderId = this.GetRandomNumber(10000)
+            };
+            IRequestBuilder lRequest = this.RequestBuilder.DeleteReminder(lInput);
             this.CheckUrl(lRequest, "ucp", "deletereminder");
             Assert.AreSame(this.ProxerClient, lRequest.Client);
             Assert.True(lRequest.PostParameter.ContainsKey("id"));
-            Assert.AreEqual(lRandomId.ToString(), lRequest.PostParameter.GetValue("id").First());
+            Assert.AreEqual(lInput.ReminderId.ToString(), lRequest.PostParameter.GetValue("id").First());
             Assert.True(lRequest.CheckLogin);
         }
 
         [Test]
         public void DeleteVoteTest()
         {
-            int lRandomId = this.GetRandomNumber(10000);
-
-            IRequestBuilder lRequest = this.RequestBuilder.DeleteVote(lRandomId);
+            DeleteVoteInput lInput = new DeleteVoteInput()
+            {
+                VoteId = this.GetRandomNumber(10000)
+            };
+            IRequestBuilder lRequest = this.RequestBuilder.DeleteVote(lInput);
             this.CheckUrl(lRequest, "ucp", "deletevote");
             Assert.AreSame(this.ProxerClient, lRequest.Client);
             Assert.True(lRequest.PostParameter.ContainsKey("id"));
-            Assert.AreEqual(lRandomId.ToString(), lRequest.PostParameter.GetValue("id").First());
+            Assert.AreEqual(lInput.VoteId.ToString(), lRequest.PostParameter.GetValue("id").First());
             Assert.True(lRequest.CheckLogin);
         }
 
         [Test]
         public void GetHistoryTest()
         {
-            IRequestBuilderWithResult<HistoryDataModel[]> lRequest = this.RequestBuilder.GetHistory(3, 20);
+            UcpEntryHistoryInput lInput = new UcpEntryHistoryInput
+            {
+                Limit = 20,
+                Page = 3
+            };
+            IRequestBuilderWithResult<HistoryDataModel[]> lRequest = this.RequestBuilder.GetHistory(lInput);
             this.CheckUrl(lRequest, "ucp", "history");
             Assert.AreSame(this.ProxerClient, lRequest.Client);
             Assert.True(lRequest.GetParameters.ContainsKey("p"));
@@ -83,10 +94,12 @@ namespace Azuria.Test.Api.v1.RequestBuilder
                 Search = lSearch,
                 SearchStart = lSearchStart,
                 Sort = UserListSort.ChangeDate,
-                SortDirection = SortDirection.Descending
+                SortDirection = SortDirection.Descending,
+                Limit = 140,
+                Page = 1
             };
 
-            IRequestBuilderWithResult<ListDataModel[]> lRequest = this.RequestBuilder.GetList(lInputDataModel, 1, 140);
+            IRequestBuilderWithResult<ListDataModel[]> lRequest = this.RequestBuilder.GetList(lInputDataModel);
             this.CheckUrl(lRequest, "ucp", "list");
             Assert.AreSame(this.ProxerClient, lRequest.Client);
             Assert.True(lRequest.GetParameters.ContainsKey("kat"));
@@ -116,10 +129,12 @@ namespace Azuria.Test.Api.v1.RequestBuilder
                 Search = lSearch,
                 SearchStart = lSearchStart,
                 Sort = sort,
-                SortDirection = sortDirection
+                SortDirection = sortDirection,
+                Limit = 140,
+                Page = 1
             };
 
-            IRequestBuilderWithResult<ListDataModel[]> lRequest = this.RequestBuilder.GetList(lInputDataModel, 1, 140);
+            IRequestBuilderWithResult<ListDataModel[]> lRequest = this.RequestBuilder.GetList(lInputDataModel);
             this.CheckUrl(lRequest, "ucp", "list");
             Assert.AreSame(this.ProxerClient, lRequest.Client);
             Assert.True(lRequest.GetParameters.ContainsKey("kat"));
@@ -140,7 +155,11 @@ namespace Azuria.Test.Api.v1.RequestBuilder
         [Test]
         public void GetListsumTest([Values] MediaEntryType category)
         {
-            IRequestBuilderWithResult<int> lRequest = this.RequestBuilder.GetListsum(category);
+            ListsumInput lInput = new ListsumInput
+            {
+                Category = category
+            };
+            IRequestBuilderWithResult<int> lRequest = this.RequestBuilder.GetListsum(lInput);
             this.CheckUrl(lRequest, "ucp", "listsum");
             Assert.AreSame(this.ProxerClient, lRequest.Client);
             Assert.True(lRequest.GetParameters.ContainsKey("kat"));
@@ -151,7 +170,13 @@ namespace Azuria.Test.Api.v1.RequestBuilder
         [Test]
         public void GetReminderTest([Values(null, MediaEntryType.Anime, MediaEntryType.Manga)] MediaEntryType? category)
         {
-            IRequestBuilderWithResult<BookmarkDataModel[]> lRequest = this.RequestBuilder.GetReminder(category, 5, 1);
+            ReminderListInput lInput = new ReminderListInput
+            {
+                Category = category,
+                Limit = 1,
+                Page = 5
+            };
+            IRequestBuilderWithResult<BookmarkDataModel[]> lRequest = this.RequestBuilder.GetReminder(lInput);
             this.CheckUrl(lRequest, "ucp", "reminder");
             Assert.AreSame(this.ProxerClient, lRequest.Client);
             Assert.True(lRequest.GetParameters.ContainsKey("kat") && category != null || category == null);
@@ -185,44 +210,48 @@ namespace Azuria.Test.Api.v1.RequestBuilder
         [Test]
         public void SetCommentStateTest()
         {
-            int lRandomId = this.GetRandomNumber(10000);
-            int lRandomProgress = this.GetRandomNumber(50);
+            SetCommentProgressInput lInput = new SetCommentProgressInput
+            {
+                CommentId = this.GetRandomNumber(10000),
+                Progress = this.GetRandomNumber(50)
+            };
 
-            IRequestBuilder lRequest = this.RequestBuilder.SetCommentState(lRandomId, lRandomProgress);
+            IRequestBuilder lRequest = this.RequestBuilder.SetCommentState(lInput);
             this.CheckUrl(lRequest, "ucp", "setcommentstate");
             Assert.AreSame(this.ProxerClient, lRequest.Client);
             Assert.True(lRequest.PostParameter.ContainsKey("id"));
             Assert.True(lRequest.PostParameter.ContainsKey("value"));
-            Assert.AreEqual(lRandomId.ToString(), lRequest.PostParameter.GetValue("id").First());
-            Assert.AreEqual(lRandomProgress.ToString(), lRequest.PostParameter.GetValue("value").First());
+            Assert.AreEqual(lInput.CommentId.ToString(), lRequest.PostParameter.GetValue("id").First());
+            Assert.AreEqual(lInput.Progress.ToString(), lRequest.PostParameter.GetValue("value").First());
             Assert.True(lRequest.CheckLogin);
         }
 
         [Test]
         public void SetReminderLanguageTest([Values] MediaLanguage language)
         {
-            int lRandomId = this.GetRandomNumber(10000);
-            int lRandomEpisode = this.GetRandomNumber(50);
+            SetReminderInput lInput = new SetReminderInput
+            {
+                Category = MediaEntryType.Anime,
+                EntryId = this.GetRandomNumber(10000),
+                Episode = this.GetRandomNumber(50),
+                Language = language
+            };
 
             if (language == MediaLanguage.Unkown)
             {
-                Assert.Throws<ArgumentException>(
-                    () => this.RequestBuilder.SetReminder(lRandomId, lRandomEpisode, language, MediaEntryType.Anime)
-                );
+                Assert.Throws<InvalidOperationException>(() => this.RequestBuilder.SetReminder(lInput));
                 return;
             }
 
-            IRequestBuilder lRequest = this.RequestBuilder.SetReminder(
-                lRandomId, lRandomEpisode, language, MediaEntryType.Anime
-            );
+            IRequestBuilder lRequest = this.RequestBuilder.SetReminder(lInput);
             this.CheckUrl(lRequest, "ucp", "setreminder");
             Assert.AreSame(this.ProxerClient, lRequest.Client);
             Assert.True(lRequest.GetParameters.ContainsKey("id"));
             Assert.True(lRequest.GetParameters.ContainsKey("episode"));
             Assert.True(lRequest.GetParameters.ContainsKey("language"));
             Assert.True(lRequest.GetParameters.ContainsKey("kat"));
-            Assert.AreEqual(lRandomId.ToString(), lRequest.GetParameters["id"]);
-            Assert.AreEqual(lRandomEpisode.ToString(), lRequest.GetParameters["episode"]);
+            Assert.AreEqual(lInput.EntryId.ToString(), lRequest.GetParameters["id"]);
+            Assert.AreEqual(lInput.Episode.ToString(), lRequest.GetParameters["episode"]);
             Assert.AreEqual(language.ToTypeString(), lRequest.GetParameters["language"]);
             Assert.AreEqual("anime", lRequest.GetParameters["kat"]);
             Assert.True(lRequest.CheckLogin);
@@ -231,19 +260,23 @@ namespace Azuria.Test.Api.v1.RequestBuilder
         [Test]
         public void SetReminderCategoryTest([Values] MediaEntryType category)
         {
-            int lRandomId = this.GetRandomNumber(10000);
-            int lRandomEpisode = this.GetRandomNumber(50);
+            SetReminderInput lInput = new SetReminderInput
+            {
+                Category = category,
+                EntryId = this.GetRandomNumber(10000),
+                Episode = this.GetRandomNumber(50),
+                Language = MediaLanguage.EngDub
+            };
 
-            IRequestBuilder lRequest = this.RequestBuilder.SetReminder(
-                lRandomId, lRandomEpisode, MediaLanguage.EngDub, category);
+            IRequestBuilder lRequest = this.RequestBuilder.SetReminder(lInput);
             this.CheckUrl(lRequest, "ucp", "setreminder");
             Assert.AreSame(this.ProxerClient, lRequest.Client);
             Assert.True(lRequest.GetParameters.ContainsKey("id"));
             Assert.True(lRequest.GetParameters.ContainsKey("episode"));
             Assert.True(lRequest.GetParameters.ContainsKey("language"));
             Assert.True(lRequest.GetParameters.ContainsKey("kat"));
-            Assert.AreEqual(lRandomId.ToString(), lRequest.GetParameters["id"]);
-            Assert.AreEqual(lRandomEpisode.ToString(), lRequest.GetParameters["episode"]);
+            Assert.AreEqual(lInput.EntryId.ToString(), lRequest.GetParameters["id"]);
+            Assert.AreEqual(lInput.Episode.ToString(), lRequest.GetParameters["episode"]);
             Assert.AreEqual("engdub", lRequest.GetParameters["language"]);
             Assert.AreEqual(category.ToString().ToLowerInvariant(), lRequest.GetParameters["kat"]);
             Assert.True(lRequest.CheckLogin);

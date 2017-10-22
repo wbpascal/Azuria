@@ -1,27 +1,23 @@
 ﻿using System;
 using Azuria.Api.v1.Converters.Info;
 using Azuria.Api.v1.DataModels.Info;
+using Azuria.Api.v1.Input.Info;
 using Azuria.Enums.Info;
 using Azuria.Helpers.Extensions;
 using Azuria.Requests.Builder;
 
 namespace Azuria.Api.v1.RequestBuilder
 {
+    /// <inheritdoc />
     /// <summary>
     /// Represents the info api class.
     /// </summary>
-    public class InfoRequestBuilder : IApiClassRequestBuilder
+    public class InfoRequestBuilder : ApiClassRequestBuilderBase
     {
-        /// <summary>
-        /// </summary>
-        /// <param name="client"></param>
-        public InfoRequestBuilder(IProxerClient client)
-        {
-            this.ProxerClient = client;
-        }
-
         /// <inheritdoc />
-        public IProxerClient ProxerClient { get; }
+        public InfoRequestBuilder(IProxerClient proxerClient) : base(proxerClient)
+        {
+        }
 
         /// <summary>
         /// Builds a request that returns all comments of an anime or manga
@@ -29,25 +25,13 @@ namespace Azuria.Api.v1.RequestBuilder
         /// Api permissions required (class - permission level):
         /// * Info - Level 0
         /// </summary>
-        /// <param name="entryId">The id of the anime or manga.</param>
-        /// <param name="page">Optional. The index of the page that will be loaded. Default: 0</param>
-        /// <param name="limit">
-        /// Optional. The amount of comments that will be returned per page. Default: 25
-        /// </param>
-        /// <param name="sort">
-        /// Optional. The order in which the returned array will be sorted. Set it to "rating" to return the
-        /// top rated comments first, otherwise the newest comments will be returned first. Default: ""
-        /// </param>
         /// <returns>An instance of <see cref="IRequestBuilderWithResult{T}" /> that returns an array of comments.</returns>
-        public IRequestBuilderWithResult<CommentDataModel[]> GetComments(
-            int entryId, int page = 0, int limit = 25, CommentSort sort = CommentSort.Newest)
+        public IRequestBuilderWithResult<CommentDataModel[]> GetComments(CommentListInput input)
         {
+            this.CheckInputDataModel(input);
             return new RequestBuilder<CommentDataModel[]>(
                     new Uri($"{ApiConstants.ApiUrlV1}/info/comments"), this.ProxerClient
-                ).WithGetParameter("id", entryId.ToString())
-                .WithGetParameter("p", page.ToString())
-                .WithGetParameter("limit", limit.ToString())
-                .WithGetParameter("sort", sort.ToString().ToLowerInvariant());
+                ).WithGetParameter(input.BuildDictionary());
         }
 
         /// <summary>
@@ -56,13 +40,13 @@ namespace Azuria.Api.v1.RequestBuilder
         /// Api permissions required (class - permission level):
         /// * Info - Level 0
         /// </summary>
-        /// <param name="entryId">The id of the Anime or Manga.</param>
         /// <returns>An instance of <see cref="IRequestBuilderWithResult{T}" /> that returns the core information.</returns>
-        public IRequestBuilderWithResult<EntryDataModel> GetEntry(int entryId)
+        public IRequestBuilderWithResult<EntryDataModel> GetEntry(EntryIdInput input)
         {
+            this.CheckInputDataModel(input);
             return new RequestBuilder<EntryDataModel>(
                 new Uri($"{ApiConstants.ApiUrlV1}/info/entry"), this.ProxerClient
-            ).WithGetParameter("id", entryId.ToString());
+            ).WithGetParameter(input.BuildDictionary());
         }
 
         /// <summary>
@@ -70,13 +54,13 @@ namespace Azuria.Api.v1.RequestBuilder
         /// Api permissions required (class - permission level):
         /// * Info - Level 0
         /// </summary>
-        /// <param name="entryId">The id of the anime or manga.</param>
         /// <returns>An instance of <see cref="IRequestBuilderWithResult{T}" /> that returns an array of tags.</returns>
-        public IRequestBuilderWithResult<TagDataModel[]> GetEntryTags(int entryId)
+        public IRequestBuilderWithResult<TagDataModel[]> GetEntryTags(EntryIdInput input)
         {
+            this.CheckInputDataModel(input);
             return new RequestBuilder<TagDataModel[]>(
                 new Uri($"{ApiConstants.ApiUrlV1}/info/entrytags"), this.ProxerClient
-            ).WithGetParameter("id", entryId.ToString());
+            ).WithGetParameter(input.BuildDictionary());
         }
 
         /// <summary>
@@ -87,13 +71,13 @@ namespace Azuria.Api.v1.RequestBuilder
         /// Api permissions required (class - permission level):
         /// * Info - Level 0
         /// </summary>
-        /// <param name="entryId">The id of the anime or manga.</param>
         /// <returns>An instance of <see cref="IRequestBuilderWithResult{T}" /> that returns the informations.</returns>
-        public IRequestBuilderWithResult<FullEntryDataModel> GetFullEntry(int entryId)
+        public IRequestBuilderWithResult<FullEntryDataModel> GetFullEntry(EntryIdInput input)
         {
+            this.CheckInputDataModel(input);
             return new RequestBuilder<FullEntryDataModel>(
                 new Uri($"{ApiConstants.ApiUrlV1}/info/fullentry"), this.ProxerClient
-            ).WithGetParameter("id", entryId.ToString());
+            ).WithGetParameter(input.BuildDictionary());
         }
 
         /// <summary>
@@ -102,12 +86,12 @@ namespace Azuria.Api.v1.RequestBuilder
         /// Api permissions required (class - permission level):
         /// * Info - Level 0
         /// </summary>
-        /// <param name="entryId">The id of the anime or manga.</param>
         /// <returns>An instance of <see cref="IRequestBuilderWithResult{T}" /> that returns a boolean.</returns>
-        public IRequestBuilderWithResult<bool> GetGate(int entryId)
+        public IRequestBuilderWithResult<bool> GetGate(EntryIdInput input)
         {
+            this.CheckInputDataModel(input);
             return new RequestBuilder<bool>(new Uri($"{ApiConstants.ApiUrlV1}/info/gate"), this.ProxerClient)
-                .WithGetParameter("id", entryId.ToString());
+                .WithGetParameter(input.BuildDictionary());
         }
 
         /// <summary>
@@ -116,13 +100,13 @@ namespace Azuria.Api.v1.RequestBuilder
         /// Api permissions required (class - permission level):
         /// * Info - Level 0
         /// </summary>
-        /// <param name="entryId">The id of the anime or manga.</param>
         /// <returns>An instance of <see cref="IRequestBuilderWithResult{T}" /> that returns an array of translators.</returns>
-        public IRequestBuilderWithResult<TranslatorDataModel[]> GetGroups(int entryId)
+        public IRequestBuilderWithResult<TranslatorDataModel[]> GetGroups(EntryIdInput input)
         {
+            this.CheckInputDataModel(input);
             return new RequestBuilder<TranslatorDataModel[]>(
                 new Uri($"{ApiConstants.ApiUrlV1}/info/groups"), this.ProxerClient
-            ).WithGetParameter("id", entryId.ToString());
+            ).WithGetParameter(input.BuildDictionary());
         }
 
         /// <summary>
@@ -130,13 +114,13 @@ namespace Azuria.Api.v1.RequestBuilder
         /// Api permissions required (class - permission level):
         /// * Info - Level 0
         /// </summary>
-        /// <param name="id">The id of the company.</param>
         /// <returns>An instance of <see cref="IRequestBuilderWithResult{T}" /> that returns information about a company.</returns>
-        public IRequestBuilderWithResult<IndustryDataModel> GetIndustry(int id)
+        public IRequestBuilderWithResult<IndustryDataModel> GetIndustry(IndustryInfoInput input)
         {
+            this.CheckInputDataModel(input);
             return new RequestBuilder<IndustryDataModel>(
                 new Uri($"{ApiConstants.ApiUrlV1}/info/industry"), this.ProxerClient
-            ).WithGetParameter("id", id.ToString());
+            ).WithGetParameter(input.BuildDictionary());
         }
 
         /// <summary>
@@ -145,12 +129,12 @@ namespace Azuria.Api.v1.RequestBuilder
         /// Api permissions required (class - permission level):
         /// * Info - Level 0
         /// </summary>
-        /// <param name="entryId">The id of the anime or manga.</param>
         /// <returns>An instance of <see cref="IRequestBuilderWithResult{T}" /> that returns an array of languages.</returns>
-        public IRequestBuilderWithResult<MediaLanguage[]> GetLanguage(int entryId)
+        public IRequestBuilderWithResult<MediaLanguage[]> GetLanguage(EntryIdInput input)
         {
+            this.CheckInputDataModel(input);
             return new RequestBuilder<MediaLanguage[]>(new Uri($"{ApiConstants.ApiUrlV1}/info/lang"), this.ProxerClient)
-                .WithGetParameter("id", entryId.ToString())
+                .WithGetParameter(input.BuildDictionary())
                 .WithCustomDataConverter(new LanguageCollectionConverter());
         }
 
@@ -160,22 +144,16 @@ namespace Azuria.Api.v1.RequestBuilder
         /// Api permissions required (class - permission level):
         /// * Info - Level 0
         /// </summary>
-        /// <param name="entryId">The id of the anime or manga.</param>
-        /// <param name="page">Optional. The index of the page that will be loaded. Default: 0</param>
-        /// <param name="limit">
-        /// Optional. The amount of episodes or chapters that will be returned. Default: 50
-        /// </param>
         /// <returns>
         /// An instance of <see cref="IRequestBuilderWithResult{T}" /> that returns an object containing all chapter/episodes
         /// and information about the returned list.
         /// </returns>
-        public IRequestBuilderWithResult<ListInfoDataModel> GetListInfo(int entryId, int page = 0, int limit = 50)
+        public IRequestBuilderWithResult<ListInfoDataModel> GetListInfo(ListInfoInput input)
         {
+            this.CheckInputDataModel(input);
             return new RequestBuilder<ListInfoDataModel>(
                     new Uri($"{ApiConstants.ApiUrlV1}/info/listinfo"), this.ProxerClient
-                ).WithGetParameter("id", entryId.ToString())
-                .WithGetParameter("p", page.ToString())
-                .WithGetParameter("limit", limit.ToString());
+                ).WithGetParameter(input.BuildDictionary());
         }
 
         /// <summary>
@@ -184,16 +162,16 @@ namespace Azuria.Api.v1.RequestBuilder
         /// Api permissions required (class - permission level):
         /// * Info - Level 0
         /// </summary>
-        /// <param name="entryId">The id of the anime or manga.</param>
         /// <returns>
         /// An instance of <see cref="IRequestBuilderWithResult{T}" /> that returns an array of object containing the names
         /// and some additional informations.
         /// </returns>
-        public IRequestBuilderWithResult<NameDataModel[]> GetNames(int entryId)
+        public IRequestBuilderWithResult<NameDataModel[]> GetNames(EntryIdInput input)
         {
+            this.CheckInputDataModel(input);
             return new RequestBuilder<NameDataModel[]>(
                 new Uri($"{ApiConstants.ApiUrlV1}/info/names"), this.ProxerClient
-            ).WithGetParameter("id", entryId.ToString());
+            ).WithGetParameter(input.BuildDictionary());
         }
 
         /// <summary>
@@ -202,15 +180,15 @@ namespace Azuria.Api.v1.RequestBuilder
         /// Api permissions required (class - permission level):
         /// * Info - Level 0
         /// </summary>
-        /// <param name="entryId">The id of the anime or manga.</param>
         /// <returns>
         /// An instance of <see cref="IRequestBuilderWithResult{T}" /> that returns an array of organisations.
         /// </returns>
-        public IRequestBuilderWithResult<IndustryBasicDataModel[]> GetPublisher(int entryId)
+        public IRequestBuilderWithResult<IndustryBasicDataModel[]> GetPublisher(EntryIdInput input)
         {
+            this.CheckInputDataModel(input);
             return new RequestBuilder<IndustryBasicDataModel[]>(
                 new Uri($"{ApiConstants.ApiUrlV1}/info/publisher"), this.ProxerClient
-            ).WithGetParameter("id", entryId.ToString());
+            ).WithGetParameter(input.BuildDictionary());
         }
 
         /// <summary>
@@ -218,13 +196,13 @@ namespace Azuria.Api.v1.RequestBuilder
         /// Api permissions required (class - permission level):
         /// * Info - Level 0
         /// </summary>
-        /// <param name="entryId">The id of the anime or manga.</param>
         /// <returns>An instance of <see cref="IRequestBuilderWithResult{T}" /> that returns an array of relations.</returns>
-        public IRequestBuilderWithResult<RelationDataModel[]> GetRelations(int entryId)
+        public IRequestBuilderWithResult<RelationDataModel[]> GetRelations(EntryIdInput input)
         {
+            this.CheckInputDataModel(input);
             return new RequestBuilder<RelationDataModel[]>(
                 new Uri($"{ApiConstants.ApiUrlV1}/info/relations"), this.ProxerClient
-            ).WithGetParameter("id", entryId.ToString());
+            ).WithGetParameter(input.BuildDictionary());
         }
 
         /// <summary>
@@ -232,13 +210,13 @@ namespace Azuria.Api.v1.RequestBuilder
         /// Api permissions required (class - permission level):
         /// * Info - Level 0
         /// </summary>
-        /// <param name="entryId">The id of the anime or manga.</param>
         /// <returns>An instance of <see cref="IRequestBuilderWithResult{T}" /> that returns an array of seasons.</returns>
-        public IRequestBuilderWithResult<SeasonDataModel[]> GetSeason(int entryId)
+        public IRequestBuilderWithResult<SeasonDataModel[]> GetSeason(EntryIdInput input)
         {
+            this.CheckInputDataModel(input);
             return new RequestBuilder<SeasonDataModel[]>(
                 new Uri($"{ApiConstants.ApiUrlV1}/info/season"), this.ProxerClient
-            ).WithGetParameter("id", entryId.ToString());
+            ).WithGetParameter(input.BuildDictionary());
         }
 
         /// <summary>
@@ -246,13 +224,13 @@ namespace Azuria.Api.v1.RequestBuilder
         /// Api permissions required (class - permission level):
         /// * Info - Level 0
         /// </summary>
-        /// <param name="id">The id of the translator group.</param>
         /// <returns>An instance of <see cref="IRequestBuilderWithResult{T}" /> that returns information about a translator group.</returns>
-        public IRequestBuilderWithResult<TranslatorDataModel> GetTranslatorGroup(int id)
+        public IRequestBuilderWithResult<TranslatorDataModel> GetTranslatorGroup(TranslatorInfoInput input)
         {
+            this.CheckInputDataModel(input);
             return new RequestBuilder<TranslatorDataModel>(
                 new Uri($"{ApiConstants.ApiUrlV1}/info/translatorgroup"), this.ProxerClient
-            ).WithGetParameter("id", id.ToString());
+            ).WithGetParameter(input.BuildDictionary());
         }
 
         /// <summary>
@@ -262,17 +240,13 @@ namespace Azuria.Api.v1.RequestBuilder
         /// Api permissions required (class - permission level):
         /// * Info - Level 1
         /// </summary>
-        /// <param name="entryId">The id of the anime or manga.</param>
-        /// <param name="list">
-        /// The list to which the anime or manga will be added. Possible values: "note", "favor", "finish"
-        /// </param>
         /// <returns>An instance of <see cref="IRequestBuilder" />.</returns>
-        public IRequestBuilder SetUserInfo(int entryId, UserList list)
+        public IRequestBuilder SetUserInfo(SetUserInfoInput input)
         {
+            this.CheckInputDataModel(input);
             return new Requests.Builder.RequestBuilder(
                     new Uri($"{ApiConstants.ApiUrlV1}/info/setuserinfo"), this.ProxerClient)
-                .WithPostParameter("id", entryId.ToString())
-                .WithPostParameter("type", list.ToTypeString())
+                .WithPostParameter(input.Build())
                 .WithLoginCheck();
         }
     }

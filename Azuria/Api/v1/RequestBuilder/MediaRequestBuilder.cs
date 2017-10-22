@@ -1,5 +1,6 @@
 ﻿using System;
 using Azuria.Api.v1.DataModels.Media;
+using Azuria.Api.v1.Input.Media;
 using Azuria.Enums.Media;
 using Azuria.Helpers.Extensions;
 using Azuria.Requests.Builder;
@@ -9,18 +10,12 @@ namespace Azuria.Api.v1.RequestBuilder
     /// <summary>
     /// Represents the media api class.
     /// </summary>
-    public class MediaRequestBuilder : IApiClassRequestBuilder
+    public class MediaRequestBuilder : ApiClassRequestBuilderBase
     {
-        /// <summary>
-        /// </summary>
-        /// <param name="client"></param>
-        public MediaRequestBuilder(IProxerClient client)
-        {
-            this.ProxerClient = client;
-        }
-
         /// <inheritdoc />
-        public IProxerClient ProxerClient { get; }
+        public MediaRequestBuilder(IProxerClient client) : base(client)
+        {
+        }
 
         /// <summary>
         /// Builds a request that returns an array of all current headers.
@@ -40,13 +35,13 @@ namespace Azuria.Api.v1.RequestBuilder
         /// Api permissions required (class - permission level):
         /// * Media - Level 0
         /// </summary>
-        /// <param name="style">Optional. The style of the returned header.</param>
         /// <returns>An instance of <see cref="IRequestBuilderWithResult{T}" /> that returns a header.</returns>
-        public IRequestBuilderWithResult<HeaderDataModel> GetRandomHeader(HeaderStyle style = HeaderStyle.Gray)
+        public IRequestBuilderWithResult<HeaderDataModel> GetRandomHeader(RandomHeaderInput input)
         {
+            this.CheckInputDataModel(input);
             return new RequestBuilder<HeaderDataModel>(
                 new Uri($"{ApiConstants.ApiUrlV1}/media/randomheader"), this.ProxerClient
-            ).WithGetParameter("style", style.ToTypeString());
+            ).WithGetParameter(input.BuildDictionary());
         }
     }
 }

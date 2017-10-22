@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using Azuria.Api.v1.DataModels.Messenger;
+using Azuria.Api.v1.Input.Messenger;
 using Azuria.Api.v1.RequestBuilder;
 using Azuria.Enums.Messenger;
 using Azuria.Requests.Builder;
@@ -15,7 +16,11 @@ namespace Azuria.Test.Api.v1.RequestBuilder
         [Test]
         public void GetConferenceInfoTest()
         {
-            IRequestBuilderWithResult<ConferenceInfoDataModel> lRequest = this.RequestBuilder.GetConferenceInfo(42);
+            ConferenceInfoInput lInput = new ConferenceInfoInput
+            {
+                ConferenceId = 42
+            };
+            IRequestBuilderWithResult<ConferenceInfoDataModel> lRequest = this.RequestBuilder.GetConferenceInfo(lInput);
             this.CheckUrl(lRequest, "messenger", "conferenceinfo");
             Assert.AreSame(this.ProxerClient, lRequest.Client);
             Assert.True(lRequest.GetParameters.ContainsKey("conference_id"));
@@ -26,7 +31,12 @@ namespace Azuria.Test.Api.v1.RequestBuilder
         [Test]
         public void GetConferencesTest([Values] ConferenceList list)
         {
-            IRequestBuilderWithResult<ConferenceDataModel[]> lRequest = this.RequestBuilder.GetConferences(list, 51);
+            ConferenceListInput lInput = new ConferenceListInput
+            {
+                List = list,
+                Page = 51
+            };
+            IRequestBuilderWithResult<ConferenceDataModel[]> lRequest = this.RequestBuilder.GetConferences(lInput);
             this.CheckUrl(lRequest, "messenger", "conferences");
             Assert.AreSame(this.ProxerClient, lRequest.Client);
             Assert.True(lRequest.GetParameters.ContainsKey("type"));
@@ -50,8 +60,13 @@ namespace Azuria.Test.Api.v1.RequestBuilder
         [TestCase(7326, 526632, true)]
         public void GetMessagesTest(int conferenceId, int messageId, bool markAsRead)
         {
-            IRequestBuilderWithResult<MessageDataModel[]> lRequest =
-                this.RequestBuilder.GetMessages(conferenceId, messageId, markAsRead);
+            MessageListInput lInput = new MessageListInput
+            {
+                ConferenceId = conferenceId,
+                MessageId = messageId,
+                MarkRead = markAsRead
+            };
+            IRequestBuilderWithResult<MessageDataModel[]> lRequest = this.RequestBuilder.GetMessages(lInput);
             this.CheckUrl(lRequest, "messenger", "messages");
             Assert.AreSame(this.ProxerClient, lRequest.Client);
             Assert.True(lRequest.GetParameters.ContainsKey("conference_id"));
@@ -66,43 +81,52 @@ namespace Azuria.Test.Api.v1.RequestBuilder
         [Test]
         public void NewConferenceTest()
         {
-            string lUsername = RandomHelper.GetRandomString(20);
-            string lText = RandomHelper.GetRandomString(40);
+            NewConferenceInput lInput = new NewConferenceInput
+            {
+                Text = RandomHelper.GetRandomString(40),
+                Username = RandomHelper.GetRandomString(10)
+            };
 
-            IRequestBuilderWithResult<int> lRequest = this.RequestBuilder.NewConference(lUsername, lText);
+            IRequestBuilderWithResult<int> lRequest = this.RequestBuilder.NewConference(lInput);
             this.CheckUrl(lRequest, "messenger", "newconference");
             Assert.AreSame(this.ProxerClient, lRequest.Client);
             Assert.True(lRequest.PostParameter.ContainsKey("username"));
             Assert.True(lRequest.PostParameter.ContainsKey("text"));
-            Assert.AreEqual(lUsername, lRequest.PostParameter.GetValue("username").First());
-            Assert.AreEqual(lText, lRequest.PostParameter.GetValue("text").First());
+            Assert.AreEqual(lInput.Username, lRequest.PostParameter.GetValue("username").First());
+            Assert.AreEqual(lInput.Text, lRequest.PostParameter.GetValue("text").First());
             Assert.True(lRequest.CheckLogin);
         }
 
         [Test]
         public void NewConferenceGroupTest()
         {
-            IEnumerable<string> lParticipants = new string[5].Select(s => RandomHelper.GetRandomString(20)).ToArray();
-            string lTopic = RandomHelper.GetRandomString(40);
-            string lText = RandomHelper.GetRandomString(40);
+            NewConferenceGroupInput lInput = new NewConferenceGroupInput
+            {
+                Text = RandomHelper.GetRandomString(40),
+                Topic = RandomHelper.GetRandomString(25),
+                Usernames = new string[5].Select(s => RandomHelper.GetRandomString(20)).ToArray()
+            };
 
-            IRequestBuilderWithResult<int> lRequest =
-                this.RequestBuilder.NewConferenceGroup(lParticipants, lTopic, lText);
+            IRequestBuilderWithResult<int> lRequest = this.RequestBuilder.NewConferenceGroup(lInput);
             this.CheckUrl(lRequest, "messenger", "newconferencegroup");
             Assert.AreSame(this.ProxerClient, lRequest.Client);
             Assert.True(lRequest.PostParameter.ContainsKey("users[]"));
             Assert.True(lRequest.PostParameter.ContainsKey("topic"));
             Assert.True(lRequest.PostParameter.ContainsKey("text"));
-            Assert.AreEqual(lParticipants, lRequest.PostParameter.GetValue("users[]").ToArray());
-            Assert.AreEqual(lTopic, lRequest.PostParameter.GetValue("topic").First());
-            Assert.AreEqual(lText, lRequest.PostParameter.GetValue("text").First());
+            Assert.AreEqual(lInput.Usernames, lRequest.PostParameter.GetValue("users[]").ToArray());
+            Assert.AreEqual(lInput.Topic, lRequest.PostParameter.GetValue("topic").First());
+            Assert.AreEqual(lInput.Text, lRequest.PostParameter.GetValue("text").First());
             Assert.True(lRequest.CheckLogin);
         }
 
         [Test]
         public void SetBlockTest()
         {
-            IRequestBuilder lRequest = this.RequestBuilder.SetBlock(42);
+            ConferenceIdInput lInput = new ConferenceIdInput
+            {
+                ConferenceId = 42
+            };
+            IRequestBuilder lRequest = this.RequestBuilder.SetBlock(lInput);
             this.CheckUrl(lRequest, "messenger", "setblock");
             Assert.AreSame(this.ProxerClient, lRequest.Client);
             Assert.True(lRequest.GetParameters.ContainsKey("conference_id"));
@@ -113,7 +137,11 @@ namespace Azuria.Test.Api.v1.RequestBuilder
         [Test]
         public void SetFavourTest()
         {
-            IRequestBuilder lRequest = this.RequestBuilder.SetFavour(42);
+            ConferenceIdInput lInput = new ConferenceIdInput
+            {
+                ConferenceId = 42
+            };
+            IRequestBuilder lRequest = this.RequestBuilder.SetFavour(lInput);
             this.CheckUrl(lRequest, "messenger", "setfavour");
             Assert.AreSame(this.ProxerClient, lRequest.Client);
             Assert.True(lRequest.GetParameters.ContainsKey("conference_id"));
@@ -124,22 +152,30 @@ namespace Azuria.Test.Api.v1.RequestBuilder
         [Test]
         public void SetMessageTest()
         {
-            string lMessage = RandomHelper.GetRandomString(40);
+            SendMessageInput lInput = new SendMessageInput
+            {
+                ConferenceId = 42,
+                Message = RandomHelper.GetRandomString(40)
+            };
 
-            IRequestBuilderWithResult<string> lRequest = this.RequestBuilder.SetMessage(42, lMessage);
+            IRequestBuilderWithResult<string> lRequest = this.RequestBuilder.SetMessage(lInput);
             this.CheckUrl(lRequest, "messenger", "setmessage");
             Assert.AreSame(this.ProxerClient, lRequest.Client);
-            Assert.True(lRequest.GetParameters.ContainsKey("conference_id"));
+            Assert.True(lRequest.PostParameter.ContainsKey("conference_id"));
             Assert.True(lRequest.PostParameter.ContainsKey("text"));
-            Assert.AreEqual("42", lRequest.GetParameters["conference_id"]);
-            Assert.AreEqual(lMessage, lRequest.PostParameter.GetValue("text").First());
+            Assert.AreEqual("42", lRequest.PostParameter.GetValue("conference_id").First());
+            Assert.AreEqual(lInput.Message, lRequest.PostParameter.GetValue("text").First());
             Assert.True(lRequest.CheckLogin);
         }
 
         [Test]
         public void SetReadTest()
         {
-            IRequestBuilder lRequest = this.RequestBuilder.SetRead(42);
+            ConferenceIdInput lInput = new ConferenceIdInput
+            {
+                ConferenceId = 42
+            };
+            IRequestBuilder lRequest = this.RequestBuilder.SetRead(lInput);
             this.CheckUrl(lRequest, "messenger", "setread");
             Assert.AreSame(this.ProxerClient, lRequest.Client);
             Assert.True(lRequest.GetParameters.ContainsKey("conference_id"));
@@ -150,22 +186,30 @@ namespace Azuria.Test.Api.v1.RequestBuilder
         [Test]
         public void SetReportTest()
         {
-            string lReason = RandomHelper.GetRandomString(40);
+            SendReportInput lInput = new SendReportInput
+            {
+                ConferenceId = 42,
+                Reason = RandomHelper.GetRandomString(40)
+            };
 
-            IRequestBuilder lRequest = this.RequestBuilder.SetReport(42, lReason);
+            IRequestBuilder lRequest = this.RequestBuilder.SetReport(lInput);
             this.CheckUrl(lRequest, "messenger", "report");
             Assert.AreSame(this.ProxerClient, lRequest.Client);
-            Assert.True(lRequest.GetParameters.ContainsKey("conference_id"));
+            Assert.True(lRequest.PostParameter.ContainsKey("conference_id"));
             Assert.True(lRequest.PostParameter.ContainsKey("text"));
-            Assert.AreEqual("42", lRequest.GetParameters["conference_id"]);
-            Assert.AreEqual(lReason, lRequest.PostParameter.GetValue("text").First());
+            Assert.AreEqual("42", lRequest.PostParameter.GetValue("conference_id").First());
+            Assert.AreEqual(lInput.Reason, lRequest.PostParameter.GetValue("text").First());
             Assert.True(lRequest.CheckLogin);
         }
 
         [Test]
         public void SetUnblockTest()
         {
-            IRequestBuilder lRequest = this.RequestBuilder.SetUnblock(42);
+            ConferenceIdInput lInput = new ConferenceIdInput
+            {
+                ConferenceId = 42
+            };
+            IRequestBuilder lRequest = this.RequestBuilder.SetUnblock(lInput);
             this.CheckUrl(lRequest, "messenger", "setunblock");
             Assert.AreSame(this.ProxerClient, lRequest.Client);
             Assert.True(lRequest.GetParameters.ContainsKey("conference_id"));
@@ -176,7 +220,11 @@ namespace Azuria.Test.Api.v1.RequestBuilder
         [Test]
         public void SetUnfavourTest()
         {
-            IRequestBuilder lRequest = this.RequestBuilder.SetUnfavour(42);
+            ConferenceIdInput lInput = new ConferenceIdInput
+            {
+                ConferenceId = 42
+            };
+            IRequestBuilder lRequest = this.RequestBuilder.SetUnfavour(lInput);
             this.CheckUrl(lRequest, "messenger", "setunfavour");
             Assert.AreSame(this.ProxerClient, lRequest.Client);
             Assert.True(lRequest.GetParameters.ContainsKey("conference_id"));
@@ -187,7 +235,11 @@ namespace Azuria.Test.Api.v1.RequestBuilder
         [Test]
         public void SetUnreadTest()
         {
-            IRequestBuilder lRequest = this.RequestBuilder.SetUnread(42);
+            ConferenceIdInput lInput = new ConferenceIdInput
+            {
+                ConferenceId = 42
+            };
+            IRequestBuilder lRequest = this.RequestBuilder.SetUnread(lInput);
             this.CheckUrl(lRequest, "messenger", "setunread");
             Assert.AreSame(this.ProxerClient, lRequest.Client);
             Assert.True(lRequest.GetParameters.ContainsKey("conference_id"));

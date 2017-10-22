@@ -5,31 +5,30 @@ using Azuria.Helpers.Attributes;
 
 namespace Azuria.Api.v1.Input.List
 {
-    /// <inheritdoc />
     /// <summary>
     /// </summary>
-    public class IndustryListInput : InputDataModel
+    public sealed class IndustryListInput : PagedInputDataModel
     {
         /// <summary>
-        /// 
+        /// Optional, if omitted (or null) the default value of the api method will be used.
         /// </summary>
-        [InputData("contains", ForbiddenValues = new object[] {""}, Optional = true)]
+        [InputData("contains", Optional = true)]
         public string Contains { get; set; }
 
         /// <summary>
-        /// 
+        /// Optional, if omitted (or null) the default value of the api method will be used.
         /// </summary>
         [InputData("country", ConverterMethodName = nameof(GetCountryString), Optional = true)]
         public Country? Country { get; set; }
 
         /// <summary>
-        /// 
+        /// Optional, if omitted (or null) the default value of the api method will be used.
         /// </summary>
-        [InputData("start", ForbiddenValues = new object[] {""}, Optional = true)]
+        [InputData("start", Optional = true)]
         public string StartsWith { get; set; }
 
         /// <summary>
-        /// 
+        /// Optional, if omitted (or null) the default value of the api method will be used.
         /// </summary>
         [InputData("type", Converter = typeof(ToTypeStringConverter), Optional = true)]
         public IndustryType? Type { get; set; }

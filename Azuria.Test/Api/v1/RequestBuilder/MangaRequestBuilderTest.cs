@@ -1,5 +1,6 @@
 using System;
 using Azuria.Api.v1.DataModels.Manga;
+using Azuria.Api.v1.Input.Manga;
 using Azuria.Api.v1.RequestBuilder;
 using Azuria.Enums.Info;
 using Azuria.Helpers.Extensions;
@@ -16,8 +17,14 @@ namespace Azuria.Test.Api.v1.RequestBuilder
         [TestCase(14923, 12, Language.German)]
         public void GetChapterTest(int id, int episode, Language language)
         {
-            IRequestBuilderWithResult<ChapterDataModel> lRequest =
-                this.RequestBuilder.GetChapter(id, episode, language);
+            ChapterInfoInput lInput = new ChapterInfoInput
+            {
+                Chapter = episode,
+                Id = id,
+                Language = language
+            };
+            
+            IRequestBuilderWithResult<ChapterDataModel> lRequest = this.RequestBuilder.GetChapter(lInput);
             this.CheckUrl(lRequest, "manga", "chapter");
             Assert.AreSame(this.ProxerClient, lRequest.Client);
             Assert.True(lRequest.GetParameters.ContainsKey("id"));
@@ -27,12 +34,6 @@ namespace Azuria.Test.Api.v1.RequestBuilder
             Assert.AreEqual(episode.ToString(), lRequest.GetParameters["episode"]);
             Assert.AreEqual(language.ToShortString(), lRequest.GetParameters["language"]);
             Assert.False(lRequest.CheckLogin);
-        }
-
-        [Test]
-        public void GetChapterInvalidLanguageTest()
-        {
-            Assert.Throws<ArgumentException>(() => this.RequestBuilder.GetChapter(1924, 42, Language.Unkown));
         }
 
         [Test]

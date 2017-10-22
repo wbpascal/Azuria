@@ -2,6 +2,7 @@
 using Azuria.Api.v1.DataModels.User;
 using Azuria.Api.v1.Input.User;
 using Azuria.Enums;
+using Azuria.Helpers.Extensions;
 using Azuria.Requests.Builder;
 
 namespace Azuria.Api.v1.RequestBuilder
@@ -9,51 +10,23 @@ namespace Azuria.Api.v1.RequestBuilder
     /// <summary>
     /// Represents the user api class.
     /// </summary>
-    public class UserRequestBuilder : IApiClassRequestBuilder
+    public class UserRequestBuilder : ApiClassRequestBuilderBase
     {
-        /// <summary>
-        /// </summary>
-        /// <param name="client"></param>
-        public UserRequestBuilder(IProxerClient client)
+        /// <inheritdoc />
+        public UserRequestBuilder(IProxerClient proxerClient) : base(proxerClient)
         {
-            this.ProxerClient = client;
         }
 
-        /// <inheritdoc />
-        public IProxerClient ProxerClient { get; }
-
-        private IRequestBuilderWithResult<HistoryDataModel[]> GetHistory(string page, string limit)
+        /// <summary>
+        /// </summary>
+        /// <param name="input"><see cref="UserEntryHistoryInput.UserId"/> or <see cref="UserEntryHistoryInput.Username"/> must be given.</param>
+        /// <returns></returns>
+        public IRequestBuilderWithResult<HistoryDataModel[]> GetHistory(UserEntryHistoryInput input)
         {
+            this.CheckInputDataModel(input);
             return new RequestBuilder<HistoryDataModel[]>(
                     new Uri($"{ApiConstants.ApiUrlV1}/user/history"), this.ProxerClient
-                ).WithGetParameter("p", page)
-                .WithGetParameter("limit", limit);
-        }
-
-        /// <summary>
-        /// </summary>
-        /// <param name="username"></param>
-        /// <param name="page"></param>
-        /// <param name="limit"></param>
-        /// <returns></returns>
-        public IRequestBuilderWithResult<HistoryDataModel[]> GetHistory(
-            string username, int page = 0, int limit = 100)
-        {
-            return this.GetHistory(page.ToString(), limit.ToString())
-                .WithGetParameter("username", username);
-        }
-
-        /// <summary>
-        /// </summary>
-        /// <param name="uid"></param>
-        /// <param name="page"></param>
-        /// <param name="limit"></param>
-        /// <returns></returns>
-        public IRequestBuilderWithResult<HistoryDataModel[]> GetHistory(
-            int uid, int page = 0, int limit = 100)
-        {
-            return this.GetHistory(page.ToString(), limit.ToString())
-                .WithGetParameter("uid", uid.ToString());
+                ).WithGetParameter(input.BuildDictionary());
         }
 
         /// <summary>
@@ -62,11 +35,13 @@ namespace Azuria.Api.v1.RequestBuilder
         /// * User - Level 0
         /// </summary>
         /// <returns>An instance of <see cref="IRequestBuilderWithResult{T}" /> that returns...</returns>
-        public IRequestBuilderWithResult<UserInfoDataModel> GetInfo()
+        public IRequestBuilderWithResult<UserInfoDataModel> GetInfo(UserInfoInput input)
         {
+            this.CheckInputDataModel(input);
             return new RequestBuilder<UserInfoDataModel>(
-                new Uri($"{ApiConstants.ApiUrlV1}/user/userinfo"), this.ProxerClient
-            ).WithLoginCheck();
+                    new Uri($"{ApiConstants.ApiUrlV1}/user/userinfo"), this.ProxerClient
+                ).WithGetParameter(input.BuildDictionary())
+                .WithLoginCheck(input.UserId == null && string.IsNullOrEmpty(input.Username));
         }
 
         /// <summary>
@@ -74,38 +49,13 @@ namespace Azuria.Api.v1.RequestBuilder
         /// Api permissions required (class - permission level):
         /// * User - Level 0
         /// </summary>
-        /// <param name="userId"></param>
         /// <returns>An instance of <see cref="IRequestBuilderWithResult{T}" /> that returns...</returns>
-        public IRequestBuilderWithResult<UserInfoDataModel> GetInfo(int userId)
+        public IRequestBuilderWithResult<CommentDataModel[]> GetLatestComments(UserCommentsListInput input)
         {
-            return this.GetInfo()
-                .WithGetParameter("uid", userId.ToString())
-                .WithLoginCheck(false);
-        }
-
-        /// <summary>
-        /// Builds a request that...
-        /// Api permissions required (class - permission level):
-        /// * User - Level 0
-        /// </summary>
-        /// <param name="username"></param>
-        /// <returns>An instance of <see cref="IRequestBuilderWithResult{T}" /> that returns...</returns>
-        public IRequestBuilderWithResult<UserInfoDataModel> GetInfo(string username)
-        {
-            return this.GetInfo()
-                .WithGetParameter("username", username)
-                .WithLoginCheck(false);
-        }
-
-        private IRequestBuilderWithResult<CommentDataModel[]> GetLatestComments(
-            int page = 0, int limit = 25, MediaEntryType category = MediaEntryType.Anime, int length = 300)
-        {
+            this.CheckInputDataModel(input);
             return new RequestBuilder<CommentDataModel[]>(
                     new Uri($"{ApiConstants.ApiUrlV1}/user/comments"), this.ProxerClient
-                ).WithGetParameter("p", page.ToString())
-                .WithGetParameter("limit", limit.ToString())
-                .WithGetParameter("kat", category.ToString().ToLowerInvariant())
-                .WithGetParameter("length", length.ToString());
+                ).WithGetParameter(input.BuildDictionary());
         }
 
         /// <summary>
@@ -113,65 +63,28 @@ namespace Azuria.Api.v1.RequestBuilder
         /// Api permissions required (class - permission level):
         /// * User - Level 0
         /// </summary>
-        /// <param name="userId"></param>
-        /// <param name="page"></param>
-        /// <param name="limit"></param>
-        /// <param name="category"></param>
-        /// <param name="length"></param>
         /// <returns>An instance of <see cref="IRequestBuilderWithResult{T}" /> that returns...</returns>
-        public IRequestBuilderWithResult<CommentDataModel[]> GetLatestComments(
-            int userId, int page = 0, int limit = 25, MediaEntryType category = MediaEntryType.Anime,
-            int length = 300)
+        public IRequestBuilderWithResult<ListDataModel[]> GetList(UserGetListInput input)
         {
-            return this.GetLatestComments(page, limit, category, length)
-                .WithGetParameter("uid", userId.ToString());
-        }
-
-        /// <summary>
-        /// Builds a request that...
-        /// Api permissions required (class - permission level):
-        /// * User - Level 0
-        /// </summary>
-        /// <param name="username"></param>
-        /// <param name="page"></param>
-        /// <param name="limit"></param>
-        /// <param name="category"></param>
-        /// <param name="length"></param>
-        /// <returns>An instance of <see cref="IRequestBuilderWithResult{T}" /> that returns...</returns>
-        public IRequestBuilderWithResult<CommentDataModel[]> GetLatestComments(
-            string username, int page = 0, int limit = 25, MediaEntryType category = MediaEntryType.Anime,
-            int length = 300)
-        {
-            return this.GetLatestComments(page, limit, category, length)
-                .WithGetParameter("username", username);
-        }
-
-        /// <summary>
-        /// Builds a request that...
-        /// Api permissions required (class - permission level):
-        /// * User - Level 0
-        /// </summary>
-        /// <param name="input"></param>
-        /// <param name="page"></param>
-        /// <param name="limit"></param>
-        /// <returns>An instance of <see cref="IRequestBuilderWithResult{T}" /> that returns...</returns>
-        public IRequestBuilderWithResult<ListDataModel[]> GetList(
-            UserGetListInput input, int page = 0, int limit = 100)
-        {
+            this.CheckInputDataModel(input);
             return new RequestBuilder<ListDataModel[]>(
                     new Uri($"{ApiConstants.ApiUrlV1}/user/list"), this.ProxerClient
-                ).WithGetParameter("p", page.ToString())
-                .WithGetParameter("limit", limit.ToString())
-                .WithGetParameter(input.Build())
-                .WithLoginCheck(input.UserId == null && input.Username == null);
+                ).WithGetParameter(input.BuildDictionary())
+                .WithLoginCheck(input.UserId == null && string.IsNullOrEmpty(input.Username));
         }
 
-        private IRequestBuilderWithResult<ToptenDataModel[]> GetTopten(
-            MediaEntryType category = MediaEntryType.Anime)
+        /// <summary>
+        /// Builds a request that...
+        /// Api permissions required (class - permission level):
+        /// * User - Level 0
+        /// </summary>
+        /// <returns>An instance of <see cref="IRequestBuilderWithResult{T}" /> that returns...</returns>
+        public IRequestBuilderWithResult<ToptenDataModel[]> GetTopten(UserToptenListInput input)
         {
+            this.CheckInputDataModel(input);
             return new RequestBuilder<ToptenDataModel[]>(
                 new Uri($"{ApiConstants.ApiUrlV1}/user/topten"), this.ProxerClient
-            ).WithGetParameter("kat", category.ToString().ToLowerInvariant());
+            ).WithGetParameter(input.BuildDictionary());
         }
 
         /// <summary>
@@ -179,60 +92,13 @@ namespace Azuria.Api.v1.RequestBuilder
         /// Api permissions required (class - permission level):
         /// * User - Level 0
         /// </summary>
-        /// <param name="userId"></param>
-        /// <param name="category"></param>
         /// <returns>An instance of <see cref="IRequestBuilderWithResult{T}" /> that returns...</returns>
-        public IRequestBuilderWithResult<ToptenDataModel[]> GetTopten(
-            int userId, MediaEntryType category = MediaEntryType.Anime)
+        public IRequestBuilderWithResult<LoginDataModel> Login(LoginInput input)
         {
-            return this.GetTopten(category)
-                .WithGetParameter("uid", userId.ToString());
-        }
-
-        /// <summary>
-        /// Builds a request that...
-        /// Api permissions required (class - permission level):
-        /// * User - Level 0
-        /// </summary>
-        /// <param name="username"></param>
-        /// <param name="category"></param>
-        /// <returns>An instance of <see cref="IRequestBuilderWithResult{T}" /> that returns...</returns>
-        public IRequestBuilderWithResult<ToptenDataModel[]> GetTopten(
-            string username, MediaEntryType category = MediaEntryType.Anime)
-        {
-            return this.GetTopten(category)
-                .WithGetParameter("username", username);
-        }
-
-        /// <summary>
-        /// Builds a request that...
-        /// Api permissions required (class - permission level):
-        /// * User - Level 0
-        /// </summary>
-        /// <param name="username"></param>
-        /// <param name="password"></param>
-        /// <returns>An instance of <see cref="IRequestBuilderWithResult{T}" /> that returns...</returns>
-        public IRequestBuilderWithResult<LoginDataModel> Login(string username, string password)
-        {
+            this.CheckInputDataModel(input);
             return new RequestBuilder<LoginDataModel>(
                     new Uri($"{ApiConstants.ApiUrlV1}/user/login"), this.ProxerClient
-                ).WithPostParameter("username", username)
-                .WithPostParameter("password", password);
-        }
-
-        /// <summary>
-        /// Builds a request that...
-        /// Api permissions required (class - permission level):
-        /// * User - Level 0
-        /// </summary>
-        /// <param name="username"></param>
-        /// <param name="password"></param>
-        /// <param name="secretKey"></param>
-        /// <returns>An instance of <see cref="IRequestBuilderWithResult{T}" /> that returns...</returns>
-        public IRequestBuilderWithResult<LoginDataModel> Login(string username, string password, string secretKey)
-        {
-            return this.Login(username, password)
-                .WithPostParameter("secretKey", secretKey);
+                ).WithPostParameter(input.Build());
         }
 
         /// <summary>

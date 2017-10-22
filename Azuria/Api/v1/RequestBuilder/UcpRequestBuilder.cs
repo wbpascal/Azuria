@@ -1,6 +1,7 @@
 ﻿using System;
 using Azuria.Api.v1.DataModels.Ucp;
 using Azuria.Api.v1.DataModels.User;
+using Azuria.Api.v1.Input.Info;
 using Azuria.Api.v1.Input.Ucp;
 using Azuria.Enums;
 using Azuria.Enums.Info;
@@ -14,19 +15,13 @@ namespace Azuria.Api.v1.RequestBuilder
     /// <summary>
     /// Represents the ucp api class.
     /// </summary>
-    public class UcpRequestBuilder : IApiClassRequestBuilder
+    public class UcpRequestBuilder : ApiClassRequestBuilderBase
     {
-        /// <summary>
-        /// </summary>
-        /// <param name="client"></param>
-        public UcpRequestBuilder(IProxerClient client)
-        {
-            this.ProxerClient = client;
-        }
-
         /// <inheritdoc />
-        public IProxerClient ProxerClient { get; }
-
+        public UcpRequestBuilder(IProxerClient proxerClient) : base(proxerClient)
+        {
+        }
+        
         /// <summary>
         /// Builds a request that removes an entry from a users topten.
         /// **Requires authentication.**
@@ -36,16 +31,14 @@ namespace Azuria.Api.v1.RequestBuilder
         /// * UCP - Level 1
         /// </para>
         /// </summary>
-        /// <param name="favouriteId">
-        /// The id of the entry that should be removed from the topten (see <see cref="GetTopten" />).
-        /// </param>
         /// <returns>An instance of <see cref="IRequestBuilder" /> that removes an entry from a users topten.</returns>
         /// <seealso cref="GetTopten" />
-        public IRequestBuilder DeleteFavourite(int favouriteId)
+        public IRequestBuilder DeleteTopten(DeleteToptenInput input)
         {
+            this.CheckInputDataModel(input);
             return new Requests.Builder.RequestBuilder(
                     new Uri($"{ApiConstants.ApiUrlV1}/ucp/deletefavorite"), this.ProxerClient)
-                .WithPostParameter("id", favouriteId.ToString())
+                .WithPostParameter(input.Build())
                 .WithLoginCheck();
         }
 
@@ -58,14 +51,14 @@ namespace Azuria.Api.v1.RequestBuilder
         /// * UCP - Level 1
         /// </para>
         /// </summary>
-        /// <param name="reminderId">The id of the reminder that should be deleted (see <see cref="GetReminder" />).</param>
         /// <returns>An instance of <see cref="IRequestBuilder" /> that deletes a reminder.</returns>
         /// <seealso cref="GetReminder" />
-        public IRequestBuilder DeleteReminder(int reminderId)
+        public IRequestBuilder DeleteReminder(DeleteReminderInput input)
         {
+            this.CheckInputDataModel(input);
             return new Requests.Builder.RequestBuilder(
                     new Uri($"{ApiConstants.ApiUrlV1}/ucp/deletereminder"), this.ProxerClient)
-                .WithPostParameter("id", reminderId.ToString())
+                .WithPostParameter(input.Build())
                 .WithLoginCheck();
         }
 
@@ -75,14 +68,14 @@ namespace Azuria.Api.v1.RequestBuilder
         /// Api permissions required (class - permission level):
         /// * UCP - Level 1
         /// </summary>
-        /// <param name="voteId">The id of the comment upvote that should be removed (see <see cref="GetVotes" />).</param>
         /// <returns>An instance of <see cref="IRequestBuilder" /> that removes a comment upvote.</returns>
         /// <seealso cref="GetVotes" />
-        public IRequestBuilder DeleteVote(int voteId)
+        public IRequestBuilder DeleteVote(DeleteVoteInput input)
         {
+            this.CheckInputDataModel(input);
             return new Requests.Builder.RequestBuilder(
                     new Uri($"{ApiConstants.ApiUrlV1}/ucp/deletevote"), this.ProxerClient
-                ).WithPostParameter("id", voteId.ToString())
+                ).WithPostParameter(input.Build())
                 .WithLoginCheck();
         }
 
@@ -93,15 +86,13 @@ namespace Azuria.Api.v1.RequestBuilder
         /// Api permissions required (class - permission level):
         /// * UCP - Level 0
         /// </summary>
-        /// <param name="page">Optional. The index of the page that should be loaded. Default: 0</param>
-        /// <param name="limit">Optional. The number of entries that should be loaded per page. Default: 50</param>
         /// <returns>An instance of <see cref="IRequestBuilderWithResult{T}" /> that returns an array of episodes and chapters.</returns>
-        public IRequestBuilderWithResult<HistoryDataModel[]> GetHistory(int page = 0, int limit = 50)
+        public IRequestBuilderWithResult<HistoryDataModel[]> GetHistory(UcpEntryHistoryInput input)
         {
+            this.CheckInputDataModel(input);
             return new RequestBuilder<HistoryDataModel[]>(
                     new Uri($"{ApiConstants.ApiUrlV1}/ucp/history"), this.ProxerClient
-                ).WithGetParameter("p", page.ToString())
-                .WithGetParameter("limit", limit.ToString())
+                ).WithGetParameter(input.BuildDictionary())
                 .WithLoginCheck();
         }
 
@@ -113,15 +104,12 @@ namespace Azuria.Api.v1.RequestBuilder
         /// * UCP - Level 0
         /// </summary>
         /// <param name="input">The data model that contains further input parameters for the request.</param>
-        /// <param name="page">Optional. The index of the page that should be loaded. Default: 0</param>
-        /// <param name="limit">Optional. The number of entries that should be returned per page. Default: 100</param>
         /// <returns>An instance of <see cref="IRequestBuilderWithResult{T}" /> that returns an array of anime or manga entries.</returns>
-        public IRequestBuilderWithResult<ListDataModel[]> GetList(UcpGetListInput input, int page = 0, int limit = 100)
+        public IRequestBuilderWithResult<ListDataModel[]> GetList(UcpGetListInput input)
         {
+            this.CheckInputDataModel(input);
             return new RequestBuilder<ListDataModel[]>(new Uri($"{ApiConstants.ApiUrlV1}/ucp/list"), this.ProxerClient)
-                .WithGetParameter("p", page.ToString())
-                .WithGetParameter("limit", limit.ToString())
-                .WithGetParameter(input.Build())
+                .WithGetParameter(input.BuildDictionary())
                 .WithLoginCheck();
         }
 
@@ -131,15 +119,15 @@ namespace Azuria.Api.v1.RequestBuilder
         /// Api permissions required (class - permission level):
         /// * UCP - Level 0
         /// </summary>
-        /// <param name="category">Optional. Whether only watched episodes or read chapters should be counted.</param>
         /// <returns>
-        /// An instance of <see cref="IRequestBuilderWithResult{T}" /> that returns a sum of watched episodes or read
+        /// An instance of <see cref="IRequestBuilderWithResult{T}" /> that returns the sum of watched episodes or read
         /// chapters.
         /// </returns>
-        public IRequestBuilderWithResult<int> GetListsum(MediaEntryType category = MediaEntryType.Anime)
+        public IRequestBuilderWithResult<int> GetListsum(ListsumInput input)
         {
+            this.CheckInputDataModel(input);
             return new RequestBuilder<int>(new Uri($"{ApiConstants.ApiUrlV1}/ucp/listsum"), this.ProxerClient)
-                .WithGetParameter("kat", category.ToString().ToLowerInvariant())
+                .WithGetParameter(input.BuildDictionary())
                 .WithLoginCheck();
         }
 
@@ -149,23 +137,14 @@ namespace Azuria.Api.v1.RequestBuilder
         /// Api permissions required (class - permission level):
         /// * UCP - Level 0
         /// </summary>
-        /// <param name="category">Optional. The category that should be loaded. If null or not given both categories are loaded.</param>
-        /// <param name="page">Optional. The index of the page that should be loaded. Default: 0</param>
-        /// <param name="limit">Optional. The number of entries that should be loaded per page. Default: 100</param>
         /// <returns>An instance of <see cref="IRequestBuilderWithResult{T}" /> that returns an array of reminders.</returns>
-        public IRequestBuilderWithResult<BookmarkDataModel[]> GetReminder(
-            MediaEntryType? category = null, int page = 0, int limit = 100)
+        public IRequestBuilderWithResult<BookmarkDataModel[]> GetReminder(ReminderListInput input)
         {
-            IRequestBuilderWithResult<BookmarkDataModel[]> lRequest = new RequestBuilder<BookmarkDataModel[]>(
+            this.CheckInputDataModel(input);
+            return new RequestBuilder<BookmarkDataModel[]>(
                     new Uri($"{ApiConstants.ApiUrlV1}/ucp/reminder"), this.ProxerClient
-                ).WithGetParameter("p", page.ToString())
-                .WithGetParameter("limit", limit.ToString())
+                ).WithGetParameter(input.BuildDictionary())
                 .WithLoginCheck();
-
-            if (category != null)
-                lRequest.WithGetParameter("kat", category.ToString().ToLowerInvariant());
-
-            return lRequest;
         }
 
         /// <summary>
@@ -204,15 +183,13 @@ namespace Azuria.Api.v1.RequestBuilder
         /// Api permissions required (class - permission level):
         /// * UCP - Level 1
         /// </summary>
-        /// <param name="id">The id of the entry that should be edited (see <see cref="GetList" />).</param>
-        /// <param name="progress">The amount of watched episodes/read chapters.</param>
         /// <returns>An instance of <see cref="IRequestBuilder" /> sets a users progress of an anime/manga.</returns>
-        public IRequestBuilder SetCommentState(int id, int progress)
+        public IRequestBuilder SetCommentState(SetCommentProgressInput input)
         {
+            this.CheckInputDataModel(input);
             return new Requests.Builder.RequestBuilder(
                     new Uri($"{ApiConstants.ApiUrlV1}/ucp/setcommentstate"), this.ProxerClient)
-                .WithPostParameter("id", id.ToString())
-                .WithPostParameter("value", progress.ToString())
+                .WithPostParameter(input.Build())
                 .WithLoginCheck();
         }
 
@@ -222,26 +199,13 @@ namespace Azuria.Api.v1.RequestBuilder
         /// Api permissions required (class - permission level):
         /// * UCP - Level 1
         /// </summary>
-        /// <param name="entryId">The id of the anime/manga that contains the episode/chapter.</param>
-        /// <param name="contentIndex">The episode/chapter number that should be added a reminder for.</param>
-        /// <param name="language">The language of the episode/chapter.</param>
-        /// <param name="category">
-        /// A value indicating whether the reminder is from an anime or manga (I don't know why we need
-        /// this).
-        /// </param>
         /// <returns>An instance of <see cref="IRequestBuilder" />.</returns>
-        public IRequestBuilder SetReminder(
-            int entryId, int contentIndex, MediaLanguage language, MediaEntryType category)
+        public IRequestBuilder SetReminder(SetReminderInput input)
         {
-            if (language == MediaLanguage.Unkown)
-                throw new ArgumentException("The given language is invalid for this request!", nameof(language));
-
+            this.CheckInputDataModel(input);
             return new Requests.Builder.RequestBuilder(
                     new Uri($"{ApiConstants.ApiUrlV1}/ucp/setreminder"), this.ProxerClient)
-                .WithGetParameter("id", entryId.ToString())
-                .WithGetParameter("episode", contentIndex.ToString())
-                .WithGetParameter("language", language.ToTypeString())
-                .WithGetParameter("kat", category.ToString().ToLowerInvariant())
+                .WithGetParameter(input.BuildDictionary())
                 .WithLoginCheck();
         }
     }
