@@ -5,6 +5,7 @@ using System.Linq;
 using System.Reflection;
 using Autofac;
 using Azuria.Api.v1.Input.Converter;
+using Azuria.Enums;
 using Azuria.Exceptions;
 using Azuria.Helpers.Attributes;
 using Azuria.Helpers.Extensions;
@@ -19,10 +20,37 @@ namespace Azuria.Api.v1.Input
         /// <inheritdoc />
         public override bool Equals(object obj)
         {
-            if (obj.GetType() != this.GetType()) return base.Equals(obj);
+            if (obj.GetType() != this.GetType()) return false;
             return this.GetType().GetRuntimeProperties().All(
                 info => obj.GetType().GetRuntimeProperty(info.Name).GetValue(obj).Equals(info.GetValue(this))
             );
+        }
+
+        /// <summary>
+        /// </summary>
+        /// <returns></returns>
+        public static bool operator ==(InputDataModel left, InputDataModel right)
+        {
+            return Equals(left, right);
+        }
+
+        /// <summary>
+        /// </summary>
+        /// <returns></returns>
+        public static bool operator !=(InputDataModel left, InputDataModel right)
+        {
+            return !Equals(left, right);
+        }
+
+        /// <inheritdoc />
+        public override int GetHashCode()
+        {
+            unchecked
+            {
+                return this.GetType().GetRuntimeProperties().Aggregate(
+                    0, (i, info) => (i * 397) ^ info.GetValue(this).GetHashCode()
+                );
+            }
         }
 
         /// <inheritdoc />
