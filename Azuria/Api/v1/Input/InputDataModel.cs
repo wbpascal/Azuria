@@ -26,22 +26,6 @@ namespace Azuria.Api.v1.Input
             );
         }
 
-        /// <summary>
-        /// </summary>
-        /// <returns></returns>
-        public static bool operator ==(InputDataModel left, InputDataModel right)
-        {
-            return Equals(left, right);
-        }
-
-        /// <summary>
-        /// </summary>
-        /// <returns></returns>
-        public static bool operator !=(InputDataModel left, InputDataModel right)
-        {
-            return !Equals(left, right);
-        }
-
         /// <inheritdoc />
         public override int GetHashCode()
         {
