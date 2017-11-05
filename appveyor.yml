@@ -19,7 +19,7 @@ before_build:
   
 build_script:
   - SonarQube.Scanner.MSBuild.exe begin /k:"Azuria" /d:sonar.host.url=https://sonarcloud.io /d:sonar.organization=infinitesoul-github /d:sonar.login=%SONAR_QUBE_TOKEN% /v:%GitVersion_LegacySemVer% /d:sonar.cs.opencover.reportsPaths=Azuria.Test\coverage.xml
-  - msbuild Azuria.sln
+  - msbuild Azuria.sln /logger:"C:\Program Files\AppVeyor\BuildAgent\Appveyor.MSBuildLogger.dll"
 
 after_build:
   - ps: ./AppveyorPack.ps1
