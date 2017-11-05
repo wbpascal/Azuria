@@ -15,7 +15,8 @@ namespace Azuria.Api.v1.RequestBuilder
     {
         /// <inheritdoc />
         public AnimeRequestBuilder(IProxerClient proxerClient) : base(proxerClient)
-        { }
+        {
+        }
 
         /// <summary>
         /// Builds a request that returns the link of a specified stream.

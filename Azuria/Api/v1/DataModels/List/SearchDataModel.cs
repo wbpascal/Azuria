@@ -7,7 +7,7 @@ namespace Azuria.Api.v1.DataModels.List
 {
     /// <summary>
     /// </summary>
-    public class SearchDataModel : IEntryInfoDataModel
+    public class SearchDataModel : DataModelBase, IEntryInfoDataModel
     {
         /// <summary>
         /// </summary>

@@ -10,7 +10,7 @@ namespace Azuria.Api.v1.DataModels.User
 {
     /// <summary>
     /// </summary>
-    public class ListDataModel : IEntryInfoDataModel
+    public class ListDataModel : DataModelBase, IEntryInfoDataModel
     {
         /// <summary>
         /// </summary>

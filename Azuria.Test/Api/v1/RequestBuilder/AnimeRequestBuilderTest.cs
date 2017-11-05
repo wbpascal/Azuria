@@ -64,7 +64,7 @@ namespace Azuria.Test.Api.v1.RequestBuilder
                 Episode = this.GetRandomNumber(42),
                 Language = language
             };
-            
+
             if (language == AnimeLanguage.Unknown)
             {
                 Assert.Throws<InvalidOperationException>(

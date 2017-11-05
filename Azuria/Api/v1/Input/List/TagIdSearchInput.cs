@@ -15,7 +15,7 @@ namespace Azuria.Api.v1.Input.List
         /// </summary>
         [InputData("search", ConverterMethodName = nameof(GetSearchString))]
         public IEnumerable<string> TagsInclude { get; set; }
-        
+
         /// <summary>
         /// </summary>
         public IEnumerable<string> TagsExclude { get; set; }

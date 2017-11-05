@@ -7,7 +7,7 @@ namespace Azuria.Api.v1.DataModels.Info
     /// <summary>
     /// 
     /// </summary>
-    public class TranslatorBasicDataModel : IDataModel
+    public class TranslatorBasicDataModel : DataModelBase
     {
         /// <summary>
         /// </summary>

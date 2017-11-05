@@ -1,4 +1,5 @@
 ﻿using Azuria.Api.v1.DataModels.Info;
+using Azuria.Enums.Info;
 using Azuria.ErrorHandling;
 using Azuria.Test.Core;
 using NUnit.Framework;
@@ -13,17 +14,43 @@ namespace Azuria.Test.Api.v1.DataModels.Info
         {
             string lJson = ResponseSetup.FileResponses["info_getfullentry.json"];
             ProxerApiResponse<FullEntryDataModel> lResponse = this.Convert(lJson);
-            this.CheckSuccessResponse(lResponse);
+            Assert.AreEqual(BuildDataModel(), lResponse.Result);
+        }
 
-            FullEntryDataModel lDataModel = lResponse.Result;
-            EntryDataModelTest.CheckDataModel(lDataModel);
-            IndustryBasicDataModelTest.CheckDataModels(lDataModel.Industry);
-            NameDataModelTest.CheckDataModels(lDataModel.Names);
-            SeasonDataModelTest.CheckDataModels(lDataModel.Seasons, true);
-            TagDataModelTest.CheckDataModels(lDataModel.Tags);
-            TranslatorBasicDataModelTest.CheckDataModels(lDataModel.Translator);
+        public static FullEntryDataModel BuildDataModel()
+        {
+            EntryDataModel lEntryDataModel = EntryDataModelTest.BuildDataModel();
+            IndustryBasicDataModel lIndustryBasicDataModel = IndustryBasicDataModelTest.BuildDataModel();
+            NameDataModel lNameDataModel = NameDataModelTest.BuildDataModel();
+            SeasonDataModel lSeasonDataModel = SeasonDataModelTest.BuildDataModel();
+            //Entry id is not included, set it back to default value
+            lSeasonDataModel.EntryId = int.MinValue;
 
-            Assert.False(lDataModel.IsHContent);
+            TagDataModel lTagDataModel = TagDataModelTest.BuildDataModel();
+            TranslatorBasicDataModel lTranslatorBasicDataModel = TranslatorBasicDataModelTest.BuildDataModel();
+            return new FullEntryDataModel
+            {
+                Clicks = lEntryDataModel.Clicks,
+                ContentCount = lEntryDataModel.ContentCount,
+                Description = lEntryDataModel.Description,
+                EntryId = lEntryDataModel.EntryId,
+                EntryMedium = lEntryDataModel.EntryMedium,
+                EntryName = lEntryDataModel.EntryName,
+                EntryType = lEntryDataModel.EntryType,
+                Fsk = lEntryDataModel.Fsk,
+                Genre = lEntryDataModel.Genre,
+                IsLicensed = lEntryDataModel.IsLicensed,
+                RatingsCount = lEntryDataModel.RatingsCount,
+                RatingsSum = lEntryDataModel.RatingsSum,
+                Status = lEntryDataModel.Status,
+                AvailableLanguages = new[] {MediaLanguage.GerSub, MediaLanguage.EngSub},
+                IsHContent = false,
+                Industry = new[] {lIndustryBasicDataModel},
+                Names = new[] {lNameDataModel},
+                Seasons = new[] {lSeasonDataModel},
+                Tags = new[] {lTagDataModel},
+                Translator = new[] {lTranslatorBasicDataModel}
+            };
         }
     }
 }

@@ -6,7 +6,7 @@ namespace Azuria.Api.v1.DataModels.Info
 {
     /// <summary>
     /// </summary>
-    public class MediaContentDataModel : IDataModel
+    public class MediaContentDataModel : DataModelBase
     {
         /// <summary>
         /// </summary>

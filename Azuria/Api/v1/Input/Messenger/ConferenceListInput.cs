@@ -15,7 +15,7 @@ namespace Azuria.Api.v1.Input.Messenger
         /// </summary>
         [InputData("type", Converter = typeof(ToLowerConverter), Optional = true)]
         public ConferenceList? List { get; set; }
-        
+
         /// <summary>
         /// Gets or sets the page of the list that should be returned. 
         /// Optional, if omitted (or null) the default value of the api method will be used.

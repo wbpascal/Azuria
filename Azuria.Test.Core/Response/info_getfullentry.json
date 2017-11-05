@@ -21,24 +21,6 @@
                 "eid": "9200",
                 "type": "name",
                 "name": "Shigatsu wa Kimi no Uso"
-            },
-            {
-                "id": "22019",
-                "eid": "9200",
-                "type": "nameeng",
-                "name": "Your Lie in April"
-            },
-            {
-                "id": "40161",
-                "eid": "9200",
-                "type": "nameger",
-                "name": "Shigatsu wa Kimi no Uso: Sekunden in Moll"
-            },
-            {
-                "id": "19233",
-                "eid": "9200",
-                "type": "namejap",
-                "name": "四月は君の嘘"
             }
         ],
         "gate": false,
@@ -48,11 +30,6 @@
                 "id": "6283",
                 "year": "2014",
                 "season": "4"
-            },
-            {
-                "id": "8526",
-                "year": "2015",
-                "season": "1"
             }
         ],
         "groups": [
@@ -60,11 +37,6 @@
                 "name": "English Studio",
                 "id": "455",
                 "country": "en"
-            },
-            {
-                "name": "Gruppe Kampfkuchen",
-                "id": "11",
-                "country": "de"
             }
         ],
         "publisher": [
@@ -73,30 +45,6 @@
                 "id": "216",
                 "type": "streaming",
                 "country": "de"
-            },
-            {
-                "name": "Peppermint Anime",
-                "id": "9",
-                "type": "publisher",
-                "country": "de"
-            },
-            {
-                "name": "Kyoraku Industrial Holdings Co.,Ltd.",
-                "id": "430",
-                "type": "producer",
-                "country": "jp"
-            },
-            {
-                "name": "Aniplex of America",
-                "id": "431",
-                "type": "publisher",
-                "country": "us"
-            },
-            {
-                "name": "A-1 Pictures",
-                "id": "7",
-                "type": "studio",
-                "country": "jp"
             }
         ],
         "tags": [
@@ -108,15 +56,6 @@
                 "spoiler_flag": "1",
                 "tag": "Bad End",
                 "description": "Bad End Beschreibungstext"
-            },
-            {
-                "id": "3949",
-                "tid": "99",
-                "timestamp": "2016-06-19 16:31:49",
-                "rate_flag": "1",
-                "spoiler_flag": "0",
-                "tag": "Osananajimi",
-                "description": "Osananajimi Beschreibung"
             }
         ]
     }

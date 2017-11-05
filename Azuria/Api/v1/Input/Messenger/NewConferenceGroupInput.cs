@@ -13,13 +13,13 @@ namespace Azuria.Api.v1.Input.Messenger
         /// Gets or sets the names of the users which will be added to the new conference. The maximum amount is limited by the message constants.
         /// </summary>
         public IEnumerable<string> Usernames { get; set; }
-        
+
         /// <summary> 
         /// Optional, if omitted (or null) no message will be send to the conference group after creation.
         /// </summary>
         [InputData("text", Optional = true)]
         public string Text { get; set; }
-        
+
         /// <summary>
         /// 
         /// </summary>

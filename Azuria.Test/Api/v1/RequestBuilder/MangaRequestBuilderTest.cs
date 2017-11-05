@@ -23,7 +23,7 @@ namespace Azuria.Test.Api.v1.RequestBuilder
                 Id = id,
                 Language = language
             };
-            
+
             IRequestBuilderWithResult<ChapterDataModel> lRequest = this.RequestBuilder.GetChapter(lInput);
             this.CheckUrl(lRequest, "manga", "chapter");
             Assert.AreSame(this.ProxerClient, lRequest.Client);

@@ -7,23 +7,50 @@ using Autofac;
 using Azuria.Api.v1.Input.Converter;
 using Azuria.Enums;
 using Azuria.Exceptions;
+using Azuria.Helpers;
 using Azuria.Helpers.Attributes;
 using Azuria.Helpers.Extensions;
 
 namespace Azuria.Api.v1.Input
 {
-    /// <inheritdoc />
+    /// <inheritdoc cref="IInputDataModel" />
     /// <summary>
     /// </summary>
-    public abstract class InputDataModel : IInputDataModel
+    public abstract class InputDataModel : IInputDataModel, IEquatable<InputDataModel>
     {
         /// <inheritdoc />
         public override bool Equals(object obj)
         {
-            if (obj.GetType() != this.GetType()) return false;
-            return this.GetType().GetRuntimeProperties().All(
-                info => obj.GetType().GetRuntimeProperty(info.Name).GetValue(obj).Equals(info.GetValue(this))
-            );
+            if (obj == null || obj.GetType() != this.GetType()) return false;
+            return ReferenceEquals(this, obj) || this.Equals((InputDataModel) obj);
+        }
+
+        /// <inheritdoc />
+        public bool Equals(InputDataModel other)
+        {
+            return this.GetType().GetRuntimeProperties().All(info => info.ArePropertyValuesEqual(this, other));
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="left"></param>
+        /// <param name="right"></param>
+        /// <returns></returns>
+        public static bool operator ==(InputDataModel left, InputDataModel right)
+        {
+            return Equals(left, right);
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="left"></param>
+        /// <param name="right"></param>
+        /// <returns></returns>
+        public static bool operator !=(InputDataModel left, InputDataModel right)
+        {
+            return !Equals(left, right);
         }
 
         /// <inheritdoc />
@@ -53,7 +80,7 @@ namespace Azuria.Api.v1.Input
                 lInputDataProperties.Select(
                         tuple => new KeyValuePair<string, string>(
                             tuple.Item2.Key, this.GetPropertyValue(tuple.Item1, tuple.Item2))
-                        )
+                    )
                     .Where(pair => pair.Value != null)
             );
             return lReturn;

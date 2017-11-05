@@ -15,39 +15,37 @@ namespace Azuria.Test.Api.v1.DataModels.Info
         {
             string lJson = ResponseSetup.FileResponses["info_getlistinfo.json"];
             ProxerApiResponse<ListInfoDataModel> lResponse = this.Convert(lJson);
-            this.CheckSuccessResponse(lResponse);
-            CheckDataModel(lResponse.Result);
+            Assert.AreEqual(BuildDataModel(), lResponse.Result);
         }
 
-        public static void CheckDataModel(ListInfoDataModel dataModel)
+        public static ListInfoDataModel BuildDataModel()
         {
-            void CheckContentObject(
-                MediaContentDataModel contentModel, int contentIndex, MediaLanguage language, string[] hosters,
-                string[] hosterImages, string title)
+            return new ListInfoDataModel
             {
-                Assert.Multiple(
-                    () =>
+                Category = MediaEntryType.Anime,
+                ContentObjects = new[]
+                {
+                    new MediaContentDataModel
                     {
-                        Assert.AreEqual(contentIndex, contentModel.ContentIndex);
-                        Assert.AreEqual(language, contentModel.Language);
-                        Assert.AreEqual(hosters, contentModel.StreamHosters);
-                        Assert.AreEqual(title, contentModel.Title);
-                    });
-            }
-
-            Assert.AreEqual(1, dataModel.StartIndex);
-            Assert.AreEqual(22, dataModel.EndIndex);
-            Assert.AreEqual(MediaEntryType.Anime, dataModel.Category);
-            CheckContentObject(
-                dataModel.ContentObjects[0], 1, MediaLanguage.EngSub,
-                new[] {"mp4upload", "yourupload", "viewster", "proxer-stream", "streamcloud2"},
-                new[] {"mp4upload.png", "yourupload.png", "viewster.png", "proxer-stream.png", "streamcloud.png"},
-                null);
-            CheckContentObject(
-                dataModel.ContentObjects[1], 4, MediaLanguage.GerSub,
-                new[] {"viewster", "akibapass"},
-                new[] {"viewster.png", "akibapass.png"},
-                null);
+                        ContentIndex = 1,
+                        Language = MediaLanguage.EngSub,
+                        StreamHosterImages = new[]
+                            {"mp4upload.png", "yourupload.png", "viewster.png", "proxer-stream.png", "streamcloud.png"},
+                        StreamHosters = new[] {"mp4upload", "yourupload", "viewster", "proxer-stream", "streamcloud2"},
+                        Title = null
+                    },
+                    new MediaContentDataModel
+                    {
+                        ContentIndex = 4,
+                        Language = MediaLanguage.GerSub,
+                        StreamHosterImages = new[] {"viewster.png", "akibapass.png"},
+                        StreamHosters = new[] {"viewster", "akibapass"},
+                        Title = null
+                    }
+                },
+                EndIndex = 22,
+                StartIndex = 1
+            };
         }
     }
 }

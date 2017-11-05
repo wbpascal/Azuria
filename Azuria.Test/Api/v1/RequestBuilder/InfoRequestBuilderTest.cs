@@ -236,7 +236,7 @@ namespace Azuria.Test.Api.v1.RequestBuilder
 
         private EntryIdInput GetRandomEntryIdInput()
         {
-            return new EntryIdInput{EntryId = this.GetRandomNumber(10000)};
+            return new EntryIdInput {EntryId = this.GetRandomNumber(10000)};
         }
     }
 }

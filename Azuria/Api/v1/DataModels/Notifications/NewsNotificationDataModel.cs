@@ -6,7 +6,7 @@ namespace Azuria.Api.v1.DataModels.Notifications
 {
     /// <summary>
     /// </summary>
-    public class NewsNotificationDataModel : IDataModel
+    public class NewsNotificationDataModel : DataModelBase
     {
         /// <summary>
         /// </summary>

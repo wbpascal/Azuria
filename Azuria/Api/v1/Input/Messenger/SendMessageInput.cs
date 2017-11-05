@@ -12,7 +12,7 @@ namespace Azuria.Api.v1.Input.Messenger
         /// </summary>
         [InputData("conference_id")]
         public int ConferenceId { get; set; }
-        
+
         /// <summary>
         /// Gets or sets the message that is send to the given conference.
         /// </summary>

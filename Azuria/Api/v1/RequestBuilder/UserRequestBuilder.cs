@@ -25,8 +25,8 @@ namespace Azuria.Api.v1.RequestBuilder
         {
             this.CheckInputDataModel(input);
             return new RequestBuilder<HistoryDataModel[]>(
-                    new Uri($"{ApiConstants.ApiUrlV1}/user/history"), this.ProxerClient
-                ).WithGetParameter(input.BuildDictionary());
+                new Uri($"{ApiConstants.ApiUrlV1}/user/history"), this.ProxerClient
+            ).WithGetParameter(input.BuildDictionary());
         }
 
         /// <summary>
@@ -54,8 +54,8 @@ namespace Azuria.Api.v1.RequestBuilder
         {
             this.CheckInputDataModel(input);
             return new RequestBuilder<CommentDataModel[]>(
-                    new Uri($"{ApiConstants.ApiUrlV1}/user/comments"), this.ProxerClient
-                ).WithGetParameter(input.BuildDictionary());
+                new Uri($"{ApiConstants.ApiUrlV1}/user/comments"), this.ProxerClient
+            ).WithGetParameter(input.BuildDictionary());
         }
 
         /// <summary>
@@ -97,8 +97,8 @@ namespace Azuria.Api.v1.RequestBuilder
         {
             this.CheckInputDataModel(input);
             return new RequestBuilder<LoginDataModel>(
-                    new Uri($"{ApiConstants.ApiUrlV1}/user/login"), this.ProxerClient
-                ).WithPostParameter(input.Build());
+                new Uri($"{ApiConstants.ApiUrlV1}/user/login"), this.ProxerClient
+            ).WithPostParameter(input.Build());
         }
 
         /// <summary>

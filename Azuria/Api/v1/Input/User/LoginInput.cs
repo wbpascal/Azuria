@@ -11,8 +11,9 @@ namespace Azuria.Api.v1.Input.User
         /// 
         /// </summary>
         public LoginInput()
-        { }
-        
+        {
+        }
+
         /// <inheritdoc />
         public LoginInput(string username, string password, string secretKey = null)
         {
@@ -32,7 +33,7 @@ namespace Azuria.Api.v1.Input.User
         /// </summary>
         [InputData("secretKey", Optional = true)]
         public string SecretKey { get; set; }
-        
+
         /// <summary>
         /// 
         /// </summary>

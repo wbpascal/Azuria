@@ -12,7 +12,7 @@ namespace Azuria.Api.v1.Input.Messenger
         /// </summary>
         [InputData("text")]
         public string Text { get; set; }
-        
+
         /// <summary>
         /// Gets or sets the username of the user that will be added to the conference. 
         /// If there already exists a conference with this user, the string given in <see cref="Text"/> will be send 

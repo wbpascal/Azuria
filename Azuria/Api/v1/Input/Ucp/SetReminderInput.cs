@@ -17,13 +17,13 @@ namespace Azuria.Api.v1.Input.Ucp
         /// </summary>
         [InputData("kat", Converter = typeof(ToLowerConverter))]
         public MediaEntryType Category { get; set; }
-        
+
         /// <summary>
         /// Gets or sets the id of the entry of which a reminder will be created.
         /// </summary>
         [InputData("id")]
         public int EntryId { get; set; }
-        
+
         /// <summary>
         /// Gets or sets the number of the episode/chapter the reminder will be created of.
         /// </summary>

@@ -14,7 +14,7 @@ namespace Azuria.Api.v1.Input.Info
         /// </summary>
         [InputData("id")]
         public int EntryId { get; set; }
-        
+
         /// <summary>
         /// Gets or sets the list of the logged in user to which the entry should be added.
         /// </summary>

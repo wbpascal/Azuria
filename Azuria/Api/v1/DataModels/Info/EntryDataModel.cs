@@ -8,7 +8,7 @@ namespace Azuria.Api.v1.DataModels.Info
 {
     /// <summary>
     /// </summary>
-    public class EntryDataModel : IEntryInfoDataModel
+    public class EntryDataModel : DataModelBase, IEntryInfoDataModel
     {
         /// <summary>
         /// </summary>

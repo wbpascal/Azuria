@@ -1,0 +1,9 @@
+{
+    "error": 0,
+    "message": "Abfrage erfolgreich",
+    "data": [
+        { "id": "1048", "type": "publisher", "name": "101 Films", "country": "us" },
+        { "id": "493", "type": "studio", "name": "10Gauge", "country": "jp" },
+        { "id": "1281", "type": "record_label", "name": "Areia Creations Global Entertainment", "country": "kr" }
+    ]
+}

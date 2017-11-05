@@ -1,4 +1,5 @@
-﻿using Azuria.Api.v1.DataModels.Info;
+﻿using System.Linq;
+using Azuria.Api.v1.DataModels.Info;
 using Azuria.Enums.Info;
 using Azuria.ErrorHandling;
 using Azuria.Test.Core;
@@ -14,26 +15,17 @@ namespace Azuria.Test.Api.v1.DataModels.Info
         {
             string lJson = ResponseSetup.FileResponses["info_getgroups.json"];
             ProxerApiResponse<TranslatorBasicDataModel[]> lResponse = this.ConvertArray(lJson);
-            this.CheckSuccessResponse(lResponse);
-            CheckDataModels(lResponse.Result);
+            Assert.AreEqual(BuildDataModel(), lResponse.Result.First());
         }
 
-        public static void CheckDataModels(TranslatorBasicDataModel[] dataModels)
+        public static TranslatorBasicDataModel BuildDataModel()
         {
-            void CheckDataModel(TranslatorBasicDataModel dataModel, string name, int id, Country country)
+            return new TranslatorBasicDataModel
             {
-                Assert.Multiple(
-                    () =>
-                    {
-                        Assert.AreEqual(country, dataModel.Country);
-                        Assert.AreEqual(id, dataModel.Id);
-                        Assert.AreEqual(name, dataModel.Name);
-                    });
-            }
-
-            Assert.AreEqual(2, dataModels.Length);
-            CheckDataModel(dataModels[0], "English Studio", 455, Country.England);
-            CheckDataModel(dataModels[1], "Gruppe Kampfkuchen", 11, Country.Germany);
+                Country = Country.England,
+                Id = 455,
+                Name = "English Studio"
+            };
         }
     }
 }

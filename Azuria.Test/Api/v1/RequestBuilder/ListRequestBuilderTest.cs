@@ -260,7 +260,8 @@ namespace Azuria.Test.Api.v1.RequestBuilder
             Assert.True(lRequest.PostParameter.ContainsKey("p"));
             Assert.AreEqual("test_start", lRequest.PostParameter.GetValue("start").First());
             Assert.AreEqual("test_contains", lRequest.PostParameter.GetValue("contains").First());
-            Assert.AreEqual(country.ToShortString() ?? string.Empty, lRequest.PostParameter.GetValue("country").First());
+            Assert.AreEqual(
+                country.ToShortString() ?? string.Empty, lRequest.PostParameter.GetValue("country").First());
             Assert.AreEqual("50", lRequest.PostParameter.GetValue("limit").First());
             Assert.AreEqual("1", lRequest.PostParameter.GetValue("p").First());
             Assert.False(lRequest.CheckLogin);

@@ -5,7 +5,7 @@ namespace Azuria.Api.v1.DataModels.User
 {
     /// <summary>
     /// </summary>
-    public class ToptenDataModel : IEntryInfoDataModel
+    public class ToptenDataModel : DataModelBase, IEntryInfoDataModel
     {
         /// <inheritdoc />
         [JsonProperty("eid")]

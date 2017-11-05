@@ -26,14 +26,15 @@ namespace Azuria.Api.v1.RequestBuilder
         /// <param name="inputDataModel"></param>
         protected void CheckInputDataModel(IInputDataModel inputDataModel)
         {
-            if(inputDataModel == null)
+            if (inputDataModel == null)
                 throw new ArgumentNullException(nameof(inputDataModel));
-            if(inputDataModel is IPagedInputDataModel)
+            if (inputDataModel is IPagedInputDataModel)
                 this.CheckPagedInputDataModel(inputDataModel as PagedInputDataModel);
         }
 
         private void CheckPagedInputDataModel(IPagedInputDataModel pagedInputDataModel)
         {
+            //Not needed right now
         }
     }
 }

@@ -4,5 +4,6 @@
     /// 
     /// </summary>
     public sealed class UcpEntryHistoryInput : PagedInputDataModel
-    { }
+    {
+    }
 }

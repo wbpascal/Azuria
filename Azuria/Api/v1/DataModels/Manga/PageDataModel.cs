@@ -2,7 +2,7 @@
 {
     /// <summary>
     /// </summary>
-    public class PageDataModel : IDataModel
+    public class PageDataModel : DataModelBase
     {
         /// <summary>
         /// </summary>

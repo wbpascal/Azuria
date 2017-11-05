@@ -4,7 +4,7 @@ namespace Azuria.Api.v1.DataModels.Messenger
 {
     /// <summary>
     /// </summary>
-    public class ConstantsDataModel : IDataModel
+    public class ConstantsDataModel : DataModelBase
     {
         /// <summary>
         /// </summary>

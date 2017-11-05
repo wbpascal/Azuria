@@ -4,7 +4,7 @@ namespace Azuria.Api.v1.DataModels.Media
 {
     /// <summary>
     /// </summary>
-    public class UploadedMediaDataModel : IDataModel
+    public class UploadedMediaDataModel : DataModelBase
     {
         /// <summary>
         /// </summary>

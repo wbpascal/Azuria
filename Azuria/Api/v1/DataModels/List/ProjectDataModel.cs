@@ -8,7 +8,7 @@ namespace Azuria.Api.v1.DataModels.List
     /// <summary>
     /// 
     /// </summary>
-    public abstract class ProjectDataModel : IEntryInfoDataModel
+    public abstract class ProjectDataModel : DataModelBase, IEntryInfoDataModel
     {
         /// <summary>
         /// </summary>

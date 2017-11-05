@@ -7,7 +7,7 @@ namespace Azuria.Api.v1.DataModels.Messenger
 {
     /// <summary>
     /// </summary>
-    public class ConferenceDataModel : IDataModel
+    public class ConferenceDataModel : DataModelBase
     {
         /// <summary>
         /// </summary>

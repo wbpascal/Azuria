@@ -7,7 +7,7 @@ namespace Azuria.Api.v1.DataModels.User
 {
     /// <summary>
     /// </summary>
-    public class HistoryDataModel : IEntryInfoDataModel
+    public class HistoryDataModel : DataModelBase, IEntryInfoDataModel
     {
         /// <summary>
         /// </summary>

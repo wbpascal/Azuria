@@ -15,16 +15,20 @@ namespace Azuria.Test.Api.v1.DataModels.Info
         {
             string lJson = ResponseSetup.FileResponses["info_getindustry.json"];
             ProxerApiResponse<IndustryDataModel> lResponse = this.Convert(lJson);
-            this.CheckSuccessResponse(lResponse);
-            IndustryDataModel lDataModel = lResponse.Result;
+            Assert.AreEqual(BuildDataModel(), lResponse.Result);
+        }
 
-            Assert.AreEqual(1292, lDataModel.Id);
-            Assert.AreEqual(IndustryType.Streaming, lDataModel.Type);
-            Assert.AreEqual("Animax UK", lDataModel.Name);
-            Assert.AreEqual(Country.UnitedStates, lDataModel.Country);
-            Assert.AreEqual(new Uri("https://www.animaxtv.co.uk/"), lDataModel.Link);
-            Assert.AreEqual("Animax UK Description Test Text", lDataModel.Description);
-            Assert.AreEqual(new Uri("https://cdn.proxer.me/industry/1292.jpg"), lDataModel.CoverImage);
+        public static IndustryDataModel BuildDataModel()
+        {
+            return new IndustryDataModel
+            {
+                Country = Country.UnitedStates,
+                Description = "Animax UK Description Test Text",
+                Id = 1292,
+                Link = new Uri("https://www.animaxtv.co.uk/"),
+                Name = "Animax UK",
+                Type = IndustryType.Streaming
+            };
         }
     }
 }

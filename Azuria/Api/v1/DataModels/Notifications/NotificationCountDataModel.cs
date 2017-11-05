@@ -2,7 +2,7 @@
 {
     /// <summary>
     /// </summary>
-    public class NotificationCountDataModel : IDataModel
+    public class NotificationCountDataModel : DataModelBase
     {
         /// <summary>
         /// </summary>

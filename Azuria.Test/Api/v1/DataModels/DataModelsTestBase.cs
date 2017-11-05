@@ -44,14 +44,12 @@ namespace Azuria.Test.Api.v1.DataModels
 
             IProxerResult<ProxerApiResponse<T1>> lResult =
                 this.Deserializer.Deserialize<ProxerApiResponse<T1>>(json, GetSettingsWithConverter());
-            Assert.True(lResult.Success);
-            Assert.NotNull(lResult.Exceptions);
-            Assert.IsEmpty(lResult.Exceptions);
-            Assert.NotNull(lResult.Result);
+            CheckSuccessResult(lResult);
+            CheckSuccessResult(lResult.Result);
             return lResult.Result;
         }
 
-        public void CheckSuccessResponse<T1>(ProxerApiResponse<T1> response)
+        private static void CheckSuccessResult<T1>(IProxerResult<T1> response)
         {
             Assert.True(response.Success);
             Assert.NotNull(response.Exceptions);

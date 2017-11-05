@@ -1,4 +1,6 @@
-﻿using Azuria.Api.v1.Converters.Info;
+﻿using System;
+using System.Collections.Generic;
+using Azuria.Api.v1.Converters.Info;
 using Azuria.Enums;
 using Newtonsoft.Json;
 
@@ -6,7 +8,7 @@ namespace Azuria.Api.v1.DataModels.Info
 {
     /// <summary>
     /// </summary>
-    public class NameDataModel : IDataModel
+    public class NameDataModel : DataModelBase
     {
         /// <summary>
         /// </summary>

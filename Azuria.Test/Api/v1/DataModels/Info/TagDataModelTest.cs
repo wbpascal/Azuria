@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using Azuria.Api.v1.DataModels.Info;
 using Azuria.ErrorHandling;
 using Azuria.Test.Core;
@@ -14,34 +15,21 @@ namespace Azuria.Test.Api.v1.DataModels.Info
         {
             string lJson = ResponseSetup.FileResponses["info_getentrytags.json"];
             ProxerApiResponse<TagDataModel[]> lResponse = this.ConvertArray(lJson);
-            this.CheckSuccessResponse(lResponse);
-            CheckDataModels(lResponse.Result);
+            Assert.AreEqual(BuildDataModel(), lResponse.Result.First());
         }
 
-        public static void CheckDataModels(TagDataModel[] dataModels)
+        public static TagDataModel BuildDataModel()
         {
-            void CheckDataModel(
-                TagDataModel dataModel, int id, int tagId, DateTime timestamp, bool isRated, bool isSpoiler,
-                string name, string description)
+            return new TagDataModel
             {
-                Assert.Multiple(
-                    () =>
-                    {
-                        Assert.AreEqual(id, dataModel.Id);
-                        Assert.AreEqual(tagId, dataModel.TagId);
-                        Assert.AreEqual(timestamp, dataModel.Timestamp);
-                        Assert.AreEqual(isRated, dataModel.IsRated);
-                        Assert.AreEqual(isSpoiler, dataModel.IsSpoiler);
-                        Assert.AreEqual(name, dataModel.Name);
-                    });
-            }
-
-            CheckDataModel(
-                dataModels[0], 174, 257, new DateTime(2016, 6, 17, 15, 11, 16), false, true, "Bad End",
-                "Bad End Beschreibungstext");
-            CheckDataModel(
-                dataModels[1], 3949, 99, new DateTime(2016, 6, 19, 16, 31, 49), true, false, "Osananajimi",
-                "Osananajimi Beschreibung");
+                Description = "Bad End Beschreibungstext",
+                Id = 174,
+                IsRated = false,
+                IsSpoiler = true,
+                Name = "Bad End",
+                TagId = 257,
+                Timestamp = new DateTime(2016, 6, 17, 15, 11, 16)
+            };
         }
     }
 }

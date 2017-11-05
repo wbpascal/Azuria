@@ -15,7 +15,7 @@ namespace Azuria.Api.v1.RequestBuilder
         public MangaRequestBuilder(IProxerClient proxerClient) : base(proxerClient)
         {
         }
-        
+
         /// <summary>
         /// <para>
         /// Builds a request that returns information about a chapter including the pages.
@@ -30,8 +30,8 @@ namespace Azuria.Api.v1.RequestBuilder
         {
             this.CheckInputDataModel(input);
             return new RequestBuilder<ChapterDataModel>(
-                    new Uri($"{ApiConstants.ApiUrlV1}/manga/chapter"), this.ProxerClient
-                ).WithGetParameter(input.BuildDictionary());
+                new Uri($"{ApiConstants.ApiUrlV1}/manga/chapter"), this.ProxerClient
+            ).WithGetParameter(input.BuildDictionary());
         }
     }
 }

@@ -4,7 +4,7 @@ namespace Azuria.Api.v1.DataModels.Ucp
 {
     /// <summary>
     /// </summary>
-    public class VoteDataModel : IDataModel
+    public class VoteDataModel : DataModelBase
     {
         /// <summary>
         /// </summary>

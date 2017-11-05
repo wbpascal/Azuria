@@ -1,4 +1,5 @@
-﻿using Azuria.Api.v1.DataModels.Info;
+﻿using System.Linq;
+using Azuria.Api.v1.DataModels.Info;
 using Azuria.Enums.Info;
 using Azuria.ErrorHandling;
 using Azuria.Test.Core;
@@ -14,13 +15,31 @@ namespace Azuria.Test.Api.v1.DataModels.Info
         {
             string lJson = ResponseSetup.FileResponses["info_getrelations.json"];
             ProxerApiResponse<RelationDataModel[]> lResponse = this.ConvertArray(lJson);
-            this.CheckSuccessResponse(lResponse);
+            Assert.AreEqual(BuildDataModel(), lResponse.Result.First());
+        }
 
-            Assert.AreEqual(1, lResponse.Result.Length);
-            EntryDataModelTest.CheckDataModel(lResponse.Result[0]);
-            Assert.AreEqual(new[] {MediaLanguage.EngSub}, lResponse.Result[0].AvailableLanguages);
-            Assert.AreEqual(Season.Spring, lResponse.Result[0].StartSeason.Season);
-            Assert.AreEqual(2011, lResponse.Result[0].StartSeason.Year);
+        public static RelationDataModel BuildDataModel()
+        {
+            EntryDataModel lEntryDataModel = EntryDataModelTest.BuildDataModel();
+            return new RelationDataModel
+            {
+                AvailableLanguages = new[] {MediaLanguage.EngSub},
+                Clicks = lEntryDataModel.Clicks,
+                ContentCount = lEntryDataModel.ContentCount,
+                Description = lEntryDataModel.Description,
+                EntryId = lEntryDataModel.EntryId,
+                EntryMedium = lEntryDataModel.EntryMedium,
+                EntryName = lEntryDataModel.EntryName,
+                EntryType = lEntryDataModel.EntryType,
+                Fsk = lEntryDataModel.Fsk,
+                Genre = lEntryDataModel.Genre,
+                IsLicensed = lEntryDataModel.IsLicensed,
+                RatingsCount = lEntryDataModel.RatingsCount,
+                RatingsSum = lEntryDataModel.RatingsSum,
+                Season = Season.Spring,
+                Status = lEntryDataModel.Status,
+                Year = 2011
+            };
         }
     }
 }

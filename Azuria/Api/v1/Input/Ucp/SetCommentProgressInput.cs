@@ -14,7 +14,7 @@ namespace Azuria.Api.v1.Input.Ucp
         /// </summary>
         [InputData("id")]
         public int CommentId { get; set; }
-        
+
         /// <summary>
         /// Gets or sets the progress the comment will be set to.
         /// </summary>

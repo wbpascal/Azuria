@@ -14,7 +14,7 @@ namespace Azuria.Api.v1.Input.User
         /// </summary>
         [InputData("kat", Converter = typeof(ToLowerConverter), Optional = true)]
         public MediaEntryType? Category { get; set; }
-        
+
         /// <summary>
         /// </summary>
         [InputData("uid", Optional = true)]

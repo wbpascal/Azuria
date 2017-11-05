@@ -14,7 +14,7 @@ namespace Azuria.Api.v1.Input.Manga
         /// </summary>
         [InputData("episode")]
         public int Chapter { get; set; }
-        
+
         /// <summary>
         /// Gets or sets the id of the manga.
         /// </summary>

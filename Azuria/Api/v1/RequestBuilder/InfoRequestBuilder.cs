@@ -30,8 +30,8 @@ namespace Azuria.Api.v1.RequestBuilder
         {
             this.CheckInputDataModel(input);
             return new RequestBuilder<CommentDataModel[]>(
-                    new Uri($"{ApiConstants.ApiUrlV1}/info/comments"), this.ProxerClient
-                ).WithGetParameter(input.BuildDictionary());
+                new Uri($"{ApiConstants.ApiUrlV1}/info/comments"), this.ProxerClient
+            ).WithGetParameter(input.BuildDictionary());
         }
 
         /// <summary>
@@ -152,8 +152,8 @@ namespace Azuria.Api.v1.RequestBuilder
         {
             this.CheckInputDataModel(input);
             return new RequestBuilder<ListInfoDataModel>(
-                    new Uri($"{ApiConstants.ApiUrlV1}/info/listinfo"), this.ProxerClient
-                ).WithGetParameter(input.BuildDictionary());
+                new Uri($"{ApiConstants.ApiUrlV1}/info/listinfo"), this.ProxerClient
+            ).WithGetParameter(input.BuildDictionary());
         }
 
         /// <summary>

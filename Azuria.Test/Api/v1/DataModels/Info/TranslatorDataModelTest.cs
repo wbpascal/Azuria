@@ -15,20 +15,22 @@ namespace Azuria.Test.Api.v1.DataModels.Info
         {
             string lJson = ResponseSetup.FileResponses["info_gettranslatorgroup.json"];
             ProxerApiResponse<TranslatorDataModel> lResponse = this.Convert(lJson);
-            this.CheckSuccessResponse(lResponse);
+            Assert.AreEqual(BuildDataModel(), lResponse.Result);
+        }
 
-            TranslatorDataModel lDataModel = lResponse.Result;
-            Assert.AreEqual(4855, lDataModel.Count);
-            Assert.AreEqual(Country.Germany, lDataModel.Country);
-            Assert.AreEqual(11, lDataModel.CProjects);
-            Assert.AreEqual("TranslatorGroup Description Test Text", lDataModel.Description);
-            Assert.AreEqual(48, lDataModel.Id);
-            Assert.AreEqual(
-                new Uri("http://www.melon-subs.de/wp-content/uploads/2014/05/cropped-ML-Logo-1080p-v12.png"),
-                lDataModel.Image
-            );
-            Assert.AreEqual(new Uri("http://melon-subs.de/index.php"), lDataModel.Link);
-            Assert.AreEqual("Melon-Subs", lDataModel.Name);
+        public static TranslatorDataModel BuildDataModel()
+        {
+            return new TranslatorDataModel
+            {
+                Count = 4855,
+                Country = Country.Germany,
+                CProjects = 11,
+                Description = "TranslatorGroup Description Test Text",
+                Id = 48,
+                Image = new Uri("http://www.melon-subs.de/wp-content/uploads/2014/05/cropped-ML-Logo-1080p-v12.png"),
+                Link = new Uri("http://melon-subs.de/index.php"),
+                Name = "Melon-Subs"
+            };
         }
     }
 }

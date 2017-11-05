@@ -21,7 +21,7 @@ namespace Azuria.Api.v1.RequestBuilder
         public UcpRequestBuilder(IProxerClient proxerClient) : base(proxerClient)
         {
         }
-        
+
         /// <summary>
         /// Builds a request that removes an entry from a users topten.
         /// **Requires authentication.**

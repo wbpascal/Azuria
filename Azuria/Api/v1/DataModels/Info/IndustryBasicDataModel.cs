@@ -6,7 +6,7 @@ namespace Azuria.Api.v1.DataModels.Info
 {
     /// <summary>
     /// </summary>
-    public class IndustryBasicDataModel : IDataModel
+    public class IndustryBasicDataModel : DataModelBase
     {
         /// <summary>
         /// </summary>

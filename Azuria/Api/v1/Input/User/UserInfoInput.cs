@@ -11,7 +11,7 @@ namespace Azuria.Api.v1.Input.User
         /// </summary>
         [InputData("uid", Optional = true)]
         public int? UserId { get; set; }
-        
+
         /// <summary>
         /// Ignored if <see cref="UserId"/> is given.
         /// </summary>

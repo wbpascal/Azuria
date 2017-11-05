@@ -6,7 +6,7 @@ namespace Azuria.Api.v1.DataModels.Info
 {
     /// <summary>
     /// </summary>
-    public class ListInfoDataModel : IDataModel
+    public class ListInfoDataModel : DataModelBase
     {
         /// <summary>
         /// </summary>

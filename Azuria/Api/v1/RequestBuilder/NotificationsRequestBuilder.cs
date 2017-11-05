@@ -16,7 +16,7 @@ namespace Azuria.Api.v1.RequestBuilder
         public NotificationsRequestBuilder(IProxerClient proxerClient) : base(proxerClient)
         {
         }
-        
+
         /// <summary>
         /// Builds a request that deletes a notification.
         /// Api permissions required (class - permission level):
@@ -56,8 +56,8 @@ namespace Azuria.Api.v1.RequestBuilder
         {
             this.CheckInputDataModel(input);
             return new RequestBuilder<NewsNotificationDataModel[]>(
-                    new Uri($"{ApiConstants.ApiUrlV1}/notifications/news"), this.ProxerClient
-                ).WithGetParameter(input.BuildDictionary());
+                new Uri($"{ApiConstants.ApiUrlV1}/notifications/news"), this.ProxerClient
+            ).WithGetParameter(input.BuildDictionary());
         }
     }
 }

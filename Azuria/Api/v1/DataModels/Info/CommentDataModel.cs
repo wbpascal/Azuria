@@ -9,7 +9,7 @@ namespace Azuria.Api.v1.DataModels.Info
     /// <inheritdoc />
     /// <summary>
     /// </summary>
-    public class CommentDataModel : IDataModel
+    public class CommentDataModel : DataModelBase
     {
         /// <summary>
         /// 

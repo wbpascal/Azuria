@@ -22,7 +22,7 @@ namespace Azuria.Api.v1.RequestBuilder
         public ListRequestBuilder(IProxerClient proxerClient) : base(proxerClient)
         {
         }
-        
+
         /// <summary>
         /// Builds a request that returns the results of a search for anime and
         /// manga.
@@ -36,8 +36,8 @@ namespace Azuria.Api.v1.RequestBuilder
         {
             this.CheckInputDataModel(input);
             return new RequestBuilder<SearchDataModel[]>(
-                    new Uri($"{ApiConstants.ApiUrlV1}/list/entrysearch"), this.ProxerClient
-                ).WithPostParameter(input.Build());
+                new Uri($"{ApiConstants.ApiUrlV1}/list/entrysearch"), this.ProxerClient
+            ).WithPostParameter(input.Build());
         }
 
         /// <summary>
@@ -51,8 +51,8 @@ namespace Azuria.Api.v1.RequestBuilder
         {
             this.CheckInputDataModel(input);
             return new RequestBuilder<SearchDataModel[]>(
-                    new Uri($"{ApiConstants.ApiUrlV1}/list/entrylist"), this.ProxerClient
-                ).WithPostParameter(input.Build());
+                new Uri($"{ApiConstants.ApiUrlV1}/list/entrylist"), this.ProxerClient
+            ).WithPostParameter(input.Build());
         }
 
         /// <summary>
@@ -65,8 +65,8 @@ namespace Azuria.Api.v1.RequestBuilder
         {
             this.CheckInputDataModel(input);
             return new RequestBuilder<IndustryDataModel[]>(
-                    new Uri($"{ApiConstants.ApiUrlV1}/list/industrys"), this.ProxerClient
-                ).WithPostParameter(input.Build());
+                new Uri($"{ApiConstants.ApiUrlV1}/list/industrys"), this.ProxerClient
+            ).WithPostParameter(input.Build());
         }
 
         /// <summary>
@@ -79,8 +79,8 @@ namespace Azuria.Api.v1.RequestBuilder
         {
             this.CheckInputDataModel(input);
             return new RequestBuilder<IndustryProjectDataModel[]>(
-                    new Uri($"{ApiConstants.ApiUrlV1}/list/industryprojects"), this.ProxerClient
-                ).WithPostParameter(input.Build());
+                new Uri($"{ApiConstants.ApiUrlV1}/list/industryprojects"), this.ProxerClient
+            ).WithPostParameter(input.Build());
         }
 
         /// <summary>
@@ -122,8 +122,8 @@ namespace Azuria.Api.v1.RequestBuilder
         {
             this.CheckInputDataModel(input);
             return new RequestBuilder<TranslatorDataModel[]>(
-                    new Uri($"{ApiConstants.ApiUrlV1}/list/translatorgroups"), this.ProxerClient
-                ).WithPostParameter(input.Build());
+                new Uri($"{ApiConstants.ApiUrlV1}/list/translatorgroups"), this.ProxerClient
+            ).WithPostParameter(input.Build());
         }
 
         /// <summary>
