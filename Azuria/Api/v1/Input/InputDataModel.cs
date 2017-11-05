@@ -26,7 +26,7 @@ namespace Azuria.Api.v1.Input
         }
 
         /// <inheritdoc />
-        public bool Equals(InputDataModel other)
+        public virtual bool Equals(InputDataModel other)
         {
             return this.GetType().GetRuntimeProperties().All(info => info.ArePropertyValuesEqual(this, other));
         }

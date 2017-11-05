@@ -19,7 +19,7 @@ namespace Azuria.Api.v1.DataModels
         }
 
         /// <inheritdoc />
-        public bool Equals(DataModelBase other)
+        public virtual bool Equals(DataModelBase other)
         {
             return this.GetType().GetRuntimeProperties().All(info => info.ArePropertyValuesEqual(this, other));
         }
