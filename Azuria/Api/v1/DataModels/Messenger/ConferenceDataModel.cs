@@ -23,12 +23,12 @@ namespace Azuria.Api.v1.DataModels.Messenger
         /// <summary>
         /// </summary>
         [JsonProperty("topic")]
-        public string ConferenceTitle { get; set; }
+        public string ConferenceTopic { get; set; }
 
         /// <summary>
         /// </summary>
         [JsonProperty("topic_custom")]
-        public string ConferenceUserTitle { get; set; }
+        public string ConferenceTopicCustom { get; set; }
 
         /// <summary>
         /// </summary>
