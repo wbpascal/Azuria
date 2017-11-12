@@ -31,7 +31,7 @@ namespace Azuria.Api.v1.Input.List
         /// Optional, if omitted (or null) the default value of the api method will be used.
         /// </summary>
         [InputData("type", Converter = typeof(ToTypeStringConverter), Optional = true)]
-        public IndustryType? Type { get; set; }
+        public IndustryRole? Role { get; set; }
 
         private string GetCountryString(Country? country)
         {

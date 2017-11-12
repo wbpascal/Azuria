@@ -4,7 +4,7 @@
     /// <summary>
     /// Represents an enumeration which describes the type of the industry.
     /// </summary>
-    public enum IndustryType
+    public enum IndustryRole
     {
         Publisher,
         Studio,

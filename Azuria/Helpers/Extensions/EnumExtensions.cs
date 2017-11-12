@@ -75,16 +75,16 @@ namespace Azuria.Helpers.Extensions
             }
         }
 
-        public static string ToTypeString(this IndustryType type)
+        public static string ToTypeString(this IndustryRole role)
         {
-            switch (type)
+            switch (role)
             {
-                case IndustryType.RecordLabel:
+                case IndustryRole.RecordLabel:
                     return "record_label";
-                case IndustryType.TalentAgent:
+                case IndustryRole.TalentAgent:
                     return "talent_agent";
                 default:
-                    return type.ToString().ToLowerInvariant();
+                    return role.ToString().ToLowerInvariant();
             }
         }
 

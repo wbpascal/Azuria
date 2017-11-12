@@ -11,7 +11,7 @@ namespace Azuria.Api.v1.DataModels.List
         /// <summary>
         /// </summary>
         [JsonProperty("type")]
-        [JsonConverter(typeof(IndustryTypeConverter))]
-        public IndustryType IndustryType { get; set; }
+        [JsonConverter(typeof(IndustryRoleConverter))]
+        public IndustryRole IndustryRole { get; set; }
     }
 }
