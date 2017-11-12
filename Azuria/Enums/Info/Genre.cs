@@ -19,7 +19,7 @@ namespace Azuria.Enums.Info
         [Description("Horror")] Horror,
         [Description("Josei")] Josei,
         [Description("Magic")] Magic,
-        [Description("Marial-Art")] MartialArt,
+        [Description("Martial-Art")] MartialArt,
         [Description("Mecha")] Mecha,
         [Description("Military")] Military,
         [Description("Musik")] Music,
