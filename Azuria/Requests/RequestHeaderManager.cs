@@ -29,9 +29,7 @@ namespace Azuria.Requests
         public Dictionary<string, string> GetHeader()
         {
             Dictionary<string, string> lHeaders = new Dictionary<string, string>
-            {
-                {ApiKeyHeaderName, new string(this._apiKey)}
-            };
+                {{ApiKeyHeaderName, new string(this._apiKey)}};
             if (this._loginManager.SendTokenWithNextRequest())
                 lHeaders.Add(LoginTokenHeaderName, new string(this._loginManager.LoginToken));
 

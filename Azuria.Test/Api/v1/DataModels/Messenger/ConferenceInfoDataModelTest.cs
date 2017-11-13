@@ -28,7 +28,7 @@ namespace Azuria.Test.Api.v1.DataModels.Messenger
                     Title = "Proxer API - Diskussion",
                     UserCount = 2
                 },
-                ParticipantsInfo = new []
+                ParticipantsInfo = new[]
                 {
                     new ConferenceInfoParticipantDataModel
                     {
@@ -36,7 +36,7 @@ namespace Azuria.Test.Api.v1.DataModels.Messenger
                         UserId = 391004,
                         Username = "cuechan",
                         UserStatus = "1462630115"
-                    }, 
+                    },
                     new ConferenceInfoParticipantDataModel
                     {
                         AvatarId = "121658_VHuZqz.jpg",

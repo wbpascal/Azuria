@@ -73,10 +73,7 @@ namespace Azuria.Test.Api.v1.RequestBuilder
         [Test]
         public void GetInfoUserIdTest()
         {
-            UserInfoInput lInput = new UserInfoInput
-            {
-                UserId = this.GetRandomNumber(500_000)
-            };
+            UserInfoInput lInput = new UserInfoInput {UserId = this.GetRandomNumber(500_000)};
             IRequestBuilderWithResult<UserInfoDataModel> lRequest = this.RequestBuilder.GetInfo(lInput);
             this.GetInfoTestBase(lRequest);
             Assert.True(lRequest.GetParameters.ContainsKey("uid"));
@@ -87,10 +84,7 @@ namespace Azuria.Test.Api.v1.RequestBuilder
         [Test]
         public void GetInfoUsernameTest()
         {
-            UserInfoInput lInput = new UserInfoInput
-            {
-                Username = RandomHelper.GetRandomString(10)
-            };
+            UserInfoInput lInput = new UserInfoInput {Username = RandomHelper.GetRandomString(10)};
             IRequestBuilderWithResult<UserInfoDataModel> lRequest = this.RequestBuilder.GetInfo(lInput);
             this.GetInfoTestBase(lRequest);
             Assert.True(lRequest.GetParameters.ContainsKey("username"));

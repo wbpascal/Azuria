@@ -23,8 +23,8 @@ namespace Azuria.Test.Api.v1.DataModels.List
         {
             return new TranslatorProjectDataModel
             {
-                EntryFsk = new []{Fsk.Fsk12},
-                EntryGenre = new []{Genre.Comedy, Genre.MartialArt},
+                EntryFsk = new[] {Fsk.Fsk12},
+                EntryGenre = new[] {Genre.Comedy, Genre.MartialArt},
                 EntryId = 3247,
                 EntryMedium = MediaMedium.Animeseries,
                 EntryName = "Accel World",

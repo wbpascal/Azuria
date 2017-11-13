@@ -36,10 +36,7 @@ namespace Azuria.Test.Api.v1.DataModels
             JsonSerializerSettings GetSettingsWithConverter()
             {
                 if (converter == null) return null;
-                return new JsonSerializerSettings
-                {
-                    Converters = new List<JsonConverter>(new[] {converter})
-                };
+                return new JsonSerializerSettings {Converters = new List<JsonConverter>(new[] {converter})};
             }
 
             IProxerResult<ProxerApiResponse<T1>> lResult =

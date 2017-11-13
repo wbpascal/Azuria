@@ -23,8 +23,8 @@ namespace Azuria.Test.Api.v1.DataModels.List
         {
             return new IndustryProjectDataModel
             {
-                EntryFsk = new []{Fsk.Fsk16, Fsk.BadLanguage, Fsk.Violence},
-                EntryGenre = new []{Genre.Action, Genre.Ecchi, Genre.Harem},
+                EntryFsk = new[] {Fsk.Fsk16, Fsk.BadLanguage, Fsk.Violence},
+                EntryGenre = new[] {Genre.Action, Genre.Ecchi, Genre.Harem},
                 EntryId = 7537,
                 EntryMedium = MediaMedium.Mangaseries,
                 EntryName = "Absolute Duo",

@@ -21,10 +21,7 @@ namespace Azuria.Test.Api.v1.RequestBuilder
         [Test]
         public void DeleteFavouriteTest()
         {
-            DeleteToptenInput lInput = new DeleteToptenInput
-            {
-                ToptenId = this.GetRandomNumber(10000)
-            };
+            DeleteToptenInput lInput = new DeleteToptenInput {ToptenId = this.GetRandomNumber(10000)};
             IRequestBuilder lRequest = this.RequestBuilder.DeleteTopten(lInput);
             this.CheckUrl(lRequest, "ucp", "deletefavorite");
             Assert.AreSame(this.ProxerClient, lRequest.Client);
@@ -36,10 +33,7 @@ namespace Azuria.Test.Api.v1.RequestBuilder
         [Test]
         public void DeleteReminderTest()
         {
-            DeleteReminderInput lInput = new DeleteReminderInput()
-            {
-                ReminderId = this.GetRandomNumber(10000)
-            };
+            DeleteReminderInput lInput = new DeleteReminderInput {ReminderId = this.GetRandomNumber(10000)};
             IRequestBuilder lRequest = this.RequestBuilder.DeleteReminder(lInput);
             this.CheckUrl(lRequest, "ucp", "deletereminder");
             Assert.AreSame(this.ProxerClient, lRequest.Client);
@@ -51,10 +45,7 @@ namespace Azuria.Test.Api.v1.RequestBuilder
         [Test]
         public void DeleteVoteTest()
         {
-            DeleteVoteInput lInput = new DeleteVoteInput()
-            {
-                VoteId = this.GetRandomNumber(10000)
-            };
+            DeleteVoteInput lInput = new DeleteVoteInput {VoteId = this.GetRandomNumber(10000)};
             IRequestBuilder lRequest = this.RequestBuilder.DeleteVote(lInput);
             this.CheckUrl(lRequest, "ucp", "deletevote");
             Assert.AreSame(this.ProxerClient, lRequest.Client);
@@ -154,10 +145,7 @@ namespace Azuria.Test.Api.v1.RequestBuilder
         [Test]
         public void GetListsumTest([Values] MediaEntryType category)
         {
-            ListsumInput lInput = new ListsumInput
-            {
-                Category = category
-            };
+            ListsumInput lInput = new ListsumInput {Category = category};
             IRequestBuilderWithResult<int> lRequest = this.RequestBuilder.GetListsum(lInput);
             this.CheckUrl(lRequest, "ucp", "listsum");
             Assert.AreSame(this.ProxerClient, lRequest.Client);
@@ -167,7 +155,9 @@ namespace Azuria.Test.Api.v1.RequestBuilder
         }
 
         [Test]
-        public void GetReminderTest([Values(null, MediaEntryType.Anime, MediaEntryType.Manga)] MediaEntryType? category)
+        public void GetReminderTest(
+            [Values(null, MediaEntryType.Anime, MediaEntryType.Manga)]
+            MediaEntryType? category)
         {
             ReminderListInput lInput = new ReminderListInput
             {
@@ -182,7 +172,7 @@ namespace Azuria.Test.Api.v1.RequestBuilder
             Assert.True(lRequest.GetParameters.ContainsKey("p"));
             Assert.True(lRequest.GetParameters.ContainsKey("limit"));
             if (category != null)
-                Assert.AreEqual(category?.ToString().ToLowerInvariant(), lRequest.GetParameters["kat"]);
+                Assert.AreEqual(category.ToString().ToLowerInvariant(), lRequest.GetParameters["kat"]);
             Assert.AreEqual("5", lRequest.GetParameters["p"]);
             Assert.AreEqual("1", lRequest.GetParameters["limit"]);
             Assert.True(lRequest.CheckLogin);

@@ -9,10 +9,8 @@ namespace Azuria.Test.Core.Helpers
         public static string GetExceptionInfo(this IEnumerable<Exception> exceptions)
         {
             return JsonConvert.SerializeObject(
-                exceptions, new JsonSerializerSettings
-                {
-                    ReferenceLoopHandling = ReferenceLoopHandling.Ignore
-                });
+                exceptions, new JsonSerializerSettings {ReferenceLoopHandling = ReferenceLoopHandling.Ignore}
+            );
         }
     }
 }

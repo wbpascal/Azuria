@@ -133,8 +133,8 @@ namespace Azuria.Test.Api.v1.RequestBuilder
 
         [Test, Combinatorial]
         public void GetIndustriesCountryTest(
-            [Values(Country.UnitedStates, Country.Japan, Country.Germany, Country.Misc)] Country country,
-            [Values] IndustryRole role)
+            [Values(Country.UnitedStates, Country.Japan, Country.Germany, Country.Misc)]
+            Country country, [Values] IndustryRole role)
         {
             IndustryListInput lInput = new IndustryListInput
             {
@@ -240,7 +240,8 @@ namespace Azuria.Test.Api.v1.RequestBuilder
 
         [Test]
         public void GetTranslatorgroupsTest(
-            [Values(Country.England, Country.Germany, Country.Misc)] Country country)
+            [Values(Country.England, Country.Germany, Country.Misc)]
+            Country country)
         {
             TranslatorListInput lInput = new TranslatorListInput
             {

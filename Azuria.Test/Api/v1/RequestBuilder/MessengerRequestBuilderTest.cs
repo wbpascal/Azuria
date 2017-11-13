@@ -16,10 +16,7 @@ namespace Azuria.Test.Api.v1.RequestBuilder
         [Test]
         public void GetConferenceInfoTest()
         {
-            ConferenceInfoInput lInput = new ConferenceInfoInput
-            {
-                ConferenceId = 42
-            };
+            ConferenceInfoInput lInput = new ConferenceInfoInput {ConferenceId = 42};
             IRequestBuilderWithResult<ConferenceInfoDataModel> lRequest = this.RequestBuilder.GetConferenceInfo(lInput);
             this.CheckUrl(lRequest, "messenger", "conferenceinfo");
             Assert.AreSame(this.ProxerClient, lRequest.Client);
@@ -122,10 +119,7 @@ namespace Azuria.Test.Api.v1.RequestBuilder
         [Test]
         public void SetBlockTest()
         {
-            ConferenceIdInput lInput = new ConferenceIdInput
-            {
-                ConferenceId = 42
-            };
+            ConferenceIdInput lInput = new ConferenceIdInput {ConferenceId = 42};
             IRequestBuilder lRequest = this.RequestBuilder.SetBlock(lInput);
             this.CheckUrl(lRequest, "messenger", "setblock");
             Assert.AreSame(this.ProxerClient, lRequest.Client);
@@ -137,10 +131,7 @@ namespace Azuria.Test.Api.v1.RequestBuilder
         [Test]
         public void SetFavourTest()
         {
-            ConferenceIdInput lInput = new ConferenceIdInput
-            {
-                ConferenceId = 42
-            };
+            ConferenceIdInput lInput = new ConferenceIdInput {ConferenceId = 42};
             IRequestBuilder lRequest = this.RequestBuilder.SetFavour(lInput);
             this.CheckUrl(lRequest, "messenger", "setfavour");
             Assert.AreSame(this.ProxerClient, lRequest.Client);
@@ -171,10 +162,7 @@ namespace Azuria.Test.Api.v1.RequestBuilder
         [Test]
         public void SetReadTest()
         {
-            ConferenceIdInput lInput = new ConferenceIdInput
-            {
-                ConferenceId = 42
-            };
+            ConferenceIdInput lInput = new ConferenceIdInput {ConferenceId = 42};
             IRequestBuilder lRequest = this.RequestBuilder.SetRead(lInput);
             this.CheckUrl(lRequest, "messenger", "setread");
             Assert.AreSame(this.ProxerClient, lRequest.Client);
@@ -205,10 +193,7 @@ namespace Azuria.Test.Api.v1.RequestBuilder
         [Test]
         public void SetUnblockTest()
         {
-            ConferenceIdInput lInput = new ConferenceIdInput
-            {
-                ConferenceId = 42
-            };
+            ConferenceIdInput lInput = new ConferenceIdInput {ConferenceId = 42};
             IRequestBuilder lRequest = this.RequestBuilder.SetUnblock(lInput);
             this.CheckUrl(lRequest, "messenger", "setunblock");
             Assert.AreSame(this.ProxerClient, lRequest.Client);
@@ -220,10 +205,7 @@ namespace Azuria.Test.Api.v1.RequestBuilder
         [Test]
         public void SetUnfavourTest()
         {
-            ConferenceIdInput lInput = new ConferenceIdInput
-            {
-                ConferenceId = 42
-            };
+            ConferenceIdInput lInput = new ConferenceIdInput {ConferenceId = 42};
             IRequestBuilder lRequest = this.RequestBuilder.SetUnfavour(lInput);
             this.CheckUrl(lRequest, "messenger", "setunfavour");
             Assert.AreSame(this.ProxerClient, lRequest.Client);
@@ -235,10 +217,7 @@ namespace Azuria.Test.Api.v1.RequestBuilder
         [Test]
         public void SetUnreadTest()
         {
-            ConferenceIdInput lInput = new ConferenceIdInput
-            {
-                ConferenceId = 42
-            };
+            ConferenceIdInput lInput = new ConferenceIdInput {ConferenceId = 42};
             IRequestBuilder lRequest = this.RequestBuilder.SetUnread(lInput);
             this.CheckUrl(lRequest, "messenger", "setunread");
             Assert.AreSame(this.ProxerClient, lRequest.Client);

@@ -23,10 +23,7 @@ namespace Azuria.Test.Api.v1.Converter
 
         public JsonSerializerSettings GetSerializerSettings()
         {
-            return new JsonSerializerSettings
-            {
-                Converters = new List<JsonConverter>(new[] {this.Converter})
-            };
+            return new JsonSerializerSettings {Converters = new List<JsonConverter>(new[] {this.Converter})};
         }
 
         public TOut DeserializeValue(string value)

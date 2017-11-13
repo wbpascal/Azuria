@@ -101,10 +101,7 @@ namespace Azuria.Test.Api.v1.RequestBuilder
         [Test]
         public void GetIndustryTest()
         {
-            IndustryInfoInput lInput = new IndustryInfoInput
-            {
-                IndustryId = this.GetRandomNumber(1000)
-            };
+            IndustryInfoInput lInput = new IndustryInfoInput {IndustryId = this.GetRandomNumber(1000)};
             IRequestBuilderWithResult<IndustryDataModel> lRequest = this.RequestBuilder.GetIndustry(lInput);
             this.CheckUrl(lRequest, "info", "industry");
             Assert.AreSame(this.ProxerClient, lRequest.Client);
@@ -198,10 +195,7 @@ namespace Azuria.Test.Api.v1.RequestBuilder
         [Test]
         public void GetTranslatorGroupTest()
         {
-            TranslatorInfoInput lInput = new TranslatorInfoInput
-            {
-                TranslatorId = this.GetRandomNumber(1000)
-            };
+            TranslatorInfoInput lInput = new TranslatorInfoInput {TranslatorId = this.GetRandomNumber(1000)};
             IRequestBuilderWithResult<TranslatorDataModel> lRequest = this.RequestBuilder.GetTranslatorGroup(lInput);
             this.CheckUrl(lRequest, "info", "translatorgroup");
             Assert.AreSame(this.ProxerClient, lRequest.Client);

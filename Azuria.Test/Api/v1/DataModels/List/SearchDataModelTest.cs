@@ -23,12 +23,12 @@ namespace Azuria.Test.Api.v1.DataModels.List
         {
             return new SearchDataModel
             {
-                AvailableLanguages = new []{MediaLanguage.GerSub, MediaLanguage.EngSub, MediaLanguage.EngDub},
+                AvailableLanguages = new[] {MediaLanguage.GerSub, MediaLanguage.EngSub, MediaLanguage.EngDub},
                 ContentCount = 24,
                 EntryId = 9651,
                 EntryMedium = MediaMedium.Animeseries,
                 EntryName = "Akatsuki no Yona",
-                Genre = new []{Genre.Adventure, Genre.Action},
+                Genre = new[] {Genre.Adventure, Genre.Action},
                 RateCount = 2779,
                 RateSum = 23457,
                 Status = MediaStatus.Completed

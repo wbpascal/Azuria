@@ -14,10 +14,7 @@ namespace Azuria.Test.Api.v1.RequestBuilder
         [Test]
         public void DeleteTest()
         {
-            DeleteNotificationInput lInput = new DeleteNotificationInput
-            {
-                NotificationId = this.GetRandomNumber(10000)
-            };
+            DeleteNotificationInput lInput = new DeleteNotificationInput {NotificationId = this.GetRandomNumber(10000)};
 
             IRequestBuilder lRequest = this.RequestBuilder.Delete(lInput);
             this.CheckUrl(lRequest, "notifications", "delete");

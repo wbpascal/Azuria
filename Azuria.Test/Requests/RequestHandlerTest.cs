@@ -29,9 +29,7 @@ namespace Azuria.Test.Requests
             };
 
         private static readonly Dictionary<string, string> StandardHeaders = new Dictionary<string, string>
-        {
-            {TestConstants.ApiKeyHeaderName, new string(new char[32])}
-        };
+            {{TestConstants.ApiKeyHeaderName, new string(new char[32])}};
 
         private readonly IRequestHandler _requestHandler;
 
@@ -165,10 +163,7 @@ namespace Azuria.Test.Requests
         [Test]
         public async Task MakeRequestPostTest()
         {
-            Dictionary<string, string> lPostArgs = new Dictionary<string, string>
-            {
-                {"test", "value"}
-            };
+            Dictionary<string, string> lPostArgs = new Dictionary<string, string> {{"test", "value"}};
 
             Mock<IHttpClient> lHttpClientMock = new Mock<IHttpClient>();
             lHttpClientMock.Setup(
@@ -223,10 +218,7 @@ namespace Azuria.Test.Requests
         [Test]
         public async Task MakeRequestWithResultPostTest()
         {
-            Dictionary<string, string> lPostArgs = new Dictionary<string, string>
-            {
-                {"test", "value"}
-            };
+            Dictionary<string, string> lPostArgs = new Dictionary<string, string> {{"test", "value"}};
 
             Mock<IHttpClient> lHttpClientMock = new Mock<IHttpClient>();
             lHttpClientMock.Setup(

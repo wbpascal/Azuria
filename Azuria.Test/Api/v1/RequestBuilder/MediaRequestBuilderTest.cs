@@ -23,10 +23,7 @@ namespace Azuria.Test.Api.v1.RequestBuilder
         [Test]
         public void GetRandomHeaderTest([Values] HeaderStyle style)
         {
-            RandomHeaderInput lInput = new RandomHeaderInput()
-            {
-                HeaderStyle = style
-            };
+            RandomHeaderInput lInput = new RandomHeaderInput {HeaderStyle = style};
             IRequestBuilderWithResult<HeaderDataModel> lRequest = this.RequestBuilder.GetRandomHeader(lInput);
             this.CheckUrl(lRequest, "media", "randomheader");
             Assert.AreSame(this.ProxerClient, lRequest.Client);
