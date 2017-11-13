@@ -5,7 +5,7 @@ namespace Azuria.Api.v1.DataModels.Ucp
 {
     /// <summary>
     /// </summary>
-    public class BookmarkDataModel : UcpEntryInfoDataModel
+    public class BookmarkDataModelBase : UcpEntryInfoDataModelBase
     {
         /// <summary>
         /// </summary>

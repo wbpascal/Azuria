@@ -6,7 +6,7 @@ namespace Azuria.Api.v1.DataModels.Ucp
 {
     /// <summary>
     /// </summary>
-    public class HistoryDataModel : UcpEntryInfoDataModel
+    public class HistoryDataModelBase : UcpEntryInfoDataModelBase
     {
         /// <summary>
         /// </summary>

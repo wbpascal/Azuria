@@ -7,7 +7,6 @@ using Azuria.Enums;
 using Azuria.Enums.Info;
 using Azuria.Helpers.Extensions;
 using Azuria.Requests.Builder;
-using HistoryDataModel = Azuria.Api.v1.DataModels.Ucp.HistoryDataModel;
 using ToptenDataModel = Azuria.Api.v1.DataModels.Ucp.ToptenDataModel;
 
 namespace Azuria.Api.v1.RequestBuilder
@@ -87,10 +86,10 @@ namespace Azuria.Api.v1.RequestBuilder
         /// * UCP - Level 0
         /// </summary>
         /// <returns>An instance of <see cref="IRequestBuilderWithResult{T}" /> that returns an array of episodes and chapters.</returns>
-        public IRequestBuilderWithResult<HistoryDataModel[]> GetHistory(UcpEntryHistoryInput input)
+        public IRequestBuilderWithResult<HistoryDataModelBase[]> GetHistory(UcpEntryHistoryInput input)
         {
             this.CheckInputDataModel(input);
-            return new RequestBuilder<HistoryDataModel[]>(
+            return new RequestBuilder<HistoryDataModelBase[]>(
                     new Uri($"{ApiConstants.ApiUrlV1}/ucp/history"), this.ProxerClient
                 ).WithGetParameter(input.BuildDictionary())
                 .WithLoginCheck();
@@ -138,10 +137,10 @@ namespace Azuria.Api.v1.RequestBuilder
         /// * UCP - Level 0
         /// </summary>
         /// <returns>An instance of <see cref="IRequestBuilderWithResult{T}" /> that returns an array of reminders.</returns>
-        public IRequestBuilderWithResult<BookmarkDataModel[]> GetReminder(ReminderListInput input)
+        public IRequestBuilderWithResult<BookmarkDataModelBase[]> GetReminder(ReminderListInput input)
         {
             this.CheckInputDataModel(input);
-            return new RequestBuilder<BookmarkDataModel[]>(
+            return new RequestBuilder<BookmarkDataModelBase[]>(
                     new Uri($"{ApiConstants.ApiUrlV1}/ucp/reminder"), this.ProxerClient
                 ).WithGetParameter(input.BuildDictionary())
                 .WithLoginCheck();

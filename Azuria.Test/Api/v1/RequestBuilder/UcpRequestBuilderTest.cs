@@ -11,7 +11,6 @@ using Azuria.Helpers.Extensions;
 using Azuria.Requests.Builder;
 using Azuria.Test.Core.Helpers;
 using NUnit.Framework;
-using HistoryDataModel = Azuria.Api.v1.DataModels.Ucp.HistoryDataModel;
 using ToptenDataModel = Azuria.Api.v1.DataModels.Ucp.ToptenDataModel;
 
 namespace Azuria.Test.Api.v1.RequestBuilder
@@ -72,7 +71,7 @@ namespace Azuria.Test.Api.v1.RequestBuilder
                 Limit = 20,
                 Page = 3
             };
-            IRequestBuilderWithResult<HistoryDataModel[]> lRequest = this.RequestBuilder.GetHistory(lInput);
+            IRequestBuilderWithResult<HistoryDataModelBase[]> lRequest = this.RequestBuilder.GetHistory(lInput);
             this.CheckUrl(lRequest, "ucp", "history");
             Assert.AreSame(this.ProxerClient, lRequest.Client);
             Assert.True(lRequest.GetParameters.ContainsKey("p"));
@@ -176,7 +175,7 @@ namespace Azuria.Test.Api.v1.RequestBuilder
                 Limit = 1,
                 Page = 5
             };
-            IRequestBuilderWithResult<BookmarkDataModel[]> lRequest = this.RequestBuilder.GetReminder(lInput);
+            IRequestBuilderWithResult<BookmarkDataModelBase[]> lRequest = this.RequestBuilder.GetReminder(lInput);
             this.CheckUrl(lRequest, "ucp", "reminder");
             Assert.AreSame(this.ProxerClient, lRequest.Client);
             Assert.True(lRequest.GetParameters.ContainsKey("kat") && category != null || category == null);

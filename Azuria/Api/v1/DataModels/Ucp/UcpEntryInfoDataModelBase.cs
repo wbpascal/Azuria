@@ -8,7 +8,7 @@ namespace Azuria.Api.v1.DataModels.Ucp
     /// <summary>
     /// 
     /// </summary>
-    public abstract class UcpEntryInfoDataModel : DataModelBase, IEntryInfoDataModel
+    public abstract class UcpEntryInfoDataModelBase : DataModelBase, IEntryInfoDataModel
     {
         /// <summary>
         /// </summary>
