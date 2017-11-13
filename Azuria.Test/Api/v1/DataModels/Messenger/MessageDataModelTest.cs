@@ -25,7 +25,7 @@ namespace Azuria.Test.Api.v1.DataModels.Messenger
             {
                 ConferenceId = 124536,
                 MessageAction = MessageAction.NoAction,
-                MessageContent = "Pro Klasse gezählt auch",
+                MessageContent = "Lorem ipsum dolor sit amet",
                 MessageId = 4993930,
                 MessageTimeStamp = DateTimeHelpers.UnixTimeStampToDateTime(1473602860),
                 SenderDevice = "default",
