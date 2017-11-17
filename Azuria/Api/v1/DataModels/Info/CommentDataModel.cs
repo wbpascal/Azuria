@@ -32,7 +32,7 @@ namespace Azuria.Api.v1.DataModels.Info
         /// <summary>
         /// </summary>
         [JsonProperty("episode")]
-        public int ContentIndex { get; set; }
+        public int Progress { get; set; }
 
         /// <summary>
         /// </summary>
