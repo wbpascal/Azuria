@@ -20,6 +20,7 @@ namespace Azuria.Api.v1.DataModels.User
 
         /// <inheritdoc />
         [JsonProperty("medium")]
+        [JsonConverter(typeof(MediumConverter))]
         public MediaMedium EntryMedium { get; set; }
 
         /// <inheritdoc />
@@ -29,10 +30,16 @@ namespace Azuria.Api.v1.DataModels.User
         /// <inheritdoc />
         [JsonProperty("kat")]
         public MediaEntryType EntryType { get; set; }
+        
+        /// <summary>
+        /// </summary>
+        [JsonProperty("id")]
+        public int Id { get; set; }
 
         /// <summary>
         /// </summary>
-        [JsonProperty("language", ItemConverterType = typeof(LanguageConverter))]
+        [JsonProperty("language")]
+        [JsonConverter(typeof(LanguageConverter))]
         public MediaLanguage Language { get; set; }
     }
 }

@@ -29,7 +29,7 @@ namespace Azuria.Test.Api.v1.DataModels.Info
                 AvatarId = "104302_2jXP5i.jpg",
                 CommentId = 11660523,
                 CommentText = "comment text 1",
-                ContentIndex = 22,
+                Progress = 22,
                 EntryId = 9200,
                 Rating = 10,
                 State = MediaProgressState.Finished,

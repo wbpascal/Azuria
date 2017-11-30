@@ -9,12 +9,22 @@ namespace Azuria.Api.v1.DataModels.User
     /// </summary>
     public class CommentDataModel : Info.CommentDataModel
     {
-        /// <inheritdoc />
+        /// <summary>
+        /// 
+        /// </summary>
         [JsonProperty("medium")]
         [JsonConverter(typeof(MediumConverter))]
         public MediaMedium EntryMedium { get; set; }
+        
+        /// <summary>
+        /// 
+        /// </summary>
+        [JsonProperty("name")]
+        public string EntryName { get; set; }
 
-        /// <inheritdoc />
+        /// <summary>
+        /// 
+        /// </summary>
         [JsonProperty("kat")]
         [JsonConverter(typeof(CategoryConverter))]
         public MediaEntryType EntryType { get; set; }

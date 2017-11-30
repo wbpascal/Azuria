@@ -9,11 +9,11 @@
             "cid": "7215389",
             "name": "Flow",
             "id": "7014",
-            "comment": "",
+            "comment": "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum.",
             "state": "0",
             "episode": "105",
-            "data": "",
-            "rating": "0",
+            "data": "{\"genre\":\"4\",\"story\":\"5\",\"animation\":\"1\",\"characters\":\"3\",\"music\":\"2\"}",
+            "rating": "7",
             "timestamp": "1416410114"
         },
         {

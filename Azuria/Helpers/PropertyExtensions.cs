@@ -19,6 +19,10 @@ namespace Azuria.Helpers
             {
                 case null:
                     return lSecondValue == null;
+                case IDictionary lFirstDict when lSecondValue is IDictionary lSecondDict:
+                    return lFirstDict.Keys
+                        .Cast<object>()
+                        .All(o => lSecondDict.Contains(o) && lFirstDict[o].Equals(lSecondDict[o]));
                 case IEnumerable lFirstEnumerable when lSecondValue is IEnumerable lSecondEnumerable:
                     return lFirstEnumerable.Cast<object>().SequenceEqual(lSecondEnumerable.Cast<object>());
             }
