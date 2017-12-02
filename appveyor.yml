@@ -38,24 +38,3 @@ test_script:
 artifacts:
   - path: '*.nupkg'
     name: Nuget Package
-
-deploy:
-  - provider: NuGet
-    name: pre-release
-    server: https://www.myget.org/F/infinitesoul/api/v2/package
-    symbol_server: https://www.myget.org/F/infinitesoul/symbols/api/v2/package
-    api_key:
-        secure: /ZVEy+qqj8rmVkcPvuEuEsJCvEAG1chXaYhZCcLDEnhLIK+TkEIfGG/JDdMn7Qrf
-    skip_symbols: false
-    artifact: /.*\.nupkg/
-    on:
-        branch: master
-
-  - provider: NuGet
-    name: production
-    api_key:
-        secure: 8mKFfgwriyN1kzevZjQeDR8b3RdWPWnxDMZ2j5RZbQYquEhTo9YjPsNRaoqpWHaw
-    skip_symbols: false
-    artifact: /.*\.nupkg/
-    on:
-        appveyor_repo_tag: true
