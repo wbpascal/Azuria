@@ -36,7 +36,7 @@ test_script:
   - SonarQube.Scanner.MSBuild.exe end /d:sonar.login=%SONAR_QUBE_TOKEN%
 
 artifacts:
-  - path: /.*\.nupkg/
+  - path: '*.nupkg'
     name: Nuget Package
 
 deploy:
