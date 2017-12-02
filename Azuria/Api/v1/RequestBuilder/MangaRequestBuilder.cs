@@ -1,31 +1,37 @@
 ﻿using System;
 using Azuria.Api.v1.DataModels.Manga;
+using Azuria.Api.v1.Input.Manga;
+using Azuria.Helpers.Extensions;
+using Azuria.Requests.Builder;
 
 namespace Azuria.Api.v1.RequestBuilder
 {
     /// <summary>
+    /// Represents the manga api class.
     /// </summary>
-    public static class MangaRequestBuilder
+    public class MangaRequestBuilder : ApiClassRequestBuilderBase
     {
-        #region Methods
-
-        /// <summary>
-        /// </summary>
-        /// <param name="id"></param>
-        /// <param name="episode"></param>
-        /// <param name="language"></param>
-        /// <param name="senpai"></param>
-        /// <returns></returns>
-        public static ApiRequest<ChapterDataModel> GetChapter(int id, int episode, string language,
-            Senpai senpai = null)
+        /// <inheritdoc />
+        public MangaRequestBuilder(IProxerClient proxerClient) : base(proxerClient)
         {
-            return ApiRequest<ChapterDataModel>.Create(new Uri($"{ApiConstants.ApiUrlV1}/manga/chapter"))
-                .WithGetParameter("id", id.ToString())
-                .WithGetParameter("episode", episode.ToString())
-                .WithGetParameter("language", language)
-                .WithSenpai(senpai);
         }
 
-        #endregion
+        /// <summary>
+        /// <para>
+        /// Builds a request that returns information about a chapter including the pages.
+        /// </para>
+        /// <para>
+        /// Api permissions required (class - permission level):
+        /// * Manga - Level 2
+        /// </para>
+        /// </summary>
+        /// <returns>An instance of <see cref="IRequestBuilderWithResult{T}" /> that returns the chapter.</returns>
+        public IRequestBuilderWithResult<ChapterDataModel> GetChapter(ChapterInfoInput input)
+        {
+            this.CheckInputDataModel(input);
+            return new RequestBuilder<ChapterDataModel>(
+                new Uri($"{ApiConstants.ApiUrlV1}/manga/chapter"), this.ProxerClient
+            ).WithGetParameter(input.BuildDictionary());
+        }
     }
 }

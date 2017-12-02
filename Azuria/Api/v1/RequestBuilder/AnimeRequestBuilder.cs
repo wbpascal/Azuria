@@ -1,41 +1,62 @@
 ﻿using System;
 using Azuria.Api.v1.DataModels.Anime;
+using Azuria.Api.v1.Input.Anime;
+using Azuria.Enums.Info;
+using Azuria.Helpers.Extensions;
+using Azuria.Requests.Builder;
 
 namespace Azuria.Api.v1.RequestBuilder
 {
+    /// <inheritdoc />
     /// <summary>
+    /// Represents the anime api class.
     /// </summary>
-    public static class AnimeRequestBuilder
+    public class AnimeRequestBuilder : ApiClassRequestBuilderBase
     {
-        #region Methods
-
-        /// <summary>
-        /// </summary>
-        /// <param name="id"></param>
-        /// <returns></returns>
-        public static ApiRequest<string> GetLink(int id)
+        /// <inheritdoc />
+        public AnimeRequestBuilder(IProxerClient proxerClient) : base(proxerClient)
         {
-            return ApiRequest<string>.Create(new Uri($"{ApiConstants.ApiUrlV1}/anime/link"))
-                .WithGetParameter("id", id.ToString());
         }
 
         /// <summary>
+        /// Builds a request that returns the link of a specified stream.
+        /// Api permissions required (class - permission level):
+        /// * Anime - Level 2
         /// </summary>
-        /// <param name="id"></param>
-        /// <param name="episode"></param>
-        /// <param name="language"></param>
-        /// <param name="senpai"></param>
-        /// <returns></returns>
-        public static ApiRequest<StreamDataModel[]> GetStreams(int id, int episode, string language,
-            Senpai senpai = null)
+        /// <returns>An instance of <see cref="IRequestBuilderWithResult{T}" /> that returns a link as a string.</returns>
+        public IRequestBuilderWithResult<string> GetLink(GetLinkInput input)
         {
-            return ApiRequest<StreamDataModel[]>.Create(new Uri($"{ApiConstants.ApiUrlV1}/anime/streams"))
-                .WithGetParameter("id", id.ToString())
-                .WithGetParameter("episode", episode.ToString())
-                .WithGetParameter("language", language)
-                .WithSenpai(senpai);
+            this.CheckInputDataModel(input);
+            return new RequestBuilder<string>(new Uri($"{ApiConstants.ApiUrlV1}/anime/link"), this.ProxerClient)
+                .WithGetParameter(input.BuildDictionary());
         }
 
-        #endregion
+        /// <summary>
+        /// Builds a request that returns all streams (including the Proxerstream) of a specified episode.
+        /// Api permissions required (class - permission level):
+        /// * Anime - Level 3
+        /// </summary>
+        /// <returns>An instance of <see cref="IRequestBuilderWithResult{T}" /> that returns an array of streams.</returns>
+        public IRequestBuilderWithResult<StreamDataModel[]> GetProxerStreams(StreamListInput input)
+        {
+            this.CheckInputDataModel(input);
+            return new RequestBuilder<StreamDataModel[]>(
+                    new Uri($"{ApiConstants.ApiUrlV1}/anime/proxerstreams"), this.ProxerClient)
+                .WithGetParameter(input.BuildDictionary());
+        }
+
+        /// <summary>
+        /// Builds a request that returns all streams (without the Proxerstream) of a specified episode.
+        /// Api permissions required (class - permission level):
+        /// * Anime - Level 2
+        /// </summary>
+        /// <returns>An instance of <see cref="IRequestBuilderWithResult{T}" /> that returns an array of streams.</returns>
+        public IRequestBuilderWithResult<StreamDataModel[]> GetStreams(StreamListInput input)
+        {
+            this.CheckInputDataModel(input);
+            return new RequestBuilder<StreamDataModel[]>(
+                    new Uri($"{ApiConstants.ApiUrlV1}/anime/streams"), this.ProxerClient)
+                .WithGetParameter(input.BuildDictionary());
+        }
     }
 }

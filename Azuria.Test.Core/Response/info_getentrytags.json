@@ -1,0 +1,24 @@
+﻿{
+    "error": 0,
+    "message": "Abfrage erfolgreich",
+    "data": [
+        {
+            "id": "174",
+            "tid": "257",
+            "timestamp": "2016-06-17 15:11:16",
+            "rate_flag": "0",
+            "spoiler_flag": "1",
+            "tag": "Bad End",
+            "description": "Bad End Beschreibungstext"
+        },
+        {
+            "id": "3949",
+            "tid": "99",
+            "timestamp": "2016-06-19 16:31:49",
+            "rate_flag": "1",
+            "spoiler_flag": "0",
+            "tag": "Osananajimi",
+            "description": "Osananajimi Beschreibung"
+        }
+    ]
+}

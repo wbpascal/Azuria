@@ -1,0 +1,26 @@
+{
+    "error": 0,
+    "message": "Abfrage erfolgreich.",
+    "data": [
+        {
+            "message_id": "4993930",
+            "conference_id": "124536",
+            "user_id": "121658",
+            "username": "RubyDerBoss",
+            "message": "Lorem ipsum dolor sit amet",
+            "action": "",
+            "timestamp": "1473602860",
+            "device": "default"
+        },
+        {
+            "message_id": "4993933",
+            "conference_id": "124536",
+            "user_id": "121658",
+            "username": "RubyDerBoss",
+            "message": "Test message text",
+            "action": "",
+            "timestamp": "1473602891",
+            "device": "default"
+        }
+    ]
+}

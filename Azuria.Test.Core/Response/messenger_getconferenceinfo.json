@@ -1,0 +1,27 @@
+{
+    "error": 0,
+    "message": "Abfrage erfolgreich.",
+    "data": {
+        "conference": {
+            "topic": "Proxer API - Diskussion",
+            "count": "2",
+            "timestamp_start": "1472560334",
+            "timestamp_end": "1475001736",
+            "leader": "121658"
+        },
+        "users": [
+            {
+                "uid": "391004",
+                "avatar": "391004_Kr4LXO.jpg",
+                "username": "cuechan",
+                "status": "1462630115"
+            },
+            {
+                "uid": "121658",
+                "avatar": "121658_VHuZqz.jpg",
+                "username": "RubyDerBoss",
+                "status": "Proxer-App Testversion: https://github.com/proxer/ProxerAndroid"
+            }
+        ]
+    }
+}

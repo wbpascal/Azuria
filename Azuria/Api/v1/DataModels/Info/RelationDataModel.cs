@@ -1,6 +1,5 @@
-﻿using System.Collections.Generic;
-using Azuria.Api.v1.Converters;
-using Azuria.Media.Properties;
+﻿using Azuria.Api.v1.Converters;
+using Azuria.Enums.Info;
 using Newtonsoft.Json;
 
 namespace Azuria.Api.v1.DataModels.Info
@@ -9,14 +8,27 @@ namespace Azuria.Api.v1.DataModels.Info
     /// </summary>
     public class RelationDataModel : EntryDataModel
     {
-        #region Properties
-
         /// <summary>
         /// </summary>
         [JsonProperty("language")]
         [JsonConverter(typeof(LanguageCommaCollectionConverter))]
-        public IEnumerable<MediaLanguage> AvailableLanguages { get; set; }
+        public MediaLanguage[] AvailableLanguages { get; set; }
 
-        #endregion
+        /// <summary>
+        /// Does not include the id of the season
+        /// </summary>
+        public SeasonDataModel StartSeason => new SeasonDataModel
+        {
+            EntryId = this.EntryId,
+            Id = int.MinValue,
+            Season = this.Season,
+            Year = this.Year
+        };
+
+        [JsonProperty("season")]
+        internal Season Season { get; set; }
+
+        [JsonProperty("year")]
+        internal int Year { get; set; }
     }
 }

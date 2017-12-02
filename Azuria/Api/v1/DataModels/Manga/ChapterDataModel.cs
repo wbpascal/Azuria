@@ -1,16 +1,15 @@
 ﻿using System;
 using Azuria.Api.v1.Converters;
 using Azuria.Api.v1.Converters.Manga;
+using Azuria.Api.v1.DataModels.Media;
 using Newtonsoft.Json;
 
 namespace Azuria.Api.v1.DataModels.Manga
 {
     /// <summary>
     /// </summary>
-    public class ChapterDataModel
+    public class ChapterDataModel : UploadedMediaDataModel
     {
-        #region Properties
-
         /// <summary>
         /// </summary>
         [JsonProperty("cid")]
@@ -39,30 +38,8 @@ namespace Azuria.Api.v1.DataModels.Manga
 
         /// <summary>
         /// </summary>
-        [JsonProperty("tid")]
-        public int? TranslatorId { get; set; }
-
-        /// <summary>
-        /// </summary>
-        [JsonProperty("tname")]
-        public string TranslatorName { get; set; }
-
-        /// <summary>
-        /// </summary>
-        [JsonProperty("uploader")]
-        public int UploaderId { get; set; }
-
-        /// <summary>
-        /// </summary>
-        [JsonProperty("username")]
-        public string UploaderName { get; set; }
-
-        /// <summary>
-        /// </summary>
         [JsonProperty("timestamp")]
         [JsonConverter(typeof(UnixToDateTimeConverter))]
         public DateTime UploadTimestamp { get; set; }
-
-        #endregion
     }
 }

@@ -1,55 +1,63 @@
 ﻿using System;
 using Azuria.Api.v1.Converters.Notifications;
 using Azuria.Api.v1.DataModels.Notifications;
+using Azuria.Api.v1.Input.Notifications;
+using Azuria.Helpers.Extensions;
+using Azuria.Requests.Builder;
 
 namespace Azuria.Api.v1.RequestBuilder
 {
     /// <summary>
+    /// Represents the notification api class.
     /// </summary>
-    public static class NotificationsRequestBuilder
+    public class NotificationsRequestBuilder : ApiClassRequestBuilderBase
     {
-        #region Methods
-
-        /// <summary>
-        /// </summary>
-        /// <param name="senpai"></param>
-        /// <param name="nid"></param>
-        /// <returns></returns>
-        public static ApiRequest Delete(Senpai senpai, int nid = 0)
+        /// <inheritdoc />
+        public NotificationsRequestBuilder(IProxerClient proxerClient) : base(proxerClient)
         {
-            return ApiRequest.Create(new Uri($"{ApiConstants.ApiUrlV1}/notifications/delete"))
-                .WithCheckLogin(true)
-                .WithPostArgument("nid", nid.ToString())
-                .WithSenpai(senpai);
         }
 
         /// <summary>
+        /// Builds a request that deletes a notification.
+        /// Api permissions required (class - permission level):
+        /// * Notifications - Level 0
         /// </summary>
-        /// <param name="senpai"></param>
-        /// <returns></returns>
-        public static ApiRequest<NotificationCountDataModel> GetCount(Senpai senpai)
+        /// <returns>An instance of <see cref="IRequestBuilder" />.</returns>
+        public IRequestBuilder Delete(DeleteNotificationInput input)
         {
-            return ApiRequest<NotificationCountDataModel>.Create(new Uri($"{ApiConstants.ApiUrlV1}/notifications/count"))
-                .WithCheckLogin(true)
-                .WithCustomDataConverter(new NotificationCountConverter())
-                .WithSenpai(senpai);
+            this.CheckInputDataModel(input);
+            return new Requests.Builder.RequestBuilder(
+                    new Uri($"{ApiConstants.ApiUrlV1}/notifications/delete"), this.ProxerClient)
+                .WithPostParameter(input.Build())
+                .WithLoginCheck();
         }
 
         /// <summary>
+        /// Builds a request that returns how many notifications a user has recieved and not read.
+        /// Api permissions required (class - permission level):
+        /// * Notifications - Level 0
         /// </summary>
-        /// <param name="page"></param>
-        /// <param name="limit"></param>
-        /// <param name="senpai"></param>
-        /// <returns></returns>
-        public static ApiRequest<NewsNotificationDataModel[]> GetNews(int page, int limit, Senpai senpai)
+        /// <returns>An instance of <see cref="IRequestBuilderWithResult{T}" /> that returns the number of notifications.</returns>
+        public IRequestBuilderWithResult<NotificationCountDataModel> GetCount()
         {
-            return ApiRequest<NewsNotificationDataModel[]>.Create(new Uri($"{ApiConstants.ApiUrlV1}/notifications/news"))
-                .WithGetParameter("p", page.ToString())
-                .WithGetParameter("limit", limit.ToString())
-                .WithCheckLogin(true)
-                .WithSenpai(senpai);
+            return new RequestBuilder<NotificationCountDataModel>(
+                    new Uri($"{ApiConstants.ApiUrlV1}/notifications/count"), this.ProxerClient
+                ).WithCustomDataConverter(new NotificationCountConverter())
+                .WithLoginCheck();
         }
 
-        #endregion
+        /// <summary>
+        /// Builds a request that returns the current news ordered by date of publication.
+        /// Api permissions required (class - permission level):
+        /// * Notifications - Level 0
+        /// </summary>
+        /// <returns>An instance of <see cref="IRequestBuilderWithResult{T}" /> that returns an array of news.</returns>
+        public IRequestBuilderWithResult<NewsNotificationDataModel[]> GetNews(NewsListInput input)
+        {
+            this.CheckInputDataModel(input);
+            return new RequestBuilder<NewsNotificationDataModel[]>(
+                new Uri($"{ApiConstants.ApiUrlV1}/notifications/news"), this.ProxerClient
+            ).WithGetParameter(input.BuildDictionary());
+        }
     }
 }

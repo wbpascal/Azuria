@@ -1,17 +1,14 @@
 ﻿using System;
 using Azuria.Api.v1.Converters;
-using Azuria.Api.v1.Converters.Anime;
-using Azuria.Media.Properties;
+using Azuria.Api.v1.DataModels.Media;
 using Newtonsoft.Json;
 
 namespace Azuria.Api.v1.DataModels.Anime
 {
     /// <summary>
     /// </summary>
-    public class StreamDataModel
+    public class StreamDataModel : UploadedMediaDataModel
     {
-        #region Properties
-
         /// <summary>
         /// </summary>
         [JsonProperty("name")]
@@ -35,8 +32,7 @@ namespace Azuria.Api.v1.DataModels.Anime
         /// <summary>
         /// </summary>
         [JsonProperty("type")]
-        [JsonConverter(typeof(StreamPartnerConverter))]
-        public StreamHoster StreamHoster { get; set; }
+        public string StreamHoster { get; set; }
 
         /// <summary>
         /// </summary>
@@ -45,30 +41,8 @@ namespace Azuria.Api.v1.DataModels.Anime
 
         /// <summary>
         /// </summary>
-        [JsonProperty("tid")]
-        public int? TranslatorId { get; set; }
-
-        /// <summary>
-        /// </summary>
-        [JsonProperty("tname")]
-        public string TranslatorName { get; set; }
-
-        /// <summary>
-        /// </summary>
-        [JsonProperty("uploader")]
-        public int UploaderId { get; set; }
-
-        /// <summary>
-        /// </summary>
-        [JsonProperty("username")]
-        public string UploaderName { get; set; }
-
-        /// <summary>
-        /// </summary>
         [JsonProperty("timestamp")]
         [JsonConverter(typeof(UnixToDateTimeConverter))]
         public DateTime UploadTimestamp { get; set; }
-
-        #endregion
     }
 }

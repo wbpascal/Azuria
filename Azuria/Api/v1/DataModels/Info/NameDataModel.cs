@@ -1,15 +1,15 @@
-﻿using Azuria.Api.v1.Converters.Info;
-using Azuria.Api.v1.Enums;
+﻿using System;
+using System.Collections.Generic;
+using Azuria.Api.v1.Converters.Info;
+using Azuria.Enums;
 using Newtonsoft.Json;
 
 namespace Azuria.Api.v1.DataModels.Info
 {
     /// <summary>
     /// </summary>
-    public class NameDataModel : IDataModel
+    public class NameDataModel : DataModelBase
     {
-        #region Properties
-
         /// <summary>
         /// </summary>
         [JsonProperty("name")]
@@ -17,10 +17,18 @@ namespace Azuria.Api.v1.DataModels.Info
 
         /// <summary>
         /// </summary>
+        [JsonProperty("id")]
+        public int Id { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [JsonProperty("eid")]
+        public int EntryId { get; set; }
+
+        /// <summary>
+        /// </summary>
         [JsonProperty("type")]
         [JsonConverter(typeof(NameTypeConverter))]
         public MediaNameType Type { get; set; }
-
-        #endregion
     }
 }

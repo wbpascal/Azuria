@@ -1,15 +1,12 @@
-﻿using Azuria.Api.v1.Enums;
-using Azuria.Search.Input;
+﻿using Azuria.Enums;
 using Newtonsoft.Json;
 
 namespace Azuria.Api.v1.DataModels.User
 {
     /// <summary>
     /// </summary>
-    public class ToptenDataModel : IEntryInfoDataModel
+    public class ToptenDataModel : DataModelBase, IEntryInfoDataModel
     {
-        #region Properties
-
         /// <inheritdoc />
         [JsonProperty("eid")]
         public int EntryId { get; set; }
@@ -25,7 +22,5 @@ namespace Azuria.Api.v1.DataModels.User
         /// <inheritdoc />
         [JsonProperty("kat")]
         public MediaEntryType EntryType { get; set; }
-
-        #endregion
     }
 }

@@ -10,24 +10,18 @@
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>An unofficial api for the german anime and manga community Proxer.Me.</description>
     <releaseNotes></releaseNotes>
-    <copyright>Copyright InfiniteSoul 2016</copyright>
-    <tags>proxer proxer.me</tags>
+    <copyright>Copyright InfiniteSoul 2017</copyright>
+    <tags>proxer proxer.me api</tags>
     <dependencies>
-      <group targetFramework="netstandard1.0">
-        <dependency id="NETStandard.Library" version="1.6.0" />
-        <dependency id="Microsoft.NETCore.Portable.Compatibility" version="1.0.1" />
-        <dependency id="Newtonsoft.Json" version="9.0.1" />
-      </group>
-      <group targetFramework="net45">
-        <dependency id="Newtonsoft.Json" version="9.0.1" />
-        <dependency id="System.Runtime" version="4.1.0" />
+      <group targetFramework="netstandard1.2">
+        <dependency id="Newtonsoft.Json" version="10.0.2" />
+        <dependency id="Autofac" version="4.5.0" />
       </group>
     </dependencies>
   </metadata>
   <files>
-    <file src="Azuria.Portable\bin\Release\Azuria.Portable.dll" target="lib\netstandard1.0" /> 
-    <file src="Azuria.Portable\bin\Release\Azuria.Portable.xml" target="lib\netstandard1.0" /> 
-    <file src="Azuria\bin\Release\Azuria.dll" target="lib\net45" /> 
-    <file src="Azuria\bin\Release\Azuria.xml" target="lib\net45" /> 
+    <file src="Azuria\bin\Appveyor\netstandard1.2\Azuria.dll" target="lib\netstandard1.2" />
+    <file src="Azuria\bin\Appveyor\netstandard1.2\Azuria.pdb" target="lib\netstandard1.2" />
+    <file src="Azuria\bin\Appveyor\netstandard1.2\Azuria.xml" target="lib\netstandard1.2" />
   </files>
 </package>

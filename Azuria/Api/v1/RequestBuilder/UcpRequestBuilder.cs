@@ -1,183 +1,211 @@
 ﻿using System;
 using Azuria.Api.v1.DataModels.Ucp;
 using Azuria.Api.v1.DataModels.User;
+using Azuria.Api.v1.Input.Info;
+using Azuria.Api.v1.Input.Ucp;
+using Azuria.Enums;
+using Azuria.Enums.Info;
+using Azuria.Helpers.Extensions;
+using Azuria.Requests.Builder;
 using ToptenDataModel = Azuria.Api.v1.DataModels.Ucp.ToptenDataModel;
 
 namespace Azuria.Api.v1.RequestBuilder
 {
     /// <summary>
+    /// Represents the ucp api class.
     /// </summary>
-    public static class UcpRequestBuilder
+    public class UcpRequestBuilder : ApiClassRequestBuilderBase
     {
-        #region Methods
-
-        /// <summary>
-        /// </summary>
-        /// <param name="favouriteId"></param>
-        /// <param name="senpai"></param>
-        /// <returns></returns>
-        public static ApiRequest<BookmarkDataModel[]> DeleteFavourite(int favouriteId, Senpai senpai)
+        /// <inheritdoc />
+        public UcpRequestBuilder(IProxerClient proxerClient) : base(proxerClient)
         {
-            return ApiRequest<BookmarkDataModel[]>.Create(new Uri($"{ApiConstants.ApiUrlV1}/ucp/deletefavorite"))
-                .WithCheckLogin(true)
-                .WithPostArgument("id", favouriteId.ToString())
-                .WithSenpai(senpai);
         }
 
         /// <summary>
+        /// Builds a request that removes an entry from a users topten.
+        /// **Requires authentication.**
+        /// <para>
+        /// Api permissions required (class - permission level):
+        /// <para />
+        /// * UCP - Level 1
+        /// </para>
         /// </summary>
-        /// <param name="bookmarkId"></param>
-        /// <param name="senpai"></param>
-        /// <returns></returns>
-        public static ApiRequest<BookmarkDataModel[]> DeleteReminder(int bookmarkId, Senpai senpai)
+        /// <returns>An instance of <see cref="IRequestBuilder" /> that removes an entry from a users topten.</returns>
+        /// <seealso cref="GetTopten" />
+        public IRequestBuilder DeleteTopten(DeleteToptenInput input)
         {
-            return ApiRequest<BookmarkDataModel[]>.Create(new Uri($"{ApiConstants.ApiUrlV1}/ucp/deletereminder"))
-                .WithCheckLogin(true)
-                .WithPostArgument("id", bookmarkId.ToString())
-                .WithSenpai(senpai);
+            this.CheckInputDataModel(input);
+            return new Requests.Builder.RequestBuilder(
+                    new Uri($"{ApiConstants.ApiUrlV1}/ucp/deletefavorite"), this.ProxerClient)
+                .WithPostParameter(input.Build())
+                .WithLoginCheck();
         }
 
         /// <summary>
+        /// Builds a request that deletes a reminder of a user.
+        /// **Requires authentication.**
+        /// <para>
+        /// Api permissions required (class - permission level):
+        /// <para />
+        /// * UCP - Level 1
+        /// </para>
         /// </summary>
-        /// <param name="voteId"></param>
-        /// <param name="senpai"></param>
-        /// <returns></returns>
-        public static ApiRequest<BookmarkDataModel[]> DeleteVote(int voteId, Senpai senpai)
+        /// <returns>An instance of <see cref="IRequestBuilder" /> that deletes a reminder.</returns>
+        /// <seealso cref="GetReminder" />
+        public IRequestBuilder DeleteReminder(DeleteReminderInput input)
         {
-            return ApiRequest<BookmarkDataModel[]>.Create(new Uri($"{ApiConstants.ApiUrlV1}/ucp/deletevote"))
-                .WithCheckLogin(true)
-                .WithPostArgument("id", voteId.ToString())
-                .WithSenpai(senpai);
+            this.CheckInputDataModel(input);
+            return new Requests.Builder.RequestBuilder(
+                    new Uri($"{ApiConstants.ApiUrlV1}/ucp/deletereminder"), this.ProxerClient)
+                .WithPostParameter(input.Build())
+                .WithLoginCheck();
         }
 
         /// <summary>
+        /// Builds a request that removes a users comment upvote.
+        /// **Requires authentication.**
+        /// Api permissions required (class - permission level):
+        /// * UCP - Level 1
         /// </summary>
-        /// <param name="page"></param>
-        /// <param name="limit"></param>
-        /// <param name="senpai"></param>
-        /// <returns></returns>
-        public static ApiRequest<HistoryDataModel[]> GetHistory(int page, int limit, Senpai senpai)
+        /// <returns>An instance of <see cref="IRequestBuilder" /> that removes a comment upvote.</returns>
+        /// <seealso cref="GetVotes" />
+        public IRequestBuilder DeleteVote(DeleteVoteInput input)
         {
-            return ApiRequest<HistoryDataModel[]>.Create(new Uri($"{ApiConstants.ApiUrlV1}/ucp/history"))
-                .WithGetParameter("p", page.ToString())
-                .WithGetParameter("limit", limit.ToString())
-                .WithCheckLogin(true)
-                .WithSenpai(senpai);
+            this.CheckInputDataModel(input);
+            return new Requests.Builder.RequestBuilder(
+                    new Uri($"{ApiConstants.ApiUrlV1}/ucp/deletevote"), this.ProxerClient
+                ).WithPostParameter(input.Build())
+                .WithLoginCheck();
         }
 
         /// <summary>
-        /// 
+        /// Builds a request that returns the history of all watched episodes and read chapters of a
+        /// user.
+        /// Requires authentication.
+        /// Api permissions required (class - permission level):
+        /// * UCP - Level 0
         /// </summary>
-        /// <param name="senpai"></param>
-        /// <param name="kat"></param>
-        /// <param name="page"></param>
-        /// <param name="limit"></param>
-        /// <param name="search"></param>
-        /// <param name="searchStart"></param>
-        /// <param name="sort"></param>
-        /// <returns></returns>
-        public static ApiRequest<ListDataModel[]> GetList(Senpai senpai, string kat = "anime", int page = 0,
-            int limit = 100, string search = "", string searchStart = "", string sort = "stateNameAsc")
+        /// <returns>An instance of <see cref="IRequestBuilderWithResult{T}" /> that returns an array of episodes and chapters.</returns>
+        public IRequestBuilderWithResult<HistoryDataModelBase[]> GetHistory(UcpEntryHistoryInput input)
         {
-            return ApiRequest<ListDataModel[]>.Create(new Uri($"{ApiConstants.ApiUrlV1}/ucp/list"))
-                .WithGetParameter("kat", kat)
-                .WithGetParameter("p", page.ToString())
-                .WithGetParameter("limit", limit.ToString())
-                .WithGetParameter("search", search)
-                .WithGetParameter("search_start", searchStart)
-                .WithGetParameter("sort", sort)
-                .WithCheckLogin(true)
-                .WithSenpai(senpai);
+            this.CheckInputDataModel(input);
+            return new RequestBuilder<HistoryDataModelBase[]>(
+                    new Uri($"{ApiConstants.ApiUrlV1}/ucp/history"), this.ProxerClient
+                ).WithGetParameter(input.BuildDictionary())
+                .WithLoginCheck();
         }
 
         /// <summary>
+        /// Builds a request that returns a list of all anime or manga a user has listed in their ucp.
+        /// Requires authentication.
+        /// Api permissions required (class - permission level):
+        /// <para />
+        /// * UCP - Level 0
         /// </summary>
-        /// <param name="senpai"></param>
-        /// <param name="kat"></param>
-        /// <returns></returns>
-        public static ApiRequest<int> GetListsum(Senpai senpai, string kat = "anime")
+        /// <param name="input">The data model that contains further input parameters for the request.</param>
+        /// <returns>An instance of <see cref="IRequestBuilderWithResult{T}" /> that returns an array of anime or manga entries.</returns>
+        public IRequestBuilderWithResult<ListDataModel[]> GetList(UcpGetListInput input)
         {
-            return ApiRequest<int>.Create(new Uri($"{ApiConstants.ApiUrlV1}/ucp/listsum"))
-                .WithGetParameter("kat", kat)
-                .WithCheckLogin(true)
-                .WithSenpai(senpai);
+            this.CheckInputDataModel(input);
+            return new RequestBuilder<ListDataModel[]>(new Uri($"{ApiConstants.ApiUrlV1}/ucp/list"), this.ProxerClient)
+                .WithGetParameter(input.BuildDictionary())
+                .WithLoginCheck();
         }
 
         /// <summary>
+        /// Builds a request that returns the sum of a users watched episodes or read chapters.
+        /// Requires authentication.
+        /// Api permissions required (class - permission level):
+        /// * UCP - Level 0
         /// </summary>
-        /// <param name="kat"></param>
-        /// <param name="page"></param>
-        /// <param name="limit"></param>
-        /// <param name="senpai"></param>
-        /// <returns></returns>
-        public static ApiRequest<BookmarkDataModel[]> GetReminder(string kat, int page, int limit,
-            Senpai senpai)
+        /// <returns>
+        /// An instance of <see cref="IRequestBuilderWithResult{T}" /> that returns the sum of watched episodes or read
+        /// chapters.
+        /// </returns>
+        public IRequestBuilderWithResult<int> GetListsum(ListsumInput input)
         {
-            return ApiRequest<BookmarkDataModel[]>.Create(new Uri($"{ApiConstants.ApiUrlV1}/ucp/reminder"))
-                .WithGetParameter("kat", kat)
-                .WithGetParameter("p", page.ToString())
-                .WithGetParameter("limit", limit.ToString())
-                .WithCheckLogin(true)
-                .WithSenpai(senpai);
+            this.CheckInputDataModel(input);
+            return new RequestBuilder<int>(new Uri($"{ApiConstants.ApiUrlV1}/ucp/listsum"), this.ProxerClient)
+                .WithGetParameter(input.BuildDictionary())
+                .WithLoginCheck();
         }
 
         /// <summary>
+        /// Builds a request that returns all reminders of a user.
+        /// Requires authentication.
+        /// Api permissions required (class - permission level):
+        /// * UCP - Level 0
         /// </summary>
-        /// <param name="senpai"></param>
-        /// <returns></returns>
-        public static ApiRequest<ToptenDataModel[]> GetTopten(Senpai senpai)
+        /// <returns>An instance of <see cref="IRequestBuilderWithResult{T}" /> that returns an array of reminders.</returns>
+        public IRequestBuilderWithResult<BookmarkDataModelBase[]> GetReminder(ReminderListInput input)
         {
-            return ApiRequest<ToptenDataModel[]>.Create(new Uri($"{ApiConstants.ApiUrlV1}/ucp/topten"))
-                .WithCheckLogin(true)
-                .WithSenpai(senpai);
+            this.CheckInputDataModel(input);
+            return new RequestBuilder<BookmarkDataModelBase[]>(
+                    new Uri($"{ApiConstants.ApiUrlV1}/ucp/reminder"), this.ProxerClient
+                ).WithGetParameter(input.BuildDictionary())
+                .WithLoginCheck();
         }
 
         /// <summary>
+        /// Builds a request that returns the topten of a user (anime and manga).
+        /// Requires authentication.
+        /// Api permissions required (class - permission level):
+        /// * UCP - Level 0
         /// </summary>
-        /// <param name="senpai"></param>
-        /// <returns></returns>
-        public static ApiRequest<VoteDataModel[]> GetVotes(Senpai senpai)
+        /// <returns>An instance of <see cref="IRequestBuilderWithResult{T}" /> that returns an array of anime and manga.</returns>
+        public IRequestBuilderWithResult<ToptenDataModel[]> GetTopten()
         {
-            return ApiRequest<VoteDataModel[]>.Create(new Uri($"{ApiConstants.ApiUrlV1}/ucp/votes"))
-                .WithCheckLogin(true)
-                .WithSenpai(senpai);
+            return new RequestBuilder<ToptenDataModel[]>(
+                new Uri($"{ApiConstants.ApiUrlV1}/ucp/topten"), this.ProxerClient
+            ).WithLoginCheck();
         }
 
         /// <summary>
+        /// Builds a request that returns all comments a user has voted for.
+        /// Requires authentication.
+        /// Api permissions required (class - permission level):
+        /// * UCP - Level 0
         /// </summary>
-        /// <param name="commentId"></param>
-        /// <param name="progress"></param>
-        /// <param name="senpai"></param>
-        /// <returns></returns>
-        public static ApiRequest SetCommentState(int commentId, int progress, Senpai senpai)
+        /// <returns>An instance of <see cref="IRequestBuilderWithResult{T}" /> that returns an array of comments.</returns>
+        public IRequestBuilderWithResult<VoteDataModel[]> GetVotes()
         {
-            return ApiRequest.Create(new Uri($"{ApiConstants.ApiUrlV1}/ucp/setcommentstate"))
-                .WithCheckLogin(true)
-                .WithPostArgument("id", commentId.ToString())
-                .WithPostArgument("value", progress.ToString())
-                .WithSenpai(senpai);
+            return new RequestBuilder<VoteDataModel[]>(
+                new Uri($"{ApiConstants.ApiUrlV1}/ucp/votes"), this.ProxerClient
+            ).WithLoginCheck();
         }
 
         /// <summary>
+        /// Builds a request that sets the number of a users watched episodes/read chapters of an
+        /// anime/manga. If the number is set to a value greater or equal of the amount of episodes/chapter the anime/manga has,
+        /// the status of the entry will be set to "Finished" as well.
+        /// Requires authentication.
+        /// Api permissions required (class - permission level):
+        /// * UCP - Level 1
         /// </summary>
-        /// <param name="entryId"></param>
-        /// <param name="contentIndex"></param>
-        /// <param name="language"></param>
-        /// <param name="kat"></param>
-        /// <param name="senpai"></param>
-        /// <returns></returns>
-        public static ApiRequest SetReminder(int entryId, int contentIndex, string language, string kat,
-            Senpai senpai)
+        /// <returns>An instance of <see cref="IRequestBuilder" /> sets a users progress of an anime/manga.</returns>
+        public IRequestBuilder SetCommentState(SetCommentProgressInput input)
         {
-            return ApiRequest.Create(new Uri($"{ApiConstants.ApiUrlV1}/ucp/setreminder"))
-                .WithGetParameter("id", entryId.ToString())
-                .WithGetParameter("episode", contentIndex.ToString())
-                .WithGetParameter("language", language)
-                .WithGetParameter("kat", kat)
-                .WithCheckLogin(true)
-                .WithSenpai(senpai);
+            this.CheckInputDataModel(input);
+            return new Requests.Builder.RequestBuilder(
+                    new Uri($"{ApiConstants.ApiUrlV1}/ucp/setcommentstate"), this.ProxerClient)
+                .WithPostParameter(input.Build())
+                .WithLoginCheck();
         }
 
-        #endregion
+        /// <summary>
+        /// Builds a request that adds a reminder for an episode/chapter to a users control-panel.
+        /// Requires authentication.
+        /// Api permissions required (class - permission level):
+        /// * UCP - Level 1
+        /// </summary>
+        /// <returns>An instance of <see cref="IRequestBuilder" />.</returns>
+        public IRequestBuilder SetReminder(SetReminderInput input)
+        {
+            this.CheckInputDataModel(input);
+            return new Requests.Builder.RequestBuilder(
+                    new Uri($"{ApiConstants.ApiUrlV1}/ucp/setreminder"), this.ProxerClient)
+                .WithGetParameter(input.BuildDictionary())
+                .WithLoginCheck();
+        }
     }
 }

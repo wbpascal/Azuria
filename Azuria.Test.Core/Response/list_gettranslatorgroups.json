@@ -1,0 +1,9 @@
+{
+    "error": 0,
+    "message": "Abfrage erfolgreich",
+    "data": [
+        { "id": "1582", "name": "#1onlii", "country": "en", "image": "" },
+        { "id": "1097", "name": "#Based Anons", "country": "en", "image": "" },
+        { "id": "920", "name": ".heaven", "country": "de", "image": "" }
+    ]
+}

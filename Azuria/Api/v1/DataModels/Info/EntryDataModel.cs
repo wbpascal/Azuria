@@ -1,19 +1,15 @@
-﻿using System.Collections.Generic;
-using Azuria.Api.v1.Converters;
+﻿using Azuria.Api.v1.Converters;
 using Azuria.Api.v1.Converters.Info;
-using Azuria.Api.v1.Enums;
-using Azuria.Media.Properties;
-using Azuria.Search.Input;
+using Azuria.Enums;
+using Azuria.Enums.Info;
 using Newtonsoft.Json;
 
 namespace Azuria.Api.v1.DataModels.Info
 {
     /// <summary>
     /// </summary>
-    public class EntryDataModel : IEntryInfoDataModel
+    public class EntryDataModel : DataModelBase, IEntryInfoDataModel
     {
-        #region Properties
-
         /// <summary>
         /// </summary>
         [JsonProperty("clicks")]
@@ -43,20 +39,19 @@ namespace Azuria.Api.v1.DataModels.Info
 
         /// <inheritdoc />
         [JsonProperty("kat")]
-        [JsonConverter(typeof(CategoryConverter))]
         public MediaEntryType EntryType { get; set; }
 
         /// <summary>
         /// </summary>
         [JsonProperty("fsk")]
         [JsonConverter(typeof(FskConverter))]
-        public IEnumerable<FskType> Fsk { get; set; }
+        public Fsk[] Fsk { get; set; }
 
         /// <summary>
         /// </summary>
         [JsonProperty("genre")]
         [JsonConverter(typeof(GenreConverter))]
-        public IEnumerable<GenreType> Genre { get; set; }
+        public Genre[] Genre { get; set; }
 
         /// <summary>
         /// </summary>
@@ -66,23 +61,17 @@ namespace Azuria.Api.v1.DataModels.Info
 
         /// <summary>
         /// </summary>
-        public MediaRating Rating => new MediaRating(this.TotalStars, this.Voters);
+        [JsonProperty("rate_count")]
+        public int RatingsCount { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [JsonProperty("rate_sum")]
+        public int RatingsSum { get; set; }
 
         /// <summary>
         /// </summary>
         [JsonProperty("state")]
         public MediaStatus Status { get; set; }
-
-        /// <summary>
-        /// </summary>
-        [JsonProperty("rate_sum")]
-        public int TotalStars { get; set; }
-
-        /// <summary>
-        /// </summary>
-        [JsonProperty("rate_count")]
-        public int Voters { get; set; }
-
-        #endregion
     }
 }

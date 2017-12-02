@@ -5,10 +5,8 @@ namespace Azuria.Api.v1.Converters
 {
     /// <summary>
     /// </summary>
-    public abstract class DataConverter<T> : JsonConverter
+    public abstract class DataConverter<T> : JsonConverter, IDataConverter
     {
-        #region Methods
-
         /// <inheritdoc />
         public override bool CanConvert(Type objectType)
         {
@@ -22,12 +20,12 @@ namespace Azuria.Api.v1.Converters
         /// <param name="existingValue"></param>
         /// <param name="serializer"></param>
         /// <returns></returns>
-        public abstract T ConvertJson(JsonReader reader, Type objectType, object existingValue,
-            JsonSerializer serializer);
+        public abstract T ConvertJson(
+            JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer);
 
         /// <inheritdoc />
-        public override object ReadJson(JsonReader reader, Type objectType, object existingValue,
-            JsonSerializer serializer)
+        public override object ReadJson(
+            JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
         {
             return this.ConvertJson(reader, objectType, existingValue, serializer);
         }
@@ -37,7 +35,5 @@ namespace Azuria.Api.v1.Converters
         {
             throw new NotImplementedException();
         }
-
-        #endregion
     }
 }

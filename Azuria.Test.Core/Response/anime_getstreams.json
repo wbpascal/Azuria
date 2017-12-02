@@ -1,0 +1,32 @@
+{
+    "error": 0,
+    "message": "Abfrage erfolgreich",
+    "data": [
+        {
+            "id": "401217",
+            "type": "mp4upload",
+            "htype": "iframe",
+            "name": "MP4Upload",
+            "img": "mp4upload.png",
+            "replace": "http://www.mp4upload.com/embed-#.html",
+            "uploader": "205400",
+            "username": "Tadakuni",
+            "timestamp": "1412882290",
+            "tid": 1158,
+            "tname": "THORAnime"
+        },
+        {
+            "id": "515544",
+            "type": "streamcloud2",
+            "htype": "link",
+            "name": "Streamcloud",
+            "img": "streamcloud.png",
+            "replace": "http://streamcloud.eu/#",
+            "uploader": "66",
+            "username": "ProxerBot",
+            "timestamp": "1444543912",
+            "tid": null,
+            "tname": null
+        }
+    ]
+}

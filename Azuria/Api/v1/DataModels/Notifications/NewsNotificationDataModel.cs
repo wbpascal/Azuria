@@ -6,10 +6,8 @@ namespace Azuria.Api.v1.DataModels.Notifications
 {
     /// <summary>
     /// </summary>
-    public class NewsNotificationDataModel : IDataModel
+    public class NewsNotificationDataModel : DataModelBase
     {
-        #region Properties
-
         /// <summary>
         /// </summary>
         [JsonProperty("uid")]
@@ -75,7 +73,5 @@ namespace Azuria.Api.v1.DataModels.Notifications
         [JsonProperty("time")]
         [JsonConverter(typeof(UnixToDateTimeConverter))]
         public DateTime TimeStamp { get; set; }
-
-        #endregion
     }
 }

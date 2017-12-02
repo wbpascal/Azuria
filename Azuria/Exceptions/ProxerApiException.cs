@@ -1,5 +1,5 @@
 ﻿using System;
-using Azuria.Api.v1;
+using Azuria.Enums;
 
 namespace Azuria.Exceptions
 {
@@ -41,12 +41,8 @@ namespace Azuria.Exceptions
         {
         }
 
-        #region Properties
-
         /// <summary>
         /// </summary>
         public ErrorCode ErrorCode { get; }
-
-        #endregion
     }
 }

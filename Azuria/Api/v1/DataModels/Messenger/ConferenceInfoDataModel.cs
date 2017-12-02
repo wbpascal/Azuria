@@ -4,10 +4,8 @@ namespace Azuria.Api.v1.DataModels.Messenger
 {
     /// <summary>
     /// </summary>
-    public class ConferenceInfoDataModel : IDataModel
+    public class ConferenceInfoDataModel : DataModelBase
     {
-        #region Properties
-
         /// <summary>
         /// </summary>
         [JsonProperty("conference")]
@@ -17,7 +15,5 @@ namespace Azuria.Api.v1.DataModels.Messenger
         /// </summary>
         [JsonProperty("users")]
         public ConferenceInfoParticipantDataModel[] ParticipantsInfo { get; set; }
-
-        #endregion
     }
 }

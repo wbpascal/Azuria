@@ -1,0 +1,62 @@
+{
+    "error": 0,
+    "message": "Abfrage erfolgreich",
+    "data": [
+        {
+            "count": "105",
+            "medium": "mangaseries",
+            "estate": "1",
+            "cid": "7215389",
+            "name": "Flow",
+            "id": "7014",
+            "comment": "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum.",
+            "state": "0",
+            "episode": "105",
+            "data": "{\"genre\":\"4\",\"story\":\"5\",\"animation\":\"1\",\"characters\":\"3\",\"music\":\"2\"}",
+            "rating": "7",
+            "timestamp": "1416410114"
+        },
+        {
+            "count": "13",
+            "medium": "mangaseries",
+            "estate": "1",
+            "cid": "12134219",
+            "name": "Half & Half",
+            "id": "8141",
+            "comment": "",
+            "state": "0",
+            "episode": "13",
+            "data": "",
+            "rating": "0",
+            "timestamp": "1443281161"
+        },
+        {
+            "count": "1",
+            "medium": "oneshot",
+            "estate": "1",
+            "cid": "15213908",
+            "name": "A Cat That Loved A Fish",
+            "id": "2427",
+            "comment": "",
+            "state": "1",
+            "episode": "0",
+            "data": "",
+            "rating": "0",
+            "timestamp": "1458676258"
+        },
+        {
+            "count": "200",
+            "medium": "mangaseries",
+            "estate": "2",
+            "cid": "5030896",
+            "name": "DICE",
+            "id": "7834",
+            "comment": "",
+            "state": "1",
+            "episode": "166",
+            "data": "",
+            "rating": "0",
+            "timestamp": "1402137363"
+        }
+    ]
+}

@@ -1,26 +1,17 @@
 ﻿using System;
 using Azuria.Api.v1.Converters;
-using Azuria.UserInfo;
 using Newtonsoft.Json;
 
 namespace Azuria.Api.v1.DataModels.User
 {
     /// <summary>
     /// </summary>
-    public class UserInfoDataModel : IDataModel
+    public class UserInfoDataModel : DataModelBase
     {
-        #region Properties
-
         /// <summary>
         /// </summary>
         [JsonProperty("avatar")]
         public string AvatarId { get; set; }
-
-        /// <summary>
-        /// </summary>
-        public UserPoints Points =>
-            new UserPoints(this.PointsAnime, this.PointsManga, this.PointsInfo, this.PointsUploads, this.PointsForum,
-                this.PointsMisc);
 
         /// <summary>
         /// </summary>
@@ -54,10 +45,6 @@ namespace Azuria.Api.v1.DataModels.User
 
         /// <summary>
         /// </summary>
-        public UserStatus Status => new UserStatus(this.StatusText, this.StatusLastChanged);
-
-        /// <summary>
-        /// </summary>
         [JsonProperty("status_time")]
         [JsonConverter(typeof(UnixToDateTimeConverter))]
         public DateTime StatusLastChanged { get; set; }
@@ -76,7 +63,5 @@ namespace Azuria.Api.v1.DataModels.User
         /// </summary>
         [JsonProperty("username")]
         public string Username { get; set; }
-
-        #endregion
     }
 }

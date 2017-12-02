@@ -1,125 +1,116 @@
 ﻿using System;
-using Azuria.Api.v1.DataModels;
 using Azuria.Api.v1.DataModels.User;
+using Azuria.Api.v1.Input.User;
+using Azuria.Enums;
+using Azuria.Helpers.Extensions;
+using Azuria.Requests.Builder;
 
 namespace Azuria.Api.v1.RequestBuilder
 {
     /// <summary>
+    /// Represents the user api class.
     /// </summary>
-    public static class UserRequestBuilder
+    public class UserRequestBuilder : ApiClassRequestBuilderBase
     {
-        #region Methods
-
-        /// <summary>
-        /// </summary>
-        /// <param name="senpai"></param>
-        /// <returns></returns>
-        public static ApiRequest<UserInfoDataModel> GetInfo(Senpai senpai)
+        /// <inheritdoc />
+        public UserRequestBuilder(IProxerClient proxerClient) : base(proxerClient)
         {
-            return ApiRequest<UserInfoDataModel>.Create(new Uri($"{ApiConstants.ApiUrlV1}/user/userinfo"))
-                .WithSenpai(senpai);
         }
 
         /// <summary>
         /// </summary>
-        /// <param name="userId"></param>
+        /// <param name="input"><see cref="UserEntryHistoryInput.UserId"/> or <see cref="UserEntryHistoryInput.Username"/> must be given.</param>
         /// <returns></returns>
-        public static ApiRequest<UserInfoDataModel> GetInfo(int userId)
+        public IRequestBuilderWithResult<HistoryDataModel[]> GetHistory(UserEntryHistoryInput input)
         {
-            return ApiRequest<UserInfoDataModel>.Create(new Uri($"{ApiConstants.ApiUrlV1}/user/userinfo"))
-                .WithGetParameter("uid", userId.ToString());
+            this.CheckInputDataModel(input);
+            return new RequestBuilder<HistoryDataModel[]>(
+                new Uri($"{ApiConstants.ApiUrlV1}/user/history"), this.ProxerClient
+            ).WithGetParameter(input.BuildDictionary());
         }
 
         /// <summary>
+        /// Builds a request that...
+        /// Api permissions required (class - permission level):
+        /// * User - Level 0
         /// </summary>
-        /// <param name="username"></param>
-        /// <returns></returns>
-        public static ApiRequest<UserInfoDataModel> GetInfo(string username)
+        /// <returns>An instance of <see cref="IRequestBuilderWithResult{T}" /> that returns...</returns>
+        public IRequestBuilderWithResult<UserInfoDataModel> GetInfo(UserInfoInput input)
         {
-            return ApiRequest<UserInfoDataModel>.Create(new Uri($"{ApiConstants.ApiUrlV1}/user/userinfo"))
-                .WithGetParameter("username", username);
+            this.CheckInputDataModel(input);
+            return new RequestBuilder<UserInfoDataModel>(
+                    new Uri($"{ApiConstants.ApiUrlV1}/user/userinfo"), this.ProxerClient
+                ).WithGetParameter(input.BuildDictionary())
+                .WithLoginCheck(input.UserId == null && string.IsNullOrEmpty(input.Username));
         }
 
         /// <summary>
+        /// Builds a request that...
+        /// Api permissions required (class - permission level):
+        /// * User - Level 0
         /// </summary>
-        /// <param name="userId"></param>
-        /// <param name="page"></param>
-        /// <param name="limit"></param>
-        /// <param name="kat"></param>
-        /// <param name="length"></param>
-        /// <param name="senpai"></param>
-        /// <returns></returns>
-        public static ApiRequest<CommentDataModel[]> GetLatestComments(int userId, int page, int limit, string kat,
-            int length, Senpai senpai = null)
+        /// <returns>An instance of <see cref="IRequestBuilderWithResult{T}" /> that returns...</returns>
+        public IRequestBuilderWithResult<CommentDataModel[]> GetLatestComments(UserCommentsListInput input)
         {
-            return ApiRequest<CommentDataModel[]>.Create(new Uri($"{ApiConstants.ApiUrlV1}/user/comments"))
-                .WithGetParameter("uid", userId.ToString())
-                .WithGetParameter("p", page.ToString())
-                .WithGetParameter("limit", limit.ToString())
-                .WithGetParameter("kat", kat)
-                .WithGetParameter("length", length.ToString())
-                .WithSenpai(senpai);
+            this.CheckInputDataModel(input);
+            return new RequestBuilder<CommentDataModel[]>(
+                new Uri($"{ApiConstants.ApiUrlV1}/user/comments"), this.ProxerClient
+            ).WithGetParameter(input.BuildDictionary());
         }
 
         /// <summary>
+        /// Builds a request that...
+        /// Api permissions required (class - permission level):
+        /// * User - Level 0
         /// </summary>
-        /// <param name="userId"></param>
-        /// <param name="kat"></param>
-        /// <param name="page"></param>
-        /// <param name="limit"></param>
-        /// <param name="senpai"></param>
-        /// <returns></returns>
-        public static ApiRequest<ListDataModel[]> GetList(int userId, string kat, int page, int limit,
-            Senpai senpai = null)
+        /// <returns>An instance of <see cref="IRequestBuilderWithResult{T}" /> that returns...</returns>
+        public IRequestBuilderWithResult<ListDataModel[]> GetList(UserGetListInput input)
         {
-            return ApiRequest<ListDataModel[]>.Create(new Uri($"{ApiConstants.ApiUrlV1}/user/list"))
-                .WithGetParameter("uid", userId.ToString())
-                .WithGetParameter("p", page.ToString())
-                .WithGetParameter("limit", limit.ToString())
-                .WithGetParameter("kat", kat)
-                .WithSenpai(senpai);
+            this.CheckInputDataModel(input);
+            return new RequestBuilder<ListDataModel[]>(
+                    new Uri($"{ApiConstants.ApiUrlV1}/user/list"), this.ProxerClient
+                ).WithGetParameter(input.BuildDictionary())
+                .WithLoginCheck(input.UserId == null && string.IsNullOrEmpty(input.Username));
         }
 
         /// <summary>
+        /// Builds a request that...
+        /// Api permissions required (class - permission level):
+        /// * User - Level 0
         /// </summary>
-        /// <param name="userId"></param>
-        /// <param name="category"></param>
-        /// <param name="senpai"></param>
-        /// <returns></returns>
-        public static ApiRequest<ToptenDataModel[]> GetTopten(int userId, string category,
-            Senpai senpai = null)
+        /// <returns>An instance of <see cref="IRequestBuilderWithResult{T}" /> that returns...</returns>
+        public IRequestBuilderWithResult<ToptenDataModel[]> GetTopten(UserToptenListInput input)
         {
-            return ApiRequest<ToptenDataModel[]>.Create(new Uri($"{ApiConstants.ApiUrlV1}/user/topten"))
-                .WithGetParameter("uid", userId.ToString())
-                .WithGetParameter("kat", category)
-                .WithSenpai(senpai);
+            this.CheckInputDataModel(input);
+            return new RequestBuilder<ToptenDataModel[]>(
+                new Uri($"{ApiConstants.ApiUrlV1}/user/topten"), this.ProxerClient
+            ).WithGetParameter(input.BuildDictionary());
         }
 
         /// <summary>
+        /// Builds a request that...
+        /// Api permissions required (class - permission level):
+        /// * User - Level 0
         /// </summary>
-        /// <param name="username"></param>
-        /// <param name="password"></param>
-        /// <param name="senpai"></param>
-        /// <returns></returns>
-        public static ApiRequest<LoginDataModel> Login(string username, string password, Senpai senpai)
+        /// <returns>An instance of <see cref="IRequestBuilderWithResult{T}" /> that returns...</returns>
+        public IRequestBuilderWithResult<LoginDataModel> Login(LoginInput input)
         {
-            return ApiRequest<LoginDataModel>.Create(new Uri($"{ApiConstants.ApiUrlV1}/user/login"))
-                .WithPostArgument("username", username)
-                .WithPostArgument("password", password)
-                .WithSenpai(senpai);
+            this.CheckInputDataModel(input);
+            return new RequestBuilder<LoginDataModel>(
+                new Uri($"{ApiConstants.ApiUrlV1}/user/login"), this.ProxerClient
+            ).WithPostParameter(input.Build());
         }
 
         /// <summary>
+        /// Builds a request that...
+        /// Api permissions required (class - permission level):
+        /// * User - Level 0
         /// </summary>
-        /// <param name="senpai"></param>
-        /// <returns></returns>
-        public static ApiRequest Logout(Senpai senpai)
+        /// <returns>An instance of <see cref="IRequestBuilder" /> that returns...</returns>
+        public IRequestBuilder Logout()
         {
-            return ApiRequest.Create(new Uri($"{ApiConstants.ApiUrlV1}/user/logout"))
-                .WithCheckLogin(true)
-                .WithSenpai(senpai);
+            return new Requests.Builder.RequestBuilder(
+                new Uri($"{ApiConstants.ApiUrlV1}/user/logout"), this.ProxerClient);
         }
-
-        #endregion
     }
 }

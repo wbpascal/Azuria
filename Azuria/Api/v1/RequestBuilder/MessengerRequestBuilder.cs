@@ -2,207 +2,249 @@
 using System.Collections.Generic;
 using System.Linq;
 using Azuria.Api.v1.DataModels.Messenger;
-using Azuria.Community;
-using Azuria.Utilities.Extensions;
+using Azuria.Api.v1.Input.Messenger;
+using Azuria.Enums.Messenger;
+using Azuria.Helpers.Extensions;
+using Azuria.Requests.Builder;
 
 namespace Azuria.Api.v1.RequestBuilder
 {
     /// <summary>
+    /// Represents the messenger api class.
     /// </summary>
-    public static class MessengerRequestBuilder
+    public class MessengerRequestBuilder : ApiClassRequestBuilderBase
     {
-        #region Methods
-
         /// <summary>
         /// </summary>
-        /// <param name="conferenceId"></param>
-        /// <param name="senpai"></param>
-        /// <returns></returns>
-        public static ApiRequest<ConferenceInfoDataModel> GetConferenceInfo(int conferenceId, Senpai senpai)
+        /// <param name="client"></param>
+        public MessengerRequestBuilder(IProxerClient client) : base(client)
         {
-            return ApiRequest<ConferenceInfoDataModel>.Create(
-                    new Uri($"{ApiConstants.ApiUrlV1}/messenger/conferenceinfo"))
-                .WithGetParameter("conference_id", conferenceId.ToString())
-                .WithCheckLogin(true)
-                .WithSenpai(senpai);
         }
 
         /// <summary>
+        /// Builds a request that returns informations about a specified conference.
+        /// Requires authentication.
+        /// Api permissions required (class - permission level):
+        /// * Messenger - Level 0
         /// </summary>
-        /// <param name="type"></param>
-        /// <param name="page"></param>
-        /// <param name="senpai"></param>
-        /// <returns></returns>
-        public static ApiRequest<ConferenceDataModel[]> GetConferences(ConferenceListType type, int page,
-            Senpai senpai)
+        /// <returns>An instance of <see cref="IRequestBuilderWithResult{T}" /> that returns information about a conference.</returns>
+        public IRequestBuilderWithResult<ConferenceInfoDataModel> GetConferenceInfo(ConferenceInfoInput input)
         {
-            return ApiRequest<ConferenceDataModel[]>.Create(new Uri($"{ApiConstants.ApiUrlV1}/messenger/conferences"))
-                .WithGetParameter("type", type.ToString().ToLowerInvariant())
-                .WithGetParameter("p", page.ToString())
-                .WithCheckLogin(true)
-                .WithSenpai(senpai);
+            this.CheckInputDataModel(input);
+            return new RequestBuilder<ConferenceInfoDataModel>(
+                    new Uri($"{ApiConstants.ApiUrlV1}/messenger/conferenceinfo"), this.ProxerClient
+                ).WithGetParameter(input.BuildDictionary())
+                .WithLoginCheck();
         }
 
         /// <summary>
+        /// Builds a request that returns an array of conferences a user participates in.
+        /// Requires authentication.
+        /// Api permissions required (class - permission level):
+        /// * Messenger - Level 0
         /// </summary>
-        /// <returns></returns>
-        public static ApiRequest<ConstantsDataModel> GetConstants()
+        /// <returns>An instance of <see cref="IRequestBuilderWithResult{T}" /> that returns an array of conferences.</returns>
+        public IRequestBuilderWithResult<ConferenceDataModel[]> GetConferences(ConferenceListInput input)
         {
-            return ApiRequest<ConstantsDataModel>.Create(new Uri($"{ApiConstants.ApiUrlV1}/messenger/constants"));
+            this.CheckInputDataModel(input);
+            return new RequestBuilder<ConferenceDataModel[]>(
+                    new Uri($"{ApiConstants.ApiUrlV1}/messenger/conferences"), this.ProxerClient
+                ).WithGetParameter(input.BuildDictionary())
+                .WithLoginCheck();
         }
 
         /// <summary>
+        /// Builds a request that returns all messenger constants. These values should only change
+        /// every few months.
+        /// Api permissions required (class - permission level):
+        /// * Messenger - Level 0
         /// </summary>
-        /// <param name="senpai"></param>
-        /// <param name="conferenceId"></param>
-        /// <param name="messageId"></param>
-        /// <param name="markAsRead"></param>
-        /// <returns></returns>
-        public static ApiRequest<MessageDataModel[]> GetMessages(Senpai senpai, int conferenceId = 0,
-            int messageId = 0, bool markAsRead = true)
+        /// <returns>An instance of <see cref="IRequestBuilderWithResult{T}" /> that returns the messenger constants.</returns>
+        public IRequestBuilderWithResult<ConstantsDataModel> GetConstants()
         {
-            return ApiRequest<MessageDataModel[]>.Create(new Uri($"{ApiConstants.ApiUrlV1}/messenger/messages"))
-                .WithGetParameter("conference_id", conferenceId.ToString())
-                .WithGetParameter("message_id", messageId.ToString())
-                .WithGetParameter("read", markAsRead.ToString().ToLowerInvariant())
-                .WithCheckLogin(true)
-                .WithSenpai(senpai);
+            return new RequestBuilder<ConstantsDataModel>(
+                new Uri($"{ApiConstants.ApiUrlV1}/messenger/constants"), this.ProxerClient
+            );
         }
 
         /// <summary>
+        /// Builds a request that returns the most recent recieved messages of a conference or a user.
+        /// Requires authentication.
+        /// Api permissions required (class - permission level):
+        /// * Messenger - Level 0
         /// </summary>
-        /// <param name="username"></param>
-        /// <param name="text"></param>
-        /// <param name="senpai"></param>
-        /// <returns></returns>
-        public static ApiRequest<int> NewConference(string username, string text, Senpai senpai)
+        /// <returns>An instance of <see cref="IRequestBuilderWithResult{T}" /> that returns an array of messages.</returns>
+        public IRequestBuilderWithResult<MessageDataModel[]> GetMessages(MessageListInput input)
         {
-            return ApiRequest<int>.Create(new Uri($"{ApiConstants.ApiUrlV1}/messenger/newconference"))
-                .WithCheckLogin(true)
-                .WithPostArgument("username", username)
-                .WithPostArgument("text", text)
-                .WithSenpai(senpai);
+            this.CheckInputDataModel(input);
+            return new RequestBuilder<MessageDataModel[]>(
+                    new Uri($"{ApiConstants.ApiUrlV1}/messenger/messages"), this.ProxerClient
+                ).WithGetParameter(input.BuildDictionary())
+                .WithLoginCheck();
         }
 
         /// <summary>
+        /// Builds a request that creates a new conference between only two users and returns the id.
+        /// If a conference between these users is already found the id of the existing conference will be returned.
+        /// Requires authentication.
+        /// <para>
+        /// Api permissions required (class - permission level):
+        /// * Messenger - Level 1
+        /// </para>
         /// </summary>
-        /// <param name="participantNames"></param>
-        /// <param name="topic"></param>
-        /// <param name="senpai"></param>
-        /// <param name="text"></param>
-        /// <returns></returns>
-        public static ApiRequest<int> NewConferenceGroup(IEnumerable<string> participantNames, string topic,
-            Senpai senpai, string text = null)
+        /// <returns>An instance of <see cref="IRequestBuilderWithResult{T}" /> that returns the id of a conference.</returns>
+        public IRequestBuilderWithResult<int> NewConference(NewConferenceInput input)
         {
-            List<KeyValuePair<string, string>> lPostArgs = new List<KeyValuePair<string, string>>
-            {
-                new KeyValuePair<string, string>("topic", topic)
-            };
-            lPostArgs.AddIf(new KeyValuePair<string, string>("text", text), pair => !string.IsNullOrEmpty(pair.Value));
-            lPostArgs.AddRange(from participantName in participantNames
-                select new KeyValuePair<string, string>("users[]", participantName));
-
-            return ApiRequest<int>.Create(new Uri($"{ApiConstants.ApiUrlV1}/messenger/newconferencegroup"))
-                .WithCheckLogin(true)
-                .WithPostArguments(lPostArgs)
-                .WithSenpai(senpai);
+            this.CheckInputDataModel(input);
+            return new RequestBuilder<int>(
+                    new Uri($"{ApiConstants.ApiUrlV1}/messenger/newconference"), this.ProxerClient
+                ).WithPostParameter(input.Build())
+                .WithLoginCheck();
         }
 
         /// <summary>
+        /// Builds a request that creates a new group conference and returns the id.
+        /// Requires authentication.
+        /// Api permissions required (class - permission level):
+        /// * Messenger - Level 1
         /// </summary>
-        /// <param name="conferenceId"></param>
-        /// <param name="senpai"></param>
-        /// <returns></returns>
-        public static ApiRequest SetBlock(int conferenceId, Senpai senpai)
+        /// <returns>An instance of <see cref="IRequestBuilderWithResult{T}" /> that returns the id of a group conference.</returns>
+        public IRequestBuilderWithResult<int> NewConferenceGroup(NewConferenceGroupInput input)
         {
-            return ApiRequest.Create(new Uri($"{ApiConstants.ApiUrlV1}/messenger/setblock"))
-                .WithGetParameter("conference_id", conferenceId.ToString())
-                .WithCheckLogin(true)
-                .WithSenpai(senpai);
+            this.CheckInputDataModel(input);
+            return new RequestBuilder<int>(
+                    new Uri($"{ApiConstants.ApiUrlV1}/messenger/newconferencegroup"), this.ProxerClient
+                ).WithPostParameter(input.Build())
+                .WithLoginCheck();
         }
 
         /// <summary>
+        /// Builds a request that blocks a conference.
+        /// Requires authentication.
+        /// Api permissions required (class - permission level):
+        /// * Messenger - Level 1
         /// </summary>
-        /// <param name="conferenceId"></param>
-        /// <param name="senpai"></param>
-        /// <returns></returns>
-        public static ApiRequest SetFavour(int conferenceId, Senpai senpai)
+        /// <returns>An instance of <see cref="IRequestBuilder" />.</returns>
+        public IRequestBuilder SetBlock(ConferenceIdInput input)
         {
-            return ApiRequest.Create(new Uri($"{ApiConstants.ApiUrlV1}/messenger/setfavour"))
-                .WithGetParameter("conference_id", conferenceId.ToString())
-                .WithCheckLogin(true)
-                .WithSenpai(senpai);
+            this.CheckInputDataModel(input);
+            return new Requests.Builder.RequestBuilder(
+                    new Uri($"{ApiConstants.ApiUrlV1}/messenger/setblock"), this.ProxerClient)
+                .WithGetParameter(input.BuildDictionary())
+                .WithLoginCheck();
         }
 
         /// <summary>
+        /// Builds a request that marks a conference as a favourite.
+        /// Requires authentication.
+        /// Api permissions required (class - permission level):
+        /// * Messenger - Level 1
         /// </summary>
-        /// <param name="conferenceId"></param>
-        /// <param name="message"></param>
-        /// <param name="senpai"></param>
-        /// <returns></returns>
-        public static ApiRequest<string> SetMessage(int conferenceId, string message, Senpai senpai)
+        /// <returns>An instance of <see cref="IRequestBuilder" />.</returns>
+        public IRequestBuilder SetFavour(ConferenceIdInput input)
         {
-            return ApiRequest<string>.Create(new Uri($"{ApiConstants.ApiUrlV1}/messenger/setmessage"))
-                .WithGetParameter("conference_id", conferenceId.ToString())
-                .WithCheckLogin(true)
-                .WithPostArgument("text", message)
-                .WithSenpai(senpai);
+            this.CheckInputDataModel(input);
+            return new Requests.Builder.RequestBuilder(
+                    new Uri($"{ApiConstants.ApiUrlV1}/messenger/setfavour"), this.ProxerClient)
+                .WithGetParameter(input.BuildDictionary())
+                .WithLoginCheck();
         }
 
         /// <summary>
+        /// Builds a request that sends a message to a conference. If the message was a command the
+        /// answer of the server will be returned.
+        /// Requires authentication.
+        /// Api permissions required (class - permission level):
+        /// * Messenger - Level 1
         /// </summary>
-        /// <param name="conferenceId"></param>
-        /// <param name="reason"></param>
-        /// <param name="senpai"></param>
-        /// <returns></returns>
-        public static ApiRequest<int> SetReport(int conferenceId, string reason, Senpai senpai)
+        /// <returns>An instance of <see cref="IRequestBuilderWithResult{T}" /> that returns a string.</returns>
+        public IRequestBuilderWithResult<string> SetMessage(SendMessageInput input)
         {
-            return ApiRequest<int>.Create(new Uri($"{ApiConstants.ApiUrlV1}/messenger/report"))
-                .WithGetParameter("conference_id", conferenceId.ToString())
-                .WithCheckLogin(true)
-                .WithPostArgument("text", reason)
-                .WithSenpai(senpai);
+            this.CheckInputDataModel(input);
+            return new RequestBuilder<string>(
+                    new Uri($"{ApiConstants.ApiUrlV1}/messenger/setmessage"), this.ProxerClient
+                ).WithPostParameter(input.Build())
+                .WithLoginCheck();
         }
 
         /// <summary>
+        /// Builds a request that marks a conference as read.
+        /// Requires authentication.
+        /// Api permissions required (class - permission level):
+        /// * Messenger - Level 0
         /// </summary>
-        /// <param name="conferenceId"></param>
-        /// <param name="senpai"></param>
-        /// <returns></returns>
-        public static ApiRequest SetUnblock(int conferenceId, Senpai senpai)
+        /// <returns>An instance of <see cref="IRequestBuilder" />.</returns>
+        public IRequestBuilder SetRead(ConferenceIdInput input)
         {
-            return ApiRequest.Create(new Uri($"{ApiConstants.ApiUrlV1}/messenger/setunblock"))
-                .WithGetParameter("conference_id", conferenceId.ToString())
-                .WithCheckLogin(true)
-                .WithSenpai(senpai);
+            this.CheckInputDataModel(input);
+            return new Requests.Builder.RequestBuilder(
+                    new Uri($"{ApiConstants.ApiUrlV1}/messenger/setread"), this.ProxerClient)
+                .WithGetParameter(input.BuildDictionary())
+                .WithLoginCheck();
         }
 
         /// <summary>
+        /// Builds a request that reports a conference to the admins.
+        /// Requires authentication.
+        /// Api permissions required (class - permission level):
+        /// * Messenger - Level 0
         /// </summary>
-        /// <param name="conferenceId"></param>
-        /// <param name="senpai"></param>
-        /// <returns></returns>
-        public static ApiRequest SetUnfavour(int conferenceId, Senpai senpai)
+        /// <returns>An instance of <see cref="IRequestBuilder" />.</returns>
+        public IRequestBuilder SetReport(SendReportInput input)
         {
-            return ApiRequest.Create(new Uri($"{ApiConstants.ApiUrlV1}/messenger/setunfavour"))
-                .WithGetParameter("conference_id", conferenceId.ToString())
-                .WithCheckLogin(true)
-                .WithSenpai(senpai);
+            this.CheckInputDataModel(input);
+            return new Requests.Builder.RequestBuilder(
+                    new Uri($"{ApiConstants.ApiUrlV1}/messenger/report"), this.ProxerClient)
+                .WithPostParameter(input.Build())
+                .WithLoginCheck();
         }
 
         /// <summary>
+        /// Builds a request that unblocks a conference.
+        /// Requires authentication.
+        /// Api permissions required (class - permission level):
+        /// * Messenger - Level 1
         /// </summary>
-        /// <param name="conferenceId"></param>
-        /// <param name="senpai"></param>
-        /// <returns></returns>
-        public static ApiRequest SetUnread(int conferenceId, Senpai senpai)
+        /// <returns>An instance of <see cref="IRequestBuilder" />.</returns>
+        public IRequestBuilder SetUnblock(ConferenceIdInput input)
         {
-            return ApiRequest.Create(new Uri($"{ApiConstants.ApiUrlV1}/messenger/setunread"))
-                .WithGetParameter("conference_id", conferenceId.ToString())
-                .WithCheckLogin(true)
-                .WithSenpai(senpai);
+            this.CheckInputDataModel(input);
+            return new Requests.Builder.RequestBuilder(
+                    new Uri($"{ApiConstants.ApiUrlV1}/messenger/setunblock"), this.ProxerClient)
+                .WithGetParameter(input.BuildDictionary())
+                .WithLoginCheck();
         }
 
-        #endregion
+        /// <summary>
+        /// Builds a request that removes a conference from the favourites.
+        /// Requires authentication.
+        /// Api permissions required (class - permission level):
+        /// * Messenger - Level 1
+        /// </summary>
+        /// <returns>An instance of <see cref="IRequestBuilder" />.</returns>
+        public IRequestBuilder SetUnfavour(ConferenceIdInput input)
+        {
+            this.CheckInputDataModel(input);
+            return new Requests.Builder.RequestBuilder(
+                    new Uri($"{ApiConstants.ApiUrlV1}/messenger/setunfavour"), this.ProxerClient)
+                .WithGetParameter(input.BuildDictionary())
+                .WithLoginCheck();
+        }
+
+        /// <summary>
+        /// Builds a request that marks a conference as unread.
+        /// Requires authentication.
+        /// Api permissions required (class - permission level):
+        /// * Messenger - Level 1
+        /// </summary>
+        /// <returns>An instance of <see cref="IRequestBuilder" />.</returns>
+        public IRequestBuilder SetUnread(ConferenceIdInput input)
+        {
+            this.CheckInputDataModel(input);
+            return new Requests.Builder.RequestBuilder(
+                    new Uri($"{ApiConstants.ApiUrlV1}/messenger/setunread"), this.ProxerClient)
+                .WithGetParameter(input.BuildDictionary())
+                .WithLoginCheck();
+        }
     }
 }

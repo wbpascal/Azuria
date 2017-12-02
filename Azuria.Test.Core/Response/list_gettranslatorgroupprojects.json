@@ -1,0 +1,17 @@
+{
+    "error": 0,
+    "message": "Abfrage erfolgreich",
+    "data": [
+        {
+            "id": "3247",
+            "name": "Accel World",
+            "fsk": "fsk12",
+            "genre": "Comedy Martial-Art",
+            "medium": "animeseries",
+            "state": "1",
+            "rate_sum": "49674",
+            "rate_count": "6164",
+            "type": "4"
+        }
+    ]
+}

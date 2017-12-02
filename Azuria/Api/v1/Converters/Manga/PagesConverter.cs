@@ -5,19 +5,11 @@ using Newtonsoft.Json;
 
 namespace Azuria.Api.v1.Converters.Manga
 {
-    internal class PagesConverter : JsonConverter
+    internal class PagesConverter : DataConverter<PageDataModel[]>
     {
-        #region Methods
-
         /// <inheritdoc />
-        public override bool CanConvert(Type objectType)
-        {
-            return objectType == typeof(IEnumerable<PageDataModel>);
-        }
-
-        /// <inheritdoc />
-        public override object ReadJson(JsonReader reader, Type objectType, object existingValue,
-            JsonSerializer serializer)
+        public override PageDataModel[] ConvertJson(
+            JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
         {
             List<PageDataModel> lPageDataModels = new List<PageDataModel>();
             while (reader.Read() && reader.TokenType != JsonToken.EndArray)
@@ -41,12 +33,5 @@ namespace Azuria.Api.v1.Converters.Manga
 
             return lPageDataModels.ToArray();
         }
-
-        /// <inheritdoc />
-        public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
-        {
-        }
-
-        #endregion
     }
 }

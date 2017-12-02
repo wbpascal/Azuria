@@ -1,15 +1,13 @@
 ﻿using Azuria.Api.v1.Converters;
-using Azuria.Api.v1.Enums;
+using Azuria.Enums;
 using Newtonsoft.Json;
 
 namespace Azuria.Api.v1.DataModels.Info
 {
     /// <summary>
     /// </summary>
-    public class ListInfoDataModel : IDataModel
+    public class ListInfoDataModel : DataModelBase
     {
-        #region Properties
-
         /// <summary>
         /// </summary>
         [JsonProperty("kat")]
@@ -30,7 +28,5 @@ namespace Azuria.Api.v1.DataModels.Info
         /// </summary>
         [JsonProperty("start")]
         public int StartIndex { get; set; }
-
-        #endregion
     }
 }

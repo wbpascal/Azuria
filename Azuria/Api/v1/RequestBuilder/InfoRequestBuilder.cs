@@ -1,163 +1,253 @@
 ﻿using System;
 using Azuria.Api.v1.Converters.Info;
-using Azuria.Api.v1.DataModels;
 using Azuria.Api.v1.DataModels.Info;
-using Azuria.Media.Properties;
+using Azuria.Api.v1.Input.Info;
+using Azuria.Enums.Info;
+using Azuria.Helpers.Extensions;
+using Azuria.Requests.Builder;
 
 namespace Azuria.Api.v1.RequestBuilder
 {
+    /// <inheritdoc />
     /// <summary>
+    /// Represents the info api class.
     /// </summary>
-    public static class InfoRequestBuilder
+    public class InfoRequestBuilder : ApiClassRequestBuilderBase
     {
-        #region Methods
-
-        /// <summary>
-        /// </summary>
-        /// <param name="entryId"></param>
-        /// <param name="page"></param>
-        /// <param name="limit"></param>
-        /// <param name="sort"></param>
-        /// <returns></returns>
-        public static ApiRequest<CommentDataModel[]> GetComments(int entryId, int page, int limit, string sort)
+        /// <inheritdoc />
+        public InfoRequestBuilder(IProxerClient proxerClient) : base(proxerClient)
         {
-            return ApiRequest<CommentDataModel[]>.Create(new Uri($"{ApiConstants.ApiUrlV1}/info/comments"))
-                .WithGetParameter("id", entryId.ToString())
-                .WithGetParameter("p", page.ToString())
-                .WithGetParameter("limit", limit.ToString())
-                .WithGetParameter("sort", sort);
         }
 
         /// <summary>
+        /// Builds a request that returns all comments of an anime or manga
+        /// (with more than 300 characters).
+        /// Api permissions required (class - permission level):
+        /// * Info - Level 0
         /// </summary>
-        /// <param name="entryId"></param>
-        /// <returns></returns>
-        public static ApiRequest<EntryDataModel> GetEntry(int entryId)
+        /// <returns>An instance of <see cref="IRequestBuilderWithResult{T}" /> that returns an array of comments.</returns>
+        public IRequestBuilderWithResult<CommentDataModel[]> GetComments(CommentListInput input)
         {
-            return ApiRequest<EntryDataModel>.Create(new Uri($"{ApiConstants.ApiUrlV1}/info/entry"))
-                .WithGetParameter("id", entryId.ToString());
+            this.CheckInputDataModel(input);
+            return new RequestBuilder<CommentDataModel[]>(
+                new Uri($"{ApiConstants.ApiUrlV1}/info/comments"), this.ProxerClient
+            ).WithGetParameter(input.BuildDictionary());
         }
 
         /// <summary>
+        /// Builds a request that returns the core information of an anime or
+        /// manga.
+        /// Api permissions required (class - permission level):
+        /// * Info - Level 0
         /// </summary>
-        /// <param name="entryId"></param>
-        /// <returns></returns>
-        public static ApiRequest<MediaTagDataModel[]> GetEntryTags(int entryId)
+        /// <returns>An instance of <see cref="IRequestBuilderWithResult{T}" /> that returns the core information.</returns>
+        public IRequestBuilderWithResult<EntryDataModel> GetEntry(EntryIdInput input)
         {
-            return ApiRequest<MediaTagDataModel[]>.Create(new Uri($"{ApiConstants.ApiUrlV1}/info/entrytags"))
-                .WithGetParameter("id", entryId.ToString());
+            this.CheckInputDataModel(input);
+            return new RequestBuilder<EntryDataModel>(
+                new Uri($"{ApiConstants.ApiUrlV1}/info/entry"), this.ProxerClient
+            ).WithGetParameter(input.BuildDictionary());
         }
 
         /// <summary>
+        /// Builds a request that returns all tags of an anime or manga.
+        /// Api permissions required (class - permission level):
+        /// * Info - Level 0
         /// </summary>
-        /// <param name="entryId"></param>
-        /// <returns></returns>
-        public static ApiRequest<FullEntryDataModel> GetFullEntry(int entryId)
+        /// <returns>An instance of <see cref="IRequestBuilderWithResult{T}" /> that returns an array of tags.</returns>
+        public IRequestBuilderWithResult<TagDataModel[]> GetEntryTags(EntryIdInput input)
         {
-            return ApiRequest<FullEntryDataModel>.Create(new Uri(
-                $"{ApiConstants.ApiUrlV1}/info/fullentry?id={entryId}"));
+            this.CheckInputDataModel(input);
+            return new RequestBuilder<TagDataModel[]>(
+                new Uri($"{ApiConstants.ApiUrlV1}/info/entrytags"), this.ProxerClient
+            ).WithGetParameter(input.BuildDictionary());
         }
 
         /// <summary>
+        /// Builds a request that returns all informations of an anime or manga.
+        /// **Warning!:**
+        /// The returned object creates a heavy load on the server if it is used in a request!
+        /// Be sure to only use it if you are certain that you need all returned informations!
+        /// Api permissions required (class - permission level):
+        /// * Info - Level 0
         /// </summary>
-        /// <param name="entryId"></param>
-        /// <returns></returns>
-        public static ApiRequest<bool> GetGate(int entryId)
+        /// <returns>An instance of <see cref="IRequestBuilderWithResult{T}" /> that returns the informations.</returns>
+        public IRequestBuilderWithResult<FullEntryDataModel> GetFullEntry(EntryIdInput input)
         {
-            return ApiRequest<bool>.Create(new Uri($"{ApiConstants.ApiUrlV1}/info/gate"))
-                .WithGetParameter("id", entryId.ToString());
+            this.CheckInputDataModel(input);
+            return new RequestBuilder<FullEntryDataModel>(
+                new Uri($"{ApiConstants.ApiUrlV1}/info/fullentry"), this.ProxerClient
+            ).WithGetParameter(input.BuildDictionary());
         }
 
         /// <summary>
+        /// Builds a request that returns a boolean indicating if the anime or
+        /// manga requires an 18+ age check.
+        /// Api permissions required (class - permission level):
+        /// * Info - Level 0
         /// </summary>
-        /// <param name="entryId"></param>
-        /// <returns></returns>
-        public static ApiRequest<TranslatorDataModel[]> GetGroups(int entryId)
+        /// <returns>An instance of <see cref="IRequestBuilderWithResult{T}" /> that returns a boolean.</returns>
+        public IRequestBuilderWithResult<bool> GetGate(EntryIdInput input)
         {
-            return ApiRequest<TranslatorDataModel[]>.Create(new Uri($"{ApiConstants.ApiUrlV1}/info/groups"))
-                .WithGetParameter("id", entryId.ToString());
+            this.CheckInputDataModel(input);
+            return new RequestBuilder<bool>(new Uri($"{ApiConstants.ApiUrlV1}/info/gate"), this.ProxerClient)
+                .WithGetParameter(input.BuildDictionary());
         }
 
         /// <summary>
+        /// Builds a request that returns informations about the translators of
+        /// an anime or manga.
+        /// Api permissions required (class - permission level):
+        /// * Info - Level 0
         /// </summary>
-        /// <param name="entryId"></param>
-        /// <returns></returns>
-        public static ApiRequest<MediaLanguage[]> GetLanguage(int entryId)
+        /// <returns>An instance of <see cref="IRequestBuilderWithResult{T}" /> that returns an array of translators.</returns>
+        public IRequestBuilderWithResult<TranslatorDataModel[]> GetGroups(EntryIdInput input)
         {
-            return ApiRequest<MediaLanguage[]>.Create(new Uri($"{ApiConstants.ApiUrlV1}/info/lang"))
-                .WithGetParameter("id", entryId.ToString())
+            this.CheckInputDataModel(input);
+            return new RequestBuilder<TranslatorDataModel[]>(
+                new Uri($"{ApiConstants.ApiUrlV1}/info/groups"), this.ProxerClient
+            ).WithGetParameter(input.BuildDictionary());
+        }
+
+        /// <summary>
+        /// Builds a request that returns information about a company.
+        /// Api permissions required (class - permission level):
+        /// * Info - Level 0
+        /// </summary>
+        /// <returns>An instance of <see cref="IRequestBuilderWithResult{T}" /> that returns information about a company.</returns>
+        public IRequestBuilderWithResult<IndustryDataModel> GetIndustry(IndustryInfoInput input)
+        {
+            this.CheckInputDataModel(input);
+            return new RequestBuilder<IndustryDataModel>(
+                new Uri($"{ApiConstants.ApiUrlV1}/info/industry"), this.ProxerClient
+            ).WithGetParameter(input.BuildDictionary());
+        }
+
+        /// <summary>
+        /// Builds a request that returns all languages an anime or manga is
+        /// available in.
+        /// Api permissions required (class - permission level):
+        /// * Info - Level 0
+        /// </summary>
+        /// <returns>An instance of <see cref="IRequestBuilderWithResult{T}" /> that returns an array of languages.</returns>
+        public IRequestBuilderWithResult<MediaLanguage[]> GetLanguage(EntryIdInput input)
+        {
+            this.CheckInputDataModel(input);
+            return new RequestBuilder<MediaLanguage[]>(new Uri($"{ApiConstants.ApiUrlV1}/info/lang"), this.ProxerClient)
+                .WithGetParameter(input.BuildDictionary())
                 .WithCustomDataConverter(new LanguageCollectionConverter());
         }
 
         /// <summary>
+        /// Builds a request that returns all episodes or chapters of an anime
+        /// or manga.
+        /// Api permissions required (class - permission level):
+        /// * Info - Level 0
         /// </summary>
-        /// <param name="entryId"></param>
-        /// <param name="page"></param>
-        /// <param name="limit"></param>
-        /// <returns></returns>
-        public static ApiRequest<ListInfoDataModel> GetListInfo(int entryId, int page, int limit)
+        /// <returns>
+        /// An instance of <see cref="IRequestBuilderWithResult{T}" /> that returns an object containing all chapter/episodes
+        /// and information about the returned list.
+        /// </returns>
+        public IRequestBuilderWithResult<ListInfoDataModel> GetListInfo(ListInfoInput input)
         {
-            return ApiRequest<ListInfoDataModel>.Create(new Uri($"{ApiConstants.ApiUrlV1}/info/listinfo"))
-                .WithGetParameter("id", entryId.ToString())
-                .WithGetParameter("p", page.ToString())
-                .WithGetParameter("limit", limit.ToString());
+            this.CheckInputDataModel(input);
+            return new RequestBuilder<ListInfoDataModel>(
+                new Uri($"{ApiConstants.ApiUrlV1}/info/listinfo"), this.ProxerClient
+            ).WithGetParameter(input.BuildDictionary());
         }
 
         /// <summary>
+        /// Builds a request that returns all names and synonymous of an anime
+        /// or manga.
+        /// Api permissions required (class - permission level):
+        /// * Info - Level 0
         /// </summary>
-        /// <param name="entryId"></param>
-        /// <returns></returns>
-        public static ApiRequest<NameDataModel[]> GetName(int entryId)
+        /// <returns>
+        /// An instance of <see cref="IRequestBuilderWithResult{T}" /> that returns an array of object containing the names
+        /// and some additional informations.
+        /// </returns>
+        public IRequestBuilderWithResult<NameDataModel[]> GetNames(EntryIdInput input)
         {
-            return ApiRequest<NameDataModel[]>.Create(new Uri($"{ApiConstants.ApiUrlV1}/info/names"))
-                .WithGetParameter("id", entryId.ToString());
+            this.CheckInputDataModel(input);
+            return new RequestBuilder<NameDataModel[]>(
+                new Uri($"{ApiConstants.ApiUrlV1}/info/names"), this.ProxerClient
+            ).WithGetParameter(input.BuildDictionary());
         }
 
         /// <summary>
+        /// Builds a request that returns returns all organisations that were
+        /// involved with creating or publishing the an anime or manga.
+        /// Api permissions required (class - permission level):
+        /// * Info - Level 0
         /// </summary>
-        /// <param name="entryId"></param>
-        /// <returns></returns>
-        public static ApiRequest<PublisherDataModel[]> GetPublisher(int entryId)
+        /// <returns>
+        /// An instance of <see cref="IRequestBuilderWithResult{T}" /> that returns an array of organisations.
+        /// </returns>
+        public IRequestBuilderWithResult<IndustryBasicDataModel[]> GetPublisher(EntryIdInput input)
         {
-            return ApiRequest<PublisherDataModel[]>.Create(new Uri($"{ApiConstants.ApiUrlV1}/info/publisher"))
-                .WithGetParameter("id", entryId.ToString());
+            this.CheckInputDataModel(input);
+            return new RequestBuilder<IndustryBasicDataModel[]>(
+                new Uri($"{ApiConstants.ApiUrlV1}/info/publisher"), this.ProxerClient
+            ).WithGetParameter(input.BuildDictionary());
         }
 
         /// <summary>
+        /// Builds a request that returns all relations of an anime or manga.
+        /// Api permissions required (class - permission level):
+        /// * Info - Level 0
         /// </summary>
-        /// <param name="entryId"></param>
-        /// <returns></returns>
-        public static ApiRequest<RelationDataModel[]> GetRelations(int entryId)
+        /// <returns>An instance of <see cref="IRequestBuilderWithResult{T}" /> that returns an array of relations.</returns>
+        public IRequestBuilderWithResult<RelationDataModel[]> GetRelations(EntryIdInput input)
         {
-            return ApiRequest<RelationDataModel[]>.Create(new Uri($"{ApiConstants.ApiUrlV1}/info/relations"))
-                .WithGetParameter("id", entryId.ToString());
+            this.CheckInputDataModel(input);
+            return new RequestBuilder<RelationDataModel[]>(
+                new Uri($"{ApiConstants.ApiUrlV1}/info/relations"), this.ProxerClient
+            ).WithGetParameter(input.BuildDictionary());
         }
 
         /// <summary>
+        /// Builds a request that returns the seasons an anime or manga aired in.
+        /// Api permissions required (class - permission level):
+        /// * Info - Level 0
         /// </summary>
-        /// <param name="entryId"></param>
-        /// <returns></returns>
-        public static ApiRequest<SeasonDataModel[]> GetSeason(int entryId)
+        /// <returns>An instance of <see cref="IRequestBuilderWithResult{T}" /> that returns an array of seasons.</returns>
+        public IRequestBuilderWithResult<SeasonDataModel[]> GetSeason(EntryIdInput input)
         {
-            return ApiRequest<SeasonDataModel[]>.Create(new Uri($"{ApiConstants.ApiUrlV1}/info/season"))
-                .WithGetParameter("id", entryId.ToString());
+            this.CheckInputDataModel(input);
+            return new RequestBuilder<SeasonDataModel[]>(
+                new Uri($"{ApiConstants.ApiUrlV1}/info/season"), this.ProxerClient
+            ).WithGetParameter(input.BuildDictionary());
         }
 
         /// <summary>
+        /// Builds a request that returns information about a translator group.
+        /// Api permissions required (class - permission level):
+        /// * Info - Level 0
         /// </summary>
-        /// <param name="entryId"></param>
-        /// <param name="type"></param>
-        /// <param name="senpai"></param>
-        /// <returns></returns>
-        public static ApiRequest SetUserInfo(int entryId, string type, Senpai senpai)
+        /// <returns>An instance of <see cref="IRequestBuilderWithResult{T}" /> that returns information about a translator group.</returns>
+        public IRequestBuilderWithResult<TranslatorDataModel> GetTranslatorGroup(TranslatorInfoInput input)
         {
-            return ApiRequest.Create(new Uri($"{ApiConstants.ApiUrlV1}/info/setuserinfo"))
-                .WithCheckLogin(true)
-                .WithPostArgument("id", entryId.ToString())
-                .WithPostArgument("type", type)
-                .WithSenpai(senpai);
+            this.CheckInputDataModel(input);
+            return new RequestBuilder<TranslatorDataModel>(
+                new Uri($"{ApiConstants.ApiUrlV1}/info/translatorgroup"), this.ProxerClient
+            ).WithGetParameter(input.BuildDictionary());
         }
 
-        #endregion
+        /// <summary>
+        /// Builds a request that adds an anime or manga to a list of a logged
+        /// in user.
+        /// Requires authentication.
+        /// Api permissions required (class - permission level):
+        /// * Info - Level 1
+        /// </summary>
+        /// <returns>An instance of <see cref="IRequestBuilder" />.</returns>
+        public IRequestBuilder SetUserInfo(SetUserInfoInput input)
+        {
+            this.CheckInputDataModel(input);
+            return new Requests.Builder.RequestBuilder(
+                    new Uri($"{ApiConstants.ApiUrlV1}/info/setuserinfo"), this.ProxerClient)
+                .WithPostParameter(input.Build())
+                .WithLoginCheck();
+        }
     }
 }

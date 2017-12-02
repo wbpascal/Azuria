@@ -1,35 +1,26 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Azuria.Media.Properties;
+using Azuria.Enums.Info;
+using Azuria.Helpers;
 using Newtonsoft.Json;
 
 namespace Azuria.Api.v1.Converters
 {
-    internal class GenreConverter : JsonConverter
+    internal class GenreConverter : DataConverter<Genre[]>
     {
-        #region Methods
-
-        public override bool CanConvert(Type objectType)
-        {
-            return objectType == typeof(IEnumerable<GenreType>);
-        }
-
-        public override object ReadJson(JsonReader reader, Type objectType, object existingValue,
-            JsonSerializer serializer)
+        /// <inheritdoc />
+        public override Genre[] ConvertJson(
+            JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
         {
             string lValue = reader.Value.ToString();
-            if (string.IsNullOrEmpty(lValue.Trim())) return new GenreType[0];
-            return (from genreString in lValue.Split(' ')
-                where GenreHelper.StringToGenreDictionary.ContainsKey(genreString)
-                select GenreHelper.StringToGenreDictionary[genreString]).ToList();
-        }
+            if (string.IsNullOrEmpty(lValue.Trim())) return new Genre[0];
 
-        public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
-        {
-            throw new NotImplementedException();
+            Dictionary<string, Genre> lStringDictionary = EnumHelpers.GetDescriptionDictionary<Genre>();
+            return lValue.Split(' ')
+                .Where(genre => lStringDictionary.ContainsKey(genre))
+                .Select(genre => lStringDictionary[genre])
+                .ToArray();
         }
-
-        #endregion
     }
 }

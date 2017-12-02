@@ -204,7 +204,8 @@ global.json
 ConsoleApplication1/
 /Components/
 /packages/
-
-# DocFx
-/docs
-/docfx_project
+/.idea/
+/docfx_project/
+/docs/
+/.sonarqube/
+/scan.bat

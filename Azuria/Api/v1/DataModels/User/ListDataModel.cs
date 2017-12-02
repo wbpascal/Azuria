@@ -1,21 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
 using Azuria.Api.v1.Converters;
-using Azuria.Api.v1.Enums;
-using Azuria.Media.Properties;
-using Azuria.Search.Input;
-using Azuria.UserInfo;
-using Azuria.UserInfo.Comment;
+using Azuria.Enums;
+using Azuria.Enums.Info;
+using Azuria.Enums.User;
 using Newtonsoft.Json;
 
 namespace Azuria.Api.v1.DataModels.User
 {
     /// <summary>
     /// </summary>
-    public class ListDataModel : IEntryInfoDataModel
+    public class ListDataModel : DataModelBase, IEntryInfoDataModel
     {
-        #region Properties
-
         /// <summary>
         /// </summary>
         [JsonProperty("comment")]
@@ -78,7 +74,5 @@ namespace Azuria.Api.v1.DataModels.User
         /// </summary>
         [JsonProperty("rating")]
         public int Rating { get; set; }
-
-        #endregion
     }
 }

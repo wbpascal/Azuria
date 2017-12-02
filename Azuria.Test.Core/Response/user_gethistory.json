@@ -1,0 +1,33 @@
+{
+    "error": 0,
+    "message": "Abfrage erfolgreich",
+    "data": [
+        {
+            "id": "411816788",
+            "eid": "7834",
+            "name": "DICE",
+            "language": "en",
+            "episode": "213",
+            "medium": "mangaseries",
+            "kat": "manga"
+        },
+        {
+            "id": "411480033",
+            "eid": "7578",
+            "name": "The Gamer",
+            "language": "en",
+            "episode": "198",
+            "medium": "mangaseries",
+            "kat": "manga"
+        },
+        {
+            "id": "410745977",
+            "eid": "20832",
+            "name": "Shokugeki no Souma: San no Sara",
+            "language": "engsub",
+            "episode": "8",
+            "medium": "animeseries",
+            "kat": "anime"
+        }
+    ]
+}

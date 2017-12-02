@@ -1,6 +1,5 @@
 ﻿using Azuria.Api.v1.Converters;
-using Azuria.Api.v1.Enums;
-using Azuria.Search.Input;
+using Azuria.Enums;
 using Newtonsoft.Json;
 
 namespace Azuria.Api.v1.DataModels
@@ -9,8 +8,6 @@ namespace Azuria.Api.v1.DataModels
     /// </summary>
     public interface IEntryInfoDataModel : IDataModel
     {
-        #region Properties
-
         /// <summary>
         /// </summary>
         int EntryId { get; }
@@ -28,7 +25,5 @@ namespace Azuria.Api.v1.DataModels
         /// </summary>
         [JsonConverter(typeof(CategoryConverter))]
         MediaEntryType EntryType { get; }
-
-        #endregion
     }
 }

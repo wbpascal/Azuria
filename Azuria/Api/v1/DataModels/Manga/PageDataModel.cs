@@ -2,10 +2,8 @@
 {
     /// <summary>
     /// </summary>
-    public class PageDataModel
+    public class PageDataModel : DataModelBase
     {
-        #region Properties
-
         /// <summary>
         /// </summary>
         public int PageHeight { get; set; }
@@ -17,7 +15,5 @@
         /// <summary>
         /// </summary>
         public string ServerFileName { get; set; }
-
-        #endregion
     }
 }

@@ -1,31 +1,35 @@
-﻿using Azuria.Api.v1.Converters.Info;
-using Azuria.Media.Properties;
+﻿using System;
 using Newtonsoft.Json;
 
 namespace Azuria.Api.v1.DataModels.Info
 {
     /// <summary>
     /// </summary>
-    public class TranslatorDataModel : IDataModel
+    public class TranslatorDataModel : TranslatorBasicDataModel
     {
-        #region Properties
+        /// <summary>
+        /// </summary>
+        [JsonProperty("count")]
+        public int Count { get; set; }
 
         /// <summary>
         /// </summary>
-        [JsonProperty("id")]
-        public int Id { get; set; }
+        [JsonProperty("cprojects")]
+        public int CProjects { get; set; }
 
         /// <summary>
         /// </summary>
-        [JsonProperty("country")]
-        [JsonConverter(typeof(GroupLanguageConverter))]
-        public Language Language { get; set; }
+        [JsonProperty("description")]
+        public string Description { get; set; }
 
         /// <summary>
         /// </summary>
-        [JsonProperty("name")]
-        public string Name { get; set; }
+        [JsonProperty("image")]
+        public Uri Image { get; set; }
 
-        #endregion
+        /// <summary>
+        /// </summary>
+        [JsonProperty("link")]
+        public Uri Link { get; set; }
     }
 }

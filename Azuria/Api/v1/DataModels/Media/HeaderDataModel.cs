@@ -5,10 +5,8 @@ namespace Azuria.Api.v1.DataModels.Media
 {
     /// <summary>
     /// </summary>
-    public class HeaderDataModel
+    public class HeaderDataModel : DataModelBase
     {
-        #region Properties
-
         /// <summary>
         /// </summary>
         [JsonProperty("imgfilename")]
@@ -27,7 +25,5 @@ namespace Azuria.Api.v1.DataModels.Media
         /// <summary>
         /// </summary>
         public Uri HeaderUrl => new Uri($"{ApiConstants.ProxerHeaderCdnUrl}/{this.HeaderPath}/{this.HeaderFileName}");
-
-        #endregion
     }
 }

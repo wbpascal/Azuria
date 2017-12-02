@@ -1,0 +1,30 @@
+{
+    "error": 0,
+    "message": "Abfrage erfolgreich.",
+    "data": [
+        {
+            "id": "19232",
+            "eid": "9200",
+            "type": "name",
+            "name": "Shigatsu wa Kimi no Uso"
+        },
+        {
+            "id": "22019",
+            "eid": "9200",
+            "type": "nameeng",
+            "name": "Your Lie in April"
+        },
+        {
+            "id": "40161",
+            "eid": "9200",
+            "type": "nameger",
+            "name": "Shigatsu wa Kimi no Uso: Sekunden in Moll"
+        },
+        {
+            "id": "19233",
+            "eid": "9200",
+            "type": "namejap",
+            "name": "四月は君の嘘"
+        }
+    ]
+}

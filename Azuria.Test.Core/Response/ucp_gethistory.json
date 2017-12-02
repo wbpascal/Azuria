@@ -1,0 +1,33 @@
+{
+    "error": 0,
+    "message": "Abfrage erfolgreich",
+    "data": [
+        {
+            "eid": "355",
+            "language": "gersub",
+            "name": "Initial D First Stage",
+            "medium": "animeseries",
+            "episode": "23",
+            "kat": "anime",
+            "timestamp": "2016-10-18 23:15:08"
+        },
+        {
+            "eid": "4188",
+            "language": "en",
+            "name": "Tower of God",
+            "medium": "mangaseries",
+            "episode": "300",
+            "kat": "manga",
+            "timestamp": "2016-10-17 17:11:25"
+        },
+        {
+            "eid": "355",
+            "language": "gersub",
+            "name": "Initial D First Stage",
+            "medium": "animeseries",
+            "episode": "23",
+            "kat": "anime",
+            "timestamp": "2016-10-16 00:54:36"
+        }
+    ]
+}

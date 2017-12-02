@@ -1,0 +1,36 @@
+{
+    "error": 0,
+    "message": "Abfrage erfolgreich.",
+    "data": [
+        {
+            "name": "Viewster",
+            "id": "216",
+            "type": "streaming",
+            "country": "de"
+        },
+        {
+            "name": "Peppermint Anime",
+            "id": "9",
+            "type": "publisher",
+            "country": "de"
+        },
+        {
+            "name": "Kyoraku Industrial Holdings Co.,Ltd.",
+            "id": "430",
+            "type": "producer",
+            "country": "jp"
+        },
+        {
+            "name": "Aniplex of America",
+            "id": "431",
+            "type": "publisher",
+            "country": "us"
+        },
+        {
+            "name": "A-1 Pictures",
+            "id": "7",
+            "type": "studio",
+            "country": "jp"
+        }
+    ]
+}

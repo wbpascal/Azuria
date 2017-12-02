@@ -6,13 +6,9 @@ namespace Azuria.Api.v1.DataModels.Ucp
     /// </summary>
     public class ToptenDataModel : User.ToptenDataModel
     {
-        #region Properties
-
         /// <summary>
         /// </summary>
         [JsonProperty("fid")]
         public int ToptenId { get; set; }
-
-        #endregion
     }
 }

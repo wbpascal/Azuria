@@ -1,0 +1,19 @@
+{
+    "error": 0,
+    "message": "Abfrage erfolgreich",
+    "data": {
+        "cid": "241036",
+        "eid": "7834",
+        "title": "Chapter 159",
+        "server": "5",
+        "uploader": "177103",
+        "timestamp": "1475095092",
+        "username": "InfiniteSoul",
+        "tid": "795",
+        "tname": "Dicescans",
+        "pages": [
+            ["1.jpg", 1600, 690],
+            ["2.jpg", 1200, 570]
+        ]
+    }
+}

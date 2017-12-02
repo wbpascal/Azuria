@@ -1,0 +1,62 @@
+﻿{
+    "error": 0,
+    "message": "Abfrage erfolgreich.",
+    "data": {
+        "id": "9200",
+        "name": "Shigatsu wa Kimi no Uso",
+        "genre": "Comedy Shounen Slice_of_Life",
+        "fsk": "fsk12 fsk18",
+        "description": "Description Text",
+        "medium": "animeseries",
+        "count": "22",
+        "state": "1",
+        "rate_sum": "40527",
+        "rate_count": "4371",
+        "clicks": "23604",
+        "kat": "anime",
+        "license": "2",
+        "names": [
+            {
+                "id": "19232",
+                "eid": "9200",
+                "type": "name",
+                "name": "Shigatsu wa Kimi no Uso"
+            }
+        ],
+        "gate": false,
+        "lang": ["gersub", "engsub"],
+        "seasons": [
+            {
+                "id": "6283",
+                "year": "2014",
+                "season": "4"
+            }
+        ],
+        "groups": [
+            {
+                "name": "English Studio",
+                "id": "455",
+                "country": "en"
+            }
+        ],
+        "publisher": [
+            {
+                "name": "Viewster",
+                "id": "216",
+                "type": "streaming",
+                "country": "de"
+            }
+        ],
+        "tags": [
+            {
+                "id": "174",
+                "tid": "257",
+                "timestamp": "2016-06-17 15:11:16",
+                "rate_flag": "0",
+                "spoiler_flag": "1",
+                "tag": "Bad End",
+                "description": "Bad End Beschreibungstext"
+            }
+        ]
+    }
+}

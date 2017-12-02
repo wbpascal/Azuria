@@ -1,30 +1,60 @@
 environment:
-  myget_key:
-    secure: /ZVEy+qqj8rmVkcPvuEuEsJCvEAG1chXaYhZCcLDEnhLIK+TkEIfGG/JDdMn7Qrf
   enc_secret:
     secure: RpJa3MpXjYvN8clOld28OQRmiEofer3+x74FzE/pGcw=
+  SONAR_QUBE_TOKEN:
+    secure: od0IGy6svr+STk26LVllpjGRxVVu8YJ3Z2kjUa2+V/iuVR6ui8yUUDk6eANnP8xX
+
+image: Visual Studio 2017
 
 install:
   - choco install gitversion.portable -pre -y
+  - choco install msbuild-sonarqube-runner -y
   - nuget install secure-file -ExcludeVersion
-  - secure-file\tools\secure-file -decrypt signing_key.snk.enc -secret %enc_secret%
+  - nuget install coveralls.net -ExcludeVersion
+  - secure-file\tools\secure-file -decrypt signing_key.snk.enc -out Azuria/signing_key.snk -secret %enc_secret%
 
 before_build:
   - nuget restore
   - ps: gitversion /l console /output buildserver /updateAssemblyInfo
+  
+build_script:
+  - SonarQube.Scanner.MSBuild.exe begin /k:"Azuria" /d:sonar.host.url=https://sonarcloud.io /d:sonar.organization=infinitesoul-github /d:sonar.login=%SONAR_QUBE_TOKEN% /v:%GitVersion_LegacySemVer% /d:sonar.cs.opencover.reportsPaths=Azuria.Test\coverage.xml
+  - msbuild Azuria.sln /verbosity:minimal /p:Configuration=Appveyor /logger:"C:\Program Files\AppVeyor\BuildAgent\Appveyor.MSBuildLogger.dll"
 
 after_build:
-  - appveyor_pack.bat
-
-on_success:
-  - appveyor_push.bat
-
-configuration: Release
-
-build:
-  project: Azuria.sln
-  verbosity: minimal
+  - ps: ./AppveyorPack.ps1
+  
+test_script:
+  - ps: >-
+      ./PrepareTestEnv.ps1
+      
+      cd ./Azuria.Test
+    
+      ../OpenCover/opencover.console.exe -register:user -target:"C:/Program Files/dotnet/dotnet.exe" -targetargs:"test --configuration Release" -filter:"+[*]* -[Azuria.Test*]* -[*]Azuria.Exceptions*" -output:"coverage.xml"
+      
+      cd ..
+  - SonarQube.Scanner.MSBuild.exe end /d:sonar.login=%SONAR_QUBE_TOKEN%
 
 artifacts:
   - path: '*.nupkg'
     name: Nuget Package
+
+deploy:
+  - provider: NuGet
+    name: pre-release
+    server: https://www.myget.org/F/infinitesoul/api/v2/package
+    api_key:
+        secure: /ZVEy+qqj8rmVkcPvuEuEsJCvEAG1chXaYhZCcLDEnhLIK+TkEIfGG/JDdMn7Qrf
+    skip_symbols: false
+    artifact: '*.nupkg'
+    on:
+        branch: master
+
+  - provider: NuGet
+    name: production
+    api_key:
+        secure: 8mKFfgwriyN1kzevZjQeDR8b3RdWPWnxDMZ2j5RZbQYquEhTo9YjPsNRaoqpWHaw
+    skip_symbols: false
+    artifact: '*.nupkg'
+    on:
+        appveyor_repo_tag: true

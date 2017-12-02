@@ -4,10 +4,8 @@ namespace Azuria.Api.v1.DataModels.Ucp
 {
     /// <summary>
     /// </summary>
-    public class VoteDataModel
+    public class VoteDataModel : DataModelBase
     {
-        #region Properties
-
         /// <summary>
         /// </summary>
         [JsonProperty("comment")]
@@ -47,7 +45,5 @@ namespace Azuria.Api.v1.DataModels.Ucp
         /// </summary>
         [JsonProperty("id")]
         public int VoteId { get; set; }
-
-        #endregion
     }
 }

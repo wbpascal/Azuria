@@ -1,32 +1,47 @@
 ﻿using System;
 using Azuria.Api.v1.DataModels.Media;
+using Azuria.Api.v1.Input.Media;
+using Azuria.Enums.Media;
+using Azuria.Helpers.Extensions;
+using Azuria.Requests.Builder;
 
 namespace Azuria.Api.v1.RequestBuilder
 {
     /// <summary>
+    /// Represents the media api class.
     /// </summary>
-    public static class MediaRequestBuilder
+    public class MediaRequestBuilder : ApiClassRequestBuilderBase
     {
-        #region Methods
-
-        /// <summary>
-        /// </summary>
-        /// <returns></returns>
-        public static ApiRequest<HeaderDataModel[]> GetHeaderList()
+        /// <inheritdoc />
+        public MediaRequestBuilder(IProxerClient client) : base(client)
         {
-            return ApiRequest<HeaderDataModel[]>.Create(new Uri($"{ApiConstants.ApiUrlV1}/media/headerlist"));
         }
 
         /// <summary>
+        /// Builds a request that returns an array of all current headers.
+        /// Api permissions required (class - permission level):
+        /// * Media - Level 0
         /// </summary>
-        /// <param name="style"></param>
-        /// <returns></returns>
-        public static ApiRequest<HeaderDataModel> GetRandomHeader(string style = "gray")
+        /// <returns>An instance of <see cref="IRequestBuilderWithResult{T}" /> that returns an array of headers.</returns>
+        public IRequestBuilderWithResult<HeaderDataModel[]> GetHeaderList()
         {
-            return ApiRequest<HeaderDataModel>.Create(new Uri($"{ApiConstants.ApiUrlV1}/media/randomheader"))
-                .WithGetParameter("style", style);
+            return new RequestBuilder<HeaderDataModel[]>(
+                new Uri($"{ApiConstants.ApiUrlV1}/media/headerlist"), this.ProxerClient
+            );
         }
 
-        #endregion
+        /// <summary>
+        /// Builds a request that returns a random header for an optional specified style.
+        /// Api permissions required (class - permission level):
+        /// * Media - Level 0
+        /// </summary>
+        /// <returns>An instance of <see cref="IRequestBuilderWithResult{T}" /> that returns a header.</returns>
+        public IRequestBuilderWithResult<HeaderDataModel> GetRandomHeader(RandomHeaderInput input)
+        {
+            this.CheckInputDataModel(input);
+            return new RequestBuilder<HeaderDataModel>(
+                new Uri($"{ApiConstants.ApiUrlV1}/media/randomheader"), this.ProxerClient
+            ).WithGetParameter(input.BuildDictionary());
+        }
     }
 }

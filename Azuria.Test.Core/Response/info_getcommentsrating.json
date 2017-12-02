@@ -1,0 +1,51 @@
+﻿{
+    "error": 0,
+    "message": "Abfrage erfolgreich.",
+    "data": [
+        {
+            "id": "11660523",
+            "tid": "9200",
+            "uid": "82932",
+            "type": "entry",
+            "state": "0",
+            "data": "{\"genre\":\"4\",\"story\":\"4\",\"animation\":\"5\",\"characters\":\"5\",\"music\":\"5\"}",
+            "comment": "comment text 1",
+            "rating": "10",
+            "episode": "22",
+            "positive": "7",
+            "timestamp": "1440565134",
+            "username": "Username 1",
+            "avatar": "104302_2jXP5i.jpg"
+        },
+        {
+            "id": "9223553",
+            "tid": "9200",
+            "uid": "192734",
+            "type": "entry",
+            "state": "1",
+            "data": "{\"genre\":\"5\",\"story\":\"5\",\"animation\":\"5\",\"characters\":\"4\"}",
+            "comment": "comment text 2",
+            "rating": "9",
+            "episode": "4",
+            "positive": "1",
+            "timestamp": "1424444000",
+            "username": "Username 2",
+            "avatar": "81017_55958x946de72.jpg"
+        },
+        {
+            "id": "9091832",
+            "tid": "9200",
+            "uid": "628395",
+            "type": "entry",
+            "state": "2",
+            "data": "",
+            "comment": "comment text 3",
+            "rating": "7",
+            "episode": "21",
+            "positive": "0",
+            "timestamp": "1444404588",
+            "username": "Username 3",
+            "avatar": "360478_5KfIf7.jpg"
+        }
+    ]
+}

@@ -1,0 +1,23 @@
+﻿{
+    "error": 0,
+    "message": "Abfrage erfolgreich",
+    "data": [
+        {
+            "id": "2255388",
+            "tid": "126",
+            "name": "Sora no Otoshimono",
+            "medium": "mangaseries",
+            "kat": "manga",
+            "state": "0",
+            "data": "{\"genre\":\"1\",\"story\":\"2\",\"animation\":\"3\",\"characters\":\"4\",\"music\":\"5\"}",
+            "comment": "Comment Text 2255388",
+            "rating": "10",
+            "episode": "13",
+            "positive": "11",
+            "timestamp": "1488368929",
+            "username": "KutoSan",
+            "uid": "163825",
+            "avatar": "163825_54623dbccb324.jpg"
+        }
+    ]
+}

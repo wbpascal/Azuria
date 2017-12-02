@@ -1,0 +1,39 @@
+{
+    "error": 0,
+    "message": "Abfrage erfolgreich",
+    "data": [
+        {
+            "name": "Akatsuki no Yona",
+            "id": "9651",
+            "genre": "Abenteuer Action",
+            "medium": "animeseries",
+            "count": "24",
+            "state": "1",
+            "rate_sum": "23457",
+            "rate_count": "2779",
+            "language": "gersub,engsub,engdub"
+        },
+        {
+            "name": "Akatsuki no Yona: The Girl Standing in the Blush of Dawn",
+            "id": "9651",
+            "genre": "Abenteuer Action Comedy Drama Fantasy Harem Historical Martial-Art Romance Shoujou",
+            "medium": "animeseries",
+            "count": "24",
+            "state": "1",
+            "rate_sum": "23457",
+            "rate_count": "2779",
+            "language": "gersub,engsub,engdub"
+        },
+        {
+            "name": "Yona of the Dawn",
+            "id": "9651",
+            "genre": "Abenteuer Action Comedy Drama Fantasy Harem Historical Martial-Art Romance Shoujou",
+            "medium": "animeseries",
+            "count": "24",
+            "state": "1",
+            "rate_sum": "23457",
+            "rate_count": "2779",
+            "language": "gersub,engsub,engdub"
+        }
+    ]
+}

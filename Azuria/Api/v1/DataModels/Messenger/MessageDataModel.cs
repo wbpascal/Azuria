@@ -1,17 +1,15 @@
 ﻿using System;
 using Azuria.Api.v1.Converters;
 using Azuria.Api.v1.Converters.Messenger;
-using Azuria.Community;
+using Azuria.Enums.Messenger;
 using Newtonsoft.Json;
 
 namespace Azuria.Api.v1.DataModels.Messenger
 {
     /// <summary>
     /// </summary>
-    public class MessageDataModel : IDataModel
+    public class MessageDataModel : DataModelBase
     {
-        #region Properties
-
         /// <summary>
         /// </summary>
         [JsonProperty("conference_id")]
@@ -53,7 +51,5 @@ namespace Azuria.Api.v1.DataModels.Messenger
         /// </summary>
         [JsonProperty("username")]
         public string SenderUsername { get; set; }
-
-        #endregion
     }
 }
