@@ -3,7 +3,6 @@ using NUnit.Framework;
 
 namespace Azuria.Test.Api.v1.Converter.Info
 {
-    [TestFixture]
     public class IsLicensedConverterTest : DataConverterTestBase<bool?>
     {
         /// <inheritdoc />
