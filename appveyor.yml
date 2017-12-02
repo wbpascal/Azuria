@@ -36,7 +36,7 @@ test_script:
   - SonarQube.Scanner.MSBuild.exe end /d:sonar.login=%SONAR_QUBE_TOKEN%
 
 artifacts:
-  - path: *\.nupkg
+  - path: /*\.nupkg/
     name: Nuget Package
 
 deploy:
@@ -47,7 +47,7 @@ deploy:
     api_key:
         secure: /ZVEy+qqj8rmVkcPvuEuEsJCvEAG1chXaYhZCcLDEnhLIK+TkEIfGG/JDdMn7Qrf
     skip_symbols: false
-    artifact: *\.nupkg
+    artifact: /*\.nupkg/
     on:
         branch: master
 
@@ -56,6 +56,6 @@ deploy:
     api_key:
         secure: 8mKFfgwriyN1kzevZjQeDR8b3RdWPWnxDMZ2j5RZbQYquEhTo9YjPsNRaoqpWHaw
     skip_symbols: false
-    artifact: *\.nupkg
+    artifact: /*\.nupkg/
     on:
         appveyor_repo_tag: true
