@@ -43,7 +43,7 @@ deploy:
   - provider: NuGet
     name: pre-release
     server: https://www.myget.org/F/infinitesoul/api/v2/package
-    symbol_server: https://www.myget.org/F/infinitesoul/symbols/
+    symbol_server: https://www.myget.org/F/infinitesoul/symbols/api/v2/package
     api_key:
         secure: /ZVEy+qqj8rmVkcPvuEuEsJCvEAG1chXaYhZCcLDEnhLIK+TkEIfGG/JDdMn7Qrf
     skip_symbols: false
