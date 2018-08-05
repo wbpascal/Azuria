@@ -1,4 +1,4 @@
-$url = "https://ci.appveyor.com/api/buildjobs/56jt50hluqai7e4e/artifacts/main%2Fbin%2Fzip%2Fopencover.4.6.690.zip"
+$url = "https://github.com/OpenCover/opencover/releases/download/4.6.519/opencover.4.6.519.zip"
 $output = "$PSScriptRoot\opencover.zip"
 $opencover_path = "$PSScriptRoot\OpenCover"
 $start_time = Get-Date
