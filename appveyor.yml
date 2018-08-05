@@ -10,7 +10,7 @@ install:
   - choco install gitversion.portable -pre -y
   - choco install msbuild-sonarqube-runner -y
   - nuget install secure-file -ExcludeVersion
-  - nuget install coveralls.net -ExcludeVersion
+  - nuget install coveralls.net -Version 0.7.0 -ExcludeVersion
   - secure-file\tools\secure-file -decrypt signing_key.snk.enc -out Azuria/signing_key.snk -secret %enc_secret%
 
 before_build:
