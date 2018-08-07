@@ -6,7 +6,7 @@ using Newtonsoft.Json;
 
 namespace Azuria.Api.v1.Converters
 {
-    internal class LanguageCommaCollectionConverter : DataConverter<MediaLanguage[]>
+    internal class MediaLanguageCommaCollectionConverter : DataConverter<MediaLanguage[]>
     {
         /// <inheritdoc />
         public override MediaLanguage[] ConvertJson(

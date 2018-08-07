@@ -9,19 +9,19 @@ using NUnit.Framework;
 namespace Azuria.Test.Api.v1.DataModels.Info
 {
     [TestFixture]
-    public class NameDataModelTest : DataModelsTestBase<NameDataModel>
+    public class NameDataModelTest : DataModelsTestBase<EntryNameDataModel>
     {
         [Test]
         public void ConvertTest()
         {
             string lJson = ResponseSetup.FileResponses["info_getnames.json"];
-            ProxerApiResponse<NameDataModel[]> lResponse = this.ConvertArray(lJson);
+            ProxerApiResponse<EntryNameDataModel[]> lResponse = this.ConvertArray(lJson);
             Assert.AreEqual(BuildDataModel(), lResponse.Result.First());
         }
 
-        public static NameDataModel BuildDataModel()
+        public static EntryNameDataModel BuildDataModel()
         {
-            return new NameDataModel
+            return new EntryNameDataModel
             {
                 EntryId = 9200,
                 Id = 19232,

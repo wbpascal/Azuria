@@ -90,7 +90,7 @@ namespace Azuria
         }
 
         /// <summary>
-        /// Registers a <see cref="IHttpClient">http client</see> with custom timeout and/or user-agent to the client.
+        /// Registers a default <see cref="IHttpClient">http client</see> with custom timeout and/or user-agent to the client.
         /// Overrides <see cref="WithCustomHttpClient(System.Func{Autofac.IComponentContext,Azuria.Requests.Http.IHttpClient})" />.
         /// </summary>
         /// <param name="timeout">Optional. The custom timeout of the http client.</param>

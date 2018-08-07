@@ -90,7 +90,7 @@ namespace Azuria.Test.Api.v1.RequestBuilder
         public void GetGroupsTest()
         {
             EntryIdInput lInput = this.GetRandomEntryIdInput();
-            IRequestBuilderWithResult<TranslatorDataModel[]> lRequest = this.RequestBuilder.GetGroups(lInput);
+            IRequestBuilderWithResult<TranslatorBasicDataModel[]> lRequest = this.RequestBuilder.GetGroups(lInput);
             this.CheckUrl(lRequest, "info", "groups");
             Assert.AreSame(this.ProxerClient, lRequest.Client);
             Assert.True(lRequest.GetParameters.ContainsKey("id"));
@@ -148,7 +148,7 @@ namespace Azuria.Test.Api.v1.RequestBuilder
         public void GetNameTest()
         {
             EntryIdInput lInput = this.GetRandomEntryIdInput();
-            IRequestBuilderWithResult<NameDataModel[]> lRequest = this.RequestBuilder.GetNames(lInput);
+            IRequestBuilderWithResult<EntryNameDataModel[]> lRequest = this.RequestBuilder.GetNames(lInput);
             this.CheckUrl(lRequest, "info", "names");
             Assert.AreSame(this.ProxerClient, lRequest.Client);
             Assert.True(lRequest.GetParameters.ContainsKey("id"));
@@ -171,12 +171,18 @@ namespace Azuria.Test.Api.v1.RequestBuilder
         [Test]
         public void GetRelationsTest()
         {
-            EntryIdInput lInput = this.GetRandomEntryIdInput();
+            RelationsInput lInput = new RelationsInput
+            {
+                EntryId = this.GetRandomNumber(10000),
+                ContainsH = true
+            };
             IRequestBuilderWithResult<RelationDataModel[]> lRequest = this.RequestBuilder.GetRelations(lInput);
             this.CheckUrl(lRequest, "info", "relations");
             Assert.AreSame(this.ProxerClient, lRequest.Client);
             Assert.True(lRequest.GetParameters.ContainsKey("id"));
+            Assert.True(lRequest.GetParameters.ContainsKey("isH"));
             Assert.AreEqual(lInput.EntryId.ToString(), lRequest.GetParameters["id"]);
+            Assert.AreEqual("true", lRequest.GetParameters["isH"]);
             Assert.False(lRequest.CheckLogin);
         }
 

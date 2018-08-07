@@ -1,17 +1,17 @@
 ﻿using System;
-using Azuria.Enums;
+using Azuria.Enums.Info;
 using Azuria.Helpers;
 using Newtonsoft.Json;
 
 namespace Azuria.Api.v1.Converters
 {
-    internal class CategoryConverter : DataConverter<MediaEntryType>
+    internal class MediaLanguageConverter : DataConverter<MediaLanguage>
     {
         /// <inheritdoc />
-        public override MediaEntryType ConvertJson(
+        public override MediaLanguage ConvertJson(
             JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
         {
-            return EnumHelpers.ParseFromString<MediaEntryType>(reader.Value.ToString());
+            return LanguageHelpers.GetMediaLanguage(reader.Value.ToString());
         }
     }
 }

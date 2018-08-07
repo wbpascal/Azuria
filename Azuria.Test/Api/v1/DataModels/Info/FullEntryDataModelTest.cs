@@ -21,7 +21,7 @@ namespace Azuria.Test.Api.v1.DataModels.Info
         {
             EntryDataModel lEntryDataModel = EntryDataModelTest.BuildDataModel();
             IndustryBasicDataModel lIndustryBasicDataModel = IndustryBasicDataModelTest.BuildDataModel();
-            NameDataModel lNameDataModel = NameDataModelTest.BuildDataModel();
+            EntryNameDataModel lNameDataModel = NameDataModelTest.BuildDataModel();
             SeasonDataModel lSeasonDataModel = SeasonDataModelTest.BuildDataModel();
             //Entry id is not included, set it back to default value
             lSeasonDataModel.EntryId = int.MinValue;

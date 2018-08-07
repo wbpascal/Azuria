@@ -11,7 +11,7 @@ namespace Azuria.Api.v1.DataModels.Info
         /// <summary>
         /// </summary>
         [JsonProperty("lang")]
-        [JsonConverter(typeof(LanguageCollectionConverter))]
+        [JsonConverter(typeof(MediaLanguageCollectionConverter))]
         public MediaLanguage[] AvailableLanguages { get; set; }
 
         /// <summary>
@@ -27,7 +27,7 @@ namespace Azuria.Api.v1.DataModels.Info
         /// <summary>
         /// </summary>
         [JsonProperty("names")]
-        public NameDataModel[] Names { get; set; }
+        public EntryNameDataModel[] Names { get; set; }
 
         /// <summary>
         /// </summary>

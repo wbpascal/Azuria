@@ -8,9 +8,11 @@
             "htype": "iframe",
             "name": "MP4Upload",
             "img": "mp4upload.png",
+            "entryname": "Entry Name Stream 1",
             "replace": "http://www.mp4upload.com/embed-#.html",
             "uploader": "205400",
             "username": "Tadakuni",
+            "count": 25,
             "timestamp": "1412882290",
             "tid": 1158,
             "tname": "THORAnime"
@@ -21,9 +23,11 @@
             "htype": "link",
             "name": "Streamcloud",
             "img": "streamcloud.png",
+            "entryname": "Entry Name 2",
             "replace": "http://streamcloud.eu/#",
             "uploader": "66",
             "username": "ProxerBot",
+            "count": 25,
             "timestamp": "1444543912",
             "tid": null,
             "tname": null

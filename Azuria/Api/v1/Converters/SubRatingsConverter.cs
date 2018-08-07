@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using Azuria.Enums.User;
+using Azuria.Helpers;
 using Newtonsoft.Json;
 
 namespace Azuria.Api.v1.Converters
@@ -19,7 +20,7 @@ namespace Azuria.Api.v1.Converters
                 return JsonConvert.DeserializeObject<Dictionary<string, int>>(reader.Value.ToString())
                     .ToDictionary(
                         keyValuePair =>
-                            (RatingCategory) Enum.Parse(typeof(RatingCategory), keyValuePair.Key, true),
+                            EnumHelpers.ParseFromString(keyValuePair.Key, RatingCategory.Unknown),
                         keyValuePair => keyValuePair.Value);
             }
             catch (Exception)

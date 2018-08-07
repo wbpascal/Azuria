@@ -21,16 +21,18 @@ namespace Azuria.Requests
         private readonly IRequestErrorHandler _errorHandler;
         private readonly IRequestHeaderManager _headerManager;
         private readonly IJsonDeserializer _jsonDeserializer;
+        private readonly IHttpClient _httpClient;
         private readonly ILoginManager _loginManager;
 
         public RequestHandler(
             IRequestHeaderManager headerManager, ILoginManager loginManager, IRequestErrorHandler errorHandler,
-            IJsonDeserializer jsonDeserializer)
+            IJsonDeserializer jsonDeserializer, IHttpClient httpClient)
         {
             this._headerManager = headerManager;
             this._loginManager = loginManager;
             this._errorHandler = errorHandler;
             this._jsonDeserializer = jsonDeserializer;
+            this._httpClient = httpClient;
         }
 
         private async Task<IProxerResult> ApiRequestInternalAsync<T>(
@@ -46,8 +48,7 @@ namespace Azuria.Requests
                 );
 
             IProxerResult<string> lResult =
-                await request.Client.Container.Resolve<IHttpClient>()
-                    .ProxerRequestAsync(
+                await this._httpClient.ProxerRequestAsync(
                         request.BuildUri(), request.PostParameter, lHeaders, token
                     )
                     .ConfigureAwait(false);
@@ -110,7 +111,7 @@ namespace Azuria.Requests
             IRequestBuilderWithResult<T> request, CancellationToken token)
         {
             if (!IsApiUrl(request.BuildUri()))
-                return new ProxerResult<T>(new InvalidRequestException("The given request was not a valid api url!"));
+                return new ProxerResult<T>(new InvalidRequestException("The given request is not a valid api url!"));
 
             JsonSerializerSettings lSerializerSettings =
                 new JsonSerializerSettings {Converters = GetCustomConverter(request)};

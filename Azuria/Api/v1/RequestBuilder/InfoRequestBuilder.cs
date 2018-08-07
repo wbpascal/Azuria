@@ -1,6 +1,7 @@
 ﻿using System;
 using Azuria.Api.v1.Converters.Info;
 using Azuria.Api.v1.DataModels.Info;
+using Azuria.Api.v1.Input;
 using Azuria.Api.v1.Input.Info;
 using Azuria.Enums.Info;
 using Azuria.Helpers.Extensions;
@@ -17,6 +18,32 @@ namespace Azuria.Api.v1.RequestBuilder
         /// <inheritdoc />
         public InfoRequestBuilder(IProxerClient proxerClient) : base(proxerClient)
         {
+        }
+        
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="input"></param>
+        /// <returns></returns>
+        public IRequestBuilderWithResult<CharacterInfoDataModel> GetCharacterInfo(SimpleIdInput input)
+        {
+            this.CheckInputDataModel(input);
+            return new RequestBuilder<CharacterInfoDataModel>(
+                new Uri($"{ApiConstants.ApiUrlV1}/info/character"), this.ProxerClient
+            ).WithPostParameter(input.BuildDictionary());
+        }
+        
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="input"></param>
+        /// <returns></returns>
+        public IRequestBuilderWithResult<CharacterDataModel[]> GetCharacters(EntryIdInput input)
+        {
+            this.CheckInputDataModel(input);
+            return new RequestBuilder<CharacterDataModel[]>(
+                new Uri($"{ApiConstants.ApiUrlV1}/info/characters"), this.ProxerClient
+            ).WithPostParameter(input.BuildDictionary());
         }
 
         /// <summary>
@@ -62,6 +89,20 @@ namespace Azuria.Api.v1.RequestBuilder
                 new Uri($"{ApiConstants.ApiUrlV1}/info/entrytags"), this.ProxerClient
             ).WithGetParameter(input.BuildDictionary());
         }
+        
+        /// <summary>
+        /// Builds a request that returns all forum threads of an anime or manga.
+        /// Api permissions required (class - permission level):
+        /// * Info - Level 0
+        /// </summary>
+        /// <returns>An instance of <see cref="IRequestBuilderWithResult{T}" /> that returns an array of tags.</returns>
+        public IRequestBuilderWithResult<TagDataModel[]> GetForum(EntryIdInput input)
+        {
+            this.CheckInputDataModel(input);
+            return new RequestBuilder<TagDataModel[]>(
+                new Uri($"{ApiConstants.ApiUrlV1}/info/forum"), this.ProxerClient
+            ).WithPostParameter(input.BuildDictionary());
+        }
 
         /// <summary>
         /// Builds a request that returns all informations of an anime or manga.
@@ -101,10 +142,10 @@ namespace Azuria.Api.v1.RequestBuilder
         /// * Info - Level 0
         /// </summary>
         /// <returns>An instance of <see cref="IRequestBuilderWithResult{T}" /> that returns an array of translators.</returns>
-        public IRequestBuilderWithResult<TranslatorDataModel[]> GetGroups(EntryIdInput input)
+        public IRequestBuilderWithResult<TranslatorBasicDataModel[]> GetGroups(EntryIdInput input)
         {
             this.CheckInputDataModel(input);
-            return new RequestBuilder<TranslatorDataModel[]>(
+            return new RequestBuilder<TranslatorBasicDataModel[]>(
                 new Uri($"{ApiConstants.ApiUrlV1}/info/groups"), this.ProxerClient
             ).WithGetParameter(input.BuildDictionary());
         }
@@ -135,7 +176,7 @@ namespace Azuria.Api.v1.RequestBuilder
             this.CheckInputDataModel(input);
             return new RequestBuilder<MediaLanguage[]>(new Uri($"{ApiConstants.ApiUrlV1}/info/lang"), this.ProxerClient)
                 .WithGetParameter(input.BuildDictionary())
-                .WithCustomDataConverter(new LanguageCollectionConverter());
+                .WithCustomDataConverter(new MediaLanguageCollectionConverter());
         }
 
         /// <summary>
@@ -166,11 +207,37 @@ namespace Azuria.Api.v1.RequestBuilder
         /// An instance of <see cref="IRequestBuilderWithResult{T}" /> that returns an array of object containing the names
         /// and some additional informations.
         /// </returns>
-        public IRequestBuilderWithResult<NameDataModel[]> GetNames(EntryIdInput input)
+        public IRequestBuilderWithResult<EntryNameDataModel[]> GetNames(EntryIdInput input)
         {
             this.CheckInputDataModel(input);
-            return new RequestBuilder<NameDataModel[]>(
+            return new RequestBuilder<EntryNameDataModel[]>(
                 new Uri($"{ApiConstants.ApiUrlV1}/info/names"), this.ProxerClient
+            ).WithGetParameter(input.BuildDictionary());
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="input"></param>
+        /// <returns></returns>
+        public IRequestBuilderWithResult<PersonInfoDataModel> GetPersonInfo(SimpleIdInput input)
+        {
+            this.CheckInputDataModel(input);
+            return new RequestBuilder<PersonInfoDataModel>(
+                new Uri($"{ApiConstants.ApiUrlV1}/info/person"), this.ProxerClient
+            ).WithGetParameter(input.BuildDictionary());
+        }
+        
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="input"></param>
+        /// <returns></returns>
+        public IRequestBuilderWithResult<PersonDataModel[]> GetPersons(EntryIdInput input)
+        {
+            this.CheckInputDataModel(input);
+            return new RequestBuilder<PersonDataModel[]>(
+                new Uri($"{ApiConstants.ApiUrlV1}/info/persons"), this.ProxerClient
             ).WithGetParameter(input.BuildDictionary());
         }
 
@@ -192,12 +259,26 @@ namespace Azuria.Api.v1.RequestBuilder
         }
 
         /// <summary>
+        /// Builds a request that returns all recommendations of an specific anime or manga.
+        /// Api permissions required (class - permission level):
+        /// * Info - Level 0
+        /// </summary>
+        /// <returns>An instance of <see cref="IRequestBuilderWithResult{T}" /> that returns an array of recommendations.</returns>
+        public IRequestBuilderWithResult<RecommendationDataModel[]> GetRecommendations(EntryIdInput input)
+        {
+            this.CheckInputDataModel(input);
+            return new RequestBuilder<RecommendationDataModel[]>(
+                new Uri($"{ApiConstants.ApiUrlV1}/info/recommendations"), this.ProxerClient
+            ).WithGetParameter(input.BuildDictionary());
+        }
+
+        /// <summary>
         /// Builds a request that returns all relations of an anime or manga.
         /// Api permissions required (class - permission level):
         /// * Info - Level 0
         /// </summary>
         /// <returns>An instance of <see cref="IRequestBuilderWithResult{T}" /> that returns an array of relations.</returns>
-        public IRequestBuilderWithResult<RelationDataModel[]> GetRelations(EntryIdInput input)
+        public IRequestBuilderWithResult<RelationDataModel[]> GetRelations(RelationsInput input)
         {
             this.CheckInputDataModel(input);
             return new RequestBuilder<RelationDataModel[]>(
@@ -234,6 +315,20 @@ namespace Azuria.Api.v1.RequestBuilder
         }
 
         /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="input"></param>
+        /// <returns></returns>
+        public IRequestBuilderWithResult<UserListsDataModel> GetUserInfo(EntryIdInput input)
+        {
+            this.CheckInputDataModel(input);
+            return new RequestBuilder<UserListsDataModel>(
+                    new Uri($"{ApiConstants.ApiUrlV1}/info/userinfo"), this.ProxerClient
+                ).WithPostParameter(input.BuildDictionary())
+                .WithLoginCheck();
+        }
+
+        /// <summary>
         /// Builds a request that adds an anime or manga to a list of a logged
         /// in user.
         /// Requires authentication.
@@ -245,8 +340,8 @@ namespace Azuria.Api.v1.RequestBuilder
         {
             this.CheckInputDataModel(input);
             return new Requests.Builder.RequestBuilder(
-                    new Uri($"{ApiConstants.ApiUrlV1}/info/setuserinfo"), this.ProxerClient)
-                .WithPostParameter(input.Build())
+                    new Uri($"{ApiConstants.ApiUrlV1}/info/setuserinfo"), this.ProxerClient
+                ).WithPostParameter(input.Build())
                 .WithLoginCheck();
         }
     }

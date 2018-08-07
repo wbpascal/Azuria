@@ -23,6 +23,8 @@ namespace Azuria.Test.Api.v1.DataModels.Anime
         {
             return new StreamDataModel
             {
+                Count = 25,
+                EntryName = "Entry Name Stream 1",
                 HosterFullName = "MP4Upload",
                 HosterImageFileName = "mp4upload.png",
                 HostingType = "iframe",

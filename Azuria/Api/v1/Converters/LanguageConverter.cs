@@ -5,13 +5,12 @@ using Newtonsoft.Json;
 
 namespace Azuria.Api.v1.Converters
 {
-    internal class LanguageConverter : DataConverter<MediaLanguage>
+    internal class LanguageConverter : DataConverter<Language>
     {
         /// <inheritdoc />
-        public override MediaLanguage ConvertJson(
-            JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
+        public override Language ConvertJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
         {
-            return LanguageHelpers.GetMediaLanguage(reader.Value.ToString());
+            return LanguageHelpers.GetLanguageFromIdentifier(reader.Value.ToString());
         }
     }
 }

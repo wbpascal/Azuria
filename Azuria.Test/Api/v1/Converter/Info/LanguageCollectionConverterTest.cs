@@ -8,7 +8,7 @@ namespace Azuria.Test.Api.v1.Converter.Info
     public class LanguageCollectionConverterTest : DataConverterTestBase<MediaLanguage[]>
     {
         /// <inheritdoc />
-        public LanguageCollectionConverterTest() : base(new LanguageCollectionConverter())
+        public LanguageCollectionConverterTest() : base(new MediaLanguageCollectionConverter())
         {
         }
 

@@ -7,6 +7,12 @@ namespace Azuria.Api.v1.DataModels.Media
     public class UploadedMediaDataModel : DataModelBase
     {
         /// <summary>
+        /// 
+        /// </summary>
+        [JsonProperty("count")]
+        public int Count { get; set; }
+        
+        /// <summary>
         /// </summary>
         [JsonProperty("tid")]
         public int? TranslatorId { get; set; }

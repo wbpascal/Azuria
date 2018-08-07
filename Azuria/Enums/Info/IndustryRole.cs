@@ -11,6 +11,7 @@
         Producer,
         Streaming,
         RecordLabel,
-        TalentAgent
+        TalentAgent,
+        Misc
     }
 }

@@ -7,6 +7,10 @@
         /// <summary>
         /// </summary>
         NoError = 0,
+        
+        /// <summary>
+        /// </summary>
+        Unkown = 1,
 
         /// <summary>
         /// </summary>

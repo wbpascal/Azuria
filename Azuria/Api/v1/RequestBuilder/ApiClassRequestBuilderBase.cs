@@ -21,15 +21,18 @@ namespace Azuria.Api.v1.RequestBuilder
         public IProxerClient ProxerClient { get; }
 
         /// <summary>
-        /// 
         /// </summary>
         /// <param name="inputDataModel"></param>
         protected void CheckInputDataModel(IInputDataModel inputDataModel)
         {
-            if (inputDataModel == null)
-                throw new ArgumentNullException(nameof(inputDataModel));
-            if (inputDataModel is IPagedInputDataModel)
-                this.CheckPagedInputDataModel(inputDataModel as PagedInputDataModel);
+            switch (inputDataModel)
+            {
+                case null:
+                    throw new ArgumentNullException(nameof(inputDataModel));
+                case IPagedInputDataModel _:
+                    this.CheckPagedInputDataModel(inputDataModel as PagedInputDataModel);
+                    break;
+            }
         }
 
         private void CheckPagedInputDataModel(IPagedInputDataModel pagedInputDataModel)
