@@ -1,13 +1,13 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.26403.7
+# Visual Studio Express 15 for Windows Desktop
+VisualStudioVersion = 15.0.27130.2010
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Test", "Test", "{72F318C3-1B16-4B7F-8223-81AAF151D41C}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Azuria", "Azuria\Azuria.csproj", "{7ABC2DF6-CF84-451F-B207-9F0A606D5A39}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Azuria", "Azuria\Azuria.csproj", "{7ABC2DF6-CF84-451F-B207-9F0A606D5A39}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Azuria.Test.Core", "Azuria.Test.Core\Azuria.Test.Core.csproj", "{92E8E7ED-4D6D-44F1-ADE9-F456E50FF99E}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Azuria.Test.Core", "Azuria.Test.Core\Azuria.Test.Core.csproj", "{92E8E7ED-4D6D-44F1-ADE9-F456E50FF99E}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Azuria.Test", "Azuria.Test\Azuria.Test.csproj", "{8F00E840-DF98-4C31-A5DD-030FDB77FD54}"
 EndProject
@@ -43,5 +43,8 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{92E8E7ED-4D6D-44F1-ADE9-F456E50FF99E} = {72F318C3-1B16-4B7F-8223-81AAF151D41C}
 		{8F00E840-DF98-4C31-A5DD-030FDB77FD54} = {72F318C3-1B16-4B7F-8223-81AAF151D41C}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {E87817DC-2771-4F31-BF56-E1D96F49AD19}
 	EndGlobalSection
 EndGlobal

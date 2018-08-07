@@ -1,16 +1,15 @@
 environment:
   enc_secret:
     secure: RpJa3MpXjYvN8clOld28OQRmiEofer3+x74FzE/pGcw=
-  SONAR_QUBE_TOKEN:
-    secure: od0IGy6svr+STk26LVllpjGRxVVu8YJ3Z2kjUa2+V/iuVR6ui8yUUDk6eANnP8xX
+  CODECOV_TOKEN:
+    secure: vMjxysRiNi1LnEosRM5vPO8ZWw9jDlh2/WAdPRa5u4ZXqUkmP87x3WKXhCACmrCc
 
 image: Visual Studio 2017
 
 install:
   - choco install gitversion.portable -pre -y
-  - choco install msbuild-sonarqube-runner -y
   - nuget install secure-file -ExcludeVersion
-  - nuget install coveralls.net -Version 0.7.0 -ExcludeVersion
+  - choco install codecov -y
   - secure-file\tools\secure-file -decrypt signing_key.snk.enc -out Azuria/signing_key.snk -secret %enc_secret%
 
 before_build:
@@ -18,22 +17,15 @@ before_build:
   - ps: gitversion /l console /output buildserver /updateAssemblyInfo
   
 build_script:
-  - SonarQube.Scanner.MSBuild.exe begin /k:"Azuria" /d:sonar.host.url=https://sonarcloud.io /d:sonar.organization=infinitesoul-github /d:sonar.login=%SONAR_QUBE_TOKEN% /v:%GitVersion_LegacySemVer% /d:sonar.cs.opencover.reportsPaths=Azuria.Test\coverage.xml
   - msbuild Azuria.sln /verbosity:minimal /p:Configuration=Appveyor /logger:"C:\Program Files\AppVeyor\BuildAgent\Appveyor.MSBuildLogger.dll"
 
 after_build:
   - ps: ./AppveyorPack.ps1
   
 test_script:
-  - ps: >-
-      ./PrepareTestEnv.ps1
-      
-      cd ./Azuria.Test
-    
-      ../OpenCover/opencover.console.exe -register:user -target:"C:/Program Files/dotnet/dotnet.exe" -targetargs:"test --configuration Release" -filter:"+[*]* -[Azuria.Test*]* -[*]Azuria.Exceptions*" -output:"coverage.xml"
-      
-      cd ..
-  - SonarQube.Scanner.MSBuild.exe end /d:sonar.login=%SONAR_QUBE_TOKEN%
+  - cd Azuria.Test
+  - dotnet test /p:CollectCoverage=true /p:CoverletOutputFormat=opencover /p:CoverletOutput=./coverage.xml /p:Exclude=\"[Azuria.Test*]*,[NUnit3.TestAdapter]*\"
+  - codecov -f "coverage.xml" -t $CODECOV_TOKEN
 
 artifacts:
   - path: '*.nupkg'
