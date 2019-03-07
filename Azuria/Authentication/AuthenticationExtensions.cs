@@ -19,7 +19,7 @@ namespace Azuria.Authentication
         /// <param name="token">Optional. The cancellation token used for cancelling the request.</param>
         /// <returns>A <see cref="Task" /> that contains the result of the request.</returns>
         public static Task<IProxerResult> LoginAsync(
-            this IProxerClient client, LoginInput input, CancellationToken token = default(CancellationToken))
+            this IProxerClient client, LoginInput input, CancellationToken token = default)
         {
             return client.Container.Resolve<ILoginManager>().PerformLoginAsync(input, token);
         }
@@ -30,8 +30,7 @@ namespace Azuria.Authentication
         /// <param name="client">The client on which the logout is performed.</param>
         /// <param name="token">Optional. The cancellation token used for cancelling the request.</param>
         /// <returns>A <see cref="Task" /> that contains the result of the method.</returns>
-        public static Task<IProxerResult> LogoutAsync(
-            this IProxerClient client, CancellationToken token = default(CancellationToken))
+        public static Task<IProxerResult> LogoutAsync(this IProxerClient client, CancellationToken token = default)
         {
             return client.Container.Resolve<ILoginManager>().PerformLogoutAsync(token);
         }

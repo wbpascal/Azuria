@@ -11,8 +11,20 @@ namespace Azuria.Api.v1.DataModels.Info
         /// <summary>
         /// </summary>
         [JsonProperty("lang")]
-        [JsonConverter(typeof(LanguageCollectionConverter))]
+        [JsonConverter(typeof(MediaLanguageCollectionConverter))]
         public MediaLanguage[] AvailableLanguages { get; set; }
+        
+        /// <summary>
+        /// 
+        /// </summary>
+        [JsonProperty("characters")]
+        public CharacterDataModel Characters { get; set; }
+        
+        /// <summary>
+        /// 
+        /// </summary>
+        [JsonProperty("forum")]
+        public ForumDataModel[] Forum { get; set; }
 
         /// <summary>
         /// </summary>
@@ -27,7 +39,13 @@ namespace Azuria.Api.v1.DataModels.Info
         /// <summary>
         /// </summary>
         [JsonProperty("names")]
-        public NameDataModel[] Names { get; set; }
+        public EntryNameDataModel[] Names { get; set; }
+        
+        /// <summary>
+        /// 
+        /// </summary>
+        [JsonProperty("persons")]
+        public PersonDataModel[] Persons { get; set; }
 
         /// <summary>
         /// </summary>

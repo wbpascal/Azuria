@@ -16,7 +16,7 @@ namespace Azuria.Api.v1.DataModels.Info
         /// <summary>
         /// </summary>
         [JsonProperty("typ")]
-        [JsonConverter(typeof(LanguageConverter))]
+        [JsonConverter(typeof(MediaLanguageConverter))]
         public MediaLanguage Language { get; set; }
 
         /// <summary>

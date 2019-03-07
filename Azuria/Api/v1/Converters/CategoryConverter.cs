@@ -1,5 +1,6 @@
 ﻿using System;
 using Azuria.Enums;
+using Azuria.Helpers;
 using Newtonsoft.Json;
 
 namespace Azuria.Api.v1.Converters
@@ -10,7 +11,7 @@ namespace Azuria.Api.v1.Converters
         public override MediaEntryType ConvertJson(
             JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
         {
-            return (MediaEntryType) Enum.Parse(typeof(MediaEntryType), reader.Value.ToString(), true);
+            return EnumHelpers.ParseFromString<MediaEntryType>(reader.Value.ToString());
         }
     }
 }

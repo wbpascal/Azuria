@@ -1,5 +1,6 @@
 ﻿using System;
 using Azuria.Enums.Info;
+using Azuria.Helpers;
 using Newtonsoft.Json;
 
 namespace Azuria.Api.v1.Converters
@@ -10,8 +11,7 @@ namespace Azuria.Api.v1.Converters
         public override IndustryRole ConvertJson(
             JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
         {
-            string lValue = reader.Value.ToString();
-            switch (lValue)
+            switch (reader.Value.ToString())
             {
                 case "streaming":
                     return IndustryRole.Streaming;
@@ -20,7 +20,7 @@ namespace Azuria.Api.v1.Converters
                 case "talent_agent":
                     return IndustryRole.TalentAgent;
                 default:
-                    return (IndustryRole) Enum.Parse(typeof(IndustryRole), lValue, true);
+                    return EnumHelpers.ParseFromString(reader.Value.ToString(), IndustryRole.Misc);
             }
         }
     }

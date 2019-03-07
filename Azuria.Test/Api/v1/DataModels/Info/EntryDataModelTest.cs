@@ -22,6 +22,14 @@ namespace Azuria.Test.Api.v1.DataModels.Info
         {
             return new EntryDataModel
             {
+                AdaptionData = new AdaptionDataModel
+                {
+                    EntryId = 8899,
+                    Medium = MediaMedium.Mangaseries,
+                    Name = "Shigatsu wa Kimi no Uso"
+                },
+                AdaptionType = AdaptionType.Entry,
+                AdaptionValue = "8899",
                 Clicks = 23604,
                 ContentCount = 22,
                 Description = "Description Text",

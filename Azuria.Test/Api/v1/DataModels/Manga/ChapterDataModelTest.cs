@@ -22,7 +22,9 @@ namespace Azuria.Test.Api.v1.DataModels.Manga
             {
                 ChapterId = 241036,
                 ChapterTitle = "Chapter 159",
+                Count = 252,
                 EntryId = 7834,
+                EntryName = "Entry Name Chapter 1",
                 Pages = new[]
                 {
                     new PageDataModel

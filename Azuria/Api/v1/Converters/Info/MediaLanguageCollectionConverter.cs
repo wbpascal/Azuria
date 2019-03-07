@@ -6,7 +6,7 @@ using Newtonsoft.Json;
 
 namespace Azuria.Api.v1.Converters.Info
 {
-    internal class LanguageCollectionConverter : DataConverter<MediaLanguage[]>
+    internal class MediaLanguageCollectionConverter : DataConverter<MediaLanguage[]>
     {
         /// <inheritdoc />
         public override MediaLanguage[] ConvertJson(

@@ -9,7 +9,7 @@ namespace Azuria.Api.v1.Converters
         public override bool ConvertJson(
             JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
         {
-            return Convert.ToInt32(reader.Value) == 1;
+            return new IntToNullableBoolConverter().ConvertJson(reader, objectType, existingValue, serializer) ?? false;
         }
     }
 }

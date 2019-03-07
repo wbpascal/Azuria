@@ -24,6 +24,11 @@ namespace Azuria.Api.v1.DataModels.Manga
         /// </summary>
         [JsonProperty("eid")]
         public int EntryId { get; set; }
+        
+        /// <summary>
+        /// </summary>
+        [JsonProperty("name")]
+        public string EntryName { get; set; }
 
         /// <summary>
         /// </summary>
