@@ -19,7 +19,7 @@ namespace Azuria.Requests.Http
         /// <param name="token">Optional. The cancellation token that can be used to cancel the request.</param>
         /// <returns>A <see cref="Task" /> that returns the result of the request.</returns>
         Task<IProxerResult<string>> GetRequestAsync(
-            Uri url, IDictionary<string, string> headers = null, CancellationToken token = default(CancellationToken));
+            Uri url, IDictionary<string, string> headers = null, CancellationToken token = default);
 
         /// <summary>
         /// Creates a "POST" request to a given url with optional header.
@@ -31,6 +31,6 @@ namespace Azuria.Requests.Http
         /// <returns>A <see cref="Task" /> that returns the result of the request.</returns>
         Task<IProxerResult<string>> PostRequestAsync(
             Uri url, IEnumerable<KeyValuePair<string, string>> postArgs,
-            IDictionary<string, string> headers = null, CancellationToken token = default(CancellationToken));
+            IDictionary<string, string> headers = null, CancellationToken token = default);
     }
 }

@@ -61,7 +61,7 @@ namespace Azuria.Requests.Http
 
         /// <inheritdoc />
         public virtual async Task<IProxerResult<string>> GetRequestAsync(
-            Uri url, IDictionary<string, string> headers = null, CancellationToken token = default(CancellationToken))
+            Uri url, IDictionary<string, string> headers = null, CancellationToken token = default)
         {
             string lResponse;
 
@@ -105,7 +105,7 @@ namespace Azuria.Requests.Http
         /// <inheritdoc />
         public virtual async Task<IProxerResult<string>> PostRequestAsync(
             Uri url, IEnumerable<KeyValuePair<string, string>> postArgs, IDictionary<string, string> headers = null,
-            CancellationToken token = default(CancellationToken))
+            CancellationToken token = default)
         {
             string lResponse;
 

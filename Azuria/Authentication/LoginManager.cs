@@ -54,7 +54,7 @@ namespace Azuria.Authentication
 
         /// <inheritdoc />
         public virtual async Task<IProxerResult> PerformLoginAsync(
-            LoginInput input, CancellationToken token = default(CancellationToken))
+            LoginInput input, CancellationToken token = default)
         {
             IRequestBuilderWithResult<LoginDataModel> lRequest = this._userRequestBuilder.Login(input);
 
@@ -70,7 +70,7 @@ namespace Azuria.Authentication
 
         /// <inheritdoc />
         public virtual async Task<IProxerResult> PerformLogoutAsync(
-            CancellationToken token = default(CancellationToken))
+            CancellationToken token = default)
         {
             IProxerResult lResult = await this._userRequestBuilder.Logout().DoRequestAsync(token);
             if (!lResult.Success)

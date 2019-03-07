@@ -36,7 +36,7 @@ namespace Azuria.Requests
         }
 
         private async Task<IProxerResult> ApiRequestInternalAsync<T>(
-            IRequestBuilderBase request, CancellationToken token, JsonSerializerSettings settings = null)
+            IRequestBuilderBase request, CancellationToken token = default, JsonSerializerSettings settings = null)
             where T : ProxerApiResponse
         {
             Dictionary<string, string> lHeaders = this._headerManager.GetHeader();
@@ -93,22 +93,23 @@ namespace Azuria.Requests
         }
 
         /// <inheritdoc />
-        public async Task<IProxerResult> MakeRequestAsync(IRequestBuilder request, CancellationToken token)
+        public async Task<IProxerResult> MakeRequestAsync(IRequestBuilder request, CancellationToken token = default)
         {
             if (!IsApiUrl(request.BuildUri()))
                 return new ProxerResult(new InvalidRequestException("The given request was not a valid api url!"));
 
-            IProxerResult lResult = await this.ApiRequestInternalAsync<ProxerApiResponse>(request, token)
-                                        .ConfigureAwait(false);
+            IProxerResult lResult = 
+                await this.ApiRequestInternalAsync<ProxerApiResponse>(request, token)
+                    .ConfigureAwait(false);
 
-            return lResult.Success && lResult is ProxerApiResponse
+            return lResult.Success
                        ? lResult as ProxerApiResponse
                        : new ProxerResult(lResult.Exceptions);
         }
 
         /// <inheritdoc />
         public async Task<IProxerResult<T>> MakeRequestAsync<T>(
-            IRequestBuilderWithResult<T> request, CancellationToken token)
+            IRequestBuilderWithResult<T> request, CancellationToken token = default)
         {
             if (!IsApiUrl(request.BuildUri()))
                 return new ProxerResult<T>(new InvalidRequestException("The given request is not a valid api url!"));
@@ -120,9 +121,9 @@ namespace Azuria.Requests
                 await this.ApiRequestInternalAsync<ProxerApiResponse<T>>(request, token, lSerializerSettings)
                     .ConfigureAwait(false);
 
-            return lResult.Success && lResult is ProxerApiResponse<T>
-                       ? lResult as ProxerApiResponse<T>
-                       : (IProxerResult<T>) new ProxerResult<T>(lResult.Exceptions);
+            return lResult.Success
+                       ? (IProxerResult<T>) (lResult as ProxerApiResponse<T>)
+                       : new ProxerResult<T>(lResult.Exceptions);
         }
     }
 }

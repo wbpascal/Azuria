@@ -33,15 +33,14 @@ namespace Azuria.Authentication
         /// <param name="input">The input model that contains the login data.</param>
         /// <param name="token">Optional. The cancellation token used for cancelling the request.</param>
         /// <returns>A <see cref="Task" /> that returns the result of the request.</returns>
-        Task<IProxerResult> PerformLoginAsync(
-            LoginInput input, CancellationToken token = default(CancellationToken));
+        Task<IProxerResult> PerformLoginAsync(LoginInput input, CancellationToken token = default);
 
         /// <summary>
         /// Performs the logout of the client.
         /// </summary>
         /// <param name="token">Optional. The cancellation token used for cancelling the request.</param>
         /// <returns>A <see cref="Task" /> that returns the result of the request.</returns>
-        Task<IProxerResult> PerformLogoutAsync(CancellationToken token = default(CancellationToken));
+        Task<IProxerResult> PerformLogoutAsync(CancellationToken token = default);
 
         /// <summary>
         /// Queues the login token to be send with the next request.
@@ -49,7 +48,7 @@ namespace Azuria.Authentication
         void QueueLoginForNextRequest();
 
         /// <summary>
-        /// Gets wether or not the login token should be send with the current request.
+        /// Gets whether or not the login token should be send with the current request.
         /// </summary>
         /// <returns>A boolean that indicates if the login token should be send with the next request.</returns>
         bool SendTokenWithNextRequest();
