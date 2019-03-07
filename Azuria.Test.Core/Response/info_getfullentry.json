@@ -57,6 +57,13 @@
                 "tag": "Bad End",
                 "description": "Bad End Beschreibungstext"
             }
-        ]
+        ],
+        "adaption_type": "entry",
+        "adaption_value": "8899",
+        "adaption_data": {
+            "id": "8899",
+            "name": "Shigatsu wa Kimi no Uso",
+            "medium": "mangaseries"
+        }
     }
 }

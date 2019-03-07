@@ -1,10 +1,13 @@
-﻿using System.Linq;
+﻿using System.Collections;
+using System.Linq;
 using Azuria.Api.v1.DataModels.Info;
+using Azuria.Api.v1.Input;
 using Azuria.Api.v1.Input.Info;
 using Azuria.Api.v1.RequestBuilder;
 using Azuria.Enums.Info;
 using Azuria.Helpers.Extensions;
 using Azuria.Requests.Builder;
+using Azuria.Test.Core.Helpers;
 using NUnit.Framework;
 
 namespace Azuria.Test.Api.v1.RequestBuilder
@@ -13,14 +16,35 @@ namespace Azuria.Test.Api.v1.RequestBuilder
     public class InfoRequestBuilderTest : RequestBuilderTestBase<InfoRequestBuilder>
     {
         [Test]
+        public void GetCharacterInfoTest()
+        {
+            SimpleIdInput lInput = new SimpleIdInput {Id = this.GetRandomNumber(10000)};
+
+            IRequestBuilderWithResult<CharacterInfoDataModel> lRequest = this.RequestBuilder.GetCharacterInfo(lInput);
+            this.CheckUrl(lRequest, "info", "character");
+            Assert.AreSame(this.ProxerClient, lRequest.Client);
+            Assert.True(lRequest.PostParameter.ContainsKey("id"));
+            Assert.Contains(lInput.Id.ToString(), lRequest.PostParameter.GetValue("id").ToList());
+        }
+
+        [Test]
+        public void GetCharactersTest()
+        {
+            EntryIdInput lInput = this.GetRandomEntryIdInput();
+
+            IRequestBuilderWithResult<CharacterDataModel[]> lRequest = this.RequestBuilder.GetCharacters(lInput);
+            this.CheckUrl(lRequest, "info", "characters");
+            Assert.AreSame(this.ProxerClient, lRequest.Client);
+            Assert.True(lRequest.PostParameter.ContainsKey("id"));
+            Assert.AreEqual(lInput.EntryId.ToString(), lRequest.PostParameter.GetValue("id").First());
+        }
+
+        [Test]
         public void GetCommentsTest([Values] CommentSort sort)
         {
             CommentListInput lInput = new CommentListInput
             {
-                Id = this.GetRandomNumber(4200),
-                Limit = 31,
-                Page = 2,
-                Sort = sort
+                Id = this.GetRandomNumber(4200), Limit = 31, Page = 2, Sort = sort
             };
 
             IRequestBuilderWithResult<CommentDataModel[]> lRequest =
@@ -60,6 +84,17 @@ namespace Azuria.Test.Api.v1.RequestBuilder
             Assert.True(lRequest.GetParameters.ContainsKey("id"));
             Assert.AreEqual(lInput.EntryId.ToString(), lRequest.GetParameters["id"]);
             Assert.False(lRequest.CheckLogin);
+        }
+
+        [Test]
+        public void GetForumTest()
+        {
+            EntryIdInput lInput = this.GetRandomEntryIdInput();
+            IRequestBuilderWithResult<ForumDataModel[]> lRequest = this.RequestBuilder.GetForum(lInput);
+            this.CheckUrl(lRequest, "info", "forum");
+            Assert.AreSame(this.ProxerClient, lRequest.Client);
+            Assert.True(lRequest.PostParameter.ContainsKey("id"));
+            Assert.AreEqual(lInput.EntryId.ToString(), lRequest.PostParameter.GetValue("id").First());
         }
 
         [Test]
@@ -126,12 +161,7 @@ namespace Azuria.Test.Api.v1.RequestBuilder
         [Test]
         public void GetListInfoTest()
         {
-            ListInfoInput lInput = new ListInfoInput
-            {
-                EntryId = this.GetRandomNumber(10000),
-                Limit = 15,
-                Page = 1
-            };
+            ListInfoInput lInput = new ListInfoInput {EntryId = this.GetRandomNumber(10000), Limit = 15, Page = 1};
             IRequestBuilderWithResult<ListInfoDataModel> lRequest = this.RequestBuilder.GetListInfo(lInput);
             this.CheckUrl(lRequest, "info", "listinfo");
             Assert.AreSame(this.ProxerClient, lRequest.Client);
@@ -157,6 +187,29 @@ namespace Azuria.Test.Api.v1.RequestBuilder
         }
 
         [Test]
+        public void GetPersonInfoTest()
+        {
+            SimpleIdInput lInput = new SimpleIdInput {Id = this.GetRandomNumber(10000)};
+
+            IRequestBuilderWithResult<PersonInfoDataModel> lRequest = this.RequestBuilder.GetPersonInfo(lInput);
+            this.CheckUrl(lRequest, "info", "person");
+            Assert.AreSame(this.ProxerClient, lRequest.Client);
+            Assert.True(lRequest.PostParameter.ContainsKey("id"));
+            Assert.AreEqual(lInput.Id.ToString(), lRequest.PostParameter.GetValue("id").First());
+        }
+
+        [Test]
+        public void GetPersonsTest()
+        {
+            EntryIdInput lInput = this.GetRandomEntryIdInput();
+            IRequestBuilderWithResult<PersonDataModel[]> lRequest = this.RequestBuilder.GetPersons(lInput);
+            this.CheckUrl(lRequest, "info", "persons");
+            Assert.AreSame(this.ProxerClient, lRequest.Client);
+            Assert.True(lRequest.PostParameter.ContainsKey("id"));
+            Assert.AreEqual(lInput.EntryId.ToString(), lRequest.PostParameter.GetValue("id").First());
+        }
+
+        [Test]
         public void GetPublisherTest()
         {
             EntryIdInput lInput = this.GetRandomEntryIdInput();
@@ -171,11 +224,7 @@ namespace Azuria.Test.Api.v1.RequestBuilder
         [Test]
         public void GetRelationsTest()
         {
-            RelationsInput lInput = new RelationsInput
-            {
-                EntryId = this.GetRandomNumber(10000),
-                ContainsH = true
-            };
+            RelationsInput lInput = new RelationsInput {EntryId = this.GetRandomNumber(10000), ContainsH = true};
             IRequestBuilderWithResult<RelationDataModel[]> lRequest = this.RequestBuilder.GetRelations(lInput);
             this.CheckUrl(lRequest, "info", "relations");
             Assert.AreSame(this.ProxerClient, lRequest.Client);
@@ -184,6 +233,18 @@ namespace Azuria.Test.Api.v1.RequestBuilder
             Assert.AreEqual(lInput.EntryId.ToString(), lRequest.GetParameters["id"]);
             Assert.AreEqual("true", lRequest.GetParameters["isH"]);
             Assert.False(lRequest.CheckLogin);
+        }
+
+        [Test]
+        public void GetRecommendationsTest()
+        {
+            EntryIdInput lInput = this.GetRandomEntryIdInput();
+            IRequestBuilderWithResult<RecommendationDataModel[]> lRequest =
+                this.RequestBuilder.GetRecommendations(lInput);
+            this.CheckUrl(lRequest, "info", "recommendations");
+            Assert.AreSame(this.ProxerClient, lRequest.Client);
+            Assert.True(lRequest.GetParameters.ContainsKey("id"));
+            Assert.AreEqual(lInput.EntryId.ToString(), lRequest.GetParameters["id"]);
         }
 
         [Test]
@@ -211,6 +272,18 @@ namespace Azuria.Test.Api.v1.RequestBuilder
         }
 
         [Test]
+        public void GetUserInfoTest()
+        {
+            EntryIdInput lInput = this.GetRandomEntryIdInput();
+            IRequestBuilderWithResult<UserListsDataModel> lRequest = this.RequestBuilder.GetUserInfo(lInput);
+            this.CheckUrl(lRequest, "info", "userinfo");
+            Assert.AreSame(this.ProxerClient, lRequest.Client);
+            Assert.True(lRequest.CheckLogin);
+            Assert.True(lRequest.PostParameter.ContainsKey("id"));
+            Assert.AreEqual(lInput.EntryId.ToString(), lRequest.PostParameter.GetValue("id").First());
+        }
+
+        [Test]
         public override void ProxerClientTest()
         {
             base.ProxerClientTest();
@@ -219,11 +292,7 @@ namespace Azuria.Test.Api.v1.RequestBuilder
         [Test]
         public void SetUserInfoTest([Values] UserList list)
         {
-            SetUserInfoInput lInput = new SetUserInfoInput
-            {
-                EntryId = this.GetRandomNumber(10000),
-                List = list
-            };
+            SetUserInfoInput lInput = new SetUserInfoInput {EntryId = this.GetRandomNumber(10000), List = list};
             IRequestBuilder lRequest = this.RequestBuilder.SetUserInfo(lInput);
             this.CheckUrl(lRequest, "info", "setuserinfo");
             Assert.AreSame(this.ProxerClient, lRequest.Client);

@@ -48,7 +48,7 @@ namespace Azuria.Api.v1.DataModels.Info
         public string Name { get; set; }
         
         [JsonProperty("names")]
-        public NameDataModel Names { get; set; }
+        public NameDataModel[] Names { get; set; }
         
         [JsonProperty("persons")]
         public PersonDataModel[] Persons { get; set; }

@@ -9,7 +9,7 @@ using NUnit.Framework;
 namespace Azuria.Test.Api.v1.DataModels.Info
 {
     [TestFixture]
-    public class NameDataModelTest : DataModelsTestBase<EntryNameDataModel>
+    public class EntryNameDataModelTest : DataModelsTestBase<EntryNameDataModel>
     {
         [Test]
         public void ConvertTest()

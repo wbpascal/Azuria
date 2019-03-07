@@ -1,4 +1,5 @@
 ﻿using Azuria.Api.v1.DataModels.Info;
+using Azuria.Enums;
 using Azuria.Enums.Info;
 using Azuria.ErrorHandling;
 using Azuria.Test.Core;
@@ -21,7 +22,7 @@ namespace Azuria.Test.Api.v1.DataModels.Info
         {
             EntryDataModel lEntryDataModel = EntryDataModelTest.BuildDataModel();
             IndustryBasicDataModel lIndustryBasicDataModel = IndustryBasicDataModelTest.BuildDataModel();
-            EntryNameDataModel lNameDataModel = NameDataModelTest.BuildDataModel();
+            EntryNameDataModel lNameDataModel = EntryNameDataModelTest.BuildDataModel();
             SeasonDataModel lSeasonDataModel = SeasonDataModelTest.BuildDataModel();
             //Entry id is not included, set it back to default value
             lSeasonDataModel.EntryId = int.MinValue;
@@ -30,6 +31,14 @@ namespace Azuria.Test.Api.v1.DataModels.Info
             TranslatorBasicDataModel lTranslatorBasicDataModel = TranslatorBasicDataModelTest.BuildDataModel();
             return new FullEntryDataModel
             {
+                AdaptionData = new AdaptionDataModel
+                {
+                    EntryId = 8899,
+                    Medium = MediaMedium.Mangaseries,
+                    Name = "Shigatsu wa Kimi no Uso"
+                },
+                AdaptionType = AdaptionType.Entry,
+                AdaptionValue = "8899",
                 Clicks = lEntryDataModel.Clicks,
                 ContentCount = lEntryDataModel.ContentCount,
                 Description = lEntryDataModel.Description,

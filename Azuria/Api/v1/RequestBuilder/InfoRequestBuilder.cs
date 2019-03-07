@@ -96,10 +96,10 @@ namespace Azuria.Api.v1.RequestBuilder
         /// * Info - Level 0
         /// </summary>
         /// <returns>An instance of <see cref="IRequestBuilderWithResult{T}" /> that returns an array of tags.</returns>
-        public IRequestBuilderWithResult<TagDataModel[]> GetForum(EntryIdInput input)
+        public IRequestBuilderWithResult<ForumDataModel[]> GetForum(EntryIdInput input)
         {
             this.CheckInputDataModel(input);
-            return new RequestBuilder<TagDataModel[]>(
+            return new RequestBuilder<ForumDataModel[]>(
                 new Uri($"{ApiConstants.ApiUrlV1}/info/forum"), this.ProxerClient
             ).WithPostParameter(input.BuildDictionary());
         }
@@ -108,7 +108,7 @@ namespace Azuria.Api.v1.RequestBuilder
         /// Builds a request that returns all informations of an anime or manga.
         /// **Warning!:**
         /// The returned object creates a heavy load on the server if it is used in a request!
-        /// Be sure to only use it if you are certain that you need all returned informations!
+        /// Be sure to only use it if you are certain that you need **all** returned information!
         /// Api permissions required (class - permission level):
         /// * Info - Level 0
         /// </summary>
@@ -225,7 +225,7 @@ namespace Azuria.Api.v1.RequestBuilder
             this.CheckInputDataModel(input);
             return new RequestBuilder<PersonInfoDataModel>(
                 new Uri($"{ApiConstants.ApiUrlV1}/info/person"), this.ProxerClient
-            ).WithGetParameter(input.BuildDictionary());
+            ).WithPostParameter(input.BuildDictionary());
         }
         
         /// <summary>
@@ -238,7 +238,7 @@ namespace Azuria.Api.v1.RequestBuilder
             this.CheckInputDataModel(input);
             return new RequestBuilder<PersonDataModel[]>(
                 new Uri($"{ApiConstants.ApiUrlV1}/info/persons"), this.ProxerClient
-            ).WithGetParameter(input.BuildDictionary());
+            ).WithPostParameter(input.BuildDictionary());
         }
 
         /// <summary>

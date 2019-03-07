@@ -1,6 +1,7 @@
 ﻿using Azuria.Api.v1.DataModels.Info;
 using Azuria.Enums;
 using Azuria.Enums.Info;
+using Azuria.Enums.User;
 using Azuria.ErrorHandling;
 using Azuria.Test.Core;
 using NUnit.Framework;
@@ -45,7 +46,8 @@ namespace Azuria.Test.Api.v1.DataModels.Info
                 },
                 EndIndex = 22,
                 Languages = new [] {MediaLanguage.GerSub, MediaLanguage.EngSub},
-                StartIndex = 1
+                StartIndex = 1,
+                State = MediaProgressState.Finished
             };
         }
     }

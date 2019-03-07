@@ -10,7 +10,7 @@ namespace Azuria.Api.v1.Converters
         public override DateTime ConvertJson(
             JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
         {
-            return DateTimeHelpers.UnixTimeStampToDateTime(Convert.ToInt64(reader.Value));
+            return DateTimeHelpers.UnixTimeStampToDateTime(Convert.ToUInt64(reader.Value));
         }
     }
 }
