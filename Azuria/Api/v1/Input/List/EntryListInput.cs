@@ -8,7 +8,7 @@ namespace Azuria.Api.v1.Input.List
 {
     /// <summary>
     /// </summary>
-    public sealed class EntryListInput : PagedInputDataModel
+    public class EntryListInput : PagedInputDataModel
     {
         /// <summary>
         /// Gets or sets the category of which entries are returned. 
@@ -27,7 +27,7 @@ namespace Azuria.Api.v1.Input.List
         [InputData(
             "medium", Converter = typeof(ToLowerConverter), ForbiddenValues = new object[] {MediaMedium.None},
             Optional = true)]
-        public MediaMedium? Medium { get; set; } = null;
+        public MediaMedium? Medium { get; set; }
 
         /// <summary>
         /// Gets or sets a value indicating if adult content is included in the result.

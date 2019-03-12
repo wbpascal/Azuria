@@ -5,7 +5,7 @@ namespace Azuria.Api.v1.Input.Messenger
     /// <summary>
     /// 
     /// </summary>
-    public sealed class NewConferenceInput : InputDataModel
+    public class NewConferenceInput : InputDataModel
     {
         /// <summary>
         /// Gets or sets a string that will be send to the conference after creating it. Commands will be ignored.

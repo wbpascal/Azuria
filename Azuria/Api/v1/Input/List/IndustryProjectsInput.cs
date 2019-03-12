@@ -7,7 +7,7 @@ namespace Azuria.Api.v1.Input.List
 {
     /// <summary>
     /// </summary>
-    public sealed class IndustryProjectsInput : PagedInputDataModel
+    public class IndustryProjectsInput : PagedInputDataModel
     {
         /// <summary>
         /// Gets or sets the id of the industry of which the projects should be returned.

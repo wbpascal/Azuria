@@ -7,7 +7,7 @@ namespace Azuria.Api.v1.Input.Manga
     /// <summary>
     /// 
     /// </summary>
-    public sealed class ChapterInfoInput : InputDataModel
+    public class ChapterInfoInput : InputDataModel
     {
         /// <summary>
         /// Gets or sets the chapter number.

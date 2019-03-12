@@ -7,7 +7,7 @@ namespace Azuria.Api.v1.Input.Messenger
     /// <summary>
     /// 
     /// </summary>
-    public sealed class ConferenceListInput : InputDataModel
+    public class ConferenceListInput : InputDataModel
     {
         /// <summary>
         /// Gets or sets the list from which the conference are to be returned. 

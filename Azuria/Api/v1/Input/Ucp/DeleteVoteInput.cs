@@ -6,7 +6,7 @@ namespace Azuria.Api.v1.Input.Ucp
     /// <summary>
     /// 
     /// </summary>
-    public sealed class DeleteVoteInput : InputDataModel
+    public class DeleteVoteInput : InputDataModel
     {
         /// <summary>
         /// Gets or sets the id of the vote that will be deleted.

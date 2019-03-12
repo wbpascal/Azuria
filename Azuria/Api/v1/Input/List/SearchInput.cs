@@ -10,7 +10,7 @@ namespace Azuria.Api.v1.Input.List
 {
     /// <summary>
     /// </summary>
-    public sealed class SearchInput : PagedInputDataModel
+    public class SearchInput : PagedInputDataModel
     {
         /// <summary>
         /// Optional, if omitted (or null) the default value of the api method will be used.

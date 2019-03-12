@@ -6,7 +6,7 @@ namespace Azuria.Api.v1.Input.Info
     /// <summary>
     /// Represents the input data for requests that only require the id of an entry.
     /// </summary>
-    public sealed class EntryIdInput : InputDataModel
+    public class EntryIdInput : InputDataModel
     {
         /// <summary>
         /// Gets or sets the id of the entry.

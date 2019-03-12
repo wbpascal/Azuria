@@ -7,7 +7,7 @@ namespace Azuria.Api.v1.Input.User
     /// <summary>
     /// 
     /// </summary>
-    public sealed class UserToptenListInput : InputDataModel
+    public class UserToptenListInput : InputDataModel
     {
         /// <summary>
         /// 

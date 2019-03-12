@@ -7,7 +7,7 @@ namespace Azuria.Api.v1.Input.Media
     /// <summary>
     /// 
     /// </summary>
-    public sealed class RandomHeaderInput : InputDataModel
+    public class RandomHeaderInput : InputDataModel
     {
         /// <summary>
         /// Gets or sets the style of the returned header.

@@ -9,7 +9,7 @@ namespace Azuria.Api.v1.Input.List
     /// <summary>
     /// 
     /// </summary>
-    public sealed class TagIdSearchInput : InputDataModel
+    public class TagIdSearchInput : InputDataModel
     {
         /// <summary>
         /// </summary>

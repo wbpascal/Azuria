@@ -122,7 +122,7 @@ namespace Azuria.Api.v1.RequestBuilder
         /// An instance of <see cref="IRequestBuilderWithResult{T}" /> that returns the sum of watched episodes or read
         /// chapters.
         /// </returns>
-        public IRequestBuilderWithResult<int> GetListsum(ListsumInput input)
+        public IRequestBuilderWithResult<int> GetListsum(ListSumInput input)
         {
             this.CheckInputDataModel(input);
             return new RequestBuilder<int>(new Uri($"{ApiConstants.ApiUrlV1}/ucp/listsum"), this.ProxerClient)

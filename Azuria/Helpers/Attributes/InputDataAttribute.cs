@@ -9,7 +9,8 @@ namespace Azuria.Helpers.Attributes
     public class InputDataAttribute : Attribute
     {
         /// <summary>
-        /// 
+        /// Type has to implement <code>IInputDataConverter<T></code> where T is assignable to the
+        /// Type of the Property
         /// </summary>
         public Type Converter { get; set; }
 
@@ -19,7 +20,10 @@ namespace Azuria.Helpers.Attributes
         public string ConverterMethodName { get; set; }
 
         /// <summary>
-        /// 
+        /// Gets or sets which values (after or before conversion of value to string!) are forbidden.
+        /// If a forbidden value was detected and <see cref="Optional"/> is true, the whole property
+        /// is ignored and not added to the dictionary. If <see cref="Optional"/> is false, a exception
+        /// is thrown if the converted value is forbidden.
         /// </summary>
         public object[] ForbiddenValues { get; set; }
 

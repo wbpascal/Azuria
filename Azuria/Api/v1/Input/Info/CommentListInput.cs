@@ -8,7 +8,7 @@ namespace Azuria.Api.v1.Input.Info
     /// <summary>
     /// Represents the input data for a request that returns a list of comments from an entry.
     /// </summary>
-    public sealed class CommentListInput : PagedInputDataModel
+    public class CommentListInput : PagedInputDataModel
     {
         /// <summary>
         /// Gets or sets the id of the entry.

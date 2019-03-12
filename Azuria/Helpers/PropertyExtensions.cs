@@ -15,6 +15,7 @@ namespace Azuria.Helpers
             object lFirstValue = property.GetValue(first);
             object lSecondValue = property.GetValue(second);
 
+            // Compare special cases
             switch (lFirstValue)
             {
                 case null:
@@ -27,6 +28,7 @@ namespace Azuria.Helpers
                     return lFirstEnumerable.Cast<object>().SequenceEqual(lSecondEnumerable.Cast<object>());
             }
 
+            // If we don't have a special case, use the normal equals method to compare the two properties
             return lFirstValue.Equals(lSecondValue);
         }
     }

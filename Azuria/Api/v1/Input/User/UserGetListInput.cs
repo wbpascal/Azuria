@@ -6,7 +6,7 @@ namespace Azuria.Api.v1.Input.User
     /// <summary>
     /// 
     /// </summary>
-    public sealed class UserGetListInput : UcpGetListInputBase
+    public class UserGetListInput : UcpGetListInputBase
     {
         /// <summary>
         /// </summary>

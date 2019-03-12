@@ -6,7 +6,7 @@ namespace Azuria.Api.v1.Input.Info
     /// <summary>
     /// 
     /// </summary>
-    public sealed class ListInfoInput : PagedInputDataModel
+    public class ListInfoInput : PagedInputDataModel
     {
         /// <summary>
         /// Gets or sets the id of the entry.

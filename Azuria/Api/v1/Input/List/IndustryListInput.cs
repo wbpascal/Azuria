@@ -7,7 +7,7 @@ namespace Azuria.Api.v1.Input.List
 {
     /// <summary>
     /// </summary>
-    public sealed class IndustryListInput : PagedInputDataModel
+    public class IndustryListInput : PagedInputDataModel
     {
         /// <summary>
         /// Optional, if omitted (or null) the default value of the api method will be used.

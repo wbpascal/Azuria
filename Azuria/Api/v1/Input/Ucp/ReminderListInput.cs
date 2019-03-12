@@ -7,7 +7,7 @@ namespace Azuria.Api.v1.Input.Ucp
     /// <summary>
     /// 
     /// </summary>
-    public sealed class ReminderListInput : PagedInputDataModel
+    public class ReminderListInput : PagedInputDataModel
     {
         /// <summary>
         /// Gets or sets the category from which the reminder will be returned. 

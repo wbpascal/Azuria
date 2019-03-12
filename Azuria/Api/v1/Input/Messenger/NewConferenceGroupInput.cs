@@ -7,7 +7,7 @@ namespace Azuria.Api.v1.Input.Messenger
     /// <summary>
     /// 
     /// </summary>
-    public sealed class NewConferenceGroupInput : InputDataModel
+    public class NewConferenceGroupInput : InputDataModel
     {
         /// <summary>
         /// Gets or sets the names of the users which will be added to the new conference. The maximum amount is limited by the message constants.

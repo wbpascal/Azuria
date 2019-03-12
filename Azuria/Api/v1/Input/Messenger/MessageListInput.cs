@@ -6,7 +6,7 @@ namespace Azuria.Api.v1.Input.Messenger
     /// <summary>
     /// 
     /// </summary>
-    public sealed class MessageListInput : InputDataModel
+    public class MessageListInput : InputDataModel
     {
         /// <summary>
         /// Gets or sets the id of the conference from where the messages should be fetched. 

@@ -9,7 +9,7 @@ namespace Azuria.Api.v1.Input.Anime
     /// <summary>
     /// Represents the input data for requests that return the streams of an episode.
     /// </summary>
-    public sealed class StreamListInput : InputDataModel
+    public class StreamListInput : InputDataModel
     {
         /// <summary>
         /// Gets or sets the episode of which the streams should be returned.

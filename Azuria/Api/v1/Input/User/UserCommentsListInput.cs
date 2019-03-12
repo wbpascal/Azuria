@@ -7,7 +7,7 @@ namespace Azuria.Api.v1.Input.User
     /// <summary>
     /// 
     /// </summary>
-    public sealed class UserCommentsListInput : PagedInputDataModel
+    public class UserCommentsListInput : PagedInputDataModel
     {
         /// <summary>
         /// 

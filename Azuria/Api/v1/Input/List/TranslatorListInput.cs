@@ -6,7 +6,7 @@ namespace Azuria.Api.v1.Input.List
 {
     /// <summary>
     /// </summary>
-    public sealed class TranslatorListInput : PagedInputDataModel
+    public class TranslatorListInput : PagedInputDataModel
     {
         /// <summary>
         /// Gets or sets the string the names of the returned translator groups have to contain.

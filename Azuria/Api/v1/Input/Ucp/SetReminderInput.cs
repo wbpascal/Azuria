@@ -8,7 +8,7 @@ namespace Azuria.Api.v1.Input.Ucp
     /// <summary>
     /// 
     /// </summary>
-    public sealed class SetReminderInput : InputDataModel
+    public class SetReminderInput : InputDataModel
     {
         /// <summary>
         /// TODO: Complete this

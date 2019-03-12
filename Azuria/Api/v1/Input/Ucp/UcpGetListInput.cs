@@ -9,7 +9,7 @@ namespace Azuria.Api.v1.Input.Ucp
     /// <summary>
     /// 
     /// </summary>
-    public sealed class UcpGetListInput : UcpGetListInputBase
+    public class UcpGetListInput : UcpGetListInputBase
     {
     }
 }

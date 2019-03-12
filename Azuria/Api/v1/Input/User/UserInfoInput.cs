@@ -5,7 +5,7 @@ namespace Azuria.Api.v1.Input.User
     /// <summary>
     /// 
     /// </summary>
-    public sealed class UserInfoInput : InputDataModel
+    public class UserInfoInput : InputDataModel
     {
         /// <summary>
         /// </summary>

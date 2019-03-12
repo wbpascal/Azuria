@@ -7,7 +7,7 @@ namespace Azuria.Api.v1.Input.Ucp
     /// <summary>
     /// 
     /// </summary>
-    public sealed class ListsumInput : InputDataModel
+    public class ListSumInput : InputDataModel
     {
         /// <summary>
         /// Gets or sets the category from which the points will be returned. 

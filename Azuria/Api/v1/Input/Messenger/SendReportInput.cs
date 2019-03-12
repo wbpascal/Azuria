@@ -5,7 +5,7 @@ namespace Azuria.Api.v1.Input.Messenger
     /// <summary>
     /// 
     /// </summary>
-    public sealed class SendReportInput : InputDataModel
+    public class SendReportInput : InputDataModel
     {
         /// <summary>
         /// Gets or sets the id of the conference that the user wants to report.

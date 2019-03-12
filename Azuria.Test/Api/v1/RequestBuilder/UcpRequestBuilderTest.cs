@@ -145,7 +145,7 @@ namespace Azuria.Test.Api.v1.RequestBuilder
         [Test]
         public void GetListsumTest([Values] MediaEntryType category)
         {
-            ListsumInput lInput = new ListsumInput {Category = category};
+            ListSumInput lInput = new ListSumInput {Category = category};
             IRequestBuilderWithResult<int> lRequest = this.RequestBuilder.GetListsum(lInput);
             this.CheckUrl(lRequest, "ucp", "listsum");
             Assert.AreSame(this.ProxerClient, lRequest.Client);

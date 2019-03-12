@@ -6,7 +6,7 @@ namespace Azuria.Api.v1.Input.Ucp
     /// <summary>
     /// 
     /// </summary>
-    public sealed class SetCommentProgressInput : InputDataModel
+    public class SetCommentProgressInput : InputDataModel
     {
         /// <summary>
         /// Gets or sets the id of the comment of which the progress will be changed.

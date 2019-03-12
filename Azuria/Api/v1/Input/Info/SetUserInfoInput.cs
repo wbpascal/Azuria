@@ -7,7 +7,7 @@ namespace Azuria.Api.v1.Input.Info
     /// <summary>
     /// 
     /// </summary>
-    public sealed class SetUserInfoInput : InputDataModel
+    public class SetUserInfoInput : InputDataModel
     {
         /// <summary>
         /// Gets or sets the id of the entry that should be added to the list of the logged in user specified in .

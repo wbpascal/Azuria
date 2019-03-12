@@ -8,7 +8,7 @@ namespace Azuria.Api.v1.Input.List
     /// <summary>
     /// 
     /// </summary>
-    public sealed class TranslatorProjectsInput : PagedInputDataModel
+    public class TranslatorProjectsInput : PagedInputDataModel
     {
         /// <summary>
         /// Gets or sets whether only H-content should be included in the results. If null both H and non-H content will be included.

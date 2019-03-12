@@ -6,7 +6,7 @@ namespace Azuria.Api.v1.Input.Ucp
     /// <summary>
     /// 
     /// </summary>
-    public sealed class DeleteToptenInput : InputDataModel
+    public class DeleteToptenInput : InputDataModel
     {
         /// <summary>
         /// Gets or sets the id of the topten entry that should be deleted. 

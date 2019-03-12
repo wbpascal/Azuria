@@ -7,7 +7,7 @@ namespace Azuria.Api.v1.Input.User
     /// <summary>
     /// 
     /// </summary>
-    public sealed class UserEntryHistoryInput : PagedInputDataModel
+    public class UserEntryHistoryInput : PagedInputDataModel
     {
         /// <summary>
         /// </summary>

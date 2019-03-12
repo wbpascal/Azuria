@@ -8,7 +8,7 @@ namespace Azuria.Api.v1.Input.List
     /// <inheritdoc />
     /// <summary>
     /// </summary>
-    public sealed class TagListInput : InputDataModel
+    public class TagListInput : InputDataModel
     {
         /// <summary>
         /// Gets or sets a string which all returned tags should contain in either their name or description.

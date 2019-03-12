@@ -3,7 +3,7 @@
     /// <summary>
     /// 
     /// </summary>
-    public sealed class UcpEntryHistoryInput : PagedInputDataModel
+    public class UcpEntryHistoryInput : PagedInputDataModel
     {
     }
 }

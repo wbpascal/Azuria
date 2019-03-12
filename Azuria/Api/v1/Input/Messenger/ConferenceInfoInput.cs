@@ -5,7 +5,7 @@ namespace Azuria.Api.v1.Input.Messenger
     /// <summary>
     /// 
     /// </summary>
-    public sealed class ConferenceInfoInput : InputDataModel
+    public class ConferenceInfoInput : InputDataModel
     {
         /// <summary>
         /// Gets or sets the id of the conference that is to be returned.

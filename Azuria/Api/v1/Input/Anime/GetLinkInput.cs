@@ -5,7 +5,7 @@ namespace Azuria.Api.v1.Input.Anime
     /// <inheritdoc />
     /// <summary>
     /// </summary>
-    public sealed class GetLinkInput : InputDataModel
+    public class GetLinkInput : InputDataModel
     {
         /// <summary>
         /// Gets or sets the id of the stream.

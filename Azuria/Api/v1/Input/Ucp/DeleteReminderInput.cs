@@ -6,7 +6,7 @@ namespace Azuria.Api.v1.Input.Ucp
     /// <summary>
     /// 
     /// </summary>
-    public sealed class DeleteReminderInput : InputDataModel
+    public class DeleteReminderInput : InputDataModel
     {
         /// <summary>
         /// Gets or sets the id of the reminder that will be deleted. 
