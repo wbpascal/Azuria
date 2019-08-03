@@ -74,6 +74,7 @@ namespace Azuria.Requests.Http
             {
                 return new ProxerResult<string>(ex);
             }
+
             string lResponseString = await lResponseObject.Content.ReadAsStringAsync().ConfigureAwait(false);
 
             if (lResponseObject.StatusCode == HttpStatusCode.OK && !string.IsNullOrEmpty(lResponseString))
@@ -86,8 +87,8 @@ namespace Azuria.Requests.Http
                     new ProxerResult<string>(new[] {new InvalidResponseException()});
 
             return string.IsNullOrEmpty(lResponse)
-                       ? new ProxerResult<string>(new Exception[] {new InvalidResponseException()})
-                       : new ProxerResult<string>(lResponse);
+                ? new ProxerResult<string>(new Exception[] {new InvalidResponseException()})
+                : new ProxerResult<string>(lResponse);
         }
 
         private async Task<HttpResponseMessage> GetWebRequestAsync(
@@ -113,12 +114,13 @@ namespace Azuria.Requests.Http
             try
             {
                 lResponseObject = await this.PostWebRequestAsync(url, postArgs, headers, token)
-                                      .ConfigureAwait(false);
+                    .ConfigureAwait(false);
             }
             catch (Exception ex)
             {
                 return new ProxerResult<string>(ex);
             }
+
             string lResponseString = await lResponseObject.Content.ReadAsStringAsync().ConfigureAwait(false);
 
             if (lResponseObject.StatusCode == HttpStatusCode.OK && !string.IsNullOrEmpty(lResponseString))
@@ -130,8 +132,8 @@ namespace Azuria.Requests.Http
                 return new ProxerResult<string>(new[] {new InvalidResponseException()});
 
             return string.IsNullOrEmpty(lResponse)
-                       ? new ProxerResult<string>(new Exception[] {new InvalidResponseException {Response = lResponse}})
-                       : new ProxerResult<string>(lResponseString);
+                ? new ProxerResult<string>(new Exception[] {new InvalidResponseException {Response = lResponse}})
+                : new ProxerResult<string>(lResponseString);
         }
 
         private async Task<HttpResponseMessage> PostWebRequestAsync(
@@ -142,12 +144,12 @@ namespace Azuria.Requests.Http
 
             if (headers == null)
                 return await this._client.PostAsync(url, new FormUrlEncodedContent(postArgs), token)
-                           .ConfigureAwait(false);
+                    .ConfigureAwait(false);
             foreach (KeyValuePair<string, string> header in headers)
                 this._client.DefaultRequestHeaders.Add(header.Key, header.Value);
 
             return await this._client.PostAsync(url, new FormUrlEncodedContent(postArgs), token)
-                       .ConfigureAwait(false);
+                .ConfigureAwait(false);
         }
     }
 }

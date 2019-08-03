@@ -20,7 +20,7 @@ namespace Azuria.Helpers.Attributes
         public string ConverterMethodName { get; set; }
 
         /// <summary>
-        /// Gets or sets which values (after or before conversion of value to string!) are forbidden.
+        /// Gets or sets which values (after or before conversion of the value to string!) are forbidden.
         /// If a forbidden value was detected and <see cref="Optional"/> is true, the whole property
         /// is ignored and not added to the dictionary. If <see cref="Optional"/> is false, a exception
         /// is thrown if the converted value is forbidden.

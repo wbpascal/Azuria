@@ -29,6 +29,7 @@ namespace Azuria.Api.v1.Converters
                 case "hmanga":
                     return MediaMedium.HManga;
             }
+
             return MediaMedium.None;
         }
     }

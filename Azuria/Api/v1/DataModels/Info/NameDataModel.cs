@@ -11,18 +11,16 @@ namespace Azuria.Api.v1.DataModels.Info
     /// </summary>
     public class NameDataModel : DataModelBase
     {
-        [JsonProperty("alternative")]
-        public string Alternative { get; set; }
-        
+        [JsonProperty("alternative")] public string Alternative { get; set; }
+
         [JsonProperty("display_name")]
         [JsonConverter(typeof(IntToBoolConverter))]
         public bool IsDisplayName { get; set; }
-        
+
         [JsonProperty("language")]
         [JsonConverter(typeof(LanguageConverter))]
         public Language Language { get; set; }
-        
-        [JsonProperty("name")]
-        public string Name { get; set; }
+
+        [JsonProperty("name")] public string Name { get; set; }
     }
 }

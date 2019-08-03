@@ -14,8 +14,8 @@ namespace Azuria.Api.v1.Converters.List
             string lTagType = reader.Value?.ToString();
             Dictionary<string, TagType> lStringDictionary = EnumHelpers.GetDescriptionDictionary<TagType>();
             return lStringDictionary.ContainsKey(lTagType)
-                       ? lStringDictionary[lTagType]
-                       : throw new InvalidOperationException($"'{lTagType}' is not a valid tag type!");
+                ? lStringDictionary[lTagType]
+                : throw new InvalidOperationException($"'{lTagType}' is not a valid tag type!");
         }
     }
 }

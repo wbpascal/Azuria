@@ -13,7 +13,7 @@ namespace Azuria.Helpers
             if (!typeof(T).GetTypeInfo().IsEnum) throw new ArgumentException("The type parameter must be an enum");
             return Enum.GetValues(typeof(T)).Cast<T>().ToDictionary(arg => arg.GetDescription(), arg => arg);
         }
-        
+
         /// <summary>
         /// Parses an enum value from a string and converts the value to the right type.
         /// Throws an exception if the parsing fails.

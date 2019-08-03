@@ -68,8 +68,7 @@ namespace Azuria.ErrorHandling
         {
         }
 
-        [JsonProperty("code")]
-        internal ErrorCode ErrorCode { get; set; } = ErrorCode.NoError;
+        [JsonProperty("code")] internal ErrorCode ErrorCode { get; set; } = ErrorCode.NoError;
 
         [JsonProperty("message", Required = Required.Always)]
         internal string Message { get; set; }

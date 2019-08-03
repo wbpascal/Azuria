@@ -53,8 +53,8 @@ namespace Azuria.Requests
             KeyValuePair<string, string>[] lPostArgs =
                 postArgs as KeyValuePair<string, string>[] ?? postArgs.ToArray();
             return lPostArgs.Any()
-                       ? httpClient.PostRequestAsync(url, lPostArgs, headers, token)
-                       : httpClient.GetRequestAsync(url, headers, token);
+                ? httpClient.PostRequestAsync(url, lPostArgs, headers, token)
+                : httpClient.GetRequestAsync(url, headers, token);
         }
     }
 }

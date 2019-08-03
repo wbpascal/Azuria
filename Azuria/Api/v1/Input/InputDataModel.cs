@@ -91,15 +91,15 @@ namespace Azuria.Api.v1.Input
         {
             if (this.ContainsForbiddenValue(propertyInfo, attribute))
                 return attribute.Optional
-                           ? (string) null
-                           : throw new InvalidOperationException(
-                                 $"This value is not supported for {propertyInfo.Name}"
-                             );
+                    ? (string) null
+                    : throw new InvalidOperationException(
+                        $"This value is not supported for {propertyInfo.Name}"
+                    );
             if (string.IsNullOrWhiteSpace(attribute.ConverterMethodName) && attribute.Converter == null)
                 return propertyInfo.GetValue(this)?.ToString() ??
                        (attribute.Optional
-                            ? (string) null
-                            : throw new ArgumentNullException($"{propertyInfo.Name} is required!"));
+                           ? (string) null
+                           : throw new ArgumentNullException($"{propertyInfo.Name} is required!"));
 
             Func<object, string> lConversionMethod = this.FindConversionMethod(propertyInfo, attribute);
 
@@ -112,6 +112,7 @@ namespace Azuria.Api.v1.Input
                 if (attribute.Optional) return null;
                 throw new InvalidOperationException($"This value is not supported for {propertyInfo.Name}");
             }
+
             if (attribute.Optional) return null;
 
             throw new MethodNotFoundException(attribute.ConverterMethodName);

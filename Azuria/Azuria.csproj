@@ -1,30 +1,30 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk" ToolsVersion="15.0">
-  <PropertyGroup>
-    <TargetFramework>netstandard1.2</TargetFramework>
-    <SignAssembly>False</SignAssembly>
-    <DelaySign>False</DelaySign>
-    <AssemblyOriginatorKeyFile>signing_key.snk</AssemblyOriginatorKeyFile>
-    <FileUpgradeFlags>
-    </FileUpgradeFlags>
-    <UpgradeBackupLocation>
-    </UpgradeBackupLocation>
-    <OldToolsVersion>2.0</OldToolsVersion>
-    <LangVersion>7.1</LangVersion>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Appveyor|AnyCPU'">
-    <DocumentationFile>bin\Appveyor\netstandard1.2\Azuria.xml</DocumentationFile>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
-    <DocumentationFile>bin\Release\netstandard1.2\Azuria.xml</DocumentationFile>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <DocumentationFile>bin\Debug\netstandard1.2\Azuria.xml</DocumentationFile>
-  </PropertyGroup>
-  <ItemGroup>
-    <PackageReference Include="Autofac" Version="4.5.0" />
-    <PackageReference Include="Newtonsoft.Json" Version="10.0.2" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Remove="signing_key.snk" />
-  </ItemGroup>
+    <PropertyGroup>
+        <TargetFramework>netstandard1.2</TargetFramework>
+        <SignAssembly>False</SignAssembly>
+        <DelaySign>False</DelaySign>
+        <AssemblyOriginatorKeyFile>signing_key.snk</AssemblyOriginatorKeyFile>
+        <FileUpgradeFlags>
+        </FileUpgradeFlags>
+        <UpgradeBackupLocation>
+        </UpgradeBackupLocation>
+        <OldToolsVersion>2.0</OldToolsVersion>
+        <LangVersion>7.1</LangVersion>
+    </PropertyGroup>
+    <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Appveyor|AnyCPU'">
+        <DocumentationFile>bin\Appveyor\netstandard1.2\Azuria.xml</DocumentationFile>
+    </PropertyGroup>
+    <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+        <DocumentationFile>bin\Release\netstandard1.2\Azuria.xml</DocumentationFile>
+    </PropertyGroup>
+    <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+        <DocumentationFile>bin\Debug\netstandard1.2\Azuria.xml</DocumentationFile>
+    </PropertyGroup>
+    <ItemGroup>
+        <PackageReference Include="Autofac" Version="4.5.0" />
+        <PackageReference Include="Newtonsoft.Json" Version="10.0.2" />
+    </ItemGroup>
+    <ItemGroup>
+        <None Remove="signing_key.snk" />
+    </ItemGroup>
 </Project>

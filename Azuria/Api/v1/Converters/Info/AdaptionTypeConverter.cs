@@ -9,7 +9,8 @@ namespace Azuria.Api.v1.Converters.Info
     internal class AdaptionTypeConverter : DataConverter<AdaptionType?>
     {
         /// <inheritdoc />
-        public override AdaptionType? ConvertJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
+        public override AdaptionType? ConvertJson(JsonReader reader, Type objectType, object existingValue,
+            JsonSerializer serializer)
         {
             string lValue = reader.Value.ToString();
             Dictionary<string, AdaptionType> lDescriptionDictionary =
@@ -21,8 +22,8 @@ namespace Azuria.Api.v1.Converters.Info
                     return null;
                 default:
                     return lDescriptionDictionary.ContainsKey(lValue)
-                               ? lDescriptionDictionary[lValue]
-                               : (AdaptionType?) null;
+                        ? lDescriptionDictionary[lValue]
+                        : (AdaptionType?) null;
             }
         }
     }

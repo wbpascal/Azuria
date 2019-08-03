@@ -16,19 +16,19 @@ namespace Azuria.Api.v1.DataModels.Info
         [JsonProperty("adaption_type")]
         [JsonConverter(typeof(AdaptionTypeConverter))]
         public AdaptionType? AdaptionType { get; set; }
-        
+
         /// <summary>
         /// 
         /// </summary>
         [JsonProperty("adaption_value")]
         public string AdaptionValue { get; set; }
-        
+
         /// <summary>
         /// 
         /// </summary>
         [JsonProperty("adaption_data")]
         public AdaptionDataModel AdaptionData { get; set; }
-        
+
         /// <summary>
         /// </summary>
         [JsonProperty("clicks")]

@@ -28,6 +28,7 @@ namespace Azuria.Api.v1.Converters.Manga
                             lPageDataModel.PageWidth = Convert.ToInt32(reader.Value);
                             break;
                     }
+
                 lPageDataModels.Add(lPageDataModel);
             }
 

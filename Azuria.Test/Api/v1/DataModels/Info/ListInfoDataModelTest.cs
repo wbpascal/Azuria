@@ -45,7 +45,7 @@ namespace Azuria.Test.Api.v1.DataModels.Info
                     }
                 },
                 EndIndex = 22,
-                Languages = new [] {MediaLanguage.GerSub, MediaLanguage.EngSub},
+                Languages = new[] {MediaLanguage.GerSub, MediaLanguage.EngSub},
                 StartIndex = 1,
                 State = MediaProgressState.Finished
             };

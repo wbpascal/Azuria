@@ -13,7 +13,7 @@ namespace Azuria.Api.v1.DataModels.Anime
         /// </summary>
         [JsonProperty("entryname")]
         public string EntryName { get; set; }
-        
+
         /// <summary>
         /// </summary>
         [JsonProperty("name")]

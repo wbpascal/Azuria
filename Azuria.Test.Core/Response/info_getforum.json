@@ -1,1 +1,20 @@
-{"error":0,"message":"Abfrage erfolgreich","data":[{"id":"380293","category_id":"56","subject":"Code Geass \u2013 erster Teaser zum neuen Film mit Lelouch","posts":"103","hits":"27205","first_post_time":"1480249550","first_post_userid":"155334","first_post_guest_name":"Minato.","last_post_time":"1533721951","last_post_userid":"399374","last_post_guest_name":"hYperCubeHD","category_name":"Anime- und Manga-News"},{"id":"383766","category_id":"94","subject":"Code Geass \u2013 Kaz\u00e9 k\u00fcndigt Gesamtausgaben an","posts":"6","hits":"2453","first_post_time":"1510070083","first_post_userid":"506740","first_post_guest_name":"Soulykun","last_post_time":"1510489001","last_post_userid":"351626","last_post_guest_name":"Asuka..","category_name":"Anime- und Manga-News in Deutschland"},{"id":"382651","category_id":"56","subject":"Code Geass \u2013 Promo-Videos zum dritten Recap-Film enth\u00fcllt","posts":"15","hits":"9992","first_post_time":"1501508225","first_post_userid":"155334","first_post_guest_name":"Minato.","last_post_time":"1505590133","last_post_userid":"164038","last_post_guest_name":"AnimeGeass","category_name":"Anime- und Manga-News"},{"id":"371620","category_id":"94","subject":"Code Geass: Akito the Exiled \u2013 deutscher Release des dritten und vierten Films","posts":"4","hits":"7104","first_post_time":"1427750971","first_post_userid":"155334","first_post_guest_name":"Minato.","last_post_time":"1482957153","last_post_userid":"260284","last_post_guest_name":"MrKingmustafa","category_name":"Anime- und Manga-News in Deutschland"},{"id":"373258","category_id":"78","subject":"Code Geass Dritte Staffel ?","posts":"27","hits":"8859","first_post_time":"1436569238","first_post_userid":"431319","first_post_guest_name":"SergioRonaldo","last_post_time":"1447803780","last_post_userid":"300945","last_post_guest_name":"Evangelion03","category_name":"Archiv: Anime und Manga"},{"id":"373237","category_id":"78","subject":"Suche Lied\/Theme aus Code Geass","posts":"3","hits":"1218","first_post_time":"1436460811","first_post_userid":"366849","first_post_guest_name":"Dethord","last_post_time":"1436468312","last_post_userid":"366849","last_post_guest_name":"Dethord","category_name":"Archiv: Anime und Manga"},{"id":"372677","category_id":"78","subject":"Code Geass 2 Staffel ?","posts":"6","hits":"2190","first_post_time":"1433618972","first_post_userid":"366849","first_post_guest_name":"Dethord","last_post_time":"1435348479","last_post_userid":"292742","last_post_guest_name":"asavakit","category_name":"Archiv: Anime und Manga"},{"id":"365681","category_id":"78","subject":"Code Geass Frage \u00fcber das Ende","posts":"3","hits":"2121","first_post_time":"1396800387","first_post_userid":"285655","first_post_guest_name":"ShinraSeigei","last_post_time":"1406881704","last_post_userid":"220224","last_post_guest_name":"Keeper596","category_name":"Archiv: Anime und Manga"},{"id":"365791","category_id":"78","subject":"Suche bestimmten Song aus dem Code Geass Soundtrack","posts":"2","hits":"786","first_post_time":"1397306364","first_post_userid":"164808","first_post_guest_name":"CodeGears","last_post_time":"1397307191","last_post_userid":"153188","last_post_guest_name":"kineh","category_name":"Archiv: Anime und Manga"},{"id":"365396","category_id":"78","subject":"Code Geass - Gibt es noch OVAs oder Movies?","posts":"3","hits":"909","first_post_time":"1395529118","first_post_userid":"181001","first_post_guest_name":"Stylleez","last_post_time":"1395529966","last_post_userid":"66493","last_post_guest_name":"SoulKnight","category_name":"Archiv: Anime und Manga"}]}
+{
+  "error": 0,
+  "message": "Abfrage erfolgreich",
+  "data": [
+    {
+      "id": "380293",
+      "category_id": "56",
+      "subject": "Code Geass \u2013 erster Teaser zum neuen Film mit Lelouch",
+      "posts": "103",
+      "hits": "27205",
+      "first_post_time": "1480249550",
+      "first_post_userid": "155334",
+      "first_post_guest_name": "Minato.",
+      "last_post_time": "1533721951",
+      "last_post_userid": "399374",
+      "last_post_guest_name": "hYperCubeHD",
+      "category_name": "Anime- und Manga-News"
+    }
+  ]
+}

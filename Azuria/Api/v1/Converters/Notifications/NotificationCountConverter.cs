@@ -31,6 +31,7 @@ namespace Azuria.Api.v1.Converters.Notifications
                         break;
                 }
             }
+
             return lDataModel;
         }
     }

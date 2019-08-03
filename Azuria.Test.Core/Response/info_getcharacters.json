@@ -1,1 +1,16 @@
-{"error":0,"message":"Abfrage erfolgreich","data":[{"id":"518","name":"Kaori Miyazono","type":"main"},{"id":"258","name":"Kousei Arima","type":"main"},{"id":"2442","name":"Tsubaki Sawabe","type":"main"},{"id":"2443","name":"Watari Ry\u014dta","type":"main"},{"id":"2446","name":"Emi Igawa","type":"support"},{"id":"2448","name":"Hiroko Seto","type":"support"},{"id":"2449","name":"Koharu Seto","type":"support"},{"id":"2484","name":"Komugi","type":"support"},{"id":"2483","name":"Nagi Aiza","type":"support"},{"id":"2450","name":"Nao Kashiwagi","type":"support"},{"id":"2445","name":"Nashida","type":"support"},{"id":"2482","name":"Saitou","type":"support"},{"id":"2444","name":"Saki Arima","type":"support"},{"id":"2485","name":"Satsugi","type":"support"},{"id":"2447","name":"Takeshi Aiza","type":"support"},{"id":"2451","name":"Toshiya Miike","type":"support"},{"id":"2452","name":"Yuriko Ochiai","type":"support"}]}
+{
+  "error": 0,
+  "message": "Abfrage erfolgreich",
+  "data": [
+    {
+      "id": "518",
+      "name": "Kaori Miyazono",
+      "type": "main"
+    },
+    {
+      "id": "2446",
+      "name": "Emi Igawa",
+      "type": "support"
+    }
+  ]
+}

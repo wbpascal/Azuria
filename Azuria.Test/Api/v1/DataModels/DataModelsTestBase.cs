@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using Autofac;
 using Azuria.Api.v1.Converters;
 using Azuria.Api.v1.DataModels;
@@ -48,10 +50,14 @@ namespace Azuria.Test.Api.v1.DataModels
 
         private static void CheckSuccessResult<T1>(IProxerResult<T1> response)
         {
-            Assert.True(response.Success);
-            Assert.NotNull(response.Exceptions);
-            Assert.IsEmpty(response.Exceptions);
-            Assert.NotNull(response.Result);
+            (bool success, IEnumerable<Exception> exceptions, T1 result) = response;
+            Assert.True(success, GetExceptionMessage(exceptions));
+            Assert.NotNull(exceptions);
+            Assert.IsEmpty(exceptions);
+            Assert.NotNull(result);
         }
+
+        private static string GetExceptionMessage(IEnumerable<Exception> exceptions)
+            => exceptions.Aggregate("", (s, exception) => s + exception.ToString() + "\n");
     }
 }

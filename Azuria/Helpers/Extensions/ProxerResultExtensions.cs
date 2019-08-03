@@ -19,7 +19,7 @@ namespace Azuria.Helpers.Extensions
         {
             return result.OnError(() => onError);
         }
-        
+
         /// <summary>
         /// </summary>
         /// <param name="result"></param>

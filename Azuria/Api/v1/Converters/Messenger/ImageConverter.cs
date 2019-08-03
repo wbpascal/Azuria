@@ -11,8 +11,8 @@ namespace Azuria.Api.v1.Converters.Messenger
         {
             string lValue = reader.Value.ToString();
             return lValue.Contains(":")
-                       ? new Uri($"{ApiConstants.ProxerAvatarCdnUrl}/{lValue.Split(':')[1]}")
-                       : null;
+                ? new Uri($"{ApiConstants.ProxerAvatarCdnUrl}/{lValue.Split(':')[1]}")
+                : null;
         }
     }
 }

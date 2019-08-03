@@ -14,7 +14,7 @@ namespace Azuria.Api.v1.DataModels.Info
         /// </summary>
         [JsonProperty("pid")]
         public int Id { get; set; }
-        
+
         /// <summary>
         /// 
         /// </summary>

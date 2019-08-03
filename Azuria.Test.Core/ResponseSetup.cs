@@ -19,6 +19,7 @@ namespace Azuria.Test.Core
                 {
                     lReturn.Add(resourceName.Remove(0, "Azuria.Test.Core.Response.".Length), lReader.ReadToEnd());
                 }
+
             return lReturn;
         }
     }

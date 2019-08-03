@@ -30,7 +30,7 @@ namespace Azuria.Api.v1.DataModels.User
         /// <inheritdoc />
         [JsonProperty("kat")]
         public MediaEntryType EntryType { get; set; }
-        
+
         /// <summary>
         /// </summary>
         [JsonProperty("id")]

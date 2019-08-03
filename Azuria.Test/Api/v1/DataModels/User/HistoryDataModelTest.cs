@@ -18,7 +18,7 @@ namespace Azuria.Test.Api.v1.DataModels.User
             Assert.AreEqual(3, lResponse.Result.Length);
             Assert.AreEqual(BuildDataModel(), lResponse.Result.First());
         }
-        
+
         private static HistoryDataModel BuildDataModel()
         {
             return new HistoryDataModel

@@ -19,7 +19,7 @@ namespace Azuria.Api.v1.RequestBuilder
         public InfoRequestBuilder(IProxerClient proxerClient) : base(proxerClient)
         {
         }
-        
+
         /// <summary>
         /// 
         /// </summary>
@@ -32,7 +32,7 @@ namespace Azuria.Api.v1.RequestBuilder
                 new Uri($"{ApiConstants.ApiUrlV1}/info/character"), this.ProxerClient
             ).WithPostParameter(input.BuildDictionary());
         }
-        
+
         /// <summary>
         /// 
         /// </summary>
@@ -89,7 +89,7 @@ namespace Azuria.Api.v1.RequestBuilder
                 new Uri($"{ApiConstants.ApiUrlV1}/info/entrytags"), this.ProxerClient
             ).WithGetParameter(input.BuildDictionary());
         }
-        
+
         /// <summary>
         /// Builds a request that returns all forum threads of an anime or manga.
         /// Api permissions required (class - permission level):
@@ -227,7 +227,7 @@ namespace Azuria.Api.v1.RequestBuilder
                 new Uri($"{ApiConstants.ApiUrlV1}/info/person"), this.ProxerClient
             ).WithPostParameter(input.BuildDictionary());
         }
-        
+
         /// <summary>
         /// 
         /// </summary>

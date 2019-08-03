@@ -74,8 +74,8 @@ namespace Azuria.Requests
             if (!(lException is NotAuthenticatedException) ||
                 this._headerManager.ContainsAuthenticationHeaders(lHeaders))
                 return lException == null
-                           ? new ProxerResult(new ProxerApiException(lApiResponse.ErrorCode))
-                           : new ProxerResult(lException);
+                    ? new ProxerResult(new ProxerApiException(lApiResponse.ErrorCode))
+                    : new ProxerResult(lException);
 
             return await this.ApiRequestInternalAsync<T>(request, token, settings).ConfigureAwait(false);
         }
@@ -83,8 +83,8 @@ namespace Azuria.Requests
         private static IList<JsonConverter> GetCustomConverter<T>(IRequestBuilderWithResult<T> request)
         {
             return request.CustomDataConverter == null
-                       ? new JsonConverter[0]
-                       : new JsonConverter[] {request.CustomDataConverter};
+                ? new JsonConverter[0]
+                : new JsonConverter[] {request.CustomDataConverter};
         }
 
         private static bool IsApiUrl(Uri url)
@@ -98,13 +98,13 @@ namespace Azuria.Requests
             if (!IsApiUrl(request.BuildUri()))
                 return new ProxerResult(new InvalidRequestException("The given request was not a valid api url!"));
 
-            IProxerResult lResult = 
+            IProxerResult lResult =
                 await this.ApiRequestInternalAsync<ProxerApiResponse>(request, token)
                     .ConfigureAwait(false);
 
             return lResult.Success
-                       ? lResult as ProxerApiResponse
-                       : new ProxerResult(lResult.Exceptions);
+                ? lResult as ProxerApiResponse
+                : new ProxerResult(lResult.Exceptions);
         }
 
         /// <inheritdoc />
@@ -122,8 +122,8 @@ namespace Azuria.Requests
                     .ConfigureAwait(false);
 
             return lResult.Success
-                       ? (IProxerResult<T>) (lResult as ProxerApiResponse<T>)
-                       : new ProxerResult<T>(lResult.Exceptions);
+                ? (IProxerResult<T>) (lResult as ProxerApiResponse<T>)
+                : new ProxerResult<T>(lResult.Exceptions);
         }
     }
 }

@@ -40,8 +40,8 @@ namespace Azuria.Test.Authentication
         public async Task PerformLoginAsyncCalledLoginManagerMethodTest()
         {
             IProxerResult lResult = await this._proxerClient.LoginAsync(
-                                        new LoginInput("username", "password", SecretKey), this._cancellationToken
-                                    );
+                new LoginInput("username", "password", SecretKey), this._cancellationToken
+            );
             Assert.True(lResult.Success);
             Assert.IsEmpty(lResult.Exceptions);
             this._loginMangerMock.Verify(

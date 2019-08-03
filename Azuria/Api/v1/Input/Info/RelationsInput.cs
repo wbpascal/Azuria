@@ -13,7 +13,7 @@ namespace Azuria.Api.v1.Input.Info
         /// </summary>
         [InputData("id")]
         public int EntryId { get; set; }
-        
+
         /// <summary>
         /// 
         /// </summary>

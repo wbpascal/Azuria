@@ -8,7 +8,8 @@ namespace Azuria.Api.v1.Converters.Info
     internal class PersonTypeConverter : DataConverter<PersonType>
     {
         /// <inheritdoc />
-        public override PersonType ConvertJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
+        public override PersonType ConvertJson(JsonReader reader, Type objectType, object existingValue,
+            JsonSerializer serializer)
         {
             switch (reader.Value.ToString())
             {

@@ -51,8 +51,8 @@ namespace Azuria.Test.Requests
             Assert.True(lResult.Exceptions.Any(exception => exception.GetType() == typeof(InvalidRequestException)));
 
             IProxerResult<object> lResultWithObject = await this._requestHandler.MakeRequestAsync(
-                                                          lRequestBuilder.WithResult<object>(), CancellationToken.None
-                                                      );
+                lRequestBuilder.WithResult<object>(), CancellationToken.None
+            );
             Assert.False(lResultWithObject.Success);
             Assert.True(
                 lResultWithObject.Exceptions.Any(exception => exception.GetType() == typeof(InvalidRequestException))

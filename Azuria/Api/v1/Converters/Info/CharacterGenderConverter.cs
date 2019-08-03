@@ -4,10 +4,23 @@ using Newtonsoft.Json;
 
 namespace Azuria.Api.v1.Converters.Info
 {
-    internal class CharacterGenderConverter : DataConverter<CharacterGender>
+    internal class CharacterGenderConverter : DataConverter<CharacterGender?>
     {
+        private readonly CharacterGender? _defaultGender;
+
+        public CharacterGenderConverter()
+            : this(null)
+        {
+        }
+
+        public CharacterGenderConverter(CharacterGender? defaultGender)
+        {
+            this._defaultGender = defaultGender;
+        }
+
         /// <inheritdoc />
-        public override CharacterGender ConvertJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
+        public override CharacterGender? ConvertJson(JsonReader reader, Type objectType, object existingValue,
+            JsonSerializer serializer)
         {
             switch (reader.Value.ToString())
             {
@@ -16,7 +29,7 @@ namespace Azuria.Api.v1.Converters.Info
                 case "m":
                     return CharacterGender.Male;
                 default:
-                    return CharacterGender.Misc;
+                    return this._defaultGender;
             }
         }
     }

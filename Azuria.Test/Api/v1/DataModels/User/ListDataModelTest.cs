@@ -27,7 +27,8 @@ namespace Azuria.Test.Api.v1.DataModels.User
         {
             return new ListDataModel
             {
-                CommentContent = "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum.",
+                CommentContent =
+                    "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum.",
                 CommentContentIndex = 105,
                 CommentId = 7215389,
                 CommentLastChanged = DateTimeHelpers.UnixTimeStampToDateTime(1416410114),

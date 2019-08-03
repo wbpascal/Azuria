@@ -1,78 +1,82 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk" ToolsVersion="15.0">
-  <PropertyGroup>
-    <TargetFramework>netstandard1.4</TargetFramework>
-    <SignAssembly>False</SignAssembly>
-    <DelaySign>False</DelaySign>
-    <AssemblyOriginatorKeyFile>signing_key.snk</AssemblyOriginatorKeyFile>
-    <FileUpgradeFlags>
-    </FileUpgradeFlags>
-    <UpgradeBackupLocation>
-    </UpgradeBackupLocation>
-    <OldToolsVersion>2.0</OldToolsVersion>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Appveyor|AnyCPU'" />
-  <ItemGroup>
-    <EmbeddedResource Include="Response\anime_getlink.json" />
-    <EmbeddedResource Include="Response\anime_getstreams.json" />
-    <EmbeddedResource Include="Response\info_getcommentslatest.json" />
-    <EmbeddedResource Include="Response\info_getcommentsrating.json" />
-    <EmbeddedResource Include="Response\info_getentry.json" />
-    <EmbeddedResource Include="Response\info_getentrytags.json" />
-    <EmbeddedResource Include="Response\info_getfullentry.json" />
-    <EmbeddedResource Include="Response\info_getgate.json" />
-    <EmbeddedResource Include="Response\info_getgroups.json" />
-    <EmbeddedResource Include="Response\info_getindustry.json" />
-    <EmbeddedResource Include="Response\info_getlang.json" />
-    <EmbeddedResource Include="Response\info_getlistinfo.json" />
-    <EmbeddedResource Include="Response\info_getnames.json" />
-    <EmbeddedResource Include="Response\info_getpublisher.json" />
-    <EmbeddedResource Include="Response\info_getrelations.json" />
-    <EmbeddedResource Include="Response\info_getseason.json" />
-    <EmbeddedResource Include="Response\info_gettranslatorgroup.json" />
-    <EmbeddedResource Include="Response\info_setuserinfofavor.json" />
-    <EmbeddedResource Include="Response\info_setuserinfofinish.json" />
-    <EmbeddedResource Include="Response\info_setuserinfonote.json" />
-    <EmbeddedResource Include="Response\list_getindustryprojects.json" />
-    <EmbeddedResource Include="Response\list_getindustries.json" />
-    <EmbeddedResource Include="Response\list_gettranslatorgroups.json" />
-    <EmbeddedResource Include="Response\list_getentrylist.json" />
-    <EmbeddedResource Include="Response\list_getentrysearch.json" />
-    <EmbeddedResource Include="Response\list_gettagids.json" />
-    <EmbeddedResource Include="Response\list_gettranslatorgroupprojects.json" />
-    <EmbeddedResource Include="Response\manga_getchapter.json" />
-    <EmbeddedResource Include="Response\media_getrandomheaderblack.json" />
-    <EmbeddedResource Include="Response\messenger_getconferenceinfo.json" />
-    <EmbeddedResource Include="Response\messenger_getconferences.json" />
-    <EmbeddedResource Include="Response\messenger_getconstants.json" />
-    <EmbeddedResource Include="Response\messenger_getmessages.json" />
-    <EmbeddedResource Include="Response\notifications_getcount.json" />
-    <EmbeddedResource Include="Response\notifications_getnews.json" />
-    <EmbeddedResource Include="Response\ucp_deletefavourite.json" />
-    <EmbeddedResource Include="Response\ucp_deletereminder.json" />
-    <EmbeddedResource Include="Response\ucp_deletevote.json" />
-    <EmbeddedResource Include="Response\ucp_gethistory.json" />
-    <EmbeddedResource Include="Response\ucp_getlistsumanime.json" />
-    <EmbeddedResource Include="Response\ucp_getlistsummanga.json" />
-    <EmbeddedResource Include="Response\ucp_getreminder.json" />
-    <EmbeddedResource Include="Response\ucp_gettopten.json" />
-    <EmbeddedResource Include="Response\ucp_getvotes.json" />
-    <EmbeddedResource Include="Response\user_gethistory.json" />
-    <EmbeddedResource Include="Response\user_getlatestcommentsmanga.json" />
-    <EmbeddedResource Include="Response\user_getlistmanga.json" />
-    <EmbeddedResource Include="Response\user_gettoptenanime.json" />
-    <EmbeddedResource Include="Response\user_getuserinfo.json" />
-    <EmbeddedResource Include="Response\user_login.json" />
-    <EmbeddedResource Include="Response\user_logout.json" />
-  </ItemGroup>
-  <ItemGroup>
-    <PackageReference Include="Microsoft.AspNetCore.WebUtilities" Version="1.1.1" />
-    <PackageReference Include="Moq" Version="4.7.8" />
-    <PackageReference Include="System.ValueTuple" Version="4.3.0" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\Azuria\Azuria.csproj" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Remove="signing_key.snk" />
-  </ItemGroup>
+    <PropertyGroup>
+        <TargetFramework>netstandard1.4</TargetFramework>
+        <SignAssembly>False</SignAssembly>
+        <DelaySign>False</DelaySign>
+        <AssemblyOriginatorKeyFile>signing_key.snk</AssemblyOriginatorKeyFile>
+        <FileUpgradeFlags>
+        </FileUpgradeFlags>
+        <UpgradeBackupLocation>
+        </UpgradeBackupLocation>
+        <OldToolsVersion>2.0</OldToolsVersion>
+    </PropertyGroup>
+    <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Appveyor|AnyCPU'" />
+    <ItemGroup>
+        <EmbeddedResource Include="Response\anime_getlink.json" />
+        <EmbeddedResource Include="Response\anime_getstreams.json" />
+        <EmbeddedResource Include="Response\info_getcommentslatest.json" />
+        <EmbeddedResource Include="Response\info_getcommentsrating.json" />
+        <EmbeddedResource Include="Response\info_getentry.json" />
+        <EmbeddedResource Include="Response\info_getentrytags.json" />
+        <EmbeddedResource Include="Response\info_getfullentry.json" />
+        <EmbeddedResource Include="Response\info_getgate.json" />
+        <EmbeddedResource Include="Response\info_getgroups.json" />
+        <EmbeddedResource Include="Response\info_getindustry.json" />
+        <EmbeddedResource Include="Response\info_getlang.json" />
+        <EmbeddedResource Include="Response\info_getlistinfo.json" />
+        <EmbeddedResource Include="Response\info_getnames.json" />
+        <EmbeddedResource Include="Response\info_getpublisher.json" />
+        <EmbeddedResource Include="Response\info_getrelations.json" />
+        <EmbeddedResource Include="Response\info_getseason.json" />
+        <EmbeddedResource Include="Response\info_gettranslatorgroup.json" />
+        <EmbeddedResource Include="Response\info_setuserinfofavor.json" />
+        <EmbeddedResource Include="Response\info_setuserinfofinish.json" />
+        <EmbeddedResource Include="Response\info_setuserinfonote.json" />
+        <EmbeddedResource Include="Response\list_getindustryprojects.json" />
+        <EmbeddedResource Include="Response\list_getindustries.json" />
+        <EmbeddedResource Include="Response\list_gettranslatorgroups.json" />
+        <EmbeddedResource Include="Response\list_getentrylist.json" />
+        <EmbeddedResource Include="Response\list_getentrysearch.json" />
+        <EmbeddedResource Include="Response\list_gettagids.json" />
+        <EmbeddedResource Include="Response\list_gettranslatorgroupprojects.json" />
+        <EmbeddedResource Include="Response\manga_getchapter.json" />
+        <EmbeddedResource Include="Response\media_getrandomheaderblack.json" />
+        <EmbeddedResource Include="Response\messenger_getconferenceinfo.json" />
+        <EmbeddedResource Include="Response\messenger_getconferences.json" />
+        <EmbeddedResource Include="Response\messenger_getconstants.json" />
+        <EmbeddedResource Include="Response\messenger_getmessages.json" />
+        <EmbeddedResource Include="Response\notifications_getcount.json" />
+        <EmbeddedResource Include="Response\notifications_getnews.json" />
+        <EmbeddedResource Include="Response\ucp_deletefavourite.json" />
+        <EmbeddedResource Include="Response\ucp_deletereminder.json" />
+        <EmbeddedResource Include="Response\ucp_deletevote.json" />
+        <EmbeddedResource Include="Response\ucp_gethistory.json" />
+        <EmbeddedResource Include="Response\ucp_getlistsumanime.json" />
+        <EmbeddedResource Include="Response\ucp_getlistsummanga.json" />
+        <EmbeddedResource Include="Response\ucp_getreminder.json" />
+        <EmbeddedResource Include="Response\ucp_gettopten.json" />
+        <EmbeddedResource Include="Response\ucp_getvotes.json" />
+        <EmbeddedResource Include="Response\user_gethistory.json" />
+        <EmbeddedResource Include="Response\user_getlatestcommentsmanga.json" />
+        <EmbeddedResource Include="Response\user_getlistmanga.json" />
+        <EmbeddedResource Include="Response\user_gettoptenanime.json" />
+        <EmbeddedResource Include="Response\user_getuserinfo.json" />
+        <EmbeddedResource Include="Response\user_login.json" />
+        <EmbeddedResource Include="Response\user_logout.json" />
+        <None Remove="Response\info_getcharacters.json" />
+        <EmbeddedResource Include="Response\info_getcharacters.json" />
+        <None Remove="Response\info_getcharacter.json" />
+        <EmbeddedResource Include="Response\info_getcharacter.json" />
+    </ItemGroup>
+    <ItemGroup>
+        <PackageReference Include="Microsoft.AspNetCore.WebUtilities" Version="1.1.1" />
+        <PackageReference Include="Moq" Version="4.7.8" />
+        <PackageReference Include="System.ValueTuple" Version="4.3.0" />
+    </ItemGroup>
+    <ItemGroup>
+        <ProjectReference Include="..\Azuria\Azuria.csproj" />
+    </ItemGroup>
+    <ItemGroup>
+        <None Remove="signing_key.snk" />
+    </ItemGroup>
 </Project>

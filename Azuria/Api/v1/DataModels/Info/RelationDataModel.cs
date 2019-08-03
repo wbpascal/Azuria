@@ -25,10 +25,8 @@ namespace Azuria.Api.v1.DataModels.Info
             Year = this.Year
         };
 
-        [JsonProperty("season")]
-        internal Season Season { get; set; }
+        [JsonProperty("season")] internal Season Season { get; set; }
 
-        [JsonProperty("year")]
-        internal int Year { get; set; }
+        [JsonProperty("year")] internal int Year { get; set; }
     }
 }

@@ -26,7 +26,7 @@ namespace Azuria.Api.v1.DataModels.Info
         /// </summary>
         [JsonProperty("end")]
         public int EndIndex { get; set; }
-        
+
         /// <summary>
         /// 
         /// </summary>

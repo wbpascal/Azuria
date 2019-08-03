@@ -12,13 +12,11 @@ namespace Azuria.Api.v1.DataModels.Info
     public class DescriptionDataModel : DataModelBase
     {
         [JsonProperty("language")]
-        [JsonConverter(typeof(MediaLanguageConverter))]
+        [JsonConverter(typeof(LanguageConverter))]
         public Language Language { get; set; }
-        
-        [JsonProperty("subject")]
-        public string Subject { get; set; }
-        
-        [JsonProperty("text")]
-        public string Text { get; set; }
+
+        [JsonProperty("subject")] public string Subject { get; set; }
+
+        [JsonProperty("text")] public string Text { get; set; }
     }
 }

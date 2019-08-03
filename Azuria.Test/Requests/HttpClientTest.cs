@@ -40,7 +40,7 @@ namespace Azuria.Test.Requests
             Dictionary<string, string> lHeaders = new Dictionary<string, string> {{"Header-Key", "headerValue"}};
             IProxerResult<string> lResult =
                 await this._httpClient.GetRequestAsync(new Uri("https://httpbin.org/get?test=value"), lHeaders);
-            Assert.True(lResult.Success);
+            Assert.True(lResult.Success, lResult.Result);
             Assert.IsEmpty(lResult.Exceptions);
             Assert.IsNotEmpty(lResult.Result);
 

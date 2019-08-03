@@ -16,8 +16,7 @@ namespace Azuria.Api.v1.DataModels.Info
         /// </summary>
         public Uri Avatar => new Uri(ApiConstants.ProxerAvatarShortCdnUrl + this.AvatarId);
 
-        [JsonProperty("avatar")]
-        internal string AvatarId { get; set; }
+        [JsonProperty("avatar")] internal string AvatarId { get; set; }
 
         /// <summary>
         /// </summary>

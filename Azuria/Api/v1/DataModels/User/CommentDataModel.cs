@@ -15,7 +15,7 @@ namespace Azuria.Api.v1.DataModels.User
         [JsonProperty("medium")]
         [JsonConverter(typeof(MediumConverter))]
         public MediaMedium EntryMedium { get; set; }
-        
+
         /// <summary>
         /// 
         /// </summary>

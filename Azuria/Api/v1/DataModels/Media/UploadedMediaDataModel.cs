@@ -11,7 +11,7 @@ namespace Azuria.Api.v1.DataModels.Media
         /// </summary>
         [JsonProperty("count")]
         public int Count { get; set; }
-        
+
         /// <summary>
         /// </summary>
         [JsonProperty("tid")]

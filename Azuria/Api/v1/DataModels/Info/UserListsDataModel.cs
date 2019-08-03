@@ -12,25 +12,25 @@ namespace Azuria.Api.v1.DataModels.Info
         /// </summary>
         [JsonProperty("canceled")]
         public bool IsCanceled { get; set; }
-        
+
         /// <summary>
         /// 
         /// </summary>
         [JsonProperty("finished")]
         public bool IsFinished { get; set; }
-        
+
         /// <summary>
         /// 
         /// </summary>
         [JsonProperty("topten")]
         public bool IsInTopten { get; set; }
-        
+
         /// <summary>
         /// 
         /// </summary>
         [JsonProperty("marked")]
         public bool IsMarked { get; set; }
-        
+
         /// <summary>
         /// 
         /// </summary>

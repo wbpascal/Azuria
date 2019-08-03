@@ -13,13 +13,13 @@ namespace Azuria.Api.v1.DataModels.Info
         [JsonProperty("lang")]
         [JsonConverter(typeof(MediaLanguageCollectionConverter))]
         public MediaLanguage[] AvailableLanguages { get; set; }
-        
+
         /// <summary>
         /// 
         /// </summary>
         [JsonProperty("characters")]
         public CharacterDataModel Characters { get; set; }
-        
+
         /// <summary>
         /// 
         /// </summary>
@@ -40,7 +40,7 @@ namespace Azuria.Api.v1.DataModels.Info
         /// </summary>
         [JsonProperty("names")]
         public EntryNameDataModel[] Names { get; set; }
-        
+
         /// <summary>
         /// 
         /// </summary>

@@ -18,6 +18,7 @@ namespace Azuria.Api.v1.Converters.Info
                 if (reader.TokenType == JsonToken.EndArray) break;
                 lLanguages.Add(LanguageHelpers.GetMediaLanguage(reader.Value.ToString()));
             }
+
             return lLanguages.ToArray();
         }
     }
