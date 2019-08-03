@@ -19,6 +19,8 @@ namespace Azuria.Requests.Builder
         /// </summary>
         IDictionary<string, string> GetParameters { get; }
 
+        IDictionary<string, string> Headers { get; }
+
         /// <summary>
         /// </summary>
         IEnumerable<KeyValuePair<string, string>> PostParameter { get; }

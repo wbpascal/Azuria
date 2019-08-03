@@ -9,24 +9,8 @@ namespace Azuria.ErrorHandling
     /// <summary>
     /// </summary>
     /// <typeparam name="T"></typeparam>
-    public class ProxerApiResponse<T> : ProxerApiResponse, IProxerResult<T>
+    public class ProxerApiResponse<T> : ProxerApiResponseBase, IProxerResult<T>
     {
-        /// <summary>
-        /// </summary>
-        internal ProxerApiResponse()
-        {
-        }
-
-        /// <inheritdoc />
-        internal ProxerApiResponse(IEnumerable<Exception> exceptions) : base(exceptions)
-        {
-        }
-
-        /// <inheritdoc />
-        internal ProxerApiResponse(Exception exception) : base(exception)
-        {
-        }
-
         /// <inheritdoc />
         [JsonProperty("data")]
         public T Result { get; internal set; }
@@ -42,40 +26,12 @@ namespace Azuria.ErrorHandling
 
     /// <summary>
     /// </summary>
-    public class ProxerApiResponse : ProxerResult
+    public class ProxerApiResponse : ProxerApiResponseBase, IProxerResult
     {
-        /// <summary>
-        /// </summary>
-        internal ProxerApiResponse()
+        public void Deconstruct(out bool success, out IEnumerable<Exception> exceptions)
         {
+            success = this.Success;
+            exceptions = this.Exceptions;
         }
-
-        /// <summary>
-        /// Initialises a new instance with the exceptions that were thrown during method execution and indicates that the
-        /// method failed to execute.
-        /// </summary>
-        /// <param name="exceptions">The exception that were thrown during method execution.</param>
-        internal ProxerApiResponse(IEnumerable<Exception> exceptions)
-        {
-            this.Success = false;
-            this.Exceptions = exceptions;
-        }
-
-        /// <summary>
-        /// </summary>
-        /// <param name="exception"></param>
-        internal ProxerApiResponse(Exception exception) : this(new[] {exception})
-        {
-        }
-
-        [JsonProperty("code")] internal ErrorCode ErrorCode { get; set; } = ErrorCode.NoError;
-
-        [JsonProperty("message", Required = Required.Always)]
-        internal string Message { get; set; }
-
-        /// <inheritdoc />
-        [JsonProperty("error", Required = Required.Always)]
-        [JsonConverter(typeof(InvertBoolConverter))]
-        public new bool Success { get; set; }
     }
 }

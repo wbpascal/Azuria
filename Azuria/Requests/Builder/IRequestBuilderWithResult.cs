@@ -33,6 +33,19 @@ namespace Azuria.Requests.Builder
 
         /// <summary>
         /// </summary>
+        /// <param name="key"></param>
+        /// <param name="value"></param>
+        /// <returns></returns>
+        IRequestBuilderWithResult<T> WithHeader(string key, string value);
+
+        /// <summary>
+        /// </summary>
+        /// <param name="header"></param>
+        /// <returns></returns>
+        IRequestBuilderWithResult<T> WithHeader(IDictionary<string, string> header);
+
+        /// <summary>
+        /// </summary>
         /// <returns></returns>
         IRequestBuilderWithResult<T> WithLoginCheck(bool check = true);
 

@@ -16,26 +16,58 @@ namespace Azuria.Authentication
     /// </summary>
     public class LoginManager : ILoginManager
     {
-        private readonly UserRequestBuilder _userRequestBuilder;
-        private bool _isLoginQueued;
+        private const string LoginTokenHeaderName = "proxer-api-token";
+
         private DateTime _lastRequestPerformed = DateTime.MinValue;
         private DateTime _loginPerformed = DateTime.MinValue;
+        private char[] _loginToken;
 
         /// <summary>
         /// </summary>
-        /// <param name="userRequestBuilder"></param>
         /// <param name="loginToken"></param>
-        public LoginManager(UserRequestBuilder userRequestBuilder, char[] loginToken = null)
+        public LoginManager(char[] loginToken = null)
         {
-            this._userRequestBuilder = userRequestBuilder;
-            this.LoginToken = loginToken;
+            this._loginToken = loginToken;
         }
 
-        /// <inheritdoc />
-        public char[] LoginToken { get; set; }
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns>If any information was added to the request</returns>
+        public bool AddAuthenticationInformation(IRequestBuilderBase request)
+        {
+            if (this.ContainsAuthenticationInformation(request)) return false;
+            if (this._loginToken == null || this._loginToken.Length != 255 || this.IsLoginProbablyValid())
+                return false;
 
-        /// <inheritdoc />
-        public bool CheckIsLoginProbablyValid()
+            request.Headers[LoginTokenHeaderName] = this._loginToken.ToString();
+            return true;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
+        public bool ContainsAuthenticationInformation(IRequestBuilderBase request)
+        {
+            return request.Headers.ContainsKey(LoginTokenHeaderName);
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public void InvalidateLogin()
+        {
+            this._loginPerformed = DateTime.MinValue;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        public bool IsLoginProbablyValid()
         {
             if (this._loginPerformed == DateTime.MinValue)
                 return false;
@@ -44,54 +76,16 @@ namespace Azuria.Authentication
             return DateTime.Now.Subtract(this._lastRequestPerformed).TotalHours < 1;
         }
 
-        /// <inheritdoc />
-        public void PerformedRequest(bool sendLoginToken = false)
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="result"></param>
+        /// <exception cref="NotImplementedException"></exception>
+        public void Update(IProxerResultBase result)
         {
             this._lastRequestPerformed = DateTime.Now;
-            this._isLoginQueued = false;
-            if (sendLoginToken) this._loginPerformed = DateTime.Now;
-        }
 
-        /// <inheritdoc />
-        public virtual async Task<IProxerResult> PerformLoginAsync(
-            LoginInput input, CancellationToken token = default)
-        {
-            IRequestBuilderWithResult<LoginDataModel> lRequest = this._userRequestBuilder.Login(input);
-
-            IProxerResult<LoginDataModel> lResult = await lRequest.DoRequestAsync(token);
-
-            if (!lResult.Success || lResult.Result == null)
-                return new ProxerResult(lResult.Exceptions);
-
-            this.LoginToken = lResult.Result.Token.ToCharArray();
-            this._loginPerformed = DateTime.Now;
-            return new ProxerResult();
-        }
-
-        /// <inheritdoc />
-        public virtual async Task<IProxerResult> PerformLogoutAsync(
-            CancellationToken token = default)
-        {
-            IProxerResult lResult = await this._userRequestBuilder.Logout().DoRequestAsync(token);
-            if (!lResult.Success)
-                return new ProxerResult(lResult.Exceptions);
-
-            this.LoginToken = null;
-            this._loginPerformed = DateTime.MinValue;
-            return new ProxerResult();
-        }
-
-        /// <inheritdoc />
-        public void QueueLoginForNextRequest()
-        {
-            this._isLoginQueued = this.LoginToken?.Length == 255;
-        }
-
-        /// <inheritdoc />
-        public bool SendTokenWithNextRequest()
-        {
-            return this.LoginToken?.Length == 255 &&
-                   (this._isLoginQueued || !this.CheckIsLoginProbablyValid());
+            // TODO: Update token after login + timestamp
         }
     }
 }

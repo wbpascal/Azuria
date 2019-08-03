@@ -50,6 +50,10 @@ namespace Azuria.Requests.Builder
 
         /// <summary>
         /// </summary>
+        public IDictionary<string, string> Headers { get; } = new Dictionary<string, string>();
+
+        /// <summary>
+        /// </summary>
         public IEnumerable<KeyValuePair<string, string>> PostParameter => this._postArguments;
 
         /// <summary>
@@ -62,11 +66,29 @@ namespace Azuria.Requests.Builder
         }
 
         /// <summary>
+        /// TODO: Change to AddGetParameter(s)
         /// </summary>
         /// <param name="parameters"></param>
         protected void AddGetParameter(IDictionary<string, string> parameters)
         {
             this.GetParameters.AddOrUpdateRange(parameters);
+        }
+
+        /// <summary>
+        /// </summary>
+        /// <param name="key"></param>
+        /// <param name="value"></param>
+        protected void AddHeader(string key, string value)
+        {
+            this.Headers[key] = value;
+        }
+
+        /// <summary>
+        /// </summary>
+        /// <param name="headers"></param>
+        protected void AddHeader(IDictionary<string, string> headers)
+        {
+            this.Headers.AddOrUpdateRange(headers);
         }
 
         /// <summary>
