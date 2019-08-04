@@ -12,6 +12,10 @@ namespace Azuria.Test.Api.v1.RequestBuilder
     [TestFixture]
     public class MangaRequestBuilderTest : RequestBuilderTestBase<MangaRequestBuilder>
     {
+        public MangaRequestBuilderTest() : base(client => new MangaRequestBuilder(client))
+        {
+        }
+
         [Test]
         [TestCase(5112, 51, Language.English)]
         [TestCase(14923, 12, Language.German)]

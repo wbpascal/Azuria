@@ -15,13 +15,13 @@ namespace Azuria.Middleware
     public class ErrorMiddleware : IMiddleware
     {
         /// <inheritdoc />
-        public async Task<IProxerResult> Invoke(IRequestBuilder request,
-            Func<IRequestBuilder, Task<IProxerResult>> next, CancellationToken cancellationToken = default)
+        public async Task<IProxerResult> Invoke(IRequestBuilder request, MiddlewareAction next,
+            CancellationToken cancellationToken = default)
         {
             Exception[] lRequestExceptions = GetRequestExceptions(request);
             if (lRequestExceptions.Any()) return new ProxerResult(lRequestExceptions);
 
-            IProxerResult lResult = await next.Invoke(request).ConfigureAwait(false);
+            IProxerResult lResult = await next(request, cancellationToken).ConfigureAwait(false);
 
             Exception[] lResultExceptions = GetResultExceptions(lResult);
             return lResultExceptions.Any() ? new ProxerResult(lResultExceptions) : lResult;
@@ -29,13 +29,12 @@ namespace Azuria.Middleware
 
         /// <inheritdoc />
         public async Task<IProxerResult<T>> InvokeWithResult<T>(IRequestBuilderWithResult<T> request,
-            Func<IRequestBuilderWithResult<T>, Task<IProxerResult<T>>> next,
-            CancellationToken cancellationToken = default)
+            MiddlewareAction<T> next, CancellationToken cancellationToken = default)
         {
             Exception[] lRequestExceptions = GetRequestExceptions(request);
             if (lRequestExceptions.Any()) return new ProxerResult<T>(lRequestExceptions);
 
-            IProxerResult<T> lResult = await next.Invoke(request).ConfigureAwait(false);
+            IProxerResult<T> lResult = await next(request, cancellationToken).ConfigureAwait(false);
 
             Exception[] lResultExceptions = GetResultExceptions(lResult);
             return lResultExceptions.Any() ? new ProxerResult<T>(lResultExceptions) : lResult;

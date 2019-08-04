@@ -19,6 +19,10 @@ namespace Azuria.Test.Api.v1.RequestBuilder
     [TestFixture]
     public class ListRequestBuilderTest : RequestBuilderTestBase<ListRequestBuilder>
     {
+        public ListRequestBuilderTest() : base(client => new ListRequestBuilder(client))
+        {
+        }
+
         [Test]
         public void EntrySearchInputNullTest()
         {

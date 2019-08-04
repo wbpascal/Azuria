@@ -16,7 +16,7 @@ namespace Azuria.Test.Api.v1.DataModels
         protected DataModelsTestBase()
         {
             this.Client = ProxerClient.Create(new char[32]);
-            this.Deserializer = this.Client.Container.Resolve<IJsonDeserializer>();
+            this.Deserializer = new JsonDeserializer();
         }
 
         public IProxerClient Client { get; }

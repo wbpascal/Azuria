@@ -11,6 +11,10 @@ namespace Azuria.Test.Api.v1.RequestBuilder
     [TestFixture]
     public class MediaRequestBuilderTest : RequestBuilderTestBase<MediaRequestBuilder>
     {
+        public MediaRequestBuilderTest() : base(client => new MediaRequestBuilder(client))
+        {
+        }
+
         [Test]
         public void GetHeaderListTest()
         {

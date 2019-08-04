@@ -26,15 +26,15 @@ namespace Azuria.Middleware
         }
 
         /// <inheritdoc />
-        public async Task<IProxerResult> Invoke(IRequestBuilder request,
-            Func<IRequestBuilder, Task<IProxerResult>> next, CancellationToken cancellationToken = default)
+        public async Task<IProxerResult> Invoke(IRequestBuilder request, MiddlewareAction next,
+            CancellationToken cancellationToken = default)
         {
             this._loginManager.AddAuthenticationInformation(request);
-            IProxerResult lResult = await next.Invoke(request).ConfigureAwait(false);
+            IProxerResult lResult = await next(request, cancellationToken).ConfigureAwait(false);
 
             //Check if we should retry the next middleware
             if (ShouldRetry(request, lResult))
-                lResult = await next.Invoke(request).ConfigureAwait(false);
+                lResult = await next(request, cancellationToken).ConfigureAwait(false);
 
             // Update the state of the login manager
             this._loginManager.Update(lResult);
@@ -44,15 +44,14 @@ namespace Azuria.Middleware
 
         /// <inheritdoc />
         public async Task<IProxerResult<T>> InvokeWithResult<T>(IRequestBuilderWithResult<T> request,
-            Func<IRequestBuilderWithResult<T>, Task<IProxerResult<T>>> next,
-            CancellationToken cancellationToken = default)
+            MiddlewareAction<T> next, CancellationToken cancellationToken = default)
         {
             this._loginManager.AddAuthenticationInformation(request);
-            IProxerResult<T> lResult = await next.Invoke(request).ConfigureAwait(false);
+            IProxerResult<T> lResult = await next(request, cancellationToken).ConfigureAwait(false);
 
             //Check if we should retry the next middleware
             if (ShouldRetry(request, lResult))
-                lResult = await next.Invoke(request).ConfigureAwait(false);
+                lResult = await next(request, cancellationToken).ConfigureAwait(false);
 
             // Update the state of the login manager
             this._loginManager.Update(lResult);

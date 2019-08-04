@@ -1,3 +1,4 @@
+using System;
 using System.Threading;
 using System.Threading.Tasks;
 using Autofac;
@@ -17,32 +18,20 @@ namespace Azuria.Test.Authentication
     public class LoginManagerTest
     {
         [Test]
-        public void LoginTokenTest()
-        {
-            char[] lRandomToken = RandomHelper.GetRandomString(255).ToCharArray();
-            IProxerClient lClient = ProxerClient.Create(
-                new char[32], options => options.WithAuthorisation(lRandomToken));
-            ILoginManager lLoginManager = lClient.Container.Resolve<ILoginManager>();
-            Assert.AreSame(lRandomToken, lLoginManager.LoginToken);
-        }
-
-        [Test]
         public void PerformedRequestTest()
         {
-            IProxerClient lClient = ProxerClient.Create(new char[32]);
-            ILoginManager lLoginManager = lClient.Container.Resolve<ILoginManager>();
-            lLoginManager.LoginToken = new char[255];
-            Assert.False(lLoginManager.CheckIsLoginProbablyValid());
-            lLoginManager.PerformedRequest(false);
-            Assert.False(lLoginManager.CheckIsLoginProbablyValid());
-            lLoginManager.PerformedRequest(true);
-            Assert.True(lLoginManager.CheckIsLoginProbablyValid());
+            LoginManager lLoginManager = new LoginManager(new char[255]);
+            Assert.False(lLoginManager.IsLoginProbablyValid());
+            lLoginManager.Update(new ProxerResult(), false);
+            Assert.False(lLoginManager.IsLoginProbablyValid());
+            lLoginManager.Update(new ProxerResult(), true);
+            Assert.True(lLoginManager.IsLoginProbablyValid());
         }
 
         [Test]
         public async Task PerformLoginTest()
         {
-            CancellationToken lCancellationToken = new CancellationTokenSource().Token;
+            /*CancellationToken lCancellationToken = new CancellationTokenSource().Token;
 
             IRequestHandler lRequestHandler = Mock.Of<IRequestHandler>();
             LoginDataModel lSuccessDataModel = new LoginDataModel
@@ -68,13 +57,14 @@ namespace Azuria.Test.Authentication
             Assert.IsEmpty(lResult.Exceptions);
 
             Assert.AreEqual(lSuccessDataModel.Token, lLoginManager.LoginToken);
-            Assert.True(lLoginManager.CheckIsLoginProbablyValid());
+            Assert.True(lLoginManager.CheckIsLoginProbablyValid());*/
+            Assert.Fail("Authentication not implemented");
         }
 
         [Test]
         public async Task PerformLoginWith2FaTokenTest()
         {
-            CancellationToken lCancellationToken = new CancellationTokenSource().Token;
+            /*CancellationToken lCancellationToken = new CancellationTokenSource().Token;
 
             IRequestHandler lRequestHandler = Mock.Of<IRequestHandler>();
             LoginDataModel lSuccessDataModel = new LoginDataModel
@@ -101,13 +91,14 @@ namespace Azuria.Test.Authentication
             Assert.IsEmpty(lResult.Exceptions);
 
             Assert.AreEqual(lSuccessDataModel.Token, lLoginManager.LoginToken);
-            Assert.True(lLoginManager.CheckIsLoginProbablyValid());
+            Assert.True(lLoginManager.CheckIsLoginProbablyValid());*/
+            Assert.Fail("Authentication not implemented");
         }
 
         [Test]
         public async Task PerformLogoutTest()
         {
-            CancellationToken lCancellationToken = new CancellationToken();
+            /*CancellationToken lCancellationToken = new CancellationToken();
 
             IRequestHandler lRequestHandler = Mock.Of<IRequestHandler>();
             Mock.Get(lRequestHandler).Setup(
@@ -126,33 +117,42 @@ namespace Azuria.Test.Authentication
             Assert.IsEmpty(lResult.Exceptions);
 
             Assert.Null(lLoginManager.LoginToken);
-            Assert.False(lLoginManager.CheckIsLoginProbablyValid());
+            Assert.False(lLoginManager.CheckIsLoginProbablyValid());*/
+            Assert.Fail("Authentication not implemented");
         }
 
         [Test]
-        public void QueueLoginForNextRequestTest()
+        public void InvalidateLoginTest()
         {
-            IProxerClient lClient = ProxerClient.Create(new char[32]);
-            ILoginManager lLoginManager = lClient.Container.Resolve<ILoginManager>();
-            lLoginManager.LoginToken = new char[255];
+            var client = ProxerClient.Create(new char[32]);
+            var loginManager = new LoginManager(new char[255]);
             //Pretend, that the user logged in
-            lLoginManager.PerformedRequest(true);
+            loginManager.Update(new ProxerResult(), true);
 
-            Assert.False(lLoginManager.SendTokenWithNextRequest());
-            lLoginManager.QueueLoginForNextRequest();
-            Assert.True(lLoginManager.SendTokenWithNextRequest());
+            Assert.False(
+                loginManager.AddAuthenticationInformation(
+                    new RequestBuilder(new Uri("https://proxer.me/api"), client)
+                )
+            );
+            loginManager.InvalidateLogin();
+            Assert.True(
+                loginManager.AddAuthenticationInformation(
+                    new RequestBuilder(new Uri("https://proxer.me/api"), client)
+                )
+            );
         }
 
         [Test]
         public void SendTokenWithNextRequest()
         {
-            IProxerClient lClient = ProxerClient.Create(new char[32]);
+            /*IProxerClient lClient = ProxerClient.Create(new char[32]);
             ILoginManager lLoginManager = lClient.Container.Resolve<ILoginManager>();
             Assert.False(lLoginManager.SendTokenWithNextRequest());
             lLoginManager.LoginToken = new char[255];
             Assert.True(lLoginManager.SendTokenWithNextRequest());
             lLoginManager.PerformedRequest(true);
-            Assert.False(lLoginManager.SendTokenWithNextRequest());
+            Assert.False(lLoginManager.SendTokenWithNextRequest());*/
+            Assert.Fail("Authentication not implemented. Not possible to modify the token");
         }
     }
 }

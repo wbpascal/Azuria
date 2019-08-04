@@ -12,20 +12,22 @@ namespace Azuria.Test
     public class ProxerClientOptionsTest
     {
         [Test]
-        public void AuthorisationTest()
+        public void WithAuthenticationTest()
         {
-            Assert.Throws<ArgumentException>(
-                () => ProxerClient.Create(new char[0], options => options.WithAuthorisation(new char[0])));
+            /*Assert.Throws<ArgumentException>(
+                () => ProxerClient.Create(new char[0], options => options.WithAuthentication(new char[0])));
             char[] lLoginKey = new char[255].Select(c => (char) new Random().Next(255)).ToArray();
-            IProxerClient lClient = ProxerClient.Create(new char[0], options => options.WithAuthorisation(lLoginKey));
+            IProxerClient lClient = ProxerClient.Create(new char[0], options => options.WithAuthentication(lLoginKey));
             Assert.True(lClient.Container.IsRegistered<ILoginManager>());
-            Assert.AreEqual(lLoginKey, lClient.Container.Resolve<ILoginManager>().LoginToken);
+            Assert.AreEqual(lLoginKey, lClient.Container.Resolve<ILoginManager>().LoginToken);*/
+
+            Assert.Fail("Not implemented");
         }
 
         [Test]
-        public void CustomHttpClientTest()
+        public void WithCustomHttpClientTest()
         {
-            Assert.Throws<ArgumentNullException>(
+            /*Assert.Throws<ArgumentNullException>(
                 () => ProxerClient.Create(new char[0], options => options.WithCustomHttpClient(null)));
 
             IHttpClient lHttpClient = Mock.Of<IHttpClient>();
@@ -36,18 +38,22 @@ namespace Azuria.Test
 
             lClient = ProxerClient.Create(
                 new char[0], options => options.WithCustomHttpClient(6000, "Azuria.Test"));
-            Assert.True(lClient.Container.IsRegistered<IHttpClient>());
+            Assert.True(lClient.Container.IsRegistered<IHttpClient>());*/
+
+            Assert.Fail("Not implemented");
         }
 
         [Test]
-        public void LoginManagerTest()
+        public void WithLoginManagerTest()
         {
-            ILoginManager lLoginManager = Mock.Of<ILoginManager>();
+            /*ILoginManager lLoginManager = Mock.Of<ILoginManager>();
             IProxerClient lClient = ProxerClient.Create(
                 "apiKey".ToCharArray(),
                 options => options.WithCustomLoginManager(context => lLoginManager));
             Assert.True(lClient.Container.IsRegistered<ILoginManager>());
-            Assert.AreSame(lLoginManager, lClient.Container.Resolve<ILoginManager>());
+            Assert.AreSame(lLoginManager, lClient.Container.Resolve<ILoginManager>());*/
+
+            Assert.Fail("Not implemented");
         }
     }
 }

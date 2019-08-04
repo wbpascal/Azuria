@@ -76,16 +76,13 @@ namespace Azuria.Authentication
             return DateTime.Now.Subtract(this._lastRequestPerformed).TotalHours < 1;
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="result"></param>
-        /// <exception cref="NotImplementedException"></exception>
-        public void Update(IProxerResultBase result)
+
+        /// <inheritdoc />
+        public void Update(IProxerResultBase result, bool includedAuthInfo = false)
         {
             this._lastRequestPerformed = DateTime.Now;
-
-            // TODO: Update token after login + timestamp
+            if (result.Success && includedAuthInfo)
+                this._loginPerformed = DateTime.Now;
         }
     }
 }

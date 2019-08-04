@@ -1,5 +1,6 @@
 ﻿using System;
 using Autofac;
+using Azuria.Middleware.Pipeline;
 
 namespace Azuria
 {
@@ -8,16 +9,12 @@ namespace Azuria
     /// </summary>
     public class ProxerClient : IProxerClient
     {
-        private ProxerClient(char[] apiKey)
+        private ProxerClient()
         {
-            this.ApiKey = apiKey;
         }
 
         /// <inheritdoc />
-        public char[] ApiKey { get; }
-
-        /// <inheritdoc />
-        public IContainer Container { get; private set; }
+        public IReadOnlyClientOptions ClientOptions { get; private set; }
 
         /// <summary>
         /// Creates a new client with the specified api key and additional options.
@@ -27,17 +24,11 @@ namespace Azuria
         /// <returns>A client with the specified api key and options.</returns>
         public static IProxerClient Create(char[] apiKey, Action<ProxerClientOptions> optionsFactory = null)
         {
-            ProxerClient lClient = new ProxerClient(apiKey);
+            ProxerClient lClient = new ProxerClient();
             ProxerClientOptions lOptions = new ProxerClientOptions(apiKey);
             optionsFactory?.Invoke(lOptions);
-            lClient.ProcessOptions(lOptions);
+            lClient.ClientOptions = lOptions;
             return lClient;
-        }
-
-        private void ProcessOptions(ProxerClientOptions options)
-        {
-            options.ContainerBuilder.RegisterInstance(this).As<IProxerClient>();
-            this.Container = options.ContainerBuilder.Build();
         }
     }
 }

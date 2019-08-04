@@ -15,7 +15,7 @@ namespace Azuria.Test.Api.Builder
         public ApiRequestBuilderTest()
         {
             this._client = ProxerClient.Create(new char[32]);
-            this._apiRequestBuilder = this._client.Container.Resolve<IApiRequestBuilder>();
+            this._apiRequestBuilder = new ApiRequestBuilder(_client);
         }
 
         [Test]

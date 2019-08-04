@@ -13,6 +13,10 @@ namespace Azuria.Test.Api.v1.RequestBuilder
     [TestFixture]
     public class MessengerRequestBuilderTest : RequestBuilderTestBase<MessengerRequestBuilder>
     {
+        public MessengerRequestBuilderTest() : base(client => new MessengerRequestBuilder(client))
+        {
+        }
+
         [Test]
         public void GetConferenceInfoTest()
         {

@@ -15,6 +15,10 @@ namespace Azuria.Test.Api.v1.RequestBuilder
     [TestFixture]
     public class UserRequestBuilderTest : RequestBuilderTestBase<UserRequestBuilder>
     {
+        public UserRequestBuilderTest() : base(client => new UserRequestBuilder(client))
+        {
+        }
+
         private void GetHistoryTestBase(IRequestBuilderBase requestBuilderBase)
         {
             this.CheckUrl(requestBuilderBase, "user", "history");

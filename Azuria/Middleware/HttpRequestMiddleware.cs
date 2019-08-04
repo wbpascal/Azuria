@@ -1,11 +1,9 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.Serialization;
 using System.Threading;
 using System.Threading.Tasks;
 using Azuria.ErrorHandling;
-using Azuria.Exceptions;
 using Azuria.Requests;
 using Azuria.Requests.Builder;
 using Azuria.Requests.Http;
@@ -67,8 +65,8 @@ namespace Azuria.Middleware
         }
 
         /// <inheritdoc />
-        public async Task<IProxerResult> Invoke(IRequestBuilder request,
-            Func<IRequestBuilder, Task<IProxerResult>> next, CancellationToken cancellationToken = default)
+        public async Task<IProxerResult> Invoke(IRequestBuilder request, MiddlewareAction next,
+            CancellationToken cancellationToken = default)
         {
             IProxerResultBase lResult =
                 await this.ApiRequestInternalAsync<ProxerApiResponse>(request, cancellationToken)
@@ -81,8 +79,7 @@ namespace Azuria.Middleware
 
         /// <inheritdoc />
         public async Task<IProxerResult<T>> InvokeWithResult<T>(IRequestBuilderWithResult<T> request,
-            Func<IRequestBuilderWithResult<T>, Task<IProxerResult<T>>> next,
-            CancellationToken cancellationToken = default)
+            MiddlewareAction<T> next, CancellationToken cancellationToken = default)
         {
             JsonSerializerSettings lSerializerSettings =
                 new JsonSerializerSettings {Converters = GetCustomConverter(request)};

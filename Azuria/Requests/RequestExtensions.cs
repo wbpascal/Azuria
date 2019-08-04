@@ -21,7 +21,7 @@ namespace Azuria.Requests
         /// <returns></returns>
         public static IApiRequestBuilder CreateRequest(this IProxerClient client)
         {
-            return client.Container.Resolve<IApiRequestBuilder>();
+            return new ApiRequestBuilder(client);
         }
 
         /// <summary>
@@ -31,7 +31,7 @@ namespace Azuria.Requests
         public static Task<IProxerResult> DoRequestAsync(
             this IRequestBuilder builder, CancellationToken token = new CancellationToken())
         {
-            return builder.Client.Container.Resolve<IRequestHandler>().MakeRequestAsync(builder, token);
+            return builder.Client.ClientOptions.Pipeline.BuildPipeline()(builder, CancellationToken.None);
         }
 
         /// <summary>
@@ -43,7 +43,7 @@ namespace Azuria.Requests
         public static Task<IProxerResult<T>> DoRequestAsync<T>(
             this IRequestBuilderWithResult<T> builder, CancellationToken token = new CancellationToken())
         {
-            return builder.Client.Container.Resolve<IRequestHandler>().MakeRequestAsync(builder, token);
+            return builder.Client.ClientOptions.Pipeline.BuildPipelineWithResult<T>()(builder, CancellationToken.None);
         }
 
         internal static Task<IProxerResult<string>> ProxerRequestAsync(

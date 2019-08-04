@@ -41,6 +41,7 @@ namespace Azuria.Authentication
         /// Updates the state of the login manager with the information from the result
         /// </summary>
         /// <param name="result"></param>
-        void Update(IProxerResultBase result);
+        /// <param name="includedAuthInfo">Whether the request included the authentication information</param>
+        void Update(IProxerResultBase result, bool includedAuthInfo = false);
     }
 }

@@ -15,8 +15,7 @@ namespace Azuria.Test.Serilization
 
         public JsonDeserializerTest()
         {
-            IProxerClient lClient = ProxerClient.Create(new char[32]);
-            this._jsonDeserializer = lClient.Container.Resolve<IJsonDeserializer>();
+            this._jsonDeserializer = new JsonDeserializer();
         }
 
         [Test]

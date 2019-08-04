@@ -24,20 +24,17 @@ namespace Azuria.Middleware
         }
 
         /// <inheritdoc />
-        public Task<IProxerResult> Invoke(IRequestBuilder request, Func<IRequestBuilder, Task<IProxerResult>> next,
+        public Task<IProxerResult> Invoke(IRequestBuilder request, MiddlewareAction next,
             CancellationToken cancellationToken = default)
         {
-            request.WithHeader(this._staticHeaders);
-            return next.Invoke(request);
+            return next(request.WithHeader(this._staticHeaders), cancellationToken);
         }
 
         /// <inheritdoc />
         public Task<IProxerResult<T>> InvokeWithResult<T>(IRequestBuilderWithResult<T> request,
-            Func<IRequestBuilderWithResult<T>, Task<IProxerResult<T>>> next,
-            CancellationToken cancellationToken = default)
+            MiddlewareAction<T> next, CancellationToken cancellationToken = default)
         {
-            request.WithHeader(this._staticHeaders);
-            return next.Invoke(request);
+            return next(request.WithHeader(this._staticHeaders), cancellationToken);
         }
     }
 }

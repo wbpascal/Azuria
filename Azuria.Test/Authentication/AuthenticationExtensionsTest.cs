@@ -21,7 +21,7 @@ namespace Azuria.Test.Authentication
         public AuthenticationExtensionsTest()
         {
             this._loginMangerMock = new Mock<ILoginManager>();
-            this._loginMangerMock
+            /*this._loginMangerMock
                 .Setup(
                     manager => manager.PerformLoginAsync(
                         new LoginInput(Username, Password, SecretKey), this._cancellationToken
@@ -30,9 +30,9 @@ namespace Azuria.Test.Authentication
                 .ReturnsAsync(new ProxerResult());
             this._loginMangerMock
                 .Setup(manager => manager.PerformLogoutAsync(this._cancellationToken))
-                .ReturnsAsync(new ProxerResult());
+                .ReturnsAsync(new ProxerResult());*/
             this._proxerClient = ProxerClient.Create(
-                new char[32], options => options.WithCustomLoginManager(context => this._loginMangerMock.Object)
+                new char[32], options => options.WithCustomLoginManager(this._loginMangerMock.Object)
             );
         }
 
@@ -44,12 +44,13 @@ namespace Azuria.Test.Authentication
             );
             Assert.True(lResult.Success);
             Assert.IsEmpty(lResult.Exceptions);
-            this._loginMangerMock.Verify(
+            /*this._loginMangerMock.Verify(
                 manager => manager.PerformLoginAsync(
                     new LoginInput(Username, Password, SecretKey), this._cancellationToken
                 ),
                 Times.Once
-            );
+            );*/
+            Assert.Fail("Not implemented again");
         }
 
         [Test]
@@ -58,7 +59,8 @@ namespace Azuria.Test.Authentication
             IProxerResult lResult = await this._proxerClient.LogoutAsync(this._cancellationToken);
             Assert.True(lResult.Success);
             Assert.IsEmpty(lResult.Exceptions);
-            this._loginMangerMock.Verify(manager => manager.PerformLogoutAsync(this._cancellationToken), Times.Once);
+            // this._loginMangerMock.Verify(manager => manager.PerformLogoutAsync(this._cancellationToken), Times.Once);
+            Assert.Fail("Not implemented again");
         }
     }
 }

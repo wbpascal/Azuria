@@ -11,6 +11,10 @@ namespace Azuria.Test.Api.v1.RequestBuilder
     [TestFixture]
     public class AnimeRequestBuilderTest : RequestBuilderTestBase<AnimeRequestBuilder>
     {
+        public AnimeRequestBuilderTest() : base(client => new AnimeRequestBuilder(client))
+        {
+        }
+
         [Test]
         public void GetLinkTest()
         {

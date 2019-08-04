@@ -1,20 +1,31 @@
 ﻿using System;
+using System.Collections.Generic;
 using Autofac;
 using Azuria.Api;
 using Azuria.Api.Builder;
 using Azuria.Authentication;
 using Azuria.ErrorHandling;
+using Azuria.Helpers;
+using Azuria.Middleware;
+using Azuria.Middleware.Pipeline;
 using Azuria.Requests;
 using Azuria.Requests.Http;
 using Azuria.Serialization;
+using Newtonsoft.Json.Linq;
+
+// ReSharper disable MemberCanBePrivate.Global
+// ReSharper disable AutoPropertyCanBeMadeGetOnly.Global
 
 namespace Azuria
 {
     /// <summary>
     /// Represents the options that are used to create a <see cref="IProxerClient">proxer client</see>.
     /// </summary>
-    public class ProxerClientOptions
+    public class ProxerClientOptions : IReadOnlyClientOptions
     {
+        private IHttpClient _httpClient = new HttpClient();
+        private IJsonDeserializer _jsonDeserializer = new JsonDeserializer();
+
         /// <summary>
         /// Creates a new instance of <see cref="ProxerClientOptions" />.
         /// </summary>
@@ -22,96 +33,139 @@ namespace Azuria
         public ProxerClientOptions(char[] apiKey)
         {
             this.ApiKey = apiKey;
-            this.RegisterDefaultComponents(this.ContainerBuilder);
+            this.Pipeline = CreateDefaultPipeline(apiKey);
         }
 
-        /// <summary>
-        /// </summary>
+        /// <inheritdoc />
         public char[] ApiKey { get; }
 
-        /// <summary>
-        /// Gets or sets the builder that is used to register dependencies.
-        /// </summary>
-        public ContainerBuilder ContainerBuilder { get; } = new ContainerBuilder();
+        /// <inheritdoc />
+        public ILoginManager LoginManager { get; private set; } = new LoginManager();
 
-        private void RegisterDefaultComponents(ContainerBuilder builder)
-        {
-            builder.RegisterType<HttpClient>().As<IHttpClient>().SingleInstance();
-            builder.RegisterType<LoginManager>()
-                .As<ILoginManager>()
-                .SingleInstance()
-                .WithParameter(new TypedParameter(typeof(char[]), null));
-
-            builder.RegisterType<ApiRequestBuilder>().As<IApiRequestBuilder>();
-            builder.RegisterType<RequestHandler>().As<IRequestHandler>();
-            builder.RegisterType<RequestErrorHandler>().As<IRequestErrorHandler>();
-            builder.RegisterType<JsonDeserializer>().As<IJsonDeserializer>();
-            builder.RegisterType<RequestHeaderManager>()
-                .As<IRequestHeaderManager>()
-                .WithParameter(new TypedParameter(typeof(char[]), this.ApiKey));
-
-            builder.RegisterModule<ApiComponentsModule>();
-        }
+        /// <inheritdoc />
+        public IPipeline Pipeline { get; set; }
 
         /// <summary>
-        /// Registers a <see cref="ILoginManager">login manager</see> with the specified login token to the client
-        /// that will authenticate on the first request made.
-        /// Overrides <see cref="WithCustomLoginManager" />.
+        /// Inserts or overwrites the default <see cref="LoginMiddleware">login middleware</see> with a new
+        /// <see cref="LoginManager">login manager</see> that may contain an optional login token.
+        /// Overwrites <see cref="WithCustomLoginManager" />.
         /// </summary>
         /// <param name="loginToken">
-        /// The login token the <see cref="ILoginManager">login manager</see> is registered with.
+        /// Optional. The login token the <see cref="LoginManager">login manager</see> is registered with. If none or
+        /// <code>null</code> was given, the <see cref="LoginManager">login manager</see> needs to be authenticated
+        /// first before it can work.
+        /// TODO: How to authenticate
         /// </param>
         /// <exception cref="ArgumentException">
-        /// Thrown if the <paramref name="loginToken">login token</paramref> is null or less then 255 characters long.
+        /// Thrown if the <paramref name="loginToken">login token</paramref> is not null and less then 255 characters long.
         /// </exception>
-        public ProxerClientOptions WithAuthorisation(char[] loginToken)
+        public ProxerClientOptions WithAuthentication(char[] loginToken = null)
         {
-            if (loginToken?.Length != 255)
+            if (loginToken != null && loginToken.Length != 255)
                 throw new ArgumentException("A valid login token must be 255 characters long", nameof(loginToken));
-            this.ContainerBuilder.RegisterType<LoginManager>()
-                .As<ILoginManager>()
-                .SingleInstance()
-                .WithParameter(new TypedParameter(typeof(char[]), loginToken));
-            return this;
+            return this.WithCustomLoginManager(new LoginManager(loginToken));
         }
 
         /// <summary>
-        /// Registers a custom <see cref="IHttpClient">http client</see> with the client that is used to make all
-        /// request of that client.
-        /// Overrides <see cref="WithCustomHttpClient(int, string)" />.
+        /// Overwrites the default <see cref="HttpJsonRequestMiddleware" /> with one that contains the given custom
+        /// <see cref="IHttpClient">http client</see> that is then used to make all requests of that client.
+        /// Overwrites <see cref="WithCustomHttpClient(int)" />.
+        /// If <see cref="Pipeline"/> does not contain any instances of <see cref="HttpJsonRequestMiddleware" />, nothing 
+        /// is done.
         /// </summary>
-        /// <param name="factory">The factory that is used to create the http client.</param>
-        /// <exception cref="ArgumentNullException">Thrown if the <paramref name="factory" /> ist null.</exception>
-        public ProxerClientOptions WithCustomHttpClient(Func<IComponentContext, IHttpClient> factory)
+        /// <param name="client">The http client.</param>
+        /// <exception cref="ArgumentNullException">Thrown if the <paramref name="client" /> ist null.</exception>
+        public ProxerClientOptions WithCustomHttpClient(IHttpClient client)
         {
-            if (factory == null) throw new ArgumentNullException(nameof(factory));
-            this.ContainerBuilder.Register(factory).As<IHttpClient>().SingleInstance();
+            this._httpClient = client ?? throw new ArgumentNullException(nameof(client));
+            this.Pipeline.ReplaceMiddleware(typeof(HttpJsonRequestMiddleware),
+                new HttpJsonRequestMiddleware(this._httpClient, this._jsonDeserializer));
             return this;
         }
 
         /// <summary>
-        /// Registers a default <see cref="IHttpClient">http client</see> with custom timeout and/or user-agent to the client.
-        /// Overrides <see cref="WithCustomHttpClient(System.Func{Autofac.IComponentContext,Azuria.Requests.Http.IHttpClient})" />.
+        /// Overwrites the default <see cref="HttpJsonRequestMiddleware" /> with one that contains an
+        /// <see cref="IHttpClient">http client</see> with the given custom timeout.
+        /// Overwrites <see cref="WithCustomHttpClient(IHttpClient)" />.
+        /// If <see cref="Pipeline"/> does not contain any instances of <see cref="HttpJsonRequestMiddleware" />, nothing 
+        /// is done.
         /// </summary>
         /// <param name="timeout">Optional. The custom timeout of the http client.</param>
-        /// <param name="userAgentExtra">Optional. A string that is appended to the user-agent of the http client.</param>
-        public ProxerClientOptions WithCustomHttpClient(int timeout = 5000, string userAgentExtra = "")
+        public ProxerClientOptions WithCustomHttpClient(int timeout = 5000)
         {
-            this.ContainerBuilder.RegisterInstance(new HttpClient(timeout, userAgentExtra)).As<IHttpClient>();
+            return this.WithCustomHttpClient(new HttpClient(timeout));
+        }
+
+        /// <summary>
+        /// Overwrites the default <see cref="HttpJsonRequestMiddleware" /> with one that contains the given custom
+        /// <see cref="IJsonDeserializer" />.
+        /// If <see cref="Pipeline"/> does not contain any instances of <see cref="HttpJsonRequestMiddleware" />, nothing 
+        /// is done.
+        /// </summary>
+        /// <param name="deserializer">The new deserializer.</param>
+        /// <exception cref="ArgumentNullException">Thrown if the <paramref name="deserializer" /> ist null.</exception>
+        public ProxerClientOptions WithCustomJsonDeserializer(IJsonDeserializer deserializer)
+        {
+            this._jsonDeserializer = deserializer ?? throw new ArgumentNullException(nameof(deserializer));
+            this.Pipeline.ReplaceMiddleware(typeof(HttpJsonRequestMiddleware),
+                new HttpJsonRequestMiddleware(this._httpClient, this._jsonDeserializer));
             return this;
         }
 
         /// <summary>
-        /// Registers a custom <see cref="ILoginManager">login manager</see> with the client.
-        /// Overrides <see cref="WithAuthorisation" />.
+        /// Inserts or overwrites the default <see cref="LoginMiddleware">login middleware</see> with a given
+        /// <see cref="ILoginManager" />.
+        /// Overwrites <see cref="WithAuthentication" />.
         /// </summary>
-        /// <param name="factory">The factory that is used to create the login manager.</param>
-        /// <exception cref="ArgumentNullException">Thrown if the <paramref name="factory" /> ist null.</exception>
-        public ProxerClientOptions WithCustomLoginManager(Func<IComponentContext, ILoginManager> factory)
+        /// <param name="loginManager">The login manager.</param>
+        /// <exception cref="ArgumentNullException">Thrown if the <paramref name="loginManager" /> ist null.</exception>
+        public ProxerClientOptions WithCustomLoginManager(ILoginManager loginManager)
         {
-            if (factory == null) throw new ArgumentNullException(nameof(factory));
-            this.ContainerBuilder.Register(factory).As<ILoginManager>().SingleInstance();
+            this.LoginManager = loginManager ?? throw new ArgumentNullException(nameof(loginManager));
+
+            // Try to replace the login middleware first, if not possible insert new middleware after StaticHeaderMiddleware
+            if (!this.Pipeline.ReplaceMiddleware(typeof(LoginMiddleware), new LoginMiddleware(loginManager)))
+                this.Pipeline.InsertMiddlewareAfter(typeof(StaticHeaderMiddleware), new LoginMiddleware(loginManager));
+
             return this;
+        }
+
+        /// <summary>
+        /// Overwrites the default <see cref="StaticHeaderMiddleware"/> so that it contains the new user agent.
+        /// If <see cref="Pipeline"/> does not contain any instances of <see cref="StaticHeaderMiddleware" />, nothing 
+        /// is done.
+        /// </summary>
+        /// <param name="userAgentExtra">Extra string that should be appended to the standard user agent.</param>
+        public ProxerClientOptions WithExtraUserAgent(string userAgentExtra)
+        {
+            var middleware = new StaticHeaderMiddleware(CreateDefaultHeaders(this.ApiKey, userAgentExtra));
+            this.Pipeline.ReplaceMiddleware(typeof(StaticHeaderMiddleware), middleware);
+            return this;
+        }
+
+        private static IPipeline CreateDefaultPipeline(char[] apiKey)
+        {
+            var middlewares = new List<IMiddleware>
+            {
+                new StaticHeaderMiddleware(CreateDefaultHeaders(apiKey)), // First to start execution
+                new LoginMiddleware(new LoginManager()),
+                new ErrorMiddleware(),
+                new HttpJsonRequestMiddleware(new HttpClient(), new JsonDeserializer()) // Last to start execution
+            };
+
+            return new Pipeline(middlewares);
+        }
+
+        private static IDictionary<string, string> CreateDefaultHeaders(char[] apiKey, string userAgentExtra = "")
+        {
+            return new Dictionary<string, string>()
+            {
+                {"proxer-api-key", apiKey.ToString()},
+                {
+                    "User-Agent",
+                    $"Azuria/{VersionHelper.GetAssemblyVersion(typeof(HttpClient))} {userAgentExtra}".TrimEnd()
+                }
+            };
         }
     }
 }

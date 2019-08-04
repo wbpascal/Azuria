@@ -14,7 +14,7 @@ namespace Azuria.Api.v1
         /// <returns></returns>
         public static AnimeRequestBuilder FromAnimeClass(this IApiRequestBuilder builder)
         {
-            return builder.ProxerClient.Container.Resolve<AnimeRequestBuilder>();
+            return new AnimeRequestBuilder(builder.ProxerClient);
         }
 
         /// <summary>
@@ -23,7 +23,7 @@ namespace Azuria.Api.v1
         /// <returns></returns>
         public static InfoRequestBuilder FromInfoClass(this IApiRequestBuilder builder)
         {
-            return builder.ProxerClient.Container.Resolve<InfoRequestBuilder>();
+            return new InfoRequestBuilder(builder.ProxerClient);
         }
 
         /// <summary>
@@ -32,7 +32,7 @@ namespace Azuria.Api.v1
         /// <returns></returns>
         public static ListRequestBuilder FromListClass(this IApiRequestBuilder builder)
         {
-            return builder.ProxerClient.Container.Resolve<ListRequestBuilder>();
+            return new ListRequestBuilder(builder.ProxerClient);
         }
 
         /// <summary>
@@ -41,7 +41,7 @@ namespace Azuria.Api.v1
         /// <returns></returns>
         public static MangaRequestBuilder FromMangaClass(this IApiRequestBuilder builder)
         {
-            return builder.ProxerClient.Container.Resolve<MangaRequestBuilder>();
+            return new MangaRequestBuilder(builder.ProxerClient);
         }
 
         /// <summary>
@@ -50,7 +50,7 @@ namespace Azuria.Api.v1
         /// <returns></returns>
         public static MediaRequestBuilder FromMediaClass(this IApiRequestBuilder builder)
         {
-            return builder.ProxerClient.Container.Resolve<MediaRequestBuilder>();
+            return new MediaRequestBuilder(builder.ProxerClient);
         }
 
         /// <summary>
@@ -59,7 +59,7 @@ namespace Azuria.Api.v1
         /// <returns></returns>
         public static MessengerRequestBuilder FromMessengerClass(this IApiRequestBuilder builder)
         {
-            return builder.ProxerClient.Container.Resolve<MessengerRequestBuilder>();
+            return new MessengerRequestBuilder(builder.ProxerClient);
         }
 
         /// <summary>
@@ -68,7 +68,7 @@ namespace Azuria.Api.v1
         /// <returns></returns>
         public static NotificationsRequestBuilder FromNotificationClass(this IApiRequestBuilder builder)
         {
-            return builder.ProxerClient.Container.Resolve<NotificationsRequestBuilder>();
+            return new NotificationsRequestBuilder(builder.ProxerClient);
         }
 
         /// <summary>
@@ -77,7 +77,7 @@ namespace Azuria.Api.v1
         /// <returns></returns>
         public static UcpRequestBuilder FromUcpClass(this IApiRequestBuilder builder)
         {
-            return builder.ProxerClient.Container.Resolve<UcpRequestBuilder>();
+            return new UcpRequestBuilder(builder.ProxerClient);
         }
 
         /// <summary>
@@ -86,7 +86,7 @@ namespace Azuria.Api.v1
         /// <returns></returns>
         public static UserRequestBuilder FromUserClass(this IApiRequestBuilder builder)
         {
-            return builder.ProxerClient.Container.Resolve<UserRequestBuilder>();
+            return new UserRequestBuilder(builder.ProxerClient);
         }
     }
 }

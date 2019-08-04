@@ -15,6 +15,10 @@ namespace Azuria.Test.Api.v1.RequestBuilder
     [TestFixture]
     public class InfoRequestBuilderTest : RequestBuilderTestBase<InfoRequestBuilder>
     {
+        public InfoRequestBuilderTest() : base(client => new InfoRequestBuilder(client))
+        {
+        }
+
         [Test]
         public void GetCharacterInfoTest()
         {

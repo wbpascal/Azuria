@@ -1,4 +1,5 @@
 ﻿using Autofac;
+using Azuria.Middleware.Pipeline;
 
 namespace Azuria
 {
@@ -8,13 +9,8 @@ namespace Azuria
     public interface IProxerClient
     {
         /// <summary>
-        /// Gets the api key the client uses.
+        /// Gets the client options for this client.
         /// </summary>
-        char[] ApiKey { get; }
-
-        /// <summary>
-        /// Gets the container that is used to resolve dependencies for this client.
-        /// </summary>
-        IContainer Container { get; }
+        IReadOnlyClientOptions ClientOptions { get; }
     }
 }

@@ -12,11 +12,11 @@ namespace Azuria.Test.Api.v1.RequestBuilder
     {
         private readonly Random _random;
 
-        protected RequestBuilderTestBase()
+        protected RequestBuilderTestBase(Func<IProxerClient, T> requestBuilderFactory)
         {
             this._random = new Random();
             this.ProxerClient = Azuria.ProxerClient.Create(new char[32]);
-            this.RequestBuilder = this.ProxerClient.Container.Resolve<T>();
+            this.RequestBuilder = requestBuilderFactory.Invoke(this.ProxerClient);
         }
 
         public IProxerClient ProxerClient { get; set; }

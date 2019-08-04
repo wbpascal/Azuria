@@ -11,6 +11,10 @@ namespace Azuria.Test.Api.v1.RequestBuilder
     [TestFixture]
     public class NotificationsRequestBuilderTest : RequestBuilderTestBase<NotificationsRequestBuilder>
     {
+        public NotificationsRequestBuilderTest() : base(client => new NotificationsRequestBuilder(client))
+        {
+        }
+
         [Test]
         public void DeleteTest()
         {

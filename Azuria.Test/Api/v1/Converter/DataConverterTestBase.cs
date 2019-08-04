@@ -14,7 +14,7 @@ namespace Azuria.Test.Api.v1.Converter
         {
             IProxerClient lClient = ProxerClient.Create(new char[32]);
             this.Converter = converter;
-            this.JsonDeserializer = lClient.Container.Resolve<IJsonDeserializer>();
+            this.JsonDeserializer = new JsonDeserializer();
         }
 
         public DataConverter<TOut> Converter { get; set; }

@@ -18,6 +18,10 @@ namespace Azuria.Test.Api.v1.RequestBuilder
     [TestFixture]
     public class UcpRequestBuilderTest : RequestBuilderTestBase<UcpRequestBuilder>
     {
+        public UcpRequestBuilderTest() : base(client => new UcpRequestBuilder(client))
+        {
+        }
+
         [Test]
         public void DeleteFavouriteTest()
         {

@@ -18,8 +18,7 @@ namespace Azuria.Test.Requests
 
         public HttpClientTest()
         {
-            IProxerClient lClient = ProxerClient.Create(new char[32]);
-            this._httpClient = lClient.Container.Resolve<IHttpClient>();
+            this._httpClient = new HttpClient();
         }
 
         [Test]
