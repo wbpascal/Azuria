@@ -1,17 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using Autofac;
-using Azuria.Api;
-using Azuria.Api.Builder;
 using Azuria.Authentication;
-using Azuria.ErrorHandling;
 using Azuria.Helpers;
 using Azuria.Middleware;
 using Azuria.Middleware.Pipeline;
-using Azuria.Requests;
 using Azuria.Requests.Http;
 using Azuria.Serialization;
-using Newtonsoft.Json.Linq;
 
 // ReSharper disable MemberCanBePrivate.Global
 // ReSharper disable AutoPropertyCanBeMadeGetOnly.Global

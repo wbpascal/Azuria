@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using Autofac;
 using Azuria.ErrorHandling;
 using Azuria.Serialization;
 using Azuria.Test.Core;

@@ -1,7 +1,4 @@
-﻿using Autofac;
-using Azuria.Middleware.Pipeline;
-
-namespace Azuria
+﻿namespace Azuria
 {
     /// <summary>
     /// Represents a client that is used to connect to the api.

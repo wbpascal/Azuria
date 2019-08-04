@@ -1,11 +1,4 @@
-﻿using Autofac;
-using Azuria.Api.Builder;
-using Azuria.Authentication;
-using Azuria.ErrorHandling;
-using Azuria.Requests;
-using Azuria.Requests.Http;
-using Azuria.Serialization;
-using NUnit.Framework;
+﻿using NUnit.Framework;
 
 namespace Azuria.Test
 {

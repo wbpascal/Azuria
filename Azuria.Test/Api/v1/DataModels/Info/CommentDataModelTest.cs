@@ -1,7 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using Azuria.Api;
 using Azuria.Api.v1.DataModels.Info;
 using Azuria.Enums.User;
 using Azuria.ErrorHandling;

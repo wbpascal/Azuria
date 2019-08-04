@@ -1,5 +1,4 @@
 ﻿using System;
-using Autofac;
 using Azuria.Api.v1.RequestBuilder;
 using Azuria.Requests.Builder;
 using Azuria.Test.Core;

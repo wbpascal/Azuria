@@ -1,12 +1,10 @@
 using System;
 using System.Threading;
 using System.Threading.Tasks;
-using Autofac;
 using Azuria.Api.Builder;
 using Azuria.ErrorHandling;
 using Azuria.Requests;
 using Azuria.Requests.Builder;
-using Moq;
 using NUnit.Framework;
 
 namespace Azuria.Test.Requests

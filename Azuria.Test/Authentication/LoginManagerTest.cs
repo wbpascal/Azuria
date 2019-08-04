@@ -1,15 +1,8 @@
 using System;
-using System.Threading;
 using System.Threading.Tasks;
-using Autofac;
-using Azuria.Api.v1.DataModels.User;
-using Azuria.Api.v1.Input.User;
 using Azuria.Authentication;
 using Azuria.ErrorHandling;
-using Azuria.Requests;
 using Azuria.Requests.Builder;
-using Azuria.Test.Core.Helpers;
-using Moq;
 using NUnit.Framework;
 
 namespace Azuria.Test.Authentication

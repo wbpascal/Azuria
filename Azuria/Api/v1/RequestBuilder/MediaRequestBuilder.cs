@@ -1,7 +1,6 @@
 ﻿using System;
 using Azuria.Api.v1.DataModels.Media;
 using Azuria.Api.v1.Input.Media;
-using Azuria.Enums.Media;
 using Azuria.Helpers.Extensions;
 using Azuria.Requests.Builder;
 

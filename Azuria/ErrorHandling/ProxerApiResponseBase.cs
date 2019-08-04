@@ -1,5 +1,3 @@
-using System;
-using System.Collections.Generic;
 using Azuria.Api.v1.Converters;
 using Azuria.Enums;
 using Newtonsoft.Json;

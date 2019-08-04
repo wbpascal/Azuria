@@ -1,5 +1,4 @@
-﻿using Azuria.Api.v1.DataModels.Info;
-using Azuria.Api.v1.Input.Converter;
+﻿using Azuria.Api.v1.Input.Converter;
 using Azuria.Enums.Info;
 using Azuria.Helpers.Attributes;
 

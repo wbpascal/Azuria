@@ -1,4 +1,3 @@
-using System;
 using Azuria.Api.v1.DataModels.Manga;
 using Azuria.Api.v1.Input.Manga;
 using Azuria.Api.v1.RequestBuilder;

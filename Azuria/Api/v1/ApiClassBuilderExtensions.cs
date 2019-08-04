@@ -1,5 +1,4 @@
-﻿using Autofac;
-using Azuria.Api.Builder;
+﻿using Azuria.Api.Builder;
 using Azuria.Api.v1.RequestBuilder;
 
 namespace Azuria.Api.v1

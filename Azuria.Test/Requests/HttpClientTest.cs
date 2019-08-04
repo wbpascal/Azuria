@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using Autofac;
 using Azuria.ErrorHandling;
 using Azuria.Requests.Http;
 using Newtonsoft.Json.Linq;

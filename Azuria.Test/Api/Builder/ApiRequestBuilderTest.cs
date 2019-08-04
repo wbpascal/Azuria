@@ -1,5 +1,4 @@
 ﻿using System;
-using Autofac;
 using Azuria.Api.Builder;
 using Azuria.Requests.Builder;
 using NUnit.Framework;

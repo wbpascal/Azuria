@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using Autofac;
 using Azuria.Api.Builder;
 using Azuria.ErrorHandling;
 using Azuria.Requests.Builder;

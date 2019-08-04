@@ -1,6 +1,4 @@
-﻿using System;
-using System.Linq;
-using Azuria.Api;
+﻿using System.Linq;
 using Azuria.Api.v1.DataModels.Messenger;
 using Azuria.ErrorHandling;
 using Azuria.Helpers;

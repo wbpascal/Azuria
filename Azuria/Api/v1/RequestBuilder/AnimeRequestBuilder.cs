@@ -1,7 +1,6 @@
 ﻿using System;
 using Azuria.Api.v1.DataModels.Anime;
 using Azuria.Api.v1.Input.Anime;
-using Azuria.Enums.Info;
 using Azuria.Helpers.Extensions;
 using Azuria.Requests.Builder;
 

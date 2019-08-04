@@ -1,4 +1,3 @@
-using System;
 using System.Linq;
 using Azuria.Api.v1.DataModels.User;
 using Azuria.Api.v1.Input.User;

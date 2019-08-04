@@ -1,10 +1,7 @@
 ﻿using System;
 using Azuria.Api.v1.DataModels.Ucp;
 using Azuria.Api.v1.DataModels.User;
-using Azuria.Api.v1.Input.Info;
 using Azuria.Api.v1.Input.Ucp;
-using Azuria.Enums;
-using Azuria.Enums.Info;
 using Azuria.Helpers.Extensions;
 using Azuria.Requests.Builder;
 using ToptenDataModel = Azuria.Api.v1.DataModels.Ucp.ToptenDataModel;

@@ -1,9 +1,3 @@
-using System;
-using System.Linq;
-using Autofac;
-using Azuria.Authentication;
-using Azuria.Requests.Http;
-using Moq;
 using NUnit.Framework;
 
 namespace Azuria.Test

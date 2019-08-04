@@ -1,6 +1,4 @@
 ﻿using System;
-using Autofac;
-using Azuria.Middleware.Pipeline;
 
 namespace Azuria
 {

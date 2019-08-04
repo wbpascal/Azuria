@@ -1,8 +1,4 @@
-﻿using System;
-using System.Threading;
-using System.Threading.Tasks;
-using Azuria.Api.v1.Input.User;
-using Azuria.ErrorHandling;
+﻿using Azuria.ErrorHandling;
 using Azuria.Requests.Builder;
 
 namespace Azuria.Authentication

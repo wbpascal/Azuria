@@ -1,9 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using Azuria.Api.v1.DataModels.Messenger;
 using Azuria.Api.v1.Input.Messenger;
-using Azuria.Enums.Messenger;
 using Azuria.Helpers.Extensions;
 using Azuria.Requests.Builder;
 

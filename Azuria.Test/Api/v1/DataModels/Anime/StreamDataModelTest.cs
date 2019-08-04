@@ -1,5 +1,4 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 using Azuria.Api.v1.DataModels.Anime;
 using Azuria.ErrorHandling;
 using Azuria.Helpers;
