@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using Azuria.ErrorHandling;
 using Azuria.Requests.Builder;
 
@@ -14,15 +15,19 @@ namespace Azuria.Authentication
 
         private DateTime _lastRequestPerformed = DateTime.MinValue;
         private DateTime _loginPerformed = DateTime.MinValue;
-        private char[] _loginToken;
 
         /// <summary>
         /// </summary>
         /// <param name="loginToken"></param>
         public LoginManager(char[] loginToken = null)
         {
-            this._loginToken = loginToken;
+            this.LoginToken = loginToken;
         }
+
+        /// <summary>
+        /// Gets or sets the login token that will be used by this login manager to authenticate the user
+        /// </summary>
+        public char[] LoginToken { get; set; }
 
         /// <summary>
         /// 
@@ -31,11 +36,12 @@ namespace Azuria.Authentication
         /// <returns>If any information was added to the request</returns>
         public bool AddAuthenticationInformation(IRequestBuilderBase request)
         {
+            if (!request.CheckLogin) return false;
             if (this.ContainsAuthenticationInformation(request)) return false;
-            if (this._loginToken == null || this._loginToken.Length != 255 || this.IsLoginProbablyValid())
+            if (this.LoginToken == null || this.LoginToken.Length != 255 || this.IsLoginProbablyValid())
                 return false;
 
-            request.Headers[LoginTokenHeaderName] = this._loginToken.ToString();
+            request.Headers[LoginTokenHeaderName] = this.LoginToken.ToString();
             return true;
         }
 

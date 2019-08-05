@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using Azuria.Authentication;
 using Azuria.ErrorHandling;
 using Azuria.Requests.Builder;
+using Azuria.Test.Core.Helpers;
 using NUnit.Framework;
 
 namespace Azuria.Test.Authentication
@@ -10,8 +11,77 @@ namespace Azuria.Test.Authentication
     [TestFixture]
     public class LoginManagerTest
     {
+        private const string LoginTokenHeaderName = "proxer-api-token";
+        
         [Test]
-        public void PerformedRequestTest()
+        public void AddAuthenticationInformation_AddsCorrectInfosTest()
+        {
+            var client = ProxerClient.Create(new char[32]);
+            
+            var loginToken = RandomHelper.GetRandomString(255).ToCharArray();
+            LoginManager loginManager = new LoginManager(loginToken);
+            
+            var request = new RequestBuilder(new Uri("http://proxer.me/api"), client).WithLoginCheck();
+            bool added = loginManager.AddAuthenticationInformation(request);
+            Assert.True(added);
+            Assert.True(request.Headers.ContainsKey(LoginTokenHeaderName));
+            Assert.AreEqual(loginToken.ToString(), request.Headers[LoginTokenHeaderName]);
+        }
+
+        [Test]
+        public void AddAuthenticationInformation_SkipsIfLoginNotNeededTest()
+        {
+            var client = ProxerClient.Create(new char[32]);
+            
+            var loginToken = RandomHelper.GetRandomString(255).ToCharArray();
+            LoginManager loginManager = new LoginManager(loginToken);
+            
+            var request = new RequestBuilder(new Uri("http://proxer.me/api"), client).WithLoginCheck(false);
+            bool added = loginManager.AddAuthenticationInformation(request);
+            Assert.False(added);
+            Assert.False(request.Headers.ContainsKey(LoginTokenHeaderName));
+        }
+
+        [Test]
+        public void AddAuthenticationInformation_SkipsIfRequestContainsAuthInfosTest()
+        {
+            var client = ProxerClient.Create(new char[32]);
+            
+            var loginToken = RandomHelper.GetRandomString(255).ToCharArray();
+            LoginManager loginManager = new LoginManager(loginToken);
+            
+            var request = 
+                new RequestBuilder(new Uri("http://proxer.me/api"), client)
+                    .WithLoginCheck(false)
+                    .WithHeader(LoginTokenHeaderName, "token");
+            bool added = loginManager.AddAuthenticationInformation(request);
+            Assert.False(added);
+            Assert.True(request.Headers.ContainsKey(LoginTokenHeaderName));
+            Assert.AreEqual("token", request.Headers[LoginTokenHeaderName]);
+        }
+        
+        [Test]
+        public void AddAuthenticationInformation_SkipsIfTokenInvalidTest()
+        {
+            var client = ProxerClient.Create(new char[32]);
+            
+            var loginToken = RandomHelper.GetRandomString(42).ToCharArray();
+            LoginManager loginManager = new LoginManager(loginToken);
+            
+            var request = new RequestBuilder(new Uri("http://proxer.me/api"), client).WithLoginCheck();
+            bool added = loginManager.AddAuthenticationInformation(request);
+            Assert.False(added);
+            Assert.False(request.Headers.ContainsKey(LoginTokenHeaderName));
+            
+            loginManager = new LoginManager();
+            
+            added = loginManager.AddAuthenticationInformation(request);
+            Assert.False(added);
+            Assert.False(request.Headers.ContainsKey(LoginTokenHeaderName));
+        }
+        
+        [Test]
+        public void UpdateTest()
         {
             LoginManager lLoginManager = new LoginManager(new char[255]);
             Assert.False(lLoginManager.IsLoginProbablyValid());
@@ -122,30 +192,10 @@ namespace Azuria.Test.Authentication
             //Pretend, that the user logged in
             loginManager.Update(new ProxerResult(), true);
 
-            Assert.False(
-                loginManager.AddAuthenticationInformation(
-                    new RequestBuilder(new Uri("https://proxer.me/api"), client)
-                )
-            );
+            var request = new RequestBuilder(new Uri("https://proxer.me/api"), client).WithLoginCheck();
+            Assert.False(loginManager.AddAuthenticationInformation(request));
             loginManager.InvalidateLogin();
-            Assert.True(
-                loginManager.AddAuthenticationInformation(
-                    new RequestBuilder(new Uri("https://proxer.me/api"), client)
-                )
-            );
-        }
-
-        [Test]
-        public void SendTokenWithNextRequest()
-        {
-            /*IProxerClient lClient = ProxerClient.Create(new char[32]);
-            ILoginManager lLoginManager = lClient.Container.Resolve<ILoginManager>();
-            Assert.False(lLoginManager.SendTokenWithNextRequest());
-            lLoginManager.LoginToken = new char[255];
-            Assert.True(lLoginManager.SendTokenWithNextRequest());
-            lLoginManager.PerformedRequest(true);
-            Assert.False(lLoginManager.SendTokenWithNextRequest());*/
-            Assert.Fail("Authentication not implemented. Not possible to modify the token");
+            Assert.True(loginManager.AddAuthenticationInformation(request));
         }
     }
 }
