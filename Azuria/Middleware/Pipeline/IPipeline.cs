@@ -6,6 +6,7 @@ namespace Azuria.Middleware.Pipeline
 {
     /// <summary>
     /// An interface that represents a middleware pipeline.
+    /// TODO: Get instances of a specific middleware type
     /// </summary>
     public interface IPipeline
     {
