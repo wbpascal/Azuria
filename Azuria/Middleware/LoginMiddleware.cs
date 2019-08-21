@@ -37,7 +37,7 @@ namespace Azuria.Middleware
                 lResult = await next(request, cancellationToken).ConfigureAwait(false);
 
             // Update the state of the login manager
-            this._loginManager.Update(lResult);
+            this._loginManager.Update(request, lResult);
 
             return lResult;
         }
@@ -54,7 +54,7 @@ namespace Azuria.Middleware
                 lResult = await next(request, cancellationToken).ConfigureAwait(false);
 
             // Update the state of the login manager
-            this._loginManager.Update(lResult);
+            this._loginManager.Update(request, lResult);
 
             return lResult;
         }
@@ -63,7 +63,7 @@ namespace Azuria.Middleware
         {
             // Check if the request failed because the client was not authenticated
             // Also check if we already added the auth information before
-            if (result.Exceptions.All(ex => ex.GetType() != typeof(NotAuthenticatedException)) ||
+            if (result.Exceptions.Any(ex => ex.GetType() == typeof(NotAuthenticatedException)) ||
                 this._loginManager.ContainsAuthenticationInformation(request)) return false;
 
             // Force login on next request

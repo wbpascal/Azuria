@@ -34,7 +34,7 @@ namespace Azuria
         public char[] ApiKey { get; }
 
         /// <inheritdoc />
-        public ILoginManager LoginManager { get; private set; } = new LoginManager();
+        public ILoginManager LoginManager { get; private set; } = new DefaultLoginManager();
 
         /// <inheritdoc />
         public IPipeline Pipeline { get; set; }
@@ -57,7 +57,7 @@ namespace Azuria
         {
             if (loginToken != null && loginToken.Length != 255)
                 throw new ArgumentException("A valid login token must be 255 characters long", nameof(loginToken));
-            return this.WithCustomLoginManager(new LoginManager(loginToken));
+            return this.WithCustomLoginManager(new DefaultLoginManager(loginToken));
         }
 
         /// <summary>
@@ -142,7 +142,7 @@ namespace Azuria
             var middlewares = new List<IMiddleware>
             {
                 new StaticHeaderMiddleware(CreateDefaultHeaders(apiKey)), // First to start execution
-                new LoginMiddleware(new LoginManager()),
+                new LoginMiddleware(new DefaultLoginManager()),
                 new ErrorMiddleware(),
                 new HttpJsonRequestMiddleware(new HttpClient(), new JsonDeserializer()) // Last to start execution
             };

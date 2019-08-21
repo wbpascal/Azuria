@@ -34,10 +34,10 @@ namespace Azuria.Authentication
         bool IsLoginProbablyValid();
 
         /// <summary>
-        /// Updates the state of the login manager with the information from the result
+        /// Updates the state of the login manager with the information from a request and the corresponding result.
         /// </summary>
+        /// <param name="request"></param>
         /// <param name="result"></param>
-        /// <param name="includedAuthInfo">Whether the request included the authentication information</param>
-        void Update(IProxerResultBase result, bool includedAuthInfo = false);
+        void Update(IRequestBuilderBase request, IProxerResultBase result);
     }
 }

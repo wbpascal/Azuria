@@ -9,7 +9,7 @@ namespace Azuria.Authentication
     /// Represents a class that is used to authenticate a <see cref="IProxerClient">client</see> and keep it
     /// authenticated.
     /// </summary>
-    public class LoginManager : ILoginManager
+    public class DefaultLoginManager : ILoginManager
     {
         private const string LoginTokenHeaderName = "proxer-api-token";
 
@@ -19,7 +19,7 @@ namespace Azuria.Authentication
         /// <summary>
         /// </summary>
         /// <param name="loginToken"></param>
-        public LoginManager(char[] loginToken = null)
+        public DefaultLoginManager(char[] loginToken = null)
         {
             this.LoginToken = loginToken;
         }
@@ -75,13 +75,12 @@ namespace Azuria.Authentication
                 return DateTime.Now.Subtract(this._loginPerformed).TotalHours < 24;
             return DateTime.Now.Subtract(this._lastRequestPerformed).TotalHours < 1;
         }
-
-
+        
         /// <inheritdoc />
-        public void Update(IProxerResultBase result, bool includedAuthInfo = false)
+        public void Update(IRequestBuilderBase request, IProxerResultBase result)
         {
             this._lastRequestPerformed = DateTime.Now;
-            if (result.Success && includedAuthInfo)
+            if (result.Success && this.ContainsAuthenticationInformation(request))
                 this._loginPerformed = DateTime.Now;
         }
     }
