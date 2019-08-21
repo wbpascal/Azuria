@@ -13,6 +13,7 @@ namespace Azuria.Authentication
     {
         private const string LoginTokenHeaderName = "proxer-api-token";
 
+        //TODO: Maybe make this protected so that the class can be derived and these values can be saved?
         private DateTime _lastRequestPerformed = DateTime.MinValue;
         private DateTime _loginPerformed = DateTime.MinValue;
 
@@ -75,7 +76,7 @@ namespace Azuria.Authentication
                 return DateTime.Now.Subtract(this._loginPerformed).TotalHours < 24;
             return DateTime.Now.Subtract(this._lastRequestPerformed).TotalHours < 1;
         }
-        
+
         /// <inheritdoc />
         public void Update(IRequestBuilderBase request, IProxerResultBase result)
         {
