@@ -1,9 +1,15 @@
 using System;
+using System.Threading;
 using System.Threading.Tasks;
+using Azuria.Api.v1.DataModels.User;
+using Azuria.Api.v1.Input.User;
 using Azuria.Authentication;
 using Azuria.ErrorHandling;
+using Azuria.Middleware;
+using Azuria.Middleware.Pipeline;
 using Azuria.Requests.Builder;
 using Azuria.Test.Core.Helpers;
+using Moq;
 using NUnit.Framework;
 
 namespace Azuria.Test.Authentication
@@ -19,7 +25,7 @@ namespace Azuria.Test.Authentication
             var client = ProxerClient.Create(new char[32]);
 
             var loginToken = RandomHelper.GetRandomString(255).ToCharArray();
-            DefaultLoginManager defaultLoginManager = new DefaultLoginManager(loginToken);
+            DefaultLoginManager defaultLoginManager = new DefaultLoginManager(client, loginToken);
 
             var request = new RequestBuilder(new Uri("http://proxer.me/api"), client).WithLoginCheck();
             bool added = defaultLoginManager.AddAuthenticationInformation(request);
@@ -34,7 +40,7 @@ namespace Azuria.Test.Authentication
             var client = ProxerClient.Create(new char[32]);
 
             var loginToken = RandomHelper.GetRandomString(255).ToCharArray();
-            DefaultLoginManager defaultLoginManager = new DefaultLoginManager(loginToken);
+            DefaultLoginManager defaultLoginManager = new DefaultLoginManager(client, loginToken);
 
             var request = new RequestBuilder(new Uri("http://proxer.me/api"), client).WithLoginCheck(false);
             bool added = defaultLoginManager.AddAuthenticationInformation(request);
@@ -48,7 +54,7 @@ namespace Azuria.Test.Authentication
             var client = ProxerClient.Create(new char[32]);
 
             var loginToken = RandomHelper.GetRandomString(255).ToCharArray();
-            DefaultLoginManager defaultLoginManager = new DefaultLoginManager(loginToken);
+            DefaultLoginManager defaultLoginManager = new DefaultLoginManager(client, loginToken);
 
             var request =
                 new RequestBuilder(new Uri("http://proxer.me/api"), client)
@@ -66,14 +72,14 @@ namespace Azuria.Test.Authentication
             var client = ProxerClient.Create(new char[32]);
 
             var loginToken = RandomHelper.GetRandomString(42).ToCharArray();
-            DefaultLoginManager defaultLoginManager = new DefaultLoginManager(loginToken);
+            DefaultLoginManager defaultLoginManager = new DefaultLoginManager(client, loginToken);
 
             var request = new RequestBuilder(new Uri("http://proxer.me/api"), client).WithLoginCheck();
             bool added = defaultLoginManager.AddAuthenticationInformation(request);
             Assert.False(added);
             Assert.False(request.Headers.ContainsKey(LoginTokenHeaderName));
 
-            defaultLoginManager = new DefaultLoginManager();
+            defaultLoginManager = new DefaultLoginManager(client);
 
             added = defaultLoginManager.AddAuthenticationInformation(request);
             Assert.False(added);
@@ -84,7 +90,7 @@ namespace Azuria.Test.Authentication
         public void ContainsAuthenticationInformationTest()
         {
             var client = ProxerClient.Create(new char[32]);
-            var loginManager = new DefaultLoginManager(RandomHelper.GetRandomString(255).ToCharArray());
+            var loginManager = new DefaultLoginManager(client, RandomHelper.GetRandomString(255).ToCharArray());
             var request = new RequestBuilder(new Uri("https://proxer.me/api"), client);
 
             Assert.False(loginManager.ContainsAuthenticationInformation(request));
@@ -110,7 +116,7 @@ namespace Azuria.Test.Authentication
         public void IsLoginProbablyValid_InvalidIfLoginNeverPerformedTest()
         {
             var client = ProxerClient.Create(new char[32]);
-            var loginManager = new DefaultLoginManager(new char[255]);
+            var loginManager = new DefaultLoginManager(client, new char[255]);
 
             Assert.False(loginManager.IsLoginProbablyValid());
         }
@@ -128,101 +134,102 @@ namespace Azuria.Test.Authentication
         [Test]
         public async Task PerformLoginTest()
         {
-            /*CancellationToken lCancellationToken = new CancellationTokenSource().Token;
-
-            IRequestHandler lRequestHandler = Mock.Of<IRequestHandler>();
-            LoginDataModel lSuccessDataModel = new LoginDataModel
+            // Mock of a middleware that returns a successful response
+            var middlewareMock = new Mock<IMiddleware>();
+            
+            var successDataModel = new LoginDataModel
             {
                 UserId = 1,
                 Token = RandomHelper.GetRandomString(255)
             };
-            Mock.Get(lRequestHandler).Setup(
-                    handler => handler.MakeRequestAsync(
-                        It.IsAny<IRequestBuilderWithResult<LoginDataModel>>(), lCancellationToken
-                    )
-                )
-                .ReturnsAsync(() => new ProxerResult<LoginDataModel>(lSuccessDataModel));
+            middlewareMock
+                .Setup(middleware => middleware.InvokeWithResult(It.IsAny<IRequestBuilderWithResult<LoginDataModel>>(),
+                    It.IsAny<MiddlewareAction<LoginDataModel>>(), It.IsAny<CancellationToken>()))
+                .ReturnsAsync(() => new ProxerResult<LoginDataModel>(successDataModel));
 
-            IProxerClient lClient = ProxerClient.Create(
-                new char[32], options => { options.ContainerBuilder.RegisterInstance(lRequestHandler); });
-            ILoginManager lLoginManager = lClient.Container.Resolve<ILoginManager>();
+            CancellationToken cancellationToken = new CancellationTokenSource().Token;
+            IProxerClient client = ProxerClient.Create(new char[32],
+                options => options.Pipeline = new Pipeline(new[] {middlewareMock.Object}));
+            DefaultLoginManager loginManager = new DefaultLoginManager(client);
 
-            IProxerResult lResult = await lLoginManager.PerformLoginAsync(
-                new LoginInput("username", "password"), token: lCancellationToken
+            IProxerResult<LoginDataModel> result = await loginManager.PerformLoginAsync(
+                new LoginInput("username", "password"), cancellationToken
             );
-            Assert.True(lResult.Success);
-            Assert.IsEmpty(lResult.Exceptions);
+            Assert.True(result.Success);
+            Assert.IsEmpty(result.Exceptions);
 
-            Assert.AreEqual(lSuccessDataModel.Token, lLoginManager.LoginToken);
-            Assert.True(lLoginManager.CheckIsLoginProbablyValid());*/
-            Assert.Fail("Authentication not implemented");
+            Assert.AreEqual(successDataModel.Token, loginManager.LoginToken);
+            Assert.True(loginManager.IsLoginProbablyValid());
         }
 
         [Test]
         public async Task PerformLoginWith2FaTokenTest()
         {
-            /*CancellationToken lCancellationToken = new CancellationTokenSource().Token;
-
-            IRequestHandler lRequestHandler = Mock.Of<IRequestHandler>();
-            LoginDataModel lSuccessDataModel = new LoginDataModel
+            // Mock of a middleware that returns a successful response
+            var middlewareMock = new Mock<IMiddleware>();
+            
+            var successDataModel = new LoginDataModel
             {
                 UserId = 1,
                 Token = RandomHelper.GetRandomString(255)
             };
-            Mock.Get(lRequestHandler).Setup(
-                    handler => handler.MakeRequestAsync(
-                        It.IsAny<IRequestBuilderWithResult<LoginDataModel>>(), lCancellationToken
-                    )
-                )
-                .ReturnsAsync(() => new ProxerResult<LoginDataModel>(lSuccessDataModel));
+            middlewareMock
+                .Setup(middleware => middleware.InvokeWithResult(It.IsAny<IRequestBuilderWithResult<LoginDataModel>>(),
+                    It.IsAny<MiddlewareAction<LoginDataModel>>(), It.IsAny<CancellationToken>()))
+                .ReturnsAsync(() => new ProxerResult<LoginDataModel>(successDataModel));
+            
+            // Begin tests
+            CancellationToken cancellationToken = new CancellationTokenSource().Token;
+            IProxerClient client = ProxerClient.Create(new char[32],
+                options => options.Pipeline = new Pipeline(new[] {middlewareMock.Object}));
+            DefaultLoginManager loginManager = new DefaultLoginManager(client);
 
-            IProxerClient lClient = ProxerClient.Create(
-                new char[32], options => { options.ContainerBuilder.RegisterInstance(lRequestHandler); });
-            ILoginManager lLoginManager = lClient.Container.Resolve<ILoginManager>();
-
-            IProxerResult lResult = await lLoginManager.PerformLoginAsync(
+            IProxerResult<LoginDataModel> result = await loginManager.PerformLoginAsync(
                 new LoginInput("username", "password", new string(new char[6])),
-                lCancellationToken
+                cancellationToken
             );
-            Assert.True(lResult.Success);
-            Assert.IsEmpty(lResult.Exceptions);
+            Assert.True(result.Success);
+            Assert.IsEmpty(result.Exceptions);
 
-            Assert.AreEqual(lSuccessDataModel.Token, lLoginManager.LoginToken);
-            Assert.True(lLoginManager.CheckIsLoginProbablyValid());*/
-            Assert.Fail("Authentication not implemented");
+            Assert.AreEqual(successDataModel.Token, loginManager.LoginToken);
+            Assert.True(loginManager.IsLoginProbablyValid());
         }
 
         [Test]
         public async Task PerformLogoutTest()
         {
-            /*CancellationToken lCancellationToken = new CancellationToken();
+            // Mock of a middleware that returns a successful response
+            var middlewareMock = new Mock<IMiddleware>();
+            
+            var successDataModel = new LoginDataModel
+            {
+                UserId = 1,
+                Token = RandomHelper.GetRandomString(255)
+            };
+            middlewareMock
+                .Setup(middleware => middleware.Invoke(It.IsAny<IRequestBuilder>(),
+                    It.IsAny<MiddlewareAction>(), It.IsAny<CancellationToken>()))
+                .ReturnsAsync(() => new ProxerResult());
 
-            IRequestHandler lRequestHandler = Mock.Of<IRequestHandler>();
-            Mock.Get(lRequestHandler).Setup(
-                handler => handler.MakeRequestAsync(
-                    It.Is<IRequestBuilder>(result => result.BuildUri().PathAndQuery.StartsWith("/api/v1/user/logout")),
-                    lCancellationToken
-                )
-            ).ReturnsAsync(() => new ProxerResult());
+            // Begin tests
+            CancellationToken cancellationToken = new CancellationTokenSource().Token;
+            IProxerClient client = ProxerClient.Create(new char[32],
+                options => options.Pipeline = new Pipeline(new[] {middlewareMock.Object}));
+            DefaultLoginManager loginManager = new DefaultLoginManager(client);
 
-            IProxerClient lClient = ProxerClient.Create(
-                new char[32], options => { options.ContainerBuilder.RegisterInstance(lRequestHandler); });
-            ILoginManager lLoginManager = lClient.Container.Resolve<ILoginManager>();
+            IProxerResult result = await loginManager.PerformLogoutAsync(cancellationToken);
+            Assert.True(result.Success);
+            Assert.IsEmpty(result.Exceptions);
 
-            IProxerResult lResult = await lLoginManager.PerformLogoutAsync(lCancellationToken);
-            Assert.True(lResult.Success);
-            Assert.IsEmpty(lResult.Exceptions);
-
-            Assert.Null(lLoginManager.LoginToken);
-            Assert.False(lLoginManager.CheckIsLoginProbablyValid());*/
-            Assert.Fail("Authentication not implemented");
+            Assert.Null(loginManager.LoginToken);
+            Assert.False(loginManager.IsLoginProbablyValid());
         }
 
         [Test]
         public void UpdateTest()
         {
             var client = ProxerClient.Create(new char[32]);
-            var loginManager = new DefaultLoginManager(new char[255]);
+            var loginManager = new DefaultLoginManager(client, new char[255]);
             Assert.False(loginManager.IsLoginProbablyValid());
 
             var request = new RequestBuilder(new Uri("http://proxer.me/api"), client);
@@ -241,12 +248,29 @@ namespace Azuria.Test.Authentication
 
         private static DefaultLoginManager CreateLoggedInManager(char[] loginToken, IProxerClient client)
         {
-            var loginManager = new DefaultLoginManager(loginToken);
+            var loginManager = new DefaultLoginManager(client, loginToken);
             var request = new RequestBuilder(new Uri("http://proxer.me/api"), client).WithLoginCheck();
             loginManager.AddAuthenticationInformation(request);
             loginManager.Update(request, new ProxerResult());
 
             return loginManager;
+        }
+        
+        // Returns the first instance from the pipeline or null
+        private static DefaultLoginManager TryFindLoginManager(IPipeline pipeline)
+        {
+            foreach (var middleware in pipeline.Middlewares)
+            {
+                if (middleware is LoginMiddleware loginMiddleware)
+                {
+                    if (loginMiddleware.LoginManager is DefaultLoginManager instance)
+                    {
+                        return instance;
+                    }
+                }
+            }
+            
+            return null;
         }
     }
 }

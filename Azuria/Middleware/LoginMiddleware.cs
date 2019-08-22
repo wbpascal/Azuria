@@ -14,7 +14,6 @@ namespace Azuria.Middleware
     /// </summary>
     public class LoginMiddleware : IMiddleware
     {
-        private readonly ILoginManager _loginManager;
 
         /// <summary>
         /// 
@@ -22,14 +21,16 @@ namespace Azuria.Middleware
         /// <param name="loginManager"></param>
         public LoginMiddleware(ILoginManager loginManager)
         {
-            this._loginManager = loginManager ?? throw new ArgumentNullException();
+            this.LoginManager = loginManager ?? throw new ArgumentNullException();
         }
+        
+        public ILoginManager LoginManager { get; }
 
         /// <inheritdoc />
         public async Task<IProxerResult> Invoke(IRequestBuilder request, MiddlewareAction next,
             CancellationToken cancellationToken = default)
         {
-            this._loginManager.AddAuthenticationInformation(request);
+            this.LoginManager.AddAuthenticationInformation(request);
             IProxerResult lResult = await next(request, cancellationToken).ConfigureAwait(false);
 
             //Check if we should retry the next middleware
@@ -37,7 +38,7 @@ namespace Azuria.Middleware
                 lResult = await next(request, cancellationToken).ConfigureAwait(false);
 
             // Update the state of the login manager
-            this._loginManager.Update(request, lResult);
+            this.LoginManager.Update(request, lResult);
 
             return lResult;
         }
@@ -46,7 +47,7 @@ namespace Azuria.Middleware
         public async Task<IProxerResult<T>> InvokeWithResult<T>(IRequestBuilderWithResult<T> request,
             MiddlewareAction<T> next, CancellationToken cancellationToken = default)
         {
-            this._loginManager.AddAuthenticationInformation(request);
+            this.LoginManager.AddAuthenticationInformation(request);
             IProxerResult<T> lResult = await next(request, cancellationToken).ConfigureAwait(false);
 
             //Check if we should retry the next middleware
@@ -54,7 +55,7 @@ namespace Azuria.Middleware
                 lResult = await next(request, cancellationToken).ConfigureAwait(false);
 
             // Update the state of the login manager
-            this._loginManager.Update(request, lResult);
+            this.LoginManager.Update(request, lResult);
 
             return lResult;
         }
@@ -64,12 +65,12 @@ namespace Azuria.Middleware
             // Check if the request failed because the client was not authenticated
             // Also check if we already added the auth information before
             if (result.Exceptions.Any(ex => ex.GetType() == typeof(NotAuthenticatedException)) ||
-                this._loginManager.ContainsAuthenticationInformation(request)) return false;
+                this.LoginManager.ContainsAuthenticationInformation(request)) return false;
 
             // Force login on next request
-            this._loginManager.InvalidateLogin();
+            this.LoginManager.InvalidateLogin();
             // Only try the request again if we can actually add any authentication information to it
-            return this._loginManager.AddAuthenticationInformation(request);
+            return this.LoginManager.AddAuthenticationInformation(request);
         }
     }
 }

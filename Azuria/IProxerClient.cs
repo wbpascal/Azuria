@@ -1,4 +1,6 @@
-﻿namespace Azuria
+﻿using Azuria.Middleware.Pipeline;
+
+namespace Azuria
 {
     /// <summary>
     /// Represents a client that is used to connect to the api.
@@ -6,8 +8,13 @@
     public interface IProxerClient
     {
         /// <summary>
-        /// Gets the client options for this client.
+        /// 
         /// </summary>
-        IReadOnlyClientOptions ClientOptions { get; }
+        char[] ApiKey { get; }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        IPipeline Pipeline { get; }
     }
 }

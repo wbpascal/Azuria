@@ -1,4 +1,5 @@
 ﻿using System;
+using Azuria.Middleware.Pipeline;
 
 namespace Azuria
 {
@@ -10,10 +11,13 @@ namespace Azuria
         private ProxerClient()
         {
         }
+        
+        /// <inheritdoc />
+        public char[] ApiKey { get; private set; }
 
         /// <inheritdoc />
-        public IReadOnlyClientOptions ClientOptions { get; private set; }
-
+        public IPipeline Pipeline { get; private set; }
+        
         /// <summary>
         /// Creates a new client with the specified api key and additional options.
         /// </summary>
@@ -22,11 +26,12 @@ namespace Azuria
         /// <returns>A client with the specified api key and options.</returns>
         public static IProxerClient Create(char[] apiKey, Action<ProxerClientOptions> optionsFactory = null)
         {
-            ProxerClient lClient = new ProxerClient();
-            ProxerClientOptions lOptions = new ProxerClientOptions(apiKey);
+            ProxerClient client = new ProxerClient();
+            ProxerClientOptions lOptions = new ProxerClientOptions(apiKey, client);
             optionsFactory?.Invoke(lOptions);
-            lClient.ClientOptions = lOptions;
-            return lClient;
+            client.ApiKey = lOptions.ApiKey;
+            client.Pipeline = lOptions.Pipeline;
+            return client;
         }
     }
 }

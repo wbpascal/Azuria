@@ -14,8 +14,9 @@ namespace Azuria
 {
     /// <summary>
     /// Represents the options that are used to create a <see cref="IProxerClient">proxer client</see>.
+    /// TODO: Check documentation for changes
     /// </summary>
-    public class ProxerClientOptions : IReadOnlyClientOptions
+    public class ProxerClientOptions
     {
         private IHttpClient _httpClient = new HttpClient();
         private IJsonDeserializer _jsonDeserializer = new JsonDeserializer();
@@ -24,29 +25,36 @@ namespace Azuria
         /// Creates a new instance of <see cref="ProxerClientOptions" />.
         /// </summary>
         /// <param name="apiKey"></param>
-        public ProxerClientOptions(char[] apiKey)
+        public ProxerClientOptions(char[] apiKey, IProxerClient client)
         {
+            this.Client = client;
             this.ApiKey = apiKey;
-            this.Pipeline = CreateDefaultPipeline(apiKey);
+            this.Pipeline = CreateDefaultPipeline(apiKey, client);
         }
 
-        /// <inheritdoc />
+        /// <summary>
+        /// 
+        /// </summary>
         public char[] ApiKey { get; }
+        
+        /// <summary>
+        /// 
+        /// </summary>
+        public IProxerClient Client { get; }
 
-        /// <inheritdoc />
-        public ILoginManager LoginManager { get; private set; } = new DefaultLoginManager();
-
-        /// <inheritdoc />
+        /// <summary>
+        /// 
+        /// </summary>
         public IPipeline Pipeline { get; set; }
 
         /// <summary>
         /// Inserts or overwrites the default <see cref="LoginMiddleware">login middleware</see> with a new
-        /// <see cref="LoginManager">login manager</see> that may contain an optional login token.
+        /// <see cref="DefaultLoginManager">login manager</see> that may contain an optional login token.
         /// Overwrites <see cref="WithCustomLoginManager" />.
         /// </summary>
         /// <param name="loginToken">
-        /// Optional. The login token the <see cref="LoginManager">login manager</see> is registered with. If none or
-        /// <code>null</code> was given, the <see cref="LoginManager">login manager</see> needs to be authenticated
+        /// Optional. The login token the <see cref="DefaultLoginManager">login manager</see> will be inserted with. If none or
+        /// <code>null</code> was given, the <see cref="DefaultLoginManager">login manager</see> needs to be authenticated
         /// first before it can work.
         /// TODO: How to authenticate
         /// </param>
@@ -57,7 +65,7 @@ namespace Azuria
         {
             if (loginToken != null && loginToken.Length != 255)
                 throw new ArgumentException("A valid login token must be 255 characters long", nameof(loginToken));
-            return this.WithCustomLoginManager(new DefaultLoginManager(loginToken));
+            return this.WithCustomLoginManager(new DefaultLoginManager(this.Client, loginToken));
         }
 
         /// <summary>
@@ -115,8 +123,8 @@ namespace Azuria
         /// <exception cref="ArgumentNullException">Thrown if the <paramref name="loginManager" /> ist null.</exception>
         public ProxerClientOptions WithCustomLoginManager(ILoginManager loginManager)
         {
-            this.LoginManager = loginManager ?? throw new ArgumentNullException(nameof(loginManager));
-
+            if (loginManager == null) throw new ArgumentNullException(nameof(loginManager));
+            
             // Try to replace the login middleware first, if not possible insert new middleware after StaticHeaderMiddleware
             if (!this.Pipeline.ReplaceMiddleware(typeof(LoginMiddleware), new LoginMiddleware(loginManager)))
                 this.Pipeline.InsertMiddlewareAfter(typeof(StaticHeaderMiddleware), new LoginMiddleware(loginManager));
@@ -137,12 +145,12 @@ namespace Azuria
             return this;
         }
 
-        private static IPipeline CreateDefaultPipeline(char[] apiKey)
+        private static IPipeline CreateDefaultPipeline(char[] apiKey, IProxerClient client)
         {
             var middlewares = new List<IMiddleware>
             {
                 new StaticHeaderMiddleware(CreateDefaultHeaders(apiKey)), // First to start execution
-                new LoginMiddleware(new DefaultLoginManager()),
+                new LoginMiddleware(new DefaultLoginManager(client)),
                 new ErrorMiddleware(),
                 new HttpJsonRequestMiddleware(new HttpClient(), new JsonDeserializer()) // Last to start execution
             };
