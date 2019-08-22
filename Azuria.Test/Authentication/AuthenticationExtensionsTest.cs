@@ -22,10 +22,10 @@ namespace Azuria.Test.Authentication
                 UserId = 1,
                 Token = RandomHelper.GetRandomString(255)
             };
-            
+
             Mock<DefaultLoginManager> loginManagerMock = null;
             IProxerClient client = ProxerClient.Create(
-                new char[32], 
+                new char[32],
                 options =>
                 {
                     loginManagerMock = new Mock<DefaultLoginManager>(options.Client, new char[255]);
@@ -36,7 +36,7 @@ namespace Azuria.Test.Authentication
                         );
                     options.WithCustomLoginManager(loginManagerMock.Object);
                 });
-            
+
             IProxerResult<LoginDataModel> result = await client.LoginAsync(
                 new LoginInput("username", "password", "ACGES1"), CancellationToken.None
             );
@@ -53,7 +53,7 @@ namespace Azuria.Test.Authentication
         {
             Mock<DefaultLoginManager> loginManagerMock = null;
             IProxerClient client = ProxerClient.Create(
-                new char[32], 
+                new char[32],
                 options =>
                 {
                     loginManagerMock = new Mock<DefaultLoginManager>(options.Client, new char[255]);

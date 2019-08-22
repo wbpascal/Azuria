@@ -11,13 +11,13 @@ namespace Azuria
         private ProxerClient()
         {
         }
-        
+
         /// <inheritdoc />
         public char[] ApiKey { get; private set; }
 
         /// <inheritdoc />
         public IPipeline Pipeline { get; private set; }
-        
+
         /// <summary>
         /// Creates a new client with the specified api key and additional options.
         /// </summary>

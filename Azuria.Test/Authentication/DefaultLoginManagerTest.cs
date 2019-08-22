@@ -136,7 +136,7 @@ namespace Azuria.Test.Authentication
         {
             // Mock of a middleware that returns a successful response
             var middlewareMock = new Mock<IMiddleware>();
-            
+
             var successDataModel = new LoginDataModel
             {
                 UserId = 1,
@@ -167,7 +167,7 @@ namespace Azuria.Test.Authentication
         {
             // Mock of a middleware that returns a successful response
             var middlewareMock = new Mock<IMiddleware>();
-            
+
             var successDataModel = new LoginDataModel
             {
                 UserId = 1,
@@ -177,7 +177,7 @@ namespace Azuria.Test.Authentication
                 .Setup(middleware => middleware.InvokeWithResult(It.IsAny<IRequestBuilderWithResult<LoginDataModel>>(),
                     It.IsAny<MiddlewareAction<LoginDataModel>>(), It.IsAny<CancellationToken>()))
                 .ReturnsAsync(() => new ProxerResult<LoginDataModel>(successDataModel));
-            
+
             // Begin tests
             CancellationToken cancellationToken = new CancellationTokenSource().Token;
             IProxerClient client = ProxerClient.Create(new char[32],
@@ -200,7 +200,7 @@ namespace Azuria.Test.Authentication
         {
             // Mock of a middleware that returns a successful response
             var middlewareMock = new Mock<IMiddleware>();
-            
+
             var successDataModel = new LoginDataModel
             {
                 UserId = 1,
@@ -255,7 +255,7 @@ namespace Azuria.Test.Authentication
 
             return loginManager;
         }
-        
+
         // Returns the first instance from the pipeline or null
         private static DefaultLoginManager TryFindLoginManager(IPipeline pipeline)
         {
@@ -269,7 +269,7 @@ namespace Azuria.Test.Authentication
                     }
                 }
             }
-            
+
             return null;
         }
     }

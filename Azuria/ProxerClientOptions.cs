@@ -36,7 +36,7 @@ namespace Azuria
         /// 
         /// </summary>
         public char[] ApiKey { get; }
-        
+
         /// <summary>
         /// 
         /// </summary>
@@ -124,7 +124,7 @@ namespace Azuria
         public ProxerClientOptions WithCustomLoginManager(ILoginManager loginManager)
         {
             if (loginManager == null) throw new ArgumentNullException(nameof(loginManager));
-            
+
             // Try to replace the login middleware first, if not possible insert new middleware after StaticHeaderMiddleware
             if (!this.Pipeline.ReplaceMiddleware(typeof(LoginMiddleware), new LoginMiddleware(loginManager)))
                 this.Pipeline.InsertMiddlewareAfter(typeof(StaticHeaderMiddleware), new LoginMiddleware(loginManager));

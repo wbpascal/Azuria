@@ -14,7 +14,6 @@ namespace Azuria.Middleware
     /// </summary>
     public class LoginMiddleware : IMiddleware
     {
-
         /// <summary>
         /// 
         /// </summary>
@@ -23,7 +22,7 @@ namespace Azuria.Middleware
         {
             this.LoginManager = loginManager ?? throw new ArgumentNullException();
         }
-        
+
         public ILoginManager LoginManager { get; }
 
         /// <inheritdoc />

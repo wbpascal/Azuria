@@ -64,10 +64,10 @@ namespace Azuria.Test.Requests
         {
             var middlewareMock = new Mock<IMiddleware>();
             middlewareMock
-                .Setup(middleware => middleware.InvokeWithResult(It.IsAny<IRequestBuilderWithResult<object>>(), 
+                .Setup(middleware => middleware.InvokeWithResult(It.IsAny<IRequestBuilderWithResult<object>>(),
                     It.IsAny<MiddlewareAction<object>>(), It.IsAny<CancellationToken>()))
                 .Returns(Task.FromResult((IProxerResult<object>) new ProxerResult<object>(new object())));
-            
+
             // Create a client with a custom pipeline that only contains the mocked middleware
             var lClient = ProxerClient.Create(new char[32],
                 options => options.Pipeline = new Pipeline(new[] {middlewareMock.Object}));

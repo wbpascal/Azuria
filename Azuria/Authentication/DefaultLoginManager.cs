@@ -85,16 +85,18 @@ namespace Azuria.Authentication
                 return DateTime.Now.Subtract(this._loginPerformed).TotalHours < 24;
             return DateTime.Now.Subtract(this._lastRequestPerformed).TotalHours < 1;
         }
-        
+
         /// <summary>
         /// 
         /// </summary>
         /// <param name="input"></param>
         /// <param name="token"></param>
         /// <returns></returns>
-        public virtual async Task<IProxerResult<LoginDataModel>> PerformLoginAsync(LoginInput input, CancellationToken token = default)
+        public virtual async Task<IProxerResult<LoginDataModel>> PerformLoginAsync(LoginInput input,
+            CancellationToken token = default)
         {
-            IRequestBuilderWithResult<LoginDataModel> loginRequest = this._client.CreateRequest().FromUserClass().Login(input);
+            IRequestBuilderWithResult<LoginDataModel> loginRequest =
+                this._client.CreateRequest().FromUserClass().Login(input);
             IProxerResult<LoginDataModel> result = await loginRequest.DoRequestAsync(token).ConfigureAwait(false);
             if (!result.Success || result.Result == null)
                 return new ProxerResult<LoginDataModel>(result.Exceptions);
