@@ -69,7 +69,7 @@ namespace Azuria.Middleware.Pipeline
             for (int index = this._middlewares.Count - 1; index >= 0; index--)
             {
                 IMiddleware obj = this._middlewares[index];
-                if (!type.GetTypeInfo().IsAssignableFrom(middleware.GetType().GetTypeInfo())) continue;
+                if (!type.GetTypeInfo().IsAssignableFrom(obj.GetType().GetTypeInfo())) continue;
 
                 this._middlewares.Insert(index + 1, middleware);
                 inserted++;
@@ -85,7 +85,7 @@ namespace Azuria.Middleware.Pipeline
             for (int index = this._middlewares.Count - 1; index >= 0; index--)
             {
                 IMiddleware obj = this._middlewares[index];
-                if (!type.GetTypeInfo().IsAssignableFrom(middleware.GetType().GetTypeInfo())) continue;
+                if (!type.GetTypeInfo().IsAssignableFrom(obj.GetType().GetTypeInfo())) continue;
 
                 this._middlewares.Insert(index, middleware);
                 inserted++;
@@ -111,7 +111,7 @@ namespace Azuria.Middleware.Pipeline
             for (var index = 0; index < this._middlewares.Count; index++)
             {
                 IMiddleware obj = this._middlewares[index];
-                if (!type.GetTypeInfo().IsAssignableFrom(middleware.GetType().GetTypeInfo())) continue;
+                if (!type.GetTypeInfo().IsAssignableFrom(obj.GetType().GetTypeInfo())) continue;
 
                 this._middlewares[index] = middleware;
                 replaced++;

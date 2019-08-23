@@ -25,7 +25,7 @@ namespace Azuria
         /// Creates a new instance of <see cref="ProxerClientOptions" />.
         /// </summary>
         /// <param name="apiKey"></param>
-        public ProxerClientOptions(char[] apiKey, IProxerClient client)
+        protected internal ProxerClientOptions(char[] apiKey, IProxerClient client)
         {
             this.Client = client;
             this.ApiKey = apiKey;
@@ -150,7 +150,6 @@ namespace Azuria
             var middlewares = new List<IMiddleware>
             {
                 new StaticHeaderMiddleware(CreateDefaultHeaders(apiKey)), // First to start execution
-                new LoginMiddleware(new DefaultLoginManager(client)),
                 new ErrorMiddleware(),
                 new HttpJsonRequestMiddleware(new HttpClient(), new JsonDeserializer()) // Last to start execution
             };
