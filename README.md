@@ -1,8 +1,8 @@
-# Azuria - A Proxer.Me API in .NET (inofficial)
+# Azuria - A Proxer.Me API in .NET (unofficial)
 
-Master | NuGet | Coverage
------- | ----- | -------- 
-[![AppVeyor branch](https://img.shields.io/appveyor/ci/InfiniteSoul/Azuria/master.svg?maxAge=2592000?style=flat-square)](https://ci.appveyor.com/project/InfiniteSoul/azuria/branch/master) | [![NuGet](https://img.shields.io/nuget/v/Azuria.svg?style=flat-square)](https://www.nuget.org/packages/Azuria) | [![codecov](https://codecov.io/gh/InfiniteSoul/Azuria/branch/master/graph/badge.svg)](https://codecov.io/gh/InfiniteSoul/Azuria)
+Master | Coverage | NuGet
+------ | -------- | ----- 
+![GitHub Actions](https://shields-staging-pr-3913.herokuapp.com/github/actions/InfiniteSoul/Azuria/master?style=for-the-badge) | [![codecov](https://img.shields.io/codecov/c/github/InfiniteSoul/Azuria?style=for-the-badge)](https://codecov.io/gh/InfiniteSoul/Azuria) | [![NuGet](https://img.shields.io/nuget/v/Azuria.svg?style=for-the-badge)](https://www.nuget.org/packages/Azuria) 
 
 ---
 
