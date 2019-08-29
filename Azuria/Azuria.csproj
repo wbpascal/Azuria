@@ -1,16 +1,25 @@
-﻿<Project Sdk="Microsoft.NET.Sdk" ToolsVersion="15.0">
+<Project Sdk="Microsoft.NET.Sdk" ToolsVersion="15.0">
     <PropertyGroup>
-        <TargetFramework>netstandard1.2</TargetFramework>
-        <SignAssembly>False</SignAssembly>
-        <DelaySign>False</DelaySign>
-        <AssemblyOriginatorKeyFile>signing_key.snk</AssemblyOriginatorKeyFile>
-        <FileUpgradeFlags>
-        </FileUpgradeFlags>
-        <UpgradeBackupLocation>
-        </UpgradeBackupLocation>
-        <OldToolsVersion>2.0</OldToolsVersion>
-        <LangVersion>7.1</LangVersion>
-    </PropertyGroup>
+		<TargetFramework>netstandard1.2</TargetFramework>
+		<SignAssembly>False</SignAssembly>
+		<DelaySign>False</DelaySign>
+		<AssemblyOriginatorKeyFile>signing_key.snk</AssemblyOriginatorKeyFile>
+		<FileUpgradeFlags>
+		</FileUpgradeFlags>
+		<UpgradeBackupLocation>
+		</UpgradeBackupLocation>
+		<OldToolsVersion>2.0</OldToolsVersion>
+		<LangVersion>7.1</LangVersion>
+	</PropertyGroup>
+	<PropertyGroup>
+		<PackageId>Azuria</PackageId>
+		<Title>Azuria</Title>
+		<Authors>InfiniteSoul</Authors>
+		<Description>An unofficial api for the german anime and manga community Proxer.Me.</Description>
+		<PackageTags>proxer;proxer.me;api</PackageTags>
+		<IncludeSymbols>true</IncludeSymbols>
+		<RepositoryUrl>https://github.com/InfiniteSoul/Azuria</RepositoryUrl>
+	</PropertyGroup>
     <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Appveyor|AnyCPU'">
         <DocumentationFile>bin\Appveyor\netstandard1.2\Azuria.xml</DocumentationFile>
     </PropertyGroup>
