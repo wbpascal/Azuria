@@ -1,0 +1,69 @@
+name: Build and Test Library
+
+on: [push, pull_request]
+
+jobs:
+  build:
+    strategy:
+      matrix:
+        os: [ubuntu-18.04, windows-2019]
+    runs-on: ${{ matrix.os }}
+    
+    steps:
+    - uses: actions/checkout@v1
+    - name: Setup .NET Core
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: 2.2.108
+    - name: Build with dotnet
+      run: dotnet build --configuration Release
+      env:
+        DOTNET_SKIP_FIRST_TIME_EXPERIENCE: true
+      
+  test_linux:
+    strategy:
+      matrix:
+        os: [ubuntu-18.04]
+    runs-on: ${{ matrix.os }}
+    needs: build
+    
+    steps:
+    - uses: actions/checkout@v1
+    - name: Setup .NET Core
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: 2.2.108
+    - name: Test Solution
+      run: dotnet test /p:CollectCoverage=true /p:CoverletOutputFormat=opencover /p:CoverletOutput=./coverage.xml /p:Exclude=\"[Azuria.Test*]*,[NUnit3.TestAdapter]*\"
+      env:
+        DOTNET_SKIP_FIRST_TIME_EXPERIENCE: true
+    - name: Upload code coverage report to Codecov
+      uses: codecov/codecov-action@v1.0.2
+      with:
+        token: ${{ secrets.CODECOV_TOKEN }}
+        name: ${{ matrix.os }}
+        
+  test_windows:
+    strategy:
+      matrix:
+        os: [windows-2019]
+    runs-on: ${{ matrix.os }}
+    needs: build
+    
+    steps:
+    - uses: actions/checkout@v1
+    - name: Setup .NET Core
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: 2.2.108
+    - name: Setup Codecov CLI
+      run: choco install codecov --yes --limitoutput --no-progress
+    - name: Test Solution
+      run: dotnet test /p:CollectCoverage=true /p:CoverletOutputFormat=opencover /p:CoverletOutput=./coverage.xml /p:Exclude=\"[Azuria.Test*]*,[NUnit3.TestAdapter]*\"
+      env:
+        DOTNET_SKIP_FIRST_TIME_EXPERIENCE: true
+    - name: Upload code coverage report to Codecov
+      run: codecov -f "./Azuria.Test/coverage.xml" -t $CODECOV_TOKEN -n ${{ matrix.os }}
+      env:
+        CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
+  
