@@ -15,6 +15,8 @@ jobs:
       uses: actions/setup-dotnet@v1
       with:
         dotnet-version: 2.2.108
+    - name: Restore Packages
+      run: dotnet restore --no-cache
     - name: Build with dotnet
       run: dotnet build --configuration Release
       
@@ -31,6 +33,8 @@ jobs:
       uses: actions/setup-dotnet@v1
       with:
         dotnet-version: 2.2.108
+    - name: Restore Packages
+      run: dotnet restore --no-cache
     - name: Test Solution
       run: dotnet test /p:CollectCoverage=true /p:CoverletOutputFormat=opencover /p:CoverletOutput=./coverage.xml /p:Exclude=\"[Azuria.Test*]*,[NUnit3.TestAdapter]*\"
     - name: Upload code coverage report to Codecov
@@ -54,6 +58,8 @@ jobs:
         dotnet-version: 2.2.108
     - name: Setup Codecov CLI
       run: choco install codecov --yes --limitoutput --no-progress
+    - name: Restore Packages
+      run: dotnet restore --no-cache
     - name: Test Solution
       run: dotnet test /p:CollectCoverage=true /p:CoverletOutputFormat=opencover /p:CoverletOutput=./coverage.xml /p:Exclude=\"[Azuria.Test*]*,[NUnit3.TestAdapter]*\"
     - name: Upload code coverage report to Codecov
