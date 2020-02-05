@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using Azuria.Authentication;
 using Azuria.Helpers;
@@ -145,13 +145,13 @@ namespace Azuria
             return this;
         }
 
-        private static IPipeline CreateDefaultPipeline(char[] apiKey, IProxerClient client)
+        private IPipeline CreateDefaultPipeline(char[] apiKey, IProxerClient client)
         {
             var middlewares = new List<IMiddleware>
             {
                 new StaticHeaderMiddleware(CreateDefaultHeaders(apiKey)), // First to start execution
                 new ErrorMiddleware(),
-                new HttpJsonRequestMiddleware(new HttpClient(), new JsonDeserializer()) // Last to start execution
+                new HttpJsonRequestMiddleware(this._httpClient, this._jsonDeserializer) // Last to start execution
             };
 
             return new Pipeline(middlewares);
