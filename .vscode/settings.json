@@ -1,0 +1,5 @@
+{
+    "dotnet-test-explorer.testProjectPath": "Azuria.Test/Azuria.Test.csproj",
+    "dotnet-test-explorer.codeLensFailed": "FAILED",
+    "dotnet-test-explorer.codeLensPassed": "PASSED"
+}
