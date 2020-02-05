@@ -11,29 +11,33 @@ namespace Azuria.Middleware
     /// </summary>
     public class StaticHeaderMiddleware : IMiddleware
     {
-        private readonly IDictionary<string, string> _staticHeaders;
-
         /// <summary>
         /// 
         /// </summary>
         /// <param name="staticHeaders"></param>
         public StaticHeaderMiddleware(IDictionary<string, string> staticHeaders)
         {
-            this._staticHeaders = staticHeaders;
+            this.Header = staticHeaders;
         }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <value></value>
+        public IDictionary<string, string> Header { get; }
 
         /// <inheritdoc />
         public Task<IProxerResult> Invoke(IRequestBuilder request, MiddlewareAction next,
             CancellationToken cancellationToken = default)
         {
-            return next(request.WithHeader(this._staticHeaders), cancellationToken);
+            return next(request.WithHeader(this.Header), cancellationToken);
         }
 
         /// <inheritdoc />
         public Task<IProxerResult<T>> InvokeWithResult<T>(IRequestBuilderWithResult<T> request,
             MiddlewareAction<T> next, CancellationToken cancellationToken = default)
         {
-            return next(request.WithHeader(this._staticHeaders), cancellationToken);
+            return next(request.WithHeader(this.Header), cancellationToken);
         }
     }
 }
