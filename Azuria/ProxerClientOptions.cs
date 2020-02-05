@@ -50,7 +50,7 @@ namespace Azuria
         /// <summary>
         /// Inserts or overwrites the default <see cref="LoginMiddleware">login middleware</see> with a new
         /// <see cref="DefaultLoginManager">login manager</see> that may contain an optional login token.
-        /// Overwrites <see cref="WithCustomLoginManager" />.
+        /// Overwrites result of <see cref="WithCustomLoginManager" />.
         /// </summary>
         /// <param name="loginToken">
         /// Optional. The login token the <see cref="DefaultLoginManager">login manager</see> will be inserted with. If none or
@@ -71,7 +71,7 @@ namespace Azuria
         /// <summary>
         /// Overwrites the default <see cref="HttpJsonRequestMiddleware" /> with one that contains the given custom
         /// <see cref="IHttpClient">http client</see> that is then used to make all requests of that client.
-        /// Overwrites <see cref="WithCustomHttpClient(int)" />.
+        /// Overwrites result of <see cref="WithCustomHttpClient(int)" />.
         /// If <see cref="Pipeline"/> does not contain any instances of <see cref="HttpJsonRequestMiddleware" />, nothing 
         /// is done.
         /// </summary>
@@ -86,9 +86,9 @@ namespace Azuria
         }
 
         /// <summary>
-        /// Overwrites the default <see cref="HttpJsonRequestMiddleware" /> with one that contains an
-        /// <see cref="IHttpClient">http client</see> with the given custom timeout.
-        /// Overwrites <see cref="WithCustomHttpClient(IHttpClient)" />.
+        /// Overwrites the default <see cref="HttpJsonRequestMiddleware" /> with one that contains a http client
+        /// with the given custom timeout.
+        /// Overwrites result of <see cref="WithCustomHttpClient(IHttpClient)" />.
         /// If <see cref="Pipeline"/> does not contain any instances of <see cref="HttpJsonRequestMiddleware" />, nothing 
         /// is done.
         /// </summary>
@@ -117,7 +117,7 @@ namespace Azuria
         /// <summary>
         /// Inserts or overwrites the default <see cref="LoginMiddleware">login middleware</see> with a given
         /// <see cref="ILoginManager" />.
-        /// Overwrites <see cref="WithAuthentication" />.
+        /// Overwrites result of <see cref="WithAuthentication" />.
         /// </summary>
         /// <param name="loginManager">The login manager.</param>
         /// <exception cref="ArgumentNullException">Thrown if the <paramref name="loginManager" /> ist null.</exception>
