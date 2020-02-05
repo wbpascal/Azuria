@@ -666,7 +666,14 @@ ConsoleApplication1/
 /Components/
 /packages/
 /.idea/
+
+# DocFx Project
 /docfx_project/
 /docs/
+
+# SonarQube Files
 /.sonarqube/
 /scan.bat
+
+# Temp coverage files
+**/lcov.info
