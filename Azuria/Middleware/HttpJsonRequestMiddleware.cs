@@ -17,9 +17,6 @@ namespace Azuria.Middleware
     /// </summary>
     public class HttpJsonRequestMiddleware : IMiddleware
     {
-        private readonly IHttpClient _httpClient;
-        private readonly IJsonDeserializer _deserializer;
-
         /// <summary>
         /// 
         /// </summary>
@@ -27,9 +24,19 @@ namespace Azuria.Middleware
         /// <param name="deserializer"></param>
         public HttpJsonRequestMiddleware(IHttpClient httpClient, IJsonDeserializer deserializer)
         {
-            this._httpClient = httpClient;
-            this._deserializer = deserializer;
+            this.HttpClient = httpClient;
+            this.JsonDeserializer = deserializer;
         }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public IHttpClient HttpClient { get; set; }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public IJsonDeserializer JsonDeserializer { get; set; }
 
         /// <summary>
         /// </summary>
@@ -40,7 +47,7 @@ namespace Azuria.Middleware
             where T : ProxerApiResponseBase
         {
             IProxerResult<string> lResult =
-                await this._httpClient.ProxerRequestAsync(
+                await this.HttpClient.ProxerRequestAsync(
                         request.BuildUri(), request.PostParameter, request.Headers, token
                     )
                     .ConfigureAwait(false);
@@ -51,7 +58,7 @@ namespace Azuria.Middleware
                         : new[] {new SerializationException("Cannot serialize empty response!")}
                 );
 
-            IProxerResult<T> lSerializationResult = this._deserializer.Deserialize<T>(lResult.Result, settings);
+            IProxerResult<T> lSerializationResult = this.JsonDeserializer.Deserialize<T>(lResult.Result, settings);
             if (!lSerializationResult.Success) return new ProxerResult(lSerializationResult.Exceptions);
 
             return lSerializationResult.Result;
