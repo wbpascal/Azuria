@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using Azuria.Authentication;
 using Azuria.Helpers;
@@ -25,6 +25,7 @@ namespace Azuria
         /// Creates a new instance of <see cref="ProxerClientOptions" />.
         /// </summary>
         /// <param name="apiKey"></param>
+        /// <param name="client"></param>
         protected internal ProxerClientOptions(char[] apiKey, IProxerClient client)
         {
             this.Client = client;
@@ -93,7 +94,7 @@ namespace Azuria
         /// is done.
         /// </summary>
         /// <param name="timeout">Optional. The custom timeout of the http client.</param>
-        public ProxerClientOptions WithCustomHttpClient(int timeout = 5000)
+        public ProxerClientOptions WithCustomHttpClient(int timeout)
         {
             return this.WithCustomHttpClient(new HttpClient(timeout));
         }
