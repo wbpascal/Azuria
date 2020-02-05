@@ -1,8 +1,11 @@
 using System;
 using System.Linq;
+using System.Reflection;
 using Azuria.Authentication;
 using Azuria.Middleware;
 using Azuria.Middleware.Pipeline;
+using Azuria.Requests.Http;
+using Azuria.Serialization;
 using Azuria.Test.Core.Helpers;
 using Moq;
 using NUnit.Framework;
@@ -19,7 +22,7 @@ namespace Azuria.Test
             IProxerClient client = ProxerClient.Create(apiKey);
 
             var options = new ProxerClientOptions(apiKey, client);
-            
+
             Assert.AreSame(apiKey, options.ApiKey);
             Assert.AreSame(client, options.Client);
             Assert.NotNull(options.Pipeline);
@@ -46,6 +49,7 @@ namespace Azuria.Test
             Assert.IsInstanceOf<HttpJsonRequestMiddleware>(middlewares[2]);
 
             //TODO: Check headers of StaticHeaderMiddleware
+            //TODO: Check http client and json deserializer (!= null)
         }
 
         [Test]
@@ -61,21 +65,21 @@ namespace Azuria.Test
 
             LoginMiddleware loginMiddleware =
                 options.Pipeline.Middlewares.FirstOrDefault(middleware =>
-                    middleware.GetType() == typeof(LoginMiddleware)) as LoginMiddleware;
+                   middleware.GetType() == typeof(LoginMiddleware)) as LoginMiddleware;
             Assert.NotNull(loginMiddleware);
             Assert.NotNull(loginMiddleware.LoginManager);
             Assert.IsInstanceOf<DefaultLoginManager>(loginMiddleware.LoginManager);
 
-            var loginManager = (DefaultLoginManager) loginMiddleware.LoginManager;
+            var loginManager = (DefaultLoginManager)loginMiddleware.LoginManager;
             Assert.AreEqual(loginToken, loginManager.LoginToken);
         }
 
         [Test]
-        public void WithAuthentication_InsertsMiddlewareAfterHeaderMiddlewareTest()
+        public void WithAuthentication_InsertsNewInstanceAfterHeaderMiddlewareTest()
         {
             // This test covers the case that no login middleware is currently in the pipeline
             // before calling WithAuthentication
-            
+
             char[] apiKey = RandomHelper.GetRandomString(32).ToCharArray();
             char[] loginToken = RandomHelper.GetRandomString(255).ToCharArray();
             IProxerClient client = ProxerClient.Create(apiKey);
@@ -83,14 +87,14 @@ namespace Azuria.Test
             var options = new ProxerClientOptions(apiKey, client);
 
             Assert.AreSame(options, options.WithAuthentication(loginToken));
-            
+
             IMiddleware[] middlewares = options.Pipeline.Middlewares.ToArray();
             Assert.IsNotEmpty(middlewares);
             Assert.AreEqual(4, middlewares.Length);
             Assert.IsInstanceOf<StaticHeaderMiddleware>(middlewares[0]);
             Assert.IsInstanceOf<LoginMiddleware>(middlewares[1]);
         }
-        
+
         [Test]
         public void WithAuthentication_NoTokenEnablesDefaultLoginMiddlewareTest()
         {
@@ -103,7 +107,7 @@ namespace Azuria.Test
 
             LoginMiddleware loginMiddleware =
                 options.Pipeline.Middlewares.FirstOrDefault(middleware =>
-                    middleware.GetType() == typeof(LoginMiddleware)) as LoginMiddleware;
+                   middleware.GetType() == typeof(LoginMiddleware)) as LoginMiddleware;
             Assert.NotNull(loginMiddleware);
             Assert.NotNull(loginMiddleware.LoginManager);
             Assert.IsInstanceOf<DefaultLoginManager>(loginMiddleware.LoginManager);
@@ -119,24 +123,23 @@ namespace Azuria.Test
             var options = new ProxerClientOptions(apiKey, client);
 
             Assert.AreSame(options, options.WithAuthentication(loginToken));
-            
+
             IMiddleware[] middlewares = options.Pipeline.Middlewares.ToArray();
             Assert.IsNotEmpty(middlewares);
             Assert.AreEqual(4, middlewares.Length);
             Assert.IsInstanceOf<LoginMiddleware>(middlewares[1]);
 
             var firstLoginMiddleware = middlewares[1];
-            
-            
+
             Assert.AreSame(options, options.WithAuthentication(loginToken));
-            
+
             middlewares = options.Pipeline.Middlewares.ToArray();
             Assert.IsNotEmpty(middlewares);
             Assert.AreEqual(4, middlewares.Length);
             Assert.IsInstanceOf<LoginMiddleware>(middlewares[1]);
             Assert.AreNotSame(firstLoginMiddleware, middlewares[1]);
         }
-        
+
         [Test]
         public void WithAuthentication_ThrowsIfInvalidTokenTest()
         {
@@ -147,42 +150,194 @@ namespace Azuria.Test
 
             var argumentException = Assert.Throws<ArgumentException>(() => options.WithAuthentication(new char[14]));
             Assert.AreEqual("loginToken", argumentException.ParamName);
-            /*char[] lLoginKey = new char[255].Select(c => (char) new Random().Next(255)).ToArray();
-            IProxerClient lClient = ProxerClient.Create(new char[0], options => options.WithAuthentication(lLoginKey));
-            Assert.True(lClient.Container.IsRegistered<ILoginManager>());
-            Assert.AreEqual(lLoginKey, lClient.Container.Resolve<ILoginManager>().LoginToken);*/
         }
 
         [Test]
-        public void WithCustomHttpClientTest()
+        public void WithExtraUserAgent_ReplacesOldMiddlewareTest()
         {
-            /*Assert.Throws<ArgumentNullException>(
-                () => ProxerClient.Create(new char[0], options => options.WithCustomHttpClient(null)));
+            char[] apiKey = RandomHelper.GetRandomString(32).ToCharArray();
+            IProxerClient client = ProxerClient.Create(apiKey);
 
-            IHttpClient lHttpClient = Mock.Of<IHttpClient>();
-            IProxerClient lClient = ProxerClient.Create(
-                new char[0], options => options.WithCustomHttpClient(context => lHttpClient));
-            Assert.True(lClient.Container.IsRegistered<IHttpClient>());
-            Assert.AreSame(lHttpClient, lClient.Container.Resolve<IHttpClient>());
+            var options = new ProxerClientOptions(apiKey, client);
+            string userAgentExtra = RandomHelper.GetRandomString(10);
 
-            lClient = ProxerClient.Create(
-                new char[0], options => options.WithCustomHttpClient(6000, "Azuria.Test"));
-            Assert.True(lClient.Container.IsRegistered<IHttpClient>());*/
+            StaticHeaderMiddleware oldHeaderMiddleware = options.Pipeline.Middlewares.First() as StaticHeaderMiddleware;
 
-            Assert.Fail("Not implemented");
+            Assert.AreSame(options, options.WithExtraUserAgent(userAgentExtra));
+
+            IMiddleware[] middlewares = options.Pipeline.Middlewares.ToArray();
+            Assert.IsNotEmpty(middlewares);
+            Assert.IsInstanceOf<StaticHeaderMiddleware>(middlewares[0]);
+
+            StaticHeaderMiddleware newHeaderMiddleware = middlewares[0] as StaticHeaderMiddleware;
+            Assert.AreNotSame(oldHeaderMiddleware, newHeaderMiddleware);
+            Assert.True(newHeaderMiddleware.Header["User-Agent"].Contains(userAgentExtra.TrimEnd()));
         }
 
         [Test]
-        public void WithLoginManagerTest()
+        public void WithCustomHttpClient_CreatesNewInstanceWithTimeoutTest()
         {
-            /*ILoginManager lLoginManager = Mock.Of<ILoginManager>();
-            IProxerClient lClient = ProxerClient.Create(
-                "apiKey".ToCharArray(),
-                options => options.WithCustomLoginManager(context => lLoginManager));
-            Assert.True(lClient.Container.IsRegistered<ILoginManager>());
-            Assert.AreSame(lLoginManager, lClient.Container.Resolve<ILoginManager>());*/
+            var timeout = 2500;
+            char[] apiKey = RandomHelper.GetRandomString(32).ToCharArray();
+            IProxerClient client = ProxerClient.Create(apiKey);
 
-            Assert.Fail("Not implemented");
+            var options = new ProxerClientOptions(apiKey, client);
+
+            Assert.AreSame(options, options.WithCustomHttpClient(timeout));
+
+            HttpJsonRequestMiddleware httpMiddleware =
+                options.Pipeline.Middlewares.FirstOrDefault(middleware =>
+                   middleware.GetType() == typeof(HttpJsonRequestMiddleware)) as HttpJsonRequestMiddleware;
+            Assert.NotNull(httpMiddleware);
+            Assert.NotNull(httpMiddleware.HttpClient);
+            Assert.NotNull(httpMiddleware.JsonDeserializer);
+
+            Assert.IsInstanceOf<HttpClient>(httpMiddleware.HttpClient);
+            // This is used because the only way to check what timeout was actually set (the idea of this function), is to check 
+            //  it in the underlying system http client. Because we don't want to actually expose this client to the user, we need
+            //  to use reflection to get the value of the field
+            System.Net.Http.HttpClient systemClient =
+                typeof(HttpClient).GetPrivateFieldValueOrDefault<System.Net.Http.HttpClient>("_client", httpMiddleware.HttpClient);
+            Assert.AreEqual(timeout, systemClient.Timeout.TotalMilliseconds);
+        }
+
+        [Test]
+        public void WithCustomHttpClient_ReplacesOldInstanceTest()
+        {
+            char[] apiKey = RandomHelper.GetRandomString(32).ToCharArray();
+            IProxerClient client = ProxerClient.Create(apiKey);
+
+            var options = new ProxerClientOptions(apiKey, client);
+            var httpClient = new HttpClient();
+
+            HttpJsonRequestMiddleware oldHttpMiddleware =
+                options.Pipeline.Middlewares.FirstOrDefault(middleware =>
+                   middleware.GetType() == typeof(HttpJsonRequestMiddleware)) as HttpJsonRequestMiddleware;
+            Assert.NotNull(oldHttpMiddleware);
+
+            Assert.AreSame(options, options.WithCustomHttpClient(httpClient));
+
+            HttpJsonRequestMiddleware httpMiddleware =
+                options.Pipeline.Middlewares.FirstOrDefault(middleware =>
+                   middleware.GetType() == typeof(HttpJsonRequestMiddleware)) as HttpJsonRequestMiddleware;
+            Assert.NotNull(httpMiddleware);
+            Assert.AreNotSame(oldHttpMiddleware, httpMiddleware);
+            Assert.AreSame(httpClient, httpMiddleware.HttpClient);
+            Assert.NotNull(httpMiddleware.JsonDeserializer);
+            Assert.AreSame(oldHttpMiddleware.JsonDeserializer, httpMiddleware.JsonDeserializer);
+        }
+
+        [Test]
+        public void WithCustomHttpClient_ThrowsIfClientNullTest()
+        {
+            char[] apiKey = RandomHelper.GetRandomString(32).ToCharArray();
+            IProxerClient client = ProxerClient.Create(apiKey);
+
+            var options = new ProxerClientOptions(apiKey, client);
+
+            var argumentException = Assert.Throws<ArgumentNullException>(() => options.WithCustomHttpClient(null));
+            Assert.AreEqual("client", argumentException.ParamName);
+        }
+
+        [Test]
+        public void WithCustomJsonDeserializer_ReplacesOldInstanceTest()
+        {
+            char[] apiKey = RandomHelper.GetRandomString(32).ToCharArray();
+            IProxerClient client = ProxerClient.Create(apiKey);
+
+            var options = new ProxerClientOptions(apiKey, client);
+            var deserializer = new JsonDeserializer();
+
+            HttpJsonRequestMiddleware oldHttpMiddleware =
+                options.Pipeline.Middlewares.FirstOrDefault(middleware =>
+                   middleware.GetType() == typeof(HttpJsonRequestMiddleware)) as HttpJsonRequestMiddleware;
+            Assert.NotNull(oldHttpMiddleware);
+
+            Assert.AreSame(options, options.WithCustomJsonDeserializer(deserializer));
+
+            HttpJsonRequestMiddleware httpMiddleware =
+                options.Pipeline.Middlewares.FirstOrDefault(middleware =>
+                   middleware.GetType() == typeof(HttpJsonRequestMiddleware)) as HttpJsonRequestMiddleware;
+            Assert.NotNull(httpMiddleware);
+            Assert.AreNotSame(oldHttpMiddleware, httpMiddleware);
+            Assert.AreSame(deserializer, httpMiddleware.JsonDeserializer);
+            Assert.NotNull(httpMiddleware.HttpClient);
+            Assert.AreSame(oldHttpMiddleware.HttpClient, httpMiddleware.HttpClient);
+        }
+
+        [Test]
+        public void WithCustomJsonDeserializer_ThrowsIfDeserializerNullTest()
+        {
+            char[] apiKey = RandomHelper.GetRandomString(32).ToCharArray();
+            IProxerClient client = ProxerClient.Create(apiKey);
+
+            var options = new ProxerClientOptions(apiKey, client);
+
+            var argumentException = Assert.Throws<ArgumentNullException>(() => options.WithCustomJsonDeserializer(null));
+            Assert.AreEqual("deserializer", argumentException.ParamName);
+        }
+
+        [Test]
+        public void WithCustomLoginManagerTest_InsertsNewInstanceAfterHeaderMiddlewareTest()
+        {
+            // This test covers the case that no login middleware is currently in the pipeline
+            // before calling WithAuthentication
+
+            char[] apiKey = RandomHelper.GetRandomString(32).ToCharArray();
+            char[] loginToken = RandomHelper.GetRandomString(255).ToCharArray();
+            IProxerClient client = ProxerClient.Create(apiKey);
+
+            var options = new ProxerClientOptions(apiKey, client);
+            var loginManager = new DefaultLoginManager(client, loginToken);
+
+            Assert.AreSame(options, options.WithCustomLoginManager(loginManager));
+
+            IMiddleware[] middlewares = options.Pipeline.Middlewares.ToArray();
+            Assert.IsNotEmpty(middlewares);
+            Assert.AreEqual(4, middlewares.Length);
+            Assert.IsInstanceOf<StaticHeaderMiddleware>(middlewares[0]);
+            Assert.IsInstanceOf<LoginMiddleware>(middlewares[1]);
+            Assert.AreSame(loginManager, (middlewares[1] as LoginMiddleware)?.LoginManager);
+        }
+
+        [Test]
+        public void WithCustomLoginManagerTest_ReplacesOldMiddlewareTest()
+        {
+            char[] apiKey = RandomHelper.GetRandomString(32).ToCharArray();
+            char[] loginToken = RandomHelper.GetRandomString(255).ToCharArray();
+            IProxerClient client = ProxerClient.Create(apiKey);
+
+            var options = new ProxerClientOptions(apiKey, client);
+            var loginManager = new DefaultLoginManager(client, loginToken);
+
+            Assert.AreSame(options, options.WithCustomLoginManager(loginManager));
+
+            IMiddleware[] middlewares = options.Pipeline.Middlewares.ToArray();
+            Assert.IsNotEmpty(middlewares);
+            Assert.AreEqual(4, middlewares.Length);
+            Assert.IsInstanceOf<LoginMiddleware>(middlewares[1]);
+
+            var firstLoginMiddleware = middlewares[1];
+
+            Assert.AreSame(options, options.WithCustomLoginManager(loginManager));
+
+            middlewares = options.Pipeline.Middlewares.ToArray();
+            Assert.IsNotEmpty(middlewares);
+            Assert.AreEqual(4, middlewares.Length);
+            Assert.IsInstanceOf<LoginMiddleware>(middlewares[1]);
+            Assert.AreNotSame(firstLoginMiddleware, middlewares[1]);
+        }
+
+        [Test]
+        public void WithCustomLoginManagerTest_ThrowsIfParamNullTest()
+        {
+            char[] apiKey = RandomHelper.GetRandomString(32).ToCharArray();
+            IProxerClient client = ProxerClient.Create(apiKey);
+
+            var options = new ProxerClientOptions(apiKey, client);
+
+            var argumentException = Assert.Throws<ArgumentNullException>(() => options.WithCustomLoginManager(null));
+            Assert.AreEqual("loginManager", argumentException.ParamName);
         }
     }
 }
