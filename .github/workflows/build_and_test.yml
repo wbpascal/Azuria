@@ -42,3 +42,5 @@ jobs:
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
           name: ${{ matrix.os }}
+          yml: ./codecov.yml
+          file: ./Azuria.Test/coverage.xml
