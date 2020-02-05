@@ -63,9 +63,7 @@
         <EmbeddedResource Include="Response\user_getuserinfo.json" />
         <EmbeddedResource Include="Response\user_login.json" />
         <EmbeddedResource Include="Response\user_logout.json" />
-        <None Remove="Response\info_getcharacters.json" />
         <EmbeddedResource Include="Response\info_getcharacters.json" />
-        <None Remove="Response\info_getcharacter.json" />
         <EmbeddedResource Include="Response\info_getcharacter.json" />
     </ItemGroup>
     <ItemGroup>
