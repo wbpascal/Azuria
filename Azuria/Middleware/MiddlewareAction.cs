@@ -9,6 +9,7 @@ namespace Azuria.Middleware
     /// 
     /// </summary>
     /// <param name="request"></param>
+    /// <param name="cancellationToken"></param>
     public delegate Task<IProxerResult> MiddlewareAction(IRequestBuilder request,
         CancellationToken cancellationToken = default);
 
@@ -16,6 +17,7 @@ namespace Azuria.Middleware
     /// 
     /// </summary>
     /// <param name="request"></param>
+    /// <param name="cancellationToken"></param>
     /// <typeparam name="T"></typeparam>
     public delegate Task<IProxerResult<T>> MiddlewareAction<T>(IRequestBuilderWithResult<T> request,
         CancellationToken cancellationToken = default);

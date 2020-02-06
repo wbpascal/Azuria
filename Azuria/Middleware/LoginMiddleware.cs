@@ -23,6 +23,10 @@ namespace Azuria.Middleware
             this.LoginManager = loginManager ?? throw new ArgumentNullException();
         }
 
+        /// <summary>
+        /// Gets the login manager used by the middleware to authenticate the user
+        /// </summary>
+        /// <value></value>
         public ILoginManager LoginManager { get; }
 
         /// <inheritdoc />

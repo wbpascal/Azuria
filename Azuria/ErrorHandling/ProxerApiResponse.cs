@@ -26,6 +26,11 @@ namespace Azuria.ErrorHandling
     /// </summary>
     public class ProxerApiResponse : ProxerApiResponseBase, IProxerResult
     {
+        /// <summary>
+        /// Method used to desconstruct an api response into a tuple.
+        /// </summary>
+        /// <param name="success"></param>
+        /// <param name="exceptions"></param>
         public void Deconstruct(out bool success, out IEnumerable<Exception> exceptions)
         {
             success = this.Success;

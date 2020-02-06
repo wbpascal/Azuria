@@ -9,7 +9,7 @@ namespace Azuria.Helpers.Attributes
     public class InputDataAttribute : Attribute
     {
         /// <summary>
-        /// Type has to implement <code>IInputDataConverter<T></code> where T is assignable to the
+        /// Type has to implement <code>IInputDataConverter</code> where T is assignable to the
         /// Type of the Property
         /// </summary>
         public Type Converter { get; set; }

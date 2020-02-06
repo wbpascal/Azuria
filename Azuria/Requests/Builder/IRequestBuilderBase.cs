@@ -19,6 +19,10 @@ namespace Azuria.Requests.Builder
         /// </summary>
         IDictionary<string, string> GetParameters { get; }
 
+        /// <summary>
+        /// Gets the headers that will be included in the request.
+        /// </summary>
+        /// <value></value>
         IDictionary<string, string> Headers { get; }
 
         /// <summary>
