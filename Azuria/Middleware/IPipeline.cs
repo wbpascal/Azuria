@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using Azuria.ErrorHandling;
 
-namespace Azuria.Middleware.Pipeline
+namespace Azuria.Middleware
 {
     /// <summary>
     /// An interface that represents a middleware pipeline.

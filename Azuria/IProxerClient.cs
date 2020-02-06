@@ -1,4 +1,4 @@
-﻿using Azuria.Middleware.Pipeline;
+﻿using Azuria.Middleware;
 
 namespace Azuria
 {

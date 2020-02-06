@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using Azuria.Authentication;
 using Azuria.Helpers;
 using Azuria.Middleware;
-using Azuria.Middleware.Pipeline;
 using Azuria.Requests.Http;
 using Azuria.Serialization;
 

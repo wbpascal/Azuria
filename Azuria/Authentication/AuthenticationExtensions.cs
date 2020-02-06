@@ -5,7 +5,6 @@ using Azuria.Api.v1.DataModels.User;
 using Azuria.Api.v1.Input.User;
 using Azuria.ErrorHandling;
 using Azuria.Middleware;
-using Azuria.Middleware.Pipeline;
 
 namespace Azuria.Authentication
 {

@@ -4,7 +4,6 @@ using System.Threading.Tasks;
 using Azuria.Api.Builder;
 using Azuria.ErrorHandling;
 using Azuria.Middleware;
-using Azuria.Middleware.Pipeline;
 using Azuria.Requests;
 using Azuria.Requests.Builder;
 using Moq;

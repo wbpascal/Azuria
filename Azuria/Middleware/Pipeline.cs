@@ -4,7 +4,7 @@ using System.Reflection;
 using System.Threading.Tasks;
 using Azuria.ErrorHandling;
 
-namespace Azuria.Middleware.Pipeline
+namespace Azuria.Middleware
 {
     /// <summary>
     /// The default implementation for a middleware pipeline

@@ -6,7 +6,6 @@ using Azuria.Api.v1.Input.User;
 using Azuria.Authentication;
 using Azuria.ErrorHandling;
 using Azuria.Middleware;
-using Azuria.Middleware.Pipeline;
 using Azuria.Requests.Builder;
 using Azuria.Test.Core.Helpers;
 using Moq;
