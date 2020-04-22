@@ -35,4 +35,7 @@
     <ItemGroup>
         <None Remove="signing_key.snk" />
     </ItemGroup>
+    <ItemGroup>
+      <None Include="..\.editorconfig" Link=".editorconfig" />
+    </ItemGroup>
 </Project>
