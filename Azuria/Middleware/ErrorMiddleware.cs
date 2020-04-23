@@ -69,26 +69,7 @@ namespace Azuria.Middleware
 
         private static Exception GetResponseException(ErrorCode code)
         {
-            switch (code)
-            {
-                case ErrorCode.IpBlocked:
-                    return new FirewallException("http://proxer.me/misc/captcha");
-                case ErrorCode.ApiKeyNoPermission:
-                    return new ApiKeyInsufficientException();
-                case ErrorCode.UserNoPermission:
-                case ErrorCode.ChatNoPermission:
-                    return new NoPermissionException();
-                case ErrorCode.NotificationsNotLoggedIn:
-                case ErrorCode.UcpNotLoggedIn:
-                case ErrorCode.InfoNotLoggedIn:
-                case ErrorCode.MessengerNotLoggedIn:
-                case ErrorCode.ChatNotLoggedIn:
-                    return new NotAuthenticatedException();
-                case ErrorCode.NoError:
-                    return null;
-                default:
-                    return new ProxerApiException(code);
-            }
+            return code == ErrorCode.NoError ? null : new ProxerApiException(code);
         }
     }
 }

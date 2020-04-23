@@ -38,7 +38,7 @@ namespace Azuria.Test.Middleware
             MiddlewareAction action = pipeline.BuildPipeline();
             Assert.NotNull(action);
 
-            IRequestBuilder request = this._apiRequestBuilder.FromUrl(new Uri("https://proxer.me"));
+            IRequestBuilder request = this._apiRequestBuilder.FromUrl(new Uri("https://proxer.me/api/v1"));
             IProxerResult result = await action.Invoke(request);
             Assert.NotNull(result);
             Assert.True(result.Success);
@@ -52,7 +52,7 @@ namespace Azuria.Test.Middleware
             MiddlewareAction action = pipeline.BuildPipeline();
             Assert.NotNull(action);
 
-            IRequestBuilder request = this._apiRequestBuilder.FromUrl(new Uri("https://proxer.me"));
+            IRequestBuilder request = this._apiRequestBuilder.FromUrl(new Uri("https://proxer.me/api/v1"));
             IProxerResult result = await action.Invoke(request);
             Assert.NotNull(result);
             Assert.True(result.Success);
@@ -68,7 +68,8 @@ namespace Azuria.Test.Middleware
             MiddlewareAction<object> action = pipeline.BuildPipelineWithResult<object>();
             Assert.NotNull(action);
 
-            IRequestBuilderWithResult<object> request = this._apiRequestBuilder.FromUrl(new Uri("https://proxer.me")).WithResult<object>();
+            IRequestBuilderWithResult<object> request =
+                this._apiRequestBuilder.FromUrl(new Uri("https://proxer.me/api/v1")).WithResult<object>();
             IProxerResult<object> result = await action.Invoke(request);
             Assert.NotNull(result);
             Assert.True(result.Success);
@@ -83,7 +84,7 @@ namespace Azuria.Test.Middleware
             Assert.NotNull(action);
 
             IRequestBuilderWithResult<string> request =
-                this._apiRequestBuilder.FromUrl(new Uri("https://proxer.me")).WithResult<string>();
+                this._apiRequestBuilder.FromUrl(new Uri("https://proxer.me/api/v1")).WithResult<string>();
             IProxerResult<string> result = await action.Invoke(request);
             Assert.NotNull(result);
             Assert.True(result.Success);
