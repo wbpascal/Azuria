@@ -30,7 +30,7 @@ namespace Azuria.Authentication
         /// <param name="loginToken"></param>
         public DefaultLoginManager(IProxerClient client, char[] loginToken = null)
         {
-            _client = client;
+            this._client = client;
             this.LoginToken = loginToken;
         }
 

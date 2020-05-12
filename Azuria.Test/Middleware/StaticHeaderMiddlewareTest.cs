@@ -35,7 +35,7 @@ namespace Azuria.Test.Middleware
             IRequestBuilder builder = this._apiRequestBuilder.FromUrl(new Uri("https://proxer.me"));
     
             // Create mock of next middleware in pipeline that asserts needed conditions
-            MiddlewareAction action = (IRequestBuilder request, CancellationToken token) => {
+            MiddlewareAction action = (request, token) => {
                 foreach (var item in header)
                 {
                     Assert.True(request.Headers.Contains(item));
@@ -62,7 +62,7 @@ namespace Azuria.Test.Middleware
             var tokenSource = new CancellationTokenSource();
 
             // Create mock of next middleware in pipeline that asserts needed conditions
-            MiddlewareAction action = (IRequestBuilder request, CancellationToken token) => {
+            MiddlewareAction action = (request, token) => {
                 Assert.NotNull(token);
                 Assert.AreEqual(tokenSource.Token, token);
                 return Task.FromResult((IProxerResult) new ProxerResult());
@@ -88,7 +88,7 @@ namespace Azuria.Test.Middleware
                     .WithResult<object>();
     
             // Create mock of next middleware in pipeline that asserts needed conditions
-            MiddlewareAction<object> action = (IRequestBuilderWithResult<object> request, CancellationToken token) => {
+            MiddlewareAction<object> action = (request, token) => {
                 foreach (var item in header)
                 {
                     Assert.True(request.Headers.Contains(item));
@@ -118,7 +118,7 @@ namespace Azuria.Test.Middleware
             var tokenSource = new CancellationTokenSource();
 
             // Create mock of next middleware in pipeline that asserts needed conditions
-            MiddlewareAction<object> action = (IRequestBuilderWithResult<object> request, CancellationToken token) => {
+            MiddlewareAction<object> action = (request, token) => {
                 Assert.NotNull(token);
                 Assert.AreEqual(tokenSource.Token, token);
                 return Task.FromResult((IProxerResult<object>) new ProxerResult<object>(new object()));
@@ -140,7 +140,7 @@ namespace Azuria.Test.Middleware
             var obj = new object();
 
             // Create mock of next middleware in pipeline that asserts needed conditions
-            MiddlewareAction<object> action = (IRequestBuilderWithResult<object> request, CancellationToken token) => {
+            MiddlewareAction<object> action = (request, token) => {
                 return Task.FromResult((IProxerResult<object>) new ProxerResult<object>(obj));
             };
 

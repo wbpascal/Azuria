@@ -18,6 +18,7 @@
         <EmbeddedResource Include="Response\info_getcommentsrating.json" />
         <EmbeddedResource Include="Response\info_getentry.json" />
         <EmbeddedResource Include="Response\info_getentrytags.json" />
+        <EmbeddedResource Include="Response\info_getforum.json" />
         <EmbeddedResource Include="Response\info_getfullentry.json" />
         <EmbeddedResource Include="Response\info_getgate.json" />
         <EmbeddedResource Include="Response\info_getgroups.json" />
@@ -25,10 +26,14 @@
         <EmbeddedResource Include="Response\info_getlang.json" />
         <EmbeddedResource Include="Response\info_getlistinfo.json" />
         <EmbeddedResource Include="Response\info_getnames.json" />
+        <EmbeddedResource Include="Response\info_getperson.json" />
+        <EmbeddedResource Include="Response\info_getpersons.json" />
         <EmbeddedResource Include="Response\info_getpublisher.json" />
+        <EmbeddedResource Include="Response\info_getrecommendations.json" />
         <EmbeddedResource Include="Response\info_getrelations.json" />
         <EmbeddedResource Include="Response\info_getseason.json" />
         <EmbeddedResource Include="Response\info_gettranslatorgroup.json" />
+        <EmbeddedResource Include="Response\info_getuserinfo.json" />
         <EmbeddedResource Include="Response\info_setuserinfofavor.json" />
         <EmbeddedResource Include="Response\info_setuserinfofinish.json" />
         <EmbeddedResource Include="Response\info_setuserinfonote.json" />
@@ -75,6 +80,11 @@
         <ProjectReference Include="..\Azuria\Azuria.csproj" />
     </ItemGroup>
     <ItemGroup>
+        <None Remove="Response\info_getforum.json" />
+        <None Remove="Response\info_getperson.json" />
+        <None Remove="Response\info_getpersons.json" />
+        <None Remove="Response\info_getrecommendations.json" />
+        <None Remove="Response\info_getuserinfo.json" />
         <None Remove="signing_key.snk" />
     </ItemGroup>
 </Project>

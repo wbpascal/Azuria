@@ -42,7 +42,7 @@ namespace Azuria.Test.Middleware
             var middleware = new HttpJsonRequestMiddleware(new TestHttpClient(), new JsonDeserializer());
             var uri = new Uri("https://proxer.me/api/v1/user/userinfo?uid=42");
             var header = new Dictionary<string, string>() {{"test", "key123"}};
-            IRequestBuilder request = _apiRequestBuilder.FromUrl(uri).WithHeader(header);
+            IRequestBuilder request = this._apiRequestBuilder.FromUrl(uri).WithHeader(header);
 
             IProxerResult result = await middleware.Invoke(request, null);
             Assert.True(result.Success);

@@ -67,7 +67,7 @@ namespace Azuria.Middleware
         {
             // Check if the request failed because the client was not authenticated
             // Also check if we already added the auth information before
-            if (result.Exceptions.Any(ex => ex.GetType() == typeof(NotAuthenticatedException)) ||
+            if (result.Exceptions.All(ex => ex.GetType() != typeof(NotAuthenticatedException)) ||
                 this.LoginManager.ContainsAuthenticationInformation(request)) return false;
 
             // Force login on next request
