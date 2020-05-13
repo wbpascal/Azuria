@@ -92,7 +92,7 @@ namespace Azuria.Middleware
                 new JsonSerializerSettings {Converters = GetCustomConverter(request)};
 
             IProxerResultBase lResult =
-                await this.ApiRequestInternalAsync<ProxerApiResponse>(request, cancellationToken, lSerializerSettings)
+                await this.ApiRequestInternalAsync<ProxerApiResponse<T>>(request, cancellationToken, lSerializerSettings)
                     .ConfigureAwait(false);
 
             return lResult.Success

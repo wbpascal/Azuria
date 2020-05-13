@@ -52,6 +52,8 @@ namespace Azuria.Middleware
         {
             if (result.Success) return new Exception[0];
 
+            // Use switch such that we can add more cases in the future
+            // From a performance standpoint it shouldn't matter if we use switch or if atm
             switch (result)
             {
                 case ProxerApiResponseBase lResponse:

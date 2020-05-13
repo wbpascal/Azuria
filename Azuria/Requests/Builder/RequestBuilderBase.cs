@@ -29,11 +29,13 @@ namespace Azuria.Requests.Builder
         /// <param name="builderBase"></param>
         protected RequestBuilderBase(RequestBuilderBase builderBase)
         {
-            this.Client = builderBase.Client;
-            this.CheckLogin = builderBase.CheckLogin;
             this._baseUri = builderBase._baseUri;
             this._postArguments = builderBase._postArguments;
+
+            this.Client = builderBase.Client;
+            this.CheckLogin = builderBase.CheckLogin;
             this.GetParameters = builderBase.GetParameters;
+            this.Headers = builderBase.Headers;
         }
 
         /// <summary>
