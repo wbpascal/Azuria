@@ -29,11 +29,13 @@ namespace Azuria.Requests.Builder
         /// <param name="builderBase"></param>
         protected RequestBuilderBase(RequestBuilderBase builderBase)
         {
-            this.Client = builderBase.Client;
-            this.CheckLogin = builderBase.CheckLogin;
             this._baseUri = builderBase._baseUri;
             this._postArguments = builderBase._postArguments;
+
+            this.Client = builderBase.Client;
+            this.CheckLogin = builderBase.CheckLogin;
             this.GetParameters = builderBase.GetParameters;
+            this.Headers = builderBase.Headers;
         }
 
         /// <summary>
@@ -50,6 +52,10 @@ namespace Azuria.Requests.Builder
 
         /// <summary>
         /// </summary>
+        public IDictionary<string, string> Headers { get; } = new Dictionary<string, string>();
+
+        /// <summary>
+        /// </summary>
         public IEnumerable<KeyValuePair<string, string>> PostParameter => this._postArguments;
 
         /// <summary>
@@ -62,11 +68,29 @@ namespace Azuria.Requests.Builder
         }
 
         /// <summary>
+        /// TODO: Change to AddGetParameter(s)
         /// </summary>
         /// <param name="parameters"></param>
         protected void AddGetParameter(IDictionary<string, string> parameters)
         {
             this.GetParameters.AddOrUpdateRange(parameters);
+        }
+
+        /// <summary>
+        /// </summary>
+        /// <param name="key"></param>
+        /// <param name="value"></param>
+        protected void AddHeader(string key, string value)
+        {
+            this.Headers[key] = value;
+        }
+
+        /// <summary>
+        /// </summary>
+        /// <param name="headers"></param>
+        protected void AddHeader(IDictionary<string, string> headers)
+        {
+            this.Headers.AddOrUpdateRange(headers);
         }
 
         /// <summary>
@@ -96,7 +120,7 @@ namespace Azuria.Requests.Builder
         /// <inheritdoc />
         public Uri BuildUri()
         {
-            UriBuilder lUriBuilder = new UriBuilder(this._baseUri);
+            var lUriBuilder = new UriBuilder(this._baseUri);
             lUriBuilder.Query += this.GetParameters.Aggregate(
                     string.Empty, (s, pair) => $"&{pair.Key}={pair.Value}"
                 )

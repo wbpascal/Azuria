@@ -13,7 +13,7 @@ namespace Azuria.Api.v1.Converters
         public override Fsk[] ConvertJson(
             JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
         {
-            string lValue = reader.Value.ToString();
+            var lValue = reader.Value.ToString();
             if (string.IsNullOrEmpty(lValue.Trim())) return new Fsk[0];
 
             Dictionary<string, Fsk> lStringDictionary = EnumHelpers.GetDescriptionDictionary<Fsk>();

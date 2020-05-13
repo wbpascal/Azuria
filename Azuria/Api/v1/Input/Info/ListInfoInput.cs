@@ -1,5 +1,4 @@
-﻿using Azuria.Api.v1.Input.List;
-using Azuria.Helpers.Attributes;
+﻿using Azuria.Helpers.Attributes;
 
 namespace Azuria.Api.v1.Input.Info
 {

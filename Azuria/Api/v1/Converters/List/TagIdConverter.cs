@@ -10,8 +10,8 @@ namespace Azuria.Api.v1.Converters.List
         public override Tuple<int[], int[]> ConvertJson(
             JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
         {
-            int[] lTagIds = new int[0];
-            int[] lNoTagIds = new int[0];
+            var lTagIds = new int[0];
+            var lNoTagIds = new int[0];
 
             while (reader.Read() && reader.TokenType != JsonToken.EndObject)
                 switch (reader.Value)

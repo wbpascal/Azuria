@@ -11,6 +11,10 @@ namespace Azuria.Test.Api.v1.RequestBuilder
     [TestFixture]
     public class MediaRequestBuilderTest : RequestBuilderTestBase<MediaRequestBuilder>
     {
+        public MediaRequestBuilderTest() : base(client => new MediaRequestBuilder(client))
+        {
+        }
+
         [Test]
         public void GetHeaderListTest()
         {
@@ -23,7 +27,7 @@ namespace Azuria.Test.Api.v1.RequestBuilder
         [Test]
         public void GetRandomHeaderTest([Values] HeaderStyle style)
         {
-            RandomHeaderInput lInput = new RandomHeaderInput {HeaderStyle = style};
+            var lInput = new RandomHeaderInput {HeaderStyle = style};
             IRequestBuilderWithResult<HeaderDataModel> lRequest = this.RequestBuilder.GetRandomHeader(lInput);
             this.CheckUrl(lRequest, "media", "randomheader");
             Assert.AreSame(this.ProxerClient, lRequest.Client);

@@ -1,15 +1,20 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Express 15 for Windows Desktop
-VisualStudioVersion = 15.0.27130.2010
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30011.22
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Test", "Test", "{72F318C3-1B16-4B7F-8223-81AAF151D41C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Azuria", "Azuria\Azuria.csproj", "{7ABC2DF6-CF84-451F-B207-9F0A606D5A39}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Azuria", "Azuria\Azuria.csproj", "{7ABC2DF6-CF84-451F-B207-9F0A606D5A39}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Azuria.Test.Core", "Azuria.Test.Core\Azuria.Test.Core.csproj", "{92E8E7ED-4D6D-44F1-ADE9-F456E50FF99E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Azuria.Test.Core", "Azuria.Test.Core\Azuria.Test.Core.csproj", "{92E8E7ED-4D6D-44F1-ADE9-F456E50FF99E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Azuria.Test", "Azuria.Test\Azuria.Test.csproj", "{8F00E840-DF98-4C31-A5DD-030FDB77FD54}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Azuria.Test", "Azuria.Test\Azuria.Test.csproj", "{8F00E840-DF98-4C31-A5DD-030FDB77FD54}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{D40DE7C7-172B-4ED9-A004-48ABCFD37871}"
+	ProjectSection(SolutionItems) = preProject
+		.editorconfig = .editorconfig
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -18,14 +23,14 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{7ABC2DF6-CF84-451F-B207-9F0A606D5A39}.Appveyor|Any CPU.ActiveCfg = Appveyor|Any CPU
-		{7ABC2DF6-CF84-451F-B207-9F0A606D5A39}.Appveyor|Any CPU.Build.0 = Appveyor|Any CPU
+		{7ABC2DF6-CF84-451F-B207-9F0A606D5A39}.Appveyor|Any CPU.ActiveCfg = Release|Any CPU
+		{7ABC2DF6-CF84-451F-B207-9F0A606D5A39}.Appveyor|Any CPU.Build.0 = Release|Any CPU
 		{7ABC2DF6-CF84-451F-B207-9F0A606D5A39}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{7ABC2DF6-CF84-451F-B207-9F0A606D5A39}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7ABC2DF6-CF84-451F-B207-9F0A606D5A39}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7ABC2DF6-CF84-451F-B207-9F0A606D5A39}.Release|Any CPU.Build.0 = Release|Any CPU
-		{92E8E7ED-4D6D-44F1-ADE9-F456E50FF99E}.Appveyor|Any CPU.ActiveCfg = Appveyor|Any CPU
-		{92E8E7ED-4D6D-44F1-ADE9-F456E50FF99E}.Appveyor|Any CPU.Build.0 = Appveyor|Any CPU
+		{92E8E7ED-4D6D-44F1-ADE9-F456E50FF99E}.Appveyor|Any CPU.ActiveCfg = Release|Any CPU
+		{92E8E7ED-4D6D-44F1-ADE9-F456E50FF99E}.Appveyor|Any CPU.Build.0 = Release|Any CPU
 		{92E8E7ED-4D6D-44F1-ADE9-F456E50FF99E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{92E8E7ED-4D6D-44F1-ADE9-F456E50FF99E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{92E8E7ED-4D6D-44F1-ADE9-F456E50FF99E}.Release|Any CPU.ActiveCfg = Release|Any CPU

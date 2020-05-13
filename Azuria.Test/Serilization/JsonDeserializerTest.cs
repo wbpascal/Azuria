@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using Autofac;
 using Azuria.ErrorHandling;
 using Azuria.Serialization;
 using Azuria.Test.Core;
@@ -15,8 +14,7 @@ namespace Azuria.Test.Serilization
 
         public JsonDeserializerTest()
         {
-            IProxerClient lClient = ProxerClient.Create(new char[32]);
-            this._jsonDeserializer = lClient.Container.Resolve<IJsonDeserializer>();
+            this._jsonDeserializer = new JsonDeserializer();
         }
 
         [Test]
@@ -38,7 +36,7 @@ namespace Azuria.Test.Serilization
         [Test]
         public void DeserializeWithSettingsTest()
         {
-            JsonSerializerSettings lSettings = new JsonSerializerSettings();
+            var lSettings = new JsonSerializerSettings();
             lSettings.Converters.Add(new TestConverter());
 
             IProxerResult<ProxerApiResponse<int>> lDeserializeResult =

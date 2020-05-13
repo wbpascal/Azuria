@@ -1,56 +1,43 @@
-﻿using System;
-using System.Threading;
-using System.Threading.Tasks;
-using Azuria.Api.v1.Input.User;
-using Azuria.ErrorHandling;
+﻿using Azuria.ErrorHandling;
+using Azuria.Requests.Builder;
 
 namespace Azuria.Authentication
 {
     /// <summary>
-    /// An interface that is used to authenticate a <see cref="IProxerClient">client</see> and keep it authenticated.
     /// </summary>
     public interface ILoginManager
     {
         /// <summary>
-        /// The login token that is used to keep the client authenticated.
+        /// Adds the authentication information to the request if needed.
         /// </summary>
-        char[] LoginToken { get; set; }
+        /// <param name="request"></param>
+        /// <returns>If any information was added to the request</returns>
+        bool AddAuthenticationInformation(IRequestBuilderBase request);
 
         /// <summary>
-        /// Gets if the client is probably logged in (based on <see cref="DateTime" /> so results
-        /// may be inaccurate).
+        /// Checks if the request contains all needed information for authentication.
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
+        bool ContainsAuthenticationInformation(IRequestBuilderBase request);
+
+        /// <summary>
+        /// Invalidates the current login session so that the authentication information will be added the next time
+        /// <see cref="AddAuthenticationInformation"/> is called.
+        /// </summary>
+        void InvalidateLogin();
+
+        /// <summary>
+        /// Checks if the client is probably logged in at the moment(results may be inaccurate).
         /// </summary>
         /// <returns>A boolean that indicates if the client is probably logged in.</returns>
-        bool CheckIsLoginProbablyValid();
+        bool IsLoginProbablyValid();
 
         /// <summary>
+        /// Updates the state of the login manager with the information from a request and the corresponding result.
         /// </summary>
-        void PerformedRequest(bool sendLoginToken = false);
-
-        /// <summary>
-        /// Performs the login of the client with the given username, password and optional 2FA-Token.
-        /// </summary>
-        /// <param name="input">The input model that contains the login data.</param>
-        /// <param name="token">Optional. The cancellation token used for cancelling the request.</param>
-        /// <returns>A <see cref="Task" /> that returns the result of the request.</returns>
-        Task<IProxerResult> PerformLoginAsync(LoginInput input, CancellationToken token = default);
-
-        /// <summary>
-        /// Performs the logout of the client.
-        /// </summary>
-        /// <param name="token">Optional. The cancellation token used for cancelling the request.</param>
-        /// <returns>A <see cref="Task" /> that returns the result of the request.</returns>
-        Task<IProxerResult> PerformLogoutAsync(CancellationToken token = default);
-
-        /// <summary>
-        /// Queues the login token to be send with the next request.
-        /// </summary>
-        void QueueLoginForNextRequest();
-
-        /// <summary>
-        /// Gets whether or not the login token should be send with the current request.
-        /// </summary>
-        /// <returns>A boolean that indicates if the login token should be send with the next request.</returns>
-        bool SendTokenWithNextRequest();
+        /// <param name="request"></param>
+        /// <param name="result"></param>
+        void Update(IRequestBuilderBase request, IProxerResultBase result);
     }
 }

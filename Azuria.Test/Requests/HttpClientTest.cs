@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using Autofac;
 using Azuria.ErrorHandling;
 using Azuria.Requests.Http;
 using Newtonsoft.Json.Linq;
@@ -18,8 +17,7 @@ namespace Azuria.Test.Requests
 
         public HttpClientTest()
         {
-            IProxerClient lClient = ProxerClient.Create(new char[32]);
-            this._httpClient = lClient.Container.Resolve<IHttpClient>();
+            this._httpClient = new HttpClient();
         }
 
         [Test]
@@ -37,7 +35,7 @@ namespace Azuria.Test.Requests
         [Test]
         public async Task GetRequestAsyncTest()
         {
-            Dictionary<string, string> lHeaders = new Dictionary<string, string> {{"Header-Key", "headerValue"}};
+            var lHeaders = new Dictionary<string, string> {{"Header-Key", "headerValue"}};
             IProxerResult<string> lResult =
                 await this._httpClient.GetRequestAsync(new Uri("https://httpbin.org/get?test=value"), lHeaders);
             Assert.True(lResult.Success, lResult.Result);
@@ -65,8 +63,8 @@ namespace Azuria.Test.Requests
         [Test]
         public async Task PostRequestAsyncTest()
         {
-            Dictionary<string, string> lHeaders = new Dictionary<string, string> {{"Header-Key", "headerValue"}};
-            Dictionary<string, string> lPostArgs = new Dictionary<string, string> {{"postKey", "postValue"}};
+            var lHeaders = new Dictionary<string, string> {{"Header-Key", "headerValue"}};
+            var lPostArgs = new Dictionary<string, string> {{"postKey", "postValue"}};
             IProxerResult<string> lResult =
                 await this._httpClient.PostRequestAsync(
                     new Uri("https://httpbin.org/post?test=value"), lPostArgs, lHeaders

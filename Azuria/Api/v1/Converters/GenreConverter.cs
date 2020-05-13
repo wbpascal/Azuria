@@ -13,7 +13,7 @@ namespace Azuria.Api.v1.Converters
         public override Genre[] ConvertJson(
             JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
         {
-            string lValue = reader.Value.ToString();
+            var lValue = reader.Value.ToString();
             if (string.IsNullOrEmpty(lValue.Trim())) return new Genre[0];
 
             Dictionary<string, Genre> lStringDictionary = EnumHelpers.GetDescriptionDictionary<Genre>();

@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Autofac;
 using Azuria.Api.v1.Converters;
 using Azuria.Api.v1.DataModels;
 using Azuria.ErrorHandling;
@@ -16,7 +15,7 @@ namespace Azuria.Test.Api.v1.DataModels
         protected DataModelsTestBase()
         {
             this.Client = ProxerClient.Create(new char[32]);
-            this.Deserializer = this.Client.Container.Resolve<IJsonDeserializer>();
+            this.Deserializer = new JsonDeserializer();
         }
 
         public IProxerClient Client { get; }
@@ -58,6 +57,8 @@ namespace Azuria.Test.Api.v1.DataModels
         }
 
         private static string GetExceptionMessage(IEnumerable<Exception> exceptions)
-            => exceptions.Aggregate("", (s, exception) => s + exception.ToString() + "\n");
+        {
+            return exceptions.Aggregate("", (s, exception) => s + exception.ToString() + "\n");
+        }
     }
 }

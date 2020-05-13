@@ -30,10 +30,12 @@
         <DocumentationFile>bin\Debug\netstandard1.2\Azuria.xml</DocumentationFile>
     </PropertyGroup>
     <ItemGroup>
-        <PackageReference Include="Autofac" Version="4.5.0" />
         <PackageReference Include="Newtonsoft.Json" Version="10.0.2" />
     </ItemGroup>
     <ItemGroup>
         <None Remove="signing_key.snk" />
+    </ItemGroup>
+    <ItemGroup>
+      <None Include="..\.editorconfig" Link=".editorconfig" />
     </ItemGroup>
 </Project>

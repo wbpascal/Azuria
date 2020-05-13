@@ -31,6 +31,20 @@ namespace Azuria.Requests.Builder
         }
 
         /// <inheritdoc />
+        public IRequestBuilder WithHeader(string key, string value)
+        {
+            this.AddHeader(key, value);
+            return this;
+        }
+
+        /// <inheritdoc />
+        public IRequestBuilder WithHeader(IDictionary<string, string> header)
+        {
+            this.AddHeader(header);
+            return this;
+        }
+
+        /// <inheritdoc />
         public IRequestBuilder WithLoginCheck(bool check = true)
         {
             this.AddLoginCheck(check);
@@ -99,6 +113,20 @@ namespace Azuria.Requests.Builder
         public IRequestBuilderWithResult<T> WithGetParameter(IDictionary<string, string> parameter)
         {
             this.AddGetParameter(parameter);
+            return this;
+        }
+
+        /// <inheritdoc />
+        public IRequestBuilderWithResult<T> WithHeader(string key, string value)
+        {
+            this.AddHeader(key, value);
+            return this;
+        }
+
+        /// <inheritdoc />
+        public IRequestBuilderWithResult<T> WithHeader(IDictionary<string, string> header)
+        {
+            this.AddHeader(header);
             return this;
         }
 

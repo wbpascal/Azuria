@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using System.Linq;
+﻿using System.Linq;
 using Azuria.Api.v1.DataModels.Info;
 using Azuria.Api.v1.Input;
 using Azuria.Api.v1.Input.Info;
@@ -15,10 +14,14 @@ namespace Azuria.Test.Api.v1.RequestBuilder
     [TestFixture]
     public class InfoRequestBuilderTest : RequestBuilderTestBase<InfoRequestBuilder>
     {
+        public InfoRequestBuilderTest() : base(client => new InfoRequestBuilder(client))
+        {
+        }
+
         [Test]
         public void GetCharacterInfoTest()
         {
-            SimpleIdInput lInput = new SimpleIdInput {Id = this.GetRandomNumber(10000)};
+            var lInput = new SimpleIdInput {Id = this.GetRandomNumber(10000)};
 
             IRequestBuilderWithResult<CharacterInfoDataModel> lRequest = this.RequestBuilder.GetCharacterInfo(lInput);
             this.CheckUrl(lRequest, "info", "character");
@@ -42,7 +45,7 @@ namespace Azuria.Test.Api.v1.RequestBuilder
         [Test]
         public void GetCommentsTest([Values] CommentSort sort)
         {
-            CommentListInput lInput = new CommentListInput
+            var lInput = new CommentListInput
             {
                 Id = this.GetRandomNumber(4200), Limit = 31, Page = 2, Sort = sort
             };
@@ -136,7 +139,7 @@ namespace Azuria.Test.Api.v1.RequestBuilder
         [Test]
         public void GetIndustryTest()
         {
-            IndustryInfoInput lInput = new IndustryInfoInput {IndustryId = this.GetRandomNumber(1000)};
+            var lInput = new IndustryInfoInput {IndustryId = this.GetRandomNumber(1000)};
             IRequestBuilderWithResult<IndustryDataModel> lRequest = this.RequestBuilder.GetIndustry(lInput);
             this.CheckUrl(lRequest, "info", "industry");
             Assert.AreSame(this.ProxerClient, lRequest.Client);
@@ -161,7 +164,7 @@ namespace Azuria.Test.Api.v1.RequestBuilder
         [Test]
         public void GetListInfoTest()
         {
-            ListInfoInput lInput = new ListInfoInput {EntryId = this.GetRandomNumber(10000), Limit = 15, Page = 1};
+            var lInput = new ListInfoInput {EntryId = this.GetRandomNumber(10000), Limit = 15, Page = 1};
             IRequestBuilderWithResult<ListInfoDataModel> lRequest = this.RequestBuilder.GetListInfo(lInput);
             this.CheckUrl(lRequest, "info", "listinfo");
             Assert.AreSame(this.ProxerClient, lRequest.Client);
@@ -189,7 +192,7 @@ namespace Azuria.Test.Api.v1.RequestBuilder
         [Test]
         public void GetPersonInfoTest()
         {
-            SimpleIdInput lInput = new SimpleIdInput {Id = this.GetRandomNumber(10000)};
+            var lInput = new SimpleIdInput {Id = this.GetRandomNumber(10000)};
 
             IRequestBuilderWithResult<PersonInfoDataModel> lRequest = this.RequestBuilder.GetPersonInfo(lInput);
             this.CheckUrl(lRequest, "info", "person");
@@ -224,7 +227,7 @@ namespace Azuria.Test.Api.v1.RequestBuilder
         [Test]
         public void GetRelationsTest()
         {
-            RelationsInput lInput = new RelationsInput {EntryId = this.GetRandomNumber(10000), ContainsH = true};
+            var lInput = new RelationsInput {EntryId = this.GetRandomNumber(10000), ContainsH = true};
             IRequestBuilderWithResult<RelationDataModel[]> lRequest = this.RequestBuilder.GetRelations(lInput);
             this.CheckUrl(lRequest, "info", "relations");
             Assert.AreSame(this.ProxerClient, lRequest.Client);
@@ -262,7 +265,7 @@ namespace Azuria.Test.Api.v1.RequestBuilder
         [Test]
         public void GetTranslatorGroupTest()
         {
-            TranslatorInfoInput lInput = new TranslatorInfoInput {TranslatorId = this.GetRandomNumber(1000)};
+            var lInput = new TranslatorInfoInput {TranslatorId = this.GetRandomNumber(1000)};
             IRequestBuilderWithResult<TranslatorDataModel> lRequest = this.RequestBuilder.GetTranslatorGroup(lInput);
             this.CheckUrl(lRequest, "info", "translatorgroup");
             Assert.AreSame(this.ProxerClient, lRequest.Client);
@@ -292,7 +295,7 @@ namespace Azuria.Test.Api.v1.RequestBuilder
         [Test]
         public void SetUserInfoTest([Values] UserList list)
         {
-            SetUserInfoInput lInput = new SetUserInfoInput {EntryId = this.GetRandomNumber(10000), List = list};
+            var lInput = new SetUserInfoInput {EntryId = this.GetRandomNumber(10000), List = list};
             IRequestBuilder lRequest = this.RequestBuilder.SetUserInfo(lInput);
             this.CheckUrl(lRequest, "info", "setuserinfo");
             Assert.AreSame(this.ProxerClient, lRequest.Client);

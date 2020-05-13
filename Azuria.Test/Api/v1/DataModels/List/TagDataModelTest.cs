@@ -1,4 +1,4 @@
-﻿using Azuria.Api.v1.DataModels.List;
+﻿using Azuria.Api.v1.DataModels.Info;
 using Azuria.Test.Core;
 using NUnit.Framework;
 

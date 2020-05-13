@@ -122,7 +122,9 @@ namespace Azuria.Api.v1.Input.List
         }
 
         private static string GetTagRateFilterString(bool filterUnratedTags)
-            => filterUnratedTags ? "rate_1" : "rate_10";
+        {
+            return filterUnratedTags ? "rate_1" : "rate_10";
+        }
 
         private static string TypeToString(SearchMediaType type)
         {

@@ -14,7 +14,7 @@ namespace Azuria.Serialization
         {
             try
             {
-                T lDeserializedObject = JsonConvert.DeserializeObject<T>(
+                var lDeserializedObject = JsonConvert.DeserializeObject<T>(
                     WebUtility.HtmlDecode(json), settings ?? new JsonSerializerSettings()
                 );
 

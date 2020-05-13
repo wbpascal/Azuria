@@ -11,11 +11,11 @@ namespace Azuria.Api.v1.Converters.Manga
         public override PageDataModel[] ConvertJson(
             JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
         {
-            List<PageDataModel> lPageDataModels = new List<PageDataModel>();
+            var lPageDataModels = new List<PageDataModel>();
             while (reader.Read() && reader.TokenType != JsonToken.EndArray)
             {
-                PageDataModel lPageDataModel = new PageDataModel();
-                for (int innerIndex = 0; reader.Read() && reader.TokenType != JsonToken.EndArray; innerIndex++)
+                var lPageDataModel = new PageDataModel();
+                for (var innerIndex = 0; reader.Read() && reader.TokenType != JsonToken.EndArray; innerIndex++)
                     switch (innerIndex)
                     {
                         case 0:

@@ -29,7 +29,7 @@ namespace Azuria.Api.v1.Input.Messenger
         /// <inheritdoc />
         public override IEnumerable<KeyValuePair<string, string>> Build()
         {
-            List<KeyValuePair<string, string>> lReturn = new List<KeyValuePair<string, string>>(base.Build());
+            var lReturn = new List<KeyValuePair<string, string>>(base.Build());
             lReturn.AddRange(this.Usernames?.Select(username => new KeyValuePair<string, string>("users[]", username)));
             return lReturn;
         }

@@ -11,10 +11,14 @@ namespace Azuria.Test.Api.v1.RequestBuilder
     [TestFixture]
     public class AnimeRequestBuilderTest : RequestBuilderTestBase<AnimeRequestBuilder>
     {
+        public AnimeRequestBuilderTest() : base(client => new AnimeRequestBuilder(client))
+        {
+        }
+
         [Test]
         public void GetLinkTest()
         {
-            GetLinkInput lInput = new GetLinkInput {Id = this.GetRandomNumber(4200)};
+            var lInput = new GetLinkInput {Id = this.GetRandomNumber(4200)};
             IRequestBuilderWithResult<string> lRequest =
                 this.RequestBuilder.GetLink(lInput);
             this.CheckUrl(lRequest, "anime", "link");
@@ -27,7 +31,7 @@ namespace Azuria.Test.Api.v1.RequestBuilder
         [Test]
         public void GetProxerStreamTest([Values] AnimeLanguage language)
         {
-            StreamListInput lInput = new StreamListInput
+            var lInput = new StreamListInput
             {
                 Id = this.GetRandomNumber(4200),
                 Episode = this.GetRandomNumber(42),
@@ -58,7 +62,7 @@ namespace Azuria.Test.Api.v1.RequestBuilder
         [Test]
         public void GetStreamTest([Values] AnimeLanguage language)
         {
-            StreamListInput lInput = new StreamListInput
+            var lInput = new StreamListInput
             {
                 Id = this.GetRandomNumber(4200),
                 Episode = this.GetRandomNumber(42),

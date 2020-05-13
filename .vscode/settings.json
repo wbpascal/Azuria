@@ -1,0 +1,4 @@
+{
+    "dotnet-test-explorer.testProjectPath": "Azuria.Test/Azuria.Test.csproj",
+    "dotnet-test-explorer.testArguments": "/p:CollectCoverage=true /p:CoverletOutputFormat=lcov /p:CoverletOutput=./lcov.info /p:Exclude=\\\"[Azuria.Test*]*,[NUnit3.TestAdapter]*\\\""
+}

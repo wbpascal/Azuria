@@ -1,6 +1,5 @@
 using System;
 using System.Linq;
-using System.Reflection;
 using Azuria.Api.v1.DataModels.Info;
 using Azuria.Api.v1.DataModels.List;
 using Azuria.Api.v1.Input.List;
@@ -19,17 +18,22 @@ namespace Azuria.Test.Api.v1.RequestBuilder
     [TestFixture]
     public class ListRequestBuilderTest : RequestBuilderTestBase<ListRequestBuilder>
     {
+        public ListRequestBuilderTest() : base(client => new ListRequestBuilder(client))
+        {
+        }
+
         [Test]
         public void EntrySearchInputNullTest()
         {
             Assert.Throws<ArgumentNullException>(() => this.RequestBuilder.EntrySearch(null));
         }
 
-        [Test, Sequential]
+        [Test]
+        [Sequential]
         public void EntrySearchTest(
             [Values] SearchResultSort sort, [Values] SearchMediaType type, [Values] LengthLimit lengthLimit)
         {
-            SearchInput lInput = new SearchInput
+            var lInput = new SearchInput
             {
                 FilterSpoilerTags = null,
                 FilterUnratedTags = false,
@@ -93,7 +97,7 @@ namespace Azuria.Test.Api.v1.RequestBuilder
         [Test]
         public void GetEntryListTest([Values] bool startWithNonAlphabeticalChar)
         {
-            EntryListInput lInput = new EntryListInput
+            var lInput = new EntryListInput
             {
                 Category = MediaEntryType.Manga,
                 Medium = MediaMedium.Mangaseries,
@@ -131,12 +135,13 @@ namespace Azuria.Test.Api.v1.RequestBuilder
             Assert.False(lRequest.CheckLogin);
         }
 
-        [Test, Combinatorial]
+        [Test]
+        [Combinatorial]
         public void GetIndustriesCountryTest(
             [Values(Country.UnitedStates, Country.Japan, Country.Germany, Country.Misc)]
             Country country, [Values] IndustryRole role)
         {
-            IndustryListInput lInput = new IndustryListInput
+            var lInput = new IndustryListInput
             {
                 Country = country,
                 Contains = "test_contains",
@@ -163,10 +168,11 @@ namespace Azuria.Test.Api.v1.RequestBuilder
             Assert.False(lRequest.CheckLogin);
         }
 
-        [Test, Combinatorial]
+        [Test]
+        [Combinatorial]
         public void GetIndustryProjectsTest([Values] IndustryRole role, [Values(null, true, false)] bool? isH)
         {
-            IndustryProjectsInput lInput = new IndustryProjectsInput
+            var lInput = new IndustryProjectsInput
             {
                 IndustryId = 42,
                 IsH = isH,
@@ -194,7 +200,7 @@ namespace Azuria.Test.Api.v1.RequestBuilder
         [Test]
         public void GetTagIdsTest()
         {
-            TagIdSearchInput lInput = new TagIdSearchInput
+            var lInput = new TagIdSearchInput
             {
                 TagsExclude = new[] {"testExclude1", "testExclude2"},
                 TagsInclude = new[] {"test1"}
@@ -209,12 +215,13 @@ namespace Azuria.Test.Api.v1.RequestBuilder
             Assert.False(lRequest.CheckLogin);
         }
 
-        [Test, Sequential]
+        [Test]
+        [Sequential]
         public void GetTagsTest(
             [Values] TagType type, [Values] TagSubtype subtype, [Values] TagListSort sort,
             [Values] SortDirection direction)
         {
-            TagListInput lInput = new TagListInput
+            var lInput = new TagListInput
             {
                 Search = "test_search",
                 Type = type,
@@ -243,7 +250,7 @@ namespace Azuria.Test.Api.v1.RequestBuilder
             [Values(Country.England, Country.Germany, Country.Misc)]
             Country country)
         {
-            TranslatorListInput lInput = new TranslatorListInput
+            var lInput = new TranslatorListInput
             {
                 Contains = "test_contains",
                 Country = country,
@@ -268,12 +275,13 @@ namespace Azuria.Test.Api.v1.RequestBuilder
             Assert.False(lRequest.CheckLogin);
         }
 
-        [Test, Combinatorial]
+        [Test]
+        [Combinatorial]
         public void GetTranslatorProjectsTest([Values] TranslationStatus status, [Values(null, true, false)] bool? isH)
         {
             if (status == TranslationStatus.Unkown) return;
 
-            TranslatorProjectsInput lInput = new TranslatorProjectsInput
+            var lInput = new TranslatorProjectsInput
             {
                 IsH = isH,
                 TranslationStatus = status,

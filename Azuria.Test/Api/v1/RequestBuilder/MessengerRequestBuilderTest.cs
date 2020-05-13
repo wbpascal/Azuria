@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using System.Linq;
 using Azuria.Api.v1.DataModels.Messenger;
 using Azuria.Api.v1.Input.Messenger;
@@ -13,10 +12,14 @@ namespace Azuria.Test.Api.v1.RequestBuilder
     [TestFixture]
     public class MessengerRequestBuilderTest : RequestBuilderTestBase<MessengerRequestBuilder>
     {
+        public MessengerRequestBuilderTest() : base(client => new MessengerRequestBuilder(client))
+        {
+        }
+
         [Test]
         public void GetConferenceInfoTest()
         {
-            ConferenceInfoInput lInput = new ConferenceInfoInput {ConferenceId = 42};
+            var lInput = new ConferenceInfoInput {ConferenceId = 42};
             IRequestBuilderWithResult<ConferenceInfoDataModel> lRequest = this.RequestBuilder.GetConferenceInfo(lInput);
             this.CheckUrl(lRequest, "messenger", "conferenceinfo");
             Assert.AreSame(this.ProxerClient, lRequest.Client);
@@ -28,7 +31,7 @@ namespace Azuria.Test.Api.v1.RequestBuilder
         [Test]
         public void GetConferencesTest([Values] ConferenceList list)
         {
-            ConferenceListInput lInput = new ConferenceListInput
+            var lInput = new ConferenceListInput
             {
                 List = list,
                 Page = 51
@@ -57,7 +60,7 @@ namespace Azuria.Test.Api.v1.RequestBuilder
         [TestCase(7326, 526632, true)]
         public void GetMessagesTest(int conferenceId, int messageId, bool markAsRead)
         {
-            MessageListInput lInput = new MessageListInput
+            var lInput = new MessageListInput
             {
                 ConferenceId = conferenceId,
                 MessageId = messageId,
@@ -78,7 +81,7 @@ namespace Azuria.Test.Api.v1.RequestBuilder
         [Test]
         public void NewConferenceTest()
         {
-            NewConferenceInput lInput = new NewConferenceInput
+            var lInput = new NewConferenceInput
             {
                 Text = RandomHelper.GetRandomString(40),
                 Username = RandomHelper.GetRandomString(10)
@@ -97,7 +100,7 @@ namespace Azuria.Test.Api.v1.RequestBuilder
         [Test]
         public void NewConferenceGroupTest()
         {
-            NewConferenceGroupInput lInput = new NewConferenceGroupInput
+            var lInput = new NewConferenceGroupInput
             {
                 Text = RandomHelper.GetRandomString(40),
                 Topic = RandomHelper.GetRandomString(25),
@@ -119,7 +122,7 @@ namespace Azuria.Test.Api.v1.RequestBuilder
         [Test]
         public void SetBlockTest()
         {
-            ConferenceIdInput lInput = new ConferenceIdInput {ConferenceId = 42};
+            var lInput = new ConferenceIdInput {ConferenceId = 42};
             IRequestBuilder lRequest = this.RequestBuilder.SetBlock(lInput);
             this.CheckUrl(lRequest, "messenger", "setblock");
             Assert.AreSame(this.ProxerClient, lRequest.Client);
@@ -131,7 +134,7 @@ namespace Azuria.Test.Api.v1.RequestBuilder
         [Test]
         public void SetFavourTest()
         {
-            ConferenceIdInput lInput = new ConferenceIdInput {ConferenceId = 42};
+            var lInput = new ConferenceIdInput {ConferenceId = 42};
             IRequestBuilder lRequest = this.RequestBuilder.SetFavour(lInput);
             this.CheckUrl(lRequest, "messenger", "setfavour");
             Assert.AreSame(this.ProxerClient, lRequest.Client);
@@ -143,7 +146,7 @@ namespace Azuria.Test.Api.v1.RequestBuilder
         [Test]
         public void SetMessageTest()
         {
-            SendMessageInput lInput = new SendMessageInput
+            var lInput = new SendMessageInput
             {
                 ConferenceId = 42,
                 Message = RandomHelper.GetRandomString(40)
@@ -162,7 +165,7 @@ namespace Azuria.Test.Api.v1.RequestBuilder
         [Test]
         public void SetReadTest()
         {
-            ConferenceIdInput lInput = new ConferenceIdInput {ConferenceId = 42};
+            var lInput = new ConferenceIdInput {ConferenceId = 42};
             IRequestBuilder lRequest = this.RequestBuilder.SetRead(lInput);
             this.CheckUrl(lRequest, "messenger", "setread");
             Assert.AreSame(this.ProxerClient, lRequest.Client);
@@ -174,7 +177,7 @@ namespace Azuria.Test.Api.v1.RequestBuilder
         [Test]
         public void SetReportTest()
         {
-            SendReportInput lInput = new SendReportInput
+            var lInput = new SendReportInput
             {
                 ConferenceId = 42,
                 Reason = RandomHelper.GetRandomString(40)
@@ -193,7 +196,7 @@ namespace Azuria.Test.Api.v1.RequestBuilder
         [Test]
         public void SetUnblockTest()
         {
-            ConferenceIdInput lInput = new ConferenceIdInput {ConferenceId = 42};
+            var lInput = new ConferenceIdInput {ConferenceId = 42};
             IRequestBuilder lRequest = this.RequestBuilder.SetUnblock(lInput);
             this.CheckUrl(lRequest, "messenger", "setunblock");
             Assert.AreSame(this.ProxerClient, lRequest.Client);
@@ -205,7 +208,7 @@ namespace Azuria.Test.Api.v1.RequestBuilder
         [Test]
         public void SetUnfavourTest()
         {
-            ConferenceIdInput lInput = new ConferenceIdInput {ConferenceId = 42};
+            var lInput = new ConferenceIdInput {ConferenceId = 42};
             IRequestBuilder lRequest = this.RequestBuilder.SetUnfavour(lInput);
             this.CheckUrl(lRequest, "messenger", "setunfavour");
             Assert.AreSame(this.ProxerClient, lRequest.Client);
@@ -217,7 +220,7 @@ namespace Azuria.Test.Api.v1.RequestBuilder
         [Test]
         public void SetUnreadTest()
         {
-            ConferenceIdInput lInput = new ConferenceIdInput {ConferenceId = 42};
+            var lInput = new ConferenceIdInput {ConferenceId = 42};
             IRequestBuilder lRequest = this.RequestBuilder.SetUnread(lInput);
             this.CheckUrl(lRequest, "messenger", "setunread");
             Assert.AreSame(this.ProxerClient, lRequest.Client);

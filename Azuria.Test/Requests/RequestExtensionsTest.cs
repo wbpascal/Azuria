@@ -1,9 +1,9 @@
 using System;
 using System.Threading;
 using System.Threading.Tasks;
-using Autofac;
 using Azuria.Api.Builder;
 using Azuria.ErrorHandling;
+using Azuria.Middleware;
 using Azuria.Requests;
 using Azuria.Requests.Builder;
 using Moq;
@@ -24,66 +24,66 @@ namespace Azuria.Test.Requests
         [Test]
         public void CreateRequestTest()
         {
-            Mock<IApiRequestBuilder> lApiRequestBuilderMock = new Mock<IApiRequestBuilder>();
-            lApiRequestBuilderMock.Setup(builder => builder.FromUrl(new Uri("https://proxer.me"))).Returns(() => null);
-
-            IProxerClient lClient = ProxerClient.Create(
-                new char[32], options => { options.ContainerBuilder.RegisterInstance(lApiRequestBuilderMock.Object); }
-            );
+            IProxerClient lClient = ProxerClient.Create(new char[32]);
 
             IApiRequestBuilder lApiRequestBuilder = lClient.CreateRequest();
-            Assert.AreSame(lApiRequestBuilderMock.Object, lApiRequestBuilder);
-
-            IRequestBuilder lRequestBuilder = lApiRequestBuilder.FromUrl(new Uri("https://proxer.me"));
-            Assert.Null(lRequestBuilder);
-
-            lApiRequestBuilderMock.Verify(builder => builder.FromUrl(new Uri("https://proxer.me")), Times.Exactly(1));
+            Assert.NotNull(lApiRequestBuilder);
+            Assert.AreSame(lClient, lApiRequestBuilder.ProxerClient);
         }
 
         [Test]
         public async Task DoRequestAsyncTest()
         {
-            Mock<IRequestHandler> lRequestHandlerMock = new Mock<IRequestHandler>();
-            IProxerClient lClient = ProxerClient.Create(
-                new char[32], options => { options.ContainerBuilder.RegisterInstance(lRequestHandlerMock.Object); });
+            var middlewareMock = new Mock<IMiddleware>();
+            middlewareMock
+                .Setup(middleware => middleware.Invoke(It.IsAny<IRequestBuilder>(), It.IsAny<MiddlewareAction>(),
+                    It.IsAny<CancellationToken>()))
+                .Returns(Task.FromResult((IProxerResult) new ProxerResult()));
 
-            RequestBuilder lRequest = new RequestBuilder(new Uri("https://proxer.me"), lClient);
-            CancellationTokenSource lCancellationTokenSource = new CancellationTokenSource();
+            // Create a client with a custom pipeline that only contains the mocked middleware
+            IProxerClient lClient = ProxerClient.Create(new char[32],
+                options => options.Pipeline = new Pipeline(new[] {middlewareMock.Object}));
 
-            lRequestHandlerMock.Setup(handler => handler.MakeRequestAsync(lRequest, lCancellationTokenSource.Token))
-                .Returns(() => Task.FromResult((IProxerResult) new ProxerResult()));
+            var lRequest = new RequestBuilder(new Uri("https://proxer.me/api"), lClient);
+            var lCancellationTokenSource = new CancellationTokenSource();
 
             IProxerResult lResult = await lRequest.DoRequestAsync(lCancellationTokenSource.Token);
+            Assert.NotNull(lResult);
             Assert.True(lResult.Success);
             Assert.IsEmpty(lResult.Exceptions);
 
-            lRequestHandlerMock.Verify(
-                handler => handler.MakeRequestAsync(lRequest, lCancellationTokenSource.Token), Times.Once
-            );
+            // Verify that the invoke function of the middleware mock was invoked exactly once
+            middlewareMock.Verify(
+                middleware => middleware.Invoke(It.IsAny<IRequestBuilder>(), It.IsAny<MiddlewareAction>(),
+                    It.IsAny<CancellationToken>()), Times.Once());
         }
 
         [Test]
         public async Task DoRequestAsyncWithResultTest()
         {
-            Mock<IRequestHandler> lRequestHandlerMock = new Mock<IRequestHandler>();
-            IProxerClient lClient = ProxerClient.Create(
-                new char[32], options => { options.ContainerBuilder.RegisterInstance(lRequestHandlerMock.Object); });
+            var middlewareMock = new Mock<IMiddleware>();
+            middlewareMock
+                .Setup(middleware => middleware.InvokeWithResult(It.IsAny<IRequestBuilderWithResult<object>>(),
+                    It.IsAny<MiddlewareAction<object>>(), It.IsAny<CancellationToken>()))
+                .Returns(Task.FromResult((IProxerResult<object>) new ProxerResult<object>(new object())));
+
+            // Create a client with a custom pipeline that only contains the mocked middleware
+            IProxerClient lClient = ProxerClient.Create(new char[32],
+                options => options.Pipeline = new Pipeline(new[] {middlewareMock.Object}));
 
             IRequestBuilderWithResult<object> lRequest = new RequestBuilder(new Uri("https://proxer.me"), lClient)
                 .WithResult<object>();
-            CancellationTokenSource lCancellationTokenSource = new CancellationTokenSource();
-
-            lRequestHandlerMock.Setup(handler => handler.MakeRequestAsync(lRequest, lCancellationTokenSource.Token))
-                .Returns(() => Task.FromResult((IProxerResult<object>) new ProxerResult<object>(new object())));
+            var lCancellationTokenSource = new CancellationTokenSource();
 
             IProxerResult<object> lResult = await lRequest.DoRequestAsync(lCancellationTokenSource.Token);
+            Assert.NotNull(lResult);
             Assert.True(lResult.Success);
             Assert.IsEmpty(lResult.Exceptions);
             Assert.NotNull(lResult.Result);
 
-            lRequestHandlerMock.Verify(
-                handler => handler.MakeRequestAsync(lRequest, lCancellationTokenSource.Token), Times.Once
-            );
+            middlewareMock.Verify(
+                middleware => middleware.InvokeWithResult(It.IsAny<IRequestBuilderWithResult<object>>(),
+                    It.IsAny<MiddlewareAction<object>>(), It.IsAny<CancellationToken>()), Times.Once);
         }
     }
 }

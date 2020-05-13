@@ -12,7 +12,7 @@ namespace Azuria.Api.v1.Converters.Info
         public override AdaptionType? ConvertJson(JsonReader reader, Type objectType, object existingValue,
             JsonSerializer serializer)
         {
-            string lValue = reader.Value.ToString();
+            var lValue = reader.Value.ToString();
             Dictionary<string, AdaptionType> lDescriptionDictionary =
                 EnumHelpers.GetDescriptionDictionary<AdaptionType>();
             switch (lValue)

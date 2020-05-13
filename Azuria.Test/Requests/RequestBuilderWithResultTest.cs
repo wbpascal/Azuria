@@ -25,7 +25,7 @@ namespace Azuria.Test.Requests
         {
             IRequestBuilderWithResult<object> lRequestBuilder =
                 this._client.CreateRequest().FromUrl(new Uri(BaseUrl)).WithResult<object>();
-            DataConverter<object> lDataConverter = Mock.Of<DataConverter<object>>();
+            var lDataConverter = Mock.Of<DataConverter<object>>();
             lRequestBuilder.WithCustomDataConverter(lDataConverter);
             Assert.AreSame(lDataConverter, lRequestBuilder.CustomDataConverter);
         }
