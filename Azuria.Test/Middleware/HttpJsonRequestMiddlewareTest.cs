@@ -23,7 +23,7 @@ namespace Azuria.Test.Middleware
         public HttpJsonRequestMiddlewareTest()
         {
             IProxerClient client = ProxerClient.Create(new char[32]);
-            _apiRequestBuilder = client.CreateRequest();
+            this._apiRequestBuilder = client.CreateRequest();
         }
 
         [Test]
@@ -90,7 +90,7 @@ namespace Azuria.Test.Middleware
         {
             var middleware = new HttpJsonRequestMiddleware(new TestHttpClient(), new JsonDeserializer());
             var uri = new Uri("https://proxer.me/api/v1/test/withoutdata?fail=1");
-            var header = new Dictionary<string, string> { { "test", "key123" } };
+            var header = new Dictionary<string, string> {{"test", "key123"}};
             IRequestBuilder request = this._apiRequestBuilder.FromUrl(uri).WithHeader(header);
 
             IProxerResult result = await middleware.Invoke(request, null);
@@ -103,7 +103,7 @@ namespace Azuria.Test.Middleware
         {
             var middleware = new HttpJsonRequestMiddleware(new TestHttpClient(), new JsonDeserializer());
             var uri = new Uri("https://proxer.me/api/v1/test/withoutdata?empty=1");
-            var header = new Dictionary<string, string> { { "test", "key123" } };
+            var header = new Dictionary<string, string> {{"test", "key123"}};
             IRequestBuilder request = this._apiRequestBuilder.FromUrl(uri).WithHeader(header);
 
             IProxerResult result = await middleware.Invoke(request, null);
@@ -116,7 +116,7 @@ namespace Azuria.Test.Middleware
         {
             var middleware = new HttpJsonRequestMiddleware(new TestHttpClient(), new JsonDeserializer());
             var uri = new Uri("https://proxer.me/api/v1/test/withoutdata?malformed=1");
-            var header = new Dictionary<string, string> { { "test", "key123" } };
+            var header = new Dictionary<string, string> {{"test", "key123"}};
             IRequestBuilder request = this._apiRequestBuilder.FromUrl(uri).WithHeader(header);
 
             IProxerResult result = await middleware.Invoke(request, null);
@@ -130,7 +130,7 @@ namespace Azuria.Test.Middleware
             // This test is needed because the custom serializer is not needed for the other tests
             // and we want to make sure that it is used
             var middleware = new HttpJsonRequestMiddleware(new TestHttpClient(), new TestJsonDeserializer());
-            IRequestBuilder request = _apiRequestBuilder.FromUrl(new Uri("https://proxer.me/api/v1"));
+            IRequestBuilder request = this._apiRequestBuilder.FromUrl(new Uri("https://proxer.me/api/v1"));
             var exception = Assert.ThrowsAsync<Exception>(async () => await middleware.Invoke(request, null));
             Assert.AreEqual(TestJsonDeserializer.TEST_MESSAGE, exception.Message);
         }
@@ -140,15 +140,16 @@ namespace Azuria.Test.Middleware
         {
             var middleware = new HttpJsonRequestMiddleware(new TestHttpClient(), new JsonDeserializer());
             var uri = new Uri("https://proxer.me/api/v1/test/withdata");
-            var header = new Dictionary<string, string>() { { "test", "key123" } };
-            IRequestBuilderWithResult<object> request = this._apiRequestBuilder.FromUrl(uri).WithHeader(header).WithResult<object>();
+            var header = new Dictionary<string, string>() {{"test", "key123"}};
+            IRequestBuilderWithResult<object> request =
+                this._apiRequestBuilder.FromUrl(uri).WithHeader(header).WithResult<object>();
 
             IProxerResult<object> result = await middleware.InvokeWithResult(request, null);
             Assert.True(result.Success);
             Assert.NotNull(result.Result);
 
             Assert.IsAssignableFrom<ProxerApiResponse<object>>(result);
-            var proxerApiResponse = (ProxerApiResponse<object>)result;
+            var proxerApiResponse = (ProxerApiResponse<object>) result;
             Assert.IsNotEmpty(proxerApiResponse.Message);
             var getData =
                 JsonConvert.DeserializeObject<Dictionary<string, string>>(
@@ -164,8 +165,8 @@ namespace Azuria.Test.Middleware
         {
             var middleware = new HttpJsonRequestMiddleware(new TestHttpClient(), new JsonDeserializer());
             var uri = new Uri("https://proxer.me/api/v1/test/withdata");
-            var header = new Dictionary<string, string> { { "test", "key123" } };
-            var postArgs = new Dictionary<string, string> { { "postArg", "test" } };
+            var header = new Dictionary<string, string> {{"test", "key123"}};
+            var postArgs = new Dictionary<string, string> {{"postArg", "test"}};
             IRequestBuilderWithResult<object> request =
                 this._apiRequestBuilder.FromUrl(uri)
                     .WithHeader(header)
@@ -193,8 +194,8 @@ namespace Azuria.Test.Middleware
         {
             var middleware = new HttpJsonRequestMiddleware(new TestHttpClient(), new JsonDeserializer());
             var uri = new Uri("https://proxer.me/api/v1/test/withoutdata?fail=1");
-            var header = new Dictionary<string, string> { { "test", "key123" } };
-            IRequestBuilderWithResult<object> request = 
+            var header = new Dictionary<string, string> {{"test", "key123"}};
+            IRequestBuilderWithResult<object> request =
                 this._apiRequestBuilder.FromUrl(uri).WithHeader(header).WithResult<object>();
 
             IProxerResult<object> result = await middleware.InvokeWithResult(request, null);
@@ -207,8 +208,8 @@ namespace Azuria.Test.Middleware
         {
             var middleware = new HttpJsonRequestMiddleware(new TestHttpClient(), new JsonDeserializer());
             var uri = new Uri("https://proxer.me/api/v1/test/withoutdata?empty=1");
-            var header = new Dictionary<string, string> { { "test", "key123" } };
-            IRequestBuilderWithResult<object> request = 
+            var header = new Dictionary<string, string> {{"test", "key123"}};
+            IRequestBuilderWithResult<object> request =
                 this._apiRequestBuilder.FromUrl(uri).WithHeader(header).WithResult<object>();
 
             IProxerResult<object> result = await middleware.InvokeWithResult(request, null);
@@ -221,7 +222,7 @@ namespace Azuria.Test.Middleware
         {
             var middleware = new HttpJsonRequestMiddleware(new TestHttpClient(), new JsonDeserializer());
             var uri = new Uri("https://proxer.me/api/v1/test/withoutdata?malformed=1");
-            var header = new Dictionary<string, string> { { "test", "key123" } };
+            var header = new Dictionary<string, string> {{"test", "key123"}};
             IRequestBuilderWithResult<object> request =
                 this._apiRequestBuilder.FromUrl(uri).WithHeader(header).WithResult<object>();
 
@@ -235,7 +236,7 @@ namespace Azuria.Test.Middleware
         {
             // See Invoke_UsesCustomJsonSerializer
             var middleware = new HttpJsonRequestMiddleware(new TestHttpClient(), new TestJsonDeserializer());
-            IRequestBuilderWithResult<object> request = _apiRequestBuilder
+            IRequestBuilderWithResult<object> request = this._apiRequestBuilder
                 .FromUrl(new Uri("https://proxer.me/api/v1")).WithResult<object>();
             var exception = Assert.ThrowsAsync<Exception>(async () => await middleware.InvokeWithResult(request, null));
             Assert.AreEqual(TestJsonDeserializer.TEST_MESSAGE, exception.Message);

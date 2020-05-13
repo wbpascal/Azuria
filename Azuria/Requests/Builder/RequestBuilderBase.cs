@@ -120,7 +120,7 @@ namespace Azuria.Requests.Builder
         /// <inheritdoc />
         public Uri BuildUri()
         {
-            UriBuilder lUriBuilder = new UriBuilder(this._baseUri);
+            var lUriBuilder = new UriBuilder(this._baseUri);
             lUriBuilder.Query += this.GetParameters.Aggregate(
                     string.Empty, (s, pair) => $"&{pair.Key}={pair.Value}"
                 )

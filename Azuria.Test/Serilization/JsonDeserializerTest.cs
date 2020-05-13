@@ -36,7 +36,7 @@ namespace Azuria.Test.Serilization
         [Test]
         public void DeserializeWithSettingsTest()
         {
-            JsonSerializerSettings lSettings = new JsonSerializerSettings();
+            var lSettings = new JsonSerializerSettings();
             lSettings.Converters.Add(new TestConverter());
 
             IProxerResult<ProxerApiResponse<int>> lDeserializeResult =

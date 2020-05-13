@@ -6,7 +6,7 @@ using Azuria.Requests.Builder;
 
 namespace Azuria.Test.Middleware
 {
-    class TestMiddleware : IMiddleware
+    internal class TestMiddleware : IMiddleware
     {
         private readonly object _obj;
 
@@ -15,15 +15,18 @@ namespace Azuria.Test.Middleware
             this._obj = obj;
         }
 
-        public Task<IProxerResult> Invoke(IRequestBuilder request, MiddlewareAction next, CancellationToken cancellationToken = default)
+        public Task<IProxerResult> Invoke(IRequestBuilder request, MiddlewareAction next,
+            CancellationToken cancellationToken = default)
         {
             return Task.FromResult((IProxerResult) new ProxerApiResponse {Success = true, Message = "TestMiddleware"});
         }
 
-        public Task<IProxerResult<T>> InvokeWithResult<T>(IRequestBuilderWithResult<T> request, MiddlewareAction<T> next,
+        public Task<IProxerResult<T>> InvokeWithResult<T>(IRequestBuilderWithResult<T> request,
+            MiddlewareAction<T> next,
             CancellationToken cancellationToken = default)
         {
-            return Task.FromResult((IProxerResult<T>) new ProxerApiResponse<T> {Success = true, Result = (T) this._obj, Message = "TestMiddleware"});
+            return Task.FromResult((IProxerResult<T>) new ProxerApiResponse<T>
+                {Success = true, Result = (T) this._obj, Message = "TestMiddleware"});
         }
     }
 }

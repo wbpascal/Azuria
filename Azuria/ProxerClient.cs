@@ -26,8 +26,8 @@ namespace Azuria
         /// <returns>A client with the specified api key and options.</returns>
         public static IProxerClient Create(char[] apiKey, Action<ProxerClientOptions> optionsFactory = null)
         {
-            ProxerClient client = new ProxerClient();
-            ProxerClientOptions lOptions = new ProxerClientOptions(apiKey, client);
+            var client = new ProxerClient();
+            var lOptions = new ProxerClientOptions(apiKey, client);
             optionsFactory?.Invoke(lOptions);
             client.ApiKey = lOptions.ApiKey;
             client.Pipeline = lOptions.Pipeline;

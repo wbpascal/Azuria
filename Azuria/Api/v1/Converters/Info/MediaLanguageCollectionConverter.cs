@@ -12,7 +12,7 @@ namespace Azuria.Api.v1.Converters.Info
         public override MediaLanguage[] ConvertJson(
             JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
         {
-            List<MediaLanguage> lLanguages = new List<MediaLanguage>();
+            var lLanguages = new List<MediaLanguage>();
             while (reader.Read())
             {
                 if (reader.TokenType == JsonToken.EndArray) break;

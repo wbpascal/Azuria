@@ -25,8 +25,8 @@ namespace Azuria.Middleware
         /// <inheritdoc />
         public IEnumerable<IMiddleware> Middlewares
         {
-            get => _middlewares;
-            set => _middlewares = new List<IMiddleware>(value);
+            get => this._middlewares;
+            set => this._middlewares = new List<IMiddleware>(value);
         }
 
         /// <inheritdoc />
@@ -37,7 +37,7 @@ namespace Azuria.Middleware
             for (int index = this._middlewares.Count - 1; index >= 0; index--)
             {
                 IMiddleware middleware = this._middlewares[index];
-                var nextAction =
+                MiddlewareAction nextAction =
                     action; // Needed so that the anonymous function below always accesses the current method in "action"
                 action = (request, token) => middleware.Invoke(request, nextAction, token);
             }
@@ -54,7 +54,7 @@ namespace Azuria.Middleware
             for (int index = this._middlewares.Count - 1; index >= 0; index--)
             {
                 IMiddleware middleware = this._middlewares[index];
-                var nextAction =
+                MiddlewareAction<T> nextAction =
                     action; // Needed so that the anonymous function below always accesses the current method in "action"
                 action = (request, token) => middleware.InvokeWithResult(request, nextAction, token);
             }

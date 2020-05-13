@@ -11,7 +11,7 @@ namespace Azuria.Api.v1.Converters.List
         public override TagType ConvertJson(
             JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
         {
-            string lTagType = reader.Value?.ToString();
+            var lTagType = reader.Value?.ToString();
             Dictionary<string, TagType> lStringDictionary = EnumHelpers.GetDescriptionDictionary<TagType>();
             return lStringDictionary.ContainsKey(lTagType)
                 ? lStringDictionary[lTagType]

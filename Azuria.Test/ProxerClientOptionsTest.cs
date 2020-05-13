@@ -62,14 +62,14 @@ namespace Azuria.Test
 
             Assert.AreSame(options, options.WithAuthentication(loginToken));
 
-            LoginMiddleware loginMiddleware =
+            var loginMiddleware =
                 options.Pipeline.Middlewares.FirstOrDefault(middleware =>
-                   middleware.GetType() == typeof(LoginMiddleware)) as LoginMiddleware;
+                    middleware.GetType() == typeof(LoginMiddleware)) as LoginMiddleware;
             Assert.NotNull(loginMiddleware);
             Assert.NotNull(loginMiddleware.LoginManager);
             Assert.IsInstanceOf<DefaultLoginManager>(loginMiddleware.LoginManager);
 
-            var loginManager = (DefaultLoginManager)loginMiddleware.LoginManager;
+            var loginManager = (DefaultLoginManager) loginMiddleware.LoginManager;
             Assert.AreEqual(loginToken, loginManager.LoginToken);
         }
 
@@ -104,9 +104,9 @@ namespace Azuria.Test
 
             Assert.AreSame(options, options.WithAuthentication());
 
-            LoginMiddleware loginMiddleware =
+            var loginMiddleware =
                 options.Pipeline.Middlewares.FirstOrDefault(middleware =>
-                   middleware.GetType() == typeof(LoginMiddleware)) as LoginMiddleware;
+                    middleware.GetType() == typeof(LoginMiddleware)) as LoginMiddleware;
             Assert.NotNull(loginMiddleware);
             Assert.NotNull(loginMiddleware.LoginManager);
             Assert.IsInstanceOf<DefaultLoginManager>(loginMiddleware.LoginManager);
@@ -128,7 +128,7 @@ namespace Azuria.Test
             Assert.AreEqual(4, middlewares.Length);
             Assert.IsInstanceOf<LoginMiddleware>(middlewares[1]);
 
-            var firstLoginMiddleware = middlewares[1];
+            IMiddleware firstLoginMiddleware = middlewares[1];
 
             Assert.AreSame(options, options.WithAuthentication(loginToken));
 
@@ -160,7 +160,7 @@ namespace Azuria.Test
             var options = new ProxerClientOptions(apiKey, client);
             string userAgentExtra = RandomHelper.GetRandomString(10);
 
-            StaticHeaderMiddleware oldHeaderMiddleware = options.Pipeline.Middlewares.First() as StaticHeaderMiddleware;
+            var oldHeaderMiddleware = options.Pipeline.Middlewares.First() as StaticHeaderMiddleware;
 
             Assert.AreSame(options, options.WithExtraUserAgent(userAgentExtra));
 
@@ -168,7 +168,7 @@ namespace Azuria.Test
             Assert.IsNotEmpty(middlewares);
             Assert.IsInstanceOf<StaticHeaderMiddleware>(middlewares[0]);
 
-            StaticHeaderMiddleware newHeaderMiddleware = middlewares[0] as StaticHeaderMiddleware;
+            var newHeaderMiddleware = middlewares[0] as StaticHeaderMiddleware;
             Assert.AreNotSame(oldHeaderMiddleware, newHeaderMiddleware);
             Assert.True(newHeaderMiddleware.Header["User-Agent"].Contains(userAgentExtra.TrimEnd()));
         }
@@ -184,9 +184,9 @@ namespace Azuria.Test
 
             Assert.AreSame(options, options.WithCustomHttpClient(timeout));
 
-            HttpJsonRequestMiddleware httpMiddleware =
+            var httpMiddleware =
                 options.Pipeline.Middlewares.FirstOrDefault(middleware =>
-                   middleware.GetType() == typeof(HttpJsonRequestMiddleware)) as HttpJsonRequestMiddleware;
+                    middleware.GetType() == typeof(HttpJsonRequestMiddleware)) as HttpJsonRequestMiddleware;
             Assert.NotNull(httpMiddleware);
             Assert.NotNull(httpMiddleware.HttpClient);
             Assert.NotNull(httpMiddleware.JsonDeserializer);
@@ -195,8 +195,9 @@ namespace Azuria.Test
             // This is used because the only way to check what timeout was actually set (the idea of this function), is to check 
             //  it in the underlying system http client. Because we don't want to actually expose this client to the user, we need
             //  to use reflection to get the value of the field
-            System.Net.Http.HttpClient systemClient =
-                typeof(HttpClient).GetPrivateFieldValueOrDefault<System.Net.Http.HttpClient>("_client", httpMiddleware.HttpClient);
+            var systemClient =
+                typeof(HttpClient).GetPrivateFieldValueOrDefault<System.Net.Http.HttpClient>("_client",
+                    httpMiddleware.HttpClient);
             Assert.AreEqual(timeout, systemClient.Timeout.TotalMilliseconds);
         }
 
@@ -209,16 +210,16 @@ namespace Azuria.Test
             var options = new ProxerClientOptions(apiKey, client);
             var httpClient = new HttpClient();
 
-            HttpJsonRequestMiddleware oldHttpMiddleware =
+            var oldHttpMiddleware =
                 options.Pipeline.Middlewares.FirstOrDefault(middleware =>
-                   middleware.GetType() == typeof(HttpJsonRequestMiddleware)) as HttpJsonRequestMiddleware;
+                    middleware.GetType() == typeof(HttpJsonRequestMiddleware)) as HttpJsonRequestMiddleware;
             Assert.NotNull(oldHttpMiddleware);
 
             Assert.AreSame(options, options.WithCustomHttpClient(httpClient));
 
-            HttpJsonRequestMiddleware httpMiddleware =
+            var httpMiddleware =
                 options.Pipeline.Middlewares.FirstOrDefault(middleware =>
-                   middleware.GetType() == typeof(HttpJsonRequestMiddleware)) as HttpJsonRequestMiddleware;
+                    middleware.GetType() == typeof(HttpJsonRequestMiddleware)) as HttpJsonRequestMiddleware;
             Assert.NotNull(httpMiddleware);
             Assert.AreNotSame(oldHttpMiddleware, httpMiddleware);
             Assert.AreSame(httpClient, httpMiddleware.HttpClient);
@@ -247,16 +248,16 @@ namespace Azuria.Test
             var options = new ProxerClientOptions(apiKey, client);
             var deserializer = new JsonDeserializer();
 
-            HttpJsonRequestMiddleware oldHttpMiddleware =
+            var oldHttpMiddleware =
                 options.Pipeline.Middlewares.FirstOrDefault(middleware =>
-                   middleware.GetType() == typeof(HttpJsonRequestMiddleware)) as HttpJsonRequestMiddleware;
+                    middleware.GetType() == typeof(HttpJsonRequestMiddleware)) as HttpJsonRequestMiddleware;
             Assert.NotNull(oldHttpMiddleware);
 
             Assert.AreSame(options, options.WithCustomJsonDeserializer(deserializer));
 
-            HttpJsonRequestMiddleware httpMiddleware =
+            var httpMiddleware =
                 options.Pipeline.Middlewares.FirstOrDefault(middleware =>
-                   middleware.GetType() == typeof(HttpJsonRequestMiddleware)) as HttpJsonRequestMiddleware;
+                    middleware.GetType() == typeof(HttpJsonRequestMiddleware)) as HttpJsonRequestMiddleware;
             Assert.NotNull(httpMiddleware);
             Assert.AreNotSame(oldHttpMiddleware, httpMiddleware);
             Assert.AreSame(deserializer, httpMiddleware.JsonDeserializer);
@@ -272,7 +273,8 @@ namespace Azuria.Test
 
             var options = new ProxerClientOptions(apiKey, client);
 
-            var argumentException = Assert.Throws<ArgumentNullException>(() => options.WithCustomJsonDeserializer(null));
+            var argumentException =
+                Assert.Throws<ArgumentNullException>(() => options.WithCustomJsonDeserializer(null));
             Assert.AreEqual("deserializer", argumentException.ParamName);
         }
 
@@ -316,7 +318,7 @@ namespace Azuria.Test
             Assert.AreEqual(4, middlewares.Length);
             Assert.IsInstanceOf<LoginMiddleware>(middlewares[1]);
 
-            var firstLoginMiddleware = middlewares[1];
+            IMiddleware firstLoginMiddleware = middlewares[1];
 
             Assert.AreSame(options, options.WithCustomLoginManager(loginManager));
 

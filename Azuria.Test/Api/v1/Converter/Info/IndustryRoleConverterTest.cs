@@ -19,26 +19,38 @@ namespace Azuria.Test.Api.v1.Converter.Info
 
         [Test]
         public void StreamingRoleTest()
-            => this.ConvertTest("streaming", IndustryRole.Streaming);
+        {
+            this.ConvertTest("streaming", IndustryRole.Streaming);
+        }
 
         [Test]
         public void RecordLabelRoleTest()
-            => this.ConvertTest("record_label", IndustryRole.RecordLabel);
+        {
+            this.ConvertTest("record_label", IndustryRole.RecordLabel);
+        }
 
         [Test]
         public void TalentAgentRoleTest()
-            => this.ConvertTest("talent_agent", IndustryRole.TalentAgent);
+        {
+            this.ConvertTest("talent_agent", IndustryRole.TalentAgent);
+        }
 
         [Test]
         public void PublisherRoleTest()
-            => this.ConvertTest("publisher", IndustryRole.Publisher);
+        {
+            this.ConvertTest("publisher", IndustryRole.Publisher);
+        }
 
         [Test]
         public void StudioRoleTest()
-            => this.ConvertTest("studio", IndustryRole.Studio);
+        {
+            this.ConvertTest("studio", IndustryRole.Studio);
+        }
 
         [Test]
         public void ProducerRoleTest()
-            => this.ConvertTest("producer", IndustryRole.Producer);
+        {
+            this.ConvertTest("producer", IndustryRole.Producer);
+        }
     }
 }

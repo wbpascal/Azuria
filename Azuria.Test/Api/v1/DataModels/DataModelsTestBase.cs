@@ -57,6 +57,8 @@ namespace Azuria.Test.Api.v1.DataModels
         }
 
         private static string GetExceptionMessage(IEnumerable<Exception> exceptions)
-            => exceptions.Aggregate("", (s, exception) => s + exception.ToString() + "\n");
+        {
+            return exceptions.Aggregate("", (s, exception) => s + exception.ToString() + "\n");
+        }
     }
 }

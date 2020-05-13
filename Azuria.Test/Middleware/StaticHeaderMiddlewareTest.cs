@@ -21,25 +21,24 @@ namespace Azuria.Test.Middleware
             IProxerClient client = ProxerClient.Create(new char[32]);
             this._apiRequestBuilder = client.CreateRequest();
         }
-        
+
         [Test]
-        public async Task Invoke_AddsHeadersFromConstructorArg() 
+        public async Task Invoke_AddsHeadersFromConstructorArg()
         {
             // Create random headers to test with
-            var header = new Dictionary<string, string>() {
+            var header = new Dictionary<string, string>()
+            {
                 {RandomHelper.GetRandomString(20), RandomHelper.GetRandomString(10)},
                 {RandomHelper.GetRandomString(5), RandomHelper.GetRandomString(5)}
             };
 
             var middleware = new StaticHeaderMiddleware(header);
             IRequestBuilder builder = this._apiRequestBuilder.FromUrl(new Uri("https://proxer.me"));
-    
+
             // Create mock of next middleware in pipeline that asserts needed conditions
-            MiddlewareAction action = (request, token) => {
-                foreach (var item in header)
-                {
-                    Assert.True(request.Headers.Contains(item));
-                }
+            MiddlewareAction action = (request, token) =>
+            {
+                foreach (KeyValuePair<string, string> item in header) Assert.True(request.Headers.Contains(item));
                 return Task.FromResult((IProxerResult) new ProxerResult());
             };
 
@@ -54,15 +53,16 @@ namespace Azuria.Test.Middleware
         }
 
         [Test]
-        public async Task Invoke_PassesCancellationTokenToNextMiddleware() 
+        public async Task Invoke_PassesCancellationTokenToNextMiddleware()
         {
             var middleware = new StaticHeaderMiddleware(new Dictionary<string, string>());
             IRequestBuilder builder = this._apiRequestBuilder.FromUrl(new Uri("https://proxer.me"));
-    
+
             var tokenSource = new CancellationTokenSource();
 
             // Create mock of next middleware in pipeline that asserts needed conditions
-            MiddlewareAction action = (request, token) => {
+            MiddlewareAction action = (request, token) =>
+            {
                 Assert.NotNull(token);
                 Assert.AreEqual(tokenSource.Token, token);
                 return Task.FromResult((IProxerResult) new ProxerResult());
@@ -71,28 +71,27 @@ namespace Azuria.Test.Middleware
             IProxerResult result = await middleware.Invoke(builder, action, tokenSource.Token);
             Assert.True(result.Success);
         }
-        
+
         [Test]
-        public async Task InvokeWithResult_AddsHeadersFromConstructorArg() 
+        public async Task InvokeWithResult_AddsHeadersFromConstructorArg()
         {
             // Create random headers to test with
-            var header = new Dictionary<string, string>() {
+            var header = new Dictionary<string, string>()
+            {
                 {RandomHelper.GetRandomString(20), RandomHelper.GetRandomString(10)},
                 {RandomHelper.GetRandomString(5), RandomHelper.GetRandomString(5)}
             };
 
             var middleware = new StaticHeaderMiddleware(header);
-            IRequestBuilderWithResult<object> builder = 
+            IRequestBuilderWithResult<object> builder =
                 this._apiRequestBuilder
                     .FromUrl(new Uri("https://proxer.me"))
                     .WithResult<object>();
-    
+
             // Create mock of next middleware in pipeline that asserts needed conditions
-            MiddlewareAction<object> action = (request, token) => {
-                foreach (var item in header)
-                {
-                    Assert.True(request.Headers.Contains(item));
-                }
+            MiddlewareAction<object> action = (request, token) =>
+            {
+                foreach (KeyValuePair<string, string> item in header) Assert.True(request.Headers.Contains(item));
                 return Task.FromResult((IProxerResult<object>) new ProxerResult<object>(new object()));
             };
 
@@ -107,18 +106,19 @@ namespace Azuria.Test.Middleware
         }
 
         [Test]
-        public async Task InvokeWithResult_PassesCancellationTokenToNextMiddleware() 
+        public async Task InvokeWithResult_PassesCancellationTokenToNextMiddleware()
         {
             var middleware = new StaticHeaderMiddleware(new Dictionary<string, string>());
-            IRequestBuilderWithResult<object> builder = 
+            IRequestBuilderWithResult<object> builder =
                 this._apiRequestBuilder
                     .FromUrl(new Uri("https://proxer.me"))
                     .WithResult<object>();
-    
+
             var tokenSource = new CancellationTokenSource();
 
             // Create mock of next middleware in pipeline that asserts needed conditions
-            MiddlewareAction<object> action = (request, token) => {
+            MiddlewareAction<object> action = (request, token) =>
+            {
                 Assert.NotNull(token);
                 Assert.AreEqual(tokenSource.Token, token);
                 return Task.FromResult((IProxerResult<object>) new ProxerResult<object>(new object()));
@@ -129,18 +129,19 @@ namespace Azuria.Test.Middleware
         }
 
         [Test]
-        public async Task InvokeWithResult_ReturnsResultFromLastMiddleware() 
+        public async Task InvokeWithResult_ReturnsResultFromLastMiddleware()
         {
             var middleware = new StaticHeaderMiddleware(new Dictionary<string, string>());
-            IRequestBuilderWithResult<object> builder = 
+            IRequestBuilderWithResult<object> builder =
                 this._apiRequestBuilder
                     .FromUrl(new Uri("https://proxer.me"))
                     .WithResult<object>();
-    
+
             var obj = new object();
 
             // Create mock of next middleware in pipeline that asserts needed conditions
-            MiddlewareAction<object> action = (request, token) => {
+            MiddlewareAction<object> action = (request, token) =>
+            {
                 return Task.FromResult((IProxerResult<object>) new ProxerResult<object>(obj));
             };
 

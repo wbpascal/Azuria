@@ -32,7 +32,7 @@ namespace Azuria.Test.Api.v1.RequestBuilder
         [Test]
         public void GetHistoryUsernameTest()
         {
-            UserEntryHistoryInput lInput = new UserEntryHistoryInput
+            var lInput = new UserEntryHistoryInput
             {
                 Username = RandomHelper.GetRandomString(10),
                 Limit = 132,
@@ -47,7 +47,7 @@ namespace Azuria.Test.Api.v1.RequestBuilder
         [Test]
         public void GetHistoryUserIdTest()
         {
-            UserEntryHistoryInput lInput = new UserEntryHistoryInput
+            var lInput = new UserEntryHistoryInput
             {
                 UserId = this.GetRandomNumber(500_000),
                 Limit = 132,
@@ -76,7 +76,7 @@ namespace Azuria.Test.Api.v1.RequestBuilder
         [Test]
         public void GetInfoUserIdTest()
         {
-            UserInfoInput lInput = new UserInfoInput {UserId = this.GetRandomNumber(500_000)};
+            var lInput = new UserInfoInput {UserId = this.GetRandomNumber(500_000)};
             IRequestBuilderWithResult<UserInfoDataModel> lRequest = this.RequestBuilder.GetInfo(lInput);
             this.GetInfoTestBase(lRequest);
             Assert.True(lRequest.GetParameters.ContainsKey("uid"));
@@ -87,7 +87,7 @@ namespace Azuria.Test.Api.v1.RequestBuilder
         [Test]
         public void GetInfoUsernameTest()
         {
-            UserInfoInput lInput = new UserInfoInput {Username = RandomHelper.GetRandomString(10)};
+            var lInput = new UserInfoInput {Username = RandomHelper.GetRandomString(10)};
             IRequestBuilderWithResult<UserInfoDataModel> lRequest = this.RequestBuilder.GetInfo(lInput);
             this.GetInfoTestBase(lRequest);
             Assert.True(lRequest.GetParameters.ContainsKey("username"));
@@ -112,7 +112,7 @@ namespace Azuria.Test.Api.v1.RequestBuilder
         [Test]
         public void GetLatestCommentsUsernameTest([Values] MediaEntryType category)
         {
-            UserCommentsListInput lInput = new UserCommentsListInput
+            var lInput = new UserCommentsListInput
             {
                 Username = RandomHelper.GetRandomString(10),
                 Category = category,
@@ -130,7 +130,7 @@ namespace Azuria.Test.Api.v1.RequestBuilder
         [Test]
         public void GetLatestCommentsUserIdTest([Values] MediaEntryType category)
         {
-            UserCommentsListInput lInput = new UserCommentsListInput
+            var lInput = new UserCommentsListInput
             {
                 UserId = this.GetRandomNumber(500_000),
                 Category = category,
@@ -167,11 +167,12 @@ namespace Azuria.Test.Api.v1.RequestBuilder
             );
         }
 
-        [Test, Pairwise]
+        [Test]
+        [Pairwise]
         public void GetListUserIdTest(
             [Values] MediaEntryType category, [Values] UserListSort sort, [Values] SortDirection sortDirection)
         {
-            UserGetListInput lInputDataModel = new UserGetListInput
+            var lInputDataModel = new UserGetListInput
             {
                 Category = category,
                 Search = "test_search",
@@ -190,11 +191,12 @@ namespace Azuria.Test.Api.v1.RequestBuilder
             Assert.False(lRequest.CheckLogin);
         }
 
-        [Test, Pairwise]
+        [Test]
+        [Pairwise]
         public void GetListUsernameTest(
             [Values] MediaEntryType category, [Values] UserListSort sort, [Values] SortDirection sortDirection)
         {
-            UserGetListInput lInputDataModel = new UserGetListInput
+            var lInputDataModel = new UserGetListInput
             {
                 Category = category,
                 Search = "test_search",
@@ -224,7 +226,7 @@ namespace Azuria.Test.Api.v1.RequestBuilder
         [Test]
         public void GetToptenUserIdTest([Values] MediaEntryType category)
         {
-            UserToptenListInput lInput = new UserToptenListInput
+            var lInput = new UserToptenListInput
             {
                 Category = category,
                 UserId = this.GetRandomNumber(500_000)
@@ -239,7 +241,7 @@ namespace Azuria.Test.Api.v1.RequestBuilder
         [Test]
         public void GetToptenUsernameTest([Values] MediaEntryType category)
         {
-            UserToptenListInput lInput = new UserToptenListInput
+            var lInput = new UserToptenListInput
             {
                 Category = category,
                 Username = RandomHelper.GetRandomString(10)
@@ -254,7 +256,7 @@ namespace Azuria.Test.Api.v1.RequestBuilder
         [Test]
         public void LoginTest()
         {
-            LoginInput lInput = new LoginInput
+            var lInput = new LoginInput
             {
                 Username = RandomHelper.GetRandomString(10),
                 Password = RandomHelper.GetRandomString(16)
@@ -272,7 +274,7 @@ namespace Azuria.Test.Api.v1.RequestBuilder
         [Test]
         public void LoginSecretKeyTest()
         {
-            LoginInput lInput = new LoginInput
+            var lInput = new LoginInput
             {
                 Username = RandomHelper.GetRandomString(10),
                 Password = RandomHelper.GetRandomString(16),

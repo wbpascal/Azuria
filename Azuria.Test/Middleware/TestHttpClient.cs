@@ -11,14 +11,15 @@ namespace Azuria.Test.Middleware
 {
     public class TestHttpClient : IHttpClient
     {
-        public Task<IProxerResult<string>> GetRequestAsync(Uri url, IDictionary<string, string> headers = null, CancellationToken token = default)
+        public Task<IProxerResult<string>> GetRequestAsync(Uri url, IDictionary<string, string> headers = null,
+            CancellationToken token = default)
         {
             if (url.Query.Contains("empty=1"))
                 return Task.FromResult((IProxerResult<string>) new ProxerResult<string>(""));
             if (url.Query.Contains("fail=1"))
                 return Task.FromResult((IProxerResult<string>) new ProxerResult<string>(new Exception("GET")));
             if (url.Query.Contains("malformed=1"))
-                return Task.FromResult((IProxerResult<string>)new ProxerResult<string>("{'}"));
+                return Task.FromResult((IProxerResult<string>) new ProxerResult<string>("{'}"));
 
             var requestData = new Dictionary<string, string>()
             {
@@ -35,7 +36,8 @@ namespace Azuria.Test.Middleware
             return Task.FromResult((IProxerResult<string>) new ProxerResult<string>(proxerApiResponse));
         }
 
-        public Task<IProxerResult<string>> PostRequestAsync(Uri url, IEnumerable<KeyValuePair<string, string>> postArgs, IDictionary<string, string> headers = null, CancellationToken token = default)
+        public Task<IProxerResult<string>> PostRequestAsync(Uri url, IEnumerable<KeyValuePair<string, string>> postArgs,
+            IDictionary<string, string> headers = null, CancellationToken token = default)
         {
             var requestData = new Dictionary<string, string>()
             {

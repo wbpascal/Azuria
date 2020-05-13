@@ -25,7 +25,7 @@ namespace Azuria.Test.Api.v1.RequestBuilder
         [Test]
         public void DeleteFavouriteTest()
         {
-            DeleteToptenInput lInput = new DeleteToptenInput {ToptenId = this.GetRandomNumber(10000)};
+            var lInput = new DeleteToptenInput {ToptenId = this.GetRandomNumber(10000)};
             IRequestBuilder lRequest = this.RequestBuilder.DeleteTopten(lInput);
             this.CheckUrl(lRequest, "ucp", "deletefavorite");
             Assert.AreSame(this.ProxerClient, lRequest.Client);
@@ -37,7 +37,7 @@ namespace Azuria.Test.Api.v1.RequestBuilder
         [Test]
         public void DeleteReminderTest()
         {
-            DeleteReminderInput lInput = new DeleteReminderInput {ReminderId = this.GetRandomNumber(10000)};
+            var lInput = new DeleteReminderInput {ReminderId = this.GetRandomNumber(10000)};
             IRequestBuilder lRequest = this.RequestBuilder.DeleteReminder(lInput);
             this.CheckUrl(lRequest, "ucp", "deletereminder");
             Assert.AreSame(this.ProxerClient, lRequest.Client);
@@ -49,7 +49,7 @@ namespace Azuria.Test.Api.v1.RequestBuilder
         [Test]
         public void DeleteVoteTest()
         {
-            DeleteVoteInput lInput = new DeleteVoteInput {VoteId = this.GetRandomNumber(10000)};
+            var lInput = new DeleteVoteInput {VoteId = this.GetRandomNumber(10000)};
             IRequestBuilder lRequest = this.RequestBuilder.DeleteVote(lInput);
             this.CheckUrl(lRequest, "ucp", "deletevote");
             Assert.AreSame(this.ProxerClient, lRequest.Client);
@@ -61,7 +61,7 @@ namespace Azuria.Test.Api.v1.RequestBuilder
         [Test]
         public void GetHistoryTest()
         {
-            UcpEntryHistoryInput lInput = new UcpEntryHistoryInput
+            var lInput = new UcpEntryHistoryInput
             {
                 Limit = 20,
                 Page = 3
@@ -82,7 +82,7 @@ namespace Azuria.Test.Api.v1.RequestBuilder
             string lSearch = RandomHelper.GetRandomString(20);
             string lSearchStart = RandomHelper.GetRandomString(20);
 
-            UcpGetListInput lInputDataModel = new UcpGetListInput
+            var lInputDataModel = new UcpGetListInput
             {
                 Category = category,
                 Search = lSearch,
@@ -111,13 +111,14 @@ namespace Azuria.Test.Api.v1.RequestBuilder
             Assert.True(lRequest.CheckLogin);
         }
 
-        [Test, Combinatorial]
+        [Test]
+        [Combinatorial]
         public void GetListSortTest([Values] UserListSort sort, [Values] SortDirection sortDirection)
         {
             string lSearch = RandomHelper.GetRandomString(20);
             string lSearchStart = RandomHelper.GetRandomString(20);
 
-            UcpGetListInput lInputDataModel = new UcpGetListInput
+            var lInputDataModel = new UcpGetListInput
             {
                 Category = MediaEntryType.Anime,
                 Search = lSearch,
@@ -149,7 +150,7 @@ namespace Azuria.Test.Api.v1.RequestBuilder
         [Test]
         public void GetListsumTest([Values] MediaEntryType category)
         {
-            ListSumInput lInput = new ListSumInput {Category = category};
+            var lInput = new ListSumInput {Category = category};
             IRequestBuilderWithResult<int> lRequest = this.RequestBuilder.GetListsum(lInput);
             this.CheckUrl(lRequest, "ucp", "listsum");
             Assert.AreSame(this.ProxerClient, lRequest.Client);
@@ -163,7 +164,7 @@ namespace Azuria.Test.Api.v1.RequestBuilder
             [Values(null, MediaEntryType.Anime, MediaEntryType.Manga)]
             MediaEntryType? category)
         {
-            ReminderListInput lInput = new ReminderListInput
+            var lInput = new ReminderListInput
             {
                 Category = category,
                 Limit = 1,
@@ -203,7 +204,7 @@ namespace Azuria.Test.Api.v1.RequestBuilder
         [Test]
         public void SetCommentStateTest()
         {
-            SetCommentProgressInput lInput = new SetCommentProgressInput
+            var lInput = new SetCommentProgressInput
             {
                 CommentId = this.GetRandomNumber(10000),
                 Progress = this.GetRandomNumber(50)
@@ -222,7 +223,7 @@ namespace Azuria.Test.Api.v1.RequestBuilder
         [Test]
         public void SetReminderLanguageTest([Values] MediaLanguage language)
         {
-            SetReminderInput lInput = new SetReminderInput
+            var lInput = new SetReminderInput
             {
                 Category = MediaEntryType.Anime,
                 EntryId = this.GetRandomNumber(10000),
@@ -253,7 +254,7 @@ namespace Azuria.Test.Api.v1.RequestBuilder
         [Test]
         public void SetReminderCategoryTest([Values] MediaEntryType category)
         {
-            SetReminderInput lInput = new SetReminderInput
+            var lInput = new SetReminderInput
             {
                 Category = category,
                 EntryId = this.GetRandomNumber(10000),

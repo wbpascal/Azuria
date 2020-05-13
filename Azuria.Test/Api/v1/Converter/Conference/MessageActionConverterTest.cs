@@ -19,22 +19,32 @@ namespace Azuria.Test.Api.v1.Converter.Conference
 
         [Test]
         public void AddUserTest()
-            => this.ConvertTest("addUser", MessageAction.AddUser);
+        {
+            this.ConvertTest("addUser", MessageAction.AddUser);
+        }
 
         [Test]
         public void RemoveUserTest()
-            => this.ConvertTest("removeUser", MessageAction.RemoveUser);
+        {
+            this.ConvertTest("removeUser", MessageAction.RemoveUser);
+        }
 
         [Test]
         public void SetTopicTest()
-            => this.ConvertTest("setTopic", MessageAction.SetTopic);
+        {
+            this.ConvertTest("setTopic", MessageAction.SetTopic);
+        }
 
         [Test]
         public void SetLeaderTest()
-            => this.ConvertTest("setLeader", MessageAction.SetLeader);
+        {
+            this.ConvertTest("setLeader", MessageAction.SetLeader);
+        }
 
         [Test]
         public void DefaultValueTest()
-            => this.ConvertTest("", MessageAction.NoAction);
+        {
+            this.ConvertTest("", MessageAction.NoAction);
+        }
     }
 }

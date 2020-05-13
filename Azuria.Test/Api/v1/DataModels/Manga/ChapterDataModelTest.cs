@@ -38,7 +38,7 @@ namespace Azuria.Test.Api.v1.DataModels.Manga
                         PageHeight = 1200,
                         PageWidth = 570,
                         ServerFileName = "2.jpg"
-                    },
+                    }
                 },
                 ServerId = 5,
                 TranslatorId = 795,

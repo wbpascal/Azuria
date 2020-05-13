@@ -37,7 +37,7 @@ namespace Azuria.Middleware
             IProxerResult lResult = await next(request, cancellationToken).ConfigureAwait(false);
 
             //Check if we should retry the next middleware
-            if (ShouldRetry(request, lResult))
+            if (this.ShouldRetry(request, lResult))
                 lResult = await next(request, cancellationToken).ConfigureAwait(false);
 
             // Update the state of the login manager
@@ -54,7 +54,7 @@ namespace Azuria.Middleware
             IProxerResult<T> lResult = await next(request, cancellationToken).ConfigureAwait(false);
 
             //Check if we should retry the next middleware
-            if (ShouldRetry(request, lResult))
+            if (this.ShouldRetry(request, lResult))
                 lResult = await next(request, cancellationToken).ConfigureAwait(false);
 
             // Update the state of the login manager

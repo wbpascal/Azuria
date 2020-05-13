@@ -88,11 +88,12 @@ namespace Azuria.Middleware
         public async Task<IProxerResult<T>> InvokeWithResult<T>(IRequestBuilderWithResult<T> request,
             MiddlewareAction<T> next, CancellationToken cancellationToken = default)
         {
-            JsonSerializerSettings lSerializerSettings =
+            var lSerializerSettings =
                 new JsonSerializerSettings {Converters = GetCustomConverter(request)};
 
             IProxerResultBase lResult =
-                await this.ApiRequestInternalAsync<ProxerApiResponse<T>>(request, cancellationToken, lSerializerSettings)
+                await this.ApiRequestInternalAsync<ProxerApiResponse<T>>(request, cancellationToken,
+                        lSerializerSettings)
                     .ConfigureAwait(false);
 
             return lResult.Success

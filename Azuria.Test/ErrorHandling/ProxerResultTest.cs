@@ -48,17 +48,17 @@ namespace Azuria.Test.ErrorHandling
         [Test]
         public void ExceptionConstructorTest()
         {
-            Exception lException = new Exception("test");
+            var lException = new Exception("test");
             Exception[] lExceptions = {lException};
 
-            ProxerResult lResult = new ProxerResult(lExceptions);
+            var lResult = new ProxerResult(lExceptions);
             Assert.False(lResult.Success);
             Assert.AreEqual(lExceptions, lResult.Exceptions);
             lResult = new ProxerResult(lException);
             Assert.False(lResult.Success);
             Assert.Contains(lException, lResult.Exceptions.ToArray());
 
-            ProxerResult<int> lResultWithValue = new ProxerResult<int>(lExceptions);
+            var lResultWithValue = new ProxerResult<int>(lExceptions);
             Assert.False(lResultWithValue.Success);
             Assert.AreEqual(lExceptions, lResultWithValue.Exceptions);
             Assert.AreEqual(default(int), lResultWithValue.Result);
@@ -71,11 +71,11 @@ namespace Azuria.Test.ErrorHandling
         [Test]
         public void SuccessResultTest()
         {
-            ProxerResult lResult = new ProxerResult();
+            var lResult = new ProxerResult();
             Assert.True(lResult.Success);
             Assert.IsEmpty(lResult.Exceptions);
 
-            ProxerResult<int> lResultWithValue = new ProxerResult<int>(int.MaxValue);
+            var lResultWithValue = new ProxerResult<int>(int.MaxValue);
             Assert.True(lResultWithValue.Success);
             Assert.IsEmpty(lResultWithValue.Exceptions);
             Assert.AreEqual(int.MaxValue, lResultWithValue.Result);

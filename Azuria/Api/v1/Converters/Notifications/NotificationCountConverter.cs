@@ -10,9 +10,9 @@ namespace Azuria.Api.v1.Converters.Notifications
         public override NotificationCountDataModel ConvertJson(
             JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
         {
-            NotificationCountDataModel lDataModel = new NotificationCountDataModel();
+            var lDataModel = new NotificationCountDataModel();
             int? lValue;
-            for (int i = 0; (lValue = reader.ReadAsInt32()) != null; i++)
+            for (var i = 0; (lValue = reader.ReadAsInt32()) != null; i++)
             {
                 if (reader.TokenType == JsonToken.EndArray) break;
                 switch (i)

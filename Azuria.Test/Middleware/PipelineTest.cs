@@ -22,16 +22,16 @@ namespace Azuria.Test.Middleware
         }
 
         [Test]
-        public void Constructor_SetsFieldsTest() 
+        public void Constructor_SetsFieldsTest()
         {
-            var middleware = new IMiddleware[] { new ErrorMiddleware() };
+            var middleware = new IMiddleware[] {new ErrorMiddleware()};
             var pipeline = new Pipeline(middleware);
 
             Assert.AreEqual(middleware, pipeline.Middlewares);
         }
 
         [Test]
-        public async Task BuildPipeline_BuildsEmptyPipelineTest() 
+        public async Task BuildPipeline_BuildsEmptyPipelineTest()
         {
             var pipeline = new Pipeline(new IMiddleware[0]);
 
@@ -47,7 +47,7 @@ namespace Azuria.Test.Middleware
         [Test]
         public async Task BuildPipeline_BuildsPipeline()
         {
-            var pipeline = new Pipeline(new IMiddleware[] { new TestMiddleware(null) });
+            var pipeline = new Pipeline(new IMiddleware[] {new TestMiddleware(null)});
 
             MiddlewareAction action = pipeline.BuildPipeline();
             Assert.NotNull(action);
@@ -61,7 +61,7 @@ namespace Azuria.Test.Middleware
         }
 
         [Test]
-        public async Task BuildPipelineWithResult_BuildsEmptyPipelineTest() 
+        public async Task BuildPipelineWithResult_BuildsEmptyPipelineTest()
         {
             var pipeline = new Pipeline(new IMiddleware[0]);
 
@@ -78,7 +78,7 @@ namespace Azuria.Test.Middleware
         [Test]
         public async Task BuildPipelineWithResult_BuildsPipeline()
         {
-            var pipeline = new Pipeline(new IMiddleware[] { new TestMiddleware("TestPipeline") });
+            var pipeline = new Pipeline(new IMiddleware[] {new TestMiddleware("TestPipeline")});
 
             MiddlewareAction<string> action = pipeline.BuildPipelineWithResult<string>();
             Assert.NotNull(action);
@@ -106,7 +106,7 @@ namespace Azuria.Test.Middleware
         [Test]
         public void InsertMiddlewareAfter_DoesNotInsertIfNotFound()
         {
-            var pipeline = new Pipeline(new IMiddleware[] { new ErrorMiddleware() });
+            var pipeline = new Pipeline(new IMiddleware[] {new ErrorMiddleware()});
 
             bool inserted = pipeline.InsertMiddlewareAfter(typeof(HttpJsonRequestMiddleware), new TestMiddleware(null));
             Assert.False(inserted);
@@ -117,7 +117,7 @@ namespace Azuria.Test.Middleware
         [Test]
         public void InsertMiddlewareAfter_InsertsAfterEachInstancesOfType()
         {
-            var pipeline = new Pipeline(new IMiddleware[] { new ErrorMiddleware(), new ErrorMiddleware() });
+            var pipeline = new Pipeline(new IMiddleware[] {new ErrorMiddleware(), new ErrorMiddleware()});
 
             bool inserted = pipeline.InsertMiddlewareAfter(typeof(ErrorMiddleware), new TestMiddleware(null));
             Assert.True(inserted);
@@ -151,7 +151,8 @@ namespace Azuria.Test.Middleware
         {
             var pipeline = new Pipeline(new IMiddleware[0]);
 
-            bool inserted = pipeline.InsertMiddlewareBefore(typeof(HttpJsonRequestMiddleware), new TestMiddleware(null));
+            bool inserted =
+                pipeline.InsertMiddlewareBefore(typeof(HttpJsonRequestMiddleware), new TestMiddleware(null));
             Assert.False(inserted);
             Assert.AreEqual(0, pipeline.Middlewares.Count());
         }
@@ -159,9 +160,10 @@ namespace Azuria.Test.Middleware
         [Test]
         public void InsertMiddlewareBefore_DoesNotInsertIfNotFound()
         {
-            var pipeline = new Pipeline(new IMiddleware[] { new ErrorMiddleware() });
+            var pipeline = new Pipeline(new IMiddleware[] {new ErrorMiddleware()});
 
-            bool inserted = pipeline.InsertMiddlewareBefore(typeof(HttpJsonRequestMiddleware), new TestMiddleware(null));
+            bool inserted =
+                pipeline.InsertMiddlewareBefore(typeof(HttpJsonRequestMiddleware), new TestMiddleware(null));
             Assert.False(inserted);
             Assert.AreEqual(1, pipeline.Middlewares.Count());
             Assert.IsInstanceOf<ErrorMiddleware>(pipeline.Middlewares.FirstOrDefault());
@@ -170,7 +172,7 @@ namespace Azuria.Test.Middleware
         [Test]
         public void InsertMiddlewareBefore_InsertsBeforeEachInstancesOfType()
         {
-            var pipeline = new Pipeline(new IMiddleware[] { new ErrorMiddleware(), new ErrorMiddleware() });
+            var pipeline = new Pipeline(new IMiddleware[] {new ErrorMiddleware(), new ErrorMiddleware()});
 
             bool inserted = pipeline.InsertMiddlewareBefore(typeof(ErrorMiddleware), new TestMiddleware(null));
             Assert.True(inserted);
@@ -238,7 +240,7 @@ namespace Azuria.Test.Middleware
         [Test]
         public void RemoveMiddleware_DoesNotRemoveIfNotFound()
         {
-            var pipeline = new Pipeline(new IMiddleware[] {new ErrorMiddleware() });
+            var pipeline = new Pipeline(new IMiddleware[] {new ErrorMiddleware()});
 
             bool removed = pipeline.RemoveMiddleware(typeof(StaticHeaderMiddleware));
             Assert.False(removed);
@@ -274,7 +276,7 @@ namespace Azuria.Test.Middleware
         [Test]
         public void ReplaceMiddleware_DoesNotReplaceIfNotFound()
         {
-            var pipeline = new Pipeline(new IMiddleware[] { new ErrorMiddleware() });
+            var pipeline = new Pipeline(new IMiddleware[] {new ErrorMiddleware()});
 
             bool replaced = pipeline.ReplaceMiddleware(typeof(StaticHeaderMiddleware), new TestMiddleware(null));
             Assert.False(replaced);

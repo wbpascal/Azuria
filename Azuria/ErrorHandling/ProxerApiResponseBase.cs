@@ -13,7 +13,8 @@ namespace Azuria.ErrorHandling
         /// Gets or sets the ErrorCode returned by the API.
         /// </summary>
         /// <value></value>
-        [JsonProperty("code")] public ErrorCode ErrorCode { get; set; } = ErrorCode.NoError;
+        [JsonProperty("code")]
+        public ErrorCode ErrorCode { get; set; } = ErrorCode.NoError;
 
         /// <summary>
         /// Gets or sets the additional message returned by the API.

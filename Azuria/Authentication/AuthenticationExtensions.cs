@@ -61,16 +61,10 @@ namespace Azuria.Authentication
         // Returns the first instance from the pipeline or null
         private static DefaultLoginManager TryFindLoginManager(IPipeline pipeline)
         {
-            foreach (var middleware in pipeline.Middlewares)
-            {
+            foreach (IMiddleware middleware in pipeline.Middlewares)
                 if (middleware is LoginMiddleware loginMiddleware)
-                {
                     if (loginMiddleware.LoginManager is DefaultLoginManager instance)
-                    {
                         return instance;
-                    }
-                }
-            }
 
             return null;
         }

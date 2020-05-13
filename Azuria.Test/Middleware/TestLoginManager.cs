@@ -5,7 +5,7 @@ using Azuria.Requests.Builder;
 
 namespace Azuria.Test.Middleware
 {
-    class TestLoginManager : ILoginManager
+    internal class TestLoginManager : ILoginManager
     {
         public const string LOGIN_HEADER_KEY = "proxer-test-login-token";
         public const string LOGIN_HEADER_VALUE = "login-token-value";

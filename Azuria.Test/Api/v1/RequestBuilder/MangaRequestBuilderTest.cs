@@ -20,7 +20,7 @@ namespace Azuria.Test.Api.v1.RequestBuilder
         [TestCase(14923, 12, Language.German)]
         public void GetChapterTest(int id, int episode, Language language)
         {
-            ChapterInfoInput lInput = new ChapterInfoInput
+            var lInput = new ChapterInfoInput
             {
                 Chapter = episode,
                 Id = id,

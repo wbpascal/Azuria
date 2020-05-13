@@ -35,7 +35,7 @@ namespace Azuria.Test.Requests
         [Test]
         public async Task GetRequestAsyncTest()
         {
-            Dictionary<string, string> lHeaders = new Dictionary<string, string> {{"Header-Key", "headerValue"}};
+            var lHeaders = new Dictionary<string, string> {{"Header-Key", "headerValue"}};
             IProxerResult<string> lResult =
                 await this._httpClient.GetRequestAsync(new Uri("https://httpbin.org/get?test=value"), lHeaders);
             Assert.True(lResult.Success, lResult.Result);
@@ -63,8 +63,8 @@ namespace Azuria.Test.Requests
         [Test]
         public async Task PostRequestAsyncTest()
         {
-            Dictionary<string, string> lHeaders = new Dictionary<string, string> {{"Header-Key", "headerValue"}};
-            Dictionary<string, string> lPostArgs = new Dictionary<string, string> {{"postKey", "postValue"}};
+            var lHeaders = new Dictionary<string, string> {{"Header-Key", "headerValue"}};
+            var lPostArgs = new Dictionary<string, string> {{"postKey", "postValue"}};
             IProxerResult<string> lResult =
                 await this._httpClient.PostRequestAsync(
                     new Uri("https://httpbin.org/post?test=value"), lPostArgs, lHeaders

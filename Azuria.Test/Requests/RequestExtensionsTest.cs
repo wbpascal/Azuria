@@ -41,11 +41,11 @@ namespace Azuria.Test.Requests
                 .Returns(Task.FromResult((IProxerResult) new ProxerResult()));
 
             // Create a client with a custom pipeline that only contains the mocked middleware
-            var lClient = ProxerClient.Create(new char[32],
+            IProxerClient lClient = ProxerClient.Create(new char[32],
                 options => options.Pipeline = new Pipeline(new[] {middlewareMock.Object}));
 
             var lRequest = new RequestBuilder(new Uri("https://proxer.me/api"), lClient);
-            CancellationTokenSource lCancellationTokenSource = new CancellationTokenSource();
+            var lCancellationTokenSource = new CancellationTokenSource();
 
             IProxerResult lResult = await lRequest.DoRequestAsync(lCancellationTokenSource.Token);
             Assert.NotNull(lResult);
@@ -68,12 +68,12 @@ namespace Azuria.Test.Requests
                 .Returns(Task.FromResult((IProxerResult<object>) new ProxerResult<object>(new object())));
 
             // Create a client with a custom pipeline that only contains the mocked middleware
-            var lClient = ProxerClient.Create(new char[32],
+            IProxerClient lClient = ProxerClient.Create(new char[32],
                 options => options.Pipeline = new Pipeline(new[] {middlewareMock.Object}));
 
             IRequestBuilderWithResult<object> lRequest = new RequestBuilder(new Uri("https://proxer.me"), lClient)
                 .WithResult<object>();
-            CancellationTokenSource lCancellationTokenSource = new CancellationTokenSource();
+            var lCancellationTokenSource = new CancellationTokenSource();
 
             IProxerResult<object> lResult = await lRequest.DoRequestAsync(lCancellationTokenSource.Token);
             Assert.NotNull(lResult);

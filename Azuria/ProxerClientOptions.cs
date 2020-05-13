@@ -29,7 +29,7 @@ namespace Azuria
         {
             this.Client = client;
             this.ApiKey = apiKey;
-            this.Pipeline = CreateDefaultPipeline(apiKey, client);
+            this.Pipeline = this.CreateDefaultPipeline(apiKey, client);
         }
 
         /// <summary>

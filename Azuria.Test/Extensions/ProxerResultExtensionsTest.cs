@@ -11,7 +11,7 @@ namespace Azuria.Test.Extensions
         [Test]
         public void OnErrorTest()
         {
-            object lToken = new object();
+            var lToken = new object();
             Assert.AreSame(lToken, new ProxerResult<object>(new Exception()).OnError(lToken));
             Assert.AreSame(lToken, new ProxerResult<object>(new Exception()).OnError(() => lToken));
         }
@@ -19,7 +19,7 @@ namespace Azuria.Test.Extensions
         [Test]
         public async Task OnErrorAsyncTest()
         {
-            object lToken = new object();
+            var lToken = new object();
             Task<ProxerResult<object>> lTask = Task.Run(() => new ProxerResult<object>(new Exception()));
             Assert.AreSame(lToken, await lTask.OnError(lToken));
             lTask = Task.Run(() => new ProxerResult<object>(new Exception()));

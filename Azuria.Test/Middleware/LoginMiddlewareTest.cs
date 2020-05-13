@@ -20,7 +20,7 @@ namespace Azuria.Test.Middleware
         public LoginMiddlewareTest()
         {
             IProxerClient client = ProxerClient.Create(new char[32]);
-            _apiRequestBuilder = client.CreateRequest();
+            this._apiRequestBuilder = client.CreateRequest();
         }
 
         [Test]
@@ -37,7 +37,7 @@ namespace Azuria.Test.Middleware
         {
             var middleware = new LoginMiddleware(new TestLoginManager());
             var uri = new Uri("https://proxer.me/api/v1/login/test?addLogin=1");
-            IRequestBuilder builder = _apiRequestBuilder.FromUrl(uri);
+            IRequestBuilder builder = this._apiRequestBuilder.FromUrl(uri);
 
             MiddlewareAction action = (request, token) =>
             {
@@ -56,7 +56,7 @@ namespace Azuria.Test.Middleware
         {
             var middleware = new LoginMiddleware(new TestLoginManager());
             var uri = new Uri("https://proxer.me/api/v1/login/test?addLogin=0");
-            IRequestBuilder builder = _apiRequestBuilder.FromUrl(uri);
+            IRequestBuilder builder = this._apiRequestBuilder.FromUrl(uri);
 
             var actionCalled = 0;
 
@@ -78,7 +78,7 @@ namespace Azuria.Test.Middleware
         {
             var middleware = new LoginMiddleware(new TestLoginManager());
             var uri = new Uri("https://proxer.me/api/v1/login/test?addLogin=1");
-            IRequestBuilder builder = _apiRequestBuilder.FromUrl(uri);
+            IRequestBuilder builder = this._apiRequestBuilder.FromUrl(uri);
 
             var actionCalled = 0;
 
@@ -100,7 +100,7 @@ namespace Azuria.Test.Middleware
         {
             var middleware = new LoginMiddleware(new TestLoginManager());
             var uri = new Uri("https://proxer.me/api/v1/login/test?addLogin=0");
-            IRequestBuilder builder = _apiRequestBuilder.FromUrl(uri);
+            IRequestBuilder builder = this._apiRequestBuilder.FromUrl(uri);
 
             var actionCalled = 0;
 
@@ -124,7 +124,7 @@ namespace Azuria.Test.Middleware
 
             var middleware = new LoginMiddleware(new TestLoginManager((req, res) => onUpdateCalled++));
             var uri = new Uri("https://proxer.me/api/v1/login/test");
-            IRequestBuilder builder = _apiRequestBuilder.FromUrl(uri);
+            IRequestBuilder builder = this._apiRequestBuilder.FromUrl(uri);
 
             MiddlewareAction action = (request, token) => Task.FromResult((IProxerResult) new ProxerResult());
 
@@ -138,7 +138,7 @@ namespace Azuria.Test.Middleware
         {
             var middleware = new LoginMiddleware(new TestLoginManager());
             var uri = new Uri("https://proxer.me/api/v1/login/test?addLogin=1");
-            IRequestBuilderWithResult<object> builder = _apiRequestBuilder.FromUrl(uri).WithResult<object>();
+            IRequestBuilderWithResult<object> builder = this._apiRequestBuilder.FromUrl(uri).WithResult<object>();
 
             MiddlewareAction<object> action = (request, token) =>
             {
@@ -157,7 +157,7 @@ namespace Azuria.Test.Middleware
         {
             var middleware = new LoginMiddleware(new TestLoginManager());
             var uri = new Uri("https://proxer.me/api/v1/login/test?addLogin=0");
-            IRequestBuilderWithResult<object> builder = _apiRequestBuilder.FromUrl(uri).WithResult<object>();
+            IRequestBuilderWithResult<object> builder = this._apiRequestBuilder.FromUrl(uri).WithResult<object>();
 
             var actionCalled = 0;
 
@@ -179,7 +179,7 @@ namespace Azuria.Test.Middleware
         {
             var middleware = new LoginMiddleware(new TestLoginManager());
             var uri = new Uri("https://proxer.me/api/v1/login/test?addLogin=1");
-            IRequestBuilderWithResult<object> builder = _apiRequestBuilder.FromUrl(uri).WithResult<object>();
+            IRequestBuilderWithResult<object> builder = this._apiRequestBuilder.FromUrl(uri).WithResult<object>();
 
             var actionCalled = 0;
 
@@ -202,7 +202,7 @@ namespace Azuria.Test.Middleware
         {
             var middleware = new LoginMiddleware(new TestLoginManager());
             var uri = new Uri("https://proxer.me/api/v1/login/test?addLogin=0");
-            IRequestBuilderWithResult<object> builder = _apiRequestBuilder.FromUrl(uri).WithResult<object>();
+            IRequestBuilderWithResult<object> builder = this._apiRequestBuilder.FromUrl(uri).WithResult<object>();
 
             var actionCalled = 0;
 
@@ -227,7 +227,7 @@ namespace Azuria.Test.Middleware
 
             var middleware = new LoginMiddleware(new TestLoginManager((req, res) => onUpdateCalled++));
             var uri = new Uri("https://proxer.me/api/v1/login/test");
-            IRequestBuilderWithResult<object> builder = _apiRequestBuilder.FromUrl(uri).WithResult<object>();
+            IRequestBuilderWithResult<object> builder = this._apiRequestBuilder.FromUrl(uri).WithResult<object>();
 
             MiddlewareAction<object> action = (request, token) =>
                 Task.FromResult((IProxerResult<object>) new ProxerResult<object>(new object()));

@@ -18,7 +18,7 @@ namespace Azuria.Test.Api.v1.RequestBuilder
         [Test]
         public void DeleteTest()
         {
-            DeleteNotificationInput lInput = new DeleteNotificationInput {NotificationId = this.GetRandomNumber(10000)};
+            var lInput = new DeleteNotificationInput {NotificationId = this.GetRandomNumber(10000)};
 
             IRequestBuilder lRequest = this.RequestBuilder.Delete(lInput);
             this.CheckUrl(lRequest, "notifications", "delete");
@@ -43,7 +43,7 @@ namespace Azuria.Test.Api.v1.RequestBuilder
         [TestCase(0, 93, false)]
         public void GetNewsTest(int page, int limit, bool markRead)
         {
-            NewsListInput lInput = new NewsListInput
+            var lInput = new NewsListInput
             {
                 Limit = limit,
                 MarkRead = markRead,

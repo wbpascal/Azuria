@@ -72,7 +72,7 @@ namespace Azuria.Api.v1.Input
                     )
                 ).Where(tuple => tuple.Item2 != null);
 
-            List<KeyValuePair<string, string>> lReturn = new List<KeyValuePair<string, string>>();
+            var lReturn = new List<KeyValuePair<string, string>>();
             lReturn.AddRange(
                 lInputDataProperties.Select(
                         tuple => new KeyValuePair<string, string>(

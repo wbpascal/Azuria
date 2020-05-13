@@ -39,12 +39,14 @@ namespace Azuria.Test.Middleware
             var middleware = new ErrorMiddleware();
 
             IRequestBuilder request = this._apiRequestBuilder.FromUrl(new Uri("https://proxer.me/api/v1"));
-            var result = new ProxerApiResponse { ErrorCode = code };
-            (bool success, IEnumerable<Exception> exceptions) = await middleware.Invoke(request, CreateNextMiddlewareStub(result));
+            var result = new ProxerApiResponse {ErrorCode = code};
+            (bool success, IEnumerable<Exception> exceptions) =
+                await middleware.Invoke(request, CreateNextMiddlewareStub(result));
             Assert.False(success);
             Assert.NotNull(exceptions);
 
-            var apiException = exceptions.FirstOrDefault(exception => exception is ProxerApiException) as ProxerApiException;
+            var apiException =
+                exceptions.FirstOrDefault(exception => exception is ProxerApiException) as ProxerApiException;
             if (code == ErrorCode.NoError)
             {
                 Assert.Null(apiException);
@@ -62,7 +64,8 @@ namespace Azuria.Test.Middleware
             var middleware = new ErrorMiddleware();
 
             IRequestBuilder request = this._apiRequestBuilder.FromUrl(new Uri("https://google.com"));
-            (bool success, IEnumerable<Exception> exceptions) = await middleware.Invoke(request, CreateNextMiddlewareStub());
+            (bool success, IEnumerable<Exception> exceptions) =
+                await middleware.Invoke(request, CreateNextMiddlewareStub());
             Assert.False(success);
             Assert.NotNull(exceptions);
             Assert.IsNotEmpty(exceptions);
@@ -83,18 +86,20 @@ namespace Azuria.Test.Middleware
 
             IRequestBuilderWithResult<object> request = this._apiRequestBuilder
                 .FromUrl(new Uri("https://proxer.me/api/v1")).WithResult<object>();
-            IProxerResult<object> result = await middleware.InvokeWithResult(request, CreateNextMiddlewareStub<object>());
+            IProxerResult<object> result =
+                await middleware.InvokeWithResult(request, CreateNextMiddlewareStub<object>());
             Assert.True(result.Success);
         }
 
         [Test]
-        public async Task InvokeWithResult_ReturnsProxerApiExceptionOnlyForCorrespondingErrorCodes([Values] ErrorCode code)
+        public async Task InvokeWithResult_ReturnsProxerApiExceptionOnlyForCorrespondingErrorCodes(
+            [Values] ErrorCode code)
         {
             var middleware = new ErrorMiddleware();
 
             IRequestBuilderWithResult<object> request = this._apiRequestBuilder
                 .FromUrl(new Uri("https://proxer.me/api/v1")).WithResult<object>();
-            var apiResult = new ProxerApiResponse<object> { ErrorCode = code };
+            var apiResult = new ProxerApiResponse<object> {ErrorCode = code};
             (bool success, IEnumerable<Exception> exceptions, _) =
                 await middleware.InvokeWithResult(request, CreateNextMiddlewareStub(apiResult));
             Assert.False(success);
