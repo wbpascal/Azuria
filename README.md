@@ -6,4 +6,4 @@ Master | Coverage | NuGet
 
 ---
 
-# Currently not maintained and out of date 
+# Currently not maintained and out of date
