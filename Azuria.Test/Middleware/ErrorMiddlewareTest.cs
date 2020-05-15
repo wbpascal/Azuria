@@ -39,7 +39,7 @@ namespace Azuria.Test.Middleware
             var middleware = new ErrorMiddleware();
 
             IRequestBuilder request = this._apiRequestBuilder.FromUrl(new Uri("https://proxer.me/api/v1"));
-            var result = new ProxerApiResponse {ErrorCode = code};
+            var result = new ProxerApiResponse {ErrorCode = (int) code};
             (bool success, IEnumerable<Exception> exceptions) =
                 await middleware.Invoke(request, CreateNextMiddlewareStub(result));
             Assert.False(success);
@@ -99,7 +99,7 @@ namespace Azuria.Test.Middleware
 
             IRequestBuilderWithResult<object> request = this._apiRequestBuilder
                 .FromUrl(new Uri("https://proxer.me/api/v1")).WithResult<object>();
-            var apiResult = new ProxerApiResponse<object> {ErrorCode = code};
+            var apiResult = new ProxerApiResponse<object> {ErrorCode = (int) code};
             (bool success, IEnumerable<Exception> exceptions, _) =
                 await middleware.InvokeWithResult(request, CreateNextMiddlewareStub(apiResult));
             Assert.False(success);

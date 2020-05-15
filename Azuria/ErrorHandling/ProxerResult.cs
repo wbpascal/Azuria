@@ -10,7 +10,7 @@ namespace Azuria.ErrorHandling
     public class ProxerResult<T> : ProxerResultBase, IProxerResult<T>
     {
         /// <summary>
-        /// Initialises a new instance indicating the successful execution of the method.
+        /// Initializes a new instance indicating the successful execution of the method.
         /// </summary>
         /// <param name="result">The returned object of the method.</param>
         public ProxerResult(T result)
@@ -21,7 +21,7 @@ namespace Azuria.ErrorHandling
         }
 
         /// <summary>
-        /// Initialises a new instance with the exceptions that were thrown during method execution
+        /// Initializes a new instance with the exceptions that were thrown during method execution
         /// (indicating that the method did not execute successfully).
         /// </summary>
         /// <param name="exceptions">
@@ -32,7 +32,7 @@ namespace Azuria.ErrorHandling
         }
 
         /// <summary>
-        /// Initialises a new instance with a single exception that was thrown during method execution
+        /// Initializes a new instance with a single exception that was thrown during method execution
         /// (indicating that the method did not execute successfully).
         /// </summary>
         /// <param name="exception">A single exception that was thrown during method execution.</param>
@@ -58,14 +58,14 @@ namespace Azuria.ErrorHandling
     public class ProxerResult : ProxerResultBase, IProxerResult
     {
         /// <summary>
-        /// Initialises a new instance indicating the successful execution of the method.
+        /// Initializes a new instance indicating the successful execution of the method.
         /// </summary>
         public ProxerResult()
         {
         }
 
         /// <summary>
-        /// Initialises a new instance with the exceptions that were thrown during method execution
+        /// Initializes a new instance with the exceptions that were thrown during method execution
         /// (indicating that the method did not execute successfully).
         /// </summary>
         /// <param name="exceptions">
@@ -76,7 +76,7 @@ namespace Azuria.ErrorHandling
         }
 
         /// <summary>
-        /// Initialises a new instance with a single exception that was thrown during method execution
+        /// Initializes a new instance with a single exception that was thrown during method execution
         /// (indicating that the method did not execute successfully).
         /// </summary>
         /// <param name="exception">A single exception that was thrown during method execution.</param>

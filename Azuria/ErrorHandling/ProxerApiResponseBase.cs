@@ -1,3 +1,4 @@
+using System;
 using Azuria.Api.v1.Converters;
 using Azuria.Enums;
 using Newtonsoft.Json;
@@ -14,7 +15,7 @@ namespace Azuria.ErrorHandling
         /// </summary>
         /// <value></value>
         [JsonProperty("code")]
-        public ErrorCode ErrorCode { get; set; } = ErrorCode.NoError;
+        public int ErrorCode { get; set; }
 
         /// <summary>
         /// Gets or sets the additional message returned by the API.
@@ -23,9 +24,20 @@ namespace Azuria.ErrorHandling
         [JsonProperty("message", Required = Required.Always)]
         public string Message { get; set; }
 
-        /// <inheritdoc />
+        /// <inheritdoc cref="ProxerResultBase.Success" />
         [JsonProperty("error", Required = Required.Always)]
         [JsonConverter(typeof(InvertBoolConverter))]
         public new bool Success { get; set; }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        public ErrorCode GetErrorCode()
+        {
+            if (!Enum.IsDefined(typeof(ErrorCode), this.ErrorCode))
+                return Enums.ErrorCode.Unknown;
+            return (ErrorCode) this.ErrorCode;
+        }
     }
 }

@@ -6,6 +6,7 @@ using NUnit.Framework;
 
 namespace Azuria.Test.ErrorHandling
 {
+    // TODO: Test constructor for ProxerResultBase (used to convert ProxerResult <-> ProxerResult<T>)
     [TestFixture]
     public class ProxerResultTest
     {

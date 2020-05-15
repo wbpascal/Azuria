@@ -57,7 +57,7 @@ namespace Azuria.Middleware
             switch (result)
             {
                 case ProxerApiResponseBase lResponse:
-                    Exception lResponseException = GetResponseException(lResponse.ErrorCode);
+                    Exception lResponseException = GetResponseException(lResponse.GetErrorCode());
                     return lResponseException == null ? new Exception[0] : new[] {lResponseException};
                 default:
                     return new Exception[0];

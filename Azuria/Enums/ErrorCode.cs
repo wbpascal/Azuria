@@ -10,7 +10,7 @@
 
         /// <summary>
         /// </summary>
-        Unkown = 1,
+        Unknown = 1,
 
         /// <summary>
         /// </summary>

@@ -9,7 +9,7 @@ namespace Azuria.ErrorHandling
     public abstract class ProxerResultBase : IProxerResultBase
     {
         /// <summary>
-        /// Initialises a new instance indicating the successful execution of the method.
+        /// Initializes a new instance indicating the successful execution of the method.
         /// </summary>
         protected ProxerResultBase()
         {
@@ -18,7 +18,7 @@ namespace Azuria.ErrorHandling
         }
 
         /// <summary>
-        /// Initialises a new instance with the exceptions that were thrown during method execution
+        /// Initializes a new instance with the exceptions that were thrown during method execution
         /// (indicating that the method did not execute successfully).
         /// </summary>
         /// <param name="exceptions">
@@ -31,7 +31,7 @@ namespace Azuria.ErrorHandling
         }
 
         /// <summary>
-        /// Initialises a new instance with a single exception that was thrown during method execution
+        /// Initializes a new instance with a single exception that was thrown during method execution
         /// (indicating that the method did not execute successfully).
         /// </summary>
         /// <param name="exception">A single exception that was thrown during method execution.</param>

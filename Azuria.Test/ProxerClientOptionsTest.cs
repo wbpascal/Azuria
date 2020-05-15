@@ -1,12 +1,10 @@
 using System;
 using System.Linq;
-using System.Reflection;
 using Azuria.Authentication;
 using Azuria.Middleware;
 using Azuria.Requests.Http;
 using Azuria.Serialization;
 using Azuria.Test.Core.Helpers;
-using Moq;
 using NUnit.Framework;
 
 namespace Azuria.Test
