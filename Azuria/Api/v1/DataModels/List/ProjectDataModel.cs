@@ -1,4 +1,5 @@
-﻿using Azuria.Api.v1.Converters;
+﻿using System;
+using Azuria.Api.v1.Converters;
 using Azuria.Enums;
 using Azuria.Enums.Info;
 using Newtonsoft.Json;
@@ -54,6 +55,20 @@ namespace Azuria.Api.v1.DataModels.List
         public MediaStatus EntryStatus { get; set; }
 
         /// <inheritdoc />
-        public MediaEntryType EntryType => (int) this.EntryMedium < 4 ? MediaEntryType.Anime : MediaEntryType.Manga;
+        public MediaEntryType EntryType => this.EntryMedium switch
+        {
+            MediaMedium.Animeseries => MediaEntryType.Anime,
+            MediaMedium.Movie => MediaEntryType.Anime,
+            MediaMedium.Ova => MediaEntryType.Anime,
+            MediaMedium.Hentai => MediaEntryType.Anime,
+            MediaMedium.Mangaseries => MediaEntryType.Manga,
+            MediaMedium.OneShot => MediaEntryType.Manga,
+            MediaMedium.Doujin => MediaEntryType.Manga,
+            MediaMedium.HManga => MediaEntryType.Manga,
+            MediaMedium.LightNovel => MediaEntryType.Novel,
+            MediaMedium.WebNovel => MediaEntryType.Novel,
+            MediaMedium.VisualNovel => MediaEntryType.Novel,
+            _ => throw new ArgumentOutOfRangeException()
+        };
     }
 }

@@ -60,9 +60,27 @@ namespace Azuria.Test.Api.v1.Converter.Info
         }
 
         [Test]
-        public void CanConverHmangaTest()
+        public void CanConvertHmangaTest()
         {
             this.ConvertTest("hmanga", MediaMedium.HManga);
+        }
+
+        [Test]
+        public void CanConvertLightNovelTest()
+        {
+            this.ConvertTest("lightnovel", MediaMedium.LightNovel);
+        }
+
+        [Test]
+        public void CanConvertWebNovelTest()
+        {
+            this.ConvertTest("webnovel", MediaMedium.WebNovel);
+        }
+
+        [Test]
+        public void CanConvertVisualNovelTest()
+        {
+            this.ConvertTest("visualnovel", MediaMedium.VisualNovel);
         }
     }
 }

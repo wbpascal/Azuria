@@ -6,6 +6,7 @@
     public enum MediaEntryType
     {
         Anime,
-        Manga
+        Manga,
+        Novel
     }
 }

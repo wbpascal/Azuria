@@ -28,6 +28,12 @@ namespace Azuria.Api.v1.Converters
                     return MediaMedium.Doujin;
                 case "hmanga":
                     return MediaMedium.HManga;
+                case "lightnovel":
+                    return MediaMedium.LightNovel;
+                case "webnovel":
+                    return MediaMedium.WebNovel;
+                case "visualnovel":
+                    return MediaMedium.VisualNovel;
             }
 
             return MediaMedium.None;
