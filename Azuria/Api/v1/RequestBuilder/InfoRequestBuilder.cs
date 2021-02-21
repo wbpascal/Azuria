@@ -1,5 +1,5 @@
 ﻿using System;
-using Azuria.Api.v1.Converters.Info;
+using Azuria.Api.v1.Converter.Info;
 using Azuria.Api.v1.DataModels.Info;
 using Azuria.Api.v1.Input;
 using Azuria.Api.v1.Input.Info;

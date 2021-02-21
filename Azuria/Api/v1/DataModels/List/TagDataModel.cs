@@ -1,4 +1,4 @@
-﻿using Azuria.Api.v1.Converters.List;
+﻿using Azuria.Api.v1.Converter.List;
 using Azuria.Enums.List;
 using Azuria.Helpers.Extensions;
 using Newtonsoft.Json;

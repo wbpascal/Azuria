@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using Azuria.Api.v1.Converters;
+using Azuria.Api.v1.Converter;
 using Azuria.ErrorHandling;
 using Azuria.Serialization;
 using Newtonsoft.Json;

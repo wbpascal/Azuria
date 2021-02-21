@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using Azuria.Api.v1.Converters;
+using Azuria.Api.v1.Converter;
 
 namespace Azuria.Requests.Builder
 {

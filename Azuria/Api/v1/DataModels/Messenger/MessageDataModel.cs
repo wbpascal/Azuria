@@ -1,6 +1,6 @@
 ﻿using System;
-using Azuria.Api.v1.Converters;
-using Azuria.Api.v1.Converters.Messenger;
+using Azuria.Api.v1.Converter;
+using Azuria.Api.v1.Converter.Messenger;
 using Azuria.Enums.Messenger;
 using Newtonsoft.Json;
 

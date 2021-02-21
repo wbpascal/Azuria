@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Azuria.Api.v1.Converters;
+using Azuria.Api.v1.Converter;
 using Azuria.Requests;
 using Azuria.Requests.Builder;
 using Moq;

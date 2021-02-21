@@ -1,5 +1,5 @@
 ﻿using System;
-using Azuria.Api.v1.Converters.Notifications;
+using Azuria.Api.v1.Converter.Notifications;
 using Azuria.Api.v1.DataModels.Notifications;
 using Azuria.Api.v1.Input.Notifications;
 using Azuria.Helpers.Extensions;

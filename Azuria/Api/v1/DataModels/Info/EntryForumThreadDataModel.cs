@@ -1,5 +1,5 @@
 ﻿using System;
-using Azuria.Api.v1.Converters;
+using Azuria.Api.v1.Converter;
 using Newtonsoft.Json;
 
 #pragma warning disable 1591

@@ -1,4 +1,4 @@
-﻿using Azuria.Api.v1.Converters.Info;
+﻿using Azuria.Api.v1.Converter.Info;
 using NUnit.Framework;
 
 namespace Azuria.Test.Api.v1.Converter.Info

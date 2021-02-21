@@ -1,4 +1,4 @@
-﻿using Azuria.Api.v1.Converters.Notifications;
+﻿using Azuria.Api.v1.Converter.Notifications;
 using Azuria.Api.v1.DataModels.Notifications;
 using Azuria.ErrorHandling;
 using Azuria.Test.Core;

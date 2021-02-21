@@ -1,5 +1,5 @@
 using System;
-using Azuria.Api.v1.Converters;
+using Azuria.Api.v1.Converter;
 using Azuria.Enums;
 using Newtonsoft.Json;
 

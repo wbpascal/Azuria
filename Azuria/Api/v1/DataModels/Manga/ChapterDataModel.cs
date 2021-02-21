@@ -1,6 +1,6 @@
 ﻿using System;
-using Azuria.Api.v1.Converters;
-using Azuria.Api.v1.Converters.Manga;
+using Azuria.Api.v1.Converter;
+using Azuria.Api.v1.Converter.Manga;
 using Azuria.Api.v1.DataModels.Media;
 using Newtonsoft.Json;
 
