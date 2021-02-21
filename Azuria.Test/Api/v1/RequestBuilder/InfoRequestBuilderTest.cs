@@ -33,13 +33,13 @@ namespace Azuria.Test.Api.v1.RequestBuilder
         [Test]
         public void GetCharactersTest()
         {
-            EntryIdInput lInput = this.GetRandomEntryIdInput();
+            SimpleIdInput lInput = this.GetRandomEntryIdInput();
 
             IRequestBuilderWithResult<CharacterDataModel[]> lRequest = this.RequestBuilder.GetCharacters(lInput);
             this.CheckUrl(lRequest, "info", "characters");
             Assert.AreSame(this.ProxerClient, lRequest.Client);
             Assert.True(lRequest.PostParameter.ContainsKey("id"));
-            Assert.AreEqual(lInput.EntryId.ToString(), lRequest.PostParameter.GetValue("id").First());
+            Assert.AreEqual(lInput.Id.ToString(), lRequest.PostParameter.GetValue("id").First());
         }
 
         [Test]
@@ -68,71 +68,71 @@ namespace Azuria.Test.Api.v1.RequestBuilder
         [Test]
         public void GetEntryTagTest()
         {
-            EntryIdInput lInput = this.GetRandomEntryIdInput();
+            SimpleIdInput lInput = this.GetRandomEntryIdInput();
             IRequestBuilderWithResult<TagDataModel[]> lRequest = this.RequestBuilder.GetEntryTags(lInput);
             this.CheckUrl(lRequest, "info", "entrytags");
             Assert.AreSame(this.ProxerClient, lRequest.Client);
             Assert.True(lRequest.GetParameters.ContainsKey("id"));
-            Assert.AreEqual(lInput.EntryId.ToString(), lRequest.GetParameters["id"]);
+            Assert.AreEqual(lInput.Id.ToString(), lRequest.GetParameters["id"]);
             Assert.False(lRequest.CheckLogin);
         }
 
         [Test]
         public void GetEntryTest()
         {
-            EntryIdInput lInput = this.GetRandomEntryIdInput();
+            SimpleIdInput lInput = this.GetRandomEntryIdInput();
             IRequestBuilderWithResult<EntryDataModel> lRequest = this.RequestBuilder.GetEntry(lInput);
             this.CheckUrl(lRequest, "info", "entry");
             Assert.AreSame(this.ProxerClient, lRequest.Client);
             Assert.True(lRequest.GetParameters.ContainsKey("id"));
-            Assert.AreEqual(lInput.EntryId.ToString(), lRequest.GetParameters["id"]);
+            Assert.AreEqual(lInput.Id.ToString(), lRequest.GetParameters["id"]);
             Assert.False(lRequest.CheckLogin);
         }
 
         [Test]
         public void GetForumTest()
         {
-            EntryIdInput lInput = this.GetRandomEntryIdInput();
+            SimpleIdInput lInput = this.GetRandomEntryIdInput();
             IRequestBuilderWithResult<ForumDataModel[]> lRequest = this.RequestBuilder.GetForum(lInput);
             this.CheckUrl(lRequest, "info", "forum");
             Assert.AreSame(this.ProxerClient, lRequest.Client);
             Assert.True(lRequest.PostParameter.ContainsKey("id"));
-            Assert.AreEqual(lInput.EntryId.ToString(), lRequest.PostParameter.GetValue("id").First());
+            Assert.AreEqual(lInput.Id.ToString(), lRequest.PostParameter.GetValue("id").First());
         }
 
         [Test]
         public void GetFullEntry()
         {
-            EntryIdInput lInput = this.GetRandomEntryIdInput();
+            SimpleIdInput lInput = this.GetRandomEntryIdInput();
             IRequestBuilderWithResult<FullEntryDataModel> lRequest = this.RequestBuilder.GetFullEntry(lInput);
             this.CheckUrl(lRequest, "info", "fullentry");
             Assert.AreSame(this.ProxerClient, lRequest.Client);
             Assert.True(lRequest.GetParameters.ContainsKey("id"));
-            Assert.AreEqual(lInput.EntryId.ToString(), lRequest.GetParameters["id"]);
+            Assert.AreEqual(lInput.Id.ToString(), lRequest.GetParameters["id"]);
             Assert.False(lRequest.CheckLogin);
         }
 
         [Test]
         public void GetGateTest()
         {
-            EntryIdInput lInput = this.GetRandomEntryIdInput();
+            SimpleIdInput lInput = this.GetRandomEntryIdInput();
             IRequestBuilderWithResult<bool> lRequest = this.RequestBuilder.GetGate(lInput);
             this.CheckUrl(lRequest, "info", "gate");
             Assert.AreSame(this.ProxerClient, lRequest.Client);
             Assert.True(lRequest.GetParameters.ContainsKey("id"));
-            Assert.AreEqual(lInput.EntryId.ToString(), lRequest.GetParameters["id"]);
+            Assert.AreEqual(lInput.Id.ToString(), lRequest.GetParameters["id"]);
             Assert.False(lRequest.CheckLogin);
         }
 
         [Test]
         public void GetGroupsTest()
         {
-            EntryIdInput lInput = this.GetRandomEntryIdInput();
+            SimpleIdInput lInput = this.GetRandomEntryIdInput();
             IRequestBuilderWithResult<TranslatorBasicDataModel[]> lRequest = this.RequestBuilder.GetGroups(lInput);
             this.CheckUrl(lRequest, "info", "groups");
             Assert.AreSame(this.ProxerClient, lRequest.Client);
             Assert.True(lRequest.GetParameters.ContainsKey("id"));
-            Assert.AreEqual(lInput.EntryId.ToString(), lRequest.GetParameters["id"]);
+            Assert.AreEqual(lInput.Id.ToString(), lRequest.GetParameters["id"]);
             Assert.False(lRequest.CheckLogin);
         }
 
@@ -151,12 +151,12 @@ namespace Azuria.Test.Api.v1.RequestBuilder
         [Test]
         public void GetLanguageTest()
         {
-            EntryIdInput lInput = this.GetRandomEntryIdInput();
+            SimpleIdInput lInput = this.GetRandomEntryIdInput();
             IRequestBuilderWithResult<MediaLanguage[]> lRequest = this.RequestBuilder.GetLanguage(lInput);
             this.CheckUrl(lRequest, "info", "lang");
             Assert.AreSame(this.ProxerClient, lRequest.Client);
             Assert.True(lRequest.GetParameters.ContainsKey("id"));
-            Assert.AreEqual(lInput.EntryId.ToString(), lRequest.GetParameters["id"]);
+            Assert.AreEqual(lInput.Id.ToString(), lRequest.GetParameters["id"]);
             Assert.NotNull(lRequest.CustomDataConverter);
             Assert.False(lRequest.CheckLogin);
         }
@@ -180,12 +180,12 @@ namespace Azuria.Test.Api.v1.RequestBuilder
         [Test]
         public void GetNameTest()
         {
-            EntryIdInput lInput = this.GetRandomEntryIdInput();
+            SimpleIdInput lInput = this.GetRandomEntryIdInput();
             IRequestBuilderWithResult<EntryNameDataModel[]> lRequest = this.RequestBuilder.GetNames(lInput);
             this.CheckUrl(lRequest, "info", "names");
             Assert.AreSame(this.ProxerClient, lRequest.Client);
             Assert.True(lRequest.GetParameters.ContainsKey("id"));
-            Assert.AreEqual(lInput.EntryId.ToString(), lRequest.GetParameters["id"]);
+            Assert.AreEqual(lInput.Id.ToString(), lRequest.GetParameters["id"]);
             Assert.False(lRequest.CheckLogin);
         }
 
@@ -204,23 +204,23 @@ namespace Azuria.Test.Api.v1.RequestBuilder
         [Test]
         public void GetPersonsTest()
         {
-            EntryIdInput lInput = this.GetRandomEntryIdInput();
+            SimpleIdInput lInput = this.GetRandomEntryIdInput();
             IRequestBuilderWithResult<PersonDataModel[]> lRequest = this.RequestBuilder.GetPersons(lInput);
             this.CheckUrl(lRequest, "info", "persons");
             Assert.AreSame(this.ProxerClient, lRequest.Client);
             Assert.True(lRequest.PostParameter.ContainsKey("id"));
-            Assert.AreEqual(lInput.EntryId.ToString(), lRequest.PostParameter.GetValue("id").First());
+            Assert.AreEqual(lInput.Id.ToString(), lRequest.PostParameter.GetValue("id").First());
         }
 
         [Test]
         public void GetPublisherTest()
         {
-            EntryIdInput lInput = this.GetRandomEntryIdInput();
+            SimpleIdInput lInput = this.GetRandomEntryIdInput();
             IRequestBuilderWithResult<IndustryBasicDataModel[]> lRequest = this.RequestBuilder.GetPublisher(lInput);
             this.CheckUrl(lRequest, "info", "publisher");
             Assert.AreSame(this.ProxerClient, lRequest.Client);
             Assert.True(lRequest.GetParameters.ContainsKey("id"));
-            Assert.AreEqual(lInput.EntryId.ToString(), lRequest.GetParameters["id"]);
+            Assert.AreEqual(lInput.Id.ToString(), lRequest.GetParameters["id"]);
             Assert.False(lRequest.CheckLogin);
         }
 
@@ -241,24 +241,24 @@ namespace Azuria.Test.Api.v1.RequestBuilder
         [Test]
         public void GetRecommendationsTest()
         {
-            EntryIdInput lInput = this.GetRandomEntryIdInput();
+            SimpleIdInput lInput = this.GetRandomEntryIdInput();
             IRequestBuilderWithResult<RecommendationDataModel[]> lRequest =
                 this.RequestBuilder.GetRecommendations(lInput);
             this.CheckUrl(lRequest, "info", "recommendations");
             Assert.AreSame(this.ProxerClient, lRequest.Client);
             Assert.True(lRequest.GetParameters.ContainsKey("id"));
-            Assert.AreEqual(lInput.EntryId.ToString(), lRequest.GetParameters["id"]);
+            Assert.AreEqual(lInput.Id.ToString(), lRequest.GetParameters["id"]);
         }
 
         [Test]
         public void GetSeasonsTest()
         {
-            EntryIdInput lInput = this.GetRandomEntryIdInput();
+            SimpleIdInput lInput = this.GetRandomEntryIdInput();
             IRequestBuilderWithResult<SeasonDataModel[]> lRequest = this.RequestBuilder.GetSeason(lInput);
             this.CheckUrl(lRequest, "info", "season");
             Assert.AreSame(this.ProxerClient, lRequest.Client);
             Assert.True(lRequest.GetParameters.ContainsKey("id"));
-            Assert.AreEqual(lInput.EntryId.ToString(), lRequest.GetParameters["id"]);
+            Assert.AreEqual(lInput.Id.ToString(), lRequest.GetParameters["id"]);
             Assert.False(lRequest.CheckLogin);
         }
 
@@ -277,13 +277,13 @@ namespace Azuria.Test.Api.v1.RequestBuilder
         [Test]
         public void GetUserInfoTest()
         {
-            EntryIdInput lInput = this.GetRandomEntryIdInput();
+            SimpleIdInput lInput = this.GetRandomEntryIdInput();
             IRequestBuilderWithResult<UserListsDataModel> lRequest = this.RequestBuilder.GetUserInfo(lInput);
             this.CheckUrl(lRequest, "info", "userinfo");
             Assert.AreSame(this.ProxerClient, lRequest.Client);
             Assert.True(lRequest.CheckLogin);
             Assert.True(lRequest.PostParameter.ContainsKey("id"));
-            Assert.AreEqual(lInput.EntryId.ToString(), lRequest.PostParameter.GetValue("id").First());
+            Assert.AreEqual(lInput.Id.ToString(), lRequest.PostParameter.GetValue("id").First());
         }
 
         [Test]
@@ -306,9 +306,9 @@ namespace Azuria.Test.Api.v1.RequestBuilder
             Assert.True(lRequest.CheckLogin);
         }
 
-        private EntryIdInput GetRandomEntryIdInput()
+        private SimpleIdInput GetRandomEntryIdInput()
         {
-            return new EntryIdInput {EntryId = this.GetRandomNumber(10000)};
+            return new SimpleIdInput { Id = this.GetRandomNumber(10000)};
         }
     }
 }

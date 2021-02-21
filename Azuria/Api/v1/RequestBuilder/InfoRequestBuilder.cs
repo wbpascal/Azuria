@@ -38,7 +38,7 @@ namespace Azuria.Api.v1.RequestBuilder
         /// </summary>
         /// <param name="input"></param>
         /// <returns></returns>
-        public IRequestBuilderWithResult<CharacterDataModel[]> GetCharacters(EntryIdInput input)
+        public IRequestBuilderWithResult<CharacterDataModel[]> GetCharacters(SimpleIdInput input)
         {
             this.CheckInputDataModel(input);
             return new RequestBuilder<CharacterDataModel[]>(
@@ -68,7 +68,7 @@ namespace Azuria.Api.v1.RequestBuilder
         /// * Info - Level 0
         /// </summary>
         /// <returns>An instance of <see cref="IRequestBuilderWithResult{T}" /> that returns the core information.</returns>
-        public IRequestBuilderWithResult<EntryDataModel> GetEntry(EntryIdInput input)
+        public IRequestBuilderWithResult<EntryDataModel> GetEntry(SimpleIdInput input)
         {
             this.CheckInputDataModel(input);
             return new RequestBuilder<EntryDataModel>(
@@ -82,7 +82,7 @@ namespace Azuria.Api.v1.RequestBuilder
         /// * Info - Level 0
         /// </summary>
         /// <returns>An instance of <see cref="IRequestBuilderWithResult{T}" /> that returns an array of tags.</returns>
-        public IRequestBuilderWithResult<TagDataModel[]> GetEntryTags(EntryIdInput input)
+        public IRequestBuilderWithResult<TagDataModel[]> GetEntryTags(SimpleIdInput input)
         {
             this.CheckInputDataModel(input);
             return new RequestBuilder<TagDataModel[]>(
@@ -96,7 +96,7 @@ namespace Azuria.Api.v1.RequestBuilder
         /// * Info - Level 0
         /// </summary>
         /// <returns>An instance of <see cref="IRequestBuilderWithResult{T}" /> that returns an array of tags.</returns>
-        public IRequestBuilderWithResult<ForumDataModel[]> GetForum(EntryIdInput input)
+        public IRequestBuilderWithResult<ForumDataModel[]> GetForum(SimpleIdInput input)
         {
             this.CheckInputDataModel(input);
             return new RequestBuilder<ForumDataModel[]>(
@@ -113,7 +113,7 @@ namespace Azuria.Api.v1.RequestBuilder
         /// * Info - Level 0
         /// </summary>
         /// <returns>An instance of <see cref="IRequestBuilderWithResult{T}" /> that returns the informations.</returns>
-        public IRequestBuilderWithResult<FullEntryDataModel> GetFullEntry(EntryIdInput input)
+        public IRequestBuilderWithResult<FullEntryDataModel> GetFullEntry(SimpleIdInput input)
         {
             this.CheckInputDataModel(input);
             return new RequestBuilder<FullEntryDataModel>(
@@ -128,7 +128,7 @@ namespace Azuria.Api.v1.RequestBuilder
         /// * Info - Level 0
         /// </summary>
         /// <returns>An instance of <see cref="IRequestBuilderWithResult{T}" /> that returns a boolean.</returns>
-        public IRequestBuilderWithResult<bool> GetGate(EntryIdInput input)
+        public IRequestBuilderWithResult<bool> GetGate(SimpleIdInput input)
         {
             this.CheckInputDataModel(input);
             return new RequestBuilder<bool>(new Uri($"{ApiConstants.ApiUrlV1}/info/gate"), this.ProxerClient)
@@ -142,7 +142,7 @@ namespace Azuria.Api.v1.RequestBuilder
         /// * Info - Level 0
         /// </summary>
         /// <returns>An instance of <see cref="IRequestBuilderWithResult{T}" /> that returns an array of translators.</returns>
-        public IRequestBuilderWithResult<TranslatorBasicDataModel[]> GetGroups(EntryIdInput input)
+        public IRequestBuilderWithResult<TranslatorBasicDataModel[]> GetGroups(SimpleIdInput input)
         {
             this.CheckInputDataModel(input);
             return new RequestBuilder<TranslatorBasicDataModel[]>(
@@ -171,7 +171,7 @@ namespace Azuria.Api.v1.RequestBuilder
         /// * Info - Level 0
         /// </summary>
         /// <returns>An instance of <see cref="IRequestBuilderWithResult{T}" /> that returns an array of languages.</returns>
-        public IRequestBuilderWithResult<MediaLanguage[]> GetLanguage(EntryIdInput input)
+        public IRequestBuilderWithResult<MediaLanguage[]> GetLanguage(SimpleIdInput input)
         {
             this.CheckInputDataModel(input);
             return new RequestBuilder<MediaLanguage[]>(new Uri($"{ApiConstants.ApiUrlV1}/info/lang"), this.ProxerClient)
@@ -207,7 +207,7 @@ namespace Azuria.Api.v1.RequestBuilder
         /// An instance of <see cref="IRequestBuilderWithResult{T}" /> that returns an array of object containing the names
         /// and some additional informations.
         /// </returns>
-        public IRequestBuilderWithResult<EntryNameDataModel[]> GetNames(EntryIdInput input)
+        public IRequestBuilderWithResult<EntryNameDataModel[]> GetNames(SimpleIdInput input)
         {
             this.CheckInputDataModel(input);
             return new RequestBuilder<EntryNameDataModel[]>(
@@ -233,7 +233,7 @@ namespace Azuria.Api.v1.RequestBuilder
         /// </summary>
         /// <param name="input"></param>
         /// <returns></returns>
-        public IRequestBuilderWithResult<PersonDataModel[]> GetPersons(EntryIdInput input)
+        public IRequestBuilderWithResult<PersonDataModel[]> GetPersons(SimpleIdInput input)
         {
             this.CheckInputDataModel(input);
             return new RequestBuilder<PersonDataModel[]>(
@@ -250,7 +250,7 @@ namespace Azuria.Api.v1.RequestBuilder
         /// <returns>
         /// An instance of <see cref="IRequestBuilderWithResult{T}" /> that returns an array of organisations.
         /// </returns>
-        public IRequestBuilderWithResult<IndustryBasicDataModel[]> GetPublisher(EntryIdInput input)
+        public IRequestBuilderWithResult<IndustryBasicDataModel[]> GetPublisher(SimpleIdInput input)
         {
             this.CheckInputDataModel(input);
             return new RequestBuilder<IndustryBasicDataModel[]>(
@@ -264,7 +264,7 @@ namespace Azuria.Api.v1.RequestBuilder
         /// * Info - Level 0
         /// </summary>
         /// <returns>An instance of <see cref="IRequestBuilderWithResult{T}" /> that returns an array of recommendations.</returns>
-        public IRequestBuilderWithResult<RecommendationDataModel[]> GetRecommendations(EntryIdInput input)
+        public IRequestBuilderWithResult<RecommendationDataModel[]> GetRecommendations(SimpleIdInput input)
         {
             this.CheckInputDataModel(input);
             return new RequestBuilder<RecommendationDataModel[]>(
@@ -292,7 +292,7 @@ namespace Azuria.Api.v1.RequestBuilder
         /// * Info - Level 0
         /// </summary>
         /// <returns>An instance of <see cref="IRequestBuilderWithResult{T}" /> that returns an array of seasons.</returns>
-        public IRequestBuilderWithResult<SeasonDataModel[]> GetSeason(EntryIdInput input)
+        public IRequestBuilderWithResult<SeasonDataModel[]> GetSeason(SimpleIdInput input)
         {
             this.CheckInputDataModel(input);
             return new RequestBuilder<SeasonDataModel[]>(
@@ -319,7 +319,7 @@ namespace Azuria.Api.v1.RequestBuilder
         /// </summary>
         /// <param name="input"></param>
         /// <returns></returns>
-        public IRequestBuilderWithResult<UserListsDataModel> GetUserInfo(EntryIdInput input)
+        public IRequestBuilderWithResult<UserListsDataModel> GetUserInfo(SimpleIdInput input)
         {
             this.CheckInputDataModel(input);
             return new RequestBuilder<UserListsDataModel>(
