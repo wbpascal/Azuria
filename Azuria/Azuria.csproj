@@ -9,7 +9,7 @@
 		<UpgradeBackupLocation>
 		</UpgradeBackupLocation>
 		<OldToolsVersion>2.0</OldToolsVersion>
-		<LangVersion>7.1</LangVersion>
+		<LangVersion>8.0</LangVersion>
 	</PropertyGroup>
 	<PropertyGroup>
 		<PackageId>Azuria</PackageId>
