@@ -27,7 +27,7 @@ namespace Azuria.Test.Api.v1.DataModels.Info
                 Id = 1292,
                 Link = new Uri("https://www.animaxtv.co.uk/"),
                 Name = "Animax UK",
-                Role = IndustryRole.Streaming
+                Type = IndustryType.Streaming
             };
         }
     }

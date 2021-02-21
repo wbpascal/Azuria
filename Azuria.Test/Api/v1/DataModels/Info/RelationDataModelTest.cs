@@ -32,7 +32,7 @@ namespace Azuria.Test.Api.v1.DataModels.Info
                 EntryName = lEntryDataModel.EntryName,
                 EntryType = lEntryDataModel.EntryType,
                 Fsk = lEntryDataModel.Fsk,
-                Genre = lEntryDataModel.Genre,
+                GenreRaw = lEntryDataModel.GenreRaw,
                 IsLicensed = lEntryDataModel.IsLicensed,
                 RatingsCount = lEntryDataModel.RatingsCount,
                 RatingsSum = lEntryDataModel.RatingsSum,

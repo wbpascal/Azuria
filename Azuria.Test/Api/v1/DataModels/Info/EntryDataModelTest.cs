@@ -2,6 +2,7 @@
 using Azuria.Enums;
 using Azuria.Enums.Info;
 using Azuria.ErrorHandling;
+using Azuria.Helpers.Extensions;
 using Azuria.Test.Core;
 using NUnit.Framework;
 
@@ -28,7 +29,7 @@ namespace Azuria.Test.Api.v1.DataModels.Info
                     Medium = MediaMedium.Mangaseries,
                     Name = "Shigatsu wa Kimi no Uso"
                 },
-                AdaptionType = AdaptionType.Entry,
+                AdaptionTypeRaw = AdaptionType.Entry.GetDescription(),
                 AdaptionValue = "8899",
                 Clicks = 23604,
                 ContentCount = 22,
@@ -38,7 +39,7 @@ namespace Azuria.Test.Api.v1.DataModels.Info
                 EntryName = "Shigatsu wa Kimi no Uso",
                 EntryType = MediaEntryType.Anime,
                 Fsk = new[] {Fsk.Fsk12, Fsk.Fsk18},
-                Genre = new[] {Genre.Comedy, Genre.Shounen, Genre.SliceOfLife},
+                GenreRaw = string.Join(" ", Genre.Comedy.GetDescription(), Genre.Shounen.GetDescription(), Genre.SliceOfLife.GetDescription()),
                 IsLicensed = true,
                 RatingsCount = 4371,
                 RatingsSum = 40527,

@@ -5,22 +5,22 @@ using Newtonsoft.Json;
 
 namespace Azuria.Api.v1.Converters
 {
-    internal class IndustryRoleConverter : DataConverter<IndustryRole>
+    internal class IndustryRoleConverter : DataConverter<IndustryType>
     {
         /// <inheritdoc />
-        public override IndustryRole ConvertJson(
+        public override IndustryType ConvertJson(
             JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
         {
             switch (reader.Value.ToString())
             {
                 case "streaming":
-                    return IndustryRole.Streaming;
+                    return IndustryType.Streaming;
                 case "record_label":
-                    return IndustryRole.RecordLabel;
+                    return IndustryType.RecordLabel;
                 case "talent_agent":
-                    return IndustryRole.TalentAgent;
+                    return IndustryType.TalentAgent;
                 default:
-                    return EnumHelpers.ParseFromString(reader.Value.ToString(), IndustryRole.Misc);
+                    return EnumHelpers.ParseFromString(reader.Value.ToString(), IndustryType.Misc);
             }
         }
     }

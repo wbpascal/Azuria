@@ -138,15 +138,15 @@ namespace Azuria.Test.Api.v1.RequestBuilder
         [Test]
         [Combinatorial]
         public void GetIndustriesCountryTest(
-            [Values(Country.UnitedStates, Country.Japan, Country.Germany, Country.Misc)]
-            Country country, [Values] IndustryRole role)
+            [Values(Country.UnitedStates, Country.Japan, Country.Germany, Country.SouthKorea, Country.China, Country.Misc)]
+            Country country, [Values] IndustryType type)
         {
             var lInput = new IndustryListInput
             {
                 Country = country,
                 Contains = "test_contains",
                 StartsWith = "test_start",
-                Role = role,
+                Role = type,
                 Limit = 30,
                 Page = 2
             };
@@ -162,7 +162,7 @@ namespace Azuria.Test.Api.v1.RequestBuilder
             Assert.AreEqual("test_start", lRequest.PostParameter.GetValue("start").First());
             Assert.AreEqual("test_contains", lRequest.PostParameter.GetValue("contains").First());
             Assert.AreEqual(country.ToShortString(), lRequest.PostParameter.GetValue("country").First());
-            Assert.AreEqual(role.ToTypeString(), lRequest.PostParameter.GetValue("type").First());
+            Assert.AreEqual(type.ToTypeString(), lRequest.PostParameter.GetValue("type").First());
             Assert.AreEqual("30", lRequest.PostParameter.GetValue("limit").First());
             Assert.AreEqual("2", lRequest.PostParameter.GetValue("p").First());
             Assert.False(lRequest.CheckLogin);
@@ -170,13 +170,13 @@ namespace Azuria.Test.Api.v1.RequestBuilder
 
         [Test]
         [Combinatorial]
-        public void GetIndustryProjectsTest([Values] IndustryRole role, [Values(null, true, false)] bool? isH)
+        public void GetIndustryProjectsTest([Values] IndustryType type, [Values(null, true, false)] bool? isH)
         {
             var lInput = new IndustryProjectsInput
             {
                 IndustryId = 42,
                 IsH = isH,
-                Role = role,
+                Role = type,
                 Limit = 150,
                 Page = 1
             };
@@ -190,7 +190,7 @@ namespace Azuria.Test.Api.v1.RequestBuilder
             Assert.True(lRequest.PostParameter.ContainsKey("p"));
             Assert.True(lRequest.PostParameter.ContainsKey("limit"));
             Assert.AreEqual("42", lRequest.PostParameter.GetValue("id").First());
-            Assert.AreEqual(role.ToTypeString(), lRequest.PostParameter.GetValue("type").First());
+            Assert.AreEqual(type.ToTypeString(), lRequest.PostParameter.GetValue("type").First());
             Assert.AreEqual(GetIsHString(isH), lRequest.PostParameter.GetValue("isH").First());
             Assert.AreEqual("1", lRequest.PostParameter.GetValue("p").First());
             Assert.AreEqual("150", lRequest.PostParameter.GetValue("limit").First());

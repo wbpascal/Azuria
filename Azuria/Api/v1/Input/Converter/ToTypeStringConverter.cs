@@ -5,11 +5,11 @@ using Azuria.Helpers.Extensions;
 namespace Azuria.Api.v1.Input.Converter
 {
     internal class ToTypeStringConverter
-        : IInputDataConverter<IndustryRole?>, IInputDataConverter<UserList?>, IInputDataConverter<MediaLanguage?>,
+        : IInputDataConverter<IndustryType?>, IInputDataConverter<UserList?>, IInputDataConverter<MediaLanguage?>,
             IInputDataConverter<HeaderStyle?>
     {
         /// <inheritdoc />
-        public string Convert(IndustryRole? toConvert)
+        public string Convert(IndustryType? toConvert)
         {
             return toConvert?.ToTypeString();
         }

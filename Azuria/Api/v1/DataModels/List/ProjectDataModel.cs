@@ -18,9 +18,13 @@ namespace Azuria.Api.v1.DataModels.List
 
         /// <summary>
         /// </summary>
+        public Genre[] EntryGenre => GenreConverter.ParseGenre(this.EntryGenreRaw);
+
+        /// <summary>
+        /// Raw value of <see cref="EntryGenre"/>
+        /// </summary>
         [JsonProperty("genre")]
-        [JsonConverter(typeof(GenreConverter))]
-        public Genre[] EntryGenre { get; set; }
+        public string EntryGenreRaw { get; set; }
 
         /// <inheritdoc />
         [JsonProperty("id")]

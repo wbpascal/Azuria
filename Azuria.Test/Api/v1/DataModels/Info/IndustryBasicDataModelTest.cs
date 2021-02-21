@@ -25,7 +25,7 @@ namespace Azuria.Test.Api.v1.DataModels.Info
                 Country = Country.Germany,
                 Id = 216,
                 Name = "Viewster",
-                Role = IndustryRole.Streaming
+                Type = IndustryType.Streaming
             };
         }
     }

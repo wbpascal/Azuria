@@ -9,6 +9,8 @@
         English,
         Japanese,
         German,
+        Korean,
+        Chinese,
         Synonym
     }
 }

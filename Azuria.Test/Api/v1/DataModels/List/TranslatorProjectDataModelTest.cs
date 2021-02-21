@@ -3,6 +3,7 @@ using Azuria.Api.v1.DataModels.List;
 using Azuria.Enums;
 using Azuria.Enums.Info;
 using Azuria.ErrorHandling;
+using Azuria.Helpers.Extensions;
 using Azuria.Test.Core;
 using NUnit.Framework;
 
@@ -24,7 +25,7 @@ namespace Azuria.Test.Api.v1.DataModels.List
             return new TranslatorProjectDataModel
             {
                 EntryFsk = new[] {Fsk.Fsk12},
-                EntryGenre = new[] {Genre.Comedy, Genre.MartialArt},
+                EntryGenreRaw = string.Join(" ", Genre.Comedy.GetDescription(), Genre.MartialArt.GetDescription()),
                 EntryId = 3247,
                 EntryMedium = MediaMedium.Animeseries,
                 EntryName = "Accel World",

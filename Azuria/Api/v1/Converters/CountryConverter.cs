@@ -20,6 +20,10 @@ namespace Azuria.Api.v1.Converters
                     return Country.UnitedStates;
                 case "jp":
                     return Country.Japan;
+                case "kr":
+                    return Country.SouthKorea;
+                case "zh":
+                    return Country.China;
                 default:
                     return Country.Misc;
             }

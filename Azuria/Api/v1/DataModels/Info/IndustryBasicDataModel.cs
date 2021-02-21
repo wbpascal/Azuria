@@ -28,6 +28,6 @@ namespace Azuria.Api.v1.DataModels.Info
         /// </summary>
         [JsonProperty("type")]
         [JsonConverter(typeof(IndustryRoleConverter))]
-        public IndustryRole Role { get; set; }
+        public IndustryType Type { get; set; }
     }
 }

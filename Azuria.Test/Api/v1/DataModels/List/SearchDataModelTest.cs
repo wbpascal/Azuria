@@ -3,6 +3,7 @@ using Azuria.Api.v1.DataModels.List;
 using Azuria.Enums;
 using Azuria.Enums.Info;
 using Azuria.ErrorHandling;
+using Azuria.Helpers.Extensions;
 using Azuria.Test.Core;
 using NUnit.Framework;
 
@@ -28,7 +29,7 @@ namespace Azuria.Test.Api.v1.DataModels.List
                 EntryId = 9651,
                 EntryMedium = MediaMedium.Animeseries,
                 EntryName = "Akatsuki no Yona",
-                Genre = new[] {Genre.Adventure, Genre.Action},
+                GenreRaw = string.Join(" ", Genre.Adventure.GetDescription(), Genre.Action.GetDescription()),
                 RateCount = 2779,
                 RateSum = 23457,
                 Status = MediaStatus.Completed

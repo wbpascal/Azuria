@@ -1,7 +1,9 @@
-﻿using Azuria.Api.v1.Converters;
+﻿using System.Linq;
+using Azuria.Api.v1.Converters;
 using Azuria.Api.v1.Converters.Info;
 using Azuria.Enums;
 using Azuria.Enums.Info;
+using Azuria.Helpers.Extensions;
 using Newtonsoft.Json;
 
 namespace Azuria.Api.v1.DataModels.Info
@@ -13,9 +15,14 @@ namespace Azuria.Api.v1.DataModels.Info
         /// <summary>
         /// 
         /// </summary>
-        [JsonProperty("adaption_type")]
         [JsonConverter(typeof(AdaptionTypeConverter))]
-        public AdaptionType? AdaptionType { get; set; }
+        public AdaptionType? AdaptionType => AdaptionTypeConverter.ParseAdaptionType(this.AdaptionTypeRaw);
+
+        /// <summary>
+        /// Raw value of <see cref="AdaptionType"/>
+        /// </summary>
+        [JsonProperty("adaption_type")]
+        public string AdaptionTypeRaw { get; set; }
 
         /// <summary>
         /// 
@@ -68,9 +75,13 @@ namespace Azuria.Api.v1.DataModels.Info
 
         /// <summary>
         /// </summary>
+        public Genre[] Genre => GenreConverter.ParseGenre(this.GenreRaw);
+
+        /// <summary>
+        /// Raw value of <see cref="Genre"/>.
+        /// </summary>
         [JsonProperty("genre")]
-        [JsonConverter(typeof(GenreConverter))]
-        public Genre[] Genre { get; set; }
+        public string GenreRaw { get; set; }
 
         /// <summary>
         /// </summary>

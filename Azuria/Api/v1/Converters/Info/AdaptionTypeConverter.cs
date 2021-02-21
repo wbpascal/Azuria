@@ -13,18 +13,16 @@ namespace Azuria.Api.v1.Converters.Info
             JsonSerializer serializer)
         {
             var lValue = reader.Value.ToString();
+            return ParseAdaptionType(lValue);
+        }
+
+        public static AdaptionType? ParseAdaptionType(string type)
+        {
             Dictionary<string, AdaptionType> lDescriptionDictionary =
                 EnumHelpers.GetDescriptionDictionary<AdaptionType>();
-            switch (lValue)
-            {
-                case null:
-                case "":
-                    return null;
-                default:
-                    return lDescriptionDictionary.ContainsKey(lValue)
-                        ? lDescriptionDictionary[lValue]
-                        : (AdaptionType?) null;
-            }
+            return type != null && lDescriptionDictionary.ContainsKey(type)
+                ? lDescriptionDictionary[type]
+                : (AdaptionType?)null;
         }
     }
 }

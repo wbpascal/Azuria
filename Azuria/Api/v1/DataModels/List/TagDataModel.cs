@@ -1,5 +1,6 @@
 ﻿using Azuria.Api.v1.Converters.List;
 using Azuria.Enums.List;
+using Azuria.Helpers.Extensions;
 using Newtonsoft.Json;
 
 namespace Azuria.Api.v1.DataModels.List
@@ -25,12 +26,20 @@ namespace Azuria.Api.v1.DataModels.List
 
         /// <summary>
         /// </summary>
-        [JsonProperty("subtype", ItemConverterType = typeof(TagSubtypeConverter))]
-        public TagSubtype Subtype { get; set; }
+        public TagSubtype? Subtype => TagSubtypeConverter.ParseSubtype(this.SubtypeRaw);
 
         /// <summary>
         /// </summary>
-        [JsonProperty("type", ItemConverterType = typeof(TagTypeConverter))]
-        public TagType TagType { get; set; }
+        [JsonProperty("subtype")]
+        public string SubtypeRaw { get; set; }
+
+        /// <summary>
+        /// </summary>
+        public TagType? TagType => TagTypeConverter.ParseTagType(this.SubtypeRaw);
+
+        /// <summary>
+        /// </summary>
+        [JsonProperty("type")]
+        public string TagTypeRaw { get; set; }
     }
 }

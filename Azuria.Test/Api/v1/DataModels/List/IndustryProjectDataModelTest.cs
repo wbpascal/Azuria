@@ -3,6 +3,7 @@ using Azuria.Api.v1.DataModels.List;
 using Azuria.Enums;
 using Azuria.Enums.Info;
 using Azuria.ErrorHandling;
+using Azuria.Helpers.Extensions;
 using Azuria.Test.Core;
 using NUnit.Framework;
 
@@ -24,14 +25,14 @@ namespace Azuria.Test.Api.v1.DataModels.List
             return new IndustryProjectDataModel
             {
                 EntryFsk = new[] {Fsk.Fsk16, Fsk.BadLanguage, Fsk.Violence},
-                EntryGenre = new[] {Genre.Action, Genre.Ecchi, Genre.Harem},
+                EntryGenreRaw = string.Join(" ", Genre.Action.GetDescription(), Genre.Ecchi.GetDescription(), Genre.Harem.GetDescription()),
                 EntryId = 7537,
                 EntryMedium = MediaMedium.Mangaseries,
                 EntryName = "Absolute Duo",
                 EntryRatingsCount = 31,
                 EntryRatingsSum = 235,
                 EntryStatus = MediaStatus.Airing,
-                IndustryRole = IndustryRole.Publisher
+                IndustryType = IndustryType.Publisher
             };
         }
     }

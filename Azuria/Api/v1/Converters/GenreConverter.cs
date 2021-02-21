@@ -14,10 +14,15 @@ namespace Azuria.Api.v1.Converters
             JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
         {
             var lValue = reader.Value.ToString();
-            if (string.IsNullOrEmpty(lValue.Trim())) return new Genre[0];
+            return ParseGenre(lValue);
+        }
+
+        public static Genre[] ParseGenre(string value)
+        {
+            if (string.IsNullOrEmpty(value.Trim())) return new Genre[0];
 
             Dictionary<string, Genre> lStringDictionary = EnumHelpers.GetDescriptionDictionary<Genre>();
-            return lValue.Split(' ')
+            return value.Split(' ')
                 .Where(genre => lStringDictionary.ContainsKey(genre))
                 .Select(genre => lStringDictionary[genre])
                 .ToArray();

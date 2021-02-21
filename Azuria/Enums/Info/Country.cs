@@ -21,6 +21,16 @@
         Japan,
 
         /// <summary>
+        /// 
+        /// </summary>
+        SouthKorea,
+
+        /// <summary>
+        /// 
+        /// </summary>
+        China,
+
+        /// <summary>
         /// </summary>
         Misc
     }

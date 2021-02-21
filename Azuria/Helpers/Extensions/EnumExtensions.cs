@@ -42,6 +42,10 @@ namespace Azuria.Helpers.Extensions
                     return "us";
                 case Country.Japan:
                     return "jp";
+                case Country.SouthKorea:
+                    return "kr";
+                case Country.China:
+                    return "zh";
                 case Country.Misc:
                     return "misc";
                 default:
@@ -75,16 +79,16 @@ namespace Azuria.Helpers.Extensions
             }
         }
 
-        public static string ToTypeString(this IndustryRole role)
+        public static string ToTypeString(this IndustryType type)
         {
-            switch (role)
+            switch (type)
             {
-                case IndustryRole.RecordLabel:
+                case IndustryType.RecordLabel:
                     return "record_label";
-                case IndustryRole.TalentAgent:
+                case IndustryType.TalentAgent:
                     return "talent_agent";
                 default:
-                    return role.ToString().ToLowerInvariant();
+                    return type.ToString().ToLowerInvariant();
             }
         }
 

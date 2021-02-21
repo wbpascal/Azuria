@@ -20,6 +20,10 @@ namespace Azuria.Api.v1.Converters.Info
                     return MediaNameType.German;
                 case "namejap":
                     return MediaNameType.Japanese;
+                case "namekor":
+                    return MediaNameType.Korean;
+                case "namezhn":
+                    return MediaNameType.Chinese;
                 case "syn":
                     return MediaNameType.Synonym;
                 default:
