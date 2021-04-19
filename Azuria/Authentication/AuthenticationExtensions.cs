@@ -14,57 +14,15 @@ namespace Azuria.Authentication
     public static class AuthenticationExtensions
     {
         /// <summary>
-        /// Authenticates a <see cref="IProxerClient">client</see> with a username, password and an optional 2FA-Token.
-        /// TODO: Rename to TryLoginAsync?
+        /// Tries to find the first login manager found within the middleware pipeline of the given client.
         /// </summary>
-        /// <param name="client">The client that is authenticated.</param>
-        /// <param name="input">The input model that contains the login data.</param>
-        /// <param name="token">Optional. The cancellation token used for cancelling the request.</param>
-        /// <exception cref="ArgumentException">
-        /// Thrown if the pipeline of the given client does not contain a login middleware with a DefaultLoginManager.
-        /// </exception>
-        /// <returns>A <see cref="Task" /> that contains the result of the request.</returns>
-        public static Task<IProxerResult<LoginDataModel>> LoginAsync(
-            this IProxerClient client, LoginInput input, CancellationToken token = default)
+        /// <param name="client"></param>
+        /// <returns>An instance of a login manager or null.</returns>
+        public static ILoginManager TryFindLoginManager(this IProxerClient client)
         {
-            DefaultLoginManager loginManager = TryFindLoginManager(client.Pipeline);
-            if (loginManager == null)
-                throw new ArgumentException(
-                    "The pipeline of the client does not contain a login middleware with a DefaultLoginManager",
-                    nameof(client)
-                );
-
-            return loginManager.PerformLoginAsync(input, token);
-        }
-
-        /// <summary>
-        /// Performs the logout of a <see cref="IProxerClient">client</see>.
-        /// </summary>
-        /// <param name="client">The client on which the logout is performed.</param>
-        /// <param name="token">Optional. The cancellation token used for cancelling the request.</param>
-        /// <exception cref="ArgumentException">
-        /// Thrown if the pipeline of the given client does not contain a login middleware with a DefaultLoginManager.
-        /// </exception>
-        /// <returns>A <see cref="Task" /> that contains the result of the method.</returns>
-        public static Task<IProxerResult> LogoutAsync(this IProxerClient client, CancellationToken token = default)
-        {
-            DefaultLoginManager loginManager = TryFindLoginManager(client.Pipeline);
-            if (loginManager == null)
-                throw new ArgumentException(
-                    "The pipeline of the client does not contain a login middleware with a DefaultLoginManager",
-                    nameof(client)
-                );
-
-            return loginManager.PerformLogoutAsync(token);
-        }
-
-        // Returns the first instance from the pipeline or null
-        private static DefaultLoginManager TryFindLoginManager(IPipeline pipeline)
-        {
-            foreach (IMiddleware middleware in pipeline.Middlewares)
+            foreach (IMiddleware middleware in client.Pipeline.Middlewares)
                 if (middleware is LoginMiddleware loginMiddleware)
-                    if (loginMiddleware.LoginManager is DefaultLoginManager instance)
-                        return instance;
+                    return loginMiddleware.LoginManager;
 
             return null;
         }

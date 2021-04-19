@@ -39,6 +39,11 @@ namespace Azuria.Test.Middleware
             this._loginInvalidated = true;
         }
 
+        public void SetLogin(char[] loginToken)
+        {
+            throw new NotImplementedException();
+        }
+
         public bool IsLoginProbablyValid()
         {
             return !this._loginInvalidated;

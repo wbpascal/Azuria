@@ -28,10 +28,11 @@ namespace Azuria.Authentication
         void InvalidateLogin();
 
         /// <summary>
-        /// Checks if the client is probably logged in at the moment(results may be inaccurate).
+        /// Assumes that the client was just logged in with the given login token. Used to manually set the login token
+        /// when the automatic interception cannot be used.
         /// </summary>
-        /// <returns>A boolean that indicates if the client is probably logged in.</returns>
-        bool IsLoginProbablyValid();
+        /// <param name="loginToken"></param>
+        void SetLogin(char[] loginToken);
 
         /// <summary>
         /// Updates the state of the login manager with the information from a request and the corresponding result.

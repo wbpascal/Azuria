@@ -17,7 +17,6 @@ namespace Azuria.Authentication
     public class DefaultLoginManager : ILoginManager
     {
         private const string LoginTokenHeaderName = "proxer-api-token";
-        private readonly IProxerClient _client;
 
         //TODO: Maybe make this protected so that the class can be derived and these values can be saved?
         private DateTime _lastRequestPerformed = DateTime.MinValue;
@@ -27,9 +26,8 @@ namespace Azuria.Authentication
         /// </summary>
         /// <param name="client"></param>
         /// <param name="loginToken"></param>
-        public DefaultLoginManager(IProxerClient client, char[] loginToken = null)
+        public DefaultLoginManager(char[] loginToken = null)
         {
-            this._client = client;
             this.LoginToken = loginToken;
         }
 
@@ -38,11 +36,7 @@ namespace Azuria.Authentication
         /// </summary>
         public char[] LoginToken { get; set; }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="request"></param>
-        /// <returns>If any information was added to the request</returns>
+        /// <inheritdoc />
         public bool AddAuthenticationInformation(IRequestBuilderBase request)
         {
             if (!request.CheckLogin) return false;
@@ -54,19 +48,13 @@ namespace Azuria.Authentication
             return true;
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="request"></param>
-        /// <returns></returns>
+        /// <inheritdoc />
         public bool ContainsAuthenticationInformation(IRequestBuilderBase request)
         {
             return request.Headers.ContainsKey(LoginTokenHeaderName);
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
+        /// <inheritdoc />
         public void InvalidateLogin()
         {
             this._loginPerformed = DateTime.MinValue;
@@ -85,46 +73,35 @@ namespace Azuria.Authentication
             return DateTime.Now.Subtract(this._lastRequestPerformed).TotalHours < 1;
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="input"></param>
-        /// <param name="token"></param>
-        /// <returns></returns>
-        public virtual async Task<IProxerResult<LoginDataModel>> PerformLoginAsync(LoginInput input,
-            CancellationToken token = default)
+        /// <inheritdoc />
+        public void SetLogin(char[] loginToken)
         {
-            IRequestBuilderWithResult<LoginDataModel> loginRequest =
-                this._client.CreateRequest().FromUserClass().Login(input);
-            IProxerResult<LoginDataModel> result = await loginRequest.DoRequestAsync(token).ConfigureAwait(false);
-            if (!result.Success || result.Result == null)
-                return new ProxerResult<LoginDataModel>(result.Exceptions);
-
-            this.LoginToken = result.Result.Token.ToCharArray();
+            this.LoginToken = loginToken;
             this._loginPerformed = DateTime.Now;
-            return new ProxerResult<LoginDataModel>(result.Result);
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="token"></param>
-        /// <returns></returns>
-        public virtual async Task<IProxerResult> PerformLogoutAsync(CancellationToken token = default)
+        private void TryParseLogin(IRequestBuilderBase request, IProxerResultBase result)
         {
-            IRequestBuilder logoutRequest = this._client.CreateRequest().FromUserClass().Logout();
-            IProxerResult lResult = await logoutRequest.DoRequestAsync(token).ConfigureAwait(false);
-            if (!lResult.Success)
-                return new ProxerResult(lResult.Exceptions);
+            if (request.BuildUri().AbsolutePath != "/api/v1/user/login" ||
+                !(result is IProxerResult<LoginDataModel> loginResult) || !result.Success) return;
+
+            this.SetLogin(loginResult.Result.Token.ToCharArray());
+        }
+
+        private void TryParseLogout(IRequestBuilderBase request, IProxerResultBase result)
+        {
+            if (request.BuildUri().AbsolutePath != "/api/v1/user/logout" || !result.Success) return;
 
             this.LoginToken = null;
-            this._loginPerformed = DateTime.MinValue;
-            return new ProxerResult();
+            this.InvalidateLogin();
         }
 
         /// <inheritdoc />
         public void Update(IRequestBuilderBase request, IProxerResultBase result)
         {
+            this.TryParseLogin(request, result);
+            this.TryParseLogout(request, result);
+
             this._lastRequestPerformed = DateTime.Now;
             if (result.Success && this.ContainsAuthenticationInformation(request))
                 this._loginPerformed = DateTime.Now;

@@ -287,7 +287,7 @@ namespace Azuria.Test
             IProxerClient client = ProxerClient.Create(apiKey);
 
             var options = new ProxerClientOptions(apiKey, client);
-            var loginManager = new DefaultLoginManager(client, loginToken);
+            var loginManager = new DefaultLoginManager(loginToken);
 
             Assert.AreSame(options, options.WithCustomLoginManager(loginManager));
 
@@ -307,7 +307,7 @@ namespace Azuria.Test
             IProxerClient client = ProxerClient.Create(apiKey);
 
             var options = new ProxerClientOptions(apiKey, client);
-            var loginManager = new DefaultLoginManager(client, loginToken);
+            var loginManager = new DefaultLoginManager(loginToken);
 
             Assert.AreSame(options, options.WithCustomLoginManager(loginManager));
 

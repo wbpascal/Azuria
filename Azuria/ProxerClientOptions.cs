@@ -65,7 +65,7 @@ namespace Azuria
         {
             if (loginToken != null && loginToken.Length != 255)
                 throw new ArgumentException("A valid login token must be 255 characters long", nameof(loginToken));
-            return this.WithCustomLoginManager(new DefaultLoginManager(this.Client, loginToken));
+            return this.WithCustomLoginManager(new DefaultLoginManager(loginToken));
         }
 
         /// <summary>
