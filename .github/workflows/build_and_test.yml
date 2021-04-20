@@ -1,6 +1,24 @@
-name: Build and Test Library
+name: Build, Test and Deploy
 
-on: [push, pull_request]
+on:
+  push:
+  pull_request:
+  release:
+    types:
+      - published
+  
+env:
+  # Stop wasting time caching packages
+  DOTNET_SKIP_FIRST_TIME_EXPERIENCE: true
+  # Disable sending usage data to Microsoft
+  DOTNET_CLI_TELEMETRY_OPTOUT: true
+  # GitHub Packages Feed settings
+  GITHUB_FEED: https://nuget.pkg.github.com/giraffe-fsharp/
+  GITHUB_USER: wbpascal
+  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  # Official NuGet Feed settings
+  NUGET_FEED: https://api.nuget.org/v3/index.json
+  NUGET_KEY: ${{ secrets.NUGET_KEY }}
 
 jobs:
   build:
@@ -10,33 +28,36 @@ jobs:
     runs-on: ${{ matrix.os }}
 
     steps:
-      - uses: actions/checkout@v1
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0 # avoid shallow clone so nbgv can do its work.
+
       - name: Setup .NET Core
         uses: actions/setup-dotnet@v1
         with:
-          dotnet-version: 2.2.207
+          dotnet-version: 5.0.202
+
+      - name: Cache dependencies
+        uses: actions/cache@v2
+        with:
+          path: ~/.nuget/packages
+          key: ${{ runner.os }}-nuget-${{ hashFiles('**/packages.lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-nuget-
+
+      - name: Restore packages
+        run: dotnet restore
+
+      - name: Calculate version
+        uses: dotnet/nbgv@master
+        id: nbgv
+
       - name: Build with dotnet
-        run: dotnet build --configuration Release
-        env:
-          DOTNET_SKIP_FIRST_TIME_EXPERIENCE: true
+        run: dotnet build --configuration Release --no-restore
 
-  test:
-    strategy:
-      matrix:
-        os: [ubuntu-18.04, windows-2019]
-    runs-on: ${{ matrix.os }}
-    needs: build
-
-    steps:
-      - uses: actions/checkout@v1
-      - name: Setup .NET Core
-        uses: actions/setup-dotnet@v1
-        with:
-          dotnet-version: 2.2.207
       - name: Test Solution
         run: dotnet test /p:CollectCoverage=true /p:CoverletOutputFormat=opencover /p:CoverletOutput=./coverage.xml /p:Include=\"[Azuria]*\"
-        env:
-          DOTNET_SKIP_FIRST_TIME_EXPERIENCE: true
+        
       - name: Upload code coverage report to Codecov
         uses: codecov/codecov-action@v1.0.5
         with:
@@ -44,3 +65,50 @@ jobs:
           name: ${{ matrix.os }}
           yml: ./codecov.yml
           file: ./Azuria.Test/coverage.xml
+
+      - name: Pack NuGet package
+        if: ${{ matrix.os == 'ubuntu-18.04' && github.event_name != 'release' }}
+        run: dotnet pack -v normal -c Release --no-restore Azuria/Azuria.csproj
+
+      - name: Pack NuGet package (public release)
+        if: ${{ matrix.os == 'ubuntu-18.04' && github.event_name == 'release' }}
+        run: dotnet pack -v normal -c Release -p:PublicRelease=true --no-restore Azuria/Azuria.csproj
+
+      - name: Upload Artifact
+        if: matrix.os == 'ubuntu-18.04'
+        uses: actions/upload-artifact@v2
+        with:
+          name: nupkg
+          path: |
+            ./Azuria/bin/Release/*.nupkg
+            ./Azuria/bin/Release/*.snupkg
+
+  publish-github-packages:
+    needs: build
+    # TODO: Enable
+    # if: github.ref == 'refs/heads/master'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download Artifact
+        uses: actions/download-artifact@v1
+        with:
+          name: nupkg
+      - name: Push to GitHub Feed
+        run: |
+          for f in ./nupkg/*.nupkg
+          do
+            curl -vX PUT -u "$GITHUB_USER:$GITHUB_TOKEN" -F package=@$f $GITHUB_FEED
+          done
+  
+  publish-nuget:
+    needs: build
+    # TODO: Enable
+    # if: github.event_name == 'release'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download Artifact
+        uses: actions/download-artifact@v1
+        with:
+          name: nupkg
+      - name: Push to NuGet Feed
+        run: dotnet nuget push ./nupkg/*.nupkg --source $NUGET_FEED --skip-duplicate --api-key $NUGET_KEY
