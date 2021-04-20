@@ -56,7 +56,7 @@ jobs:
         run: dotnet build --configuration Release --no-restore
 
       - name: Test Solution
-        run: dotnet test -p:CollectCoverage=true -p:CoverletOutputFormat=opencover -p:CoverletOutput=./coverage.xml -p:Include=\"[Azuria]*\"
+        run: dotnet test /p:CollectCoverage=true /p:CoverletOutputFormat=opencover /p:CoverletOutput=./coverage.xml /p:Include=\"[Azuria]*\"
 
       - name: Upload code coverage report to Codecov
         uses: codecov/codecov-action@v1.0.5
