@@ -56,7 +56,7 @@ jobs:
         run: dotnet build --configuration Release --no-restore
 
       - name: Test Solution
-        run: dotnet test /p:CollectCoverage=true /p:CoverletOutputFormat=opencover /p:CoverletOutput=./coverage.xml /p:Include=\"[Azuria]*\"
+        run: dotnet test -p:CollectCoverage=true -p:CoverletOutputFormat=opencover -p:CoverletOutput=./coverage.xml -p:Include=\"[Azuria]*\"
         
       - name: Upload code coverage report to Codecov
         uses: codecov/codecov-action@v1.0.5
@@ -85,8 +85,7 @@ jobs:
 
   publish-github-packages:
     needs: build
-    # TODO: Enable
-    # if: github.ref == 'refs/heads/master'
+    if: github.ref == 'refs/heads/master'
     runs-on: ubuntu-latest
     steps:
       - name: Download Artifact
@@ -102,8 +101,7 @@ jobs:
   
   publish-nuget:
     needs: build
-    # TODO: Enable
-    # if: github.event_name == 'release'
+    if: github.event_name == 'release'
     runs-on: ubuntu-latest
     steps:
       - name: Download Artifact
