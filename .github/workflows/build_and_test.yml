@@ -13,7 +13,7 @@ env:
   # Disable sending usage data to Microsoft
   DOTNET_CLI_TELEMETRY_OPTOUT: true
   # GitHub Packages Feed settings
-  GITHUB_FEED: https://nuget.pkg.github.com/giraffe-fsharp/
+  GITHUB_FEED: https://nuget.pkg.github.com/Azuria/
   GITHUB_USER: wbpascal
   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
   # Official NuGet Feed settings

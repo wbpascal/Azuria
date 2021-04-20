@@ -1,6 +1,6 @@
-<Project Sdk="Microsoft.NET.Sdk" ToolsVersion="15.0">
+<Project Sdk="Microsoft.NET.Sdk">
     <PropertyGroup>
-        <TargetFramework>netcoreapp2.1</TargetFramework>
+        <TargetFramework>netcoreapp5</TargetFramework>
         <SignAssembly>False</SignAssembly>
         <AssemblyOriginatorKeyFile>signing_key.snk</AssemblyOriginatorKeyFile>
         <DelaySign>False</DelaySign>
