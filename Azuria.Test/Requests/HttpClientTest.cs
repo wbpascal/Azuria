@@ -23,10 +23,10 @@ namespace Azuria.Test.Requests
         [Test]
         public async Task GetRequestAsyncCancelTokenTest()
         {
-            //Start request and cancel after 1 ms
+            //Start request and cancel immediately
             IProxerResult<string> lResult =
                 await this._httpClient.GetRequestAsync(
-                    new Uri("https://httpbin.org/get"), token: new CancellationTokenSource(1).Token
+                    new Uri("https://httpbin.org/get"), token: new CancellationTokenSource(0).Token
                 );
             Assert.False(lResult.Success);
             Assert.True(lResult.Exceptions.Any(exception => exception.GetType() == typeof(TaskCanceledException)));
@@ -50,11 +50,11 @@ namespace Azuria.Test.Requests
         [Test]
         public async Task PostRequestAsyncCancelTokenTest()
         {
-            //Start request and cancel after 1 ms
+            //Start request and cancel immediately
             IProxerResult<string> lResult =
                 await this._httpClient.PostRequestAsync(
                     new Uri("https://httpbin.org/post"), new KeyValuePair<string, string>[0],
-                    token: new CancellationTokenSource(1).Token
+                    token: new CancellationTokenSource(0).Token
                 );
             Assert.False(lResult.Success);
             Assert.True(lResult.Exceptions.Any(exception => exception.GetType() == typeof(TaskCanceledException)));

@@ -20,7 +20,7 @@ or using the dotnet CLI
 
     dotnet add package Azuria
 
-All Versions can be found on the [NuGet Page](https://www.nuget.org/packages/Azuria/).
+All Versions can be found on the [NuGet Page](https://www.nuget.org/packages/Azuria/). Prerelease versions can be installed from the [GitHub NuGet Repository](https://github.com/wbpascal/Azuria/packages/742231).
 
 
 # Using
