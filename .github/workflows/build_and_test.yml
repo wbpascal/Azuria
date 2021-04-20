@@ -68,7 +68,7 @@ jobs:
 
       - name: Pack NuGet package
         if: ${{ matrix.os == 'ubuntu-18.04' && github.event_name != 'release' }}
-        run: dotnet pack -v normal -c Release --no-restore Azuria/Azuria.csproj
+        run: dotnet pack -v normal -c Release -p:PublicRelease=false --no-restore Azuria/Azuria.csproj
 
       - name: Pack NuGet package (public release)
         if: ${{ matrix.os == 'ubuntu-18.04' && github.event_name == 'release' }}
