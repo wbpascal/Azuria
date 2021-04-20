@@ -6,7 +6,7 @@ on:
   release:
     types:
       - published
-  
+
 env:
   # Stop wasting time caching packages
   DOTNET_SKIP_FIRST_TIME_EXPERIENCE: true
@@ -57,7 +57,7 @@ jobs:
 
       - name: Test Solution
         run: dotnet test -p:CollectCoverage=true -p:CoverletOutputFormat=opencover -p:CoverletOutput=./coverage.xml -p:Include=\"[Azuria]*\"
-        
+
       - name: Upload code coverage report to Codecov
         uses: codecov/codecov-action@v1.0.5
         with:
@@ -98,7 +98,7 @@ jobs:
           do
             curl -vX PUT -u "$GITHUB_USER:$GITHUB_TOKEN" -F package=@$f $GITHUB_FEED
           done
-  
+
   publish-nuget:
     needs: build
     if: github.event_name == 'release'
