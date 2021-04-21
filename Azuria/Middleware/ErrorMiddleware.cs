@@ -57,7 +57,7 @@ namespace Azuria.Middleware
             switch (result)
             {
                 case ProxerApiResponseBase lResponse:
-                    Exception lResponseException = GetResponseException(lResponse.GetErrorCode());
+                    Exception lResponseException = GetResponseException(lResponse.ErrorCode);
                     return lResponseException == null ? new Exception[0] : new[] {lResponseException};
                 default:
                     return new Exception[0];
@@ -69,9 +69,9 @@ namespace Azuria.Middleware
             return url.Host.Equals("proxer.me") && url.AbsolutePath.StartsWith("/api/");
         }
 
-        private static Exception GetResponseException(ErrorCode code)
+        private static Exception GetResponseException(int errorCode)
         {
-            return code == ErrorCode.NoError ? null : new ProxerApiException(code);
+            return errorCode == (int) ErrorCode.NoError ? null : new ProxerApiException(errorCode);
         }
     }
 }

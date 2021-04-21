@@ -1,5 +1,6 @@
 ﻿using System;
 using Azuria.Enums;
+using Azuria.Helpers;
 
 namespace Azuria.Exceptions
 {
@@ -8,17 +9,17 @@ namespace Azuria.Exceptions
     public class ProxerApiException : Exception
     {
         /// <summary>
-        /// Initialises a new instance of the <see cref="ProxerApiException" /> class.
+        /// Initializes a new instance of the <see cref="ProxerApiException" /> class.
         /// </summary>
         public ProxerApiException()
         {
         }
 
         /// <summary>
-        /// Initialises a new instance of the <see cref="ProxerApiException" /> class.
+        /// Initializes a new instance of the <see cref="ProxerApiException" /> class.
         /// </summary>
         /// <param name="errorCode"></param>
-        public ProxerApiException(ErrorCode errorCode)
+        public ProxerApiException(int errorCode)
         {
             this.ErrorCode = errorCode;
         }
@@ -43,6 +44,12 @@ namespace Azuria.Exceptions
 
         /// <summary>
         /// </summary>
-        public ErrorCode ErrorCode { get; }
+        public int ErrorCode { get; }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        public ErrorCode GetErrorCode() => ErrorCodeHelper.GetErrorCodeFromInt(this.ErrorCode);
     }
 }

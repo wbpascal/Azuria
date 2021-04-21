@@ -54,7 +54,7 @@ namespace Azuria.Test.Middleware
             else
             {
                 Assert.NotNull(apiException);
-                Assert.AreEqual(code, apiException.ErrorCode);
+                Assert.AreEqual(code, apiException.GetErrorCode());
             }
         }
 
@@ -114,7 +114,7 @@ namespace Azuria.Test.Middleware
             else
             {
                 Assert.NotNull(apiException);
-                Assert.AreEqual(code, apiException.ErrorCode);
+                Assert.AreEqual(code, apiException.GetErrorCode());
             }
         }
 

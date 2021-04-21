@@ -1,6 +1,7 @@
 using System;
 using Azuria.Api.v1.Converter;
 using Azuria.Enums;
+using Azuria.Helpers;
 using Newtonsoft.Json;
 
 namespace Azuria.ErrorHandling
@@ -33,11 +34,6 @@ namespace Azuria.ErrorHandling
         /// 
         /// </summary>
         /// <returns></returns>
-        public ErrorCode GetErrorCode()
-        {
-            if (!Enum.IsDefined(typeof(ErrorCode), this.ErrorCode))
-                return Enums.ErrorCode.Unknown;
-            return (ErrorCode) this.ErrorCode;
-        }
+        public ErrorCode GetErrorCode() => ErrorCodeHelper.GetErrorCodeFromInt(this.ErrorCode);
     }
 }
