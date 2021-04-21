@@ -68,7 +68,7 @@ jobs:
           yml: ./codecov.yml
           file: ./Azuria.Test/coverage.xml
 
-      - name: Pack NuGet package (public release)
+      - name: Pack NuGet package
         if: ${{ matrix.os == 'ubuntu-18.04' }}
         run: dotnet pack -v normal -c Release --no-restore Azuria/Azuria.csproj
 
