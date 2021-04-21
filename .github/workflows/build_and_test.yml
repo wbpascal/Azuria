@@ -52,7 +52,7 @@ jobs:
         run: dotnet restore
 
       - name: Calculate version
-        run: gitversion /updateprojectfiles
+        run: dotnet-gitversion /updateprojectfiles
 
       - name: Build with dotnet
         run: dotnet build --configuration Release --no-restore
