@@ -4,9 +4,9 @@ Azuria is a customizable and extensible C# API for the german anime and manga we
 
 **Disclaimer:** Although the core design is stable, not every API action or class provided by the [Proxer.Me API](https://proxer.me/wiki/Proxer_API/v1) has been implemented. Furthermore, a lot of the classes and methods are undocumented, a short overview of the basic functionality of the library and its extensibility is provided below. The [official Proxer.Me API Wiki](https://proxer.me/wiki/Proxer_API/v1) (only available in German) should be used for any documentation about the API itself and about how to acquire a valid API key.
 
-Master | NuGet | Coverage | Code Quality
------- | ----- | -------- | ------------
-![GitHub Workflow Status (branch)](https://img.shields.io/github/workflow/status/InfiniteSoul/Azuria/Build%20and%20Test%20Library/master?style=for-the-badge) | [![NuGet](https://img.shields.io/nuget/v/Azuria.svg?style=for-the-badge)](https://www.nuget.org/packages/Azuria) | [![codecov](https://img.shields.io/codecov/c/github/InfiniteSoul/Azuria?style=for-the-badge)](https://codecov.io/gh/InfiniteSoul/Azuria) | [![CodeFactor Grade](https://img.shields.io/codefactor/grade/github/wbpascal/Azuria?label=CodeFactor&logo=CodeFactor&style=for-the-badge)](https://www.codefactor.io/repository/github/wbpascal/azuria)
+Build & Test | NuGet | Test Coverage | Code Quality
+------------ | ----- | ------------- | ------------
+![GitHub Workflow Status (branch)](https://img.shields.io/github/workflow/status/wbpascal/Azuria/Build%20and%20Test%20Library/master?style=for-the-badge) | [![NuGet](https://img.shields.io/nuget/v/Azuria.svg?style=for-the-badge)](https://www.nuget.org/packages/Azuria) | [![codecov](https://img.shields.io/codecov/c/github/wbpascal/Azuria?style=for-the-badge)](https://codecov.io/gh/wbpascal/Azuria) | [![CodeFactor Grade](https://img.shields.io/codefactor/grade/github/wbpascal/Azuria?label=CodeFactor&logo=CodeFactor&style=for-the-badge)](https://www.codefactor.io/repository/github/wbpascal/azuria)
 
 ---
 
