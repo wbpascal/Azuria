@@ -30,7 +30,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2
         with:
-          fetch-depth: 0 # avoid shallow clone so nbgv can do its work.
+          fetch-depth: 0 # avoid shallow clone so gitversion can do its work.
 
       - name: Setup .NET Core
         uses: actions/setup-dotnet@v1
@@ -45,12 +45,14 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-nuget-
 
+      - name: Install GitVersion
+        run: dotnet tool install --global GitVersion.Tool
+
       - name: Restore packages
         run: dotnet restore
 
       - name: Calculate version
-        uses: dotnet/nbgv@master
-        id: nbgv
+        run: dotnet-gitversion /updateprojectfiles
 
       - name: Build with dotnet
         run: dotnet build --configuration Release --no-restore
@@ -67,14 +69,10 @@ jobs:
           file: ./Azuria.Test/coverage.xml
 
       - name: Pack NuGet package
-        if: ${{ matrix.os == 'ubuntu-18.04' && github.event_name != 'release' }}
-        run: dotnet pack -v normal -c Release -p:PublicRelease=false --no-restore Azuria/Azuria.csproj
+        if: ${{ matrix.os == 'ubuntu-18.04' }}
+        run: dotnet pack -v normal -c Release --no-restore Azuria/Azuria.csproj
 
-      - name: Pack NuGet package (public release)
-        if: ${{ matrix.os == 'ubuntu-18.04' && github.event_name == 'release' }}
-        run: dotnet pack -v normal -c Release -p:PublicRelease=true --no-restore Azuria/Azuria.csproj
-
-      - name: Upload Artifact
+      - name: Upload NuGet packages as artifacts
         if: matrix.os == 'ubuntu-18.04'
         uses: actions/upload-artifact@v2
         with:
