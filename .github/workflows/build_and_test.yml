@@ -15,10 +15,8 @@ env:
   # GitHub Packages Feed settings
   GITHUB_FEED: https://nuget.pkg.github.com/Azuria/
   GITHUB_USER: wbpascal
-  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
   # Official NuGet Feed settings
   NUGET_FEED: https://api.nuget.org/v3/index.json
-  NUGET_KEY: ${{ secrets.NUGET_KEY }}
 
 jobs:
   build:
@@ -36,6 +34,11 @@ jobs:
         uses: actions/setup-dotnet@v1
         with:
           dotnet-version: 5.0.202
+          
+      - name: Install GitVersion
+        uses: gittools/actions/gitversion/setup@v0.9.7
+        with:
+          versionSpec: '5.6.8'
 
       - name: Cache dependencies
         uses: actions/cache@v2
@@ -45,14 +48,14 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-nuget-
 
-      - name: Install GitVersion
-        run: dotnet tool install --global GitVersion.Tool
-
       - name: Restore packages
         run: dotnet restore
 
-      - name: Calculate version
-        run: dotnet-gitversion /updateprojectfiles
+      - name: Calculate Version
+        id: gitversion
+        uses: gittools/actions/gitversion/execute@v0.9.7
+        with:
+          useConfigFile: true
 
       - name: Build with dotnet
         run: dotnet build --configuration Release --no-restore
@@ -69,8 +72,12 @@ jobs:
           file: ./Azuria.Test/coverage.xml
 
       - name: Pack NuGet package
-        if: ${{ matrix.os == 'ubuntu-18.04' }}
-        run: dotnet pack -v normal -c Release --no-restore Azuria/Azuria.csproj
+        if: ${{ matrix.os == 'ubuntu-18.04' && github.event_name != 'release' }}
+        run: dotnet pack -v normal -c Release -p:Version=${{ steps.gitversion.outputs.nuGetVersionV2 }} --no-restore Azuria/Azuria.csproj
+
+      - name: Pack NuGet package (public release)
+        if: ${{ matrix.os == 'ubuntu-18.04' && github.event_name == 'release' }}
+        run: dotnet pack -v normal -c Release -p:Version=${{ steps.gitversion.outputs.majorMinorPatch }} --no-restore Azuria/Azuria.csproj
 
       - name: Upload NuGet packages as artifacts
         if: matrix.os == 'ubuntu-18.04'
@@ -94,7 +101,7 @@ jobs:
         run: |
           for f in ./nupkg/*.nupkg
           do
-            curl -vX PUT -u "$GITHUB_USER:$GITHUB_TOKEN" -F package=@$f $GITHUB_FEED
+            curl -vX PUT -u "$GITHUB_USER:${{ secrets.GITHUB_TOKEN }}" -F package=@$f $GITHUB_FEED
           done
 
   publish-nuget:
@@ -107,4 +114,4 @@ jobs:
         with:
           name: nupkg
       - name: Push to NuGet Feed
-        run: dotnet nuget push ./nupkg/*.nupkg --source $NUGET_FEED --skip-duplicate --api-key $NUGET_KEY
+        run: dotnet nuget push ./nupkg/*.nupkg --source $NUGET_FEED --skip-duplicate --api-key ${{ secrets.NUGET_KEY }}
