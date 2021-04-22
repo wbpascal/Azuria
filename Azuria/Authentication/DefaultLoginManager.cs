@@ -24,7 +24,6 @@ namespace Azuria.Authentication
 
         /// <summary>
         /// </summary>
-        /// <param name="client"></param>
         /// <param name="loginToken"></param>
         public DefaultLoginManager(char[] loginToken = null)
         {
