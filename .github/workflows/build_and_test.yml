@@ -90,7 +90,7 @@ jobs:
 
   publish-github-packages:
     needs: build
-    if: github.ref == 'refs/heads/master'
+    if: github.ref == 'refs/heads/master' || github.event_name == 'release'
     runs-on: ubuntu-latest
     steps:
       - name: Download Artifact
